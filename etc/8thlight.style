@@ -1,0 +1,191 @@
+page:
+	width: 1000
+	height: 900
+	horizontal_alignment: center
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/bg.jpg
+	
+main_column:
+	border_width: 0
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/canvas_bg.jpg
+	width: 823
+	height: 850
+	horizontal_alignment: center
+	
+header:
+	height: 200
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/header.jpg
+	width: 823
+	horizontal_alignment: center
+
+menu:
+	height: 67
+	top_border_width: 1
+	bottom_border_width: 1
+	border_color: #333333
+	width: 823
+	horizontal_alignment: :right
+	right_margin: 25
+	left_margin: 25
+	bottom_margin: 15
+
+link:
+	width: 80
+	height: 50
+	text_color: #0049F4
+	font_face: Arial
+	font_size: 13
+	vertical_alignment: middle
+	horizontal_alignment: center
+	
+link.hover:
+	text_color: #ffffff
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/button_bg.jpg
+
+tag_line:
+	width: 823
+	height: 200
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/tag_line.jpg
+	right_margin: 25
+	left_margin: 25
+	horizontal_alignment: left
+	
+tag_line_content:
+	width: 400
+	height: 150
+	top_margin: 50
+	left_margin: 50
+	text_color: white
+	font_size: 14
+
+spot_light:
+	width: 412
+	height: 300
+	top_margin: 20
+	left_margin: 50
+	right_margin: 50
+	
+spot_light_title:
+	width: 312
+	height: 45
+	bottom_border_width: 1
+	border_color: #0049F4
+	font_size: 20
+	text_color: white
+
+book_news:
+	height: 75
+	width: 100%
+	bottom_border_width: 1
+	border_color: #333333
+	top_margin: 10
+	
+book_news_img:
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/thumbnail_book.jpg
+	width: 59
+	height: 58
+	
+book_news_text:
+	width: 253
+	height: 58
+	left_margin: 10
+	font_size: 15
+	font_face: Helvetica
+	text_color: #919191
+
+sm_news:
+	height: 75
+	width: 100%
+	bottom_border_width: 1
+	border_color: #333333
+	top_margin: 10
+	
+sm_news_img:
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/statemachine_thumbnail.png
+	width: 59
+	height: 58
+	
+sm_news_text:
+	width: 253
+	height: 58
+	left_margin: 10
+	font_size: 15
+	font_face: Helvetica
+	text_color: #919191
+
+news:
+	width: 411
+	height: 300
+	top_margin: 20
+	left_margin: 50
+	right_margin: 50
+	
+news_title:
+	width: 311
+	height: 35
+	bottom_border_width: 1
+	border_color: #0049F4
+	font_size: 20
+	text_color: white
+
+doug_news:
+	text_color: #919191
+	font_size: 15
+	font_face: Helvetica
+	height: 50
+	width: 100%
+	bottom_border_width: 1
+	border_color: #333333
+	top_margin: 10
+	
+rails_fest_news:
+	text_color: #919191
+	font_size: 15
+	font_face: Helvetica
+	height: 50
+	width: 100%
+	bottom_border_width: 1
+	border_color: #333333
+	top_margin: 10
+	
+eric_news:
+	text_color: #919191
+	font_size: 15
+	font_face: Helvetica
+	height: 35
+	width: 100%
+	bottom_border_width: 1
+	border_color: #333333
+	top_margin: 10
+	
+jim_news:
+	text_color: #919191
+	font_size: 15
+	font_face: Helvetica
+	height: 35
+	width: 100%
+	bottom_border_width: 1
+	border_color: #333333
+	top_margin: 10
+	
+wpt_news:
+	text_color: #919191
+	font_size: 15
+	font_face: Helvetica
+	height: 70
+	width: 100%
+	bottom_border_width: 1
+	border_color: #333333
+	top_margin: 10
+
+footer:
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/footer_bg.jpg
+	height: 80
+	width: 823
+	
+copyright:
+	top_margin: 40
+	vertical_alignment: :middle
+	horizontal_alignment: :center
+	text_color: #666
+	width: 823
+	height: 80
