@@ -26,9 +26,9 @@ public class PanelTest extends TestCase
 
 	public void testCreateFontWithBoldHelvetica() throws Exception
 	{
-		block.setFontFace("Helvetica");
-		block.setFontSize(13);
-		block.setFontStyle("bold");
+		block.getStyle().setFontFace("Helvetica");
+		block.getStyle().setFontSize("13");
+		block.getStyle().setFontStyle("bold");
 
 		Font font = panel.createFont();
 
@@ -39,9 +39,9 @@ public class PanelTest extends TestCase
 
 	public void testCreateFontWithCourierItalics() throws Exception
 	{
-		block.setFontFace("Courier");
-		block.setFontSize(6);
-		block.setFontStyle("italic");
+		block.getStyle().setFontFace("Courier");
+		block.getStyle().setFontSize("6");
+		block.getStyle().setFontStyle("italic");
 
 		Font font = panel.createFont();
 
@@ -52,9 +52,9 @@ public class PanelTest extends TestCase
 
 	public void testCreateFontWithTimesBoldItalic() throws Exception
 	{
-		block.setFontFace("Times");
-		block.setFontSize(9);
-		block.setFontStyle("bold italic");
+		block.getStyle().setFontFace("Times");
+		block.getStyle().setFontSize("9");
+		block.getStyle().setFontStyle("bold italic");
 
 		Font font = panel.createFont();
 

@@ -25,163 +25,167 @@ public class BlockTest extends TestCase
 
 	public void testDefaultStyles() throws Exception
 	{
-		assertEquals("repeat", block.getBackgroundImageFillStrategy());
+		assertEquals("repeat", block.getStyle().getBackgroundImageFillStrategy());
 	}
 
 	public void testSetBorderColor() throws Exception
 	{
 		Color blue = Colors.resolve("blue");
 
-		block.setBorderColor("blue");
+		block.getStyle().setBorderColor("blue");
 
-		assertEquals(blue, block.getTopBorderColor());
-		assertEquals(blue, block.getRightBorderColor());
-		assertEquals(blue, block.getBottomBorderColor());
-		assertEquals(blue, block.getLeftBorderColor());
+		assertEquals(blue, block.getStyle().getTopBorderColor());
+		assertEquals(blue, block.getStyle().getRightBorderColor());
+		assertEquals(blue, block.getStyle().getBottomBorderColor());
+		assertEquals(blue, block.getStyle().getLeftBorderColor());
 	}
 
 	public void testSettingEachBorderColor() throws Exception
 	{
 		Color red = Colors.resolve("red");
 
-		block.setTopBorderColor("red");
-		block.setRightBorderColor("red");
-		block.setBottomBorderColor("red");
-		block.setLeftBorderColor("red");
+		block.getStyle().setTopBorderColor("red");
+		block.getStyle().setRightBorderColor("red");
+		block.getStyle().setBottomBorderColor("red");
+		block.getStyle().setLeftBorderColor("red");
 
 
-		assertEquals(red, block.getTopBorderColor());
-		assertEquals(red, block.getRightBorderColor());
-		assertEquals(red, block.getBottomBorderColor());
-		assertEquals(red, block.getLeftBorderColor());
+		assertEquals(red, block.getStyle().getTopBorderColor());
+		assertEquals(red, block.getStyle().getRightBorderColor());
+		assertEquals(red, block.getStyle().getBottomBorderColor());
+		assertEquals(red, block.getStyle().getLeftBorderColor());
 	}
 
 	public void testSetBorderWidth() throws Exception
 	{
-		block.setBorderWidth(6);
+		block.getStyle().setBorderWidth("6");
 
-		assertEquals(6, block.getTopBorderWidth());
-		assertEquals(6, block.getRightBorderWidth());
-		assertEquals(6, block.getBottomBorderWidth());
-		assertEquals(6, block.getLeftBorderWidth());
+		assertEquals("6", block.getStyle().getTopBorderWidth());
+		assertEquals("6", block.getStyle().getRightBorderWidth());
+		assertEquals("6", block.getStyle().getBottomBorderWidth());
+		assertEquals("6", block.getStyle().getLeftBorderWidth());
 	}
 
 	public void testSettingEachBorderWidth() throws Exception
 	{
-		block.setTopBorderWidth(6);
-		block.setRightBorderWidth(6);
-		block.setBottomBorderWidth(6);
-		block.setLeftBorderWidth(6);
+		block.getStyle().setTopBorderWidth("6");
+		block.getStyle().setRightBorderWidth("6");
+		block.getStyle().setBottomBorderWidth("6");
+		block.getStyle().setLeftBorderWidth("6");
 
-		assertEquals(6, block.getTopBorderWidth());
-		assertEquals(6, block.getRightBorderWidth());
-		assertEquals(6, block.getBottomBorderWidth());
-		assertEquals(6, block.getLeftBorderWidth());
+		assertEquals("6", block.getStyle().getTopBorderWidth());
+		assertEquals("6", block.getStyle().getRightBorderWidth());
+		assertEquals("6", block.getStyle().getBottomBorderWidth());
+		assertEquals("6", block.getStyle().getLeftBorderWidth());
 	}
 
 	public void testSetMargin() throws Exception
 	{
-		block.setMargin(6);
+		block.getStyle().setMargin("6");
 
-		assertEquals(6, block.getTopMargin());
-		assertEquals(6, block.getRightMargin());
-		assertEquals(6, block.getBottomMargin());
-		assertEquals(6, block.getLeftMargin());
+		assertEquals("6", block.getStyle().getTopMargin());
+		assertEquals("6", block.getStyle().getRightMargin());
+		assertEquals("6", block.getStyle().getBottomMargin());
+		assertEquals("6", block.getStyle().getLeftMargin());
 	}
 
 	public void testSettingEachMargin() throws Exception
 	{
-		block.setTopMargin(6);
-		block.setRightMargin(6);
-		block.setBottomMargin(6);
-		block.setLeftMargin(6);
+		block.getStyle().setTopMargin("6");
+		block.getStyle().setRightMargin("6");
+		block.getStyle().setBottomMargin("6");
+		block.getStyle().setLeftMargin("6");
 
-		assertEquals(6, block.getTopMargin());
-		assertEquals(6, block.getRightMargin());
-		assertEquals(6, block.getBottomMargin());
-		assertEquals(6, block.getLeftMargin());
+		assertEquals("6", block.getStyle().getTopMargin());
+		assertEquals("6", block.getStyle().getRightMargin());
+		assertEquals("6", block.getStyle().getBottomMargin());
+		assertEquals("6", block.getStyle().getLeftMargin());
 	}
 
 	public void testSetPadding() throws Exception
 	{
-		block.setPadding(6);
+		block.getStyle().setPadding("6");
 
-		assertEquals(6, block.getTopPadding());
-		assertEquals(6, block.getRightPadding());
-		assertEquals(6, block.getBottomPadding());
-		assertEquals(6, block.getLeftPadding());
+		assertEquals("6", block.getStyle().getTopPadding());
+		assertEquals("6", block.getStyle().getRightPadding());
+		assertEquals("6", block.getStyle().getBottomPadding());
+		assertEquals("6", block.getStyle().getLeftPadding());
 	}
 
 	public void testSettingEachPadding() throws Exception
 	{
-		block.setTopPadding(6);
-		block.setRightPadding(6);
-		block.setBottomPadding(6);
-		block.setLeftPadding(6);
+		block.getStyle().setTopPadding("6");
+		block.getStyle().setRightPadding("6");
+		block.getStyle().setBottomPadding("6");
+		block.getStyle().setLeftPadding("6");
 
-		assertEquals(6, block.getTopPadding());
-		assertEquals(6, block.getRightPadding());
-		assertEquals(6, block.getBottomPadding());
-		assertEquals(6, block.getLeftPadding());
+		assertEquals("6", block.getStyle().getTopPadding());
+		assertEquals("6", block.getStyle().getRightPadding());
+		assertEquals("6", block.getStyle().getBottomPadding());
+		assertEquals("6", block.getStyle().getLeftPadding());
 	}
 
 	public void testBackgroundImage() throws Exception
 	{
-		block.setBackgroundImage("etc/star.gif");
+		block.getStyle().setBackgroundImage("etc/star.gif");
 
-		assertEquals("etc/star.gif", block.getBackgroundImage());
+		assertEquals("etc/star.gif", block.getStyle().getBackgroundImage());
 	}
 
 	public void testHorizontalAlignment() throws Exception
 	{
-		block.setHorizontalAlignment("center");
-		assertEquals("center", block.getHorizontalAlignment());
+		block.getStyle().setHorizontalAlignment("center");
+		assertEquals("center", block.getStyle().getHorizontalAlignment());
 	}
 
 	public void testVerticalAlignment() throws Exception
 	{
-		block.setVerticalAlignment("middle");
-		assertEquals("middle", block.getVerticalAlignment());
+		block.getStyle().setVerticalAlignment("middle");
+		assertEquals("middle", block.getStyle().getVerticalAlignment());
 	}
 
 	public void testColor() throws Exception
 	{
-		block.setTextColor("blue");
-		assertEquals(Color.blue, block.getTextColor());
+		block.getStyle().setTextColor("blue");
+		assertEquals(Color.blue, block.getStyle().getTextColor());
 	}
 
 	public void testFontFace() throws Exception
 	{
-		block.setFontFace("Helvetica");
-		assertEquals("Helvetica", block.getFontFace());
+		block.getStyle().setFontFace("Helvetica");
+		assertEquals("Helvetica", block.getStyle().getFontFace());
 	}
 
 	public void testFontSize() throws Exception
 	{
-		block.setFontSize(12);
-		assertEquals(12, block.getFontSize());
+		block.getStyle().setFontSize("12");
+		assertEquals("12", block.getStyle().getFontSize());
 	}
 
 	public void testFontStyle() throws Exception
 	{
-		block.setFontStyle("bold italic");
-		assertEquals("bold italic", block.getFontStyle());
+		block.getStyle().setFontStyle("bold italic");
+		assertEquals("bold italic", block.getStyle().getFontStyle());
 	}
 
 	public void testPaintBorder() throws Exception
 	{
 		block.setX(0);
 		block.setY(1);
-		block.setWidth("123");
-		block.setHeight("321");
-		block.setTopBorderColor("red");
-		block.setTopBorderWidth(1);
-		block.setRightBorderColor("orange");
-		block.setRightBorderWidth(2);
-		block.setBottomBorderColor("yellow");
-		block.setBottomBorderWidth(3);
-		block.setLeftBorderColor("green");
-		block.setLeftBorderWidth(4);
+		block.getStyle().setWidth("123");
+		block.getStyle().setHeight("321");
+		block.getStyle().setTopBorderColor("red");
+		block.getStyle().setTopBorderWidth("1");
+		block.getStyle().setRightBorderColor("orange");
+		block.getStyle().setRightBorderWidth("2");
+		block.getStyle().setBottomBorderColor("yellow");
+		block.getStyle().setBottomBorderWidth("3");
+		block.getStyle().setLeftBorderColor("green");
+		block.getStyle().setLeftBorderWidth("4");
+
+		MockPanel panel = new MockPanel();
+		panel.add(block.getPanel());
+	  block.getPanel().snapToDesiredSize();
 
 		MockGraphics graphics = new MockGraphics();
 		block.getPanel().paintBorder(graphics);
@@ -195,7 +199,7 @@ public class BlockTest extends TestCase
 
 	public void testPaintBorderWhenThereIsNoBordewr() throws Exception
 	{
-		block.setBorderWidth(0);
+		block.getStyle().setBorderWidth("0");
 
 		MockGraphics graphics = new MockGraphics();
 		block.getPanel().paintBorder(graphics);
@@ -207,20 +211,24 @@ public class BlockTest extends TestCase
 	{
 		block.setX(0);
 		block.setY(1);
-		block.setWidth("123");
-		block.setHeight("321");
-		block.setTopBorderColor("red");
-		block.setTopBorderWidth(1);
-		block.setTopMargin(10);
-		block.setRightBorderColor("orange");
-		block.setRightBorderWidth(2);
-		block.setRightMargin(20);
-		block.setBottomBorderColor("yellow");
-		block.setBottomBorderWidth(3);
-		block.setBottomMargin(30);
-		block.setLeftBorderColor("green");
-		block.setLeftBorderWidth(4);
-		block.setLeftMargin(40);
+		block.getStyle().setWidth("123");
+		block.getStyle().setHeight("321");
+		block.getStyle().setTopBorderColor("red");
+		block.getStyle().setTopBorderWidth("1");
+		block.getStyle().setTopMargin("10");
+		block.getStyle().setRightBorderColor("orange");
+		block.getStyle().setRightBorderWidth("2");
+		block.getStyle().setRightMargin("20");
+		block.getStyle().setBottomBorderColor("yellow");
+		block.getStyle().setBottomBorderWidth("3");
+		block.getStyle().setBottomMargin("30");
+		block.getStyle().setLeftBorderColor("green");
+		block.getStyle().setLeftBorderWidth("4");
+		block.getStyle().setLeftMargin("40");
+
+		MockPanel panel = new MockPanel();
+		panel.add(block.getPanel());
+	  block.getPanel().snapToDesiredSize();
 
 		MockGraphics graphics = new MockGraphics();
 		block.getPanel().paintBorder(graphics);

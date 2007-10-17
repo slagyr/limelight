@@ -18,29 +18,29 @@ public class BlockLayout implements LayoutManager
 
 	public void addLayoutComponent(String string, Component component)
 	{
-		System.out.println("addLayoutComponent(" + string + ", " + component + ")");
+//		System.out.println("addLayoutComponent(" + string + ", " + component + ")");
 	}
 
 	public void removeLayoutComponent(Component component)
 	{
-		System.out.println("removeLayoutComponent(" + component + ")");
+//		System.out.println("removeLayoutComponent(" + component + ")");
 	}
 
 	public Dimension preferredLayoutSize(Container container)
 	{
-		System.out.println("prefereedLayoutSize(" + container + ")");
+//		System.out.println("prefereedLayoutSize(" + container + ")");
 		return container.getPreferredSize();
 	}
 
 	public Dimension minimumLayoutSize(Container container)
 	{
-		System.out.println("minimumLayoutSize(" + container + ")");
+//		System.out.println("minimumLayoutSize(" + container + ")");
 		return container.getMinimumSize();
 	}
 
 	public void layoutContainer(Container container)
 	{
-		System.out.println("layoutContainer(" + container + ")");
+//		System.out.println("layoutContainer(" + ((Panel)container).getBlock() + ")");
 		Component[] components = container.getComponents();
 		if(components.length == 0)
 			return;
@@ -62,7 +62,7 @@ public class BlockLayout implements LayoutManager
 		for(int i = 0; i < components.length; i++)
 		{
 			Component component = components[i];
-			translateAndSetSizeFor(component);
+			((Panel)component).snapToDesiredSize();
 
 			if(!currentRow.isEmpty() && !currentRow.fits(component))
 			{
@@ -74,31 +74,10 @@ public class BlockLayout implements LayoutManager
 		aligner.addConsumedHeight(currentRow.height);
 	}
 
-	private void translateAndSetSizeFor(Component component)
-	{
-		Panel currentPanel = (Panel)component;
-		int width = translateDimension(currentPanel.getBlock().getWidth(), panel.getWidth());
-		int height = translateDimension(currentPanel.getBlock().getHeight(), panel.getHeight());
-		component.setSize(width, height);
-	}
-
-	private int translateDimension(String sizeString, int maxSize)
-	{
-		if(sizeString.endsWith("%"))
-		{
-			double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-			return (int)((percentage * 0.01) * (double)maxSize);
-		}
-		else
-		{
-			return Integer.parseInt(sizeString);
-		}
-	}
-
 	private void reset(Container container)
 	{
 		Block block = ((Panel) container).getBlock();
-		aligner = new Aligner(block.getRectangleInsidePadding(), block.getHorizontalAlignment(), block.getVerticalAlignment());
+		aligner = new Aligner(block.getPanel().getRectangleInsidePadding(), block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
 		rows.clear();
 		newRow();
 	}
