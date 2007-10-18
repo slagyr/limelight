@@ -1,0 +1,41 @@
+<page>
+	<main_column>
+		<header/>
+		<menu>
+			<link>Home</link>
+			<link>Services</link>
+			<link>About</link>
+			<link>Blog</link>
+			<link>Contact</link>
+		</menu>
+		<tag_line>
+			<tag_line_content>
+				We at 8th Light believe craftsmanship and quality are the path to success.
+
+				We specialize in writing high quality custom applications.
+			</tag_line_content>
+		</tag_line>
+  		<spot_light>
+			<spot_light_title>In the spotlight</spot_light_title>
+			<book_news>
+				<book_news_img/>
+				<book_news_text>Micah coathors Agile Principles, Patterns, and Practices in C# with Unclebob.</book_news_text>
+			</book_news>
+			<sm_news>
+				<sm_news_img/>
+				<sm_news_text>Check out the Statemachine Ruby Gem and Rails plugin.</sm_news_text>
+			</sm_news>
+		</spot_light>
+		<news>
+			<news_title>Recent News"</news_title>
+			<doug_news>07.07  8th Light welcomes Doug Bradbury to the team!</doug_news>
+			<rails_fest_news>07.07  8th Light doing Agile Rails Fest at Agile Conference in August.</rails_fest_news>
+			<eric_news>02.07  Eric Smith Joins the 8th Light team!</eric_news>
+			<jim_news>01.07  Jim Suchy Joins the 8th Light team!</jim_news>
+			<wpt_news>01.07  Micah Martin contributes article on FitNesse to the just released "Windows Developer Power Tools" book.</wpt_news>
+		</news>
+		<footer>
+			<copyright>8th Light, Inc. Copyright 2007"</copyright>
+		</footer>
+	</main_column>
+</page>
