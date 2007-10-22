@@ -114,69 +114,34 @@ sm_news_text:
 
 news:
 	width: 411
-	height: 300
+	height: 325
 	top_margin: 20
 	left_margin: 50
 	right_margin: 50
 	
 news_title:
 	width: 311
-	height: 35
+	height: 30
 	bottom_border_width: 1
 	border_color: #0049F4
 	font_size: 20
 	text_color: white
 
-doug_news:
+new_item:
 	text_color: #919191
-	font_size: 15
+	font_size: 12
 	font_face: Helvetica
 	height: 50
 	width: 100%
 	bottom_border_width: 1
 	border_color: #333333
 	top_margin: 10
-	
-rails_fest_news:
-	text_color: #919191
-	font_size: 15
-	font_face: Helvetica
-	height: 50
-	width: 100%
-	bottom_border_width: 1
-	border_color: #333333
-	top_margin: 10
-	
-eric_news:
-	text_color: #919191
-	font_size: 15
-	font_face: Helvetica
-	height: 35
-	width: 100%
-	bottom_border_width: 1
-	border_color: #333333
-	top_margin: 10
-	
-jim_news:
-	text_color: #919191
-	font_size: 15
-	font_face: Helvetica
-	height: 35
-	width: 100%
-	bottom_border_width: 1
-	border_color: #333333
-	top_margin: 10
-	
-wpt_news:
-	text_color: #919191
-	font_size: 15
-	font_face: Helvetica
-	height: 70
-	width: 100%
-	bottom_border_width: 1
-	border_color: #333333
-	top_margin: 10
+	background_color: black
 
+new_item.hover:
+	text_color: white
+	background_color: black
+	
 footer:
 	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/footer_bg.jpg
 	height: 80

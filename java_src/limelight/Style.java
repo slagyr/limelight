@@ -11,311 +11,316 @@ public class Style
 		styles = new Hashtable<String, String>();
 	}
 
-	public Hashtable<String, String> getStyles()
+	protected String get(String key)
 	{
-		return styles;
+		return styles.get(key);
+	}
+
+	protected void put(String key, String value)
+	{
+		styles.put(key, value);
 	}
 
 	public void setWidth(String value)
 	{
-		styles.put("width", value);
+		put("width", value);
 	}
 
 	public String getWidth()
 	{
-		return styles.get("width");
+		return get("width");
 	}
 
 	public void setHeight(String value)
 	{
-		styles.put("height", value);
+		put("height", value);
 	}
 
 	public String getHeight()
 	{
-		return styles.get("height");
+		return get("height");
 	}
 
 	public void setTextColor(String value)
 	{
-		styles.put("textColor", value);
+		put("textColor", value);
 	}
 
 	public String getTextColor()
 	{
-		return styles.get("textColor");
+		return get("textColor");
 	}
 
 	public void setBorderColor(String value)
 	{
-		styles.put("topBorderColor", value);
-		styles.put("rightBorderColor",value);
-		styles.put("bottomBorderColor", value);
-		styles.put("leftBorderColor", value);
+		put("topBorderColor", value);
+		put("rightBorderColor",value);
+		put("bottomBorderColor", value);
+		put("leftBorderColor", value);
 	}
 
 	public String getTopBorderColor()
 	{
-		return styles.get("topBorderColor");
+		return get("topBorderColor");
 	}
 
 	public String getRightBorderColor()
 	{
-		return styles.get("rightBorderColor");
+		return get("rightBorderColor");
 	}
 
 	public String getBottomBorderColor()
 	{
-		return styles.get("bottomBorderColor");
+		return get("bottomBorderColor");
 	}
 
 	public String getLeftBorderColor()
 	{
-		return styles.get("leftBorderColor");
+		return get("leftBorderColor");
 	}
 
 	public String getBackgroundColor()
 	{
-		return styles.get("backgroundColor");
+		return get("backgroundColor");
 	}
 
 	public void setTopBorderColor(String value)
 	{
-		styles.put("topBorderColor", value);
+		put("topBorderColor", value);
 	}
 
 	public void setRightBorderColor(String value)
 	{
-		styles.put("rightBorderColor", value);
+		put("rightBorderColor", value);
 	}
 
 	public void setBottomBorderColor(String value)
 	{
-		styles.put("bottomBorderColor", value);
+		put("bottomBorderColor", value);
 	}
 
 	public void setLeftBorderColor(String value)
 	{
-		styles.put("leftBorderColor", value);
+		put("leftBorderColor", value);
 	}
 
 	public void setBorderWidth(String pixels)
 	{
-		styles.put("topBorderWidth", pixels);
-		styles.put("rightBorderWidth", pixels);
-		styles.put("bottomBorderWidth", pixels);
-		styles.put("leftBorderWidth", pixels);
+		put("topBorderWidth", pixels);
+		put("rightBorderWidth", pixels);
+		put("bottomBorderWidth", pixels);
+		put("leftBorderWidth", pixels);
 	}
 
 	public String getTopBorderWidth()
 	{
-		return styles.get("topBorderWidth");
+		return get("topBorderWidth");
 	}
 
 	public void setTopBorderWidth(String topBorderWidth)
 	{
-		styles.put("topBorderWidth", topBorderWidth);
+		put("topBorderWidth", topBorderWidth);
 	}
 
 	public String getRightBorderWidth()
 	{
-		return styles.get("rightBorderWidth");
+		return get("rightBorderWidth");
 	}
 
 	public void setRightBorderWidth(String rightBorderWidth)
 	{
-		styles.put("rightBorderWidth", rightBorderWidth);
+		put("rightBorderWidth", rightBorderWidth);
 	}
 
 	public String getBottomBorderWidth()
 	{
-		return styles.get("bottomBorderWidth");
+		return get("bottomBorderWidth");
 	}
 
 	public void setBottomBorderWidth(String bottomBorderWidth)
 	{
-		styles.put("bottomBorderWidth", bottomBorderWidth);
+		put("bottomBorderWidth", bottomBorderWidth);
 	}
 
 	public String getLeftBorderWidth()
 	{
-		return styles.get("leftBorderWidth");
+		return get("leftBorderWidth");
 	}
 
 	public void setLeftBorderWidth(String leftBorderWidth)
 	{
-		styles.put("leftBorderWidth", leftBorderWidth);
+		put("leftBorderWidth", leftBorderWidth);
 	}
 
 	public void setMargin(String margin)
 	{
-		styles.put("topMargin", margin);
-		styles.put("rightMargin", margin);
-		styles.put("bottomMargin", margin);
-		styles.put("leftMargin", margin);
+		put("topMargin", margin);
+		put("rightMargin", margin);
+		put("bottomMargin", margin);
+		put("leftMargin", margin);
 	}
 
 	public String getTopMargin()
 	{
-		return styles.get("topMargin");
+		return get("topMargin");
 	}
 
 	public void setTopMargin(String topMargin)
 	{
-		styles.put("topMargin", topMargin);
+		put("topMargin", topMargin);
 	}
 
 	public String getRightMargin()
 	{
-		return styles.get("rightMargin");
+		return get("rightMargin");
 	}
 
 	public void setRightMargin(String rightMargin)
 	{
-		styles.put("rightMargin", rightMargin);
+		put("rightMargin", rightMargin);
 	}
 
 	public String getBottomMargin()
 	{
-		return styles.get("bottomMargin");
+		return get("bottomMargin");
 	}
 
 	public void setBottomMargin(String bottomMargin)
 	{
-		styles.put("bottomMargin", bottomMargin);
+		put("bottomMargin", bottomMargin);
 	}
 
 	public String getLeftMargin()
 	{
-		return styles.get("leftMargin");
+		return get("leftMargin");
 	}
 
 	public void setLeftMargin(String leftMargin)
 	{
-		styles.put("leftMargin", leftMargin);
+		put("leftMargin", leftMargin);
 	}
 
 	public void setPadding(String padding)
 	{
-		styles.put("topPadding", padding);
-		styles.put("rightPadding",padding);
-		styles.put("bottomPadding", padding);
-		styles.put("leftPadding", padding);
+		put("topPadding", padding);
+		put("rightPadding",padding);
+		put("bottomPadding", padding);
+		put("leftPadding", padding);
 	}
 
 	public String getTopPadding()
 	{
-		return styles.get("topPadding");
+		return get("topPadding");
 	}
 
 	public void setTopPadding(String topPadding)
 	{
-		styles.put("topPadding", topPadding);
+		put("topPadding", topPadding);
 	}
 
 	public String getRightPadding()
 	{
-		return styles.get("rightPadding");
+		return get("rightPadding");
 	}
 
 	public void setRightPadding(String rightPadding)
 	{
-		styles.put("rightPadding", rightPadding);
+		put("rightPadding", rightPadding);
 	}
 
 	public String getBottomPadding()
 	{
-		return styles.get("bottomPadding");
+		return get("bottomPadding");
 	}
 
 	public void setBottomPadding(String bottomPadding)
 	{
-		styles.put("bottomPadding", bottomPadding);
+		put("bottomPadding", bottomPadding);
 	}
 
 	public String getLeftPadding()
 	{
-		return styles.get("leftPadding");
+		return get("leftPadding");
 	}
 
 	public void setLeftPadding(String leftPadding)
 	{
-		styles.put("leftPadding", leftPadding);
+		put("leftPadding", leftPadding);
 	}
 
 	public void setBackgroundColor(String backgroundColor)
 	{
-		styles.put("backgroundColor", backgroundColor);
+		put("backgroundColor", backgroundColor);
 	}
 
 	public void setBackgroundImage(String backgroundImage)
 	{
-		styles.put("backgroundImage", backgroundImage);
+		put("backgroundImage", backgroundImage);
 	}
 
 	public String getBackgroundImage()
 	{
-		return styles.get("backgroundImage");
+		return get("backgroundImage");
 	}
 
 	public String getBackgroundImageFillStrategy()
 	{
-		return styles.get("backgroundImageFillStrategy");
+		return get("backgroundImageFillStrategy");
 	}
 
 	public void setBackgroundImageFillStrategy(String backgroundImageFillStrategy)
 	{
-		styles.put("backgroundImageFillStrategy", backgroundImageFillStrategy);
+		put("backgroundImageFillStrategy", backgroundImageFillStrategy);
 	}
 
 	public void setHorizontalAlignment(String alignment)
 	{
-		styles.put("horizontalAlignment", alignment);
+		put("horizontalAlignment", alignment);
 	}
 
 	public String getHorizontalAlignment()
 	{
-		return styles.get("horizontalAlignment");
+		return get("horizontalAlignment");
 	}
 
 	public void setVerticalAlignment(String alignment)
 	{
-		styles.put("verticalAlignment", alignment);
+		put("verticalAlignment", alignment);
 	}
 
 	public String getVerticalAlignment()
 	{
-		return styles.get("verticalAlignment");
+		return get("verticalAlignment");
 	}
 
 	public String getFontFace()
 	{
-		return styles.get("fontFace");
+		return get("fontFace");
 	}
 
 	public void setFontFace(String fontFace)
 	{
-		styles.put("fontFace", fontFace);
+		put("fontFace", fontFace);
 	}
 
 	public String getFontSize()
 	{
-		return styles.get("fontSize");
+		return get("fontSize");
 	}
 
 	public void setFontSize(String fontSize)
 	{
-		styles.put("fontSize", fontSize);
+		put("fontSize", fontSize);
 	}
 
 	public String getFontStyle()
 	{
-		return styles.get("fontStyle");
+		return get("fontStyle");
 	}
 
 	public void setFontStyle(String fontStyle)
 	{
-		styles.put("fontStyle", fontStyle);
+		put("fontStyle", fontStyle);
 	}
 
 }

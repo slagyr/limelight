@@ -7,18 +7,19 @@ public class Block
 	private Panel panel;
 
 	private String text;
-	private Style style;
+	private StackableStyle style;
 	private Page page;
 	private String name;
 	private LinkedList<Block> children;
+	private Style hoverStyle;
 
 	public Block()
 	{
 		panel = new Panel(this);
 		children = new LinkedList<Block>();
-		style = new Style();
-		style.setBorderColor("white");
-		style.setBackgroundColor("white");
+		style = new StackableStyle();
+//		style.setBorderColor("white");
+//		style.setBackgroundColor("white");
 		style.setBackgroundImageFillStrategy("repeat");
 		panel.addMouseListener(new BlockMouseListener(this));
 	}
@@ -95,12 +96,34 @@ public class Block
 		{
 			Style newStyle = page.getStyles().get(name);
 			if(newStyle != null)
-				style = newStyle;
+				style.addToBottom(newStyle);
+			hoverStyle = page.getStyles().get(name + ".hover");
 		}
 		for(Iterator iterator = children.iterator(); iterator.hasNext();)
 		{
 			Block block = (Block) iterator.next();
 			block.loadStyle();
+		}
+	}
+
+	public void hoverOn()
+	{
+		if(hoverStyle != null)
+		{
+			panel.repaint();
+			style.push(hoverStyle);
+			panel.repaint();
+		}
+	}
+
+	public void hoverOff()
+	{
+		if(hoverStyle != null)
+		{
+			panel.repaint();
+			style.pop();
+			panel.repaint();
+			panel.getParent().validate();
 		}
 	}
 }

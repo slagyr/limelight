@@ -28,11 +28,11 @@
 		</spot_light>
 		<news>
 			<news_title>Recent News"</news_title>
-			<doug_news>07.07  8th Light welcomes Doug Bradbury to the team!</doug_news>
-			<rails_fest_news>07.07  8th Light doing Agile Rails Fest at Agile Conference in August.</rails_fest_news>
-			<eric_news>02.07  Eric Smith Joins the 8th Light team!</eric_news>
-			<jim_news>01.07  Jim Suchy Joins the 8th Light team!</jim_news>
-			<wpt_news>01.07  Micah Martin contributes article on FitNesse to the just released "Windows Developer Power Tools" book.</wpt_news>
+			<new_item>07.07  8th Light welcomes Doug Bradbury to the team!</new_item>
+			<new_item>07.07  8th Light doing Agile Rails Fest at Agile Conference in August.</new_item>
+			<new_item>02.07  Eric Smith Joins the 8th Light team!</new_item>
+			<new_item>01.07  Jim Suchy Joins the 8th Light team!</new_item>
+			<new_item>01.07  Micah Martin contributes article on FitNesse to the just released "Windows Developer Power Tools" book.</new_item>
 		</news>
 		<footer>
 			<copyright>8th Light, Inc. Copyright 2007"</copyright>
