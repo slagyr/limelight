@@ -24,6 +24,7 @@ public class Book
 		frame.setLocation(200, 25);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		load(page);
+RepaintManager.currentManager(frame.getContentPane()).setDoubleBufferingEnabled(false);
 		frame.setVisible(true);
 		frame.repaint();
 	}

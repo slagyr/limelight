@@ -25,11 +25,13 @@ public class BlockMouseListener implements MouseListener
 
 	public void mouseEntered(MouseEvent mouseEvent)
 	{
+		block.hoverOn();
 		block.mouseEntered();	
 	}
 
 	public void mouseExited(MouseEvent mouseEvent)
 	{
 		block.mouseExited();
+		block.hoverOff();
 	}
 }

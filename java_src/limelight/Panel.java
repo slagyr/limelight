@@ -3,6 +3,7 @@ package limelight;
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.font.*;
 import java.text.*;
 import java.io.*;
@@ -11,11 +12,13 @@ import java.util.*;
 public class Panel extends JPanel
 {
 	private Block block;
+	private BufferedImage buffer;
 
 	public Panel(Block owner)
 	{
 		this.block = owner;
 		setOpaque(false);
+		setDoubleBuffered(false);
 		setLayout(new BlockLayout(this));
 	}
 
@@ -24,21 +27,28 @@ public class Panel extends JPanel
 		return block;
 	}
 
+	int paints = 0;
+	boolean badName = false;
+
 	public void paint(Graphics graphics)
 	{
-		super.paint(graphics);
+		if(buffer == null || shouldRepaintBuffer(graphics))
+		{
+			buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
+			paintComponent(bufferGraphics);
+			paintBorder(bufferGraphics);
+		}
+		Rectangle clip = new Rectangle(graphics.getClipBounds());
+		graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
+		super.paintChildren(graphics);
 	}
 
-	protected void paintComponent(Graphics graphics)
+	private boolean shouldRepaintBuffer(Graphics graphics)
 	{
-		super.paintComponent(graphics);
-		paintComponent((Graphics2D)graphics);
-	}
-
-	protected void paintBorder(Graphics graphics)
-	{
-		super.paintBorder(graphics);
-		paintBorder((Graphics2D)graphics);
+		Rectangle clip = new Rectangle(graphics.getClipBounds());
+		Rectangle bounds = new Rectangle(getBounds());
+		return bounds.width == clip.width && bounds.height == clip.height;
 	}
 
 	public void paintComponent(Graphics2D graphics)
@@ -96,9 +106,14 @@ public class Panel extends JPanel
 
 	public void paintBackground(Graphics2D graphics)
 	{
+		Rectangle r = getRectangleInsideBorders();
+		if(block.getStyle().getBackgroundColor() != null)
+		{
+			graphics.setColor(Colors.resolve(block.getStyle().getBackgroundColor()));
+			graphics.fill(r);
+		}
 		if(block.getStyle().getBackgroundImage() != null)
 		{
-			Rectangle r = getRectangleInsideBorders();
 			try
 			{
 				Image image = ImageIO.read(new File(block.getStyle().getBackgroundImage()));
