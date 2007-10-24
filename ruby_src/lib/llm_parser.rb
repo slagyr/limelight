@@ -1,4 +1,7 @@
 require "rexml/document"
+require 'page'
+require 'block'
+require 'styles'
 
 class LlmParser
   
@@ -10,6 +13,7 @@ class LlmParser
     page = Page.new()
     populate(page, doc.root)
     process_children(doc.root, page, page)
+    handle_styles(page, doc.root)
     return page
   end
   
@@ -33,6 +37,10 @@ class LlmParser
     block.name = element.name
     text = element.text ? element.text.strip : ""
     block.text = text if text.size > 0
+    element.attributes.each do |name, value|
+      setter_sym = "#{name.downcase}=".to_sym
+      block.send(setter_sym, value) if block.respond_to?(setter_sym)
+    end
   end
   
   def process_children(element, block, page)
@@ -40,6 +48,15 @@ class LlmParser
       if child.is_a? REXML::Element
         process(child, block, page)
       end
+    end
+  end
+  
+  def handle_styles(page, element)
+    styles_attr = element.attribute("styles")
+    if styles_attr
+      file = styles_attr.value
+      Styles.load_into_page(file, page)
+      page.loadStyle()
     end
   end
   

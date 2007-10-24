@@ -23,8 +23,7 @@ public class Book
 		frame.setSize(900, 900);
 		frame.setLocation(200, 25);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		load(page);
-RepaintManager.currentManager(frame.getContentPane()).setDoubleBufferingEnabled(false);
+		loadPage(page);
 		frame.setVisible(true);
 		frame.repaint();
 	}
@@ -35,10 +34,11 @@ RepaintManager.currentManager(frame.getContentPane()).setDoubleBufferingEnabled(
 		frame.dispose();
 	}
 
-	public void load(Page page)
+	public void loadPage(Page page)
 	{
-//		frame.removeAll();
+		frame.getContentPane().removeAll();
 		frame.add(page.getPanel());
+		page.setBook(this);
 		page.getPanel().setSize(frame.getSize());
 	}
 
