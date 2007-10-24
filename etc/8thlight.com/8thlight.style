@@ -56,6 +56,54 @@ tag_line_content:
 	left_margin: 50
 	text_color: white
 	font_size: 14
+	
+services_tagline:
+	width: 823
+	height: 70
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/botticelli.jpg
+	right_margin: 25
+	left_margin: 25
+	horizontal_alignment: right
+	font_style: italics
+	text_color: white
+	font_size: 18
+	top_padding: 10
+	left_padding: 10
+	right_padding: 375
+	
+about_tagline:
+	width: 823
+	height: 70
+	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/moses.jpg
+	right_margin: 25
+	left_margin: 25
+	horizontal_alignment: right
+	font_style: italics
+	text_color: white
+	font_size: 18
+	top_padding: 10
+	left_padding: 10
+	right_padding: 375
+	
+section_title:
+	width: 823
+	height: 50
+	top_margin: 20
+	left_margin: 50
+	right_margin: 50
+	bottom_border_width: 1
+	border_color: #0049F4
+	text_color: white
+	font_size: 20
+	font_style: bold
+	
+section_body:
+	width: 823
+	height: 385
+	left_margin: 50
+	right_margin: 50
+	text_color: white
+	font_size: 14
 
 spot_light:
 	width: 412
@@ -114,14 +162,14 @@ sm_news_text:
 
 news:
 	width: 411
-	height: 325
+	height: 300
 	top_margin: 20
 	left_margin: 50
 	right_margin: 50
 	
 news_title:
 	width: 311
-	height: 30
+	height: 45
 	bottom_border_width: 1
 	border_color: #0049F4
 	font_size: 20
