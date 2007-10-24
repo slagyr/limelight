@@ -5,6 +5,7 @@ import java.util.Hashtable;
 public class Page extends Block
 {
 	private Hashtable<String, Style> styles;
+	private Book book;
 
 	public Page()
 	{
@@ -16,6 +17,16 @@ public class Page extends Block
 	public Hashtable<String, Style> getStyles()
 	{
 		return styles;
+	}
+
+	public void setBook(Book book)
+	{
+		this.book = book;
+	}
+
+	public Book getBook()
+	{
+		return book;
 	}
 }
 

@@ -1,6 +1,7 @@
 package limelight;
 
 import java.util.*;
+import java.awt.*;
 
 public class Block
 {
@@ -18,8 +19,6 @@ public class Block
 		panel = new Panel(this);
 		children = new LinkedList<Block>();
 		style = new StackableStyle();
-//		style.setBorderColor("white");
-//		style.setBackgroundColor("white");
 		style.setBackgroundImageFillStrategy("repeat");
 		panel.addMouseListener(new BlockMouseListener(this));
 	}
@@ -49,6 +48,11 @@ public class Block
 	public void setPage(Page page)
 	{
 		this.page = page;
+	}
+
+	public Book getBook()
+	{
+		return page.getBook();
 	}
 
 	public void setName(String name)
@@ -110,7 +114,7 @@ public class Block
 	{
 		if(hoverStyle != null)
 		{
-			panel.repaint();
+			panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			style.push(hoverStyle);
 			panel.repaint();
 		}
@@ -120,10 +124,13 @@ public class Block
 	{
 		if(hoverStyle != null)
 		{
-			panel.repaint();
+			panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			style.pop();
 			panel.repaint();
-			panel.getParent().validate();
 		}
+	}
+
+	public void mouseClicked()
+	{
 	}
 }

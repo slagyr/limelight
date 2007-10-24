@@ -13,6 +13,7 @@ public class BlockMouseListener implements MouseListener
 
 	public void mouseClicked(MouseEvent mouseEvent)
 	{
+		block.mouseClicked();
 	}
 
 	public void mousePressed(MouseEvent mouseEvent)
