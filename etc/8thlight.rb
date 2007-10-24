@@ -1,11 +1,16 @@
 $: << File.expand_path(File.dirname(__FILE__) + "/../ruby_src/lib")
-require 'block'
-require 'page'
-require 'styles'
-require 'llm_parser'
+require 'book'
 
-parser = LlmParser.new
-page = parser.parse(IO.read("8thlight.llm"))
+Dir.chdir('8thlight.com')
+Book.new().load("home.llm")
+
+# require 'block'
+# require 'page'
+# require 'styles'
+# require 'llm_parser'
+
+# parser = LlmParser.new
+# page = parser.parse(IO.read("8thlight.llm"))
 
 # IMAGES = File.expand_path("~/Projects/8thlight.com/public/images")
 # 
@@ -50,8 +55,8 @@ page = parser.parse(IO.read("8thlight.llm"))
 # footer = main_column << Block.new(:name => "footer")
 # copyright = footer << Block.new(:name => "copyright", :text => "8th Light, Inc. Copyright 2007")
 
-Styles.load_into_page(File.expand_path(File.dirname(__FILE__) + "/8thlight.style"), page)
-page.loadStyle()
+# Styles.load_into_page(File.expand_path(File.dirname(__FILE__) + "/8thlight.style"), page)
+# page.loadStyle()
 
-book = Book.new()
-book.open(page)
+# book = Book.new()
+# book.load("8thlight.llm")

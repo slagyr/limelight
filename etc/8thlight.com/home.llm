@@ -1,12 +1,12 @@
-<page>
+<page styles="8thlight.style">
 	<main_column>
 		<header/>
 		<menu>
-			<link>Home</link>
-			<link>Services</link>
-			<link>About</link>
-			<link>Blog</link>
-			<link>Contact</link>
+			<link onClick="book.load('home.llm')">Home</link>
+			<link onClick="book.load('services.llm')">Services</link>
+			<link onClick="book.load('about.llm')">About</link>
+			<link onClick="book.load('blog.llm')">Blog</link>
+			<link onClick="book.load('contact.llm')">Contact</link>
 		</menu>
 		<tag_line>
 			<tag_line_content>
