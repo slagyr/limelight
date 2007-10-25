@@ -34,7 +34,7 @@ link:
 	text_color: #0049F4
 	font_face: Arial
 	font_size: 13
-	vertical_alignment: middle
+	vertical_alignment: center
 	horizontal_alignment: center
 	
 link.hover:
@@ -197,8 +197,8 @@ footer:
 	
 copyright:
 	top_margin: 40
-	vertical_alignment: :middle
-	horizontal_alignment: :center
+	vertical_alignment: center
+	horizontal_alignment: center
 	text_color: #666
 	width: 823
 	height: 80

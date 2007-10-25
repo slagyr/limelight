@@ -29,7 +29,7 @@ public class Aligner
 	public int startingY()
 	{
 		int diff = area.height - consumedHeight;
-		if("middle".equals(verticalAlignment))
+		if("center".equals(verticalAlignment))
 			return diff/2;
 		else if("bottom".equals(verticalAlignment))
 			return diff;

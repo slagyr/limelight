@@ -140,8 +140,8 @@ public class BlockTest extends TestCase
 
 	public void testVerticalAlignment() throws Exception
 	{
-		block.getStyle().setVerticalAlignment("middle");
-		assertEquals("middle", block.getStyle().getVerticalAlignment());
+		block.getStyle().setVerticalAlignment("center");
+		assertEquals("center", block.getStyle().getVerticalAlignment());
 	}
 
 	public void testColor() throws Exception

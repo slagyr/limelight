@@ -100,7 +100,7 @@ public class BlockStylingTest extends TestCase
 		block.getStyle().setVerticalAlignment("bottom");
 		drawIt();
 
-		block.getStyle().setVerticalAlignment("middle");
+		block.getStyle().setVerticalAlignment("center");
 	}
 
 	public void testOneLineOfText() throws Exception
@@ -125,7 +125,7 @@ public class BlockStylingTest extends TestCase
 		block.getStyle().setVerticalAlignment("bottom");
 		drawIt();
 
-		block.getStyle().setVerticalAlignment("middle");
+		block.getStyle().setVerticalAlignment("center");
 	}
 
 	public void testFonts() throws Exception
@@ -133,7 +133,7 @@ public class BlockStylingTest extends TestCase
 		block.getStyle().setWidth("200");
 		block.getStyle().setHeight("30");
 		block.getStyle().setBorderWidth("1");
-		block.getStyle().setVerticalAlignment("middle");
+		block.getStyle().setVerticalAlignment("center");
 		block.setText("The lazy brown dog jumped over the quick red fox.");
 		block.getStyle().setFontFace("Courier");
 		block.getStyle().setFontSize("10");
@@ -151,7 +151,7 @@ public class BlockStylingTest extends TestCase
 	public void testPercentageDimensions() throws Exception
 	{
 		page.getStyle().setHorizontalAlignment("center");
-		page.getStyle().setVerticalAlignment("middle");
+		page.getStyle().setVerticalAlignment("center");
 		block.getStyle().setBorderWidth("2");
 		block.getStyle().setBorderColor("blue");
 		block.getStyle().setWidth("25%");
