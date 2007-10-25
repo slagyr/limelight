@@ -26,11 +26,22 @@ class LlmParser
   end
   
   def block_from(name)
+    block = nil
     if(name == "page")
-      return Page.new()
+      block = Page.new()
     else
-      return Block.new()
+      block = Block.new()
     end
+    
+    if File.exists?("#{name}.rb")
+      load "#{name}.rb"
+      module_name = name[0..0].upcase + name[1..-1]
+      mod = eval(module_name)
+      block.instance_eval { extend mod }
+      block.extended if block.respond_to?(:extended)
+    end
+    
+    return block
   end
   
   def populate(block, element)

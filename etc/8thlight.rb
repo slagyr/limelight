@@ -1,8 +1,7 @@
 $: << File.expand_path(File.dirname(__FILE__) + "/../ruby_src/lib")
 require 'book'
 
-Dir.chdir('8thlight.com')
-Book.new().load("home.llm")
+Book.new().load("8thlight.com/home.llm")
 
 # require 'block'
 # require 'page'

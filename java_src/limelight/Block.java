@@ -91,7 +91,6 @@ public class Block
 
 	public void mouseExited()
 	{
-
 	}
 
 	public void loadStyle()
@@ -132,5 +131,11 @@ public class Block
 
 	public void mouseClicked()
 	{
+	}
+
+	public void update()
+	{
+		panel.doLayout();
+		panel.repaint();
 	}
 }
