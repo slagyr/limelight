@@ -19,7 +19,6 @@ public class Block
 		panel = new Panel(this);
 		children = new LinkedList<Block>();
 		style = new StackableStyle();
-		style.setBackgroundImageFillStrategy("repeat");
 		panel.addMouseListener(new BlockMouseListener(this));
 	}
 
@@ -85,14 +84,6 @@ public class Block
 		panel.setLocation(panel.getLocation().x, y);
 	}
 
-	public void mouseEntered()
-	{
-	}
-
-	public void mouseExited()
-	{
-	}
-
 	public void loadStyle()
 	{
 		if(name != null)
@@ -102,11 +93,8 @@ public class Block
 				style.addToBottom(newStyle);
 			hoverStyle = page.getStyles().get(name + ".hover");
 		}
-		for(Iterator iterator = children.iterator(); iterator.hasNext();)
-		{
-			Block block = (Block) iterator.next();
+		for(Block block : children)
 			block.loadStyle();
-		}
 	}
 
 	public void hoverOn()
@@ -133,9 +121,23 @@ public class Block
 	{
 	}
 
+	public void mouseEntered()
+	{
+	}
+
+	public void mouseExited()
+	{
+	}
+
 	public void update()
 	{
 		panel.doLayout();
 		panel.repaint();
+	}
+
+	public void updateNow()
+	{		
+		panel.doLayout();
+		panel.paintImmediately(0, 0, panel.getWidth(), panel.getHeight());
 	}
 }
