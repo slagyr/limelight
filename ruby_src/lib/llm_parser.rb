@@ -33,24 +33,18 @@ class LlmParser
       block = Block.new()
     end
     
-    if File.exists?("#{name}.rb")
-      load "#{name}.rb"
-      module_name = name[0..0].upcase + name[1..-1]
-      mod = eval(module_name)
-      block.instance_eval { extend mod }
-      block.extended if block.respond_to?(:extended)
-    end
-    
     return block
   end
   
   def populate(block, element)
     block.name = element.name
+    add_extension(block.name, block)
     text = element.text ? element.text.strip : ""
     block.text = text if text.size > 0
     element.attributes.each do |name, value|
       setter_sym = "#{name.downcase}=".to_sym
       block.send(setter_sym, value) if block.respond_to?(setter_sym)
+      block.style.send(setter_sym, value) if block.style.respond_to?(setter_sym)
     end
   end
   
@@ -68,6 +62,16 @@ class LlmParser
       file = styles_attr.value
       Styles.load_into_page(file, page)
       page.loadStyle()
+    end
+  end
+  
+  def add_extension(name, block)
+    if File.exists?("#{name}.rb")
+      load "#{name}.rb"
+      module_name = name[0..0].upcase + name[1..-1]
+      mod = eval(module_name)
+      block.instance_eval { extend mod }
+      block.extended if block.respond_to?(:extended)
     end
   end
   

@@ -70,9 +70,8 @@ public class Panel extends JPanel
 			LinkedList<TextLayout> lines = buildTextLines(newGraphics, usableArea, aligner);
 
 			int y = aligner.startingY();// - (int)((TextLayout)lines.get(0)).getDescent();;
-			for(Iterator iterator = lines.iterator(); iterator.hasNext();)
+			for (TextLayout textLayout : lines)
 			{
-				TextLayout textLayout = (TextLayout) iterator.next();
 				y += textLayout.getAscent() + textLayout.getDescent() + textLayout.getLeading();
 				textLayout.draw(newGraphics, aligner.startingX(textLayout.getBounds().getWidth()), y);
 			}
@@ -83,17 +82,16 @@ public class Panel extends JPanel
 	{
 		LinkedList<TextLayout> lines = new LinkedList<TextLayout>();
 		String[] paragraphs = block.getText().split("\n");
-		for(int i = 0; i < paragraphs.length; i++)
+		for (String paragraph : paragraphs)
 		{
-			String paragraph = paragraphs[i];
-			if(paragraph.length() != 0)
+			if (paragraph.length() != 0)
 			{
 				AttributedString aText = new AttributedString(paragraph);
 				aText.addAttribute(TextAttribute.FONT, createFont());
 				LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), newGraphics.getFontRenderContext());
-				while(lbm.getPosition() < paragraph.length())
+				while (lbm.getPosition() < paragraph.length())
 				{
-					TextLayout layout = lbm.nextLayout((float)usableArea.getWidth());
+					TextLayout layout = lbm.nextLayout((float) usableArea.getWidth());
 					lines.add(layout);
 					aligner.addConsumedHeight(layout.getAscent() + layout.getDescent() + layout.getLeading());
 				}

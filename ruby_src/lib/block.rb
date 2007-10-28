@@ -5,10 +5,13 @@ class Block < JBlock
   attr_accessor :onclick
   
   def mouseClicked()
-    puts @onclick
-    puts "book: #{book}"
-    puts "book.class: #{book.class}"
     eval(@onclick) if @onclick
+  end
+  
+  def mouseEntered()
+  end
+  
+  def mouseExited()
   end
   
 end
