@@ -36,11 +36,21 @@ public class Panel extends JPanel
 		{
 			buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 			Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
+
 			paintComponent(bufferGraphics);
 			paintBorder(bufferGraphics);
 		}
+
+		Composite	originalComposite = ((Graphics2D)graphics).getComposite();
+		if(block.getStyle().getTransparency() != null)
+		{
+			float transparency = Integer.parseInt(block.getStyle().getTransparency()) / 100.0f;
+			Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
+			((Graphics2D)graphics).setComposite(alphaComposite);
+		}
 		Rectangle clip = new Rectangle(graphics.getClipBounds());
 		graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
+		((Graphics2D)graphics).setComposite(originalComposite);
 		super.paintChildren(graphics);
 	}
 

@@ -30,3 +30,17 @@ fader:
 	padding: 10
 	font_size: 15
 	font_style: bold
+	
+beach:
+	width: 640
+	height: 480
+	horizontal_alignment: center
+	vertical_alignment: center
+	background_image: sandbox/beach.jpg
+	
+homer:
+	width: 320
+	height: 452
+	background_image: sandbox/homer.jpg
+	transparency: 50
+

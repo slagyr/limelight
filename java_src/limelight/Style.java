@@ -323,4 +323,14 @@ public class Style
 		put("fontStyle", fontStyle);
 	}
 
+	public String getTransparency()
+	{
+		return get("transparency");
+	}
+
+	public void setTransparency(String transparency)
+	{
+		put("transparency", transparency);
+	}
+
 }
