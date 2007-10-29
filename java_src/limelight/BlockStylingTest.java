@@ -39,9 +39,6 @@ public class BlockStylingTest extends TestCase
 		block.getStyle().setHeight("100");
 		block.getStyle().setBorderColor("red");
 		block.getStyle().setBorderWidth("25");
-
-		assertEquals("100", block.getPanel().getWidth());
-		assertEquals("100", block.getPanel().getHeight());
 	}
 
 	public void testSettingPosition() throws Exception

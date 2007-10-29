@@ -33,12 +33,13 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iml" afterPath="$PROJECT_DIR$/limelight.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etc/sandbox/sandbox.style" afterPath="$PROJECT_DIR$/etc/sandbox/sandbox.style" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/llm_parser.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/llm_parser.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Style.java" afterPath="$PROJECT_DIR$/java_src/limelight/Style.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Colors.java" afterPath="$PROJECT_DIR$/java_src/limelight/Colors.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ImageFillStrategies.java" afterPath="$PROJECT_DIR$/java_src/limelight/ImageFillStrategies.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.ipr" afterPath="$PROJECT_DIR$/limelight.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/block.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/block.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etc/sandbox.rb" afterPath="$PROJECT_DIR$/etc/sandbox.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/BlockStylingTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/BlockStylingTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Panel.java" afterPath="$PROJECT_DIR$/java_src/limelight/Panel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Block.java" afterPath="$PROJECT_DIR$/java_src/limelight/Block.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ColorsTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ColorsTest.java" />
@@ -159,39 +160,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Block.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/Block.java">
+      <file leaf-file-name="Style.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/Style.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="138" column="3" selection-start="1967" selection-end="1967" vertical-scroll-proportion="1.3120438">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Colors.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/Colors.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="150" selection-start="102" selection-end="102" vertical-scroll-proportion="0.04379562">
+            <state line="327" column="28" selection-start="5548" selection-end="5548" vertical-scroll-proportion="0.78848416">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ColorsTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ColorsTest.java">
+      <file leaf-file-name="BlockStylingTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockStylingTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="87" selection-start="1902" selection-end="1902" vertical-scroll-proportion="1.0510949">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockLayout.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockLayout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="13" selection-start="73" selection-end="73" vertical-scroll-proportion="-1.29927">
+            <state line="157" column="66" selection-start="4079" selection-end="4079" vertical-scroll-proportion="0.8025852">
               <folding />
             </state>
           </provider>
@@ -200,52 +181,7 @@
       <file leaf-file-name="Panel.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/java_src/limelight/Panel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="3" selection-start="573" selection-end="573" vertical-scroll-proportion="0.58536583">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ImageFillStrategies.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ImageFillStrategies.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="5" selection-start="107" selection-end="107" vertical-scroll-proportion="0.10948905">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StaticImageFillStrategy.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/StaticImageFillStrategy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="13" selection-start="53" selection-end="53" vertical-scroll-proportion="0.08759124">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Book.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/Book.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="152" selection-start="205" selection-end="205" vertical-scroll-proportion="0.37226278">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Page.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/Page.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="36" selection-start="342" selection-end="342" vertical-scroll-proportion="0.48175183">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockMouseListener.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockMouseListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="13" selection-start="59" selection-end="59" vertical-scroll-proportion="0.08759124">
+            <state line="50" column="121" selection-start="1284" selection-end="1284" vertical-scroll-proportion="0.29784688">
               <folding />
             </state>
           </provider>
@@ -363,7 +299,7 @@
     <property name="RunManagerConfig.compileBeforeRunning" value="true" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="true" />
+    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -371,14 +307,14 @@
       <recent name="limelighttest" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ColorsTest">
-    <tempConfiguration default="false" name="ColorsTest" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
+  <component name="RunManager" selected="JUnit.BlockStylingTest">
+    <tempConfiguration default="false" name="BlockStylingTest" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
       <pattern value="limelight.*" />
       <module name="limelight" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="limelight" />
-      <option name="MAIN_CLASS_NAME" value="limelight.ColorsTest" />
+      <option name="MAIN_CLASS_NAME" value="limelight.BlockStylingTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -468,7 +404,7 @@
       </method>
     </configuration>
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ColorsTest" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.BlockStylingTest" />
     </list>
     <configuration default="true" type="RUBY_RUN_CONFIGURATION_TYPE" factoryName="Ruby">
       <RUBY_RUN_CONFIG NAME="SCRIPT_PATH" VALUE="" />
@@ -573,7 +509,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
@@ -581,7 +517,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24954017" order="0" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" order="1" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32852387" order="8" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" order="8" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="6" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
@@ -696,13 +632,6 @@
     <option name="myLastEditedConfigurable" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/StackableHashtable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="272" selection-end="609" vertical-scroll-proportion="0.29734513">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/StackableStyle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="83" selection-start="118" selection-end="118" vertical-scroll-proportion="0.12743363">
@@ -724,13 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockStylingTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="67" selection-start="4020" selection-end="4020" vertical-scroll-proportion="1.1587591">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="147" column="153" selection-start="4450" selection-end="4450" vertical-scroll-proportion="0.02189781">
@@ -738,58 +660,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/Page.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="36" selection-start="342" selection-end="342" vertical-scroll-proportion="0.48175183">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/Book.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="152" selection-start="205" selection-end="205" vertical-scroll-proportion="0.37226278">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/StaticImageFillStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="13" selection-start="53" selection-end="53" vertical-scroll-proportion="0.08759124">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockLayout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="73" selection-end="73" vertical-scroll-proportion="-1.29927">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ColorsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="87" selection-start="1902" selection-end="1902" vertical-scroll-proportion="1.0510949">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/Colors.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="150" selection-start="102" selection-end="102" vertical-scroll-proportion="0.04379562">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ImageFillStrategies.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="5" selection-start="107" selection-end="107" vertical-scroll-proportion="0.10948905">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockMouseListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="13" selection-start="59" selection-end="59" vertical-scroll-proportion="0.08759124">
           <folding />
         </state>
       </provider>
@@ -803,9 +676,72 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ColorsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="87" selection-start="1902" selection-end="1902" vertical-scroll-proportion="0.67685074">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockLayout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="73" selection-end="73" vertical-scroll-proportion="-0.83666277">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ImageFillStrategies.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="5" selection-start="107" selection-end="107" vertical-scroll-proportion="0.07050529">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/StaticImageFillStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="13" selection-start="53" selection-end="53" vertical-scroll-proportion="0.05640423">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/Book.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="152" selection-start="205" selection-end="205" vertical-scroll-proportion="0.23971798">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/Page.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="36" selection-start="342" selection-end="342" vertical-scroll-proportion="0.31022328">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockMouseListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="13" selection-start="59" selection-end="59" vertical-scroll-proportion="0.05640423">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/BlockStylingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="157" column="66" selection-start="4079" selection-end="4079" vertical-scroll-proportion="0.8025852">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/Style.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="327" column="28" selection-start="5548" selection-end="5548" vertical-scroll-proportion="0.78848416">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/Panel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="3" selection-start="573" selection-end="573" vertical-scroll-proportion="0.58536583">
+        <state line="50" column="121" selection-start="1284" selection-end="1284" vertical-scroll-proportion="0.29784688">
           <folding />
         </state>
       </provider>
