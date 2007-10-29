@@ -181,7 +181,7 @@
       <file leaf-file-name="Panel.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/java_src/limelight/Panel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="121" selection-start="1284" selection-end="1284" vertical-scroll-proportion="0.29784688">
+            <state line="41" column="94" selection-start="855" selection-end="855" vertical-scroll-proportion="0.2547847">
               <folding />
             </state>
           </provider>
@@ -509,12 +509,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24954017" order="0" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24954017" order="0" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" order="1" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" order="8" />
@@ -741,7 +741,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/Panel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="121" selection-start="1284" selection-end="1284" vertical-scroll-proportion="0.29784688">
+        <state line="41" column="94" selection-start="855" selection-end="855" vertical-scroll-proportion="0.2547847">
           <folding />
         </state>
       </provider>

@@ -44,7 +44,7 @@ public class Panel extends JPanel
 		Composite	originalComposite = ((Graphics2D)graphics).getComposite();
 		if(block.getStyle().getTransparency() != null)
 		{
-			float transparency = Integer.parseInt(block.getStyle().getTransparency()) / 100.0f;
+			float transparency = 1f - (Integer.parseInt(block.getStyle().getTransparency()) / 100.0f);
 			Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
 			((Graphics2D)graphics).setComposite(alphaComposite);
 		}

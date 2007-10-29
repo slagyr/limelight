@@ -42,5 +42,5 @@ homer:
 	width: 320
 	height: 452
 	background_image: sandbox/homer.jpg
-	transparency: 50
+	transparency: 100
 
