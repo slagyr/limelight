@@ -333,4 +333,43 @@ public class Style
 		put("transparency", transparency);
 	}
 
+  public void setSecondaryBackgroundColor(String color)
+  {
+    put("secondaryBackgroundColor", color);
+  }
+
+	public String getSecondaryBackgroundColor()
+	{
+		return get("secondaryBackgroundColor");
+	}
+
+  public void setGradientAngle(String value)
+  {
+    put("gradientAngle", value);
+  }
+
+  public String getGradientAngle()
+  {
+    return get("gradientAngle");
+  }
+
+  public void setGradientPenetration(String value)
+  {
+    put("gradientPenetration", value);
+  }
+
+  public String getGradientPenetration()
+  {
+    return get("gradientPenetration");
+  }
+
+  public void setCyclicGradient(String value)
+  {
+    put("cyclicGradient", value);
+  }
+
+  public String getCyclicGradient()
+  {
+    return get("cyclicGradient");
+  }
 }
