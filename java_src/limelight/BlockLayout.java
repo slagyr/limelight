@@ -81,6 +81,7 @@ System.err.println("x = " + x);
 	private void reset(Container container)
 	{
 		Block block = ((Panel) container).getBlock();
+System.out.println("BlockLayout.reset");
 		aligner = new Aligner(block.getPanel().getRectangleInsidePadding(), block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
 		rows.clear();
 		newRow();

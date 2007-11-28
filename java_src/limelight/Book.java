@@ -58,7 +58,7 @@ public class Book
 
 	public void open()
 	{
-		open(new DefaultPage());
+//		open(new DefaultPage());
 	}
 
 	public void open(Page page)
@@ -92,6 +92,7 @@ System.out.println("reload");
 
   public void loadPage(Page page)
 	{
+System.out.println("Book.loadPage()");
 		frame.getContentPane().removeAll();
 		frame.add(page.getPanel());
 		page.setBook(this);
