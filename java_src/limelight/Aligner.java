@@ -17,8 +17,10 @@ public class Aligner
 
 	public int startingX(double usedWidth)
 	{
-		int diff = area.width - (int)(usedWidth + 0.5);
-		if("center".equals(horizontalAlignment))
+System.err.println("area.width = " + area.width);    
+    int diff = area.width - (int)(usedWidth + 0.5);
+System.err.println("diff = " + diff);    
+    if("center".equals(horizontalAlignment))
 			return diff/2;
 		else if("right".equals(horizontalAlignment))
 			return diff;

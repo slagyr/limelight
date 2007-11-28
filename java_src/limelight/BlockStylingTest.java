@@ -7,13 +7,15 @@ public class BlockStylingTest extends TestCase
 {
 	private Block block;
 	private Page page;
+  private Style style;
 
-	public void setUp() throws Exception
+  public void setUp() throws Exception
 	{
 		page = new Page();
 		page.getStyle().setWidth("500");
 		page.getStyle().setHeight("500");
 		block = new Block();
+    style = block.getStyle();
 		page.add(block);
 
 		page.getStyle().setBorderColor("magenta");
@@ -43,123 +45,126 @@ public class BlockStylingTest extends TestCase
 
 	public void testSettingPosition() throws Exception
 	{
-		block.getStyle().setWidth("100");
-		block.getStyle().setHeight("50");
-		block.getStyle().setBorderColor("green");
-		block.getStyle().setBorderWidth("3");
-		block.setX(100);
-		block.setY(123);
+		style.setWidth("100");
+		style.setHeight("50");
+		style.setBorderColor("green");
+		style.setBorderWidth("3");
+		style.setXOffset("100");
+		style.setYOffset("123");
 		block.getPanel().setBackground(Color.blue);
 
-		assertEquals(100, block.getPanel().getX());
-		assertEquals(123, block.getPanel().getY());
+		assertEquals(100, block.getPanel().getXOffset());
+		assertEquals(123, block.getPanel().getYOffset());
 	}
 
 	public void testWithSomeMargin() throws Exception
 	{
-		block.getStyle().setWidth("100");
-		block.getStyle().setHeight("100");
-		block.getStyle().setMargin("20");
-		block.getStyle().setBorderColor("green");
-		block.getStyle().setBorderWidth("3");
+		style.setWidth("100");
+		style.setHeight("100");
+		style.setMargin("20");
+		style.setBorderColor("green");
+		style.setBorderWidth("3");
 	}
 
 	public void testWithBackgroundImage() throws Exception
 	{
-		block.setX(10);
-		block.setY(10);
-		block.getStyle().setWidth("400");
-		block.getStyle().setHeight("400");
-		block.getStyle().setBorderWidth("0");
-		block.getStyle().setBorderColor("black");
-		block.getStyle().setBackgroundImage("etc/star.gif");
-		block.getStyle().setBackgroundImageFillStrategy("repeat");
+		style.setXOffset("10");
+		style.setYOffset("10");
+		style.setWidth("400");
+		style.setHeight("400");
+		style.setBorderWidth("0");
+		style.setBorderColor("black");
+		style.setBackgroundImage("etc/star.gif");
+		style.setBackgroundImageFillStrategy("repeat");
 	}
 
 	public void testSomeText() throws Exception
 	{
-		block.getStyle().setWidth("100");
-		block.getStyle().setHeight("100");
-		block.setX(200);
-		block.setY(200);
-		block.getStyle().setBorderColor("blue");
-		block.getStyle().setBorderWidth("2");
-		block.getStyle().setPadding("0");
-		block.setText("I'm a little teapot. Short and Stout.  This is my handle and this is my spout.");
+    style.setWidth("100");
+		style.setHeight("100");
+		style.setXOffset("200");
+		style.setYOffset("200");
+		style.setBorderColor("blue");
+		style.setBorderWidth("2");
+		style.setPadding("0");
+    style.setTextColor("black");
+    block.setText("I'm a little teapot. Short and Stout.  This is my handle and this is my spout.");
 		drawIt();
 
-		block.getStyle().setHorizontalAlignment("right");
+		style.setHorizontalAlignment("right");
 		drawIt();
 
-		block.getStyle().setHorizontalAlignment("center");
+		style.setHorizontalAlignment("center");
 		drawIt();
 
-		block.getStyle().setVerticalAlignment("bottom");
+		style.setVerticalAlignment("bottom");
 		drawIt();
 
-		block.getStyle().setVerticalAlignment("center");
+		style.setVerticalAlignment("center");
 	}
 
 	public void testOneLineOfText() throws Exception
 	{
-		block.getStyle().setWidth("60");
-		block.getStyle().setHeight("40");
+		style.setWidth("60");
+		style.setHeight("40");
 		block.setX(200);
 		block.setY(200);
-		block.getStyle().setBorderColor("blue");
-		block.getStyle().setTextColor("black");
-		block.getStyle().setBorderWidth("2");
-		block.getStyle().setPadding("0");
+		style.setBorderColor("blue");
+		style.setTextColor("black");
+		style.setBorderWidth("2");
+		style.setPadding("0");
 		block.setText("Savy");
 		drawIt();
 
-		block.getStyle().setHorizontalAlignment("right");
+		style.setHorizontalAlignment("right");
 		drawIt();
 
-		block.getStyle().setHorizontalAlignment("center");
+		style.setHorizontalAlignment("center");
 		drawIt();
 
-		block.getStyle().setVerticalAlignment("bottom");
+		style.setVerticalAlignment("bottom");
 		drawIt();
 
-		block.getStyle().setVerticalAlignment("center");
+		style.setVerticalAlignment("center");
 	}
 
 	public void testFonts() throws Exception
 	{
-		block.getStyle().setWidth("200");
-		block.getStyle().setHeight("30");
-		block.getStyle().setBorderWidth("1");
-		block.getStyle().setVerticalAlignment("center");
+		style.setWidth("200");
+		style.setHeight("30");
+		style.setBorderWidth("1");
+    style.setBorderColor("brown");
+    style.setVerticalAlignment("center");
 		block.setText("The lazy brown dog jumped over the quick red fox.");
-		block.getStyle().setFontFace("Courier");
-		block.getStyle().setFontSize("10");
+		style.setFontFace("Courier");
+		style.setFontSize("10");
+    style.setTextColor("black");
 		drawIt();
 
-		block.getStyle().setFontFace("Helvetica");
-		block.getStyle().setFontStyle("bold");
+		style.setFontFace("Helvetica");
+		style.setFontStyle("bold");
 		drawIt();
 
-		block.getStyle().setFontFace("Monaco");
-		block.getStyle().setFontSize("20");
-		block.getStyle().setFontStyle("bold italic");
+		style.setFontFace("Monaco");
+		style.setFontSize("20");
+		style.setFontStyle("bold italic");
 	}
 
 	public void testPercentageDimensions() throws Exception
 	{
 		page.getStyle().setHorizontalAlignment("center");
 		page.getStyle().setVerticalAlignment("center");
-		block.getStyle().setBorderWidth("2");
-		block.getStyle().setBorderColor("blue");
-		block.getStyle().setWidth("25%");
-		block.getStyle().setHeight("25%");
+		style.setBorderWidth("2");
+		style.setBorderColor("blue");
+		style.setWidth("25%");
+		style.setHeight("25%");
 		drawIt();
 
-		block.getStyle().setWidth("50%");
-		block.getStyle().setHeight("50%");
+		style.setWidth("50%");
+		style.setHeight("50%");
 		drawIt();
 
-		block.getStyle().setWidth("75%");
-		block.getStyle().setHeight("75%");
+		style.setWidth("75%");
+		style.setHeight("75%");
 	}
 }

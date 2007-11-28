@@ -1,7 +1,8 @@
 $: << File.expand_path(File.dirname(__FILE__) + "/../ruby_src/lib")
-require 'book'
+require 'limelight/book'
 
-# Book.new().load("sandbox/actions.llm")
-# Book.new().load("sandbox/colors.llm")
-# Book.new().load("sandbox/transparency.llm")
-Book.new().load("sandbox/gradients.llm")
+# Limelight::Book.new().load("sandbox/actions.llm")
+# Limelight::Book.new().load("sandbox/colors.llm")
+# Limelight::Book.new().load("sandbox/transparency.llm")
+Limelight::Book.new().load("sandbox/gradients.llm")
+# Limelight::Book.new().load("sandbox/inputs.llm")

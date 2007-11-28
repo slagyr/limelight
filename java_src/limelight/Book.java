@@ -1,16 +1,60 @@
 package limelight;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 public class Book
 {
 	private JFrame frame;
+  private File directory;
 
-	public Book()
+  public Book()
 	{
 		frame = new JFrame();
-	}
+
+    JMenuBar menuBar = new JMenuBar();
+    frame.setJMenuBar(menuBar);
+    JMenu fileMenu = new JMenu("File");
+    menuBar.add(fileMenu);
+    JMenuItem open = new JMenuItem("Open");
+    fileMenu.add(open);
+    open.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event)
+      {
+        JFileChooser chooser = new JFileChooser();
+        if(directory != null)
+          chooser.setCurrentDirectory(directory);
+        chooser.setFileFilter(new FileFilter() {
+          public boolean accept(File file)
+          {
+            return file.getName().endsWith("llm");  
+          }
+
+          public String getDescription()
+          {
+            return "Limelight Markup File";
+          }
+        });
+        int returnVal = chooser.showOpenDialog(frame);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+          load2(chooser.getSelectedFile().getAbsolutePath());
+          directory = chooser.getSelectedFile().getAbsoluteFile().getParentFile();
+        }
+      }
+    });
+    JMenuItem refresh = new JMenuItem("Refresh");
+    refresh.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event)
+      {
+        reload();
+      }
+    });
+    fileMenu.add(refresh);
+
+  }
 
 	public void open()
 	{
@@ -34,7 +78,19 @@ public class Book
 		frame.dispose();
 	}
 
-	public void loadPage(Page page)
+  public void load2(String filename)
+  {
+System.out.println("filename = " + filename);
+    // to be overidden
+  }
+
+  public void reload()
+  {
+System.out.println("reload");
+    // to be overidden
+  }
+
+  public void loadPage(Page page)
 	{
 		frame.getContentPane().removeAll();
 		frame.add(page.getPanel());

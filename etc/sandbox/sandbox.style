@@ -81,4 +81,9 @@ teaser:
 	secondary_background_color: black
 	gradient_angle: 45
 	gradient_penetration: 100	
+	
+input1:
+	width: 100
+	height: 100
+	background_color: blue
 
