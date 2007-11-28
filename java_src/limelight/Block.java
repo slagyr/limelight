@@ -140,4 +140,15 @@ public class Block
 		panel.doLayout();
 		panel.paintImmediately(0, 0, panel.getWidth(), panel.getHeight());
 	}
+
+  public Block find(String name)
+  {
+    for (Iterator<Block> blockIterator = children.iterator(); blockIterator.hasNext();)
+    {
+      Block block = blockIterator.next();
+      if(name.equals(block.getName()))
+        return block;
+    }
+    return null;
+  }
 }

@@ -44,15 +44,17 @@ public class BlockLayout implements LayoutManager
 		Component[] components = container.getComponents();
 		if(components.length == 0)
 			return;
-		reset(container);
+    reset(container);
 		buildRows(components);
 
 		int y = aligner.startingY();
 		for(Iterator iterator = rows.iterator(); iterator.hasNext();)
 		{
 			Row row = (Row) iterator.next();
-			int x = aligner.startingX(row.width);
-			row.layoutComponents(x, y);
+System.err.println("row.width = " + row.width);      
+      int x = aligner.startingX(row.width);
+System.err.println("x = " + x);      
+      row.layoutComponents(x, y);
 			y += row.height;
 		}
 	}
@@ -62,14 +64,16 @@ public class BlockLayout implements LayoutManager
 		for(int i = 0; i < components.length; i++)
 		{
 			Component component = components[i];
-			((Panel)component).snapToDesiredSize();
+      Panel panel = ((Panel)component);
+      panel.snapToDesiredSize();
+      panel.snapOffsets();
 
-			if(!currentRow.isEmpty() && !currentRow.fits(component))
+      if(!currentRow.isEmpty() && !currentRow.fits(component))
 			{
 				aligner.addConsumedHeight(currentRow.height);
 				newRow();
 			}
-			currentRow.add(component);
+			currentRow.add(panel);
 		}
 		aligner.addConsumedHeight(currentRow.height);
 	}
@@ -103,12 +107,12 @@ public class BlockLayout implements LayoutManager
 			items = new LinkedList<Component>();
 		}
 
-		public void add(Component component)
+		public void add(Panel panel)
 		{
-			items.add(component);
-			width += component.getWidth();
-			if(component.getHeight() > height)
-				height = component.getHeight();
+			items.add(panel);
+			width += panel.getWidth();
+			if(panel.getHeight() + panel.getYOffset() > height)
+				height = panel.getHeight() + panel.getYOffset();
 		}
 
 		public boolean isEmpty()
@@ -123,12 +127,13 @@ public class BlockLayout implements LayoutManager
 
 		public void layoutComponents(int x, int y)
 		{
-			for(Iterator iterator = items.iterator(); iterator.hasNext();)
-			{
-				Component component = (Component) iterator.next();
-				component.setLocation(x, y);
-				x += component.getWidth();
-			}
+      for (Component component : items)
+      {
+        Panel panel = (Panel)component;
+System.out.println(panel.getBlock().getName() + " panel.getXOffset() = " + panel.getXOffset()); 
+        panel.setLocation(x + panel.getXOffset(), y + panel.getYOffset());
+        x += component.getWidth() + panel.getXOffset();
+      }
 		}
 	}
 }

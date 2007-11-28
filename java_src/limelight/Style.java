@@ -1,6 +1,7 @@
 package limelight;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 
 public class Style
 {
@@ -11,7 +12,7 @@ public class Style
 		styles = new Hashtable<String, String>();
 	}
 
-	protected String get(String key)
+  protected String get(String key)
 	{
 		return styles.get(key);
 	}
@@ -152,7 +153,27 @@ public class Style
 		put("leftBorderWidth", leftBorderWidth);
 	}
 
-	public void setMargin(String margin)
+  public void setXOffset(String value)
+  {
+    put("xOffset", value);
+  }
+
+  public String getXOffset()
+  {
+    return get("xOffset");
+  }
+
+  public void setYOffset(String value)
+  {
+    put("yOffset", value);
+  }
+
+  public String getYOffset()
+  {
+    return get("yOffset");
+  }
+
+  public void setMargin(String margin)
 	{
 		put("topMargin", margin);
 		put("rightMargin", margin);

@@ -7,12 +7,17 @@ public class PanelTest extends TestCase
 {
 	private Block block;
 	private Panel panel;
+  private Style style;
+  private MockPanel parent;
 
-	public void setUp() throws Exception
+  public void setUp() throws Exception
 	{
 		block = new Block();
 		panel = block.getPanel();
-	}
+    style = block.getStyle();
+    parent = new MockPanel();
+    parent.add(panel);
+  }
 
 	public void tearDown() throws Exception
 	{
@@ -39,9 +44,9 @@ public class PanelTest extends TestCase
 
 	public void testCreateFontWithCourierItalics() throws Exception
 	{
-		block.getStyle().setFontFace("Courier");
-		block.getStyle().setFontSize("6");
-		block.getStyle().setFontStyle("italic");
+		style.setFontFace("Courier");
+		style.setFontSize("6");
+		style.setFontStyle("italic");
 
 		Font font = panel.createFont();
 
@@ -52,9 +57,9 @@ public class PanelTest extends TestCase
 
 	public void testCreateFontWithTimesBoldItalic() throws Exception
 	{
-		block.getStyle().setFontFace("Times");
-		block.getStyle().setFontSize("9");
-		block.getStyle().setFontStyle("bold italic");
+		style.setFontFace("Times");
+		style.setFontSize("9");
+		style.setFontStyle("bold italic");
 
 		Font font = panel.createFont();
 
@@ -62,4 +67,26 @@ public class PanelTest extends TestCase
 		assertEquals(9, font.getSize());
 		assertEquals(Font.BOLD | Font.ITALIC, font.getStyle());
 	}
+  
+  public void testSnapToSize() throws Exception
+  {
+    style.setWidth("100");
+    style.setHeight("200");
+
+    panel.snapToDesiredSize();
+
+    assertEquals(100, panel.getWidth());
+    assertEquals(200, panel.getHeight());
+  }
+
+  public void testSnapOffsets() throws Exception
+  {
+    style.setYOffset("40");
+    style.setXOffset("30");
+
+    panel.snapOffsets();
+
+    assertEquals(30, panel.getXOffset());
+    assertEquals(40, panel.getYOffset());
+  }
 }

@@ -1,0 +1,3 @@
+<sandbox styles="sandbox.style">
+	<input1 controllers="textbox"/>
+</sandbox>

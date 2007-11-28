@@ -52,10 +52,11 @@ tag_line:
 tag_line_content:
 	width: 400
 	height: 150
-	top_margin: 50
+	top_margin: 82
 	left_margin: 50
 	text_color: white
-	font_size: 14
+	font_size: 17
+	font_style: bold italic
 	
 services_tagline:
 	width: 823

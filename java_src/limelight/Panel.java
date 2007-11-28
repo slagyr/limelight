@@ -13,8 +13,10 @@ public class Panel extends JPanel
 {
 	private Block block;
 	private BufferedImage buffer;
+  private int xOffset;
+  private int yOffset;
 
-	public Panel(Block owner)
+  public Panel(Block owner)
 	{
 		this.block = owner;
 		setOpaque(false);
@@ -58,7 +60,9 @@ public class Panel extends JPanel
 	{
 		Rectangle clip = new Rectangle(graphics.getClipBounds());
 		Rectangle bounds = new Rectangle(getBounds());
-		return bounds.width == clip.width && bounds.height == clip.height;
+System.out.println(block.getName() + " clip = " + clip);
+System.out.println(block.getName() + " bounds = " + bounds);
+    return bounds.width == clip.width && bounds.height == clip.height;
 	}
 
 	public void paintComponent(Graphics2D graphics)
@@ -265,13 +269,26 @@ public class Panel extends JPanel
 	{
 		Rectangle r = ((Panel)getParent()).getRectangleInsidePadding();
 		int width = translateDimension(block.getStyle().getWidth(), r.width);
-		int height = translateDimension(block.getStyle().getHeight(), r.height);
+System.err.println(block.getName() + " width = " + width);
+System.err.println("block.getStyle().getWidth() = " + block.getStyle().getWidth());
+    int height = translateDimension(block.getStyle().getHeight(), r.height);
 		setSize(width, height);
 	}
 
-	private int translateDimension(String sizeString, int maxSize)
+  public void snapOffsets()
+  {
+    if(block.getStyle().getXOffset() != null)
+      xOffset = Integer.parseInt(block.getStyle().getXOffset());
+
+    if(block.getStyle().getYOffset() != null)
+      yOffset = Integer.parseInt(block.getStyle().getYOffset());
+  }
+
+  private int translateDimension(String sizeString, int maxSize)
 	{
-		if(sizeString.endsWith("%"))
+    if(sizeString == null)
+      return 0;
+    else if(sizeString.endsWith("%"))
 		{
 			double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
 			return (int)((percentage * 0.01) * (double)maxSize);
@@ -284,7 +301,9 @@ public class Panel extends JPanel
 
 	public Rectangle getRectangle()
 	{
-		return new Rectangle(0, 0, getWidth(), getHeight());
+System.err.println("block.getName() = " + block.getName());
+System.err.println("getWidth() = " + getWidth());
+    return new Rectangle(0, 0, getWidth(), getHeight());
 	}
 
 	public Rectangle getRectangleInsideMargins()
@@ -303,10 +322,18 @@ public class Panel extends JPanel
 
 	public Rectangle getRectangleInsidePadding()
 	{
-		Rectangle r = getRectangleInsideBorders();
-		r.shave(resolveInt(block.getStyle().getTopPadding()), resolveInt(block.getStyle().getRightPadding()), resolveInt(block.getStyle().getBottomPadding()), resolveInt(block.getStyle().getLeftPadding()));
-		return r;
+    Rectangle r = getRectangleInsideBorders();
+		r.shave(resolveInt(block.getStyle().getTopPadding()), resolveInt(block.getStyle().getRightPadding()), resolveInt(block.getStyle().getBottomPadding()), resolveInt(block.getStyle().getLeftPadding())); 
+    return r;
 	}
 
+  public int getXOffset()
+  {
+    return xOffset;
+  }
 
+  public int getYOffset()
+  {
+    return yOffset;
+  }
 }
