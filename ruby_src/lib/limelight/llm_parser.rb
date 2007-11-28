@@ -63,7 +63,7 @@ module Limelight
       if styles_attr
         file = styles_attr.value
         Styles.load_into_page(file, page)
-        page.loadStyle()
+        page.load_style()
       end
     end
     

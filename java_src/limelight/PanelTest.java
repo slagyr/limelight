@@ -12,7 +12,7 @@ public class PanelTest extends TestCase
 
   public void setUp() throws Exception
 	{
-		block = new Block();
+		block = new MockBlock();
 		panel = block.getPanel();
     style = block.getStyle();
     parent = new MockPanel();

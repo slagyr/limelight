@@ -12,11 +12,11 @@ module Limelight
 
     def self.load_into_page(filename, page)
       style_defs = load(filename)
-      styles = page.getStyles();
+      styles = page.styles;
   
       style_defs.each_pair do |key, value|
         style = create_style(value)
-        styles.put(key, style)
+        styles[key] = style
       end
     end
 
