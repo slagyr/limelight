@@ -2,8 +2,6 @@ package limelight;
 
 interface Page extends Block
 {
-
-  void setBook(Book book);
 }
 
 //public class Page extends Block
