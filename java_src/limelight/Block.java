@@ -1,8 +1,5 @@
 package limelight;
 
-import java.util.*;
-import java.awt.*;
-
 interface Block
 {
   Panel getPanel();
