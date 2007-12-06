@@ -1,5 +1,6 @@
 require 'limelight/limelight_java'
 require 'limelight/llm_parser'
+require 'limelight/menu_bar'
 
 module Limelight
   
@@ -22,15 +23,16 @@ module Limelight
     end
     
     def actionPerformed(event)
-      chooser = javax.swing.JFileChooser.new
-      chooser.setCurrentDirectory(@book.directory) if @book.directory
-      chooser.setFileFilter(ChooseFileFilter.new)
-      returnVal = chooser.showOpenDialog(@book.frame);
-      
-      if(returnVal == javax.swing.JFileChooser::APPROVE_OPTION)
-        @book.load(chooser.getSelectedFile().getAbsolutePath());
-        @book.directory = chooser.getSelectedFile().getAbsoluteFile().getParentFile();
-      end
+      @book.public_choose_file
+      # chooser = javax.swing.JFileChooser.new
+      #       chooser.setCurrentDirectory(@book.directory) if @book.directory
+      #       chooser.setFileFilter(ChooseFileFilter.new)
+      #       returnVal = chooser.showOpenDialog(@book.frame);
+      #       
+      #       if(returnVal == javax.swing.JFileChooser::APPROVE_OPTION)
+      #         @book.load(chooser.getSelectedFile().getAbsolutePath());
+      #         @book.directory = chooser.getSelectedFile().getAbsoluteFile().getParentFile();
+      #       end
     end
   end
   
@@ -50,21 +52,21 @@ module Limelight
     attr_accessor :directory
     attr_reader :frame
     
+    def public_choose_file
+      choose_file
+    end
+    
     def initialize
       @frame = javax.swing.JFrame.new
-        
-      menuBar = javax.swing.JMenuBar.new
-      frame.setJMenuBar(menuBar)
-      fileMenu = javax.swing.JMenu.new("File")
-      menuBar.add(fileMenu)
       
-      open = javax.swing.JMenuItem.new("Open")
-      fileMenu.add(open)
-      open.addActionListener(OpenActionListener.new(self))
+      menu_bar = MenuBar.build(self) do
+        menu("File") do
+          item("Open", :choose_file)
+          item("Refresh", :reload)
+        end
+      end
       
-      refresh = javax.swing.JMenuItem.new("Refresh")
-      fileMenu.add(refresh);
-      refresh.addActionListener(RefreshActionListener.new(self))
+      frame.setJMenuBar(menu_bar)
     end
     
      def open(page)
@@ -92,7 +94,7 @@ module Limelight
     def load(llm_file)
       @current_file = llm_file
       parser = LlmParser.new
-      dir = File.expand_path(File.dirname(llm_file))
+      dir = File.expand_path(File.dirname(llm_file))    
       Dir.chdir(dir)
       $: << dir
       page = parser.parse(IO.read(File.basename(llm_file)))
@@ -101,6 +103,20 @@ module Limelight
   
     def reload
       load(@current_file)
+    end
+
+    private ###############################################
+    
+    def choose_file
+      chooser = javax.swing.JFileChooser.new
+      chooser.setCurrentDirectory(@directory) if @directory
+      chooser.setFileFilter(ChooseFileFilter.new)
+      returnVal = chooser.showOpenDialog(@frame);
+      
+      if(returnVal == javax.swing.JFileChooser::APPROVE_OPTION)
+        load(chooser.getSelectedFile().getAbsolutePath());
+        @directory = chooser.getSelectedFile().getAbsoluteFile().getParentFile();
+      end
     end
 
   end
