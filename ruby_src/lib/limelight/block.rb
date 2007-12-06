@@ -6,9 +6,9 @@ module Limelight
     include Java::limelight.Block
   
     attr_accessor :onclick
-    attr_reader :panel, :style, :book
+    attr_reader :panel, :style
     attr_accessor :page, :name, :text
-    getters :panel, :style, :book, :page, :name, :text
+    getters :panel, :style, :page, :name, :text
     setters :page, :name, :text
     
     def initialize
@@ -69,6 +69,10 @@ module Limelight
     
     def find(name)
       return @children.find { |child| child.name == name }
+    end
+    
+    def book
+      return page.book
     end
       
   end
