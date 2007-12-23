@@ -1,6 +1,6 @@
 module Button
   
-  def extended
+  def self.extended(extended_block)
     puts "Button extended"
   end
   

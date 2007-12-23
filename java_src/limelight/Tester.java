@@ -15,13 +15,13 @@
 //
 //		Block[] blocks = new Block[num];
 //		Hashtable[] tables = new Hashtable[num];
-//		Style[] styles = new Style[num];
+//		FlatStyle[] styles = new FlatStyle[num];
 //
 //		for(int i = 0; i < num; i++)
 //		{
 //			blocks[i] = new Block();
 //			tables[i] = new Hashtable();
-//			styles[i] = new Style();
+//			styles[i] = new FlatStyle();
 //		}
 //
 //		double then, now, duration;
@@ -54,7 +54,7 @@
 //		then = System.currentTimeMillis();
 //		for(int i = 0; i < styles.length; i++)
 //		{
-//			Style style = styles[i];
+//			FlatStyle style = styles[i];
 //			for(int j = 0; j < reps; j++)
 //				loadStyle(style);
 //		}
@@ -65,7 +65,7 @@
 //		then = System.currentTimeMillis();
 //		for(int i = 0; i < styles.length; i++)
 //		{
-//			Style style = styles[i];
+//			FlatStyle style = styles[i];
 //			for(int j = 0; j < reps; j++)
 //				unloadStyle(style);
 //		}
@@ -225,7 +225,7 @@
 //		table.put("FontStyle", "bold");
 //	}
 //
-//	public static void loadStyle(Style style)
+//	public static void loadStyle(FlatStyle style)
 //	{
 //		style.setWidth("123");
 //		style.setHeight("123");
@@ -256,7 +256,7 @@
 //		style.setFontStyle("bold");
 //	}
 //
-//public static void unloadStyle(Style style)
+//public static void unloadStyle(FlatStyle style)
 //	{
 //		style.getWidth();
 //		style.getHeight();

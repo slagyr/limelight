@@ -12,8 +12,8 @@ public class Colors
 	private static Pattern shortHexWithAlpha = Pattern.compile("#[0-9aAbBcCdDeEfF]{4}");
 
 	public static Color resolve(String value)
-	{
-		Color result = Color.black;
+	{ 
+    Color result = Color.black;
 		if(fullHexWithAlpha.matcher(value).find())
 		{
             int r = hexToInt(value.substring(1, 3));

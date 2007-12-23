@@ -2,28 +2,38 @@ package limelight;
 
 public class MockBlock implements Block
 {
+  public FlatStyle style;
+  public String text;
+  public String name;
+
+  public MockBlock()
+  {
+    style = new FlatStyle();
+  }
+
   public Panel getPanel()
   {
     return null;
   }
 
-  public Style getStyle()
+  public FlatStyle getStyle()
   {
-    return null;
+    return style;
   }
 
   public String getName()
   {
-    return null;
+    return name;
   }
 
   public String getText()
   {
-    return null;
+    return text;
   }
 
   public void setText(String value)
   {
+    text = value;
   }
 
   public void mouseClicked()

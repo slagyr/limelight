@@ -7,7 +7,7 @@
 //{
 //	private Block block;
 //	private Page page;
-//  private Style style;
+//  private FlatStyle style;
 //
 //  public void setUp() throws Exception
 //	{

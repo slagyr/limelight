@@ -10,20 +10,21 @@ module Limelight
     def initialize()
     end
   
-    def parse(xml)
+    def parse(xml, loader)
       doc = REXML::Document.new(xml)
-      page = Page.new()
-      populate(page, doc.root)
-      process_children(doc.root, page, page)
-      handle_styles(page, doc.root)
-      return page
+      @page = Page.new()
+      @page.loader = loader
+      populate(@page, doc.root)
+      process_children(doc.root, @page)
+      handle_styles(doc.root)   
+      return @page
     end
   
-    def process(element, parent, page)
+    def process(element, parent)
       block = block_from(element.name)
       parent.add(block)
       populate(block, element)
-      process_children(element, block, page)
+      process_children(element, block)
       return block
     end
   
@@ -40,9 +41,9 @@ module Limelight
   
     def populate(block, element)
       block.name = element.name
-      add_extensions(element, block)
+      add_extensions(element, block) 
       text = element.text ? element.text.strip : ""
-      block.text = text if text.size > 0
+      block.text = text
       element.attributes.each do |name, value|
         setter_sym = "#{name.downcase}=".to_sym
         block.send(setter_sym, value) if block.respond_to?(setter_sym)
@@ -50,26 +51,26 @@ module Limelight
       end
     end
   
-    def process_children(element, block, page)
+    def process_children(element, block)
       element.children.each do |child|
         if child.is_a? REXML::Element
-          process(child, block, page)
+          process(child, block)
         end
       end
     end
   
-    def handle_styles(page, element)
+    def handle_styles(element)
       styles_attr = element.attribute("styles")
       if styles_attr
         file = styles_attr.value
-        Styles.load_into_page(file, page)
-        page.load_style()
+        Styles.load_into_page(file, @page)
+        @page.load_style()
       end
     end
     
     def add_extensions(element, block)
       name = element.name
-      add_extension(name, block)
+      add_extension(name, block) if name
       controllers_attr = element.attribute("controllers")
       if controllers_attr
         controllers = controllers_attr.value.split(" ")
@@ -77,25 +78,20 @@ module Limelight
       end
     end
   
-    def add_extension(name, block)
-      try_to_require(name)
+    def add_extension(name, block)  
+      try_to_require(@page.loader.path_to(name))
       try_to_require("limelight/controllers/#{name}")
       module_name = name[0..0].upcase + name[1..-1]
-# puts "module_name: #{module_name}"      
-# puts "Object.const_defined?(module_name): #{Object.const_defined?(module_name)}"
-# puts "Limelight::Controllers.const_defined?(module_name): #{Limelight::Controllers.const_defined?(module_name)}"
       if Object.const_defined?(module_name)
         mod = Object.const_get(module_name)
-        block.instance_eval { extend mod }
-        block.extended if block.respond_to?(:extended)     
+        block.add_controller(mod)
       elsif Limelight::Controllers.const_defined?(module_name)
         mod = Limelight::Controllers.const_get(module_name)
-        block.instance_eval { extend mod }
-        block.extended if block.respond_to?(:extended)
+        block.add_controller(mod)
       end
     end
     
-    def try_to_require(name)
+    def try_to_require(name) 
       begin
         require name
       rescue Exception

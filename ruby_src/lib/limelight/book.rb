@@ -1,56 +1,13 @@
-require 'limelight/limelight_java'
+require 'limelight/java_util'
 require 'limelight/llm_parser'
 require 'limelight/menu_bar'
+require 'limelight/loaders/file_loader'
 
 module Limelight
   
-  class ChooseFileFilter < javax.swing.filechooser::FileFilter
-    
-    def accept(file)
-      return file.name[-3..-1] == "llm"
-    end
-    
-    def getDescription
-      return "Limelight Markup File"
-    end
-  end
-  
-  class OpenActionListener
-    include java.awt.event.ActionListener
-    
-    def initialize(book)
-      @book = book
-    end
-    
-    def actionPerformed(event)
-      @book.public_choose_file
-      # chooser = javax.swing.JFileChooser.new
-      #       chooser.setCurrentDirectory(@book.directory) if @book.directory
-      #       chooser.setFileFilter(ChooseFileFilter.new)
-      #       returnVal = chooser.showOpenDialog(@book.frame);
-      #       
-      #       if(returnVal == javax.swing.JFileChooser::APPROVE_OPTION)
-      #         @book.load(chooser.getSelectedFile().getAbsolutePath());
-      #         @book.directory = chooser.getSelectedFile().getAbsoluteFile().getParentFile();
-      #       end
-    end
-  end
-  
-  class RefreshActionListener
-    include java.awt.event.ActionListener
-    
-    def initialize(book)
-      @book = book
-    end
-    
-    def actionPerformed(event)
-      @book.reload
-    end
-  end
-  
   class Book
     attr_accessor :directory
-    attr_reader :frame
+    attr_reader :frame, :current_page
     
     def public_choose_file
       choose_file
@@ -58,6 +15,10 @@ module Limelight
     
     def initialize
       @frame = javax.swing.JFrame.new
+      @frame.setDefaultCloseOperation(javax.swing.WindowConstants::EXIT_ON_CLOSE)
+      @frame.setLayout(nil)
+      @frame.setSize(900, 900)
+      @frame.setLocation(200, 25)
       
       menu_bar = MenuBar.build(self) do
         menu("File") do
@@ -69,11 +30,7 @@ module Limelight
       frame.setJMenuBar(menu_bar)
     end
     
-     def open(page)
-      @frame.setLayout(nil)
-      @frame.setSize(900, 900)
-      @frame.setLocation(200, 25)
-      @frame.setDefaultCloseOperation(javax.swing.WindowConstants::EXIT_ON_CLOSE)
+    def open(page)
       loadPage(page)
       @frame.setVisible(true)
       @frame.repaint
@@ -89,20 +46,23 @@ module Limelight
       @frame.add(page.panel)
       page.book = self
       page.panel.size = @frame.size
+      @current_page = page
     end
     
     def load(llm_file)
-      @current_file = llm_file
+      if(@current_page)
+        loader = Loaders::FileLoader.new(@current_page.loader.path_to(llm_file))
+      else
+        loader = Loaders::FileLoader.new(llm_file)
+      end 
       parser = LlmParser.new
-      dir = File.expand_path(File.dirname(llm_file))    
-      Dir.chdir(dir)
-      $: << dir
-      page = parser.parse(IO.read(File.basename(llm_file)))
+      page_content = loader.load(loader.page_file) 
+      page = parser.parse(page_content, loader)
       open(page)
     end
   
     def reload
-      load(@current_file)
+      load(@current_page.loader.page_file)
     end
 
     private ###############################################
@@ -119,6 +79,17 @@ module Limelight
       end
     end
 
+  end
+  
+  class ChooseFileFilter < javax.swing.filechooser::FileFilter
+    
+    def accept(file)
+      return file.name[-3..-1] == "llm"
+    end
+    
+    def getDescription
+      return "Limelight Markup File"
+    end
   end
     
 end

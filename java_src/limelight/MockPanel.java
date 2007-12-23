@@ -4,7 +4,7 @@ public class MockPanel extends Panel
 {
 	public MockPanel()
 	{
-		super(null);
+		super(new MockBlock());
 	}
 
 	public Rectangle getRectangleInsidePadding()

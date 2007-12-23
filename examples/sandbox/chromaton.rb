@@ -3,10 +3,12 @@ puts "Chromaton required"
 
 module Chromaton
   
-  def extended
+  attr_accessor :clicks
+  
+  def self.extended(extended_block)
     puts "Chromaton extended"
-    @clicks = 0
-    self.text = "Click Me!"
+    extended_block.clicks = 0
+    extended_block.text = "Click Me!"
   end
   
   def mouseClicked
