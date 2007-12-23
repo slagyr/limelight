@@ -48,40 +48,38 @@ public class BlockLayout implements LayoutManager
 		buildRows(components);
 
 		int y = aligner.startingY();
-		for(Iterator iterator = rows.iterator(); iterator.hasNext();)
-		{
-			Row row = (Row) iterator.next();
-System.err.println("row.width = " + row.width);      
+    for(Row row : rows)
+    {
+/*System.err.println("row.width = " + row.width);      */
       int x = aligner.startingX(row.width);
-System.err.println("x = " + x);      
+/*System.err.println("x = " + x);      */
       row.layoutComponents(x, y);
-			y += row.height;
-		}
+      y += row.height;
+    }
 	}
 
 	private void buildRows(Component[] components)
 	{
-		for(int i = 0; i < components.length; i++)
-		{
-			Component component = components[i];
-      Panel panel = ((Panel)component);
+    for(Component component : components)
+    {
+      Panel panel = ((Panel) component);
       panel.snapToDesiredSize();
       panel.snapOffsets();
 
-      if(!currentRow.isEmpty() && !currentRow.fits(component))
-			{
-				aligner.addConsumedHeight(currentRow.height);
-				newRow();
-			}
-			currentRow.add(panel);
-		}
+      if (!currentRow.isEmpty() && !currentRow.fits(component))
+      {
+        aligner.addConsumedHeight(currentRow.height);
+        newRow();
+      }
+      currentRow.add(panel);
+    }
 		aligner.addConsumedHeight(currentRow.height);
 	}
 
 	private void reset(Container container)
 	{
 		Block block = ((Panel) container).getBlock();
-System.out.println("BlockLayout.reset");
+//System.out.println("BlockLayout.reset");
 		aligner = new Aligner(block.getPanel().getRectangleInsidePadding(), block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
 		rows.clear();
 		newRow();

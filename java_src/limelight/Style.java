@@ -1,157 +1,145 @@
 package limelight;
 
-import java.util.Hashtable;
-import java.util.Iterator;
-
-public class Style
+public abstract class Style
 {
-	private Hashtable<String, String> styles;
+  protected abstract String get(String key);
 
-	public Style()
-	{
-		styles = new Hashtable<String, String>();
-	}
+  protected abstract void put(String key, String value);
 
-  protected String get(String key)
-	{
-		return styles.get(key);
-	}
+  protected abstract boolean has(Object key);
 
-	protected void put(String key, String value)
-	{
-		styles.put(key, value);
-	}
+  public abstract int checksum();
 
-	public void setWidth(String value)
-	{
-		put("width", value);
-	}
+  public void setWidth(String value)
+  {
+    put("width", value);
+  }
 
-	public String getWidth()
-	{
-		return get("width");
-	}
+  public String getWidth()
+  {
+    return get("width");
+  }
 
-	public void setHeight(String value)
-	{
-		put("height", value);
-	}
+  public void setHeight(String value)
+  {
+    put("height", value);
+  }
 
-	public String getHeight()
-	{
-		return get("height");
-	}
+  public String getHeight()
+  {
+    return get("height");
+  }
 
-	public void setTextColor(String value)
-	{
-		put("textColor", value);
-	}
+  public void setTextColor(String value)
+  {
+    put("textColor", value);
+  }
 
-	public String getTextColor()
-	{
-		return get("textColor");
-	}
+  public String getTextColor()
+  {
+    return get("textColor");
+  }
 
-	public void setBorderColor(String value)
-	{
-		put("topBorderColor", value);
-		put("rightBorderColor",value);
-		put("bottomBorderColor", value);
-		put("leftBorderColor", value);
-	}
+  public void setBorderColor(String value)
+  {
+    put("topBorderColor", value);
+    put("rightBorderColor", value);
+    put("bottomBorderColor", value);
+    put("leftBorderColor", value);
+  }
 
-	public String getTopBorderColor()
-	{
-		return get("topBorderColor");
-	}
+  public String getTopBorderColor()
+  {
+    return get("topBorderColor");
+  }
 
-	public String getRightBorderColor()
-	{
-		return get("rightBorderColor");
-	}
+  public String getRightBorderColor()
+  {
+    return get("rightBorderColor");
+  }
 
-	public String getBottomBorderColor()
-	{
-		return get("bottomBorderColor");
-	}
+  public String getBottomBorderColor()
+  {
+    return get("bottomBorderColor");
+  }
 
-	public String getLeftBorderColor()
-	{
-		return get("leftBorderColor");
-	}
+  public String getLeftBorderColor()
+  {
+    return get("leftBorderColor");
+  }
 
-	public String getBackgroundColor()
-	{
-		return get("backgroundColor");
-	}
+  public String getBackgroundColor()
+  {
+    return get("backgroundColor");
+  }
 
-	public void setTopBorderColor(String value)
-	{
-		put("topBorderColor", value);
-	}
+  public void setTopBorderColor(String value)
+  {
+    put("topBorderColor", value);
+  }
 
-	public void setRightBorderColor(String value)
-	{
-		put("rightBorderColor", value);
-	}
+  public void setRightBorderColor(String value)
+  {
+    put("rightBorderColor", value);
+  }
 
-	public void setBottomBorderColor(String value)
-	{
-		put("bottomBorderColor", value);
-	}
+  public void setBottomBorderColor(String value)
+  {
+    put("bottomBorderColor", value);
+  }
 
-	public void setLeftBorderColor(String value)
-	{
-		put("leftBorderColor", value);
-	}
+  public void setLeftBorderColor(String value)
+  {
+    put("leftBorderColor", value);
+  }
 
-	public void setBorderWidth(String pixels)
-	{
-		put("topBorderWidth", pixels);
-		put("rightBorderWidth", pixels);
-		put("bottomBorderWidth", pixels);
-		put("leftBorderWidth", pixels);
-	}
+  public void setBorderWidth(String pixels)
+  {
+    put("topBorderWidth", pixels);
+    put("rightBorderWidth", pixels);
+    put("bottomBorderWidth", pixels);
+    put("leftBorderWidth", pixels);
+  }
 
-	public String getTopBorderWidth()
-	{
-		return get("topBorderWidth");
-	}
+  public String getTopBorderWidth()
+  {
+    return get("topBorderWidth");
+  }
 
-	public void setTopBorderWidth(String topBorderWidth)
-	{
-		put("topBorderWidth", topBorderWidth);
-	}
+  public void setTopBorderWidth(String topBorderWidth)
+  {
+    put("topBorderWidth", topBorderWidth);
+  }
 
-	public String getRightBorderWidth()
-	{
-		return get("rightBorderWidth");
-	}
+  public String getRightBorderWidth()
+  {
+    return get("rightBorderWidth");
+  }
 
-	public void setRightBorderWidth(String rightBorderWidth)
-	{
-		put("rightBorderWidth", rightBorderWidth);
-	}
+  public void setRightBorderWidth(String rightBorderWidth)
+  {
+    put("rightBorderWidth", rightBorderWidth);
+  }
 
-	public String getBottomBorderWidth()
-	{
-		return get("bottomBorderWidth");
-	}
+  public String getBottomBorderWidth()
+  {
+    return get("bottomBorderWidth");
+  }
 
-	public void setBottomBorderWidth(String bottomBorderWidth)
-	{
-		put("bottomBorderWidth", bottomBorderWidth);
-	}
+  public void setBottomBorderWidth(String bottomBorderWidth)
+  {
+    put("bottomBorderWidth", bottomBorderWidth);
+  }
 
-	public String getLeftBorderWidth()
-	{
-		return get("leftBorderWidth");
-	}
+  public String getLeftBorderWidth()
+  {
+    return get("leftBorderWidth");
+  }
 
-	public void setLeftBorderWidth(String leftBorderWidth)
-	{
-		put("leftBorderWidth", leftBorderWidth);
-	}
+  public void setLeftBorderWidth(String leftBorderWidth)
+  {
+    put("leftBorderWidth", leftBorderWidth);
+  }
 
   public void setXOffset(String value)
   {
@@ -174,195 +162,195 @@ public class Style
   }
 
   public void setMargin(String margin)
-	{
-		put("topMargin", margin);
-		put("rightMargin", margin);
-		put("bottomMargin", margin);
-		put("leftMargin", margin);
-	}
+  {
+    put("topMargin", margin);
+    put("rightMargin", margin);
+    put("bottomMargin", margin);
+    put("leftMargin", margin);
+  }
 
-	public String getTopMargin()
-	{
-		return get("topMargin");
-	}
+  public String getTopMargin()
+  {
+    return get("topMargin");
+  }
 
-	public void setTopMargin(String topMargin)
-	{
-		put("topMargin", topMargin);
-	}
+  public void setTopMargin(String topMargin)
+  {
+    put("topMargin", topMargin);
+  }
 
-	public String getRightMargin()
-	{
-		return get("rightMargin");
-	}
+  public String getRightMargin()
+  {
+    return get("rightMargin");
+  }
 
-	public void setRightMargin(String rightMargin)
-	{
-		put("rightMargin", rightMargin);
-	}
+  public void setRightMargin(String rightMargin)
+  {
+    put("rightMargin", rightMargin);
+  }
 
-	public String getBottomMargin()
-	{
-		return get("bottomMargin");
-	}
+  public String getBottomMargin()
+  {
+    return get("bottomMargin");
+  }
 
-	public void setBottomMargin(String bottomMargin)
-	{
-		put("bottomMargin", bottomMargin);
-	}
+  public void setBottomMargin(String bottomMargin)
+  {
+    put("bottomMargin", bottomMargin);
+  }
 
-	public String getLeftMargin()
-	{
-		return get("leftMargin");
-	}
+  public String getLeftMargin()
+  {
+    return get("leftMargin");
+  }
 
-	public void setLeftMargin(String leftMargin)
-	{
-		put("leftMargin", leftMargin);
-	}
+  public void setLeftMargin(String leftMargin)
+  {
+    put("leftMargin", leftMargin);
+  }
 
-	public void setPadding(String padding)
-	{
-		put("topPadding", padding);
-		put("rightPadding",padding);
-		put("bottomPadding", padding);
-		put("leftPadding", padding);
-	}
+  public void setPadding(String padding)
+  {
+    put("topPadding", padding);
+    put("rightPadding", padding);
+    put("bottomPadding", padding);
+    put("leftPadding", padding);
+  }
 
-	public String getTopPadding()
-	{
-		return get("topPadding");
-	}
+  public String getTopPadding()
+  {
+    return get("topPadding");
+  }
 
-	public void setTopPadding(String topPadding)
-	{
-		put("topPadding", topPadding);
-	}
+  public void setTopPadding(String topPadding)
+  {
+    put("topPadding", topPadding);
+  }
 
-	public String getRightPadding()
-	{
-		return get("rightPadding");
-	}
+  public String getRightPadding()
+  {
+    return get("rightPadding");
+  }
 
-	public void setRightPadding(String rightPadding)
-	{
-		put("rightPadding", rightPadding);
-	}
+  public void setRightPadding(String rightPadding)
+  {
+    put("rightPadding", rightPadding);
+  }
 
-	public String getBottomPadding()
-	{
-		return get("bottomPadding");
-	}
+  public String getBottomPadding()
+  {
+    return get("bottomPadding");
+  }
 
-	public void setBottomPadding(String bottomPadding)
-	{
-		put("bottomPadding", bottomPadding);
-	}
+  public void setBottomPadding(String bottomPadding)
+  {
+    put("bottomPadding", bottomPadding);
+  }
 
-	public String getLeftPadding()
-	{
-		return get("leftPadding");
-	}
+  public String getLeftPadding()
+  {
+    return get("leftPadding");
+  }
 
-	public void setLeftPadding(String leftPadding)
-	{
-		put("leftPadding", leftPadding);
-	}
+  public void setLeftPadding(String leftPadding)
+  {
+    put("leftPadding", leftPadding);
+  }
 
-	public void setBackgroundColor(String backgroundColor)
-	{
-		put("backgroundColor", backgroundColor);
-	}
+  public void setBackgroundColor(String backgroundColor)
+  {
+    put("backgroundColor", backgroundColor);
+  }
 
-	public void setBackgroundImage(String backgroundImage)
-	{
-		put("backgroundImage", backgroundImage);
-	}
+  public void setBackgroundImage(String backgroundImage)
+  {
+    put("backgroundImage", backgroundImage);
+  }
 
-	public String getBackgroundImage()
-	{
-		return get("backgroundImage");
-	}
+  public String getBackgroundImage()
+  {
+    return get("backgroundImage");
+  }
 
-	public String getBackgroundImageFillStrategy()
-	{
-		return get("backgroundImageFillStrategy");
-	}
+  public String getBackgroundImageFillStrategy()
+  {
+    return get("backgroundImageFillStrategy");
+  }
 
-	public void setBackgroundImageFillStrategy(String backgroundImageFillStrategy)
-	{
-		put("backgroundImageFillStrategy", backgroundImageFillStrategy);
-	}
+  public void setBackgroundImageFillStrategy(String backgroundImageFillStrategy)
+  {
+    put("backgroundImageFillStrategy", backgroundImageFillStrategy);
+  }
 
-	public void setHorizontalAlignment(String alignment)
-	{
-		put("horizontalAlignment", alignment);
-	}
+  public void setHorizontalAlignment(String alignment)
+  {
+    put("horizontalAlignment", alignment);
+  }
 
-	public String getHorizontalAlignment()
-	{
-		return get("horizontalAlignment");
-	}
+  public String getHorizontalAlignment()
+  {
+    return get("horizontalAlignment");
+  }
 
-	public void setVerticalAlignment(String alignment)
-	{
-		put("verticalAlignment", alignment);
-	}
+  public void setVerticalAlignment(String alignment)
+  {
+    put("verticalAlignment", alignment);
+  }
 
-	public String getVerticalAlignment()
-	{
-		return get("verticalAlignment");
-	}
+  public String getVerticalAlignment()
+  {
+    return get("verticalAlignment");
+  }
 
-	public String getFontFace()
-	{
-		return get("fontFace");
-	}
+  public String getFontFace()
+  {
+    return get("fontFace");
+  }
 
-	public void setFontFace(String fontFace)
-	{
-		put("fontFace", fontFace);
-	}
+  public void setFontFace(String fontFace)
+  {
+    put("fontFace", fontFace);
+  }
 
-	public String getFontSize()
-	{
-		return get("fontSize");
-	}
+  public String getFontSize()
+  {
+    return get("fontSize");
+  }
 
-	public void setFontSize(String fontSize)
-	{
-		put("fontSize", fontSize);
-	}
+  public void setFontSize(String fontSize)
+  {
+    put("fontSize", fontSize);
+  }
 
-	public String getFontStyle()
-	{
-		return get("fontStyle");
-	}
+  public String getFontStyle()
+  {
+    return get("fontStyle");
+  }
 
-	public void setFontStyle(String fontStyle)
-	{
-		put("fontStyle", fontStyle);
-	}
+  public void setFontStyle(String fontStyle)
+  {
+    put("fontStyle", fontStyle);
+  }
 
-	public String getTransparency()
-	{
-		return get("transparency");
-	}
+  public String getTransparency()
+  {
+    return get("transparency");
+  }
 
-	public void setTransparency(String transparency)
-	{
-		put("transparency", transparency);
-	}
+  public void setTransparency(String transparency)
+  {
+    put("transparency", transparency);
+  }
 
   public void setSecondaryBackgroundColor(String color)
   {
     put("secondaryBackgroundColor", color);
   }
 
-	public String getSecondaryBackgroundColor()
-	{
-		return get("secondaryBackgroundColor");
-	}
+  public String getSecondaryBackgroundColor()
+  {
+    return get("secondaryBackgroundColor");
+  }
 
   public void setGradientAngle(String value)
   {

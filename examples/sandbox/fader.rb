@@ -1,6 +1,6 @@
 module Fader
   
-  def extended
+  def self.extended(extended_block)
   end
   
   def mouseClicked

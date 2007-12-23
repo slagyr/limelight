@@ -4,24 +4,23 @@ import java.util.*;
 
 public class StackableStyle extends Style
 {
-	private LinkedList<Style> stack;
+	private LinkedList<FlatStyle> stack;
 
 	public StackableStyle()
 	{
-		stack = new LinkedList<Style>();
-		stack.addFirst(new Style());
+		stack = new LinkedList<FlatStyle>();
+		stack.addFirst(new FlatStyle());
 	}
 
 	protected String get(String key)
 	{
 		String value = null;
-		for(Iterator iterator = stack.iterator(); iterator.hasNext();)
-		{
-			Style style = (Style) iterator.next();
-			value = style.get(key);
-			if(value != null)
-			 break;
-		}
+    for (FlatStyle style : stack)
+    {
+      value = style.get(key);
+      if (value != null)
+        break;
+    }
 		return value;
 	}
 
@@ -30,23 +29,52 @@ public class StackableStyle extends Style
 		stack.getFirst().put(key, value);
 	}
 
-	public void push(Style style)
+  protected boolean has(Object key)
+  {
+    for (FlatStyle style : stack)
+    {
+      if(style.has(key))
+        return true;
+    }
+    return false;
+  }
+
+  public int checksum()
+  {
+    return getReducedStyle().checksum();
+  }
+
+  public void push(FlatStyle style)
 	{
 		stack.addFirst(style);
 	}
 
-	public Style pop()
+	public FlatStyle pop()
 	{
 		return stack.removeFirst();
 	}
 
-	public void addToBottom(Style style)
+	public void addToBottom(FlatStyle style)
 	{
 		stack.addLast(style);
 	}
 
-	public Style removeFromBottom()
+	public FlatStyle removeFromBottom()
 	{
 		return stack.removeFirst();
 	}
+
+  public FlatStyle getReducedStyle()
+  {
+    FlatStyle reduced = new FlatStyle();
+    for (FlatStyle style : stack)
+    {
+      for(Map.Entry entry : style.getStyles().entrySet())
+      {
+          if(!reduced.has(entry.getKey()))
+            reduced.put((String)entry.getKey(), (String)entry.getValue());
+      }
+    }
+    return reduced;
+  }
 }

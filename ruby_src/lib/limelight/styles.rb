@@ -4,14 +4,14 @@ module Limelight
   
   class Styles
 
-    def self.load(filename)
-      content = IO.read(filename)
+    def self.load(content)
       yamalized_content = content.gsub("\t", "  ").gsub("#", "pigpen")
       return YAML.load(yamalized_content)
     end
 
     def self.load_into_page(filename, page)
-      style_defs = load(filename)
+      content = page.loader.load(filename)
+      style_defs = load(content)
       styles = page.styles;
   
       style_defs.each_pair do |key, value|
@@ -21,7 +21,7 @@ module Limelight
     end
 
     def self.create_style(hash)
-      style = Style.new
+      style = Java::limelight.FlatStyle.new
       hash.each_pair do |key, value|
         value = value.to_s.gsub("pigpen", "#")
         style.send((key.to_s + "=").to_sym, value)

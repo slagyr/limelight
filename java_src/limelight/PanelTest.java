@@ -3,17 +3,35 @@ package limelight;
 import junit.framework.TestCase;
 import java.awt.*;
 
+class TestablePanel extends Panel
+{
+  public TestablePanel(Block owner)
+  {
+    super(owner);
+  }
+
+  public boolean _shouldBuildBuffer()
+  {
+    return shouldBuildBuffer();
+  }
+
+  public void _buildBuffer()
+  {
+    buildBuffer();
+  }
+}
+
 public class PanelTest extends TestCase
 {
-	private Block block;
-	private Panel panel;
-  private Style style;
+	private MockBlock block;
+	private TestablePanel panel;
+  private FlatStyle style;
   private MockPanel parent;
 
   public void setUp() throws Exception
 	{
 		block = new MockBlock();
-		panel = block.getPanel();
+		panel = new TestablePanel(block);
     style = block.getStyle();
     parent = new MockPanel();
     parent.add(panel);
@@ -88,5 +106,80 @@ public class PanelTest extends TestCase
 
     assertEquals(30, panel.getXOffset());
     assertEquals(40, panel.getYOffset());
+  }
+
+  public void testShouldBuildBuffer() throws Exception
+  {
+    makePaintable();
+
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+
+    block.style.setWidth("101");
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+
+    block.setText("ABC");
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+    
+    block.setText("XYZ");
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+  }
+
+  private void makePaintable()
+  {
+    block.style.setWidth("100");
+    block.style.setHeight("100");
+    block.style.setTextColor("blue");
+    panel.snapToDesiredSize();
+  }
+
+  public void testPainters() throws Exception
+  {
+    assertEquals(3, panel.getPainters().size());
+    assertEquals(BackgroundPainter.class, panel.getPainters().get(0).getClass());
+    assertEquals(BorderPainter.class, panel.getPainters().get(1).getClass());
+    assertEquals(TextPainter.class, panel.getPainters().get(2).getClass());
+  }
+
+  public void testPaintComponent() throws Exception
+  {
+    makePaintable();
+    MockPainter painter1 = new MockPainter();
+    MockPainter painter2 = new MockPainter();
+    panel.getPainters().clear();
+    panel.getPainters().add(painter1);
+    panel.getPainters().add(painter2);
+
+    panel._buildBuffer();
+
+    assertTrue(painter1.painted);
+    assertTrue(painter2.painted);
+  }
+
+  public void testblockChildren() throws Exception
+  {
+    block.name = "Blah";
+    panel.sterilize();
+
+    try
+    {
+      panel.add(new Panel(new MockBlock()));
+      fail("Should have thrown an exception");
+    }
+    catch(Error e)
+    {
+      assertEquals(SterilePanelException.class, e.getClass());
+      assertEquals("The panel for block named 'Blah' has been sterilized and child components may not be added.", e.getMessage());
+    }
+    
+    assertEquals(0, panel.getComponents().length);
+    assertTrue(panel.isSterilized());
   }
 }

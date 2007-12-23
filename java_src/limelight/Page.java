@@ -6,17 +6,17 @@ interface Page extends Block
 
 //public class Page extends Block
 //{
-//	private Hashtable<String, Style> styles;
+//	private Hashtable<String, FlatStyle> styles;
 //	private Book book;
 //
 //	public Page()
 //	{
 //		super();
 //		setPage(this);
-//		styles = new Hashtable<String, Style>();
+//		styles = new Hashtable<String, FlatStyle>();
 //	}
 //
-//	public Hashtable<String, Style> getStyles()
+//	public Hashtable<String, FlatStyle> getStyles()
 //	{
 //		return styles;
 //	}

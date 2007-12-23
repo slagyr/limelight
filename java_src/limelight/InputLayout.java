@@ -1,0 +1,34 @@
+package limelight;
+
+import java.awt.*;
+
+public class InputLayout implements LayoutManager
+{
+  public void addLayoutComponent(String string, Component component)
+	{
+	}
+
+	public void removeLayoutComponent(Component component)
+	{
+	}
+
+	public Dimension preferredLayoutSize(Container container)
+	{
+		return container.getPreferredSize();
+	}
+
+	public Dimension minimumLayoutSize(Container container)
+	{
+		return container.getMinimumSize();
+	}
+
+  public void layoutContainer(Container parent)
+  {
+    for(Component component : parent.getComponents())
+    {
+      Rectangle rectangle = ((Panel) parent).getRectangleInsidePadding();
+      component.setLocation(rectangle.x, rectangle.y);
+      component.setSize(rectangle.width, rectangle.height);
+    }
+  }
+}

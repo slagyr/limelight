@@ -1,20 +1,20 @@
 package limelight;
 
 import javax.swing.*;
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.font.*;
-import java.text.*;
-import java.io.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Panel extends JPanel
 {
 	private Block block;
 	private BufferedImage buffer;
+  private int checksum;
   private int xOffset;
   private int yOffset;
+  private List<Painter> painters;
+  private boolean sterilized;
 
   public Panel(Block owner)
 	{
@@ -22,234 +22,57 @@ public class Panel extends JPanel
 		setOpaque(false);
 		setDoubleBuffered(false);
 		setLayout(new BlockLayout(this));
-	}
+    buildPainters();
+  }
 
-	public Block getBlock()
+  public Component add(Component comp)
+  {
+    if(sterilized)
+      throw new SterilePanelException(block.getName());
+    return super.add(comp);
+  }
+
+  public Block getBlock()
 	{
 		return block;
 	}
 
-	int paints = 0;
+  public List<Painter> getPainters()
+  {
+    return painters;
+  }
+
+  int paints = 0;
 	boolean badName = false;
 
 	public void paint(Graphics graphics)
 	{
-		if(buffer == null || shouldRepaintBuffer(graphics))
-		{
-			buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-			Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
+		if(shouldBuildBuffer())
+      buildBuffer();
 
-			paintComponent(bufferGraphics);
-			paintBorder(bufferGraphics);
-		}
-
-		Composite	originalComposite = ((Graphics2D)graphics).getComposite();
-		if(block.getStyle().getTransparency() != null)
-		{
-			float transparency = 1f - (Integer.parseInt(block.getStyle().getTransparency()) / 100.0f);
-			Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
-			((Graphics2D)graphics).setComposite(alphaComposite);
-		}
-		Rectangle clip = new Rectangle(graphics.getClipBounds());
+    Composite	originalComposite = ((Graphics2D)graphics).getComposite();
+    applyAlphaComposite(graphics);
+    Rectangle clip = new Rectangle(graphics.getClipBounds());
 		graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
 		((Graphics2D)graphics).setComposite(originalComposite);
 		super.paintChildren(graphics);
 	}
 
-	private boolean shouldRepaintBuffer(Graphics graphics)
-	{
-		Rectangle clip = new Rectangle(graphics.getClipBounds());
-		Rectangle bounds = new Rectangle(getBounds());
-System.out.println(block.getName() + " clip = " + clip);
-System.out.println(block.getName() + " bounds = " + bounds);
-    return bounds.width == clip.width && bounds.height == clip.height;
-	}
-
-	public void paintComponent(Graphics2D graphics)
-	{
-		paintBackground(graphics);
-		paintText(graphics);
-	}
-
-	private void paintText(Graphics2D graphics)
-	{
-		if(block.getText() != null)
-		{
-			Rectangle usableArea = getRectangleInsidePadding();
-			Graphics2D newGraphics = (Graphics2D)graphics.create(usableArea.x, usableArea.y, usableArea.width, usableArea.height);
-			Aligner aligner = new Aligner(new Rectangle(newGraphics.getClipBounds()), block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
-
-			newGraphics.setColor(Colors.resolve(block.getStyle().getTextColor()));
-
-			LinkedList<TextLayout> lines = buildTextLines(newGraphics, usableArea, aligner);
-
-			int y = aligner.startingY();// - (int)((TextLayout)lines.get(0)).getDescent();;
-			for (TextLayout textLayout : lines)
-			{
-				y += textLayout.getAscent() + textLayout.getDescent() + textLayout.getLeading();
-				textLayout.draw(newGraphics, aligner.startingX(textLayout.getBounds().getWidth()), y);
-			}
-		}
-	}
-
-	private LinkedList<TextLayout> buildTextLines(Graphics2D newGraphics, Rectangle usableArea, Aligner aligner)
-	{
-		LinkedList<TextLayout> lines = new LinkedList<TextLayout>();
-		String[] paragraphs = block.getText().split("\n");
-		for (String paragraph : paragraphs)
-		{
-			if (paragraph.length() != 0)
-			{
-				AttributedString aText = new AttributedString(paragraph);
-				aText.addAttribute(TextAttribute.FONT, createFont());
-				LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), newGraphics.getFontRenderContext());
-				while (lbm.getPosition() < paragraph.length())
-				{
-					TextLayout layout = lbm.nextLayout((float) usableArea.getWidth());
-					lines.add(layout);
-					aligner.addConsumedHeight(layout.getAscent() + layout.getDescent() + layout.getLeading());
-				}
-			}
-			else
-				lines.add(new TextLayout(" ", createFont(), newGraphics.getFontRenderContext()));
-		}
-		return lines;
-	}
-
-	public void paintBackground(Graphics2D graphics)
-	{
-		Rectangle r = getRectangleInsideBorders();
-    if(block.getStyle().getSecondaryBackgroundColor() != null && block.getStyle().getGradientAngle() != null && block.getStyle().getGradientPenetration() != null)
-      paintGradientBackground(graphics);
-    else if(block.getStyle().getBackgroundColor() != null)
-		{
-      graphics.setColor(Colors.resolve(block.getStyle().getBackgroundColor()));
-			graphics.fill(r);
-		}
-		if(block.getStyle().getBackgroundImage() != null)
-		{
-			try
-			{
-				Image image = ImageIO.read(new File(block.getStyle().getBackgroundImage()));
-				Graphics2D borderedGraphics = (Graphics2D)graphics.create(r.x, r.y, r.width, r.height); 
-				ImageFillStrategies.get(block.getStyle().getBackgroundImageFillStrategy()).fill(borderedGraphics, image);
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-  private void paintGradientBackground(Graphics2D graphics)
+  protected boolean shouldBuildBuffer()
   {
-    Rectangle r = getRectangleInsideBorders();
-    Color color1 = Colors.resolve(block.getStyle().getBackgroundColor());
-    Color color2 = Colors.resolve(block.getStyle().getSecondaryBackgroundColor());
-    int angle = Integer.parseInt(block.getStyle().getGradientAngle());
-    int penetration = Integer.parseInt(block.getStyle().getGradientPenetration());
-    boolean cyclic = "true".equals(block.getStyle().getCyclicGradient());
-    int x1, y1, x2, y2;
-    if(angle == 90)
-    {
-      x1 = x2 = r.width / 2;
-      y1 = r.height;
-      y2 = 0;
-    }
-    else if(angle == 270)
-    {
-      x1 = x2 = r.width / 2;
-      y1 = 0;
-      y2 = r.height;
-    }
-    else if(angle == 0)
-    {
-      y1 = y2 = r.height / 2;
-      x1 = 0;
-      x2 = r.width;
-    }
-
-    else if(angle == 180)
-    {
-      y1 = y2 = r.height / 2;
-      x1 = r.width;
-      x2 = 0;
-    }
-    else
-    {
-      double radians = Math.toRadians(angle);
-      double x = Math.cos(radians);
-      double y = Math.sin(radians);
-      double a = y / x;
-      double dx = Math.abs(r.height / a);
-      double dy = Math.abs(r.width * a);
-
-      if(x > 0)
-      {
-        x1 = (int)(r.width/2 - dx/2);
-        x1 = Math.max(x1, 0);
-        x2 = (int)(r.width/2 + dx/2);
-        x2 = Math.min(x2, r.width);
-      }
-      else
-      {
-        x2 = (int)(r.width/2 - dx/2);
-        x2 = Math.max(x2, 0);
-        x1 = (int)(r.width/2 + dx/2);
-        x1 = Math.min(x1, r.width);
-      }
-
-      if(y >= 0)
-      {
-        y1 = (int)(r.height/2 + dy/2);
-        y1 = Math.min(r.height, y1);
-        y2 = (int)(r.height/2 - dy/2);
-        y2 = Math.max(0, y2);
-      }
-      else
-      {
-        y2 = (int)(r.height/2 + dy/2);
-        y2 = Math.min(r.height, y2);
-        y1 = (int)(r.height/2 - dy/2);
-        y1 = Math.max(0, y1);
-      }
-    }
-    
-    int x3 = x1 + (int)((x2 - x1) * penetration * 0.01);
-    int y3 = y1 + (int)((y2 - y1) * penetration * 0.01);
-
-    graphics.setPaint(new GradientPaint(x1, y1, color1, x3, y3, color2, cyclic));
-    graphics.fill(r);
+    return buffer == null || checksum != checksum();
   }
 
-  public void paintBorder(Graphics2D graphics)
-	{
-		Pen pen = new Pen(graphics);
+  protected void buildBuffer()
+  {
+    buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
 
-		Rectangle r = getRectangleInsideMargins();
-		r.shave(resolveInt(block.getStyle().getTopBorderWidth()) / 2, resolveInt(block.getStyle().getRightBorderWidth()) / 2 + 1, resolveInt(block.getStyle().getBottomBorderWidth()) / 2 + 1, resolveInt(block.getStyle().getLeftBorderWidth()) / 2);
+    for (Painter painter : painters)
+      painter.paint(bufferGraphics);
 
-		if(resolveInt(block.getStyle().getTopBorderWidth()) > 0)
-			pen.withColor(Colors.resolve(block.getStyle().getTopBorderColor())).withStroke(resolveInt(block.getStyle().getTopBorderWidth())).drawLine(r.left(), r.top(),r. right(), r.top());
-		if(resolveInt(block.getStyle().getRightBorderWidth()) > 0)
-			pen.withColor(Colors.resolve(block.getStyle().getRightBorderColor())).withStroke(resolveInt(block.getStyle().getRightBorderWidth())).drawLine(r.right(), r.top(), r.right(), r.bottom());
-		if(resolveInt(block.getStyle().getBottomBorderWidth()) > 0)
-			pen.withColor(Colors.resolve(block.getStyle().getBottomBorderColor())).withStroke(resolveInt(block.getStyle().getBottomBorderWidth())).drawLine(r.right(), r.bottom(), r.left(), r.bottom());
-		if(resolveInt(block.getStyle().getLeftBorderWidth()) > 0)
-			pen.withColor(Colors.resolve(block.getStyle().getLeftBorderColor())).withStroke(resolveInt(block.getStyle().getLeftBorderWidth())).drawLine(r.left(), r.bottom(), r.left(), r.top());
-	}
-
-	private int resolveInt(String value)
-	{
-		try
-		{
-			return Integer.parseInt(value);
-		}
-		catch(NumberFormatException e)
-		{
-			return 0;
-		}
-	}
+    checksum = checksum();
+  }
 
 	public Font createFont()
 	{
@@ -269,8 +92,8 @@ System.out.println(block.getName() + " bounds = " + bounds);
 	{
 		Rectangle r = ((Panel)getParent()).getRectangleInsidePadding();
 		int width = translateDimension(block.getStyle().getWidth(), r.width);
-System.err.println(block.getName() + " width = " + width);
-System.err.println("block.getStyle().getWidth() = " + block.getStyle().getWidth());
+/*System.err.println(block.getName() + " width = " + width);
+System.err.println("block.getStyle().getWidth() = " + block.getStyle().getWidth());*/
     int height = translateDimension(block.getStyle().getHeight(), r.height);
 		setSize(width, height);
 	}
@@ -284,32 +107,18 @@ System.err.println("block.getStyle().getWidth() = " + block.getStyle().getWidth(
       yOffset = Integer.parseInt(block.getStyle().getYOffset());
   }
 
-  private int translateDimension(String sizeString, int maxSize)
-	{
-    if(sizeString == null)
-      return 0;
-    else if(sizeString.endsWith("%"))
-		{
-			double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-			return (int)((percentage * 0.01) * (double)maxSize);
-		}
-		else
-		{
-			return Integer.parseInt(sizeString);
-		}
-	}
-
 	public Rectangle getRectangle()
 	{
-System.err.println("block.getName() = " + block.getName());
-System.err.println("getWidth() = " + getWidth());
+/*System.err.println("block.getName() = " + block.getName());
+System.err.println("getWidth() = " + getWidth());*/
     return new Rectangle(0, 0, getWidth(), getHeight());
 	}
 
 	public Rectangle getRectangleInsideMargins()
 	{
 		Rectangle r = getRectangle();
-		r.shave(resolveInt(block.getStyle().getTopMargin()), resolveInt(block.getStyle().getRightMargin()), resolveInt(block.getStyle().getBottomMargin()), resolveInt(block.getStyle().getLeftMargin()));
+    Style style = block.getStyle();
+    r.shave(resolveInt(style.getTopMargin()), resolveInt(style.getRightMargin()), resolveInt(style.getBottomMargin()), resolveInt(style.getLeftMargin()));
 		return r;
 	}
 
@@ -331,9 +140,80 @@ System.err.println("getWidth() = " + getWidth());
   {
     return xOffset;
   }
+  
+  public void sterilize()
+  {
+    sterilized = true;
+  }
+
+  public boolean isSterilized()
+  {
+    return sterilized;
+  }
 
   public int getYOffset()
   {
     return yOffset;
+  }
+  
+  private void buildPainters()
+  {
+    painters = new LinkedList<Painter>(); 
+    painters.add(new BackgroundPainter(this));
+    painters.add(new BorderPainter(this));
+    painters.add(new TextPainter(this));
+  }
+
+  private int checksum()
+  {
+    int checksum = block.getStyle().checksum();
+    if(block.getText() != null)
+      checksum *= block.getText().hashCode();
+    return checksum;
+  }
+
+  private int translateDimension(String sizeString, int maxSize)
+	{
+    if(sizeString == null)
+      return 0;
+    else if(sizeString.endsWith("%"))
+		{
+			double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
+			return (int)((percentage * 0.01) * (double)maxSize);
+		}
+		else
+		{
+			return Integer.parseInt(sizeString);
+		}
+	}
+
+  private void applyAlphaComposite(Graphics graphics)
+  {
+    if(block.getStyle().getTransparency() != null)
+    {
+      float transparency = 1f - (Integer.parseInt(block.getStyle().getTransparency()) / 100.0f);
+      Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
+      ((Graphics2D)graphics).setComposite(alphaComposite);
+    }
+  }
+
+	private int resolveInt(String value)
+	{
+		try
+		{
+			return Integer.parseInt(value);
+		}
+		catch(NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+}
+
+class SterilePanelException extends Error
+{
+  SterilePanelException(String name)
+  {
+    super("The panel for block named '" + name + "' has been sterilized and child components may not be added.");
   }
 }
