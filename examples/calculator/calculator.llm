@@ -1,5 +1,5 @@
 <calculator styles = "calculator.style">	
-	<screen>
+	<screen id="screen">
 	1000000000		
 	</screen>
 	

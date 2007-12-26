@@ -1,4 +1,21 @@
-//package limelight;
+package limelight;
+
+import javax.swing.*;
+
+public class Tester
+{
+  public static void main(String[] args)
+  {
+    JFrame frame = new JFrame();
+    frame.setSize(200, 50);
+    JTextField input = new JTextField();
+    frame.getContentPane().add(input);
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.setVisible(true);
+  }
+}
+
+
 //
 //import javax.swing.*;
 //import javax.swing.text.JTextComponent;

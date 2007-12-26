@@ -1,7 +1,9 @@
 module Limelight
   module Loaders
     
-    class FileLoader
+    class FilePageLoader
+      
+      include Java::limelight.PageLoader
     
       attr_reader :page_file, :root, :current_dir
     
@@ -18,6 +20,8 @@ module Limelight
           return File.expand_path(File.join(@current_dir, path))
         end
       end
+      
+      alias :pathTo :path_to
       
       def load(path)
 puts "path: #{path}"        

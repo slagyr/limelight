@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
-require 'limelight/loaders/file_loader'
+require 'limelight/loaders/file_page_loader'
 
-describe Limelight::Loaders::FileLoader do
+describe Limelight::Loaders::FilePageLoader do
 
   before(:each) do
-    @loader = Limelight::Loaders::FileLoader.new("/Users/micahmartin/Projects/limelight/example/sandbox.llm")
+    @loader = Limelight::Loaders::FilePageLoader.new("/Users/micahmartin/Projects/limelight/example/sandbox.llm")
   end
   
   it "should load path parts" do

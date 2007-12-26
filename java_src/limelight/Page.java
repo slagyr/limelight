@@ -2,6 +2,7 @@ package limelight;
 
 interface Page extends Block
 {
+  PageLoader getLoader();
 }
 
 //public class Page extends Block

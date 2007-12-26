@@ -12,7 +12,7 @@ class MockGraphics extends java.awt.Graphics2D
 {
 	private Color color;
 	public LinkedList<DrawnShape> drawnShapes;
-	private BasicStroke stroke;
+  private BasicStroke stroke;
 
 	public class DrawnShape
 	{

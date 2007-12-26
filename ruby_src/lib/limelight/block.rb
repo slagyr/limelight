@@ -5,17 +5,23 @@ module Limelight
     
     include Java::limelight.Block
   
-    attr_accessor :onclick
     attr_reader :panel, :style
-    attr_accessor :page, :name, :text
-    getters :panel, :style, :page, :name, :text
-    setters :name, :text
+    attr_accessor :page, :class_name, :text, :id
+    getters :panel, :style, :page, :class_name, :text
+    setters :text
     
-    def initialize
-      @panel = Java::limelight.Panel.new(self)
-      @children = []
-      @style = Java::limelight.StackableStyle.new
-      panel.addMouseListener(Java::limelight.BlockMouseListener.new(self))
+    def initialize(hash = {})
+      populate(hash)
+      @panel = Java::limelight.Panel.new(self) unless @panel
+      @children = [] unless @children
+      @style = Java::limelight.StackableStyle.new unless @style
+    end
+    
+    def populate(hash)
+      hash.each_pair do |key, value|
+        setter_sym = "#{key.to_s}=".to_sym
+        self.send(setter_sym, value) if self.respond_to?(setter_sym)
+      end
     end
     
     def add(child)
@@ -23,42 +29,23 @@ module Limelight
       @panel.add(child.panel)
       child.page = @page
     end
+     
+    def <<(child)
+      add(child)
+      return self
+    end
     
     def load_style
-      if name
-        new_style = @page.styles[name];
+      if @class_name
+        new_style = @page.styles[@class_name];
         @style.add_to_bottom(new_style) if new_style
-        @hover_style = page.styles["#{name}.hover"];
+        @hover_style = page.styles["#{@class_name}.hover"];
       end
       @children.each { |child| child.load_style }
     end
     
     def add_controller(controller_module)
-      extend controller_module     
-    end
-    
-    def hoverOn
-      return nil if @hover_style.nil?
-      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
-      style.push(@hover_style)
-      update
-    end
-    
-    def hoverOff
-      return nil if @hover_style.nil?
-      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
-      @style.pop
-      update
-    end
-  
-    def mouseClicked()
-      eval(@onclick) if @onclick
-    end
-  
-    def mouseEntered()
-    end
-  
-    def mouseExited()
+      extend controller_module unless self.is_a?(controller_module)
     end
     
     def update
@@ -71,13 +58,62 @@ module Limelight
       @panel.paintImmediately(0, 0, @panel.width, @panel.height)
     end     
     
-    def find(name)
-      return @children.find { |child| child.name == name }
+    def find(id)
+      return self if @id == id
+      @children.each do |child|
+        result = child.find(id)
+        return result if result
+      end
+      return nil
+    end
+    
+    def find_by_class(class_name, results = [])
+      results << self if @class_name == class_name
+      @children.each { |child| child.find_by_class(class_name, results) }
+      return results
     end
     
     def book
       return page.book
     end
+    
+    def to_s
+      return "Block[id: #{@id}, class_name: #{@class_name}]"
+    end
+    
+    def inspect
+      return self.to_s
+    end
+    
+    # GUI Events ##########################################
+    
+    def hover_on
+      return nil if @hover_style.nil?
+      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
+      style.push(@hover_style)
+      update
+    end
+    
+    def hover_off
+      return nil if @hover_style.nil?
+      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
+      @style.pop
+      update
+    end
+    
+    def ignore_event(event)
+    end
+    
+    alias :mouse_clicked :ignore_event
+    alias :mouse_entered :ignore_event
+    alias :mouse_exited :ignore_event
+    alias :mouse_pressed :ignore_event
+    alias :mouse_released :ignore_event
+    alias :mouse_dragged :ignore_event
+    alias :mouse_moved :ignore_event
+    alias :key_typed :ignore_event
+    alias :key_pressed :ignore_event
+    alias :key_released :ignore_event
       
   end
 end

@@ -9,21 +9,19 @@ public class Aligner
 
 	public Aligner(Rectangle area, String horizontalAlignment, String verticalAlignment)
 	{
-		this.area = area;
-		this.horizontalAlignment = horizontalAlignment;
-		this.verticalAlignment = verticalAlignment;
-		consumedHeight = 0;
+		this.area = area;    
+    this.horizontalAlignment = horizontalAlignment;
+		this.verticalAlignment = verticalAlignment;  
+    consumedHeight = 0;
 	}
 
-	public int startingX(double usedWidth)
+	public int startingX(double consumedWidth)
 	{
-/*System.err.println("area.width = " + area.width);    */
-    int diff = area.width - (int)(usedWidth + 0.5);
-/*System.err.println("diff = " + diff);    */
+    int diff = area.width - (int)(consumedWidth + 0.5);
     if("center".equals(horizontalAlignment))
-			return diff/2;
+			return area.x + diff/2;
 		else if("right".equals(horizontalAlignment))
-			return diff;
+			return area.x + diff;
 		else
 			return area.x;
 	}
@@ -32,9 +30,9 @@ public class Aligner
 	{
 		int diff = area.height - consumedHeight;
 		if("center".equals(verticalAlignment))
-			return diff/2;
+			return area.y + diff/2;
 		else if("bottom".equals(verticalAlignment))
-			return diff;
+			return area.y + diff;
 		else
 			return area.y;
 	}

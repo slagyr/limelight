@@ -3,10 +3,16 @@ module Limelight
     
     module Textbox
       class << self
-        def extended(extended_block)     
-          text_painter = extended_block.panel.painters.find { |painter| painter.class == Java::limelight.TextPainter }
-          extended_block.panel.painters.remove(text_painter) if text_painter
-          extended_block.panel.painters << Java.limelight.TextboxPainter.new(extended_block.panel)
+        def extended(block)
+          block.panel.painters.clear
+          block.panel.painters << Java.limelight.TextboxPainter.new(block.panel)
+          block.panel.clear_event_listeners
+          set_default_styles(block)
+        end
+        
+        def set_default_styles(block)
+          block.style.width = "120"
+          block.style.height = "22"
         end
       end
   

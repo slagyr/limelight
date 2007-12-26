@@ -2,18 +2,18 @@ page:
 	width: 1000
 	height: 900
 	horizontal_alignment: center
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/bg.jpg
+	background_image: images/bg.jpg
 	
 main_column:
 	border_width: 0
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/canvas_bg.jpg
+	background_image: images/canvas_bg.jpg
 	width: 823
 	height: 850
 	horizontal_alignment: center
 	
 header:
 	height: 200
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/header.jpg
+	background_image: images/header.jpg
 	width: 823
 	horizontal_alignment: center
 
@@ -39,12 +39,12 @@ link:
 	
 link.hover:
 	text_color: #ffffff
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/button_bg.jpg
+	background_image: images/button_bg.jpg
 
 tag_line:
 	width: 823
 	height: 200
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/tag_line.jpg
+	background_image: images/anvil.jpg
 	right_margin: 25
 	left_margin: 25
 	horizontal_alignment: left
@@ -61,7 +61,7 @@ tag_line_content:
 services_tagline:
 	width: 823
 	height: 70
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/botticelli.jpg
+	background_image: images/botticelli.jpg
 	right_margin: 25
 	left_margin: 25
 	horizontal_alignment: right
@@ -75,7 +75,7 @@ services_tagline:
 about_tagline:
 	width: 823
 	height: 70
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/moses.jpg
+	background_image: images/moses.jpg
 	right_margin: 25
 	left_margin: 25
 	horizontal_alignment: right
@@ -129,7 +129,7 @@ book_news:
 	top_margin: 10
 	
 book_news_img:
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/thumbnail_book.jpg
+	background_image: images/thumbnail_book.jpg
 	width: 59
 	height: 58
 	
@@ -149,7 +149,7 @@ sm_news:
 	top_margin: 10
 	
 sm_news_img:
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/statemachine_thumbnail.png
+	background_image: images/statemachine_thumbnail.png
 	width: 59
 	height: 58
 	
@@ -192,7 +192,7 @@ new_item.hover:
 	background_color: black
 	
 footer:
-	background_image: /Users/micahmartin/Projects/8thlight.com/public/images/footer_bg.jpg
+	background_image: images/footer_bg.jpg
 	height: 80
 	width: 823
 	

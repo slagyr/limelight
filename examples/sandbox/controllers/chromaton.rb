@@ -11,7 +11,7 @@ module Chromaton
     extended_block.text = "Click Me!"
   end
   
-  def mouseClicked
+  def mouse_clicked(e)
     @clicks += 1
     new_random_color
     new_random_size

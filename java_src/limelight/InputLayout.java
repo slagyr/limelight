@@ -25,10 +25,6 @@ public class InputLayout implements LayoutManager
   public void layoutContainer(Container parent)
   {
     for(Component component : parent.getComponents())
-    {
-      Rectangle rectangle = ((Panel) parent).getRectangleInsidePadding();
-      component.setLocation(rectangle.x, rectangle.y);
-      component.setSize(rectangle.width, rectangle.height);
-    }
+      component.setSize(parent.getSize());
   }
 }
