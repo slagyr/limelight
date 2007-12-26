@@ -8,7 +8,7 @@ module Limelight
   
     attr_reader :styles
     attr_accessor :book, :loader
-    getters :book
+    getters :book, :loader
     setters :book
     
     def initialize

@@ -40,19 +40,16 @@ public class BlockLayout implements LayoutManager
 
 	public void layoutContainer(Container container)
 	{
-//		System.out.println("layoutContainer(" + ((Panel)container).getBlock() + ")");
 		Component[] components = container.getComponents();
 		if(components.length == 0)
 			return;
     reset(container);
 		buildRows(components);
 
-		int y = aligner.startingY();
+    int y = aligner.startingY();
     for(Row row : rows)
     {
-/*System.err.println("row.width = " + row.width);      */
       int x = aligner.startingX(row.width);
-/*System.err.println("x = " + x);      */
       row.layoutComponents(x, y);
       y += row.height;
     }
@@ -62,6 +59,7 @@ public class BlockLayout implements LayoutManager
 	{
     for(Component component : components)
     {
+
       Panel panel = ((Panel) component);
       panel.snapToDesiredSize();
       panel.snapOffsets();
@@ -79,9 +77,8 @@ public class BlockLayout implements LayoutManager
 	private void reset(Container container)
 	{
 		Block block = ((Panel) container).getBlock();
-//System.out.println("BlockLayout.reset");
-		aligner = new Aligner(block.getPanel().getRectangleInsidePadding(), block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
-		rows.clear();
+    aligner = new Aligner(block.getPanel().getRectangleInsidePadding(), block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
+    rows.clear();
 		newRow();
 	}
 
@@ -129,7 +126,6 @@ public class BlockLayout implements LayoutManager
       for (Component component : items)
       {
         Panel panel = (Panel)component;
-System.out.println(panel.getBlock().getName() + " panel.getXOffset() = " + panel.getXOffset()); 
         panel.setLocation(x + panel.getXOffset(), y + panel.getYOffset());
         x += component.getWidth() + panel.getXOffset();
       }

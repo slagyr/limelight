@@ -4,7 +4,7 @@ module Button
     puts "Button extended"
   end
   
-  def mouseClicked
+  def mouse_clicked(e)
     screen = page.find('screen')
     screen.text = self.text
     screen.style.background_color = "yellow"

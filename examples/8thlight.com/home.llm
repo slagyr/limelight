@@ -2,11 +2,11 @@
 	<main_column>
 		<header/>
 		<menu>
-			<link onClick="book.load('home.llm')">Home</link>
-			<link onClick="book.load('services.llm')">Services</link>
-			<link onClick="book.load('about.llm')">About</link>
-			<link onClick="book.load('blog.llm')">Blog</link>
-			<link onClick="book.load('contact.llm')">Contact</link>
+			<link mouse_clicked="book.load('home.llm')">Home</link>
+			<link mouse_clicked="book.load('services.llm')">Services</link>
+			<link mouse_clicked="book.load('about.llm')">About</link>
+			<link mouse_clicked="book.load('blog.llm')">Blog</link>
+			<link mouse_clicked="book.load('contact.llm')">Contact</link>
 		</menu>
 		<tag_line>
 			<tag_line_content>

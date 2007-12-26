@@ -1,7 +1,7 @@
 require 'limelight/java_util'
 require 'limelight/llm_parser'
 require 'limelight/menu_bar'
-require 'limelight/loaders/file_loader'
+require 'limelight/loaders/file_page_loader'
 
 module Limelight
   
@@ -51,9 +51,9 @@ module Limelight
     
     def load(llm_file)
       if(@current_page)
-        loader = Loaders::FileLoader.new(@current_page.loader.path_to(llm_file))
+        loader = Loaders::FilePageLoader.new(@current_page.loader.path_to(llm_file))
       else
-        loader = Loaders::FileLoader.new(llm_file)
+        loader = Loaders::FilePageLoader.new(llm_file)
       end 
       parser = LlmParser.new
       page_content = loader.load(loader.page_file) 

@@ -1,3 +1,4 @@
+require File.expand_path(File.dirname(__FILE__) + "/ruby_src/lib/init")
 
 task :gems do
   puts "Establishing Gems"
@@ -13,3 +14,21 @@ task :gems do
     system "gem install -i etc/gems --no-rdoc --no-ri -f etc/gems/cache/#{gem}.gem"
   end
 end
+
+task :spec do
+  ARGV.clear
+  ARGV << "ruby_src/spec"
+  gem 'rspec'
+  load 'spec'
+end
+
+task :java_tests do
+  output = `ant unit_test`
+  if output.include?("BUILD SUCCESSFUL")
+    puts "Java unit tests passed!"
+  else
+    raise output
+  end
+end
+
+task :all_tests => [:java_tests, :spec]

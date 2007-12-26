@@ -4,15 +4,21 @@ import junit.framework.TestCase;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 public class TextboxPainterTest extends TestCase
 {
   private Panel panel;
   private TextboxPainter painter;
+  private MockBlock block;
 
   public void setUp() throws Exception
   {
-    panel = new Panel(new MockBlock());
+    block = new MockBlock();
+    panel = new Panel(block);
     painter = new TextboxPainter(panel);
     panel.getPainters().add(painter);
   }
@@ -32,5 +38,49 @@ public class TextboxPainterTest extends TestCase
   {
     LayoutManager layout = panel.getLayout();
     assertTrue(layout.getClass() == InputLayout.class);
+  }
+
+  public void testEvents() throws Exception
+  {
+    JTextField field = (JTextField)panel.getComponents()[0];
+    assertEquals(1, field.getKeyListeners().length);
+    KeyListener listener = field.getKeyListeners()[0];
+
+    KeyEvent e = new KeyEvent(field, 1, 2, 3, 4, '5');
+
+    listener.keyPressed(e);
+    assertEquals(e, block.pressedKey);
+
+    listener.keyReleased(e);
+    assertEquals(e, block.releasedKey);
+
+    listener.keyTyped(e);
+    assertEquals(e, block.typedKey);
+  }
+
+  public void testMouseActions() throws Exception
+  {
+    JTextField field = (JTextField)panel.getComponents()[0];
+    assertEquals(4, field.getMouseListeners().length);
+    MouseListener listener = field.getMouseListeners()[3];
+
+    MouseEvent e = new MouseEvent(field, 1, 2, 3, 4, 5, 6, false);
+
+    listener.mouseClicked(e);
+    assertEquals(e, block.clickedMouse);
+
+    listener.mouseEntered(e);
+    assertEquals(e, block.enteredMouse);
+    assertTrue(block.hooverOn);
+
+    listener.mouseExited(e);
+    assertEquals(e, block.exitedMouse);
+    assertFalse(block.hooverOn);
+
+    listener.mousePressed(e);
+    assertEquals(e, block.pressedMouse);
+
+    listener.mouseReleased(e);
+    assertEquals(e, block.releasedMouse);
   }
 }

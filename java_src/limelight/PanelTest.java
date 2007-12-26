@@ -1,7 +1,9 @@
 package limelight;
 
 import junit.framework.TestCase;
+
 import java.awt.*;
+import java.awt.event.*;
 
 class TestablePanel extends Panel
 {
@@ -163,7 +165,7 @@ public class PanelTest extends TestCase
     assertTrue(painter2.painted);
   }
 
-  public void testblockChildren() throws Exception
+  public void testSterilization() throws Exception
   {
     block.name = "Blah";
     panel.sterilize();
@@ -181,5 +183,69 @@ public class PanelTest extends TestCase
     
     assertEquals(0, panel.getComponents().length);
     assertTrue(panel.isSterilized());
+  }
+
+  public void testKeyActions() throws Exception
+  {
+    assertEquals(1, panel.getKeyListeners().length);
+    KeyListener listener = panel.getKeyListeners()[0];
+
+    KeyEvent e = new KeyEvent(panel, 1, 2, 3, 4, '5');
+
+    listener.keyPressed(e);
+    assertEquals(e, block.pressedKey);
+
+    listener.keyReleased(e);
+    assertEquals(e, block.releasedKey);
+
+    listener.keyTyped(e);
+    assertEquals(e, block.typedKey);
+  }
+
+  public void testMouseActions() throws Exception
+  {
+    assertEquals(1, panel.getMouseListeners().length);
+    MouseListener listener = panel.getMouseListeners()[0];
+
+    MouseEvent e = new MouseEvent(panel, 1, 2, 3, 4, 5, 6, false);
+
+    listener.mouseClicked(e);
+    assertEquals(e, block.clickedMouse);
+
+    listener.mouseEntered(e);
+    assertEquals(e, block.enteredMouse);
+    assertTrue(block.hooverOn);
+
+    listener.mouseExited(e);
+    assertEquals(e, block.exitedMouse);
+    assertFalse(block.hooverOn);
+
+    listener.mousePressed(e);
+    assertEquals(e, block.pressedMouse);
+
+    listener.mouseReleased(e);
+    assertEquals(e, block.releasedMouse);
+  }
+
+  public void testMouseMotionActions() throws Exception
+  {
+    assertEquals(1, panel.getMouseMotionListeners().length);
+    MouseMotionListener listener = panel.getMouseMotionListeners()[0];
+
+    MouseEvent e = new MouseEvent(panel, 1, 2, 3, 4, 5, 6, false);
+
+    listener.mouseDragged(e);
+    assertEquals(e, block.draggedMouse);
+
+    listener.mouseMoved(e);
+    assertEquals(e, block.movedMouse);
+  }
+
+  public void testClearingEventListeners() throws Exception
+  {
+    panel.clearEventListeners();
+    assertEquals(0, panel.getMouseListeners().length);
+    assertEquals(0, panel.getMouseMotionListeners().length);
+    assertEquals(0, panel.getKeyListeners().length);
   }
 }

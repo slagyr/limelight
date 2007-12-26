@@ -1,3 +1,10 @@
 <sandbox styles="sandbox.style">
-	<input1 controllers="textbox"/>
+	<table>
+		<cell>
+			<input1 controllers="textbox"/>
+		</cell>
+		<cell border_width="1">
+			<input_log id="input1_log"/>
+		</cell>
+	</table>
 </sandbox>

@@ -9,10 +9,14 @@ describe Limelight::Controllers::Textbox do
     @block.add_controller(Limelight::Controllers::Textbox)
   end
   
-  it "should get rid of the TextPainter and add a TextboxPainter" do
-    @block.panel.painters.size.should == 3
-    @block.panel.painters.find { |painter| painter.class == Java::limelight.TextPainter }.should == nil
+  it "should get rid of the all painters and add a TextboxPainter" do
+    @block.panel.painters.size.should == 1
     @block.panel.painters.last.class.should == Java::limelight.TextboxPainter
+  end
+  
+  it "should clear event listeners on the panel" do
+    @block.panel.mouse_listeners.length.should == 0
+    @block.panel.key_listeners.length.should == 0
   end
 
 end

@@ -2,6 +2,9 @@ package limelight;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,13 +25,17 @@ public class Panel extends JPanel
 		setOpaque(false);
 		setDoubleBuffered(false);
 		setLayout(new BlockLayout(this));
+    BlockEventListener listener = new BlockEventListener(block);
+    addKeyListener(listener);
+    addMouseListener(listener);
+    addMouseMotionListener(listener);
     buildPainters();
   }
 
   public Component add(Component comp)
   {
     if(sterilized)
-      throw new SterilePanelException(block.getName());
+      throw new SterilePanelException(block.getClassName());
     return super.add(comp);
   }
 
@@ -42,8 +49,18 @@ public class Panel extends JPanel
     return painters;
   }
 
-  int paints = 0;
-	boolean badName = false;
+  public void clearEventListeners()
+  {
+    for(MouseListener listner : getMouseListeners())
+      removeMouseListener(listner);
+    for(MouseMotionListener listner : getMouseMotionListeners())
+      removeMouseMotionListener(listner);
+    for(KeyListener listner : getKeyListeners())
+      removeKeyListener(listner);
+  }
+
+//  int paints = 0;
+//	boolean badName = false;
 
 	public void paint(Graphics graphics)
 	{
@@ -90,12 +107,10 @@ public class Panel extends JPanel
 
 	public void snapToDesiredSize()
 	{
-		Rectangle r = ((Panel)getParent()).getRectangleInsidePadding();
-		int width = translateDimension(block.getStyle().getWidth(), r.width);
-/*System.err.println(block.getName() + " width = " + width);
-System.err.println("block.getStyle().getWidth() = " + block.getStyle().getWidth());*/
-    int height = translateDimension(block.getStyle().getHeight(), r.height);
-		setSize(width, height);
+    Rectangle r = ((Panel)getParent()).getRectangleInsidePadding();
+    int width = translateDimension(block.getStyle().getWidth(), r.width);
+    int height = translateDimension(block.getStyle().getHeight(), r.height);    
+    setSize(width, height);
 	}
 
   public void snapOffsets()
@@ -109,7 +124,7 @@ System.err.println("block.getStyle().getWidth() = " + block.getStyle().getWidth(
 
 	public Rectangle getRectangle()
 	{
-/*System.err.println("block.getName() = " + block.getName());
+/*System.err.println("block.getClassName() = " + block.getClassName());
 System.err.println("getWidth() = " + getWidth());*/
     return new Rectangle(0, 0, getWidth(), getHeight());
 	}
