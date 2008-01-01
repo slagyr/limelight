@@ -6,7 +6,7 @@ module Limelight
     include Java::limelight.Block
   
     attr_reader :panel, :style
-    attr_accessor :page, :class_name, :text, :id
+    attr_accessor :page, :class_name, :id, :parent
     getters :panel, :style, :page, :class_name, :text
     setters :text
     
@@ -27,6 +27,7 @@ module Limelight
     def add(child)
       @children << child
       @panel.add(child.panel)
+      child.parent = self
       child.page = @page
     end
      
@@ -73,6 +74,14 @@ module Limelight
       return results
     end
     
+    def text=(value)
+      @panel.text_accessor.text = value
+    end
+    
+    def text
+      return panel.text_accessor.text
+    end
+    
     def book
       return page.book
     end
@@ -114,6 +123,11 @@ module Limelight
     alias :key_typed :ignore_event
     alias :key_pressed :ignore_event
     alias :key_released :ignore_event
-      
+    alias :focus_gained :ignore_event
+    alias :focus_lost :ignore_event
+    alias :state_changed :ignore_event
+    alias :button_pressed :ignore_event
+    alias :item_state_changed :ignore_event
+    
   end
 end

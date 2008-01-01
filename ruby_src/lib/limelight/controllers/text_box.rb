@@ -1,11 +1,11 @@
 module Limelight
   module Controllers
     
-    module Textbox
+    module TextBox
       class << self
-        def extended(block)
+        def extended(block)  
           block.panel.painters.clear
-          block.panel.painters << Java.limelight.TextboxPainter.new(block.panel)
+          block.panel.painters << Java.limelight.TextBoxPainter.new(block.panel)
           block.panel.clear_event_listeners
           set_default_styles(block)
         end

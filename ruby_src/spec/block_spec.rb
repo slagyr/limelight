@@ -62,6 +62,11 @@ describe Limelight::Block do
     @block.find_by_class("child_class").should == [@child1, @child2]
     @block.find_by_class("grand_child_class").should == [@grand_child1, @grand_child2, @grand_child3, @grand_child4]
   end
+  
+  it "should get and set text" do
+    @block.text = "blah"
+    @block.text.should == "blah"
+  end
 
 end
 

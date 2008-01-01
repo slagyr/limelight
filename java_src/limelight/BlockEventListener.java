@@ -1,8 +1,10 @@
 package limelight;
 
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
-public class BlockEventListener implements MouseListener, KeyListener, MouseMotionListener
+public class BlockEventListener implements MouseListener, KeyListener, MouseMotionListener, FocusListener, ChangeListener, ActionListener, ItemListener
 {
 	private Block block;
 
@@ -61,5 +63,30 @@ public class BlockEventListener implements MouseListener, KeyListener, MouseMoti
   public void mouseMoved(MouseEvent e)
   {
     block.mouse_moved(e);
+  }
+
+  public void focusGained(FocusEvent e)
+  {
+    block.focus_gained(e);
+  }
+
+  public void focusLost(FocusEvent e)
+  {
+    block.focus_lost(e);
+  }
+
+  public void stateChanged(ChangeEvent e)
+  {    
+    block.state_changed(e);
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    block.button_pressed(e);
+  }
+
+  public void itemStateChanged(ItemEvent e)
+  {
+    block.item_state_changed(e);
   }
 }

@@ -1,7 +1,7 @@
 package limelight;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.*;
 
 public class MockBlock implements Block
 {
@@ -19,6 +19,11 @@ public class MockBlock implements Block
   public Object pressedMouse;
   public Object draggedMouse;
   public Object movedMouse;
+  public Object gainedFocus;
+  public Object lostFocus;
+  public Object changedState;
+  public Object pressedButton;
+  public Object changedItemState;
 
   public MockBlock()
   {
@@ -113,5 +118,30 @@ public class MockBlock implements Block
   public void key_released(KeyEvent e)
   {
     releasedKey = e;
+  }
+
+  public void focus_gained(FocusEvent e)
+  {
+    gainedFocus = e;
+  }
+
+  public void focus_lost(FocusEvent e)
+  {
+    lostFocus = e;
+  }
+
+  public void state_changed(ChangeEvent e)
+  {
+    changedState = e;
+  }
+
+  public void button_pressed(ActionEvent e)
+  {
+    pressedButton = e;
+  }
+
+  public void item_state_changed(ItemEvent e)
+  {
+    changedItemState = e;
   }
 }

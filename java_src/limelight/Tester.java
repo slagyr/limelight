@@ -1,18 +1,46 @@
 package limelight;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Tester
 {
+
   public static void main(String[] args)
   {
     JFrame frame = new JFrame();
-    frame.setSize(200, 50);
-    JTextField input = new JTextField();
-    frame.getContentPane().add(input);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.setSize(500, 500);
+    frame.setBackground(Color.red);
+    BorderLayout layout = new BorderLayout();
+    frame.setLayout(layout);
+
+    JPanel view = new javax.swing.JPanel();
+    view.setBackground(Color.green);
+    view.setSize(190, 600);
+    view.setLayout(new GridLayout(3, 1));
+    view.add(new Button("1"));
+    view.add(new Button("2"));
+    view.add(new Button("3"));
+
+    
+    JScrollPane scrollPane = new JScrollPane(view);
+    scrollPane.setSize(200, 200);
+    scrollPane.setBackground(Color.blue);
+    frame.add(scrollPane, BorderLayout.CENTER);
+
     frame.setVisible(true);
   }
+
+//  public static void main(String[] args)
+//  {
+//    JFrame frame = new JFrame();
+//    frame.setSize(200, 50);
+//    JTextField input = new JTextField();
+//    frame.getContentPane().add(input);
+//    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//    frame.setVisible(true);
+//  }
 }
 
 

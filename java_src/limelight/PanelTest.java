@@ -1,8 +1,6 @@
 package limelight;
 
 import junit.framework.TestCase;
-
-import java.awt.*;
 import java.awt.event.*;
 
 class TestablePanel extends Panel
@@ -42,69 +40,22 @@ public class PanelTest extends TestCase
 	public void tearDown() throws Exception
 	{
 	}
-
-	public void testGetDefaultFont() throws Exception
-	{
-		Font font = panel.createFont();
-		assertEquals("ArialMT", font.getFontName());
-	}
-
-	public void testCreateFontWithBoldHelvetica() throws Exception
-	{
-		block.getStyle().setFontFace("Helvetica");
-		block.getStyle().setFontSize("13");
-		block.getStyle().setFontStyle("bold");
-
-		Font font = panel.createFont();
-
-		assertEquals("Helvetica-Bold", font.getFontName());
-		assertEquals(13, font.getSize());
-		assertEquals(Font.BOLD, font.getStyle());
-	}
-
-	public void testCreateFontWithCourierItalics() throws Exception
-	{
-		style.setFontFace("Courier");
-		style.setFontSize("6");
-		style.setFontStyle("italic");
-
-		Font font = panel.createFont();
-
-		assertEquals("Courier-Oblique", font.getFontName());
-		assertEquals(6, font.getSize());
-		assertEquals(Font.ITALIC, font.getStyle());
-	}
-
-	public void testCreateFontWithTimesBoldItalic() throws Exception
-	{
-		style.setFontFace("Times");
-		style.setFontSize("9");
-		style.setFontStyle("bold italic");
-
-		Font font = panel.createFont();
-
-		assertEquals("Times-BoldItalic", font.getFontName());
-		assertEquals(9, font.getSize());
-		assertEquals(Font.BOLD | Font.ITALIC, font.getStyle());
-	}
   
-  public void testSnapToSize() throws Exception
+  public void testPreferredSize() throws Exception
   {
     style.setWidth("100");
     style.setHeight("200");
 
-    panel.snapToDesiredSize();
+    panel.setSize(panel.getPreferredSize());
 
     assertEquals(100, panel.getWidth());
     assertEquals(200, panel.getHeight());
   }
 
-  public void testSnapOffsets() throws Exception
+  public void testOffsets() throws Exception
   {
     style.setYOffset("40");
     style.setXOffset("30");
-
-    panel.snapOffsets();
 
     assertEquals(30, panel.getXOffset());
     assertEquals(40, panel.getYOffset());
@@ -139,15 +90,14 @@ public class PanelTest extends TestCase
     block.style.setWidth("100");
     block.style.setHeight("100");
     block.style.setTextColor("blue");
-    panel.snapToDesiredSize();
+    panel.setSize(panel.getPreferredSize());
   }
 
   public void testPainters() throws Exception
   {
-    assertEquals(3, panel.getPainters().size());
+    assertEquals(2, panel.getPainters().size());
     assertEquals(BackgroundPainter.class, panel.getPainters().get(0).getClass());
     assertEquals(BorderPainter.class, panel.getPainters().get(1).getClass());
-    assertEquals(TextPainter.class, panel.getPainters().get(2).getClass());
   }
 
   public void testPaintComponent() throws Exception
@@ -247,5 +197,24 @@ public class PanelTest extends TestCase
     assertEquals(0, panel.getMouseListeners().length);
     assertEquals(0, panel.getMouseMotionListeners().length);
     assertEquals(0, panel.getKeyListeners().length);
+  }
+
+  public void testSetLocation() throws Exception
+  {
+    panel.setLocation(100, 100);
+    assertEquals(100, panel.getX());
+    assertEquals(100, panel.getY());
+
+    style.setXOffset("12");
+    style.setYOffset("34");
+    panel.setLocation(100, 100);
+
+    assertEquals(112, panel.getX());
+    assertEquals(134, panel.getY());
+  }
+
+  public void testTextAccessor() throws Exception
+  {
+    assertEquals(TextPaneTextAccessor.class, panel.getTextAccessor().getClass());
   }
 }

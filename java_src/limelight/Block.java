@@ -1,7 +1,7 @@
 package limelight;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.*;
 
 interface Block
 {
@@ -24,5 +24,9 @@ interface Block
   void key_typed(KeyEvent e);
   void key_pressed(KeyEvent e);
   void key_released(KeyEvent e);
-
+  void focus_gained(FocusEvent e);
+  void focus_lost(FocusEvent e);
+  void state_changed(ChangeEvent e);
+  void button_pressed(ActionEvent e);
+  void item_state_changed(ItemEvent e);
 }

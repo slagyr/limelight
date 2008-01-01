@@ -10,6 +10,18 @@ public abstract class Style
 
   public abstract int checksum();
 
+  public int asInt(String value)
+	{
+		try
+		{
+			return Integer.parseInt(value);
+		}
+		catch(NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+
   public void setWidth(String value)
   {
     put("width", value);

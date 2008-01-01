@@ -42,8 +42,28 @@ public class Aligner
 		return area.width;
 	}
 
-	public void addConsumedHeight(double height)
+  public int getConsumedHeight()
+  {
+    return consumedHeight;
+  }
+
+  public void addConsumedHeight(double height)
 	{
 		consumedHeight += (int)(height + 0.5);
 	}
+
+  public Rectangle getArea()
+  {
+    return area;
+  }
+
+  public String getHorizontalAlignment()
+  {
+    return horizontalAlignment;
+  }
+
+  public String getVerticalAlignment()
+  {
+    return verticalAlignment;
+  }
 }

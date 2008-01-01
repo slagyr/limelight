@@ -86,7 +86,7 @@ module Limelight
     def add_extension(name, block)  
       try_to_require(@page.loader.path_to("controllers/#{name}"))
       try_to_require("limelight/controllers/#{name}")
-      module_name = name[0..0].upcase + name[1..-1]
+      module_name = name.camalized   
       if Object.const_defined?(module_name)
         mod = Object.const_get(module_name)
         block.add_controller(mod)      
@@ -96,7 +96,7 @@ module Limelight
       end
     end
     
-    def try_to_require(name) 
+    def try_to_require(name)
       begin
         require name
       rescue Exception

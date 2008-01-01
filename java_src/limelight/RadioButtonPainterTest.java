@@ -3,27 +3,29 @@ package limelight;
 import junit.framework.TestCase;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
-public class TextBoxPainterTest extends TestCase
+public class RadioButtonPainterTest extends TestCase
 {
   private Panel panel;
-  private TextBoxPainter painter;
+  private RadioButtonPainter painter;
   private MockBlock block;
 
   public void setUp() throws Exception
   {
     block = new MockBlock();
     panel = new Panel(block);
-    painter = new TextBoxPainter(panel);
+    painter = new RadioButtonPainter(panel);
     panel.getPainters().add(painter);
   }
 
-  public void testThatATextboxIsAddedToThePanel() throws Exception
+  public void testThatACheckboxIsAddedToThePanel() throws Exception
   {
     assertEquals(1, panel.getComponents().length);
-    assertEquals(JTextField.class, panel.getComponents()[0].getClass());
+    assertEquals(JRadioButton.class, panel.getComponents()[0].getClass());
   }
 
   public void testItsPanelIsSterilized() throws Exception
@@ -39,7 +41,7 @@ public class TextBoxPainterTest extends TestCase
 
   public void testEvents() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
     assertEquals(1, field.getKeyListeners().length);
     KeyListener listener = field.getKeyListeners()[0];
 
@@ -57,9 +59,9 @@ public class TextBoxPainterTest extends TestCase
 
   public void testMouseActions() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(4, field.getMouseListeners().length);
-    MouseListener listener = field.getMouseListeners()[3];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
+    assertEquals(2, field.getMouseListeners().length);
+    MouseListener listener = field.getMouseListeners()[1];
 
     MouseEvent e = new MouseEvent(field, 1, 2, 3, 4, 5, 6, false);
 
@@ -81,22 +83,11 @@ public class TextBoxPainterTest extends TestCase
     assertEquals(e, block.releasedMouse);
   }
 
-  public void testText() throws Exception
-  {
-    panel.getTextAccessor().setText("blah");
-
-    assertEquals("blah", painter.getTextField().getText());
-
-    painter.getTextField().setText("hubbub");
-
-    assertEquals("hubbub", panel.getTextAccessor().getText());
-  }
-
   public void testFocusEvents() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(4, field.getFocusListeners().length);
-    FocusListener listener = field.getFocusListeners()[3];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
+    assertEquals(2, field.getFocusListeners().length);
+    FocusListener listener = field.getFocusListeners()[1];
 
     FocusEvent e = new FocusEvent(field, 1);
 
@@ -106,4 +97,29 @@ public class TextBoxPainterTest extends TestCase
     listener.focusLost(e);
     assertEquals(e, block.lostFocus);
   }
+
+  public void testChangedStateEvent() throws Exception
+  {
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
+    assertEquals(2, field.getChangeListeners().length);
+    ChangeListener listener = field.getChangeListeners()[0];
+
+    ChangeEvent e = new ChangeEvent(field);
+
+    listener.stateChanged(e);
+    assertEquals(e, block.changedState);
+  }
+
+  public void testButtonPressedEvent() throws Exception
+  {
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
+    assertEquals(1, field.getActionListeners().length);
+    ActionListener listener = field.getActionListeners()[0];
+
+    ActionEvent e = new ActionEvent(field, 1, "blah");
+
+    listener.actionPerformed(e);
+    assertEquals(e, block.pressedButton);
+  }
+
 }
