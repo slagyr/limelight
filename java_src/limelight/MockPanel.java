@@ -3,15 +3,11 @@ package limelight;
 public class MockPanel extends Panel
 {
   public Rectangle rectangleInsideMargin;
+  public Rectangle rectangleInsidePadding;
 
   public MockPanel()
 	{
 		super(new MockBlock());
-	}
-
-	public Rectangle getRectangleInsidePadding()
-	{
-		return new Rectangle(0, 0, 999, 999);
 	}
 
   public Rectangle getRectangleInsideMargins()
@@ -19,5 +15,12 @@ public class MockPanel extends Panel
     if(rectangleInsideMargin != null)
       return rectangleInsideMargin;
     return super.getRectangleInsideMargins();
+  }
+
+  public Rectangle getRectangleInsidePadding()
+  {
+    if(rectangleInsidePadding != null)
+      return rectangleInsidePadding;
+    return super.getRectangleInsidePadding();
   }
 }

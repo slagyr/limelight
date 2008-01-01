@@ -6,24 +6,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class TextBoxPainterTest extends TestCase
+public class ComboBoxPainterTest extends TestCase
 {
   private Panel panel;
-  private TextBoxPainter painter;
+  private ComboBoxPainter painter;
   private MockBlock block;
 
   public void setUp() throws Exception
   {
     block = new MockBlock();
     panel = new Panel(block);
-    painter = new TextBoxPainter(panel);
+    painter = new ComboBoxPainter(panel);
     panel.getPainters().add(painter);
   }
 
   public void testThatATextboxIsAddedToThePanel() throws Exception
   {
     assertEquals(1, panel.getComponents().length);
-    assertEquals(JTextField.class, panel.getComponents()[0].getClass());
+    assertEquals(JComboBox.class, panel.getComponents()[0].getClass());
   }
 
   public void testItsPanelIsSterilized() throws Exception
@@ -39,9 +39,9 @@ public class TextBoxPainterTest extends TestCase
 
   public void testEvents() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(1, field.getKeyListeners().length);
-    KeyListener listener = field.getKeyListeners()[0];
+    JComboBox field = (JComboBox)panel.getComponents()[0];
+    assertEquals(2, field.getKeyListeners().length);
+    KeyListener listener = field.getKeyListeners()[1];
 
     KeyEvent e = new KeyEvent(field, 1, 2, 3, 4, '5');
 
@@ -57,9 +57,9 @@ public class TextBoxPainterTest extends TestCase
 
   public void testMouseActions() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(4, field.getMouseListeners().length);
-    MouseListener listener = field.getMouseListeners()[3];
+    JComboBox field = (JComboBox)panel.getComponents()[0];
+    assertEquals(2, field.getMouseListeners().length);
+    MouseListener listener = field.getMouseListeners()[1];
 
     MouseEvent e = new MouseEvent(field, 1, 2, 3, 4, 5, 6, false);
 
@@ -83,20 +83,23 @@ public class TextBoxPainterTest extends TestCase
 
   public void testText() throws Exception
   {
-    panel.getTextAccessor().setText("blah");
+    painter.getComboBox().addItem("Red");
+    painter.getComboBox().addItem("Blue");
 
-    assertEquals("blah", painter.getTextField().getText());
+    panel.getTextAccessor().setText("Red");
 
-    painter.getTextField().setText("hubbub");
+    assertEquals("Red", painter.getComboBox().getSelectedItem());
 
-    assertEquals("hubbub", panel.getTextAccessor().getText());
+    painter.getComboBox().setSelectedItem("Blue");
+
+    assertEquals("Blue", panel.getTextAccessor().getText());
   }
 
   public void testFocusEvents() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(4, field.getFocusListeners().length);
-    FocusListener listener = field.getFocusListeners()[3];
+    JComboBox field = (JComboBox)panel.getComponents()[0];
+    assertEquals(2, field.getFocusListeners().length);
+    FocusListener listener = field.getFocusListeners()[1];
 
     FocusEvent e = new FocusEvent(field, 1);
 
@@ -105,5 +108,17 @@ public class TextBoxPainterTest extends TestCase
 
     listener.focusLost(e);
     assertEquals(e, block.lostFocus);
+  }
+
+  public void testItemEvent() throws Exception
+  {
+    JComboBox field = (JComboBox)panel.getComponents()[0];
+    assertEquals(3, field.getItemListeners().length);
+    ItemListener listener = field.getItemListeners()[0];
+
+    ItemEvent e = new ItemEvent(field, 1, "blah", 2);
+
+    listener.itemStateChanged(e);
+    assertEquals(e, block.changedItemState); 
   }
 }

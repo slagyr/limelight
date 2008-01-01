@@ -14,10 +14,9 @@ public class Panel extends JPanel
 	private Block block;
 	private BufferedImage buffer;
   private int checksum;
-  private int xOffset;
-  private int yOffset;
   private List<Painter> painters;
   private boolean sterilized;
+  private TextAccessor textAccessor;
 
   public Panel(Block owner)
 	{
@@ -30,6 +29,7 @@ public class Panel extends JPanel
     addMouseListener(listener);
     addMouseMotionListener(listener);
     buildPainters();
+    textAccessor = new TextPaneTextAccessor(this);
   }
 
   public Component add(Component comp)
@@ -59,12 +59,24 @@ public class Panel extends JPanel
       removeKeyListener(listner);
   }
 
-//  int paints = 0;
-//	boolean badName = false;
+  public TextAccessor getTextAccessor()
+  {
+    return textAccessor;
+  }
 
-	public void paint(Graphics graphics)
+  public void setTextAccessor(TextAccessor textAccessor)
+  {
+    this.textAccessor = textAccessor;
+  }
+
+  public void doLayout()
+  {
+    super.doLayout();
+  }
+
+  public void paint(Graphics graphics)
 	{
-		if(shouldBuildBuffer())
+    if(shouldBuildBuffer())
       buildBuffer();
 
     Composite	originalComposite = ((Graphics2D)graphics).getComposite();
@@ -81,7 +93,7 @@ public class Panel extends JPanel
   }
 
   protected void buildBuffer()
-  {
+  { 
     buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
 
@@ -91,41 +103,30 @@ public class Panel extends JPanel
     checksum = checksum();
   }
 
-	public Font createFont()
-	{
-		int style = 0;
-		if(block.getStyle().getFontStyle() != null && block.getStyle().getFontStyle().indexOf("bold") != -1)
-			style |= Font.BOLD;
-		if(block.getStyle().getFontStyle() != null && block.getStyle().getFontStyle().indexOf("italic") != -1)
-			style |= Font.ITALIC;
-
-		String face = block.getStyle().getFontFace() == null ? "Arial" : block.getStyle().getFontFace();
-		int size = resolveInt(block.getStyle().getFontSize()) <= 0 ? 10 : resolveInt(block.getStyle().getFontSize());
-
-		return new Font(face, style, size);
-	}
-
-	public void snapToDesiredSize()
-	{
-    Rectangle r = ((Panel)getParent()).getRectangleInsidePadding();
-    int width = translateDimension(block.getStyle().getWidth(), r.width);
-    int height = translateDimension(block.getStyle().getHeight(), r.height);    
-    setSize(width, height);
-	}
-
-  public void snapOffsets()
+  public Dimension getPreferredSize()
   {
-    if(block.getStyle().getXOffset() != null)
-      xOffset = Integer.parseInt(block.getStyle().getXOffset());
+    Rectangle r = null;
+    if(getParent().getClass() == Panel.class)
+      r = ((Panel)getParent()).getRectangleInsidePadding();
+    else
+      r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
+    int width = translateDimension(block.getStyle().getWidth(), r.width);
+    int height = translateDimension(block.getStyle().getHeight(), r.height);
+    return new Dimension(width, height);
+  }
 
-    if(block.getStyle().getYOffset() != null)
-      yOffset = Integer.parseInt(block.getStyle().getYOffset());
+  public void setLocation(int x, int y)
+  {
+    super.setLocation(x + getXOffset(), y + getYOffset());
+  }
+
+  public void setLocation(Point point)
+  {
+    super.setLocation(new Point((int)point.getX() + getXOffset(), (int)point.getY() + getYOffset()));
   }
 
 	public Rectangle getRectangle()
 	{
-/*System.err.println("block.getClassName() = " + block.getClassName());
-System.err.println("getWidth() = " + getWidth());*/
     return new Rectangle(0, 0, getWidth(), getHeight());
 	}
 
@@ -133,27 +134,38 @@ System.err.println("getWidth() = " + getWidth());*/
 	{
 		Rectangle r = getRectangle();
     Style style = block.getStyle();
-    r.shave(resolveInt(style.getTopMargin()), resolveInt(style.getRightMargin()), resolveInt(style.getBottomMargin()), resolveInt(style.getLeftMargin()));
+    r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
 		return r;
 	}
 
 	public Rectangle getRectangleInsideBorders()
 	{
 		Rectangle r = getRectangleInsideMargins();
-		r.shave(resolveInt(block.getStyle().getTopBorderWidth()), resolveInt(block.getStyle().getRightBorderWidth()), resolveInt(block.getStyle().getBottomBorderWidth()), resolveInt(block.getStyle().getLeftBorderWidth()));
+    Style style = block.getStyle();
+    r.shave(style.asInt(style.getTopBorderWidth()), style.asInt(style.getRightBorderWidth()), style.asInt(style.getBottomBorderWidth()), style.asInt(style.getLeftBorderWidth()));
 		return r;
 	}
 
 	public Rectangle getRectangleInsidePadding()
 	{
     Rectangle r = getRectangleInsideBorders();
-		r.shave(resolveInt(block.getStyle().getTopPadding()), resolveInt(block.getStyle().getRightPadding()), resolveInt(block.getStyle().getBottomPadding()), resolveInt(block.getStyle().getLeftPadding())); 
+    Style style = block.getStyle();
+    r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding())); 
     return r;
 	}
 
   public int getXOffset()
   {
-    return xOffset;
+    if(block.getStyle().getXOffset() != null)
+      return Integer.parseInt(block.getStyle().getXOffset());
+    return 0;
+  }
+
+  public int getYOffset()
+  {
+    if(block.getStyle().getYOffset() != null)
+      return Integer.parseInt(block.getStyle().getYOffset());
+    return 0;
   }
   
   public void sterilize()
@@ -161,14 +173,19 @@ System.err.println("getWidth() = " + getWidth());*/
     sterilized = true;
   }
 
+  public void replaceChildren(Component[] components)
+  {
+    boolean sterilizedTemp = sterilized;
+    sterilized = false;
+    removeAll();
+    for (Component component : components)
+      add(component);
+    sterilized = sterilizedTemp;
+  }
+
   public boolean isSterilized()
   {
     return sterilized;
-  }
-
-  public int getYOffset()
-  {
-    return yOffset;
   }
   
   private void buildPainters()
@@ -176,10 +193,9 @@ System.err.println("getWidth() = " + getWidth());*/
     painters = new LinkedList<Painter>(); 
     painters.add(new BackgroundPainter(this));
     painters.add(new BorderPainter(this));
-    painters.add(new TextPainter(this));
   }
 
-  private int checksum()
+  public int checksum()
   {
     int checksum = block.getStyle().checksum();
     if(block.getText() != null)
@@ -211,21 +227,9 @@ System.err.println("getWidth() = " + getWidth());*/
       ((Graphics2D)graphics).setComposite(alphaComposite);
     }
   }
-
-	private int resolveInt(String value)
-	{
-		try
-		{
-			return Integer.parseInt(value);
-		}
-		catch(NumberFormatException e)
-		{
-			return 0;
-		}
-	}
 }
 
-class SterilePanelException extends Error
+class SterilePanelException extends LimelightError
 {
   SterilePanelException(String name)
   {

@@ -3,11 +3,11 @@ package limelight;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextBoxPainter extends Painter
+public class ButtonPainter extends Painter
 {
-  private JTextField textField;
+  private JButton button;
 
-  public TextBoxPainter(Panel panel)
+  public ButtonPainter(Panel panel)
   {
     super(panel);
     panel.add(buildTextBox());
@@ -17,32 +17,34 @@ public class TextBoxPainter extends Painter
 
       public void setText(String text) throws LimelightException
       {
-        textField.setText(text);
+        button.setText(text);
       }
 
       public String getText()
       {
-        return textField.getText();
+        return button.getText();
       }
     });
   }
 
-  private JTextField buildTextBox()
+  private JButton buildTextBox()
   {
-    textField = new JTextField();
+    button = new JButton();
     BlockEventListener listener = new BlockEventListener(panel.getBlock());
-    textField.addKeyListener(listener);
-    textField.addMouseListener(listener);
-    textField.addFocusListener(listener);
-    return textField;
+    button.addKeyListener(listener);
+    button.addMouseListener(listener);
+    button.addActionListener(listener);
+    button.addFocusListener(listener);
+    button.addChangeListener(listener);
+    return button;
   }
 
   public void paint(Graphics2D graphics)
   {
   }
 
-  public JTextField getTextField()
+  public JButton getButton()
   {
-    return textField;
+    return button;
   }
 }

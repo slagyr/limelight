@@ -1,51 +1,79 @@
 package limelight;
 
+import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.LinkedList;
 
 public class BlockLayout implements LayoutManager
 {
-	private Panel panel;
 	private LinkedList<Row> rows;
 	private Row currentRow;
-	private Aligner aligner;
+  private Panel panel;
+  private boolean inScrollMode;
+  private JPanel scrollView;
+  private Rectangle area;
+  private int consumedWidth;
+  private int consumedHeight;
 
-	public BlockLayout(Panel panel)
-	{
-		this.panel = panel;
-		rows = new LinkedList<Row>();
+  public BlockLayout(Panel panel)
+  {
+    this.panel = panel;
+    rows = new LinkedList<Row>();
+    inScrollMode = false;
 	}
 
 	public void addLayoutComponent(String string, Component component)
 	{
-//		System.out.println("addLayoutComponent(" + string + ", " + component + ")");
 	}
 
 	public void removeLayoutComponent(Component component)
 	{
-//		System.out.println("removeLayoutComponent(" + component + ")");
 	}
 
 	public Dimension preferredLayoutSize(Container container)
 	{
-//		System.out.println("prefereedLayoutSize(" + container + ")");
 		return container.getPreferredSize();
 	}
 
 	public Dimension minimumLayoutSize(Container container)
 	{
-//		System.out.println("minimumLayoutSize(" + container + ")");
 		return container.getMinimumSize();
 	}
 
-	public void layoutContainer(Container container)
+  private Component[] getComponents()
+  {
+    if(inScrollMode)
+      return scrollView.getComponents();
+    else
+      return panel.getComponents();
+  }
+
+  public void layoutContainer(Container container)
 	{
-		Component[] components = container.getComponents();
+    Component[] components = getComponents();
 		if(components.length == 0)
 			return;
-    reset(container);
-		buildRows(components);
 
+    reset();
+    buildRows();
+    if(!inScrollMode && (consumedHeight > area.height || consumedWidth > area.width))
+      enterScrollMode();
+    if(inScrollMode && consumedHeight <= area.height && consumedWidth <= area.width)
+      exitScrollMode();
+
+    if(inScrollMode)
+    {
+      scrollView.setSize(consumedWidth, consumedHeight);
+      scrollView.doLayout();
+    }
+    else
+      doNormalLayout();
+  }
+
+  private void doNormalLayout()
+  {
+    Aligner aligner = buildAligner(panel.getRectangleInsidePadding());
+    aligner.addConsumedHeight(consumedHeight);
     int y = aligner.startingY();
     for(Row row : rows)
     {
@@ -53,82 +81,170 @@ public class BlockLayout implements LayoutManager
       row.layoutComponents(x, y);
       y += row.height;
     }
-	}
+  }
 
-	private void buildRows(Component[] components)
+  private void enterScrollMode()
+  { 
+    scrollView = new JPanel();
+    scrollView.setLayout(new ScrollViewLayout(scrollView));
+    scrollView.setOpaque(false);
+    scrollView.setSize(consumedWidth, consumedHeight);
+    scrollView.setLocation(0, 0);
+    for (Component component : getComponents())
+      scrollView.add(component);
+
+    JScrollPane scrollPane = new JScrollPane(scrollView);
+    scrollPane.getViewport().setOpaque(false);
+    scrollPane.getViewport().setBackground(Color.blue);
+    scrollPane.setOpaque(false);
+    scrollPane.setBackground(Color.orange);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
+    scrollPane.setSize(area.width,  area.height);
+    scrollPane.setLocation(area.x, area.y);
+    panel.replaceChildren(new Component[] {scrollPane});
+    scrollPane.doLayout();
+
+    inScrollMode = true;
+  }
+
+  private void exitScrollMode()
+  {
+    panel.replaceChildren(scrollView.getComponents());
+    inScrollMode = false;
+  }
+
+  private void buildRows()
 	{
-    for(Component component : components)
+    for(Component component : getComponents())
     {
-
-      Panel panel = ((Panel) component);
-      panel.snapToDesiredSize();
-      panel.snapOffsets();
-
+      component.setSize(component.getPreferredSize());
+      component.doLayout();
       if (!currentRow.isEmpty() && !currentRow.fits(component))
-      {
-        aligner.addConsumedHeight(currentRow.height);
         newRow();
-      }
-      currentRow.add(panel);
+      currentRow.add(component);
     }
-		aligner.addConsumedHeight(currentRow.height);
-	}
+    calculateConsumedDimentions();
+  }
 
-	private void reset(Container container)
+  private Aligner buildAligner(Rectangle rectangle)
+  {
+    Block block = panel.getBlock();
+    return new Aligner(rectangle, block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
+  }
+
+  private void reset()
 	{
-		Block block = ((Panel) container).getBlock();
-    aligner = new Aligner(block.getPanel().getRectangleInsidePadding(), block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
+    area = panel.getRectangleInsidePadding();
     rows.clear();
 		newRow();
 	}
 
 	private void newRow()
 	{
-		currentRow = new Row(aligner.getWidth());
+		currentRow = new Row(area.width);
 		rows.add(currentRow);
 	}
 
-	private class Row
-	{
-		private LinkedList<Component> items;
-		private int maxWidth;
-		public int width;
-		public int height;
+  private void calculateConsumedDimentions()
+  {
+    consumedWidth = 0;
+    consumedHeight = 0;
+    for (Row row : rows)
+    {
+      consumedHeight += row.height;
+      if(row.width > consumedWidth)
+        consumedWidth = row.width;
+    }
+  }
 
-		public Row(int maxWidth)
-		{
-			this.maxWidth = maxWidth;
-			width = 0;
-			height = 0;
-			items = new LinkedList<Component>();
-		}
+  public Panel getPanel()
+  {
+    return panel;
+  }
 
-		public void add(Panel panel)
-		{
-			items.add(panel);
-			width += panel.getWidth();
-			if(panel.getHeight() + panel.getYOffset() > height)
-				height = panel.getHeight() + panel.getYOffset();
-		}
+  private class Row
+  {
+    private LinkedList<Component> items;
+    private int maxWidth;
+    public int width;
+    public int height;
 
-		public boolean isEmpty()
-		{
-			return items.size() == 0;
-		}
+    public Row(int maxWidth)
+    {
+      this.maxWidth = maxWidth;
+      width = 0;
+      height = 0;
+      items = new LinkedList<Component>();
+    }
 
-		public boolean fits(Component component)
-		{
-			return (width + component.getWidth()) <= maxWidth;
-		}
+    public void add(Component component)
+    {
+      items.add(component);
+      width += component.getWidth();
+      if(component.getHeight() > height)
+        height = component.getHeight();
+    }
 
-		public void layoutComponents(int x, int y)
-		{
+    public boolean isEmpty()
+    {
+      return items.size() == 0;
+    }
+
+    public boolean fits(Component component)
+    {
+      return (width + component.getWidth()) <= maxWidth;
+    }
+
+    public void layoutComponents(int x, int y)
+    {
       for (Component component : items)
       {
-        Panel panel = (Panel)component;
-        panel.setLocation(x + panel.getXOffset(), y + panel.getYOffset());
-        x += component.getWidth() + panel.getXOffset();
+        component.setLocation(x, y);
+        x += component.getWidth();
       }
-		}
-	}
+    }
+  }
+
+  private class ScrollViewLayout implements LayoutManager
+  {
+    private JPanel view;
+
+    private ScrollViewLayout(JPanel panel)
+    {
+      this.view = panel;
+    }
+
+    public void addLayoutComponent(String s, Component component)
+    {
+    }
+
+    public void removeLayoutComponent(Component component)
+    {
+    }
+
+    public Dimension preferredLayoutSize(Container container)
+    {
+      return view.getSize();
+    }
+
+    public Dimension minimumLayoutSize(Container container)
+    {
+      return view.getSize();
+    }
+
+    public void layoutContainer(Container container)
+    {
+      String horizontalAlignment = panel.getBlock().getStyle().getHorizontalAlignment();
+      Aligner aligner = new Aligner(new Rectangle(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
+      int y = aligner.startingY();
+      for(Row row : rows)
+      {
+        int x = aligner.startingX(row.width);
+        row.layoutComponents(x, y);
+        y += row.height;
+      }
+    }
+  }
 }
+
+

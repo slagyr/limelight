@@ -18,7 +18,7 @@ pattern:
 	height: 640
 	horizontal_alignment: center
 	vertical_alignment: center
-	background_image: sandbox/marilyn.jpg
+	background_image: images/marilyn.jpg
 	background_image_fill_strategy: static
 	
 fader:
@@ -36,12 +36,12 @@ beach:
 	height: 480
 	horizontal_alignment: center
 	vertical_alignment: center
-	background_image: sandbox/beach.jpg
+	background_image: images/beach.jpg
 	
 homer:
 	width: 320
 	height: 452
-	background_image: sandbox/homer.jpg
+	background_image: images/homer.jpg
 	transparency: 100
 	
 spinner:
@@ -72,7 +72,7 @@ waves:
 teaser_back:
 	width: 320
 	height: 320
-	background_image: sandbox/arch.jpg
+	background_image: images/arch.jpg
 	
 teaser:
 	width: 320
@@ -87,8 +87,8 @@ input1:
 	border_width: 1
 	
 table:
-	width: 502
-	height: 500
+	width: 752
+	height: 620
 	border_width: 1
 	border_color: orange
 
@@ -96,6 +96,7 @@ cell:
 	width: 250
 	height: 100
 	vertical_alignment: center
+	horizontal_alignment: center
 	border_width: 1
 	border_color: blue
 	
@@ -105,4 +106,15 @@ input_log:
 	background_color: #999
 	text_color: black
 	
+input_results:
+	height: 100%
+	width: 100%
+	background_color: #FFD
+	text_color: black
+
+radio_label:
+	width: 220
+	height: 20
+	text_color: black
+	vertical_alignment: center
 
