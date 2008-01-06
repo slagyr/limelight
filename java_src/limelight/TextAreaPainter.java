@@ -14,7 +14,6 @@ public class TextAreaPainter extends Painter
     panel.sterilize();
     panel.setLayout(new InputLayout());
     panel.setTextAccessor(new TextAccessor() {
-
       public void setText(String text) throws LimelightException
       {
         textArea.setText(text);

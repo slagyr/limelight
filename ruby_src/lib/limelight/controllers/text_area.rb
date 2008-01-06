@@ -11,8 +11,8 @@ module Limelight
         end
         
         def set_default_styles(block)
-          block.style.width = "240"
-          block.style.height = "88"
+          block.style.width ||= "240"
+          block.style.height ||= "88"
         end
       end
   
