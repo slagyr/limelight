@@ -98,7 +98,7 @@ module Limelight
     
     def try_to_require(name)
       begin
-        require name
+        load "#{name}.rb"
       rescue Exception
         # ignore
       end

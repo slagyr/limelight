@@ -11,9 +11,9 @@ module Limelight
     setters :text
     
     def initialize(hash = {})
-      populate(hash)
       @panel = Java::limelight.Panel.new(self) unless @panel
       @children = [] unless @children
+      populate(hash)
       @style = Java::limelight.StackableStyle.new unless @style
     end
     
