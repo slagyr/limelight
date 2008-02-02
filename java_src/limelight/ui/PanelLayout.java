@@ -38,7 +38,7 @@ public class PanelLayout
 
   private void buildRows()
 	{
-    for(AbstractPanel child : panel.getChildren())
+    for(Panel child : panel.getChildren())
     {
       child.snapToSize();
       if (!currentRow.isEmpty() && !currentRow.fits(child))
@@ -86,7 +86,7 @@ public class PanelLayout
 
   private class Row
   {
-    private LinkedList<AbstractPanel> items;
+    private LinkedList<Panel> items;
     private int maxWidth;
     public int width;
     public int height;
@@ -96,10 +96,10 @@ public class PanelLayout
       this.maxWidth = maxWidth;
       width = 0;
       height = 0;
-      items = new LinkedList<AbstractPanel>();
+      items = new LinkedList<Panel>();
     }
 
-    public void add(AbstractPanel panel)
+    public void add(Panel panel)
     {
       items.add(panel);
       width += panel.getWidth();
@@ -112,14 +112,14 @@ public class PanelLayout
       return items.size() == 0;
     }
 
-    public boolean fits(AbstractPanel panel)
+    public boolean fits(Panel panel)
     {
       return (width + panel.getWidth()) <= maxWidth;
     }
 
     public void layoutComponents(int x, int y)
     {
-      for (AbstractPanel panel : items)
+      for (Panel panel : items)
       {
         panel.setLocation(x, y);
         x += panel.getWidth();

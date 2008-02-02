@@ -85,11 +85,13 @@ public class BlockPanelTest extends TestCase
   public void testPaintingWillPaintAllTheChildPanels() throws Exception
   {
     MockPanel panel1 = new MockPanel();
-    panel1.setLocation(10, 11);
-    panel1.setSize(100, 101);
+    panel1.getBlock().getStyle().setWidth("100");
+    panel1.getBlock().getStyle().setHeight("101");
     MockPanel panel2 = new MockPanel();
-    panel2.setLocation(20, 22);
-    panel2.setSize(200, 202);
+    panel2.getBlock().getStyle().setWidth("200");
+    panel2.getBlock().getStyle().setHeight("202");
+//    panel2.setLocation(20, 22);
+//    panel2.setSize(200, 202);
 
     panel.add(panel1);
     panel.add(panel2);

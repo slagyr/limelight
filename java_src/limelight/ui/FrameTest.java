@@ -29,14 +29,6 @@ public class FrameTest extends TestCase
     assertEquals(0, panel.getY());
   }
 
-  public void testSettingSizeSetsSizeOnPanel() throws Exception
-  {
-    frame.setSize(100, 200);
-
-    assertEquals(100, frame.getPanel().getWidth());
-    assertEquals(200, frame.getPanel().getHeight());
-  }
-
   public void testPaintWillPaintPanel() throws Exception
   {
     MockPanel mockPanel = new MockPanel();
