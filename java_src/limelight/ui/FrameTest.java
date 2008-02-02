@@ -22,7 +22,7 @@ public class FrameTest extends TestCase
 
   public void testHasRootPanel() throws Exception
   {
-    Panel panel = frame.getPanel();
+    BlockPanel panel = frame.getPanel();
 
     assertNotNull(panel);
     assertEquals(0, panel.getX());

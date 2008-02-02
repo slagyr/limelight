@@ -3,7 +3,7 @@ package limelight.ui;
 import junit.framework.TestCase;
 import java.awt.Rectangle;
 
-class TestablePanel extends Panel
+class TestablePanel extends BlockPanel
 {
   public TestablePanel(Block owner)
   {
@@ -21,7 +21,7 @@ class TestablePanel extends Panel
   }
 }
 
-public class PanelTest extends TestCase
+public class BlockPanelTest extends TestCase
 {
   private TestablePanel panel;
   private MockBlock block;
@@ -72,8 +72,8 @@ public class PanelTest extends TestCase
 
   public void testCanAddPanels() throws Exception
   {
-    Panel panel1 = new Panel(new MockBlock());
-    Panel panel2 = new Panel(new MockBlock());
+    BlockPanel panel1 = new BlockPanel(new MockBlock());
+    BlockPanel panel2 = new BlockPanel(new MockBlock());
 
     panel.add(panel1);
     panel.add(panel2);
@@ -157,7 +157,7 @@ public class PanelTest extends TestCase
 
     try
     {
-      panel.add(new Panel(new MockBlock()));
+      panel.add(new BlockPanel(new MockBlock()));
       fail("Should have thrown an exception");
     }
     catch(Exception e)
@@ -172,7 +172,7 @@ public class PanelTest extends TestCase
 
   public void testSnapToSizeWithAbsoluteValues() throws Exception
   {
-    Panel parent = new Panel(new MockBlock());
+    BlockPanel parent = new BlockPanel(new MockBlock());
     parent.setSize(1000, 1000);
     parent.add(panel);
 
@@ -185,7 +185,7 @@ public class PanelTest extends TestCase
 
   public void testSnapToSizeWithPercentages() throws Exception
   {
-    Panel parent = new Panel(new MockBlock());
+    BlockPanel parent = new BlockPanel(new MockBlock());
     parent.setSize(1000, 1000);
     parent.getBlock().getStyle().setMargin("100");
     parent.getBlock().getStyle().setPadding("200");

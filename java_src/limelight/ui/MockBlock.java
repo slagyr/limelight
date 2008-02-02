@@ -32,7 +32,7 @@ public class MockBlock implements Block
     style = new FlatStyle();
   }
 
-  public Panel getPanel()
+  public BlockPanel getPanel()
   {
     return null;
   }

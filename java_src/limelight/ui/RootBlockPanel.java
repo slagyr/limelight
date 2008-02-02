@@ -1,8 +1,6 @@
 package limelight.ui;
 
-import limelight.Rectangle;
-
-public class RootBlockPanel extends Panel
+public class RootBlockPanel extends BlockPanel
 {
   private Frame frame;
 

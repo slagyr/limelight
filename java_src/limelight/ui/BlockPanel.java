@@ -4,9 +4,8 @@ import limelight.LimelightException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
-import java.util.Iterator;
 
-public class Panel extends AbstractPanel
+public class BlockPanel extends AbstractPanel
 {
   private LinkedList<AbstractPanel> children;
   private Block block;
@@ -16,7 +15,7 @@ public class Panel extends AbstractPanel
   private TextAccessor textAccessor;
   private boolean sterilized;
 
-  public Panel(Block block)
+  public BlockPanel(Block block)
   {
     super();
     this.block = block;

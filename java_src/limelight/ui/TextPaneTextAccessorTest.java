@@ -5,12 +5,12 @@ import limelight.LimelightException;
 
 public class TextPaneTextAccessorTest extends TestCase
 {
-  private Panel panel;
+  private BlockPanel panel;
   private TextPaneTextAccessor accessor;
 
   public void setUp() throws Exception
   {
-    panel = new Panel(new MockBlock());
+    panel = new BlockPanel(new MockBlock());
     accessor = new TextPaneTextAccessor(panel);
     panel.setTextAccessor(accessor);
   }
@@ -45,7 +45,7 @@ public class TextPaneTextAccessorTest extends TestCase
 
   public void testSettingTextWhenThereIsAlreadyChildren() throws Exception
   {
-    panel.add(new Panel(new MockBlock()));
+    panel.add(new BlockPanel(new MockBlock()));
     try
     {
       accessor.setText("blah");

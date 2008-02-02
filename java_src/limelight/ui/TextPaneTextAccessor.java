@@ -4,10 +4,10 @@ import limelight.LimelightException;
 
 public class TextPaneTextAccessor implements TextAccessor
 {
-  private Panel panel;
+  private BlockPanel panel;
   private TextPanel textPanel;
 
-  public TextPaneTextAccessor(Panel panel)
+  public TextPaneTextAccessor(BlockPanel panel)
   {
     this.panel = panel;
   }

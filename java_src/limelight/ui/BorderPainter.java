@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class BorderPainter extends Painter
 {
-  public BorderPainter(Panel panel)
+  public BorderPainter(BlockPanel panel)
   {
     super(panel);
   }

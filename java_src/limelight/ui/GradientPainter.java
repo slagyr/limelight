@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class GradientPainter extends Painter
 {
-  public GradientPainter(Panel panel)
+  public GradientPainter(BlockPanel panel)
   {
     super(panel);
   }
