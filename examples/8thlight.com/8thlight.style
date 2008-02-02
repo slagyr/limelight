@@ -1,5 +1,5 @@
 page:
-	width: 1000
+	width: 900
 	height: 900
 	horizontal_alignment: center
 	background_image: images/bg.jpg

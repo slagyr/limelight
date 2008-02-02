@@ -4,6 +4,7 @@ import limelight.LimelightException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+import java.util.Iterator;
 
 public class Panel extends AbstractPanel
 {
@@ -70,6 +71,10 @@ public class Panel extends AbstractPanel
   public void paint(Graphics2D graphics)
   {
     new PanelLayout(this).doLayout();
+
+    for (Painter painter : painters)
+      painter.paint(graphics);
+    
     for(AbstractPanel panel : children)
     {     
       Graphics2D childGraphics = (Graphics2D)graphics.create(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight());

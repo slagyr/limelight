@@ -23,10 +23,13 @@ public class Frame extends JPanel
     this.panel = panel;
   }
 
-  public void setSize(int width, int height)
+  public void doLayout()
   {
-    super.setSize(width, height);
-    panel.setSize(width, height);
+    setLocation(0, 0);
+    panel.snapToSize();
+System.err.println("panel.getWidth() = " + panel.getWidth());
+System.err.println("panel.getHeight() = " + panel.getHeight());
+    setSize(panel.getWidth(), panel.getHeight());
   }
 
   public void paint(Graphics g)
