@@ -29,29 +29,7 @@
     <option name="USER" value="" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/styles.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/styles.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FrameTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/FrameTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/BlockTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/BlockTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/waves.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/waves.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox.rb" afterPath="$PROJECT_DIR$/examples/sandbox.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/homer.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/homer.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PanelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/spinner.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/spinner.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/teaser.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/teaser.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/wave.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/wave.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/fader.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/fader.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BackgroundPainterTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BackgroundPainterTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java" />
-    </list>
+    <list default="true" name="Default" comment="" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="Commander">
