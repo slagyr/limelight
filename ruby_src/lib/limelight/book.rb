@@ -43,9 +43,9 @@ module Limelight
     
     def loadPage(page)
       @frame.content_pane.removeAll
-      @frame.add(page.panel)
+      @frame.add(page.frame)
       page.book = self
-      page.panel.size = @frame.size
+      # page.panel.size = @frame.size
       @current_page = page
     end
     

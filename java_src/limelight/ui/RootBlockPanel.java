@@ -1,5 +1,7 @@
 package limelight.ui;
 
+import limelight.Rectangle;
+
 public class RootBlockPanel extends Panel
 {
   private Frame frame;
@@ -14,4 +16,12 @@ public class RootBlockPanel extends Panel
   {
     return frame;
   }
+
+  public void snapToSize()
+  {
+    Style style = getBlock().getStyle();
+    width = style.asInt(style.getWidth());
+    height = style.asInt(style.getHeight());;
+  }
+
 }
