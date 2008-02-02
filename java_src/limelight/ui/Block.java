@@ -1,11 +1,9 @@
-package limelight;
-
-import limelight.ui.Style;
+package limelight.ui;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
-interface Block
+public interface Block
 {
   Panel getPanel();
   Style getStyle();

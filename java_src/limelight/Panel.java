@@ -1,5 +1,8 @@
 package limelight;
 
+import limelight.ui.Style;
+import limelight.ui.TextAccessor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
@@ -173,6 +176,11 @@ public class Panel extends JPanel
     sterilized = true;
   }
 
+  public boolean isSterilized()
+  {
+    return sterilized;
+  }
+
   public void replaceChildren(Component[] components)
   {
     boolean sterilizedTemp = sterilized;
@@ -181,11 +189,6 @@ public class Panel extends JPanel
     for (Component component : components)
       add(component);
     sterilized = sterilizedTemp;
-  }
-
-  public boolean isSterilized()
-  {
-    return sterilized;
   }
 
   private void buildPainters()

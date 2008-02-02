@@ -3,6 +3,8 @@ package limelight;
 import junit.framework.TestCase;
 import java.awt.event.*;
 
+import limelight.ui.FlatStyle;
+
 class TestablePanel extends Panel
 {
   public TestablePanel(Block owner)

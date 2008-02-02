@@ -1,8 +1,11 @@
-package limelight;
+package limelight.ui;
 
 import junit.framework.TestCase;
 
 import java.awt.*;
+
+import limelight.ui.FlatStyle;
+import limelight.ui.FontFactory;
 
 public class FontFactoryTest extends TestCase
 {

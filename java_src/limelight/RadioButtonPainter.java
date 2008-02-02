@@ -1,5 +1,7 @@
 package limelight;
 
+import limelight.ui.TextAccessor;
+
 import javax.swing.*;
 import java.awt.*;
 

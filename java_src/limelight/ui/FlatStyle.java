@@ -1,4 +1,6 @@
-package limelight;
+package limelight.ui;
+
+import limelight.ui.Style;
 
 import java.util.Hashtable;
 import java.util.Map;

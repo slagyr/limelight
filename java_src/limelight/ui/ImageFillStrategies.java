@@ -1,4 +1,8 @@
-package limelight;
+package limelight.ui;
+
+import limelight.ui.ImageFillStrategy;
+import limelight.StaticImageFillStrategy;
+import limelight.RepeatingImageFillStrategy;
 
 public class ImageFillStrategies
 {

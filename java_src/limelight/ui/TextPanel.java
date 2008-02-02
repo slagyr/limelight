@@ -1,19 +1,14 @@
-package limelight;
+package limelight.ui;
 
-import limelight.ui.Style;
-import limelight.ui.Colors;
-import limelight.ui.Aligner;
-import limelight.ui.FontFactory;
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.font.TextLayout;
-import java.awt.font.TextAttribute;
 import java.awt.font.LineBreakMeasurer;
-import java.util.LinkedList;
+import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
 import java.text.AttributedString;
+import java.util.LinkedList;
+import limelight.Rectangle;
 
-public class TextPane extends JPanel
+public class TextPanel extends AbstractPanel
 {
   public static double widthPadding = 2.0; // The text measuerments aren't always quite right.  This helps.
 
@@ -25,7 +20,7 @@ public class TextPane extends JPanel
   private int lastChecksum;
   private Graphics2D graphics;
 
-  public TextPane(Panel panel, String text)
+  public TextPanel(Panel panel, String text)
   {
     this.panel = panel;
     this.text = text;
@@ -46,22 +41,15 @@ public class TextPane extends JPanel
     return panel;
   }
 
+  //TODO MDM - Wow! This is inefficient.  Called in a loop below.Ê
   public Rectangle getBounds()
   {
     return panel.getRectangleInsidePadding();
   }
 
-  public Dimension getPreferredSize()
-  {
-    graphics = (Graphics2D)getGraphics();
-    compile();
-    return new Dimension((int)(consumedWidth + 0.5), (int)(consumedHeight + 0.5));
-  }
-
-  public void paint(Graphics aGraphics)
+  public void paint(Graphics2D graphics)
 	{
-    graphics = (Graphics2D)aGraphics;
-    compile();
+    this.graphics = graphics;
 
     Aligner aligner = createAligner();
     graphics.setColor(Colors.resolve(getStyle().getTextColor()));
@@ -74,6 +62,19 @@ public class TextPane extends JPanel
     }
 	}
 
+  public void snapToSize()
+  {
+    int currentChecksum = panel.checksum();
+    if(lastChecksum != currentChecksum)
+    {
+      lastChecksum = currentChecksum;
+      buildLines();
+      calculateDimentions();
+    }
+    setWidth((int)(consumedWidth + 0.5));
+    setHeight((int)(consumedHeight + 0.5));
+  }
+
   private Aligner createAligner()
   {
     return new Aligner(new Rectangle(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
@@ -82,17 +83,6 @@ public class TextPane extends JPanel
   private Style getStyle()
   {
     return panel.getBlock().getStyle();
-  }
-
-  private void compile()
-	{
-    int currentChecksum = panel.checksum();
-    if(lastChecksum != currentChecksum)
-    {
-      lastChecksum = currentChecksum;
-      buildLines();
-      calculateDimentions();
-    }
   }
 
   private void buildLines()
@@ -108,7 +98,7 @@ public class TextPane extends JPanel
         {
           AttributedString aText = new AttributedString(paragraph);
           aText.addAttribute(TextAttribute.FONT, font);
-          LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), graphics.getFontRenderContext());
+          LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics().getFontRenderContext());
           while (lbm.getPosition() < paragraph.length())
           {
             TextLayout layout = lbm.nextLayout((float) getBounds().getWidth());
@@ -134,10 +124,15 @@ public class TextPane extends JPanel
     }
   }
 
-  public Graphics getGraphics()
+  public void setGraphics(Graphics graphics)
   {
-    if(graphics != null)
-      return graphics;
-    return super.getGraphics();
+    this.graphics = (Graphics2D)graphics;
+  }
+
+  private Graphics2D getGraphics()
+  {
+    if(graphics == null)
+      graphics = (Graphics2D)getFrame().getGraphics();
+    return graphics;
   }
 }

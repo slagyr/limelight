@@ -1,4 +1,4 @@
-package limelight;
+package limelight.ui;
 
 public abstract class Style
 {

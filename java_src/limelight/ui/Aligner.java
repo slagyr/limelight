@@ -1,4 +1,6 @@
-package limelight;
+package limelight.ui;
+
+import limelight.Rectangle;
 
 public class Aligner
 {

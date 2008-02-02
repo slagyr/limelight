@@ -1,8 +1,4 @@
-package limelight;
-
-import limelight.ui.Style;
-import limelight.ui.Colors;
-import limelight.ui.ImageFillStrategies;
+package limelight.ui;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -43,3 +39,4 @@ public class BackgroundPainter extends Painter
     }
   }
 }
+

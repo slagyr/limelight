@@ -1,8 +1,9 @@
-package limelight;
+package limelight.ui;
 
 import java.awt.*;
 
 import junit.framework.TestCase;
+import limelight.ui.Colors;
 
 public class ColorsTest extends TestCase
 {

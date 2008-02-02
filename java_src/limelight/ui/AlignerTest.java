@@ -1,6 +1,8 @@
-package limelight;
+package limelight.ui;
 
 import junit.framework.TestCase;
+import limelight.ui.Aligner;
+import limelight.Rectangle;
 
 public class AlignerTest extends TestCase
 {
