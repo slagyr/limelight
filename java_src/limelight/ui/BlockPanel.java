@@ -5,9 +5,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-public class BlockPanel extends AbstractPanel
+public class BlockPanel extends Panel
 {
-  private LinkedList<AbstractPanel> children;
+  private LinkedList<Panel> children;
   private Block block;
   private BufferedImage buffer;
   private int checksum;
@@ -19,7 +19,7 @@ public class BlockPanel extends AbstractPanel
   {
     super();
     this.block = block;
-    children = new LinkedList<AbstractPanel>();
+    children = new LinkedList<Panel>();
     buildPainters();
     textAccessor = new TextPaneTextAccessor(this);
   }
@@ -29,7 +29,7 @@ public class BlockPanel extends AbstractPanel
     return block;
   }
 
-  public void add(AbstractPanel panel) throws SterilePanelException
+  public void add(Panel panel) throws SterilePanelException
   {
     if (sterilized)
       throw new SterilePanelException(block.getClassName());
@@ -37,7 +37,7 @@ public class BlockPanel extends AbstractPanel
     panel.setParent(this);
   }
 
-  public LinkedList<AbstractPanel> getChildren()
+  public LinkedList<Panel> getChildren()
   {
     return children;
   }
@@ -74,7 +74,7 @@ public class BlockPanel extends AbstractPanel
     for (Painter painter : painters)
       painter.paint(graphics);
     
-    for(AbstractPanel panel : children)
+    for(Panel panel : children)
     {     
       Graphics2D childGraphics = (Graphics2D)graphics.create(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight());
       panel.paint(childGraphics);

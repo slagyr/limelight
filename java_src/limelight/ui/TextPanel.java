@@ -8,7 +8,7 @@ import java.text.AttributedString;
 import java.util.LinkedList;
 import limelight.Rectangle;
 
-public class TextPanel extends AbstractPanel
+public class TextPanel extends Panel
 {
   public static double widthPadding = 2.0; // The text measuerments aren't always quite right.  This helps.
 
