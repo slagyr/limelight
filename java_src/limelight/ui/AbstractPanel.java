@@ -8,7 +8,7 @@ public abstract class AbstractPanel
   protected int width;
   private int x;
   private int y;
-  private Panel parent;
+  private BlockPanel parent;
 
   public AbstractPanel()
   {
@@ -68,12 +68,12 @@ public abstract class AbstractPanel
     this.y = y;
   }
 
-  public Panel getParent()
+  public BlockPanel getParent()
   {
     return parent;
   }
 
-  public void setParent(Panel parent)
+  public void setParent(BlockPanel parent)
   {
     this.parent = parent;
   }

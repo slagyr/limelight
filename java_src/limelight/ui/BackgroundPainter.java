@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class BackgroundPainter extends Painter
 {
-  public BackgroundPainter(Panel panel)
+  public BackgroundPainter(BlockPanel panel)
   {
     super(panel);
   }

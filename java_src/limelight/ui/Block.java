@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 public interface Block
 {
-  Panel getPanel();
+  BlockPanel getPanel();
   Style getStyle();
   String getClassName();
   String getText();

@@ -7,11 +7,11 @@ public class PanelLayout
 {
 	private LinkedList<Row> rows;
 	private Row currentRow;
-  private Panel panel;
+  private BlockPanel panel;
   private Rectangle area;
   private int consumedHeight;
 
-  public PanelLayout(Panel panel)
+  public PanelLayout(BlockPanel panel)
   {
     this.panel = panel;
     rows = new LinkedList<Row>();
@@ -79,7 +79,7 @@ public class PanelLayout
     }
   }
 
-  public Panel getPanel()
+  public BlockPanel getPanel()
   {
     return panel;
   }

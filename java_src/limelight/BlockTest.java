@@ -19,7 +19,7 @@
 //
 //	public void testConstruction() throws Exception
 //	{
-//		assertEquals(Panel.class, block.getPanel().getClass());
+//		assertEquals(BlockPanel.class, block.getPanel().getClass());
 //		assertFalse(block.getPanel().isOpaque());
 //	}
 //

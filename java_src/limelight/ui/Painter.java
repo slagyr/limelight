@@ -4,9 +4,9 @@ import java.awt.*;
 
 public abstract class Painter
 {
-  protected Panel panel;
+  protected BlockPanel panel;
 
-  public Painter(Panel panel)
+  public Painter(BlockPanel panel)
   {
     this.panel = panel;
   }

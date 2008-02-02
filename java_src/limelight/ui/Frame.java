@@ -13,7 +13,7 @@ public class Frame extends JPanel
     panel = new RootBlockPanel(block, this);
   }
 
-  public Panel getPanel()
+  public BlockPanel getPanel()
   {
     return panel;
   }
@@ -27,8 +27,6 @@ public class Frame extends JPanel
   {
     setLocation(0, 0);
     panel.snapToSize();
-System.err.println("panel.getWidth() = " + panel.getWidth());
-System.err.println("panel.getHeight() = " + panel.getHeight());
     setSize(panel.getWidth(), panel.getHeight());
   }
 

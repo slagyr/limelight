@@ -13,14 +13,14 @@ public class TextPanel extends AbstractPanel
   public static double widthPadding = 2.0; // The text measuerments aren't always quite right.  This helps.
 
   private String text;
-  private Panel panel;
+  private BlockPanel panel;
   private double consumedHeight;
   private double consumedWidth;
   private LinkedList<TextLayout> lines;
   private int lastChecksum;
   private Graphics2D graphics;
 
-  public TextPanel(Panel panel, String text)
+  public TextPanel(BlockPanel panel, String text)
   {
     this.panel = panel;
     this.text = text;
@@ -36,7 +36,7 @@ public class TextPanel extends AbstractPanel
     this.text = text;
   }
 
-  public Panel getPanel()
+  public BlockPanel getPanel()
   {
     return panel;
   }
