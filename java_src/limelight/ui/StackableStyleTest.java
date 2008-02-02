@@ -1,6 +1,8 @@
-package limelight;
+package limelight.ui;
 
 import junit.framework.TestCase;
+import limelight.ui.StackableStyle;
+import limelight.ui.FlatStyle;
 
 public class StackableStyleTest extends TestCase
 {

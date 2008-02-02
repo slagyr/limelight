@@ -1,6 +1,4 @@
-package limelight;
-
-import limelight.ui.Style;
+package limelight.ui;
 
 import java.awt.*;
 

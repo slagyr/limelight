@@ -1,4 +1,7 @@
-package limelight;
+package limelight.ui;
+
+import limelight.ui.Style;
+import limelight.ui.FlatStyle;
 
 import java.util.*;
 

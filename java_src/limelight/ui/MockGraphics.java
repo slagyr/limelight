@@ -1,4 +1,6 @@
-package limelight;
+package limelight.ui;
+
+import limelight.Rectangle;
 
 import java.awt.*;
 import java.awt.font.*;
@@ -8,13 +10,14 @@ import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.util.*;
 
-class MockGraphics extends java.awt.Graphics2D
+public class MockGraphics extends java.awt.Graphics2D
 {
 	private Color color;
 	public LinkedList<DrawnShape> drawnShapes;
   private BasicStroke stroke;
+  private Rectangle clip;
 
-	public class DrawnShape
+  public class DrawnShape
 	{
 		public Color color;
 		public Shape shape;
@@ -201,7 +204,7 @@ class MockGraphics extends java.awt.Graphics2D
 
 	public Graphics create()
 	{
-		return null;
+		return new MockGraphics();
 	}
 
 	public Color getColor()
@@ -236,22 +239,24 @@ class MockGraphics extends java.awt.Graphics2D
 		return null;
 	}
 
-	public Rectangle getClipBounds()
+	public limelight.Rectangle getClipBounds()
 	{
-		return null;
+		return clip;
 	}
 
-	public void clipRect(int i, int i1, int i2, int i3)
+	public void clipRect(int x, int y, int width, int height)
 	{
-	}
+    clip = new Rectangle(x, y, width, height);
+  }
 
-	public void setClip(int i, int i1, int i2, int i3)
+	public void setClip(int x, int y, int width, int height)
 	{
-	}
+    clip = new Rectangle(x, y, width, height);
+  }
 
 	public Shape getClip()
 	{
-		return null;
+		return clip;
 	}
 
 	public void setClip(Shape shape)

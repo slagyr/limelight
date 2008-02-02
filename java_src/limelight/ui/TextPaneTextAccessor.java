@@ -1,11 +1,11 @@
-package limelight;
+package limelight.ui;
 
-import limelight.ui.TextAccessor;
+import limelight.LimelightException;
 
 public class TextPaneTextAccessor implements TextAccessor
 {
   private Panel panel;
-  private TextPane textPane;
+  private TextPanel textPanel;
 
   public TextPaneTextAccessor(Panel panel)
   {
@@ -14,22 +14,23 @@ public class TextPaneTextAccessor implements TextAccessor
 
   public void setText(String text) throws LimelightException
   {
-    if(textPane == null)
+    if(textPanel == null)
     {
       if(text == null || text.length() == 0)
         return;
-      if(panel.getComponents().length > 0)
+      if(panel.getChildren().size() > 0)
         throw new LimelightException("You may only set text on empty blocks.");
-      textPane = new TextPane(panel, text);
-      panel.add(textPane);
+      textPanel = new TextPanel(panel, text);
+      panel.add(textPanel);
       panel.sterilize();
     }
     else
-      textPane.setText(text);
+      textPanel.setText(text);
   }
 
   public String getText()
   {
-    return textPane == null ? "" : textPane.getText();
+    return textPanel == null ? "" : textPanel.getText();
   }
 }
+

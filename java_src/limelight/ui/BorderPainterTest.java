@@ -1,12 +1,9 @@
-package limelight;
+package limelight.ui;
 
 import junit.framework.TestCase;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
-
-import limelight.ui.MockGraphics;
-import limelight.ui.FlatStyle;
 
 public class BorderPainterTest extends TestCase
 {
@@ -14,7 +11,7 @@ public class BorderPainterTest extends TestCase
   private MockPanel panel;
   private FlatStyle style;
   private BorderPainter painter;
-  private Rectangle border;
+  private limelight.Rectangle border;
   private MockGraphics graphics;
 
   public void setUp() throws Exception
@@ -22,7 +19,7 @@ public class BorderPainterTest extends TestCase
     panel = new MockPanel();
     block = (MockBlock)panel.getBlock();
     style = block.style;
-    border = new Rectangle(5, 5, 100, 100);
+    border = new limelight.Rectangle(5, 5, 100, 100);
     panel.rectangleInsideMargin = border;
     painter = new BorderPainter(panel);
     graphics = new MockGraphics();
@@ -95,5 +92,5 @@ public class BorderPainterTest extends TestCase
     assertEquals(x2, (int)line.getX2());
     assertEquals(y2, (int)line.getY2());
   }
-  
+
 }

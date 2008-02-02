@@ -14,7 +14,7 @@ module Limelight
       @panel = Java::limelight.Panel.new(self) unless @panel
       @children = [] unless @children
       populate(hash)
-      @style = Java::limelight.StackableStyle.new unless @style
+      @style = Java::limelight.ui.StackableStyle.new unless @style
     end
     
     def populate(hash)

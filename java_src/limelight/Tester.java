@@ -2,6 +2,9 @@ package limelight;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.AdjustmentEvent;
 
 public class Tester
 {
@@ -10,27 +13,108 @@ public class Tester
   {
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.setSize(500, 500);
-    frame.setBackground(Color.red);
+    frame.setSize(500, 200);
     BorderLayout layout = new BorderLayout();
     frame.setLayout(layout);
 
-    JPanel view = new javax.swing.JPanel();
+    MyTextPanel view = new MyTextPanel();
+    view.setSize(600, 200);
     view.setBackground(Color.green);
-    view.setSize(190, 600);
-    view.setLayout(new GridLayout(3, 1));
-    view.add(new Button("1"));
-    view.add(new Button("2"));
-    view.add(new Button("3"));
 
-    
-    JScrollPane scrollPane = new JScrollPane(view);
-    scrollPane.setSize(200, 200);
-    scrollPane.setBackground(Color.blue);
-    frame.add(scrollPane, BorderLayout.CENTER);
+    JScrollBar scrollbar = new MyScrollBar(view);
+    scrollbar.setOrientation(JScrollBar.HORIZONTAL);
 
+    frame.add(view, BorderLayout.CENTER);
+    frame.add(scrollbar, BorderLayout.SOUTH);
     frame.setVisible(true);
   }
+
+  static class MyTextPanel extends JPanel
+  {
+
+    private String text;
+    private int desiredWidth;
+    private int startingX;
+
+    public MyTextPanel()
+    {
+      text = "To be or not to be, that is the question.  Whether tis nobler in the mind to suffer the slings and arrows of time or to take arms against them and by opposing end them";
+      desiredWidth = 100;
+      startingX = 0;
+    }
+
+    protected void paintComponent(Graphics g)
+    {
+      super.paintComponent(g);
+System.out.println("drawing");
+      desiredWidth = g.getFontMetrics().stringWidth(text);
+System.err.println("desiredWidth = " + desiredWidth);
+
+//      BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+//      Graphics2D bufferGraphics = (Graphics2D) buffer.getGraphics();
+
+      g.drawString(text, 0 - startingX, 50);
+    }
+
+    public int getDesiredWidth()
+    {
+      return desiredWidth;
+    }
+
+    public void setStartingX(int startingX)
+    {
+      this.startingX = startingX;
+    }
+  }
+
+  static class MyScrollBar extends JScrollBar
+  {
+    private MyTextPanel panel;
+
+    public MyScrollBar(final MyTextPanel panel)
+    {
+      this.panel = panel;
+      this.addAdjustmentListener(new AdjustmentListener() {
+        public void adjustmentValueChanged(AdjustmentEvent e)
+        {
+          panel.setStartingX(e.getValue());
+          panel.repaint();
+        }
+      });
+    }
+
+    protected void paintComponent(Graphics g)
+    {
+      this.setMaximum(panel.getDesiredWidth());
+      this.setVisibleAmount(panel.getWidth());
+      super.paintComponent(g);
+    }
+  }
+//  public static void main(String[] args)
+//  {
+//    JFrame frame = new JFrame();
+//    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//    frame.setSize(500, 500);
+//    frame.setBackground(Color.red);
+//    BorderLayout layout = new BorderLayout();
+//    frame.setLayout(layout);
+//
+//    JPanel view = new javax.swing.JPanel();
+//    view.setBackground(Color.green);
+//    view.setSize(190, 600);
+//    view.setLayout(new GridLayout(3, 1));
+//    view.add(new Button("1"));
+//    view.add(new Button("2"));
+//    view.add(new Button("3"));
+//
+//
+//    JScrollPane scrollPane = new JScrollPane(view);
+//    scrollPane.setSize(200, 200);
+//    scrollPane.setBackground(Color.blue);
+//    frame.add(scrollPane, BorderLayout.CENTER);
+//
+//    frame.setVisible(true);
+//  }
 
 //  public static void main(String[] args)
 //  {

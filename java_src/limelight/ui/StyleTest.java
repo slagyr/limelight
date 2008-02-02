@@ -1,6 +1,7 @@
-package limelight;
+package limelight.ui;
 
 import junit.framework.TestCase;
+import limelight.ui.FlatStyle;
 
 
 public class StyleTest extends TestCase

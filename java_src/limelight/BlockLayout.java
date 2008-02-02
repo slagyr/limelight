@@ -1,5 +1,7 @@
 package limelight;
 
+import limelight.ui.Aligner;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;

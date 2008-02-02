@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.awt.*;
 
+import limelight.ui.Style;
+
 public class TextPaneTest extends TestCase
 {
   private TextPane pane;

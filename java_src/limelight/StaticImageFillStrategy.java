@@ -1,5 +1,7 @@
 package limelight;
 
+import limelight.ui.ImageFillStrategy;
+
 import java.awt.*;
 
 public class StaticImageFillStrategy implements ImageFillStrategy
