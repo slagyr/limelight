@@ -1,5 +1,8 @@
 package limelight.ui;
 
+import limelight.LimelightError;
+import limelight.LimelightException;
+
 import java.awt.*;
 
 public abstract class Panel
@@ -68,6 +71,16 @@ public abstract class Panel
     this.y = y;
   }
 
+  public limelight.Rectangle getInternalRectangle()
+  {
+    return new limelight.Rectangle(0, 0, getWidth(), getHeight());
+  }
+
+  public limelight.Rectangle getExternalRectangle()
+  {
+    return new limelight.Rectangle(x, y, getWidth(), getHeight());
+  }
+
   public BlockPanel getParent()
   {
     return parent;
@@ -78,12 +91,68 @@ public abstract class Panel
     this.parent = parent;
   }
 
+  public Block getBlock()
+  {
+    return parent.getBlock();
+  }
+
   public Frame getFrame()
   {
     return getParent().getFrame();
   }
 
-  public abstract void paint(Graphics2D graphics);
+  public boolean containsPoint(Point point)
+  {
+    return  point.x >= x &&
+            point.x < x + width &&
+            point.y >= y &&
+            point.y < y + height;
+  }
+
+  public Panel getOwnerOfPoint(Point point)
+  {
+    return this;
+  }
+
+  public boolean isAncestor(Panel panel)
+  {
+    if(parent == null)
+      return false;
+    else if(parent == panel)
+      return true;
+    else
+      return parent.isAncestor(panel);
+  }
+
+  public Panel getClosestCommonAncestor(Panel panel)
+  {
+    Panel ancestor = getParent();
+    while(ancestor != null && !panel.isAncestor(ancestor))
+      ancestor = ancestor.getParent();
+
+    if(ancestor == null)
+      throw new LimelightError("No common ancestor found! Do the panels belong to the same tree?");
+
+    return ancestor;
+  }
+
+  public Point getAbsoluteLocation()
+  {
+    int x = this.x;
+    int y = this.y;
+
+    Panel p = parent;
+    while(p != null)
+    {
+      x += p.getX();
+      y += p.getY();
+      p = p.getParent();
+    }
+
+    return new Point(x, y);
+  }
+
+  public abstract void paint(java.awt.Rectangle clip);
 
   public abstract void snapToSize();
 }

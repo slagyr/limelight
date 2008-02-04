@@ -1,6 +1,8 @@
 package limelight.ui;
 
 import limelight.LimelightException;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
@@ -67,29 +69,55 @@ public class BlockPanel extends Panel
     return sterilized;
   }
 
-  public void paint(Graphics2D graphics)
+  public void paint(Rectangle clip)
   {
     new PanelLayout(this).doLayout();
+ 
+    if (shouldBuildBuffer())
+      buildBuffer();
 
-    for (Painter painter : painters)
-      painter.paint(graphics);
-    
+    Point absoluteLocation = getAbsoluteLocation();
+    Graphics2D graphics = (Graphics2D)getFrame().getGraphics().create(absoluteLocation.x + clip.x, absoluteLocation.y + clip.y, clip.width, clip.height);
+
+
+    Composite originalComposite = graphics.getComposite();
+    applyAlphaComposite(graphics);
+    graphics.drawImage(buffer, 0, 0, clip.width, clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
+    graphics.setComposite(originalComposite);
+
+
     for(Panel panel : children)
-    {     
-      Graphics2D childGraphics = (Graphics2D)graphics.create(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight());
-      panel.paint(childGraphics);
+    {
+      Rectangle panelBounds = panel.getExternalRectangle();
+      if(clip.intersects(panelBounds))
+      {
+        Rectangle intersection = clip.intersection(panelBounds);
+        intersection.translate(panel.getX() * -1, panel.getY() * -1);
+        panel.paint(intersection);
+      }
     }
   }
 
-  protected boolean shouldBuildBuffer()
+  // MDM - Purely for debuggin graphics
+  private void showClip(final Rectangle clip, final BufferedImage buffer, String title)
   {
-    return buffer == null || checksum != checksum();
+    JFrame jframe = new JFrame(title);
+    jframe.setSize(clip.width,  clip.height + 30);
+    jframe.add(new JPanel() {
+      public void paint(Graphics g)
+      {
+        g.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
+      }
+    });
+    jframe.setVisible(true);
   }
 
-  public limelight.Rectangle getRectangle()
+  public void repaint()
   {
-    return new limelight.Rectangle(0, 0, getWidth(), getHeight());
+    Point point = getAbsoluteLocation();
+    getFrame().getPanel().paint(new Rectangle(point.x, point.y, width, height));
   }
+
 
   public void snapToSize()
   {
@@ -100,7 +128,7 @@ public class BlockPanel extends Panel
 
   public limelight.Rectangle getRectangleInsideMargins()
   {
-    limelight.Rectangle r = getRectangle();
+    limelight.Rectangle r = getInternalRectangle();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
     return r;
@@ -120,6 +148,22 @@ public class BlockPanel extends Panel
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
     return r;
+  }
+
+  public Panel getOwnerOfPoint(Point point)
+  {
+    point = new Point(point.x - getX(), point.y - getY());
+    for (Panel panel : children)
+    {
+      if(panel.containsPoint(point))
+        return panel.getOwnerOfPoint(point);
+    }
+    return this;
+  }
+
+  protected boolean shouldBuildBuffer()
+  {
+    return buffer == null || checksum != checksum();
   }
 
   protected void buildBuffer()
@@ -160,6 +204,17 @@ public class BlockPanel extends Panel
     else
     {
       return Integer.parseInt(sizeString);
+    }
+  }
+
+
+  private void applyAlphaComposite(Graphics graphics)
+  {
+    if (block.getStyle().getTransparency() != null)
+    {
+      float transparency = 1f - (Integer.parseInt(block.getStyle().getTransparency()) / 100.0f);
+      Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
+      ((Graphics2D) graphics).setComposite(alphaComposite);
     }
   }
 

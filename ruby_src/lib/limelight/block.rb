@@ -50,13 +50,11 @@ module Limelight
     end
     
     def update
-      @panel.doLayout
       @panel.repaint
     end
     
     def update_now
-      @panel.doLayout()
-      @panel.paintImmediately(0, 0, @panel.width, @panel.height)
+      @panel.repaint
     end     
     
     def find(id)
@@ -98,14 +96,14 @@ module Limelight
     
     def hover_on
       return nil if @hover_style.nil?
-      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
+      @panel.frame.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
       style.push(@hover_style)
       update
     end
     
     def hover_off
       return nil if @hover_style.nil?
-      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
+      @panel.frame.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
       @style.pop
       update
     end
