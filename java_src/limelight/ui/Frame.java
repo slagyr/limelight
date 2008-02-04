@@ -6,11 +6,17 @@ import java.awt.*;
 public class Frame extends JPanel
 {
   private RootBlockPanel panel;
+  private FrameListener listener;
 
   public Frame(Block block)
   {
     super();
     panel = new RootBlockPanel(block, this);
+    listener = new FrameListener(this);
+    addMouseListener(listener);
+    addMouseMotionListener(listener);
+    addMouseWheelListener(listener);
+    addKeyListener(listener);
   }
 
   public BlockPanel getPanel()
@@ -32,6 +38,7 @@ public class Frame extends JPanel
 
   public void paint(Graphics g)
   {
-    panel.paint((Graphics2D)g);
+//    panel.paint((Graphics2D)g);
+    panel.paint(g.getClipBounds());
   }
 }

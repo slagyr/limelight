@@ -1,34 +1,38 @@
 package limelight.ui;
 
 import junit.framework.TestCase;
-import java.awt.Rectangle;
 
-class TestablePanel extends BlockPanel
-{
-  public TestablePanel(Block owner)
-  {
-    super(owner);
-  }
-
-  public boolean _shouldBuildBuffer()
-  {
-    return shouldBuildBuffer();
-  }
-
-  public void _buildBuffer()
-  {
-    buildBuffer();
-  }
-}
+import java.awt.*;
 
 public class BlockPanelTest extends TestCase
 {
   private TestablePanel panel;
   private MockBlock block;
+  private BlockPanel rootPanel;
+
+  private class TestablePanel extends BlockPanel
+  {
+    public TestablePanel(Block owner)
+    {
+      super(owner);
+    }
+
+    public boolean _shouldBuildBuffer()
+    {
+      return shouldBuildBuffer();
+    }
+
+    public void _buildBuffer()
+    {
+      buildBuffer();
+    }
+  }
 
   public void setUp() throws Exception
   {
     block = new MockBlock();
+    Frame frame = new MockFrame();
+    rootPanel = frame.getPanel();
     panel = new TestablePanel(block);
   }
 
@@ -90,27 +94,42 @@ public class BlockPanelTest extends TestCase
     MockPanel panel2 = new MockPanel();
     panel2.getBlock().getStyle().setWidth("200");
     panel2.getBlock().getStyle().setHeight("202");
-//    panel2.setLocation(20, 22);
-//    panel2.setSize(200, 202);
 
-    panel.add(panel1);
-    panel.add(panel2);
+    rootPanel.add(panel1);
+    rootPanel.add(panel2);
 
-    MockGraphics graphics = new MockGraphics();
-    graphics.setClip(0, 0, 500, 500);
-    panel.paint(graphics);
+    Rectangle rectangle = new Rectangle(0, 0, 500, 500);
+    rootPanel.paint(rectangle);
 
-    Rectangle bounds1 = (Rectangle)panel1.paintedGraphics.getClip();
+    Rectangle bounds1 = panel1.paintedClip;
     assertEquals(0, bounds1.getX(), 0.1);
     assertEquals(0, bounds1.getY(), 0.1);
     assertEquals(100, bounds1.getWidth(), 0.1);
     assertEquals(101, bounds1.getHeight(), 0.1);
 
-    Rectangle bounds2 = (Rectangle)panel2.paintedGraphics.getClip();
+    Rectangle bounds2 = panel2.paintedClip;
     assertEquals(0, bounds2.getX(), 0.1);
     assertEquals(0, bounds2.getY(), 0.1);
     assertEquals(200, bounds2.getWidth(), 0.1);
     assertEquals(202, bounds2.getHeight(), 0.1);
+  }
+  
+  public void testPaintingChildrenWithPartialClips() throws Exception
+  {
+    MockPanel panel1 = new MockPanel();
+    panel1.getBlock().getStyle().setWidth("200");
+    panel1.getBlock().getStyle().setHeight("200");
+
+    rootPanel.add(panel1);
+
+    Rectangle rectangle = new Rectangle(0, 0, 100, 101);
+    rootPanel.paint(rectangle);
+
+    Rectangle bounds1 = panel1.paintedClip;
+    assertEquals(0, bounds1.getX(), 0.1);
+    assertEquals(0, bounds1.getY(), 0.1);
+    assertEquals(100, bounds1.getWidth(), 0.1);
+    assertEquals(101, bounds1.getHeight(), 0.1);
   }
   
   public void testShouldBuildBuffer() throws Exception
@@ -198,5 +217,42 @@ public class BlockPanelTest extends TestCase
     panel.snapToSize();
     assertEquals(400, panel.getWidth());
     assertEquals(200, panel.getHeight());
+  }
+
+  public void testGetOwnerOfPoint() throws Exception
+  {
+    Panel panel1 = new MockPanel();
+    Panel panel2 = new MockPanel();
+
+    panel1.setLocation(0, 0);
+    panel1.setSize(100, 100);
+    panel2.setLocation(100, 100);
+    panel2.setSize(100, 100);
+
+    panel.add(panel1);
+    panel.add(panel2);
+
+    assertSame(panel1, panel.getOwnerOfPoint(new Point(0, 0)));
+    assertSame(panel2, panel.getOwnerOfPoint(new Point(100, 100)));
+    assertSame(panel1, panel.getOwnerOfPoint(new Point(50, 50)));
+    assertSame(panel2, panel.getOwnerOfPoint(new Point(150, 150)));
+    assertSame(panel, panel.getOwnerOfPoint(new Point(150, 50)));
+    assertSame(panel, panel.getOwnerOfPoint(new Point(50, 150)));
+  }
+
+  public void testGetOwnerOfPointWithNestedPanels() throws Exception
+  {
+    MockPanel panel1 = new MockPanel();
+    Panel panel2 = new MockPanel();
+
+    panel1.setLocation(50, 50);
+    panel1.setSize(100, 100);
+    panel2.setLocation(0, 0);
+    panel2.setSize(10, 10);
+
+    panel.add(panel1);
+    panel1.add(panel2);
+
+    assertSame(panel2, panel.getOwnerOfPoint(new Point(55, 55)));
   }
 }

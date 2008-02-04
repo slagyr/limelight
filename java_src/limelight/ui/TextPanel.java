@@ -47,9 +47,10 @@ public class TextPanel extends Panel
     return panel.getRectangleInsidePadding();
   }
 
-  public void paint(Graphics2D graphics)
-	{
-    this.graphics = graphics;
+  public void paint(java.awt.Rectangle clip)
+  {
+    Point absoluteLocation = getAbsoluteLocation();
+    graphics = (Graphics2D)getFrame().getGraphics().create(absoluteLocation.x + clip.x, absoluteLocation.y + clip.y, clip.width, clip.height);
 
     Aligner aligner = createAligner();
     graphics.setColor(Colors.resolve(getStyle().getTextColor()));
@@ -60,7 +61,7 @@ public class TextPanel extends Panel
       textLayout.draw(graphics, aligner.startingX(textLayout.getBounds().getWidth()), y);
       y += textLayout.getDescent() + textLayout.getLeading();
     }
-	}
+  }
 
   public void snapToSize()
   {

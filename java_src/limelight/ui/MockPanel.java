@@ -4,9 +4,9 @@ import java.awt.*;
 
 public class MockPanel extends RootBlockPanel
 {
-  public Graphics2D paintedGraphics;
   public limelight.Rectangle rectangleInsideMargin;
   public limelight.Rectangle rectangleInsidePadding;
+  public Rectangle paintedClip;
 
   public MockPanel()
   {
@@ -16,11 +16,6 @@ public class MockPanel extends RootBlockPanel
   public MockPanel(Block block)
   {
     super(block, new MockFrame());
-  }
-
-  public void paint(Graphics2D graphics)
-  {
-    this.paintedGraphics = graphics;  
   }
 
   public limelight.Rectangle getRectangleInsideMargins()
@@ -36,12 +31,25 @@ public class MockPanel extends RootBlockPanel
       return rectangleInsidePadding;
     return super.getRectangleInsidePadding();
   }
+
+  public void paint(Rectangle clip)
+  {
+    paintedClip = clip;
+  }
 }
 
 class MockFrame extends Frame
 {
+  public Graphics graphics;
+
   public MockFrame()
   {
     super(new MockBlock());
+    graphics = new MockGraphics();
+  }
+
+  public Graphics getGraphics()
+  {
+    return graphics;
   }
 }

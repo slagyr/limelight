@@ -37,6 +37,25 @@ public class FrameTest extends TestCase
     MockGraphics graphics = new MockGraphics();
     frame.paint(graphics);
 
-    assertSame(graphics, mockPanel.paintedGraphics);
+    assertEquals(graphics.getClipBounds(), mockPanel.paintedClip);
+  }
+
+  public void testListeners() throws Exception
+  {
+    checkListeners(frame.getMouseListeners(), "MouseListeners");
+    checkListeners(frame.getMouseMotionListeners(), "MouseMotionListeners");
+    checkListeners(frame.getMouseWheelListeners(), "MouseWheelListeners");
+    checkListeners(frame.getKeyListeners(), "KeyListeners");
+  }
+
+  private void checkListeners(Object[] listeners, String listenerType)
+  {
+    boolean found = false;
+    for (Object listener : listeners)
+    {
+      if(listener.getClass() == FrameListener.class)
+        found = true;
+    }
+    assertTrue("FrameListener was not included in " + listenerType, found);
   }
 }
