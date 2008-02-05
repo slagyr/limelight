@@ -72,7 +72,7 @@ public class BlockPanel extends Panel
   public void paint(Rectangle clip)
   {
     new PanelLayout(this).doLayout();
- 
+
     if (shouldBuildBuffer())
       buildBuffer();
 
@@ -155,7 +155,7 @@ public class BlockPanel extends Panel
     point = new Point(point.x - getX(), point.y - getY());
     for (Panel panel : children)
     {
-      if(panel.containsPoint(point))
+      if(panel.containsRelativePoint(point))
         return panel.getOwnerOfPoint(point);
     }
     return this;

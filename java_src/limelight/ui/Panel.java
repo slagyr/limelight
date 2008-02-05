@@ -1,7 +1,6 @@
 package limelight.ui;
 
 import limelight.LimelightError;
-import limelight.LimelightException;
 
 import java.awt.*;
 
@@ -101,12 +100,21 @@ public abstract class Panel
     return getParent().getFrame();
   }
 
-  public boolean containsPoint(Point point)
+  public boolean containsRelativePoint(Point point)
   {
-    return  point.x >= x &&
-            point.x < x + width &&
-            point.y >= y &&
-            point.y < y + height;
+    return point.x >= x &&
+           point.x < x + width &&
+           point.y >= y &&
+           point.y < y + height;
+  }
+
+  public boolean containsAbsolutePoint(Point point)
+  {
+    Point absoluteLocation = getAbsoluteLocation();
+    return point.x >= absoluteLocation.x &&
+           point.x < absoluteLocation.x + width &&
+           point.y >= absoluteLocation.y &&
+           point.y < absoluteLocation.y + height;
   }
 
   public Panel getOwnerOfPoint(Point point)
