@@ -68,23 +68,23 @@ public class PanelTest extends TestCase
     assertEquals(567, panel.getY());
   }
 
-  public void testContainsPoint() throws Exception
+  public void testContainsRealativePoint() throws Exception
   {
     panel.setLocation(100, 200);
     panel.setSize(300, 400);
 
-    assertFalse(panel.containsPoint(new Point(0, 0)));
-    assertFalse(panel.containsPoint(new Point(1000, 1000)));
-    assertFalse(panel.containsPoint(new Point(99, 400)));
-    assertFalse(panel.containsPoint(new Point(400, 400)));
-    assertFalse(panel.containsPoint(new Point(200, 199)));
-    assertFalse(panel.containsPoint(new Point(200, 600)));
+    assertFalse(panel.containsRelativePoint(new Point(0, 0)));
+    assertFalse(panel.containsRelativePoint(new Point(1000, 1000)));
+    assertFalse(panel.containsRelativePoint(new Point(99, 400)));
+    assertFalse(panel.containsRelativePoint(new Point(400, 400)));
+    assertFalse(panel.containsRelativePoint(new Point(200, 199)));
+    assertFalse(panel.containsRelativePoint(new Point(200, 600)));
 
-    assertTrue(panel.containsPoint(new Point(200, 400)));
-    assertTrue(panel.containsPoint(new Point(100, 400)));
-    assertTrue(panel.containsPoint(new Point(399, 400)));
-    assertTrue(panel.containsPoint(new Point(200, 200)));
-    assertTrue(panel.containsPoint(new Point(200, 599)));
+    assertTrue(panel.containsRelativePoint(new Point(200, 400)));
+    assertTrue(panel.containsRelativePoint(new Point(100, 400)));
+    assertTrue(panel.containsRelativePoint(new Point(399, 400)));
+    assertTrue(panel.containsRelativePoint(new Point(200, 200)));
+    assertTrue(panel.containsRelativePoint(new Point(200, 599)));
   }
 
   public void testIsAncestor() throws Exception
@@ -149,6 +149,27 @@ public class PanelTest extends TestCase
     assertEquals(new Point(1, 10), parent.getAbsoluteLocation());
     assertEquals(new Point(3, 30), child.getAbsoluteLocation());
     assertEquals(new Point(8, 80), grandChild.getAbsoluteLocation());
+  }
+
+  public void testContainsAbsolutePoint() throws Exception
+  {
+    createFamilyTree();
+
+    parent.setLocation(1, 10);
+    child.setLocation(2, 20);
+    grandChild.setLocation(5, 50);
+    grandChild.setSize(10, 10);
+
+    assertFalse(grandChild.containsAbsolutePoint(new Point(0, 0)));
+    assertFalse(grandChild.containsAbsolutePoint(new Point(100, 100)));
+    assertFalse(grandChild.containsAbsolutePoint(new Point(7, 85)));
+    assertFalse(grandChild.containsAbsolutePoint(new Point(18, 85)));
+    assertFalse(grandChild.containsAbsolutePoint(new Point(15, 79)));
+    assertFalse(grandChild.containsAbsolutePoint(new Point(15, 90)));
+
+    assertTrue(grandChild.containsAbsolutePoint(new Point(8, 80)));
+    assertTrue(grandChild.containsAbsolutePoint(new Point(17, 89)));
+    assertTrue(grandChild.containsAbsolutePoint(new Point(15, 85)));
   }
 }
 

@@ -16,10 +16,16 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
 
   private Panel panelFor(Point point)
   {
-    if(hooveredPanel != null && hooveredPanel.containsPoint(point))
-      return hooveredPanel.getOwnerOfPoint(point);
+    Panel result;
+    if(hooveredPanel != null && hooveredPanel.containsAbsolutePoint(point))
+      if(hooveredPanel.getParent() != null)
+        result = hooveredPanel.getOwnerOfPoint(new Point(point.x - hooveredPanel.getParent().getX(), point.y - hooveredPanel.getParent().getY()));
+      else
+        result = hooveredPanel.getOwnerOfPoint(point);
     else
-      return frame.getPanel().getOwnerOfPoint(point);
+      result = frame.getPanel().getOwnerOfPoint(point);
+
+    return result;
   }
 
   public void mouseClicked(MouseEvent e)
