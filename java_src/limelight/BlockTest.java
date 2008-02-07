@@ -183,7 +183,7 @@
 //		block.getStyle().setLeftBorderColor("green");
 //		block.getStyle().setLeftBorderWidth("4");
 //
-//		MockPanel panel = new MockPanel();
+//		MockRootBlockPanel panel = new MockRootBlockPanel();
 //		panel.add(block.getPanel());
 //	  block.getPanel().snapToDesiredSize();
 //
@@ -226,7 +226,7 @@
 //		block.getStyle().setLeftBorderWidth("4");
 //		block.getStyle().setLeftMargin("40");
 //
-//		MockPanel panel = new MockPanel();
+//		MockRootBlockPanel panel = new MockRootBlockPanel();
 //		panel.add(block.getPanel());
 //	  block.getPanel().snapToDesiredSize();
 //

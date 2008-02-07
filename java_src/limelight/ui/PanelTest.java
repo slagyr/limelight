@@ -7,27 +7,15 @@ import java.awt.*;
 
 public class PanelTest extends TestCase
 {
-  private TestablePanel panel;
-  private MockPanel parent;
-  private MockPanel child;
+  private MockPanel panel;
+  private MockRootBlockPanel parent;
+  private MockRootBlockPanel child;
   private Panel sibling;
-  private MockPanel grandChild;
-
-  private class TestablePanel extends Panel
-  {
-
-    public void paint(Rectangle clip)
-    {
-    }
-
-    public void snapToSize()
-    {
-    }
-  }
+  private MockRootBlockPanel grandChild;
 
   public void setUp() throws Exception
   {
-    panel = new TestablePanel();
+    panel = new MockPanel();
   }
 
   public void testPanelHasDefaultSize() throws Exception
@@ -102,12 +90,12 @@ public class PanelTest extends TestCase
 
   private void createFamilyTree() throws SterilePanelException
   {
-    parent = new MockPanel();
-    child = new MockPanel();
+    parent = new MockRootBlockPanel();
+    child = new MockRootBlockPanel();
     parent.add(child);
-    grandChild = new MockPanel();
+    grandChild = new MockRootBlockPanel();
     child.add(grandChild);
-    sibling = new MockPanel();
+    sibling = new MockRootBlockPanel();
     parent.add(sibling);
   }
 

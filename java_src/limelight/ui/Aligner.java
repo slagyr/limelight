@@ -1,7 +1,5 @@
 package limelight.ui;
 
-import limelight.Rectangle;
-
 public class Aligner
 {
 	private Rectangle area;

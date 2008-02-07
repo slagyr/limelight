@@ -1,11 +1,10 @@
 package limelight.ui;
 
-import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
 public interface Block
 {
-  BlockPanel getPanel();
+  ParentPanel getPanel();
   Style getStyle();
   String getClassName();
   String getText();

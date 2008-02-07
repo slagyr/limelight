@@ -9,7 +9,7 @@ public class FrameListenerTest extends TestCase
   private FrameListener listener;
   private Frame frame;
   private MockBlock childBlock;
-  private BlockPanel childPanel;
+  private ParentPanel childPanel;
   private MockBlock rootBlock;
 
   public void setUp() throws Exception
@@ -103,7 +103,7 @@ public class FrameListenerTest extends TestCase
   public void testMouseEnteredAndExited() throws Exception
   {
     MockBlock child2Block = new MockBlock();
-    BlockPanel child2Panel = new BlockPanel(child2Block);
+    ParentPanel child2Panel = new BlockPanel(child2Block);
     frame.getPanel().add(child2Panel);
     child2Panel.setLocation(1, 1);
     child2Panel.setSize(100, 100);
@@ -131,7 +131,7 @@ public class FrameListenerTest extends TestCase
   public void testMouseEnteredAndExitedWhileDragging() throws Exception
   {
     MockBlock child2Block = new MockBlock();
-    BlockPanel child2Panel = new BlockPanel(child2Block);
+    ParentPanel child2Panel = new BlockPanel(child2Block);
     frame.getPanel().add(child2Panel);
     child2Panel.setLocation(1, 1);
     child2Panel.setSize(100, 100);

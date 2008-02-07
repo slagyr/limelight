@@ -19,7 +19,7 @@ public class RootBlockPanel extends BlockPanel
   {
     Style style = getBlock().getStyle();
     width = style.asInt(style.getWidth());
-    height = style.asInt(style.getHeight());;
+    height = style.asInt(style.getHeight());
   }
 
 }

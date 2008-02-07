@@ -1,7 +1,5 @@
 package limelight.ui;
 
-import limelight.ui.FlatStyle;
-
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
@@ -32,7 +30,7 @@ public class MockBlock implements Block
     style = new FlatStyle();
   }
 
-  public BlockPanel getPanel()
+  public ParentPanel getPanel()
   {
     return null;
   }

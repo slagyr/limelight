@@ -8,18 +8,18 @@ import java.awt.geom.Line2D;
 public class BorderPainterTest extends TestCase
 {
   private MockBlock block;
-  private MockPanel panel;
+  private MockRootBlockPanel panel;
   private FlatStyle style;
   private BorderPainter painter;
-  private limelight.Rectangle border;
+  private Rectangle border;
   private MockGraphics graphics;
 
   public void setUp() throws Exception
   {
-    panel = new MockPanel();
+    panel = new MockRootBlockPanel();
     block = (MockBlock)panel.getBlock();
     style = block.style;
-    border = new limelight.Rectangle(5, 5, 100, 100);
+    border = new Rectangle(5, 5, 100, 100);
     panel.rectangleInsideMargin = border;
     painter = new BorderPainter(panel);
     graphics = new MockGraphics();

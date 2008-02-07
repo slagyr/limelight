@@ -8,7 +8,7 @@ public class BlockPanelTest extends TestCase
 {
   private TestablePanel panel;
   private MockBlock block;
-  private BlockPanel rootPanel;
+  private ParentPanel rootPanel;
 
   private class TestablePanel extends BlockPanel
   {
@@ -76,60 +76,14 @@ public class BlockPanelTest extends TestCase
 
   public void testCanAddPanels() throws Exception
   {
-    BlockPanel panel1 = new BlockPanel(new MockBlock());
-    BlockPanel panel2 = new BlockPanel(new MockBlock());
+    ParentPanel panel1 = new BlockPanel(new MockBlock());
+    ParentPanel panel2 = new BlockPanel(new MockBlock());
 
     panel.add(panel1);
     panel.add(panel2);
 
     assertEquals(panel1, panel.getChildren().get(0));
     assertEquals(panel2, panel.getChildren().get(1));
-  }
-
-  public void testPaintingWillPaintAllTheChildPanels() throws Exception
-  {
-    MockPanel panel1 = new MockPanel();
-    panel1.getBlock().getStyle().setWidth("100");
-    panel1.getBlock().getStyle().setHeight("101");
-    MockPanel panel2 = new MockPanel();
-    panel2.getBlock().getStyle().setWidth("200");
-    panel2.getBlock().getStyle().setHeight("202");
-
-    rootPanel.add(panel1);
-    rootPanel.add(panel2);
-
-    Rectangle rectangle = new Rectangle(0, 0, 500, 500);
-    rootPanel.paint(rectangle);
-
-    Rectangle bounds1 = panel1.paintedClip;
-    assertEquals(0, bounds1.getX(), 0.1);
-    assertEquals(0, bounds1.getY(), 0.1);
-    assertEquals(100, bounds1.getWidth(), 0.1);
-    assertEquals(101, bounds1.getHeight(), 0.1);
-
-    Rectangle bounds2 = panel2.paintedClip;
-    assertEquals(0, bounds2.getX(), 0.1);
-    assertEquals(0, bounds2.getY(), 0.1);
-    assertEquals(200, bounds2.getWidth(), 0.1);
-    assertEquals(202, bounds2.getHeight(), 0.1);
-  }
-  
-  public void testPaintingChildrenWithPartialClips() throws Exception
-  {
-    MockPanel panel1 = new MockPanel();
-    panel1.getBlock().getStyle().setWidth("200");
-    panel1.getBlock().getStyle().setHeight("200");
-
-    rootPanel.add(panel1);
-
-    Rectangle rectangle = new Rectangle(0, 0, 100, 101);
-    rootPanel.paint(rectangle);
-
-    Rectangle bounds1 = panel1.paintedClip;
-    assertEquals(0, bounds1.getX(), 0.1);
-    assertEquals(0, bounds1.getY(), 0.1);
-    assertEquals(100, bounds1.getWidth(), 0.1);
-    assertEquals(101, bounds1.getHeight(), 0.1);
   }
   
   public void testShouldBuildBuffer() throws Exception
@@ -184,7 +138,7 @@ public class BlockPanelTest extends TestCase
     catch(Exception e)
     {
       assertEquals(SterilePanelException.class, e.getClass());
-      assertEquals("The panel for block named 'Blah' has been sterilized and child components may not be added.", e.getMessage());
+      assertEquals("The panel for block named 'Blah' has been sterilized. Child components may not be added.", e.getMessage());
     }
 
     assertEquals(0, panel.getChildren().size());
@@ -193,7 +147,7 @@ public class BlockPanelTest extends TestCase
 
   public void testSnapToSizeWithAbsoluteValues() throws Exception
   {
-    BlockPanel parent = new BlockPanel(new MockBlock());
+    ParentPanel parent = new BlockPanel(new MockBlock());
     parent.setSize(1000, 1000);
     parent.add(panel);
 
@@ -206,7 +160,7 @@ public class BlockPanelTest extends TestCase
 
   public void testSnapToSizeWithPercentages() throws Exception
   {
-    BlockPanel parent = new BlockPanel(new MockBlock());
+    ParentPanel parent = new BlockPanel(new MockBlock());
     parent.setSize(1000, 1000);
     parent.getBlock().getStyle().setMargin("100");
     parent.getBlock().getStyle().setPadding("200");
@@ -221,8 +175,8 @@ public class BlockPanelTest extends TestCase
 
   public void testGetOwnerOfPoint() throws Exception
   {
-    Panel panel1 = new MockPanel();
-    Panel panel2 = new MockPanel();
+    Panel panel1 = new MockRootBlockPanel();
+    Panel panel2 = new MockRootBlockPanel();
 
     panel1.setLocation(0, 0);
     panel1.setSize(100, 100);
@@ -242,8 +196,8 @@ public class BlockPanelTest extends TestCase
 
   public void testGetOwnerOfPointWithNestedPanels() throws Exception
   {
-    MockPanel panel1 = new MockPanel();
-    Panel panel2 = new MockPanel();
+    MockRootBlockPanel panel1 = new MockRootBlockPanel();
+    Panel panel2 = new MockRootBlockPanel();
 
     panel1.setLocation(50, 50);
     panel1.setSize(100, 100);

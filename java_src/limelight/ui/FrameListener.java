@@ -90,7 +90,7 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
     if(descendant == ancestor || descendant == null)
       return;
     enter(descendant.getParent(), ancestor, e);
-    if(descendant instanceof BlockPanel)
+    if(descendant instanceof ParentPanel)
     {
       descendant.getBlock().hover_on();
       descendant.getBlock().mouse_entered(e);
@@ -101,7 +101,7 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
   {
     while(descendant != ancestor)
     {
-      if(descendant instanceof BlockPanel)
+      if(descendant instanceof ParentPanel)
       {
         descendant.getBlock().mouse_exited(e);
         descendant.getBlock().hover_off();

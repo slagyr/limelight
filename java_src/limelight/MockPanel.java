@@ -1,5 +1,7 @@
 package limelight;
 
+import limelight.ui.Rectangle;
+
 public class MockPanel extends Panel
 {
   public Rectangle rectangleInsideMargin;

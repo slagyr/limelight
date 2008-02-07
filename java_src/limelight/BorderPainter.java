@@ -1,8 +1,6 @@
 package limelight;
 
-import limelight.ui.Style;
-import limelight.ui.Pen;
-import limelight.ui.Colors;
+import limelight.ui.*;
 
 import java.awt.*;
 
@@ -18,7 +16,7 @@ public class BorderPainter extends Painter
     Style style = getStyle();
     Pen pen = new Pen(graphics);
 
-    Rectangle r = panel.getRectangleInsideMargins();
+    limelight.ui.Rectangle r = panel.getRectangleInsideMargins();
     r.shave(resolveInt(style.getTopBorderWidth()) / 2, resolveInt(style.getRightBorderWidth()) / 2 + 1, resolveInt(style.getBottomBorderWidth()) / 2 + 1, resolveInt(style.getLeftBorderWidth()) / 2);
 
     int topWidth = resolveInt(style.getTopBorderWidth());

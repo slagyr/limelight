@@ -1,8 +1,6 @@
 package limelight;
 
-import limelight.ui.Style;
-import limelight.ui.Colors;
-import limelight.ui.ImageFillStrategies;
+import limelight.ui.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,7 +17,7 @@ public class BackgroundPainter extends Painter
   public void paint(Graphics2D graphics)
   {
     Style style = getStyle();
-    Rectangle r = panel.getRectangleInsideBorders();
+    limelight.ui.Rectangle r = panel.getRectangleInsideBorders();
     if (style.getSecondaryBackgroundColor() != null && style.getGradientAngle() != null && style.getGradientPenetration() != null)
       new GradientPainter(panel).paint(graphics);
     else if (style.getBackgroundColor() != null)

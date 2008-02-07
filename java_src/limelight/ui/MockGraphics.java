@@ -1,7 +1,5 @@
 package limelight.ui;
 
-import limelight.Rectangle;
-
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.image.*;
@@ -16,6 +14,11 @@ public class MockGraphics extends java.awt.Graphics2D
 	public LinkedList<DrawnShape> drawnShapes;
   private BasicStroke stroke;
   private Rectangle clip;
+  public Rectangle drawnImageDestination;
+  public Rectangle drawnImageSource;
+  public Image drawnImage;
+  public int drawnImageX;
+  public int drawnImageY;
 
   public class DrawnShape
 	{
@@ -38,7 +41,7 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public DrawnShape drawnShape(int i)
 	{
-		return (DrawnShape)drawnShapes.get(i);
+		return drawnShapes.get(i);
 	}
 
 	public void draw(Shape shape)
@@ -239,7 +242,7 @@ public class MockGraphics extends java.awt.Graphics2D
 		return null;
 	}
 
-	public limelight.Rectangle getClipBounds()
+	public Rectangle getClipBounds()
 	{
 		return clip;
 	}
@@ -315,9 +318,12 @@ public class MockGraphics extends java.awt.Graphics2D
 	{
 	}
 
-	public boolean drawImage(Image image, int i, int i1, ImageObserver imageObserver)
+	public boolean drawImage(Image image, int x, int y, ImageObserver imageObserver)
 	{
-		return false;
+    drawnImage = image;
+    drawnImageX = x;
+    drawnImageY = y;
+    return true;
 	}
 
 	public boolean drawImage(Image image, int i, int i1, int i2, int i3, ImageObserver imageObserver)
@@ -335,9 +341,12 @@ public class MockGraphics extends java.awt.Graphics2D
 		return false;
 	}
 
-	public boolean drawImage(Image image, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7, ImageObserver imageObserver)
+	public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver imageObserver)
 	{
-		return false;
+    drawnImage = image;
+    drawnImageDestination = new Rectangle(dx1, dy1, dx2 - dx1, dy2 - dy1);
+    drawnImageSource = new Rectangle(sx1, sy1, sx2 - sx1, sy2 - sy1);
+    return true;
 	}
 
 	public boolean drawImage(Image image, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7, Color color, ImageObserver imageObserver)

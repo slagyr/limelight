@@ -19,7 +19,7 @@ public class Frame extends JPanel
     addKeyListener(listener);
   }
 
-  public BlockPanel getPanel()
+  public ParentPanel getPanel()
   {
     return panel;
   }
@@ -39,6 +39,9 @@ public class Frame extends JPanel
   public void paint(Graphics g)
   {
 //    panel.paint((Graphics2D)g);
-    panel.paint(g.getClipBounds());
+//    panel.paint(new Rectangle(g.getClipBounds()));
+    PaintJob job = new PaintJob(new Rectangle(0, 0, getWidth(), getHeight()));
+    job.paint(panel);
+    job.applyTo(getGraphics());
   }
 }

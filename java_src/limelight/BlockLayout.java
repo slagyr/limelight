@@ -1,6 +1,6 @@
 package limelight;
 
-import limelight.ui.Aligner;
+import limelight.ui.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ public class BlockLayout implements LayoutManager
   private Panel panel;
   private boolean inScrollMode;
   private JPanel scrollView;
-  private Rectangle area;
+  private limelight.ui.Rectangle area;
   private int consumedWidth;
   private int consumedHeight;
 
@@ -128,7 +128,7 @@ public class BlockLayout implements LayoutManager
     calculateConsumedDimentions();
   }
 
-  private Aligner buildAligner(Rectangle rectangle)
+  private Aligner buildAligner(limelight.ui.Rectangle rectangle)
   {
     Block block = panel.getBlock();
     return new Aligner(rectangle, block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
@@ -237,7 +237,7 @@ public class BlockLayout implements LayoutManager
     public void layoutContainer(Container container)
     {
       String horizontalAlignment = panel.getBlock().getStyle().getHorizontalAlignment();
-      Aligner aligner = new Aligner(new Rectangle(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
+      Aligner aligner = new Aligner(new limelight.ui.Rectangle(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
       int y = aligner.startingY();
       for(Row row : rows)
       {

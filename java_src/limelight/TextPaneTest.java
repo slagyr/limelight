@@ -5,12 +5,12 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.awt.*;
 
-import limelight.ui.Style;
+import limelight.ui.*;
 
 public class TextPaneTest extends TestCase
 {
   private TextPane pane;
-  private Rectangle bounds;
+  private limelight.ui.Rectangle bounds;
   private MockBlock block;
   private Style style;
   private JFrame frame;
@@ -19,7 +19,7 @@ public class TextPaneTest extends TestCase
   public void setUp() throws Exception
   {
     TextPane.widthPadding = 0;
-    bounds = new Rectangle(0, 0, 100, 100);
+    bounds = new limelight.ui.Rectangle(0, 0, 100, 100);
     panel = new MockPanel();
     panel.rectangleInsidePadding = bounds;
     style = panel.getBlock().getStyle();
