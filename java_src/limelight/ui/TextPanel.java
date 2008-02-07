@@ -6,7 +6,6 @@ import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.text.AttributedString;
 import java.util.LinkedList;
-import limelight.Rectangle;
 
 public class TextPanel extends Panel
 {
@@ -20,6 +19,7 @@ public class TextPanel extends Panel
   private int lastChecksum;
   private Graphics2D graphics;
 
+  //TODO MDM panel is not really needed here.  It's the same as parent.
   public TextPanel(BlockPanel panel, String text)
   {
     this.panel = panel;
@@ -36,22 +36,13 @@ public class TextPanel extends Panel
     this.text = text;
   }
 
-  public BlockPanel getPanel()
+  public ParentPanel getPanel()
   {
     return panel;
   }
 
-  //TODO MDM - Wow! This is inefficient.  Called in a loop below.Ê
-  public Rectangle getBounds()
+  public void paintOn(Graphics2D graphics)
   {
-    return panel.getRectangleInsidePadding();
-  }
-
-  public void paint(java.awt.Rectangle clip)
-  {
-    Point absoluteLocation = getAbsoluteLocation();
-    graphics = (Graphics2D)getFrame().getGraphics().create(absoluteLocation.x + clip.x, absoluteLocation.y + clip.y, clip.width, clip.height);
-
     Aligner aligner = createAligner();
     graphics.setColor(Colors.resolve(getStyle().getTextColor()));
     float y = 0;
@@ -102,7 +93,8 @@ public class TextPanel extends Panel
           LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics().getFontRenderContext());
           while (lbm.getPosition() < paragraph.length())
           {
-            TextLayout layout = lbm.nextLayout((float) getBounds().getWidth());
+                                                      //TODO MDM - Wow! This is inefficient. The getChildConsumableArea has to be calculated every time!
+            TextLayout layout = lbm.nextLayout((float)panel.getChildConsumableArea().width);
             lines.add(layout);
           }
         }

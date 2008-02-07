@@ -1,7 +1,6 @@
 package limelight;
 
-import limelight.ui.Style;
-import limelight.ui.Colors;
+import limelight.ui.*;
 
 import java.awt.*;
 
@@ -15,7 +14,7 @@ public class GradientPainter extends Painter
   public void paint(Graphics2D graphics)
   {
     Style style = getStyle();
-    Rectangle r = panel.getRectangleInsideBorders();
+    limelight.ui.Rectangle r = panel.getRectangleInsideBorders();
     Color color1 = Colors.resolve(style.getBackgroundColor());
     Color color2 = Colors.resolve(style.getSecondaryBackgroundColor());
     int angle = Integer.parseInt(style.getGradientAngle());

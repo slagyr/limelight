@@ -1,4 +1,4 @@
-package limelight;
+package limelight.ui;
 
 public class Rectangle extends java.awt.Rectangle
 {

@@ -1,55 +1,22 @@
 package limelight.ui;
 
+import java.awt.image.BufferedImage;
 import java.awt.*;
 
-public class MockPanel extends RootBlockPanel
+class MockPanel extends Panel
 {
-  public limelight.Rectangle rectangleInsideMargin;
-  public limelight.Rectangle rectangleInsidePadding;
-  public Rectangle paintedClip;
+  public BufferedImage buffer;
 
-  public MockPanel()
+  public BufferedImage getBuffer()
   {
-    super(new MockBlock(), new MockFrame());
+    return buffer;
   }
 
-  public MockPanel(Block block)
+  public void snapToSize()
   {
-    super(block, new MockFrame());
   }
 
-  public limelight.Rectangle getRectangleInsideMargins()
+  public void paintOn(Graphics2D graphics)
   {
-    if(rectangleInsideMargin != null)
-      return rectangleInsideMargin;
-    return super.getRectangleInsideMargins();
-  }
-
-  public limelight.Rectangle getRectangleInsidePadding()
-  {
-    if(rectangleInsidePadding != null)
-      return rectangleInsidePadding;
-    return super.getRectangleInsidePadding();
-  }
-
-  public void paint(Rectangle clip)
-  {
-    paintedClip = clip;
-  }
-}
-
-class MockFrame extends Frame
-{
-  public Graphics graphics;
-
-  public MockFrame()
-  {
-    super(new MockBlock());
-    graphics = new MockGraphics();
-  }
-
-  public Graphics getGraphics()
-  {
-    return graphics;
   }
 }

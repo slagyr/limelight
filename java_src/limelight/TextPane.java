@@ -1,9 +1,6 @@
 package limelight;
 
-import limelight.ui.Style;
-import limelight.ui.Colors;
-import limelight.ui.Aligner;
-import limelight.ui.FontFactory;
+import limelight.ui.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +43,7 @@ public class TextPane extends JPanel
     return panel;
   }
 
-  public Rectangle getBounds()
+  public limelight.ui.Rectangle getBounds()
   {
     return panel.getRectangleInsidePadding();
   }
@@ -76,7 +73,7 @@ public class TextPane extends JPanel
 
   private Aligner createAligner()
   {
-    return new Aligner(new Rectangle(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
+    return new Aligner(new limelight.ui.Rectangle(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
   }
 
   private Style getStyle()

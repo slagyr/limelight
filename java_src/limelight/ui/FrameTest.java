@@ -22,7 +22,7 @@ public class FrameTest extends TestCase
 
   public void testHasRootPanel() throws Exception
   {
-    BlockPanel panel = frame.getPanel();
+    ParentPanel panel = frame.getPanel();
 
     assertNotNull(panel);
     assertEquals(0, panel.getX());
@@ -31,7 +31,7 @@ public class FrameTest extends TestCase
 
   public void testPaintWillPaintPanel() throws Exception
   {
-    MockPanel mockPanel = new MockPanel();
+    MockRootBlockPanel mockPanel = new MockRootBlockPanel();
     frame.setPanel(mockPanel);
 
     MockGraphics graphics = new MockGraphics();

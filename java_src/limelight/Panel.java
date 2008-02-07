@@ -1,7 +1,6 @@
 package limelight;
 
-import limelight.ui.Style;
-import limelight.ui.TextAccessor;
+import limelight.ui.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +83,7 @@ public class Panel extends JPanel
 
     Composite originalComposite = ((Graphics2D) graphics).getComposite();
     applyAlphaComposite(graphics);
-    Rectangle clip = new Rectangle(graphics.getClipBounds());
+    limelight.ui.Rectangle clip = new limelight.ui.Rectangle(graphics.getClipBounds());
     graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
     ((Graphics2D) graphics).setComposite(originalComposite);
     super.paintChildren(graphics);
@@ -108,11 +107,11 @@ public class Panel extends JPanel
 
   public Dimension getPreferredSize()
   {
-    Rectangle r = null;
+    limelight.ui.Rectangle r;
     if (getParent().getClass() == Panel.class)
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
-      r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
+      r = new limelight.ui.Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
     int width = translateDimension(block.getStyle().getWidth(), r.width);
     int height = translateDimension(block.getStyle().getHeight(), r.height);
     return new Dimension(width, height);
@@ -128,30 +127,30 @@ public class Panel extends JPanel
     super.setLocation(new Point((int) point.getX() + getXOffset(), (int) point.getY() + getYOffset()));
   }
 
-  public Rectangle getRectangle()
+  public limelight.ui.Rectangle getRectangle()
   {
-    return new Rectangle(0, 0, getWidth(), getHeight());
+    return new limelight.ui.Rectangle(0, 0, getWidth(), getHeight());
   }
 
-  public Rectangle getRectangleInsideMargins()
+  public limelight.ui.Rectangle getRectangleInsideMargins()
   {
-    Rectangle r = getRectangle();
+    limelight.ui.Rectangle r = getRectangle();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
     return r;
   }
 
-  public Rectangle getRectangleInsideBorders()
+  public limelight.ui.Rectangle getRectangleInsideBorders()
   {
-    Rectangle r = getRectangleInsideMargins();
+    limelight.ui.Rectangle r = getRectangleInsideMargins();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopBorderWidth()), style.asInt(style.getRightBorderWidth()), style.asInt(style.getBottomBorderWidth()), style.asInt(style.getLeftBorderWidth()));
     return r;
   }
 
-  public Rectangle getRectangleInsidePadding()
+  public limelight.ui.Rectangle getRectangleInsidePadding()
   {
-    Rectangle r = getRectangleInsideBorders();
+    limelight.ui.Rectangle r = getRectangleInsideBorders();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
     return r;

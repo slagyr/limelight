@@ -1,21 +1,16 @@
 package limelight.ui;
 
-import limelight.LimelightException;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-public class BlockPanel extends Panel
+public class BlockPanel extends ParentPanel
 {
-  private LinkedList<Panel> children;
   private Block block;
   private BufferedImage buffer;
   private int checksum;
   private LinkedList<Painter> painters;
   private TextAccessor textAccessor;
-  private boolean sterilized;
 
   public BlockPanel(Block block)
   {
@@ -29,19 +24,6 @@ public class BlockPanel extends Panel
   public Block getBlock()
   {
     return block;
-  }
-
-  public void add(Panel panel) throws SterilePanelException
-  {
-    if (sterilized)
-      throw new SterilePanelException(block.getClassName());
-    children.add(panel);
-    panel.setParent(this);
-  }
-
-  public LinkedList<Panel> getChildren()
-  {
-    return children;
   }
 
   public TextAccessor getTextAccessor()
@@ -59,95 +41,54 @@ public class BlockPanel extends Panel
     return painters;
   }
 
-  public void sterilize()
+  public BufferedImage getBuffer()
   {
-    sterilized = true;
-  }
-
-  public boolean isSterilized()
-  {
-    return sterilized;
-  }
-
-  public void paint(Rectangle clip)
-  {
-    new PanelLayout(this).doLayout();
-
     if (shouldBuildBuffer())
       buildBuffer();
-
-    Point absoluteLocation = getAbsoluteLocation();
-    Graphics2D graphics = (Graphics2D)getFrame().getGraphics().create(absoluteLocation.x + clip.x, absoluteLocation.y + clip.y, clip.width, clip.height);
-
-
-    Composite originalComposite = graphics.getComposite();
-    applyAlphaComposite(graphics);
-    graphics.drawImage(buffer, 0, 0, clip.width, clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
-    graphics.setComposite(originalComposite);
-
-
-    for(Panel panel : children)
-    {
-      Rectangle panelBounds = panel.getExternalRectangle();
-      if(clip.intersects(panelBounds))
-      {
-        Rectangle intersection = clip.intersection(panelBounds);
-        intersection.translate(panel.getX() * -1, panel.getY() * -1);
-        panel.paint(intersection);
-      }
-    }
-  }
-
-  // MDM - Purely for debuggin graphics
-  private void showClip(final Rectangle clip, final BufferedImage buffer, String title)
-  {
-    JFrame jframe = new JFrame(title);
-    jframe.setSize(clip.width,  clip.height + 30);
-    jframe.add(new JPanel() {
-      public void paint(Graphics g)
-      {
-        g.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
-      }
-    });
-    jframe.setVisible(true);
+    return buffer;
   }
 
   public void repaint()
   {
-    Point point = getAbsoluteLocation();
-    getFrame().getPanel().paint(new Rectangle(point.x, point.y, width, height));
+    PaintJob job = new PaintJob(getAbsoluteBounds());
+    job.paint(getFrame().getPanel());
+    job.applyTo(getFrame().getGraphics());
   }
-
 
   public void snapToSize()
   {
-    Rectangle r = getParent().getRectangleInsidePadding();
+    Rectangle r = getParent().getChildConsumableArea();
     width = translateDimension(block.getStyle().getWidth(), r.width);
     height = translateDimension(block.getStyle().getHeight(), r.height);
   }
 
-  public limelight.Rectangle getRectangleInsideMargins()
+  public Rectangle getRectangleInsideMargins()
   {
-    limelight.Rectangle r = getInternalRectangle();
+    Rectangle r = getInternalRectangle();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
     return r;
   }
 
-  public limelight.Rectangle getRectangleInsideBorders()
+  public Rectangle getRectangleInsideBorders()
   {
-    limelight.Rectangle r = getRectangleInsideMargins();
+    Rectangle r = getRectangleInsideMargins();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopBorderWidth()), style.asInt(style.getRightBorderWidth()), style.asInt(style.getBottomBorderWidth()), style.asInt(style.getLeftBorderWidth()));
     return r;
   }
 
-  public limelight.Rectangle getRectangleInsidePadding()
+  public Rectangle getRectangleInsidePadding()
   {
-    limelight.Rectangle r = getRectangleInsideBorders();
+    Rectangle r = getRectangleInsideBorders();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
     return r;
+  }
+
+  public Rectangle getChildConsumableArea()
+  {
+    return getRectangleInsidePadding();
   }
 
   public Panel getOwnerOfPoint(Point point)
@@ -161,6 +102,11 @@ public class BlockPanel extends Panel
     return this;
   }
 
+  public boolean usesBuffer()
+  {
+    return true;
+  }
+
   protected boolean shouldBuildBuffer()
   {
     return buffer == null || checksum != checksum();
@@ -171,10 +117,15 @@ public class BlockPanel extends Panel
     buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D bufferGraphics = (Graphics2D) buffer.getGraphics();
 
-    for (Painter painter : painters)
-      painter.paint(bufferGraphics);
+    paintOn(bufferGraphics);
 
     checksum = checksum();
+  }
+
+  public void paintOn(Graphics2D bufferGraphics)
+  {
+    for (Painter painter : painters)
+      painter.paint(bufferGraphics);
   }
 
   public int checksum()
@@ -220,10 +171,4 @@ public class BlockPanel extends Panel
 
 }
 
-class SterilePanelException extends LimelightException
-{
-  SterilePanelException(String name)
-  {
-    super("The panel for block named '" + name + "' has been sterilized and child components may not be added.");
-  }
-}
+

@@ -1,7 +1,6 @@
 package limelight.ui;
 
 import junit.framework.TestCase;
-import limelight.Rectangle;
 
 import javax.swing.*;
 
@@ -11,13 +10,13 @@ public class TextPanelTest extends TestCase
   private Rectangle bounds;
   private Style style;
   private JFrame frame;
-  private MockPanel parent;
+  private MockRootBlockPanel parent;
 
   public void setUp() throws Exception
   {
     TextPanel.widthPadding = 0;
     bounds = new Rectangle(0, 0, 100, 100);
-    parent = new MockPanel();
+    parent = new MockRootBlockPanel();
     parent.rectangleInsidePadding = bounds;
     style = parent.getBlock().getStyle();
     panel = new TextPanel(parent, "Some Text");

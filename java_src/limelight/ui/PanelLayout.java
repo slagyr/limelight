@@ -1,6 +1,5 @@
 package limelight.ui;
 
-import limelight.Rectangle;
 import java.util.LinkedList;
 
 public class PanelLayout
@@ -79,7 +78,7 @@ public class PanelLayout
     }
   }
 
-  public BlockPanel getPanel()
+  public ParentPanel getPanel()
   {
     return panel;
   }

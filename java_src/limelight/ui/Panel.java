@@ -3,6 +3,8 @@ package limelight.ui;
 import limelight.LimelightError;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 public abstract class Panel
 {
@@ -10,7 +12,7 @@ public abstract class Panel
   protected int width;
   private int x;
   private int y;
-  private BlockPanel parent;
+  private ParentPanel parent;
 
   public Panel()
   {
@@ -70,24 +72,40 @@ public abstract class Panel
     this.y = y;
   }
 
-  public limelight.Rectangle getInternalRectangle()
+  public Rectangle getInternalRectangle()
   {
-    return new limelight.Rectangle(0, 0, getWidth(), getHeight());
+    return new Rectangle(0, 0, getWidth(), getHeight());
   }
 
-  public limelight.Rectangle getExternalRectangle()
+  public Rectangle getBounds()
   {
-    return new limelight.Rectangle(x, y, getWidth(), getHeight());
+    return new Rectangle(x, y, getWidth(), getHeight());
   }
 
-  public BlockPanel getParent()
+  public Rectangle getAbsoluteBounds()
+  {
+    Point absoluteLocation = getAbsoluteLocation();
+    return new Rectangle(absoluteLocation.x, absoluteLocation.y, getWidth(), getHeight());
+  }
+
+  public ParentPanel getParent()
   {
     return parent;
   }
 
-  public void setParent(BlockPanel parent)
+  public void setParent(ParentPanel parent)
   {
     this.parent = parent;
+  }
+
+  public boolean hasChildren()
+  {
+    return false;
+  }
+
+  public LinkedList<Panel> getChildren()
+  {
+    return null;
   }
 
   public Block getBlock()
@@ -160,7 +178,16 @@ public abstract class Panel
     return new Point(x, y);
   }
 
-  public abstract void paint(java.awt.Rectangle clip);
+  public boolean usesBuffer()
+  {
+    return false;
+  }
+
+  public BufferedImage getBuffer()
+  {
+    throw new LimelightError("Can't get buffer from a panel that doesn't use buffers");
+  }
 
   public abstract void snapToSize();
+  public abstract void paintOn(Graphics2D graphics);
 }
