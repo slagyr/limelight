@@ -6,11 +6,11 @@ public class PanelLayout
 {
 	private LinkedList<Row> rows;
 	private Row currentRow;
-  private BlockPanel panel;
+  private ParentPanel panel;
   private Rectangle area;
   private int consumedHeight;
 
-  public PanelLayout(BlockPanel panel)
+  public PanelLayout(ParentPanel panel)
   {
     this.panel = panel;
     rows = new LinkedList<Row>();
@@ -24,7 +24,7 @@ public class PanelLayout
     reset();
     buildRows();
 
-    Aligner aligner = buildAligner(panel.getRectangleInsidePadding());
+    Aligner aligner = buildAligner(panel.getChildConsumableArea());
     aligner.addConsumedHeight(consumedHeight);
     int y = aligner.startingY();
     for(Row row : rows)
@@ -40,6 +40,7 @@ public class PanelLayout
     for(Panel child : panel.getChildren())
     {
       child.snapToSize();
+      child.doLayout();
       if (!currentRow.isEmpty() && !currentRow.fits(child))
         newRow();
       currentRow.add(child);
@@ -55,7 +56,7 @@ public class PanelLayout
 
   private void reset()
 	{
-    area = panel.getRectangleInsidePadding();
+    area = panel.getChildConsumableArea();
     rows.clear();
 		newRow();
 	}

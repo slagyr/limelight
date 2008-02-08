@@ -209,4 +209,16 @@ public class BlockPanelTest extends TestCase
 
     assertSame(panel2, panel.getOwnerOfPoint(new Point(55, 55)));
   }
+
+  public void testRepaint() throws Exception
+  {
+    MockFrame frame = new MockFrame();
+    panel.setParent(frame.getPanel());
+    MockLayout layout = new MockLayout();
+    panel.setLayout(layout);
+
+    panel.repaint();
+
+    assertTrue(layout.layoutPerformed);
+  }
 }

@@ -12,6 +12,7 @@ public abstract class ParentPanel extends Panel
   public ParentPanel()
   {
     super();
+    children = new LinkedList<Panel>();
   }
 
   public void add(Panel panel) throws SterilePanelException

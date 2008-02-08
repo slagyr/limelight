@@ -23,12 +23,8 @@ public class PaintJob
   {
     if(panelIsInClip(panel))
     {
-      //TODO MDM Hackery!  Layout need only be done once per paint request as long as it traverses it's children.
-      if(panel instanceof BlockPanel)
-        new PanelLayout((BlockPanel)panel).doLayout();
-
       applyAlphaCompositeFor(panel);
-      pasteClipFor(panel);
+      paintClipFor(panel);
       restoreComposite();
       paintChildren(panel);
     }
@@ -55,7 +51,7 @@ public class PaintJob
     return clip.intersects(panelClip);
   }
 
-  public void pasteClipFor(Panel panel)
+  public void paintClipFor(Panel panel)
   {
     Rectangle panelBounds = panel.getAbsoluteBounds();
 
