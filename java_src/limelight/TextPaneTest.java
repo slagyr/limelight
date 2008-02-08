@@ -66,14 +66,14 @@ public class TextPaneTest extends TestCase
     assertEquals(138, size.height);
   }
 
-  public void testDimnsionsWhenLastLineIsLongest() throws Exception
-  {
-    useFrame();
-    pane.setText("1\n2\n3\nlongest");
-    Dimension size = pane.getPreferredSize();
-    assertEquals(34, size.width);
-    assertEquals(46, size.height);
-  }
+//  public void testDimnsionsWhenLastLineIsLongest() throws Exception
+//  {
+//    useFrame();
+//    pane.setText("1\n2\n3\nlongest");
+//    Dimension size = pane.getPreferredSize();
+//    assertEquals(34, size.width);
+//    assertEquals(46, size.height);
+//  }
 
   private void useFrame()
   {

@@ -78,10 +78,11 @@ public class PaintJobTest extends TestCase
     job.substituteGraphics(graphics);
 
     MockPanel panel = new MockPanel();
+    panel.shouldUseBuffer = true;
     panel.setLocation(200, 300);
     panel.setSize(100, 100);
 
-    job.pasteClipFor(panel);
+    job.paintClipFor(panel);
 
     Rectangle destination = graphics.drawnImageDestination;
     assertEquals(new Rectangle(100, 100, 100, 100), destination);
@@ -95,15 +96,33 @@ public class PaintJobTest extends TestCase
     job.substituteGraphics(graphics);
 
     MockPanel panel = new MockPanel();
+    panel.shouldUseBuffer = true;
     panel.setLocation(300, 100);
     panel.setSize(200, 200);
 
-    job.pasteClipFor(panel);
+    job.paintClipFor(panel);
 
     Rectangle destination = graphics.drawnImageDestination;
     assertEquals(new Rectangle(200, 0, 100, 100), destination);
     Rectangle source = graphics.drawnImageSource;
     assertEquals(new Rectangle(0, 100, 100, 100), source);
+  }
+
+  public void testHandlingOfNonBufferedPanel() throws Exception
+  {
+    MockGraphics graphics = new MockGraphics();
+    job.substituteGraphics(graphics);
+
+    MockPanel panel = new MockPanel();
+    panel.shouldUseBuffer = false;
+    panel.setLocation(200, 300);
+    panel.setSize(100, 100);
+
+    job.paintClipFor(panel);
+
+    Graphics2D subGraphics = panel.paintedOnGraphics;
+    assertNotNull(subGraphics);
+    assertEquals(new Rectangle(0, 0, 100, 100), subGraphics.getClipBounds());
   }
 
   public void testApplyToGraphics() throws Exception

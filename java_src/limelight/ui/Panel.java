@@ -72,6 +72,27 @@ public abstract class Panel
     this.y = y;
   }
 
+  public Point getLocation()
+  {
+    return new Point(x, y);
+  }
+
+  public Point getAbsoluteLocation()
+  {
+    int x = this.x;
+    int y = this.y;
+
+    Panel p = parent;
+    while(p != null)
+    {
+      x += p.getX();
+      y += p.getY();
+      p = p.getParent();
+    }
+
+    return new Point(x, y);
+  }
+
   public Rectangle getInternalRectangle()
   {
     return new Rectangle(0, 0, getWidth(), getHeight());
@@ -162,22 +183,6 @@ public abstract class Panel
     return ancestor;
   }
 
-  public Point getAbsoluteLocation()
-  {
-    int x = this.x;
-    int y = this.y;
-
-    Panel p = parent;
-    while(p != null)
-    {
-      x += p.getX();
-      y += p.getY();
-      p = p.getParent();
-    }
-
-    return new Point(x, y);
-  }
-
   public boolean usesBuffer()
   {
     return false;
@@ -186,6 +191,11 @@ public abstract class Panel
   public BufferedImage getBuffer()
   {
     throw new LimelightError("Can't get buffer from a panel that doesn't use buffers");
+  }
+
+  public void doLayout()
+  {
+    // Do nothing by default
   }
 
   public abstract void snapToSize();

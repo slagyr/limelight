@@ -11,14 +11,15 @@ public class BlockPanel extends ParentPanel
   private int checksum;
   private LinkedList<Painter> painters;
   private TextAccessor textAccessor;
+  private PanelLayout layout;
 
   public BlockPanel(Block block)
   {
     super();
     this.block = block;
-    children = new LinkedList<Panel>();
     buildPainters();
     textAccessor = new TextPaneTextAccessor(this);
+    layout = new PanelLayout(this);
   }
 
   public Block getBlock()
@@ -40,6 +41,11 @@ public class BlockPanel extends ParentPanel
   {
     return painters;
   }
+  
+  public void setLayout(PanelLayout layout)
+  {
+    this.layout = layout;
+  }
 
   public BufferedImage getBuffer()
   {
@@ -50,6 +56,7 @@ public class BlockPanel extends ParentPanel
 
   public void repaint()
   {
+    doLayout();
     PaintJob job = new PaintJob(getAbsoluteBounds());
     job.paint(getFrame().getPanel());
     job.applyTo(getFrame().getGraphics());
@@ -60,6 +67,11 @@ public class BlockPanel extends ParentPanel
     Rectangle r = getParent().getChildConsumableArea();
     width = translateDimension(block.getStyle().getWidth(), r.width);
     height = translateDimension(block.getStyle().getHeight(), r.height);
+  }
+
+  public void doLayout()
+  {
+    layout.doLayout();
   }
 
   public Rectangle getRectangleInsideMargins()
@@ -155,17 +167,6 @@ public class BlockPanel extends ParentPanel
     else
     {
       return Integer.parseInt(sizeString);
-    }
-  }
-
-
-  private void applyAlphaComposite(Graphics graphics)
-  {
-    if (block.getStyle().getTransparency() != null)
-    {
-      float transparency = 1f - (Integer.parseInt(block.getStyle().getTransparency()) / 100.0f);
-      Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
-      ((Graphics2D) graphics).setComposite(alphaComposite);
     }
   }
 

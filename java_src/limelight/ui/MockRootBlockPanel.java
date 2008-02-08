@@ -26,7 +26,7 @@ public class MockRootBlockPanel extends RootBlockPanel
   }
 
   public Rectangle getRectangleInsidePadding()
-  {
+  {    
     if(rectangleInsidePadding != null)
       return rectangleInsidePadding;
     return super.getRectangleInsidePadding();

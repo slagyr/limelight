@@ -33,13 +33,12 @@ public class Frame extends JPanel
   {
     setLocation(0, 0);
     panel.snapToSize();
+    panel.doLayout();
     setSize(panel.getWidth(), panel.getHeight());
   }
 
   public void paint(Graphics g)
   {
-//    panel.paint((Graphics2D)g);
-//    panel.paint(new Rectangle(g.getClipBounds()));
     PaintJob job = new PaintJob(new Rectangle(0, 0, getWidth(), getHeight()));
     job.paint(panel);
     job.applyTo(getGraphics());
