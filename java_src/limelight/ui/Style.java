@@ -72,6 +72,15 @@ public abstract class Style
       changes[i] = false;
   }
 
+  public int getChangedCount()
+  {
+    int count = 0;
+    for (int i = 0; i < changes.length; i++)
+      if(changes[i])
+        count++;
+    return count;
+  }
+
   public int asInt(String value)
 	{
 		try

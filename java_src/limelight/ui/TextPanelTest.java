@@ -38,7 +38,7 @@ public class TextPanelTest extends TestCase
   public void testPreferredSize() throws Exception
   {
     useFrame();
-    panel.snapToSize();
+    panel.doLayout();
     assertEquals(50, panel.getWidth());
     assertEquals(11, panel.getHeight());
   }
@@ -47,7 +47,7 @@ public class TextPanelTest extends TestCase
   {
     useFrame();
     panel.setText("Once upon a time, there was a developer working on a tool called Limelight.");
-    panel.snapToSize();
+    panel.doLayout();
     assertEquals(98, panel.getWidth());
     assertEquals(57, panel.getHeight());
   }
@@ -56,7 +56,7 @@ public class TextPanelTest extends TestCase
   {
     useFrame();
     style.setFontSize("40");
-    panel.snapToSize();
+    panel.doLayout();
     assertEquals(79, panel.getWidth());
     assertEquals(138, panel.getHeight());
   }
@@ -65,7 +65,7 @@ public class TextPanelTest extends TestCase
   {
     useFrame();
     panel.setText("1\n2\n3\nlongest");
-    panel.snapToSize();
+    panel.doLayout();
     assertEquals(34, panel.getWidth());
     assertEquals(46, panel.getHeight());
   }

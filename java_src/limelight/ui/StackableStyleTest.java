@@ -17,6 +17,16 @@ public class StackableStyleTest extends TestCase
     style.push(style2);
     style.push(style3);
   }
+  
+  public void testWithNothingStacked() throws Exception
+  {
+    style = new StackableStyle();
+
+    style.setWidth("100");
+    assertEquals("100", style.getWidth());
+    assertTrue(style.changed());
+    assertTrue(style.changed(Style.WIDTH));
+  }
 
   public void testChanges() throws Exception
   {

@@ -19,8 +19,8 @@ public class Aligner
 	{
     int diff = area.width - (int)(consumedWidth + 0.5);
     if("center".equals(horizontalAlignment))
-			return area.x + diff/2;
-		else if("right".equals(horizontalAlignment))
+      return area.x + diff/2;
+    else if("right".equals(horizontalAlignment))
 			return area.x + diff;
 		else
 			return area.x;

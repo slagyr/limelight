@@ -59,7 +59,7 @@ public class TextPanel extends Panel
     }
   }
 
-  public void snapToSize()
+  public void doLayout()
   {
     if(!compiled || textChanged())
     {

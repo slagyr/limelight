@@ -95,6 +95,9 @@ public class BlockPanelTest extends TestCase
     assertTrue(panel._shouldBuildBuffer());
     panel._buildBuffer();
     assertFalse(panel._shouldBuildBuffer());
+
+    block.style.setTransparency("50");
+    assertFalse(panel._shouldBuildBuffer());
   }
 
   private void makePaintable()
@@ -130,34 +133,6 @@ public class BlockPanelTest extends TestCase
 
     assertEquals(0, panel.getChildren().size());
     assertTrue(panel.isSterilized());
-  }
-
-  public void testSnapToSizeWithAbsoluteValues() throws Exception
-  {
-    ParentPanel parent = new BlockPanel(new MockBlock());
-    parent.setSize(1000, 1000);
-    parent.add(panel);
-
-    block.style.setWidth("100");
-    block.style.setHeight("200");
-    panel.snapToSize();
-    assertEquals(100, panel.getWidth());
-    assertEquals(200, panel.getHeight());
-  }
-
-  public void testSnapToSizeWithPercentages() throws Exception
-  {
-    ParentPanel parent = new BlockPanel(new MockBlock());
-    parent.setSize(1000, 1000);
-    parent.getBlock().getStyle().setMargin("100");
-    parent.getBlock().getStyle().setPadding("200");
-    parent.add(panel);
-
-    block.style.setWidth("100%");
-    block.style.setHeight("50%");
-    panel.snapToSize();
-    assertEquals(400, panel.getWidth());
-    assertEquals(200, panel.getHeight());
   }
 
   public void testGetOwnerOfPoint() throws Exception
@@ -207,5 +182,18 @@ public class BlockPanelTest extends TestCase
     panel.repaint();
 
     assertTrue(layout.layoutPerformed);
+  }
+
+  public void testRepaintDelegatesToParentWhenSizeChanges() throws Exception
+  {
+    MockParentPanel parent = new MockParentPanel();
+    panel.setParent(parent);
+
+    panel.getBlock().getStyle().setWidth("123");
+    panel.getBlock().getStyle().setHeight("321");
+
+    panel.repaint();
+
+    assertTrue(parent.repainted);
   }
 }

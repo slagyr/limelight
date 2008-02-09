@@ -16,6 +16,8 @@ public class PaintJob
     this.clip = clip;
     buffer = new BufferedImage(clip.width, clip.height, BufferedImage.TYPE_4BYTE_ABGR);
     graphics = (Graphics2D)buffer.getGraphics();
+    graphics.setBackground(Color.white);
+    graphics.clearRect(0, 0, clip.width, clip.height);
     composite = graphics.getComposite();
   }
 
@@ -109,6 +111,7 @@ public class PaintJob
 
   public void applyTo(Graphics graphics)
   {
+//    graphics.clearRect(clip.x, clip.y, clip.width, clip.height);
     graphics.drawImage(buffer, clip.x, clip.y, null);
   }
 

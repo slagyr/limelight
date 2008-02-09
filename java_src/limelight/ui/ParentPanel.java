@@ -44,6 +44,7 @@ public abstract class ParentPanel extends Panel
   }
 
   public abstract Rectangle getChildConsumableArea();
+  public abstract void repaint();
 }
 
 class SterilePanelException extends LimelightException

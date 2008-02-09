@@ -32,7 +32,7 @@ public class Frame extends JPanel
   public void doLayout()
   {
     setLocation(0, 0);
-    panel.snapToSize();
+//    panel.snapToSize();
     panel.doLayout();
     setSize(panel.getWidth(), panel.getHeight());
   }

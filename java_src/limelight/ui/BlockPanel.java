@@ -55,17 +55,15 @@ public class BlockPanel extends ParentPanel
 
   public void repaint()
   {
-    doLayout();
-    PaintJob job = new PaintJob(getAbsoluteBounds());
-    job.paint(getFrame().getPanel());
-    job.applyTo(getFrame().getGraphics());
-  }
-
-  public void snapToSize()
-  {
-    Rectangle r = getParent().getChildConsumableArea();
-    width = translateDimension(block.getStyle().getWidth(), r.width);
-    height = translateDimension(block.getStyle().getHeight(), r.height);
+    if(block.getStyle().changed(Style.WIDTH) || block.getStyle().changed(Style.WIDTH))
+      getParent().repaint();
+    else
+    {
+      doLayout();
+      PaintJob job = new PaintJob(getAbsoluteBounds());
+      job.paint(getFrame().getPanel());
+      job.applyTo(getFrame().getGraphics());
+    }
   }
 
   public void doLayout()
@@ -120,7 +118,18 @@ public class BlockPanel extends ParentPanel
 
   protected boolean shouldBuildBuffer()
   {
-    return buffer == null || getBlock().getStyle().changed();
+    Style style = getBlock().getStyle();
+    if(buffer == null)
+      return true;
+    else if(style.changed())
+    {
+      if(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY))
+        return false;
+      else
+        return true;
+    }
+    else
+      return false;
   }
 
   protected void buildBuffer()
@@ -146,6 +155,7 @@ public class BlockPanel extends ParentPanel
     painters.add(new BorderPainter(this));
   }
 
+
   private int translateDimension(String sizeString, int maxSize)
   {
     if (sizeString == null)
@@ -160,7 +170,6 @@ public class BlockPanel extends ParentPanel
       return Integer.parseInt(sizeString);
     }
   }
-
 }
 
 

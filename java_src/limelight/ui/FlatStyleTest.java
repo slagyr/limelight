@@ -117,6 +117,20 @@ public class FlatStyleTest extends TestCase
     assertFalse(style.changed(Style.HEIGHT));
   }
 
+  public void testChangeCount() throws Exception
+  {
+    assertEquals(0, style.getChangedCount());
+
+    style.setWidth("123");
+    assertEquals(1, style.getChangedCount());
+
+    style.setHeight("123");
+    assertEquals(2, style.getChangedCount());
+
+    style.flushChanges();
+    assertEquals(0, style.getChangedCount());
+  }
+
 
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds
 //  // Array based: 3800000 sets and 3500000 gets took = 1863.0 milliseconds
