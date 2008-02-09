@@ -8,7 +8,6 @@ public class BlockPanelTest extends TestCase
 {
   private TestablePanel panel;
   private MockBlock block;
-  private ParentPanel rootPanel;
 
   private class TestablePanel extends BlockPanel
   {
@@ -31,8 +30,6 @@ public class BlockPanelTest extends TestCase
   public void setUp() throws Exception
   {
     block = new MockBlock();
-    Frame frame = new MockFrame();
-    rootPanel = frame.getPanel();
     panel = new TestablePanel(block);
   }
 
@@ -95,16 +92,6 @@ public class BlockPanelTest extends TestCase
     assertFalse(panel._shouldBuildBuffer());
 
     block.style.setWidth("101");
-    assertTrue(panel._shouldBuildBuffer());
-    panel._buildBuffer();
-    assertFalse(panel._shouldBuildBuffer());
-
-    block.setText("ABC");
-    assertTrue(panel._shouldBuildBuffer());
-    panel._buildBuffer();
-    assertFalse(panel._shouldBuildBuffer());
-
-    block.setText("XYZ");
     assertTrue(panel._shouldBuildBuffer());
     panel._buildBuffer();
     assertFalse(panel._shouldBuildBuffer());

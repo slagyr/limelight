@@ -30,23 +30,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FlatStyle.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/FlatStyle.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockRootBlockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/MockRootBlockPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FrameTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/FrameTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PaintJobTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PaintJobTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/StackableStyle.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/StackableStyle.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPanelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PaintJob.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PaintJob.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayoutTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/MockPanel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/MockLayout.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/MockBlockPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Style.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Style.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/FlatStyleTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/StackableStyleTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/StackableStyleTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/TextPane.java" afterPath="$PROJECT_DIR$/java_src/limelight/TextPane.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/StyleObserver.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/Util.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/PanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/PanelTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Panel.java" afterPath="$PROJECT_DIR$/java_src/limelight/Panel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/TextPaneTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/TextPaneTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Frame.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Frame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" />
     </list>
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
@@ -164,64 +163,50 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TextPanelTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextPanelTest.java">
+      <file leaf-file-name="FlatStyle.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FlatStyle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="34" selection-start="832" selection-end="832" vertical-scroll-proportion="0.55191255">
+            <state line="42" column="3" selection-start="804" selection-end="804" vertical-scroll-proportion="0.9162113">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Style.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Style.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="47" column="3" selection-start="1799" selection-end="1799" vertical-scroll-proportion="0.284153">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TextPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java">
+      <file leaf-file-name="FlatStyleTest.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FlatStyleTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="9" selection-start="661" selection-end="661" vertical-scroll-proportion="-0.9635701">
+            <state line="98" column="8" selection-start="2438" selection-end="2438" vertical-scroll-proportion="0.57377046">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Panel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Panel.java">
+      <file leaf-file-name="StackableStyle.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/StackableStyle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="100" column="19" selection-start="1390" selection-end="1390" vertical-scroll-proportion="0.35519126">
-              <folding />
+            <state line="71" column="3" selection-start="1321" selection-end="1321" vertical-scroll-proportion="0.8287796">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MockRootBlockPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockRootBlockPanel.java">
+      <file leaf-file-name="StackableStyleTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/StackableStyleTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="3" selection-start="613" selection-end="613" vertical-scroll-proportion="0.61202186">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PaintJobTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PaintJobTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="15" selection-start="2934" selection-end="2934" vertical-scroll-proportion="0.63205826">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PaintJob.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PaintJob.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="13" selection-start="115" selection-end="115" vertical-scroll-proportion="-0.78688526">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MockPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="9" selection-start="274" selection-end="274" vertical-scroll-proportion="0.24043716">
+            <state line="64" column="3" selection-start="394" selection-end="1534" vertical-scroll-proportion="0.8469945">
               <folding />
             </state>
           </provider>
@@ -266,6 +251,24 @@
         </PATH_ELEMENT>
         <PATH_ELEMENT>
           <option name="myItemId" value="limelight" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="limelight" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="limelight" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="limelight" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ui" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -866,7 +869,7 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented double buffered painting... No more flashes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimized the layout of panels." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -881,6 +884,7 @@
     <MESSAGE value="Hovering now works properly" />
     <MESSAGE value="Fixed problem where hovering was not aligned properly." />
     <MESSAGE value="Implemented double buffered painting... No more flashes." />
+    <MESSAGE value="Optimized the layout of panels." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -947,116 +951,122 @@
     <option name="myLastEditedConfigurable" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockBlockPanel.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FontFactoryTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="25" selection-start="191" selection-end="191" vertical-scroll-proportion="0.24043716">
+        <state line="38" column="13" selection-start="849" selection-end="849" vertical-scroll-proportion="0.4653349">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/StyleObserver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="17" selection-start="239" selection-end="239" vertical-scroll-proportion="0.26229507">
+        <state line="4" column="29" selection-start="85" selection-end="85" vertical-scroll-proportion="0.05640423">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PanelLayoutTest.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/Util.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="43" selection-start="2637" selection-end="2637" vertical-scroll-proportion="0.95992714">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="25" selection-start="908" selection-end="908" vertical-scroll-proportion="0.4494382">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="223" column="19" selection-start="5747" selection-end="5747" vertical-scroll-proportion="0.8469945">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Frame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="21" selection-start="674" selection-end="674" vertical-scroll-proportion="0.6502732">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FrameTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="108" selection-start="752" selection-end="752" vertical-scroll-proportion="0.2021858">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/TextPaneTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="0" selection-start="1667" selection-end="1925" vertical-scroll-proportion="0.5409836">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockLayout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="8" selection-start="77" selection-end="77" vertical-scroll-proportion="0.08743169">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Panel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="19" selection-start="1390" selection-end="1390" vertical-scroll-proportion="0.35519126">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextPanelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="34" selection-start="832" selection-end="832" vertical-scroll-proportion="0.55191255">
+        <state line="8" column="30" selection-start="166" selection-end="166" vertical-scroll-proportion="0.11280846">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="9" selection-start="661" selection-end="661" vertical-scroll-proportion="-0.9635701">
+        <state line="143" column="3" selection-start="3770" selection-end="3770" vertical-scroll-proportion="1.8460635">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/Block.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="2" selection-start="152" selection-end="152" vertical-scroll-proportion="0.21857923">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/Panel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="37" selection-start="2338" selection-end="2338" vertical-scroll-proportion="0.7022472">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockRootBlockPanel.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockBlock.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="3" selection-start="613" selection-end="613" vertical-scroll-proportion="0.61202186">
+        <state line="5" column="7" selection-start="94" selection-end="94" vertical-scroll-proportion="0.08743169">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockPanel.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/PanelTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="9" selection-start="274" selection-end="274" vertical-scroll-proportion="0.24043716">
+        <state line="65" column="0" selection-start="1187" selection-end="1559" vertical-scroll-proportion="0.15846995">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PaintJob.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="13" selection-start="115" selection-end="115" vertical-scroll-proportion="-0.78688526">
+        <state line="93" column="32" selection-start="2011" selection-end="2011" vertical-scroll-proportion="0.61748636">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PaintJobTest.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="15" selection-start="2934" selection-end="2934" vertical-scroll-proportion="0.63205826">
+        <state line="122" column="45" selection-start="2936" selection-end="2936" vertical-scroll-proportion="0.47003746">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Block.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="2" selection-start="102" selection-end="102" vertical-scroll-proportion="0.15300547">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/StackableStyle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="3" selection-start="1321" selection-end="1321" vertical-scroll-proportion="0.8287796">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Style.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="3" selection-start="1799" selection-end="1799" vertical-scroll-proportion="0.284153">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/StackableStyleTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="3" selection-start="394" selection-end="1534" vertical-scroll-proportion="0.8469945">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FlatStyle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="3" selection-start="804" selection-end="804" vertical-scroll-proportion="0.9162113">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FlatStyleTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="8" selection-start="2438" selection-end="2438" vertical-scroll-proportion="0.57377046">
           <folding />
         </state>
       </provider>

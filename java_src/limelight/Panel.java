@@ -15,7 +15,6 @@ public class Panel extends JPanel
 {
   private Block block;
   private BufferedImage buffer;
-  private int checksum;
   private List<Painter> painters;
   private boolean sterilized;
   private TextAccessor textAccessor;
@@ -91,7 +90,7 @@ public class Panel extends JPanel
 
   protected boolean shouldBuildBuffer()
   {
-    return buffer == null || checksum != checksum();
+    return buffer == null || block.getStyle().changed();
   }
 
   protected void buildBuffer()
@@ -102,7 +101,7 @@ public class Panel extends JPanel
     for (Painter painter : painters)
       painter.paint(bufferGraphics);
 
-    checksum = checksum();
+    block.getStyle().flushChanges();
   }
 
   public Dimension getPreferredSize()
@@ -195,14 +194,6 @@ public class Panel extends JPanel
     painters = new LinkedList<Painter>();
     painters.add(new BackgroundPainter(this));
     painters.add(new BorderPainter(this));
-  }
-
-  public int checksum()
-  {
-    int checksum = block.getStyle().checksum();
-    if (block.getText() != null)
-      checksum ^= block.getText().hashCode();
-    return checksum;
   }
 
   private int translateDimension(String sizeString, int maxSize)

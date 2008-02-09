@@ -1,21 +1,20 @@
 package limelight.ui;
 
-import limelight.ui.Style;
-import limelight.ui.FlatStyle;
+import limelight.Util;
 
-import java.util.*;
+import java.util.LinkedList;
 
-public class StackableStyle extends Style
+public class StackableStyle extends Style implements StyleObserver
 {
 	private LinkedList<FlatStyle> stack;
 
-	public StackableStyle()
+  public StackableStyle()
 	{
 		stack = new LinkedList<FlatStyle>();
 		stack.addFirst(new FlatStyle());
 	}
 
-	protected String get(String key)
+	protected String get(int key)
 	{
 		String value = null;
     for (FlatStyle style : stack)
@@ -27,12 +26,12 @@ public class StackableStyle extends Style
 		return value;
 	}
 
-	protected void put(String key, String value)
+	protected void put(int key, String value)
 	{
 		stack.getFirst().put(key, value);
 	}
 
-  protected boolean has(Object key)
+  protected boolean has(int key)
   {
     for (FlatStyle style : stack)
     {
@@ -42,42 +41,58 @@ public class StackableStyle extends Style
     return false;
   }
 
-  public int checksum()
-  {
-    return getReducedStyle().checksum();
-  }
-
   public void push(FlatStyle style)
 	{
-		stack.addFirst(style);
-	}
+    applyChangesFromTop(style);
+    stack.addFirst(style);
+    style.addObserver(this);
+  }
 
 	public FlatStyle pop()
 	{
-		return stack.removeFirst();
+    FlatStyle style = stack.removeFirst();
+    applyChangesFromTop(style);
+    style.removeObserver(this);
+    return style;
 	}
 
-	public void addToBottom(FlatStyle style)
+  public void addToBottom(FlatStyle style)
 	{
-		stack.addLast(style);
-	}
+    applyChangesFromBottom(style);
+    stack.addLast(style);
+    style.addObserver(this);
+  }
 
 	public FlatStyle removeFromBottom()
 	{
-		return stack.removeFirst();
+    FlatStyle style = stack.removeLast();
+    applyChangesFromBottom(style);
+    style.removeObserver(this);
+    return style;
 	}
 
-  public FlatStyle getReducedStyle()
+  public void styleChanged(int key)
   {
-    FlatStyle reduced = new FlatStyle();
-    for (FlatStyle style : stack)
+    changes[key] = true;
+  }
+
+  private void applyChangesFromBottom(FlatStyle style)
+  {
+    for(int i = 0; i < Style.STYLE_COUNT; i++)
     {
-      for(Map.Entry entry : style.getStyles().entrySet())
-      {
-          if(!reduced.has(entry.getKey()))
-            reduced.put((String)entry.getKey(), (String)entry.getValue());
-      }
+      String value = get(i);
+      if(value == null && style.get(i) != null)
+        changes[i] = true;
     }
-    return reduced;
+  }
+  
+  private void applyChangesFromTop(FlatStyle style)
+  {
+    for(int i = 0; i < Style.STYLE_COUNT; i++)
+    {
+      String value = style.get(i);
+      if(value != null && !value.equals(get(i)))
+        changes[i] = true;
+    }
   }
 }
