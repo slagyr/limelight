@@ -83,13 +83,8 @@ public class TextPane extends JPanel
 
   private void compile()
 	{
-    int currentChecksum = panel.checksum();
-    if(lastChecksum != currentChecksum)
-    {
-      lastChecksum = currentChecksum;
-      buildLines();
-      calculateDimentions();
-    }
+    buildLines();
+    calculateDimentions();
   }
 
   private void buildLines()

@@ -2,13 +2,75 @@ package limelight.ui;
 
 public abstract class Style
 {
-  protected abstract String get(String key);
+  public static final int WIDTH = 0;
+  public static final int HEIGHT = 1;
+  public static final int X_OFFSET = 2;
+  public static final int Y_OFFSET = 3;
+  public static final int TOP_BORDER_COLOR = 4;
+  public static final int RIGHT_BORDER_COLOR = 5;
+  public static final int BOTTOM_BORDER_COLOR = 6;
+  public static final int LEFT_BORDER_COLOR = 7;
+  public static final int TOP_BORDER_WIDTH = 8;
+  public static final int RIGHT_BORDER_WIDTH = 9;
+  public static final int BOTTOM_BORDER_WIDTH = 10;
+  public static final int LEFT_BORDER_WIDTH = 11;
+  public static final int TOP_MARGIN = 12;
+  public static final int RIGHT_MARGIN = 13;
+  public static final int BOTTOM_MARGIN = 14;
+  public static final int LEFT_MARGIN = 15;
+  public static final int TOP_PADDING = 16;
+  public static final int RIGHT_PADDING = 17;
+  public static final int BOTTOM_PADDING = 18;
+  public static final int LEFT_PADDING = 19;
+  public static final int BACKGROUND_COLOR = 20;
+  public static final int SECONDARY_BACKGROUND_COLOR = 21;
+  public static final int BACKGROUND_IMAGE = 22;
+  public static final int BACKGROUND_IMAGE_FILL_STRATEGY = 23;
+  public static final int GRADIENT_ANGLE = 24;
+  public static final int GRADIENT_PENETRATION = 25;
+  public static final int CYCLIC_GRADIENT = 26;
+  public static final int HORIZONTAL_ALIGNMENT = 27;
+  public static final int VERTICAL_ALIGNMENT = 28;
+  public static final int TEXT_COLOR = 29;
+  public static final int FONT_FACE = 30;
+  public static final int FONT_SIZE = 31;
+  public static final int FONT_STYLE = 32;
+  public static final int TRANSPARENCY = 34;
 
-  protected abstract void put(String key, String value);
+  protected static final int STYLE_COUNT = 35;
 
-  protected abstract boolean has(Object key);
 
-  public abstract int checksum();
+  protected boolean[] changes;
+
+  public Style()
+  {
+    changes = new boolean[STYLE_COUNT];
+  }
+
+  protected abstract String get(int key);
+  protected abstract void put(int key, String value);
+  protected abstract boolean has(int key);
+
+  public boolean changed()
+  {
+    for(int i = 0; i < changes.length; i++)
+    {
+      if(changes[i])
+        return true;
+    }
+    return false;
+  }
+
+  public boolean changed(int key)
+  {
+    return changes[key];
+  }
+
+  public void flushChanges()
+  {
+    for (int i = 0; i < changes.length; i++)
+      changes[i] = false;
+  }
 
   public int asInt(String value)
 	{
@@ -24,373 +86,373 @@ public abstract class Style
 
   public void setWidth(String value)
   {
-    put("width", value);
+    put(WIDTH, value);
   }
 
   public String getWidth()
   {
-    return get("width");
+    return get(WIDTH);
   }
 
   public void setHeight(String value)
   {
-    put("height", value);
+    put(HEIGHT, value);
   }
 
   public String getHeight()
   {
-    return get("height");
-  }
-
-  public void setTextColor(String value)
-  {
-    put("textColor", value);
-  }
-
-  public String getTextColor()
-  {
-    return get("textColor");
-  }
-
-  public void setBorderColor(String value)
-  {
-    put("topBorderColor", value);
-    put("rightBorderColor", value);
-    put("bottomBorderColor", value);
-    put("leftBorderColor", value);
-  }
-
-  public String getTopBorderColor()
-  {
-    return get("topBorderColor");
-  }
-
-  public String getRightBorderColor()
-  {
-    return get("rightBorderColor");
-  }
-
-  public String getBottomBorderColor()
-  {
-    return get("bottomBorderColor");
-  }
-
-  public String getLeftBorderColor()
-  {
-    return get("leftBorderColor");
-  }
-
-  public String getBackgroundColor()
-  {
-    return get("backgroundColor");
-  }
-
-  public void setTopBorderColor(String value)
-  {
-    put("topBorderColor", value);
-  }
-
-  public void setRightBorderColor(String value)
-  {
-    put("rightBorderColor", value);
-  }
-
-  public void setBottomBorderColor(String value)
-  {
-    put("bottomBorderColor", value);
-  }
-
-  public void setLeftBorderColor(String value)
-  {
-    put("leftBorderColor", value);
-  }
-
-  public void setBorderWidth(String pixels)
-  {
-    put("topBorderWidth", pixels);
-    put("rightBorderWidth", pixels);
-    put("bottomBorderWidth", pixels);
-    put("leftBorderWidth", pixels);
-  }
-
-  public String getTopBorderWidth()
-  {
-    return get("topBorderWidth");
-  }
-
-  public void setTopBorderWidth(String topBorderWidth)
-  {
-    put("topBorderWidth", topBorderWidth);
-  }
-
-  public String getRightBorderWidth()
-  {
-    return get("rightBorderWidth");
-  }
-
-  public void setRightBorderWidth(String rightBorderWidth)
-  {
-    put("rightBorderWidth", rightBorderWidth);
-  }
-
-  public String getBottomBorderWidth()
-  {
-    return get("bottomBorderWidth");
-  }
-
-  public void setBottomBorderWidth(String bottomBorderWidth)
-  {
-    put("bottomBorderWidth", bottomBorderWidth);
-  }
-
-  public String getLeftBorderWidth()
-  {
-    return get("leftBorderWidth");
-  }
-
-  public void setLeftBorderWidth(String leftBorderWidth)
-  {
-    put("leftBorderWidth", leftBorderWidth);
+    return get(HEIGHT);
   }
 
   public void setXOffset(String value)
   {
-    put("xOffset", value);
+    put(X_OFFSET, value);
   }
 
   public String getXOffset()
   {
-    return get("xOffset");
+    return get(X_OFFSET);
   }
 
   public void setYOffset(String value)
   {
-    put("yOffset", value);
+    put(Y_OFFSET, value);
   }
 
   public String getYOffset()
   {
-    return get("yOffset");
+    return get(Y_OFFSET);
+  }
+
+  public void setTextColor(String value)
+  {
+    put(TEXT_COLOR, value);
+  }
+
+  public String getTextColor()
+  {
+    return get(TEXT_COLOR);
+  }
+
+  public void setBorderColor(String value)
+  {
+    put(TOP_BORDER_COLOR, value);
+    put(RIGHT_BORDER_COLOR, value);
+    put(BOTTOM_BORDER_COLOR, value);
+    put(LEFT_BORDER_COLOR, value);
+  }
+
+  public String getTopBorderColor()
+  {
+    return get(TOP_BORDER_COLOR);
+  }
+
+  public String getRightBorderColor()
+  {
+    return get(RIGHT_BORDER_COLOR);
+  }
+
+  public String getBottomBorderColor()
+  {
+    return get(BOTTOM_BORDER_COLOR);
+  }
+
+  public String getLeftBorderColor()
+  {
+    return get(LEFT_BORDER_COLOR);
+  }
+
+  public void setTopBorderColor(String value)
+  {
+    put(TOP_BORDER_COLOR, value);
+  }
+
+  public void setRightBorderColor(String value)
+  {
+    put(RIGHT_BORDER_COLOR, value);
+  }
+
+  public void setBottomBorderColor(String value)
+  {
+    put(BOTTOM_BORDER_COLOR, value);
+  }
+
+  public void setLeftBorderColor(String value)
+  {
+    put(LEFT_BORDER_COLOR, value);
+  }
+
+  public void setBorderWidth(String pixels)
+  {
+    put(TOP_BORDER_WIDTH, pixels);
+    put(RIGHT_BORDER_WIDTH, pixels);
+    put(BOTTOM_BORDER_WIDTH, pixels);
+    put(LEFT_BORDER_WIDTH, pixels);
+  }
+
+  public String getTopBorderWidth()
+  {
+    return get(TOP_BORDER_WIDTH);
+  }
+
+  public void setTopBorderWidth(String topBorderWidth)
+  {
+    put(TOP_BORDER_WIDTH, topBorderWidth);
+  }
+
+  public String getRightBorderWidth()
+  {
+    return get(RIGHT_BORDER_WIDTH);
+  }
+
+  public void setRightBorderWidth(String rightBorderWidth)
+  {
+    put(RIGHT_BORDER_WIDTH, rightBorderWidth);
+  }
+
+  public String getBottomBorderWidth()
+  {
+    return get(BOTTOM_BORDER_WIDTH);
+  }
+
+  public void setBottomBorderWidth(String bottomBorderWidth)
+  {
+    put(BOTTOM_BORDER_WIDTH, bottomBorderWidth);
+  }
+
+  public String getLeftBorderWidth()
+  {
+    return get(LEFT_BORDER_WIDTH);
+  }
+
+  public void setLeftBorderWidth(String leftBorderWidth)
+  {
+    put(LEFT_BORDER_WIDTH, leftBorderWidth);
   }
 
   public void setMargin(String margin)
   {
-    put("topMargin", margin);
-    put("rightMargin", margin);
-    put("bottomMargin", margin);
-    put("leftMargin", margin);
+    put(TOP_MARGIN, margin);
+    put(RIGHT_MARGIN, margin);
+    put(BOTTOM_MARGIN, margin);
+    put(LEFT_MARGIN, margin);
   }
 
   public String getTopMargin()
   {
-    return get("topMargin");
+    return get(TOP_MARGIN);
   }
 
   public void setTopMargin(String topMargin)
   {
-    put("topMargin", topMargin);
+    put(TOP_MARGIN, topMargin);
   }
 
   public String getRightMargin()
   {
-    return get("rightMargin");
+    return get(RIGHT_MARGIN);
   }
 
   public void setRightMargin(String rightMargin)
   {
-    put("rightMargin", rightMargin);
+    put(RIGHT_MARGIN, rightMargin);
   }
 
   public String getBottomMargin()
   {
-    return get("bottomMargin");
+    return get(BOTTOM_MARGIN);
   }
 
   public void setBottomMargin(String bottomMargin)
   {
-    put("bottomMargin", bottomMargin);
+    put(BOTTOM_MARGIN, bottomMargin);
   }
 
   public String getLeftMargin()
   {
-    return get("leftMargin");
+    return get(LEFT_MARGIN);
   }
 
   public void setLeftMargin(String leftMargin)
   {
-    put("leftMargin", leftMargin);
+    put(LEFT_MARGIN, leftMargin);
   }
 
   public void setPadding(String padding)
   {
-    put("topPadding", padding);
-    put("rightPadding", padding);
-    put("bottomPadding", padding);
-    put("leftPadding", padding);
+    put(TOP_PADDING, padding);
+    put(RIGHT_PADDING, padding);
+    put(BOTTOM_PADDING, padding);
+    put(LEFT_PADDING, padding);
   }
 
   public String getTopPadding()
   {
-    return get("topPadding");
+    return get(TOP_PADDING);
   }
 
   public void setTopPadding(String topPadding)
   {
-    put("topPadding", topPadding);
+    put(TOP_PADDING, topPadding);
   }
 
   public String getRightPadding()
   {
-    return get("rightPadding");
+    return get(RIGHT_PADDING);
   }
 
   public void setRightPadding(String rightPadding)
   {
-    put("rightPadding", rightPadding);
+    put(RIGHT_PADDING, rightPadding);
   }
 
   public String getBottomPadding()
   {
-    return get("bottomPadding");
+    return get(BOTTOM_PADDING);
   }
 
   public void setBottomPadding(String bottomPadding)
   {
-    put("bottomPadding", bottomPadding);
+    put(BOTTOM_PADDING, bottomPadding);
   }
 
   public String getLeftPadding()
   {
-    return get("leftPadding");
+    return get(LEFT_PADDING);
   }
 
   public void setLeftPadding(String leftPadding)
   {
-    put("leftPadding", leftPadding);
+    put(LEFT_PADDING, leftPadding);
   }
 
   public void setBackgroundColor(String backgroundColor)
   {
-    put("backgroundColor", backgroundColor);
+    put(BACKGROUND_COLOR, backgroundColor);
+  }
+
+  public String getBackgroundColor()
+  {
+    return get(BACKGROUND_COLOR);
   }
 
   public void setBackgroundImage(String backgroundImage)
   {
-    put("backgroundImage", backgroundImage);
+    put(BACKGROUND_IMAGE, backgroundImage);
   }
 
   public String getBackgroundImage()
   {
-    return get("backgroundImage");
+    return get(BACKGROUND_IMAGE);
   }
 
   public String getBackgroundImageFillStrategy()
   {
-    return get("backgroundImageFillStrategy");
+    return get(BACKGROUND_IMAGE_FILL_STRATEGY);
   }
 
   public void setBackgroundImageFillStrategy(String backgroundImageFillStrategy)
   {
-    put("backgroundImageFillStrategy", backgroundImageFillStrategy);
-  }
-
-  public void setHorizontalAlignment(String alignment)
-  {
-    put("horizontalAlignment", alignment);
-  }
-
-  public String getHorizontalAlignment()
-  {
-    return get("horizontalAlignment");
-  }
-
-  public void setVerticalAlignment(String alignment)
-  {
-    put("verticalAlignment", alignment);
-  }
-
-  public String getVerticalAlignment()
-  {
-    return get("verticalAlignment");
-  }
-
-  public String getFontFace()
-  {
-    return get("fontFace");
-  }
-
-  public void setFontFace(String fontFace)
-  {
-    put("fontFace", fontFace);
-  }
-
-  public String getFontSize()
-  {
-    return get("fontSize");
-  }
-
-  public void setFontSize(String fontSize)
-  {
-    put("fontSize", fontSize);
-  }
-
-  public String getFontStyle()
-  {
-    return get("fontStyle");
-  }
-
-  public void setFontStyle(String fontStyle)
-  {
-    put("fontStyle", fontStyle);
-  }
-
-  public String getTransparency()
-  {
-    return get("transparency");
-  }
-
-  public void setTransparency(String transparency)
-  {
-    put("transparency", transparency);
+    put(BACKGROUND_IMAGE_FILL_STRATEGY, backgroundImageFillStrategy);
   }
 
   public void setSecondaryBackgroundColor(String color)
   {
-    put("secondaryBackgroundColor", color);
+    put(SECONDARY_BACKGROUND_COLOR, color);
   }
 
   public String getSecondaryBackgroundColor()
   {
-    return get("secondaryBackgroundColor");
+    return get(SECONDARY_BACKGROUND_COLOR);
   }
 
   public void setGradientAngle(String value)
   {
-    put("gradientAngle", value);
+    put(GRADIENT_ANGLE, value);
   }
 
   public String getGradientAngle()
   {
-    return get("gradientAngle");
+    return get(GRADIENT_ANGLE);
   }
 
   public void setGradientPenetration(String value)
   {
-    put("gradientPenetration", value);
+    put(GRADIENT_PENETRATION, value);
   }
 
   public String getGradientPenetration()
   {
-    return get("gradientPenetration");
+    return get(GRADIENT_PENETRATION);
   }
 
   public void setCyclicGradient(String value)
   {
-    put("cyclicGradient", value);
+    put(CYCLIC_GRADIENT, value);
   }
 
   public String getCyclicGradient()
   {
-    return get("cyclicGradient");
+    return get(CYCLIC_GRADIENT);
+  }
+
+  public void setHorizontalAlignment(String alignment)
+  {
+    put(HORIZONTAL_ALIGNMENT, alignment);
+  }
+
+  public String getHorizontalAlignment()
+  {
+    return get(HORIZONTAL_ALIGNMENT);
+  }
+
+  public void setVerticalAlignment(String alignment)
+  {
+    put(VERTICAL_ALIGNMENT, alignment);
+  }
+
+  public String getVerticalAlignment()
+  {
+    return get(VERTICAL_ALIGNMENT);
+  }
+
+  public String getFontFace()
+  {
+    return get(FONT_FACE);
+  }
+
+  public void setFontFace(String fontFace)
+  {
+    put(FONT_FACE, fontFace);
+  }
+
+  public String getFontSize()
+  {
+    return get(FONT_SIZE);
+  }
+
+  public void setFontSize(String fontSize)
+  {
+    put(FONT_SIZE, fontSize);
+  }
+
+  public String getFontStyle()
+  {
+    return get(FONT_STYLE);
+  }
+
+  public void setFontStyle(String fontStyle)
+  {
+    put(FONT_STYLE, fontStyle);
+  }
+
+  public String getTransparency()
+  {
+    return get(TRANSPARENCY);
+  }
+
+  public void setTransparency(String transparency)
+  {
+    put(TRANSPARENCY, transparency);
   }
 }

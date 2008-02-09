@@ -8,7 +8,6 @@ public class BlockPanel extends ParentPanel
 {
   private Block block;
   private BufferedImage buffer;
-  private int checksum;
   private LinkedList<Painter> painters;
   private TextAccessor textAccessor;
   private PanelLayout layout;
@@ -121,7 +120,7 @@ public class BlockPanel extends ParentPanel
 
   protected boolean shouldBuildBuffer()
   {
-    return buffer == null || checksum != checksum();
+    return buffer == null || getBlock().getStyle().changed();
   }
 
   protected void buildBuffer()
@@ -131,21 +130,13 @@ public class BlockPanel extends ParentPanel
 
     paintOn(bufferGraphics);
 
-    checksum = checksum();
+    getBlock().getStyle().flushChanges();
   }
 
   public void paintOn(Graphics2D bufferGraphics)
   {
     for (Painter painter : painters)
       painter.paint(bufferGraphics);
-  }
-
-  public int checksum()
-  {
-    int checksum = block.getStyle().checksum();
-    if (block.getText() != null)
-      checksum ^= block.getText().hashCode();
-    return checksum;
   }
 
   private void buildPainters()

@@ -1,5 +1,7 @@
 package limelight.ui;
 
+import limelight.Util;
+
 import java.awt.*;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -16,8 +18,9 @@ public class TextPanel extends Panel
   private double consumedHeight;
   private double consumedWidth;
   private LinkedList<TextLayout> lines;
-  private int lastChecksum;
   private Graphics2D graphics;
+  private boolean textChanged;
+  private boolean compiled;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
   public TextPanel(BlockPanel panel, String text)
@@ -33,6 +36,8 @@ public class TextPanel extends Panel
 
   public void setText(String text)
   {
+    if(!textChanged && !Util.equal(text, this.text))
+      textChanged = true;
     this.text = text;
   }
 
@@ -56,12 +61,11 @@ public class TextPanel extends Panel
 
   public void snapToSize()
   {
-    int currentChecksum = panel.checksum();
-    if(lastChecksum != currentChecksum)
+    if(!compiled || textChanged())
     {
-      lastChecksum = currentChecksum;
       buildLines();
       calculateDimentions();
+      compiled = true;
     }
     setWidth((int)(consumedWidth + 0.5));
     setHeight((int)(consumedHeight + 0.5));
@@ -127,5 +131,15 @@ public class TextPanel extends Panel
     if(graphics == null)
       graphics = (Graphics2D)getFrame().getGraphics();
     return graphics;
+  }
+
+  public boolean textChanged()
+  {
+    return textChanged;
+  }
+
+  public void flushChanges()
+  {
+    textChanged = false;
   }
 }

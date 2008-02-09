@@ -76,4 +76,22 @@ public class TextPanelTest extends TestCase
     frame.setVisible(true);
     panel.setGraphics(frame.getGraphics());
   }
+
+  public void testTextChanged() throws Exception
+  {
+    assertFalse(panel.textChanged());
+
+    panel.setText("Something");
+    assertTrue(panel.textChanged());
+
+    panel.flushChanges();
+    panel.setText("Something");
+    assertFalse(panel.textChanged());
+
+    panel.setText("Something Else");
+    assertTrue(panel.textChanged());
+
+    panel.flushChanges();
+    assertFalse(panel.textChanged());
+  }
 }
