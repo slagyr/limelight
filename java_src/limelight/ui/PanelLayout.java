@@ -9,6 +9,7 @@ public class PanelLayout
   private ParentPanel panel;
   private Rectangle area;
   private int consumedHeight;
+  private Style style;
 
   public PanelLayout(ParentPanel panel)
   {
@@ -18,7 +19,11 @@ public class PanelLayout
 
   public void doLayout()
 	{
-		if(panel.getChildren().size() == 0)
+    style = panel.getBlock().getStyle();
+    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT))
+      snapPanelToSize(panel);
+
+    if(panel.getChildren().size() == 0)
 			return;
 
     reset();
@@ -39,7 +44,6 @@ public class PanelLayout
 	{
     for(Panel child : panel.getChildren())
     {
-      child.snapToSize();
       child.doLayout();
       if (!currentRow.isEmpty() && !currentRow.fits(child))
         newRow();
@@ -50,8 +54,7 @@ public class PanelLayout
 
   private Aligner buildAligner(Rectangle rectangle)
   {
-    Block block = panel.getBlock();
-    return new Aligner(rectangle, block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
+    return new Aligner(rectangle, style.getHorizontalAlignment(), style.getVerticalAlignment());
   }
 
   private void reset()
@@ -82,6 +85,37 @@ public class PanelLayout
   public ParentPanel getPanel()
   {
     return panel;
+  }
+
+  public void snapPanelToSize(Panel panel)
+  {
+    style = panel.getBlock().getStyle();
+    if(panel.getParent() != null)
+    {
+      Rectangle r = panel.getParent().getChildConsumableArea();
+      panel.setWidth(translateDimension(style.getWidth(), r.width));
+      panel.setHeight(translateDimension(style.getHeight(), r.height));
+    }
+    else
+    {
+      panel.setWidth(style.asInt(style.getWidth()));
+      panel.setHeight(style.asInt(style.getHeight()));
+    }
+  }
+
+  private int translateDimension(String sizeString, int maxSize)
+  {
+    if (sizeString == null)
+      return 0;
+    else if (sizeString.endsWith("%"))
+    {
+      double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
+      return (int) ((percentage * 0.01) * (double) maxSize);
+    }
+    else
+    {
+      return Integer.parseInt(sizeString);
+    }
   }
 
   private class Row

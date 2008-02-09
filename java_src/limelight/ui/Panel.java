@@ -198,6 +198,5 @@ public abstract class Panel
     // Do nothing by default
   }
 
-  public abstract void snapToSize();
   public abstract void paintOn(Graphics2D graphics);
 }

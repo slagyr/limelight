@@ -29,6 +29,7 @@ public class PaintJobTest extends TestCase
 
     Graphics2D graphics = job.getGraphics();
     assertNotNull(graphics);
+    assertEquals(Color.white, graphics.getBackground());
   }
 
   public void testPanelIsInClip() throws Exception

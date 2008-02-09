@@ -11,7 +11,7 @@ public class StackableStyle extends Style implements StyleObserver
   public StackableStyle()
 	{
 		stack = new LinkedList<FlatStyle>();
-		stack.addFirst(new FlatStyle());
+		push(new FlatStyle());
 	}
 
 	protected String get(int key)
