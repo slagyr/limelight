@@ -23,13 +23,20 @@ public class PaintJob
 
   public void paint(Panel panel)
   {
-    if(panelIsInClip(panel))
-    {
-      applyAlphaCompositeFor(panel);
-      paintClipFor(panel);
-      restoreComposite();
-      paintChildren(panel);
-    }
+    Rectangle panelBounds = panel.getAbsoluteBounds();
+    int x = panelBounds.x - clip.x;
+    int y = panelBounds.y - clip.y;
+    Graphics2D graphics = (Graphics2D)this.graphics.create(x, y, panel.width, panel.height);
+
+    paint(panel, graphics);
+  }
+
+  public void paint(Panel panel, Graphics2D graphics)
+  {
+    applyAlphaCompositeFor(panel, graphics);
+    paintClipFor(panel, graphics);
+    restoreComposite(graphics);
+    paintChildren(panel, graphics);
   }
 
   public Rectangle getClip()
@@ -49,69 +56,55 @@ public class PaintJob
 
   public boolean panelIsInClip(Panel panel)
   {
-    Rectangle panelClip = panel.getAbsoluteBounds(); 
+    Rectangle panelClip = panel.getAbsoluteBounds();
     return clip.intersects(panelClip);
   }
 
-  public void paintClipFor(Panel panel)
+  public void paintClipFor(Panel panel, Graphics2D graphics)
   {
-    Rectangle panelBounds = panel.getAbsoluteBounds();
-
-    if (panel.usesBuffer())
-    {
-      java.awt.Rectangle intersection = clip.intersection(panelBounds);
-      int destinationX = intersection.x - clip.x;
-      int destinationY = intersection.y - clip.y;
-      int sourceX = intersection.x - panelBounds.x;
-      int sourceY = intersection.y - panelBounds.y;
-      BufferedImage panelBuffer = panel.getBuffer();
-
-      graphics.drawImage(panelBuffer, destinationX, destinationY, intersection.width + destinationX, intersection.height + destinationY,
-                                      sourceX, sourceY, intersection.width + sourceX, intersection.height + sourceY, null);
-    }
+    if(panel.usesBuffer())
+      graphics.drawImage(panel.getBuffer(), 0, 0, null);
     else
-    {
-      int x = panelBounds.x - clip.x;
-      int y = panelBounds.y - clip.y;
-      Graphics2D subGraphics = (Graphics2D)graphics.create(x, y, panel.width, panel.height);
-      panel.paintOn(subGraphics);
-    }
+      panel.paintOn(graphics);
   }
 
-  public void applyAlphaCompositeFor(Panel panel)
+  public void applyAlphaCompositeFor(Panel panel, Graphics2D graphics)
   {
     Style style = panel.getBlock().getStyle();
     int alphaPercentage = style.asInt(style.getTransparency());
     if(alphaPercentage > 0)
-    {    
+    {
       float alpha = 1.0f - (alphaPercentage / 100.0f);
       Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
       graphics.setComposite(alphaComposite);
     }
   }
 
-  public void restoreComposite()
+  public void restoreComposite(Graphics2D graphics)
   {
     graphics.setComposite(composite);
   }
 
-  public void paintChildren(Panel panel)
+  public void paintChildren(Panel panel, Graphics2D graphics)
   {
     if(panel.hasChildren())
     {
+      ParentPanel parent = (ParentPanel)panel;
+      Rectangle innards = parent.getChildConsumableArea();
+      graphics.clipRect(innards.x, innards.y, innards.width, innards.height);
       for (Panel child : panel.getChildren())
-        paint(child);
+      {
+        if(panelIsInClip(child))
+        {
+          Graphics2D childGraphics = (Graphics2D)graphics.create(child.getX(), child.getY(), child.getWidth(), child.getHeight());
+          paint(child, childGraphics);
+        }
+      }
     }
-  }
-
-  public void substituteGraphics(Graphics2D graphics)
-  {
-    this.graphics = graphics;
   }
 
   public void applyTo(Graphics graphics)
   {
-//    graphics.clearRect(clip.x, clip.y, clip.width, clip.height);
     graphics.drawImage(buffer, clip.x, clip.y, null);
   }
 
@@ -127,5 +120,10 @@ public class PaintJob
       }
     });
     jframe.setVisible(true);
+  }
+
+  public void substituteGraphics(Graphics2D graphics)
+  {
+    this.graphics = graphics;
   }
 }
