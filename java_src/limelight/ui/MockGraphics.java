@@ -13,12 +13,15 @@ public class MockGraphics extends java.awt.Graphics2D
 	private Color color;
 	public LinkedList<DrawnShape> drawnShapes;
   private BasicStroke stroke;
-  private Rectangle clip;
+  public Rectangle clip;
   public Rectangle drawnImageDestination;
   public Rectangle drawnImageSource;
   public Image drawnImage;
   public int drawnImageX;
   public int drawnImageY;
+  public MockGraphics createdGraphics;
+  public Rectangle createdGraphicsRectangle;
+  public Rectangle clippedRectangle;
 
   public class DrawnShape
 	{
@@ -207,10 +210,17 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public Graphics create()
 	{
-		return new MockGraphics();
+    createdGraphics = new MockGraphics();
+    return createdGraphics;
 	}
 
-	public Color getColor()
+  public Graphics create(int x, int y, int width, int height)
+  {
+    createdGraphicsRectangle = new Rectangle(x, y, width, height);
+    return super.create(x, y, width, height);
+  }
+
+  public Color getColor()
 	{
 		return color;
 	}
@@ -249,7 +259,8 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void clipRect(int x, int y, int width, int height)
 	{
-    clip = new Rectangle(x, y, width, height);
+    clippedRectangle = new Rectangle(x, y, width, height);
+    clip = clippedRectangle;
   }
 
 	public void setClip(int x, int y, int width, int height)

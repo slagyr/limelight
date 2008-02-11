@@ -48,7 +48,7 @@ public class TextPanel extends Panel
 
   public void paintOn(Graphics2D graphics)
   {
-    Aligner aligner = createAligner();
+    Aligner aligner = createAligner();  
     graphics.setColor(Colors.resolve(getStyle().getTextColor()));
     float y = 0;
     for (TextLayout textLayout : lines)
@@ -127,7 +127,7 @@ public class TextPanel extends Panel
   }
 
   private Graphics2D getGraphics()
-  {
+  {   
     if(graphics == null)
       graphics = (Graphics2D)getFrame().getGraphics();
     return graphics;
