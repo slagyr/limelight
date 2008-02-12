@@ -154,22 +154,6 @@ public class BlockPanel extends ParentPanel
     painters.add(new BackgroundPainter(this));
     painters.add(new BorderPainter(this));
   }
-
-
-  private int translateDimension(String sizeString, int maxSize)
-  {
-    if (sizeString == null)
-      return 0;
-    else if (sizeString.endsWith("%"))
-    {
-      double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-      return (int) ((percentage * 0.01) * (double) maxSize);
-    }
-    else
-    {
-      return Integer.parseInt(sizeString);
-    }
-  }
 }
 
 

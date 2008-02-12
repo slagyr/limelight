@@ -26,10 +26,23 @@ public class PanelLayout
     if(panel.getChildren().size() == 0)
 			return;
 
+    doLayoutOnChildren();
+    area = panel.getChildConsumableArea();
     reset();
     buildRows();
 
-    Aligner aligner = buildAligner(panel.getChildConsumableArea());
+    Aligner aligner = buildAligner(area);
+    layoutRows(aligner);
+  }
+
+  private void doLayoutOnChildren()
+  {
+    for(Panel child : panel.getChildren())
+      child.doLayout();
+  }
+
+  private void layoutRows(Aligner aligner)
+  {
     aligner.addConsumedHeight(consumedHeight);
     int y = aligner.startingY();
     for(Row row : rows)
@@ -44,7 +57,6 @@ public class PanelLayout
 	{
     for(Panel child : panel.getChildren())
     {
-      child.doLayout();
       if (!currentRow.isEmpty() && !currentRow.fits(child))
         newRow();
       currentRow.add(child);
@@ -59,7 +71,6 @@ public class PanelLayout
 
   private void reset()
 	{
-    area = panel.getChildConsumableArea();
     rows.clear();
 		newRow();
 	}

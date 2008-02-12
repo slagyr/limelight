@@ -48,7 +48,7 @@ public class TextPanel extends Panel
 
   public void paintOn(Graphics2D graphics)
   {
-    Aligner aligner = createAligner();  
+    Aligner aligner = createAligner();
     graphics.setColor(Colors.resolve(getStyle().getTextColor()));
     float y = 0;
     for (TextLayout textLayout : lines)
@@ -97,8 +97,9 @@ public class TextPanel extends Panel
           LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics().getFontRenderContext());
           while (lbm.getPosition() < paragraph.length())
           {
-                                                      //TODO MDM - Wow! This is inefficient. The getChildConsumableArea has to be calculated every time!
-            TextLayout layout = lbm.nextLayout((float)panel.getChildConsumableArea().width);
+            //TODO MDM - Wow! This is inefficient. The getChildConsumableArea has to be calculated every time!
+            float width1 = (float) panel.getChildConsumableArea().width;
+            TextLayout layout = lbm.nextLayout(width1);
             lines.add(layout);
           }
         }
