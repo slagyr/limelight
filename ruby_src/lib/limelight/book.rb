@@ -45,7 +45,6 @@ module Limelight
       @frame.content_pane.removeAll
       @frame.add(page.frame)
       page.book = self
-      # page.panel.size = @frame.size
       @current_page = page
     end
     

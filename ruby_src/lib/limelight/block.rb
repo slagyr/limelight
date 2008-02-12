@@ -36,9 +36,9 @@ module Limelight
       return self
     end
     
-    def load_style
+    def load_style   
       if @class_name
-        new_style = @page.styles[@class_name];
+        new_style = @page.styles[@class_name];    
         @style.add_to_bottom(new_style) if new_style
         @hover_style = page.styles["#{@class_name}.hover"];
       end

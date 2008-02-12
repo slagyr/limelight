@@ -14,7 +14,6 @@ public class PanelLayoutTest extends TestCase
     parent = new MockBlockPanel();
     parent.getBlock().getStyle().setWidth("100");
     parent.getBlock().getStyle().setHeight("100");
-//    parent.setSize(100, 100);
     layout = new PanelLayout(parent);
   }
 
