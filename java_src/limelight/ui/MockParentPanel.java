@@ -5,6 +5,7 @@ import java.awt.*;
 public class MockParentPanel extends ParentPanel
 {
   public boolean repainted;
+  public Block block;
 
   public Rectangle getChildConsumableArea()
   {
@@ -18,5 +19,10 @@ public class MockParentPanel extends ParentPanel
   public void repaint()
   {
     repainted = true;
+  }
+
+  public Block getBlock()
+  {
+    return block;
   }
 }
