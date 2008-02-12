@@ -56,6 +56,8 @@ public class PanelTest extends TestCase
     assertEquals(567, panel.getY());
   }
 
+  
+
   public void testContainsRealativePoint() throws Exception
   {
     panel.setLocation(100, 200);

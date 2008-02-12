@@ -100,17 +100,6 @@ public class BlockPanel extends ParentPanel
     return getRectangleInsidePadding();
   }
 
-  public Panel getOwnerOfPoint(Point point)
-  {
-    point = new Point(point.x - getX(), point.y - getY());
-    for (Panel panel : children)
-    {
-      if(panel.containsRelativePoint(point))
-        return panel.getOwnerOfPoint(point);
-    }
-    return this;
-  }
-
   public boolean usesBuffer()
   {
     return true;

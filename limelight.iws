@@ -30,15 +30,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayoutTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayoutTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/sandbox.style" afterPath="$PROJECT_DIR$/examples/sandbox/sandbox.style" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox.rb" afterPath="$PROJECT_DIR$/examples/sandbox.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanelTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/PanelTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockParentPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/MockParentPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java" />
     </list>
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
@@ -155,37 +153,7 @@
     </subPane>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="TextPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="38" selection-start="1153" selection-end="1153" vertical-scroll-proportion="0.39162114">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PanelLayout.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="55" selection-start="776" selection-end="776" vertical-scroll-proportion="0.8087432">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="114" column="98" selection-start="2734" selection-end="2734" vertical-scroll-proportion="0.41947564">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -842,7 +810,7 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Painting children is caintined within parent." />
+    <option name="LAST_COMMIT_MESSAGE" value="Got Langston working." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -861,6 +829,7 @@
     <MESSAGE value="Optimized the handling of style and text changes.  A move to remove the snapToSize method form Panel and just use doLayout." />
     <MESSAGE value="repaint knows when to have it's parent do layout.  Got rid of snapToSize." />
     <MESSAGE value="Painting children is caintined within parent." />
+    <MESSAGE value="Got Langston working." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -955,15 +924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="33" selection-start="856" selection-end="856" vertical-scroll-proportion="1.0036364">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PanelLayoutTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="21" selection-start="410" selection-end="410" vertical-scroll-proportion="0.3272727">
@@ -978,12 +938,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockBlock.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="98" selection-start="2734" selection-end="2734" vertical-scroll-proportion="0.41947564">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="27" column="9" selection-start="678" selection-end="678" vertical-scroll-proportion="0.55191255">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -996,7 +954,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="55" selection-start="776" selection-end="776" vertical-scroll-proportion="0.8087432">
+        <state line="40" column="51" selection-start="847" selection-end="847" vertical-scroll-proportion="0.87431693">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="3" selection-start="2435" selection-end="2435" vertical-scroll-proportion="0.5168539">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="39" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.8251366">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ParentPanelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="30" selection-start="2224" selection-end="2224" vertical-scroll-proportion="1.7704918">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/MockParentPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="42" selection-start="85" selection-end="85" vertical-scroll-proportion="0.08743169">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PanelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="2" selection-start="1269" selection-end="1269" vertical-scroll-proportion="1.0655738">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="3" selection-start="1422" selection-end="1422" vertical-scroll-proportion="0.48087433">
           <folding />
         </state>
       </provider>

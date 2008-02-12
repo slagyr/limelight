@@ -3,6 +3,7 @@ package limelight.ui;
 import limelight.LimelightException;
 
 import java.util.LinkedList;
+import java.awt.*;
 
 public abstract class ParentPanel extends Panel
 {
@@ -45,6 +46,27 @@ public abstract class ParentPanel extends Panel
 
   public abstract Rectangle getChildConsumableArea();
   public abstract void repaint();
+
+  public Panel getOwnerOfPoint(Point point)
+  {
+    point = new Point(point.x - getX(), point.y - getY());
+    for (Panel panel : children)
+    {
+      if(panel.containsRelativePoint(point))
+        return panel.getOwnerOfPoint(point);
+    }
+    return this;
+  }
+
+  public void replace(Panel existing, Panel replacement)
+  {
+    int index = children.indexOf(existing);
+    if(index > 0)
+    {
+      children.remove(index);
+      children.add(index, replacement);
+    }
+  }
 }
 
 class SterilePanelException extends LimelightException
