@@ -45,7 +45,11 @@ public abstract class ParentPanel extends Panel
   }
 
   public abstract Rectangle getChildConsumableArea();
-  public abstract void repaint();
+
+  public void repaint()
+  {
+    getParent().repaint();
+  }
 
   public Panel getOwnerOfPoint(Point point)
   {
@@ -66,6 +70,12 @@ public abstract class ParentPanel extends Panel
       children.remove(index);
       children.add(index, replacement);
     }
+  }
+
+  public void clearChildren()
+  {
+    children.clear();
+    sterilized = false;
   }
 }
 

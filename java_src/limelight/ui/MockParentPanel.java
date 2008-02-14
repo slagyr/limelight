@@ -25,4 +25,8 @@ public class MockParentPanel extends ParentPanel
   {
     return block;
   }
+
+  public void snapToSize()
+  {
+  }
 }

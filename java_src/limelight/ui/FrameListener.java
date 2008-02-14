@@ -36,15 +36,15 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
   public void mousePressed(MouseEvent e)
   {
     pressedPanel = panelFor(e.getPoint());
-    pressedPanel.getBlock().mouse_pressed(e);
+    pressedPanel.mousePressed(e);
   }
 
   public void mouseReleased(MouseEvent e)
   {
     Panel releasedPanel = panelFor(e.getPoint());
-    releasedPanel.getBlock().mouse_released(e);
+    releasedPanel.mouseReleased(e);
     if(releasedPanel == pressedPanel)
-      releasedPanel.getBlock().mouse_clicked(e);
+      releasedPanel.mouseClicked(e);
   }
 
   public void mouseEntered(MouseEvent e)
@@ -62,14 +62,14 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
     Panel panel = panelFor(e.getPoint());
     if(panel != hooveredPanel)
       transition(panel, e);
-    panel.getBlock().mouse_dragged(e);
+    panel.mouseDragged(e);
   }
 
   private void transition(Panel panel, MouseEvent e)
   {
     if(hooveredPanel == null)
     {
-      frame.getPanel().getBlock().mouse_entered(e);
+      frame.getPanel().mouseEntered(e);
       enter(panel, frame.getPanel(), e);
     }
     else if(hooveredPanel.isAncestor(panel))
@@ -91,10 +91,7 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
       return;
     enter(descendant.getParent(), ancestor, e);
     if(descendant instanceof ParentPanel)
-    {
-      descendant.getBlock().hover_on();
-      descendant.getBlock().mouse_entered(e);
-    }
+      descendant.mouseEntered(e);
   }
 
   private void exit(Panel descendant, Panel ancestor, MouseEvent e)
@@ -102,10 +99,7 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
     while(descendant != ancestor)
     {
       if(descendant instanceof ParentPanel)
-      {
-        descendant.getBlock().mouse_exited(e);
-        descendant.getBlock().hover_off();
-      }
+        descendant.mouseExited(e);
       descendant = descendant.getParent();
     }
   }
@@ -115,11 +109,12 @@ public class FrameListener implements MouseListener, MouseMotionListener, MouseW
     Panel panel = panelFor(e.getPoint());
     if(panel != hooveredPanel)
       transition(panel, e);
-    panel.getBlock().mouse_moved(e);
+    panel.mouseMoved(e);
   }
 
   public void mouseWheelMoved(MouseWheelEvent e)
   {
+    panelFor(e.getPoint()).mouseWheelMoved(e);
   }
 
   public void keyTyped(KeyEvent e)

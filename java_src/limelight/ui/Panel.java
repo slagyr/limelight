@@ -3,6 +3,8 @@ package limelight.ui;
 import limelight.LimelightError;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
@@ -195,8 +197,52 @@ public abstract class Panel
 
   public void doLayout()
   {
-    // Do nothing by default
+    snapToSize();
   }
 
+  public void mousePressed(MouseEvent e)
+  {
+    getBlock().mouse_pressed(e);
+  }
+
+  public void mouseReleased(MouseEvent e)
+  {
+    getBlock().mouse_released(e);
+  }
+
+  public void mouseClicked(MouseEvent e)
+  {
+    getBlock().mouse_clicked(e);
+  }
+
+  public void mouseDragged(MouseEvent e)
+  {
+    getBlock().mouse_dragged(e);
+  }
+
+  public void mouseEntered(MouseEvent e)
+  {
+    getBlock().mouse_entered(e);
+    getBlock().hover_on();
+  }
+
+  public void mouseExited(MouseEvent e)
+  {
+    getBlock().mouse_exited(e);
+    getBlock().hover_off();
+  }
+
+  public void mouseMoved(MouseEvent e)
+  {
+    getBlock().mouse_moved(e);
+  }
+
+  public void mouseWheelMoved(MouseWheelEvent e)
+  {
+    getParent().mouseWheelMoved(e);
+  }
+
+  public abstract void snapToSize();
   public abstract void paintOn(Graphics2D graphics);
+
 }

@@ -18,7 +18,7 @@ public class BlockPanel extends ParentPanel
     this.block = block;
     buildPainters();
     textAccessor = new TextPaneTextAccessor(this);
-    layout = new PanelLayout(this);
+    layout = new BlockPanelLayout(this);
   }
 
   public Block getBlock()
@@ -68,8 +68,16 @@ public class BlockPanel extends ParentPanel
 
   public void doLayout()
   {
-    layout.doLayout();
+    layout.doLayout();  
   }
+
+  public void snapToSize()
+  {
+    Rectangle r = getParent().getChildConsumableArea();
+    setWidth(translateDimension(getBlock().getStyle().getWidth(), r.width));
+    setHeight(translateDimension(getBlock().getStyle().getHeight(), r.height));
+  }
+
 
   public Rectangle getRectangleInsideMargins()
   {
@@ -142,6 +150,21 @@ public class BlockPanel extends ParentPanel
     painters = new LinkedList<Painter>();
     painters.add(new BackgroundPainter(this));
     painters.add(new BorderPainter(this));
+  }
+
+  private int translateDimension(String sizeString, int maxSize)
+  {
+    if (sizeString == null)
+      return 0;
+    else if (sizeString.endsWith("%"))
+    {
+      double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
+      return (int) ((percentage * 0.01) * (double) maxSize);
+    }
+    else
+    {
+      return Integer.parseInt(sizeString);
+    }
   }
 }
 

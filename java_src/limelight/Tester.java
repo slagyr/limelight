@@ -2,13 +2,13 @@ package limelight;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 public class Tester
 {
-
   public static void main(String[] args)
   {
     JFrame frame = new JFrame();
@@ -81,12 +81,37 @@ System.err.println("desiredWidth = " + desiredWidth);
           panel.repaint();
         }
       });
+
+      this.addMouseListener(new MouseListener() {
+
+        public void mouseClicked(MouseEvent e)
+        {
+          System.err.println("e = " + e);
+        }
+
+        public void mousePressed(MouseEvent e)
+        {
+        }
+
+        public void mouseReleased(MouseEvent e)
+        {
+        }
+
+        public void mouseEntered(MouseEvent e)
+        {
+        }
+
+        public void mouseExited(MouseEvent e)
+        {
+        }
+      });
     }
 
     protected void paintComponent(Graphics g)
     {
       this.setMaximum(panel.getDesiredWidth());
       this.setVisibleAmount(panel.getWidth());
+System.err.println("getHeight() = " + getHeight());      
       super.paintComponent(g);
     }
   }
