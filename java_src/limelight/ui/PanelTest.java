@@ -3,7 +3,10 @@ package limelight.ui;
 import junit.framework.TestCase;
 import limelight.LimelightError;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class PanelTest extends TestCase
 {
@@ -12,6 +15,9 @@ public class PanelTest extends TestCase
   private MockRootBlockPanel child;
   private Panel sibling;
   private MockRootBlockPanel grandChild;
+  private MockBlock block;
+  private MouseEvent mouseEvent;
+  private MouseWheelEvent mouseWheelEvent;
 
   public void setUp() throws Exception
   {
@@ -55,8 +61,6 @@ public class PanelTest extends TestCase
     panel.setY(567);
     assertEquals(567, panel.getY());
   }
-
-  
 
   public void testContainsRealativePoint() throws Exception
   {
@@ -160,6 +164,65 @@ public class PanelTest extends TestCase
     assertTrue(grandChild.containsAbsolutePoint(new Point(8, 80)));
     assertTrue(grandChild.containsAbsolutePoint(new Point(17, 89)));
     assertTrue(grandChild.containsAbsolutePoint(new Point(15, 85)));
+  }
+
+  public void testMousePressed() throws Exception
+  {
+    setUpForEvent();
+    panel.mousePressed(mouseEvent);
+    assertSame(mouseEvent, block.pressedMouse);
+  }
+
+  private MouseEvent setUpForEvent() throws SterilePanelException
+  {
+    parent = new MockRootBlockPanel();
+    parent.add(panel);
+    block = (MockBlock)parent.getBlock();
+    mouseEvent = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
+    mouseWheelEvent = new MouseWheelEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false, 7, 8, 9);
+    return mouseEvent;
+  }
+
+  public void testMouseReleased() throws Exception
+  {
+    setUpForEvent();
+    panel.mouseReleased(mouseEvent);
+    assertSame(mouseEvent, block.releasedMouse);
+  }
+
+  public void testMouseClicked() throws Exception
+  {
+    setUpForEvent();
+    panel.mouseClicked(mouseEvent);
+    assertSame(mouseEvent, block.clickedMouse);
+  }
+
+  public void testMouseDragged() throws Exception
+  {
+    setUpForEvent();
+    panel.mouseDragged(mouseEvent);
+    assertSame(mouseEvent, block.draggedMouse);
+  }
+
+  public void testMouseEntered() throws Exception
+  {
+    setUpForEvent();
+    panel.mouseEntered(mouseEvent);
+    assertSame(mouseEvent, block.enteredMouse);
+  }
+
+  public void testMouseExited() throws Exception
+  {
+    setUpForEvent();
+    panel.mouseExited(mouseEvent);
+    assertSame(mouseEvent, block.exitedMouse);
+  }
+
+  public void testMouseMoved() throws Exception
+  {
+    setUpForEvent();
+    panel.mouseMoved(mouseEvent);
+    assertSame(mouseEvent, block.movedMouse);
   }
 }
 

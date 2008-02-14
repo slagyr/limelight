@@ -1,5 +1,7 @@
 package limelight.ui;
 
+import java.awt.event.MouseWheelEvent;
+
 public class RootBlockPanel extends BlockPanel
 {
   private Frame frame;
@@ -22,4 +24,8 @@ public class RootBlockPanel extends BlockPanel
     height = style.asInt(style.getHeight());
   }
 
+  public void mouseWheelMoved(MouseWheelEvent e)
+  {
+    //ignore
+  }
 }

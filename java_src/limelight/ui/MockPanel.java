@@ -2,6 +2,7 @@ package limelight.ui;
 
 import java.awt.image.BufferedImage;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 class MockPanel extends Panel
 {
@@ -36,6 +37,11 @@ class MockPanel extends Panel
   public void doLayout()
   {
     wasLaidOut = true;
+    snapToSize();
+  }
+
+  public void snapToSize()
+  {
     setWidth(snapToWidth);
     setHeight(snapToHeight);
   }

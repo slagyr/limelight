@@ -88,7 +88,7 @@ public class PaintJob
   public void paintChildren(Panel panel, Graphics2D graphics)
   {
     if(panel.hasChildren())
-    {
+    {     
       ParentPanel parent = (ParentPanel)panel;
       Rectangle innards = parent.getChildConsumableArea();
       graphics.clipRect(innards.x, innards.y, innards.width, innards.height);

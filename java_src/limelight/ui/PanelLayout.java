@@ -2,14 +2,14 @@ package limelight.ui;
 
 import java.util.LinkedList;
 
-public class PanelLayout
+public abstract class PanelLayout
 {
 	private LinkedList<Row> rows;
 	private Row currentRow;
-  private ParentPanel panel;
-  private Rectangle area;
-  private int consumedHeight;
-  private Style style;
+  protected ParentPanel panel;
+  protected Rectangle area;
+  protected int consumedHeight;
+  protected int consumedWidth;
 
   public PanelLayout(ParentPanel panel)
   {
@@ -17,31 +17,15 @@ public class PanelLayout
     rows = new LinkedList<Row>();
 	}
 
-  public void doLayout()
-	{
-    style = panel.getBlock().getStyle();
-    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT))
-      snapPanelToSize(panel);
+  public abstract void doLayout();
 
-    if(panel.getChildren().size() == 0)
-			return;
-
-    doLayoutOnChildren();
-    area = panel.getChildConsumableArea();
-    reset();
-    buildRows();
-
-    Aligner aligner = buildAligner(area);
-    layoutRows(aligner);
-  }
-
-  private void doLayoutOnChildren()
+  protected void doLayoutOnChildren()
   {
     for(Panel child : panel.getChildren())
       child.doLayout();
   }
 
-  private void layoutRows(Aligner aligner)
+  protected void layoutRows(Aligner aligner)
   {
     aligner.addConsumedHeight(consumedHeight);
     int y = aligner.startingY();
@@ -53,7 +37,7 @@ public class PanelLayout
     }
   }
 
-  private void buildRows()
+  protected void buildRows()
 	{
     for(Panel child : panel.getChildren())
     {
@@ -64,12 +48,13 @@ public class PanelLayout
     calculateConsumedDimentions();
   }
 
-  private Aligner buildAligner(Rectangle rectangle)
+  protected Aligner buildAligner(Rectangle rectangle)
   {
+    Style style = panel.getBlock().getStyle();
     return new Aligner(rectangle, style.getHorizontalAlignment(), style.getVerticalAlignment());
   }
 
-  private void reset()
+  protected void reset()
 	{
     rows.clear();
 		newRow();
@@ -83,7 +68,7 @@ public class PanelLayout
 
   private void calculateConsumedDimentions()
   {
-    int consumedWidth = 0;
+    consumedWidth = 0;
     consumedHeight = 0;
     for (Row row : rows)
     {
@@ -96,37 +81,6 @@ public class PanelLayout
   public ParentPanel getPanel()
   {
     return panel;
-  }
-
-  public void snapPanelToSize(Panel panel)
-  {
-    style = panel.getBlock().getStyle();
-    if(panel.getParent() != null)
-    {
-      Rectangle r = panel.getParent().getChildConsumableArea();
-      panel.setWidth(translateDimension(style.getWidth(), r.width));
-      panel.setHeight(translateDimension(style.getHeight(), r.height));
-    }
-    else
-    {
-      panel.setWidth(style.asInt(style.getWidth()));
-      panel.setHeight(style.asInt(style.getHeight()));
-    }
-  }
-
-  private int translateDimension(String sizeString, int maxSize)
-  {
-    if (sizeString == null)
-      return 0;
-    else if (sizeString.endsWith("%"))
-    {
-      double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-      return (int) ((percentage * 0.01) * (double) maxSize);
-    }
-    else
-    {
-      return Integer.parseInt(sizeString);
-    }
   }
 
   private class Row

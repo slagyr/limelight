@@ -88,4 +88,40 @@ public class BlockPanelTest extends TestCase
 
     assertTrue(parent.repainted);
   }
+
+  public void testSnapToSizeWithAbsoluteValues() throws Exception
+  {
+    MockParentPanel parent = new MockParentPanel();
+    parent.setSize(1000, 1000);
+    MockBlock block = new MockBlock();
+    BlockPanel panel = new BlockPanel(block);
+    parent.add(panel);
+
+    block.style.setWidth("100");
+    block.style.setHeight("200");
+
+    panel.snapToSize();
+
+    assertEquals(100, panel.getWidth());
+    assertEquals(200, panel.getHeight());
+  }
+
+  public void testSnapToSizeWithPercentages() throws Exception
+  {
+    MockBlockPanel parent = new MockBlockPanel();
+    parent.setSize(1000, 1000);
+    parent.getBlock().getStyle().setMargin("100");
+    parent.getBlock().getStyle().setPadding("200");
+    MockBlock block = new MockBlock();
+    BlockPanel panel = new BlockPanel(block);
+    parent.add(panel);
+
+    block.style.setWidth("100%");
+    block.style.setHeight("50%");
+
+    panel.snapToSize();
+
+    assertEquals(400, panel.getWidth());
+    assertEquals(200, panel.getHeight());
+  }
 }

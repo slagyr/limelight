@@ -67,6 +67,11 @@ public class TextPanel extends Panel
       calculateDimentions();
       compiled = true;
     }
+    snapToSize();
+  }
+
+  public void snapToSize()
+  {
     setWidth((int)(consumedWidth + 0.5));
     setHeight((int)(consumedHeight + 0.5));
   }

@@ -6,15 +6,15 @@ import java.awt.*;
 
 public class PanelLayoutTest extends TestCase
 {
-  private MockBlockPanel parent;
+  private MockRootBlockPanel parent;
   private PanelLayout layout;
 
   public void setUp() throws Exception
   {
-    parent = new MockBlockPanel();
+    parent = new MockRootBlockPanel();
     parent.getBlock().getStyle().setWidth("100");
     parent.getBlock().getStyle().setHeight("100");
-    layout = new PanelLayout(parent);
+    layout = new BlockPanelLayout(parent);
   }
 
   public void testLayoutWithOneFullSizedChild() throws Exception
@@ -95,36 +95,6 @@ public class PanelLayoutTest extends TestCase
 
     assertEquals(new Point(0, 0), child.getLocation());
     assertEquals(new Point(20, 20), grandChild.getLocation());
-  }
-
-  public void testSnapToSizeWithAbsoluteValues() throws Exception
-  {
-    parent.setSize(1000, 1000);
-    MockBlock block = new MockBlock();
-    BlockPanel panel = new BlockPanel(block);
-    parent.add(panel);
-
-    block.style.setWidth("100");
-    block.style.setHeight("200");
-    layout.snapPanelToSize(panel);
-    assertEquals(100, panel.getWidth());
-    assertEquals(200, panel.getHeight());
-  }
-
-  public void testSnapToSizeWithPercentages() throws Exception
-  {
-    parent.setSize(1000, 1000);
-    parent.getBlock().getStyle().setMargin("100");
-    parent.getBlock().getStyle().setPadding("200");
-    MockBlock block = new MockBlock();
-    BlockPanel panel = new BlockPanel(block);
-    parent.add(panel);
-
-    block.style.setWidth("100%");
-    block.style.setHeight("50%");
-    layout.snapPanelToSize(panel);
-    assertEquals(400, panel.getWidth());
-    assertEquals(200, panel.getHeight());
   }
 
   private MockPanel createAndAddChildWithSize(int width, int height) throws SterilePanelException

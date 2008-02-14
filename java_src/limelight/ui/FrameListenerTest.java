@@ -3,6 +3,7 @@ package limelight.ui;
 import junit.framework.TestCase;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class FrameListenerTest extends TestCase
 {
@@ -159,5 +160,10 @@ public class FrameListenerTest extends TestCase
   private MouseEvent mouseEvent(int x, int y)
   {
     return new MouseEvent(frame, 1, 2, 3, x, y, 1, false);
+  }
+
+  private MouseWheelEvent mouseWheelEvent(int x, int y)
+  {
+    return new MouseWheelEvent(frame, 1, 2, 3, x, y, 1, false, 1, 2, 3);
   }
 }
