@@ -9,13 +9,13 @@ public class VerticalScrollBarPanel extends ScrollBarPanel
     return new ScrollBar(JScrollBar.VERTICAL, this);
   }
 
-  protected void valueChanged(int value)
-  {
-    
-  }
-
   public void snapToSize()
   {
-    setSize(SCROLL_BAR_WIDTH, getParent().getHeight());  
+    if(!getScrollPanel().isVerticalScrollBarOn())
+      setSize(0, 0);
+    else if(getScrollPanel().isHorizontalScrollBarOn())
+      setSize(SCROLL_BAR_WIDTH, getParent().getHeight() - SCROLL_BAR_WIDTH);
+    else
+      setSize(SCROLL_BAR_WIDTH, getParent().getHeight());
   }
 }

@@ -10,7 +10,7 @@ public class BlockPanel extends ParentPanel
   private BufferedImage buffer;
   private LinkedList<Painter> painters;
   private TextAccessor textAccessor;
-  private PanelLayout layout;
+  protected PanelLayout layout;
 
   public BlockPanel(Block block)
   {

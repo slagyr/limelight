@@ -52,9 +52,14 @@ public class ScrollViewPanel extends ParentPanel
     job.applyTo(getFrame().getGraphics());
   }
 
-  private Point getStartingPoint()
+  public ScrollPanel getScrollPanel()
   {
-    return ((ScrollPanel)getParent()).getScrollCoordinates();
+    return  (ScrollPanel)getParent();
+  }
+
+  public Point getStartingPoint()
+  {
+    return startingPoint;
   }
 
   public void update()
@@ -74,7 +79,7 @@ public class ScrollViewPanel extends ParentPanel
 
   private void translateChildLocations()
   {
-    startingPoint = getStartingPoint();
+    startingPoint = getScrollPanel().getScrollCoordinates();
     for(Panel child : children)
       child.setLocation(child.getX() - startingPoint.x, child.getY() - startingPoint.y);
   }

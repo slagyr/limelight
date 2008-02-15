@@ -10,6 +10,8 @@ public class ScrollPanel extends ParentPanel
   private ScrollViewPanel view;
   private ScrollBarPanel verticalScrollBar;
   private ScrollBarPanel horizontalScrollBar;
+  private boolean verticalScrollBarOn;
+  private boolean horizontalScrollBarOn;
 
   public ScrollPanel(LinkedList<Panel> children) throws SterilePanelException
   {
@@ -17,13 +19,23 @@ public class ScrollPanel extends ParentPanel
     verticalScrollBar = new VerticalScrollBarPanel();
     horizontalScrollBar = new HorizontalScrollBarPanel();
     add(view);
-    add(verticalScrollBar);
-    add(horizontalScrollBar);
+    enableVerticalScrollBar();
+    enableHorizontalScrollBar();
   }
 
   public ScrollViewPanel getView()
   {
     return view;
+  }
+
+  public ScrollBarPanel getVerticalScrollBar()
+  {
+    return verticalScrollBar;
+  }
+
+  public ScrollBarPanel getHorizontalScrollBar()
+  {
+    return horizontalScrollBar;
   }
 
   public Point getScrollCoordinates()
@@ -67,5 +79,39 @@ public class ScrollPanel extends ParentPanel
     boolean isVertical = e.getModifiers() % 2 == 0;
     JScrollBar scrollBar = isVertical ? verticalScrollBar.getScrollBar() : horizontalScrollBar.getScrollBar();
     scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
+  }
+
+  public boolean isVerticalScrollBarOn()
+  {
+    return verticalScrollBarOn;
+  }
+
+  public boolean isHorizontalScrollBarOn()
+  {
+    return horizontalScrollBarOn;
+  }
+
+  public void disableVerticalScrollBar()
+  {
+    verticalScrollBarOn = false;
+    remove(verticalScrollBar);
+  }
+
+  public void enableVerticalScrollBar()
+  {
+    verticalScrollBarOn = true;
+    addUnchecked(verticalScrollBar);
+  }
+
+  public void disableHorizontalScrollBar()
+  {
+    horizontalScrollBarOn = false;
+    remove(horizontalScrollBar);
+  }
+
+  public void enableHorizontalScrollBar()
+  {
+    horizontalScrollBarOn = true;
+    addUnchecked(horizontalScrollBar);
   }
 }

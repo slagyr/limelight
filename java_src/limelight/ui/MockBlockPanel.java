@@ -21,4 +21,9 @@ public class MockBlockPanel extends BlockPanel
     else
       return super.getChildConsumableArea();
   }
+
+  public BlockPanelLayout getLayout()
+  {
+    return (BlockPanelLayout)layout;
+  }
 }
