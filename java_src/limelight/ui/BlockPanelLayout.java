@@ -21,6 +21,17 @@ public class BlockPanelLayout extends PanelLayout
     reset();
     buildRows();
 
+    boolean switched = switchToScrollModeIfNeeded();
+
+    if(!switched)
+    {
+      Aligner aligner = buildAligner(area);
+      layoutRows(aligner);
+    }
+  }
+
+  private boolean switchToScrollModeIfNeeded()
+  {
     if(consumedHeight > area.height || consumedWidth > area.width)
     {
       try
@@ -29,14 +40,13 @@ public class BlockPanelLayout extends PanelLayout
         panel.clearChildren();
         panel.add(scrollPanel);
         doLayout();
+        return true;
       }
       catch (SterilePanelException e)
       {
         e.printStackTrace();
       }
     }
-
-    Aligner aligner = buildAligner(area);
-    layoutRows(aligner);
+    return false;
   }
 }

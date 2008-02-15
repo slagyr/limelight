@@ -45,6 +45,11 @@ public abstract class ScrollBarPanel extends Panel
     return value;
   }
 
+  public void setValue(int value)
+  {
+    this.value = value;
+  }
+
   public JScrollBar getScrollBar()
   {
     return scrollBar;
@@ -52,7 +57,12 @@ public abstract class ScrollBarPanel extends Panel
 
   protected ScrollViewPanel getView()
   {
-    return ((ScrollPanel)getParent()).getView();
+    return getScrollPanel().getView();
+  }
+
+  protected ScrollPanel getScrollPanel()
+  {
+    return (ScrollPanel)getParent();
   }
 
   public void setSize(int width, int height)

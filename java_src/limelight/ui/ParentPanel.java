@@ -24,6 +24,19 @@ public abstract class ParentPanel extends Panel
     panel.setParent(this);
   }
 
+  protected boolean addUnchecked(Panel child)
+  {
+    try
+    {
+      add(child);
+      return true;
+    }
+    catch (SterilePanelException e)
+    {
+      return false;
+    }
+  }
+
   public boolean hasChildren()
   {
     return children.size() > 0;
@@ -60,6 +73,16 @@ public abstract class ParentPanel extends Panel
         return panel.getOwnerOfPoint(point);
     }
     return this;
+  }
+
+  public boolean isChild(Panel child)
+  {
+    return children.contains(child);
+  }
+
+  public boolean remove(Panel child)
+  {
+    return children.remove(child);
   }
 
   public void replace(Panel existing, Panel replacement)
