@@ -27,7 +27,6 @@ public class FrameListenerTest extends TestCase
     frame.getPanel().setSize(1000, 1000);
     childPanel.setLocation(250, 250);
     childPanel.setSize(500, 500);
-
   }
 
   public void testMousePressed() throws Exception

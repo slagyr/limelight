@@ -138,7 +138,14 @@ public abstract class Panel
 
   public Frame getFrame()
   {
+    if(getParent() == null)
+      System.err.println("Panel without parent = " + this);
     return getParent().getFrame();
+  }
+
+  public Graphics2D getClippedGraphics()
+  {
+    return (Graphics2D)parent.getClippedGraphics().create(x, y, width, height);
   }
 
   public boolean containsRelativePoint(Point point)

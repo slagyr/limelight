@@ -100,4 +100,17 @@ public class ParentPanelTest extends TestCase
     assertEquals(3, panel.getChildren().size());
     assertSame(panel4, panel.getChildren().get(1));
   }
+
+  public void testRemovePanel() throws Exception
+  {
+    MockPanel panel1 = new MockPanel();
+    MockPanel panel2 = new MockPanel();
+    panel.add(panel1);
+    panel.add(panel2);
+
+    panel.remove(panel1);
+
+    assertEquals(1, panel.getChildren().size());
+    assertSame(panel2, panel.getChildren().get(0));
+  }
 }
