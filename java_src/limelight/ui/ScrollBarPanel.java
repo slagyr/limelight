@@ -23,7 +23,7 @@ public abstract class ScrollBarPanel extends Panel
 
   protected abstract ScrollBar createScrollBar();
 
-  public void reset(int max, int viewable)
+  public void setConfigurations(int max, int viewable)
   {
     locked = true;
     scrollBar.setMaximum(max);
@@ -140,13 +140,9 @@ public abstract class ScrollBarPanel extends Panel
 
     public void repaint()
     {
-      if(panel == null)
+      if(panel == null || locked)
         return;
-      Rectangle absoluteClip = getAbsoluteBounds();
-      Frame frame = panel.getFrame();
-      Graphics graphics = frame.getGraphics();
-      Graphics clippedGraphics = graphics.create(absoluteClip.x, absoluteClip.y, absoluteClip.width, absoluteClip.height);
-      paint(clippedGraphics);
+      paint(getClippedGraphics());
     }
   }
 }

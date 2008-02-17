@@ -1,5 +1,7 @@
 package limelight.ui;
 
+import limelight.LimelightException;
+
 import java.awt.*;
 import java.util.LinkedList;
 
@@ -12,6 +14,7 @@ public class ScrollViewPanel extends ParentPanel
   {
     super();
     layout = new ScrollViewLayout(this);
+    startingPoint = new Point(0, 0);
     for(Panel child : children)
       add(child);
   }
@@ -29,6 +32,7 @@ public class ScrollViewPanel extends ParentPanel
   public void doLayout()
   {
     layout.doLayout();
+    translateChildLocations();
   }
 
   public int getConsumedWidth()
@@ -71,8 +75,6 @@ public class ScrollViewPanel extends ParentPanel
 
   private void restoreChildLocations()
   {
-    if(startingPoint == null)
-      return;
     for(Panel child : children)
       child.setLocation(child.getX() + startingPoint.x, child.getY() + startingPoint.y);
   }

@@ -42,7 +42,7 @@ public class ScrollBarPanelTest extends TestCase
 
   public void testReset() throws Exception
   {
-    horizontalScrollBar.reset(500, 100);
+    horizontalScrollBar.setConfigurations(500, 100);
 
     assertEquals(500, horizontalScrollBar.getScrollBar().getMaximum());
     assertEquals(100, horizontalScrollBar.getScrollBar().getVisibleAmount());

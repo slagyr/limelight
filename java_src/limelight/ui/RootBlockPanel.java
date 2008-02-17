@@ -1,5 +1,6 @@
 package limelight.ui;
 
+import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 
 public class RootBlockPanel extends BlockPanel
@@ -27,5 +28,10 @@ public class RootBlockPanel extends BlockPanel
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     //ignore
+  }
+
+  public Graphics2D getClippedGraphics()
+  {
+    return (Graphics2D)frame.getGraphics();
   }
 }

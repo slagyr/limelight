@@ -56,7 +56,7 @@ public class ScrollViewLayoutTest extends TestCase
   public void testHorizontalScrollBarNotNeeded() throws Exception
   {
     scrollPanel.setSize(500, 500);
-    child.prepForSnap(500, 1000);
+    child.prepForSnap(485, 1000);
 
     view.doLayout();
 

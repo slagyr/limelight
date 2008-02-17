@@ -53,8 +53,8 @@ public class ScrollPanel extends ParentPanel
     snapToSize();
     view.doLayout();
 
-    verticalScrollBar.reset(view.getConsumedHeight(), view.getHeight());
-    horizontalScrollBar.reset(view.getConsumedWidth(), view.getWidth());
+    verticalScrollBar.setConfigurations(view.getConsumedHeight(), view.getHeight());
+    horizontalScrollBar.setConfigurations(view.getConsumedWidth(), view.getWidth());
 
     verticalScrollBar.doLayout();
     horizontalScrollBar.doLayout();

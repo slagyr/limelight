@@ -5,7 +5,7 @@ module Limelight
     
     include Java::limelight.ui.Block
   
-    attr_reader :panel, :style
+    attr_reader :panel, :style, :children
     attr_accessor :page, :class_name, :id, :parent
     getters :panel, :style, :page, :class_name, :text
     setters :text
@@ -34,6 +34,12 @@ module Limelight
     def <<(child)
       add(child)
       return self
+    end
+    
+    def remove(child)
+      @children.delete(child)
+      @panel.remove(child.panel)
+      child.parent = nil
     end
     
     def load_style   

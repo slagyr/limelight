@@ -58,7 +58,7 @@ public class BlockPanel extends ParentPanel
     if(block.getStyle().changed(Style.WIDTH) || block.getStyle().changed(Style.WIDTH))
       getParent().repaint();
     else
-    {
+    {      
       doLayout();
       PaintJob job = new PaintJob(getAbsoluteBounds());
       job.paint(getFrame().getPanel());

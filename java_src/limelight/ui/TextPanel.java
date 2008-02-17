@@ -47,7 +47,7 @@ public class TextPanel extends Panel
   }
 
   public void paintOn(Graphics2D graphics)
-  {
+  { 
     Aligner aligner = createAligner();
     graphics.setColor(Colors.resolve(getStyle().getTextColor()));
     float y = 0;

@@ -48,6 +48,6 @@ public class Rectangle extends java.awt.Rectangle
 
 	public String toString()
 	{
-		return "Rectangle: x: " + x + ",  y: " + y + ", width: " + width + ", height: " + height;
+		return "Rectangle: x: " + x + ", y: " + y + ", width: " + width + ", height: " + height;
 	}
 }
