@@ -11,23 +11,35 @@ public class Tester
 {
   public static void main(String[] args)
   {
-    JFrame frame = new JFrame();
+      JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.setSize(500, 200);
     BorderLayout layout = new BorderLayout();
     frame.setLayout(layout);
 
-    MyTextPanel view = new MyTextPanel();
-    view.setSize(600, 200);
-    view.setBackground(Color.green);
-
-    JScrollBar scrollbar = new MyScrollBar(view);
-    scrollbar.setOrientation(JScrollBar.HORIZONTAL);
-
-    frame.add(view, BorderLayout.CENTER);
-    frame.add(scrollbar, BorderLayout.SOUTH);
+    frame.add(new JTextField(), BorderLayout.CENTER);
     frame.setVisible(true);
   }
+
+//  public static void main(String[] args)
+//  {
+//    JFrame frame = new JFrame();
+//    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//    frame.setSize(500, 200);
+//    BorderLayout layout = new BorderLayout();
+//    frame.setLayout(layout);
+//
+//    MyTextPanel view = new MyTextPanel();
+//    view.setSize(600, 200);
+//    view.setBackground(Color.green);
+//
+//    JScrollBar scrollbar = new MyScrollBar(view);
+//    scrollbar.setOrientation(JScrollBar.HORIZONTAL);
+//
+//    frame.add(view, BorderLayout.CENTER);
+//    frame.add(scrollbar, BorderLayout.SOUTH);
+//    frame.setVisible(true);
+//  }
 
   static class MyTextPanel extends JPanel
   {

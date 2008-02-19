@@ -1,0 +1,60 @@
+screen:        
+	background_color: blue
+	secondary_background_color: #222
+	gradient_angle: 90
+	gradient_penetration: 100
+	cyclic_gradient: true	
+
+header:
+	width: 100%
+	height: 100             
+	text_color: white
+	font_size: 25
+	horizontal_alignment: center
+	vertical_alignment: center
+	
+status: 
+	width: 300
+	height: 40
+	text_color: red
+	font_size: 18
+ 
+world:
+	width: 100%
+	height: 900	              
+	font_size: 12
+	text_color: black      
+	horizontal_alignment: center
+	
+grid:          
+	width: 500
+	height: 500
+	background_color: white
+
+go_button:                 
+	width: 125
+	height: 70
+	background_color: white
+	text_color: black
+	font_size: 20
+	horizontal_alignment: center
+	vertical_alignment: center
+	border_width: 3
+	border_color: black
+	
+square:
+	height: 5
+	width: 5
+	border_color: blue
+	border_width: 1 
+	background_color: white
+           
+current_move:
+	height: 20
+	width: 100
+	text_color: white
+	
+moves:
+	height: 20
+	width: 100%
+	text_color: white

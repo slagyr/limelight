@@ -30,23 +30,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FrameListenerTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/FrameListenerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ScrollPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Rectangle.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Rectangle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayout.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FrameListener.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/FrameListener.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/controllers/start_stop_button.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/spec/grid_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/spec/controllers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/controllers/start_button_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/controllers/plane.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/ant.style" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/langston.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/spec/spec.opts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayoutTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayoutTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/RootBlockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/RootBlockPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/spec/block_spec.rb" afterPath="$PROJECT_DIR$/ruby_src/spec/block_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/main.llm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/controllers/go_button.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Frame.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Frame.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/controllers/ant.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/html_javascript/ant.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/controllers" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/controllers/grid.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/langston.style" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/controllers/start_button.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/html_javascript/ant.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/ant.style" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/controllers/plane_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/html_javascript/ant.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/spec_helper.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Tester.java" afterPath="$PROJECT_DIR$/java_src/limelight/Tester.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/controllers/text_box.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/controllers/text_box.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/ComponentPanel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/html_javascript" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/spec/go_button_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/controllers/antville.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/spec" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/controllers/board.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/inputs.llm" afterPath="$PROJECT_DIR$/examples/sandbox/inputs.llm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/ant.llm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/langston.llm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/controllers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/controllers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/controllers/start_button.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/controllers/log.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextBoxPanel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/main.style" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/spec" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/spec/spec_helper.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/spec/controllers/antville_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/controllers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston/controllers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/ant.style" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/controllers/button_input.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/ant.llm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextBoxPanelTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/controllers/world.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/controllers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/db_langston" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant/ant.llm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons_ant" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant.rb" />
     </list>
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
@@ -164,22 +214,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="RootBlockPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/RootBlockPanel.java">
+      <file leaf-file-name="TextBoxPanel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextBoxPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="23" selection-start="613" selection-end="613" vertical-scroll-proportion="0.7431694">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="16" column="3" selection-start="352" selection-end="352" vertical-scroll-proportion="0.15511164">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Panel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Panel.java">
+      <file leaf-file-name="ComponentPanel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ComponentPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="146" column="68" selection-start="2264" selection-end="2264" vertical-scroll-proportion="0.30418944">
-              <folding />
+            <state line="12" column="162" selection-start="283" selection-end="283" vertical-scroll-proportion="0.17105263">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -187,7 +237,34 @@
       <file leaf-file-name="ScrollBarPanel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="18" selection-start="631" selection-end="631" vertical-scroll-proportion="0.60674155">
+            <state line="97" column="29" selection-start="1883" selection-end="1883" vertical-scroll-proportion="0.8589894">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RepaintManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/javax/swing/RepaintManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="388" column="16" selection-start="12420" selection-end="12420" vertical-scroll-proportion="-0.20329025">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ScrollPanel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="13" selection-start="146" selection-end="146" vertical-scroll-proportion="-0.22561692">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Frame.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Frame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="108" selection-start="242" selection-end="242" vertical-scroll-proportion="0.18331374">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -195,51 +272,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BlockPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java">
+      <file leaf-file-name="Panel.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Panel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="117" column="100" selection-start="2842" selection-end="2842" vertical-scroll-proportion="0.4082397">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScrollViewLayoutTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayoutTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="25" selection-start="1681" selection-end="1681" vertical-scroll-proportion="0.36612022">
+            <state line="187" column="94" selection-start="3307" selection-end="3307" vertical-scroll-proportion="0.4359577">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TextPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="3" selection-start="1114" selection-end="1114" vertical-scroll-proportion="0.63205826">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScrollViewLayout.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="3" selection-start="230" selection-end="230" vertical-scroll-proportion="0.284153">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScrollViewPanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollViewPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="96" selection-start="1067" selection-end="1067" vertical-scroll-proportion="0.65391624">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -558,7 +595,7 @@
       <showLibraryContents />
       <hideEmptyPackages ProjectPane="true" />
       <abbreviatePackageNames />
-      <showStructure Favorites="false" Scope="false" PackagesPane="false" ProjectPane="false" />
+      <showStructure PackagesPane="false" Scope="false" Favorites="false" ProjectPane="false" />
       <autoscrollToSource />
       <autoscrollFromSource />
       <sortByType />
@@ -604,48 +641,39 @@
       <recent name="limelighttest" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ScrollViewLayoutTest.testHorizontalScrollBarNotNeeded">
-    <tempConfiguration default="false" name="ScrollViewLayoutTest.testHorizontalScrollBarNotNeeded" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
-      <pattern value="limelight.ui.*" />
-      <module name="limelight" />
+  <component name="RunManager" selected="Application.Tester">
+    <tempConfiguration default="false" name="Tester" type="Application" factoryName="Application" enabled="false" merge="false">
+      <option name="MAIN_CLASS_NAME" value="limelight.Tester" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="limelight.ui" />
-      <option name="MAIN_CLASS_NAME" value="limelight.ui.ScrollViewLayoutTest" />
-      <option name="METHOD_NAME" value="testHorizontalScrollBarNotNeeded" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
+      <module name="limelight" />
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" />
+      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Profile " />
       <ConfigurationWrapper RunnerId="Run" />
       <method>
         <option name="Make" value="true" />
       </method>
     </tempConfiguration>
-    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
-      <module name="" />
+    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
+      <module name="" />
       <method>
         <option name="Make" value="true" />
       </method>
@@ -685,17 +713,23 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
+      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
       <method>
         <option name="Make" value="true" />
       </method>
@@ -723,7 +757,7 @@
     </configuration>
     <list size="2">
       <item index="0" class="java.lang.String" itemvalue="JUnit.TextBoxPainterTest" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.ScrollViewLayoutTest.testHorizontalScrollBarNotNeeded" />
+      <item index="1" class="java.lang.String" itemvalue="Application.Tester" />
     </list>
     <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
       <module name="" />
@@ -856,8 +890,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
+      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" order="-1" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924587" order="3" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" order="7" />
@@ -866,13 +901,14 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32519424" order="14" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="6" />
+      <window_info id="Profile" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" order="-1" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="10" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="4" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24831392" order="1" />
       <window_info id="Maven projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329859" order="5" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" order="11" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32741398" order="2" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" order="11" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32741398" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="2" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39975476" order="0" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39844617" order="4" />
@@ -902,7 +938,7 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Scrolling is in much better shape.  Many tests added.  Needs some performance enhancements." />
+    <option name="LAST_COMMIT_MESSAGE" value="Scroll bars show up in proper dimension and appear only when needed.  Nested scrolling behaves properly." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -925,6 +961,7 @@
     <MESSAGE value="Refactored methods into ParentPanel" />
     <MESSAGE value="Spike to get scrolling working is done.  Many tests to write and code to refactor." />
     <MESSAGE value="Scrolling is in much better shape.  Many tests added.  Needs some performance enhancements." />
+    <MESSAGE value="Scroll bars show up in proper dimension and appear only when needed.  Nested scrolling behaves properly." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -991,58 +1028,109 @@
     <option name="myLastEditedConfigurable" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/VerticalScrollBarPanel.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="174" selection-start="207" selection-end="207" vertical-scroll-proportion="0.12690952">
+        <state line="4" column="22" selection-start="75" selection-end="75" vertical-scroll-proportion="-0.50881314">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/javax/swing/JTextField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="139" column="38" selection-start="5665" selection-end="5665" vertical-scroll-proportion="0.39201453">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/java/awt/Container.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1721" column="23" selection-start="62877" selection-end="62883" vertical-scroll-proportion="38.4">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/javax/swing/text/JTextComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="419" column="10" selection-start="16047" selection-end="16052" vertical-scroll-proportion="4.6571426">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/javax/swing/JPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="14" selection-start="1306" selection-end="1306" vertical-scroll-proportion="0.42649728">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/HorizontalScrollBarPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="22" selection-start="131" selection-end="131" vertical-scroll-proportion="0.08460634">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/java/awt/event/MouseListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="16" selection-start="1727" selection-end="1727" vertical-scroll-proportion="0.57814336">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/java/awt/Component.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5604" column="34" selection-start="199797" selection-end="199797" vertical-scroll-proportion="0.46424243">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/javax/swing/JComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3122" column="26" selection-start="111166" selection-end="111179" vertical-scroll-proportion="0.33333334">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="3" selection-start="2368" selection-end="2368" vertical-scroll-proportion="0.54876614">
+        <state line="7" column="13" selection-start="146" selection-end="146" vertical-scroll-proportion="-0.22561692">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ParentPanelTest.java">
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/src.jar!/src/javax/swing/RepaintManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="186" selection-start="2020" selection-end="2020" vertical-scroll-proportion="0.35135135">
+        <state line="388" column="16" selection-start="12420" selection-end="12420" vertical-scroll-proportion="-0.20329025">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FrameListener.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="3" selection-start="369" selection-end="369" vertical-scroll-proportion="0.11280846">
+        <state line="97" column="29" selection-start="1883" selection-end="1883" vertical-scroll-proportion="0.8589894">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FrameListenerTest.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ComponentPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="33" selection-start="725" selection-end="725" vertical-scroll-proportion="0.38072854">
-          <folding />
+        <state line="12" column="162" selection-start="283" selection-end="283" vertical-scroll-proportion="0.17105263">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java">
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextBoxPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="0" selection-start="1083" selection-end="1345" vertical-scroll-proportion="0.35252643">
+        <state line="16" column="3" selection-start="352" selection-end="352" vertical-scroll-proportion="0.15511164">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Frame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="78" selection-end="78" vertical-scroll-proportion="0.05640423">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/RootBlockPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="23" selection-start="613" selection-end="613" vertical-scroll-proportion="0.7431694">
+        <state line="13" column="108" selection-start="242" selection-end="242" vertical-scroll-proportion="0.18331374">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1051,62 +1139,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Panel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="146" column="68" selection-start="2264" selection-end="2264" vertical-scroll-proportion="0.30418944">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/Rectangle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="36" selection-start="719" selection-end="719" vertical-scroll-proportion="0.70505285">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="18" selection-start="631" selection-end="631" vertical-scroll-proportion="0.60674155">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollViewPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="96" selection-start="1067" selection-end="1067" vertical-scroll-proportion="0.65391624">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="3" selection-start="230" selection-end="230" vertical-scroll-proportion="0.284153">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="3" selection-start="1114" selection-end="1114" vertical-scroll-proportion="0.63205826">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="100" selection-start="2842" selection-end="2842" vertical-scroll-proportion="0.4082397">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayoutTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="25" selection-start="1681" selection-end="1681" vertical-scroll-proportion="0.36612022">
+        <state line="187" column="94" selection-start="3307" selection-end="3307" vertical-scroll-proportion="0.4359577">
           <folding />
         </state>
       </provider>
