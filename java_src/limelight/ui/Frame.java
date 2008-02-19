@@ -7,6 +7,7 @@ public class Frame extends JPanel
 {
   private RootBlockPanel panel;
   private FrameListener listener;
+  private JPanel hiddenPanel;
 
   public Frame(Block block)
   {
@@ -17,6 +18,9 @@ public class Frame extends JPanel
     addMouseMotionListener(listener);
     addMouseWheelListener(listener);
     addKeyListener(listener);
+
+    hiddenPanel = new JPanel();
+    hiddenPanel.setVisible(false);
   }
 
   public ParentPanel getPanel()
@@ -29,12 +33,18 @@ public class Frame extends JPanel
     this.panel = panel;
   }
 
+  public JPanel getHiddenPanel()
+  {
+    return hiddenPanel;
+  }
+
   public void doLayout()
   {
     setLocation(0, 0);
 //    panel.snapToSize();
     panel.doLayout();
     setSize(panel.getWidth(), panel.getHeight());
+    hiddenPanel.setSize(panel.getWidth(), panel.getHeight());
   }
 
   public void paint(Graphics g)
@@ -42,5 +52,10 @@ public class Frame extends JPanel
     PaintJob job = new PaintJob(new Rectangle(0, 0, getWidth(), getHeight()));
     job.paint(panel);
     job.applyTo(getGraphics());
+  }
+  
+  public Graphics getGraphics()
+  {
+    return super.getGraphics();
   }
 }

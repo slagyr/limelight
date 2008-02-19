@@ -15,6 +15,8 @@ public abstract class Panel
   private int x;
   private int y;
   private ParentPanel parent;
+  private Point absoluteLocation;
+  private Rectangle absoluteBounds;
 
   public Panel()
   {
@@ -81,18 +83,21 @@ public abstract class Panel
 
   public Point getAbsoluteLocation()
   {
-    int x = this.x;
-    int y = this.y;
-
-    Panel p = parent;
-    while(p != null)
+    if(absoluteLocation == null)
     {
-      x += p.getX();
-      y += p.getY();
-      p = p.getParent();
-    }
+      int x = this.x;
+      int y = this.y;
 
-    return new Point(x, y);
+      Panel p = parent;
+      while(p != null)
+      {
+        x += p.getX();
+        y += p.getY();
+        p = p.getParent();
+      }
+      absoluteLocation = new Point(x, y);
+    }
+    return absoluteLocation;
   }
 
   public Rectangle getInternalRectangle()
@@ -107,8 +112,12 @@ public abstract class Panel
 
   public Rectangle getAbsoluteBounds()
   {
-    Point absoluteLocation = getAbsoluteLocation();
-    return new Rectangle(absoluteLocation.x, absoluteLocation.y, getWidth(), getHeight());
+    if(absoluteBounds == null)
+    {
+      Point absoluteLocation = getAbsoluteLocation();
+      absoluteBounds = new Rectangle(absoluteLocation.x, absoluteLocation.y, getWidth(), getHeight());
+    }
+    return absoluteBounds;
   }
 
   public ParentPanel getParent()
@@ -204,6 +213,9 @@ public abstract class Panel
 
   public void doLayout()
   {
+    absoluteLocation = null;
+    absoluteBounds = null;
+
     snapToSize();
   }
 

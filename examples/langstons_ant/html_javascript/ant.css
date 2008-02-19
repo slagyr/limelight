@@ -1,0 +1,39 @@
+body {
+	background-color: blue;
+	margin-left: auto;
+	margin-right: auto;
+	width: 600px;
+}
+
+#title {
+	border: 2px solid orange;
+	font-size: 20pt;
+	color: orange;
+	padding: 20px;
+	text-align: center;
+}
+
+#description {
+	font-size: 15pt;
+	margin: auto;
+	padding: 10px;
+}
+
+#world {
+	width: 500px;
+	height: 500px;
+	margin: auto;
+	border: 2px solid gray;
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
+}
+
+.row {
+	
+}
+
+.cell {
+	width: 4px;
+	height: 4px;
+	border: 1px solid gray;
+}

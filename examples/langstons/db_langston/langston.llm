@@ -1,0 +1,13 @@
+<langston styles="langston.style">
+	<header>
+		Langston's Ant
+	</header>
+	
+	<antville id="antville">
+	
+	</antville>
+	
+	<start_button>
+		Start
+	</start_button>
+</langston>
