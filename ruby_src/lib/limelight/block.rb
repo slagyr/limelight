@@ -3,18 +3,18 @@ require 'limelight/java_util'
 module Limelight
   class Block
     
-    include Java::limelight.ui.Block
+    include Java::limelight.Block
   
-    attr_reader :panel, :style, :children
+    attr_reader :panel, :style
     attr_accessor :page, :class_name, :id, :parent
     getters :panel, :style, :page, :class_name, :text
     setters :text
     
     def initialize(hash = {})
-      @panel = Java::limelight.ui.BlockPanel.new(self) unless @panel
+      @panel = Java::limelight.Panel.new(self) unless @panel
       @children = [] unless @children
       populate(hash)
-      @style = Java::limelight.ui.StackableStyle.new unless @style
+      @style = Java::limelight.StackableStyle.new unless @style
     end
     
     def populate(hash)
@@ -36,15 +36,9 @@ module Limelight
       return self
     end
     
-    def remove(child)
-      @children.delete(child)
-      @panel.remove(child.panel)
-      child.parent = nil
-    end
-    
-    def load_style   
+    def load_style
       if @class_name
-        new_style = @page.styles[@class_name];    
+        new_style = @page.styles[@class_name];
         @style.add_to_bottom(new_style) if new_style
         @hover_style = page.styles["#{@class_name}.hover"];
       end
@@ -56,11 +50,13 @@ module Limelight
     end
     
     def update
+      @panel.doLayout
       @panel.repaint
     end
     
     def update_now
-      @panel.repaint
+      @panel.doLayout()
+      @panel.paintImmediately(0, 0, @panel.width, @panel.height)
     end     
     
     def find(id)
@@ -102,14 +98,14 @@ module Limelight
     
     def hover_on
       return nil if @hover_style.nil?
-      @panel.frame.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
+      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
       style.push(@hover_style)
       update
     end
     
     def hover_off
       return nil if @hover_style.nil?
-      @panel.frame.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
+      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
       @style.pop
       update
     end

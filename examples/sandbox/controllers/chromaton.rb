@@ -16,7 +16,7 @@ module Chromaton
     new_random_color
     new_random_size
     update_text
-    update
+    page.update
   end
   
   private

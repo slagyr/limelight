@@ -19,7 +19,7 @@
 //
 //	public void testConstruction() throws Exception
 //	{
-//		assertEquals(BlockPanel.class, block.getPanel().getClass());
+//		assertEquals(Panel.class, block.getPanel().getClass());
 //		assertFalse(block.getPanel().isOpaque());
 //	}
 //
@@ -183,7 +183,7 @@
 //		block.getStyle().setLeftBorderColor("green");
 //		block.getStyle().setLeftBorderWidth("4");
 //
-//		MockRootBlockPanel panel = new MockRootBlockPanel();
+//		MockPanel panel = new MockPanel();
 //		panel.add(block.getPanel());
 //	  block.getPanel().snapToDesiredSize();
 //
@@ -226,7 +226,7 @@
 //		block.getStyle().setLeftBorderWidth("4");
 //		block.getStyle().setLeftMargin("40");
 //
-//		MockRootBlockPanel panel = new MockRootBlockPanel();
+//		MockPanel panel = new MockPanel();
 //		panel.add(block.getPanel());
 //	  block.getPanel().snapToDesiredSize();
 //

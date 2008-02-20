@@ -1,12 +1,12 @@
 module Waves
   
-  def mouse_entered(e)
+  def mouseEntered
     @active = true
     @step = -1
     @thread = Thread.new { wave }
   end
   
-  def mouse_exited(e)
+  def mouseExited 
     @active = false
   end
   

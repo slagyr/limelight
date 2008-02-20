@@ -1,7 +1,5 @@
 package limelight;
 
-import limelight.ui.*;
-
 import java.awt.*;
 
 public class RepeatingImageFillStrategy implements ImageFillStrategy
@@ -10,7 +8,7 @@ public class RepeatingImageFillStrategy implements ImageFillStrategy
 	{
 		int imageWidth = image.getWidth(null);
 		int imageHeight = image.getHeight(null);
-		limelight.ui.Rectangle area = new limelight.ui.Rectangle(graphics.getClipBounds());
+		Rectangle area = new Rectangle(graphics.getClipBounds());
 
 		for(int y = 0; y < area.height; y += imageHeight)
 		{
