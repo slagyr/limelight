@@ -13,7 +13,7 @@ describe Limelight::Controllers::RadioButton do
   
   it "should get rid of the all painters and add a RadioButtonPainter" do
     @block.panel.painters.size.should == 1
-    @block.panel.painters.last.class.should == Java::limelight.RadioButtonPainter
+    @block.panel.painters.last.class.should == Java::limelight.ui.painting.RadioButtonPainter
   end
   
   it "should clear event listeners on the panel" do

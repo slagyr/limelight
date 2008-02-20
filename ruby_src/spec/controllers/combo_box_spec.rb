@@ -13,7 +13,7 @@ describe Limelight::Controllers::ComboBox do
   
   it "should get rid of the all painters and add a ComboBoxPainter" do
     @block.panel.painters.size.should == 1
-    @block.panel.painters.last.class.should == Java::limelight.ComboBoxPainter
+    @block.panel.painters.last.class.should == Java::limelight.ui.painting.ComboBoxPainter
   end
   
   it "should clear event listeners on the panel" do

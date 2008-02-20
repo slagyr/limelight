@@ -1,47 +1,65 @@
 package limelight.ui;
 
-import limelight.ui.Style;
+import limelight.Util;
 
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.LinkedList;
 
 public class FlatStyle extends Style
 {
-	private Hashtable<String, String> styles;
+  private String[] styles;
+  private LinkedList<StyleObserver> observers;
 
-	public FlatStyle()
+  public FlatStyle()
 	{
-		styles = new Hashtable<String, String>();
-	}
-
-  protected String get(String key)
-	{
-		return styles.get(key);
-	}
-
-	protected void put(String key, String value)
-	{
-		styles.put(key, value);
-	}
-
-  protected boolean has(Object key)
-  {
-    return styles.containsKey(key);
+    styles = new String[STYLE_COUNT];
+    observers = new LinkedList<StyleObserver>();
   }
 
-  public Hashtable<String, String> getStyles()
+  protected String get(int key)
+	{
+		return styles[key];
+	}
+
+	protected void put(int key, String value)
+	{
+    if(value == null)
+      return;
+    value = value.trim();
+    if(value.length() == 0)
+      value = null;
+
+    String originalValue = styles[key];
+    styles[key] = value;
+    if(!Util.equal(originalValue, value))
+    {
+      changes[key] = true;
+      notifyObservers(key);
+    }
+  }
+
+  protected boolean has(int key)
+  {
+    return styles[key] != null && styles[key].length() > 0;
+  }
+
+  public String[] getStyles()
   {
     return styles;
   }
 
-  public int checksum()
+  public void addObserver(StyleObserver observer)
   {
-    int checksum = 0;
-    for (Map.Entry entry : styles.entrySet())
-    {
-      if(entry.getKey() != "transparency")
-        checksum += (entry.getKey().hashCode() & entry.getValue().hashCode());
-    }
-    return checksum;
+    observers.add(observer);
+  }
+
+  private void notifyObservers(int key)
+  {
+    for(StyleObserver observer : observers)
+      observer.styleChanged(key);
+  }
+
+  public void removeObserver(StyleObserver observer)
+  {
+    observers.remove(observer);
   }
 }

@@ -1,5 +1,5 @@
 module Limelight
-  ButtonGroupCache = Java::limelight.ButtonGroupCache
+  ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
   class ButtonGroupCache
     def [](key)
       return self.get(key)

@@ -11,7 +11,7 @@ describe Limelight::Controllers::TextBox do
   
   it "should get rid of the all painters and add a TextboxPainter" do
     @block.panel.painters.size.should == 1
-    @block.panel.painters.last.class.should == Java::limelight.TextBoxPainter
+    @block.panel.painters.last.class.should == Java::limelight.ui.painting.TextBoxPainter
   end
   
   it "should clear event listeners on the panel" do

@@ -3,7 +3,7 @@ require 'limelight/java_util'
 module Limelight
   class Block
     
-    include Java::limelight.Block
+    include Java::limelight.ui.Block
   
     attr_reader :panel, :style
     attr_accessor :page, :class_name, :id, :parent
@@ -11,7 +11,7 @@ module Limelight
     setters :text
     
     def initialize(hash = {})
-      @panel = Java::limelight.Panel.new(self) unless @panel
+      @panel = Java::limelight.ui.Panel.new(self) unless @panel
       @children = [] unless @children
       populate(hash)
       @style = Java::limelight.ui.StackableStyle.new unless @style
