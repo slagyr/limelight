@@ -30,30 +30,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/ant.style" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayoutTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/langston.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ImageFillStrategy.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/controllers/start_button_spec.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/spec_helper.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/GradientPainter.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockPanel.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FlatStyle.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/AlignerTest.java" afterPath="" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/MockGraphics.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayout.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/controllers/ant.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/spec" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/table3.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/StackableStyleTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/controllers/plane_spec.rb" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/TextPaneTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/TextPaneTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Panel.java" afterPath="$PROJECT_DIR$/java_src/limelight/Panel.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelLayoutTest.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/wave.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/wave.rb" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/controllers/start_button.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Colors.java" afterPath="" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/AlignerTest.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/table2.rb" afterPath="" />
@@ -61,9 +52,7 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/Rectangle.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/chromaton.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/chromaton.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ButtonPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/ButtonPainter.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/controllers/grid.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextBoxPanel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/ant.llm" afterPath="" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ui/StyleTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/Tester.java" afterPath="$PROJECT_DIR$/java_src/limelight/Tester.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockBufferedImage.java" afterPath="" />
@@ -74,51 +63,32 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPanel.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelTest.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/StaticImageFillStrategy.java" afterPath="$PROJECT_DIR$/java_src/limelight/StaticImageFillStrategy.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/main.llm" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/Util.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ComponentPanel.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/inputs.llm" afterPath="$PROJECT_DIR$/examples/sandbox/inputs.llm" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/controllers/button_input.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockBlockPanel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/controllers" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Frame.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/spec/go_button_spec.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanelTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/html_javascript/ant.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/MockPanel.java" afterPath="$PROJECT_DIR$/java_src/limelight/MockPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/waves.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/waves.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/homer.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/homer.rb" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/controllers/world.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/controllers/go_button.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/html_javascript" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/spinner.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/spinner.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanelLayout.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/controllers" afterPath="" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/Colors.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec/controllers" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant/controllers/plane.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/langston.llm" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanelTest.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PaintJobTest.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewPanelTest.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Rectangle.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/RadioButtonPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/RadioButtonPainter.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/PenTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/controllers/log.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FlatStyleTest.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/BorderPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/BorderPainter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/BackgroundPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/BackgroundPainter.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/spec/controllers/antville_spec.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollPanel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/spec/controllers" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BorderPainter.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPaneTextAccessorTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/ant.style" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/controllers" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockPanel.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/teaser.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/teaser.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextBoxPanelTest.java" afterPath="" />
@@ -126,31 +96,19 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockRootBlockPanel.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/PanelTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/PanelTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/BorderPainterTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/BorderPainterTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/main.style" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PenTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/ant.llm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/spec/spec.opts" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/sandbox/scrolling.llm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewPanel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/spec" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ColorsTest.java" afterPath="" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ImageFillStrategies.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/es_langstons_ant/langstons_ant/controllers/board.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/html_javascript/ant.css" afterPath="" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/Aligner.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/cell2.rb" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/BlockTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/BlockTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/8thlight.com/8thlight.style" afterPath="$PROJECT_DIR$/examples/8thlight.com/8thlight.style" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/langston.style" afterPath="" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/ColorsTest.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/TextAccessor.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/TextBoxPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/TextBoxPainter.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FontFactoryTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/fader.rb" afterPath="$PROJECT_DIR$/examples/sandbox/controllers/fader.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BackgroundPainterTest.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPanelTest.java" afterPath="" />
@@ -162,56 +120,41 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BackgroundPainter.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ImageFillStrategies.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Block.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/spec/grid_spec.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FontFactory.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/MockPen.java" afterPath="$PROJECT_DIR$/java_src/limelight/MockPen.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/FontFactoryTest.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollPanelTest.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/StyleObserver.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/TextAreaPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/TextAreaPainter.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/spec" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/ant.style" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollViewLayout.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java_src/limelight/Pen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/styles.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/styles.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/StackableStyle.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/GradientPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/GradientPainter.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Aligner.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/pwp_langstons_ant/langstons_ant/controllers" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/sandbox.rb" afterPath="$PROJECT_DIR$/examples/sandbox.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/TextPaneTextAccessor.java" afterPath="$PROJECT_DIR$/java_src/limelight/TextPaneTextAccessor.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ParentPanel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/controllers/antville.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Pen.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/TextPane.java" afterPath="$PROJECT_DIR$/java_src/limelight/TextPane.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Style.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelLayoutTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/controllers/start_stop_button.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPaneTextAccessor.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PanelTest.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Page.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Painter.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/ant.llm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/jts_langston_ant/langston_ant" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/controllers" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/PaintJob.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/BlockLayout.java" afterPath="$PROJECT_DIR$/java_src/limelight/BlockLayout.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FrameListenerTest.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BorderPainterTest.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/RepeatingImageFillStrategy.java" afterPath="$PROJECT_DIR$/java_src/limelight/RepeatingImageFillStrategy.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/spec/spec_helper.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/sandbox/controllers/table4.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FrameListener.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/ScrollBarPanel.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/FrameTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/html_javascript/ant.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockBlock.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons/db_langston/controllers/start_button.rb" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/MockGraphics.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/micahs_langstons_ant.zip" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextAccessor.java" afterPath="" />
@@ -924,12 +867,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924587" order="3" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" order="7" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24647455" order="0" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24647455" order="0" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263041" order="1" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263041" order="14" />
