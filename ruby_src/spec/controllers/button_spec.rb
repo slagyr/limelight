@@ -13,7 +13,7 @@ describe Limelight::Controllers::Button do
   
   it "should get rid of the all painters and add a ButtonPainter" do
     @block.panel.painters.size.should == 1
-    @block.panel.painters.last.class.should == Java::limelight.ButtonPainter
+    @block.panel.painters.last.class.should == Java::limelight.ui.painting.ButtonPainter
   end
   
   it "should clear event listeners on the panel" do

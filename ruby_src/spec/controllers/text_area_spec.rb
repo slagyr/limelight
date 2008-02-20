@@ -11,7 +11,7 @@ describe Limelight::Controllers::TextArea do
   
   it "should get rid of the all painters and add a TextAreaPainter" do
     @block.panel.painters.size.should == 1
-    @block.panel.painters.last.class.should == Java::limelight.TextAreaPainter
+    @block.panel.painters.last.class.should == Java::limelight.ui.painting.TextAreaPainter
   end
   
   it "should clear event listeners on the panel" do

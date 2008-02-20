@@ -5,7 +5,7 @@ module Limelight
       class << self
         def extended(block)  
           block.panel.painters.clear
-          painter = Java.limelight.CheckBoxPainter.new(block.panel)
+          painter = Java.limelight.ui.painting.CheckBoxPainter.new(block.panel)
           block.check_box = painter.check_box
           block.panel.painters << painter
           block.panel.clear_event_listeners

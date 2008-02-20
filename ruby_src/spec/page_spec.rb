@@ -14,6 +14,6 @@ describe Limelight::Page do
 
   it "should have a button group cache" do
     @page.button_groups.should_not == nil
-    @page.button_groups.class.should == Java::limelight.ButtonGroupCache
+    @page.button_groups.class.should == Java::limelight.ui.ButtonGroupCache
   end
 end

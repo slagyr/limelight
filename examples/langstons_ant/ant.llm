@@ -1,0 +1,18 @@
+<earth styles="ant.style">
+	<title>Langston's Ant</title>
+	<description>
+		*The Rules:
+		If the ant is on a black dot, paint it white and go right.
+		If the ant is on a white dot, paint it black and go left.
+	</description>
+	<world id="world"/>
+	<console>
+		<start_stop_button>Start</start_stop_button>
+		<log id="log">
+			<moves_label>Moves:</moves_label>
+			<moves_counter id="count"># of moves</moves_counter>
+			<location_label>Location:</location_label>
+			<location id="location">???</location>
+		</log>
+	</console>
+</earth>

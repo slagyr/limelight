@@ -11,7 +11,7 @@ describe Limelight::Controllers::CheckBox do
   
   it "should get rid of the all painters and add a CheckBoxPainter" do
     @block.panel.painters.size.should == 1
-    @block.panel.painters.last.class.should == Java::limelight.CheckBoxPainter
+    @block.panel.painters.last.class.should == Java::limelight.ui.painting.CheckBoxPainter
   end
   
   it "should clear event listeners on the panel" do
