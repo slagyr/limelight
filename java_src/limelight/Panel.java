@@ -1,6 +1,6 @@
 package limelight;
 
-import limelight.ui.*;
+import limelight.ui.Style;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +15,7 @@ public class Panel extends JPanel
 {
   private Block block;
   private BufferedImage buffer;
+  private int checksum;
   private List<Painter> painters;
   private boolean sterilized;
   private TextAccessor textAccessor;
@@ -82,7 +83,7 @@ public class Panel extends JPanel
 
     Composite originalComposite = ((Graphics2D) graphics).getComposite();
     applyAlphaComposite(graphics);
-    limelight.ui.Rectangle clip = new limelight.ui.Rectangle(graphics.getClipBounds());
+    Rectangle clip = new Rectangle(graphics.getClipBounds());
     graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
     ((Graphics2D) graphics).setComposite(originalComposite);
     super.paintChildren(graphics);
@@ -90,7 +91,7 @@ public class Panel extends JPanel
 
   protected boolean shouldBuildBuffer()
   {
-    return buffer == null || block.getStyle().changed();
+    return buffer == null || checksum != checksum();
   }
 
   protected void buildBuffer()
@@ -101,16 +102,16 @@ public class Panel extends JPanel
     for (Painter painter : painters)
       painter.paint(bufferGraphics);
 
-    block.getStyle().flushChanges();
+    checksum = checksum();
   }
 
   public Dimension getPreferredSize()
   {
-    limelight.ui.Rectangle r;
+    Rectangle r = null;
     if (getParent().getClass() == Panel.class)
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
-      r = new limelight.ui.Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
+      r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
     int width = translateDimension(block.getStyle().getWidth(), r.width);
     int height = translateDimension(block.getStyle().getHeight(), r.height);
     return new Dimension(width, height);
@@ -126,30 +127,30 @@ public class Panel extends JPanel
     super.setLocation(new Point((int) point.getX() + getXOffset(), (int) point.getY() + getYOffset()));
   }
 
-  public limelight.ui.Rectangle getRectangle()
+  public Rectangle getRectangle()
   {
-    return new limelight.ui.Rectangle(0, 0, getWidth(), getHeight());
+    return new Rectangle(0, 0, getWidth(), getHeight());
   }
 
-  public limelight.ui.Rectangle getRectangleInsideMargins()
+  public Rectangle getRectangleInsideMargins()
   {
-    limelight.ui.Rectangle r = getRectangle();
+    Rectangle r = getRectangle();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
     return r;
   }
 
-  public limelight.ui.Rectangle getRectangleInsideBorders()
+  public Rectangle getRectangleInsideBorders()
   {
-    limelight.ui.Rectangle r = getRectangleInsideMargins();
+    Rectangle r = getRectangleInsideMargins();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopBorderWidth()), style.asInt(style.getRightBorderWidth()), style.asInt(style.getBottomBorderWidth()), style.asInt(style.getLeftBorderWidth()));
     return r;
   }
 
-  public limelight.ui.Rectangle getRectangleInsidePadding()
+  public Rectangle getRectangleInsidePadding()
   {
-    limelight.ui.Rectangle r = getRectangleInsideBorders();
+    Rectangle r = getRectangleInsideBorders();
     Style style = block.getStyle();
     r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
     return r;
@@ -174,11 +175,6 @@ public class Panel extends JPanel
     sterilized = true;
   }
 
-  public boolean isSterilized()
-  {
-    return sterilized;
-  }
-
   public void replaceChildren(Component[] components)
   {
     boolean sterilizedTemp = sterilized;
@@ -189,11 +185,24 @@ public class Panel extends JPanel
     sterilized = sterilizedTemp;
   }
 
+  public boolean isSterilized()
+  {
+    return sterilized;
+  }
+
   private void buildPainters()
   {
     painters = new LinkedList<Painter>();
     painters.add(new BackgroundPainter(this));
     painters.add(new BorderPainter(this));
+  }
+
+  public int checksum()
+  {
+    int checksum = block.getStyle().checksum();
+    if (block.getText() != null)
+      checksum ^= block.getText().hashCode();
+    return checksum;
   }
 
   private int translateDimension(String sizeString, int maxSize)

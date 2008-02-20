@@ -1,9 +1,0 @@
-<screen styles="ant.style">
-	<rules>
-		If the ant is on a black dot, paint it white and go right.
-		If the ant is on a white dot, paint it black and go left.
-	</rules>
-	<plane id="plane">
-	</plane>
-	<start_button controllers="button" text="Start"/>
-</screen>

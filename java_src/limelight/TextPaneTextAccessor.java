@@ -1,7 +1,5 @@
 package limelight;
 
-import limelight.ui.TextAccessor;
-
 public class TextPaneTextAccessor implements TextAccessor
 {
   private Panel panel;

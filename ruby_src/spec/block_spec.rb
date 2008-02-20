@@ -67,17 +67,6 @@ describe Limelight::Block do
     @block.text = "blah"
     @block.text.should == "blah"
   end
-  
-  it "should allow removal of children" do
-    build_block_tree
-    
-    @block.remove(@child1)
-    
-    @block.children.length.should == 1
-    @block.children[0].should be(@child2)
-    @block.panel.is_child(@child1.panel).should == false
-    @child1.parent.should == nil
-  end
 
 end
 

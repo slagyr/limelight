@@ -1,11 +1,11 @@
 module Spinner
   
-  def mouse_entered(e)
+  def mouseEntered
     @active = true
     @thread = Thread.new { spin }
   end
   
-  def mouse_exited(e) 
+  def mouseExited 
     @active = false
   end
   

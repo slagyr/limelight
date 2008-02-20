@@ -63,19 +63,29 @@ public class PanelTest extends TestCase
     assertEquals(40, panel.getYOffset());
   }
 
-//  public void testShouldBuildBuffer() throws Exception
-//  {
-//    makePaintable();
-//
-//    assertTrue(panel._shouldBuildBuffer());
-//    panel._buildBuffer();
-//    assertFalse(panel._shouldBuildBuffer());
-//
-//    block.style.setWidth("101");
-//    assertTrue(panel._shouldBuildBuffer());
-//    panel._buildBuffer();
-//    assertFalse(panel._shouldBuildBuffer());
-//  }
+  public void testShouldBuildBuffer() throws Exception
+  {
+    makePaintable();
+
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+
+    block.style.setWidth("101");
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+
+    block.setText("ABC");
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+    
+    block.setText("XYZ");
+    assertTrue(panel._shouldBuildBuffer());
+    panel._buildBuffer();
+    assertFalse(panel._shouldBuildBuffer());
+  }
 
   private void makePaintable()
   {

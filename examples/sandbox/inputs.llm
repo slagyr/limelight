@@ -10,7 +10,7 @@
 			<input_results id="text_box_results"/>
 		</cell>
 		<!-- end row ------------------------------------------------->
-		<!-- <cell>
+		<cell>
 			<text_area_input controllers="text_area"/>
 		</cell>
 		<cell>
@@ -19,7 +19,7 @@
 		<cell border_width="1">
 			<input_results id="text_area_results"/>
 		</cell>
-		<!-- end row -------------------------------------------------!>
+		<!-- end row ------------------------------------------------->
 		<cell>
 			<check_box_input controllers="check_box"/>
 		</cell>
@@ -29,7 +29,7 @@
 		<cell border_width="1">
 			<input_results id="check_box_results"/>
 		</cell>
-		<!-- end row -------------------------------------------------!>
+		<!-- end row ------------------------------------------------->
 		<cell>
 			<radio_button_input controllers="radio_button" id="radio_1" group="radios"/><radio_label>One</radio_label>
 			<radio_button_input controllers="radio_button" id="radio_2" group="radios"/><radio_label>Two</radio_label>
@@ -41,7 +41,7 @@
 		<cell border_width="1">
 			<input_results id="radio_button_results"/>
 		</cell>
-		<!-- end row -------------------------------------------------!>
+		<!-- end row ------------------------------------------------->
 		<cell>
 			<combo_box_input controllers="combo_box" choices="%w{Red Orange Yellow Green Blue Indigo Violet}"/>
 		</cell>
@@ -51,7 +51,7 @@
 		<cell border_width="1">
 			<input_results id="combo_box_results"/>
 		</cell>
-		<!-- end row -------------------------------------------------!>
+		<!-- end row ------------------------------------------------->
 		<cell>
 			<button_input controllers="button" text="A Button"/>
 		</cell>
@@ -60,6 +60,6 @@
 		</cell>
 		<cell border_width="1">
 			<input_results id="button_results"/>
-		</cell> -->
+		</cell>
 	</table>
 </sandbox>
