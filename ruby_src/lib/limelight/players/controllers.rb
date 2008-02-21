@@ -1,4 +1,4 @@
 module Limelight
-  module Controllers
+  module Players
   end
 end

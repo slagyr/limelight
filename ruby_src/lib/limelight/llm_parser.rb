@@ -2,7 +2,7 @@ require "rexml/document"
 require 'limelight/page'
 require 'limelight/block'
 require 'limelight/styles'
-require 'limelight/controllers/controllers'
+require 'limelight/players/controllers'
 
 module Limelight
   class LlmParser
@@ -84,14 +84,14 @@ module Limelight
     end
   
     def add_extension(name, block)  
-      try_to_require(@page.loader.path_to("controllers/#{name}"))
-      try_to_require("limelight/controllers/#{name}")
+      try_to_require(@page.loader.path_to("players/#{name}"))
+      try_to_require("limelight/players/#{name}")
       module_name = name.camalized   
       if Object.const_defined?(module_name)
         mod = Object.const_get(module_name)
         block.add_controller(mod)      
-      elsif Limelight::Controllers.const_defined?(module_name)   
-        mod = Limelight::Controllers.const_get(module_name)
+      elsif Limelight::Players.const_defined?(module_name)
+        mod = Limelight::Players.const_get(module_name)
         block.add_controller(mod)
       end
     end

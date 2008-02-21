@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 require 'limelight/page'
 require 'limelight/block'
-require 'limelight/controllers/radio_button'
+require 'limelight/players/radio_button'
 
-describe Limelight::Controllers::RadioButton do
+describe Limelight::Players::RadioButton do
 
   before(:each) do
     @page = Limelight::Page.new
     @block = Limelight::Block.new(:page => @page)
-    @block.add_controller(Limelight::Controllers::RadioButton)
+    @block.add_controller(Limelight::Players::RadioButton)
   end
   
   it "should get rid of the all painters and add a RadioButtonPainter" do
@@ -44,11 +44,11 @@ describe Limelight::Controllers::RadioButton do
     @block.group = "group 1"
     
     block2 = Limelight::Block.new(:page => @page)
-    block2.add_controller(Limelight::Controllers::RadioButton)
+    block2.add_controller(Limelight::Players::RadioButton)
     block2.group = "group 1"
     
     block3 = Limelight::Block.new(:page => @page)
-    block3.add_controller(Limelight::Controllers::RadioButton)
+    block3.add_controller(Limelight::Players::RadioButton)
     block3.group = "group 2"
     
     group1 = @page.button_groups["group 1"]

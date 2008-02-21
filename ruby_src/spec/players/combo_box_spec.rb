@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 require 'limelight/page'
 require 'limelight/block'
-require 'limelight/controllers/combo_box'
+require 'limelight/players/combo_box'
 
-describe Limelight::Controllers::ComboBox do
+describe Limelight::Players::ComboBox do
 
   before(:each) do
     @page = Limelight::Page.new
     @block = Limelight::Block.new(:page => @page)
-    @block.add_controller(Limelight::Controllers::ComboBox)
+    @block.add_controller(Limelight::Players::ComboBox)
   end
   
   it "should get rid of the all painters and add a ComboBoxPainter" do

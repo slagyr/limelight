@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 require 'limelight/block'
-require 'limelight/controllers/check_box'
+require 'limelight/players/check_box'
 
-describe Limelight::Controllers::CheckBox do
+describe Limelight::Players::CheckBox do
 
   before(:each) do
     @block = Limelight::Block.new
-    @block.add_controller(Limelight::Controllers::CheckBox)
+    @block.add_controller(Limelight::Players::CheckBox)
   end
   
   it "should get rid of the all painters and add a CheckBoxPainter" do
