@@ -67,6 +67,35 @@ describe Limelight::Block do
     @block.text = "blah"
     @block.text.should == "blah"
   end
-
+  
+  it "should have controllers" do
+    @block.players = "abc, xyz"
+    @block.players.should == "abc, xyz"
+  end
+  
+  it "should get populated through constructor" do
+    block = Limelight::Block.new(:class_name => "my_class_name", :id => "123", :players => "a, b, c")
+    
+    block.class_name.should == "my_class_name"
+    block.id.should == "123"
+    block.players.should == "a, b, c"
+  end
+  
+  it "should populate styles through constructor" do
+    block = Limelight::Block.new(:width => "100", :text_color => "white", :background_image => "apple.jpg")
+    
+    block.style.width.should == "100"
+    block.style.text_color.should == "white"
+    block.style.background_image.should == "apple.jpg"
+  end
+  
+  it "should define event through constructor using a string" do
+    block = Limelight::Block.new(:on_mouse_entered => "return event")
+    
+    value = block.mouse_entered("my event")
+    
+    value.should == "my event"
+  end
+  
 end
 

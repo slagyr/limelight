@@ -12,8 +12,8 @@ module Limelight
     getters :book, :loader
     setters :book
     
-    def initialize
-      super
+    def initialize(options={})
+      super(options)
       @page = self
       @styles = {}
       @button_groups = ButtonGroupCache.new
