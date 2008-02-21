@@ -5,7 +5,7 @@ module Limelight
       class << self
         def extended(block)  
           block.panel.painters.clear
-          painter = Java.limelight.RadioButtonPainter.new(block.panel)
+          painter = Java.limelight.ui.painting.RadioButtonPainter.new(block.panel)
           block.radio_button = painter.radio_button
           block.panel.painters << painter
           block.panel.clear_event_listeners
