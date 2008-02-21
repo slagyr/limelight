@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 require 'limelight/page'
 require 'limelight/block'
-require 'limelight/controllers/button'
+require 'limelight/players/button'
 
-describe Limelight::Controllers::Button do
+describe Limelight::Players::Button do
 
   before(:each) do
     @page = Limelight::Page.new
     @block = Limelight::Block.new(:page => @page)
-    @block.add_controller(Limelight::Controllers::Button)
+    @block.add_controller(Limelight::Players::Button)
   end
   
   it "should get rid of the all painters and add a ButtonPainter" do

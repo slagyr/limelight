@@ -1,5 +1,5 @@
 module Limelight
-  module Controllers
+  module Players
     
     module TextBox
       class << self
