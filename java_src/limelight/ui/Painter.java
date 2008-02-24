@@ -33,6 +33,6 @@ public abstract class Painter
 
   protected Style getStyle()
   {
-    return panel.getBlock().getStyle();
+    return panel.getStyle();
   }
 }

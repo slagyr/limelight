@@ -91,7 +91,7 @@ public class TextPane extends JPanel
 
   private Style getStyle()
   {
-    return panel.getBlock().getStyle();
+    return panel.getStyle();
   }
 
   private void buildLines()

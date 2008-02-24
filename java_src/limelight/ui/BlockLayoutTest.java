@@ -12,8 +12,8 @@ public class BlockLayoutTest extends TestCase
   public void setUp() throws Exception
   {
     parent = new MockPanel();
-    parent.getBlock().getStyle().setWidth("100");
-    parent.getBlock().getStyle().setHeight("100");
+    parent.getStyle().setWidth("100");
+    parent.getStyle().setHeight("100");
     layout = new BlockLayout(parent);
   }
 

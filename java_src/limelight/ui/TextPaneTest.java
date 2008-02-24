@@ -23,7 +23,7 @@ public class TextPaneTest extends TestCase
     bounds = new limelight.ui.Rectangle(0, 0, 100, 100);
     panel = new MockPanel();
     panel.rectangleInsidePadding = bounds;
-    style = panel.getBlock().getStyle();
+    style = panel.getStyle();
     pane = new TextPane(panel, "Some Text");
     style.setTextColor("black");
   }

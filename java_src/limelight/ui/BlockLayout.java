@@ -131,8 +131,7 @@ public class BlockLayout implements LayoutManager
 
   private Aligner buildAligner(limelight.ui.Rectangle rectangle)
   {
-    Block block = panel.getBlock();
-    return new Aligner(rectangle, block.getStyle().getHorizontalAlignment(), block.getStyle().getVerticalAlignment());
+    return new Aligner(rectangle, panel.getStyle().getHorizontalAlignment(), panel.getStyle().getVerticalAlignment());
   }
 
   private void reset()
@@ -237,7 +236,7 @@ public class BlockLayout implements LayoutManager
 
     public void layoutContainer(Container container)
     {
-      String horizontalAlignment = panel.getBlock().getStyle().getHorizontalAlignment();
+      String horizontalAlignment = panel.getStyle().getHorizontalAlignment();
       Aligner aligner = new Aligner(new limelight.ui.Rectangle(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
       int y = aligner.startingY();
       for(Row row : rows)
