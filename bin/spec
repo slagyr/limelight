@@ -1,5 +1,0 @@
-#! /bin/sh
-
-CLASSPATH=$CLASSPATH:classes
-export CLASSPATH
-jruby bin/jspec.rb $1 $2 $3 $4 $5

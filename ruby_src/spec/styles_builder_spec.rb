@@ -58,6 +58,21 @@ describe Limelight::StylesBuilder do
     result["one"].width.should == "100"
     result["two"].width.should == "50"
   end
+  
+  it "should allow hover styles" do
+    styles = Limelight.build_styles do
+      root do
+        width 100
+        hover do
+          width 50
+        end
+      end
+    end
+    
+    styles.size.should == 2
+    styles["root"].width.should == "100"
+    styles["root.hover"].width.should == "50"
+  end
 
 end
 

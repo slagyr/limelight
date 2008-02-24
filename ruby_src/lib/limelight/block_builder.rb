@@ -16,8 +16,13 @@ module Limelight
       @__block__ = Block.new(options)
     end
     
+    def __(options)
+      @__block__.populate(options)
+    end
+    
     def method_missing(sym, options={}, &block)
       options[:class_name] ||= sym.to_s
+      options[:page] = @__block__.page
       block_builder = BlockBuilder.new(options)
       block_builder.instance_eval(&block) if block
       @__block__.add(block_builder.__block__)

@@ -17,7 +17,6 @@ public class Panel extends JPanel
 {
   private Block block;
   private BufferedImage buffer;
-  private int checksum;
   private List<Painter> painters;
   private boolean sterilized;
   private TextAccessor textAccessor;
@@ -73,11 +72,6 @@ public class Panel extends JPanel
     this.textAccessor = textAccessor;
   }
 
-  public void doLayout()
-  {
-    super.doLayout();
-  }
-
   public void paint(Graphics graphics)
   {
     if (shouldBuildBuffer())
@@ -104,6 +98,8 @@ public class Panel extends JPanel
 
     for (Painter painter : painters)
       painter.paint(bufferGraphics);
+
+    getBlock().getStyle().flushChanges();
   }
 
   public Dimension getPreferredSize()

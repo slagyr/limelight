@@ -15,6 +15,7 @@ module StartStopButton
   end
   
   def start
+@start_time = Time.now
     ant = Ant.new(50, 50, page.find("world"), 100)
     @thread = Thread.new do
       begin
@@ -27,6 +28,7 @@ module StartStopButton
   end
   
   def stop
+puts "Time between start and stop: #{Time.now - @start_time}"
     @thread.kill
   end
   

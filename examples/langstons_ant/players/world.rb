@@ -20,6 +20,7 @@ add_time += Time.now - start
       end
     end
     # block.update
+    block.stylize
 puts "create_time: #{create_time}"    
 puts "add_time: #{add_time}"
 # create_time: 3.2059999999998325

@@ -8,7 +8,7 @@ module Limelight
     include Java::limelight.ui.Page
   
     attr_reader :styles, :button_groups
-    attr_accessor :book, :loader
+    attr_accessor :book, :loader, :styles
     getters :book, :loader
     setters :book
     

@@ -67,9 +67,13 @@ module Limelight
       @children.each { |child| child.load_style }
     end
     
+    alias :stylize :load_style
+    
     def add_controller(controller_module)
       extend controller_module unless self.is_a?(controller_module)
     end
+    
+    alias :include_player :add_controller
     
     def update
       @panel.doLayout
