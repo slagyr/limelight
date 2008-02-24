@@ -15,11 +15,10 @@ module StartStopButton
   end
   
   def start
-@start_time = Time.now
-    ant = Ant.new(50, 50, page.find("world"), 100)
+    @ant = Ant.new(50, 50, page.find("world"), 100)
     @thread = Thread.new do
       begin
-        ant.walk
+        @ant.walk
       rescue Exception => e
         puts e
         puts e.backtrace
@@ -28,8 +27,7 @@ module StartStopButton
   end
   
   def stop
-puts "Time between start and stop: #{Time.now - @start_time}"
-    @thread.kill
+    @ant.stop
   end
   
 end

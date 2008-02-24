@@ -6,6 +6,7 @@ import limelight.ui.painting.BackgroundPainter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -20,6 +21,7 @@ public class Panel extends JPanel
   private List<Painter> painters;
   private boolean sterilized;
   private TextAccessor textAccessor;
+  private Style style;
 
   public Panel(Block owner)
   {
@@ -42,9 +44,21 @@ public class Panel extends JPanel
     return super.add(comp);
   }
 
+  public void setLocation(int x, int y)
+  {
+    super.setLocation(x + getXOffset(), y + getYOffset());
+  }
+
   public Block getBlock()
   {
     return block;
+  }
+
+  public Style getStyle()
+  {
+    if(style == null)
+      style = getBlock().getStyle();
+    return style;
   }
 
   public List<Painter> getPainters()
@@ -87,7 +101,7 @@ public class Panel extends JPanel
 
   protected boolean shouldBuildBuffer()
   {
-    Style style = getBlock().getStyle();
+    Style style = getStyle();
     return buffer == null || style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY));
   }
 
@@ -99,7 +113,7 @@ public class Panel extends JPanel
     for (Painter painter : painters)
       painter.paint(bufferGraphics);
 
-    getBlock().getStyle().flushChanges();
+    getStyle().flushChanges();
   }
 
   public Dimension getPreferredSize()
@@ -109,19 +123,9 @@ public class Panel extends JPanel
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
       r = new limelight.ui.Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
-    int width = translateDimension(block.getStyle().getWidth(), r.width);
-    int height = translateDimension(block.getStyle().getHeight(), r.height);
+    int width = translateDimension(getStyle().getWidth(), r.width);
+    int height = translateDimension(getStyle().getHeight(), r.height);
     return new Dimension(width, height);
-  }
-
-  public void setLocation(int x, int y)
-  {
-    super.setLocation(x + getXOffset(), y + getYOffset());
-  }
-
-  public void setLocation(Point point)
-  {
-    super.setLocation(new Point((int) point.getX() + getXOffset(), (int) point.getY() + getYOffset()));
   }
 
   public limelight.ui.Rectangle getRectangle()
@@ -132,7 +136,7 @@ public class Panel extends JPanel
   public limelight.ui.Rectangle getRectangleInsideMargins()
   {
     limelight.ui.Rectangle r = getRectangle();
-    Style style = block.getStyle();
+    Style style = getStyle();
     r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
     return r;
   }
@@ -140,7 +144,7 @@ public class Panel extends JPanel
   public limelight.ui.Rectangle getRectangleInsideBorders()
   {
     limelight.ui.Rectangle r = getRectangleInsideMargins();
-    Style style = block.getStyle();
+    Style style = getStyle();
     r.shave(style.asInt(style.getTopBorderWidth()), style.asInt(style.getRightBorderWidth()), style.asInt(style.getBottomBorderWidth()), style.asInt(style.getLeftBorderWidth()));
     return r;
   }
@@ -148,22 +152,22 @@ public class Panel extends JPanel
   public limelight.ui.Rectangle getRectangleInsidePadding()
   {
     limelight.ui.Rectangle r = getRectangleInsideBorders();
-    Style style = block.getStyle();
+    Style style = getStyle();
     r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
     return r;
   }
 
   public int getXOffset()
   {
-    if (block.getStyle().getXOffset() != null)
-      return Integer.parseInt(block.getStyle().getXOffset());
+    if (getStyle().getXOffset() != null)
+      return Integer.parseInt(getStyle().getXOffset());
     return 0;
   }
 
   public int getYOffset()
   {
-    if (block.getStyle().getYOffset() != null)
-      return Integer.parseInt(block.getStyle().getYOffset());
+    if (getStyle().getYOffset() != null)
+      return Integer.parseInt(getStyle().getYOffset());
     return 0;
   }
 
@@ -211,9 +215,9 @@ public class Panel extends JPanel
 
   private void applyAlphaComposite(Graphics graphics)
   {
-    if (block.getStyle().getTransparency() != null)
+    if (getStyle().getTransparency() != null)
     {
-      float transparency = 1f - (Integer.parseInt(block.getStyle().getTransparency()) / 100.0f);
+      float transparency = 1f - (Integer.parseInt(getStyle().getTransparency()) / 100.0f);
       Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
       ((Graphics2D) graphics).setComposite(alphaComposite);
     }
