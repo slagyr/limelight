@@ -2,7 +2,7 @@ require "rexml/document"
 require 'limelight/page'
 require 'limelight/block'
 require 'limelight/styles'
-require 'limelight/players/players'
+require 'limelight/players'
 
 module Limelight
   class LlmParser

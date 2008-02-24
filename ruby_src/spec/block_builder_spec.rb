@@ -81,5 +81,27 @@ describe Limelight::PageBuilder do
     child = root.children[0]
     child.mouse_entered("blah").should == [child, "blah"]
   end
+  
+  it "should allow page configuration" do
+    root = Limelight::build_page do
+      __ :class_name => "root", :id => "123"
+    end
+    
+    root.children.size.should == 0
+    root.class_name.should == "root"
+    root.id.should == "123"
+  end
+  
+  it "should give every block their page" do
+    root = Limelight::build_page(:class_name => "root") do
+      child do
+        grandchild
+      end
+    end
+    
+    root.page.should == root
+    root.children[0].page.should == root
+    root.children[0].children[0].page.should == root
+  end
 
 end

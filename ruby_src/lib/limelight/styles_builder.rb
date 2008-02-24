@@ -15,17 +15,27 @@ module Limelight
     end
     
     def method_missing(sym, &block)
-      builder = StyleBuilder.new
+      __add_style(sym.to_s, &block)
+    end
+    
+    def __add_style(name, &block)
+      builder = StyleBuilder.new(name, self)
       builder.instance_eval(&block) if block
-      @__styles__[sym.to_s] = builder.__style__
+      @__styles__[name] = builder.__style__
     end
   end
   
   class StyleBuilder
     attr_reader :__style__
     
-    def initialize
+    def initialize(name, styles_builder)
       @__style__ = Java::limelight.ui.FlatStyle.new  
+      @__name__ = name
+      @__styles_builder = styles_builder
+    end
+    
+    def hover(&block)
+      @__styles_builder.__add_style("#{@__name__}.hover", &block)
     end
     
     def method_missing(sym, value)

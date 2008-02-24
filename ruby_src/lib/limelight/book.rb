@@ -51,9 +51,9 @@ module Limelight
     
     def load(llm_file)
       if(@current_page)
-        loader = Loaders::FilePageLoader.new(@current_page.loader.path_to(llm_file))
+        loader = Loaders::FilePageLoader.for_page(@current_page.loader.path_to(llm_file))
       else
-        loader = Loaders::FilePageLoader.new(llm_file)
+        loader = Loaders::FilePageLoader.for_page(llm_file)
       end 
       parser = LlmParser.new
       page_content = loader.load(loader.page_file) 

@@ -19,13 +19,18 @@ class Ant
   end
   
   def walk    
-    loop do   
+    @walking = true
+    while @walking   
       make_step
       @steps += 1
       @log.update_counter(@steps)
       @log.update_location("#{@x}, #{@y}")
       # sleep(.25)
     end
+  end
+  
+  def stop
+    @walking = false
   end
   
   def make_step
