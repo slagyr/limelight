@@ -6,7 +6,7 @@ require 'limelight/loaders/file_page_loader'
 module Limelight
   
   class Book
-    attr_accessor :directory
+    attr_accessor :directory, :default_page, :styles
     attr_reader :frame, :current_page
     
     def public_choose_file
@@ -14,6 +14,7 @@ module Limelight
     end
     
     def initialize
+      @styles = {}
       @frame = javax.swing.JFrame.new
       @frame.setDefaultCloseOperation(javax.swing.WindowConstants::EXIT_ON_CLOSE)
       @frame.setLayout(nil)

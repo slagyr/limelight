@@ -47,6 +47,8 @@ module Limelight
         return IO.read(file_to_load)
       end
       
+      alias :read :load
+      
     end
     
   end

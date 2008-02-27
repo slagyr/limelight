@@ -4,12 +4,10 @@ require 'limelight/loaders/file_page_loader'
 describe Limelight::Loaders::FilePageLoader do
 
   before(:each) do
-    @loader = Limelight::Loaders::FilePageLoader.new("/Users/micahmartin/Projects/limelight/example/sandbox.llm")
+    @loader = Limelight::Loaders::FilePageLoader.for_root("/Users/micahmartin/Projects/limelight/example")
   end
   
   it "should load path parts" do
-    @loader.root.should == ""
-    @loader.page_file.should == "/Users/micahmartin/Projects/limelight/example/sandbox.llm"
     @loader.current_dir.should == "/Users/micahmartin/Projects/limelight/example"
   end
   
