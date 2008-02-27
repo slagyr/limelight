@@ -104,4 +104,56 @@ describe Limelight::PageBuilder do
     root.children[0].children[0].page.should == root
   end
 
+  it "should install external blocks" do
+    loader = make_mock("loader", :exists? => true)
+    loader.should_receive(:load).with("external.rb").and_return("child :id => 123")
+    
+    root = Limelight::build_page(:id => 321, :loader => loader) do
+      __install "external.rb"
+    end  
+    
+    root.id.should == 321
+    root.children.size.should == 1
+    child = root.children[0]
+    child.class_name.should == "child"
+    child.id.should == 123
+  end
+  
+  it "should fail if no loader is provided" do
+    begin
+      root = Limelight::build_page(:id => 321, :loader => nil) do
+        __install "external.rb"
+      end
+      root.should == nil # should never get here
+    rescue Exception => e
+      e.message.should == "Cannot install external blocks because no loader was provided"
+    end
+  end
+  
+  it "should fail when the external file doesn't exist" do
+    loader = make_mock("loader")
+    loader.should_receive(:exists?).with("external.rb").and_return(false)
+    
+    begin
+      root = Limelight::build_page(:id => 321, :loader => loader) do
+        __install "external.rb"
+      end
+    rescue Exception => e
+      e.message.should == "External block file: 'external.rb' doesn't exist"
+    end
+  end
+  
+  it "should fail with BlockException when there's problem in the external file" do
+    loader = make_mock("loader", :exists? => true)
+    loader.should_receive(:load).with("external.rb").and_return("+")
+    
+    begin
+      root = Limelight::build_page(:id => 321, :loader => loader ) do
+        __install "external.rb"
+      end  
+    rescue Limelight::BuildException => e
+      e.message.should == "external.rb:1: (eval):1: , unexpected end-of-file\n\n\t1: +\n"
+    end
+  end
+  
 end

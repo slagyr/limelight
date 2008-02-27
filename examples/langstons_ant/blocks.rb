@@ -1,5 +1,5 @@
 description_text = <<END
-*The Rules:
+The Rules:
 If the ant is on a black dot, paint it white and go right.
 If the ant is on a white dot, paint it black and go left.
 END

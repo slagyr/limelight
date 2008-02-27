@@ -1,0 +1,229 @@
+page {
+	width 1000
+	height 900
+	horizontal_alignment "center"
+	background_image "images/bg.jpg"
+}
+	
+main_column {
+	border_width 0
+	background_image "images/canvas_bg.jpg"
+	width 823
+	height 850
+	horizontal_alignment "center"
+}
+	
+header {
+	height 200
+	background_image "images/header.jpg"
+	width 823
+	horizontal_alignment "center"
+}
+
+menu {
+	height 67
+	top_border_width 1
+	bottom_border_width 1
+	border_color "#333333"
+	width 823
+	horizontal_alignment :right
+	right_margin 25
+	left_margin 25
+	bottom_margin 15
+}
+
+link {
+	width 80
+	height 50
+	text_color "#0049F4"
+	font_face "Arial"
+	font_size 13
+	vertical_alignment :center
+	horizontal_alignment :center
+	hover {
+  	text_color "#ffffff"
+  	background_image "images/button_bg.jpg"
+	}
+}
+
+tag_line {
+	width 823
+	height 200
+	background_image "images/anvil.jpg"
+	right_margin 25
+	left_margin 25
+	horizontal_alignment :left
+}
+	
+tag_line_content {
+	width 400
+	height 150
+	top_margin 82
+	left_margin 50
+	text_color "white"
+	font_size 17
+	font_style "bold italic"
+}
+	
+services_tagline {
+	width 823
+	height 70
+	background_image "images/botticelli.jpg"
+	right_margin 25
+	left_margin 25
+	horizontal_alignment "right"
+	font_style "italics"
+	text_color "white"
+	font_size 18
+	top_padding 10
+	left_padding 10
+	right_padding 375
+}
+	
+about_tagline {
+	width 823
+	height 70
+	background_image "images/moses.jpg"
+	right_margin 25
+	left_margin 25
+	horizontal_alignment "right"
+	font_style "italics"
+	text_color "white"
+	font_size 18
+	top_padding 10
+	left_padding 10
+	right_padding 375
+}
+	
+section_title {
+	width 823
+	height 50
+	top_margin 20
+	left_margin 50
+	right_margin 50
+	bottom_border_width 1
+	border_color "#0049F4"
+	text_color "white"
+	font_size 20
+	font_style "bold"
+}
+	
+section_body {
+	width 823
+	height 385
+	left_margin 50
+	right_margin 50
+	text_color "white"
+	font_size 14
+}
+
+spot_light {
+	width 412
+	height 300
+	top_margin 20
+	left_margin 50
+	right_margin 50
+}
+	
+spot_light_title {
+	width 312
+	height 45
+	bottom_border_width 1
+	border_color "#0049F4"
+	font_size 20
+	text_color "white"
+}
+
+book_news {
+	height 75
+	width "100%"
+	bottom_border_width 1
+	border_color "#333333"
+	top_margin 10
+}
+	
+book_news_img {
+	background_image "images/thumbnail_book.jpg"
+	width 59
+	height 58
+}
+	
+book_news_text {
+	width 253
+	height 58
+	left_margin 10
+	font_size 15
+	font_face "Helvetica"
+	text_color "#919191"
+}
+
+sm_news {
+	height 75
+	width "100%"
+	bottom_border_width 1
+	border_color "#333333"
+	top_margin 10
+}
+	
+sm_news_img {
+	background_image "images/statemachine_thumbnail.png"
+	width 59
+	height 58
+}
+	
+sm_news_text {
+	width 253
+	height 58
+	left_margin 10
+	font_size 15
+	font_face "Helvetica"
+	text_color "#919191"
+}
+
+news {
+	width 411
+	height 300
+	top_margin 20
+	left_margin 50
+	right_margin 50
+}
+	
+news_title {
+	width 311
+	height 45
+	bottom_border_width 1
+	border_color "#0049F4"
+	font_size 20
+	text_color "white"
+}
+
+new_item {
+	text_color "#919191"
+	font_size 12
+	font_face "Helvetica"
+	height 50
+	width "100%"
+	bottom_border_width 1
+	border_color "#333333"
+	top_margin 10
+	background_color "black"
+	hover {
+  	text_color "white"
+  	background_color "black"
+	}
+}
+	
+footer {
+	background_image "images/footer_bg.jpg"
+	height 80
+	width 823
+}
+	
+copyright {
+	top_margin 40
+	vertical_alignment :center
+	horizontal_alignment :center
+	text_color "#666"
+	width 823
+	height 80
+}

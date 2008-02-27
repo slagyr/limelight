@@ -1,15 +1,21 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/book'
+require 'limelight/loaders/file_page_loader'
 
 describe Limelight::Book do
 
   before(:each) do
-    @path = "/Users/micahmartin/Projects/limelight/text.llm"
+    # @path = "/Users/micahmartin/Projects/limelight/text.llm"
     @book = Limelight::Book.new
-    @loader = mock("loader")
-    Limelight::Loaders::FileLoader.should_receive(:new).with(@path).and_return(@loader)
-    @parser = mock("parser")
-    Limelight::LlmParser.should_receive(:new).and_return(@parser)
+    # @loader = mock("loader")
+    # Limelight::Loaders::FilePageLoader.should_receive(:new).with(@path).and_return(@loader)
+    # @parser = mock("parser")
+    # Limelight::LlmParser.should_receive(:new).and_return(@parser)
+  end
+  
+  it "should init defaults" do
+    @book.styles.class.should == Hash
+    @book.styles.size.should == 0
   end
 
 # This too ugly to be right.  Book's design probably needs to change.

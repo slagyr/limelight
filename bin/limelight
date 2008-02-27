@@ -1,4 +1,4 @@
-#!/usr/bin/env jrubyp
+#!/usr/bin/env jruby
 
 require File.expand_path(File.dirname(__FILE__) + "/../ruby_src/lib/init")
 require 'limelight/producer'
