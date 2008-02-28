@@ -1,9 +1,0 @@
-<sandbox styles="sandbox.style">
-	<pattern>
-		<fader background_color="#0000">0% Alpha</fader>
-		<fader background_color="#0008">50% Alpha</fader>
-		<fader background_color="#000B">75% Alpha</fader>
-		<fader background_color="#000D">88% Alpha</fader>
-		<fader background_color="#000F">100% Alpha</fader>
-	</pattern>
-</sandbox>

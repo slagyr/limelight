@@ -55,7 +55,7 @@ module Limelight
       page.loader = loader
       
       page.stylize
-      Illuminator.new(loader).illuminate(page)
+      Illuminator.new(Loaders::FilePageLoader.for_root(loader.path_to(path))).illuminate(page)
       @book.open(page)
     end
     

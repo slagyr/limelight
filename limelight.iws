@@ -17,36 +17,61 @@
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/calculator/calculator.style" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/blocks.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/gradients/blocks.rb" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/chromaton.rb" afterPath="$PROJECT_DIR$/examples/sandbox/click_me/players/chromaton.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/players" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/click_me/players" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/gradients" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/langstons_ant/players/start_stop_button.rb" afterPath="$PROJECT_DIR$/examples/langstons_ant/players/start_stop_button.rb" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/spinner.rb" afterPath="$PROJECT_DIR$/examples/sandbox/gradients/players/spinner.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/spec/styles_builder_spec.rb" afterPath="$PROJECT_DIR$/ruby_src/spec/styles_builder_spec.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/painting/ButtonPainter.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/painting/ButtonPainter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/text_box_input.rb" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/players/text_box_input.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/inputs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPaneTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPaneTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockLayoutTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockLayoutTest.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/ant.style" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/check_box_input.rb" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/players/check_box_input.rb" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/text_area_input.rb" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/players/text_area_input.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/click_me" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/click_me/styles.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/styles.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/limelight.iws" afterPath="$PROJECT_DIR$/limelight.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/page.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockLayout.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockLayout.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/gradients/styles.rb" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/wave.rb" afterPath="$PROJECT_DIR$/examples/sandbox/gradients/players/wave.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/bin/spec" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/block_builder.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/block_builder.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/spec/producer_spec.rb" afterPath="$PROJECT_DIR$/ruby_src/spec/producer_spec.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/spec/block_builder_spec.rb" afterPath="$PROJECT_DIR$/ruby_src/spec/block_builder_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/gradients/players" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/combo_box_input.rb" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/players/combo_box_input.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/langstons_ant/players/world.rb" afterPath="$PROJECT_DIR$/examples/langstons_ant/players/world.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPane.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPane.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/langstons_ant/players/start_stop_button.rb" afterPath="$PROJECT_DIR$/examples/langstons_ant/players/start_stop_button.rb" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/waves.rb" afterPath="$PROJECT_DIR$/examples/sandbox/gradients/players/waves.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/calculator/calculator.llm" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/calculator.rb" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Panel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/homer/blocks.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/producer.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/producer.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/block.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/loaders/file_page_loader.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/loaders/file_page_loader.rb" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/ant.llm" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/langstons_ant/blocks.rb" afterPath="$PROJECT_DIR$/examples/langstons_ant/blocks.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/spec/book_spec.rb" afterPath="$PROJECT_DIR$/ruby_src/spec/book_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/homer/styles.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/homer" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/calculator/players/button.rb" afterPath="$PROJECT_DIR$/examples/calculator/players/button.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/book.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/spec/styles_builder_spec.rb" afterPath="$PROJECT_DIR$/ruby_src/spec/styles_builder_spec.rb" />
       <change type="MOVED" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/players/players.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/players.rb" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/button_input.rb" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/players/button_input.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/homer/players" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby_src/lib/limelight/llm_parser.rb" afterPath="$PROJECT_DIR$/ruby_src/lib/limelight/llm_parser.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/BlockLayoutTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/BlockLayoutTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/TextPaneTest.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/TextPaneTest.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/radio_button_input.rb" afterPath="$PROJECT_DIR$/examples/sandbox/inputs/players/radio_button_input.rb" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/teaser.rb" afterPath="$PROJECT_DIR$/examples/sandbox/gradients/players/teaser.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java_src/limelight/ui/Painter.java" afterPath="$PROJECT_DIR$/java_src/limelight/ui/Painter.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant/ant.style" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/examples/langstons_ant.rb" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/examples/sandbox/players/homer.rb" afterPath="$PROJECT_DIR$/examples/sandbox/homer/players/homer.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/limelight" afterPath="$PROJECT_DIR$/bin/limelight" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/sandbox/click_me/blocks.rb" />
     </list>
     <ignored path="limelight.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -118,10 +143,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FlatStyle.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="FlatStyle.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FlatStyle.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="23" column="106" selection-start="413" selection-end="413" vertical-scroll-proportion="0.3039807">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ButtonPainter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/painting/ButtonPainter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="110" selection-start="636" selection-end="636" vertical-scroll-proportion="0.26055488">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComboBoxPainter.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/painting/ComboBoxPainter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="13" selection-start="148" selection-end="148" vertical-scroll-proportion="0.057901084">
               <folding />
             </state>
           </provider>
@@ -487,16 +530,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="44" width="1680" height="1002" extended-state="1" />
+    <frame x="0" y="44" width="1680" height="1002" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24954017" order="0" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" order="1" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32764506" order="1" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33740288" order="8" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3367463" order="8" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="6" />
       <window_info id="Profile" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
@@ -593,20 +636,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ruby_src/spec/players/text_area_spec.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="19" selection-start="114" selection-end="114" vertical-scroll-proportion="0.028950542">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ruby_src/spec/players/text_box_spec.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="1010" selection-end="1010" vertical-scroll-proportion="0.47768396">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ruby_src/lib/limelight/players/button.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="9" selection-start="26" selection-end="26" vertical-scroll-proportion="0.014475271">
@@ -703,6 +732,20 @@
     <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/FlatStyle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="106" selection-start="413" selection-end="413" vertical-scroll-proportion="0.3039807">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/painting/ButtonPainter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="110" selection-start="636" selection-end="636" vertical-scroll-proportion="0.26055488">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java_src/limelight/ui/painting/ComboBoxPainter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="13" selection-start="148" selection-end="148" vertical-scroll-proportion="0.057901084">
           <folding />
         </state>
       </provider>

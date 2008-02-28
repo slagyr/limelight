@@ -13,7 +13,12 @@ public class ButtonPainter extends Painter
   public ButtonPainter(limelight.ui.Panel panel)
   {
     super(panel);
-    panel.add(buildTextBox());
+    // TODO MDM a hack to get by the fact that players are illuminated after the text has been set on a panel
+    String text = panel.getTextAccessor().getText();
+    panel.replaceChildren(new Component[]{buildButton()});
+    button.setText(text);
+    // end hack
+//    panel.add(buildButton());
     panel.sterilize();
     panel.setLayout(new InputLayout());
     panel.setTextAccessor(new TextAccessor() {
@@ -30,7 +35,7 @@ public class ButtonPainter extends Painter
     });
   }
 
-  private JButton buildTextBox()
+  private JButton buildButton()
   {
     button = new JButton();
     BlockEventListener listener = new BlockEventListener(panel.getBlock());

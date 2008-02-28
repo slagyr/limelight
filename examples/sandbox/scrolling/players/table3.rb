@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + "/cell2")
 
-module Table2
+module Table3
   
   def self.extended(block)
     block.cell_index = {}
-    10.times do |y|
+    2.times do |y|
       row = Limelight::Block.new(:class_name => "row2", :id => y.to_s)
       block.add(row)
       10.times do |x|
@@ -16,6 +16,7 @@ module Table2
         row.add(cell)     
       end
     end
+      block.stylize
     # block.update
   end
   

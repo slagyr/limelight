@@ -3,10 +3,7 @@ module Fader
   def self.extended(extended_block)
   end
   
-  def mouseClicked
-  end
-  
-  def mouseEntered
+  def mouse_entered(e)
     @color = style.background_color
     @base_alpha = (style.background_color[4..-1] + style.background_color[4..-1]).hex
     @step = (255 - @base_alpha) / 80
@@ -15,7 +12,7 @@ module Fader
     @thread = Thread.new { do_shading }
   end
   
-  def mouseExited 
+  def mouse_exited(e)
     @should_loop = false
     @thread.join
     style.background_color = @color

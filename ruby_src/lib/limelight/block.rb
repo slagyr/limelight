@@ -62,7 +62,7 @@ module Limelight
       if @class_name
         new_style = @page.styles[@class_name];
         @style.add_to_bottom(new_style) if new_style
-        @hover_style = page.styles["#{@class_name}.hover"];
+        @hover_style = page.styles["#{@class_name}.hover"]
       end
       @children.each { |child| child.load_style }
     end
