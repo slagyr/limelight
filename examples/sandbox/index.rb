@@ -1,1 +1,1 @@
-default_page "teaser"
+default_page "click_me"
