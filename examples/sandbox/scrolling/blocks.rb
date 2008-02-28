@@ -1,4 +1,7 @@
 __ :class_name => "sandbox"
-table2
-table3
-table4
+__install "header.rb"
+arena do
+  table2  
+  table3
+  table4
+end

@@ -1,4 +1,7 @@
 __ :class_name => "sandbox"
-beach do
-  homer
+__install "header.rb"
+arena do
+  beach do
+    homer
+  end
 end

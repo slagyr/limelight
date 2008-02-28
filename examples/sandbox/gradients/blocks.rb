@@ -1,7 +1,10 @@
 __ :class_name => "sandbox"
-spinner
-wave
-waves
-teaser_back do
-  teaser
+__install "header.rb"
+arena do
+  spinner
+  wave
+  waves
+  teaser_back do
+    teaser
+  end
 end

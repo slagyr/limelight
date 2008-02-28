@@ -1,3 +1,5 @@
 __ :class_name => "sandbox"
 __install "header.rb"
-chromaton
+arena do
+  chromaton
+end
