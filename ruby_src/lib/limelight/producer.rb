@@ -47,22 +47,21 @@ module Limelight
     end
     
     def open_page(path)
-      page = load_blocks(path)
+      page_specific_loader = Loaders::FilePageLoader.for_root(loader.path_to(path)) #TODO - MDM - Shouldn't really be needed
       styles = load_styles(path)
       merge_with_book_styles(styles)
+      illuminator = Illuminator.new(page_specific_loader)
       
-      page.styles = styles
-      page.loader = loader
+      page = load_blocks(path, :styles => styles, :illuminator => illuminator, :loader => @loader)
       
-      page.stylize
-      Illuminator.new(Loaders::FilePageLoader.for_root(loader.path_to(path))).illuminate(page)
       @book.open(page)
     end
     
-    def load_blocks(path)
+    def load_blocks(path, options = {})
       filename = File.join(path, "blocks.rb")
       content = @loader.load(filename)
-      return Limelight.build_page(:loader => @loader) do
+      options[:build_loader] = @loader
+      return Limelight.build_page(options) do
         begin
           eval content
         rescue Exception => e

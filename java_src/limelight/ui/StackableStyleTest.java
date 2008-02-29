@@ -146,4 +146,36 @@ public class StackableStyleTest extends TestCase
     assertTrue(style.changed());
     assertTrue(style.changed(Style.WIDTH));
   }
+
+  public void testRemoveStyle() throws Exception
+  {
+    FlatStyle newStyle = new FlatStyle();
+    newStyle.setWidth("123");
+    FlatStyle anotherNewStyle = new FlatStyle();
+    anotherNewStyle.setWidth("100"); 
+
+    style.push(newStyle);
+    style.push(anotherNewStyle);
+    assertEquals(false, style.remove(new FlatStyle()));
+
+    assertEquals(true, style.remove(newStyle));
+    assertEquals("100", style.getWidth());
+  }
+
+  public void testRemoveStyleAffectsChanges() throws Exception
+  {
+    FlatStyle newStyle = new FlatStyle();
+    newStyle.setWidth("123");
+    FlatStyle anotherNewStyle = new FlatStyle();
+    anotherNewStyle.setWidth("100");
+
+    style.push(newStyle);
+    style.push(anotherNewStyle);
+    style.flushChanges();
+    
+    style.remove(newStyle);
+
+    assertTrue(style.changed());
+    assertTrue(style.changed(Style.WIDTH));
+  }
 }

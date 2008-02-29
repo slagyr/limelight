@@ -1,5 +1,4 @@
 require 'limelight/java_util'
-require 'limelight/llm_parser'
 require 'limelight/menu_bar'
 require 'limelight/loaders/file_page_loader'
 
@@ -35,6 +34,7 @@ module Limelight
       loadPage(page)
       @frame.setVisible(true)
       @frame.repaint
+      page.visible = true
     end
   
     def close

@@ -6,3 +6,4 @@ header do
   example_link :text => "Scrolling", :on_mouse_clicked => "book.load('scrolling')"
   example_link :text => "Inputs", :on_mouse_clicked => "book.load('inputs')"
 end
+

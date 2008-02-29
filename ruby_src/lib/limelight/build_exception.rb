@@ -9,6 +9,7 @@ module Limelight
       @original_exception = e
       @line_number = find_line_number
       super(build_error_message)
+      set_backtrace(e.backtrace)
     end
 
     def find_line_number
@@ -29,8 +30,9 @@ module Limelight
       start_line = @line_number - 4 < 0 ? 0 : @line_number - 4
       end_line = @line_number + 2 >= lines.size ? lines.size - 1: @line_number + 2
       message = "#{@filename}:#{@line_number}: #{@original_exception.message}"
+      message << "\n\t----- #{@filename} lines #{start_line + 1} - #{end_line + 1} -----"
       (start_line..end_line).each do |i|
-        message << "\n\t#{i+1}: #{lines[i]}"
+        message << "\n\t#{i == @line_number - 1 ? "*": " "} #{i+1}: #{lines[i]}"
       end  
       message << "\n"
       return message

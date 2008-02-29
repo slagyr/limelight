@@ -5,7 +5,7 @@ require 'limelight/build_exception'
 module Limelight
   
   def self.build_page(options={}, &block)
-    loader = options.delete(:loader)
+    loader = options.delete(:build_loader)
     builder = PageBuilder.new(options)
     builder.__loader__ = loader
     builder.instance_eval(&block) if block
@@ -21,7 +21,7 @@ module Limelight
     end
     
     def __(options)
-      @__block__.populate(options)
+      @__block__.add_options(options)
     end
     
     def __install(file)
@@ -37,7 +37,6 @@ module Limelight
     
     def method_missing(sym, options={}, &block)
       options[:class_name] ||= sym.to_s
-      options[:page] = @__block__.page
       builder = BlockBuilder.new(options)
       builder.__loader__ = @__loader__
       builder.instance_eval(&block) if block

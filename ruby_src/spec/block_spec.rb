@@ -1,10 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/block'
+require 'limelight/styles_builder'
+require 'limelight/page'
 
 describe Limelight::Block do
 
   before(:each) do
+    @illuminator = make_mock("illuminator", :fill_cast => nil)
+    @page = Limelight::Page.new(:illuminator => @illuminator)
     @block = Limelight::Block.new(:id => "root", :class_name => "root_class")
+    @page << @block
   end
   
   it "should extend added controllers and invoke the extended hook" do
@@ -27,8 +32,7 @@ describe Limelight::Block do
   end
   
   it "should have an id" do
-    @block.id = "123"
-    @block.id.should == "123"
+    @block.id.should == "root"
   end
   
   def build_block_tree
@@ -69,20 +73,22 @@ describe Limelight::Block do
   end
   
   it "should have controllers" do
-    @block.players = "abc, xyz"
-    @block.players.should == "abc, xyz"
+    block = Limelight::Block.new(:players => "abc, xyz")
+    @page << block
+    block.players.should == "abc, xyz"
   end
   
   it "should get populated through constructor" do
     block = Limelight::Block.new(:class_name => "my_class_name", :id => "123", :players => "a, b, c")
+    @page << block
     
     block.class_name.should == "my_class_name"
     block.id.should == "123"
-    block.players.should == "a, b, c"
   end
   
   it "should populate styles through constructor" do
     block = Limelight::Block.new(:width => "100", :text_color => "white", :background_image => "apple.jpg")
+    @page << block
     
     block.style.width.should == "100"
     block.style.text_color.should == "white"
@@ -91,10 +97,51 @@ describe Limelight::Block do
   
   it "should define event through constructor using a string" do
     block = Limelight::Block.new(:on_mouse_entered => "return event")
+    @page << block
     
     value = block.mouse_entered("my event")
     
     value.should == "my event"
+  end
+  
+  it "should pass page on to children" do
+    child = Limelight::Block.new(:class_name => "child")
+    
+    @block.parent.should == @page
+    @block.page.should == @page
+    
+    @block << child
+    child.parent.should == @block
+    child.page.should == @page
+  end
+  
+  it "should set styles upon adding to parent" do
+    styles = Limelight::build_styles { child { width 123 } }
+    page = Limelight::Page.new(:illuminator => @illuminator, :styles => styles)
+    block = Limelight::Block.new(:class_name => "child")
+    
+    page << block
+    
+    block.style.width.should == "123"
+  end
+  
+  it "should set styles upon adding to parent" do
+    block = Limelight::Block.new(:class_name => "child")
+    
+    @illuminator.should_receive(:fill_cast).with(block)
+    
+    @page << block
+  end
+  
+  it "should use populate data included by players" do
+    block = Limelight::Block.new(:class_name => "child", :foo => "bar")
+    @illuminator.should_receive(:fill_cast).with(block) do
+      block.instance_eval "def foo=(value); @foo = value; end; def foo; return @foo; end;" 
+    end
+    
+    @page << block
+    
+    block.foo.should == "bar"
   end
   
 end

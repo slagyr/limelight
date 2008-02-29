@@ -6,9 +6,9 @@ require 'limelight/players/button'
 describe Limelight::Players::Button do
 
   before(:each) do
-    @page = Limelight::Page.new
-    @block = Limelight::Block.new(:page => @page)
-    @block.add_controller(Limelight::Players::Button)
+    @page = Limelight::Page.new(:illuminator => make_mock("caster", :fill_cast => nil))
+    @block = Limelight::Block.new
+    @block.include_player(Limelight::Players::Button)
   end
   
   it "should get rid of the all painters and add a ButtonPainter" do

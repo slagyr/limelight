@@ -6,9 +6,10 @@ require 'limelight/players/radio_button'
 describe Limelight::Players::RadioButton do
 
   before(:each) do
-    @page = Limelight::Page.new
-    @block = Limelight::Block.new(:page => @page)
-    @block.add_controller(Limelight::Players::RadioButton)
+    @page = Limelight::Page.new(:illuminator => make_mock("caster", :fill_cast => nil))
+    @block = Limelight::Block.new
+    @page << @block
+    @block.include_player(Limelight::Players::RadioButton)
   end
   
   it "should get rid of the all painters and add a RadioButtonPainter" do
@@ -43,11 +44,13 @@ describe Limelight::Players::RadioButton do
   it "should belong to a button group" do
     @block.group = "group 1"
     
-    block2 = Limelight::Block.new(:page => @page)
+    block2 = Limelight::Block.new
+    @page << block2
     block2.add_controller(Limelight::Players::RadioButton)
     block2.group = "group 1"
     
-    block3 = Limelight::Block.new(:page => @page)
+    block3 = Limelight::Block.new
+    @page << block3
     block3.add_controller(Limelight::Players::RadioButton)
     block3.group = "group 2"
     
