@@ -95,4 +95,29 @@ public class StackableStyle extends Style implements StyleObserver
         changes[i] = true;
     }
   }
+
+  public boolean remove(FlatStyle style)
+  {
+    if(stack.contains(style))
+    {
+      String[] reduction = reduce();
+      stack.remove(style);
+      for(int i = 0; i < Style.STYLE_COUNT; i++)
+      {
+        if(Util.equal(reduction[i], get(i)))
+          changes[i] = true;  
+      }
+
+      return true;
+    }
+    return false;
+  }
+
+  private String[] reduce()
+  {
+    String[] reduction = new String[Style.STYLE_COUNT];
+    for(int i = 0; i < Style.STYLE_COUNT; i++)
+      reduction[i] = get(i);
+    return reduction;
+  }
 }

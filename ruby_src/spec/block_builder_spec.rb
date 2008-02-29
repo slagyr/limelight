@@ -4,10 +4,12 @@ require 'limelight/block_builder'
 describe Limelight::PageBuilder do
 
   before(:each) do
+    @caster = make_mock("caster", :fill_cast => nil)
+    @options = { :class_name => "root", :illuminator => @caster}
   end
   
   it "should build root" do
-    root = Limelight.build_page(:class_name => "root")
+    root = Limelight.build_page(@options)
     
     root.class.should == Limelight::Page
     root.class_name.should == "root"
@@ -16,7 +18,7 @@ describe Limelight::PageBuilder do
   end
   
   it "should build one child block" do
-    root = Limelight::build_page(:class_name => "root") do
+    root = Limelight::build_page(@options) do
       child
     end
     
@@ -29,7 +31,7 @@ describe Limelight::PageBuilder do
   end
   
   it "should allow multiple children" do
-    root = Limelight::build_page(:class_name => "root") do
+    root = Limelight::build_page(@options) do
       child1
       child2
     end
@@ -40,7 +42,7 @@ describe Limelight::PageBuilder do
   end
 
   it "should allow nested children" do
-    root = Limelight::build_page(:class_name => "root") do
+    root = Limelight::build_page(@options) do
       child do
         grandchild
       end
@@ -53,7 +55,7 @@ describe Limelight::PageBuilder do
   end
   
   it "should be able to set the id" do
-    root = Limelight::build_page(:class_name => "root") do
+    root = Limelight::build_page(@options) do
       child :id => "child_1", :players => "x, y, z"
     end
     
@@ -63,7 +65,7 @@ describe Limelight::PageBuilder do
   end
   
   it "should allow setting styles" do
-    root = Limelight::build_page(:class_name => "root") do
+    root = Limelight::build_page(@options) do
       child :width => "100", :font_size => "10", :top_border_color => "blue"
     end
     
@@ -74,7 +76,7 @@ describe Limelight::PageBuilder do
   end
   
   it "should allow defining events through constructor" do
-    root = Limelight::build_page(:class_name => "root") do
+    root = Limelight::build_page(@options) do
       child :on_mouse_entered => "return [self, event]"
     end  
     
@@ -83,7 +85,7 @@ describe Limelight::PageBuilder do
   end
   
   it "should allow page configuration" do
-    root = Limelight::build_page do
+    root = Limelight::build_page(@options) do
       __ :class_name => "root", :id => "123"
     end
     
@@ -93,7 +95,7 @@ describe Limelight::PageBuilder do
   end
   
   it "should give every block their page" do
-    root = Limelight::build_page(:class_name => "root") do
+    root = Limelight::build_page(@options) do
       child do
         grandchild
       end
@@ -108,7 +110,7 @@ describe Limelight::PageBuilder do
     loader = make_mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("child :id => 123")
     
-    root = Limelight::build_page(:id => 321, :loader => loader) do
+    root = Limelight::build_page(:id => 321, :build_loader => loader, :illuminator => @caster) do
       __install "external.rb"
     end  
     
@@ -121,7 +123,7 @@ describe Limelight::PageBuilder do
   
   it "should fail if no loader is provided" do
     begin
-      root = Limelight::build_page(:id => 321, :loader => nil) do
+      root = Limelight::build_page(@options.merge(:id => 321, :build_loader => nil)) do
         __install "external.rb"
       end
       root.should == nil # should never get here
@@ -135,7 +137,7 @@ describe Limelight::PageBuilder do
     loader.should_receive(:exists?).with("external.rb").and_return(false)
     
     begin
-      root = Limelight::build_page(:id => 321, :loader => loader) do
+      root = Limelight::build_page(@options.merge(:id => 321, :build_loader => loader)) do
         __install "external.rb"
       end
     rescue Exception => e
@@ -148,11 +150,11 @@ describe Limelight::PageBuilder do
     loader.should_receive(:load).with("external.rb").and_return("+")
     
     begin
-      root = Limelight::build_page(:id => 321, :loader => loader ) do
+      root = Limelight::build_page(@options.merge(:id => 321, :build_loader => loader)) do
         __install "external.rb"
       end  
     rescue Limelight::BuildException => e
-      e.message.should == "external.rb:1: (eval):1: , unexpected end-of-file\n\n\t1: +\n"
+      e.message.should include("external.rb:1: (eval):1: , unexpected end-of-file")
     end
   end
   

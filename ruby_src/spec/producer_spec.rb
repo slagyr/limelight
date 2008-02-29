@@ -15,7 +15,7 @@ describe Limelight::Producer do
   it "should load blocks" do
     @loader.should_receive(:load).with("./blocks.rb").and_return("child :id => 321")
     
-    page = @producer.load_blocks(".")
+    page = @producer.load_blocks(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
     page.children.size.should == 1
     page.children[0].class_name.should == "child"
     page.children[0].id.should == 321
@@ -33,12 +33,12 @@ describe Limelight::Producer do
     @loader.should_receive(:load).with("./blocks.rb").and_return("one\n+\nthree")
     
     begin
-      result = @producer.load_blocks(".")
+      result = @producer.load_blocks(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
       result.should == nil # should never execute
     rescue Limelight::BuildException => e
       e.line_number.should == 3
       e.filename.should == "./blocks.rb"
-      e.message.should == "./blocks.rb:3: undefined method `+@' for Block[id: , class_name: ]:Limelight::Page\n\t1: one\n\t2: +\n\t3: three\n"
+      e.message.should include("./blocks.rb:3: undefined method `+@' for ")
     end
   end
   
@@ -51,11 +51,7 @@ describe Limelight::Producer do
     rescue Limelight::BuildException => e
       e.line_number.should == 4
       e.filename.should == "./styles.rb"
-      e.message[0..73].should == "./styles.rb:4: undefined method `-@' for #<Java::LimelightUi::FlatStyle:0x"
-      e.message.split("\n")[1].should == "\t1: one {}"
-      e.message.split("\n")[2].should == "\t2: two {}"
-      e.message.split("\n")[3].should == "\t3: -"
-      e.message.split("\n")[4].should == "\t4: three {}"
+      e.message.should include("./styles.rb:4: undefined method `-@' for #<Java::LimelightUi::FlatStyle:0x")
     end
   end
   

@@ -2,6 +2,7 @@ require 'limelight/players'
 
 module Limelight
   
+  #TODO - MDM - Rename to CastingDirector
   class Illuminator
     
     def initialize(loader)
@@ -9,21 +10,19 @@ module Limelight
       @known_players = {}
     end
     
-    def illuminate(block)
-      apply_default_player(block)
-      apply_additional_players(block)
-      
-      block.children.each do |child|
-        illuminate(child)
-      end
+    def fill_cast(block)
+      cast_default_player(block)
+      cast_additional_players(block)
     end
     
-    def apply_default_player(block)
+    private ###############################################
+    
+    def cast_default_player(block)
       return if block.class_name.nil? || block.class_name.empty?
       block.include_player(@known_players[block.class_name]) if player_exists?(block.class_name)
     end
     
-    def apply_additional_players(block)
+    def cast_additional_players(block)
       return if block.players.nil? || block.players.empty?
       player_names = block.players.split(/[ ,]/)
       player_names.each do |player_name|
@@ -34,8 +33,6 @@ module Limelight
     def apply_player(block, player_name)
       block.include_player(@known_players[player_name]) if player_exists?(player_name)
     end
-    
-    private ###############################################
     
     def player_exists?(player_name)
       load_player_by_name(player_name) if !@known_players.has_key?(player_name)

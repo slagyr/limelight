@@ -6,9 +6,9 @@ require 'limelight/players/combo_box'
 describe Limelight::Players::ComboBox do
 
   before(:each) do
-    @page = Limelight::Page.new
+    @page = Limelight::Page.new(:illuminator => make_mock("caster", :fill_cast => nil))
     @block = Limelight::Block.new(:page => @page)
-    @block.add_controller(Limelight::Players::ComboBox)
+    @block.include_player(Limelight::Players::ComboBox)
   end
   
   it "should get rid of the all painters and add a ComboBoxPainter" do

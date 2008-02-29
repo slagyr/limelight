@@ -7,16 +7,27 @@ module Limelight
     
     include Java::limelight.ui.Page
   
-    attr_reader :styles, :button_groups
-    attr_accessor :book, :loader, :styles
+    attr_reader :button_groups, :styles, :illuminator
+    attr_accessor :book, :loader, :visible
     getters :book, :loader
     setters :book
     
     def initialize(options={})
       super(options)
       @page = self
-      @styles = {}
       @button_groups = ButtonGroupCache.new
+      illuminate
+    end
+  
+    def add_options(options)
+      @options = options
+      illuminate
+    end
+    
+    def illuminate
+      @styles = @options.has_key?(:styles) ? @options.delete(:styles) : (@styles || {})
+      @illuminator = @options.delete(:illuminator) if @options.has_key?(:illuminator)
+      super
     end
   
   end
