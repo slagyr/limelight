@@ -17,7 +17,6 @@ module Table4
         row.add(cell)     
       end
     end
-    block.stylize
   end
   
   attr_accessor :cell_index

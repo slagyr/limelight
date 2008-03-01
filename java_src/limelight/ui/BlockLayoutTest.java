@@ -17,6 +17,11 @@ public class BlockLayoutTest extends TestCase
     layout = new BlockLayout(parent);
   }
 
+  public void testToKeepAntHappy() throws Exception
+  {
+    
+  }
+
 //  public void testLayoutWithOneFullSizedChild() throws Exception
 //  {
 //    MockPanel child = createAndAddChildWithSize(100, 100);

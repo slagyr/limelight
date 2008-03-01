@@ -1,1 +1,1 @@
-default_page "inputs"
+default_page "click_me"

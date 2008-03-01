@@ -26,14 +26,14 @@ module Limelight
         @book = open_book
         open_page(@book.default_page)
       else
-        @book = Book.new
+        @book = Book.new(self)
         open_page(".")
       end
     end
     
     def open_book
       content = @loader.load("index.rb")
-      book = Limelight.build_book do
+      book = Limelight.build_book(self) do
         begin
           eval content
         rescue Exception => e

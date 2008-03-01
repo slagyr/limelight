@@ -2,8 +2,8 @@ require 'limelight/book'
 
 module Limelight
   
-  def self.build_book(&block)
-    builder = BookBuilder.new
+  def self.build_book(producer, &block)
+    builder = BookBuilder.new(producer)
     builder.instance_eval(&block) if block
     return builder.book
   end
@@ -12,8 +12,8 @@ module Limelight
     
     attr_reader :book
     
-    def initialize
-      @book = Book.new
+    def initialize(producer)
+      @book = Book.new(producer)
     end
     
     def default_page(page_name)
