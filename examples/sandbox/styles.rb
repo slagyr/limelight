@@ -17,6 +17,7 @@ header {
   background_color "#888"
   border_color :blue
   border_width 1
+  horizontal_alignment :center
 }
 
 example_link {

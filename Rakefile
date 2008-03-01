@@ -22,13 +22,9 @@ task :spec do
   load 'spec'
 end
 
-task :java_tests do
+task :junit do
   output = `ant unit_test`
-  if output.include?("BUILD SUCCESSFUL")
-    puts "Java unit tests passed!"
-  else
-    raise output
-  end
+  raise output if $?.exitstatus != 0
 end
 
-task :all_tests => [:java_tests, :spec]
+task :tests => [:junit, :spec]

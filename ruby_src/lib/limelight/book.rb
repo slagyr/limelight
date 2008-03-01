@@ -6,13 +6,14 @@ module Limelight
   
   class Book
     attr_accessor :directory, :default_page, :styles
-    attr_reader :frame, :current_page
+    attr_reader :frame, :current_page, :producer
     
     def public_choose_file
       choose_file
     end
     
-    def initialize
+    def initialize(producer)
+      @producer = producer
       @styles = {}
       @frame = javax.swing.JFrame.new
       @frame.setDefaultCloseOperation(javax.swing.WindowConstants::EXIT_ON_CLOSE)
@@ -50,16 +51,8 @@ module Limelight
       @current_page = page
     end
     
-    def load(llm_file)
-      if(@current_page)
-        loader = Loaders::FilePageLoader.for_page(@current_page.loader.path_to(llm_file))
-      else
-        loader = Loaders::FilePageLoader.for_page(llm_file)
-      end 
-      parser = LlmParser.new
-      page_content = loader.load(loader.page_file) 
-      page = parser.parse(page_content, loader)
-      open(page)
+    def load(page_path)
+      @producer.open_page(page_path)
     end
   
     def reload

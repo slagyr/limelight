@@ -1,1 +1,1 @@
-default_page "services"
+default_page "home"

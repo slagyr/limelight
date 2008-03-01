@@ -16,8 +16,6 @@ module Table2
         row.add(cell)     
       end
     end
-    block.stylize
-    # block.update
   end
   
   attr_accessor :cell_index

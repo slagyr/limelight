@@ -81,12 +81,7 @@ public class PanelTest extends TestCase
     panel._buildBuffer();
     assertFalse(panel._shouldBuildBuffer());
 
-    block.setText("ABC");
-    assertTrue(panel._shouldBuildBuffer());
-    panel._buildBuffer();
-    assertFalse(panel._shouldBuildBuffer());
-    
-    block.setText("XYZ");
+    block.style.setWidth("321");
     assertTrue(panel._shouldBuildBuffer());
     panel._buildBuffer();
     assertFalse(panel._shouldBuildBuffer());
