@@ -9,7 +9,7 @@ title :text => "Langston's Ant"
 description :text => description_text
 world :id => "world"
 console {
-  start_stop_button :text => "Start"
+  start_stop_button :text => "Start", :players => "button"
   log :id => "log" do
     moves_label :text => "Moves:"
     moves_counter :id => "count", :text => "# of moves"
