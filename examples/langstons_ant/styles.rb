@@ -48,15 +48,6 @@ console {
 	left_padding 200
 }
 
-start_stop_button {
-	text_color "black"
-	border_color "black"
-	border_width 1
-	background_color "grey"
-	width 50
-	height 25
-}
-
 description {
 	width "100%"
 	height 100

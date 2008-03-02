@@ -15,7 +15,7 @@ module StartStopButton
   end
   
   def start
-    @ant = Ant.new(50, 50, page.find("world"), 100)
+    @ant = Ant.new(50, 50, page.find("world"), 100) if @ant.nil?
     @thread = Thread.new do
       begin
         @ant.walk
