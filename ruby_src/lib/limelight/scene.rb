@@ -8,9 +8,9 @@ module Limelight
     include Java::limelight.ui.Scene
   
     attr_reader :button_groups, :styles, :illuminator
-    attr_accessor :book, :loader, :visible
-    getters :book, :loader
-    setters :book
+    attr_accessor :stage, :loader, :visible
+    getters :stage, :loader
+    setters :stage
     
     def initialize(options={})
       super(options)

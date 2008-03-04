@@ -4,7 +4,7 @@ require 'limelight/loaders/file_scene_loader'
 
 module Limelight
   
-  class Book
+  class Stage
     attr_accessor :directory, :default_scene, :styles
     attr_reader :frame, :current_scene, :producer
     
@@ -46,7 +46,7 @@ module Limelight
     def loadScene(scene)
       @frame.content_pane.removeAll
       @frame.add(scene.panel)
-      scene.book = self
+      scene.stage = self
       scene.panel.size = @frame.size
       @current_scene = scene
     end

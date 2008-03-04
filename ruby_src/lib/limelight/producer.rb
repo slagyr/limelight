@@ -2,9 +2,9 @@ require 'limelight/loaders/file_scene_loader'
 require 'limelight/prop_builder'
 require 'limelight/styles_builder'
 require 'limelight/illuminator'
-require 'limelight/book'
+require 'limelight/stage'
 require 'limelight/build_exception'
-require 'limelight/book_builder'
+require 'limelight/stage_builder'
 
 module Limelight
 
@@ -23,17 +23,17 @@ module Limelight
     
     def open()
       if @loader.exists?("index.rb")
-        @book = open_book
-        open_scene(@book.default_scene)
+        @stage = open_stage
+        open_scene(@stage.default_scene)
       else
-        @book = Book.new(self)
+        @stage = Stage.new(self)
         open_scene(".")
       end
     end
     
-    def open_book
+    def open_stage
       content = @loader.load("index.rb")
-      book = Limelight.build_book(self) do
+      stage = Limelight.build_stage(self) do
         begin
           eval content
         rescue Exception => e
@@ -41,20 +41,20 @@ module Limelight
         end
       end
       
-      book.styles = load_styles('.')
+      stage.styles = load_styles('.')
       
-      return book
+      return stage
     end
     
     def open_scene(path)
       scene_specific_loader = Loaders::FileSceneLoader.for_root(loader.path_to(path)) #TODO - MDM - Shouldn't really be needed
       styles = load_styles(path)
-      merge_with_book_styles(styles)
+      merge_with_stage_styles(styles)
       illuminator = Illuminator.new(scene_specific_loader)
       
       scene = load_props(path, :styles => styles, :illuminator => illuminator, :loader => @loader)
       
-      @book.open(scene)
+      @stage.open(scene)
     end
     
     def load_props(path, options = {})
@@ -82,8 +82,8 @@ module Limelight
       end
     end
     
-    def merge_with_book_styles(styles)
-      @book.styles.each_pair do |key, value|
+    def merge_with_stage_styles(styles)
+      @stage.styles.each_pair do |key, value|
         styles[key] = value if !styles.has_key?(key)
       end
     end

@@ -47,7 +47,7 @@
             <classpath refid="classpath" />
             <formatter type="xml" usefile="true" />
             <formatter type="plain" usefile="false" />
-			<batchtest fork="yes" todir="etc/test_reports">
+			<batchtest fork="no" todir="etc/test_reports">
 				<fileset dir="${src}">
 					<include name="**/*Test.java"/>
 				</fileset>
