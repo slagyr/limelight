@@ -14,7 +14,7 @@ class Ant
     @y = y
     @world_size = world_size
     @direction = NORTH
-    @log = @world.page.find("log")
+    @log = @world.scene.find("log")
     @steps = 0
   end
   

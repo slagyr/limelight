@@ -1,1 +1,1 @@
-default_page "home"
+default_scene "home"

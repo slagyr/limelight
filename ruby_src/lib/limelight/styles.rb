@@ -9,10 +9,10 @@ module Limelight
       return YAML.load(yamalized_content)
     end
 
-    def self.load_into_page(filename, page)
-      content = page.loader.load(filename)
+    def self.load_into_scene(filename, scene)
+      content = scene.loader.load(filename)
       style_defs = load(content)
-      styles = page.styles;
+      styles = scene.styles;
   
       style_defs.each_pair do |key, value|
         style = create_style(value)

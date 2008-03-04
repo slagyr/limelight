@@ -21,11 +21,11 @@ module TextBoxInput
   end
   
   def print(value)
-    log = page.find("text_box_log")
+    log = scene.find("text_box_log")
     log.text += value + "\n"
     log.update
     
-    results = page.find("text_box_results")
+    results = scene.find("text_box_results")
     results.text = self.text 
     results.update
   end

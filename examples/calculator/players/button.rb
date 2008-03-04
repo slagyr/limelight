@@ -5,7 +5,7 @@ module Button
   end
   
   def mouse_clicked(e)
-    screen = page.find('screen')
+    screen = scene.find('screen')
     if self.text != "="
       screen.text += self.text
       screen.style.background_color = "yellow"

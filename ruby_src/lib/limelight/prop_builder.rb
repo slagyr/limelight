@@ -1,12 +1,12 @@
-require 'limelight/page'
+require 'limelight/scene'
 require 'limelight/prop'
 require 'limelight/build_exception'
 
 module Limelight
   
-  def self.build_page(options={}, &prop)
+  def self.build_scene(options={}, &prop)
     loader = options.delete(:build_loader)
-    builder = PageBuilder.new(options)
+    builder = SceneBuilder.new(options)
     builder.__loader__ = loader
     builder.instance_eval(&prop) if prop
     return builder.__prop__
@@ -44,9 +44,9 @@ module Limelight
     end
   end
   
-  class PageBuilder < PropBuilder
+  class SceneBuilder < PropBuilder
     def initialize(options)
-      @__prop__ = Page.new(options)
+      @__prop__ = Scene.new(options)
     end
   end
   

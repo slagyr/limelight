@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
-require 'limelight/loaders/file_page_loader'
+require 'limelight/loaders/file_scene_loader'
 
-describe Limelight::Loaders::FilePageLoader do
+describe Limelight::Loaders::FileSceneLoader do
 
   before(:each) do
-    @loader = Limelight::Loaders::FilePageLoader.for_root("/Users/micahmartin/Projects/limelight/example")
+    @loader = Limelight::Loaders::FileSceneLoader.for_root("/Users/micahmartin/Projects/limelight/example")
   end
   
   it "should load path parts" do
@@ -25,7 +25,7 @@ describe Limelight::Loaders::FilePageLoader do
   # it "should deal with windows paths" do
   #   @loader = Limelight::Loaders::FileLoader.new("C:\\Projects\\limelight\\example\\sandbox.llm")
   #   @loader.root.should == "C:/"
-  #   @loader.page_file.should == "C:\\Projects\\limelight\\example\\sandbox.llm"
+  #   @loader.scene_file.should == "C:\\Projects\\limelight\\example\\sandbox.llm"
   #   @loader.current_dir.should == "C:/Projects/limelight/example/"
   # end
 

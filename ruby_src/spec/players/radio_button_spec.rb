@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
-require 'limelight/page'
+require 'limelight/scene'
 require 'limelight/prop'
 require 'limelight/players/radio_button'
 
 describe Limelight::Players::RadioButton do
 
   before(:each) do
-    @page = Limelight::Page.new(:illuminator => make_mock("caster", :fill_cast => nil))
+    @scene = Limelight::Scene.new(:illuminator => make_mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new
-    @page << @prop
+    @scene << @prop
     @prop.include_player(Limelight::Players::RadioButton)
   end
   
@@ -45,21 +45,21 @@ describe Limelight::Players::RadioButton do
     @prop.group = "group 1"
     
     prop2 = Limelight::Prop.new
-    @page << prop2
+    @scene << prop2
     prop2.add_controller(Limelight::Players::RadioButton)
     prop2.group = "group 1"
     
     prop3 = Limelight::Prop.new
-    @page << prop3
+    @scene << prop3
     prop3.add_controller(Limelight::Players::RadioButton)
     prop3.group = "group 2"
     
-    group1 = @page.button_groups["group 1"]
+    group1 = @scene.button_groups["group 1"]
     group1.elements.should include(@prop.radio_button)
     group1.elements.should include(prop2.radio_button)
     group1.elements.should_not include(prop3.radio_button)
     
-    group2 = @page.button_groups["group 2"]
+    group2 = @scene.button_groups["group 2"]
     group2.elements.should_not include(@prop.radio_button)
     group2.elements.should_not include(prop2.radio_button)
     group2.elements.should include(prop3.radio_button)

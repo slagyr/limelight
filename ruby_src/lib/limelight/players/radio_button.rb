@@ -22,7 +22,7 @@ module Limelight
       attr_reader :button_group
 
       def group=(group_name)
-        @button_group = page.button_groups[group_name]
+        @button_group = scene.button_groups[group_name]
         @button_group.add(@radio_button)
       end
       

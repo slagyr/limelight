@@ -1,4 +1,4 @@
-require 'limelight/loaders/file_page_loader'
+require 'limelight/loaders/file_scene_loader'
 require 'limelight/prop_builder'
 require 'limelight/styles_builder'
 require 'limelight/illuminator'
@@ -10,24 +10,24 @@ module Limelight
 
   class Producer
 
-    def self.open(page_name)
-      producer = new(page_name)
+    def self.open(scene_name)
+      producer = new(scene_name)
       producer.open
     end
     
     attr_reader :loader
     
     def initialize(root_path)
-      @loader = Loaders::FilePageLoader.for_root(root_path)
+      @loader = Loaders::FileSceneLoader.for_root(root_path)
     end
     
     def open()
       if @loader.exists?("index.rb")
         @book = open_book
-        open_page(@book.default_page)
+        open_scene(@book.default_scene)
       else
         @book = Book.new(self)
-        open_page(".")
+        open_scene(".")
       end
     end
     
@@ -46,22 +46,22 @@ module Limelight
       return book
     end
     
-    def open_page(path)
-      page_specific_loader = Loaders::FilePageLoader.for_root(loader.path_to(path)) #TODO - MDM - Shouldn't really be needed
+    def open_scene(path)
+      scene_specific_loader = Loaders::FileSceneLoader.for_root(loader.path_to(path)) #TODO - MDM - Shouldn't really be needed
       styles = load_styles(path)
       merge_with_book_styles(styles)
-      illuminator = Illuminator.new(page_specific_loader)
+      illuminator = Illuminator.new(scene_specific_loader)
       
-      page = load_props(path, :styles => styles, :illuminator => illuminator, :loader => @loader)
+      scene = load_props(path, :styles => styles, :illuminator => illuminator, :loader => @loader)
       
-      @book.open(page)
+      @book.open(scene)
     end
     
     def load_props(path, options = {})
       filename = File.join(path, "props.rb")
       content = @loader.load(filename)
       options[:build_loader] = @loader
-      return Limelight.build_page(options) do
+      return Limelight.build_scene(options) do
         begin
           eval content
         rescue Exception => e

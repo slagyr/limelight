@@ -3,9 +3,9 @@ require 'limelight/prop'
 require 'limelight/button_group_cache'
 
 module Limelight
-  class Page < Prop
+  class Scene < Prop
     
-    include Java::limelight.ui.Page
+    include Java::limelight.ui.Scene
   
     attr_reader :button_groups, :styles, :illuminator
     attr_accessor :book, :loader, :visible
@@ -14,7 +14,7 @@ module Limelight
     
     def initialize(options={})
       super(options)
-      @page = self
+      @scene = self
       @button_groups = ButtonGroupCache.new
       illuminate
     end

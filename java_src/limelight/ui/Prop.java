@@ -2,7 +2,7 @@ package limelight.ui;
 
 import limelight.ui.Style;
 import limelight.ui.Panel;
-import limelight.ui.Page;
+import limelight.ui.Scene;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
@@ -13,7 +13,7 @@ public interface Prop
   Style getStyle();
   String getClassName();
   String getText();
-  Page getPage();
+  Scene getScene();
   void setText(String value);
 
   void hover_on();

@@ -15,10 +15,10 @@ describe Limelight::Producer do
   it "should load props" do
     @loader.should_receive(:load).with("./props.rb").and_return("child :id => 321")
     
-    page = @producer.load_props(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
-    page.children.size.should == 1
-    page.children[0].class_name.should == "child"
-    page.children[0].id.should == 321
+    scene = @producer.load_props(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
+    scene.children.size.should == 1
+    scene.children[0].class_name.should == "child"
+    scene.children[0].id.should == 321
   end
   
   it "should load styles" do
@@ -57,16 +57,16 @@ describe Limelight::Producer do
   
   it "should load a book when index.rb exists" do
     @loader.should_receive(:exists?).with("index.rb").and_return true
-    @producer.should_receive(:open_book).and_return(make_mock("book", :default_page => "abc"))
-    @producer.should_receive(:open_page).with("abc")
+    @producer.should_receive(:open_book).and_return(make_mock("book", :default_scene => "abc"))
+    @producer.should_receive(:open_scene).with("abc")
     
     @producer.open
   end
   
-  it "should load a page when index.rb doesn't exists" do
+  it "should load a scene when index.rb doesn't exists" do
     @loader.should_receive(:exists?).with("index.rb").and_return false
     @producer.should_not_receive(:open_book)
-    @producer.should_receive(:open_page).with(".")
+    @producer.should_receive(:open_scene).with(".")
     
     @producer.open
   end

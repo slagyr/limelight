@@ -1,15 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/prop'
 require 'limelight/styles_builder'
-require 'limelight/page'
+require 'limelight/scene'
 
 describe Limelight::Prop do
 
   before(:each) do
     @illuminator = make_mock("illuminator", :fill_cast => nil)
-    @page = Limelight::Page.new(:illuminator => @illuminator)
+    @scene = Limelight::Scene.new(:illuminator => @illuminator)
     @prop = Limelight::Prop.new(:id => "root", :class_name => "root_class")
-    @page << @prop
+    @scene << @prop
   end
   
   it "should extend added controllers and invoke the extended hook" do
@@ -74,13 +74,13 @@ describe Limelight::Prop do
   
   it "should have controllers" do
     prop = Limelight::Prop.new(:players => "abc, xyz")
-    @page << prop
+    @scene << prop
     prop.players.should == "abc, xyz"
   end
   
   it "should get populated through constructor" do
     prop = Limelight::Prop.new(:class_name => "my_class_name", :id => "123", :players => "a, b, c")
-    @page << prop
+    @scene << prop
     
     prop.class_name.should == "my_class_name"
     prop.id.should == "123"
@@ -88,7 +88,7 @@ describe Limelight::Prop do
   
   it "should populate styles through constructor" do
     prop = Limelight::Prop.new(:width => "100", :text_color => "white", :background_image => "apple.jpg")
-    @page << prop
+    @scene << prop
     
     prop.style.width.should == "100"
     prop.style.text_color.should == "white"
@@ -97,30 +97,30 @@ describe Limelight::Prop do
   
   it "should define event through constructor using a string" do
     prop = Limelight::Prop.new(:on_mouse_entered => "return event")
-    @page << prop
+    @scene << prop
     
     value = prop.mouse_entered("my event")
     
     value.should == "my event"
   end
   
-  it "should pass page on to children" do
+  it "should pass scene on to children" do
     child = Limelight::Prop.new(:class_name => "child")
     
-    @prop.parent.should == @page
-    @prop.page.should == @page
+    @prop.parent.should == @scene
+    @prop.scene.should == @scene
     
     @prop << child
     child.parent.should == @prop
-    child.page.should == @page
+    child.scene.should == @scene
   end
   
   it "should set styles upon adding to parent" do
     styles = Limelight::build_styles { child { width 123 } }
-    page = Limelight::Page.new(:illuminator => @illuminator, :styles => styles)
+    scene = Limelight::Scene.new(:illuminator => @illuminator, :styles => styles)
     prop = Limelight::Prop.new(:class_name => "child")
     
-    page << prop
+    scene << prop
     
     prop.style.width.should == "123"
   end
@@ -130,7 +130,7 @@ describe Limelight::Prop do
     
     @illuminator.should_receive(:fill_cast).with(prop)
     
-    @page << prop
+    @scene << prop
   end
   
   it "should use populate data included by players" do
@@ -139,7 +139,7 @@ describe Limelight::Prop do
       prop.instance_eval "def foo=(value); @foo = value; end; def foo; return @foo; end;"
     end
     
-    @page << prop
+    @scene << prop
     
     prop.foo.should == "bar"
   end

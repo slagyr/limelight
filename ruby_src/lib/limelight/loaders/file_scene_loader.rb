@@ -1,11 +1,11 @@
 module Limelight
   module Loaders
     
-    class FilePageLoader
+    class FileSceneLoader
       
-      include Java::limelight.PageLoader
+      include Java::limelight.SceneLoader
     
-      attr_reader :page_file, :current_dir
+      attr_reader :scene_file, :current_dir
       
       def self.for_root(root)
         loader = new
@@ -13,9 +13,9 @@ module Limelight
         return loader
       end
       
-      def self.for_page(filename)
+      def self.for_scene(filename)
         loader = new
-        loader.reset_on_page(filename)
+        loader.reset_on_scene(filename)
         return loader
       end
       
@@ -23,9 +23,9 @@ module Limelight
         @current_dir = File.expand_path(root)
       end
       
-      def reset_on_page(filename)
-        @page_file = File.expand_path(filename)
-        @current_dir = File.dirname(@page_file)
+      def reset_on_scene(filename)
+        @scene_file = File.expand_path(filename)
+        @current_dir = File.dirname(@scene_file)
       end
       
       def path_to(path)
