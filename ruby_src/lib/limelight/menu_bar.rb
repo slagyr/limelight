@@ -16,9 +16,9 @@ module Limelight
   
   class MenuBar
     
-    def self.build(context, &block)
+    def self.build(context, &prop)
       builder = self.new(context)
-      builder.instance_eval(&block)
+      builder.instance_eval(&prop)
       return builder.menu_bar
     end
     

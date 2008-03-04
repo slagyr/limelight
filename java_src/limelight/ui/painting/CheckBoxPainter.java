@@ -1,6 +1,6 @@
 package limelight.ui.painting;
 
-import limelight.ui.BlockEventListener;
+import limelight.ui.PropEventListener;
 import limelight.ui.InputLayout;
 import limelight.ui.Painter;
 
@@ -22,7 +22,7 @@ public class CheckBoxPainter extends Painter
   private JCheckBox buildTextBox()
   {
     checkBox = new JCheckBox();
-    BlockEventListener listener = new BlockEventListener(panel.getBlock());
+    PropEventListener listener = new PropEventListener(panel.getProp());
     checkBox.addKeyListener(listener);
     checkBox.addMouseListener(listener);
     checkBox.addActionListener(listener);

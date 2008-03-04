@@ -33,7 +33,7 @@ public class ButtonPainter extends Painter
   private JButton buildButton()
   {
     button = new JButton();
-    BlockEventListener listener = new BlockEventListener(panel.getBlock());
+    PropEventListener listener = new PropEventListener(panel.getProp());
     button.addKeyListener(listener);
     button.addMouseListener(listener);
     button.addActionListener(listener);

@@ -1,7 +1,7 @@
 require 'limelight/java_util'
 
 module Limelight
-  class Block
+  class Prop
     
     class << self
 
@@ -19,7 +19,7 @@ module Limelight
 
     end
     
-    include Java::limelight.ui.Block
+    include Java::limelight.ui.Prop
   
     attr_reader :panel, :style, :children, :page, :parent
     attr_reader :class_name, :id, :players

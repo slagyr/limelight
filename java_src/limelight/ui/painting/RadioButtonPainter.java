@@ -32,7 +32,7 @@ public class RadioButtonPainter extends Painter
   private JRadioButton buildTextBox()
   {
     radioButton = new JRadioButton();
-    BlockEventListener listener = new BlockEventListener(panel.getBlock());
+    PropEventListener listener = new PropEventListener(panel.getProp());
     radioButton.addKeyListener(listener);
     radioButton.addMouseListener(listener);
     radioButton.addActionListener(listener);

@@ -9,7 +9,7 @@ import limelight.ui.*;
 
 public class BorderPainterTest extends TestCase
 {
-  private MockBlock block;
+  private MockProp prop;
   private MockPanel panel;
   private FlatStyle style;
   private BorderPainter painter;
@@ -19,8 +19,8 @@ public class BorderPainterTest extends TestCase
   public void setUp() throws Exception
   {
     panel = new MockPanel();
-    block = (MockBlock)panel.getBlock();
-    style = block.style;
+    prop = (MockProp)panel.getProp();
+    style = prop.style;
     border = new limelight.ui.Rectangle(5, 5, 100, 100);
     panel.rectangleInsideMargin = border;
     painter = new BorderPainter(panel);

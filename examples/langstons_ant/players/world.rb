@@ -2,21 +2,21 @@ load File.expand_path(File.dirname(__FILE__) + "/ant.rb")
   
 module World
   
-  def self.extended(block)    
+  def self.extended(prop)
 create_time = 0
 add_time = 0
     
-    block.cell_index = {}
+    prop.cell_index = {}
     100.times do |y|
       100.times do |x|
         id = "#{x},#{y}"
 start = Time.now
-        cell = Limelight::Block.new(:class_name => "cell", :id => id)
+        cell = Limelight::Prop.new(:class_name => "cell", :id => id)
 create_time += Time.now - start
 start = Time.now
-        block.add(cell)
+        prop.add(cell)
 add_time += Time.now - start        
-        block.cell_index[id] = cell
+        prop.cell_index[id] = cell
       end
     end
 puts "create_time: #{create_time}"    

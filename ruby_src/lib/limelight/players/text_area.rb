@@ -3,16 +3,16 @@ module Limelight
     
     module TextArea
       class << self
-        def extended(block)  
-          block.panel.painters.clear
-          block.panel.painters << Java.limelight.ui.painting.TextAreaPainter.new(block.panel)
-          block.panel.clear_event_listeners
-          set_default_styles(block)
+        def extended(prop)
+          prop.panel.painters.clear
+          prop.panel.painters << Java.limelight.ui.painting.TextAreaPainter.new(prop.panel)
+          prop.panel.clear_event_listeners
+          set_default_styles(prop)
         end
         
-        def set_default_styles(block)
-          block.style.width ||= "240"
-          block.style.height ||= "88"
+        def set_default_styles(prop)
+          prop.style.width ||= "240"
+          prop.style.height ||= "88"
         end
       end
   

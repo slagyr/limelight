@@ -22,7 +22,7 @@ public class TextPaneTextAccessor implements TextAccessor
       if(text == null || text.length() == 0)
         return;
       if(panel.getComponents().length > 0)
-        throw new LimelightException("You may only set text on empty blocks.");
+        throw new LimelightException("You may only set text on empty props.");
       textPane = new TextPane(panel, text);
       panel.add(textPane);
       panel.sterilize();

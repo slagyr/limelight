@@ -58,13 +58,13 @@ public class Tester
 //		int num = 1000;
 //		int reps = 1000;
 //
-//		Block[] blocks = new Block[num];
+//		Prop[] props = new Prop[num];
 //		Hashtable[] tables = new Hashtable[num];
 //		FlatStyle[] styles = new FlatStyle[num];
 //
 //		for(int i = 0; i < num; i++)
 //		{
-//			blocks[i] = new Block();
+//			props[i] = new Prop();
 //			tables[i] = new Hashtable();
 //			styles[i] = new FlatStyle();
 //		}
@@ -121,59 +121,59 @@ public class Tester
 //
 //		//BLOCK
 //		then = System.currentTimeMillis();
-//		for(int i = 0; i < blocks.length; i++)
+//		for(int i = 0; i < props.length; i++)
 //		{
-//			Block block = blocks[i];
+//			Prop prop = props[i];
 //			for(int j = 0; j < reps; j++)
-//				loadBlock(block);
+//				loadProp(prop);
 //		}
 //		now = System.currentTimeMillis();
 //		duration = now - then;
-//		System.out.println("Loading blocks: " + duration);
+//		System.out.println("Loading props: " + duration);
 //
 //		then = System.currentTimeMillis();
-//		for(int i = 0; i < blocks.length; i++)
+//		for(int i = 0; i < props.length; i++)
 //		{
-//			Block block = blocks[i];
+//			Prop prop = props[i];
 //			for(int j = 0; j < reps; j++)
-//				unloadBlock(block);
+//				unloadProp(prop);
 //		}
 //		now = System.currentTimeMillis();
 //		duration = now - then;
-//		System.out.println("Unloading blocks: " + duration);
+//		System.out.println("Unloading props: " + duration);
 //
 //
 //	}
 //
-//	public static void unloadBlock(Block block)
+//	public static void unloadProp(Prop prop)
 //	{
-//		block.getStyle().getWidth();
-//		block.getStyle().getHeight();
-//		block.getStyle().getTopBorderColor();
-//		block.getStyle().getRightBorderColor();
-//		block.getStyle().getBottomBorderColor();
-//		block.getStyle().getLeftBorderColor();
-//		block.getStyle().getTopBorderWidth();
-//		block.getStyle().getRightBorderWidth();
-//		block.getStyle().getBottomBorderWidth();
-//		block.getStyle().getLeftBorderWidth();
-//		block.getStyle().getTopMargin();
-//		block.getStyle().getRightMargin();
-//		block.getStyle().getBottomMargin();
-//		block.getStyle().getLeftMargin();
-//		block.getStyle().getTopPadding();
-//		block.getStyle().getRightPadding();
-//		block.getStyle().getBottomPadding();
-//		block.getStyle().getLeftPadding();
-//		block.getStyle().getBackgroundColor();
-//		block.getStyle().getBackgroundImage();
-//		block.getStyle().getBackgroundImageFillStrategy();
-//		block.getStyle().getHorizontalAlignment();
-//		block.getStyle().getVerticalAlignment();
-//		block.getStyle().getTextColor();
-//		block.getStyle().getFontFace();
-//		block.getStyle().getFontSize();
-//		block.getStyle().getFontStyle();
+//		prop.getStyle().getWidth();
+//		prop.getStyle().getHeight();
+//		prop.getStyle().getTopBorderColor();
+//		prop.getStyle().getRightBorderColor();
+//		prop.getStyle().getBottomBorderColor();
+//		prop.getStyle().getLeftBorderColor();
+//		prop.getStyle().getTopBorderWidth();
+//		prop.getStyle().getRightBorderWidth();
+//		prop.getStyle().getBottomBorderWidth();
+//		prop.getStyle().getLeftBorderWidth();
+//		prop.getStyle().getTopMargin();
+//		prop.getStyle().getRightMargin();
+//		prop.getStyle().getBottomMargin();
+//		prop.getStyle().getLeftMargin();
+//		prop.getStyle().getTopPadding();
+//		prop.getStyle().getRightPadding();
+//		prop.getStyle().getBottomPadding();
+//		prop.getStyle().getLeftPadding();
+//		prop.getStyle().getBackgroundColor();
+//		prop.getStyle().getBackgroundImage();
+//		prop.getStyle().getBackgroundImageFillStrategy();
+//		prop.getStyle().getHorizontalAlignment();
+//		prop.getStyle().getVerticalAlignment();
+//		prop.getStyle().getTextColor();
+//		prop.getStyle().getFontFace();
+//		prop.getStyle().getFontSize();
+//		prop.getStyle().getFontStyle();
 //	}
 //
 //	public static void unloadTable(Hashtable table)
@@ -207,35 +207,35 @@ public class Tester
 //		table.get("FontStyle");
 //	}
 //
-//	public static void loadBlock(Block block)
+//	public static void loadProp(Prop prop)
 //	{
-//		block.getStyle().setWidth("123");
-//		block.getStyle().setHeight("123");
-//		block.getStyle().setTopBorderColor("red");
-//		block.getStyle().setRightBorderColor("red");
-//		block.getStyle().setBottomBorderColor("red");
-//		block.getStyle().setLeftBorderColor("red");
-//		block.getStyle().setTopBorderWidth("123");
-//		block.getStyle().setRightBorderWidth("123");
-//		block.getStyle().setBottomBorderWidth("123");
-//		block.getStyle().setLeftBorderWidth("123");
-//		block.getStyle().setTopMargin("123");
-//		block.getStyle().setRightMargin("123");
-//		block.getStyle().setBottomMargin("123");
-//		block.getStyle().setLeftMargin("123");
-//		block.getStyle().setTopPadding("123");
-//		block.getStyle().setRightPadding("123");
-//		block.getStyle().setBottomPadding("123");
-//		block.getStyle().setLeftPadding("123");
-//		block.getStyle().setBackgroundColor("red");
-//		block.getStyle().setBackgroundImage("blah.png");
-//		block.getStyle().setBackgroundImageFillStrategy("static");
-//		block.getStyle().setHorizontalAlignment("left");
-//		block.getStyle().setVerticalAlignment("left");
-//		block.getStyle().setTextColor("red");
-//		block.getStyle().setFontFace("anything");
-//		block.getStyle().setFontSize("123");
-//		block.getStyle().setFontStyle("bold");
+//		prop.getStyle().setWidth("123");
+//		prop.getStyle().setHeight("123");
+//		prop.getStyle().setTopBorderColor("red");
+//		prop.getStyle().setRightBorderColor("red");
+//		prop.getStyle().setBottomBorderColor("red");
+//		prop.getStyle().setLeftBorderColor("red");
+//		prop.getStyle().setTopBorderWidth("123");
+//		prop.getStyle().setRightBorderWidth("123");
+//		prop.getStyle().setBottomBorderWidth("123");
+//		prop.getStyle().setLeftBorderWidth("123");
+//		prop.getStyle().setTopMargin("123");
+//		prop.getStyle().setRightMargin("123");
+//		prop.getStyle().setBottomMargin("123");
+//		prop.getStyle().setLeftMargin("123");
+//		prop.getStyle().setTopPadding("123");
+//		prop.getStyle().setRightPadding("123");
+//		prop.getStyle().setBottomPadding("123");
+//		prop.getStyle().setLeftPadding("123");
+//		prop.getStyle().setBackgroundColor("red");
+//		prop.getStyle().setBackgroundImage("blah.png");
+//		prop.getStyle().setBackgroundImageFillStrategy("static");
+//		prop.getStyle().setHorizontalAlignment("left");
+//		prop.getStyle().setVerticalAlignment("left");
+//		prop.getStyle().setTextColor("red");
+//		prop.getStyle().setFontFace("anything");
+//		prop.getStyle().setFontSize("123");
+//		prop.getStyle().setFontStyle("bold");
 //
 //	}
 //

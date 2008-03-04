@@ -3,18 +3,18 @@ module Limelight
     
     module Button
       class << self
-        def extended(block)  
-          block.panel.painters.clear
-          painter = Java.limelight.ui.painting.ButtonPainter.new(block.panel)
-          block.button = painter.button
-          block.panel.painters << painter
-          block.panel.clear_event_listeners
-          set_default_styles(block)
+        def extended(prop)
+          prop.panel.painters.clear
+          painter = Java.limelight.ui.painting.ButtonPainter.new(prop.panel)
+          prop.button = painter.button
+          prop.panel.painters << painter
+          prop.panel.clear_event_listeners
+          set_default_styles(prop)
         end
         
-        def set_default_styles(block)
-          block.style.width = "100"
-          block.style.height = "25"
+        def set_default_styles(prop)
+          prop.style.width = "100"
+          prop.style.height = "25"
         end
       end
   

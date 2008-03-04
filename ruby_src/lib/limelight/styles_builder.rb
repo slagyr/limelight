@@ -1,9 +1,9 @@
 
 module Limelight
   
-  def self.build_styles(&block)
+  def self.build_styles(&prop)
     builder = StylesBuilder.new
-    builder.instance_eval(&block) if block
+    builder.instance_eval(&prop) if prop
     return builder.__styles__
   end
   
@@ -14,13 +14,13 @@ module Limelight
       @__styles__ = {}
     end
     
-    def method_missing(sym, &block)
-      __add_style(sym.to_s, &block)
+    def method_missing(sym, &prop)
+      __add_style(sym.to_s, &prop)
     end
     
-    def __add_style(name, &block)
+    def __add_style(name, &prop)
       builder = StyleBuilder.new(name, self)
-      builder.instance_eval(&block) if block
+      builder.instance_eval(&prop) if prop
       @__styles__[name] = builder.__style__
     end
   end
@@ -34,8 +34,8 @@ module Limelight
       @__styles_builder = styles_builder
     end
     
-    def hover(&block)
-      @__styles_builder.__add_style("#{@__name__}.hover", &block)
+    def hover(&prop)
+      @__styles_builder.__add_style("#{@__name__}.hover", &prop)
     end
     
     def method_missing(sym, value)

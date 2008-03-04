@@ -1,6 +1,6 @@
 module Cell2
   
-  def self.extended(block)
+  def self.extended(prop)
   end
   
   def mouse_clicked(e)

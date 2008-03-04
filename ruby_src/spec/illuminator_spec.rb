@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/illuminator'
-require 'limelight/block_builder'
+require 'limelight/prop_builder'
 
 describe Limelight::Illuminator do
 
@@ -18,7 +18,7 @@ describe Limelight::Illuminator do
   end
   
   def make_root(options={})
-    @root = Limelight::Block.new(options)
+    @root = Limelight::Prop.new(options)
     @page << @root
   end
   

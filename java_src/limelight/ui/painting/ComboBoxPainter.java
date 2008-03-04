@@ -33,7 +33,7 @@ public class ComboBoxPainter extends Painter
   private JComboBox buildComboBox()
   {
     comboBox = new JComboBox();
-    BlockEventListener listener = new BlockEventListener(panel.getBlock());
+    PropEventListener listener = new PropEventListener(panel.getProp());
     comboBox.addKeyListener(listener);
     comboBox.addMouseListener(listener);
     comboBox.addFocusListener(listener);

@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 import limelight.ui.FlatStyle;
 import limelight.ui.TextPaneTextAccessor;
-import limelight.ui.Block;
+import limelight.ui.Prop;
 import limelight.ui.Panel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
@@ -14,7 +14,7 @@ public class PanelTest extends TestCase
 {
   private static class TestablePanel extends Panel
   {
-    public TestablePanel(Block owner)
+    public TestablePanel(Prop owner)
     {
       super(owner);
     }
@@ -30,16 +30,16 @@ public class PanelTest extends TestCase
     }
   }
 
-  private MockBlock block;
+  private MockProp prop;
 	private TestablePanel panel;
   private FlatStyle style;
   private MockPanel parent;
 
   public void setUp() throws Exception
 	{
-		block = new MockBlock();
-		panel = new TestablePanel(block);
-    style = block.getStyle();
+		prop = new MockProp();
+		panel = new TestablePanel(prop);
+    style = prop.getStyle();
     parent = new MockPanel();
     parent.add(panel);
   }
@@ -76,12 +76,12 @@ public class PanelTest extends TestCase
     panel._buildBuffer();
     assertFalse(panel._shouldBuildBuffer());
 
-    block.style.setWidth("101");
+    prop.style.setWidth("101");
     assertTrue(panel._shouldBuildBuffer());
     panel._buildBuffer();
     assertFalse(panel._shouldBuildBuffer());
 
-    block.style.setWidth("321");
+    prop.style.setWidth("321");
     assertTrue(panel._shouldBuildBuffer());
     panel._buildBuffer();
     assertFalse(panel._shouldBuildBuffer());
@@ -89,9 +89,9 @@ public class PanelTest extends TestCase
 
   private void makePaintable()
   {
-    block.style.setWidth("100");
-    block.style.setHeight("100");
-    block.style.setTextColor("blue");
+    prop.style.setWidth("100");
+    prop.style.setHeight("100");
+    prop.style.setTextColor("blue");
     panel.setSize(panel.getPreferredSize());
   }
 
@@ -119,18 +119,18 @@ public class PanelTest extends TestCase
 
   public void testSterilization() throws Exception
   {
-    block.name = "Blah";
+    prop.name = "Blah";
     panel.sterilize();
 
     try
     {
-      panel.add(new Panel(new MockBlock()));
+      panel.add(new Panel(new MockProp()));
       fail("Should have thrown an exception");
     }
     catch(Error e)
     {
       assertEquals(Panel.SterilePanelException.class, e.getClass());
-      assertEquals("The panel for block named 'Blah' has been sterilized and child components may not be added.", e.getMessage());
+      assertEquals("The panel for prop named 'Blah' has been sterilized and child components may not be added.", e.getMessage());
     }
     
     assertEquals(0, panel.getComponents().length);
@@ -145,13 +145,13 @@ public class PanelTest extends TestCase
     KeyEvent e = new KeyEvent(panel, 1, 2, 3, 4, '5');
 
     listener.keyPressed(e);
-    assertEquals(e, block.pressedKey);
+    assertEquals(e, prop.pressedKey);
 
     listener.keyReleased(e);
-    assertEquals(e, block.releasedKey);
+    assertEquals(e, prop.releasedKey);
 
     listener.keyTyped(e);
-    assertEquals(e, block.typedKey);
+    assertEquals(e, prop.typedKey);
   }
 
   public void testMouseActions() throws Exception
@@ -162,21 +162,21 @@ public class PanelTest extends TestCase
     MouseEvent e = new MouseEvent(panel, 1, 2, 3, 4, 5, 6, false);
 
     listener.mouseClicked(e);
-    assertEquals(e, block.clickedMouse);
+    assertEquals(e, prop.clickedMouse);
 
     listener.mouseEntered(e);
-    assertEquals(e, block.enteredMouse);
-    assertTrue(block.hooverOn);
+    assertEquals(e, prop.enteredMouse);
+    assertTrue(prop.hooverOn);
 
     listener.mouseExited(e);
-    assertEquals(e, block.exitedMouse);
-    assertFalse(block.hooverOn);
+    assertEquals(e, prop.exitedMouse);
+    assertFalse(prop.hooverOn);
 
     listener.mousePressed(e);
-    assertEquals(e, block.pressedMouse);
+    assertEquals(e, prop.pressedMouse);
 
     listener.mouseReleased(e);
-    assertEquals(e, block.releasedMouse);
+    assertEquals(e, prop.releasedMouse);
   }
 
   public void testMouseMotionActions() throws Exception
@@ -187,10 +187,10 @@ public class PanelTest extends TestCase
     MouseEvent e = new MouseEvent(panel, 1, 2, 3, 4, 5, 6, false);
 
     listener.mouseDragged(e);
-    assertEquals(e, block.draggedMouse);
+    assertEquals(e, prop.draggedMouse);
 
     listener.mouseMoved(e);
-    assertEquals(e, block.movedMouse);
+    assertEquals(e, prop.movedMouse);
   }
 
   public void testClearingEventListeners() throws Exception

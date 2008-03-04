@@ -32,7 +32,7 @@ public class TextAreaPainter extends Painter
   private JTextArea buildTextArea()
   {
     textArea = new JTextArea();
-    BlockEventListener listener = new BlockEventListener(panel.getBlock());
+    PropEventListener listener = new PropEventListener(panel.getProp());
     textArea.addKeyListener(listener);
     textArea.addMouseListener(listener);
     textArea.addFocusListener(listener);

@@ -1,14 +1,14 @@
 package limelight.ui;
 
 import limelight.ui.FlatStyle;
-import limelight.ui.Block;
+import limelight.ui.Prop;
 import limelight.ui.Page;
 import limelight.ui.Panel;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
-public class MockBlock implements Block
+public class MockProp implements Prop
 {
   public FlatStyle style;
   public String text;
@@ -30,7 +30,7 @@ public class MockBlock implements Block
   public Object pressedButton;
   public Object changedItemState;
 
-  public MockBlock()
+  public MockProp()
   {
     style = new FlatStyle();
   }

@@ -1,9 +1,9 @@
 require 'limelight/java_util'
-require 'limelight/block'
+require 'limelight/prop'
 require 'limelight/button_group_cache'
 
 module Limelight
-  class Page < Block
+  class Page < Prop
     
     include Java::limelight.ui.Page
   
