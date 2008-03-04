@@ -1,13 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
-require 'limelight/page'
+require 'limelight/scene'
 require 'limelight/prop'
 require 'limelight/players/combo_box'
 
 describe Limelight::Players::ComboBox do
 
   before(:each) do
-    @page = Limelight::Page.new(:illuminator => make_mock("caster", :fill_cast => nil))
-    @prop = Limelight::Prop.new(:page => @page)
+    @scene = Limelight::Scene.new(:illuminator => make_mock("caster", :fill_cast => nil))
+    @prop = Limelight::Prop.new(:scene => @scene)
     @prop.include_player(Limelight::Players::ComboBox)
   end
   

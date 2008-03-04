@@ -25,14 +25,14 @@ module RadioButtonInput
   end
   
   def print(value)
-    log = page.find("radio_button_log")
+    log = scene.find("radio_button_log")
     log.text += "#{id}:#{value}\n"
     log.update
     
-    results = page.find("radio_button_results")
-    radio1 = page.find("radio_1")
-    radio2 = page.find("radio_2")
-    radio3 = page.find("radio_3")
+    results = scene.find("radio_button_results")
+    radio1 = scene.find("radio_1")
+    radio2 = scene.find("radio_2")
+    radio3 = scene.find("radio_3")
     results.text = "One: #{radio1.selected?}\nTwo: #{radio2.selected?}\nThree: #{radio3.selected?}"
     results.update
   end

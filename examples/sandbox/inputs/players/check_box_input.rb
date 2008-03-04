@@ -25,11 +25,11 @@ module CheckBoxInput
   end
   
   def print(value)
-    log = page.find("check_box_log")
+    log = scene.find("check_box_log")
     log.text += value + "\n"
     log.update
     
-    results = page.find("check_box_results")
+    results = scene.find("check_box_results")
     results.text = self.checked? ? "checked" : "unchecked"
     results.update
   end

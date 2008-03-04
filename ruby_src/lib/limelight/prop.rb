@@ -21,9 +21,9 @@ module Limelight
     
     include Java::limelight.ui.Prop
   
-    attr_reader :panel, :style, :children, :page, :parent
+    attr_reader :panel, :style, :children, :scene, :parent
     attr_reader :class_name, :id, :players
-    getters :panel, :style, :page, :class_name, :text
+    getters :panel, :style, :scene, :class_name, :text
     setters :text
     
     def initialize(hash = {})
@@ -51,13 +51,13 @@ module Limelight
     alias :include_player :add_controller
     
     def update
-      return if(@page.nil? || !@page.visible)
+      return if(@scene.nil? || !@scene.visible)
       @panel.doLayout
       @panel.repaint
     end
     
     def update_now
-      return if(@page.nil? || !@page.visible)
+      return if(@scene.nil? || !@scene.visible)
       @panel.doLayout()
       @panel.paintImmediately(0, 0, @panel.width, @panel.height)
     end     
@@ -86,7 +86,7 @@ module Limelight
     end
     
     def book
-      return page.book
+      return scene.book
     end
     
     def to_s
@@ -99,14 +99,14 @@ module Limelight
     
     def set_parent(parent)
       @parent = parent
-      set_page parent.page
+      set_scene parent.scene
     end
     
-    def set_page(page)
-      return if page == @page || page.nil?  
-      @page = page
+    def set_scene(scene)
+      return if scene == @scene || scene.nil?
+      @scene = scene
       illuminate
-      children.each { |child| child.set_page(page) }
+      children.each { |child| child.set_scene(scene) }
     end
     
     def add_options(more_options)
@@ -146,7 +146,7 @@ module Limelight
       @players = @options.delete(:players)
       
       inherit_styles
-      @page.illuminator.fill_cast(self)
+      @scene.illuminator.fill_cast(self)
       apply_options
       
       @options = nil
@@ -177,14 +177,14 @@ module Limelight
     
     def inherit_styles
       return if @class_name.nil?
-      new_style = @page.styles[@class_name]
+      new_style = @scene.styles[@class_name]
       @style.add_to_bottom(new_style) if new_style
-      @hover_style = page.styles["#{@class_name}.hover"]
+      @hover_style = scene.styles["#{@class_name}.hover"]
     end
     
     def disinherit_styles
       return if @class_name.nil?
-      old_style = @page.styles[@class_name]
+      old_style = @scene.styles[@class_name]
       @style.remove(old_style) if old_style
       @hover_style = nil
     end

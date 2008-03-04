@@ -14,11 +14,11 @@ describe Limelight::BookBuilder do
     book.class.should == Limelight::Book
   end
 
-  it "should allow default page" do
+  it "should allow default scene" do
     book = Limelight.build_book(@producer) do
-      default_page :front_page
+      default_scene :front_scene
     end
     
-    book.default_page.should == :front_page
+    book.default_scene.should == :front_scene
   end
 end

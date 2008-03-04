@@ -2,7 +2,7 @@ package limelight.ui;
 
 import limelight.ui.FlatStyle;
 import limelight.ui.Prop;
-import limelight.ui.Page;
+import limelight.ui.Scene;
 import limelight.ui.Panel;
 
 import javax.swing.event.ChangeEvent;
@@ -55,7 +55,7 @@ public class MockProp implements Prop
     return text;
   }
 
-  public Page getPage()
+  public Scene getScene()
   {
     return null;
   }

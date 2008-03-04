@@ -1,6 +1,6 @@
 package limelight;
 
-public interface PageLoader
+public interface SceneLoader
 {
   String pathTo(String relativePath);
 }

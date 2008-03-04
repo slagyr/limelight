@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/book'
-require 'limelight/loaders/file_page_loader'
+require 'limelight/loaders/file_scene_loader'
 
 describe Limelight::Book do
 

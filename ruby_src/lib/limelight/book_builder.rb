@@ -16,8 +16,8 @@ module Limelight
       @book = Book.new(producer)
     end
     
-    def default_page(page_name)
-      @book.default_page = page_name
+    def default_scene(scene_name)
+      @book.default_scene = scene_name
     end
     
   end

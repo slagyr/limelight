@@ -1,12 +1,12 @@
 require 'limelight/java_util'
 require 'limelight/menu_bar'
-require 'limelight/loaders/file_page_loader'
+require 'limelight/loaders/file_scene_loader'
 
 module Limelight
   
   class Book
-    attr_accessor :directory, :default_page, :styles
-    attr_reader :frame, :current_page, :producer
+    attr_accessor :directory, :default_scene, :styles
+    attr_reader :frame, :current_scene, :producer
     
     def public_choose_file
       choose_file
@@ -31,11 +31,11 @@ module Limelight
       frame.setJMenuBar(menu_bar)
     end
     
-    def open(page)
-      loadPage(page)
+    def open(scene)
+      loadScene(scene)
       @frame.setVisible(true)
       @frame.repaint
-      page.visible = true
+      scene.visible = true
     end
   
     def close
@@ -43,20 +43,20 @@ module Limelight
       @frame.dispose()
     end
     
-    def loadPage(page)
+    def loadScene(scene)
       @frame.content_pane.removeAll
-      @frame.add(page.panel)
-      page.book = self
-      page.panel.size = @frame.size
-      @current_page = page
+      @frame.add(scene.panel)
+      scene.book = self
+      scene.panel.size = @frame.size
+      @current_scene = scene
     end
     
-    def load(page_path)
-      @producer.open_page(page_path)
+    def load(scene_path)
+      @producer.open_scene(scene_path)
     end
   
     def reload
-      load(@current_page.loader.page_file)
+      load(@current_scene.loader.scene_file)
     end
 
     private ###############################################

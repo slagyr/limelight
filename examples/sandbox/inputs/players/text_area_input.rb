@@ -21,11 +21,11 @@ module TextAreaInput
   end
   
   def print(value)
-    log = page.find("text_area_log")
+    log = scene.find("text_area_log")
     log.text += value + "\n"
     log.update
     
-    results = page.find("text_area_results")
+    results = scene.find("text_area_results")
     results.text = self.text 
     results.update
   end

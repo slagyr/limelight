@@ -5,8 +5,8 @@ require 'limelight/prop_builder'
 describe Limelight::Illuminator do
 
   before(:each) do
-    @page = Limelight::Page.new(:illuminator => make_mock("casting_director", :fill_cast => nil))
-    # @root = Limelight.build_page(:class_name => "root", :illuminator => make_mock("casting_director", :fill_cast => nil)) do
+    @scene = Limelight::Scene.new(:illuminator => make_mock("casting_director", :fill_cast => nil))
+    # @root = Limelight.build_scene(:class_name => "root", :illuminator => make_mock("casting_director", :fill_cast => nil)) do
     #   child do
     #     grandchild
     #   end
@@ -19,7 +19,7 @@ describe Limelight::Illuminator do
   
   def make_root(options={})
     @root = Limelight::Prop.new(options)
-    @page << @root
+    @scene << @root
   end
   
   it "should include default players" do
