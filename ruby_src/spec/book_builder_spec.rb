@@ -1,24 +1,24 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'limelight/book_builder'
-require 'limelight/book'
+require 'limelight/stage_builder'
+require 'limelight/stage'
 
-describe Limelight::BookBuilder do
+describe Limelight::StageBuilder do
 
   before(:each) do
     @producer = make_mock("producer")
   end
   
-  it "should build a book" do
-    book = Limelight.build_book(@producer) 
+  it "should build a stage" do
+    stage = Limelight.build_stage(@producer)
     
-    book.class.should == Limelight::Book
+    stage.class.should == Limelight::Stage
   end
 
   it "should allow default scene" do
-    book = Limelight.build_book(@producer) do
+    stage = Limelight.build_stage(@producer) do
       default_scene :front_scene
     end
     
-    book.default_scene.should == :front_scene
+    stage.default_scene.should == :front_scene
   end
 end

@@ -85,8 +85,8 @@ module Limelight
       return panel.text_accessor.text
     end
     
-    def book
-      return scene.book
+    def stage
+      return scene.stage
     end
     
     def to_s
