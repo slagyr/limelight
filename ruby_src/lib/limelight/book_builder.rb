@@ -2,9 +2,9 @@ require 'limelight/book'
 
 module Limelight
   
-  def self.build_book(producer, &block)
+  def self.build_book(producer, &prop)
     builder = BookBuilder.new(producer)
-    builder.instance_eval(&block) if block
+    builder.instance_eval(&prop) if prop
     return builder.book
   end
   

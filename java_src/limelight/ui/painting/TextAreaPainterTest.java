@@ -6,19 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import limelight.ui.MockBlock;
+import limelight.ui.MockProp;
 import limelight.ui.InputLayout;
 
 public class TextAreaPainterTest extends TestCase
 {
   private limelight.ui.Panel panel;
   private TextAreaPainter painter;
-  private MockBlock block;
+  private MockProp prop;
 
   public void setUp() throws Exception
   {
-    block = new MockBlock();
-    panel = new limelight.ui.Panel(block);
+    prop = new MockProp();
+    panel = new limelight.ui.Panel(prop);
     painter = new TextAreaPainter(panel);
     panel.getPainters().add(painter);
   }
@@ -49,13 +49,13 @@ public class TextAreaPainterTest extends TestCase
     KeyEvent e = new KeyEvent(area, 1, 2, 3, 4, '5');
 
     listener.keyPressed(e);
-    assertEquals(e, block.pressedKey);
+    assertEquals(e, prop.pressedKey);
 
     listener.keyReleased(e);
-    assertEquals(e, block.releasedKey);
+    assertEquals(e, prop.releasedKey);
 
     listener.keyTyped(e);
-    assertEquals(e, block.typedKey);
+    assertEquals(e, prop.typedKey);
   }
 
   public void testMouseActions() throws Exception
@@ -67,21 +67,21 @@ public class TextAreaPainterTest extends TestCase
     MouseEvent e = new MouseEvent(area, 1, 2, 3, 4, 5, 6, false);
 
     listener.mouseClicked(e);
-    assertEquals(e, block.clickedMouse);
+    assertEquals(e, prop.clickedMouse);
 
     listener.mouseEntered(e);
-    assertEquals(e, block.enteredMouse);
-    assertTrue(block.hooverOn);
+    assertEquals(e, prop.enteredMouse);
+    assertTrue(prop.hooverOn);
 
     listener.mouseExited(e);
-    assertEquals(e, block.exitedMouse);
-    assertFalse(block.hooverOn);
+    assertEquals(e, prop.exitedMouse);
+    assertFalse(prop.hooverOn);
 
     listener.mousePressed(e);
-    assertEquals(e, block.pressedMouse);
+    assertEquals(e, prop.pressedMouse);
 
     listener.mouseReleased(e);
-    assertEquals(e, block.releasedMouse);
+    assertEquals(e, prop.releasedMouse);
   }
 
   public void testText() throws Exception
@@ -104,9 +104,9 @@ public class TextAreaPainterTest extends TestCase
     FocusEvent e = new FocusEvent(area, 1);
 
     listener.focusGained(e);
-    assertEquals(e, block.gainedFocus);
+    assertEquals(e, prop.gainedFocus);
 
     listener.focusLost(e);
-    assertEquals(e, block.lostFocus);
+    assertEquals(e, prop.lostFocus);
   }
 }

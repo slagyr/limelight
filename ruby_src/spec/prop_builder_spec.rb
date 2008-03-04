@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'limelight/block_builder'
+require 'limelight/prop_builder'
 
 describe Limelight::PageBuilder do
 
@@ -17,14 +17,14 @@ describe Limelight::PageBuilder do
     root.children.size.should == 0
   end
   
-  it "should build one child block" do
+  it "should build one child prop" do
     root = Limelight::build_page(@options) do
       child
     end
     
     root.children.size.should == 1
     child = root.children[0]
-    child.class.should == Limelight::Block
+    child.class.should == Limelight::Prop
     child.class_name.should == "child"
     child.panel.should_not == nil
     child.children.size.should == 0
@@ -94,7 +94,7 @@ describe Limelight::PageBuilder do
     root.id.should == "123"
   end
   
-  it "should give every block their page" do
+  it "should give every prop their page" do
     root = Limelight::build_page(@options) do
       child do
         grandchild
@@ -106,7 +106,7 @@ describe Limelight::PageBuilder do
     root.children[0].children[0].page.should == root
   end
 
-  it "should install external blocks" do
+  it "should install external props" do
     loader = make_mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("child :id => 123")
     
@@ -128,7 +128,7 @@ describe Limelight::PageBuilder do
       end
       root.should == nil # should never get here
     rescue Exception => e
-      e.message.should == "Cannot install external blocks because no loader was provided"
+      e.message.should == "Cannot install external props because no loader was provided"
     end
   end
   
@@ -141,11 +141,11 @@ describe Limelight::PageBuilder do
         __install "external.rb"
       end
     rescue Exception => e
-      e.message.should == "External block file: 'external.rb' doesn't exist"
+      e.message.should == "External prop file: 'external.rb' doesn't exist"
     end
   end
   
-  it "should fail with BlockException when there's problem in the external file" do
+  it "should fail with PropException when there's problem in the external file" do
     loader = make_mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("+")
     

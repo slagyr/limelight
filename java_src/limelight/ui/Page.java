@@ -2,12 +2,12 @@ package limelight.ui;
 
 import limelight.PageLoader;
 
-public interface Page extends Block
+public interface Page extends Prop
 {
   PageLoader getLoader();
 }
 
-//public class Page extends Block
+//public class Page extends Prop
 //{
 //	private Hashtable<String, FlatStyle> styles;
 //	private Book book;

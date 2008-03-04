@@ -33,7 +33,7 @@ public class TextBoxPainter extends Painter
   private JTextField buildTextBox()
   {
     textField = new JTextField();
-    BlockEventListener listener = new BlockEventListener(panel.getBlock());
+    PropEventListener listener = new PropEventListener(panel.getProp());
     textField.addKeyListener(listener);
     textField.addMouseListener(listener);
     textField.addFocusListener(listener);

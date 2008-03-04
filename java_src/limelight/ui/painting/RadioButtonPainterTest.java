@@ -8,19 +8,19 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
-import limelight.ui.MockBlock;
+import limelight.ui.MockProp;
 import limelight.ui.InputLayout;
 
 public class RadioButtonPainterTest extends TestCase
 {
   private limelight.ui.Panel panel;
   private RadioButtonPainter painter;
-  private MockBlock block;
+  private MockProp prop;
 
   public void setUp() throws Exception
   {
-    block = new MockBlock();
-    panel = new limelight.ui.Panel(block);
+    prop = new MockProp();
+    panel = new limelight.ui.Panel(prop);
     painter = new RadioButtonPainter(panel);
     panel.getPainters().add(painter);
   }
@@ -51,13 +51,13 @@ public class RadioButtonPainterTest extends TestCase
     KeyEvent e = new KeyEvent(field, 1, 2, 3, 4, '5');
 
     listener.keyPressed(e);
-    assertEquals(e, block.pressedKey);
+    assertEquals(e, prop.pressedKey);
 
     listener.keyReleased(e);
-    assertEquals(e, block.releasedKey);
+    assertEquals(e, prop.releasedKey);
 
     listener.keyTyped(e);
-    assertEquals(e, block.typedKey);
+    assertEquals(e, prop.typedKey);
   }
 
   public void testMouseActions() throws Exception
@@ -69,21 +69,21 @@ public class RadioButtonPainterTest extends TestCase
     MouseEvent e = new MouseEvent(field, 1, 2, 3, 4, 5, 6, false);
 
     listener.mouseClicked(e);
-    assertEquals(e, block.clickedMouse);
+    assertEquals(e, prop.clickedMouse);
 
     listener.mouseEntered(e);
-    assertEquals(e, block.enteredMouse);
-    assertTrue(block.hooverOn);
+    assertEquals(e, prop.enteredMouse);
+    assertTrue(prop.hooverOn);
 
     listener.mouseExited(e);
-    assertEquals(e, block.exitedMouse);
-    assertFalse(block.hooverOn);
+    assertEquals(e, prop.exitedMouse);
+    assertFalse(prop.hooverOn);
 
     listener.mousePressed(e);
-    assertEquals(e, block.pressedMouse);
+    assertEquals(e, prop.pressedMouse);
 
     listener.mouseReleased(e);
-    assertEquals(e, block.releasedMouse);
+    assertEquals(e, prop.releasedMouse);
   }
 
   public void testFocusEvents() throws Exception
@@ -95,10 +95,10 @@ public class RadioButtonPainterTest extends TestCase
     FocusEvent e = new FocusEvent(field, 1);
 
     listener.focusGained(e);
-    assertEquals(e, block.gainedFocus);
+    assertEquals(e, prop.gainedFocus);
 
     listener.focusLost(e);
-    assertEquals(e, block.lostFocus);
+    assertEquals(e, prop.lostFocus);
   }
 
   public void testChangedStateEvent() throws Exception
@@ -110,7 +110,7 @@ public class RadioButtonPainterTest extends TestCase
     ChangeEvent e = new ChangeEvent(field);
 
     listener.stateChanged(e);
-    assertEquals(e, block.changedState);
+    assertEquals(e, prop.changedState);
   }
 
   public void testButtonPressedEvent() throws Exception
@@ -122,7 +122,7 @@ public class RadioButtonPainterTest extends TestCase
     ActionEvent e = new ActionEvent(field, 1, "blah");
 
     listener.actionPerformed(e);
-    assertEquals(e, block.pressedButton);
+    assertEquals(e, prop.pressedButton);
   }
 
 }

@@ -1,72 +1,72 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 require 'limelight/page'
-require 'limelight/block'
+require 'limelight/prop'
 require 'limelight/players/radio_button'
 
 describe Limelight::Players::RadioButton do
 
   before(:each) do
     @page = Limelight::Page.new(:illuminator => make_mock("caster", :fill_cast => nil))
-    @block = Limelight::Block.new
-    @page << @block
-    @block.include_player(Limelight::Players::RadioButton)
+    @prop = Limelight::Prop.new
+    @page << @prop
+    @prop.include_player(Limelight::Players::RadioButton)
   end
   
   it "should get rid of the all painters and add a RadioButtonPainter" do
-    @block.panel.painters.size.should == 1
-    @block.panel.painters.last.class.should == Java::limelight.ui.painting.RadioButtonPainter
+    @prop.panel.painters.size.should == 1
+    @prop.panel.painters.last.class.should == Java::limelight.ui.painting.RadioButtonPainter
   end
   
   it "should clear event listeners on the panel" do
-    @block.panel.mouse_listeners.length.should == 0
-    @block.panel.key_listeners.length.should == 0
+    @prop.panel.mouse_listeners.length.should == 0
+    @prop.panel.key_listeners.length.should == 0
   end
   
   it "should have a RadioButton" do
-    @block.panel.components[0].class.should == javax.swing.JRadioButton
+    @prop.panel.components[0].class.should == javax.swing.JRadioButton
   end
   
   it "should handled checked state" do
-    @block.checked?.should == false
-    @block.checked.should == false
-    @block.selected?.should == false
-    @block.selected.should == false
+    @prop.checked?.should == false
+    @prop.checked.should == false
+    @prop.selected?.should == false
+    @prop.selected.should == false
     
-    @block.selected = true
+    @prop.selected = true
     
-    @block.checked?.should == true
-    @block.checked.should == true
-    @block.selected?.should == true
-    @block.selected.should == true
-    @block.panel.components[0].is_selected.should == true
+    @prop.checked?.should == true
+    @prop.checked.should == true
+    @prop.selected?.should == true
+    @prop.selected.should == true
+    @prop.panel.components[0].is_selected.should == true
   end
   
   it "should belong to a button group" do
-    @block.group = "group 1"
+    @prop.group = "group 1"
     
-    block2 = Limelight::Block.new
-    @page << block2
-    block2.add_controller(Limelight::Players::RadioButton)
-    block2.group = "group 1"
+    prop2 = Limelight::Prop.new
+    @page << prop2
+    prop2.add_controller(Limelight::Players::RadioButton)
+    prop2.group = "group 1"
     
-    block3 = Limelight::Block.new
-    @page << block3
-    block3.add_controller(Limelight::Players::RadioButton)
-    block3.group = "group 2"
+    prop3 = Limelight::Prop.new
+    @page << prop3
+    prop3.add_controller(Limelight::Players::RadioButton)
+    prop3.group = "group 2"
     
     group1 = @page.button_groups["group 1"]
-    group1.elements.should include(@block.radio_button)
-    group1.elements.should include(block2.radio_button)
-    group1.elements.should_not include(block3.radio_button)
+    group1.elements.should include(@prop.radio_button)
+    group1.elements.should include(prop2.radio_button)
+    group1.elements.should_not include(prop3.radio_button)
     
     group2 = @page.button_groups["group 2"]
-    group2.elements.should_not include(@block.radio_button)
-    group2.elements.should_not include(block2.radio_button)
-    group2.elements.should include(block3.radio_button)
+    group2.elements.should_not include(@prop.radio_button)
+    group2.elements.should_not include(prop2.radio_button)
+    group2.elements.should include(prop3.radio_button)
     
-    @block.button_group.should == group1
-    block2.button_group.should == group1
-    block3.button_group.should == group2
+    @prop.button_group.should == group1
+    prop2.button_group.should == group1
+    prop3.button_group.should == group2
   end
 
 end

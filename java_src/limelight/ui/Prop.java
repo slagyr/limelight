@@ -7,7 +7,7 @@ import limelight.ui.Page;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
-public interface Block
+public interface Prop
 {
   Panel getPanel();
   Style getStyle();

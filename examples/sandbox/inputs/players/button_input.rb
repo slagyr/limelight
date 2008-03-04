@@ -2,7 +2,7 @@ puts "REQUIRED"
 
 module ButtonInput
   
-  def self.extended(block)
+  def self.extended(prop)
     puts "BUTTON INOPUT EXTENDED"
   end
     

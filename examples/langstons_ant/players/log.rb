@@ -1,6 +1,6 @@
 module Log
   
-  def self.extended(block)
+  def self.extended(prop)
   end
   
   def update_counter(steps)

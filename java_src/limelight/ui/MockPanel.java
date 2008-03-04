@@ -2,7 +2,7 @@ package limelight.ui;
 
 import limelight.ui.Rectangle;
 import limelight.ui.Panel;
-import limelight.ui.MockBlock;
+import limelight.ui.MockProp;
 
 public class MockPanel extends Panel
 {
@@ -11,7 +11,7 @@ public class MockPanel extends Panel
 
   public MockPanel()
 	{
-		super(new MockBlock());
+		super(new MockProp());
 	}
 
   public Rectangle getRectangleInsideMargins()

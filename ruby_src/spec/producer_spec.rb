@@ -12,10 +12,10 @@ describe Limelight::Producer do
     @producer.loader.current_dir.should == "/tmp"
   end
   
-  it "should load blocks" do
-    @loader.should_receive(:load).with("./blocks.rb").and_return("child :id => 321")
+  it "should load props" do
+    @loader.should_receive(:load).with("./props.rb").and_return("child :id => 321")
     
-    page = @producer.load_blocks(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
+    page = @producer.load_props(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
     page.children.size.should == 1
     page.children[0].class_name.should == "child"
     page.children[0].id.should == 321
@@ -29,16 +29,16 @@ describe Limelight::Producer do
     styles["alpha"].width.should == "100"
   end
   
-  it "should format block errors well" do
-    @loader.should_receive(:load).with("./blocks.rb").and_return("one\n+\nthree")
+  it "should format prop errors well" do
+    @loader.should_receive(:load).with("./props.rb").and_return("one\n+\nthree")
     
     begin
-      result = @producer.load_blocks(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
+      result = @producer.load_props(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
       result.should == nil # should never execute
     rescue Limelight::BuildException => e
       e.line_number.should == 3
-      e.filename.should == "./blocks.rb"
-      e.message.should include("./blocks.rb:3: undefined method `+@' for ")
+      e.filename.should == "./props.rb"
+      e.message.should include("./props.rb:3: undefined method `+@' for ")
     end
   end
   

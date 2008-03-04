@@ -12,7 +12,7 @@ public class TextPaneTest extends TestCase
 {
   private TextPane pane;
   private limelight.ui.Rectangle bounds;
-  private MockBlock block;
+  private MockProp prop;
   private Style style;
   private JFrame frame;
   private MockPanel panel;

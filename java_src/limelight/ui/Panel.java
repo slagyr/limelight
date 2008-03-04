@@ -6,7 +6,6 @@ import limelight.ui.painting.BackgroundPainter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,20 +15,20 @@ import java.util.List;
 
 public class Panel extends JPanel
 {
-  private Block block;
+  private Prop prop;
   private BufferedImage buffer;
   private List<Painter> painters;
   private boolean sterilized;
   private TextAccessor textAccessor;
   private Style style;
 
-  public Panel(Block owner)
+  public Panel(Prop owner)
   {
-    this.block = owner;
+    this.prop = owner;
     setOpaque(false);
     setDoubleBuffered(false);
-    setLayout(new BlockLayout(this));
-    BlockEventListener listener = new BlockEventListener(block);
+    setLayout(new PropLayout(this));
+    PropEventListener listener = new PropEventListener(prop);
     addKeyListener(listener);
     addMouseListener(listener);
     addMouseMotionListener(listener);
@@ -40,7 +39,7 @@ public class Panel extends JPanel
   public Component add(Component comp)
   {
     if (sterilized)
-      throw new SterilePanelException(block.getClassName());
+      throw new SterilePanelException(prop.getClassName());
     return super.add(comp);
   }
 
@@ -49,15 +48,15 @@ public class Panel extends JPanel
     super.setLocation(x + getXOffset(), y + getYOffset());
   }
 
-  public Block getBlock()
+  public Prop getProp()
   {
-    return block;
+    return prop;
   }
 
   public Style getStyle()
   {
     if(style == null)
-      style = getBlock().getStyle();
+      style = getProp().getStyle();
     return style;
   }
 
@@ -227,7 +226,7 @@ public class Panel extends JPanel
   {
     SterilePanelException(String name)
     {
-      super("The panel for block named '" + name + "' has been sterilized and child components may not be added.");
+      super("The panel for prop named '" + name + "' has been sterilized and child components may not be added.");
     }
   }
 }

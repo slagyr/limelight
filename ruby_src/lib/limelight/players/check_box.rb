@@ -3,18 +3,18 @@ module Limelight
     
     module CheckBox
       class << self
-        def extended(block)  
-          block.panel.painters.clear
-          painter = Java.limelight.ui.painting.CheckBoxPainter.new(block.panel)
-          block.check_box = painter.check_box
-          block.panel.painters << painter
-          block.panel.clear_event_listeners
-          set_default_styles(block)
+        def extended(prop)
+          prop.panel.painters.clear
+          painter = Java.limelight.ui.painting.CheckBoxPainter.new(prop.panel)
+          prop.check_box = painter.check_box
+          prop.panel.painters << painter
+          prop.panel.clear_event_listeners
+          set_default_styles(prop)
         end
         
-        def set_default_styles(block)
-          block.style.width = "22"
-          block.style.height = "22"
+        def set_default_styles(prop)
+          prop.style.width = "22"
+          prop.style.height = "22"
         end
       end
       

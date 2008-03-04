@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import limelight.ui.TextPane;
 import limelight.ui.TextPaneTextAccessor;
 import limelight.ui.Panel;
-import limelight.ui.MockBlock;
+import limelight.ui.MockProp;
 import limelight.LimelightException;
 
 public class TextPaneTextAccessorTest extends TestCase
@@ -14,7 +14,7 @@ public class TextPaneTextAccessorTest extends TestCase
 
   public void setUp() throws Exception
   {
-    panel = new Panel(new MockBlock());
+    panel = new Panel(new MockProp());
     accessor = new TextPaneTextAccessor(panel);
     panel.setTextAccessor(accessor);
   }
@@ -49,7 +49,7 @@ public class TextPaneTextAccessorTest extends TestCase
 
   public void testSettingTextWhenThereIsAlreadyChildren() throws Exception
   {
-    panel.add(new Panel(new MockBlock()));
+    panel.add(new Panel(new MockProp()));
     try
     {
       accessor.setText("blah");
@@ -57,7 +57,7 @@ public class TextPaneTextAccessorTest extends TestCase
     }
     catch(LimelightException e)
     {
-      assertEquals("You may only set text on empty blocks.", e.getMessage());
+      assertEquals("You may only set text on empty props.", e.getMessage());
     }
   }
 

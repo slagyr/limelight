@@ -1,94 +1,94 @@
 package limelight.ui;
 
-import limelight.ui.Block;
+import limelight.ui.Prop;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
-public class BlockEventListener implements MouseListener, KeyListener, MouseMotionListener, FocusListener, ChangeListener, ActionListener, ItemListener
+public class PropEventListener implements MouseListener, KeyListener, MouseMotionListener, FocusListener, ChangeListener, ActionListener, ItemListener
 {
-	private Block block;
+	private Prop prop;
 
-	public BlockEventListener(Block block)
+	public PropEventListener(Prop prop)
 	{
-		this.block = block;
+		this.prop = prop;
 	}
 
 	public void mouseClicked(MouseEvent e)
 	{
-		block.mouse_clicked(e);
+		prop.mouse_clicked(e);
 	}
 
 	public void mousePressed(MouseEvent e)
 	{
-    block.mouse_pressed(e);
+    prop.mouse_pressed(e);
   }
 
 	public void mouseReleased(MouseEvent e)
 	{
-    block.mouse_released(e);
+    prop.mouse_released(e);
   }
 
 	public void mouseEntered(MouseEvent e)
 	{
-		block.hover_on();
-		block.mouse_entered(e);
+		prop.hover_on();
+		prop.mouse_entered(e);
 	}
 
 	public void mouseExited(MouseEvent e)
 	{
-		block.mouse_exited(e);
-		block.hover_off();
+		prop.mouse_exited(e);
+		prop.hover_off();
 	}
 
   public void keyTyped(KeyEvent e)
   {
-    block.key_typed(e);
+    prop.key_typed(e);
   }
 
   public void keyPressed(KeyEvent e)
   {
-    block.key_pressed(e);
+    prop.key_pressed(e);
   }
 
   public void keyReleased(KeyEvent e)
   {
-    block.key_released(e);
+    prop.key_released(e);
   }
 
   public void mouseDragged(MouseEvent e)
   {
-    block.mouse_dragged(e);
+    prop.mouse_dragged(e);
   }
 
   public void mouseMoved(MouseEvent e)
   {
-    block.mouse_moved(e);
+    prop.mouse_moved(e);
   }
 
   public void focusGained(FocusEvent e)
   {
-    block.focus_gained(e);
+    prop.focus_gained(e);
   }
 
   public void focusLost(FocusEvent e)
   {
-    block.focus_lost(e);
+    prop.focus_lost(e);
   }
 
   public void stateChanged(ChangeEvent e)
   {    
-    block.state_changed(e);
+    prop.state_changed(e);
   }
 
   public void actionPerformed(ActionEvent e)
   {
-    block.button_pressed(e);
+    prop.button_pressed(e);
   }
 
   public void itemStateChanged(ItemEvent e)
   {
-    block.item_state_changed(e);
+    prop.item_state_changed(e);
   }
 }

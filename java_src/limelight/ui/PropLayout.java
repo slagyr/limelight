@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class BlockLayout implements LayoutManager
+public class PropLayout implements LayoutManager
 {
 	private LinkedList<Row> rows;
 	private Row currentRow;
@@ -18,7 +18,7 @@ public class BlockLayout implements LayoutManager
   private int consumedWidth;
   private int consumedHeight;
 
-  public BlockLayout(Panel panel)
+  public PropLayout(Panel panel)
   {
     this.panel = panel;
     rows = new LinkedList<Row>();

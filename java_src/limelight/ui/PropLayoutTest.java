@@ -2,19 +2,17 @@ package limelight.ui;
 
 import junit.framework.TestCase;
 
-import java.awt.*;
-
-public class BlockLayoutTest extends TestCase
+public class PropLayoutTest extends TestCase
 {
   private MockPanel parent;
-  private BlockLayout layout;
+  private PropLayout layout;
 
   public void setUp() throws Exception
   {
     parent = new MockPanel();
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("100");
-    layout = new BlockLayout(parent);
+    layout = new PropLayout(parent);
   }
 
   public void testToKeepAntHappy() throws Exception
@@ -60,8 +58,8 @@ public class BlockLayoutTest extends TestCase
 //
 //  public void testLayoutWithOneChildAlignedBottomRight() throws Exception
 //  {
-//    parent.getBlock().getStyle().setVerticalAlignment("bottom");
-//    parent.getBlock().getStyle().setHorizontalAlignment("right");
+//    parent.getProp().getStyle().setVerticalAlignment("bottom");
+//    parent.getProp().getStyle().setHorizontalAlignment("right");
 //    MockPanel child = createAndAddChildWithSize(50, 50);
 //
 //    layout.doLayout();
@@ -72,8 +70,8 @@ public class BlockLayoutTest extends TestCase
 //
 //  public void testLayoutWithTwoChildrenAlignedCenterCenter() throws Exception
 //  {
-//    parent.getBlock().getStyle().setVerticalAlignment("center");
-//    parent.getBlock().getStyle().setHorizontalAlignment("center");
+//    parent.getProp().getStyle().setVerticalAlignment("center");
+//    parent.getProp().getStyle().setHorizontalAlignment("center");
 //    MockPanel child1 = createAndAddChildWithSize(25, 50);
 //    MockPanel child2 = createAndAddChildWithSize(25, 50);
 //
@@ -85,11 +83,11 @@ public class BlockLayoutTest extends TestCase
 //
 //  public void testChildrenAreLaidout() throws Exception
 //  {
-//    MockBlockPanel child = new MockBlockPanel();
-//    child.getBlock().getStyle().setWidth("50");
-//    child.getBlock().getStyle().setHeight("50");
-//    child.getBlock().getStyle().setHorizontalAlignment("center");
-//    child.getBlock().getStyle().setVerticalAlignment("center");
+//    MockPropPanel child = new MockPropPanel();
+//    child.getProp().getStyle().setWidth("50");
+//    child.getProp().getStyle().setHeight("50");
+//    child.getProp().getStyle().setHorizontalAlignment("center");
+//    child.getProp().getStyle().setVerticalAlignment("center");
 //    parent.add(child);
 //
 //    MockPanel grandChild = new MockPanel();
@@ -112,11 +110,11 @@ public class BlockLayoutTest extends TestCase
 //
 ////  public void setUp() throws Exception
 ////  {
-////    MockRootBlockPanel root = new MockRootBlockPanel();
-////    panel = new MockBlockPanel();
+////    MockRootPropPanel root = new MockRootPropPanel();
+////    panel = new MockPropPanel();
 ////    root.add(panel);
-////    block = (MockBlock)panel.getBlock();
-////    style = block.getStyle();
+////    prop = (MockProp)panel.getProp();
+////    style = prop.getStyle();
 ////    layout = panel.getLayout();
 ////
 ////    style.setHeight("100");

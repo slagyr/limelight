@@ -1,5 +1,5 @@
 require 'limelight/loaders/file_page_loader'
-require 'limelight/block_builder'
+require 'limelight/prop_builder'
 require 'limelight/styles_builder'
 require 'limelight/illuminator'
 require 'limelight/book'
@@ -52,13 +52,13 @@ module Limelight
       merge_with_book_styles(styles)
       illuminator = Illuminator.new(page_specific_loader)
       
-      page = load_blocks(path, :styles => styles, :illuminator => illuminator, :loader => @loader)
+      page = load_props(path, :styles => styles, :illuminator => illuminator, :loader => @loader)
       
       @book.open(page)
     end
     
-    def load_blocks(path, options = {})
-      filename = File.join(path, "blocks.rb")
+    def load_props(path, options = {})
+      filename = File.join(path, "props.rb")
       content = @loader.load(filename)
       options[:build_loader] = @loader
       return Limelight.build_page(options) do
