@@ -6,7 +6,7 @@ require 'limelight/players/button'
 describe Limelight::Players::Button do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:illuminator => make_mock("caster", :fill_cast => nil))
+    @scene = Limelight::Scene.new(:casting_director => make_mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new
     @prop.include_player(Limelight::Players::Button)
   end

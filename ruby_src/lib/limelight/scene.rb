@@ -7,7 +7,7 @@ module Limelight
     
     include Java::limelight.ui.Scene
   
-    attr_reader :button_groups, :styles, :illuminator
+    attr_reader :button_groups, :styles, :casting_director
     attr_accessor :stage, :loader, :visible
     getters :stage, :loader
     setters :stage
@@ -26,7 +26,7 @@ module Limelight
     
     def illuminate
       @styles = @options.has_key?(:styles) ? @options.delete(:styles) : (@styles || {})
-      @illuminator = @options.delete(:illuminator) if @options.has_key?(:illuminator)
+      @casting_director = @options.delete(:casting_director) if @options.has_key?(:casting_director)
       super
     end
   

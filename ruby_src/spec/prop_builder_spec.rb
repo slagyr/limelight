@@ -5,7 +5,7 @@ describe Limelight::SceneBuilder do
 
   before(:each) do
     @caster = make_mock("caster", :fill_cast => nil)
-    @options = { :class_name => "root", :illuminator => @caster}
+    @options = { :class_name => "root", :casting_director => @caster}
   end
   
   it "should build root" do
@@ -110,7 +110,7 @@ describe Limelight::SceneBuilder do
     loader = make_mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("child :id => 123")
     
-    root = Limelight::build_scene(:id => 321, :build_loader => loader, :illuminator => @caster) do
+    root = Limelight::build_scene(:id => 321, :build_loader => loader, :casting_director => @caster) do
       __install "external.rb"
     end  
     

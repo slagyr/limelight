@@ -2,8 +2,7 @@ require 'limelight/players'
 
 module Limelight
   
-  #TODO - MDM - Rename to CastingDirector
-  class Illuminator
+  class CastingDirector
     
     def initialize(loader)
       @loader = loader
