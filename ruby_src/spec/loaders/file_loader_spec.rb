@@ -8,7 +8,7 @@ describe Limelight::Loaders::FileSceneLoader do
   end
   
   it "should load path parts" do
-    @loader.current_dir.should == "/Users/micahmartin/Projects/limelight/example"
+    @loader.root.should == "/Users/micahmartin/Projects/limelight/example"
   end
   
   it "should calculate relative file paths" do
