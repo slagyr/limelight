@@ -8,7 +8,7 @@ module Limelight
     include Java::limelight.ui.Scene
   
     attr_reader :button_groups, :styles, :casting_director
-    attr_accessor :stage, :loader, :visible
+    attr_accessor :stage, :loader, :visible, :path
     getters :stage, :loader
     setters :stage
     
