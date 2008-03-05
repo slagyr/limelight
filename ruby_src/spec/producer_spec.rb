@@ -9,7 +9,7 @@ describe Limelight::Producer do
   end
   
   it "should have loader on creation" do
-    @producer.loader.current_dir.should == "/tmp"
+    @producer.loader.root.should == "/tmp"
   end
   
   it "should load props" do
