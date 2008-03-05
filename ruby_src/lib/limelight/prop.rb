@@ -146,7 +146,7 @@ module Limelight
       @players = @options.delete(:players)
       
       inherit_styles
-      @scene.illuminator.fill_cast(self)
+      @scene.casting_director.fill_cast(self)
       apply_options
       
       @options = nil

@@ -4,8 +4,8 @@ require 'limelight/scene'
 describe Limelight::Scene do
 
   before(:each) do
-    @illuminator = make_mock("illuminator", :fill_cast => nil)
-    @scene = Limelight::Scene.new(:illuminator => @illuminator)
+    @casting_director = make_mock("casting_director", :fill_cast => nil)
+    @scene = Limelight::Scene.new(:casting_director => @casting_director)
   end
   
   it "should have a styles hash" do
@@ -19,9 +19,9 @@ describe Limelight::Scene do
   end
   
   it "should pullout sytles and casting_director from options" do
-    scene = Limelight::Scene.new(:styles => "styles", :illuminator => @illuminator)
+    scene = Limelight::Scene.new(:styles => "styles", :casting_director => @casting_director)
     
     scene.styles.should == "styles"
-    scene.illuminator.should == @illuminator
+    scene.casting_director.should == @casting_director
   end
 end

@@ -6,8 +6,8 @@ require 'limelight/scene'
 describe Limelight::Prop do
 
   before(:each) do
-    @illuminator = make_mock("illuminator", :fill_cast => nil)
-    @scene = Limelight::Scene.new(:illuminator => @illuminator)
+    @casting_director = make_mock("casting_director", :fill_cast => nil)
+    @scene = Limelight::Scene.new(:casting_director => @casting_director)
     @prop = Limelight::Prop.new(:id => "root", :class_name => "root_class")
     @scene << @prop
   end
@@ -117,7 +117,7 @@ describe Limelight::Prop do
   
   it "should set styles upon adding to parent" do
     styles = Limelight::build_styles { child { width 123 } }
-    scene = Limelight::Scene.new(:illuminator => @illuminator, :styles => styles)
+    scene = Limelight::Scene.new(:casting_director => @casting_director, :styles => styles)
     prop = Limelight::Prop.new(:class_name => "child")
     
     scene << prop
@@ -128,14 +128,14 @@ describe Limelight::Prop do
   it "should set styles upon adding to parent" do
     prop = Limelight::Prop.new(:class_name => "child")
     
-    @illuminator.should_receive(:fill_cast).with(prop)
+    @casting_director.should_receive(:fill_cast).with(prop)
     
     @scene << prop
   end
   
   it "should use populate data included by players" do
     prop = Limelight::Prop.new(:class_name => "child", :foo => "bar")
-    @illuminator.should_receive(:fill_cast).with(prop) do
+    @casting_director.should_receive(:fill_cast).with(prop) do
       prop.instance_eval "def foo=(value); @foo = value; end; def foo; return @foo; end;"
     end
     

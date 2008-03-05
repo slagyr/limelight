@@ -1,7 +1,7 @@
 require 'limelight/loaders/file_scene_loader'
 require 'limelight/prop_builder'
 require 'limelight/styles_builder'
-require 'limelight/illuminator'
+require 'limelight/casting_director'
 require 'limelight/stage'
 require 'limelight/build_exception'
 require 'limelight/stage_builder'
@@ -50,9 +50,9 @@ module Limelight
       scene_specific_loader = Loaders::FileSceneLoader.for_root(loader.path_to(path)) #TODO - MDM - Shouldn't really be needed
       styles = load_styles(path)
       merge_with_stage_styles(styles)
-      illuminator = Illuminator.new(scene_specific_loader)
+      casting_director = CastingDirector.new(scene_specific_loader)
       
-      scene = load_props(path, :styles => styles, :illuminator => illuminator, :loader => @loader)
+      scene = load_props(path, :styles => styles, :casting_director => casting_director, :loader => @loader)
       
       @stage.open(scene)
     end

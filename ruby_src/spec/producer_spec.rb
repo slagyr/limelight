@@ -15,7 +15,7 @@ describe Limelight::Producer do
   it "should load props" do
     @loader.should_receive(:load).with("./props.rb").and_return("child :id => 321")
     
-    scene = @producer.load_props(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
+    scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
     scene.children.size.should == 1
     scene.children[0].class_name.should == "child"
     scene.children[0].id.should == 321
@@ -33,7 +33,7 @@ describe Limelight::Producer do
     @loader.should_receive(:load).with("./props.rb").and_return("one\n+\nthree")
     
     begin
-      result = @producer.load_props(".", :illuminator => make_mock("casting_director", :fill_cast => nil))
+      result = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
       result.should == nil # should never execute
     rescue Limelight::BuildException => e
       e.line_number.should == 3

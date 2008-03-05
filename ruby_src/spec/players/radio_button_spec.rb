@@ -6,7 +6,7 @@ require 'limelight/players/radio_button'
 describe Limelight::Players::RadioButton do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:illuminator => make_mock("caster", :fill_cast => nil))
+    @scene = Limelight::Scene.new(:casting_director => make_mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new
     @scene << @prop
     @prop.include_player(Limelight::Players::RadioButton)

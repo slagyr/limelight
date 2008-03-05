@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'limelight/illuminator'
+require 'limelight/casting_director'
 require 'limelight/prop_builder'
 
-describe Limelight::Illuminator do
+describe Limelight::CastingDirector do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:illuminator => make_mock("casting_director", :fill_cast => nil))
-    # @root = Limelight.build_scene(:class_name => "root", :illuminator => make_mock("casting_director", :fill_cast => nil)) do
+    @scene = Limelight::Scene.new(:casting_director => make_mock("casting_director", :fill_cast => nil))
+    # @root = Limelight.build_scene(:class_name => "root", :casting_director => make_mock("casting_director", :fill_cast => nil)) do
     #   child do
     #     grandchild
     #   end
@@ -14,7 +14,7 @@ describe Limelight::Illuminator do
     # @child = @root.children[0]
     # @grandchild = @child.children[0]
     @loader = make_mock("loader")
-    @illuminator = Limelight::Illuminator.new(@loader)
+    @casting_director = Limelight::CastingDirector.new(@loader)
   end
   
   def make_root(options={})
@@ -28,7 +28,7 @@ describe Limelight::Illuminator do
     
     @root.should_receive(:include_player).with("root module")
     
-    @illuminator.fill_cast(@root)
+    @casting_director.fill_cast(@root)
   end
   
   def prepare_fake_player(class_name)
@@ -47,7 +47,7 @@ describe Limelight::Illuminator do
     @child.should_not_receive(:include_player)
     @grandchild.should_not_receive(:include_player)
     
-    @illuminator.fill_cast(@root)
+    @casting_director.fill_cast(@root)
   end
   
   it "should not load any players if they don't define a module with the right name" do
@@ -59,14 +59,14 @@ describe Limelight::Illuminator do
     
     @root.should_not_receive(:include_player)
     
-    @illuminator.fill_cast(@root)
+    @casting_director.fill_cast(@root)
   end
   
   it "should load builtin players" do
     @loader.stub!(:exists?).and_return(false)
     make_root(:class_name => "root", :players => "button")
     
-    @illuminator.fill_cast(@root)
+    @casting_director.fill_cast(@root)
     
     @root.is_a?(Limelight::Players::Button).should == true
   end
@@ -78,7 +78,7 @@ describe Limelight::Illuminator do
     
     @root.should_receive(:include_player).with("custom_player module")
     
-    @illuminator.fill_cast(@root)
+    @casting_director.fill_cast(@root)
   end
   
   it "should handle multiple players" do
@@ -92,7 +92,7 @@ describe Limelight::Illuminator do
     @root.should_receive(:include_player).with("custom_player module")
     @root.should_receive(:include_player).with(Limelight::Players::Button)
     
-    @illuminator.fill_cast(@root)
+    @casting_director.fill_cast(@root)
   end
 
 end
