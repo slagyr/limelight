@@ -56,7 +56,7 @@ module Limelight
     end
   
     def reload
-      load(@current_scene.loader.scene_file)
+      load(@current_scene.path)
     end
 
     private ###############################################

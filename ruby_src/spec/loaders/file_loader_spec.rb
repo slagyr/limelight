@@ -21,12 +21,5 @@ describe Limelight::Loaders::FileSceneLoader do
     @loader.path_to("/").should == "/"
     @loader.path_to("/Users").should == "/Users"
   end
-  
-  # it "should deal with windows paths" do
-  #   @loader = Limelight::Loaders::FileLoader.new("C:\\Projects\\limelight\\example\\sandbox.llm")
-  #   @loader.root.should == "C:/"
-  #   @loader.scene_file.should == "C:\\Projects\\limelight\\example\\sandbox.llm"
-  #   @loader.current_dir.should == "C:/Projects/limelight/example/"
-  # end
 
 end

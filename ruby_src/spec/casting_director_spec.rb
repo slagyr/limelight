@@ -5,14 +5,7 @@ require 'limelight/prop_builder'
 describe Limelight::CastingDirector do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:casting_director => make_mock("casting_director", :fill_cast => nil))
-    # @root = Limelight.build_scene(:class_name => "root", :casting_director => make_mock("casting_director", :fill_cast => nil)) do
-    #   child do
-    #     grandchild
-    #   end
-    # end
-    # @child = @root.children[0]
-    # @grandchild = @child.children[0]
+    @scene = Limelight::Scene.new(:casting_director => make_mock("casting_director", :fill_cast => nil), :path => "scene_path")
     @loader = make_mock("loader")
     @casting_director = Limelight::CastingDirector.new(@loader)
   end
@@ -32,9 +25,9 @@ describe Limelight::CastingDirector do
   end
   
   def prepare_fake_player(class_name)
-    @loader.should_receive(:exists?).with("players/#{class_name}.rb").and_return(true)
-    @loader.should_receive(:path_to).with("players/#{class_name}.rb").and_return("players/#{class_name}.rb")
-    Kernel.should_receive(:load).with("players/#{class_name}.rb").and_return(true)
+    @loader.should_receive(:exists?).with("scene_path/players/#{class_name}.rb").and_return(true)
+    @loader.should_receive(:path_to).with("scene_path/players/#{class_name}.rb").and_return("scene_path/players/#{class_name}.rb")
+    Kernel.should_receive(:load).with("scene_path/players/#{class_name}.rb").and_return(true)
     Object.should_receive(:const_defined?).with(class_name.camalized).and_return(true)
     Object.should_receive(:const_get).with(class_name.camalized).and_return("#{class_name} module")
   end
