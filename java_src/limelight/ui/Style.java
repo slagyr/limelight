@@ -36,9 +36,20 @@ public abstract class Style
   public static final int FONT_SIZE = 31;
   public static final int FONT_STYLE = 32;
   public static final int TRANSPARENCY = 34;
+  public static final int TOP_RIGHT_ROUNDED_CORNER_RADIUS = 35;
+  public static final int BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS = 36;
+  public static final int BOTTOM_LEFT_ROUNDED_CORNER_RADIUS = 37;
+  public static final int TOP_LEFT_ROUNDED_CORNER_RADIUS = 38;
+  public static final int TOP_RIGHT_BORDER_WIDTH = 39;
+  public static final int BOTTOM_RIGHT_BORDER_WIDTH = 40;
+  public static final int BOTTOM_LEFT_BORDER_WIDTH = 41;
+  public static final int TOP_LEFT_BORDER_WIDTH = 42;
+  public static final int TOP_RIGHT_BORDER_COLOR = 43;
+  public static final int BOTTOM_RIGHT_BORDER_COLOR = 44;
+  public static final int BOTTOM_LEFT_BORDER_COLOR = 45;
+  public static final int TOP_LEFT_BORDER_COLOR = 46;
 
-  protected static final int STYLE_COUNT = 35;
-
+  protected static final int STYLE_COUNT = 47;
 
   protected boolean[] changes;
 
@@ -146,9 +157,13 @@ public abstract class Style
   public void setBorderColor(String value)
   {
     put(TOP_BORDER_COLOR, value);
+    put(TOP_RIGHT_BORDER_COLOR, value);
     put(RIGHT_BORDER_COLOR, value);
+    put(BOTTOM_RIGHT_BORDER_COLOR, value);
     put(BOTTOM_BORDER_COLOR, value);
+    put(BOTTOM_LEFT_BORDER_COLOR, value);
     put(LEFT_BORDER_COLOR, value);
+    put(TOP_LEFT_BORDER_COLOR, value);
   }
 
   public String getTopBorderColor()
@@ -194,9 +209,13 @@ public abstract class Style
   public void setBorderWidth(String pixels)
   {
     put(TOP_BORDER_WIDTH, pixels);
+    put(TOP_RIGHT_BORDER_WIDTH, pixels);
     put(RIGHT_BORDER_WIDTH, pixels);
+    put(BOTTOM_RIGHT_BORDER_WIDTH, pixels);
     put(BOTTOM_BORDER_WIDTH, pixels);
+    put(BOTTOM_LEFT_BORDER_WIDTH, pixels);
     put(LEFT_BORDER_WIDTH, pixels);
+    put(TOP_LEFT_BORDER_WIDTH, pixels);
   }
 
   public String getTopBorderWidth()
@@ -463,5 +482,117 @@ public abstract class Style
   public void setTransparency(String transparency)
   {
     put(TRANSPARENCY, transparency);
+  }
+
+  public String getTopRightBorderWidth()
+  {
+    return get(TOP_RIGHT_BORDER_WIDTH);
+  }
+
+  public String getBottomRightBorderWidth()
+  {
+    return get(BOTTOM_RIGHT_BORDER_WIDTH);
+  }
+
+  public String getBottomLeftBorderWidth()
+  {
+    return get(BOTTOM_LEFT_BORDER_WIDTH);
+  }
+
+  public String getTopLeftBorderWidth()
+  {
+    return get(TOP_LEFT_BORDER_WIDTH);
+  }
+
+  public String getTopRightBorderColor()
+  {
+    return get(TOP_RIGHT_BORDER_COLOR);
+  }
+
+  public String getBottomRightBorderColor()
+  {
+    return get(BOTTOM_RIGHT_BORDER_COLOR);
+  }
+
+  public String getBottomLeftBorderColor()
+  {
+    return get(BOTTOM_LEFT_BORDER_COLOR);
+  }
+
+  public String getTopLeftBorderColor()
+  {
+    return get(TOP_LEFT_BORDER_COLOR);
+  }
+
+  public void setRoundedCornerRadius(String radius)
+  {
+    put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, radius);
+    put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, radius);
+    put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, radius);
+    put(TOP_LEFT_ROUNDED_CORNER_RADIUS, radius);
+  }
+
+  public void setTopRightRoundedCornerRadius(String value)
+  {
+    put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, value);
+  }
+
+  public String getTopRightRoundedCornerRadius()
+  {
+    return get(TOP_RIGHT_ROUNDED_CORNER_RADIUS);
+  }
+
+  public void setBottomRightRoundedCornerRadius(String value)
+  {
+    put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, value);
+  }
+
+  public String getBottomRightRoundedCornerRadius()
+  {
+    return get(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
+  }
+
+  public void setBottomLeftRoundedCornerRadius(String value)
+  {
+    put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, value);
+  }
+
+  public String getBottomLeftRoundedCornerRadius()
+  {
+    return get(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
+  }
+
+  public void setTopLeftRoundedCornerRadius(String value)
+  {
+    put(TOP_LEFT_ROUNDED_CORNER_RADIUS, value);
+  }
+
+  public String getTopLeftRoundedCornerRadius()
+  {
+    return get(TOP_LEFT_ROUNDED_CORNER_RADIUS);
+  }
+
+  public void setTopRoundedCornerRadius(String radius)
+  {
+    put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, radius);
+    put(TOP_LEFT_ROUNDED_CORNER_RADIUS, radius);
+  }
+
+  public void setRightRoundedCornerRadius(String radius)
+  {
+    put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, radius);
+    put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, radius);
+  }
+
+  public void setBottomRoundedCornerRadius(String radius)
+  {
+    put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, radius);
+    put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, radius);
+  }
+
+  public void setLeftRoundedCornerRadius(String radius)
+  {
+    put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, radius);
+    put(TOP_LEFT_ROUNDED_CORNER_RADIUS, radius);
   }
 }

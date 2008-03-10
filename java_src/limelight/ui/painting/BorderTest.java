@@ -1,0 +1,282 @@
+package limelight.ui.painting;
+
+import junit.framework.TestCase;
+import limelight.ui.FlatStyle;
+import limelight.ui.Rectangle;
+import limelight.ui.Style;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.PathIterator;
+
+public class BorderTest extends TestCase
+{
+  private Style style;
+  private Border border;
+  private Rectangle insideMargin;
+
+  public void setUp() {
+    style = new FlatStyle();
+    insideMargin = new Rectangle(0, 0, 100, 200);
+  }
+
+  private void verifyLine(Line2D line, int x1, int y1, int x2, int y2) {
+    assertEquals(x1, line.getX1(), 0.1);
+    assertEquals(y1, line.getY1(), 0.1);
+    assertEquals(x2, line.getX2(), 0.1);
+    assertEquals(y2, line.getY2(), 0.1);
+  }
+
+  public void testBorderConstruction() throws Exception
+  {
+    border = new Border(style, insideMargin);
+    assertSame(style, border.getStyle());
+  }
+
+  public void testNotHaveBordersWhenBorderWidthIsZero() throws Exception
+  {
+    style.setBorderWidth("0");
+    border = new Border(style, insideMargin);
+
+    assertFalse(border.hasTopBorder());
+    assertFalse(border.hasRightBorder());
+    assertFalse(border.hasBottomBorder());
+    assertFalse(border.hasLeftBorder());
+
+    style.setBorderWidth(null);
+    border = new Border(style, insideMargin);
+
+    assertFalse(border.hasTopBorder());
+    assertFalse(border.hasRightBorder());
+    assertFalse(border.hasBottomBorder());
+    assertFalse(border.hasLeftBorder());
+  }
+  
+  public void testHasBordersForAnyBorderWhoseWidthIsNotZero() throws Exception
+  {
+    style.setBorderWidth("1");
+    style.setTopBorderWidth("0");
+    border = new Border(style, insideMargin);
+
+    assertFalse(border.hasTopBorder());
+    assertTrue(border.hasRightBorder());
+    assertTrue(border.hasBottomBorder());
+    assertTrue(border.hasLeftBorder());
+  }
+
+  public void testGetLinesFromBorderWithOnePixelWidthAllAround() throws Exception
+  {
+    style.setBorderWidth("1");
+    border = new Border(style, insideMargin);
+
+    verifyLine(border.getTopLine(), 0, 0, 99, 0);
+    verifyLine(border.getRightLine(), 99, 0, 99, 199);
+    verifyLine(border.getBottomLine(), 99, 199, 0, 199);
+    verifyLine(border.getLeftLine(), 0, 199, 0, 0);
+  }
+
+  public void testGetLinesFromBorderWithOnePixelWidthAllAroundAndSomeMargin() throws Exception
+  {
+    style.setBorderWidth("1");
+    insideMargin = new Rectangle(20, 30, 100, 200);
+    border = new Border(style, insideMargin);
+
+    int right = insideMargin.width - 1 + 20;
+    int bottom = insideMargin.height - 1 + 30;
+    verifyLine(border.getTopLine(), 20, 30, right, 30);
+    verifyLine(border.getRightLine(), right, 30, right, bottom);
+    verifyLine(border.getBottomLine(), right, bottom, 20, bottom);
+    verifyLine(border.getLeftLine(), 20, bottom, 20, 30);
+  }
+
+  public void testGetLinesFromBorderWithWideEvenBorder() throws Exception
+  {
+    int borderWidth = 4;
+    style.setBorderWidth("" + borderWidth);
+    border = new Border(style, insideMargin);
+
+    verifyLine(border.getTopLine(), 2, 2, 98, 2);
+    verifyLine(border.getRightLine(), 98, 2, 98, 198);
+    verifyLine(border.getBottomLine(), 98, 198, 2, 198);
+    verifyLine(border.getLeftLine(), 2, 198, 2, 2);
+  }
+
+  public void testGetLinesFromBorderWithWideOddBorder() throws Exception
+  {
+    int borderWidth = 5;
+    style.setBorderWidth("" + borderWidth);
+    border = new Border(style, insideMargin);
+
+    verifyLine(border.getTopLine(), 2, 2, 97, 2);
+    verifyLine(border.getRightLine(), 97, 2, 97, 197);
+    verifyLine(border.getBottomLine(), 97, 197, 2, 197);
+    verifyLine(border.getLeftLine(), 2, 197, 2, 2);
+  }
+
+  public void testGetLinesForBordersWithZeroWidth() throws Exception
+  {
+    style.setBorderWidth("0");
+    border = new Border(style, insideMargin);
+
+    verifyLine(border.getTopLine(), 0, 0, 100, 0);
+    verifyLine(border.getRightLine(), 100, 0, 100, 200);
+    verifyLine(border.getBottomLine(), 100, 200, 0, 200);
+    verifyLine(border.getLeftLine(), 0, 200, 0, 0);
+  }
+
+  public void testHasCorners() throws Exception
+  {
+    style.setBorderWidth("1");
+    style.setRoundedCornerRadius("0");
+    border = new Border(style, insideMargin);
+
+    assertEquals(false, border.hasTopRightCorner());
+    assertEquals(false, border.hasBottomRightCorner());
+    assertEquals(false, border.hasBottomLeftCorner());
+    assertEquals(false, border.hasTopLeftCorner());
+
+    style.setRoundedCornerRadius(null);
+    border = new Border(style, insideMargin);
+
+    assertEquals(false, border.hasTopRightCorner());
+    assertEquals(false, border.hasBottomRightCorner());
+    assertEquals(false, border.hasBottomLeftCorner());
+    assertEquals(false, border.hasTopLeftCorner());
+
+    style.setRoundedCornerRadius("10");
+    border = new Border(style, insideMargin);
+
+    assertEquals(true, border.hasTopRightCorner());
+    assertEquals(true, border.hasBottomRightCorner());
+    assertEquals(true, border.hasBottomLeftCorner());
+    assertEquals(true, border.hasTopLeftCorner());
+  }
+
+  public void testGetLinesAndCornersWithSomeRadiusNoMarginAndWidthOfOne() throws Exception
+  {
+    style.setBorderWidth("1");
+    style.setMargin("0");
+    style.setRoundedCornerRadius("10");
+    border = new Border(style, insideMargin);
+
+    verifyLine(border.getTopLine(), 10, 0, 89, 0);
+    verifyLine(border.getRightLine(), 99, 10, 99, 189);
+    verifyLine(border.getBottomLine(), 89, 199, 10, 199);
+    verifyLine(border.getLeftLine(), 0, 189, 0, 10);
+
+    verifyArc(border.getTopRightArc(), 90, -90, 79, 0, 20, 20);
+    verifyArc(border.getBottomRightArc(), 0, -90, 79, 179, 20, 20);
+    verifyArc(border.getBottomLeftArc(), 270, -90, 0, 179, 20, 20);
+    verifyArc(border.getTopLeftArc(), 180, -90, 0, 0, 20, 20);
+  }
+
+  public void testGetLinesAndCornersEvenWidth() throws Exception
+  {
+    style.setBorderWidth("4");
+    style.setMargin("0");
+    style.setRoundedCornerRadius("10");
+    border = new Border(style, insideMargin);
+
+    verifyLine(border.getTopLine(), 12, 2, 88, 2);
+    verifyLine(border.getRightLine(), 98, 12, 98, 188);
+    verifyLine(border.getBottomLine(), 88, 198, 12, 198);
+    verifyLine(border.getLeftLine(), 2, 188, 2, 12);
+
+    verifyArc(border.getTopRightArc(), 90, -90, 79, 2, 18, 18);
+    verifyArc(border.getBottomRightArc(), 0, -90, 79, 179, 18, 18);
+    verifyArc(border.getBottomLeftArc(), 270, -90, 2, 179, 18, 18);
+    verifyArc(border.getTopLeftArc(), 180, -90, 2, 2, 18, 18);
+  }
+
+  private void verifyArc(Arc2D arc, int startAngle, int extent, int x, int y, int width, int height)
+  {
+    assertEquals(Arc2D.OPEN, arc.getArcType());
+    assertEquals(startAngle, arc.getAngleStart(), 0.1);
+    assertEquals(extent, arc.getAngleExtent(), 0.1);
+    assertEquals(x, arc.getBounds().x, 0.1);
+    assertEquals(y, arc.getBounds().y, 0.1);
+    assertEquals(width, arc.getBounds().width, 0.1);
+    assertEquals(height, arc.getBounds().height, 0.1);
+  }
+
+  public void testGettingShapeInsideBorderWithNoCorners() throws Exception
+  {
+    style.setBorderWidth("1");
+    style.setRoundedCornerRadius("0");
+    border = new Border(style, insideMargin);
+    double[] coords = new double[6];
+
+    Shape inside = border.getShapeInsideBorder();
+    AffineTransform transform = new AffineTransform();
+    PathIterator iterator = inside.getPathIterator(transform);
+
+    assertEquals(PathIterator.SEG_MOVETO, iterator.currentSegment(coords));
+    assertEquals(1, coords[0], 0.1);
+    assertEquals(1, coords[1], 0.1);
+    iterator.next();
+    checkLineSegment(coords, iterator, 98, 1);
+    checkLineSegment(coords, iterator, 98, 198);
+    checkLineSegment(coords, iterator, 98, 198);
+    checkLineSegment(coords, iterator, 1, 198);
+    checkLineSegment(coords, iterator, 1, 198);
+    checkLineSegment(coords, iterator, 1, 1);
+    checkLineSegment(coords, iterator, 1, 1);
+    iterator.next();
+    assertEquals(true, iterator.isDone());
+  }
+
+  private void checkLineSegment(double[] coords, PathIterator iterator, double x, double y)
+  {
+    iterator.next();
+    assertEquals(PathIterator.SEG_LINETO, iterator.currentSegment(coords));
+    assertEquals(x, coords[0], 0.1);
+    assertEquals(y, coords[1], 0.1);
+  }
+
+  public void testGettingShapeInsideBorderWithCorners() throws Exception
+  {
+    style.setBorderWidth("1");
+    style.setRoundedCornerRadius("10");
+    border = new Border(style, insideMargin);
+    double[] coords = new double[6];
+
+    Shape inside = border.getShapeInsideBorder();
+    AffineTransform transform = new AffineTransform();
+    PathIterator iterator = inside.getPathIterator(transform);
+
+    assertEquals(PathIterator.SEG_MOVETO, iterator.currentSegment(coords));
+    assertEquals(11, coords[0], 0.1);
+    assertEquals(1, coords[1], 0.1);
+    checkLineSegment(coords, iterator, 88, 1);
+    checkLineSegment(coords, iterator, 88.5, 1);
+    checkCubicSegment(coords, iterator, 93.7, 1, 98, 10.5);
+    checkLineSegment(coords, iterator, 98, 11);
+    checkLineSegment(coords, iterator, 98, 188);
+    checkLineSegment(coords, iterator, 98, 188.5);
+    checkCubicSegment(coords, iterator, 98, 193.7, 88.5, 198);
+    checkLineSegment(coords, iterator, 88, 198);
+    checkLineSegment(coords, iterator, 11, 198);
+    checkLineSegment(coords, iterator, 10.5, 198);
+    checkCubicSegment(coords, iterator, 5.3, 198, 1, 188.5);
+    checkLineSegment(coords, iterator, 1, 188);              
+    checkLineSegment(coords, iterator, 1, 11);
+    checkLineSegment(coords, iterator, 1, 10.5);
+    checkCubicSegment(coords, iterator, 1, 5.3, 10.5, 1);
+    checkLineSegment(coords, iterator, 11, 1);
+    iterator.next();
+    assertEquals(true, iterator.isDone());
+  }
+
+  private void checkCubicSegment(double[] coords, PathIterator iterator, double x1, double y1, double x3, double y3)
+  {
+    iterator.next();
+    assertEquals(PathIterator.SEG_CUBICTO, iterator.currentSegment(coords));
+    assertEquals(x1, coords[0], 0.1);
+    assertEquals(y1, coords[1], 0.1);
+    assertEquals(x3, coords[4], 0.1);
+    assertEquals(y3, coords[5], 0.1);
+  }
+
+}

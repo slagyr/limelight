@@ -91,6 +91,9 @@ public class GradientPainter extends Painter
     int y3 = y1 + (int)((y2 - y1) * penetration * 0.01);
 
     graphics.setPaint(new GradientPaint(x1, y1, color1, x3, y3, color2, cyclic));
-    graphics.fill(r);
+
+    Border border = new Border(style, panel.getRectangleInsideMargins());
+    Shape insideBorder = border.getShapeInsideBorder();
+    graphics.fill(insideBorder);
   }
 }
