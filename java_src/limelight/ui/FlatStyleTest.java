@@ -130,6 +130,77 @@ public class FlatStyleTest extends TestCase
     assertEquals(0, style.getChangedCount());
   }
 
+  public void testSetBorderWidthSetsWidthOnSidesAllCorners() throws Exception
+  {
+    style.setBorderWidth("5");
+
+    assertEquals("5", style.getTopBorderWidth());
+    assertEquals("5", style.getTopRightBorderWidth());
+    assertEquals("5", style.getRightBorderWidth());
+    assertEquals("5", style.getBottomRightBorderWidth());
+    assertEquals("5", style.getBottomBorderWidth());
+    assertEquals("5", style.getBottomLeftBorderWidth());
+    assertEquals("5", style.getLeftBorderWidth());
+    assertEquals("5", style.getTopLeftBorderWidth());
+  }
+
+  public void testSetBorderColorSetsColorOnSidesAllCorners() throws Exception
+  {
+    style.setBorderColor("blue");
+
+    assertEquals("blue", style.getTopBorderColor());
+    assertEquals("blue", style.getTopRightBorderColor());
+    assertEquals("blue", style.getRightBorderColor());
+    assertEquals("blue", style.getBottomRightBorderColor());
+    assertEquals("blue", style.getBottomBorderColor());
+    assertEquals("blue", style.getBottomLeftBorderColor());
+    assertEquals("blue", style.getLeftBorderColor());
+    assertEquals("blue", style.getTopLeftBorderColor());
+  }
+
+  public void testSettingRoundedCorderRadiusSetsRadiusOnAllCorders() throws Exception
+  {
+    style.setRoundedCornerRadius("5");
+
+    assertEquals("5", style.getTopRightRoundedCornerRadius());
+    assertEquals("5", style.getBottomRightRoundedCornerRadius());
+    assertEquals("5", style.getBottomLeftRoundedCornerRadius());
+    assertEquals("5", style.getTopLeftRoundedCornerRadius());
+  }
+
+  public void testSetTopRoundedCornerRadius() throws Exception
+  {
+    style.setTopRoundedCornerRadius("6");    
+
+    assertEquals("6", style.getTopRightRoundedCornerRadius());
+    assertEquals("6", style.getTopLeftRoundedCornerRadius());
+  }
+
+  public void testSetRightRoundedCornerRadius() throws Exception
+  {
+    style.setRightRoundedCornerRadius("6");
+
+    assertEquals("6", style.getTopRightRoundedCornerRadius());
+    assertEquals("6", style.getBottomRightRoundedCornerRadius());
+  }
+
+  public void testSetBottomRoundedCornerRadius() throws Exception
+  {
+    style.setBottomRoundedCornerRadius("6");
+
+    assertEquals("6", style.getBottomRightRoundedCornerRadius());
+    assertEquals("6", style.getBottomLeftRoundedCornerRadius());
+  }
+
+  public void testSetLeftRoundedCornerRadius() throws Exception
+  {
+    style.setLeftRoundedCornerRadius("6");
+
+    assertEquals("6", style.getTopLeftRoundedCornerRadius());
+    assertEquals("6", style.getBottomLeftRoundedCornerRadius());
+  }
+
+
 
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds
 //  // Array based: 3800000 sets and 3500000 gets took = 1863.0 milliseconds

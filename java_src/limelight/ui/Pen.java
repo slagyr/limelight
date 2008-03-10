@@ -38,4 +38,9 @@ public class Pen
 	{
 		return (BasicStroke)graphics.getStroke();
 	}
+
+  public void draw(Shape shape)
+  {
+    graphics.draw(shape);
+  }
 }

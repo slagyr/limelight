@@ -33,12 +33,12 @@ public class Rectangle extends java.awt.Rectangle
 
 	public int right()
 	{
-		return x + width;
+		return x + width - 1;
 	}
 
 	public int bottom()
 	{
-		return y + height;
+		return y + height - 1;
 	}
 
 	public int left()

@@ -2,6 +2,7 @@ package limelight.ui.painting;
 
 import limelight.ui.*;
 import limelight.ui.Panel;
+import limelight.ui.Rectangle;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,21 +19,24 @@ public class BackgroundPainter extends Painter
   public void paint(Graphics2D graphics)
   {
     Style style = getStyle();
-    limelight.ui.Rectangle r = panel.getRectangleInsideBorders();
+    Border border = new Border(style, panel.getRectangleInsideMargins());
+    Shape insideBorder = border.getShapeInsideBorder();
+//    Shape insideBorder = panel.getRectangleInsideBorders();
     if (style.getSecondaryBackgroundColor() != null && style.getGradientAngle() != null && style.getGradientPenetration() != null)
       new GradientPainter(panel).paint(graphics);
     else if (style.getBackgroundColor() != null)
     {
       graphics.setColor(Colors.resolve(style.getBackgroundColor()));
-      graphics.fill(r);
+      graphics.fill(insideBorder);
     }
     if (style.getBackgroundImage() != null)
     {
       try
       {
+        Rectangle borderFrame = panel.getRectangleInsideBorders();
         String imageFilename = panel.getProp().getScene().getLoader().pathTo(style.getBackgroundImage());
         Image image = ImageIO.read(new File(imageFilename));
-        Graphics2D borderedGraphics = (Graphics2D) graphics.create(r.x, r.y, r.width, r.height);
+        Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);
         ImageFillStrategies.get(style.getBackgroundImageFillStrategy()).fill(borderedGraphics, image);
       }
       catch (IOException e)
