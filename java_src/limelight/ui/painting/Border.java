@@ -231,6 +231,11 @@ public class Border
     public abstract Arc2D getTopLeftArc();
   }
 
+
+  //TODO MDM - There is some work to do regarding the angles of the arcs.  As the width of the border increases
+  // the arcs overlap more and more.  This results in protrusions around the corners... with or without borders.
+  // Based on the radius of the arc, and width of the border, we should be able to calculate a starting angle
+  // and extent such that the arcs will not overlap.
   private static class CenterJig extends Jig
   {
 
