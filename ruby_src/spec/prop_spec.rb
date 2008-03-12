@@ -144,5 +144,19 @@ describe Limelight::Prop do
     prop.foo.should == "bar"
   end
   
+  it "should be able to remove children" do
+    child1 = Limelight::Prop.new()
+    child2 = Limelight::Prop.new()
+    child3 = Limelight::Prop.new()
+    @prop << child1 << child2 << child3
+    
+    @prop.remove(child2)
+    
+    @prop.children.length.should == 2
+    @prop.children.should_not include(child2)
+    @prop.panel.components.length.should == 2
+    @prop.panel.components.should_not include(child2.panel)
+  end
+  
 end
 

@@ -21,6 +21,7 @@ public class Panel extends JPanel
   private boolean sterilized;
   private TextAccessor textAccessor;
   private Style style;
+  private PropEventListener listener;
 
   public Panel(Prop owner)
   {
@@ -28,7 +29,7 @@ public class Panel extends JPanel
     setOpaque(false);
     setDoubleBuffered(false);
     setLayout(new PropLayout(this));
-    PropEventListener listener = new PropEventListener(prop);
+    listener = new PropEventListener(prop);
     addKeyListener(listener);
     addMouseListener(listener);
     addMouseMotionListener(listener);
@@ -51,6 +52,11 @@ public class Panel extends JPanel
   public Prop getProp()
   {
     return prop;
+  }
+
+  public PropEventListener getListener()
+  {
+    return listener;
   }
 
   public Style getStyle()
