@@ -15,10 +15,8 @@ module Limelight
     def initialize(producer)
       @producer = producer
       @styles = {}
-      @frame = javax.swing.JFrame.new
-      @frame.setDefaultCloseOperation(javax.swing.WindowConstants::EXIT_ON_CLOSE)
-      @frame.setLayout(nil)
-      @frame.setSize(900, 900)
+      @frame = Java::limelight.ui.Frame.new
+      # @frame.setSize(900, 900)
       @frame.setLocation(200, 25)
       
       menu_bar = MenuBar.build(self) do
@@ -33,21 +31,19 @@ module Limelight
     
     def open(scene)
       loadScene(scene)
-      @frame.setVisible(true)
-      @frame.repaint
+      @frame.open
       scene.visible = true
     end
   
     def close
-      @frame.setVisible(false)
-      @frame.dispose()
+      @frame.close
     end
     
     def loadScene(scene)
-      @frame.content_pane.removeAll
-      @frame.add(scene.panel)
+      @frame.load(scene.panel)
       scene.stage = self
-      scene.panel.size = @frame.size
+      scene.panel.set_size(scene.panel.get_preferred_size)
+      @frame.set_size(scene.panel.get_size)
       @current_scene = scene
     end
     

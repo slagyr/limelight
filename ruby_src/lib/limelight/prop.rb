@@ -44,6 +44,12 @@ module Limelight
       return self
     end
     
+    def remove(child)
+      if children.delete(child)
+        @panel.remove(child.panel)
+      end
+    end
+    
     def add_controller(controller_module)
       extend controller_module unless self.is_a?(controller_module)
     end

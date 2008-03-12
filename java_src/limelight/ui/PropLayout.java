@@ -1,10 +1,9 @@
 package limelight.ui;
 
-import limelight.ui.Panel;
-import limelight.ui.Aligner;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
 public class PropLayout implements LayoutManager
@@ -89,6 +88,7 @@ public class PropLayout implements LayoutManager
   private void enterScrollMode()
   { 
     scrollView = new JPanel();
+    scrollView.addMouseListener(panel.getListener());
     scrollView.setLayout(new ScrollViewLayout(scrollView));
     scrollView.setOpaque(false);
     scrollView.setSize(consumedWidth, consumedHeight);
