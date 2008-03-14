@@ -1,14 +1,11 @@
 package limelight.ui;
 
 import junit.framework.TestCase;
-import java.awt.event.*;
-
-import limelight.ui.FlatStyle;
-import limelight.ui.TextPaneTextAccessor;
-import limelight.ui.Prop;
-import limelight.ui.Panel;
-import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
+import limelight.ui.painting.BorderPainter;
+
+import java.awt.*;
+import java.awt.event.*;
 
 public class PanelTest extends TestCase
 {
@@ -57,6 +54,34 @@ public class PanelTest extends TestCase
 
     assertEquals(100, panel.getWidth());
     assertEquals(200, panel.getHeight());
+  }
+
+  public void testSizeUsingAutoWidthAndHeight() throws Exception
+  {
+    parent.setSize(100, 100);
+    style.setWidth("auto");
+    style.setHeight("auto");
+    assertEquals(new Dimension(100, 100), panel.getMaximumSize());
+
+    style.setWidth("auto");
+    style.setHeight("50");
+    assertEquals(new Dimension(100, 50), panel.getMaximumSize());
+
+    style.setWidth("42%");
+    style.setHeight("auto");
+    assertEquals(new Dimension(42, 100), panel.getMaximumSize());
+  }
+  
+  public void testBothDimensionsAreZeroWhenOneIsZero() throws Exception
+  {
+    panel.setSize(100, 100);
+    assertEquals(new Dimension(100, 100), panel.getSize());
+
+    panel.setSize(0, 100);
+    assertEquals(new Dimension(0, 0), panel.getSize());
+
+    panel.setSize(100, 0);
+    assertEquals(new Dimension(0, 0), panel.getSize());
   }
 
   public void testOffsets() throws Exception

@@ -7,7 +7,7 @@ module Cell2
     puts "mouse clicked"
     p = parent
     parent.remove(self)
-    p.update
+    p.parent.update # update the whole table incase a row can be removed.
   end
   
 end

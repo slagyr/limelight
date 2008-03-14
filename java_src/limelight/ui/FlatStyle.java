@@ -20,7 +20,7 @@ public class FlatStyle extends Style
 		return styles[key];
 	}
 
-	protected void put(int key, String value)
+	protected void put(StyleDescriptor descriptor, String value)
 	{
     if(value == null)
       return;
@@ -28,12 +28,12 @@ public class FlatStyle extends Style
     if(value.length() == 0)
       value = null;
 
-    String originalValue = styles[key];
-    styles[key] = value;
+    String originalValue = styles[descriptor.index];
+    styles[descriptor.index] = value;
     if(!Util.equal(originalValue, value))
     {
-      changes[key] = true;
-      notifyObservers(key);
+      changes[descriptor.index] = true;
+      notifyObservers(descriptor);
     }
   }
 
@@ -52,10 +52,10 @@ public class FlatStyle extends Style
     observers.add(observer);
   }
 
-  private void notifyObservers(int key)
+  private void notifyObservers(StyleDescriptor descriptor)
   {
     for(StyleObserver observer : observers)
-      observer.styleChanged(key);
+      observer.styleChanged(descriptor);
   }
 
   public void removeObserver(StyleObserver observer)

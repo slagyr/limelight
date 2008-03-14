@@ -26,9 +26,9 @@ public class StackableStyle extends Style implements StyleObserver
 		return value;
 	}
 
-	protected void put(int key, String value)
+	protected void put(StyleDescriptor descriptor, String value)
 	{
-		stack.getFirst().put(key, value);
+		stack.getFirst().put(descriptor, value);
 	}
 
   protected boolean has(int key)
@@ -71,9 +71,9 @@ public class StackableStyle extends Style implements StyleObserver
     return style;
 	}
 
-  public void styleChanged(int key)
+  public void styleChanged(StyleDescriptor descriptor)
   {
-    changes[key] = true;
+    changes[descriptor.index] = true;
   }
 
   private void applyChangesFromBottom(FlatStyle style)

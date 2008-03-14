@@ -10,7 +10,7 @@ table2 {
 
 row2 {
   width 500
-  height 50
+  height :auto
 }
 
 cell2 {

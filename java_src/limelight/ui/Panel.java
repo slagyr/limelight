@@ -44,9 +44,25 @@ public class Panel extends JPanel
     return super.add(comp);
   }
 
+  public boolean hasChild(Component child)
+  {
+    Component[] components = getComponents();
+    for(Component component : components)
+      if (child == component)
+        return true;
+    return false;
+  }
+
   public void setLocation(int x, int y)
   {
     super.setLocation(x + getXOffset(), y + getYOffset());
+  }
+
+  public void setSize(int width, int height)
+  {
+    width = height == 0 ? 0 : width;
+    height = width == 0 ? 0 : height;
+    super.setSize(width, height);
   }
 
   public Prop getProp()
@@ -123,14 +139,20 @@ public class Panel extends JPanel
 
   public Dimension getPreferredSize()
   {
-    limelight.ui.Rectangle r = null;
+    return getMaximumSize();
+  }
+
+  public Dimension getMaximumSize()
+  {
+    Rectangle r = null;
     if (getParent().getClass() == Panel.class)
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
-      r = new limelight.ui.Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
+      r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
     int width = translateDimension(getStyle().getWidth(), r.width);
     int height = translateDimension(getStyle().getHeight(), r.height);
-    return new Dimension(width, height);
+    Dimension dimension = new Dimension(width, height);
+    return dimension;
   }
 
   public limelight.ui.Rectangle getRectangle()
@@ -207,10 +229,13 @@ public class Panel extends JPanel
   {
     if (sizeString == null)
       return 0;
-    else if (sizeString.endsWith("%"))
+    else if("auto".equals(sizeString))
+      return maxSize;
+    else if(sizeString.endsWith("%"))
     {
       double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-      return (int) ((percentage * 0.01) * (double) maxSize);
+      int result = (int) ((percentage * 0.01) * (double) maxSize);      
+      return result;
     }
     else
     {

@@ -23,26 +23,26 @@ public class FlatStyleTest extends TestCase
 
   private class MockStyleObserver implements StyleObserver
   {
-    public int changedStyle;
+    public StyleDescriptor changedStyle;
 
-    public void styleChanged(int key)
+    public void styleChanged(StyleDescriptor descriptor)
     {
-      changedStyle = key;
+      changedStyle = descriptor;
     }
   }
 
   public void testObserving() throws Exception
   {
     MockStyleObserver observer = new MockStyleObserver();
-    observer.changedStyle = -1;
+    observer.changedStyle = null;
     style.addObserver(observer);
 
     style.setWidth("100");
     assertEquals(Style.WIDTH, observer.changedStyle);
-    observer.changedStyle = -1;
+    observer.changedStyle = null;
 
     style.setWidth("100");
-    assertEquals(-1, observer.changedStyle);
+    assertEquals(null, observer.changedStyle);
 
     style.setWidth("123");
     assertEquals(Style.WIDTH, observer.changedStyle);
@@ -70,12 +70,12 @@ public class FlatStyleTest extends TestCase
 
     style.removeObserver(observer1);
     style.setHeight("123");
-    assertEquals(0, observer1.changedStyle);
+    assertEquals(null, observer1.changedStyle);
     assertEquals(Style.HEIGHT, observer2.changedStyle);
 
     style.removeObserver(observer2);
     style.setWidth("123");
-    assertEquals(0, observer1.changedStyle);
+    assertEquals(null, observer1.changedStyle);
     assertEquals(Style.HEIGHT, observer2.changedStyle);
   }
 

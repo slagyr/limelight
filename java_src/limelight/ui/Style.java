@@ -2,54 +2,54 @@ package limelight.ui;
 
 public abstract class Style
 {
-  public static final int WIDTH = 0;
-  public static final int HEIGHT = 1;
-  public static final int X_OFFSET = 2;
-  public static final int Y_OFFSET = 3;
-  public static final int TOP_BORDER_COLOR = 4;
-  public static final int RIGHT_BORDER_COLOR = 5;
-  public static final int BOTTOM_BORDER_COLOR = 6;
-  public static final int LEFT_BORDER_COLOR = 7;
-  public static final int TOP_BORDER_WIDTH = 8;
-  public static final int RIGHT_BORDER_WIDTH = 9;
-  public static final int BOTTOM_BORDER_WIDTH = 10;
-  public static final int LEFT_BORDER_WIDTH = 11;
-  public static final int TOP_MARGIN = 12;
-  public static final int RIGHT_MARGIN = 13;
-  public static final int BOTTOM_MARGIN = 14;
-  public static final int LEFT_MARGIN = 15;
-  public static final int TOP_PADDING = 16;
-  public static final int RIGHT_PADDING = 17;
-  public static final int BOTTOM_PADDING = 18;
-  public static final int LEFT_PADDING = 19;
-  public static final int BACKGROUND_COLOR = 20;
-  public static final int SECONDARY_BACKGROUND_COLOR = 21;
-  public static final int BACKGROUND_IMAGE = 22;
-  public static final int BACKGROUND_IMAGE_FILL_STRATEGY = 23;
-  public static final int GRADIENT_ANGLE = 24;
-  public static final int GRADIENT_PENETRATION = 25;
-  public static final int CYCLIC_GRADIENT = 26;
-  public static final int HORIZONTAL_ALIGNMENT = 27;
-  public static final int VERTICAL_ALIGNMENT = 28;
-  public static final int TEXT_COLOR = 29;
-  public static final int FONT_FACE = 30;
-  public static final int FONT_SIZE = 31;
-  public static final int FONT_STYLE = 32;
-  public static final int TRANSPARENCY = 34;
-  public static final int TOP_RIGHT_ROUNDED_CORNER_RADIUS = 35;
-  public static final int BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS = 36;
-  public static final int BOTTOM_LEFT_ROUNDED_CORNER_RADIUS = 37;
-  public static final int TOP_LEFT_ROUNDED_CORNER_RADIUS = 38;
-  public static final int TOP_RIGHT_BORDER_WIDTH = 39;
-  public static final int BOTTOM_RIGHT_BORDER_WIDTH = 40;
-  public static final int BOTTOM_LEFT_BORDER_WIDTH = 41;
-  public static final int TOP_LEFT_BORDER_WIDTH = 42;
-  public static final int TOP_RIGHT_BORDER_COLOR = 43;
-  public static final int BOTTOM_RIGHT_BORDER_COLOR = 44;
-  public static final int BOTTOM_LEFT_BORDER_COLOR = 45;
-  public static final int TOP_LEFT_BORDER_COLOR = 46;
+  public static final StyleDescriptor WIDTH = new StyleDescriptor(0, null);
+  public static final StyleDescriptor HEIGHT = new StyleDescriptor(1, null);
+  public static final StyleDescriptor X_OFFSET = new StyleDescriptor(2, null);
+  public static final StyleDescriptor Y_OFFSET = new StyleDescriptor(3, null);
+  public static final StyleDescriptor TOP_BORDER_COLOR = new StyleDescriptor(4, null);
+  public static final StyleDescriptor RIGHT_BORDER_COLOR = new StyleDescriptor(5, null);
+  public static final StyleDescriptor BOTTOM_BORDER_COLOR = new StyleDescriptor(6, null);
+  public static final StyleDescriptor LEFT_BORDER_COLOR = new StyleDescriptor(7, null);
+  public static final StyleDescriptor TOP_BORDER_WIDTH = new StyleDescriptor(8, null);
+  public static final StyleDescriptor RIGHT_BORDER_WIDTH = new StyleDescriptor(9, null);
+  public static final StyleDescriptor BOTTOM_BORDER_WIDTH = new StyleDescriptor(10, null);
+  public static final StyleDescriptor LEFT_BORDER_WIDTH = new StyleDescriptor(11, null);
+  public static final StyleDescriptor TOP_MARGIN = new StyleDescriptor(12, null);
+  public static final StyleDescriptor RIGHT_MARGIN = new StyleDescriptor(13, null);
+  public static final StyleDescriptor BOTTOM_MARGIN = new StyleDescriptor(14, null);
+  public static final StyleDescriptor LEFT_MARGIN = new StyleDescriptor(15, null);
+  public static final StyleDescriptor TOP_PADDING = new StyleDescriptor(16, null);
+  public static final StyleDescriptor RIGHT_PADDING = new StyleDescriptor(17, null);
+  public static final StyleDescriptor BOTTOM_PADDING = new StyleDescriptor(18, null);
+  public static final StyleDescriptor LEFT_PADDING = new StyleDescriptor(19, null);
+  public static final StyleDescriptor BACKGROUND_COLOR = new StyleDescriptor(20, null);
+  public static final StyleDescriptor SECONDARY_BACKGROUND_COLOR = new StyleDescriptor(21, null);
+  public static final StyleDescriptor BACKGROUND_IMAGE = new StyleDescriptor(22, null);
+  public static final StyleDescriptor BACKGROUND_IMAGE_FILL_STRATEGY = new StyleDescriptor(23, null);
+  public static final StyleDescriptor GRADIENT_ANGLE = new StyleDescriptor(24, null);
+  public static final StyleDescriptor GRADIENT_PENETRATION = new StyleDescriptor(25, null);
+  public static final StyleDescriptor CYCLIC_GRADIENT = new StyleDescriptor(26, null);
+  public static final StyleDescriptor HORIZONTAL_ALIGNMENT = new StyleDescriptor(27, null);
+  public static final StyleDescriptor VERTICAL_ALIGNMENT = new StyleDescriptor(28, null);
+  public static final StyleDescriptor TEXT_COLOR = new StyleDescriptor(29, null);
+  public static final StyleDescriptor FONT_FACE = new StyleDescriptor(30, null);
+  public static final StyleDescriptor FONT_SIZE = new StyleDescriptor(31, null);
+  public static final StyleDescriptor FONT_STYLE = new StyleDescriptor(32, null);
+  public static final StyleDescriptor TRANSPARENCY = new StyleDescriptor(33, null);
+  public static final StyleDescriptor TOP_RIGHT_ROUNDED_CORNER_RADIUS = new StyleDescriptor(34, null);
+  public static final StyleDescriptor BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS = new StyleDescriptor(35, null);
+  public static final StyleDescriptor BOTTOM_LEFT_ROUNDED_CORNER_RADIUS = new StyleDescriptor(36, null);
+  public static final StyleDescriptor TOP_LEFT_ROUNDED_CORNER_RADIUS = new StyleDescriptor(37, null);
+  public static final StyleDescriptor TOP_RIGHT_BORDER_WIDTH = new StyleDescriptor(38, null);
+  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_WIDTH = new StyleDescriptor(39, null);
+  public static final StyleDescriptor BOTTOM_LEFT_BORDER_WIDTH = new StyleDescriptor(40, null);
+  public static final StyleDescriptor TOP_LEFT_BORDER_WIDTH = new StyleDescriptor(41, null);
+  public static final StyleDescriptor TOP_RIGHT_BORDER_COLOR = new StyleDescriptor(42, null);
+  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_COLOR = new StyleDescriptor(43, null);
+  public static final StyleDescriptor BOTTOM_LEFT_BORDER_COLOR = new StyleDescriptor(44, null);
+  public static final StyleDescriptor TOP_LEFT_BORDER_COLOR = new StyleDescriptor(45, null);
 
-  protected static final int STYLE_COUNT = 47;
+  protected static final int STYLE_COUNT = 46;
 
   protected boolean[] changes;
 
@@ -59,8 +59,13 @@ public abstract class Style
   }
 
   protected abstract String get(int key);
-  protected abstract void put(int key, String value);
+  protected abstract void put(StyleDescriptor descriptor, String value);
   protected abstract boolean has(int key);
+
+  protected String get(StyleDescriptor descriptor)
+  {
+    return get(descriptor.index);
+  }
 
   public boolean changed()
   {
@@ -72,9 +77,9 @@ public abstract class Style
     return false;
   }
 
-  public boolean changed(int key)
+  public boolean changed(StyleDescriptor descriptor)
   {
-    return changes[key];
+    return changes[descriptor.index];
   }
 
   public void flushChanges()
