@@ -4,10 +4,16 @@ import limelight.ui.Rectangle;
 import limelight.ui.Panel;
 import limelight.ui.MockProp;
 
+import java.awt.*;
+
 public class MockPanel extends Panel
 {
   public Rectangle rectangleInsideMargin;
   public Rectangle rectangleInsidePadding;
+  private int prepWidth;
+  private int prepHeight;
+  public boolean wasLaidOut;
+  private boolean dimensionsArePrepared;
 
   public MockPanel()
 	{
@@ -26,5 +32,26 @@ public class MockPanel extends Panel
     if(rectangleInsidePadding != null)
       return rectangleInsidePadding;
     return super.getRectangleInsidePadding();
+  }
+
+  public void prepForSnap(int width, int height)
+  {
+    this.prepWidth = width;
+    this.prepHeight = height;
+    dimensionsArePrepared = true;
+  }
+
+  public Dimension getMaximumSize()
+  {
+    if(dimensionsArePrepared)
+      return new Dimension(prepWidth, prepHeight);
+    else
+      return super.getMaximumSize();
+  }
+
+  public void doLayout()
+  {
+    super.doLayout();
+    wasLaidOut = true;
   }
 }

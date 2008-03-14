@@ -216,11 +216,11 @@ public class BorderTest extends TestCase
     assertEquals(1, coords[0], 0.1);
     assertEquals(1, coords[1], 0.1);
     iterator.next();
-    checkLineSegment(coords, iterator, 98, 1);
-    checkLineSegment(coords, iterator, 98, 198);
-    checkLineSegment(coords, iterator, 98, 198);
-    checkLineSegment(coords, iterator, 1, 198);
-    checkLineSegment(coords, iterator, 1, 198);
+    checkLineSegment(coords, iterator, 99, 1);
+    checkLineSegment(coords, iterator, 99, 199);
+    checkLineSegment(coords, iterator, 99, 199);
+    checkLineSegment(coords, iterator, 1, 199);
+    checkLineSegment(coords, iterator, 1, 199);
     checkLineSegment(coords, iterator, 1, 1);
     checkLineSegment(coords, iterator, 1, 1);
     iterator.next();

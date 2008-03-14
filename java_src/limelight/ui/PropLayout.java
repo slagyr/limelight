@@ -52,9 +52,8 @@ public class PropLayout implements LayoutManager
 
   public void layoutContainer(Container container)
 	{
+    panel.setSize(panel.getMaximumSize());
     Component[] components = getComponents();
-		if(components.length == 0)
-			return;
 
     reset();
     buildRows();
@@ -69,7 +68,22 @@ public class PropLayout implements LayoutManager
       scrollView.doLayout();
     }
     else
+    {
       doNormalLayout();
+      collapseAutoDimensions();
+    }
+  }
+
+  private void collapseAutoDimensions()
+  {
+    boolean hasAutoWidth = "auto".equals(panel.getStyle().getWidth());
+    boolean hasAutoHeight = "auto".equals(panel.getStyle().getHeight());
+    if(hasAutoWidth && hasAutoHeight)
+      panel.setSize(consumedWidth, consumedHeight);
+    else if(hasAutoWidth)
+      panel.setSize(consumedWidth, panel.getHeight());
+    else if(hasAutoHeight)
+      panel.setSize(panel.getWidth(), consumedHeight);
   }
 
   private void doNormalLayout()
@@ -120,7 +134,6 @@ public class PropLayout implements LayoutManager
 	{
     for(Component component : getComponents())
     {
-      component.setSize(component.getPreferredSize());
       component.doLayout();
       if (!currentRow.isEmpty() && !currentRow.fits(component))
         newRow();
@@ -193,7 +206,7 @@ public class PropLayout implements LayoutManager
     }
 
     public boolean fits(Component component)
-    {
+    {      
       return (width + component.getWidth()) <= maxWidth;
     }
 

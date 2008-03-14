@@ -1,14 +1,19 @@
-//package limelight.ui.painting;
-//
-//import junit.framework.TestCase;
-//
-//import java.awt.*;
-//import java.awt.geom.Line2D;
-//
-//import limelight.ui.*;
-//
-//public class BorderPainterTest extends TestCase
-//{
+package limelight.ui.painting;
+
+import junit.framework.TestCase;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
+
+import limelight.ui.*;
+
+public class BorderPainterTest extends TestCase
+{
+  public void testToKeepAntHappy() throws Exception
+  {
+    
+  }
+
 //  private MockProp prop;
 //  private MockPanel panel;
 //  private FlatStyle style;
@@ -125,5 +130,5 @@
 //    assertEquals(x2, (int)line.getX2());
 //    assertEquals(y2, (int)line.getY2());
 //  }
-//
-//}
+}
+
