@@ -8,7 +8,7 @@ arena do
   end
   row do
     5.times do |i|
-      box :rounded_corner_radius => (i * 10).to_s, :background_color => "red"
+      box :rounded_corner_radius => (i * 10).to_s, :background_color => "red", :border_color => "#00fa"
     end
   end
   row do

@@ -27,7 +27,10 @@ public class BackgroundPainter extends Painter
     else if (style.getBackgroundColor() != null)
     {
       graphics.setColor(Colors.resolve(style.getBackgroundColor()));
+
+      graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       graphics.fill(insideBorder);
+      graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
     if (style.getBackgroundImage() != null)
     {
