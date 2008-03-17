@@ -24,6 +24,7 @@ public class InputLayout implements LayoutManager
 
   public void layoutContainer(Container parent)
   {
+    parent.setSize(parent.getMaximumSize());
     for(Component component : parent.getComponents())
     {
       Dimension size = parent.getSize();
