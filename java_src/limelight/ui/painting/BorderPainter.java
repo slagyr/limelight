@@ -18,6 +18,8 @@ public class BorderPainter extends Painter
     Pen pen = new Pen(graphics);
     Border border = new Border(style, panel.getRectangleInsideMargins());
 
+    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
     if(border.hasTopBorder())
       pen.withColor(Colors.resolve(style.getTopBorderColor())).withStroke(border.getTopWidth()).draw(border.getTopLine());
     if(border.hasTopRightCorner())
@@ -34,6 +36,8 @@ public class BorderPainter extends Painter
       pen.withColor(Colors.resolve(style.getLeftBorderColor())).withStroke(border.getLeftWidth()).draw(border.getLeftLine());
     if(border.hasTopLeftCorner())
       pen.withColor(Colors.resolve(style.getTopLeftBorderColor())).withStroke(border.getTopLeftWidth()).draw(border.getTopLeftArc());
+    
+    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 
 //    limelight.ui.Rectangle r = panel.getRectangleInsideMargins();
 //

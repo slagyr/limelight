@@ -60,6 +60,11 @@ public class Tester
 
         MyShape border = new MyShape(x, y, width, height, tlr, trr, brr, blr);
 
+        g.setColor(Color.blue);
+        g2.fill(border);
+
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         g.setColor(Color.red);
 
         g2.draw(border.tl);
@@ -70,9 +75,6 @@ public class Tester
         g2.draw(border.rightl);
         g2.draw(border.bottoml);
         g2.draw(border.leftl);
-
-                g.setColor(Color.blue);
-        g2.fill(border);
       }
     };
     panel.setBackground(Color.white);

@@ -264,7 +264,7 @@ public class Border
       return new Arc2D.Double(x, y, bottomRightArcWidth, bottomRightArcWidth, 0, -90, Arc2D.OPEN);
     }
 
-    public Arc2D getBottomLeftArc()
+    public Arc2D getBottomLeftArc()                                                                                
     {
       int bottomLeftArcWidth = border.bottomLeftRadius * 2 - border.bottomLeftWidth / 2;
       int x = border.insideMargin.left() + shave(border.bottomLeftWidth);
@@ -296,22 +296,22 @@ public class Border
     {
       int topRightArcWidth = border.topRightRadius * 2 - border.topRightWidth;
       int x = border.insideMargin.right() - border.topRightWidth - topRightArcWidth + 1;
-      int y = border.insideMargin.top() + border.topRightWidth - 1;
+      int y = border.insideMargin.top() + border.topRightWidth;
       return new Arc2D.Double(x, y, topRightArcWidth, topRightArcWidth, 90, -90, Arc2D.OPEN);
     }
 
     public Arc2D getBottomRightArc()
     {
       int bottomRightArcWidth = border.bottomRightRadius * 2 - border.bottomRightWidth;
-      double x = border.insideMargin.right() - border.bottomRightWidth - bottomRightArcWidth + 1.5;
-      double y = border.insideMargin.bottom() - border.bottomRightWidth - bottomRightArcWidth + 1.5;
+      double x = border.insideMargin.right() - border.bottomRightWidth - bottomRightArcWidth + 1;
+      double y = border.insideMargin.bottom() - border.bottomRightWidth - bottomRightArcWidth + 1;
       return new Arc2D.Double(x, y, bottomRightArcWidth, bottomRightArcWidth, 0, -90, Arc2D.OPEN);
     }
 
     public Arc2D getBottomLeftArc()
     {
       int bottomLeftArcWidth = border.bottomLeftRadius * 2 - border.bottomLeftWidth;
-      int x = border.insideMargin.left() + border.bottomLeftWidth - 1;
+      int x = border.insideMargin.left() + border.bottomLeftWidth;
       int y = border.insideMargin.bottom() - border.bottomLeftWidth - bottomLeftArcWidth + 1;
       return new Arc2D.Double(x, y, bottomLeftArcWidth, bottomLeftArcWidth, 270, -90, Arc2D.OPEN);
     }
@@ -319,8 +319,8 @@ public class Border
     public Arc2D getTopLeftArc()
     {
       int topLeftArcWidth = border.topLeftRadius * 2 - border.topLeftWidth;
-      int x = border.insideMargin.left() + border.topLeftWidth - 1;
-      int y = border.insideMargin.top() + border.topLeftWidth - 1;
+      int x = border.insideMargin.left() + border.topLeftWidth;
+      int y = border.insideMargin.top() + border.topLeftWidth;
       return new Arc2D.Double(x, y, topLeftArcWidth, topLeftArcWidth, 180, -90, Arc2D.OPEN);
     }
   }

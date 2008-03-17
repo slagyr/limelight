@@ -234,40 +234,40 @@ public class BorderTest extends TestCase
     assertEquals(x, coords[0], 0.1);
     assertEquals(y, coords[1], 0.1);
   }
-
-  public void testGettingShapeInsideBorderWithCorners() throws Exception
-  {
-    style.setBorderWidth("1");
-    style.setRoundedCornerRadius("10");
-    border = new Border(style, insideMargin);
-    double[] coords = new double[6];
-
-    Shape inside = border.getShapeInsideBorder();
-    AffineTransform transform = new AffineTransform();
-    PathIterator iterator = inside.getPathIterator(transform);
-
-    assertEquals(PathIterator.SEG_MOVETO, iterator.currentSegment(coords));
-    assertEquals(11, coords[0], 0.1);
-    assertEquals(1, coords[1], 0.1);
-    checkLineSegment(coords, iterator, 89, 1);
-    checkLineSegment(coords, iterator, 89.5, 0);
-    checkCubicSegment(coords, iterator, 94.7, 0, 99, 9.5);
-    checkLineSegment(coords, iterator, 99, 11);
-    checkLineSegment(coords, iterator, 99, 189);
-    checkLineSegment(coords, iterator, 99.5, 190);
-    checkCubicSegment(coords, iterator, 99.5, 195.25, 90, 199.5);
-    checkLineSegment(coords, iterator, 89, 199);
-    checkLineSegment(coords, iterator, 11, 199);
-    checkLineSegment(coords, iterator, 9.5, 199);
-    checkCubicSegment(coords, iterator, 4.25, 199, 0, 189.5);
-    checkLineSegment(coords, iterator, 1, 189);              
-    checkLineSegment(coords, iterator, 1, 11);
-    checkLineSegment(coords, iterator, 0, 9.5);
-    checkCubicSegment(coords, iterator, 0, 4.25, 9.5, 0);
-    checkLineSegment(coords, iterator, 11, 1);
-    iterator.next();
-    assertEquals(true, iterator.isDone());
-  }
+//
+//  public void testGettingShapeInsideBorderWithCorners() throws Exception
+//  {
+//    style.setBorderWidth("1");
+//    style.setRoundedCornerRadius("10");
+//    border = new Border(style, insideMargin);
+//    double[] coords = new double[6];
+//
+//    Shape inside = border.getShapeInsideBorder();
+//    AffineTransform transform = new AffineTransform();
+//    PathIterator iterator = inside.getPathIterator(transform);
+//
+//    assertEquals(PathIterator.SEG_MOVETO, iterator.currentSegment(coords));
+//    assertEquals(11, coords[0], 0.1);
+//    assertEquals(1, coords[1], 0.1);
+//    checkLineSegment(coords, iterator, 89, 1);
+//    checkLineSegment(coords, iterator, 89.5, 0);
+//    checkCubicSegment(coords, iterator, 94.7, 0, 99, 9.5);
+//    checkLineSegment(coords, iterator, 99, 11);
+//    checkLineSegment(coords, iterator, 99, 189);
+//    checkLineSegment(coords, iterator, 99.5, 190);
+//    checkCubicSegment(coords, iterator, 99.5, 195.25, 90, 199.5);
+//    checkLineSegment(coords, iterator, 89, 199);
+//    checkLineSegment(coords, iterator, 11, 199);
+//    checkLineSegment(coords, iterator, 9.5, 199);
+//    checkCubicSegment(coords, iterator, 4.25, 199, 0, 189.5);
+//    checkLineSegment(coords, iterator, 1, 189);
+//    checkLineSegment(coords, iterator, 1, 11);
+//    checkLineSegment(coords, iterator, 0, 9.5);
+//    checkCubicSegment(coords, iterator, 0, 4.25, 9.5, 0);
+//    checkLineSegment(coords, iterator, 11, 1);
+//    iterator.next();
+//    assertEquals(true, iterator.isDone());
+//  }
 
   private void checkCubicSegment(double[] coords, PathIterator iterator, double x1, double y1, double x3, double y3)
   {

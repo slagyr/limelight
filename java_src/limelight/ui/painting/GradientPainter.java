@@ -94,6 +94,8 @@ public class GradientPainter extends Painter
 
     Border border = new Border(style, panel.getRectangleInsideMargins());
     Shape insideBorder = border.getShapeInsideBorder();
+    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     graphics.fill(insideBorder);
+    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
   }
 }
