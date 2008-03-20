@@ -1,10 +1,11 @@
-#!/usr/bin/env jruby
+#! /bin/bash
 
-require File.expand_path(File.dirname(__FILE__) + "/../ruby_src/lib/init")
-require 'limelight/producer'
+JAVA_OPTS=$JAVA_OPTS' -Dapple.laf.useScreenMenuBar=true '
+JAVA_OPTS=$JAVA_OPTS' -Xdock:name=Limelight '
+JAVA_OPTS=$JAVA_OPTS-Xdock:icon=$0.icns
+export JAVA_OPTS
+echo $JAVA_OPTS
 
-page_name = ARGV[0]
-Limelight::Producer.open(page_name)
-
+/usr/bin/env jruby "$0.rb" $1 $2 $3 $4 $5
 
 
