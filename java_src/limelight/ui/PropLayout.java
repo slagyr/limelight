@@ -1,9 +1,8 @@
 package limelight.ui;
 
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
 public class PropLayout implements LayoutManager
@@ -16,6 +15,7 @@ public class PropLayout implements LayoutManager
   private limelight.ui.Rectangle area;
   private int consumedWidth;
   private int consumedHeight;
+  private JScrollPane scrollPane;
 
   public PropLayout(Panel panel)
   {
@@ -57,6 +57,11 @@ public class PropLayout implements LayoutManager
 
     reset();
     buildRows();
+
+    //TODO Hack - March 17, 08
+    if("auto".equals(panel.getStyle().getHeight()))
+      area = new Rectangle(area.x, area.y, area.width, consumedHeight);
+
     if(!inScrollMode && (consumedHeight > area.height || consumedWidth > area.width))
       enterScrollMode();
     if(inScrollMode && consumedHeight <= area.height && consumedWidth <= area.width)
@@ -64,8 +69,10 @@ public class PropLayout implements LayoutManager
 
     if(inScrollMode)
     {
+      scrollPane.setSize(area.width,  area.height);
       scrollView.setSize(consumedWidth, consumedHeight);
-      scrollView.doLayout();
+      scrollPane.doLayout();
+      collapseAutoDimensions();
     }
     else
     {
@@ -110,7 +117,7 @@ public class PropLayout implements LayoutManager
     for (Component component : getComponents())
       scrollView.add(component);
 
-    JScrollPane scrollPane = new JScrollPane(scrollView);
+    scrollPane = new JScrollPane(scrollView);
     scrollPane.getViewport().setOpaque(false);
     scrollPane.getViewport().setBackground(Color.blue);
     scrollPane.setOpaque(false);
@@ -248,7 +255,7 @@ public class PropLayout implements LayoutManager
     }
 
     public void layoutContainer(Container container)
-    {
+    {                                       
       String horizontalAlignment = panel.getStyle().getHorizontalAlignment();
       Aligner aligner = new Aligner(new limelight.ui.Rectangle(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
       int y = aligner.startingY();

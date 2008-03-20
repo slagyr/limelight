@@ -8,6 +8,8 @@ module Limelight
     attr_accessor :directory, :default_scene, :styles
     attr_reader :frame, :current_scene, :producer
     
+    include Java::limelight.ui.Stage
+    
     def public_choose_file
       choose_file
     end
@@ -15,8 +17,7 @@ module Limelight
     def initialize(producer)
       @producer = producer
       @styles = {}
-      @frame = Java::limelight.ui.Frame.new
-      # @frame.setSize(900, 900)
+      @frame = Java::limelight.ui.Frame.new(self)
       @frame.setLocation(200, 25)
       
       menu_bar = MenuBar.build(self) do
@@ -43,7 +44,11 @@ module Limelight
       @frame.load(scene.panel)
       scene.stage = self
       scene.panel.set_size(scene.panel.get_preferred_size)
-      @frame.set_size(scene.panel.get_size)
+      if(scene.has_static_size?)
+        @frame.set_size(scene.panel.get_size)
+      else
+        @frame.set_size(800, 800)
+      end
       @current_scene = scene
     end
     
@@ -53,6 +58,10 @@ module Limelight
   
     def reload
       load(@current_scene.path)
+    end
+    
+    def resized
+      @current_scene.update
     end
 
     private ###############################################

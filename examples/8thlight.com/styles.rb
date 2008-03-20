@@ -1,6 +1,6 @@
 page {
-	width 1000
-	height 900
+	width "100%"
+	height "100%"
 	horizontal_alignment "center"
 	background_image "images/bg.jpg"
 }
@@ -9,7 +9,7 @@ main_column {
 	border_width 0
 	background_image "images/canvas_bg.jpg"
 	width 823
-	height 850
+	height :auto
 	horizontal_alignment "center"
 }
 	
@@ -48,21 +48,11 @@ link {
 
 tag_line {
 	width 823
-	height 200
+	height 70
 	background_image "images/anvil.jpg"
 	right_margin 25
 	left_margin 25
 	horizontal_alignment :left
-}
-	
-tag_line_content {
-	width 400
-	height 150
-	top_margin 82
-	left_margin 50
-	text_color "white"
-	font_size 17
-	font_style "bold italic"
 }
 	
 services_tagline {
@@ -110,7 +100,7 @@ section_title {
 	
 section_body {
 	width 823
-	height 385
+	height :auto
 	left_margin 50
 	right_margin 50
 	text_color "white"
@@ -182,9 +172,9 @@ sm_news_text {
 
 news {
 	width 411
-	height 300
+	height 320
 	top_margin 20
-	left_margin 50
+	left_margin 30
 	right_margin 50
 }
 	

@@ -36,7 +36,6 @@ public class TextPaneTest extends TestCase
 
   public void testConstructor() throws Exception
   {
-    assertEquals(bounds, pane.getBounds());
     assertEquals(panel, pane.getPanel());
     assertEquals("Some Text", pane.getText());
   }

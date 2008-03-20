@@ -60,6 +60,9 @@ public class Panel extends JPanel
 
   public void setSize(int width, int height)
   {
+//System.err.println(getProp().getClassName() + " setSize() = " + width + ", " + height);
+//if("section_body".equals(getProp().getClassName()))
+//  new Exception().printStackTrace();
     width = height == 0 ? 0 : width;
     height = width == 0 ? 0 : height;
     super.setSize(width, height);
@@ -123,7 +126,13 @@ public class Panel extends JPanel
   protected boolean shouldBuildBuffer()
   {
     Style style = getStyle();
-    return buffer == null || style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY));
+    if(buffer == null)
+      return true;
+    if(style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY)))
+      return true;
+    if(getWidth() != buffer.getWidth() || getHeight() != buffer.getHeight())
+      return true;
+    return false;
   }
 
   protected void buildBuffer()
@@ -143,12 +152,14 @@ public class Panel extends JPanel
   }
 
   public Dimension getMaximumSize()
-  {
+  {  
     Rectangle r = null;
     if (getParent().getClass() == Panel.class)
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
       r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
+//System.err.println("r = " + r + " " + prop.getClassName());
+
     int width = translateDimension(getStyle().getWidth(), r.width);
     int height = translateDimension(getStyle().getHeight(), r.height);
     Dimension dimension = new Dimension(width, height);
@@ -181,6 +192,7 @@ public class Panel extends JPanel
     limelight.ui.Rectangle r = getRectangleInsideBorders();
     Style style = getStyle();
     r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
+//System.err.println("rectangleInsidePadding = " + r + " " + getProp().getClassName());
     return r;
   }
 

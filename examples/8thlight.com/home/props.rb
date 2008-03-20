@@ -1,9 +1,7 @@
 __ :class_name => "page"
 main_column do
   __install "menu.rb"
-  tag_line do
-    tag_line_content :text => "High quality software written by craftsmen."
-  end
+  tag_line
   spot_light do
     spot_light_title :text => "In the spotlight"
     book_news do
