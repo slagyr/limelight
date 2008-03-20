@@ -5,10 +5,24 @@ import java.awt.*;
 
 public class Frame extends JFrame
 {
-  public Frame()
+  private Stage stage;
+
+  public Frame(Stage stage)
   {
+    this.stage = stage;
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setLayout(null);
+  }
+
+  public void doLayout()
+  {
+    super.doLayout();
+    Component[] components = getContentPane().getComponents();
+    for (Component component : components)
+    {
+      component.doLayout();
+      component.repaint();
+    }
   }
 
   public void close()

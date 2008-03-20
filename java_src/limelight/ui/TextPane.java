@@ -23,6 +23,7 @@ public class TextPane extends JPanel
   private Graphics2D graphics;
   private boolean textChanged;
   private boolean compiled;
+  private Rectangle bounds;
 
   public TextPane(Panel panel, String text)
   {
@@ -49,13 +50,14 @@ public class TextPane extends JPanel
 
   public limelight.ui.Rectangle getBounds()
   {
-    return panel.getRectangleInsidePadding();
+    return bounds;
   }
 
   public void doLayout()
   {
     if(!compiled || textChanged() || fontChanged())
     {
+      bounds = panel.getRectangleInsidePadding();
       buildLines();
       calculateDimentions();
       setSize((int)(consumedWidth + 0.5), (int)(consumedHeight + 0.5));
@@ -110,7 +112,7 @@ public class TextPane extends JPanel
           LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics().getFontRenderContext());
           while (lbm.getPosition() < paragraph.length())
           {
-            TextLayout layout = lbm.nextLayout((float) getBounds().getWidth());
+            TextLayout layout = lbm.nextLayout((float) (getBounds().getWidth() - widthPadding));
             lines.add(layout);
           }
         }
@@ -127,7 +129,7 @@ public class TextPane extends JPanel
     for (TextLayout layout : lines)
     {
       consumedHeight += (layout.getAscent() + layout.getDescent() + layout.getLeading());
-      double lineWidth = layout.getBounds().getWidth() + widthPadding;
+      double lineWidth = layout.getBounds().getWidth();
       if(lineWidth > consumedWidth)
         consumedWidth = lineWidth;
     }

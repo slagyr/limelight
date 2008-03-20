@@ -29,6 +29,16 @@ module Limelight
       @casting_director = @options.delete(:casting_director) if @options.has_key?(:casting_director)
       super
     end
+    
+    def has_static_size?
+      return is_static?(style.get_width) && is_static?(style.get_height)
+    end
+    
+    private ###############################################
+    
+    def is_static?(value)
+      return !(value.to_s.include?("%")) && !(value.to_s == "auto")
+    end
   
   end
 end

@@ -112,6 +112,19 @@ public class PanelTest extends TestCase
     assertFalse(panel._shouldBuildBuffer());
   }
 
+  public void testShouldBuildBufferIfSizeChanges() throws Exception
+  {
+    parent.setSize(100, 100);
+    prop.style.setWidth("100%");
+    prop.style.setHeight("100%");
+    panel.setSize(panel.getMaximumSize());
+    panel.buildBuffer();
+
+    parent.setSize(200, 200);
+    panel.setSize(panel.getMaximumSize());
+    assertEquals(true, panel._shouldBuildBuffer());
+  }
+
   private void makePaintable()
   {
     prop.style.setWidth("100");
