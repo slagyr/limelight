@@ -3,6 +3,7 @@ package limelight.ui;
 import limelight.*;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
+import limelight.ui.painting.Border;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,11 @@ public class Panel extends JPanel
   private TextAccessor textAccessor;
   private Style style;
   private PropEventListener listener;
+  private Rectangle rectangle;
+  private Rectangle rectangleInsideMargins;
+  private Rectangle rectangleInsideBorders;
+  private Rectangle rectangleInsidePadding;
+  private Border borderShaper;
 
   public Panel(Prop owner)
   {
@@ -65,7 +71,16 @@ public class Panel extends JPanel
 //  new Exception().printStackTrace();
     width = height == 0 ? 0 : width;
     height = width == 0 ? 0 : height;
+    if(width != getWidth() || height != getHeight())
+      clearLayoutCache();
     super.setSize(width, height);
+  }
+
+  public void doLayout()
+  {
+    if(borderShaper != null)
+      borderShaper.updateDimentions();
+    super.doLayout();
   }
 
   public Prop getProp()
@@ -153,12 +168,11 @@ public class Panel extends JPanel
 
   public Dimension getMaximumSize()
   {  
-    Rectangle r = null;
+    Rectangle r;
     if (getParent().getClass() == Panel.class)
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
       r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
-//System.err.println("r = " + r + " " + prop.getClassName());
 
     int width = translateDimension(getStyle().getWidth(), r.width);
     int height = translateDimension(getStyle().getHeight(), r.height);
@@ -168,32 +182,46 @@ public class Panel extends JPanel
 
   public limelight.ui.Rectangle getRectangle()
   {
-    return new limelight.ui.Rectangle(0, 0, getWidth(), getHeight());
+    if(rectangle == null)
+      rectangle = new Rectangle(0, 0, getWidth(), getHeight());
+    return rectangle;
   }
 
   public limelight.ui.Rectangle getRectangleInsideMargins()
   {
-    limelight.ui.Rectangle r = getRectangle();
-    Style style = getStyle();
-    r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
-    return r;
+    if(rectangleInsideMargins == null)
+    {
+      rectangleInsideMargins = (Rectangle)getRectangle().clone();
+      rectangleInsideMargins.shave(getStyle().asInt(getStyle().getTopMargin()), getStyle().asInt(getStyle().getRightMargin()), getStyle().asInt(getStyle().getBottomMargin()), getStyle().asInt(getStyle().getLeftMargin()));
+    }
+    return rectangleInsideMargins;
   }
 
   public limelight.ui.Rectangle getRectangleInsideBorders()
   {
-    limelight.ui.Rectangle r = getRectangleInsideMargins();
-    Style style = getStyle();
-    r.shave(style.asInt(style.getTopBorderWidth()), style.asInt(style.getRightBorderWidth()), style.asInt(style.getBottomBorderWidth()), style.asInt(style.getLeftBorderWidth()));
-    return r;
+    if(rectangleInsideBorders == null)
+    {
+      rectangleInsideBorders = (Rectangle)getRectangleInsideMargins().clone();
+      rectangleInsideBorders.shave(getStyle().asInt(getStyle().getTopBorderWidth()), getStyle().asInt(getStyle().getRightBorderWidth()), getStyle().asInt(getStyle().getBottomBorderWidth()), getStyle().asInt(getStyle().getLeftBorderWidth()));
+    }
+    return rectangleInsideBorders;
   }
 
   public limelight.ui.Rectangle getRectangleInsidePadding()
   {
-    limelight.ui.Rectangle r = getRectangleInsideBorders();
-    Style style = getStyle();
-    r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
-//System.err.println("rectangleInsidePadding = " + r + " " + getProp().getClassName());
-    return r;
+    if(rectangleInsidePadding == null)
+    {
+      rectangleInsidePadding = (Rectangle)getRectangleInsideBorders().clone();
+      rectangleInsidePadding.shave(getStyle().asInt(getStyle().getTopPadding()), getStyle().asInt(getStyle().getRightPadding()), getStyle().asInt(getStyle().getBottomPadding()), getStyle().asInt(getStyle().getLeftPadding()));
+    }
+    return rectangleInsidePadding;
+  }
+
+  public Border getBorderShaper()
+  {
+    if(borderShaper == null)
+      borderShaper = new Border(getStyle(), getRectangleInsideMargins());
+    return borderShaper;
   }
 
   public int getXOffset()
@@ -263,6 +291,14 @@ public class Panel extends JPanel
       Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);
       ((Graphics2D) graphics).setComposite(alphaComposite);
     }
+  }
+
+  private void clearLayoutCache()
+  {
+    rectangle = null;
+    rectangleInsideMargins = null;
+    rectangleInsideBorders = null;
+    rectangleInsidePadding = null;
   }
 
   public static class SterilePanelException extends LimelightError

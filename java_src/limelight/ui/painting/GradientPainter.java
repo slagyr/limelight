@@ -92,7 +92,7 @@ public class GradientPainter extends Painter
 
     graphics.setPaint(new GradientPaint(x1, y1, color1, x3, y3, color2, cyclic));
 
-    Border border = new Border(style, panel.getRectangleInsideMargins());
+    Border border = panel.getBorderShaper();
     Shape insideBorder = border.getShapeInsideBorder();
     graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     graphics.fill(insideBorder);

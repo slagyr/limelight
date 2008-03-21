@@ -16,7 +16,7 @@ public class BorderPainter extends Painter
   {
     Style style = getStyle();
     Pen pen = new Pen(graphics);
-    Border border = new Border(style, panel.getRectangleInsideMargins());
+    Border border = panel.getBorderShaper();
 
     graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

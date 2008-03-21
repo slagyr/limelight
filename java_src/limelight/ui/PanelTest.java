@@ -2,6 +2,7 @@ package limelight.ui;
 
 import junit.framework.TestCase;
 import limelight.ui.painting.BackgroundPainter;
+import limelight.ui.painting.Border;
 import limelight.ui.painting.BorderPainter;
 
 import java.awt.*;
@@ -11,6 +12,8 @@ public class PanelTest extends TestCase
 {
   private static class TestablePanel extends Panel
   {
+    private Border borderShaper;
+
     public TestablePanel(Prop owner)
     {
       super(owner);
@@ -256,5 +259,37 @@ public class PanelTest extends TestCase
   public void testTextAccessor() throws Exception
   {
     assertEquals(TextPaneTextAccessor.class, panel.getTextAccessor().getClass());
+  }
+  
+  public void testRactanglesAreCached() throws Exception
+  {
+    Rectangle rectangle = panel.getRectangle();
+    Rectangle insideMargins = panel.getRectangleInsideMargins();
+    Rectangle insideBorders = panel.getRectangleInsideBorders();
+    Rectangle insidePadding = panel.getRectangleInsidePadding();
+
+    assertSame(rectangle, panel.getRectangle());
+    assertSame(insideMargins, panel.getRectangleInsideMargins());
+    assertSame(insideBorders, panel.getRectangleInsideBorders());
+    assertSame(insidePadding, panel.getRectangleInsidePadding());
+
+    panel.setSize(123, 456);
+
+    assertNotSame(rectangle, panel.getRectangle());
+    assertNotSame(insideMargins, panel.getRectangleInsideMargins());
+    assertNotSame(insideBorders, panel.getRectangleInsideBorders());
+    assertNotSame(insidePadding, panel.getRectangleInsidePadding());
+  }
+
+  public void testBorderGetUpdatedOnLayout() throws Exception
+  {
+    parent.setSize(100, 100);
+    Border border = panel.getBorderShaper();
+    style.flushChanges();
+
+    style.setBorderWidth("21");
+    panel.doLayout();
+
+    assertEquals(21, border.getTopWidth());
   }
 }

@@ -47,7 +47,7 @@ module Limelight
       if(scene.has_static_size?)
         @frame.set_size(scene.panel.get_size)
       else
-        @frame.set_size(800, 800)
+        @frame.set_size(800, 800) if @frame.get_width == 0 || @frame.get_height == 0
       end
       @current_scene = scene
     end

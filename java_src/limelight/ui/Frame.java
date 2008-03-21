@@ -9,7 +9,6 @@ public class Frame extends JFrame
 
   public Frame(Stage stage)
   {
-	System.setProperty("apple.laf.useScreenMenuBar", "true");
     this.stage = stage;
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setLayout(null);

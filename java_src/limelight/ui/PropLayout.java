@@ -17,6 +17,9 @@ public class PropLayout implements LayoutManager
   private int consumedHeight;
   private JScrollPane scrollPane;
 
+  private static long totalDuration = 0;
+  private static int calls = 0;
+
   public PropLayout(Panel panel)
   {
     this.panel = panel;
@@ -52,8 +55,8 @@ public class PropLayout implements LayoutManager
 
   public void layoutContainer(Container container)
 	{
+long start = System.currentTimeMillis();
     panel.setSize(panel.getMaximumSize());
-    Component[] components = getComponents();
 
     reset();
     buildRows();
@@ -79,6 +82,10 @@ public class PropLayout implements LayoutManager
       doNormalLayout();
       collapseAutoDimensions();
     }
+long duration = System.currentTimeMillis() - start;
+totalDuration += duration;
+calls++;
+//System.err.println("duration = " + duration + "\t\t" + totalDuration + "\t" + calls);
   }
 
   private void collapseAutoDimensions()

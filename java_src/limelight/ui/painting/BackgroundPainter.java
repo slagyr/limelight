@@ -19,7 +19,7 @@ public class BackgroundPainter extends Painter
   public void paint(Graphics2D graphics)
   {
     Style style = getStyle();
-    Border border = new Border(style, panel.getRectangleInsideMargins());
+    Border border = panel.getBorderShaper();
     Shape insideBorder = border.getShapeInsideBorder();
 //    Shape insideBorder = panel.getRectangleInsideBorders();
     if (style.getSecondaryBackgroundColor() != null && style.getGradientAngle() != null && style.getGradientPenetration() != null)
