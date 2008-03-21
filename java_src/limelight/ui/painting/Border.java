@@ -6,15 +6,10 @@ import limelight.ui.Style;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Border
 {
   private Style style;
-  private int right;
-  private int bottom;
-  private int left;
-  private int top;
   private int topWidth;
   private int rightWidth;
   private int bottomWidth;
@@ -27,12 +22,12 @@ public class Border
   private int bottomRightRadius;
   private int bottomLeftRadius;
   private int topLeftRadius;
-  private Rectangle insideMargin;
+  private Rectangle bounds;
   private Jig jig;
 
-  public Border(Style style, Rectangle insideMargin) {
+  public Border(Style style, Rectangle bounds) {
     this.style = style;
-    this.insideMargin = insideMargin;
+    this.bounds = bounds;
     
     topWidth = style.asInt(style.getTopBorderWidth());
     rightWidth = style.asInt(style.getRightBorderWidth());
@@ -49,6 +44,11 @@ public class Border
     topLeftRadius = style.asInt(style.getTopLeftRoundedCornerRadius());
 
     jig = new CenterJig(this);
+  }
+
+  public void setBounds(Rectangle bounds)
+  {
+    this.bounds = bounds;
   }
 
   public Style getStyle() {
@@ -93,6 +93,31 @@ public class Border
   public int getTopLeftWidth()
   {
     return topLeftWidth;
+  }
+
+  public int getTopRightRadius()
+  {
+    return topRightRadius;
+  }
+
+  public int getBottomRightRadius()
+  {
+    return bottomRightRadius;
+  }
+
+  public int getBottomLeftRadius()
+  {
+    return bottomLeftRadius;
+  }
+
+  public int getTopLeftRadius()
+  {
+    return topLeftRadius;
+  }
+
+  public Rectangle getBounds()
+  {
+    return bounds;
   }
 
   public boolean hasTopBorder()
@@ -180,6 +205,34 @@ public class Border
     return new BorderShape(this);
   }
 
+  public void updateDimentions()
+  {
+    if(style.changed(Style.TOP_BORDER_WIDTH))
+      topWidth = style.asInt(style.getTopBorderWidth());
+    if(style.changed(Style.RIGHT_BORDER_WIDTH))
+      rightWidth = style.asInt(style.getRightBorderWidth());
+    if(style.changed(Style.BOTTOM_BORDER_WIDTH))
+      bottomWidth = style.asInt(style.getBottomBorderWidth());
+    if(style.changed(Style.LEFT_BORDER_WIDTH))
+      leftWidth = style.asInt(style.getLeftBorderWidth());
+    if(style.changed(Style.TOP_RIGHT_BORDER_WIDTH))
+      topRightWidth = style.asInt(style.getTopRightBorderWidth());
+    if(style.changed(Style.BOTTOM_RIGHT_BORDER_WIDTH))
+      bottomRightWidth = style.asInt(style.getBottomRightBorderWidth());
+    if(style.changed(Style.BOTTOM_LEFT_BORDER_WIDTH))
+      bottomLeftWidth = style.asInt(style.getBottomLeftBorderWidth());
+    if(style.changed(Style.TOP_LEFT_BORDER_WIDTH))
+      topLeftWidth = style.asInt(style.getTopLeftBorderWidth());
+    if(style.changed(Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS))
+      topRightRadius = style.asInt(style.getTopRightRoundedCornerRadius());
+    if(style.changed(Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS))
+      bottomRightRadius = style.asInt(style.getBottomRightRoundedCornerRadius());
+    if(style.changed(Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS))
+      bottomLeftRadius = style.asInt(style.getBottomLeftRoundedCornerRadius());
+    if(style.changed(Style.TOP_LEFT_ROUNDED_CORNER_RADIUS))
+      topLeftRadius = style.asInt(style.getTopLeftRoundedCornerRadius());
+  }
+
   private abstract static class Jig
   {
     protected int left, right, top, bottom;
@@ -242,41 +295,41 @@ public class Border
     public CenterJig(Border border)
     {
       super(border);
-      left = border.insideMargin.left() + shave(border.leftWidth);
-      right = border.insideMargin.right() - rightShave(border.rightWidth) + 1;
-      top = border.insideMargin.top() + shave(border.topWidth);
-      bottom = border.insideMargin.bottom() - bottomShave(border.bottomWidth) + 1;
+      left = border.bounds.left() + shave(border.leftWidth);
+      right = border.bounds.right() - rightShave(border.rightWidth) + 1;
+      top = border.bounds.top() + shave(border.topWidth);
+      bottom = border.bounds.bottom() - bottomShave(border.bottomWidth) + 1;
     }
 
     public Arc2D getTopRightArc()
     {
       int topRightArcWidth = border.topRightRadius * 2 - border.topRightWidth / 2;
-      int x = border.insideMargin.right() - shave(border.topRightWidth) - topRightArcWidth;
-      int y = border.insideMargin.top() + shave(border.topRightWidth);
+      int x = border.bounds.right() - shave(border.topRightWidth) - topRightArcWidth;
+      int y = border.bounds.top() + shave(border.topRightWidth);
       return new Arc2D.Double(x, y, topRightArcWidth, topRightArcWidth, 90, -90, Arc2D.OPEN);
     }
 
     public Arc2D getBottomRightArc()
     {
       int bottomRightArcWidth = border.bottomRightRadius * 2 - border.bottomRightWidth / 2;
-      int x = border.insideMargin.right() - shave(border.bottomRightWidth) - bottomRightArcWidth;
-      int y = border.insideMargin.bottom() - shave(border.bottomRightWidth) - bottomRightArcWidth;
+      int x = border.bounds.right() - shave(border.bottomRightWidth) - bottomRightArcWidth;
+      int y = border.bounds.bottom() - shave(border.bottomRightWidth) - bottomRightArcWidth;
       return new Arc2D.Double(x, y, bottomRightArcWidth, bottomRightArcWidth, 0, -90, Arc2D.OPEN);
     }
 
     public Arc2D getBottomLeftArc()                                                                                
     {
       int bottomLeftArcWidth = border.bottomLeftRadius * 2 - border.bottomLeftWidth / 2;
-      int x = border.insideMargin.left() + shave(border.bottomLeftWidth);
-      int y = border.insideMargin.bottom() - shave(border.bottomLeftWidth) - bottomLeftArcWidth;
+      int x = border.bounds.left() + shave(border.bottomLeftWidth);
+      int y = border.bounds.bottom() - shave(border.bottomLeftWidth) - bottomLeftArcWidth;
       return new Arc2D.Double(x, y, bottomLeftArcWidth, bottomLeftArcWidth, 270, -90, Arc2D.OPEN);
     }
 
     public Arc2D getTopLeftArc()
     {
       int topLeftArcWidth = border.topLeftRadius * 2 - border.topLeftWidth / 2;
-      int x = border.insideMargin.left() + shave(border.topLeftWidth);
-      int y = border.insideMargin.top() + shave(border.topLeftWidth);
+      int x = border.bounds.left() + shave(border.topLeftWidth);
+      int y = border.bounds.top() + shave(border.topLeftWidth);
       return new Arc2D.Double(x, y, topLeftArcWidth, topLeftArcWidth, 180, -90, Arc2D.OPEN);
     }
   }
@@ -286,41 +339,41 @@ public class Border
     public InsideJig(Border border)
     {
       super(border);
-      left = border.insideMargin.left() + border.leftWidth;
-      right = border.insideMargin.right() - border.rightWidth + 1;
-      top = border.insideMargin.top() + border.topWidth;
-      bottom = border.insideMargin.bottom() - border.bottomWidth + 1;
+      left = border.bounds.left() + border.leftWidth;
+      right = border.bounds.right() - border.rightWidth + 1;
+      top = border.bounds.top() + border.topWidth;
+      bottom = border.bounds.bottom() - border.bottomWidth + 1;
     }
 
     public Arc2D getTopRightArc()
     {
       int topRightArcWidth = border.topRightRadius * 2 - border.topRightWidth;
-      int x = border.insideMargin.right() - border.topRightWidth - topRightArcWidth + 1;
-      int y = border.insideMargin.top() + border.topRightWidth;
+      int x = border.bounds.right() - border.topRightWidth - topRightArcWidth + 1;
+      int y = border.bounds.top() + border.topRightWidth;
       return new Arc2D.Double(x, y, topRightArcWidth, topRightArcWidth, 90, -90, Arc2D.OPEN);
     }
 
     public Arc2D getBottomRightArc()
     {
       int bottomRightArcWidth = border.bottomRightRadius * 2 - border.bottomRightWidth;
-      double x = border.insideMargin.right() - border.bottomRightWidth - bottomRightArcWidth + 1;
-      double y = border.insideMargin.bottom() - border.bottomRightWidth - bottomRightArcWidth + 1;
+      double x = border.bounds.right() - border.bottomRightWidth - bottomRightArcWidth + 1;
+      double y = border.bounds.bottom() - border.bottomRightWidth - bottomRightArcWidth + 1;
       return new Arc2D.Double(x, y, bottomRightArcWidth, bottomRightArcWidth, 0, -90, Arc2D.OPEN);
     }
 
     public Arc2D getBottomLeftArc()
     {
       int bottomLeftArcWidth = border.bottomLeftRadius * 2 - border.bottomLeftWidth;
-      int x = border.insideMargin.left() + border.bottomLeftWidth;
-      int y = border.insideMargin.bottom() - border.bottomLeftWidth - bottomLeftArcWidth + 1;
+      int x = border.bounds.left() + border.bottomLeftWidth;
+      int y = border.bounds.bottom() - border.bottomLeftWidth - bottomLeftArcWidth + 1;
       return new Arc2D.Double(x, y, bottomLeftArcWidth, bottomLeftArcWidth, 270, -90, Arc2D.OPEN);
     }
 
     public Arc2D getTopLeftArc()
     {
       int topLeftArcWidth = border.topLeftRadius * 2 - border.topLeftWidth;
-      int x = border.insideMargin.left() + border.topLeftWidth;
-      int y = border.insideMargin.top() + border.topLeftWidth;
+      int x = border.bounds.left() + border.topLeftWidth;
+      int y = border.bounds.top() + border.topLeftWidth;
       return new Arc2D.Double(x, y, topLeftArcWidth, topLeftArcWidth, 180, -90, Arc2D.OPEN);
     }
   }
@@ -337,42 +390,42 @@ public class Border
 
     public java.awt.Rectangle getBounds()
     {
-      return border.insideMargin;
+      return border.bounds;
     }
 
     public Rectangle2D getBounds2D()
     {
-      return border.insideMargin;
+      return border.bounds;
     }
 
     public boolean contains(double x, double y)
     {
-      return border.insideMargin.contains(x, y);
+      return border.bounds.contains(x, y);
     }
 
     public boolean contains(Point2D p)
     {
-      return border.insideMargin.contains(p);
+      return border.bounds.contains(p);
     }
 
     public boolean intersects(double x, double y, double w, double h)
     {
-      return border.insideMargin.intersects(x, y, w, h);
+      return border.bounds.intersects(x, y, w, h);
     }
 
     public boolean intersects(Rectangle2D r)
     {
-      return border.insideMargin.intersects(r);
+      return border.bounds.intersects(r);
     }
 
     public boolean contains(double x, double y, double w, double h)
     {
-      return border.insideMargin.contains(x, y, w, h);
+      return border.bounds.contains(x, y, w, h);
     }
 
     public boolean contains(Rectangle2D r)
     {
-      return border.insideMargin.contains(r);
+      return border.bounds.contains(r);
     }
 
     public PathIterator getPathIterator(AffineTransform at)

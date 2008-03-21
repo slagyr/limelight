@@ -4,7 +4,6 @@ JAVA_OPTS=$JAVA_OPTS' -Dapple.laf.useScreenMenuBar=true '
 JAVA_OPTS=$JAVA_OPTS' -Xdock:name=Limelight '
 JAVA_OPTS=$JAVA_OPTS-Xdock:icon=$0.icns
 export JAVA_OPTS
-echo $JAVA_OPTS
 
 /usr/bin/env jruby "$0.rb" $1 $2 $3 $4 $5
 

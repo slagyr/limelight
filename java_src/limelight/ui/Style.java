@@ -494,9 +494,19 @@ public abstract class Style
     return get(TOP_RIGHT_BORDER_WIDTH);
   }
 
+  public void setTopRightBorderWidth(String value)
+  {
+    put(TOP_RIGHT_BORDER_WIDTH, value);
+  }
+
   public String getBottomRightBorderWidth()
   {
     return get(BOTTOM_RIGHT_BORDER_WIDTH);
+  }
+
+  public void setBottomRightBorderWidth(String value)
+  {
+    put(BOTTOM_RIGHT_BORDER_WIDTH, value);
   }
 
   public String getBottomLeftBorderWidth()
@@ -504,9 +514,19 @@ public abstract class Style
     return get(BOTTOM_LEFT_BORDER_WIDTH);
   }
 
+  public void setBottomLeftBorderWidth(String value)
+  {
+    put(BOTTOM_LEFT_BORDER_WIDTH, value);
+  }
+
   public String getTopLeftBorderWidth()
   {
     return get(TOP_LEFT_BORDER_WIDTH);
+  }
+
+  public void setTopLeftBorderWidth(String value)
+  {
+    put(TOP_LEFT_BORDER_WIDTH, value);
   }
 
   public String getTopRightBorderColor()
@@ -514,9 +534,19 @@ public abstract class Style
     return get(TOP_RIGHT_BORDER_COLOR);
   }
 
+  public void setTopRightBorderColor(String value)
+  {
+    put(TOP_RIGHT_BORDER_COLOR, value);
+  }
+
   public String getBottomRightBorderColor()
   {
     return get(BOTTOM_RIGHT_BORDER_COLOR);
+  }
+
+  public void setBottomRightBorderColor(String value)
+  {
+    put(BOTTOM_RIGHT_BORDER_COLOR, value);
   }
 
   public String getBottomLeftBorderColor()
@@ -524,9 +554,19 @@ public abstract class Style
     return get(BOTTOM_LEFT_BORDER_COLOR);
   }
 
+  public void setBottomLeftBorderColor(String value)
+  {
+    put(BOTTOM_LEFT_BORDER_COLOR, value);
+  }
+
   public String getTopLeftBorderColor()
   {
     return get(TOP_LEFT_BORDER_COLOR);
+  }
+
+  public void setTopLeftBorderColor(String value)
+  {
+    put(TOP_LEFT_BORDER_COLOR, value);
   }
 
   public void setRoundedCornerRadius(String radius)
