@@ -200,7 +200,26 @@ public class FlatStyleTest extends TestCase
     assertEquals("6", style.getBottomLeftRoundedCornerRadius());
   }
 
+  public void testFloatingStyle() throws Exception
+  {
+    assertEquals("off", style.getFloat());
 
+    style.setFloat("on");
+
+    assertEquals("on", style.getFloat());
+  }
+
+  public void testXandY() throws Exception
+  {
+    assertEquals("0", style.getX());
+    assertEquals("0", style.getY());
+
+    style.setX("1");
+    style.setY("2");
+
+    assertEquals("1", style.getX());
+    assertEquals("2", style.getY());
+  }
 
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds
 //  // Array based: 3800000 sets and 3500000 gets took = 1863.0 milliseconds

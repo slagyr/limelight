@@ -206,7 +206,7 @@ public class Border
   }
 
   public void updateDimentions()
-  {
+  {    
     if(style.changed(Style.TOP_BORDER_WIDTH))
       topWidth = style.asInt(style.getTopBorderWidth());
     if(style.changed(Style.RIGHT_BORDER_WIDTH))

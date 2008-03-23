@@ -8,12 +8,15 @@ import java.awt.*;
 
 public class MockPanel extends Panel
 {
+  public static int paintCount = 0;
+
   public Rectangle rectangleInsideMargin;
   public Rectangle rectangleInsidePadding;
   private int prepWidth;
   private int prepHeight;
   public boolean wasLaidOut;
   private boolean dimensionsArePrepared;
+  public int paintIndex;
 
   public MockPanel()
 	{
@@ -53,5 +56,11 @@ public class MockPanel extends Panel
   {
     super.doLayout();
     wasLaidOut = true;
+  }
+
+  public void paint(Graphics graphics)
+  {   
+    paintIndex = paintCount++;
+//    super.paint(graphics);
   }
 }

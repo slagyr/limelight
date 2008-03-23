@@ -209,5 +209,58 @@ public class PropLayoutTest extends TestCase
     assertEquals(0, panel.getWidth());
     assertEquals(0, panel.getHeight());
   }
+
+  public void testFloatersAreNoConsideredInDeterminingScrollMode() throws Exception
+  {
+    MockPanel child = new MockPanel();
+    child.prepForSnap(50, 50);
+    MockPanel floater = new MockPanel();
+    floater.getStyle().setFloat("on");
+    floater.prepForSnap(500, 500);
+    parent.add(child);
+    parent.add(floater);
+
+    layout.layoutContainer(parent);
+
+    assertEquals(2, parent.getComponents().length);
+    assertSame(child, parent.getComponents()[0]);
+    assertSame(floater, parent.getComponents()[1]);
+  }
+  
+  public void testFloatersDoNotInfluenceAutoSize() throws Exception
+  {
+    MockPanel panel = new MockPanel();
+    panel.getStyle().setWidth("auto");
+    panel.getStyle().setHeight("auto");
+    parent.add(panel);
+    MockPanel child = new MockPanel();
+    child.prepForSnap(50, 50);
+    panel.add(child);
+    MockPanel floater = new MockPanel();
+    floater.getStyle().setFloat("on");
+    floater.prepForSnap(500, 500);
+    panel.add(floater);
+
+    layout.layoutContainer(parent);
+
+    assertEquals(50, panel.getWidth());
+    assertEquals(50, panel.getHeight());
+  }
+  
+  public void testFloatersAreLaidOut() throws Exception
+  {
+    MockPanel floater = createAndAddChildWithSize(50, 50);
+    floater.getStyle().setFloat("on");
+    floater.getStyle().setX("2");
+    floater.getStyle().setY("3");
+    MockPanel child = createAndAddChildWithSize(50, 50);
+
+    layout.layoutContainer(parent);
+
+    assertTrue(floater.wasLaidOut);
+    assertTrue(child.wasLaidOut);
+    assertEquals(new Point(2, 3), floater.getLocation());
+    assertEquals(new Point(0, 0), child.getLocation());
+  }
 }
 

@@ -4,6 +4,7 @@ package limelight.ui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.Iterator;
 
 public class PropLayout implements LayoutManager
 {
@@ -16,6 +17,7 @@ public class PropLayout implements LayoutManager
   private int consumedWidth;
   private int consumedHeight;
   private JScrollPane scrollPane;
+  private LinkedList<Panel> floaters;
 
   private static long totalDuration = 0;
   private static int calls = 0;
@@ -104,6 +106,28 @@ calls++;
   {
     Aligner aligner = buildAligner(panel.getRectangleInsidePadding());
     aligner.addConsumedHeight(consumedHeight);
+    layoutRows(aligner);
+    layoutFloaters();
+  }
+
+  private void layoutFloaters()
+  {
+    if(floaters == null)
+      return;
+    for (Panel floater : floaters)
+      layoutFloater(floater);
+  }
+
+  private void layoutFloater(Panel floater)
+  {
+    Style style = floater.getStyle();
+    int x = style.asInt(style.getX());
+    int y = style.asInt(style.getY());
+    floater.setLocation(area.x + x, area.y + y);
+  }
+
+  private void layoutRows(Aligner aligner)
+  {
     int y = aligner.startingY();
     for(Row row : rows)
     {
@@ -149,11 +173,31 @@ calls++;
     for(Component component : getComponents())
     {
       component.doLayout();
-      if (!currentRow.isEmpty() && !currentRow.fits(component))
-        newRow();
-      currentRow.add(component);
+      if(isFloater(component))
+        addFloater(component);
+      else
+        addToRow(component);
     }
     calculateConsumedDimentions();
+  }
+
+  private void addToRow(Component component)
+  {
+    if(!currentRow.isEmpty() && !currentRow.fits(component))
+      newRow();
+    currentRow.add(component);
+  }
+
+  private boolean isFloater(Component component)
+  {
+    return component instanceof Panel && ((Panel)component).isFloater();
+  }
+
+  private void addFloater(Component component)
+  {
+    if(floaters == null)
+      floaters = new LinkedList<Panel>();
+    floaters.add((Panel)component);
   }
 
   private Aligner buildAligner(limelight.ui.Rectangle rectangle)
@@ -164,6 +208,7 @@ calls++;
   private void reset()
 	{
     area = panel.getRectangleInsidePadding();
+    floaters = null;
     rows.clear();
 		newRow();
 	}
@@ -265,13 +310,7 @@ calls++;
     {                                       
       String horizontalAlignment = panel.getStyle().getHorizontalAlignment();
       Aligner aligner = new Aligner(new limelight.ui.Rectangle(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
-      int y = aligner.startingY();
-      for(Row row : rows)
-      {
-        int x = aligner.startingX(row.width);
-        row.layoutComponents(x, y);
-        y += row.height;
-      }
+      layoutRows(aligner);
     }
   }
 }

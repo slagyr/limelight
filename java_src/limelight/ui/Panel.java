@@ -53,7 +53,7 @@ public class Panel extends JPanel
   public boolean hasChild(Component child)
   {
     Component[] components = getComponents();
-    for(Component component : components)
+    for (Component component : components)
       if (child == component)
         return true;
     return false;
@@ -71,16 +71,21 @@ public class Panel extends JPanel
 //  new Exception().printStackTrace();
     width = height == 0 ? 0 : width;
     height = width == 0 ? 0 : height;
-    if(width != getWidth() || height != getHeight())
+    if (width != getWidth() || height != getHeight())
       clearLayoutCache();
     super.setSize(width, height);
   }
 
   public void doLayout()
   {
-    if(borderShaper != null)
+    if (borderShaper != null)
       borderShaper.updateDimentions();
+
     super.doLayout();
+
+    //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
+    if (borderShaper != null)
+      borderShaper.setBounds(getRectangleInsideMargins());
   }
 
   public Prop getProp()
@@ -95,7 +100,7 @@ public class Panel extends JPanel
 
   public Style getStyle()
   {
-    if(style == null)
+    if (style == null)
       style = getProp().getStyle();
     return style;
   }
@@ -135,17 +140,46 @@ public class Panel extends JPanel
     limelight.ui.Rectangle clip = new limelight.ui.Rectangle(graphics.getClipBounds());
     graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
     ((Graphics2D) graphics).setComposite(originalComposite);
-    super.paintChildren(graphics);
+    paintChildren(graphics);
+  }
+
+  protected void paintChildren(Graphics graphics)
+  {
+    Component[] components = getComponents();
+    for (Component child : components)
+    {
+      if(!isFloater(child))
+        paintChild(graphics, child);
+    }
+    for (Component child : components)
+    {
+      if(isFloater(child))
+        paintChild(graphics, child);
+    }
+  }
+
+  private void paintChild(Graphics graphics, Component child)
+  {
+    if (graphics.hitClip(child.getX(), child.getY(), child.getWidth(), child.getHeight()))
+    {
+      Graphics childGraphics = graphics.create(child.getX(), child.getY(), child.getWidth(), child.getHeight());
+      child.paint(childGraphics);
+    }
+  }
+
+  private boolean isFloater(Component component)
+  {
+    return (component instanceof Panel) && ((Panel)component).isFloater();
   }
 
   protected boolean shouldBuildBuffer()
   {
     Style style = getStyle();
-    if(buffer == null)
+    if (buffer == null)
       return true;
-    if(style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY)))
+    if (style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY)))
       return true;
-    if(getWidth() != buffer.getWidth() || getHeight() != buffer.getHeight())
+    if (getWidth() != buffer.getWidth() || getHeight() != buffer.getHeight())
       return true;
     return false;
   }
@@ -167,7 +201,7 @@ public class Panel extends JPanel
   }
 
   public Dimension getMaximumSize()
-  {  
+  {
     Rectangle r;
     if (getParent().getClass() == Panel.class)
       r = ((Panel) getParent()).getRectangleInsidePadding();
@@ -182,16 +216,16 @@ public class Panel extends JPanel
 
   public limelight.ui.Rectangle getRectangle()
   {
-    if(rectangle == null)
+    if (rectangle == null)
       rectangle = new Rectangle(0, 0, getWidth(), getHeight());
     return rectangle;
   }
 
   public limelight.ui.Rectangle getRectangleInsideMargins()
   {
-    if(rectangleInsideMargins == null)
+    if (rectangleInsideMargins == null)
     {
-      rectangleInsideMargins = (Rectangle)getRectangle().clone();
+      rectangleInsideMargins = (Rectangle) getRectangle().clone();
       rectangleInsideMargins.shave(getStyle().asInt(getStyle().getTopMargin()), getStyle().asInt(getStyle().getRightMargin()), getStyle().asInt(getStyle().getBottomMargin()), getStyle().asInt(getStyle().getLeftMargin()));
     }
     return rectangleInsideMargins;
@@ -199,9 +233,9 @@ public class Panel extends JPanel
 
   public limelight.ui.Rectangle getRectangleInsideBorders()
   {
-    if(rectangleInsideBorders == null)
+    if (rectangleInsideBorders == null)
     {
-      rectangleInsideBorders = (Rectangle)getRectangleInsideMargins().clone();
+      rectangleInsideBorders = (Rectangle) getRectangleInsideMargins().clone();
       rectangleInsideBorders.shave(getStyle().asInt(getStyle().getTopBorderWidth()), getStyle().asInt(getStyle().getRightBorderWidth()), getStyle().asInt(getStyle().getBottomBorderWidth()), getStyle().asInt(getStyle().getLeftBorderWidth()));
     }
     return rectangleInsideBorders;
@@ -209,9 +243,9 @@ public class Panel extends JPanel
 
   public limelight.ui.Rectangle getRectangleInsidePadding()
   {
-    if(rectangleInsidePadding == null)
+    if (rectangleInsidePadding == null)
     {
-      rectangleInsidePadding = (Rectangle)getRectangleInsideBorders().clone();
+      rectangleInsidePadding = (Rectangle) getRectangleInsideBorders().clone();
       rectangleInsidePadding.shave(getStyle().asInt(getStyle().getTopPadding()), getStyle().asInt(getStyle().getRightPadding()), getStyle().asInt(getStyle().getBottomPadding()), getStyle().asInt(getStyle().getLeftPadding()));
     }
     return rectangleInsidePadding;
@@ -219,7 +253,7 @@ public class Panel extends JPanel
 
   public Border getBorderShaper()
   {
-    if(borderShaper == null)
+    if (borderShaper == null)
       borderShaper = new Border(getStyle(), getRectangleInsideMargins());
     return borderShaper;
   }
@@ -258,6 +292,11 @@ public class Panel extends JPanel
     return sterilized;
   }
 
+  public boolean isFloater()
+  {
+    return "on".equals(getStyle().getFloat());
+  }
+
   private void buildPainters()
   {
     painters = new LinkedList<Painter>();
@@ -269,12 +308,12 @@ public class Panel extends JPanel
   {
     if (sizeString == null)
       return 0;
-    else if("auto".equals(sizeString))
+    else if ("auto".equals(sizeString))
       return maxSize;
-    else if(sizeString.endsWith("%"))
+    else if (sizeString.endsWith("%"))
     {
       double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-      int result = (int) ((percentage * 0.01) * (double) maxSize);      
+      int result = (int) ((percentage * 0.01) * (double) maxSize);
       return result;
     }
     else

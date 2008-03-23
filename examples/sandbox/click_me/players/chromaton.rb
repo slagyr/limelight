@@ -16,7 +16,7 @@ module Chromaton
     new_random_color
     new_random_size
     update_text
-    scene.update
+    parent.update
   end
   
   private
