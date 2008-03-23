@@ -66,9 +66,6 @@ public class Panel extends JPanel
 
   public void setSize(int width, int height)
   {
-//System.err.println(getProp().getClassName() + " setSize() = " + width + ", " + height);
-//if("section_body".equals(getProp().getClassName()))
-//  new Exception().printStackTrace();
     width = height == 0 ? 0 : width;
     height = width == 0 ? 0 : height;
     if (width != getWidth() || height != getHeight())

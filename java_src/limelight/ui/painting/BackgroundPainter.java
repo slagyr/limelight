@@ -21,7 +21,6 @@ public class BackgroundPainter extends Painter
     Style style = getStyle();
     Border border = panel.getBorderShaper();
     Shape insideBorder = border.getShapeInsideBorder();
-//    Shape insideBorder = panel.getRectangleInsideBorders();
     if (style.getSecondaryBackgroundColor() != null && style.getGradientAngle() != null && style.getGradientPenetration() != null)
       new GradientPainter(panel).paint(graphics);
     else if (style.getBackgroundColor() != null)
