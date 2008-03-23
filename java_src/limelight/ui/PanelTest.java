@@ -292,4 +292,41 @@ public class PanelTest extends TestCase
 
     assertEquals(21, border.getTopWidth());
   }
+
+  public void testIsFloater() throws Exception
+  {
+    assertEquals(false, panel.isFloater());
+    panel.getStyle().setFloat("on");
+    assertEquals(true, panel.isFloater());
+    panel.getStyle().setFloat("off");
+    assertEquals(false, panel.isFloater());
+  }
+
+  public void testFloaterArePutAtTheBackOfTheLine() throws Exception
+  {
+    MockPanel child1 = new MockPanel();
+    MockPanel child2 = new MockPanel();
+    MockPanel child3 = new MockPanel();
+    MockPanel child4 = new MockPanel();
+    MockPanel child5 = new MockPanel();
+
+    panel.add(child1);
+    panel.add(child2);
+    panel.add(child3);
+    panel.add(child4);
+    panel.add(child5);
+
+    child1.getStyle().setFloat("on");
+    child3.getStyle().setFloat("on");
+
+    MockPanel.paintCount = 0;
+    panel.setSize(100, 100);
+    panel.paintChildren(new MockGraphics());
+
+    assertEquals(0, child2.paintIndex);
+    assertEquals(1, child4.paintIndex);
+    assertEquals(2, child5.paintIndex);
+    assertEquals(3, child1.paintIndex);
+    assertEquals(4, child3.paintIndex);
+  }
 }

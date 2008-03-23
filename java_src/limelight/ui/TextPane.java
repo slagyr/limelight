@@ -112,7 +112,7 @@ public class TextPane extends JPanel
           LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics().getFontRenderContext());
           while (lbm.getPosition() < paragraph.length())
           {
-            TextLayout layout = lbm.nextLayout((float) (getBounds().getWidth() - widthPadding));
+            TextLayout layout = lbm.nextLayout((float) (getBounds().getWidth()));
             lines.add(layout);
           }
         }
@@ -129,7 +129,9 @@ public class TextPane extends JPanel
     for (TextLayout layout : lines)
     {
       consumedHeight += (layout.getAscent() + layout.getDescent() + layout.getLeading());
-      double lineWidth = layout.getBounds().getWidth();
+      double lineWidth = layout.getBounds().getWidth() + widthPadding;
+      if(lineWidth > bounds.width)
+        lineWidth = bounds.width;
       if(lineWidth > consumedWidth)
         consumedWidth = lineWidth;
     }

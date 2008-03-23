@@ -48,8 +48,11 @@ public abstract class Style
   public static final StyleDescriptor BOTTOM_RIGHT_BORDER_COLOR = new StyleDescriptor(43, null);
   public static final StyleDescriptor BOTTOM_LEFT_BORDER_COLOR = new StyleDescriptor(44, null);
   public static final StyleDescriptor TOP_LEFT_BORDER_COLOR = new StyleDescriptor(45, null);
+  public static final StyleDescriptor FLOAT = new StyleDescriptor(46, "off");
+  public static final StyleDescriptor X = new StyleDescriptor(47, "0");
+  public static final StyleDescriptor Y = new StyleDescriptor(48, "0");
 
-  protected static final int STYLE_COUNT = 46;
+  protected static final int STYLE_COUNT = 49;
 
   protected boolean[] changes;
 
@@ -64,7 +67,11 @@ public abstract class Style
 
   protected String get(StyleDescriptor descriptor)
   {
-    return get(descriptor.index);
+    String value = get(descriptor.index);
+    if(value == null)
+      return descriptor.defaultValue;
+    else
+      return value;
   }
 
   public boolean changed()
@@ -640,4 +647,35 @@ public abstract class Style
     put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, radius);
     put(TOP_LEFT_ROUNDED_CORNER_RADIUS, radius);
   }
+
+  public String getFloat()
+  {
+    return get(FLOAT);
+  }
+
+  public void setFloat(String value)
+  {
+    put(FLOAT, value);
+  }
+
+  public String getX()
+  {
+    return get(X);
+  }
+
+  public void setX(String value)
+  {
+    put(X, value);
+  }
+
+  public String getY()
+  {
+    return get(Y);
+  }
+
+  public void setY(String value)
+  {
+    put(Y, value);
+  }
+
 }
