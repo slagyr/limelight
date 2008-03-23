@@ -49,6 +49,7 @@ public class Border
   public void setBounds(Rectangle bounds)
   {
     this.bounds = bounds;
+    jig = new CenterJig(this); //TODO MDM a new jig is not needed... it just needs to update.
   }
 
   public Style getStyle() {
@@ -259,7 +260,7 @@ public class Border
     }
 
     public Line2D getTopLine()
-    {
+    { 
       return new Line2D.Double(left + border.topLeftRadius, top, right - border.topRightRadius, top);
     }
 
@@ -385,7 +386,6 @@ public class Border
     public BorderShape(Border border)
     {
       this.border = border;
-      jig = new InsideJig(border);
     }
 
     public java.awt.Rectangle getBounds()
@@ -430,7 +430,7 @@ public class Border
 
     public PathIterator getPathIterator(AffineTransform at)
     {
-      return new BorderShapePathIterator(border, jig, at);
+      return new BorderShapePathIterator(border, new InsideJig(border), at);
     }
 
     public PathIterator getPathIterator(AffineTransform at, double flatness)
@@ -539,7 +539,7 @@ public class Border
 
   private static class MovePathSegment extends PathSegment
   {
-    private double d1, d2;
+    protected double d1, d2;
 
     public MovePathSegment(double[] coords)
     {
@@ -563,6 +563,11 @@ public class Border
       coords[0] = (float)d1;
       coords[1] = (float)d2;
     }
+
+    public String toString()
+    {
+      return "MoveTo: " + d1 + ", " + d2;
+    }
   }
 
   private static class LinePathSegment extends MovePathSegment
@@ -575,6 +580,11 @@ public class Border
     public int type()
     {
       return PathIterator.SEG_LINETO;
+    }
+
+    public String toString()
+    {
+      return "Line To: " + d1 + ", " + d2;
     }
   }
 
@@ -615,6 +625,11 @@ public class Border
       coords[3] = (float)d4;
       coords[4] = (float)d5;
       coords[5] = (float)d6;
+    }
+
+    public String toString()
+    {
+      return "Cubic To: " + d1 + ", " + d2 + " " +  d3 + ", " + d4 + " " +  d5 + ", " + d6;
     }
   }
 }
