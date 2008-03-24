@@ -43,4 +43,11 @@ public class Pen
   {
     graphics.draw(shape);
   }
+
+  public Pen withAntialiasing(boolean on)
+  {
+    Object value = on ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF;
+    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, value);
+    return this;
+  }
 }
