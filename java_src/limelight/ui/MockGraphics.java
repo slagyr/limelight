@@ -13,25 +13,29 @@ public class MockGraphics extends java.awt.Graphics2D
 	private Color color;
 	public LinkedList<DrawnShape> drawnShapes;
   private BasicStroke stroke;
+  private Hashtable<Object, Object> hints;
 
-	public class DrawnShape
+  public class DrawnShape
 	{
 		public Color color;
 		public Shape shape;
 		public BasicStroke stroke;
+    public boolean antialiasing;
 
-		public DrawnShape(Shape shape, BasicStroke stroke, Color color)
+    public DrawnShape(Shape shape, BasicStroke stroke, Color color, boolean antialiasing)
 		{
 			this.shape = shape;
 			this.stroke = stroke;
 			this.color = color;
-		}
+      this.antialiasing = antialiasing;
+    }
 	}
 
 	public MockGraphics()
 	{
 		drawnShapes = new LinkedList<DrawnShape>();
-	}
+    hints = new Hashtable<Object, Object>();
+  }
 
 	public DrawnShape drawnShape(int i)
 	{
@@ -40,7 +44,8 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void draw(Shape shape)
 	{
-		drawnShapes.add(new DrawnShape(shape, stroke, color));
+    boolean antialiasing = hints.get(RenderingHints.KEY_ANTIALIASING) == RenderingHints.VALUE_ANTIALIAS_ON;
+    drawnShapes.add(new DrawnShape(shape, stroke, color, antialiasing));
 	}
 
 	public boolean drawImage(Image image, AffineTransform affineTransform, ImageObserver imageObserver)
@@ -109,11 +114,12 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void setRenderingHint(RenderingHints.Key key, Object object)
 	{
-	}
+    hints.put(key, object);
+  }
 
 	public Object getRenderingHint(RenderingHints.Key key)
 	{
-		return null;
+		return hints.get(key);
 	}
 
 	public void setRenderingHints(Map<?, ?> map)
