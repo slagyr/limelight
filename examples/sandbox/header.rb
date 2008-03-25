@@ -7,5 +7,6 @@ header do
   example_link :text => "Inputs", :on_mouse_clicked => "stage.load('inputs')"
   example_link :text => "Rounded Corners", :on_mouse_clicked => "stage.load('rounded_corners')"
   example_link :text => "Floaters", :on_mouse_clicked => "stage.load('floaters')"
+  example_link :text => "Sketching", :on_mouse_clicked => "stage.load('sketching')"
 end
 

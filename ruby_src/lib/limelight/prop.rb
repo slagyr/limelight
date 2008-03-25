@@ -1,4 +1,5 @@
 require 'limelight/java_util'
+require 'limelight/pen'
 
 module Limelight
   class Prop
@@ -118,6 +119,18 @@ module Limelight
     def add_options(more_options)
       raise "Too late to add options" if @options.nil?
       @options.merge!(more_options)
+    end
+    
+    def area
+      return panel.get_rectangle.clone
+    end
+    
+    def bordered_area
+      return panel.get_rectangle_inside_borders.clone
+    end
+    
+    def pen
+      return Pen.new(panel.getGraphics)
     end
     
     # GUI Events ##########################################

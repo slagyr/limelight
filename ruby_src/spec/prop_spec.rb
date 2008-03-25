@@ -158,5 +158,22 @@ describe Limelight::Prop do
     @prop.panel.components.should_not include(child2.panel)
   end
   
+  it "should make dimensions accessible" do
+    @prop.panel.should_receive(:get_rectangle).and_return("whole area")
+    @prop.panel.should_receive(:get_rectangle_inside_borders).and_return("area inside borders")
+    
+    @prop.area.should == "whole area"
+    @prop.bordered_area.should == "area inside borders"
+  end
+  
+  it "should give you a pen" do
+    graphics = make_mock("graphics", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
+    @prop.panel.should_receive(:getGraphics).and_return(graphics)
+    
+    pen = @prop.pen
+    
+    pen.context.should be(graphics)
+  end
+  
 end
 
