@@ -6,14 +6,14 @@ sandbox {
 
 arena {
   width 900
-	height 850
+	height 800
 	horizontal_alignment :center
 	vertical_alignment :center
 }
 
 header {
   width 900
-  height 50
+  height 100
   background_color "#888"
   border_color :blue
   border_width 1
