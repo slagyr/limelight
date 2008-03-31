@@ -2,8 +2,8 @@ package limelight.ui;
 
 public abstract class Style
 {
-  public static final StyleDescriptor WIDTH = new StyleDescriptor(0, null);
-  public static final StyleDescriptor HEIGHT = new StyleDescriptor(1, null);
+  public static final StyleDescriptor WIDTH = new StyleDescriptor(0, "auto");
+  public static final StyleDescriptor HEIGHT = new StyleDescriptor(1, "auto");
   public static final StyleDescriptor X_OFFSET = new StyleDescriptor(2, null);
   public static final StyleDescriptor Y_OFFSET = new StyleDescriptor(3, null);
   public static final StyleDescriptor TOP_BORDER_COLOR = new StyleDescriptor(4, null);

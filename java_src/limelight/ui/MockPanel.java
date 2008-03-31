@@ -41,6 +41,8 @@ public class MockPanel extends Panel
   {
     this.prepWidth = width;
     this.prepHeight = height;
+    getProp().getStyle().setWidth(width + "");
+    getProp().getStyle().setHeight(height + "");
     dimensionsArePrepared = true;
   }
 
@@ -53,7 +55,7 @@ public class MockPanel extends Panel
   }
 
   public void doLayout()
-  {
+  {  
     super.doLayout();
     wasLaidOut = true;
   }

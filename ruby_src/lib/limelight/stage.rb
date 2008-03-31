@@ -6,7 +6,7 @@ module Limelight
   
   class Stage
     attr_accessor :directory, :default_scene, :styles
-    attr_reader :frame, :current_scene, :producer
+    attr_reader :frame, :current_scene, :producer, :name
     
     include Java::limelight.ui.Stage
     
@@ -14,24 +14,40 @@ module Limelight
       choose_file
     end
     
-    def initialize(producer)
+    def initialize(producer, name="default")
       @producer = producer
+      @name = name
       @styles = {}
-      @frame = Java::limelight.ui.Frame.new(self)
-      @frame.setLocation(200, 25)
-      
-      menu_bar = MenuBar.build(self) do
-        menu("File") do
-          item("Open", :choose_file)
-          item("Refresh", :reload)
-        end
-      end
-      
-      frame.setJMenuBar(menu_bar)
+      build_frame
+      self.title = @name
+    end
+    
+    def title
+      return @frame.title
+    end
+    
+    def title=(value)
+      @frame.title = value
+    end
+    
+    def size
+      return @frame.width, @frame.height
+    end
+    
+    def size=(values)
+      @frame.set_size(values[0], values[1])
+    end
+    
+    def location
+      return @frame.location.x, @frame.location.y
+    end
+    
+    def location= values
+      @frame.set_location(values[0], values[1])
     end
     
     def open(scene)
-      loadScene(scene)
+      load_scene(scene)
       @frame.open
       scene.visible = true
     end
@@ -40,14 +56,12 @@ module Limelight
       @frame.close
     end
     
-    def loadScene(scene)
+    def load_scene(scene)
       @frame.load(scene.panel)
       scene.stage = self
       scene.panel.set_size(scene.panel.get_preferred_size)
       if(scene.has_static_size?)
         @frame.set_size(scene.panel.get_size)
-      else
-        @frame.set_size(800, 800) if @frame.get_width == 0 || @frame.get_height == 0
       end
       @current_scene = scene
     end
@@ -59,12 +73,24 @@ module Limelight
     def reload
       load(@current_scene.path)
     end
-    
-    def resized
-      @current_scene.update
-    end
 
     private ###############################################
+    
+    def build_frame
+      @frame = Java::limelight.ui.Frame.new(self)
+      @frame.set_size(800, 800)
+      @frame.set_location(200, 25)
+      @frame.title = title
+      
+      menu_bar = MenuBar.build(self) do
+        menu("File") do
+          item("Open", :choose_file)
+          item("Refresh", :reload)
+        end
+      end
+      
+      @frame.setJMenuBar(menu_bar)
+    end
     
     def choose_file
       chooser = javax.swing.JFileChooser.new

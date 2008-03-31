@@ -10,19 +10,12 @@ public class Frame extends JFrame
   public Frame(Stage stage)
   {
     this.stage = stage;
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setLayout(null);
   }
 
   public void doLayout()
   {
     super.doLayout();
-    Component[] components = getContentPane().getComponents();
-    for (Component component : components)
-    {
-      component.doLayout();
-      component.repaint();
-    }
   }
 
   public void close()
@@ -42,6 +35,4 @@ public class Frame extends JFrame
     getContentPane().removeAll();
     add(child);
   }
-
-
 }

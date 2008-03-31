@@ -23,17 +23,18 @@ module Limelight
     
     def open()
       if @loader.exists?("index.rb")
-        @stage = open_stage
-        open_scene(@stage.default_scene)
+        @stages = load_stages
       else
-        @stage = Stage.new(self)
-        open_scene(".")
+        stage = Stage.new(self, "Limelight")
+        stage.default_scene = "."
+        @stages = [stage]
       end
+      @stages.each { |stage| open_scene(stage.default_scene, stage) }
     end
     
-    def open_stage
+    def load_stages
       content = @loader.load("index.rb")
-      stage = Limelight.build_stage(self) do
+      stages = Limelight.build_stages(self) do
         begin
           eval content
         rescue Exception => e
@@ -41,22 +42,27 @@ module Limelight
         end
       end
       
-      stage.styles = load_styles('.')
+      if @loader.exists?('styles.rb')
+        root_styles = load_styles('.')
+        stages.each { |stage| stage.styles = root_styles }
+      end
       
-      return stage
+      return stages
     end
     
-    def open_scene(path)
+    def open_scene(path, stage = nil)
+      stage ||= @stages[0]
       styles = load_styles(path)
-      merge_with_stage_styles(styles)
+      merge_with_stage_styles(styles, stage)
       casting_director = CastingDirector.new(loader)
       
       scene = load_props(path, :styles => styles, :casting_director => casting_director, :loader => @loader, :path => path)
       
-      @stage.open(scene)
+      stage.open(scene)
     end
     
     def load_props(path, options = {})
+      return Scene.new(options) if path.nil?
       filename = File.join(path, "props.rb")
       content = @loader.load(filename)
       options[:build_loader] = @loader
@@ -70,6 +76,7 @@ module Limelight
     end
     
     def load_styles(path)
+      return {} if path.nil?
       filename = File.join(path, "styles.rb")
       content = @loader.load(filename)
       return  Limelight.build_styles do
@@ -81,8 +88,8 @@ module Limelight
       end
     end
     
-    def merge_with_stage_styles(styles)
-      @stage.styles.each_pair do |key, value|
+    def merge_with_stage_styles(styles, stage)
+      stage.styles.each_pair do |key, value|
         styles[key] = value if !styles.has_key?(key)
       end
     end
