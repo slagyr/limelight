@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Panel extends JPanel
-{
+{                                                  
   private Prop prop;
   private BufferedImage buffer;
   private List<Painter> painters;
@@ -77,12 +77,20 @@ public class Panel extends JPanel
   {
     if (borderShaper != null)
       borderShaper.updateDimentions();
-
+   
     super.doLayout();
 
     //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
     if (borderShaper != null)
       borderShaper.setBounds(getRectangleInsideMargins());
+  }
+
+  // TODO - MDM - This is silly inefficient.  It forces panels to relayout all the time.  Particulary when the frame is resized.
+  // The correct way to handle this is to add observer ability to the styles and invalidate the panel when appropriate styles change.
+  public void validate()
+  {
+    super.validate();
+    invalidate();
   }
 
   public Prop getProp()
@@ -204,6 +212,8 @@ public class Panel extends JPanel
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
       r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
+
+System.err.println("maxSize = " + r);    
 
     int width = translateDimension(getStyle().getWidth(), r.width);
     int height = translateDimension(getStyle().getHeight(), r.height);

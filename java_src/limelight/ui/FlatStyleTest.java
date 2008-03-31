@@ -14,11 +14,11 @@ public class FlatStyleTest extends TestCase
   public void testSettingEmptyStringIsSameAsNull() throws Exception
   {
     style.setWidth("");
-    assertEquals(null, style.getWidth());
+    assertEquals("auto", style.getWidth());
     style.setWidth("      ");
-    assertEquals(null, style.getWidth());
+    assertEquals("auto", style.getWidth());
     style.setWidth(null);
-    assertEquals(null, style.getWidth());
+    assertEquals("auto", style.getWidth());
   }
 
   private class MockStyleObserver implements StyleObserver

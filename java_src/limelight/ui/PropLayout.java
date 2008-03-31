@@ -58,7 +58,8 @@ public class PropLayout implements LayoutManager
   public void layoutContainer(Container container)
 	{
 long start = System.currentTimeMillis();
-    panel.setSize(panel.getMaximumSize());
+    Dimension d = panel.getMaximumSize();
+    panel.setSize(d);
 
     reset();
     buildRows();
@@ -274,7 +275,7 @@ calls++;
       for (Component component : items)
       {
         component.setLocation(x, y);
-        x += component.getWidth();
+        x += component.getWidth();      
       }
     }
   }

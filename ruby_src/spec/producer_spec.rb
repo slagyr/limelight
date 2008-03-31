@@ -57,16 +57,16 @@ describe Limelight::Producer do
   
   it "should load a stage when index.rb exists" do
     @loader.should_receive(:exists?).with("index.rb").and_return true
-    @producer.should_receive(:open_stage).and_return(make_mock("stage", :default_scene => "abc"))
-    @producer.should_receive(:open_scene).with("abc")
+    @producer.should_receive(:load_stages).and_return([make_mock("stage", :default_scene => "abc")])
+    @producer.should_receive(:open_scene).with("abc", anything)
     
     @producer.open
   end
   
   it "should load a scene when index.rb doesn't exists" do
     @loader.should_receive(:exists?).with("index.rb").and_return false
-    @producer.should_not_receive(:open_stage)
-    @producer.should_receive(:open_scene).with(".")
+    @producer.should_not_receive(:open_stages)
+    @producer.should_receive(:open_scene).with(".", anything)
     
     @producer.open
   end

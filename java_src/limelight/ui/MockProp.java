@@ -35,6 +35,12 @@ public class MockProp implements Prop
     style = new FlatStyle();
   }
 
+  public MockProp(String name)
+  {
+    this();
+    this.name = name;
+  }
+
   public Panel getPanel()
   {
     return null;
