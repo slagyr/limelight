@@ -1,4 +1,4 @@
-__ :class_name => "sandbox"
+__ :name => "sandbox"
 __install "header.rb"
 arena do
   spinner

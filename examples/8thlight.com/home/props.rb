@@ -1,4 +1,4 @@
-__ :class_name => "page"
+__ :name => "page"
 main_column do
   __install "menu.rb"
   tag_line

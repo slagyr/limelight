@@ -1,6 +1,8 @@
 require 'limelight/java_util'
 require 'limelight/menu_bar'
 require 'limelight/loaders/file_scene_loader'
+require 'limelight/file_chooser'
+require 'limelight/util'
 
 module Limelight
   
@@ -67,7 +69,7 @@ module Limelight
     end
     
     def load(scene_path)
-      @producer.open_scene(scene_path)
+      @producer.open_scene(scene_path, self)
     end
   
     def reload
@@ -84,7 +86,7 @@ module Limelight
       
       menu_bar = MenuBar.build(self) do
         menu("File") do
-          item("Open", :choose_file)
+          item("Open", :open_chosen_scene)
           item("Refresh", :reload)
         end
       end
@@ -92,29 +94,14 @@ module Limelight
       @frame.setJMenuBar(menu_bar)
     end
     
-    def choose_file
-      chooser = javax.swing.JFileChooser.new
-      chooser.setCurrentDirectory(@directory) if @directory
-      chooser.setFileFilter(ChooseFileFilter.new)
-      returnVal = chooser.showOpenDialog(@frame);
-      
-      if(returnVal == javax.swing.JFileChooser::APPROVE_OPTION)
-        load(chooser.getSelectedFile().getAbsolutePath());
-        @directory = chooser.getSelectedFile().getAbsoluteFile().getParentFile();
+    def open_chosen_scene
+      chooser = FileChooser.new(:parent => @frame, :title => "Open New Limelight Scene", :description => "Limelight Scene", :directory => @directory) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_theater?(file) }
+      if(chooser.choose_file)
+        load(chooser.chosen_file)
+        @directory = File.dirname(chooser.chosen_file)
       end
     end
-
-  end
-  
-  class ChooseFileFilter < javax.swing.filechooser::FileFilter
     
-    def accept(file)
-      return file.name[-3..-1] == "llm"
-    end
-    
-    def getDescription
-      return "Limelight Markup File"
-    end
   end
     
 end

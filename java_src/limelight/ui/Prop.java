@@ -11,7 +11,7 @@ public interface Prop
 {
   Panel getPanel();
   Style getStyle();
-  String getClassName();
+  String getName();
   String getText();
   Scene getScene();
   void setText(String value);

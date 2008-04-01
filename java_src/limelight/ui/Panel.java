@@ -46,7 +46,7 @@ public class Panel extends JPanel
   public Component add(Component comp)
   {
     if (sterilized)
-      throw new SterilePanelException(prop.getClassName());
+      throw new SterilePanelException(prop.getName());
     return super.add(comp);
   }
 
@@ -212,8 +212,6 @@ public class Panel extends JPanel
       r = ((Panel) getParent()).getRectangleInsidePadding();
     else
       r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
-
-System.err.println("maxSize = " + r);    
 
     int width = translateDimension(getStyle().getWidth(), r.width);
     int height = translateDimension(getStyle().getHeight(), r.height);

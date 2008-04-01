@@ -17,8 +17,8 @@ module Limelight
     private ###############################################
     
     def cast_default_player(prop)
-      return if prop.class_name.nil? || prop.class_name.empty?
-      prop.include_player(@known_players[prop.class_name]) if player_exists?(prop, prop.class_name)
+      return if prop.name.nil? || prop.name.empty?
+      prop.include_player(@known_players[prop.name]) if player_exists?(prop, prop.name)
     end
     
     def cast_additional_players(prop)

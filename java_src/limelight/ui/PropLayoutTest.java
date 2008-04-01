@@ -196,6 +196,55 @@ public class PropLayoutTest extends TestCase
     assertEquals(70, panel.getWidth());
     assertEquals(50, panel.getHeight());
   }
+
+  public void testAutoSizeIncludesMarginPaddingAndBorder() throws Exception
+  {
+    MockPanel panel = new MockPanel();
+    panel.getStyle().setWidth("auto");
+    panel.getStyle().setHeight("auto");
+    panel.getStyle().setTopMargin("1");
+    panel.getStyle().setTopBorderWidth("2");
+    panel.getStyle().setTopPadding("3");
+    panel.getStyle().setRightMargin("4");
+    panel.getStyle().setRightBorderWidth("5");
+    panel.getStyle().setRightPadding("6");
+    panel.getStyle().setBottomMargin("7");
+    panel.getStyle().setBottomBorderWidth("8");
+    panel.getStyle().setBottomPadding("9");
+    panel.getStyle().setLeftMargin("10");
+    panel.getStyle().setLeftBorderWidth("11");
+    panel.getStyle().setLeftPadding("12");
+    parent.add(panel);
+    MockPanel child = new MockPanel();
+    child.prepForSnap(50, 50);
+    panel.add(child);
+
+    layout.layoutContainer(parent);
+
+    assertEquals(98, panel.getWidth());
+    assertEquals(80, panel.getHeight());
+  }
+
+  public void testAutoSizeWithChildrenCentered() throws Exception
+  {
+    MockPanel panel = new MockPanel();
+    panel.getStyle().setWidth("auto");
+    panel.getStyle().setHeight("auto");
+    panel.getStyle().setHorizontalAlignment("center");
+    panel.getStyle().setVerticalAlignment("center");
+    panel.getStyle().setMargin("10");
+    parent.add(panel);
+    MockPanel child = new MockPanel();
+    child.prepForSnap(50, 50);
+    panel.add(child);
+
+    layout.layoutContainer(parent);
+
+    assertEquals(10, child.getX());
+    assertEquals(10, child.getY());
+    assertEquals(70, panel.getWidth());
+    assertEquals(70, panel.getHeight());
+  }
   
   public void testAutoSizingWithNoChildren() throws Exception
   {

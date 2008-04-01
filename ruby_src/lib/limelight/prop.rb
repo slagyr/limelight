@@ -23,8 +23,8 @@ module Limelight
     include Java::limelight.ui.Prop
   
     attr_reader :panel, :style, :children, :scene, :parent
-    attr_reader :class_name, :id, :players
-    getters :panel, :style, :scene, :class_name, :text
+    attr_reader :name, :id, :players
+    getters :panel, :style, :scene, :name, :text
     setters :text
     
     def initialize(hash = {})
@@ -78,9 +78,9 @@ module Limelight
       return nil
     end
     
-    def find_by_class(class_name, results = [])
-      results << self if @class_name == class_name
-      @children.each { |child| child.find_by_class(class_name, results) }
+    def find_by_name(name, results = [])
+      results << self if @name == name
+      @children.each { |child| child.find_by_name(name, results) }
       return results
     end
     
@@ -97,7 +97,7 @@ module Limelight
     end
     
     def to_s
-      return "#{self.class.name}[id: #{@id}, class_name: #{@class_name}]"
+      return "#{self.class.name}[id: #{@id}, name: #{@name}]"
     end
     
     def inspect
@@ -161,7 +161,7 @@ module Limelight
       return if @options.nil?
 
       @id = @options.delete(:id)
-      @class_name = @options.delete(:class_name)
+      @name = @options.delete(:name)
       @players = @options.delete(:players)
       
       inherit_styles
@@ -195,15 +195,15 @@ module Limelight
     end
     
     def inherit_styles
-      return if @class_name.nil?
-      new_style = @scene.styles[@class_name]
+      return if @name.nil?
+      new_style = @scene.styles[@name]
       @style.add_to_bottom(new_style) if new_style
-      @hover_style = scene.styles["#{@class_name}.hover"]
+      @hover_style = scene.styles["#{@name}.hover"]
     end
     
     def disinherit_styles
-      return if @class_name.nil?
-      old_style = @scene.styles[@class_name]
+      return if @name.nil?
+      old_style = @scene.styles[@name]
       @style.remove(old_style) if old_style
       @hover_style = nil
     end

@@ -36,7 +36,7 @@ module Limelight
     end
     
     def method_missing(sym, options={}, &prop)
-      options[:class_name] ||= sym.to_s
+      options[:name] ||= sym.to_s
       builder = PropBuilder.new(options)
       builder.__loader__ = @__loader__
       builder.instance_eval(&prop) if prop

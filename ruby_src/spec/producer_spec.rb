@@ -17,7 +17,7 @@ describe Limelight::Producer do
     
     scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
     scene.children.size.should == 1
-    scene.children[0].class_name.should == "child"
+    scene.children[0].name.should == "child"
     scene.children[0].id.should == 321
   end
   
@@ -55,16 +55,16 @@ describe Limelight::Producer do
     end
   end
   
-  it "should load a stage when index.rb exists" do
-    @loader.should_receive(:exists?).with("index.rb").and_return true
+  it "should load a stage when production.rb exists" do
+    @loader.should_receive(:exists?).with("production.rb").and_return true
     @producer.should_receive(:load_stages).and_return([make_mock("stage", :default_scene => "abc")])
     @producer.should_receive(:open_scene).with("abc", anything)
     
     @producer.open
   end
   
-  it "should load a scene when index.rb doesn't exists" do
-    @loader.should_receive(:exists?).with("index.rb").and_return false
+  it "should load a scene when production.rb doesn't exists" do
+    @loader.should_receive(:exists?).with("production.rb").and_return false
     @producer.should_not_receive(:open_stages)
     @producer.should_receive(:open_scene).with(".", anything)
     
