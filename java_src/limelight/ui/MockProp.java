@@ -51,7 +51,7 @@ public class MockProp implements Prop
     return style;
   }
 
-  public String getClassName()
+  public String getName()
   {
     return name;
   }

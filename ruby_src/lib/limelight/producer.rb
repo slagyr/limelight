@@ -22,7 +22,7 @@ module Limelight
     end
     
     def open()
-      if @loader.exists?("index.rb")
+      if @loader.exists?("production.rb")
         @stages = load_stages
       else
         stage = Stage.new(self, "Limelight")
@@ -33,12 +33,12 @@ module Limelight
     end
     
     def load_stages
-      content = @loader.load("index.rb")
+      content = @loader.load("production.rb")
       stages = Limelight.build_stages(self) do
         begin
           eval content
         rescue Exception => e
-          raise BuildException.new("index.rb", content, e)
+          raise BuildException.new("production.rb", content, e)
         end
       end
       

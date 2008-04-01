@@ -1,7 +1,7 @@
 module Surface
   
   def floaters
-    @floaters = parent.find_by_class("floater") if @floaters.nil?
+    @floaters = parent.find_by_name("floater") if @floaters.nil?
     return @floaters
   end
   

@@ -1,4 +1,4 @@
-__ :class_name => "calculator"
+__ :name => "calculator"
 screen :id => "screen", :text => "1000000000"
 buttons do
   button :text => "1"

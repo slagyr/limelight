@@ -5,14 +5,14 @@ describe Limelight::SceneBuilder do
 
   before(:each) do
     @caster = make_mock("caster", :fill_cast => nil)
-    @options = { :class_name => "root", :casting_director => @caster}
+    @options = { :name => "root", :casting_director => @caster}
   end
   
   it "should build root" do
     root = Limelight.build_scene(@options)
     
     root.class.should == Limelight::Scene
-    root.class_name.should == "root"
+    root.name.should == "root"
     root.panel.should_not == nil
     root.children.size.should == 0
   end
@@ -25,7 +25,7 @@ describe Limelight::SceneBuilder do
     root.children.size.should == 1
     child = root.children[0]
     child.class.should == Limelight::Prop
-    child.class_name.should == "child"
+    child.name.should == "child"
     child.panel.should_not == nil
     child.children.size.should == 0
   end
@@ -37,8 +37,8 @@ describe Limelight::SceneBuilder do
     end
     
     root.children.size.should == 2
-    root.children[0].class_name.should == "child1"
-    root.children[1].class_name.should == "child2"
+    root.children[0].name.should == "child1"
+    root.children[1].name.should == "child2"
   end
 
   it "should allow nested children" do
@@ -49,9 +49,9 @@ describe Limelight::SceneBuilder do
     end
 
     root.children.size.should == 1
-    root.children[0].class_name.should == "child"
+    root.children[0].name.should == "child"
     root.children[0].children.size.should == 1
-    root.children[0].children[0].class_name.should == "grandchild"
+    root.children[0].children[0].name.should == "grandchild"
   end
   
   it "should be able to set the id" do
@@ -86,11 +86,11 @@ describe Limelight::SceneBuilder do
   
   it "should allow scene configuration" do
     root = Limelight::build_scene(@options) do
-      __ :class_name => "root", :id => "123"
+      __ :name => "root", :id => "123"
     end
     
     root.children.size.should == 0
-    root.class_name.should == "root"
+    root.name.should == "root"
     root.id.should == "123"
   end
   
@@ -117,7 +117,7 @@ describe Limelight::SceneBuilder do
     root.id.should == 321
     root.children.size.should == 1
     child = root.children[0]
-    child.class_name.should == "child"
+    child.name.should == "child"
     child.id.should == 123
   end
   

@@ -11,7 +11,7 @@ add_time = 0
       100.times do |x|
         id = "#{x},#{y}"
 start = Time.now
-        cell = Limelight::Prop.new(:class_name => "cell", :id => id)
+        cell = Limelight::Prop.new(:name => "cell", :id => id)
 create_time += Time.now - start
 start = Time.now
         prop.add(cell)

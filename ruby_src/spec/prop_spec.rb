@@ -8,7 +8,7 @@ describe Limelight::Prop do
   before(:each) do
     @casting_director = make_mock("casting_director", :fill_cast => nil)
     @scene = Limelight::Scene.new(:casting_director => @casting_director)
-    @prop = Limelight::Prop.new(:id => "root", :class_name => "root_class")
+    @prop = Limelight::Prop.new(:id => "root", :name => "root_class")
     @scene << @prop
   end
   
@@ -36,12 +36,12 @@ describe Limelight::Prop do
   end
   
   def build_prop_tree
-    @child1 = Limelight::Prop.new(:id => "child1", :class_name => "child_class")
-    @child2 = Limelight::Prop.new(:id => "child2", :class_name => "child_class")
-    @grand_child1 = Limelight::Prop.new(:id => "grand_child1", :class_name => "grand_child_class")
-    @grand_child2 = Limelight::Prop.new(:id => "grand_child2", :class_name => "grand_child_class")
-    @grand_child3 = Limelight::Prop.new(:id => "grand_child3", :class_name => "grand_child_class")
-    @grand_child4 = Limelight::Prop.new(:id => "grand_child4", :class_name => "grand_child_class")
+    @child1 = Limelight::Prop.new(:id => "child1", :name => "child_class")
+    @child2 = Limelight::Prop.new(:id => "child2", :name => "child_class")
+    @grand_child1 = Limelight::Prop.new(:id => "grand_child1", :name => "grand_child_class")
+    @grand_child2 = Limelight::Prop.new(:id => "grand_child2", :name => "grand_child_class")
+    @grand_child3 = Limelight::Prop.new(:id => "grand_child3", :name => "grand_child_class")
+    @grand_child4 = Limelight::Prop.new(:id => "grand_child4", :name => "grand_child_class")
     
     @prop << @child1 << @child2
     @child1 << @grand_child1 << @grand_child2
@@ -60,11 +60,11 @@ describe Limelight::Prop do
     @prop.find("grand_child4").should be(@grand_child4)
   end
   
-  it "should find children by class" do
+  it "should find children by name" do
     build_prop_tree
-    @prop.find_by_class("root_class").should == [@prop]
-    @prop.find_by_class("child_class").should == [@child1, @child2]
-    @prop.find_by_class("grand_child_class").should == [@grand_child1, @grand_child2, @grand_child3, @grand_child4]
+    @prop.find_by_name("root_class").should == [@prop]
+    @prop.find_by_name("child_class").should == [@child1, @child2]
+    @prop.find_by_name("grand_child_class").should == [@grand_child1, @grand_child2, @grand_child3, @grand_child4]
   end
   
   it "should get and set text" do
@@ -79,10 +79,10 @@ describe Limelight::Prop do
   end
   
   it "should get populated through constructor" do
-    prop = Limelight::Prop.new(:class_name => "my_class_name", :id => "123", :players => "a, b, c")
+    prop = Limelight::Prop.new(:name => "my_name", :id => "123", :players => "a, b, c")
     @scene << prop
     
-    prop.class_name.should == "my_class_name"
+    prop.name.should == "my_name"
     prop.id.should == "123"
   end
   
@@ -105,7 +105,7 @@ describe Limelight::Prop do
   end
   
   it "should pass scene on to children" do
-    child = Limelight::Prop.new(:class_name => "child")
+    child = Limelight::Prop.new(:name => "child")
     
     @prop.parent.should == @scene
     @prop.scene.should == @scene
@@ -118,7 +118,7 @@ describe Limelight::Prop do
   it "should set styles upon adding to parent" do
     styles = Limelight::build_styles { child { width 123 } }
     scene = Limelight::Scene.new(:casting_director => @casting_director, :styles => styles)
-    prop = Limelight::Prop.new(:class_name => "child")
+    prop = Limelight::Prop.new(:name => "child")
     
     scene << prop
     
@@ -126,7 +126,7 @@ describe Limelight::Prop do
   end
   
   it "should set styles upon adding to parent" do
-    prop = Limelight::Prop.new(:class_name => "child")
+    prop = Limelight::Prop.new(:name => "child")
     
     @casting_director.should_receive(:fill_cast).with(prop)
     
@@ -134,7 +134,7 @@ describe Limelight::Prop do
   end
   
   it "should use populate data included by players" do
-    prop = Limelight::Prop.new(:class_name => "child", :foo => "bar")
+    prop = Limelight::Prop.new(:name => "child", :foo => "bar")
     @casting_director.should_receive(:fill_cast).with(prop) do
       prop.instance_eval "def foo=(value); @foo = value; end; def foo; return @foo; end;"
     end

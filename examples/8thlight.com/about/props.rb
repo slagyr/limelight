@@ -1,4 +1,4 @@
-__ :class_name => "page"
+__ :name => "page"
 main_column do
   __install "menu.rb"
   about_tagline :text => "By the work one knows the workmen.\nJean De La Fontaine"

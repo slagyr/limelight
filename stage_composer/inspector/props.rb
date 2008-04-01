@@ -1,5 +1,5 @@
-__ :class_name => "inspector_pane"
+__ :class_name => "inspector"
 tool_bar do
-  tool :text => "New"
-  tool :text => "Open"
+  tool :text => "New", :on_mouse_clicked => "scene.new"
+  tool :text => "Open", :on_mouse_clicked => "scene.open"
 end

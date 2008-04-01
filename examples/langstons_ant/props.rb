@@ -4,7 +4,7 @@ If the ant is on a black dot, paint it white and go right.
 If the ant is on a white dot, paint it black and go left.
 END
 
-__ :class_name => "earth"
+__ :name => "earth"
 title :text => "Langston's Ant"
 description :text => description_text
 world :id => "world"

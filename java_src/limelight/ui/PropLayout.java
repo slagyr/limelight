@@ -82,8 +82,8 @@ long start = System.currentTimeMillis();
     }
     else
     {
-      doNormalLayout();
       collapseAutoDimensions();
+      doNormalLayout();
     }
 long duration = System.currentTimeMillis() - start;
 totalDuration += duration;
@@ -96,11 +96,21 @@ calls++;
     boolean hasAutoWidth = "auto".equals(panel.getStyle().getWidth());
     boolean hasAutoHeight = "auto".equals(panel.getStyle().getHeight());
     if(hasAutoWidth && hasAutoHeight)
-      panel.setSize(consumedWidth, consumedHeight);
+      panel.setSize(consumedWidth + horizontalInsets(), consumedHeight + verticalInsets());
     else if(hasAutoWidth)
-      panel.setSize(consumedWidth, panel.getHeight());
+      panel.setSize(consumedWidth + horizontalInsets(), panel.getHeight());
     else if(hasAutoHeight)
-      panel.setSize(panel.getWidth(), consumedHeight);
+      panel.setSize(panel.getWidth(), consumedHeight + verticalInsets());
+  }
+
+  public int horizontalInsets()
+  {
+    return panel.getRectangle().width - panel.getRectangleInsidePadding().width;
+  }
+
+  public int verticalInsets()
+  {
+    return panel.getRectangle().height - panel.getRectangleInsidePadding().height;
   }
 
   private void doNormalLayout()
