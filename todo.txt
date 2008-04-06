@@ -1,3 +1,6 @@
-clicking in scroll area doesn't work (Click-Me example)
-Refresh doest work
-load doesn't work
+Events should not be consumed by props that don't look for events.
+Add defaults to styles.
+Make styles reusable
+Default style?
+
+

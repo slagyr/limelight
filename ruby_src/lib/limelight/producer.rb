@@ -31,6 +31,17 @@ module Limelight
       end
       @stages.each { |stage| open_scene(stage.default_scene, stage) }
     end
+
+    def open_scene(path, stage = nil)
+      stage ||= @stages[0]
+      styles = load_styles(path)
+      merge_with_stage_styles(styles, stage)
+      casting_director = CastingDirector.new(loader)
+
+      scene = load_props(path, :styles => styles, :casting_director => casting_director, :loader => @loader, :path => path)
+
+      stage.open(scene)
+    end
     
     def load_stages
       content = @loader.load("production.rb")
@@ -48,17 +59,6 @@ module Limelight
       end
       
       return stages
-    end
-    
-    def open_scene(path, stage = nil)
-      stage ||= @stages[0]
-      styles = load_styles(path)
-      merge_with_stage_styles(styles, stage)
-      casting_director = CastingDirector.new(loader)
-      
-      scene = load_props(path, :styles => styles, :casting_director => casting_director, :loader => @loader, :path => path)
-      
-      stage.open(scene)
     end
     
     def load_props(path, options = {})
@@ -87,6 +87,8 @@ module Limelight
         end
       end
     end
+    
+    private ###############################################
     
     def merge_with_stage_styles(styles, stage)
       stage.styles.each_pair do |key, value|
