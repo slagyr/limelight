@@ -37,5 +37,9 @@ describe Limelight::Stage do
     
     @stage.location.should == [123, 456]
   end
+  
+  it "should not allow name changes" do
+    lambda { @stage.name = "new name" }.should raise_error
+  end
 
 end

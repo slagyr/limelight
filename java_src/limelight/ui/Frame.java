@@ -35,4 +35,9 @@ public class Frame extends JFrame
     getContentPane().removeAll();
     add(child);
   }
+
+  public Stage getStage()
+  {
+    return stage;
+  }
 }
