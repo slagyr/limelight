@@ -1,10 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/stage_builder'
+require 'limelight/theater'
 
 describe Limelight::StageBuilder do
   
   before(:each) do
-    @producer = make_mock("producer")
+    @theater = Limelight::Theater.new
+    @producer = make_mock("producer", :theater => @theater)
   end
 
   it "should give no stages if empty" do
@@ -56,5 +58,31 @@ describe Limelight::StageBuilder do
     end.should raise_error(Limelight::StageBuilderException, "'blah' is not a valid stage property")
   end
 
+  it "should add stages to the theater" do
+    stages = Limelight::build_stages(@producer) do
+      stage "George" do
+        title "The Curious"
+      end
+    end
+    
+    @theater["George"].should == stages[0]
+  end
+
+  it "should add stages to the theater" do
+    stages = Limelight::build_stages(@producer) do
+      stage "George" do
+        title "The Curious"
+      end
+    end
+    stages = Limelight::build_stages(@producer) do
+      stage "George" do
+        title "The Monkey"
+      end
+    end
+    
+    @theater.stages.length.should == 1
+    @theater["George"].title.should == "The Monkey"
+  end
+  
 end
 

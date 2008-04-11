@@ -5,6 +5,7 @@ require 'limelight/casting_director'
 require 'limelight/stage'
 require 'limelight/build_exception'
 require 'limelight/stage_builder'
+require 'limelight/theater'
 
 module Limelight
 
@@ -15,30 +16,30 @@ module Limelight
       producer.open
     end
     
-    attr_reader :loader
+    attr_reader :loader, :theater
     
-    def initialize(root_path)
+    def initialize(root_path, theater=nil)
       @loader = Loaders::FileSceneLoader.for_root(root_path)
+      @theater = theater.nil? ? Theater.new : theater
+      @casting_director = CastingDirector.new(loader)
     end
     
     def open()
       if @loader.exists?("production.rb")
         @stages = load_stages
       else
-        stage = Stage.new(self, "Limelight")
+        stage = default_stage
         stage.default_scene = "."
         @stages = [stage]
       end
       @stages.each { |stage| open_scene(stage.default_scene, stage) }
     end
 
-    def open_scene(path, stage = nil)
-      stage ||= @stages[0]
+    def open_scene(path, stage)
       styles = load_styles(path)
-      merge_with_stage_styles(styles, stage)
-      casting_director = CastingDirector.new(loader)
+      merge_with_root_styles(styles)
 
-      scene = load_props(path, :styles => styles, :casting_director => casting_director, :loader => @loader, :path => path)
+      scene = load_props(path, :styles => styles, :casting_director => @casting_director, :loader => @loader, :path => path)
 
       stage.open(scene)
     end
@@ -52,12 +53,6 @@ module Limelight
           raise BuildException.new("production.rb", content, e)
         end
       end
-      
-      if @loader.exists?('styles.rb')
-        root_styles = load_styles('.')
-        stages.each { |stage| stage.styles = root_styles }
-      end
-      
       return stages
     end
     
@@ -87,13 +82,31 @@ module Limelight
         end
       end
     end
+
+    def root_styles
+      return @root_syles if @root_syles
+      if @loader.exists?('styles.rb')
+        @root_styles = load_styles('.')
+      else
+        @root_styles = {}
+      end
+      return @root_styles
+    end
     
     private ###############################################
     
-    def merge_with_stage_styles(styles, stage)
-      stage.styles.each_pair do |key, value|
+    def merge_with_root_styles(styles)
+      root_styles.each_pair do |key, value|
         styles[key] = value if !styles.has_key?(key)
       end
+    end
+    
+    def default_stage
+      if @theater["Limelight"].nil?
+        stage = Stage.new(self, "Limelight")
+        @theater.add_stage(stage)
+      end
+      return @theater["Limelight"]
     end
 
   end

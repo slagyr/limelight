@@ -2,5 +2,8 @@ Events should not be consumed by props that don't look for events.
 Add defaults to styles.
 Make styles reusable
 Default style?
+Turn Style/FlatStyle/StackableStyle into a linked list.
+Casting Director needs to know of scene structure to handle players in different scenes with the same name.
+init.rb automatically included when loading a production?
 
 

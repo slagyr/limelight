@@ -13,7 +13,7 @@ module Limelight
     end
     
     def stages
-      return @stages.dup
+      return @stages.values
     end
     
     def [](stage_name)
