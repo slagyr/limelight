@@ -12,10 +12,5 @@ describe Limelight::Stage do
   it "should have a producer" do
     @stage.producer.should == @producer
   end
-  
-  it "should init defaults" do
-    @stage.styles.class.should == Hash
-    @stage.styles.size.should == 0
-  end
 
 end

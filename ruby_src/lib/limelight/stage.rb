@@ -7,7 +7,7 @@ require 'limelight/util'
 module Limelight
   
   class Stage
-    attr_accessor :directory, :default_scene, :styles
+    attr_accessor :directory, :default_scene
     attr_reader :frame, :current_scene, :producer, :name
     
     include Java::limelight.ui.Stage
@@ -19,7 +19,6 @@ module Limelight
     def initialize(producer, name="default")
       @producer = producer
       @name = name
-      @styles = {}
       build_frame
       self.title = @name
     end
@@ -75,6 +74,12 @@ module Limelight
     def reload
       load(@current_scene.path)
     end
+    
+    def choose_file(options={}, &block)
+      options[:parent] = @frame
+      chooser = FileChooser.new(options, &block)
+      return chooser.choose_file
+    end
 
     private ###############################################
     
@@ -95,10 +100,12 @@ module Limelight
     end
     
     def open_chosen_scene
-      chooser = FileChooser.new(:parent => @frame, :title => "Open New Limelight Scene", :description => "Limelight Scene", :directory => @directory) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_theater?(file) }
-      if(chooser.choose_file)
-        load(chooser.chosen_file)
-        @directory = File.dirname(chooser.chosen_file)
+      options = { :title => "Open New Limelight Scene", :description => "Limelight Scene", :directory => @directory }
+      chosen_file = choose_file(options) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_production?(file) }
+      if chosen_file
+        @directory = File.dirname(chosen_file)
+        producer = Producer.new(chosen_file, @producer.theater)
+        producer.open
       end
     end
     

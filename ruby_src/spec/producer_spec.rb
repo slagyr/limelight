@@ -12,6 +12,18 @@ describe Limelight::Producer do
     @producer.loader.root.should == "/tmp"
   end
   
+  it "should take an optional theater on creation" do
+    theater = make_mock("theater")
+    producer = Limelight::Producer.new("/tmp", theater)
+    
+    producer.theater.should == theater
+  end
+  
+  it "should build a new theater if none is passing in constructor" do
+    @producer.theater.should_not == nil
+    @producer.theater.class.should == Limelight::Theater
+  end
+  
   it "should load props" do
     @loader.should_receive(:load).with("./props.rb").and_return("child :id => 321")
     
@@ -57,7 +69,7 @@ describe Limelight::Producer do
   
   it "should load a stage when production.rb exists" do
     @loader.should_receive(:exists?).with("production.rb").and_return true
-    @producer.should_receive(:load_stages).and_return([make_mock("stage", :default_scene => "abc")])
+    @producer.should_receive(:load_stages).and_return([make_mock("stage", :default_scene => "abc", :name => "Default")])
     @producer.should_receive(:open_scene).with("abc", anything)
     
     @producer.open
@@ -71,6 +83,13 @@ describe Limelight::Producer do
     @producer.open
   end
   
-  
+  it "should have one default stage when no production.rb is provided" do
+    @loader.should_receive(:exists?).with("production.rb").and_return false
+    @producer.stub!(:open_scene)
+    @producer.open
+    
+    @producer.theater.stages.size.should == 1
+    @producer.theater["Limelight"].should_not == nil
+  end
   
 end

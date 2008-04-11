@@ -149,11 +149,10 @@ module Limelight
       update
     end
     
-    event :mouse_clicked, :mouse_entered, :mouse_exited, :mouse_pressed, :mouse_released, :mouse_dragged, :mouse_moved
-    event :key_typed, :key_pressed, :key_released
-    event :focus_gained, :focus_lost
-    event :state_changed, :button_pressed
-    event :item_state_changed
+    EVENTS = [:mouse_clicked, :mouse_entered, :mouse_exited, :mouse_pressed, :mouse_released, :mouse_dragged, :mouse_moved,
+         :key_typed, :key_pressed, :key_released, :focus_gained, :focus_lost, :state_changed, :button_pressed, :item_state_changed]
+         
+    event *EVENTS
    
     private ###############################################
     

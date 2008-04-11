@@ -30,7 +30,12 @@ module Limelight
     attr_reader :stage
     
     def initialize(producer, name)
-      @stage = Stage.new(producer, name)
+      if producer.theater[name]
+        @stage = producer.theater[name]
+      else
+        @stage = Stage.new(producer, name)
+        producer.theater.add_stage(@stage)
+      end
     end
     
     def default_scene(scene_name)

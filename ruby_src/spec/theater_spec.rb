@@ -14,7 +14,7 @@ describe Limelight::Theater do
     @theater.add_stage(@stage)
     
     @theater.stages.length.should == 1
-    @theater.stages.values[0].should == @stage
+    @theater.stages[0].should == @stage
   end
   
   it "should not return the actual_list of stages" do
@@ -44,10 +44,6 @@ describe Limelight::Theater do
     @theater["default"].should == @stage
     @theater["two"].should == stage2
     @theater["three"].should == stage3
-  
-    @theater.stages["default"].should == @stage
-    @theater.stages["two"].should == stage2
-    @theater.stages["three"].should == stage3
   end
   
   it "should not allow duplicate theater names" do

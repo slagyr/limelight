@@ -32,7 +32,7 @@ module Limelight
       alias :pathTo :path_to
       
       def load(path)       
-        file_to_load = path_to(path)        
+        file_to_load = path_to(path)  
         return IO.read(file_to_load)
       end
       
