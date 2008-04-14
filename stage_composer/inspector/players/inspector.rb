@@ -25,14 +25,14 @@ module Inspector
   end
   
   def load_scene(root, scene_path)
-    producer = Limelight::Producer.new(root, theater)
+    producer = Limelight::Producer.new(root, theater, scene.production)
     scene_path = scene_path
     
     producer.open_scene(scene_path, viewer_stage)
   end
   
   def theater
-    return scene.stage.producer.theater
+    return scene.production.theater
   end
   
   def viewer_stage

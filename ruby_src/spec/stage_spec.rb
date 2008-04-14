@@ -4,13 +4,13 @@ require 'limelight/stage'
 describe Limelight::Stage do
 
   before(:each) do
-    @producer = make_mock("producer")
-    @stage = Limelight::Stage.new(@producer, "George")
+    @theater = make_mock("theater")
+    @stage = Limelight::Stage.new(@theater, "George")
   end
   
   it "should have a name" do
-    stage = Limelight::Stage.new(@producer, "Jose")
-    stage.producer.should be(@producer)
+    stage = Limelight::Stage.new(@theater, "Jose")
+    stage.theater.should be(@theater)
     stage.name.should == "Jose"
   end
   

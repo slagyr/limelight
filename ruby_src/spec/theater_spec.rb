@@ -6,8 +6,7 @@ describe Limelight::Theater do
 
   before(:each) do
     @theater = Limelight::Theater.new
-    @producer = make_mock("producer")
-    @stage = Limelight::Stage.new(@producer, "default")
+    @stage = Limelight::Stage.new(@theater, "default")
   end
   
   it "should allow adding of stages" do
@@ -22,7 +21,7 @@ describe Limelight::Theater do
   end
   
   it "should know it's active stage" do
-    stage2 = Limelight::Stage.new(@producer, "two")
+    stage2 = Limelight::Stage.new(@theater, "two")
     
     @theater.add_stage(@stage)
     @theater.add_stage(stage2)
@@ -35,8 +34,8 @@ describe Limelight::Theater do
   end
   
   it "should allow recalling stage by name" do
-    stage2 = Limelight::Stage.new(@producer, "two")
-    stage3 = Limelight::Stage.new(@producer, "three")
+    stage2 = Limelight::Stage.new(@theater, "two")
+    stage3 = Limelight::Stage.new(@theater, "three")
     @theater.add_stage(@stage)
     @theater.add_stage(stage2)
     @theater.add_stage(stage3)
@@ -47,11 +46,18 @@ describe Limelight::Theater do
   end
   
   it "should not allow duplicate theater names" do
-    stage = Limelight::Stage.new(@producer, "default")
-    duplicate = Limelight::Stage.new(@producer, "default")
+    stage = Limelight::Stage.new(@theater, "default")
+    duplicate = Limelight::Stage.new(@theater, "default")
     
     @theater.add_stage(stage)
     lambda {  @theater.add_stage(stage) }.should raise_error(Limelight::LimelightException, "Duplicate stage name: 'default'")
+  end
+  
+  it "should have a default stage" do
+    @theater.default_stage.name.should == "Limelight"
+    @theater.default_stage.theater.should == @theater
+    
+    @theater.default_stage.should be(@theater.default_stage)
   end
 
 end
