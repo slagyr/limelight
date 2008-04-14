@@ -1,14 +1,14 @@
-require 'limelight/scene'
 require 'limelight/prop'
+require 'limelight/scene'
 require 'limelight/build_exception'
 
 module Limelight
   
-  def self.build_scene(options={}, &prop)
+  def self.build_scene(options={}, &block)
     loader = options.delete(:build_loader)
     builder = SceneBuilder.new(options)
     builder.__loader__ = loader
-    builder.instance_eval(&prop) if prop
+    builder.instance_eval(&block) if block
     return builder.__prop__
   end
   
@@ -17,7 +17,11 @@ module Limelight
     attr_accessor :__loader__
     
     def initialize(options)
-      @__prop__ = Prop.new(options)
+      if options.is_a?(Prop)
+        @__prop__ = options
+      else
+        @__prop__ = Prop.new(options)
+      end
     end
     
     def __(options)

@@ -148,6 +148,32 @@ public class PropLayoutTest extends TestCase
     Component view = scrollPanel.getViewport().getComponents()[0];
     assertSame(child, ((Container)view).getComponents()[0]);
   }
+
+  public void testNotSwitchingToScrollModeWhenChildrenAreTooWideButHorizontalScrollbarIsOff() throws Exception
+  {
+    MockPanel child = new MockPanel();
+    child.prepForSnap(500, 10);
+    parent.add(child);
+    parent.getStyle().setHorizontalScrollbar("off");
+
+    layout.layoutContainer(parent);
+
+    assertEquals(true, parent.hasChild(child));
+    assertSame(child, parent.getComponents()[0]);
+  }
+
+  public void testNotSwitchingToScrollModeWhenChildrenAreTooTallButVerticalScrollbarIsOff() throws Exception
+  {
+    MockPanel child = new MockPanel();
+    child.prepForSnap(10, 500);
+    parent.add(child);
+    parent.getStyle().setVerticalScrollbar("off");
+
+    layout.layoutContainer(parent);
+
+    assertEquals(true, parent.hasChild(child));
+    assertSame(child, parent.getComponents()[0]);
+  }
   
   public void testAutoSize() throws Exception
   {

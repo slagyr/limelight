@@ -20,7 +20,7 @@ public class FlatStyle extends Style
 		return styles[key];
 	}
 
-	protected void put(StyleDescriptor descriptor, String value)
+	public void put(StyleDescriptor descriptor, String value)
 	{
     if(value == null)
       return;

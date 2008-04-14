@@ -194,5 +194,20 @@ describe Limelight::Prop do
     @prop.panel.after_paint_action.should == nil
   end
   
+  it "should build children" do
+    @prop.build do
+      one
+      two do
+        three
+      end
+    end
+    
+    @prop.children.length.should == 2
+    @prop.children[0].name.should == "one"
+    @prop.children[1].name.should == "two"
+    @prop.children[1].children.length.should == 1
+    @prop.children[1].children[0].name.should == "three"
+  end
+  
 end
 

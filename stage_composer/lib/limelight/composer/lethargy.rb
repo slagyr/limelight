@@ -12,7 +12,7 @@ module Limelight
       null_event *Limelight::Prop::EVENTS
       
       def mouse_clicked(e)
-        scene.production.controller.prop_clicked(self)
+        scene.production.controller.prop_selected(self)
       end
       
     end

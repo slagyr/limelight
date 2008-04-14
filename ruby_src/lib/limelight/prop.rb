@@ -46,10 +46,21 @@ module Limelight
       return self
     end
     
+    def build(&block)
+      require 'limelight/prop_builder'
+      builder = Limelight::PropBuilder.new(self)
+      builder.instance_eval(&block)
+    end
+    
     def remove(child)
       if children.delete(child)
         @panel.remove(child.panel)
       end
+    end
+    
+    def remove_all
+      @panel.remove_all
+      @children = []
     end
     
     def add_controller(controller_module)
@@ -101,8 +112,13 @@ module Limelight
       return panel.text_accessor.text
     end
     
+    #TODO - MDM - DELETE ME
     def stage
       return scene.stage
+    end
+    
+    def production
+      return scene.production
     end
     
     def to_s
@@ -113,11 +129,13 @@ module Limelight
       return self.to_s
     end
     
+    # unusual name because it's not part of public api
     def set_parent(parent)
       @parent = parent
       set_scene parent.scene
     end
     
+    # unusual name because it's not part of public api
     def set_scene(scene)
       return if scene == @scene || scene.nil?
       @scene = scene

@@ -68,7 +68,9 @@ long start = System.currentTimeMillis();
     if("auto".equals(panel.getStyle().getHeight()))
       area = new Rectangle(area.x, area.y, area.width, consumedHeight);
 
-    if(!inScrollMode && (consumedHeight > area.height || consumedWidth > area.width))
+    boolean vertical_scrollbar_required = (consumedHeight > area.height) && !"off".equals(panel.getStyle().getVerticalScrollbar());
+    boolean horizontal_scrollbar_required = (consumedWidth > area.width) && !"off".equals(panel.getStyle().getHorizontalScrollbar());
+    if(!inScrollMode && (vertical_scrollbar_required || horizontal_scrollbar_required))
       enterScrollMode();
     if(inScrollMode && consumedHeight <= area.height && consumedWidth <= area.width)
       exitScrollMode();
@@ -167,6 +169,8 @@ calls++;
     scrollPane.setBorder(BorderFactory.createEmptyBorder());
     scrollPane.setSize(area.width,  area.height);
     scrollPane.setLocation(area.x, area.y);
+    scrollPane.getVerticalScrollBar().setUnitIncrement((int)(area.height * 0.1));
+    scrollPane.getHorizontalScrollBar().setUnitIncrement((int)(area.width * 0.1));
     panel.replaceChildren(new Component[] {scrollPane});
     scrollPane.doLayout();
 
