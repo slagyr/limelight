@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.BorderPainter;
+import limelight.ui.painting.PaintAction;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -328,5 +329,26 @@ public class PanelTest extends TestCase
     assertEquals(2, child5.paintIndex);
     assertEquals(3, child1.paintIndex);
     assertEquals(4, child3.paintIndex);
+  }
+
+  private boolean invoked;
+  public void testAfterPaintAction() throws Exception
+  {
+    invoked = false;
+    PaintAction action = new PaintAction() {
+
+      public void invoke(Graphics2D graphics)
+      {
+        invoked = true;
+      }
+    };
+
+    panel.setAfterPaintAction(action);
+    panel.setSize(100, 100);
+    MockGraphics mockGraphics = new MockGraphics();
+    mockGraphics.setClip(0, 0, 100, 100);
+    panel.paint(mockGraphics);
+
+    assertEquals(true, invoked);
   }
 }

@@ -13,10 +13,16 @@ module Limelight
       end
       
       def highlight(prop)
-        @highlighted_prop.update unless @highlighted_prop.nil?
-        
+        if @highlighted_prop
+          @highlighted_prop.after_painting(nil)
+          @highlighted_prop.update
+        end
         @highlighted_prop = prop
-        pen = prop.pen
+        prop.after_painting { |pen| paint_hightlight(prop, pen) }
+        prop.update
+      end
+      
+      def paint_hightlight(prop, pen)
         area = prop.area
         
         pen.color = "#B8C6F2DD"
