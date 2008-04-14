@@ -7,10 +7,18 @@ module Limelight
         @production = production
       end
       
-      def prop_clicked(prop)
+      def prop_selected(prop)
         puts "Prop clicked: #{prop}"
         highlight(prop)
+        @production.inspector.inspect_prop(prop)
       end
+      
+      def value_changed(descriptor, value)
+        @highlighted_prop.style.put(descriptor, value)
+        @highlighted_prop.update
+      end
+      
+      private #############################################
       
       def highlight(prop)
         if @highlighted_prop

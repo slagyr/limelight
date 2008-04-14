@@ -26,7 +26,7 @@ public class StackableStyle extends Style implements StyleObserver
 		return value;
 	}
 
-	protected void put(StyleDescriptor descriptor, String value)
+	public void put(StyleDescriptor descriptor, String value)
 	{
 		stack.getFirst().put(descriptor, value);
 	}

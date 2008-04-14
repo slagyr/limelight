@@ -158,4 +158,17 @@ describe Limelight::SceneBuilder do
     end
   end
   
+  it "should build onto an existing block" do
+    prop = Limelight::Prop.new
+    builder = Limelight::PropBuilder.new(prop)
+    block = Proc.new { one; two { three } }
+    builder.instance_eval(&block)
+    
+    prop.children.length.should == 2
+    prop.children[0].name.should == "one"
+    prop.children[1].name.should == "two"
+    prop.children[1].children.length.should == 1
+    prop.children[1].children[0].name.should == "three"
+  end
+  
 end

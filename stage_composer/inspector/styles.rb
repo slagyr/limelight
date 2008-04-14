@@ -29,3 +29,40 @@ tool {
     font_style "bold"
   }
 }
+
+prop_tree {
+ width "100%"
+ height "200" 
+ background_color :white
+}
+
+prop_row {
+  width "100%"
+  height "15"
+  background_color :white
+}
+
+style_table {
+  width "100%"
+  height "68%"
+}
+
+style_row {
+  width "100%"
+  height "28"
+}
+
+style_name {
+  width "50%"
+  height "100%"
+  vertical_alignment :center
+  horizontal_alignment :right
+  horizontal_scrollbar :off
+  vertical_scrollbar :off
+}
+
+style_value {
+  width "50%"
+  vertical_alignment :center
+  horizontal_alignment :left
+}

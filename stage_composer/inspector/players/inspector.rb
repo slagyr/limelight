@@ -5,6 +5,7 @@ module Inspector
   
   def self.extended(block)
     puts "Inspector extended"
+    block.production.inspector = block
   end
   
   def new
@@ -21,8 +22,24 @@ module Inspector
       end
       
       devitalize(viewer_stage.current_scene)
+      prop_tree.build_tree(viewer_stage.current_scene)
     end
   end
+  
+  def inspect_prop(prop)
+    style_table.populate(prop.style)
+    prop_tree.highlight(prop)
+  end
+  
+  def style_table
+    return find('style_table')
+  end
+  
+  def prop_tree
+    return find('prop_tree')
+  end
+  
+  private #################################################
   
   def load_scene(root, scene_path)
     producer = Limelight::Producer.new(root, theater, scene.production)

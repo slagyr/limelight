@@ -41,8 +41,7 @@ module Limelight
       styles = load_styles(path)
       merge_with_root_styles(styles)
 
-      scene = load_props(path, :styles => styles, :casting_director => @casting_director, :loader => @loader, :path => path)     
-      scene.production = @production
+      scene = load_props(path, :styles => styles, :production => @production, :casting_director => @casting_director, :loader => @loader, :path => path)
 
       stage.open(scene)
     end
@@ -91,7 +90,7 @@ module Limelight
       return if @production
       if @loader.exists?("production.rb")
         content = @loader.load("production.rb")
-        @production = Limelight.build_production(@producer, @theater) do
+        @production = Limelight.build_production(self, @theater) do
           begin
             eval content
           rescue Exception => e
@@ -99,8 +98,8 @@ module Limelight
           end
         end
       else
-        @production = Production.new(@producer, @theater)
-      end
+        @production = Production.new(self, @theater)
+      end      
     end
 
     def root_styles
