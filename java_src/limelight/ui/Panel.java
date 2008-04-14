@@ -4,6 +4,7 @@ import limelight.*;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
+import limelight.ui.painting.PaintAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,7 @@ public class Panel extends JPanel
   private Rectangle rectangleInsideBorders;
   private Rectangle rectangleInsidePadding;
   private Border borderShaper;
+  private PaintAction afterPaintAction;
 
   public Panel(Prop owner)
   {
@@ -135,17 +137,30 @@ public class Panel extends JPanel
     this.textAccessor = textAccessor;
   }
 
+  public void setAfterPaintAction(PaintAction action)
+  {
+    afterPaintAction = action;
+  }
+
+  public PaintAction getAfterPaintAction()
+  {
+    return afterPaintAction;
+  }
+
   public void paint(Graphics graphics)
   {
     if (shouldBuildBuffer())
       buildBuffer();
 
-    Composite originalComposite = ((Graphics2D) graphics).getComposite();
+    Graphics2D graphics2d = (Graphics2D) graphics;
+    Composite originalComposite = graphics2d.getComposite();
     applyAlphaComposite(graphics);
     limelight.ui.Rectangle clip = new limelight.ui.Rectangle(graphics.getClipBounds());
     graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
-    ((Graphics2D) graphics).setComposite(originalComposite);
+    graphics2d.setComposite(originalComposite);
     paintChildren(graphics);
+    if(afterPaintAction != null)
+      afterPaintAction.invoke(graphics2d);
   }
 
   protected void paintChildren(Graphics graphics)

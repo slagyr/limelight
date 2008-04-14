@@ -175,5 +175,24 @@ describe Limelight::Prop do
     pen.context.should be(graphics)
   end
   
+  it "should set after paint action" do
+    block = Proc.new { |pen| }
+    
+    @prop.after_painting &block
+    
+    action = @prop.panel.after_paint_action
+    action.should_not == nil
+    action.class.should == Limelight::PaintAction
+    action.block.should == block
+  end
+  
+  it "should clear after paint action" do
+    @prop.after_painting { |pen| puts "blah" }
+    
+    @prop.after_painting nil
+    
+    @prop.panel.after_paint_action.should == nil
+  end
+  
 end
 

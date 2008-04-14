@@ -14,6 +14,7 @@ public class MockGraphics extends java.awt.Graphics2D
 	public LinkedList<DrawnShape> drawnShapes;
   private BasicStroke stroke;
   private Hashtable<Object, Object> hints;
+  private Rectangle clip;
 
   public class DrawnShape
 	{
@@ -244,7 +245,7 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public limelight.ui.Rectangle getClipBounds()
 	{
-		return null;
+		return clip;
 	}
 
 	public void clipRect(int i, int i1, int i2, int i3)
@@ -253,7 +254,8 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void setClip(int i, int i1, int i2, int i3)
 	{
-	}
+    clip = new Rectangle(i, i1, i2, i3);
+  }
 
 	public Shape getClip()
 	{

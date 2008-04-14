@@ -1,5 +1,6 @@
 require 'limelight/java_util'
 require 'limelight/pen'
+require 'limelight/paint_action'
 
 module Limelight
   class Prop
@@ -67,7 +68,15 @@ module Limelight
       return if(@scene.nil? || !@scene.visible)
       @panel.doLayout()
       @panel.paintImmediately(0, 0, @panel.width, @panel.height)
-    end     
+    end    
+    
+    def after_painting(flag = true, &block)
+      if flag
+        @panel.after_paint_action = PaintAction.new(&block)
+      else
+        @panel.after_paint_action = nil
+      end
+    end 
     
     def find(id)
       return self if @id == id
