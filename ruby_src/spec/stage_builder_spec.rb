@@ -6,17 +6,16 @@ describe Limelight::StageBuilder do
   
   before(:each) do
     @theater = Limelight::Theater.new
-    @producer = make_mock("producer", :theater => @theater)
   end
 
   it "should give no stages if empty" do
-    stages = Limelight::build_stages(@producer)
+    stages = Limelight::build_stages(@theater)
     
     stages.should == []
   end
   
   it "should build one stage" do
-    stages = Limelight::build_stages(@producer) do
+    stages = Limelight::build_stages(@theater) do
       stage "George"
     end
     
@@ -25,7 +24,7 @@ describe Limelight::StageBuilder do
   end
   
   it "should build multiple stages" do
-    stages = Limelight::build_stages(@producer) do
+    stages = Limelight::build_stages(@theater) do
       stage "George"
       stage "Bill"
       stage "Amy"
@@ -38,7 +37,7 @@ describe Limelight::StageBuilder do
   end
   
   it "should allow the setting of stage properties" do
-    stages = Limelight::build_stages(@producer) do
+    stages = Limelight::build_stages(@theater) do
       stage "George" do
         title "The Curious"
       end
@@ -50,7 +49,7 @@ describe Limelight::StageBuilder do
   
   it "should raise an exception when setting an invalid property" do
     lambda do
-        Limelight::build_stages(@producer) do
+        Limelight::build_stages(@theater) do
         stage "George" do
           blah "blah"
         end
@@ -59,7 +58,7 @@ describe Limelight::StageBuilder do
   end
 
   it "should add stages to the theater" do
-    stages = Limelight::build_stages(@producer) do
+    stages = Limelight::build_stages(@theater) do
       stage "George" do
         title "The Curious"
       end
@@ -69,12 +68,12 @@ describe Limelight::StageBuilder do
   end
 
   it "should add stages to the theater" do
-    stages = Limelight::build_stages(@producer) do
+    stages = Limelight::build_stages(@theater) do
       stage "George" do
         title "The Curious"
       end
     end
-    stages = Limelight::build_stages(@producer) do
+    stages = Limelight::build_stages(@theater) do
       stage "George" do
         title "The Monkey"
       end

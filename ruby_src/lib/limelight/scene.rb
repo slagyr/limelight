@@ -8,7 +8,7 @@ module Limelight
     include Java::limelight.ui.Scene
   
     attr_reader :button_groups, :styles, :casting_director
-    attr_accessor :stage, :loader, :visible, :path
+    attr_accessor :stage, :loader, :visible, :path, :production
     getters :stage, :loader
     setters :stage
     
@@ -34,10 +34,37 @@ module Limelight
       return is_static?(style.get_width) && is_static?(style.get_height)
     end
     
+    def menu_bar
+      return MenuBar.build(self) do
+        menu("File") do
+          item("Open", :open_chosen_scene)
+          item("Refresh", :reload)
+        end
+      end
+    end
+    
+    def load(path)
+      @production.producer.open_scene(path, @stage)
+    end
+    
     private ###############################################
     
     def is_static?(value)
       return !(value.to_s.include?("%")) && !(value.to_s == "auto")
+    end
+    
+    def open_chosen_scene
+      options = { :title => "Open New Limelight Scene", :description => "Limelight Scene", :directory => @directory }
+      chosen_file = stage.choose_file(options) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_production?(file) }
+      if chosen_file
+        @directory = File.dirname(chosen_file)
+        producer = Producer.new(chosen_file, @production.theater)
+        producer.open
+      end
+    end
+    
+    def reload
+      load(@path)
     end
   
   end

@@ -7,8 +7,8 @@ require 'limelight/util'
 module Limelight
   
   class Stage
-    attr_accessor :directory, :default_scene
-    attr_reader :frame, :current_scene, :producer, :name
+    attr_accessor :default_scene
+    attr_reader :frame, :current_scene, :name, :theater
     
     include Java::limelight.ui.Stage
     
@@ -16,8 +16,8 @@ module Limelight
       choose_file
     end
     
-    def initialize(producer, name="default")
-      @producer = producer
+    def initialize(theater, name="default")
+      @theater = theater
       @name = name
       build_frame
       self.title = @name
@@ -58,6 +58,7 @@ module Limelight
     end
     
     def load_scene(scene)
+      @frame.setJMenuBar(scene.menu_bar)
       @frame.load(scene.panel)
       scene.stage = self
       scene.panel.set_size(scene.panel.get_preferred_size)
@@ -65,14 +66,6 @@ module Limelight
         @frame.set_size(scene.panel.get_size)
       end
       @current_scene = scene
-    end
-    
-    def load(scene_path)
-      @producer.open_scene(scene_path, self)
-    end
-  
-    def reload
-      load(@current_scene.path)
     end
     
     def choose_file(options={}, &block)
@@ -88,25 +81,6 @@ module Limelight
       @frame.set_size(800, 800)
       @frame.set_location(200, 25)
       @frame.title = title
-      
-      menu_bar = MenuBar.build(self) do
-        menu("File") do
-          item("Open", :open_chosen_scene)
-          item("Refresh", :reload)
-        end
-      end
-      
-      @frame.setJMenuBar(menu_bar)
-    end
-    
-    def open_chosen_scene
-      options = { :title => "Open New Limelight Scene", :description => "Limelight Scene", :directory => @directory }
-      chosen_file = choose_file(options) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_production?(file) }
-      if chosen_file
-        @directory = File.dirname(chosen_file)
-        producer = Producer.new(chosen_file, @producer.theater)
-        producer.open
-      end
     end
     
   end

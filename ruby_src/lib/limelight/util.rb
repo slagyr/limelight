@@ -7,7 +7,7 @@ module Limelight
     end
     
     def self.is_limelight_production?(file)
-      return is_directory_containing_file?(file, "production.rb")
+      return is_directory_containing_file?(file, "stages.rb")
     end
     
     def self.is_directory_containing_file?(file, file_name)

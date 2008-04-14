@@ -1,9 +1,10 @@
 require 'limelight/stage'
+require 'limelight/limelight_exception'
 
 module Limelight
   
-  def self.build_stages(producer, &block)
-    builder = StagesBuilder.new(producer)
+  def self.build_stages(theater, &block)
+    builder = StagesBuilder.new(theater)
     builder.instance_eval(&block) if block
     return builder.stages
   end
@@ -12,13 +13,13 @@ module Limelight
     
     attr_reader :stages
     
-    def initialize(producer)
-      @producer = producer
+    def initialize(theater)
+      @theater = theater
       @stages = []
     end
     
     def stage(name, &block)
-      stage_builder = StageBuilder.new(@producer, name)
+      stage_builder = StageBuilder.new(@theater, name)
       stage_builder.instance_eval(&block) if block
       @stages << stage_builder.stage
     end
@@ -29,12 +30,12 @@ module Limelight
     
     attr_reader :stage
     
-    def initialize(producer, name)
-      if producer.theater[name]
-        @stage = producer.theater[name]
+    def initialize(theater, name)
+      if theater[name]
+        @stage = theater[name]
       else
-        @stage = Stage.new(producer, name)
-        producer.theater.add_stage(@stage)
+        @stage = Stage.new(theater, name)
+        theater.add_stage(@stage)
       end
     end
     
@@ -49,7 +50,7 @@ module Limelight
     end
   end
 
-  class StageBuilderException < Exception
+  class StageBuilderException < LimelightException
     def initialize(name)
       super("'#{name}' is not a valid stage property")
     end

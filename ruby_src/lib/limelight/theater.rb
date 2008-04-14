@@ -29,6 +29,11 @@ module Limelight
       @active_stage = stage
     end
     
+    def default_stage
+      add_stage(Stage.new(self, "Limelight")) if self["Limelight"].nil?
+      return self["Limelight"]
+    end
+    
   end
   
 end
