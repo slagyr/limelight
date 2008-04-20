@@ -33,7 +33,7 @@ module Limelight
       
       def load(path)       
         file_to_load = path_to(path)
-        raise LimelightException.new("File not found: #{path}") if not File.exists?(file_to_load)  
+        raise LimelightException.new("File not found: #{file_to_load}") if not File.exists?(file_to_load)  
         return IO.read(file_to_load)
       end
       

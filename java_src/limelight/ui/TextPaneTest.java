@@ -45,8 +45,8 @@ public class TextPaneTest extends TestCase
     useFrame();
     pane.doLayout();
     Dimension size = pane.getPreferredSize();
-    assertEquals(50, size.width);
-    assertEquals(11, size.height);
+    assertEquals(59, size.width);
+    assertEquals(14, size.height);
   }
 
   public void testPreferredSizeWithMoreText() throws Exception
@@ -55,8 +55,8 @@ public class TextPaneTest extends TestCase
     pane.setText("Once upon a time, there was a developer working on a tool called Limelight.");
     pane.doLayout();
     Dimension size = pane.getPreferredSize();
-    assertEquals(98, size.width);
-    assertEquals(57, size.height);
+    assertEquals(99, size.width);
+    assertEquals(69, size.height);
   }
 
   public void testPreferredSizeWithBigFontSize() throws Exception
@@ -75,8 +75,8 @@ public class TextPaneTest extends TestCase
     pane.setText("1\n2\n3\nlongest");
     pane.doLayout();
     Dimension size = pane.getPreferredSize();
-    assertEquals(34, size.width);
-    assertEquals(46, size.height);
+    assertEquals(41, size.width);
+    assertEquals(55, size.height);
   }
 
   private void useFrame()

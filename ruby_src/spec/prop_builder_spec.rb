@@ -160,6 +160,7 @@ describe Limelight::SceneBuilder do
   
   it "should build onto an existing block" do
     prop = Limelight::Prop.new
+    prop.set_scene(Limelight::Scene.new(:casting_director => make_mock(:casting_director, :fill_cast => nil)))
     builder = Limelight::PropBuilder.new(prop)
     block = Proc.new { one; two { three } }
     builder.instance_eval(&block)
