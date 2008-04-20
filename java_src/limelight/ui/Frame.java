@@ -5,12 +5,16 @@ import java.awt.*;
 
 public class Frame extends JFrame
 {
+  public static String ICON = "???";
+
   private Stage stage;
 
   public Frame(Stage stage)
   {
     this.stage = stage;
     setLayout(null);
+//    setIconImage(new ImageIcon(ICON).getImage());
+//    System.out.println("System.getProperty(\"mrj.version\") = " + System.getProperty("mrj.version"));
   }
 
   public void doLayout()

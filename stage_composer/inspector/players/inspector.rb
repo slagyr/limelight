@@ -13,7 +13,8 @@ module Inspector
   
   def open
     # result = scene.stage.choose_file(:title => "Open Limelight Scene", :description => "Limelight Scene", :directory => @directory) { |file| Limelight::Util.is_limelight_scene?(file) }
-    result = "/Users/micahmartin/Projects/limelight/trunk/examples/sandbox/click_me"
+    # result = "/Users/micahmartin/Projects/limelight/trunk/examples/sandbox/click_me"
+    result = "Y:\\Projects\\limelight\\trunk\\examples\\sandbox\\click_me"
     if result
       if Limelight::Util.is_limelight_production?(File.dirname(result))
         load_scene(File.dirname(result), File.basename(result))

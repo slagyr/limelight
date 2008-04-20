@@ -24,7 +24,11 @@ module Limelight
       @loader = Loaders::FileSceneLoader.for_root(root_path)
       @theater = theater.nil? ? Theater.new : theater
       @production = production
-      @casting_director = CastingDirector.new(loader)
+    end
+    
+    def casting_director
+      @casting_director = CastingDirector.new(loader) if not @casting_director
+      return @casting_director
     end
     
     def open()
@@ -35,13 +39,14 @@ module Limelight
       else
         open_scene('.', @theater.default_stage)
       end
+      @casting_director = nil
     end
 
     def open_scene(path, stage)
       styles = load_styles(path)
       merge_with_root_styles(styles)
 
-      scene = load_props(path, :styles => styles, :production => @production, :casting_director => @casting_director, :loader => @loader, :path => path)
+      scene = load_props(path, :styles => styles, :production => @production, :casting_director => casting_director, :loader => @loader, :path => path)
 
       stage.open(scene)
     end
@@ -61,7 +66,7 @@ module Limelight
     def load_props(path, options = {})
       return Scene.new(options) if path.nil?
       filename = File.join(path, "props.rb")
-      content = @loader.load(filename)
+      content = @loader.exists?(filename) ? @loader.load(filename) : ""
       options[:build_loader] = @loader
       return Limelight.build_scene(options) do
         begin

@@ -16,11 +16,11 @@ module Limelight
     attr_reader :__prop__
     attr_accessor :__loader__
     
-    def initialize(options)
+    def initialize(options)    
       if options.is_a?(Prop)
         @__prop__ = options
       else
-        @__prop__ = Prop.new(options)
+        @__prop__ = Prop.new(options)  
       end
     end
     

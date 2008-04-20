@@ -26,12 +26,20 @@ describe Limelight::Producer do
   end
   
   it "should load props" do
+    @loader.should_receive(:exists?).with("./props.rb").and_return(true)
     @loader.should_receive(:load).with("./props.rb").and_return("child :id => 321")
     
     scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
     scene.children.size.should == 1
     scene.children[0].name.should == "child"
     scene.children[0].id.should == 321
+  end
+
+  it "should load props even when props.rd doesn't exist." do
+    @loader.should_receive(:exists?).with("./props.rb").and_return(false)
+
+    scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
+    scene.children.size.should == 0
   end
   
   it "should load styles" do
@@ -44,6 +52,7 @@ describe Limelight::Producer do
   end
   
   it "should format prop errors well" do
+    @loader.should_receive(:exists?).with("./props.rb").and_return(true)
     @loader.should_receive(:load).with("./props.rb").and_return("one\n+\nthree")
     
     begin
