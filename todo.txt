@@ -11,5 +11,5 @@ Build style from props.rb
 Make text selectable
 Drop shadows
 Allow production styles and stages to be build in production.rb
-
+Exit when last stage is closed.  (Windows only?)
 
