@@ -13,7 +13,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/jars/jruby.jar!/" />
+          <root url="jar://$MODULE_DIR$/jruby/lib/jruby.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

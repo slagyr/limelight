@@ -4,8 +4,10 @@ JAVA_OPTS=$JAVA_OPTS' -Dapple.laf.useScreenMenuBar=true '
 JAVA_OPTS=$JAVA_OPTS' -Xdock:name=Limelight '
 JAVA_OPTS=$JAVA_OPTS' -Dapple.awt.showGrowBox=true '
 JAVA_OPTS=$JAVA_OPTS-Xdock:icon=$0.icns
-export JAVA_OPTS
+# export JAVA_OPTS
+# 
+# /usr/bin/env jruby "$0.rb" $1 $2 $3 $4 $5
 
-/usr/bin/env jruby "$0.rb" $1 $2 $3 $4 $5
+java -cp 'dist/limelight.jar:jruby/lib/jruby.jar' $JAVA_OPTS -Dlimelight.home='/Users/micahmartin/Projects/limelight/trunk' limelight.Main $1 $2 $3 $4 $5
 
 

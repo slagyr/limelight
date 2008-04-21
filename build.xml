@@ -6,10 +6,14 @@
     <property name="src" location="java_src" />
     <property name="classes" location="classes" />
     <property name="lib" location="jars" />
+    <property name="ruby_lib" location="jruby/lib" />
 
     <path id="classpath">
         <pathelement path="${classes}" />
         <fileset dir="${lib}">
+            <include name="*.jar" />
+        </fileset>
+        <fileset dir="${ruby_lib}">
             <include name="*.jar" />
         </fileset>
     </path>
