@@ -3,19 +3,16 @@
 		LimeLight
 	</description>
 
-    <property name="src" location="java_src" />
+    <property name="src" location="src" />
     <property name="classes" location="classes" />
-    <property name="lib" location="jars" />
-    <property name="ruby_lib" location="jruby/lib" />
+    <property name="lib" location="lib" />
 
     <path id="classpath">
         <pathelement path="${classes}" />
         <fileset dir="${lib}">
             <include name="*.jar" />
         </fileset>
-        <fileset dir="${ruby_lib}">
-            <include name="*.jar" />
-        </fileset>
+        <fileset file="jruby/lib/jruby.jar"/>
     </path>
 
     <target name="build" depends="clean, compile" description="clean, then compile the source" />
@@ -23,10 +20,9 @@
     <target name="testbuild" depends="clean, unit_test" description="Run this target any time you change code or acceptance tests. It will clean, then compile the source, run all the unit test and fintesse acceptance tests." />
 
     <target name="jar" depends="build" description="generate the jar file">
-        <mkdir dir="dist" />
-        <delete file="dist/limelight.jar" />
+        <delete file="${lib}/limelight.jar" />
 
-        <jar jarfile="dist/limelight.jar" basedir="classes">
+        <jar jarfile="${lib}/limelight.jar" basedir="classes">
             <include name="**/*" />
             <exclude name="**/*Test.class" />
             <manifest>
