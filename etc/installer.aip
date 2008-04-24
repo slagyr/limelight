@@ -116,7 +116,7 @@
     <ROW Directory="painting_DIR" Directory_Parent="ui_DIR" DefaultDir="painting"/>
     <ROW Directory="parsers_1_DIR" Directory_Parent="rexml_DIR" DefaultDir="parsers"/>
     <ROW Directory="parsers_DIR" Directory_Parent="rdoc_DIR" DefaultDir="parsers"/>
-    <ROW Directory="part1_DIR" Directory_Parent="installer_cache_DIR" DefaultDir="part1"/>
+    <ROW Directory="part4_DIR" Directory_Parent="installer_cache_DIR" DefaultDir="part4"/>
     <ROW Directory="players_10_DIR" Directory_Parent="sketching_DIR" DefaultDir="players"/>
     <ROW Directory="players_11_DIR" Directory_Parent="teaser_DIR" DefaultDir="players"/>
     <ROW Directory="players_12_DIR" Directory_Parent="tutorial_1_1_DIR" DefaultDir="players"/>
@@ -264,7 +264,7 @@
     <ROW Component="default.rb" ComponentId="{6F4DA30F-49E8-465E-9B38-82AFAF30137B}" Directory_="formatters_DIR" Attributes="0" KeyPath="default.rb" Type="0"/>
     <ROW Component="digest_adapter.rb" ComponentId="{02E43ADB-A8A7-4960-9F97-8B256A60843A}" Directory_="digest_DIR" Attributes="0" KeyPath="digest_adapter.rb" Type="0"/>
     <ROW Component="dir.rb" ComponentId="{36EE9261-A187-48CE-90F7-FFCE82436F13}" Directory_="collector_DIR" Attributes="0" KeyPath="dir.rb" Type="0"/>
-    <ROW Component="disk1.cab" ComponentId="{8673261F-AF09-4CF4-8BC9-3E910DE3F7D3}" Directory_="part1_DIR" Attributes="0" KeyPath="disk1.cab" Type="0"/>
+    <ROW Component="disk1.cab" ComponentId="{A19C549A-60DE-47EA-8EDE-724F4F2E1DC8}" Directory_="part4_DIR" Attributes="0" KeyPath="disk1.cab" Type="0"/>
     <ROW Component="doc" ComponentId="{C5E7439F-1F51-4570-84D9-6274F55EAA66}" Directory_="doc_1_DIR" Attributes="0"/>
     <ROW Component="dot.rb" ComponentId="{A7013462-F2E3-45C9-8043-6EC902FC7DDC}" Directory_="dot_DIR" Attributes="0" KeyPath="dot.rb" Type="0"/>
     <ROW Component="error.rb" ComponentId="{577201F3-4DEB-4ADF-A09F-1256D8E20D19}" Directory_="lc_DIR" Attributes="0" KeyPath="error.rb" Type="0"/>
@@ -724,7 +724,7 @@
     <ROW File="digest_adapter.rb" Component_="digest_adapter.rb" FileName="digest~1.rb|digest_adapter.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\site_ruby\1.8\rubygems\digest\digest_adapter.rb" SelfReg="false" Sequence="877"/>
     <ROW File="digestauth.rb" Component_="authenticator.rb" FileName="digest~1.rb|digestauth.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\webrick\httpauth\digestauth.rb" SelfReg="false" Sequence="679"/>
     <ROW File="dir.rb" Component_="dir.rb" FileName="dir.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\test\unit\collector\dir.rb" SelfReg="false" Sequence="636"/>
-    <ROW File="disk1.cab" Component_="disk1.cab" FileName="disk1.cab" Attributes="0" SourcePath="installer-cache\part1\disk1.cab" SelfReg="false" Sequence="1002"/>
+    <ROW File="disk1.cab" Component_="disk1.cab" FileName="disk1.cab" Attributes="0" SourcePath="installer-cache\part4\disk1.cab" SelfReg="false" Sequence="1003"/>
     <ROW File="dl.rb" Component_="abbrev.rb" FileName="dl.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\dl.rb" SelfReg="false" Sequence="322"/>
     <ROW File="doc_manager.rb" Component_="builder.rb_1" FileName="doc_ma~1.rb|doc_manager.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\site_ruby\1.8\rubygems\doc_manager.rb" SelfReg="false" Sequence="881"/>
     <ROW File="doctype.rb" Component_="attlistdecl.rb" FileName="doctype.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\rexml\doctype.rb" SelfReg="false" Sequence="486"/>
@@ -855,6 +855,7 @@
     <ROW File="httpstatus.rb" Component_="accesslog.rb" FileName="httpst~1.rb|httpstatus.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\webrick\httpstatus.rb" SelfReg="false" Sequence="697"/>
     <ROW File="httputils.rb" Component_="accesslog.rb" FileName="httput~1.rb|httputils.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\webrick\httputils.rb" SelfReg="false" Sequence="698"/>
     <ROW File="httpversion.rb" Component_="accesslog.rb" FileName="httpve~1.rb|httpversion.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\webrick\httpversion.rb" SelfReg="false" Sequence="699"/>
+    <ROW File="icon.ico" Component_="icon_48.gif" FileName="icon.ico" Attributes="0" SourcePath="..\bin\icon.ico" SelfReg="false" Sequence="1002"/>
     <ROW File="icon.psd" Component_="icon.psd" FileName="icon.psd" Attributes="0" SourcePath="art\icon.psd" SelfReg="false" Sequence="129"/>
     <ROW File="icon_48.gif" Component_="icon_48.gif" FileName="icon_48.gif" Attributes="0" SourcePath="..\bin\icon_48.gif" SelfReg="false" Sequence="1"/>
     <ROW File="iconvcharset.rb" Component_="charset.rb" FileName="iconvc~1.rb|iconvcharset.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\xsd\iconvcharset.rb" SelfReg="false" Sequence="790"/>
@@ -989,7 +990,7 @@
     <ROW File="ostruct.rb" Component_="abbrev.rb" FileName="ostruct.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\ostruct.rb" SelfReg="false" Sequence="416"/>
     <ROW File="outdated_command.rb" Component_="build_command.rb" FileName="outdat~1.rb|outdated_command.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\site_ruby\1.8\rubygems\commands\outdated_command.rb" SelfReg="false" Sequence="859"/>
     <ROW File="output.rb" Component_="attlistdecl.rb" FileName="output.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\rexml\output.rb" SelfReg="false" Sequence="515"/>
-    <ROW File="output_info.ini" Component_="disk1.cab" FileName="output~1.ini|output-info.ini" Attributes="0" SourcePath="installer-cache\part1\output-info.ini" SelfReg="false" Sequence="1003"/>
+    <ROW File="output_info.ini" Component_="disk1.cab" FileName="output~1.ini|output-info.ini" Attributes="0" SourcePath="installer-cache\part4\output-info.ini" SelfReg="false" Sequence="1004"/>
     <ROW File="output_method.rb" Component_="completion.rb" FileName="output~1.rb|output-method.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\irb\output-method.rb" SelfReg="false" Sequence="381"/>
     <ROW File="package.rb" Component_="builder.rb_1" FileName="package.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\site_ruby\1.8\rubygems\package.rb" SelfReg="false" Sequence="903"/>
     <ROW File="paint_action.rb" Component_="build_exception.rb" FileName="paint_~1.rb|paint_action.rb" Attributes="0" SourcePath="..\ruby_src\lib\limelight\paint_action.rb" SelfReg="false" Sequence="938"/>
@@ -1363,6 +1364,7 @@
     <ROW File="xsd2ruby.rb" Component_="all.rb" FileName="xsd2ruby.rb" Attributes="0" SourcePath="..\jruby\lib\ruby\1.8\wsdl\xmlSchema\xsd2ruby.rb" SelfReg="false" Sequence="769"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
+    <ROW BuildKey="BuildMacOS" BuildName="BuildMacOS" BuildOrder="2" BuildType="2" MacDefaultMemorySize="128"/>
     <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="1" InstallationType="4"/>
     <ATTRIBUTE name="CurrentBuild" value="DefaultBuild"/>
   </COMPONENT>
@@ -1431,7 +1433,7 @@
     <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="740"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiJavaComponent">
-    <ROW Name="Limelight.exe" Launcher="Limelight.exe" MainClass="Main_Class" ClassPath="Class_Path" VMParams="Virtual_Machine_Parameters" JREMin="Minimum_Version" JREMax="Maximum_Version" IconPath="..\bin\icon.ico" AppType="Application_Type" PlusList="APPDIR;" MinusList="#Limelight.exe;" MacIcon="..\bin\limelight.icns" MacDescription="[CurrentJavaProductName] [ProductVersion] © [Manufacturer], Inc, 2008" MacBundleId="com.[Manufacturer].[ProductName].[CurrentJavaProductName]" FailureCheck="Failure_Check" UACExecutionLevel="0"/>
+    <ROW Name="Limelight.exe" Launcher="Limelight.exe" MainClass="Main_Class" ClassPath="Class_Path" VMParams="Virtual_Machine_Parameters" JREMin="Minimum_Version" JREMax="Maximum_Version" IconPath="..\bin\icon.ico" AppType="Application_Type" PlusList="APPDIR;" MinusList="#Limelight.exe;" MacIcon="..\bin\limelight.icns" MacVersion="10.2.0" MacDescription="[CurrentJavaProductName] [ProductVersion] © [Manufacturer], Inc, 2008" MacBundleId="com.[Manufacturer].[ProductName].[CurrentJavaProductName]" FailureCheck="Failure_Check" UACExecutionLevel="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiProgIdComponent">
     <ROW ProgId="[|Manufacturer].[|ProductName]"/>
