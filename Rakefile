@@ -1,19 +1,14 @@
-require File.expand_path(File.dirname(__FILE__) + "/lib/init")
+TASK_DIR = File.expand_path(File.dirname(__FILE__) + "/etc/tasks")
+Gem.clear_paths
+ENV["GEM_HOME"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
+ENV["GEM_PATH"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
+puts "Using gem home: #{Gem.dir}"
+puts "Using gem path: #{Gem.path}"
 
-task :gems do
-  puts "Establishing Gems"
-  gem_pattern = /\W+(\d+\.?)*\.gem/
-  gem_dir_pattern = /\W+(\d+\.?)*/
-  all_gems = []
-  Dir.entries("etc/gems/required_gems").each { |entry| all_gems << entry[0...-4] if entry.match(gem_pattern) }
-  installed_gems = []
-  Dir.entries("etc/gems/gems").each { |entry| installed_gems << entry if entry.match(gem_dir_pattern)} if File.exists?("etc/gems/gems")   
-  gems_to_install = all_gems - installed_gems
-  gems_to_install.each do |gem|
-    puts "Installing gem: #{gem}"
-    system "gem install -i etc/gems --no-rdoc --no-ri -f etc/gems/required_gems/#{gem}.gem"
-  end
-end
+require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
+
+load File.join(TASK_DIR, "dev_gems.rake")
+load File.join(TASK_DIR, "gem.rake")
 
 task :spec do
   ARGV.clear

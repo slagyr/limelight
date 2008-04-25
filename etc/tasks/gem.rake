@@ -5,9 +5,11 @@ PKG_VERSION   = Limelight::VERSION::STRING
 PKG_TAG = Limelight::VERSION::TAG
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 PKG_FILES = FileList[
-  '[A-Z]*',
   'lib/**/*.rb', 
-  'spec/**/*.rb' 
+  'lib/limelight.jar',
+  'spec/**/*.rb',
+  'productions/**/*',
+  'bin/**/*'
 ]
 
 spec = Gem::Specification.new do |s|
@@ -18,7 +20,7 @@ spec = Gem::Specification.new do |s|
   s.files = PKG_FILES.to_a
   s.require_path = 'lib'
   s.test_files = Dir.glob('spec/*_spec.rb')
-  s.bindir = 'bin/gem_bin'
+  s.bindir = 'bin'
   s.executables = ['limelight']
   s.autorequire = 'init'
   s.platform = "java"

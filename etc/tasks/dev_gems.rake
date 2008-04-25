@@ -7,13 +7,13 @@ end
 
 task :gems do
   puts "Establishing Gems"
-  gem_pattern = /\W+(\d+\.?)*\.gem/
+  gem_pattern = /.*\.gem/
   all_gems = []
   Dir.entries("etc/gems/required_gems").each { |entry| all_gems << entry[0...-4] if entry.match(gem_pattern) }  
   gems_to_install = all_gems - installed_gems
   gems_to_install.each do |gem|
     puts "Installing gem: #{gem}"
-    system "gem install -i etc/gems --no-rdoc --no-ri -f etc/gems/required_gems/#{gem}.gem"
+    system "jruby/bin/gem install etc/gems/required_gems/#{gem}.gem -i etc/gems -f --no-rdoc --no-ri"
   end
 end
 
