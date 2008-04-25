@@ -1,11 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + "/init")
-require 'limelight/producer'
 
 if defined? LIMELIGHT_STARTUP_PRODUCTION
   production_name = LIMELIGHT_STARTUP_PRODUCTION
-else
+elsif ARGV[0]
   production_name = ARGV[0]
+else
+  production_name = File.expand_path(File.dirname(__FILE__) + "/../productions/startup")
 end
 
-raise "No input" unless production_name
+puts "production_name: #{production_name}"
+
+require 'limelight/producer'
 Limelight::Producer.open(production_name)

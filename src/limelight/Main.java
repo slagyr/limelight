@@ -14,7 +14,7 @@ public class Main
 
   public static void main(String[] args) throws Exception
   {
-    String mainRubyFile = LIMELIGHT_HOME + "/ruby_src/lib/limelight.rb";
+    String mainRubyFile = LIMELIGHT_HOME + "/lib/limelight.rb";
 //    args = adjustArgs(args, mainRubyFile);
 
     System.setProperty("jruby.base", "");
@@ -34,7 +34,7 @@ public class Main
     RubyInstanceConfig config = new RubyInstanceConfig();
     config.processArguments(args);
 
-    String sceneName = LIMELIGHT_HOME + "/startup_production";
+    String sceneName = LIMELIGHT_HOME + "/productions/startup";
     if(config.getScriptFileName() != null)
       sceneName = config.getScriptFileName();
 
