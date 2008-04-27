@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 
 public class Colors
 {
+  public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
   private static Pattern fullHex = Pattern.compile("#[0-9aAbBcCdDeEfF]{6}");
   private static Pattern shortHex = Pattern.compile("#[0-9aAbBcCdDeEfF]{3}");
   private static Pattern fullHexWithAlpha = Pattern.compile("#[0-9aAbBcCdDeEfF]{8}");
@@ -45,6 +47,8 @@ public class Colors
 
       result = Color.decode(fullHexValue);
     }
+    else if("transparent".equals(value))
+      return TRANSPARENT;
     else
     {
       try

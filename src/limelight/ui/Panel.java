@@ -61,11 +61,6 @@ public class Panel extends JPanel
     return false;
   }
 
-  public void setLocation(int x, int y)
-  {
-    super.setLocation(x + getXOffset(), y + getYOffset());
-  }
-
   public void setSize(int width, int height)
   {
     width = height == 0 ? 0 : width;
@@ -278,20 +273,6 @@ public class Panel extends JPanel
     return borderShaper;
   }
 
-  public int getXOffset()
-  {
-    if (getStyle().getXOffset() != null)
-      return Integer.parseInt(getStyle().getXOffset());
-    return 0;
-  }
-
-  public int getYOffset()
-  {
-    if (getStyle().getYOffset() != null)
-      return Integer.parseInt(getStyle().getYOffset());
-    return 0;
-  }
-
   public void sterilize()
   {
     sterilized = true;
@@ -344,7 +325,7 @@ public class Panel extends JPanel
 
   private void applyAlphaComposite(Graphics graphics)
   {
-    if (getStyle().getTransparency() != null)
+    if (!"0".equals(getStyle().getTransparency()))
     {
       float transparency = 1f - (Integer.parseInt(getStyle().getTransparency()) / 100.0f);
       Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency);

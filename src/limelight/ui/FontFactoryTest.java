@@ -24,7 +24,15 @@ public class FontFactoryTest extends TestCase
 		assertEquals("ArialMT", font.getFontName());
 	}
 
-	public void testCreateFontWithBoldHelvetica() throws Exception
+  public void testDefaultFontExplicitlySet() throws Exception
+	{
+		style.setFontFace("arial");
+    style.setFontStyle("plain");
+    Font font = factory.createFont(style);
+		assertEquals("ArialMT", font.getFontName());
+	}
+
+  public void testCreateFontWithBoldHelvetica() throws Exception
 	{
 		style.setFontFace("Helvetica");
 		style.setFontSize("13");

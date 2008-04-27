@@ -1,5 +1,3 @@
-Events should not be consumed by props that don't look for events.
-Add defaults to styles.
 Make styles reusable
 Default style?
 Turn Style/FlatStyle/StackableStyle into a linked list.
@@ -12,4 +10,5 @@ Make text selectable
 Drop shadows
 Allow production styles and stages to be build in production.rb
 Exit when last stage is closed.  (Windows only?)
+Figure out and implement solution for productions to use gems.
 

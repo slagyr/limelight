@@ -9,6 +9,11 @@ require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
 
 load File.join(TASK_DIR, "dev_gems.rake")
 load File.join(TASK_DIR, "gem.rake")
+load File.join(TASK_DIR, "dist.rake")
+
+task :jar do
+  # system "ant jar"
+end
 
 task :spec do
   ARGV.clear

@@ -56,11 +56,16 @@ public class ColorsTest extends TestCase
 		checkColor(Colors.resolve("#B2B2"), 0xBB, 0x22, 0xBB, 0x22);
 	}
 
-    public void checkColor(Color color, int red, int green, int blue, int alpha)
+  public void checkColor(Color color, int red, int green, int blue, int alpha)
 	{
 		assertEquals(red, color.getRed());
 		assertEquals(green, color.getGreen());
 		assertEquals(blue, color.getBlue());
 		assertEquals(alpha, color.getAlpha());
 	}
+
+  public void testResolvesTransparent() throws Exception
+  {
+    checkColor(Colors.resolve("transparent"), 0, 0, 0, 0);
+  }
 }

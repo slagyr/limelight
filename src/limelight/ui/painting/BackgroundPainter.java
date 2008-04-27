@@ -21,17 +21,20 @@ public class BackgroundPainter extends Painter
     Style style = getStyle();
     Border border = panel.getBorderShaper();
     Shape insideBorder = border.getShapeInsideBorder();
-    if (style.getSecondaryBackgroundColor() != null && style.getGradientAngle() != null && style.getGradientPenetration() != null)
+
+    if(style.isOn(style.getGradient()))
       new GradientPainter(panel).paint(graphics);
-    else if (style.getBackgroundColor() != null)
+    else if(!"transparent".equals(style.getBackgroundColor()))
     {
-      graphics.setColor(Colors.resolve(style.getBackgroundColor()));
+      Color color = Colors.resolve(style.getBackgroundColor());
+      graphics.setColor(color);
 
       graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       graphics.fill(insideBorder);
       graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
-    if (style.getBackgroundImage() != null)
+    
+    if (!"none".equals(style.getBackgroundImage()))
     {
       try
       {
