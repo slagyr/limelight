@@ -10,11 +10,13 @@ import java.util.*;
 
 public class MockGraphics extends java.awt.Graphics2D
 {
-	private Color color;
+	public Color color;
 	public LinkedList<DrawnShape> drawnShapes;
+	public LinkedList<DrawnShape> filledShapes;
   private BasicStroke stroke;
   private Hashtable<Object, Object> hints;
   private Rectangle clip;
+  private Paint paint;
 
   public class DrawnShape
 	{
@@ -22,6 +24,7 @@ public class MockGraphics extends java.awt.Graphics2D
 		public Shape shape;
 		public BasicStroke stroke;
     public boolean antialiasing;
+    public Paint paint;
 
     public DrawnShape(Shape shape, BasicStroke stroke, Color color, boolean antialiasing)
 		{
@@ -35,21 +38,26 @@ public class MockGraphics extends java.awt.Graphics2D
 	public MockGraphics()
 	{
 		drawnShapes = new LinkedList<DrawnShape>();
+		filledShapes = new LinkedList<DrawnShape>();
     hints = new Hashtable<Object, Object>();
   }
 
 	public DrawnShape drawnShape(int i)
 	{
-		return (DrawnShape)drawnShapes.get(i);
+		return drawnShapes.get(i);
 	}
 
 	public void draw(Shape shape)
 	{
-    boolean antialiasing = hints.get(RenderingHints.KEY_ANTIALIASING) == RenderingHints.VALUE_ANTIALIAS_ON;
-    drawnShapes.add(new DrawnShape(shape, stroke, color, antialiasing));
+    drawnShapes.add(new DrawnShape(shape, stroke, color, antialiasing()));
 	}
 
-	public boolean drawImage(Image image, AffineTransform affineTransform, ImageObserver imageObserver)
+  private boolean antialiasing()
+  {
+    return hints.get(RenderingHints.KEY_ANTIALIASING) == RenderingHints.VALUE_ANTIALIAS_ON;
+  }
+
+  public boolean drawImage(Image image, AffineTransform affineTransform, ImageObserver imageObserver)
 	{
 		return false;
 	}
@@ -88,7 +96,10 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void fill(Shape shape)
 	{
-	}
+    DrawnShape theShape = new DrawnShape(shape, stroke, color, antialiasing());
+    theShape.paint = paint;
+    filledShapes.add(theShape);
+  }
 
 	public boolean hit(java.awt.Rectangle rectangle, Shape shape, boolean b)
 	{
@@ -105,8 +116,9 @@ public class MockGraphics extends java.awt.Graphics2D
 	}
 
 	public void setPaint(Paint paint)
-	{
-	}
+  {
+    this.paint = paint;
+  }
 
 	public void setStroke(Stroke stroke)
 	{

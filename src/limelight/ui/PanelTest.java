@@ -13,8 +13,6 @@ public class PanelTest extends TestCase
 {
   private static class TestablePanel extends Panel
   {
-    private Border borderShaper;
-
     public TestablePanel(Prop owner)
     {
       super(owner);
@@ -86,15 +84,6 @@ public class PanelTest extends TestCase
 
     panel.setSize(100, 0);
     assertEquals(new Dimension(0, 0), panel.getSize());
-  }
-
-  public void testOffsets() throws Exception
-  {
-    style.setYOffset("40");
-    style.setXOffset("30");
-
-    assertEquals(30, panel.getXOffset());
-    assertEquals(40, panel.getYOffset());
   }
 
   public void testShouldBuildBuffer() throws Exception
@@ -241,20 +230,6 @@ public class PanelTest extends TestCase
     assertEquals(0, panel.getMouseListeners().length);
     assertEquals(0, panel.getMouseMotionListeners().length);
     assertEquals(0, panel.getKeyListeners().length);
-  }
-
-  public void testSetLocation() throws Exception
-  {
-    panel.setLocation(100, 100);
-    assertEquals(100, panel.getX());
-    assertEquals(100, panel.getY());
-
-    style.setXOffset("12");
-    style.setYOffset("34");
-    panel.setLocation(100, 100);
-
-    assertEquals(112, panel.getX());
-    assertEquals(134, panel.getY());
   }
 
   public void testTextAccessor() throws Exception

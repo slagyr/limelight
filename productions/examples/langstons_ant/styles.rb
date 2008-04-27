@@ -2,6 +2,7 @@ earth {
 	width 900
 	height 900
 	background_color "blue"
+	gradient :on
 	secondary_background_color "#88f"
 	gradient_angle 310
 	gradient_penetration 75

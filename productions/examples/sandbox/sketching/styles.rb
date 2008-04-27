@@ -26,6 +26,7 @@ sketchpad {
   border_color :black
   border_width 2
   background_color "#eeecb3"
+  gradient :on
   secondary_background_color "#f2ee80"
   gradient_penetration 100
   gradient_angle 270

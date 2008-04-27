@@ -17,50 +17,49 @@ public abstract class Style
   public static final StyleDescriptor HEIGHT = descriptor("Height", "auto");
   public static final StyleDescriptor VERTICAL_SCROLLBAR = descriptor("Vertical Scrollbar", "auto");
   public static final StyleDescriptor HORIZONTAL_SCROLLBAR = descriptor("Horizontal Scrollbar", "auto");
-  public static final StyleDescriptor X_OFFSET = descriptor("X-Offset", null);
-  public static final StyleDescriptor Y_OFFSET = descriptor("Y-Offset", null);
-  public static final StyleDescriptor TOP_BORDER_COLOR = descriptor("Top Border Color", null);
-  public static final StyleDescriptor RIGHT_BORDER_COLOR = descriptor("Right Border Color", null);
-  public static final StyleDescriptor BOTTOM_BORDER_COLOR = descriptor("Bottom Border Color", null);
-  public static final StyleDescriptor LEFT_BORDER_COLOR = descriptor("Left Border Color", null);
-  public static final StyleDescriptor TOP_BORDER_WIDTH = descriptor("Top Border Width", null);
-  public static final StyleDescriptor RIGHT_BORDER_WIDTH = descriptor("Right Border Width", null);
-  public static final StyleDescriptor BOTTOM_BORDER_WIDTH = descriptor("Bottom Border Width", null);
-  public static final StyleDescriptor LEFT_BORDER_WIDTH = descriptor("Left Border Width", null);
-  public static final StyleDescriptor TOP_MARGIN = descriptor("Top Margin", null);
-  public static final StyleDescriptor RIGHT_MARGIN = descriptor("Right Margin", null);
-  public static final StyleDescriptor BOTTOM_MARGIN = descriptor("Bottom Margin", null);
-  public static final StyleDescriptor LEFT_MARGIN = descriptor("Left Margin", null);
-  public static final StyleDescriptor TOP_PADDING = descriptor("Top Padding", null);
-  public static final StyleDescriptor RIGHT_PADDING = descriptor("Right Padding", null);
-  public static final StyleDescriptor BOTTOM_PADDING = descriptor("Bottom Padding", null);
-  public static final StyleDescriptor LEFT_PADDING = descriptor("Left Padding", null);
-  public static final StyleDescriptor BACKGROUND_COLOR = descriptor("Background Color", null);
-  public static final StyleDescriptor SECONDARY_BACKGROUND_COLOR = descriptor("Secondary Background Color", null);
-  public static final StyleDescriptor BACKGROUND_IMAGE = descriptor("Background Image", null);
-  public static final StyleDescriptor BACKGROUND_IMAGE_FILL_STRATEGY = descriptor("Background Image Fill Strategy", null);
-  public static final StyleDescriptor GRADIENT_ANGLE = descriptor("Gradient Angle", null);
-  public static final StyleDescriptor GRADIENT_PENETRATION = descriptor("Gradient Penetration", null);
-  public static final StyleDescriptor CYCLIC_GRADIENT = descriptor("Cyclic Gradient", null);
-  public static final StyleDescriptor HORIZONTAL_ALIGNMENT = descriptor("Horizontal Alignment", null);
-  public static final StyleDescriptor VERTICAL_ALIGNMENT = descriptor("Vertical Alignment", null);
+  public static final StyleDescriptor TOP_BORDER_COLOR = descriptor("Top Border Color", "black");
+  public static final StyleDescriptor RIGHT_BORDER_COLOR = descriptor("Right Border Color", "black");
+  public static final StyleDescriptor BOTTOM_BORDER_COLOR = descriptor("Bottom Border Color", "black");
+  public static final StyleDescriptor LEFT_BORDER_COLOR = descriptor("Left Border Color", "black");
+  public static final StyleDescriptor TOP_BORDER_WIDTH = descriptor("Top Border Width", "0");
+  public static final StyleDescriptor RIGHT_BORDER_WIDTH = descriptor("Right Border Width", "0");
+  public static final StyleDescriptor BOTTOM_BORDER_WIDTH = descriptor("Bottom Border Width", "0");
+  public static final StyleDescriptor LEFT_BORDER_WIDTH = descriptor("Left Border Width", "0");
+  public static final StyleDescriptor TOP_MARGIN = descriptor("Top Margin", "0");
+  public static final StyleDescriptor RIGHT_MARGIN = descriptor("Right Margin", "0");
+  public static final StyleDescriptor BOTTOM_MARGIN = descriptor("Bottom Margin", "0");
+  public static final StyleDescriptor LEFT_MARGIN = descriptor("Left Margin", "0");
+  public static final StyleDescriptor TOP_PADDING = descriptor("Top Padding", "0");
+  public static final StyleDescriptor RIGHT_PADDING = descriptor("Right Padding", "0");
+  public static final StyleDescriptor BOTTOM_PADDING = descriptor("Bottom Padding", "0");
+  public static final StyleDescriptor LEFT_PADDING = descriptor("Left Padding", "0");
+  public static final StyleDescriptor BACKGROUND_COLOR = descriptor("Background Color", "transparent");
+  public static final StyleDescriptor SECONDARY_BACKGROUND_COLOR = descriptor("Secondary Background Color", "transparent");
+  public static final StyleDescriptor BACKGROUND_IMAGE = descriptor("Background Image", "none");
+  public static final StyleDescriptor BACKGROUND_IMAGE_FILL_STRATEGY = descriptor("Background Image Fill Strategy", "repeat");
+  public static final StyleDescriptor GRADIENT = descriptor("Gradient", "off");
+  public static final StyleDescriptor GRADIENT_ANGLE = descriptor("Gradient Angle", "90");
+  public static final StyleDescriptor GRADIENT_PENETRATION = descriptor("Gradient Penetration", "100");
+  public static final StyleDescriptor CYCLIC_GRADIENT = descriptor("Cyclic Gradient", "off");
+  public static final StyleDescriptor HORIZONTAL_ALIGNMENT = descriptor("Horizontal Alignment", "left");
+  public static final StyleDescriptor VERTICAL_ALIGNMENT = descriptor("Vertical Alignment", "top");
   public static final StyleDescriptor TEXT_COLOR = descriptor("Text Color", "black");
   public static final StyleDescriptor FONT_FACE = descriptor("Font Face", "Arial");
   public static final StyleDescriptor FONT_SIZE = descriptor("Font Size", "12");
-  public static final StyleDescriptor FONT_STYLE = descriptor("Font Style", null);
-  public static final StyleDescriptor TRANSPARENCY = descriptor("Transparency", null);
-  public static final StyleDescriptor TOP_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Top Right Rounded Corner Radius", null);
-  public static final StyleDescriptor BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Right Rounded Corner Radius", null);
-  public static final StyleDescriptor BOTTOM_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Left Rounded Corner Radius", null);
-  public static final StyleDescriptor TOP_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Top Left Rounded Corner Radius", null);
-  public static final StyleDescriptor TOP_RIGHT_BORDER_WIDTH = descriptor("Top Right Border Width", null);
-  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_WIDTH = descriptor("Bottom Right Border Width", null);
-  public static final StyleDescriptor BOTTOM_LEFT_BORDER_WIDTH = descriptor("Bottom Left Border Width", null);
-  public static final StyleDescriptor TOP_LEFT_BORDER_WIDTH = descriptor("Top Left Border Width", null);
-  public static final StyleDescriptor TOP_RIGHT_BORDER_COLOR = descriptor("Top Right Border Color", null);
-  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_COLOR = descriptor("Bottom Right Border Color", null);
-  public static final StyleDescriptor BOTTOM_LEFT_BORDER_COLOR = descriptor("Bottom Left Border Color", null);
-  public static final StyleDescriptor TOP_LEFT_BORDER_COLOR = descriptor("Top Left Border Color", null);
+  public static final StyleDescriptor FONT_STYLE = descriptor("Font Style", "plain");
+  public static final StyleDescriptor TRANSPARENCY = descriptor("Transparency", "0");
+  public static final StyleDescriptor TOP_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Top Right Rounded Corner Radius", "0");
+  public static final StyleDescriptor BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Right Rounded Corner Radius", "0");
+  public static final StyleDescriptor BOTTOM_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Left Rounded Corner Radius", "0");
+  public static final StyleDescriptor TOP_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Top Left Rounded Corner Radius", "0");
+  public static final StyleDescriptor TOP_RIGHT_BORDER_WIDTH = descriptor("Top Right Border Width", "0");
+  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_WIDTH = descriptor("Bottom Right Border Width", "0");
+  public static final StyleDescriptor BOTTOM_LEFT_BORDER_WIDTH = descriptor("Bottom Left Border Width", "0");
+  public static final StyleDescriptor TOP_LEFT_BORDER_WIDTH = descriptor("Top Left Border Width", "0");
+  public static final StyleDescriptor TOP_RIGHT_BORDER_COLOR = descriptor("Top Right Border Color", "black");
+  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_COLOR = descriptor("Bottom Right Border Color", "black");
+  public static final StyleDescriptor BOTTOM_LEFT_BORDER_COLOR = descriptor("Bottom Left Border Color", "black");
+  public static final StyleDescriptor TOP_LEFT_BORDER_COLOR = descriptor("Top Left Border Color", "black");
   public static final StyleDescriptor FLOAT = descriptor("Float", "off");
   public static final StyleDescriptor X = descriptor("X", "0");
   public static final StyleDescriptor Y = descriptor("Y", "0");
@@ -128,6 +127,11 @@ public abstract class Style
 			return 0;
 		}
 	}
+  
+  public boolean isOn(String value)
+  {
+    return "on".equals(value);
+  }
 
   public void setWidth(String value)
   {
@@ -147,26 +151,6 @@ public abstract class Style
   public String getHeight()
   {
     return get(HEIGHT);
-  }
-
-  public void setXOffset(String value)
-  {
-    put(X_OFFSET, value);
-  }
-
-  public String getXOffset()
-  {
-    return get(X_OFFSET);
-  }
-
-  public void setYOffset(String value)
-  {
-    put(Y_OFFSET, value);
-  }
-
-  public String getYOffset()
-  {
-    return get(Y_OFFSET);
   }
 
   public void setTextColor(String value)
@@ -407,6 +391,16 @@ public abstract class Style
   public void setBackgroundImageFillStrategy(String backgroundImageFillStrategy)
   {
     put(BACKGROUND_IMAGE_FILL_STRATEGY, backgroundImageFillStrategy);
+  }
+
+  public void setGradient(String color)
+  {
+    put(GRADIENT, color);
+  }
+
+  public String getGradient()
+  {
+    return get(GRADIENT);
   }
 
   public void setSecondaryBackgroundColor(String color)
@@ -716,5 +710,4 @@ public abstract class Style
   {
     put(HORIZONTAL_SCROLLBAR, value);
   }
-
 }
