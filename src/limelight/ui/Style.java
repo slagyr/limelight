@@ -75,7 +75,7 @@ public abstract class Style
 
   protected abstract String get(int key);
   public abstract void put(StyleDescriptor descriptor, String value);
-  protected abstract boolean has(int key);
+  protected abstract boolean has(int key);  //TODO  MDM,  Delete ME!
 
   public String get(StyleDescriptor descriptor)
   {
