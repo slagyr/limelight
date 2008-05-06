@@ -32,7 +32,7 @@ module Limelight
       @options = hash
       @children = []
       @panel = Java::limelight.ui.Panel.new(self)
-      @style = Java::limelight.ui.StackableStyle.new
+      @style = Java::limelight.ui.ScreenableStyle.new
     end
     
     def add(child)
@@ -165,14 +165,14 @@ module Limelight
     def hover_on
       return nil if @hover_style.nil?
       @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
-      style.push(@hover_style)
+      style.applyScreen(@hover_style)
       update
     end
     
     def hover_off
       return nil if @hover_style.nil?
       @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
-      @style.pop
+      @style.removeScreen()
       update
     end
     
@@ -223,14 +223,14 @@ module Limelight
     def inherit_styles
       return if @name.nil?
       new_style = @scene.styles[@name]
-      @style.add_to_bottom(new_style) if new_style
+      @style.add_extension(new_style) if new_style
       @hover_style = scene.styles["#{@name}.hover"]
     end
     
     def disinherit_styles
       return if @name.nil?
       old_style = @scene.styles[@name]
-      @style.remove(old_style) if old_style
+      @style.remove_extension(old_style) if old_style
       @hover_style = nil
     end
     
