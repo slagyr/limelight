@@ -1,7 +1,5 @@
 package limelight.ui;
 
-import java.util.Iterator;
-
 public class ScreenableStyle extends RichStyle
 {
   private Style screen;

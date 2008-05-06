@@ -19,7 +19,7 @@ describe Limelight::StylesBuilder do
     end
     
     result.size.should == 1
-    result["root"].class.should == Java::limelight.ui.FlatStyle
+    result["root"].class.should == Java::limelight.ui.RichStyle
   end
   
   it "should build one style with styling" do

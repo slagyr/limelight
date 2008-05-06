@@ -29,7 +29,7 @@ module Limelight
     attr_reader :__style__
     
     def initialize(name, styles_builder)
-      @__style__ = Java::limelight.ui.FlatStyle.new  
+      @__style__ = Java::limelight.ui.RichStyle.new  
       @__name__ = name
       @__styles_builder = styles_builder
     end
@@ -37,7 +37,7 @@ module Limelight
     def hover(&block)
       @__styles_builder.__add_style("#{@__name__}.hover", &block)
     end
-    
+                                                                                  
     def method_missing(sym, value)
       setter_sym = "#{sym}=".to_s
       raise StyleBuilderException.new(sym) if !@__style__.respond_to?(setter_sym)
