@@ -1,9 +1,4 @@
-Make styles reusable
-Default style?
-Turn Style/FlatStyle/StackableStyle into a linked list.
 Casting Director needs to know of scene structure to handle players in different scenes with the same name.
-init.rb automatically included when loading a production?
-Build props from code
 Build styles from code
 Build style from props.rb
 Make text selectable
@@ -11,4 +6,5 @@ Drop shadows
 Allow production styles and stages to be build in production.rb
 Exit when last stage is closed.  (Windows only?)
 Figure out and implement solution for productions to use gems.
+Default style? - Not sure how this should work eactly
 
