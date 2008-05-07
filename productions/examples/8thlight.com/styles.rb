@@ -53,36 +53,24 @@ tag_line {
 	right_margin 25
 	left_margin 25
 	horizontal_alignment :left
+	font_style "italics"
+	text_color "white"
+	font_size 18
+	top_padding 10
+	left_padding 10
+	right_padding 375
 }
 	
 services_tagline {
-	width 823
-	height 70
-	background_image "images/botticelli.jpg"
-	right_margin 25
-	left_margin 25
+  extends :tag_line
+  background_image "images/botticelli.jpg"
 	horizontal_alignment "right"
-	font_style "italics"
-	text_color "white"
-	font_size 18
-	top_padding 10
-	left_padding 10
-	right_padding 375
 }
 	
 about_tagline {
-	width 823
-	height 70
+  extends :tag_line
 	background_image "images/moses.jpg"
-	right_margin 25
-	left_margin 25
 	horizontal_alignment "right"
-	font_style "italics"
-	text_color "white"
-	font_size 18
-	top_padding 10
-	left_padding 10
-	right_padding 375
 }
 	
 section_title {
@@ -162,12 +150,7 @@ sm_news_img {
 }
 	
 sm_news_text {
-	width 253
-	height 58
-	left_margin 10
-	font_size 15
-	font_face "Helvetica"
-	text_color "#919191"
+  extends :book_news_text
 }
 
 news {
