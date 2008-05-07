@@ -1,4 +1,4 @@
-module Cell2
+module Cell
   
   def self.extended(prop)
   end

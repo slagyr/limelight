@@ -74,5 +74,47 @@ describe Limelight::StylesBuilder do
     styles["root.hover"].width.should == "50"
   end
 
+  it "should allow styles to extend other styles" do
+    styles = Limelight.build_styles do
+      one { width 100 }
+      two {
+        extends "one"
+        height 200
+      }
+    end
+
+    styles.size.should == 2
+    one = styles["one"]
+    two = styles["two"]
+    two.has_extension(one).should == true
+    two.height.should == "200"
+    two.width.should == "100"
+  end
+
+  it "should allow multiple extensions" do
+    styles = Limelight.build_styles do
+      one { width 100 }
+      two { x 100 }
+      three {
+        extends :one, :two
+        height 200
+      }
+    end
+
+    styles.size.should == 3
+    one = styles["one"]
+    two = styles["two"]
+    three = styles["three"]
+    three.has_extension(one).should == true
+    three.has_extension(two).should == true
+    three.height.should == "200"
+    three.width.should == "100"
+    three.x.should == "100"
+  end
+
+  it "should raise an exception when attempting to extend a missing style" do
+    lambda { Limelight.build_styles { one { extends :blah } } }.should raise_error(Limelight::StyleBuilderException, "Can't extend missing style: 'blah'")
+    end
+
 end
 
