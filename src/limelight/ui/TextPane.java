@@ -1,7 +1,7 @@
 package limelight.ui;
 
 import limelight.ui.Style;
-import limelight.*;
+import limelight.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
