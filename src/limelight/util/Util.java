@@ -1,4 +1,4 @@
-package limelight;
+package limelight.util;
 
 public class Util
 {

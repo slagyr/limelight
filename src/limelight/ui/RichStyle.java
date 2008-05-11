@@ -1,6 +1,6 @@
 package limelight.ui;
 
-import limelight.Util;
+import limelight.util.Util;
 
 import java.util.LinkedList;
 
