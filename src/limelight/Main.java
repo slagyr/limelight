@@ -21,6 +21,11 @@ public class Main
     new Main().run(args);
   }
 
+  public static void initializeContext() throws Exception
+  {
+    new Main().configureContext();
+  }
+
   public void run(String[] args) throws Exception
   {
     configureSystemProperties();

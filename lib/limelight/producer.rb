@@ -13,8 +13,11 @@ module Limelight
 
   class Producer
 
-    def self.open(scene_name)
-      producer = new(scene_name)
+    def self.open(production_name)
+      if(production_name[-4..-1] == ".llp")
+        production_name = unpack_production(production_name)
+      end
+      producer = new(production_name)
       producer.open
     end
     
@@ -123,6 +126,11 @@ module Limelight
       root_styles.each_pair do |key, value|
         styles[key] = value if !styles.has_key?(key)
       end
+    end
+
+    def self.unpack_production(production_name)
+      packer = Java::limelight::io.Packer.new()
+      return packer.unpack(production_name)
     end
 
   end
