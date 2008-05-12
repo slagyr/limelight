@@ -4,6 +4,7 @@ import limelight.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class Packer
 {
@@ -16,8 +17,11 @@ public class Packer
     return zipper.getDirectoryPath();
   }
 
-  public void pack(String productionPath)
+  public void pack(String productionPath) throws Exception
   {
-
+    DirectoryZipper zipper = DirectoryZipper.fromDir(productionPath);
+    String productionName = zipper.getProductionName();
+    FileOutputStream output = new FileOutputStream(productionName + ".llp");
+    zipper.zipTo(output);
   }
 }
