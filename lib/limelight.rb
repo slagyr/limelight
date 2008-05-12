@@ -1,5 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/init")
 
+Java::limelight::Main.initialize_context
+
 if defined? LIMELIGHT_STARTUP_PRODUCTION
   production_name = LIMELIGHT_STARTUP_PRODUCTION
 elsif ARGV[0]

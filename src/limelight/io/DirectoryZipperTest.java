@@ -44,6 +44,7 @@ public class DirectoryZipperTest extends TestCase
 
     DirectoryZipper zipper = DirectoryZipper.fromDir(ROOT_DIR);
     assertEquals(new File(ROOT_DIR).getAbsolutePath(), zipper.getDirectoryPath());
+    assertEquals("test_rootdir", zipper.getProductionName());
   }
 
   public void testShouldInstantiateFromZipcontent() throws Exception
@@ -60,6 +61,7 @@ public class DirectoryZipperTest extends TestCase
     newZipper.unzip(TestUtil.TMP_DIR);
 
     assertEquals(new File(ROOT_DIR).getAbsolutePath() + "/", newZipper.getDirectoryPath());
+    assertEquals("test_rootdir", newZipper.getProductionName());
     assertEquals("root", FileUtil.getFileContent(FileUtil.pathTo(ROOT_DIR, "root.txt")));
     assertEquals("child", FileUtil.getFileContent(FileUtil.pathTo(ROOT_DIR, "childdir", "child.txt")));
     assertEquals("grand child", FileUtil.getFileContent(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt")));

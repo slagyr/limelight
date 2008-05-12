@@ -13,6 +13,11 @@ public class TempDirectoryTest extends TestCase
     tempDirectory = new TempDirectory();
   }
 
+  public void tearDown() throws Exception
+  {
+    tempDirectory.cleanup(); 
+  }
+
   public void testLocations() throws Exception
   {
     String systemTempDir = System.getProperty("java.io.tmpdir");

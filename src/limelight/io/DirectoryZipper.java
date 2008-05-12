@@ -133,4 +133,9 @@ public class DirectoryZipper
       isRootDirectoryUnzipped = true;
     }
   }
+
+  public String getProductionName()
+  {
+    return new File(directoryPath).getName();
+  }
 }
