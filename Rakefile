@@ -1,3 +1,4 @@
+PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
 TASK_DIR = File.expand_path(File.dirname(__FILE__) + "/etc/tasks")
 Gem.clear_paths
 ENV["GEM_HOME"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
@@ -10,6 +11,7 @@ require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
 load File.join(TASK_DIR, "dev_gems.rake")
 load File.join(TASK_DIR, "gem.rake")
 load File.join(TASK_DIR, "dist.rake")
+load File.join(TASK_DIR, "copyrights.rake")
 
 task :jar do
   # system "ant jar"

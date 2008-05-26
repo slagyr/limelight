@@ -42,4 +42,13 @@ describe Limelight::Stage do
     lambda { @stage.name = "new name" }.should raise_error
   end
 
+  it "should call scene.scene_opened at the end of opening a scene" do
+    scene = make_mock("scene", :visible= => nil)
+    scene.should_receive(:scene_opened)
+
+    @stage.frame.stub!(:open)
+    @stage.stub!(:load_scene)
+    @stage.open(scene)
+  end
+
 end

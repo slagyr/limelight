@@ -26,16 +26,13 @@ title {
 world {
 	width 503
 	height 503
-	top_border_width 2
-	right_border_width 1
-	bottom_border_width 1
-	left_border_width 2
+	border_width 2
 	border_color "#bbb"
 }
 	
 cell {
-	width 5
-	height 5
+	width 10
+	height 10
 	right_border_width 1
 	bottom_border_width 1
 	border_color "#bbb"

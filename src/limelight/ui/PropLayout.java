@@ -29,7 +29,17 @@ public class PropLayout implements LayoutManager
     inScrollMode = false;
 	}
 
-	public void addLayoutComponent(String string, Component component)
+  public boolean isInScrollMode()
+  {
+    return inScrollMode;
+  }
+
+  public JPanel getScrollView()
+  {
+    return scrollView;
+  }
+
+  public void addLayoutComponent(String string, Component component)
 	{
 	}
 

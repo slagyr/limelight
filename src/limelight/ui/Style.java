@@ -22,7 +22,7 @@ public abstract class Style
   public static final StyleDescriptor BOTTOM_BORDER_COLOR = descriptor("Bottom Border Color", "black");
   public static final StyleDescriptor LEFT_BORDER_COLOR = descriptor("Left Border Color", "black");
   public static final StyleDescriptor TOP_BORDER_WIDTH = descriptor("Top Border Width", "0");
-  public static final StyleDescriptor RIGHT_BORDER_WIDTH = descriptor("Right Border Width", "0");
+  public static final StyleDescriptor RIGHT_BORDER_WIDTH = descriptor("Right Border Width", "0");                            
   public static final StyleDescriptor BOTTOM_BORDER_WIDTH = descriptor("Bottom Border Width", "0");
   public static final StyleDescriptor LEFT_BORDER_WIDTH = descriptor("Left Border Width", "0");
   public static final StyleDescriptor TOP_MARGIN = descriptor("Top Margin", "0");

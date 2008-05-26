@@ -49,7 +49,10 @@ public class Panel extends JPanel
   {
     if (sterilized)
       throw new SterilePanelException(prop.getName());
-    return super.add(comp);
+    if(((PropLayout)getLayout()).isInScrollMode())      // TODO MDM HACK HACK HACK!!!!
+      return ((PropLayout)getLayout()).getScrollView().add(comp);
+    else
+      return super.add(comp);
   }
 
   public boolean hasChild(Component child)
@@ -190,13 +193,15 @@ public class Panel extends JPanel
   protected boolean shouldBuildBuffer()
   {
     Style style = getStyle();
+    boolean should_repaint = false;
     if (buffer == null)
-      return true;
-    if (style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY)))
-      return true;
-    if (getWidth() != buffer.getWidth() || getHeight() != buffer.getHeight())
-      return true;
-    return false;
+      should_repaint = true;
+    else if (style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY)))
+      should_repaint = true;
+    else if (getWidth() != buffer.getWidth() || getHeight() != buffer.getHeight())
+      should_repaint = true;
+
+    return should_repaint;
   }
 
   protected void buildBuffer()
