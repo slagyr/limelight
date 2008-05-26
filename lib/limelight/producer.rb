@@ -1,3 +1,6 @@
+#- Copyright 2008 8th Light, Inc.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 require 'limelight/loaders/file_scene_loader'
 require 'limelight/prop_builder'
 require 'limelight/styles_builder'
