@@ -11,6 +11,7 @@ module Limelight
     attr_accessor :stage, :loader, :visible, :path, :production
     getters :stage, :loader
     setters :stage
+    event :scene_opened
     
     def initialize(options={})
       super(options)

@@ -51,6 +51,7 @@ module Limelight
       load_scene(scene)
       @frame.open
       scene.visible = true
+      scene.scene_opened(self)
     end
   
     def close

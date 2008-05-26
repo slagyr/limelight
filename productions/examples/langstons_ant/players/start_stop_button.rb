@@ -15,7 +15,9 @@ module StartStopButton
   end
   
   def start
-    @ant = Ant.new(50, 50, scene.find("world"), 100) if @ant.nil?
+    world = scene.find("world")
+    world.draw_grid
+    @ant = Ant.new(50, 50, world, 100) if @ant.nil?
     @thread = Thread.new do
       begin
         @ant.walk

@@ -34,15 +34,25 @@ class Ant
   end
   
   def make_step
-    cell = @world.cell_index["#{@x},#{@y}"]
-    if cell.style.background_color == BLACK
-      cell.style.background_color = WHITE
+    if @world.cells["#{@x},#{@y}"] # black
+      @world.paint_cell(@x, @y, WHITE)
+      @world.cells["#{@x},#{@y}"] = false
       go_right
-    else
-      cell.style.background_color = BLACK
+    else   # white
+      @world.paint_cell(@x, @y, BLACK)
+      @world.cells["#{@x},#{@y}"] = true
       go_left
-    end 
-    cell.update_now
+    end
+      
+    # cell = @world.cell_index["#{@x},#{@y}"]
+    # if cell.style.background_color == BLACK
+    #   cell.style.background_color = WHITE
+    #   go_right
+    # else
+    #   cell.style.background_color = BLACK
+    #   go_left
+    # end 
+    # cell.update_now
     wrap_if_needed
   end
   

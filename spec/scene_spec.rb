@@ -24,4 +24,8 @@ describe Limelight::Scene do
     scene.styles.should == "styles"
     scene.casting_director.should == @casting_director
   end
+
+  it "should have opened event" do
+    @scene.should respond_to(:scene_opened)
+  end
 end
