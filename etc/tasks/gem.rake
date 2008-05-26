@@ -31,6 +31,6 @@ spec = Gem::Specification.new do |s|
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.need_zip = true
-  pkg.need_tar = true
+  pkg.need_zip = false
+  pkg.need_tar = false
 end

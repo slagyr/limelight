@@ -8,10 +8,9 @@ puts "Using gem path: #{Gem.path}"
 
 require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
 
-load File.join(TASK_DIR, "dev_gems.rake")
-load File.join(TASK_DIR, "gem.rake")
-load File.join(TASK_DIR, "dist.rake")
-load File.join(TASK_DIR, "copyrights.rake")
+Dir.glob(File.join(TASK_DIR, "*.rake")).each do |rakefile|
+  load rakefile
+end
 
 task :jar do
   # system "ant jar"
