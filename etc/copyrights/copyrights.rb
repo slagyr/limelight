@@ -1,7 +1,5 @@
-# -----
-# Copyright 2008 8th Light Inc.
-# Limelight and all included source files are distributed under terms of the GNU LGPL.
-# -----
+#- Copyright 2008 8th Light, Inc.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 module Copyrights
 
@@ -62,8 +60,8 @@ module Copyrights
     def find_copyright
       @copyright = ''
       @lines.each do |line|
-        if line[0...@comment_prefix.length] == @comment_prefix
-          @copyright << line << ENDL
+        if has_comment_prefix(line)
+          @copyright << line
         else
           break
         end
@@ -71,12 +69,28 @@ module Copyrights
       @copyright.strip!
     end
 
-    def add_copyright(text)
+    def has_comment_prefix(line)
+      return false if line.nil?
+      return line[0...@comment_prefix.length] == @comment_prefix
+    end
 
+    def remove_copyright
+      while has_comment_prefix(@lines[0])
+        @lines.shift
+      end
+    end
+
+    def add_copyright(text)
+      @lines.insert(0, ENDL) if @lines[0].to_s.strip.length > 0
+      @lines.insert(0, text, ENDL)
     end
 
     def save!
-      
+      File.open(@filename, "w") do |file|
+         @lines.each do |line|
+           file.write line
+         end
+      end
     end
   end
 
@@ -88,16 +102,16 @@ module Copyrights
       if source_file.has_copyright?
         if source_file.copyright != lang.text
           puts "invalid copyright: #{filename}"
-#          source_file.remove_copyright
-#          source_file.add_copyright(lang.text)
-#          source_file.save!
+          source_file.remove_copyright
+          source_file.add_copyright(lang.text)
+          source_file.save!
         else
           puts "already has valid copyright: #{filename}"
         end
       else
         puts "missing copyright: #{filename}"
-#        source_file.add_copyright(lang.text)
-#        source_file.save!
+        source_file.add_copyright(lang.text)
+        source_file.save!
       end
     end
   end

@@ -1,3 +1,6 @@
+#- Copyright 2008 8th Light, Inc.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 require 'limelight/java_util'
 require 'limelight/pen'
 require 'limelight/paint_action'

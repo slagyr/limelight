@@ -1,3 +1,6 @@
+#- Copyright 2008 8th Light, Inc.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 __ :name => "calculator"
 screen :id => "screen", :text => "1000000000"
 buttons do

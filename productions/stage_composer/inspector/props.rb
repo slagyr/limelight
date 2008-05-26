@@ -1,3 +1,6 @@
+#- Copyright 2008 8th Light, Inc.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 __ :name => "inspector"
 tool_bar do
   tool :text => "New", :on_mouse_clicked => "scene.new"
