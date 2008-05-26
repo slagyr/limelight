@@ -3,6 +3,28 @@ body {
 	background-color: white;
 }
 
+img {
+  border: 0px;
+}
+
+a:link, a:visited, a:active {
+	color: #8cc63f;
+	font-family: Sans-Serif;
+	font-weight: bold;
+	font-size: 12pt;
+	text-decoration: none;
+}
+
+a:hover {
+  color: #bad452;
+}
+
+div#main_body {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 #header {
 	margin-top: 40px;
 	height: 120px;
@@ -92,6 +114,7 @@ a.footer_link:link, a.footer_link:visited, a.footer_link:active {
 }
 
 a.footer_link:hover {
+  color: #bad452;
 }
 
 #small_sparkle_link, #small_sparkle_link:link, #small_sparkle_link:visited, #small_sparkle_link:active {
@@ -138,13 +161,13 @@ span.title {
 	text-decoration: none;
 }
 
-#text_table {
-	width: 900px;
+.two_col_table, #download_table {
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-#text_table tr td {
+.two_col_table tr td {
 	padding: 0px 20px 0px 20px;
 }
 
@@ -153,4 +176,29 @@ span.text {
 	font-family: Serif;
 	font-size: 12pt;
 	line-height: 17pt;
+}
+
+span.text a {
+	font-family: Serif;
+	font-size: 12pt;
+  font-weight: normal;
+  line-height: 17pt;
+}
+
+pre {
+  color: black;
+  border-left: 1px solid #999999;
+  padding: 5px 10px 5px 20px;
+  background-color: #eeeeee;
+}
+
+span.tutorial_title {
+	display: block;
+	margin: 10px 0px 5px 0px;
+	color: #8cc63f;
+	font-family: Sans-Serif;
+	font-weight: bold;
+	font-size: 15pt;
+	text-decoration: none;
+  text-align: center;
 }
