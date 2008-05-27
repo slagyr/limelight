@@ -19,4 +19,4 @@ end
 url_for(:controller => "downloader", :action => "download", :package => "MyLimelightPackage")
 
 
-Copyright (c) 2008 8th Light Inc., released under the MIT license
+Copyright (c) 2008 8th Light, Inc., released under terms of the GNU LGPL.
