@@ -36,7 +36,7 @@ public class BackgroundPainter extends Painter
       graphics.fill(insideBorder);
       graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
-    
+
     if (!"none".equals(style.getBackgroundImage()))
     {
       try
