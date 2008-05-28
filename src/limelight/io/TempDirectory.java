@@ -47,4 +47,12 @@ public class TempDirectory
   {
     FileUtil.deleteFileSystemDirectory(root);
   }
+
+  public File getDownloadsDirectory()
+  {
+    File downloadsDirectory = new File(root, "downloads");
+    if(!downloadsDirectory.exists())
+      downloadsDirectory.mkdir();
+    return downloadsDirectory;
+  }
 }

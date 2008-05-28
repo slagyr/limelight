@@ -5,10 +5,7 @@ package limelight.io;
 
 import limelight.util.StringUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class FileUtil
 {
@@ -142,4 +139,14 @@ public class FileUtil
 		stream.close();
 		return bytes;
 	}
+
+  public static void copyBytes(InputStream input, OutputStream output) throws Exception
+  {
+    BufferedInputStream bufferedInput = new BufferedInputStream(input);
+    StreamReader reader = new StreamReader(bufferedInput);
+    BufferedOutputStream bufferedOutput = new BufferedOutputStream(output);
+    while(!reader.isEof())
+      bufferedOutput.write(reader.readBytes(1000));
+    bufferedOutput.flush();
+  }
 }
