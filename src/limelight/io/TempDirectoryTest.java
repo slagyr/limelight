@@ -63,4 +63,13 @@ public class TempDirectoryTest extends TestCase
     assertEquals(tempDirectory.getRoot(), temp2.getParentFile());
     assertEquals(false, temp1.getPath().equals(temp2.getPath()));
   }
+
+  public void testDownloadsDirectory() throws Exception
+  {
+    File downloadsDirectory = tempDirectory.getDownloadsDirectory();
+
+    assertEquals(true, downloadsDirectory.exists());
+    assertEquals(true, downloadsDirectory.isDirectory());
+    assertEquals(tempDirectory.getRoot(), downloadsDirectory.getParentFile());
+  }
 }

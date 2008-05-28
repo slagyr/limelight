@@ -121,10 +121,9 @@ public class DirectoryZipper
 
   private void unzipFile(String absolutePath) throws Exception
   {
-    FileOutputStream output = new FileOutputStream(absolutePath);
-    StreamReader reader = new StreamReader(zipInput);
-    while(!reader.isEof())
-          output.write(reader.readBytes(1000));
+    FileOutputStream fileOutput = new FileOutputStream(absolutePath);
+    FileUtil.copyBytes(zipInput, fileOutput);
+    fileOutput.close();
   }
 
   private void unzipDirectory(String absolutePath)
