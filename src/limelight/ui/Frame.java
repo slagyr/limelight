@@ -45,4 +45,9 @@ public class Frame extends JFrame
   {
     return stage;
   }
+
+  public void alert(String message)
+  {
+    JOptionPane.showMessageDialog(this, message, "Limelight Alert", JOptionPane.WARNING_MESSAGE);
+  }
 }

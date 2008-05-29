@@ -78,6 +78,10 @@ module Limelight
       return chooser.choose_file
     end
 
+    def alert(message)
+      frame.alert(message)
+    end
+
     private ###############################################
     
     def build_frame

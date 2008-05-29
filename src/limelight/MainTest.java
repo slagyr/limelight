@@ -4,6 +4,7 @@
 package limelight;
 
 import junit.framework.TestCase;
+import limelight.io.Downloader;
 
 public class MainTest extends TestCase
 {
@@ -20,5 +21,13 @@ public class MainTest extends TestCase
     main.configureContext();
 
     assertNotNull(Context.instance().tempDirectory);
+  }
+
+  public void testDownloaderIsAddedToContext() throws Exception
+  {
+    main.configureContext();
+
+    Downloader downloader = Context.instance().downloader;
+    assertSame(Context.instance().tempDirectory, downloader.getTempDirectory());
   }
 }

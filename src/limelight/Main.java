@@ -3,10 +3,12 @@
 
 package limelight;
 
+import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
+
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 
@@ -84,6 +86,7 @@ public class Main
       return;
     Context context = Context.instance();
     context.tempDirectory = new TempDirectory();
+    context.downloader = new Downloader(context.tempDirectory);
     contextIsConfigured = true;
   }
 }
