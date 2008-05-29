@@ -58,6 +58,14 @@ public class Panel extends JPanel
       return super.add(comp);
   }
 
+  public void remove(Component comp)   // TODO HACK
+  {
+    if(((PropLayout)getLayout()).isInScrollMode())      // TODO MDM HACK HACK HACK!!!!
+      ((PropLayout)getLayout()).getScrollView().remove(comp);
+    else
+      super.remove(comp);
+  }
+
   public boolean hasChild(Component child)
   {
     Component[] components = getComponents();
