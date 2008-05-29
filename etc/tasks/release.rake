@@ -44,8 +44,8 @@ task :publish_packages => [:verify_user, :verify_password, :package] do
   require 'rake/contrib/xforge'
   release_files = FileList[
     "pkg/#{PKG_FILE_NAME}-java.gem",
-    "etc/installers/limelight-0.0.1.msi",
-    "etc/installers/limelight-0.0.1.dmg"
+    "etc/installers/limelight-0.1.0.msi",
+    "etc/installers/limelight-0.1.0.dmg"
   ]
 
   Rake::XForge::Release.new(MetaProject::Project::XForge::RubyForge.new(PKG_NAME)) do |xf|
