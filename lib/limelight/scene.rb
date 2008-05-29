@@ -47,6 +47,20 @@ module Limelight
       end
     end
     
+    def open_chosen_scene
+      options = { :title => "Open New Limelight Scene", :description => "Limelight Production or Scene", :directory => @directory }
+      chosen_file = stage.choose_file(options) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_production?(file) }
+      if chosen_file
+        @directory = File.dirname(chosen_file)
+        open_production(chosen_file)
+      end
+    end
+
+    def open_production(production_path)
+      producer = Producer.new(production_path, @production.theater)
+      producer.open
+    end
+    
     def load(path)
       @production.producer.open_scene(path, @stage)
     end
@@ -55,16 +69,6 @@ module Limelight
     
     def is_static?(value)
       return !(value.to_s.include?("%")) && !(value.to_s == "auto")
-    end
-    
-    def open_chosen_scene
-      options = { :title => "Open New Limelight Scene", :description => "Limelight Scene", :directory => @directory }
-      chosen_file = stage.choose_file(options) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_production?(file) }
-      if chosen_file
-        @directory = File.dirname(chosen_file)
-        producer = Producer.new(chosen_file, @production.theater)
-        producer.open
-      end
     end
     
     def reload

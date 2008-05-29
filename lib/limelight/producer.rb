@@ -17,9 +17,6 @@ module Limelight
   class Producer
 
     def self.open(production_name)
-      if(production_name[-4..-1] == ".llp")
-        production_name = unpack_production(production_name)
-      end
       producer = new(production_name)
       producer.open
     end
@@ -27,6 +24,9 @@ module Limelight
     attr_reader :loader, :theater, :production
     
     def initialize(root_path, theater=nil, production=nil)
+      if(root_path[-4..-1] == ".llp")
+        root_path = unpack_production(root_path)
+      end
       @loader = Loaders::FileSceneLoader.for_root(root_path)
       @theater = theater.nil? ? Theater.new : theater
       @production = production
@@ -131,7 +131,7 @@ module Limelight
       end
     end
 
-    def self.unpack_production(production_name)
+    def unpack_production(production_name)
       packer = Java::limelight::io.Packer.new()
       return packer.unpack(production_name)
     end

@@ -4,12 +4,14 @@
 package limelight;
 
 import limelight.io.TempDirectory;
+import limelight.io.Downloader;
 
 public class Context
 {
   private static Context instance;
   
   public TempDirectory tempDirectory;
+  public Downloader downloader;
 
   protected Context()
   {

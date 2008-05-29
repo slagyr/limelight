@@ -5,10 +5,15 @@ package limelight.io;
 
 import limelight.LimelightException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Downloader
 {
@@ -19,11 +24,16 @@ public class Downloader
     this.tempDirectory = tempDirectory;
   }
 
+  public TempDirectory getTempDirectory()
+  {
+    return tempDirectory;
+  }
+
   public File download(String location) throws LimelightException
   {
     try
     {
-      URL url = new URL(location);      
+      URL url = new URL(location);
       if("file".equals(url.getProtocol()))
         return loadFile(url.getPath());
       else
@@ -39,10 +49,11 @@ public class Downloader
   {
     try
     {
-      String filename = new File(url.getFile()).getName();
-      File file = new File(tempDirectory.getDownloadsDirectory(), filename);
 
       URLConnection connection = url.openConnection();
+      String filename = calculateFilename(url, connection);
+      File file = new File(tempDirectory.getDownloadsDirectory(), filename);
+
       connection.connect();
       OutputStream output = new FileOutputStream(file);
       FileUtil.copyBytes(connection.getInputStream(), output);
@@ -58,6 +69,22 @@ public class Downloader
     {
       throw new LimelightException("Download failed: " + url.toString() + "\n" + e.toString());
     }
+  }
+
+  private String calculateFilename(URL url, URLConnection connection)
+  {
+    String filename = null;
+    String contentDisposition = connection.getHeaderField("Content-Disposition");
+    if(contentDisposition != null)
+    {
+      Pattern regex = Pattern.compile("filename=\"(.*)\"");
+      Matcher matcher = regex.matcher(contentDisposition);
+      if(matcher.find())
+        filename = matcher.group(1);
+    }
+    if(filename == null)
+      filename = new File(url.getFile()).getName();
+    return filename;
   }
 
   private File loadFile(String location) throws LimelightException

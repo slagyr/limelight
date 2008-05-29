@@ -21,6 +21,16 @@ logo {
   background_image_fill_strategy :static
 }
 
+intro {
+  top_margin 25
+  left_margin 20
+  width "100%"
+  text_color :white
+  font_face "Arial Rounded MT Bold"
+  font_style "italics"
+  font_size 25
+}
+
 section {
   width "100%"
   margin 20
@@ -29,17 +39,65 @@ section {
   secondary_background_color "#fff6"
   gradient :on
   gradient_angle 270
+  padding 10
+  horizontal_alignment :center
 }
 
-blah {
-  height 100
-  width 100
+section_title {
+  width "100%"
+  horizontal_alignment :center
+  font_size 25
+  font_face "Arial Rounded MT Bold"
+  text_color "#666"
+}
+
+section_label {
+  text_color :white
+  font_face "Arial Rounded MT Bold"
+  font_size 25
 }
 
 copyright {
   width "100%"
   text_color :white
   font_face "Times New Roman"
-  font_size "12"
+  font_size "14"
   horizontal_alignment :center
+}
+
+browse_button {
+  horizontal_alignment :center
+  width "100%"
+  text_color :white
+  font_face "Arial Rounded MT Bold"
+  font_style "italics"
+  font_size 25
+  hover {
+    text_color "#67b313"
+  }
+}
+
+field_wrapper {
+  top_padding 4
+}
+
+url_field {
+  top_padding 10
+  width 500
+}
+
+download_button {
+  extends "browse_button"
+  width :auto
+  left_padding 5
+  hover {
+    text_color "#67b313"
+  }
+}
+
+sandbox_button{
+  extends "browse_button"
+  hover {
+    text_color "#67b313"
+  }
 }
