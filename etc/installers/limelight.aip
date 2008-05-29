@@ -72,6 +72,7 @@
     <ROW Directory="httpservlet_DIR" Directory_Parent="webrick_DIR" DefaultDir="httpse~1|httpservlet"/>
     <ROW Directory="icons_DIR" Directory_Parent="bin_DIR" DefaultDir="icons"/>
     <ROW Directory="images_1_DIR" Directory_Parent="sandbox_DIR" DefaultDir="images"/>
+    <ROW Directory="images_2_DIR" Directory_Parent="startup_DIR" DefaultDir="images"/>
     <ROW Directory="images_DIR" Directory_Parent="thlight.com_DIR" DefaultDir="images"/>
     <ROW Directory="indexer_DIR" Directory_Parent="rubygems_DIR" DefaultDir="indexer"/>
     <ROW Directory="inputs_DIR" Directory_Parent="sandbox_DIR" DefaultDir="inputs"/>
@@ -106,6 +107,7 @@
     <ROW Directory="players_12_DIR" Directory_Parent="teaser_DIR" DefaultDir="players"/>
     <ROW Directory="players_13_DIR" Directory_Parent="tutorial_1_DIR" DefaultDir="players"/>
     <ROW Directory="players_14_DIR" Directory_Parent="inspector_DIR" DefaultDir="players"/>
+    <ROW Directory="players_15_DIR" Directory_Parent="startup_DIR" DefaultDir="players"/>
     <ROW Directory="players_1_DIR" Directory_Parent="calculator_DIR" DefaultDir="players"/>
     <ROW Directory="players_2_DIR" Directory_Parent="langstons_ant_DIR" DefaultDir="players"/>
     <ROW Directory="players_3_DIR" Directory_Parent="click_me_DIR" DefaultDir="players"/>
@@ -122,12 +124,20 @@
     <ROW Directory="prop_base_3_DIR" Directory_Parent="tmp_1_DIR" DefaultDir="prop-b~1|prop-base"/>
     <ROW Directory="prop_base_4_DIR" Directory_Parent="svn_2_DIR" DefaultDir="prop-b~1|prop-base"/>
     <ROW Directory="prop_base_5_DIR" Directory_Parent="tmp_2_DIR" DefaultDir="prop-b~1|prop-base"/>
+    <ROW Directory="prop_base_6_DIR" Directory_Parent="svn_3_DIR" DefaultDir="prop-b~1|prop-base"/>
+    <ROW Directory="prop_base_7_DIR" Directory_Parent="tmp_3_DIR" DefaultDir="prop-b~1|prop-base"/>
+    <ROW Directory="prop_base_8_DIR" Directory_Parent="svn_4_DIR" DefaultDir="prop-b~1|prop-base"/>
+    <ROW Directory="prop_base_9_DIR" Directory_Parent="tmp_4_DIR" DefaultDir="prop-b~1|prop-base"/>
     <ROW Directory="prop_base_DIR" Directory_Parent="svn_DIR" DefaultDir="prop-b~1|prop-base"/>
     <ROW Directory="props_1_DIR" Directory_Parent="tmp_DIR" DefaultDir="props"/>
     <ROW Directory="props_2_DIR" Directory_Parent="svn_1_DIR" DefaultDir="props"/>
     <ROW Directory="props_3_DIR" Directory_Parent="tmp_1_DIR" DefaultDir="props"/>
     <ROW Directory="props_4_DIR" Directory_Parent="svn_2_DIR" DefaultDir="props"/>
     <ROW Directory="props_5_DIR" Directory_Parent="tmp_2_DIR" DefaultDir="props"/>
+    <ROW Directory="props_6_DIR" Directory_Parent="svn_3_DIR" DefaultDir="props"/>
+    <ROW Directory="props_7_DIR" Directory_Parent="tmp_3_DIR" DefaultDir="props"/>
+    <ROW Directory="props_8_DIR" Directory_Parent="svn_4_DIR" DefaultDir="props"/>
+    <ROW Directory="props_9_DIR" Directory_Parent="tmp_4_DIR" DefaultDir="props"/>
     <ROW Directory="props_DIR" Directory_Parent="svn_DIR" DefaultDir="props"/>
     <ROW Directory="proxy_DIR" Directory_Parent="javasupport_DIR" DefaultDir="proxy"/>
     <ROW Directory="pruby_DIR" Directory_Parent="compiler_DIR" DefaultDir="pruby"/>
@@ -160,6 +170,8 @@
     <ROW Directory="startup_DIR" Directory_Parent="productions_DIR" DefaultDir="startup"/>
     <ROW Directory="svn_1_DIR" Directory_Parent="loaders_DIR" DefaultDir="svn~1|.svn"/>
     <ROW Directory="svn_2_DIR" Directory_Parent="players_DIR" DefaultDir="svn~1|.svn"/>
+    <ROW Directory="svn_3_DIR" Directory_Parent="players_15_DIR" DefaultDir="svn~1|.svn"/>
+    <ROW Directory="svn_4_DIR" Directory_Parent="images_2_DIR" DefaultDir="svn~1|.svn"/>
     <ROW Directory="svn_DIR" Directory_Parent="limelight_DIR" DefaultDir="svn~1|.svn"/>
     <ROW Directory="teaser_DIR" Directory_Parent="sandbox_DIR" DefaultDir="teaser"/>
     <ROW Directory="template_DIR" Directory_Parent="generators_DIR" DefaultDir="template"/>
@@ -170,11 +182,17 @@
     <ROW Directory="text_base_3_DIR" Directory_Parent="tmp_1_DIR" DefaultDir="text-b~1|text-base"/>
     <ROW Directory="text_base_4_DIR" Directory_Parent="svn_2_DIR" DefaultDir="text-b~1|text-base"/>
     <ROW Directory="text_base_5_DIR" Directory_Parent="tmp_2_DIR" DefaultDir="text-b~1|text-base"/>
+    <ROW Directory="text_base_6_DIR" Directory_Parent="svn_3_DIR" DefaultDir="text-b~1|text-base"/>
+    <ROW Directory="text_base_7_DIR" Directory_Parent="tmp_3_DIR" DefaultDir="text-b~1|text-base"/>
+    <ROW Directory="text_base_8_DIR" Directory_Parent="svn_4_DIR" DefaultDir="text-b~1|text-base"/>
+    <ROW Directory="text_base_9_DIR" Directory_Parent="tmp_4_DIR" DefaultDir="text-b~1|text-base"/>
     <ROW Directory="text_base_DIR" Directory_Parent="svn_DIR" DefaultDir="text-b~1|text-base"/>
     <ROW Directory="thlight.com_DIR" Directory_Parent="examples_DIR" DefaultDir="8thlight.com"/>
     <ROW Directory="tk_DIR" Directory_Parent="ui_DIR" DefaultDir="tk"/>
     <ROW Directory="tmp_1_DIR" Directory_Parent="svn_1_DIR" DefaultDir="tmp"/>
     <ROW Directory="tmp_2_DIR" Directory_Parent="svn_2_DIR" DefaultDir="tmp"/>
+    <ROW Directory="tmp_3_DIR" Directory_Parent="svn_3_DIR" DefaultDir="tmp"/>
+    <ROW Directory="tmp_4_DIR" Directory_Parent="svn_4_DIR" DefaultDir="tmp"/>
     <ROW Directory="tmp_DIR" Directory_Parent="svn_DIR" DefaultDir="tmp"/>
     <ROW Directory="tutorial_1_DIR" Directory_Parent="tutorials_DIR" DefaultDir="tutori~1|tutorial_1"/>
     <ROW Directory="tutorials_DIR" Directory_Parent="examples_DIR" DefaultDir="tutori~1|tutorials"/>
@@ -208,6 +226,8 @@
     <ROW Component="all_wcprops" ComponentId="{BEEE10B5-63B5-4735-BC57-E3C6BF9D0337}" Directory_="svn_DIR" Attributes="0" KeyPath="all_wcprops" Type="0"/>
     <ROW Component="all_wcprops_1" ComponentId="{C820E7E4-E89F-4C67-AEDB-EEAFB174934F}" Directory_="svn_1_DIR" Attributes="0" KeyPath="all_wcprops_1" Type="0"/>
     <ROW Component="all_wcprops_2" ComponentId="{70A13E21-C453-453A-8552-848B7D3C2B22}" Directory_="svn_2_DIR" Attributes="0" KeyPath="all_wcprops_2" Type="0"/>
+    <ROW Component="all_wcprops_3" ComponentId="{12F42945-ACFF-4183-ADC3-339A423CA245}" Directory_="svn_3_DIR" Attributes="0" KeyPath="all_wcprops_3" Type="0"/>
+    <ROW Component="all_wcprops_4" ComponentId="{694D90A3-00B8-4198-94B3-8B0EE4EEDC72}" Directory_="svn_4_DIR" Attributes="0" KeyPath="all_wcprops_4" Type="0"/>
     <ROW Component="ant.css" ComponentId="{EF3E0DC4-7739-4E3A-A0FB-71FCC0855008}" Directory_="html_javascript_DIR" Attributes="0" KeyPath="ant.css" Type="0"/>
     <ROW Component="ant.rb" ComponentId="{C603C4D6-AA23-4052-A1E0-020C708CA5DA}" Directory_="players_2_DIR" Attributes="0" KeyPath="ant.rb" Type="0"/>
     <ROW Component="anvil.jpg" ComponentId="{1A3B9706-2510-4E63-AD87-1374C05DB449}" Directory_="images_DIR" Attributes="0" KeyPath="anvil.jpg" Type="0"/>
@@ -229,6 +249,8 @@
     <ROW Component="baseparser.rb" ComponentId="{D48B10C0-03DF-4619-9047-3DC0080905A5}" Directory_="parsers_1_DIR" Attributes="0" KeyPath="baseparser.rb" Type="0"/>
     <ROW Component="binding.rb" ComponentId="{718C776A-3AD5-4F61-A89D-D62D072268CD}" Directory_="wsdl_DIR" Attributes="0" KeyPath="binding.rb" Type="0"/>
     <ROW Component="box.rb" ComponentId="{DB892DE0-6CF7-4788-9B41-F027952AE492}" Directory_="players_9_DIR" Attributes="0" KeyPath="box.rb" Type="0"/>
+    <ROW Component="browse_button.rb" ComponentId="{22502DF8-40B7-44C2-B4AA-58069BCEAA59}" Directory_="players_15_DIR" Attributes="0" KeyPath="browse_button.rb" Type="0"/>
+    <ROW Component="browse_button.rb.svn_base" ComponentId="{E168CE7F-E287-4F51-A8D0-06FA9C597F8C}" Directory_="text_base_6_DIR" Attributes="0" KeyPath="browse_button.rb.svn_base" Type="0"/>
     <ROW Component="build_command.rb" ComponentId="{9A9F7BA9-3C69-4C02-8887-59E3BA4B7A94}" Directory_="commands_DIR" Attributes="0" KeyPath="build_command.rb" Type="0"/>
     <ROW Component="build_exception.rb" ComponentId="{F3745EE8-CC81-4519-806B-9C5E3A2FEE6A}" Directory_="limelight_DIR" Attributes="0" KeyPath="build_exception.rb" Type="0"/>
     <ROW Component="build_exception.rb.svn_base" ComponentId="{6113347F-FA94-4EC5-ACBC-B02FF7AC9D11}" Directory_="text_base_DIR" Attributes="0" KeyPath="build_exception.rb.svn_base" Type="0"/>
@@ -289,6 +311,9 @@
     <ROW Component="jrubycleanup.bat" ComponentId="{FFA6DB78-3C8D-43FF-805A-F15461EE0BA4}" Directory_="bin_1_DIR" Attributes="0" KeyPath="jrubycleanup.bat" Type="0"/>
     <ROW Component="license.txt" ComponentId="{A900D3F8-4D51-441A-BC99-27FB3FFD2462}" Directory_="APPDIR" Attributes="0" KeyPath="license.txt" Type="0"/>
     <ROW Component="limelight" ComponentId="{83FB596D-83AB-4848-9817-A92B57B3E976}" Directory_="bin_DIR" Attributes="0" KeyPath="limelight" Type="0"/>
+    <ROW Component="logo.png" ComponentId="{27E28EEB-9793-4E3A-A8DE-0E9159368836}" Directory_="images_2_DIR" Attributes="0" KeyPath="logo.png" Type="0"/>
+    <ROW Component="logo.png.svn_base" ComponentId="{DFC94A9C-688B-4876-8BAE-7024EC28A38A}" Directory_="prop_base_8_DIR" Attributes="0" KeyPath="logo.png.svn_base" Type="0"/>
+    <ROW Component="logo.png.svn_base_1" ComponentId="{A9CDFEFB-5224-4674-8928-2523BF29D03C}" Directory_="text_base_8_DIR" Attributes="0" KeyPath="logo.png.svn_base_1" Type="0"/>
     <ROW Component="node.rb" ComponentId="{AC5E886A-B012-4E4A-9D0C-CB061A7D49A5}" Directory_="light_DIR" Attributes="0" KeyPath="node.rb" Type="0"/>
     <ROW Component="nonblock.rb" ComponentId="{47FCB2B6-4814-451C-A01C-E57E01DA3AA2}" Directory_="io_DIR" Attributes="0" KeyPath="nonblock.rb" Type="0"/>
     <ROW Component="parse_c.rb" ComponentId="{F6EEAF2B-447D-463A-A4A7-6ED6FB7FE0E2}" Directory_="parsers_DIR" Attributes="0" KeyPath="parse_c.rb" Type="0"/>
@@ -300,6 +325,9 @@
     <ROW Component="prop_base_3" ComponentId="{CFCF7019-5A9F-4DE2-8C1D-A5D8D5098BD7}" Directory_="prop_base_3_DIR" Attributes="0"/>
     <ROW Component="prop_base_4" ComponentId="{B7356DFA-08AB-412B-A6CC-524ED3050F45}" Directory_="prop_base_4_DIR" Attributes="0"/>
     <ROW Component="prop_base_5" ComponentId="{7D3A1FDA-F8C4-4025-9F4D-A90789A9038B}" Directory_="prop_base_5_DIR" Attributes="0"/>
+    <ROW Component="prop_base_6" ComponentId="{8A5F0073-B20F-4EE4-8AC7-930B9FB253D9}" Directory_="prop_base_6_DIR" Attributes="0"/>
+    <ROW Component="prop_base_7" ComponentId="{D3D16927-0EE3-4BF1-83EF-47B4A362E0A9}" Directory_="prop_base_7_DIR" Attributes="0"/>
+    <ROW Component="prop_base_8" ComponentId="{F95F70A7-F432-4AC5-A474-D15E182DB7DB}" Directory_="prop_base_9_DIR" Attributes="0"/>
     <ROW Component="props" ComponentId="{060BCC34-28CB-4397-BE34-7FEA2C4DBCD3}" Directory_="props_DIR" Attributes="0"/>
     <ROW Component="props.rb" ComponentId="{9B12605D-5A65-4993-9357-603F39764743}" Directory_="home_DIR" Attributes="0" KeyPath="props.rb_1" Type="0"/>
     <ROW Component="props.rb_1" ComponentId="{0C0899BD-82B5-4DFA-81CB-488F4C7E0200}" Directory_="services_DIR" Attributes="0" KeyPath="props.rb_2" Type="0"/>
@@ -322,6 +350,10 @@
     <ROW Component="props_3" ComponentId="{035E26E6-392E-4317-A822-46C4413884DD}" Directory_="props_3_DIR" Attributes="0"/>
     <ROW Component="props_4" ComponentId="{90F4BD8D-230A-432E-B352-B116D0365DB5}" Directory_="props_4_DIR" Attributes="0"/>
     <ROW Component="props_5" ComponentId="{33389269-CAEF-4FDF-8742-821BFCF4EF09}" Directory_="props_5_DIR" Attributes="0"/>
+    <ROW Component="props_6" ComponentId="{E83C5B7B-55A9-4A11-9858-FE3D803105AB}" Directory_="props_6_DIR" Attributes="0"/>
+    <ROW Component="props_7" ComponentId="{D9C758C4-E665-4861-93B2-95E69663F881}" Directory_="props_7_DIR" Attributes="0"/>
+    <ROW Component="props_8" ComponentId="{494A30F6-95DB-4503-9012-3069E51EC54F}" Directory_="props_8_DIR" Attributes="0"/>
+    <ROW Component="props_9" ComponentId="{C1C8D7F6-E083-45DC-BD9F-2323773C1202}" Directory_="props_9_DIR" Attributes="0"/>
     <ROW Component="pruby" ComponentId="{42B860E5-B329-4451-A489-757CD9BB8DE9}" Directory_="pruby_DIR" Attributes="0"/>
     <ROW Component="pstore.rb" ComponentId="{FBAD9B8C-E266-4CD9-A321-50BE1CE63187}" Directory_="session_DIR" Attributes="0" KeyPath="pstore.rb" Type="0"/>
     <ROW Component="rb" ComponentId="{D489F220-A565-409F-85FF-DFDF8F75818A}" Directory_="rss_DIR" Attributes="0" KeyPath="rb" Type="0"/>
@@ -350,10 +382,12 @@
     <ROW Component="text_base" ComponentId="{A71B8CFA-D690-4A87-A943-6ED87EAB6649}" Directory_="text_base_1_DIR" Attributes="0"/>
     <ROW Component="text_base_1" ComponentId="{0411AE78-212D-46E1-B167-17BEFC3C60B2}" Directory_="text_base_3_DIR" Attributes="0"/>
     <ROW Component="text_base_2" ComponentId="{256BBEC8-4B36-4E10-97C3-EE26E6F01454}" Directory_="text_base_5_DIR" Attributes="0"/>
+    <ROW Component="text_base_3" ComponentId="{98677437-4279-4ACE-A77E-3191DA62B108}" Directory_="text_base_7_DIR" Attributes="0"/>
+    <ROW Component="text_base_4" ComponentId="{58156995-0C67-4B4A-B6AD-851E6495B6D4}" Directory_="text_base_9_DIR" Attributes="0"/>
     <ROW Component="unit.rb" ComponentId="{1D543873-0EB3-4A66-9949-DAD6FEB05B77}" Directory_="test_1_DIR" Attributes="0" KeyPath="unit.rb" Type="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
-    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="icon.ico limelight jrubycleanup.bat jruby.jar abbrev.rb jacobian.rb pstore.rb session.rb format.rb acl.rb nonblock.rb chws.rb completion.rb change_ws.rb error.rb error.rb_1 ftp.rb date.rb parser.rb code_objects.rb dot.rb chm_generator.rb chm.rb hefss.rb rdf.rb rdoc2latex.rb fragments.rb simple_markup.rb AllTests.rb parse_c.rb ri_cache.rb attlistdecl.rb attlistdecl.rb_1 CP_1252.rb default.rb node.rb baseparser.rb relaxng.rb rinda.rb rb rb_1 assert.rb testrunner.rb builtin_command.rb attachment.rb aspDotNetHandler.rb handler.rb factory.rb cgistub.rb assertionfailederror.rb dir.rb testrunner.rb_1 testrunner.rb_2 testrunner.rb_3 testrunner.rb_4 testrunnermediator.rb testrunner.rb_5 backtracefilter.rb unit.rb common.rb accesslog.rb authenticator.rb abstract.rb binding.rb address.rb all.rb base64.rb charset.rb classdef.rb parser.rb_1 sources_0.0.1.gem sources.rb sources_0.0.1.gemspec ast.rb array.rb core_ext.rb array.rb_1 array.rb_2 javasupport.rb builder.rb ast.rb_1 gemconfigure.rb jrubyc.rb builtin.rb datadir.rb builder.rb_1 build_command.rb digest_adapter.rb builder.rb_2 abstract_index_builder.rb init.rb license.txt about.txt footer.rb props.rb anvil.jpg props.rb_1 button.rb_1 props.rb_2 ant.css ant.rb props.rb_3 chromaton.rb props.rb_4 floater.rb props.rb_5 spinner.rb props.rb_6 header.rb homer.rb props.rb_7 arch.jpg button_input.rb props.rb_8 sandbox.rb box.rb props.rb_9 cell2.rb props.rb_10 sketchpad.rb props.rb_11 fader.rb props.rb_12 sample.rb props.rb_13 init.rb_1 inspector.rb props.rb_14 init.rb_2 controller.rb props.rb_15 Limelight.exe SHORTCUTDIR pruby all_wcprops prop_base props build_exception.rb.svn_base prop_base_1 props_1 text_base build_exception.rb all_wcprops_1 prop_base_2 props_2 file_scene_loader.rb.svn_base prop_base_3 props_3 text_base_1 file_scene_loader.rb all_wcprops_2 prop_base_4 props_4 button.rb.svn_base prop_base_5 props_5 text_base_2 button.rb"/>
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="icon.ico limelight jrubycleanup.bat jruby.jar abbrev.rb jacobian.rb pstore.rb session.rb format.rb acl.rb nonblock.rb chws.rb completion.rb change_ws.rb error.rb error.rb_1 ftp.rb date.rb parser.rb code_objects.rb dot.rb chm_generator.rb chm.rb hefss.rb rdf.rb rdoc2latex.rb fragments.rb simple_markup.rb AllTests.rb parse_c.rb ri_cache.rb attlistdecl.rb attlistdecl.rb_1 CP_1252.rb default.rb node.rb baseparser.rb relaxng.rb rinda.rb rb rb_1 assert.rb testrunner.rb builtin_command.rb attachment.rb aspDotNetHandler.rb handler.rb factory.rb cgistub.rb assertionfailederror.rb dir.rb testrunner.rb_1 testrunner.rb_2 testrunner.rb_3 testrunner.rb_4 testrunnermediator.rb testrunner.rb_5 backtracefilter.rb unit.rb common.rb accesslog.rb authenticator.rb abstract.rb binding.rb address.rb all.rb base64.rb charset.rb classdef.rb parser.rb_1 sources_0.0.1.gem sources.rb sources_0.0.1.gemspec ast.rb array.rb core_ext.rb array.rb_1 array.rb_2 javasupport.rb builder.rb ast.rb_1 gemconfigure.rb jrubyc.rb builtin.rb datadir.rb builder.rb_1 build_command.rb digest_adapter.rb builder.rb_2 abstract_index_builder.rb init.rb license.txt about.txt footer.rb props.rb anvil.jpg props.rb_1 button.rb_1 props.rb_2 ant.css ant.rb props.rb_3 chromaton.rb props.rb_4 floater.rb props.rb_5 spinner.rb props.rb_6 header.rb homer.rb props.rb_7 arch.jpg button_input.rb props.rb_8 sandbox.rb box.rb props.rb_9 cell2.rb props.rb_10 sketchpad.rb props.rb_11 fader.rb props.rb_12 sample.rb props.rb_13 init.rb_1 inspector.rb props.rb_14 init.rb_2 controller.rb props.rb_15 Limelight.exe SHORTCUTDIR pruby all_wcprops prop_base props build_exception.rb.svn_base prop_base_1 props_1 text_base build_exception.rb all_wcprops_1 prop_base_2 props_2 file_scene_loader.rb.svn_base prop_base_3 props_3 text_base_1 file_scene_loader.rb all_wcprops_2 prop_base_4 props_4 button.rb.svn_base prop_base_5 props_5 text_base_2 button.rb all_wcprops_3 prop_base_6 props_6 browse_button.rb.svn_base prop_base_7 props_7 text_base_3 browse_button.rb all_wcprops_4 logo.png.svn_base props_8 logo.png.svn_base_1 prop_base_8 props_9 text_base_4 logo.png"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
@@ -388,6 +422,8 @@
     <ROW File="all_wcprops" Component_="all_wcprops" FileName="all-wc~1|all-wcprops" Attributes="1" SourcePath="..\..\lib\limelight\.svn\all-wcprops" SelfReg="false" Sequence="771"/>
     <ROW File="all_wcprops_1" Component_="all_wcprops_1" FileName="all-wc~1|all-wcprops" Attributes="1" SourcePath="..\..\lib\limelight\loaders\.svn\all-wcprops" SelfReg="false" Sequence="807"/>
     <ROW File="all_wcprops_2" Component_="all_wcprops_2" FileName="all-wc~1|all-wcprops" Attributes="1" SourcePath="..\..\lib\limelight\players\.svn\all-wcprops" SelfReg="false" Sequence="815"/>
+    <ROW File="all_wcprops_3" Component_="all_wcprops_3" FileName="all-wc~1|all-wcprops" Attributes="1" SourcePath="..\..\productions\startup\players\.svn\all-wcprops" SelfReg="false" Sequence="846"/>
+    <ROW File="all_wcprops_4" Component_="all_wcprops_4" FileName="all-wc~1|all-wcprops" Attributes="1" SourcePath="..\..\productions\startup\images\.svn\all-wcprops" SelfReg="false" Sequence="855"/>
     <ROW File="annotation.rb" Component_="all.rb" FileName="annota~1.rb|annotation.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\wsdl\xmlSchema\annotation.rb" SelfReg="false" Sequence="487"/>
     <ROW File="ant.css" Component_="ant.css" FileName="ant.css" Attributes="0" SourcePath="..\dist\productions\examples\langstons_ant\html_javascript\ant.css" SelfReg="false" Sequence="694"/>
     <ROW File="ant.html" Component_="ant.css" FileName="ant~1.htm|ant.html" Attributes="0" SourcePath="..\dist\productions\examples\langstons_ant\html_javascript\ant.html" SelfReg="false" Sequence="695"/>
@@ -429,6 +465,8 @@
     <ROW File="body.rb" Component_="address.rb" FileName="body.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\wsdl\soap\body.rb" SelfReg="false" Sequence="465"/>
     <ROW File="botticelli.jpg" Component_="anvil.jpg" FileName="bottic~1.jpg|botticelli.jpg" Attributes="0" SourcePath="..\dist\productions\examples\8thlight.com\images\botticelli.jpg" SelfReg="false" Sequence="675"/>
     <ROW File="box.rb" Component_="box.rb" FileName="box.rb" Attributes="0" SourcePath="..\dist\productions\examples\sandbox\rounded_corners\players\box.rb" SelfReg="false" Sequence="734"/>
+    <ROW File="browse_button.rb" Component_="browse_button.rb" FileName="browse~1.rb|browse_button.rb" Attributes="0" SourcePath="..\..\productions\startup\players\browse_button.rb" SelfReg="false" Sequence="852"/>
+    <ROW File="browse_button.rb.svn_base" Component_="browse_button.rb.svn_base" FileName="browse~1.svn|browse_button.rb.svn-base" Attributes="1" SourcePath="..\..\productions\startup\players\.svn\text-base\browse_button.rb.svn-base" SelfReg="false" Sequence="849"/>
     <ROW File="build_command.rb" Component_="build_command.rb" FileName="build_~1.rb|build_command.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\site_ruby\1.8\rubygems\commands\build_command.rb" SelfReg="false" Sequence="586"/>
     <ROW File="build_exception.rb" Component_="build_exception.rb" FileName="build_~1.rb|build_exception.rb" Attributes="0" SourcePath="..\..\lib\limelight\build_exception.rb" SelfReg="false" Sequence="799"/>
     <ROW File="build_exception.rb.svn_base" Component_="build_exception.rb.svn_base" FileName="build_~1.svn|build_exception.rb.svn-base" Attributes="1" SourcePath="..\..\lib\limelight\.svn\text-base\build_exception.rb.svn-base" SelfReg="false" Sequence="774"/>
@@ -548,6 +586,8 @@
     <ROW File="document.rb" Component_="attlistdecl.rb" FileName="document.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\rexml\document.rb" SelfReg="false" Sequence="228"/>
     <ROW File="documentation.rb" Component_="binding.rb" FileName="docume~1.rb|documentation.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\wsdl\documentation.rb" SelfReg="false" Sequence="450"/>
     <ROW File="dot.rb" Component_="dot.rb" FileName="dot.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\rdoc\dot\dot.rb" SelfReg="false" Sequence="171"/>
+    <ROW File="download_button.rb" Component_="browse_button.rb" FileName="downlo~1.rb|download_button.rb" Attributes="0" SourcePath="..\..\productions\startup\players\download_button.rb" SelfReg="false" Sequence="853"/>
+    <ROW File="download_button.rb.svn_base" Component_="browse_button.rb.svn_base" FileName="downlo~1.svn|download_button.rb.svn-base" Attributes="1" SourcePath="..\..\productions\startup\players\.svn\text-base\download_button.rb.svn-base" SelfReg="false" Sequence="850"/>
     <ROW File="drb.rb" Component_="acl.rb" FileName="drb.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\drb\drb.rb" SelfReg="false" Sequence="65"/>
     <ROW File="drb.rb_1" Component_="abbrev.rb" FileName="drb.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\drb.rb" SelfReg="false" Sequence="75"/>
     <ROW File="driver.rb" Component_="cgistub.rb" FileName="driver.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\soap\rpc\driver.rb" SelfReg="false" Sequence="361"/>
@@ -569,6 +609,8 @@
     <ROW File="entries" Component_="all_wcprops" FileName="entries" Attributes="1" SourcePath="..\..\lib\limelight\.svn\entries" SelfReg="false" Sequence="772"/>
     <ROW File="entries_1" Component_="all_wcprops_1" FileName="entries" Attributes="1" SourcePath="..\..\lib\limelight\loaders\.svn\entries" SelfReg="false" Sequence="808"/>
     <ROW File="entries_2" Component_="all_wcprops_2" FileName="entries" Attributes="1" SourcePath="..\..\lib\limelight\players\.svn\entries" SelfReg="false" Sequence="816"/>
+    <ROW File="entries_3" Component_="all_wcprops_3" FileName="entries" Attributes="1" SourcePath="..\..\productions\startup\players\.svn\entries" SelfReg="false" Sequence="847"/>
+    <ROW File="entries_4" Component_="all_wcprops_4" FileName="entries" Attributes="1" SourcePath="..\..\productions\startup\images\.svn\entries" SelfReg="false" Sequence="856"/>
     <ROW File="enumeration.rb" Component_="all.rb" FileName="enumer~1.rb|enumeration.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\wsdl\xmlSchema\enumeration.rb" SelfReg="false" Sequence="496"/>
     <ROW File="environment_command.rb" Component_="build_command.rb" FileName="enviro~1.rb|environment_command.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\site_ruby\1.8\rubygems\commands\environment_command.rb" SelfReg="false" Sequence="592"/>
     <ROW File="eq.rb" Component_="acl.rb" FileName="eq.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\drb\eq.rb" SelfReg="false" Sequence="66"/>
@@ -612,6 +654,8 @@
     <ROW File="format.rb_1" Component_="builder.rb_1" FileName="format.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\site_ruby\1.8\rubygems\format.rb" SelfReg="false" Sequence="629"/>
     <ROW File="format_1" Component_="all_wcprops_1" FileName="format" Attributes="1" SourcePath="..\..\lib\limelight\loaders\.svn\format" SelfReg="false" Sequence="809"/>
     <ROW File="format_2" Component_="all_wcprops_2" FileName="format" Attributes="1" SourcePath="..\..\lib\limelight\players\.svn\format" SelfReg="false" Sequence="817"/>
+    <ROW File="format_3" Component_="all_wcprops_3" FileName="format" Attributes="0" SourcePath="..\..\productions\startup\players\.svn\format" SelfReg="false" Sequence="848"/>
+    <ROW File="format_4" Component_="all_wcprops_4" FileName="format" Attributes="0" SourcePath="..\..\productions\startup\images\.svn\format" SelfReg="false" Sequence="857"/>
     <ROW File="forwardable.rb" Component_="abbrev.rb" FileName="forwar~1.rb|forwardable.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\forwardable.rb" SelfReg="false" Sequence="84"/>
     <ROW File="fragments.rb" Component_="fragments.rb" FileName="fragme~1.rb|fragments.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\rdoc\markup\simple_markup\fragments.rb" SelfReg="false" Sequence="186"/>
     <ROW File="frame.rb" Component_="completion.rb" FileName="frame.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\irb\frame.rb" SelfReg="false" Sequence="112"/>
@@ -752,6 +796,7 @@
     <ROW File="limelight" Component_="limelight" FileName="limeli~1|limelight" Attributes="0" SourcePath="..\dist\bin\limelight" SelfReg="false" Sequence="4"/>
     <ROW File="limelight.icns" Component_="icon.ico" FileName="limeli~1.icn|limelight.icns" Attributes="0" SourcePath="..\dist\bin\icons\limelight.icns" SelfReg="false" Sequence="3"/>
     <ROW File="limelight.jar" Component_="init.rb" FileName="limeli~1.jar|limelight.jar" Attributes="0" SourcePath="..\..\lib\limelight.jar" SelfReg="false" Sequence="665"/>
+    <ROW File="limelight.rb" Component_="init.rb" FileName="limeli~1.rb|limelight.rb" Attributes="0" SourcePath="..\dist\lib\limelight.rb" SelfReg="false" Sequence="844"/>
     <ROW File="limelight_exception.rb" Component_="build_exception.rb" FileName="limeli~1.rb|limelight_exception.rb" Attributes="0" SourcePath="..\..\lib\limelight\limelight_exception.rb" SelfReg="false" Sequence="806"/>
     <ROW File="limelight_exception.rb.svn_base" Component_="build_exception.rb.svn_base" FileName="limeli~1.svn|limelight_exception.rb.svn-base" Attributes="1" SourcePath="..\..\lib\limelight\.svn\text-base\limelight_exception.rb.svn-base" SelfReg="false" Sequence="781"/>
     <ROW File="limelight_spotlight.jpg" Component_="arch.jpg" FileName="limeli~1.jpg|limelight_spotlight.jpg" Attributes="0" SourcePath="..\dist\productions\examples\sandbox\images\limelight_spotlight.jpg" SelfReg="false" Sequence="723"/>
@@ -768,6 +813,9 @@
     <ROW File="log.rb" Component_="accesslog.rb" FileName="log.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\webrick\log.rb" SelfReg="false" Sequence="441"/>
     <ROW File="log.rb_1" Component_="ant.rb" FileName="log.rb" Attributes="0" SourcePath="..\dist\productions\examples\langstons_ant\players\log.rb" SelfReg="false" Sequence="698"/>
     <ROW File="logger.rb" Component_="abbrev.rb" FileName="logger.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\logger.rb" SelfReg="false" Sequence="133"/>
+    <ROW File="logo.png" Component_="logo.png" FileName="logo.png" Attributes="0" SourcePath="..\..\productions\startup\images\logo.png" SelfReg="false" Sequence="862"/>
+    <ROW File="logo.png.svn_base" Component_="logo.png.svn_base" FileName="logopn~1.svn|logo.png.svn-base" Attributes="1" SourcePath="..\..\productions\startup\images\.svn\prop-base\logo.png.svn-base" SelfReg="false" Sequence="858"/>
+    <ROW File="logo.png.svn_base_1" Component_="logo.png.svn_base_1" FileName="logopn~1.svn|logo.png.svn-base" Attributes="1" SourcePath="..\..\productions\startup\images\.svn\text-base\logo.png.svn-base" SelfReg="false" Sequence="860"/>
     <ROW File="ludcmp.rb" Component_="jacobian.rb" FileName="ludcmp.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\bigdecimal\ludcmp.rb" SelfReg="false" Sequence="48"/>
     <ROW File="mailread.rb" Component_="abbrev.rb" FileName="mailread.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\mailread.rb" SelfReg="false" Sequence="134"/>
     <ROW File="mailto.rb" Component_="common.rb" FileName="mailto.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\uri\mailto.rb" SelfReg="false" Sequence="410"/>
@@ -900,7 +948,7 @@
     <ROW File="props.rb_13" Component_="props.rb_12" FileName="props.rb" Attributes="0" SourcePath="..\dist\productions\examples\sandbox\teaser\props.rb" SelfReg="false" Sequence="749"/>
     <ROW File="props.rb_14" Component_="props.rb_13" FileName="props.rb" Attributes="0" SourcePath="..\dist\productions\examples\tutorials\tutorial_1\props.rb" SelfReg="false" Sequence="752"/>
     <ROW File="props.rb_15" Component_="props.rb_14" FileName="props.rb" Attributes="0" SourcePath="..\dist\productions\stage_composer\inspector\props.rb" SelfReg="false" Sequence="760"/>
-    <ROW File="props.rb_16" Component_="props.rb_15" FileName="props.rb" Attributes="0" SourcePath="..\dist\productions\startup\props.rb" SelfReg="false" Sequence="767"/>
+    <ROW File="props.rb_16" Component_="props.rb_15" FileName="props.rb" Attributes="0" SourcePath="..\..\productions\startup\props.rb" SelfReg="false" Sequence="767"/>
     <ROW File="props.rb_2" Component_="props.rb_1" FileName="props.rb" Attributes="0" SourcePath="..\dist\productions\examples\8thlight.com\services\props.rb" SelfReg="false" Sequence="684"/>
     <ROW File="props.rb_3" Component_="props.rb_2" FileName="props.rb" Attributes="0" SourcePath="..\dist\productions\examples\calculator\props.rb" SelfReg="false" Sequence="692"/>
     <ROW File="props.rb_4" Component_="props.rb_3" FileName="props.rb" Attributes="0" SourcePath="..\dist\productions\examples\langstons_ant\props.rb" SelfReg="false" Sequence="701"/>
@@ -977,6 +1025,8 @@
     <ROW File="sample.rb" Component_="rdoc2latex.rb" FileName="sample.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\rdoc\markup\sample\sample.rb" SelfReg="false" Sequence="185"/>
     <ROW File="sample.rb_1" Component_="sample.rb" FileName="sample.rb" Attributes="0" SourcePath="..\dist\productions\examples\tutorials\tutorial_1\players\sample.rb" SelfReg="false" Sequence="751"/>
     <ROW File="sandbox.rb" Component_="sandbox.rb" FileName="sandbox.rb" Attributes="0" SourcePath="..\dist\productions\examples\sandbox\players\sandbox.rb" SelfReg="false" Sequence="733"/>
+    <ROW File="sandbox_button.rb" Component_="browse_button.rb" FileName="sandbo~1.rb|sandbox_button.rb" Attributes="0" SourcePath="..\..\productions\startup\players\sandbox_button.rb" SelfReg="false" Sequence="854"/>
+    <ROW File="sandbox_button.rb.svn_base" Component_="browse_button.rb.svn_base" FileName="sandbo~1.svn|sandbox_button.rb.svn-base" Attributes="1" SourcePath="..\..\productions\startup\players\.svn\text-base\sandbox_button.rb.svn-base" SelfReg="false" Sequence="851"/>
     <ROW File="save_history.rb" Component_="change_ws.rb" FileName="save-h~1.rb|save-history.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\irb\ext\save-history.rb" SelfReg="false" Sequence="107"/>
     <ROW File="sax2listener.rb" Component_="attlistdecl.rb" FileName="sax2li~1.rb|sax2listener.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\rexml\sax2listener.rb" SelfReg="false" Sequence="269"/>
     <ROW File="sax2parser.rb" Component_="baseparser.rb" FileName="sax2pa~1.rb|sax2parser.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\rexml\parsers\sax2parser.rb" SelfReg="false" Sequence="262"/>
@@ -1030,6 +1080,9 @@
     <ROW File="specification_command.rb" Component_="build_command.rb" FileName="specif~1.rb|specification_command.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\site_ruby\1.8\rubygems\commands\specification_command.rb" SelfReg="false" Sequence="607"/>
     <ROW File="spinner.rb" Component_="spinner.rb" FileName="spinner.rb" Attributes="0" SourcePath="..\dist\productions\examples\sandbox\gradients\players\spinner.rb" SelfReg="false" Sequence="710"/>
     <ROW File="splash.png" Component_="icon.ico" FileName="splash.png" Attributes="0" SourcePath="..\..\bin\icons\splash.png" SelfReg="false" Sequence="769"/>
+    <ROW File="splash.png.svn_base" Component_="logo.png.svn_base" FileName="splash~1.svn|splash.png.svn-base" Attributes="1" SourcePath="..\..\productions\startup\images\.svn\prop-base\splash.png.svn-base" SelfReg="false" Sequence="859"/>
+    <ROW File="splash.png.svn_base_1" Component_="logo.png.svn_base_1" FileName="splash~1.svn|splash.png.svn-base" Attributes="1" SourcePath="..\..\productions\startup\images\.svn\text-base\splash.png.svn-base" SelfReg="false" Sequence="861"/>
+    <ROW File="splash.png_1" Component_="logo.png" FileName="splash.png" Attributes="0" SourcePath="..\..\productions\startup\images\splash.png" SelfReg="false" Sequence="863"/>
     <ROW File="ssl.rb" Component_="acl.rb" FileName="ssl.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\drb\ssl.rb" SelfReg="false" Sequence="72"/>
     <ROW File="ssl.rb_1" Component_="accesslog.rb" FileName="ssl.rb" Attributes="0" SourcePath="..\dist\jruby\lib\ruby\1.8\webrick\ssl.rb" SelfReg="false" Sequence="443"/>
     <ROW File="stage.rb" Component_="build_exception.rb" FileName="stage.rb" Attributes="0" SourcePath="..\..\lib\limelight\stage.rb" SelfReg="false" Sequence="837"/>
@@ -1062,6 +1115,7 @@
     <ROW File="styles.rb_16" Component_="props.rb_12" FileName="styles.rb" Attributes="0" SourcePath="..\dist\productions\examples\sandbox\teaser\styles.rb" SelfReg="false" Sequence="750"/>
     <ROW File="styles.rb_17" Component_="props.rb_13" FileName="styles.rb" Attributes="0" SourcePath="..\dist\productions\examples\tutorials\tutorial_1\styles.rb" SelfReg="false" Sequence="753"/>
     <ROW File="styles.rb_18" Component_="props.rb_14" FileName="styles.rb" Attributes="0" SourcePath="..\dist\productions\stage_composer\inspector\styles.rb" SelfReg="false" Sequence="761"/>
+    <ROW File="styles.rb_19" Component_="props.rb_15" FileName="styles.rb" Attributes="0" SourcePath="..\..\productions\startup\styles.rb" SelfReg="false" Sequence="845"/>
     <ROW File="styles.rb_2" Component_="props.rb" FileName="styles.rb" Attributes="0" SourcePath="..\dist\productions\examples\8thlight.com\home\styles.rb" SelfReg="false" Sequence="672"/>
     <ROW File="styles.rb_3" Component_="props.rb_1" FileName="styles.rb" Attributes="0" SourcePath="..\dist\productions\examples\8thlight.com\services\styles.rb" SelfReg="false" Sequence="686"/>
     <ROW File="styles.rb_4" Component_="footer.rb" FileName="styles.rb" Attributes="0" SourcePath="..\dist\productions\examples\8thlight.com\styles.rb" SelfReg="false" Sequence="688"/>
@@ -1251,6 +1305,15 @@
     <ROW Directory_="prop_base_5_DIR" Component_="prop_base_5"/>
     <ROW Directory_="props_5_DIR" Component_="props_5"/>
     <ROW Directory_="text_base_5_DIR" Component_="text_base_2"/>
+    <ROW Directory_="prop_base_6_DIR" Component_="prop_base_6"/>
+    <ROW Directory_="props_6_DIR" Component_="props_6"/>
+    <ROW Directory_="prop_base_7_DIR" Component_="prop_base_7"/>
+    <ROW Directory_="props_7_DIR" Component_="props_7"/>
+    <ROW Directory_="text_base_7_DIR" Component_="text_base_3"/>
+    <ROW Directory_="props_8_DIR" Component_="props_8"/>
+    <ROW Directory_="prop_base_9_DIR" Component_="prop_base_8"/>
+    <ROW Directory_="props_9_DIR" Component_="props_9"/>
+    <ROW Directory_="text_base_9_DIR" Component_="text_base_4"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
     <ROW Action="AI_DOWNGRADE" Type="19" Target="4010"/>
