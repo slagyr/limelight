@@ -13,7 +13,21 @@ Dir.glob(File.join(TASK_DIR, "*.rake")).each do |rakefile|
 end
 
 task :jar do
-  # system "ant jar"
+  system "ant jar"
+end
+
+task :init_jruby do
+  JRUBY_TAG = "jruby-1_1"
+  jruby_bin_path = File.join(PROJECT_ROOT, 'jruby', 'bin')
+  jruby_ruby_path = File.join(PROJECT_ROOT, 'jruby', 'lib', 'ruby')
+  FileUtils.rm_r(jruby_bin_path, :force => true)
+  FileUtils.rm_r(jruby_ruby_path, :force => true)
+  system "svn export http://svn.codehaus.org/jruby/tags/#{JRUBY_TAG}/bin/ #{jruby_bin_path}"
+  system "svn export http://svn.codehaus.org/jruby/tags/#{JRUBY_TAG}/lib/ruby #{jruby_ruby_path}"
+
+end
+
+task :init => [:jar, :init_jruby, :gems] do
 end
 
 task :spec do
