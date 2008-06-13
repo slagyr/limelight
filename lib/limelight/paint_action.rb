@@ -7,7 +7,7 @@ module Limelight
   
   class PaintAction 
     
-    include Java::limelight.ui.painting.PaintAction
+    include UI::Painting::PaintAction
     
     attr_reader :block
     

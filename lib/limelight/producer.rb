@@ -132,7 +132,7 @@ module Limelight
     end
 
     def unpack_production(production_name)
-      packer = Java::limelight::io.Packer.new()
+      packer = Limelight::IO::Packer.new()
       return packer.unpack(production_name)
     end
 

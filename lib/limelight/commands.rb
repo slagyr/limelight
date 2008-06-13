@@ -15,7 +15,7 @@ module Limelight
       end
 
       def run(args)
-        Java::limelight::Main.initialize_context
+        Main.initialize_context
         require 'limelight/producer'
         production = args.length > 0 ? args[0] : DEFAULT_PRODUCTION
         Limelight::Producer.open(production)
@@ -28,7 +28,7 @@ module Limelight
       end
 
       def run(args)
-        packer = Java::limelight::io::Packer.new
+        packer = Limelight::IO::Packer.new
         packer.pack(args.shift)
       end
     end

@@ -7,7 +7,7 @@ module Limelight
   
   class Theater
     
-    include Java::limelight.ui.Theater
+    include UI::Theater
     
     attr_reader :active_stage
     

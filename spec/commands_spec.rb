@@ -24,7 +24,7 @@ describe Limelight::Commands do
 
   it "should pack a production" do
     mock_packer = make_mock("packer")
-    Java::limelight::io::Packer.should_receive(:new).and_return(mock_packer)
+    Limelight::IO::Packer.should_receive(:new).and_return(mock_packer)
     mock_packer.should_receive(:pack).with("production_to_pack")
 
     Limelight::Commands.run(["pack", "production_to_pack"])

@@ -24,7 +24,7 @@ module Limelight
 
     end
     
-    include Java::limelight.ui.Prop
+    include UI::Prop
   
     attr_reader :panel, :style, :children, :scene, :parent
     attr_reader :name, :id, :players
@@ -34,8 +34,8 @@ module Limelight
     def initialize(hash = {})
       @options = hash
       @children = []
-      @panel = Java::limelight.ui.Panel.new(self)
-      @style = Java::limelight.ui.ScreenableStyle.new
+      @panel = UI::Panel.new(self)
+      @style = UI::ScreenableStyle.new
     end
     
     def add(child)
