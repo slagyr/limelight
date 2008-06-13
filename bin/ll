@@ -5,6 +5,6 @@ JAVA_OPTS=$JAVA_OPTS' -Xdock:name=Limelight '
 JAVA_OPTS=$JAVA_OPTS' -Dapple.awt.showGrowBox=true '
 JAVA_OPTS=$JAVA_OPTS-Xdock:icon=$LIMELIGHT_HOME/bin/icons/limelight.icns
 
-java -cp $LIMELIGHT_HOME/lib/limelight.jar:$LIMELIGHT_HOME/jruby/lib/jruby.jar $JAVA_OPTS -Dlimelight.home=$LIMELIGHT_HOME limelight.Main $1 $2 $3 $4 $5
+java -Xmx512M -cp $LIMELIGHT_HOME/lib/limelight.jar:$LIMELIGHT_HOME/jruby/lib/jruby.jar $JAVA_OPTS -Dlimelight.home=$LIMELIGHT_HOME limelight.Main $1 $2 $3 $4 $5
 
 

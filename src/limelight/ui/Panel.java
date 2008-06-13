@@ -158,6 +158,11 @@ public class Panel extends JPanel
 
   public void paint(Graphics graphics)
   {
+if("application_list".equals(prop.getName()))
+{
+  System.err.println("paint");
+//  new Exception().printStackTrace();
+}
     if (shouldBuildBuffer())
       buildBuffer();
 

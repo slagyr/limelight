@@ -22,9 +22,6 @@ public class PropLayout implements LayoutManager
   private JScrollPane scrollPane;
   private LinkedList<Panel> floaters;
 
-  private static long totalDuration = 0;
-  private static int calls = 0;
-
   public PropLayout(Panel panel)
   {
     this.panel = panel;
@@ -70,7 +67,6 @@ public class PropLayout implements LayoutManager
 
   public void layoutContainer(Container container)
 	{
-long start = System.currentTimeMillis();
     Dimension d = panel.getMaximumSize();
     panel.setSize(d);
 
@@ -100,10 +96,6 @@ long start = System.currentTimeMillis();
       collapseAutoDimensions();
       doNormalLayout();
     }
-long duration = System.currentTimeMillis() - start;
-totalDuration += duration;
-calls++;
-//System.err.println("duration = " + duration + "\t\t" + totalDuration + "\t" + calls);
   }
 
   private void collapseAutoDimensions()
