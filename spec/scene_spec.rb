@@ -18,7 +18,7 @@ describe Limelight::Scene do
 
   it "should have a button group cache" do
     @scene.button_groups.should_not == nil
-    @scene.button_groups.class.should == Java::limelight.ui.ButtonGroupCache
+    @scene.button_groups.class.should == Limelight::UI::ButtonGroupCache
   end
   
   it "should pullout sytles and casting_director from options" do

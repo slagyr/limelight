@@ -24,7 +24,7 @@ module Limelight
     end
 
     def self.create_style(hash)
-      style = Java::limelight.ui.FlatStyle.new
+      style = UI::FlatStyle.new
       hash.each_pair do |key, value|
         value = value.to_s.gsub("pigpen", "#")
         style.send((key.to_s + "=").to_sym, value)

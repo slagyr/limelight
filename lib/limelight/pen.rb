@@ -15,7 +15,7 @@ module Limelight
     end
     
     def color=(value)
-      resolve_color = Java::limelight.ui.Colors.resolve(value)
+      resolve_color = UI::Colors.resolve(value)
       @context.setColor(resolve_color)
     end
     

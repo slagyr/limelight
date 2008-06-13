@@ -14,7 +14,7 @@ describe Limelight::Players::CheckBox do
   
   it "should get rid of the all painters and add a CheckBoxPainter" do
     @prop.panel.painters.size.should == 1
-    @prop.panel.painters.last.class.should == Java::limelight.ui.painting.CheckBoxPainter
+    @prop.panel.painters.last.class.should == Limelight::UI::Painting::CheckBoxPainter
   end
   
   it "should clear event listeners on the panel" do

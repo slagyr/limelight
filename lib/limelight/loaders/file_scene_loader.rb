@@ -6,7 +6,7 @@ module Limelight
     
     class FileSceneLoader
       
-      include Java::limelight.SceneLoader
+      include SceneLoader
     
       attr_reader :root
       

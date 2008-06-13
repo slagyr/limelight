@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 module Limelight
-  ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
+  ButtonGroupCache = UI::ButtonGroupCache
   class ButtonGroupCache
     def [](key)
       return self.get(key)
