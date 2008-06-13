@@ -6,6 +6,7 @@ package limelight;
 import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
+import limelight.ui.painting.VerboseRepaintManager;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 
@@ -82,6 +83,7 @@ public class Main
 
   public void configureContext()
   {
+//VerboseRepaintManager.install();
     if(contextIsConfigured)
       return;
     Context context = Context.instance();
