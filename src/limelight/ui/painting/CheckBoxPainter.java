@@ -3,8 +3,8 @@
 
 package limelight.ui.painting;
 
-import limelight.ui.PropEventListener;
-import limelight.ui.InputLayout;
+import limelight.ui.model.PropEventListener;
+import limelight.ui.model.InputLayout;
 import limelight.ui.Painter;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ public class CheckBoxPainter extends Painter
 {
   private JCheckBox checkBox;
 
-  public CheckBoxPainter(limelight.ui.Panel panel)
+  public CheckBoxPainter(limelight.ui.model.Panel panel)
   {
     super(panel);
     panel.add(buildTextBox());

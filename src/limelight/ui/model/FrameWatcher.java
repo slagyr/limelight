@@ -1,9 +1,9 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
-import limelight.rapi.Theater;
+import limelight.ui.api.Theater;
 
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowEvent;
@@ -21,9 +21,9 @@ public class FrameWatcher implements WindowFocusListener
   public void windowGainedFocus(WindowEvent e)
   {
     Window window = e.getWindow();
-    if(window instanceof Frame)
+    if(window instanceof limelight.ui.model.Frame)
     {
-      Frame frame = (Frame)window;
+      limelight.ui.model.Frame frame = (limelight.ui.model.Frame)window;
       theater.stage_activated(frame.getStage());
     }
   }
@@ -32,7 +32,7 @@ public class FrameWatcher implements WindowFocusListener
   {
   }
 
-  public void watch(Frame frame)
+  public void watch(limelight.ui.model.Frame frame)
   {
     frame.addWindowFocusListener(this);
   }

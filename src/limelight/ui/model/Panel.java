@@ -1,16 +1,17 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
 import limelight.*;
 import limelight.util.Box;
-import limelight.rapi.Prop;
+import limelight.ui.api.Prop;
 import limelight.styles.Style;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.PaintAction;
+import limelight.ui.Painter;
 
 import javax.swing.*;
 import java.awt.*;

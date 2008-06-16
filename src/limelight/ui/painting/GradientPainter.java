@@ -4,7 +4,6 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
-import limelight.ui.Panel;
 import limelight.styles.Style;
 import limelight.util.Colors;
 import limelight.util.Box;
@@ -13,7 +12,7 @@ import java.awt.*;
 
 public class GradientPainter extends Painter
 {
-  public GradientPainter(Panel panel)
+  public GradientPainter(limelight.ui.model.Panel panel)
   {
     super(panel);
   }

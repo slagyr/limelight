@@ -9,19 +9,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import limelight.ui.MockProp;
-import limelight.ui.InputLayout;
+import limelight.ui.api.MockProp;
+import limelight.ui.model.InputLayout;
+import limelight.ui.model.Panel;
 
 public class TextBoxPainterTest extends TestCase
 {
-  private limelight.ui.Panel panel;
+  private limelight.ui.model.Panel panel;
   private TextBoxPainter painter;
   private MockProp prop;
 
   public void setUp() throws Exception
   {
     prop = new MockProp();
-    panel = new limelight.ui.Panel(prop);
+    panel = new Panel(prop);
     painter = new TextBoxPainter(panel);
     panel.getPainters().add(painter);
   }

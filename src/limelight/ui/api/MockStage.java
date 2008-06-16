@@ -1,8 +1,10 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.rapi;
+package limelight.ui.api;
 
-public interface Stage
+import limelight.ui.api.Stage;
+
+public class MockStage implements Stage
 {
 }

@@ -4,6 +4,7 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
+import limelight.ui.model.*;
 import limelight.LimelightException;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ public class ButtonPainter extends Painter
 {
   private JButton button;
 
-  public ButtonPainter(limelight.ui.Panel panel)
+  public ButtonPainter(limelight.ui.model.Panel panel)
   {
     super(panel);
     panel.add(buildButton());

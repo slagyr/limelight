@@ -1,10 +1,9 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
 import limelight.styles.Style;
-import limelight.util.*;
 import limelight.util.Box;
 
 import javax.swing.*;
@@ -15,16 +14,16 @@ public class PropLayout implements LayoutManager
 {
 	private LinkedList<Row> rows;
 	private Row currentRow;
-  private Panel panel;
+  private limelight.ui.model.Panel panel;
   private boolean inScrollMode;
   private JPanel scrollView;
   private Box area;
   private int consumedWidth;
   private int consumedHeight;
   private JScrollPane scrollPane;
-  private LinkedList<Panel> floaters;
+  private LinkedList<limelight.ui.model.Panel> floaters;
 
-  public PropLayout(Panel panel)
+  public PropLayout(limelight.ui.model.Panel panel)
   {
     this.panel = panel;
     rows = new LinkedList<Row>();
@@ -134,11 +133,11 @@ public class PropLayout implements LayoutManager
   {
     if(floaters == null)
       return;
-    for (Panel floater : floaters)
+    for (limelight.ui.model.Panel floater : floaters)
       layoutFloater(floater);
   }
 
-  private void layoutFloater(Panel floater)
+  private void layoutFloater(limelight.ui.model.Panel floater)
   {
     Style style = floater.getStyle();
     int x = style.asInt(style.getX());
@@ -212,14 +211,14 @@ public class PropLayout implements LayoutManager
 
   private boolean isFloater(Component component)
   {
-    return component instanceof Panel && ((Panel)component).isFloater();
+    return component instanceof limelight.ui.model.Panel && ((limelight.ui.model.Panel)component).isFloater();
   }
 
   private void addFloater(Component component)
   {
     if(floaters == null)
-      floaters = new LinkedList<Panel>();
-    floaters.add((Panel)component);
+      floaters = new LinkedList<limelight.ui.model.Panel>();
+    floaters.add((limelight.ui.model.Panel)component);
   }
 
   private limelight.util.Aligner buildAligner(Box box)
@@ -253,7 +252,7 @@ public class PropLayout implements LayoutManager
     }
   }
 
-  public Panel getPanel()
+  public limelight.ui.model.Panel getPanel()
   {
     return panel;
   }

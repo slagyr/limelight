@@ -1,9 +1,9 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
-import limelight.rapi.Stage;
+import limelight.ui.api.Stage;
 
 import javax.swing.*;
 import java.awt.*;

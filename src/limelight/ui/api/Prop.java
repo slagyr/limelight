@@ -1,10 +1,10 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.rapi;
+package limelight.ui.api;
 
 import limelight.styles.Style;
-import limelight.ui.Panel;
+import limelight.ui.model.Panel;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;

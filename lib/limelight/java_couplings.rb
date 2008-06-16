@@ -15,18 +15,21 @@ module Limelight
     Colors = Java::limelight.util.Colors
   end
 
-  module Rapi
-    Scene = Java::limelight.rapi.Scene
-    Prop = Java::limelight.rapi.Prop
-    Stage = Java::limelight.rapi.Stage
-    Theater = Java::limelight.rapi.Theater
-  end
-
   module UI
 
     ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
-    Frame = Java::limelight.ui.Frame
-    Panel = Java::limelight.ui.Panel
+
+    module Model
+      Frame = Java::limelight.ui.model.Frame
+      Panel = Java::limelight.ui.model.Panel
+    end
+
+    module Api
+      Scene = Java::limelight.ui.api.Scene
+      Prop = Java::limelight.ui.api.Prop
+      Stage = Java::limelight.ui.api.Stage
+      Theater = Java::limelight.ui.api.Theater
+    end
 
     module Painting
       PaintAction = Java::limelight.ui.painting.PaintAction

@@ -4,7 +4,7 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
-import limelight.ui.Panel;
+import limelight.ui.model.Panel;
 import limelight.styles.Style;
 import limelight.util.Colors;
 
