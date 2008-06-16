@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.styles;
 
 import limelight.util.Util;
 
@@ -111,7 +111,7 @@ public class RichStyle extends Style
   {
     LinkedList<RichStyle> seniorExtensions = findSeniorExtensions(style);
 
-    for(StyleDescriptor descriptor : Style.STYLE_LIST)
+    for(StyleDescriptor descriptor : STYLE_LIST)
     {
       String value = style.get(descriptor.index);
       if(value != null && getFrom(seniorExtensions, descriptor.index) == null)

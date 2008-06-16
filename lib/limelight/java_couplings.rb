@@ -4,20 +4,23 @@ module Limelight
   SceneLoader = Java::limelight.SceneLoader
   Context = Java::limelight.Context
 
+  module Styles
+    Style = Java::limelight.styles.Style
+    FlatStyle = Java::limelight.styles.FlatStyle
+    RichStyle = Java::limelight.styles.RichStyle
+    ScreenableStyle = Java::limelight.styles.ScreenableStyle 
+  end
+
   module UI
 
     Prop = Java::limelight.ui.Prop
     ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
     Colors = Java::limelight.ui.Colors
     Panel = Java::limelight.ui.Panel
-    ScreenableStyle = Java::limelight.ui.ScreenableStyle              
     Scene = Java::limelight.ui.Scene
     Stage = Java::limelight.ui.Stage
     Frame = Java::limelight.ui.Frame
-    FlatStyle = Java::limelight.ui.FlatStyle
-    RichStyle = Java::limelight.ui.RichStyle
     Theater = Java::limelight.ui.Theater
-    Style = Java::limelight.ui.Style
 
     module Painting
       PaintAction = Java::limelight.ui.painting.PaintAction

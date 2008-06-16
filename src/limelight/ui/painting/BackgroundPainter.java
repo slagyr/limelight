@@ -6,6 +6,7 @@ package limelight.ui.painting;
 import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.ui.Rectangle;
+import limelight.styles.Style;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

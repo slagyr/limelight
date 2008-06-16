@@ -35,7 +35,7 @@ module Limelight
       @options = hash
       @children = []
       @panel = UI::Panel.new(self)
-      @style = UI::ScreenableStyle.new
+      @style = Styles::ScreenableStyle.new
     end
     
     def add(child)

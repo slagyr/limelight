@@ -31,7 +31,7 @@ module Limelight
     attr_reader :__style
     
     def initialize(name, styles_builder)
-      @__style = UI::RichStyle.new
+      @__style = Styles::RichStyle.new
       @__name = name
       @__styles_builder = styles_builder
     end

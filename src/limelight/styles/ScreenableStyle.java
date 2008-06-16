@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.styles;
 
 public class ScreenableStyle extends RichStyle
 {
@@ -34,7 +34,7 @@ public class ScreenableStyle extends RichStyle
 
   private void applyChangesFromScreen(Style screen)
   {
-    for(StyleDescriptor descriptor : Style.STYLE_LIST)
+    for(StyleDescriptor descriptor : STYLE_LIST)
     {
       String value = screen.get(descriptor.index);
       if(value != null && !value.equals(get(descriptor.index)))

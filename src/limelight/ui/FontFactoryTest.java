@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 import java.awt.*;
 
-import limelight.ui.FlatStyle;
+import limelight.styles.FlatStyle;
 import limelight.ui.FontFactory;
 
 public class FontFactoryTest extends TestCase

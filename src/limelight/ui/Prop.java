@@ -3,7 +3,7 @@
 
 package limelight.ui;
 
-import limelight.ui.Style;
+import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.Scene;
 
