@@ -4,6 +4,7 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
+import limelight.ui.model.*;
 import limelight.LimelightException;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ public class RadioButtonPainter extends Painter
 {
   private JRadioButton radioButton;
 
-  public RadioButtonPainter(limelight.ui.Panel panel)
+  public RadioButtonPainter(limelight.ui.model.Panel panel)
   {
     super(panel);
     panel.add(buildTextBox());

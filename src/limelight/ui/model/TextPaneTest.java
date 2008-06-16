@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
 import junit.framework.TestCase;
 
@@ -9,7 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import limelight.styles.Style;
-import limelight.ui.TextPane;
+import limelight.ui.model.TextPane;
+import limelight.ui.api.MockProp;
 import limelight.util.Box;
 
 public class TextPaneTest extends TestCase

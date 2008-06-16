@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
 import junit.framework.TestCase;
 
@@ -99,7 +99,7 @@ public class PropLayoutTest extends TestCase
     assertEquals(new Point(20, 20), grandChild.getLocation());
   }
 
-  private MockPanel createAndAddChildWithSize(int width, int height) throws Panel.SterilePanelException
+  private MockPanel createAndAddChildWithSize(int width, int height) throws limelight.ui.model.Panel.SterilePanelException
   {
     MockPanel child = new MockPanel();
     child.prepForSnap(width, height);

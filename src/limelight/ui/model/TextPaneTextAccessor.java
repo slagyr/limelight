@@ -1,11 +1,11 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
-import limelight.ui.TextPane;
-import limelight.ui.TextAccessor;
-import limelight.ui.Panel;
+import limelight.ui.model.TextPane;
+import limelight.ui.model.TextAccessor;
+import limelight.ui.model.Panel;
 import limelight.LimelightException;
 
 public class TextPaneTextAccessor implements TextAccessor

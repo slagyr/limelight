@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
 import limelight.styles.Style;
 import limelight.util.*;
@@ -20,7 +20,7 @@ public class TextPane extends JPanel
   public static double widthPadding = 2.0; // The text measuerments aren't always quite right.  This helps.
 
   private String text;
-  private Panel panel;
+  private limelight.ui.model.Panel panel;
   private double consumedHeight;
   private double consumedWidth;
   private LinkedList<TextLayout> lines;
@@ -29,7 +29,7 @@ public class TextPane extends JPanel
   private boolean compiled;
   private Box bounds;
 
-  public TextPane(Panel panel, String text)
+  public TextPane(limelight.ui.model.Panel panel, String text)
   {
     this.panel = panel;
     this.text = text;
@@ -47,7 +47,7 @@ public class TextPane extends JPanel
     this.text = text;
   }
 
-  public Panel getPanel()
+  public limelight.ui.model.Panel getPanel()
   {
     return panel;
   }

@@ -13,7 +13,7 @@ module Limelight
     attr_accessor :default_scene
     attr_reader :frame, :current_scene, :name, :theater
     
-    include Rapi::Stage
+    include UI::Api::Stage
     
     def public_choose_file
       choose_file
@@ -85,7 +85,7 @@ module Limelight
     private ###############################################
     
     def build_frame
-      @frame = UI::Frame.new(self)
+      @frame = UI::Model::Frame.new(self)
       @frame.set_size(800, 800)
       @frame.set_location(200, 25)
       @frame.title = title

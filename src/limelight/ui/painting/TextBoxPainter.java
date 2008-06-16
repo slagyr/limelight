@@ -4,6 +4,7 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
+import limelight.ui.model.*;
 import limelight.LimelightException;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ public class TextBoxPainter extends Painter
 {
   private JTextField textField;
 
-  public TextBoxPainter(limelight.ui.Panel panel)
+  public TextBoxPainter(limelight.ui.model.Panel panel)
   {
     super(panel);
     panel.add(buildTextBox());

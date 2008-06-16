@@ -1,15 +1,16 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.ui.model;
 
 import junit.framework.TestCase;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
+import limelight.ui.api.MockProp;
 import limelight.styles.FlatStyle;
-import limelight.rapi.Prop;
+import limelight.ui.api.Prop;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -17,7 +18,7 @@ import java.awt.event.*;
 
 public class PanelTest extends TestCase
 {
-  private static class TestablePanel extends Panel
+  private static class TestablePanel extends limelight.ui.model.Panel
   {
     public TestablePanel(Prop owner)
     {
@@ -161,12 +162,12 @@ public class PanelTest extends TestCase
 
     try
     {
-      panel.add(new Panel(new MockProp()));
+      panel.add(new limelight.ui.model.Panel(new MockProp()));
       fail("Should have thrown an exception");
     }
     catch(Error e)
     {
-      assertEquals(Panel.SterilePanelException.class, e.getClass());
+      assertEquals(limelight.ui.model.Panel.SterilePanelException.class, e.getClass());
       assertEquals("The panel for prop named 'Blah' has been sterilized and child components may not be added.", e.getMessage());
     }
     

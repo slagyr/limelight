@@ -4,7 +4,6 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
-import limelight.ui.Panel;
 import limelight.styles.Style;
 import limelight.util.Colors;
 import limelight.util.Box;
@@ -16,7 +15,7 @@ import java.io.IOException;
 
 public class BackgroundPainter extends Painter
 {
-  public BackgroundPainter(Panel panel)
+  public BackgroundPainter(limelight.ui.model.Panel panel)
   {
     super(panel);
   }

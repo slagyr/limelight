@@ -24,7 +24,7 @@ module Limelight
 
     end
     
-    include Rapi::Prop
+    include UI::Api::Prop
   
     attr_reader :panel, :style, :children, :scene, :parent
     attr_reader :name, :id, :players
@@ -34,7 +34,7 @@ module Limelight
     def initialize(hash = {})
       @options = hash
       @children = []
-      @panel = UI::Panel.new(self)
+      @panel = UI::Model::Panel.new(self)
       @style = Styles::ScreenableStyle.new
     end
     
