@@ -28,7 +28,7 @@ module Limelight
       end
 
       def run(args)
-        packer = Limelight::IO::Packer.new
+        packer = Limelight::Util::Packer.new
         packer.pack(args.shift)
       end
     end

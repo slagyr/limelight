@@ -31,7 +31,7 @@ module Limelight
 
   end
 
-  module IO
+  module Util
 
     Packer = Java::limelight.io.Packer
 
