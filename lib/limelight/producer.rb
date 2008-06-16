@@ -132,7 +132,7 @@ module Limelight
     end
 
     def unpack_production(production_name)
-      packer = Limelight::IO::Packer.new()
+      packer = Limelight::Util::Packer.new()
       return packer.unpack(production_name)
     end
 
