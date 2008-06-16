@@ -4,6 +4,7 @@
 package limelight.ui;
 
 import limelight.*;
+import limelight.util.Box;
 import limelight.rapi.Prop;
 import limelight.styles.Style;
 import limelight.ui.painting.BorderPainter;
@@ -29,10 +30,10 @@ public class Panel extends JPanel
   private TextAccessor textAccessor;
   private Style style;
   private PropEventListener listener;
-  private Rectangle rectangle;
-  private Rectangle rectangleInsideMargins;
-  private Rectangle rectangleInsideBorders;
-  private Rectangle rectangleInsidePadding;
+  private Box box;
+  private Box boxInsideMargins;
+  private Box boxInsideBorders;
+  private Box boxInsidePadding;
   private Border borderShaper;
   private PaintAction afterPaintAction;
 
@@ -95,7 +96,7 @@ public class Panel extends JPanel
 
     //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
     if (borderShaper != null)
-      borderShaper.setBounds(getRectangleInsideMargins());
+      borderShaper.setBounds(getBoxInsideMargins());
   }
 
   // TODO - MDM - This is silly inefficient.  It forces panels to relayout all the time.  Particulary when the frame is resized.
@@ -171,7 +172,7 @@ if("application_list".equals(prop.getName()))
     Graphics2D graphics2d = (Graphics2D) graphics;
     Composite originalComposite = graphics2d.getComposite();
     applyAlphaComposite(graphics);
-    limelight.ui.Rectangle clip = new limelight.ui.Rectangle(graphics.getClipBounds());
+    Box clip = new Box(graphics.getClipBounds());
     graphics.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
     graphics2d.setComposite(originalComposite);
     paintChildren(graphics);
@@ -240,11 +241,11 @@ if("application_list".equals(prop.getName()))
 
   public Dimension getMaximumSize()
   {
-    Rectangle r;
+    Box r;
     if (getParent().getClass() == Panel.class)
-      r = ((Panel) getParent()).getRectangleInsidePadding();
+      r = ((Panel) getParent()).getBoxInsidePadding();
     else
-      r = new Rectangle(0, 0, getParent().getWidth(), getParent().getHeight());
+      r = new Box(0, 0, getParent().getWidth(), getParent().getHeight());
 
     int width = translateDimension(getStyle().getWidth(), r.width);
     int height = translateDimension(getStyle().getHeight(), r.height);
@@ -252,47 +253,47 @@ if("application_list".equals(prop.getName()))
     return dimension;
   }
 
-  public limelight.ui.Rectangle getRectangle()
+  public Box getBox()
   {
-    if (rectangle == null)
-      rectangle = new Rectangle(0, 0, getWidth(), getHeight());
-    return rectangle;
+    if (box == null)
+      box = new Box(0, 0, getWidth(), getHeight());
+    return box;
   }
 
-  public limelight.ui.Rectangle getRectangleInsideMargins()
+  public Box getBoxInsideMargins()
   {
-    if (rectangleInsideMargins == null)
+    if (boxInsideMargins == null)
     {
-      rectangleInsideMargins = (Rectangle) getRectangle().clone();
-      rectangleInsideMargins.shave(getStyle().asInt(getStyle().getTopMargin()), getStyle().asInt(getStyle().getRightMargin()), getStyle().asInt(getStyle().getBottomMargin()), getStyle().asInt(getStyle().getLeftMargin()));
+      boxInsideMargins = (Box)getBox().clone();
+      boxInsideMargins.shave(getStyle().asInt(getStyle().getTopMargin()), getStyle().asInt(getStyle().getRightMargin()), getStyle().asInt(getStyle().getBottomMargin()), getStyle().asInt(getStyle().getLeftMargin()));
     }
-    return rectangleInsideMargins;
+    return boxInsideMargins;
   }
 
-  public limelight.ui.Rectangle getRectangleInsideBorders()
+  public Box getBoxInsideBorders()
   {
-    if (rectangleInsideBorders == null)
+    if (boxInsideBorders == null)
     {
-      rectangleInsideBorders = (Rectangle) getRectangleInsideMargins().clone();
-      rectangleInsideBorders.shave(getStyle().asInt(getStyle().getTopBorderWidth()), getStyle().asInt(getStyle().getRightBorderWidth()), getStyle().asInt(getStyle().getBottomBorderWidth()), getStyle().asInt(getStyle().getLeftBorderWidth()));
+      boxInsideBorders = (Box)getBoxInsideMargins().clone();
+      boxInsideBorders.shave(getStyle().asInt(getStyle().getTopBorderWidth()), getStyle().asInt(getStyle().getRightBorderWidth()), getStyle().asInt(getStyle().getBottomBorderWidth()), getStyle().asInt(getStyle().getLeftBorderWidth()));
     }
-    return rectangleInsideBorders;
+    return boxInsideBorders;
   }
 
-  public limelight.ui.Rectangle getRectangleInsidePadding()
+  public Box getBoxInsidePadding()
   {
-    if (rectangleInsidePadding == null)
+    if (boxInsidePadding == null)
     {
-      rectangleInsidePadding = (Rectangle) getRectangleInsideBorders().clone();
-      rectangleInsidePadding.shave(getStyle().asInt(getStyle().getTopPadding()), getStyle().asInt(getStyle().getRightPadding()), getStyle().asInt(getStyle().getBottomPadding()), getStyle().asInt(getStyle().getLeftPadding()));
+      boxInsidePadding = (Box)getBoxInsideBorders().clone();
+      boxInsidePadding.shave(getStyle().asInt(getStyle().getTopPadding()), getStyle().asInt(getStyle().getRightPadding()), getStyle().asInt(getStyle().getBottomPadding()), getStyle().asInt(getStyle().getLeftPadding()));
     }
-    return rectangleInsidePadding;
+    return boxInsidePadding;
   }
 
   public Border getBorderShaper()
   {
     if (borderShaper == null)
-      borderShaper = new Border(getStyle(), getRectangleInsideMargins());
+      borderShaper = new Border(getStyle(), getBoxInsideMargins());
     return borderShaper;
   }
 
@@ -358,10 +359,10 @@ if("application_list".equals(prop.getName()))
 
   private void clearLayoutCache()
   {
-    rectangle = null;
-    rectangleInsideMargins = null;
-    rectangleInsideBorders = null;
-    rectangleInsidePadding = null;
+    box = null;
+    boxInsideMargins = null;
+    boxInsideBorders = null;
+    boxInsidePadding = null;
   }
 
   public static class SterilePanelException extends LimelightError

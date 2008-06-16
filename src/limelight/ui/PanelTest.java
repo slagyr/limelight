@@ -10,6 +10,7 @@ import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
 import limelight.rapi.Prop;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -244,22 +245,22 @@ public class PanelTest extends TestCase
   
   public void testRactanglesAreCached() throws Exception
   {
-    Rectangle rectangle = panel.getRectangle();
-    Rectangle insideMargins = panel.getRectangleInsideMargins();
-    Rectangle insideBorders = panel.getRectangleInsideBorders();
-    Rectangle insidePadding = panel.getRectangleInsidePadding();
+    Box rectangle = panel.getBox();
+    Box insideMargins = panel.getBoxInsideMargins();
+    Box insideBorders = panel.getBoxInsideBorders();
+    Box insidePadding = panel.getBoxInsidePadding();
 
-    assertSame(rectangle, panel.getRectangle());
-    assertSame(insideMargins, panel.getRectangleInsideMargins());
-    assertSame(insideBorders, panel.getRectangleInsideBorders());
-    assertSame(insidePadding, panel.getRectangleInsidePadding());
+    assertSame(rectangle, panel.getBox());
+    assertSame(insideMargins, panel.getBoxInsideMargins());
+    assertSame(insideBorders, panel.getBoxInsideBorders());
+    assertSame(insidePadding, panel.getBoxInsidePadding());
 
     panel.setSize(123, 456);
 
-    assertNotSame(rectangle, panel.getRectangle());
-    assertNotSame(insideMargins, panel.getRectangleInsideMargins());
-    assertNotSame(insideBorders, panel.getRectangleInsideBorders());
-    assertNotSame(insidePadding, panel.getRectangleInsidePadding());
+    assertNotSame(rectangle, panel.getBox());
+    assertNotSame(insideMargins, panel.getBoxInsideMargins());
+    assertNotSame(insideBorders, panel.getBoxInsideBorders());
+    assertNotSame(insidePadding, panel.getBoxInsidePadding());
   }
 
   public void testBorderGetUpdatedOnLayout() throws Exception

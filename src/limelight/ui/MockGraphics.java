@@ -3,6 +3,8 @@
 
 package limelight.ui;
 
+import limelight.util.Box;
+
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.image.*;
@@ -18,7 +20,7 @@ public class MockGraphics extends java.awt.Graphics2D
 	public LinkedList<DrawnShape> filledShapes;
   private BasicStroke stroke;
   private Hashtable<Object, Object> hints;
-  private Rectangle clip;
+  private Box clip;
   private Paint paint;
 
   public class DrawnShape
@@ -258,7 +260,7 @@ public class MockGraphics extends java.awt.Graphics2D
 		return null;
 	}
 
-	public limelight.ui.Rectangle getClipBounds()
+	public Box getClipBounds()
 	{
 		return clip;
 	}
@@ -269,7 +271,7 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void setClip(int i, int i1, int i2, int i3)
 	{
-    clip = new Rectangle(i, i1, i2, i3);
+    clip = new Box(i, i1, i2, i3);
   }
 
 	public Shape getClip()

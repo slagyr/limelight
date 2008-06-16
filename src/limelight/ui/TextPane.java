@@ -4,9 +4,8 @@
 package limelight.ui;
 
 import limelight.styles.Style;
-import limelight.util.Util;
-import limelight.util.Colors;
-import limelight.util.FontFactory;
+import limelight.util.*;
+import limelight.util.Box;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +27,7 @@ public class TextPane extends JPanel
   private Graphics2D graphics;
   private boolean textChanged;
   private boolean compiled;
-  private Rectangle bounds;
+  private Box bounds;
 
   public TextPane(Panel panel, String text)
   {
@@ -53,7 +52,7 @@ public class TextPane extends JPanel
     return panel;
   }
 
-  public limelight.ui.Rectangle getBounds()
+  public Box getBounds()
   {
     return bounds;
   }
@@ -62,7 +61,7 @@ public class TextPane extends JPanel
   {
     if(!compiled || textChanged() || fontChanged())
     {
-      bounds = panel.getRectangleInsidePadding();
+      bounds = panel.getBoxInsidePadding();
       buildLines();
       calculateDimentions();
       setSize((int)(consumedWidth + 0.5), (int)(consumedHeight + 0.5));
@@ -80,7 +79,7 @@ public class TextPane extends JPanel
 	{
     graphics = (Graphics2D)aGraphics;
 
-    Aligner aligner = createAligner();
+    limelight.util.Aligner aligner = createAligner();
     graphics.setColor(Colors.resolve(getStyle().getTextColor()));
     float y = 0;
     for (TextLayout textLayout : lines)
@@ -91,9 +90,9 @@ public class TextPane extends JPanel
     }
 	}
 
-  private Aligner createAligner()
+  private limelight.util.Aligner createAligner()
   {
-    return new Aligner(new limelight.ui.Rectangle(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
+    return new limelight.util.Aligner(new limelight.util.Box(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
   }
 
   private Style getStyle()

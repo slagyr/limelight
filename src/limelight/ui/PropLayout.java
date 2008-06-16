@@ -3,8 +3,9 @@
 
 package limelight.ui;
 
-
 import limelight.styles.Style;
+import limelight.util.*;
+import limelight.util.Box;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,7 @@ public class PropLayout implements LayoutManager
   private Panel panel;
   private boolean inScrollMode;
   private JPanel scrollView;
-  private limelight.ui.Rectangle area;
+  private Box area;
   private int consumedWidth;
   private int consumedHeight;
   private JScrollPane scrollPane;
@@ -76,7 +77,7 @@ public class PropLayout implements LayoutManager
 
     //TODO Hack - March 17, 08
     if("auto".equals(panel.getStyle().getHeight()))
-      area = new Rectangle(area.x, area.y, area.width, consumedHeight);
+      area = new Box(area.x, area.y, area.width, consumedHeight);
 
     boolean vertical_scrollbar_required = (consumedHeight > area.height) && !"off".equals(panel.getStyle().getVerticalScrollbar());
     boolean horizontal_scrollbar_required = (consumedWidth > area.width) && !"off".equals(panel.getStyle().getHorizontalScrollbar());
@@ -113,17 +114,17 @@ public class PropLayout implements LayoutManager
 
   public int horizontalInsets()
   {
-    return panel.getRectangle().width - panel.getRectangleInsidePadding().width;
+    return panel.getBox().width - panel.getBoxInsidePadding().width;
   }
 
   public int verticalInsets()
   {
-    return panel.getRectangle().height - panel.getRectangleInsidePadding().height;
+    return panel.getBox().height - panel.getBoxInsidePadding().height;
   }
 
   private void doNormalLayout()
   {
-    Aligner aligner = buildAligner(panel.getRectangleInsidePadding());
+    limelight.util.Aligner aligner = buildAligner(panel.getBoxInsidePadding());
     aligner.addConsumedHeight(consumedHeight);
     layoutRows(aligner);
     layoutFloaters();
@@ -145,7 +146,7 @@ public class PropLayout implements LayoutManager
     floater.setLocation(area.x + x, area.y + y);
   }
 
-  private void layoutRows(Aligner aligner)
+  private void layoutRows(limelight.util.Aligner aligner)
   {
     int y = aligner.startingY();
     for(Row row : rows)
@@ -221,14 +222,14 @@ public class PropLayout implements LayoutManager
     floaters.add((Panel)component);
   }
 
-  private Aligner buildAligner(limelight.ui.Rectangle rectangle)
+  private limelight.util.Aligner buildAligner(Box box)
   {
-    return new Aligner(rectangle, panel.getStyle().getHorizontalAlignment(), panel.getStyle().getVerticalAlignment());
+    return new limelight.util.Aligner(box, panel.getStyle().getHorizontalAlignment(), panel.getStyle().getVerticalAlignment());
   }
 
   private void reset()
 	{
-    area = panel.getRectangleInsidePadding();
+    area = panel.getBoxInsidePadding();
     floaters = null;
     rows.clear();
 		newRow();
@@ -330,7 +331,7 @@ public class PropLayout implements LayoutManager
     public void layoutContainer(Container container)
     {                                       
       String horizontalAlignment = panel.getStyle().getHorizontalAlignment();
-      Aligner aligner = new Aligner(new limelight.ui.Rectangle(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
+      limelight.util.Aligner aligner = new limelight.util.Aligner(new Box(0, 0, view.getWidth(), view.getHeight()), horizontalAlignment, "top");
       layoutRows(aligner);
     }
   }

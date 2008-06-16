@@ -5,9 +5,9 @@ package limelight.ui.painting;
 
 import limelight.ui.*;
 import limelight.ui.Panel;
-import limelight.ui.Rectangle;
 import limelight.styles.Style;
 import limelight.util.Colors;
+import limelight.util.Box;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -43,7 +43,7 @@ public class BackgroundPainter extends Painter
     {
       try
       {
-        Rectangle borderFrame = panel.getRectangleInsideBorders();
+        Box borderFrame = panel.getBoxInsideBorders();
         String imageFilename = panel.getProp().getScene().getLoader().pathTo(style.getBackgroundImage());
         Image image = ImageIO.read(new File(imageFilename));
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);

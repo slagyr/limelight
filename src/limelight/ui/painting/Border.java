@@ -3,8 +3,8 @@
 
 package limelight.ui.painting;
 
-import limelight.ui.Rectangle;
 import limelight.styles.Style;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -25,10 +25,10 @@ public class Border
   private int bottomRightRadius;
   private int bottomLeftRadius;
   private int topLeftRadius;
-  private Rectangle bounds;
+  private Box bounds;
   private Jig jig;
 
-  public Border(Style style, Rectangle bounds) {
+  public Border(Style style, Box bounds) {
     this.style = style;
     this.bounds = bounds;
     
@@ -49,7 +49,7 @@ public class Border
     jig = new CenterJig(this);
   }
 
-  public void setBounds(Rectangle bounds)
+  public void setBounds(Box bounds)
   {
     this.bounds = bounds;
     jig = new CenterJig(this); //TODO MDM a new jig is not needed... it just needs to update.

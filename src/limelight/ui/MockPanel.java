@@ -3,9 +3,9 @@
 
 package limelight.ui;
 
-import limelight.ui.Rectangle;
 import limelight.ui.Panel;
 import limelight.ui.MockProp;
+import limelight.util.Box;
 
 import java.awt.*;
 
@@ -13,8 +13,8 @@ public class MockPanel extends Panel
 {
   public static int paintCount = 0;
 
-  public Rectangle rectangleInsideMargin;
-  public Rectangle rectangleInsidePadding;
+  public Box boxInsideMargin;
+  public Box boxInsidePadding;
   private int prepWidth;
   private int prepHeight;
   public boolean wasLaidOut;
@@ -26,18 +26,18 @@ public class MockPanel extends Panel
 		super(new MockProp());
 	}
 
-  public Rectangle getRectangleInsideMargins()
+  public Box getBoxInsideMargins()
   {
-    if(rectangleInsideMargin != null)
-      return rectangleInsideMargin;
-    return super.getRectangleInsideMargins();
+    if(boxInsideMargin != null)
+      return boxInsideMargin;
+    return super.getBoxInsideMargins();
   }
 
-  public Rectangle getRectangleInsidePadding()
+  public Box getBoxInsidePadding()
   {
-    if(rectangleInsidePadding != null)
-      return rectangleInsidePadding;
-    return super.getRectangleInsidePadding();
+    if(boxInsidePadding != null)
+      return boxInsidePadding;
+    return super.getBoxInsidePadding();
   }
 
   public void prepForSnap(int width, int height)

@@ -5,8 +5,8 @@ package limelight.ui.painting;
 
 import junit.framework.TestCase;
 import limelight.styles.FlatStyle;
-import limelight.ui.Rectangle;
 import limelight.styles.Style;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -18,11 +18,11 @@ public class BorderTest extends TestCase
 {
   private Style style;
   private Border border;
-  private Rectangle insideMargin;
+  private Box insideMargin;
 
   public void setUp() {
     style = new FlatStyle();
-    insideMargin = new Rectangle(0, 0, 100, 200);
+    insideMargin = new Box(0, 0, 100, 200);
   }
 
   private void verifyLine(Line2D line, int x1, int y1, int x2, int y2) {
@@ -83,7 +83,7 @@ public class BorderTest extends TestCase
   public void testGetLinesFromBorderWithOnePixelWidthAllAroundAndSomeMargin() throws Exception
   {
     style.setBorderWidth("1");
-    insideMargin = new Rectangle(20, 30, 100, 200);
+    insideMargin = new Box(20, 30, 100, 200);
     border = new Border(style, insideMargin);
 
     int right = insideMargin.width - 1 + 20;

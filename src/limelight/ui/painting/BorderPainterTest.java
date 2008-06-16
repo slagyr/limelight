@@ -8,6 +8,7 @@ import limelight.styles.FlatStyle;
 import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
 import limelight.ui.MockProp;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
@@ -24,7 +25,7 @@ public class BorderPainterTest extends TestCase
   private MockPanel panel;
   private FlatStyle style;
   private BorderPainter painter;
-  private limelight.ui.Rectangle border;
+  private Box border;
   private MockGraphics graphics;
 
   public void setUp() throws Exception
@@ -32,8 +33,8 @@ public class BorderPainterTest extends TestCase
     panel = new MockPanel();
     prop = (MockProp)panel.getProp();
     style = prop.style;
-    border = new limelight.ui.Rectangle(5, 5, 100, 100);
-    panel.rectangleInsideMargin = border;
+    border = new Box(5, 5, 100, 100);
+    panel.boxInsideMargin = border;
     painter = new BorderPainter(panel);
     graphics = new MockGraphics();
   }
@@ -62,8 +63,8 @@ public class BorderPainterTest extends TestCase
 
   public void testGetLinesFromBorderWithEven() throws Exception
   {
-    border = new limelight.ui.Rectangle(0, 0, 100, 200);
-    panel.rectangleInsideMargin = border;
+    border = new Box(0, 0, 100, 200);
+    panel.boxInsideMargin = border;
     style.setBorderWidth("4");
     style.setBorderColor("blue");
 
@@ -77,8 +78,8 @@ public class BorderPainterTest extends TestCase
 
     public void testGetLinesFromBorderWithOdd() throws Exception
   {
-    border = new limelight.ui.Rectangle(0, 0, 100, 200);
-    panel.rectangleInsideMargin = border;
+    border = new Box(0, 0, 100, 200);
+    panel.boxInsideMargin = border;
     style.setBorderWidth("5");
     style.setBorderColor("blue");
 

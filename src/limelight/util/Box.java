@@ -1,11 +1,11 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.util;
 
-public class Rectangle extends java.awt.Rectangle
+public class Box extends java.awt.Rectangle
 {
-	public Rectangle(int x, int y, int width, int height)
+	public Box(int x, int y, int width, int height)
 	{
 		this.x = x;
 		this.y = y;
@@ -13,7 +13,7 @@ public class Rectangle extends java.awt.Rectangle
 		this.height = height;
 	}
 
-	public Rectangle(java.awt.Rectangle r)
+	public Box(java.awt.Rectangle r)
 	{
 		x = r.x;
 		y = r.y;
