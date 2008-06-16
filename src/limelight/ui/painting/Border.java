@@ -4,7 +4,7 @@
 package limelight.ui.painting;
 
 import limelight.ui.Rectangle;
-import limelight.ui.Style;
+import limelight.styles.Style;
 
 import java.awt.*;
 import java.awt.geom.*;

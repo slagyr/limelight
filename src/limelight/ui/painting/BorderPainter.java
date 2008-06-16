@@ -5,6 +5,7 @@ package limelight.ui.painting;
 
 import limelight.ui.*;
 import limelight.ui.Panel;
+import limelight.styles.Style;
 
 import java.awt.*;
 

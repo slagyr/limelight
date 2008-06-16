@@ -3,7 +3,7 @@
 
 package limelight.ui;
 
-import limelight.ui.Style;
+import limelight.styles.Style;
 import limelight.util.Util;
 
 import javax.swing.*;

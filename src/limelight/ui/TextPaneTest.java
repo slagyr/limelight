@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.awt.*;
 
-import limelight.ui.Style;
+import limelight.styles.Style;
 import limelight.ui.TextPane;
 
 public class TextPaneTest extends TestCase

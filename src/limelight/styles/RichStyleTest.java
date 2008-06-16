@@ -1,12 +1,12 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.styles;
 
 import junit.framework.TestCase;
-import limelight.ui.RichStyle;
-import limelight.ui.Style;
-import limelight.ui.StyleDescriptor;
+import limelight.styles.RichStyle;
+import limelight.styles.Style;
+import limelight.styles.StyleDescriptor;
 
 public class RichStyleTest extends TestCase
 {

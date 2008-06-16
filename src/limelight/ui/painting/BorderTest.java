@@ -4,9 +4,9 @@
 package limelight.ui.painting;
 
 import junit.framework.TestCase;
-import limelight.ui.FlatStyle;
+import limelight.styles.FlatStyle;
 import limelight.ui.Rectangle;
-import limelight.ui.Style;
+import limelight.styles.Style;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

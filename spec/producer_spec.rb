@@ -78,7 +78,7 @@ describe Limelight::Producer do
     rescue Limelight::BuildException => e
       e.line_number.should == 4
       e.filename.should == "./styles.rb"
-      e.message.should include("./styles.rb:4: undefined method `-@' for #<Java::LimelightUi::RichStyle:0x")
+      e.message.should include("./styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x")
     end
   end
   

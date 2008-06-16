@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import limelight.ui.Colors;
 import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
-import limelight.ui.Style;
+import limelight.styles.Style;
 
 import java.awt.*;
 

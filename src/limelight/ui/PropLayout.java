@@ -4,10 +4,11 @@
 package limelight.ui;
 
 
+import limelight.styles.Style;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
-import java.util.Iterator;
 
 public class PropLayout implements LayoutManager
 {
