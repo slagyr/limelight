@@ -13,7 +13,7 @@ module Limelight
     attr_accessor :default_scene
     attr_reader :frame, :current_scene, :name, :theater
     
-    include UI::Stage
+    include Rapi::Stage
     
     def public_choose_file
       choose_file

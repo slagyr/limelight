@@ -11,16 +11,22 @@ module Limelight
     ScreenableStyle = Java::limelight.styles.ScreenableStyle 
   end
 
+  module Util
+    Colors = Java::limelight.util.Colors
+  end
+
+  module Rapi
+    Scene = Java::limelight.rapi.Scene
+    Prop = Java::limelight.rapi.Prop
+    Stage = Java::limelight.rapi.Stage
+    Theater = Java::limelight.rapi.Theater
+  end
+
   module UI
 
-    Prop = Java::limelight.ui.Prop
     ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
-    Colors = Java::limelight.ui.Colors
-    Panel = Java::limelight.ui.Panel
-    Scene = Java::limelight.ui.Scene
-    Stage = Java::limelight.ui.Stage
     Frame = Java::limelight.ui.Frame
-    Theater = Java::limelight.ui.Theater
+    Panel = Java::limelight.ui.Panel
 
     module Painting
       PaintAction = Java::limelight.ui.painting.PaintAction

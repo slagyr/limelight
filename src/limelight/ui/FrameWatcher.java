@@ -3,6 +3,8 @@
 
 package limelight.ui;
 
+import limelight.rapi.Theater;
+
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.*;

@@ -1,12 +1,12 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.util;
 
 import java.awt.*;
 
 import junit.framework.TestCase;
-import limelight.ui.Colors;
+import limelight.util.Colors;
 
 public class ColorsTest extends TestCase
 {

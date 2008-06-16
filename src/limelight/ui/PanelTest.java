@@ -9,6 +9,7 @@ import limelight.ui.painting.Border;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
+import limelight.rapi.Prop;
 
 import java.awt.*;
 import java.awt.event.*;

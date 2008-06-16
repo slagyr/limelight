@@ -7,7 +7,7 @@ module Limelight
   
   class Theater
     
-    include UI::Theater
+    include Rapi::Theater
     
     attr_reader :active_stage
     

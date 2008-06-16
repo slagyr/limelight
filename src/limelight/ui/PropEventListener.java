@@ -3,7 +3,7 @@
 
 package limelight.ui;
 
-import limelight.ui.Prop;
+import limelight.rapi.Prop;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
