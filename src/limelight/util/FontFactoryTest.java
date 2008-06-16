@@ -1,14 +1,14 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.util;
 
 import junit.framework.TestCase;
 
 import java.awt.*;
 
 import limelight.styles.FlatStyle;
-import limelight.ui.FontFactory;
+import limelight.util.FontFactory;
 
 public class FontFactoryTest extends TestCase
 {

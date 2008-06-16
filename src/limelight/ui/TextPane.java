@@ -5,6 +5,8 @@ package limelight.ui;
 
 import limelight.styles.Style;
 import limelight.util.Util;
+import limelight.util.Colors;
+import limelight.util.FontFactory;
 
 import javax.swing.*;
 import java.awt.*;

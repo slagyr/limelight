@@ -3,6 +3,8 @@
 
 package limelight.ui;
 
+import limelight.rapi.Stage;
+
 public class MockStage implements Stage
 {
 }

@@ -3,6 +3,9 @@
 
 package limelight.ui;
 
+import limelight.rapi.Theater;
+import limelight.rapi.Stage;
+
 public class MockTheater implements Theater
 {
   public Stage activatedStage;

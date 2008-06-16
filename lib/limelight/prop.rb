@@ -24,7 +24,7 @@ module Limelight
 
     end
     
-    include UI::Prop
+    include Rapi::Prop
   
     attr_reader :panel, :style, :children, :scene, :parent
     attr_reader :name, :id, :players

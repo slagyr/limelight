@@ -4,6 +4,7 @@
 package limelight.ui;
 
 import limelight.*;
+import limelight.rapi.Prop;
 import limelight.styles.Style;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;

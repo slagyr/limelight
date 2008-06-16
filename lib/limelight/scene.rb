@@ -8,7 +8,7 @@ require 'limelight/button_group_cache'
 module Limelight
   class Scene < Prop
     
-    include UI::Scene
+    include Rapi::Scene
   
     attr_reader :button_groups, :styles, :casting_director
     attr_accessor :stage, :loader, :visible, :path, :production

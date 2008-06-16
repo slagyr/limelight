@@ -4,9 +4,8 @@
 package limelight.ui;
 
 import limelight.styles.FlatStyle;
-import limelight.ui.Prop;
-import limelight.ui.Scene;
-import limelight.ui.Panel;
+import limelight.rapi.Prop;
+import limelight.rapi.Scene;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
