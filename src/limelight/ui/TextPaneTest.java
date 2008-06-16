@@ -10,11 +10,12 @@ import java.awt.*;
 
 import limelight.styles.Style;
 import limelight.ui.TextPane;
+import limelight.util.Box;
 
 public class TextPaneTest extends TestCase
 {
   private TextPane pane;
-  private limelight.ui.Rectangle bounds;
+  private Box bounds;
   private MockProp prop;
   private Style style;
   private JFrame frame;
@@ -23,9 +24,9 @@ public class TextPaneTest extends TestCase
   public void setUp() throws Exception
   {
     TextPane.widthPadding = 0;
-    bounds = new limelight.ui.Rectangle(0, 0, 100, 100);
+    bounds = new limelight.util.Box(0, 0, 100, 100);
     panel = new MockPanel();
-    panel.rectangleInsidePadding = bounds;
+    panel.boxInsidePadding = bounds;
     style = panel.getStyle();
     pane = new TextPane(panel, "Some Text");
     style.setTextColor("black");

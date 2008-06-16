@@ -1,18 +1,18 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.util;
 
-import limelight.ui.Rectangle;
+public class
 
-public class Aligner
+    Aligner
 {
-	private Rectangle area;
+	private Box area;
 	private String horizontalAlignment;
 	private String verticalAlignment;
 	private int consumedHeight;
 
-	public Aligner(Rectangle area, String horizontalAlignment, String verticalAlignment)
+	public Aligner(Box area, String horizontalAlignment, String verticalAlignment)
 	{
 		this.area = area;    
     this.horizontalAlignment = horizontalAlignment;
@@ -57,7 +57,7 @@ public class Aligner
 		consumedHeight += (int)(height + 0.5);
 	}
 
-  public Rectangle getArea()
+  public Box getArea()
   {
     return area;
   }

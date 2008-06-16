@@ -1,17 +1,16 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui;
+package limelight.util;
 
 import junit.framework.TestCase;
-import limelight.ui.Rectangle;
-import limelight.ui.Aligner;
+import limelight.util.Aligner;
 
 public class AlignerTest extends TestCase
 {
   public void testDefaultAlignmentIsSameAsTopLeft() throws Exception
   {
-    Rectangle area = new Rectangle(0, 0, 100, 100);
+    Box area = new Box(0, 0, 100, 100);
     Aligner aligner = new Aligner(area, null, null);
 
     assertEquals(0, aligner.startingX(0));
@@ -24,7 +23,7 @@ public class AlignerTest extends TestCase
 
   public void testCenterAlignments() throws Exception
   {
-    Rectangle area = new Rectangle(0, 0, 100, 100);
+    Box area = new Box(0, 0, 100, 100);
     Aligner aligner = new Aligner(area, "center", "center");
 
     assertEquals(50, aligner.startingX(0));
@@ -37,7 +36,7 @@ public class AlignerTest extends TestCase
 
   public void testBottomRightAlignment() throws Exception
   {
-    Rectangle area = new Rectangle(0, 0, 100, 100);
+    Box area = new Box(0, 0, 100, 100);
     Aligner aligner = new Aligner(area, "right", "bottom");
 
     assertEquals(100, aligner.startingX(0));
@@ -50,7 +49,7 @@ public class AlignerTest extends TestCase
 
   public void testTopLeftNotStartingAtZero() throws Exception
   {
-    Rectangle area = new Rectangle(5, 5, 100, 100);
+    Box area = new Box(5, 5, 100, 100);
     Aligner aligner = new Aligner(area, null, null);
 
     assertEquals(5, aligner.startingX(0));
@@ -63,7 +62,7 @@ public class AlignerTest extends TestCase
 
   public void testCenterAlignmentsNotStartingAtZero() throws Exception
   {
-    Rectangle area = new Rectangle(5, 5, 100, 100);
+    Box area = new Box(5, 5, 100, 100);
     Aligner aligner = new Aligner(area, "center", "center");
 
     assertEquals(55, aligner.startingX(0));
@@ -76,7 +75,7 @@ public class AlignerTest extends TestCase
 
   public void testBottomRightAlignmentNotStartingAtZero() throws Exception
   {
-    Rectangle area = new Rectangle(5, 5, 100, 100);
+    Box area = new Box(5, 5, 100, 100);
     Aligner aligner = new Aligner(area, "right", "bottom");
 
     assertEquals(105, aligner.startingX(0));
