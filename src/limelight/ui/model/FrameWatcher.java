@@ -7,15 +7,18 @@ import limelight.ui.api.Theater;
 
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.*;
 
-public class FrameWatcher implements WindowFocusListener
+public class FrameWatcher implements WindowFocusListener, WindowListener
 {
   private Theater theater;
+  private int frameCount;
 
   public FrameWatcher(Theater theater)
   {
     this.theater = theater;
+    frameCount = 0;
   }
 
   public void windowGainedFocus(WindowEvent e)
@@ -35,5 +38,39 @@ public class FrameWatcher implements WindowFocusListener
   public void watch(limelight.ui.model.Frame frame)
   {
     frame.addWindowFocusListener(this);
+    frame.addWindowListener(this);
+    frameCount++;
+  }
+
+  public void windowOpened(WindowEvent e)
+  {
+  }
+
+  public void windowClosing(WindowEvent e)
+  {
+  }
+
+  public void windowClosed(WindowEvent e)
+  {
+    frameCount--;
+System.err.println("frameCount = " + frameCount);
+    if(frameCount == 0)
+      System.exit(0);
+  }
+
+  public void windowIconified(WindowEvent e)
+  {
+  }
+
+  public void windowDeiconified(WindowEvent e)
+  {
+  }
+
+  public void windowActivated(WindowEvent e)
+  {
+  }
+
+  public void windowDeactivated(WindowEvent e)
+  {
   }
 }
