@@ -12,7 +12,13 @@ public class AnimationLoopTest extends TestCase
   {
     public int updates;
     public int refreshes;
-    public Runnable refreshRunnable;
+    private int delay;
+    public LinkedList<Integer> record;
+
+    public TestableAnimationLoop()
+    {
+      record = new LinkedList<Integer>();
+    }
 
     protected void update()
     {
@@ -21,8 +27,15 @@ public class AnimationLoopTest extends TestCase
 
     protected void refresh()
     {
-      if(refreshRunnable != null)
-        refreshRunnable.run();
+      try
+      {
+        Thread.sleep(delay);
+      }
+      catch(InterruptedException e)
+      {
+        e.printStackTrace();
+      }
+      record.add(loop.getRoundsWithoutYielding());
       refreshes++;
     }
 
@@ -31,31 +44,6 @@ public class AnimationLoopTest extends TestCase
       return roundsWithoutYielding;
     }
 
-  }
-
-  private class HelpfulRunnable implements Runnable
-  {
-    private int delay;
-    public LinkedList<Integer> record;
-
-    public HelpfulRunnable(int delay)
-    {
-      this.delay = delay;
-      record = new LinkedList<Integer>();
-    }
-
-    public void run()
-    {
-      try
-      {
-        Thread.sleep(delay);      
-        record.add(loop.getRoundsWithoutYielding());
-      }
-      catch(InterruptedException e)
-      {
-        e.printStackTrace();
-      }
-    }
   }
 
   public void setUp() throws Exception
@@ -112,36 +100,56 @@ public class AnimationLoopTest extends TestCase
     Thread.sleep(100);
     loop.stop();
 
-    assertEquals("Expected 8 refreshes but got " + loop.refreshes, true, loop.refreshes > 6 && loop.refreshes < 10);
-    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates > 6 && loop.updates < 10); // should be 8
+    assertEquals("Expected 8 refreshes but got " + loop.refreshes, true, loop.refreshes >= 6 && loop.refreshes <= 10);
+    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
   }
 
   public void testFramesPerSecondWhenPaitingIsTimerConsuming() throws Exception
   {
-    loop.refreshRunnable = new HelpfulRunnable(10);
+    loop.delay = 10;
     loop.start();
     Thread.sleep(100);
     loop.stop();
 
-    assertEquals("Expected 8 refreshes but got " + loop.refreshes, true, loop.refreshes > 6 && loop.refreshes < 10);
-    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates > 6 && loop.updates < 10); // should be 8
+    assertEquals("Expected 8 refreshes but got " + loop.refreshes, true, loop.refreshes >= 6 && loop.refreshes <= 10);
+    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
   }
 
   public void testRoundsWithoutYielding() throws Exception
   {
-    HelpfulRunnable runnable = new HelpfulRunnable(20);
-    loop.refreshRunnable = runnable;
+    loop.delay = 15;
     loop.start();
     Thread.sleep(200);
     loop.stop();
 
-    assertEquals("record has " + runnable.record.size() + " entries", true, runnable.record.size() > 5);
-    assertEquals(0, (int)runnable.record.get(0));
-    assertEquals(1, (int)runnable.record.get(1));
-    assertEquals(2, (int)runnable.record.get(2));
-    assertEquals(3, (int)runnable.record.get(3));
-    assertEquals(4, (int)runnable.record.get(4));
-    assertEquals(5, (int)runnable.record.get(5));
-    assertEquals(0, (int)runnable.record.get(6));
+    assertEquals("record has " + loop.record.size() + " entries", true, loop.record.size() > 5);
+    assertEquals(0, (int)loop.record.get(0));
+    assertEquals(1, (int)loop.record.get(1));
+    assertEquals(2, (int)loop.record.get(2));
+    assertEquals(3, (int)loop.record.get(3));
+    assertEquals(4, (int)loop.record.get(4));
+    assertEquals(5, (int)loop.record.get(5));
+    assertEquals(0, (int)loop.record.get(6));
+  }
+
+  public void testUpdatesWillCatchUp() throws Exception
+  {
+    loop.delay = 25;
+    loop.start();
+    Thread.sleep(100);
+    loop.stop();
+
+    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
+  }
+
+  public void testUpdatesWillCatchUpButNotMoreThanMax() throws Exception
+  {
+    loop.delay = 90;
+    loop.start();
+    Thread.sleep(200);
+    loop.stop();
+
+    assertEquals(13, loop.updates);
+//    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
   }
 }

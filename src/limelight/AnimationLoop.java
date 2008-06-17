@@ -5,6 +5,7 @@ import limelight.util.NanoTimer;
 public abstract class AnimationLoop
 {
   private static final int MAX_ITERATIONS_WITHOUT_YIELDING = 5;
+  private static final int MAX_EXTRA_UPDATES = 5;
 
   private int framesPerSecond;
   private int updatesPerSecond;
@@ -13,6 +14,7 @@ public abstract class AnimationLoop
   private long sleepPeriod;
   private NanoTimer timer;
   protected int roundsWithoutYielding;
+  private int missedUpdates;
 
   public AnimationLoop()
   {
@@ -81,25 +83,36 @@ public abstract class AnimationLoop
       update();
       refresh();
 
-      timer.sleep(sleepPeriod - timer.getIdleNanos() + timer.getSleepJiggle());
-      yieldIfNeeded(timer.getActualSleepDuration());
+      long adjustedSleepTime = sleepPeriod - timer.getIdleNanos() + timer.getSleepJiggle();
+      if(adjustedSleepTime > 0)
+      {
+        timer.sleep(adjustedSleepTime);
+        roundsWithoutYielding = 0;
+      }
+      else
+      {
+        catchUpOnUpdatesIfNeeded(adjustedSleepTime);
+        yieldIfNeeded();
+      }
     }
   }
 
-  // MDM - We need to yield at some point to let other threads get some work done.
-  private void yieldIfNeeded(long actualSleepDuration)
+  private void catchUpOnUpdatesIfNeeded(long adjustedSleepTime)
   {
-    if(actualSleepDuration == 0)
+    missedUpdates += (int)((adjustedSleepTime * -1) / sleepPeriod);
+    for(int extraUpdates = 0; (missedUpdates > 0 && extraUpdates < MAX_EXTRA_UPDATES); missedUpdates--, extraUpdates++)
+      update();
+  }
+
+  // MDM - We need to yield at some point to let other threads get some work done.
+  private void yieldIfNeeded()
+  {
+    roundsWithoutYielding++;  
+    if(roundsWithoutYielding > MAX_ITERATIONS_WITHOUT_YIELDING)
     {
-      roundsWithoutYielding++;
-      if(roundsWithoutYielding > MAX_ITERATIONS_WITHOUT_YIELDING)
-      {
-        Thread.yield();
-        roundsWithoutYielding = 0;
-      }
-    }
-    else
+      Thread.yield();
       roundsWithoutYielding = 0;
+    }
   }
 
   protected abstract void update();
