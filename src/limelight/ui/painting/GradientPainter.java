@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class GradientPainter extends Painter
 {
-  public GradientPainter(limelight.ui.model.Panel panel)
+  public GradientPainter(PaintablePanel panel)
   {
     super(panel);
   }

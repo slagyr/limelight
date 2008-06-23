@@ -122,7 +122,7 @@ public class AnimationLoopTest extends TestCase
     Thread.sleep(200);
     loop.stop();
 
-    assertEquals("record has " + loop.record.size() + " entries", true, loop.record.size() > 5);
+    assertEquals("record has " + loop.record.size() + " entries", true, loop.record.size() > 5);                                                       
     assertEquals(0, (int)loop.record.get(0));
     assertEquals(1, (int)loop.record.get(1));
     assertEquals(2, (int)loop.record.get(2));

@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class BorderPainter extends Painter
 {
-  public BorderPainter(Panel panel)
+  public BorderPainter(PaintablePanel panel)
   {
     super(panel);
   }

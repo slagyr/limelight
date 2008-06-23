@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class BackgroundPainter extends Painter
 {
-  public BackgroundPainter(limelight.ui.model.Panel panel)
+  public BackgroundPainter(PaintablePanel panel)
   {
     super(panel);
   }

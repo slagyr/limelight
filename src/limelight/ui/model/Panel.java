@@ -12,17 +12,16 @@ import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.PaintAction;
 import limelight.ui.Painter;
+import limelight.ui.PaintablePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Panel extends JPanel
+public class Panel extends JPanel implements PaintablePanel
 {                                                  
   private Prop prop;
   private BufferedImage buffer;
@@ -88,6 +87,11 @@ public class Panel extends JPanel
     super.setSize(width, height);
   }
 
+  public void snapToSize()
+  {
+    setSize(getPreferredSize());
+  }
+
   public void doLayout()
   {
     if (borderShaper != null)
@@ -101,7 +105,7 @@ public class Panel extends JPanel
   }
 
   // TODO - MDM - This is silly inefficient.  It forces panels to relayout all the time.  Particulary when the frame is resized.
-  // The correct way to handle this is to add observer ability to the styles and invalidate the panel when appropriate styles change.
+  // The correct way to handle this is to addChild observer ability to the styles and invalidate the panel when appropriate styles change.
   public void validate()
   {
     super.validate();
@@ -138,6 +142,16 @@ public class Panel extends JPanel
       removeMouseMotionListener(listner);
     for (KeyListener listner : getKeyListeners())
       removeKeyListener(listner);
+  }
+
+  public void setText(String text) throws LimelightException
+  {
+    textAccessor.setText(text);
+  }
+
+  public String getText()
+  {
+    return textAccessor.getText();
   }
 
   public TextAccessor getTextAccessor()

@@ -249,7 +249,7 @@ public class FlatStyleTest extends TestCase
 //      if(method.getName().startsWith("set"))
 //        setters.add(method);
 //      else if(method.getName().startsWith("get") && method.getParameterTypes().length == 0)
-//        getters.add(method);
+//        getters.src/limelight/styles/FlatStyleTest.java(method);
 //    }
 //
 //    Style style = new FlatStyle();
