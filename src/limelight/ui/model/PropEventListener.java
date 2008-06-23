@@ -20,6 +20,7 @@ public class PropEventListener implements MouseListener, KeyListener, MouseMotio
 
 	public void mouseClicked(MouseEvent e)
 	{
+System.err.println("mouseClicked in " + prop.getName());   
 		prop.mouse_clicked(e);
 	}
 

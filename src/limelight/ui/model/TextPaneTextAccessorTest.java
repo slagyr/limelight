@@ -4,9 +4,6 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.ui.model.TextPane;
-import limelight.ui.model.TextPaneTextAccessor;
-import limelight.ui.model.Panel;
 import limelight.ui.api.MockProp;
 import limelight.LimelightException;
 

@@ -162,8 +162,8 @@ describe Limelight::Prop do
   end
   
   it "should make dimensions accessible" do
-    @prop.panel.should_receive(:get_rectangle).and_return("whole area")
-    @prop.panel.should_receive(:get_rectangle_inside_borders).and_return("area inside borders")
+    @prop.panel.should_receive(:get_box).and_return("whole area")
+    @prop.panel.should_receive(:get_box_inside_borders).and_return("area inside borders")
     
     @prop.area.should == "whole area"
     @prop.bordered_area.should == "area inside borders"

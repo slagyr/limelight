@@ -4,15 +4,14 @@
 package limelight.ui;
 
 import limelight.styles.Style;
-import limelight.ui.model.Panel;
 
 import java.awt.*;
 
 public abstract class Painter
 {
-  protected limelight.ui.model.Panel panel;
+  protected PaintablePanel panel;
 
-  public Painter(Panel panel)
+  public Painter(PaintablePanel panel)
   {
     this.panel = panel;
   }

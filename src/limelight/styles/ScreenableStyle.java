@@ -44,6 +44,8 @@ public class ScreenableStyle extends RichStyle
 
   public void removeScreen()
   {
+    if(screen == null)
+      return;
     Style screen = this.screen;
     this.screen = null;
     applyChangesFromScreen(screen);

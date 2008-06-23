@@ -108,11 +108,11 @@ module Limelight
     end
     
     def text=(value)
-      @panel.text_accessor.text = value
+      @panel.text = value
     end
     
     def text
-      return panel.text_accessor.text
+      return panel.text
     end
     
     #TODO - MDM - DELETE ME
@@ -152,11 +152,11 @@ module Limelight
     end
     
     def area
-      return panel.get_rectangle.clone
+      return panel.get_box.clone
     end
     
     def bordered_area
-      return panel.get_rectangle_inside_borders.clone
+      return panel.get_box_inside_borders.clone
     end
     
     def pen
