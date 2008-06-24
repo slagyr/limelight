@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.model;
+package limelight.ui;
 
 import limelight.util.Box;
 
@@ -18,10 +18,18 @@ public class MockGraphics extends java.awt.Graphics2D
 	public Color color;
 	public LinkedList<DrawnShape> drawnShapes;
 	public LinkedList<DrawnShape> filledShapes;
-  private BasicStroke stroke;
-  private Hashtable<Object, Object> hints;
-  private Box clip;
-  private Paint paint;
+  public BasicStroke stroke;
+  public Hashtable<Object, Object> hints;
+  public Box clip;
+  public Paint paint;
+  public Box createdGraphicsBox;
+  public MockGraphics createdGraphics;
+  public Image drawnImage;
+  public int drawnImageX;
+  public int drawnImageY;
+  public Rectangle drawnImageDestination;
+  public Rectangle drawnImageSource;
+  private Box clippedRectangle;
 
   public class DrawnShape
 	{
@@ -62,13 +70,49 @@ public class MockGraphics extends java.awt.Graphics2D
     return hints.get(RenderingHints.KEY_ANTIALIASING) == RenderingHints.VALUE_ANTIALIAS_ON;
   }
 
-  public boolean drawImage(Image image, AffineTransform affineTransform, ImageObserver imageObserver)
+  public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs)
+  {
+    return false;
+  }
+
+  public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y)
+  {
+  }
+
+  public boolean drawImage(Image image, int x, int y, ImageObserver imageObserver)
+	{
+    drawnImage = image;
+    drawnImageX = x;
+    drawnImageY = y;
+    return true;
+	}
+
+	public boolean drawImage(Image image, int i, int i1, int i2, int i3, ImageObserver imageObserver)
 	{
 		return false;
 	}
 
-	public void drawImage(BufferedImage bufferedImage, BufferedImageOp bufferedImageOp, int i, int i1)
+	public boolean drawImage(Image image, int i, int i1, Color color, ImageObserver imageObserver)
 	{
+		return false;
+	}
+
+	public boolean drawImage(Image image, int i, int i1, int i2, int i3, Color color, ImageObserver imageObserver)
+	{
+		return false;
+	}
+
+	public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver imageObserver)
+	{
+    drawnImage = image;
+    drawnImageDestination = new Rectangle(dx1, dy1, dx2 - dx1, dy2 - dy1);
+    drawnImageSource = new Rectangle(sx1, sy1, sx2 - sx1, sy2 - sy1);
+    return true;
+	}
+
+	public boolean drawImage(Image image, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7, Color color, ImageObserver imageObserver)
+	{
+		return false;
 	}
 
 	public void drawRenderedImage(RenderedImage renderedImage, AffineTransform affineTransform)
@@ -225,10 +269,18 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public Graphics create()
 	{
-		return null;
+    createdGraphics = new MockGraphics();
+    return createdGraphics;
 	}
 
-	public Color getColor()
+  public Graphics create(int x, int y, int width, int height)
+  {
+    createdGraphicsBox = new Box(x, y, width, height);
+    Graphics graphics = super.create(x, y, width, height);
+    return graphics;
+  }
+
+  public Color getColor()
 	{
 		return color;
 	}
@@ -265,8 +317,10 @@ public class MockGraphics extends java.awt.Graphics2D
 		return clip;
 	}
 
-	public void clipRect(int i, int i1, int i2, int i3)
+	public void clipRect(int x, int y, int width, int height)
 	{
+    clippedRectangle = new Box(x, y, width, height);
+    clip = clippedRectangle;
 	}
 
 	public void setClip(int i, int i1, int i2, int i3)
@@ -333,36 +387,6 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void fillPolygon(int[] ints, int[] ints1, int i)
 	{
-	}
-
-	public boolean drawImage(Image image, int i, int i1, ImageObserver imageObserver)
-	{
-		return false;
-	}
-
-	public boolean drawImage(Image image, int i, int i1, int i2, int i3, ImageObserver imageObserver)
-	{
-		return false;
-	}
-
-	public boolean drawImage(Image image, int i, int i1, Color color, ImageObserver imageObserver)
-	{
-		return false;
-	}
-
-	public boolean drawImage(Image image, int i, int i1, int i2, int i3, Color color, ImageObserver imageObserver)
-	{
-		return false;
-	}
-
-	public boolean drawImage(Image image, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7, ImageObserver imageObserver)
-	{
-		return false;
-	}
-
-	public boolean drawImage(Image image, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7, Color color, ImageObserver imageObserver)
-	{
-		return false;
 	}
 
 	public void dispose()

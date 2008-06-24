@@ -2,9 +2,7 @@ package limelight.ui.model2;
 
 import limelight.ui.api.Stage;
 import limelight.ui.Panel;
-
 import javax.swing.*;
-import java.awt.*;
 
 public class Frame extends JFrame
 {
@@ -14,9 +12,7 @@ public class Frame extends JFrame
   public Frame(Stage stage)
   {
     this.stage = stage;
-//    setLayout(null);
     setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
-//    System.out.println("System.getProperty(\"mrj.version\") = " + System.getProperty("mrj.version"));
   }
 
   public void close()
@@ -28,12 +24,9 @@ public class Frame extends JFrame
   public void open()
   {
     setVisible(true);
+
     root.doLayout();
-    PaintJob job = new PaintJob(root.getAbsoluteBounds());
-    job.paint(root);
-    Graphics graphics = getContentPane().getGraphics();
-    job.applyTo(graphics);
-// NOW PAINT!
+    root.repaint();
   }
 
   public void load(Panel child)
@@ -55,5 +48,10 @@ public class Frame extends JFrame
   public void setSize(int width, int height)
   {
     super.setSize(width, height);
+  }
+
+  public RootPanel getRoot()
+  {
+    return root;
   }
 }

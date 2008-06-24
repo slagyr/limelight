@@ -2,7 +2,6 @@ package limelight.ui.model2;
 
 import limelight.ui.Painter;
 import limelight.ui.PaintablePanel;
-import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.ui.painting.BackgroundPainter;
@@ -12,54 +11,31 @@ import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.LimelightError;
 import limelight.styles.Style;
+
 import java.util.LinkedList;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class PropPanel implements PropablePanel, PaintablePanel, Panel
+public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel
 {
-  private int width;
   private Prop prop;
-  private int height;
-  private boolean sterilized;
-  private LinkedList<Panel> children;
-  private Panel parent;
   private PropPanelLayout layout;
-  private int y;
-  private int x;
-  private Box absoluteBounds;
-  private Point absoluteLocation;
   private LinkedList<Painter> painters;
   private Border borderShaper;
   private TextPaneTextAccessor textAccessor;
+  private Box boxInsideMargins;
+  private Box boxInsideBorders;
+  private Box boxInsidePadding;
+  private Style style;
+  private PaintAction afterPaintAction;
 
   public PropPanel(Prop prop)
   {
     this.prop = prop;
     buildPainters();
-    children = new LinkedList<Panel>();
     layout = new PropPanelLayout(this);
     textAccessor = new TextPaneTextAccessor(this);
-  }
-
-  public Panel getOwnerOfPoint(Point point)
-  {
-    point = new Point(point.x - getX(), point.y - getY());
-    for (Panel panel : children)
-    {
-      if(panel.containsRelativePoint(point))
-        return panel.getOwnerOfPoint(point);
-    }
-    return this;
-  }
-
-  public boolean containsRelativePoint(Point point)
-  {
-    return point.x >= x &&
-           point.x < x + width &&
-           point.y >= y &&
-           point.y < y + height;
   }
 
   private void buildPainters()
@@ -68,36 +44,6 @@ public class PropPanel implements PropablePanel, PaintablePanel, Panel
     painters.add(new BackgroundPainter(this));
     painters.add(new BorderPainter(this));
   }
-
-  public void addChild(Panel panel) throws SterilePanelException
-  {
-    if (sterilized)
-      throw new SterilePanelException(getProp().getName());
-    children.add(panel);
-    panel.setParent(this);
-  }
-
-  public void remove(Panel child)
-  {
-    children.remove(child);
-  }
-
-  public void removeAll()
-  {
-    children.clear();
-  }
-
-  public void add(Panel panel)
-  {
-    addChild(panel);
-  }
-
-  public void setParent(Panel panel)
-  {
-    parent = panel;
-  }
-
-  
 
   public String getText()
   {
@@ -109,46 +55,31 @@ public class PropPanel implements PropablePanel, PaintablePanel, Panel
     textAccessor.setText(text);
   }
 
+  public TextPaneTextAccessor getTextAccessor()
+  {
+    return textAccessor;
+  }
+
+  public void setTextAccessor(TextPaneTextAccessor textAccessor)
+  {
+    this.textAccessor = textAccessor;
+  }
+
   public void snapToSize()
   {
-    Box r = getParentPanel().getChildConsumableArea();
-    setWidth(translateDimension(getProp().getStyle().getWidth(), r.width));
-    setHeight(translateDimension(getProp().getStyle().getHeight(), r.height));
-  }
-
-  public void setHeight(int value)
-  {
-    height = value;
-  }
-
-  public void setWidth(int value)
-  {
-    width = value;
-  }
-
-  public int getWidth()
-  {
-    return width;
-  }
-
-  public int getHeight()
-  {
-    return height;
-  }
-
-  public void setLocation(int x, int y)
-  {
-    this.x = x;
-    this.y = y;
+    Box r = getParent().getChildConsumableArea();
+    int newWidth = translateDimension(getProp().getStyle().getWidth(), r.width);
+    int newHeight = translateDimension(getProp().getStyle().getHeight(), r.height);
+    setSize(newWidth, newHeight);
   }
 
   private int translateDimension(String sizeString, int maxSize)
   {
-    if (sizeString == null)
+    if(sizeString == null)
       return 0;
-    else if ("auto".equals(sizeString))
+    else if("auto".equals(sizeString))
       return maxSize;
-    else if (sizeString.endsWith("%"))
+    else if(sizeString.endsWith("%"))
     {
       double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
       int result = (int) ((percentage * 0.01) * (double) maxSize);
@@ -165,43 +96,34 @@ public class PropPanel implements PropablePanel, PaintablePanel, Panel
     return prop;
   }
 
-  public boolean hasChildren()
-  {
-    return children.size() > 0;
-  }
-
-  public Box getBox()
-  {
-    return getInternalBox();
-  }
-
-  public Box getInternalBox()
-  {
-    return new Box(0, 0, getWidth(), getHeight());
-  }
-
   public Box getBoxInsideMargins()
   {
-    Box r = getInternalBox();
-    Style style = prop.getStyle();
-    r.shave(style.asInt(style.getTopMargin()), style.asInt(style.getRightMargin()), style.asInt(style.getBottomMargin()), style.asInt(style.getLeftMargin()));
-    return r;
+    if(boxInsideMargins == null)
+    {
+      boxInsideMargins = (Box) getBoundingBox().clone();
+      boxInsideMargins.shave(getStyle().asInt(getStyle().getTopMargin()), getStyle().asInt(getStyle().getRightMargin()), getStyle().asInt(getStyle().getBottomMargin()), getStyle().asInt(getStyle().getLeftMargin()));
+    }
+    return boxInsideMargins;
   }
 
   public Box getBoxInsideBorders()
   {
-    Box r = getBoxInsideMargins();
-    Style style = prop.getStyle();
-    r.shave(style.asInt(style.getTopBorderWidth()), style.asInt(style.getRightBorderWidth()), style.asInt(style.getBottomBorderWidth()), style.asInt(style.getLeftBorderWidth()));
-    return r;
+    if(boxInsideBorders == null)
+    {
+      boxInsideBorders = (Box) getBoxInsideMargins().clone();
+      boxInsideBorders.shave(getStyle().asInt(getStyle().getTopBorderWidth()), getStyle().asInt(getStyle().getRightBorderWidth()), getStyle().asInt(getStyle().getBottomBorderWidth()), getStyle().asInt(getStyle().getLeftBorderWidth()));
+    }
+    return boxInsideBorders;
   }
 
   public Box getBoxInsidePadding()
   {
-    Box r = getBoxInsideBorders();
-    Style style = prop.getStyle();
-    r.shave(style.asInt(style.getTopPadding()), style.asInt(style.getRightPadding()), style.asInt(style.getBottomPadding()), style.asInt(style.getLeftPadding()));
-    return r;
+    if(boxInsidePadding == null)
+    {
+      boxInsidePadding = (Box) getBoxInsideBorders().clone();
+      boxInsidePadding.shave(getStyle().asInt(getStyle().getTopPadding()), getStyle().asInt(getStyle().getRightPadding()), getStyle().asInt(getStyle().getBottomPadding()), getStyle().asInt(getStyle().getLeftPadding()));
+    }
+    return boxInsidePadding;
   }
 
   public Box getChildConsumableArea()
@@ -209,117 +131,39 @@ public class PropPanel implements PropablePanel, PaintablePanel, Panel
     return getBoxInsidePadding();
   }
 
-  public LinkedList<Panel> getChildren()
-  {
-    return children;
-  }
-
   public void doLayout()
   {
+    if(borderShaper != null)
+      borderShaper.updateDimentions();
+
     layout.doLayout();
+
+//    //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
+//    if (borderShaper != null)
+//      borderShaper.setBounds(getBoxInsideMargins());
   }
 
-  public Box getAbsoluteBounds()
+  public void paintOn(Graphics2D graphics)
   {
-//    if(absoluteBounds == null)
-//    {
-      Point absoluteLocation = getAbsoluteLocation();
-      absoluteBounds = new Box(absoluteLocation.x, absoluteLocation.y, getWidth(), getHeight());
-//    }
-    return absoluteBounds;
-  }
-
-    public Point getAbsoluteLocation()
-  {
-//    if(absoluteLocation == null)
-//    {
-      int x = this.x;
-      int y = this.y;
-
-      Panel p = parent;
-      while(p != null)
-      {
-        x += p.getX();
-        y += p.getY();
-        p = p.getParentPanel();
-      }
-      absoluteLocation = new Point(x, y);
-//    }
-    return absoluteLocation;
-  }
-
-  public int getX()
-  {
-    return x;
-  }
-
-  public int getY()
-  {
-    return y;
-  }
-
-  public void paintOn(Graphics2D bufferGraphics)
-  {
-    for (Painter painter : painters)
-      painter.paint(bufferGraphics);
-
-  }
-
-  public Panel getParentPanel()
-  {
-    return parent;
+    for(Painter painter : painters)
+      painter.paint(graphics);
+    
+    if(afterPaintAction != null)
+      afterPaintAction.invoke(graphics);
   }
 
   public Style getStyle()
   {
-    return prop.getStyle();
+    if(style == null)
+      style = prop.getStyle();
+    return style;
   }
 
   public Border getBorderShaper()
   {
-    if (borderShaper == null)
+    if(borderShaper == null)
       borderShaper = new Border(getStyle(), getBoxInsideMargins());
     return borderShaper;
-  }
-
-  public void sterilize()
-  {
-    sterilized = true;
-  }
-
-  public Panel getRoot()
-  {
-    return getParentPanel().getRoot();
-  }
-
-  public static class SterilePanelException extends LimelightError
-  {
-    SterilePanelException(String name)
-    {
-      super("The panel for prop named '" + name + "' has been sterilized and child components may not be added.");
-    }
-  }
-
-  public boolean isAncestor(Panel panel)
-  {
-    if(parent == null)
-      return false;
-    else if(parent == panel)
-      return true;
-    else
-      return parent.isAncestor(panel);
-  }
-
-  public Panel getClosestCommonAncestor(Panel panel)
-  {
-    Panel ancestor = getParentPanel();
-    while(ancestor != null && !panel.isAncestor(ancestor))
-      ancestor = ancestor.getParentPanel();
-
-    if(ancestor == null)
-      throw new LimelightError("No common ancestor found! Do the panels belong to the same tree?");
-
-    return ancestor;
   }
 
   public void mousePressed(MouseEvent e)
@@ -361,7 +205,7 @@ public class PropPanel implements PropablePanel, PaintablePanel, Panel
 
   public void mouseWheelMoved(MouseWheelEvent e)
   {
-    getParentPanel().mouseWheelMoved(e);
+    getParent().mouseWheelMoved(e);
   }
 
   public void setCursor(Cursor cursor)
@@ -371,30 +215,20 @@ public class PropPanel implements PropablePanel, PaintablePanel, Panel
 
   public void repaint()
   {
-    if(getParentPanel() != null && (prop.getStyle().changed(Style.WIDTH) || prop.getStyle().changed(Style.WIDTH)))
-      getParentPanel().repaint();
+    if(getParent() != null && (prop.getStyle().changed(Style.WIDTH) || prop.getStyle().changed(Style.WIDTH)))
+      getParent().repaint();
     else
     {
       doLayout();
       PaintJob job = new PaintJob(getAbsoluteBounds());
       job.paint(getRoot());
-      job.applyTo(getRoot().getGraphics2D());
+      job.applyTo(getRoot().getGraphics());
     }
   }
 
   public void paintImmediately(int a, int b, int c, int d)
   {
     repaint();
-  }
-
-  public Graphics2D getGraphics()
-  {
-    return getGraphics2D();
-  }
-
-  public Graphics2D getGraphics2D()
-  {
-    return getRoot().getGraphics2D();
   }
 
   public String toString()
@@ -404,6 +238,30 @@ public class PropPanel implements PropablePanel, PaintablePanel, Panel
 
   public void setAfterPaintAction(PaintAction action)
   {
+    afterPaintAction = action;
+  }
+
+  public PropPanelLayout getLayout()
+  {
+    return layout;
+  }
+
+  public LinkedList<Painter> getPainters()
+  {
+    return painters;
+  }
+
+  public boolean isFloater()
+  {
+    return "on".equals(getStyle().getFloat());
+  }
+
+  protected void clearCache()
+  {
+    super.clearCache();
+    boxInsideMargins = null;
+    boxInsideBorders = null;
+    boxInsidePadding = null;
   }
 }
 

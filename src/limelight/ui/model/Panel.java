@@ -105,7 +105,7 @@ public class Panel extends JPanel implements PaintablePanel
   }
 
   // TODO - MDM - This is silly inefficient.  It forces panels to relayout all the time.  Particulary when the frame is resized.
-  // The correct way to handle this is to addChild observer ability to the styles and invalidate the panel when appropriate styles change.
+  // The correct way to handle this is to add observer ability to the styles and invalidate the panel when appropriate styles change.
   public void validate()
   {
     super.validate();

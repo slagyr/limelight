@@ -5,7 +5,7 @@ package limelight.ui.painting;
 
 import junit.framework.TestCase;
 import limelight.util.Colors;
-import limelight.ui.model.MockGraphics;
+import limelight.ui.MockGraphics;
 import limelight.ui.model.MockPanel;
 import limelight.styles.Style;
 

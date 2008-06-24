@@ -2,12 +2,14 @@ package limelight.ui.api;
 
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
+import limelight.styles.Style;
+
 import java.awt.*;
 
 public interface PropablePanel
 {
   void add(limelight.ui.Panel child);
-  void remove(limelight.ui.Panel child);
+  boolean remove(limelight.ui.Panel child);
   void removeAll();
   void doLayout();
   void repaint();
@@ -16,7 +18,9 @@ public interface PropablePanel
   void setText(String text);
   String getText();
   void setCursor(Cursor cursor);
-  Box getBox();
+  Box getBoundingBox();
   Box getBoxInsideBorders();
   Graphics2D getGraphics();
+  Style getStyle();
+  Prop getProp();
 }

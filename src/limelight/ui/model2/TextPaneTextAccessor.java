@@ -24,10 +24,9 @@ public class TextPaneTextAccessor implements TextAccessor
         return;
       if(panel.hasChildren())
         throw new LimelightError("You may only set text on empty props.");
-      textPane = new TextPanel(panel, text);
-System.err.println("Adding a TextPanel to " + panel.getProp().getName());      
-      panel.addChild(textPane);
-      ((PropPanel)panel).sterilize();
+      textPane = new TextPanel(panel, text);   
+      panel.add(textPane);
+      panel.sterilize();
     }
     else
       textPane.setText(text);
