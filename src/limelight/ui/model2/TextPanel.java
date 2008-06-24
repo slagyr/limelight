@@ -90,8 +90,7 @@ public class TextPanel implements limelight.ui.Panel
 
   public void snapToSize()
   {
-    setWidth((int)(consumedWidth + 0.5));
-    setHeight((int)(consumedHeight + 0.5));
+    setSize((int)(consumedWidth + 0.5), (int)(consumedHeight + 0.5));
   }
 
   private Aligner createAligner()
@@ -102,6 +101,11 @@ public class TextPanel implements limelight.ui.Panel
   public Style getStyle()
   {
     return panel.getStyle();
+  }
+
+  public boolean isFloater()
+  {
+    return false;
   }
 
   private void buildLines()
@@ -117,7 +121,7 @@ public class TextPanel implements limelight.ui.Panel
         {
           AttributedString aText = new AttributedString(paragraph);
           aText.addAttribute(TextAttribute.FONT, font);
-          LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics2D().getFontRenderContext());
+          LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics().getFontRenderContext());
           while (lbm.getPosition() < paragraph.length())
           {
             //TODO MDM - Wow! This is inefficient. The getChildConsumableArea has to be calculated every time!
@@ -182,20 +186,16 @@ public class TextPanel implements limelight.ui.Panel
     return height;
   }
 
-  public void setWidth(int value)
-  {
-    width = value;
-  }
-
-  public void setHeight(int value)
-  {
-    height = value;
-  }
-
   public void setLocation(int x, int y)
   {
     this.x = x;
     this.y = y;
+  }
+
+  public void setSize(int width, int height)
+  {
+    this.width = width;
+    this.height = height;
   }
 
   public Box getAbsoluteBounds()
@@ -220,7 +220,7 @@ public class TextPanel implements limelight.ui.Panel
       {
         x += p.getX();
         y += p.getY();
-        p = p.getParentPanel();
+        p = p.getParent();
       }
       absoluteLocation = new Point(x, y);
 //    }
@@ -237,7 +237,7 @@ public class TextPanel implements limelight.ui.Panel
     return y;
   }
 
-  public Panel getParentPanel()
+  public Panel getParent()
   {
     return panel;
   }
@@ -269,7 +269,7 @@ public class TextPanel implements limelight.ui.Panel
 
   public Panel getRoot()
   {
-    return getParentPanel().getRoot();
+    return getParent().getRoot();
   }
 
   public void addChild(Panel panel)
@@ -330,10 +330,10 @@ public class TextPanel implements limelight.ui.Panel
 
   public Panel getClosestCommonAncestor(Panel panel)
   {
-    Panel ancestor = getParentPanel();
+    Panel ancestor = getParent();
     while(ancestor != null && !panel.isAncestor(ancestor))
     {
-      ancestor = ancestor.getParentPanel();
+      ancestor = ancestor.getParent();
     }
 
     if(ancestor == null)
@@ -347,9 +347,9 @@ public class TextPanel implements limelight.ui.Panel
     panel.setCursor(cursor);
   }
 
-  public Graphics2D getGraphics2D()
+  public Graphics2D getGraphics()
   {
-    return panel.getGraphics2D();
+    return panel.getGraphics();
   }
 
   public void repaint()
@@ -359,5 +359,37 @@ public class TextPanel implements limelight.ui.Panel
   public String toString()
   {
     return "Text: <" + getText() + ">";
+  }
+
+  public void add(Panel child)
+  {
+    throw new LimelightError("TextPanel.add()");
+  }
+
+  public boolean containsAbsolutePoint(Point point)
+  {
+    return false;
+  }
+
+  public void sterilize()
+  {
+  }
+
+  public boolean isSterilized()
+  {
+    return false;
+  }
+
+  public void replace(Panel child, Panel newChild)
+  {
+  }
+
+  public boolean remove(Panel child)
+  {
+    return true;
+  }
+
+  public void removeAll()
+  {
   }
 }

@@ -2,24 +2,20 @@ package limelight.ui.model2;
 
 import limelight.util.Box;
 import limelight.ui.Panel;
-import limelight.ui.api.Prop;
-import limelight.ui.painting.Border;
 import limelight.styles.Style;
 import java.util.LinkedList;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class RootPanel implements limelight.ui.Panel
+public class RootPanel implements Panel
 {
   private Panel panel;
-  private Frame frame;
   private Container contentPane;
   private EventListener listener;
 
   public RootPanel(Frame frame)
   {
-    this.frame = frame;
     contentPane = frame.getContentPane();
   }
 
@@ -43,24 +39,19 @@ public class RootPanel implements limelight.ui.Panel
     return contentPane.getHeight();
   }
 
-  public void setWidth(int value)
-  {
-    contentPane.setSize(value, getHeight());
-  }
-
-  public void setHeight(int value)
-  {
-    contentPane.setSize(value, getHeight());
-  }
-
   public void setLocation(int x, int y)
   {
-    //ignore
+    contentPane.setLocation(x, y);
+  }
+
+  public void setSize(int width, int height)
+  {
+    contentPane.setSize(width, height);
   }
 
   public Box getAbsoluteBounds()
   {
-    return new Box(getX(), getY(), contentPane.getWidth(), contentPane.getHeight());
+    return new Box(contentPane.getBounds());
   }
 
   public Point getAbsoluteLocation()
@@ -78,18 +69,57 @@ public class RootPanel implements limelight.ui.Panel
     return getAbsoluteLocation().y;
   }
 
-  public Panel getParent()
+  public void setPanel(Panel child)
   {
-    return null;
+    this.panel = child;
+    child.setParent(this);
+
+    listener = new EventListener(panel);
+    contentPane.addMouseListener(listener);
+    contentPane.addMouseMotionListener(listener);
+    contentPane.addMouseWheelListener(listener);
+    contentPane.addKeyListener(listener);
   }
+
+  public Panel getRoot()
+  {
+    return this;
+  }
+
+  public Graphics2D getGraphics()
+  {
+    return (Graphics2D)contentPane.getGraphics();
+  }
+
+  public boolean isAncestor(Panel panel)
+  {
+    return panel == this;
+  }
+
+  public Panel getClosestCommonAncestor(Panel panel)
+  {
+    return this;
+  }
+
+  public void repaint()
+  {
+    doLayout();
+    PaintJob job = new PaintJob(getAbsoluteBounds());
+    job.paint(panel);
+    job.applyTo(getGraphics());
+  }
+
+  public Panel getPanel()
+  {
+    return panel;
+  }
+
+  /////////////////////////////////////////////
+  /// NOT NEEDED
+  /////////////////////////////////////////////
 
   public void paintOn(Graphics2D graphics)
   {
-  }
-
-  public Prop getProp()
-  {
-    return panel.getProp();
   }
 
   public boolean hasChildren()
@@ -104,23 +134,38 @@ public class RootPanel implements limelight.ui.Panel
     return panels;
   }
 
-  public void setPanel(Panel child)
+  public void replace(Panel child, Panel newChild)
   {
-    this.panel = child;
-    child.setParent(this);
+  }
 
-    listener = new EventListener(panel);
-    contentPane.addMouseListener(listener);
-    contentPane.addMouseMotionListener(listener);
-    contentPane.addMouseWheelListener(listener);
-    contentPane.addKeyListener(listener);
+  public boolean remove(Panel child)
+  {
+    return false;
+  }
+
+  public void removeAll()
+  {
+  }
+
+  public boolean containsAbsolutePoint(Point point)
+  {
+    return false;
   }
 
   public void setParent(Panel panel)
   {
   }
 
-  public Panel getParentPanel()
+  public void sterilize()
+  {
+  }
+
+  public boolean isSterilized()
+  {
+    return false;
+  }
+
+  public Panel getParent()
   {
     return null;
   }
@@ -130,29 +175,9 @@ public class RootPanel implements limelight.ui.Panel
     throw new RuntimeException("RootPanel.getStyle()");
   }
 
-  public Border getBorderShaper()
+  public boolean isFloater()
   {
-    throw new RuntimeException("RootPanel.getBorderShaper()");
-  }
-
-  public Box getBoxInsideBorders()
-  {
-    throw new RuntimeException("RootPanel.getBoxInsideBorders()");
-  }
-
-  public Panel getRoot()
-  {
-    return this;
-  }
-
-  public Graphics2D getGraphics2D()
-  {
-    return (Graphics2D)contentPane.getGraphics();
-  }
-
-  public void addChild(Panel panel)
-  {
-    throw new RuntimeException("RootPanel.addChild()");
+    return false;
   }
 
   public boolean containsRelativePoint(Point point)
@@ -200,14 +225,8 @@ public class RootPanel implements limelight.ui.Panel
   {
   }
 
-  public boolean isAncestor(Panel panel)
+  public void add(Panel child)
   {
-    return panel == this;
-  }
-
-  public Panel getClosestCommonAncestor(Panel panel)
-  {
-    return this;
   }
 
   public void setCursor(Cursor cursor)
@@ -215,11 +234,5 @@ public class RootPanel implements limelight.ui.Panel
     contentPane.setCursor(cursor);
   }
 
-  public void repaint()
-  {
-      doLayout();
-      PaintJob job = new PaintJob(getAbsoluteBounds());
-      job.paint(panel);
-      job.applyTo(getGraphics2D());
-  }
+
 }

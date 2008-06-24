@@ -11,6 +11,8 @@ import limelight.ui.painting.PaintAction;
 import limelight.ui.api.MockProp;
 import limelight.styles.FlatStyle;
 import limelight.ui.api.Prop;
+import limelight.ui.MockGraphics;
+import limelight.ui.MockPainter;
 import limelight.util.Box;
 
 import java.awt.*;
