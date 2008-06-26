@@ -181,18 +181,22 @@ public abstract class BasePanel implements Panel
 
   public void mousePressed(MouseEvent e)
   {
+    parent.mousePressed(e);
   }
 
   public void mouseReleased(MouseEvent e)
   {
+    parent.mouseReleased(e);
   }
 
   public void mouseClicked(MouseEvent e)
   {
+    parent.mouseClicked(e);
   }
 
   public void mouseDragged(MouseEvent e)
   {
+    parent.mouseDragged(e);
   }
 
   public void mouseEntered(MouseEvent e)
@@ -205,10 +209,12 @@ public abstract class BasePanel implements Panel
 
   public void mouseMoved(MouseEvent e)
   {
+    parent.mouseMoved(e);
   }
 
   public void mouseWheelMoved(MouseWheelEvent e)
   {
+    parent.mouseWheelMoved(e);
   }
 
   public void add(Panel panel)

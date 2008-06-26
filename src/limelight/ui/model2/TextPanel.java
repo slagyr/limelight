@@ -1,45 +1,35 @@
 package limelight.ui.model2;
 
 import limelight.util.Colors;
-import limelight.styles.Style;
 import limelight.util.Util;
 import limelight.util.Box;
 import limelight.util.Aligner;
 import limelight.ui.api.*;
 import limelight.ui.Panel;
-import limelight.ui.painting.Border;
-import limelight.LimelightError;
+import limelight.styles.Style;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.text.AttributedString;
 import java.util.LinkedList;
 
-public class TextPanel implements limelight.ui.Panel
+public class TextPanel extends BasePanel
 {
   public static double widthPadding = 2.0; // The text measuerments aren't always quite right.  This helps.
 
   private String text;
-  private PropPanel panel;
+  private PropablePanel panel;
   private double consumedHeight;
   private double consumedWidth;
   private LinkedList<TextLayout> lines;
   private Graphics2D graphics;
   private boolean textChanged;
   private boolean compiled;
-  private int width;
-  private int height;
-  private int x;
-  private int y;
-  private Point absoluteLocation;
-  private Box absoluteBounds;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
-  public TextPanel(PropPanel panel, String text)
+  public TextPanel(PropablePanel panel, String text)
   {
     this.panel = panel;
     this.text = text;
@@ -77,6 +67,11 @@ public class TextPanel implements limelight.ui.Panel
     }
   }
 
+  public Style getStyle()
+  {
+    return panel.getStyle();
+  }
+
   public void doLayout()
   {
     if(!compiled || textChanged())
@@ -96,16 +91,6 @@ public class TextPanel implements limelight.ui.Panel
   private Aligner createAligner()
   {
     return new Aligner(new Box(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
-  }
-
-  public Style getStyle()
-  {
-    return panel.getStyle();
-  }
-
-  public boolean isFloater()
-  {
-    return false;
   }
 
   private void buildLines()
@@ -164,232 +149,21 @@ public class TextPanel implements limelight.ui.Panel
     textChanged = false;
   }
 
-  // Implemented only to satisfy the interface
-
-  public void setParent(Panel panel)
-  {
-    this.panel = (PropPanel)panel;
-  }
-
   public Box getChildConsumableArea()
   {
     return null;
   }
 
-  public int getWidth()
-  {
-    return width;
-  }
-
-  public int getHeight()
-  {
-    return height;
-  }
-
-  public void setLocation(int x, int y)
-  {
-    this.x = x;
-    this.y = y;
-  }
-
-  public void setSize(int width, int height)
-  {
-    this.width = width;
-    this.height = height;
-  }
-
-  public Box getAbsoluteBounds()
-  {
-//    if(absoluteBounds == null)
-//    {
-      Point absoluteLocation = getAbsoluteLocation();
-      absoluteBounds = new Box(absoluteLocation.x, absoluteLocation.y, getWidth(), getHeight());
-//    }
-    return absoluteBounds;
-  }
-
-  public Point getAbsoluteLocation()
-  {
-//    if(absoluteLocation == null)
-//    {
-      int x = this.x;
-      int y = this.y;
-
-      Panel p = panel;
-      while(p != null)
-      {
-        x += p.getX();
-        y += p.getY();
-        p = p.getParent();
-      }
-      absoluteLocation = new Point(x, y);
-//    }
-    return absoluteLocation;
-  }
-
-  public int getX()
-  {
-    return x;
-  }
-
-  public int getY()
-  {
-    return y;
-  }
-
-  public Panel getParent()
-  {
-    return panel;
-  }
-
-  public Prop getProp()
-  {
-    return panel.getProp();
-  }
-
-  public boolean hasChildren()
-  {
-    return false;
-  }
-
-  public LinkedList<Panel> getChildren()
-  {
-    return new LinkedList<Panel>();
-  }
-
-  public Border getBorderShaper()
-  {
-    return null;
-  }
-
-  public Box getBoxInsideBorders()
-  {
-    return null;
-  }
-
-  public Panel getRoot()
-  {
-    return getParent().getRoot();
-  }
-
-  public void addChild(Panel panel)
-  {
-    throw new RuntimeException("TextPanel.addChild()");
-  }
-
-  public boolean containsRelativePoint(Point point)
-  {
-    return true;
-  }
-
-  public Panel getOwnerOfPoint(Point point)
-  {
-    return this;
-  }
-
-  public void mousePressed(MouseEvent e)
-  {
-    getProp().mouse_pressed(e);
-  }
-
-  public void mouseReleased(MouseEvent e)
-  {
-    getProp().mouse_released(e);
-  }
-
-  public void mouseClicked(MouseEvent e)
-  {
-    getProp().mouse_clicked(e);
-  }
-
-  public void mouseDragged(MouseEvent e)
-  {
-    getProp().mouse_dragged(e);
-  }
-
-  public void mouseEntered(MouseEvent e)
-  {
-  }
-
-  public void mouseExited(MouseEvent e)
-  {
-  }
-
-  public void mouseMoved(MouseEvent e)
-  {
-    getProp().mouse_moved(e);
-  }
-  public void mouseWheelMoved(MouseWheelEvent e)
-  {
-  }
-
-  public boolean isAncestor(Panel panel)
-  {
-    return this.panel.isAncestor(panel);
-  }
-
-  public Panel getClosestCommonAncestor(Panel panel)
-  {
-    Panel ancestor = getParent();
-    while(ancestor != null && !panel.isAncestor(ancestor))
-    {
-      ancestor = ancestor.getParent();
-    }
-
-    if(ancestor == null)
-      throw new LimelightError("No common ancestor found! Do the panels belong to the same tree?");
-
-    return ancestor;
-  }
-
-  public void setCursor(Cursor cursor)
-  {
-    panel.setCursor(cursor);
-  }
-
   public Graphics2D getGraphics()
   {
-    return panel.getGraphics();
-  }
-
-  public void repaint()
-  {
+    if(graphics != null)
+      return graphics;
+    else
+      return panel.getGraphics();
   }
 
   public String toString()
   {
     return "Text: <" + getText() + ">";
-  }
-
-  public void add(Panel child)
-  {
-    throw new LimelightError("TextPanel.add()");
-  }
-
-  public boolean containsAbsolutePoint(Point point)
-  {
-    return false;
-  }
-
-  public void sterilize()
-  {
-  }
-
-  public boolean isSterilized()
-  {
-    return false;
-  }
-
-  public void replace(Panel child, Panel newChild)
-  {
-  }
-
-  public boolean remove(Panel child)
-  {
-    return true;
-  }
-
-  public void removeAll()
-  {
   }
 }

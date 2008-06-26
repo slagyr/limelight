@@ -3,11 +3,14 @@ package limelight.ui.model2;
 import junit.framework.TestCase;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
+import limelight.ui.api.MockProp;
 import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.util.Box;
 
+import javax.swing.*;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 public class BasePanelTest extends TestCase
 {
@@ -16,6 +19,9 @@ public class BasePanelTest extends TestCase
   private MockPanel child;
   private MockPanel grandChild;
   private MockPanel sibling;
+  private MockProp prop;
+  private PropPanel propPanel;
+  private MouseEvent mouseEvent;
 
   class TestableBasePanel extends BasePanel
   {
@@ -353,4 +359,52 @@ public class BasePanelTest extends TestCase
     assertEquals(456, panel.getAbsoluteBounds().height);
   }
 
+  void addPropPanel()
+  {
+    prop = new MockProp();
+    propPanel = new PropPanel(prop);
+    propPanel.add(panel);
+    mouseEvent = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
+  }
+  
+  public void testMousePressed() throws Exception
+  {
+    addPropPanel();
+    panel.mousePressed(mouseEvent);
+
+    assertSame(mouseEvent, prop.pressedMouse);
+  }
+         
+  public void testMouseReleased() throws Exception
+  {
+    addPropPanel();
+    panel.mouseReleased(mouseEvent);
+
+    assertSame(mouseEvent, prop.releasedMouse);
+  }
+         
+  public void testMouseClicked() throws Exception
+  {
+    addPropPanel();
+    panel.mouseClicked(mouseEvent);
+
+    assertSame(mouseEvent, prop.clickedMouse);
+  }
+         
+  public void testMouseDragged() throws Exception
+  {
+    addPropPanel();
+    panel.mouseDragged(mouseEvent);
+
+    assertSame(mouseEvent, prop.draggedMouse);
+  }
+         
+  public void testMouseMoved() throws Exception
+  {
+    addPropPanel();
+    panel.mouseMoved(mouseEvent);
+
+    assertSame(mouseEvent, prop.movedMouse);
+  }
 }
+

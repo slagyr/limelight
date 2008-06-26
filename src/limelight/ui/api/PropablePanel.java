@@ -6,7 +6,7 @@ import limelight.styles.Style;
 
 import java.awt.*;
 
-public interface PropablePanel
+public interface PropablePanel extends limelight.ui.Panel
 {
   void add(limelight.ui.Panel child);
   boolean remove(limelight.ui.Panel child);
