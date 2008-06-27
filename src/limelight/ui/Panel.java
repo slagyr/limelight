@@ -10,6 +10,7 @@ import java.util.LinkedList;
 public interface Panel
 {            
   void setLocation(int x, int y);
+  Point getLocation();
   void setSize(int width, int height);
   int getX();
   int getY();

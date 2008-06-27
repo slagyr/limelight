@@ -1,5 +1,13 @@
 package limelight.ui.model2;
 
-public class RootPanelTest
+import junit.framework.TestCase;
+
+public class RootPanelTest extends TestCase
 {
+
+  public void testToSatisfyJUnit() throws Exception
+  {
+    
+  }
+
 }

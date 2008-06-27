@@ -12,9 +12,9 @@ public class PropPanelLayout
   private LinkedList<Row> rows;
   private Row currentRow;
   protected PropPanel panel;
-  protected Box area;
   protected int consumedHeight;
   protected int consumedWidth;
+  private LinkedList<Panel> floaters;
 
   public PropPanelLayout(PropPanel panel)
   {
@@ -29,20 +29,46 @@ public class PropPanelLayout
       panel.snapToSize();
 
     if(panel.getChildren().size() == 0)
-			return;
+    {
+      collapseAutoDimensions();
+      return;
+    }
 
     doLayoutOnChildren();
-    area = panel.getChildConsumableArea();
     reset();
     buildRows();
+    collapseAutoDimensions();
 
     boolean switched = false;//switchToScrollModeIfNeeded();
 
     if(!switched)
     {
-      Aligner aligner = buildAligner(area);
+      Aligner aligner = buildAligner(panel.getChildConsumableArea());
       layoutRows(aligner);
+      layoutFloaters();
     }
+  }
+
+  private void collapseAutoDimensions()
+  {
+    boolean hasAutoWidth = "auto".equals(panel.getStyle().getWidth());
+    boolean hasAutoHeight = "auto".equals(panel.getStyle().getHeight());
+    if(hasAutoWidth && hasAutoHeight)
+      panel.setSize(consumedWidth + horizontalInsets(), consumedHeight + verticalInsets());
+    else if(hasAutoWidth)
+      panel.setSize(consumedWidth + horizontalInsets(), panel.getHeight());
+    else if(hasAutoHeight)
+      panel.setSize(panel.getWidth(), consumedHeight + verticalInsets());
+  }
+
+  public int horizontalInsets()
+  {
+    return panel.getBoundingBox().width - panel.getBoxInsidePadding().width;
+  }
+
+  public int verticalInsets()
+  {
+    return panel.getBoundingBox().height - panel.getBoxInsidePadding().height;
   }
 
   protected void doLayoutOnChildren()
@@ -63,15 +89,47 @@ public class PropPanelLayout
     }
   }
 
+  private void layoutFloaters()
+  {
+    if(floaters == null)
+      return;
+    for (Panel floater : floaters)
+      layoutFloater(floater);
+  }
+
+  private void layoutFloater(Panel floater)
+  {
+    Style style = floater.getStyle();
+    int x = style.asInt(style.getX());
+    int y = style.asInt(style.getY());
+    Box area = panel.getChildConsumableArea();
+    floater.setLocation(area.x + x, area.y + y);
+  }
+
+  private void addFloater(Panel panel)
+  {
+    if(floaters == null)
+      floaters = new LinkedList<Panel>();
+    floaters.add(panel);
+  }
+
   protected void buildRows()
 	{
     for(Panel child : panel.getChildren())
     {
-      if (!currentRow.isEmpty() && !currentRow.fits(child))
-        newRow();
-      currentRow.add(child);
+      if(child.isFloater())
+        addFloater(child);
+      else
+        addToRow(child);
     }
     calculateConsumedDimentions();
+  }
+
+  private void addToRow(Panel child)
+  {
+    if (!currentRow.isEmpty() && !currentRow.fits(child))
+      newRow();
+    currentRow.add(child);
   }
 
   protected Aligner buildAligner(Box rectangle)
@@ -88,7 +146,7 @@ public class PropPanelLayout
 
 	private void newRow()
 	{
-		currentRow = new Row(area.width);
+		currentRow = new Row(panel.getChildConsumableArea().width);
 		rows.add(currentRow);
 	}
 

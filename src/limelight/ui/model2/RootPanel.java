@@ -44,6 +44,11 @@ public class RootPanel implements Panel
     contentPane.setLocation(x, y);
   }
 
+  public Point getLocation()
+  {
+    return contentPane.getLocation();
+  }
+
   public void setSize(int width, int height)
   {
     contentPane.setSize(width, height);
