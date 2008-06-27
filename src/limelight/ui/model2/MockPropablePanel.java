@@ -1,6 +1,7 @@
 package limelight.ui.model2;
 
 import limelight.ui.MockPanel;
+import limelight.ui.Panel;
 import limelight.ui.painting.PaintAction;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.MockProp;
@@ -9,12 +10,17 @@ import limelight.util.Box;
 import limelight.styles.FlatStyle;
 import limelight.styles.Style;
 
+import java.util.Iterator;
+
 public class MockPropablePanel extends MockPanel implements PropablePanel
 {
   public MockProp prop;
   public FlatStyle style;
   public Box childConsumableBox;
   public boolean floater;
+  private int prepForSnapWidth;
+  private int prepForSnapHeight;
+  public boolean wasLaidOut;
 
   public MockPropablePanel()
   {
@@ -62,8 +68,28 @@ public class MockPropablePanel extends MockPanel implements PropablePanel
     return prop;
   }
 
+  //Used by layout
+  public void snapToSize()
+  {
+    setSize(prepForSnapWidth, prepForSnapHeight);
+  }
+
+  public void doLayout()
+  {
+    snapToSize();
+    for(Panel child : children)
+      child.doLayout();
+    wasLaidOut = true;
+  }
+
   public boolean isFloater()
   {
     return floater;
+  }
+
+  public void prepForSnap(int width, int height)
+  {
+    prepForSnapWidth = width;
+    prepForSnapHeight = height;
   }
 }

@@ -77,6 +77,11 @@ public abstract class BasePanel implements Panel
     this.y = y;
   }
 
+  public Point getLocation()
+  {
+    return new Point(x, y);
+  }
+
   public Point getAbsoluteLocation()
   {
     if(absoluteLocation == null)
