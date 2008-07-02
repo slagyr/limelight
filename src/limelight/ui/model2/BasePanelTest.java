@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
+import limelight.ui.api.MockStage;
 import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.util.Box;
@@ -22,6 +23,7 @@ public class BasePanelTest extends TestCase
   private MockProp prop;
   private PropPanel propPanel;
   private MouseEvent mouseEvent;
+  private RootPanel root;
 
   class TestableBasePanel extends BasePanel
   {
@@ -122,7 +124,9 @@ public class BasePanelTest extends TestCase
 
   private void createFamilyTree()
   {
+    root = new RootPanel(new Frame(new MockStage()));
     parent = new MockPanel();
+    root.setPanel(parent);
     child = new MockPanel();
     parent.add(child);
     grandChild = new MockPanel();
@@ -150,7 +154,7 @@ public class BasePanelTest extends TestCase
 
     try
     {
-      parent.getClosestCommonAncestor(child);
+      parent.getClosestCommonAncestor(new MockPanel());
       fail("An exception is expected");
     }
     catch(LimelightError e)
@@ -196,9 +200,10 @@ public class BasePanelTest extends TestCase
   {
     createFamilyTree();
 
-    assertSame(parent, sibling.getRoot());
-    assertSame(parent, child.getRoot());
-    assertSame(parent, grandChild.getRoot());
+    assertSame(root, parent.getRoot());
+    assertSame(root, sibling.getRoot());
+    assertSame(root, child.getRoot());
+    assertSame(root, grandChild.getRoot());
   }
 
   //PARENT PANEL STUFF

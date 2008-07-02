@@ -34,4 +34,18 @@ public class FrameTest extends TestCase
 
     assertSame(panel, root.getPanel());
   }
+
+  public void testLoadWillDestroyPreviousRoots() throws Exception
+  {
+    MockPanel panel = new MockPanel();
+    frame.load(panel);
+
+    RootPanel firstRoot = frame.getRoot();
+    assertEquals(true, firstRoot.isAlive());
+
+    MockPanel panel2 = new MockPanel();
+    frame.load(panel2);
+
+    assertEquals(false, firstRoot.isAlive());
+  }
 }
