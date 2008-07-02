@@ -31,6 +31,8 @@ public class Frame extends JFrame
 
   public void load(Panel child)
   {
+    if(root != null)
+      root.destroy();
     root = new RootPanel(this);
     root.setPanel(child);
   }

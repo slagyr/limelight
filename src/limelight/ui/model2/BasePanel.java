@@ -140,8 +140,8 @@ public abstract class BasePanel implements Panel
 
   public Panel getRoot()
   {
-    if(parent == null)
-      return this;
+//    if(parent == null)
+//      return this;
     return parent.getRoot();
   }
 

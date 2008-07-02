@@ -13,6 +13,7 @@ public class RootPanel implements Panel
   private Panel panel;
   private Container contentPane;
   private EventListener listener;
+  private boolean alive;
 
   public RootPanel(Frame frame)
   {
@@ -75,7 +76,7 @@ public class RootPanel implements Panel
   }
 
   public void setPanel(Panel child)
-  {
+  { 
     this.panel = child;
     child.setParent(this);
 
@@ -84,6 +85,18 @@ public class RootPanel implements Panel
     contentPane.addMouseMotionListener(listener);
     contentPane.addMouseWheelListener(listener);
     contentPane.addKeyListener(listener);
+    alive = true;
+  }
+
+  public void destroy()
+  {
+    contentPane.removeMouseListener(listener);
+    contentPane.removeMouseMotionListener(listener);
+    contentPane.removeMouseWheelListener(listener);
+    contentPane.removeKeyListener(listener);
+    listener = null;
+    panel.setParent(null);
+    alive = false;
   }
 
   public Panel getRoot()
@@ -239,5 +252,13 @@ public class RootPanel implements Panel
     contentPane.setCursor(cursor);
   }
 
+  public boolean isAlive()
+  {
+    return alive;
+  }
 
+  public EventListener getListener()
+  {
+    return listener;
+  }
 }
