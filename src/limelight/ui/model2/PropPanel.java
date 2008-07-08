@@ -155,7 +155,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public Style getStyle()
   {
     if(style == null)
+    {
       style = prop.getStyle();
+    }
     return style;
   }
 
@@ -215,15 +217,17 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void repaint()
   {
-    if(getParent() != null && (prop.getStyle().changed(Style.WIDTH) || prop.getStyle().changed(Style.WIDTH)))
-      getParent().repaint();
-    else
-    {
+//System.err.println("repaint: " + this + ": " + (getParent() != null) + ", " + (getStyle().changed(Style.WIDTH) || getStyle().changed(Style.WIDTH)));
+    //TODO Handle the case when the parent needs to repaint.
+//    if(getParent() != null && (getStyle().changed(Style.WIDTH) || getStyle().changed(Style.WIDTH)))
+//      getParent().repaint();
+//    else
+//    {
       doLayout();
       PaintJob job = new PaintJob(getAbsoluteBounds());
-      job.paint(getRoot());
+      job.paint(((RootPanel)getRoot()).getPanel()); //TODO - cast should not be neccessary here.
       job.applyTo(getRoot().getGraphics());
-    }
+//    }
   }
 
   public void paintImmediately(int a, int b, int c, int d)
@@ -233,7 +237,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public String toString()
   {
-    return "Panel - " + getProp().getName();
+    return "PropPanel - " + getProp().getName();
   }
 
   public void setAfterPaintAction(PaintAction action)

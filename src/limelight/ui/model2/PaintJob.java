@@ -6,11 +6,7 @@ import limelight.ui.Panel;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.awt.Composite;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Color;
+import java.awt.*;
 
 public class PaintJob
 {
@@ -70,17 +66,12 @@ public class PaintJob
 
   public void paintClipFor(Panel panel, Graphics2D graphics)
   {
-//    if(panel.usesBuffer())
-//      graphics.drawImage(panel.getBuffer(), 0, 0, null);
-//    else
     panel.paintOn(graphics);
   }
 
   public void applyAlphaCompositeFor(Panel panel, Graphics2D graphics)
   {
-//    if(panel instanceof RootPanel)
-//      return;
-
+    
     Style style = panel.getStyle();
     int alphaPercentage = style.asInt(style.getTransparency());
     if(alphaPercentage > 0)
@@ -122,7 +113,9 @@ public class PaintJob
 
   public void applyTo(Graphics graphics)
   {
+System.err.println("applying change at: " + clip.x + ", " + clip.y + " : " + buffer.getWidth() + ", " + buffer.getHeight());    
     graphics.drawImage(buffer, clip.x, clip.y, null);
+    Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
   }
 
 //    // MDM - Purely for debuggin graphics
