@@ -35,12 +35,14 @@ public class TaskEngine
 
   public void cycle()
   {
-    for(int tasksToPerform = tasks.size(); tasksToPerform > 0; tasksToPerform--)
+    int tasksToPerform = tasks.size();
+    for(int currentTask = 0; currentTask < tasksToPerform; currentTask++)
     {
       Task task = tasks.removeFirst();
-      task.prepare();
-      task.perform();
-      task.conclude();
+      if(task.isReady())
+        task.perform();
+      else
+        tasks.add(task);
     }
   }
 
@@ -83,5 +85,11 @@ public class TaskEngine
   public boolean isRunning()
   {
     return running;
+  }
+
+  public TaskEngine started()
+  {
+    start();
+    return this;
   }
 }

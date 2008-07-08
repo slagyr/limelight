@@ -5,6 +5,7 @@ package limelight;
 
 import junit.framework.TestCase;
 import limelight.io.Downloader;
+import limelight.task.TaskEngine;
 
 public class MainTest extends TestCase
 {
@@ -29,5 +30,13 @@ public class MainTest extends TestCase
 
     Downloader downloader = Context.instance().downloader;
     assertSame(Context.instance().tempDirectory, downloader.getTempDirectory());
+  }
+
+  public void testTaskEngineIsAddedToContextAndStarted() throws Exception
+  {
+    main.configureContext();
+
+    TaskEngine engine = Context.instance().taskEngine;
+    assertEquals(true, engine.isRunning());
   }
 }

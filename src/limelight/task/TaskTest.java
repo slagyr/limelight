@@ -7,6 +7,11 @@ public class TaskTest extends TestCase
   public void testEngine() throws Exception
   {
     Task task = new Task(){
+      public boolean isReady()
+      {
+        return true;
+      }
+
       public void perform()
       {
       }
