@@ -5,6 +5,7 @@ package limelight;
 
 import limelight.io.TempDirectory;
 import limelight.io.Downloader;
+import limelight.task.TaskEngine;
 
 public class Context
 {
@@ -12,6 +13,7 @@ public class Context
   
   public TempDirectory tempDirectory;
   public Downloader downloader;
+  public TaskEngine taskEngine;
 
   protected Context()
   {

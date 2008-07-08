@@ -7,6 +7,7 @@ import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.painting.VerboseRepaintManager;
+import limelight.task.TaskEngine;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 
@@ -89,6 +90,7 @@ public class Main
     Context context = Context.instance();
     context.tempDirectory = new TempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
+    context.taskEngine = new TaskEngine().started(); 
     contextIsConfigured = true;
   }
 }

@@ -4,17 +4,8 @@ public abstract class Task
 {
   private TaskEngine engine;
 
-  public void prepare()
-  {
-    // do nothing by default
-  }
-
+  public abstract boolean isReady();
   public abstract void perform();
-
-  public void conclude()
-  {
-    // do nothing by default
-  }
 
   public TaskEngine getEngine()
   {

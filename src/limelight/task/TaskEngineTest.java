@@ -35,9 +35,8 @@ public class TaskEngineTest extends TestCase
     engine.cycle();
 
     assertEquals(0, engine.getTasks().size());
-    assertEquals(true, task.prepared);
+    assertEquals(true, task.askedIfReady);
     assertEquals(true, task.performed);
-    assertEquals(true, task.concluded);
   }
 
   public void testRunMultipleTasks() throws Exception
@@ -51,15 +50,12 @@ public class TaskEngineTest extends TestCase
     engine.cycle();
 
     assertEquals(0, engine.getTasks().size());
-    assertEquals(true, task.prepared);
+    assertEquals(true, task.askedIfReady);
     assertEquals(true, task.performed);
-    assertEquals(true, task.concluded);
-    assertEquals(true, task2.prepared);
+    assertEquals(true, task2.askedIfReady);
     assertEquals(true, task2.performed);
-    assertEquals(true, task2.concluded);
-    assertEquals(true, task3.prepared);
+    assertEquals(true, task3.askedIfReady);
     assertEquals(true, task3.performed);
-    assertEquals(true, task3.concluded);
   }
 
   public void testTasksAddedDuringCycleAreNotPerformed() throws Exception
@@ -78,12 +74,10 @@ public class TaskEngineTest extends TestCase
 
     assertEquals(1, engine.getTasks().size());
     assertEquals(task2, engine.getTasks().get(0));
-    assertEquals(true, task.prepared);
+    assertEquals(true, task.askedIfReady);
     assertEquals(true, task.performed);
-    assertEquals(true, task.concluded);
-    assertEquals(false, task2.prepared);
+    assertEquals(false, task2.askedIfReady);
     assertEquals(false, task2.performed);
-    assertEquals(false, task2.concluded);
   }
 
   public void testStartingAndStopping() throws Exception
@@ -99,6 +93,11 @@ public class TaskEngineTest extends TestCase
 
   public void testRunsAbout100TimesPerSecond() throws Exception
   {
+    checkFor100PerformancesInaSecond();
+  }
+
+  private void checkFor100PerformancesInaSecond() throws InterruptedException
+  {
     task.onPerform = new Runnable() {
       public void run()
       {
@@ -113,5 +112,32 @@ public class TaskEngineTest extends TestCase
     Thread.sleep(10);
 
     assertEquals("actual performances: " + task.performances, true, task.performances > 95 && task.performances < 105);
+  }
+
+  public void testDoesntPerformTasksThatArentReady() throws Exception
+  {
+    MockTask task2 = new MockTask();
+    task2.ready = false;
+
+    engine.add(task);
+    engine.add(task2);
+
+    engine.cycle();
+
+    assertEquals(1, engine.getTasks().size());
+    assertSame(task2, engine.getTasks().get(0));
+    assertEquals(false, task2.performed);
+  }
+
+  public void testCanHandle100TasksAndStillHitTargetSpeed() throws Exception
+  {
+    for(int i = 0; i < 100; i++)
+    {
+      MockTask task = new MockTask();
+      task.ready = false;
+      engine.add(task);
+    }
+    
+    checkFor100PerformancesInaSecond();
   }
 }

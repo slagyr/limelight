@@ -2,15 +2,16 @@ package limelight.task;
 
 public class MockTask extends Task
 {
-  public boolean concluded;
-  public boolean prepared;
+  public boolean askedIfReady;
   public boolean performed;
   public Runnable onPerform;
   public int performances;
+  public boolean ready = true;
 
-  public void prepare()
+  public boolean isReady()
   {
-    prepared = true;
+    askedIfReady = true;
+    return ready;
   }
 
   public void perform()
@@ -19,11 +20,6 @@ public class MockTask extends Task
     if(onPerform != null)
       onPerform.run();
     performances++;
-  }
-
-  public void conclude()
-  {
-    concluded = true;
   }
 
 }
