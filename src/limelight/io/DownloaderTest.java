@@ -71,7 +71,7 @@ public class DownloaderTest extends TestCase
     }
   }
 
-// - These tests hit web sites over the internet and should not be run as part of the normal test suite.
+// - These tests hit web sites over the internet and should not be start as part of the normal test suite.
 //
 //  public void testDownloadingViaHTTP() throws Exception
 //  {

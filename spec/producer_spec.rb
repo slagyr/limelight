@@ -60,7 +60,7 @@ describe Limelight::Producer do
     
     begin
       result = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
-      result.should == nil # should never execute
+      result.should == nil # should never perform
     rescue Limelight::BuildException => e
       e.line_number.should == 3
       e.filename.should == "./props.rb"
@@ -74,7 +74,7 @@ describe Limelight::Producer do
     
     begin
       result = @producer.load_styles(".")
-      result.should == nil # should never execute
+      result.should == nil # should never perform
     rescue Limelight::BuildException => e
       e.line_number.should == 4
       e.filename.should == "./styles.rb"

@@ -43,7 +43,7 @@ public class BackgroundPainter extends Painter
       try
       {
         Box borderFrame = panel.getBoxInsideBorders();
-        String imageFilename = panel.getProp().getScene().getLoader().pathTo(style.getBackgroundImage());
+        String imageFilename = panel.getProp().getScene().getLoader().pathTo(style.getBackgroundImage());      
         Image image = ImageIO.read(new File(imageFilename));
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);
         ImageFillStrategies.get(style.getBackgroundImageFillStrategy()).fill(borderedGraphics, image);
