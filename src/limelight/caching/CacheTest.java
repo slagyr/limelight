@@ -56,4 +56,13 @@ public class CacheTest extends TestCase
     cache.retrieve("1");
     assertEquals(0, cache.getMap().size());
   }
+  
+  public void testExplicitlyExpiringAnEntry() throws Exception
+  {
+    cache.cache("1", "One");
+
+    cache.expire("1");
+
+    assertEquals(null, cache.retrieve("1"));
+  }
 }

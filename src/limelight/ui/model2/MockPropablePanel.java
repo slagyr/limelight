@@ -11,6 +11,7 @@ import limelight.styles.FlatStyle;
 import limelight.styles.Style;
 
 import java.util.Iterator;
+import java.awt.*;
 
 public class MockPropablePanel extends MockPanel implements PropablePanel
 {

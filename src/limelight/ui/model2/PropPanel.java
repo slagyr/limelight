@@ -14,6 +14,7 @@ import limelight.styles.Style;
 
 import java.util.LinkedList;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 

@@ -53,4 +53,9 @@ public abstract class Cache<KEY, VALUE>
     for(KEY key : deletes)
       map.remove(key);
   }
+
+  public void expire(KEY key)
+  {
+    map.remove(key);
+  }
 }

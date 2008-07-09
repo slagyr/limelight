@@ -97,4 +97,9 @@ public class TextPanelTest extends TestCase
     panel.flushChanges();
     assertFalse(panel.textChanged());
   }
+
+  public void testCanBeBuffered() throws Exception
+  {
+    assertEquals(false, panel.canBeBuffered());
+  }
 }

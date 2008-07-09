@@ -107,7 +107,6 @@ public class Main
     context.taskEngine.add(new RecurringTask("Buffered Image Cache Cleaner", 1) {
       protected void doPerform()
       {
-System.err.println(getName());
         Context.instance().bufferedImageCache.clean();
       }
     });

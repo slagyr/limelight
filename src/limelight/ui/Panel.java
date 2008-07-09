@@ -45,6 +45,7 @@ public interface Panel
   void repaint();     
   Graphics2D getGraphics();
   void paintOn(Graphics2D graphics);
+  boolean canBeBuffered();
 
   Style getStyle();
   
