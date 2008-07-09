@@ -6,6 +6,14 @@ package limelight;
 import junit.framework.TestCase;
 import limelight.io.Downloader;
 import limelight.task.TaskEngine;
+import limelight.task.Task;
+import limelight.task.RecurringTask;
+import limelight.caching.Cache;
+import limelight.caching.TimedCache;
+import limelight.ui.Panel;
+
+import java.awt.image.BufferedImage;
+import java.util.Iterator;
 
 public class MainTest extends TestCase
 {
@@ -38,5 +46,34 @@ public class MainTest extends TestCase
 
     TaskEngine engine = Context.instance().taskEngine;
     assertEquals(true, engine.isRunning());
+  }
+  
+  public void testBufferedImageCacheIsAddedToContext() throws Exception
+  {
+    main.configureContext();
+
+    Cache<Panel, BufferedImage> cache = Context.instance().bufferedImageCache;
+    assertEquals(TimedCache.class, cache.getClass());
+    assertEquals(1, ((TimedCache)cache).getTimeoutSeconds(), 0.01);
+  }
+
+  public void testRecurringTaskAddedForCleaningTheBufferedImageCache() throws Exception
+  {
+    main.configureContext();
+
+    Task task = findTaskEngineHashTaskNamed("Buffered Image Cache Cleaner");
+    assertEquals(true, task instanceof RecurringTask);
+    assertEquals(1, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
+  }
+
+  private Task findTaskEngineHashTaskNamed(String name)
+  {
+    TaskEngine engine = Context.instance().taskEngine;
+    for(Task task : engine.getTasks())
+    {
+      if(name.equals(task.getName()))
+        return task;
+    }
+    return null;
   }
 }

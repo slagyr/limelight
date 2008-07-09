@@ -35,6 +35,7 @@ public class TaskEngine
 
   public void cycle()
   {
+//System.err.print(".");
     int tasksToPerform = tasks.size();
     for(int currentTask = 0; currentTask < tasksToPerform; currentTask++)
     {

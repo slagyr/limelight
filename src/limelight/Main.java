@@ -7,12 +7,16 @@ import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.painting.VerboseRepaintManager;
+import limelight.ui.Panel;
 import limelight.task.TaskEngine;
+import limelight.task.RecurringTask;
+import limelight.caching.TimedCache;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.awt.image.BufferedImage;
 
 public class Main
 {
@@ -90,7 +94,22 @@ public class Main
     Context context = Context.instance();
     context.tempDirectory = new TempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
-    context.taskEngine = new TaskEngine().started(); 
+    context.taskEngine = new TaskEngine().started();
+    context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
+
+    addBufferedImageCacheCleanerTask(context);
+
     contextIsConfigured = true;
+  }
+
+  private void addBufferedImageCacheCleanerTask(Context context)
+  {
+    context.taskEngine.add(new RecurringTask("Buffered Image Cache Cleaner", 1) {
+      protected void doPerform()
+      {
+System.err.println(getName());
+        Context.instance().bufferedImageCache.clean();
+      }
+    });
   }
 }

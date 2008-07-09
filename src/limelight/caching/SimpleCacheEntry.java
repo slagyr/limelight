@@ -1,8 +1,8 @@
 package limelight.caching;
 
-public class SimpleCacheEntry extends CacheEntry
+public class SimpleCacheEntry<T> extends CacheEntry<T>
 {
-  public SimpleCacheEntry(Object value)
+  public SimpleCacheEntry(T value)
   {
     super(value);
   }

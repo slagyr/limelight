@@ -9,9 +9,11 @@ public abstract class RecurringTask extends Task
   private long delay;
   private NanoTimer timer;
   private boolean strict;
+  private double performancesPerSecond;
 
-  public RecurringTask(int performancesPerSecond)
+  public RecurringTask(String name, int performancesPerSecond)
   {
+    super(name);
     setPerformancesPerSecond(performancesPerSecond);
     timer = new NanoTimer();
   }
@@ -23,6 +25,7 @@ public abstract class RecurringTask extends Task
 
   public void setPerformancesPerSecond(int performancesPerSecond)
   {
+    this.performancesPerSecond = performancesPerSecond;
     delay = 1000000000l / performancesPerSecond;
   }
 
@@ -37,6 +40,7 @@ public abstract class RecurringTask extends Task
       makeupMissedPerformances();
     timer.markTime();
     doPerform();
+    getEngine().add(this);
   }
 
   private void makeupMissedPerformances()
@@ -61,5 +65,10 @@ public abstract class RecurringTask extends Task
   public boolean isStrict()
   {
     return strict;
+  }
+
+  public double getPerformancesPerSecond()
+  {
+    return performancesPerSecond;
   }
 }

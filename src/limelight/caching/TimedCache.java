@@ -1,6 +1,6 @@
 package limelight.caching;
 
-public class TimedCache extends Cache
+public class TimedCache<KEY, VALUE> extends Cache<KEY, VALUE>
 {
   private double timeoutSeconds;
 
@@ -9,9 +9,9 @@ public class TimedCache extends Cache
     timeoutSeconds = timeoutInSeconds;
   }
 
-  protected CacheEntry createEntry(Object value)
+  protected CacheEntry<VALUE> createEntry(VALUE value)
   {
-    return new TimedCacheEntry(value, timeoutSeconds);
+    return new TimedCacheEntry<VALUE>(value, timeoutSeconds);
   }
 
   public double getTimeoutSeconds()

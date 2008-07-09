@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class CacheEntryTest extends TestCase
 {
-  private class TestableCahceEntry extends CacheEntry
+  private class TestableCahceEntry extends CacheEntry<Object>
   {
     public TestableCahceEntry(Object value)
     {

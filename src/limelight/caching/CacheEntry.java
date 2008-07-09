@@ -2,16 +2,20 @@ package limelight.caching;
 
 import java.lang.ref.SoftReference;
 
-public abstract class CacheEntry
+public abstract class CacheEntry<T>
 {
-  private SoftReference<Object> entry;
+  private SoftReference<T> entry;
 
-  public CacheEntry(Object value)
+  public CacheEntry(T value)
   {
-    entry = new SoftReference<Object>(value);
+    entry = new SoftReference<T>(value);
   }
 
-  public Object value()
+  public CacheEntry()
+  {
+  }
+
+  public T value()
   {
     return entry.get();
   }
