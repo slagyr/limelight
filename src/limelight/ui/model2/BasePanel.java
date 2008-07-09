@@ -321,4 +321,9 @@ public abstract class BasePanel implements Panel
   {
     return false;
   }
+
+  public boolean canBeBuffered()
+  {
+    return true;
+  }
 }

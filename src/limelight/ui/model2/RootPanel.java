@@ -132,12 +132,18 @@ public class RootPanel implements Panel
     return panel;
   }
 
+
   /////////////////////////////////////////////
   /// NOT NEEDED
   /////////////////////////////////////////////
 
   public void paintOn(Graphics2D graphics)
   {
+  }
+
+  public boolean canBeBuffered()
+  {
+    return false;
   }
 
   public boolean hasChildren()

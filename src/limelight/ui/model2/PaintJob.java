@@ -1,28 +1,31 @@
 package limelight.ui.model2;
 
+import limelight.Context;
+import limelight.caching.Cache;
 import limelight.styles.Style;
-import limelight.util.Box;
 import limelight.ui.Panel;
+import limelight.util.Box;
 
-import javax.swing.*;
-import java.awt.image.BufferedImage;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class PaintJob
 {
   private Box clip;
   private BufferedImage buffer;
-  private Graphics2D graphics;
+  private Graphics2D rootGraphics;
   private Composite composite;
+  private Cache<Panel, BufferedImage> bufferCache;
 
   public PaintJob(Box clip)
   {
+    bufferCache = Context.instance().bufferedImageCache;
     this.clip = clip;
     buffer = new BufferedImage(clip.width, clip.height, BufferedImage.TYPE_4BYTE_ABGR);
-    graphics = (Graphics2D) buffer.getGraphics();
-    graphics.setBackground(Color.white);
-    graphics.clearRect(0, 0, clip.width, clip.height);
-    composite = graphics.getComposite();
+    rootGraphics = (Graphics2D) buffer.getGraphics();
+    rootGraphics.setBackground(Color.white);
+    rootGraphics.clearRect(0, 0, clip.width, clip.height);
+    composite = rootGraphics.getComposite();
   }
 
   public void paint(Panel panel)
@@ -30,9 +33,11 @@ public class PaintJob
     Box panelBounds = panel.getAbsoluteBounds();
     int x = panelBounds.x - clip.x;
     int y = panelBounds.y - clip.y;
-    Graphics2D graphics = (Graphics2D) this.graphics.create(x, y, panel.getWidth(), panel.getHeight());
 
+    Graphics2D graphics = (Graphics2D) rootGraphics.create(x, y, panel.getWidth(), panel.getHeight());
     paint(panel, graphics);
+    graphics.dispose();
+    rootGraphics.dispose();
   }
 
   public void paint(Panel panel, Graphics2D graphics)
@@ -55,7 +60,7 @@ public class PaintJob
 
   public Graphics2D getGraphics()
   {
-    return graphics;
+    return rootGraphics;
   }
 
   public boolean panelIsInClip(Panel panel)
@@ -66,12 +71,19 @@ public class PaintJob
 
   public void paintClipFor(Panel panel, Graphics2D graphics)
   {
-    panel.paintOn(graphics);
+    if(panel.canBeBuffered())
+    {
+      BufferedImage panelBuffer = bufferCache.retrieve(panel);
+      if(shouldBuildBufferFor(panel, panelBuffer))
+        panelBuffer = buildBufferFor(panel);
+      graphics.drawImage(panelBuffer, 0, 0, null);
+    }
+    else
+      panel.paintOn(graphics);
   }
 
   public void applyAlphaCompositeFor(Panel panel, Graphics2D graphics)
   {
-    
     Style style = panel.getStyle();
     int alphaPercentage = style.asInt(style.getTransparency());
     if(alphaPercentage > 0)
@@ -105,15 +117,15 @@ public class PaintJob
   private void paintChild(Graphics2D graphics, Panel child)
   {
     if(panelIsInClip(child))
-        {
-          Graphics2D childGraphics = (Graphics2D) graphics.create(child.getX(), child.getY(), child.getWidth(), child.getHeight());
+    {
+      Graphics2D childGraphics = (Graphics2D) graphics.create(child.getX(), child.getY(), child.getWidth(), child.getHeight());
       paint(child, childGraphics);
+      childGraphics.dispose();
     }
   }
 
   public void applyTo(Graphics graphics)
   {
-System.err.println("applying change at: " + clip.x + ", " + clip.y + " : " + buffer.getWidth() + ", " + buffer.getHeight());    
     graphics.drawImage(buffer, clip.x, clip.y, null);
     Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
   }
@@ -134,7 +146,31 @@ System.err.println("applying change at: " + clip.x + ", " + clip.y + " : " + buf
 
   public void substituteGraphics(Graphics2D graphics)
   {
-    this.graphics = graphics;
+    this.rootGraphics = graphics;
+  }
+
+  public boolean shouldBuildBufferFor(Panel panel, BufferedImage buffer)
+  {
+    if(buffer == null)
+      return true;
+    Style style = panel.getStyle();
+    if(panel.getWidth() != buffer.getWidth() || panel.getHeight() != buffer.getHeight())
+      return true;
+    else if(style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY)))
+      return true;
+    else
+      return false;
+  }
+
+  public BufferedImage buildBufferFor(Panel panel)
+  {
+    BufferedImage buffer = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D graphics = buffer.createGraphics();
+    panel.paintOn(graphics);
+    graphics.dispose();
+    panel.getStyle().flushChanges(); //TODO Maybe called redundantly because Panel.paintOn() should also flushChanges. 
+    bufferCache.cache(panel, buffer);
+    return buffer;
   }
 }
 

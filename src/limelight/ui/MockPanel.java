@@ -12,10 +12,13 @@ public class MockPanel extends BasePanel
   public FlatStyle style;
   public static int paintCount;
   public int paintIndex;
+  public boolean wasPainted;
+  public boolean canBeBuffered;
 
   public MockPanel()
   {
     style = new FlatStyle();
+    canBeBuffered = true;
   }
 
   public Box getChildConsumableArea()
@@ -31,6 +34,12 @@ public class MockPanel extends BasePanel
   public void paintOn(Graphics2D graphics)
   {
     super.paintOn(graphics);
+    wasPainted = true;
     paintIndex = paintCount++;
+  }
+
+  public boolean canBeBuffered()
+  {
+    return canBeBuffered;
   }
 }

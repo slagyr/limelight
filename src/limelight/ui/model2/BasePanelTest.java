@@ -411,5 +411,10 @@ public class BasePanelTest extends TestCase
 
     assertSame(mouseEvent, prop.movedMouse);
   }
+
+  public void testCanBeBuffered() throws Exception
+  {
+    assertEquals(true, panel.canBeBuffered());
+  }
 }
 

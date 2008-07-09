@@ -166,4 +166,9 @@ public class TextPanel extends BasePanel
   {
     return "Text: <" + getText() + ">";
   }
+
+  public boolean canBeBuffered()
+  {
+    return false;
+  }
 }

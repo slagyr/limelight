@@ -2,25 +2,28 @@ package limelight.ui.model2;
 
 import junit.framework.TestCase;
 
+import limelight.util.Box;
+import limelight.ui.*;
+import limelight.ui.Panel;
+import limelight.styles.FlatStyle;
+import limelight.Context;
+import limelight.caching.SimpleCache;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import limelight.util.Box;
-import limelight.ui.MockGraphics;
-import limelight.ui.MockPanel;
-import limelight.styles.FlatStyle;
 
 public class PaintJobTest extends TestCase
 {
-  private Box clip;
   private PaintJob job;
   private MockPropablePanel panel;
   private FlatStyle style;
   private MockGraphics graphics;
+  private SimpleCache<Panel,BufferedImage> bufferedImageCache;
 
   public void setUp() throws Exception
   {
-    clip = new Box(100, 200, 300, 400);
-    job = new PaintJob(clip);
+    bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
+    Context.instance().bufferedImageCache = bufferedImageCache;
+    job = new PaintJob(new Box(100, 200, 300, 400));
     panel = new MockPropablePanel();
     style = panel.style;
     graphics = new MockGraphics();
@@ -72,7 +75,7 @@ public class PaintJobTest extends TestCase
 
   public void testApplyComposite() throws Exception
   {
-    Graphics2D graphics = job.getGraphics();
+    Graphics2D graphics = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR).createGraphics();
 
     job.applyAlphaCompositeFor(panel, graphics);
     assertEquals(1.0, ((AlphaComposite) graphics.getComposite()).getAlpha(), 0.001);
@@ -93,32 +96,59 @@ public class PaintJobTest extends TestCase
     assertEquals(1.0, ((AlphaComposite) graphics.getComposite()).getAlpha(), 0.001);
   }
 
-//  public void testPasteClipWhenPanelBuffered() throws Exception
-//  {
-//    panel.shouldUseBuffer = true;
-//    panel.buffer = new MockBufferedImage();
-//
-//    job.paintClipFor(panel, graphics);
-//
-//    assertEquals(0, graphics.drawnImageX);
-//    assertEquals(0, graphics.drawnImageY);
-//    assertEquals(panel.buffer, graphics.drawnImage);
-//  }
-//
-//  public void testHandlingOfNonBufferedPanel() throws Exception
-//  {
-//    limelight.alt_ui.MockGraphics graphics = new limelight.alt_ui.MockGraphics();
-//    limelight.alt_ui.MockPanel panel = new limelight.alt_ui.MockPanel();
-//    panel.shouldUseBuffer = false;
-//    panel.setLocation(200, 300);
-//    panel.setSize(100, 100);
-//
-//    job.paintClipFor(panel, graphics);
-//
-//    Graphics2D subGraphics = panel.paintedOnGraphics;
-//    assertNotNull(subGraphics);
-//    assertSame(graphics, panel.paintedOnGraphics);
-//  }
+  public void testHandlingOfNonBufferedPanel() throws Exception
+  {
+    panel.canBeBuffered = false;
+
+    job.paintClipFor(panel, graphics);
+
+    assertEquals(true, panel.wasPainted);
+    assertEquals(null, bufferedImageCache.retrieve(panel));
+  }
+
+  public void testBuilfBufferForPanel() throws Exception
+  {
+    assertEquals(null, bufferedImageCache.retrieve(panel));
+
+    BufferedImage buffer = job.buildBufferFor(panel);
+
+    assertEquals(true, panel.wasPainted);
+    assertSame(buffer, bufferedImageCache.retrieve(panel));
+    assertEquals(panel.getWidth(), buffer.getWidth());
+    assertEquals(panel.getHeight(), buffer.getHeight());
+    assertEquals(BufferedImage.TYPE_4BYTE_ABGR, buffer.getType());
+  }
+
+  public void testShouldBuildBufferWhenStyleChanges() throws Exception
+  {
+    assertEquals(true, job.shouldBuildBufferFor(panel, null));
+
+    BufferedImage buffer = job.buildBufferFor(panel);
+    assertEquals(false, job.shouldBuildBufferFor(panel, buffer));
+
+    style.setWidth("101");
+    assertEquals(true, job.shouldBuildBufferFor(panel, buffer));
+    buffer = job.buildBufferFor(panel);
+    assertEquals(false, job.shouldBuildBufferFor(panel, buffer));
+  }
+
+  public void testShouldNotBuildBufferWhenTransparencyChanges() throws Exception
+  {
+    BufferedImage buffer = job.buildBufferFor(panel);
+
+    style.setTransparency("50");
+    assertEquals(false, job.shouldBuildBufferFor(panel, buffer));
+  }
+  
+  public void testShouldBuildBufferIfSizeChanges() throws Exception
+  {
+    style.setWidth("100%");
+    style.setHeight("100%");
+    BufferedImage buffer = job.buildBufferFor(panel);
+
+    panel.setSize(123, 456);
+    assertEquals(true, job.shouldBuildBufferFor(panel, buffer));
+  }
 
   public void testApplyToGraphics() throws Exception
   {
