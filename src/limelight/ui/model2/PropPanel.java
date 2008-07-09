@@ -171,43 +171,52 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void mousePressed(MouseEvent e)
   {
-    getProp().mouse_pressed(e);
+    getProp().mouse_pressed(translatedEvent(e));
   }
 
   public void mouseReleased(MouseEvent e)
   {
-    getProp().mouse_released(e);
+    getProp().mouse_released(translatedEvent(e));
   }
 
   public void mouseClicked(MouseEvent e)
   {
-    getProp().mouse_clicked(e);
+    getProp().mouse_clicked(translatedEvent(e));
   }
 
   public void mouseDragged(MouseEvent e)
   {
-    getProp().mouse_dragged(e);
+    getProp().mouse_dragged(translatedEvent(e));
   }
 
   public void mouseEntered(MouseEvent e)
   {
-    getProp().mouse_entered(e);
+    getProp().mouse_entered(translatedEvent(e));
     getProp().hover_on();
   }
 
   public void mouseExited(MouseEvent e)
   {
-    getProp().mouse_exited(e);
+    getProp().mouse_exited(translatedEvent(e));
     getProp().hover_off();
   }
 
   public void mouseMoved(MouseEvent e)
   {
-    getProp().mouse_moved(e);
+    getProp().mouse_moved(translatedEvent(e));
+  }
+
+  //TODO This is little inefficient.  Reconsider what get's passed to props.
+  private MouseEvent translatedEvent(MouseEvent e)
+  {
+    e = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getClickCount(), false);
+    Point absoluteLocation = getAbsoluteLocation();
+    e.translatePoint(absoluteLocation.x * -1, absoluteLocation.y * -1);
+    return e;
   }
 
   public void mouseWheelMoved(MouseWheelEvent e)
-  {
+  {                
     getParent().mouseWheelMoved(e);
   }
 

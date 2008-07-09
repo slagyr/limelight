@@ -15,8 +15,8 @@ public abstract class BasePanel implements Panel
   private int x;
   private int y;
   private Panel parent;
-  private Point absoluteLocation;
-  private Box absoluteBounds;
+  protected Point absoluteLocation;
+  protected Box absoluteBounds;
   protected LinkedList<Panel> children;
   private boolean sterilized;
   protected Box boundingBox;

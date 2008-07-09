@@ -11,21 +11,21 @@ public class EventListenerTest extends TestCase
 {
   private EventListener listener;
   private PropPanel root;
-  private MockProp childBlock;
+  private MockProp childProp;
   private PropPanel childPanel;
-  private MockProp rootBlock;
+  private MockProp rootProp;
   private JPanel jpanel;
 
   public void setUp() throws Exception
   {
     jpanel = new JPanel();
 
-    rootBlock = new MockProp();
-    root = new PropPanel(rootBlock);
+    rootProp = new MockProp();
+    root = new PropPanel(rootProp);
     listener = new EventListener(root);
 
-    childBlock = new MockProp();
-    childPanel = new PropPanel(childBlock);
+    childProp = new MockProp();
+    childPanel = new PropPanel(childProp);
 
     root.add(childPanel);
 
@@ -38,24 +38,32 @@ public class EventListenerTest extends TestCase
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mousePressed(e1);
-    assertSame(e1, rootBlock.pressedMouse);
     assertSame(root, listener.pressedPanel);
+    checkEvent(e1, rootProp.pressedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mousePressed(e2);
-    assertSame(e2, childBlock.pressedMouse);
     assertSame(childPanel, listener.pressedPanel);
+    checkEvent(e2, childProp.pressedMouse, 250, 250);
+  }
+
+  private void checkEvent(MouseEvent expectedEvent, Object actualEvent, int x, int y)
+  {
+    MouseEvent actual = (MouseEvent)actualEvent;
+//    assertEquals(expectedEvent, actualEvent);
+    assertEquals(x, actual.getX());
+    assertEquals(y, actual.getX());
   }
 
   public void testMouseReleased() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseReleased(e1);
-    assertSame(e1, rootBlock.releasedMouse);
+    checkEvent(e1, rootProp.releasedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mouseReleased(e2);
-    assertSame(e2, childBlock.releasedMouse);
+    checkEvent(e2, childProp.releasedMouse, 250, 250);
   }
 
   public void testMouseClick() throws Exception
@@ -63,12 +71,12 @@ public class EventListenerTest extends TestCase
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mousePressed(e1);
     listener.mouseReleased(e1);
-    assertSame(e1, rootBlock.clickedMouse);
+    checkEvent(e1, rootProp.clickedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mousePressed(e2);
     listener.mouseReleased(e2);
-    assertSame(e2, childBlock.clickedMouse);
+    checkEvent(e2, childProp.clickedMouse, 250, 250);
   }
 
   public void testMouseClickButPanelChanged() throws Exception
@@ -79,30 +87,30 @@ public class EventListenerTest extends TestCase
     listener.mousePressed(e1);
     listener.mouseReleased(e2);
 
-    assertNull(rootBlock.clickedMouse);
-    assertNull(childBlock.clickedMouse);
+    assertNull(rootProp.clickedMouse);
+    assertNull(childProp.clickedMouse);
   }
 
   public void testMouseMoved() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseMoved(e1);
-    assertSame(e1, rootBlock.movedMouse);
+    checkEvent(e1, rootProp.movedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mouseMoved(e2);
-    assertSame(e2, childBlock.movedMouse);
+    checkEvent(e2, childProp.movedMouse, 250, 250);
   }
 
   public void testMouseDragged() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseDragged(e1);
-    assertSame(e1, rootBlock.draggedMouse);
+    checkEvent(e1, rootProp.draggedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mouseDragged(e2);
-    assertSame(e2, childBlock.draggedMouse);
+    checkEvent(e2, childProp.draggedMouse, 250, 250);
   }
 
   public void testMouseEnteredAndExited() throws Exception
@@ -120,17 +128,17 @@ public class EventListenerTest extends TestCase
 
     listener.mouseMoved(e1);
     assertSame(root, listener.hooveredPanel);
-    assertSame(e1, rootBlock.enteredMouse);
+    checkEvent(e1, rootProp.enteredMouse, 0, 0);
 
     listener.mouseMoved(e2);
     assertSame(child2Panel, listener.hooveredPanel);
-    assertNull(rootBlock.exitedMouse);
-    assertSame(e2, child2Block.enteredMouse);
+    assertNull(rootProp.exitedMouse);
+    checkEvent(e2, child2Block.enteredMouse, 49, 49);
 
     listener.mouseMoved(e3);
     assertSame(childPanel, listener.hooveredPanel);
-    assertSame(e3, child2Block.exitedMouse);
-    assertSame(e3, childBlock.enteredMouse);
+    checkEvent(e3, child2Block.exitedMouse, 499, 499);
+    checkEvent(e3, childProp.enteredMouse, 250, 250);
   }
 
   public void testMouseEnteredAndExitedWhileDragging() throws Exception
@@ -148,17 +156,17 @@ public class EventListenerTest extends TestCase
 
     listener.mouseDragged(e1);
     assertSame(root, listener.hooveredPanel);
-    assertSame(e1, rootBlock.enteredMouse);
+    checkEvent(e1, rootProp.enteredMouse, 0, 0);
 
     listener.mouseDragged(e2);
     assertSame(child2Panel, listener.hooveredPanel);
-    assertNull(rootBlock.exitedMouse);
-    assertSame(e2, child2Block.enteredMouse);
+    assertNull(rootProp.exitedMouse);
+    checkEvent(e2, child2Block.enteredMouse, 49, 49);
 
     listener.mouseDragged(e3);
     assertSame(childPanel, listener.hooveredPanel);
-    assertSame(e3, child2Block.exitedMouse);
-    assertSame(e3, childBlock.enteredMouse);
+    checkEvent(e3, child2Block.exitedMouse, 499, 499);
+    checkEvent(e3, childProp.enteredMouse, 250, 250);
   }
 
   private MouseEvent mouseEvent(int x, int y)

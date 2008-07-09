@@ -82,16 +82,13 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
     if(descendant == ancestor || descendant == null)
       return;
     enter(descendant.getParent(), ancestor, e);
-//    if(descendant instanceof ParentPanel)
-    if(descendant != null)
-      descendant.mouseEntered(e);
+    descendant.mouseEntered(e);
   }
 
   private void exit(Panel descendant, Panel ancestor, MouseEvent e)
   {
     while(descendant != ancestor && !(descendant instanceof RootPanel))
     {
-//      if(descendant instanceof ParentPanel)
       if(descendant != null)
         descendant.mouseExited(e);
       descendant = descendant.getParent();
