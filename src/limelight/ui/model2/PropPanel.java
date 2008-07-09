@@ -133,15 +133,15 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void doLayout()
-  {
+  {                   
     if(borderShaper != null)
       borderShaper.updateDimentions();
 
     layout.doLayout();
 
-//    //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
-//    if (borderShaper != null)
-//      borderShaper.setBounds(getBoxInsideMargins());
+    //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
+    if (borderShaper != null)
+      borderShaper.setBounds(getBoxInsideMargins());
   }
 
   public void paintOn(Graphics2D graphics)
