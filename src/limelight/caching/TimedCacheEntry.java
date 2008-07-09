@@ -1,11 +1,11 @@
 package limelight.caching;
 
-public class TimedCacheEntry extends CacheEntry
+public class TimedCacheEntry<T> extends CacheEntry<T>
 {
   private double timeoutSeconds;
   private double expirationDate;
 
-  public TimedCacheEntry(Object value, double timeout)
+  public TimedCacheEntry(T value, double timeout)
   {
     super(value);
     timeoutSeconds = timeout;
@@ -19,7 +19,7 @@ public class TimedCacheEntry extends CacheEntry
 
   public boolean isExpired()
   {
-    return System.nanoTime() > expirationDate;
+    return value() == null || System.nanoTime() > expirationDate;
   }
 
   public double getTimeoutSeconds()

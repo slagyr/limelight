@@ -6,6 +6,10 @@ package limelight;
 import limelight.io.TempDirectory;
 import limelight.io.Downloader;
 import limelight.task.TaskEngine;
+import limelight.ui.Panel;
+import limelight.caching.Cache;
+
+import java.awt.image.BufferedImage;
 
 public class Context
 {
@@ -14,6 +18,7 @@ public class Context
   public TempDirectory tempDirectory;
   public Downloader downloader;
   public TaskEngine taskEngine;
+  public Cache<Panel, BufferedImage> bufferedImageCache;
 
   protected Context()
   {

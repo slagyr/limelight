@@ -1,12 +1,12 @@
 package limelight.caching;
 
-public class MockCacheEntry extends CacheEntry
+public class MockCacheEntry<T> extends CacheEntry<T>
 {
   public boolean expired;
   public static MockCacheEntry last;
   public boolean renewed;
 
-  public MockCacheEntry(Object value)
+  public MockCacheEntry(T value)
   {
     super(value);
     last = this;

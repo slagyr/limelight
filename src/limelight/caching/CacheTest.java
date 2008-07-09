@@ -4,13 +4,13 @@ import junit.framework.TestCase;
 
 public class CacheTest extends TestCase
 {
-  private Cache cache;
+  private Cache<String, String> cache;
 
-  private class TestableCache extends Cache
+  private class TestableCache extends Cache<String, String>
   {
-    protected CacheEntry createEntry(Object value)
+    protected CacheEntry<String> createEntry(String value)
     {
-      return new MockCacheEntry(value);
+      return new MockCacheEntry<String>(value);
     }
   }
 

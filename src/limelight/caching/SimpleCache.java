@@ -1,9 +1,9 @@
 package limelight.caching;
 
-public class SimpleCache extends Cache
+public class SimpleCache<KEY, VALUE> extends Cache<KEY, VALUE>
 {
-  protected CacheEntry createEntry(Object value)
+  protected CacheEntry<VALUE> createEntry(VALUE value)
   {
-    return new SimpleCacheEntry(value);
+    return new SimpleCacheEntry<VALUE>(value);
   }
 }

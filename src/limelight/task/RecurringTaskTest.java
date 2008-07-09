@@ -5,15 +5,16 @@ import junit.framework.TestCase;
 public class RecurringTaskTest extends TestCase
 {
   private TestableRecurringTask task;
+  private TaskEngine engine;
 
   private class TestableRecurringTask extends RecurringTask
   {
     public boolean performed;
     public int performances;
 
-    public TestableRecurringTask(int delayInMillis)
+    public TestableRecurringTask(String name, int delayInMillis)
     {
-      super(delayInMillis);
+      super(name, delayInMillis);
     }
 
     protected void doPerform()
@@ -25,7 +26,9 @@ public class RecurringTaskTest extends TestCase
 
   public void setUp() throws Exception
   {
-    task = new TestableRecurringTask(100);
+    task = new TestableRecurringTask("blah", 100);
+    engine = new TaskEngine();
+    task.setEngine(engine);
   }
   
   public void testDelay() throws Exception
@@ -100,5 +103,14 @@ public class RecurringTaskTest extends TestCase
     task.perform();
 
     assertEquals(7, task.performances);
+  }
+  
+  public void testAddsItsSelfBackToTaskListAfterExecuting() throws Exception
+  {
+    assertEquals(0, engine.getTasks().size());
+
+    task.perform();
+
+    assertEquals(1, engine.getTasks().size());
   }
 }

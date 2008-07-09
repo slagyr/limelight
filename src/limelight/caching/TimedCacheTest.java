@@ -4,11 +4,11 @@ import junit.framework.TestCase;
 
 public class TimedCacheTest extends TestCase
 {
-  private TimedCache cache;
+  private TimedCache<String, String> cache;
 
   public void setUp() throws Exception
   {
-    cache = new TimedCache(1);
+    cache = new TimedCache<String, String>(1);
   }
   
   public void testTimeout() throws Exception

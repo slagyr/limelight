@@ -8,7 +8,7 @@ public class TimedCacheEntryTest extends TestCase
 
   public void setUp() throws Exception
   {
-    entry = new TimedCacheEntry("blah", 0.01);
+    entry = new TimedCacheEntry<String>("blah", 0.01);
   }
 
   public void testConstructor() throws Exception
@@ -32,5 +32,11 @@ public class TimedCacheEntryTest extends TestCase
     entry.renew();
 
     assertEquals(false, entry.isExpired());
+  }
+  
+  public void testIsExpiredIfValueIsNull() throws Exception
+  {
+    entry = new TimedCacheEntry<String>(null, 1);
+    assertEquals(true, entry.isExpired());
   }
 }

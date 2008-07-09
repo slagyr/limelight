@@ -4,28 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-public abstract class Cache
+public abstract class Cache<KEY, VALUE>
 {
-  private HashMap<Object, CacheEntry> map;
+  private HashMap<KEY, CacheEntry<VALUE>> map;
 
   public Cache()
   {
-    map = new HashMap<Object, CacheEntry>();
+    map = new HashMap<KEY, CacheEntry<VALUE>>();
   }
 
-  public void cache(Object key, Object value)
+  public void cache(KEY key, VALUE value)
   {
     map.put(key, createEntry(value));
   }
 
-  protected abstract CacheEntry createEntry(Object value);
+  protected abstract CacheEntry<VALUE> createEntry(VALUE value);
 
-  public Object retrieve(Object key)
+  public VALUE retrieve(KEY key)
   {
-    CacheEntry entry = map.get(key);
+    CacheEntry<VALUE> entry = map.get(key);
     if(entry != null)
     {
-      Object value = entry.value();
+      VALUE value = entry.value();
       if(value != null)
         entry.renew();
       else
@@ -36,21 +36,21 @@ public abstract class Cache
       return null;
   }
 
-  public HashMap<Object, CacheEntry> getMap()
+  public HashMap<KEY, CacheEntry<VALUE>> getMap()
   {
     return map;
   }
 
   public void clean()
   {
-    ArrayList deletes = new ArrayList();
-    for(Map.Entry<Object, CacheEntry> mapEntry : map.entrySet())
+    ArrayList<KEY> deletes = new ArrayList<KEY>();
+    for(Map.Entry<KEY, CacheEntry<VALUE>> mapEntry : map.entrySet())
     {
       if(mapEntry.getValue().isExpired())
         deletes.add(mapEntry.getKey());
     }
 
-    for(Object key : deletes)
+    for(KEY key : deletes)
       map.remove(key);
   }
 }
