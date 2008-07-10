@@ -28,7 +28,7 @@ public class FlatStyleTest extends TestCase
   {
     public StyleDescriptor changedStyle;
 
-    public void styleChanged(StyleDescriptor descriptor)
+    public void styleChanged(StyleDescriptor descriptor, String value)
     {
       changedStyle = descriptor;
     }

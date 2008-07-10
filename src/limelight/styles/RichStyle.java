@@ -7,10 +7,9 @@ import limelight.util.Util;
 
 import java.util.LinkedList;
 
-public class RichStyle extends Style
+public class RichStyle extends Style implements StyleObserver
 {
   private String[] styles;
-  private LinkedList<RichStyle> extenders;
   private LinkedList<RichStyle> extensions;
 
   public RichStyle()
@@ -43,7 +42,7 @@ public class RichStyle extends Style
     if(!Util.equal(originalValue, value))
     {
       changes[descriptor.index] = true;
-      notifyExtendersOfChange(descriptor, value);
+      notifyObserversOfChange(descriptor, value);
     }
   }
 
@@ -56,16 +55,10 @@ public class RichStyle extends Style
   {
     if(extensions != null)
     {
-      extension.removeExtender(this);
+      extension.removeObserver(this);
       applyChangesFromExtension(extension);
       extensions.remove(extension);
     }
-  }
-
-  private void removeExtender(RichStyle extender)
-  {
-    if(extenders != null)
-      extenders.remove(extender);
   }
 
   public void addExtension(RichStyle extension)
@@ -77,33 +70,17 @@ public class RichStyle extends Style
     {
       applyChangesFromExtension(extension);
       extensions.add(extension);
-      if(!extension.hasExtender(this))
-        extension.addExtender(this);
+      if(!extension.hasObserver(this))
+        extension.addObserver(this);
     }
   }
 
-  private void addExtender(RichStyle extender)
-  {
-    if(extenders == null)
-      extenders = new LinkedList<RichStyle>();
-    extenders.add(extender);
-  }
-
-  private void notifyExtendersOfChange(StyleDescriptor descriptor, String value)
-  {
-    if(extenders != null)
-    {
-      for(RichStyle extender : extenders)
-        extender.styleChanged(descriptor, value);
-    }
-  }
-
-  private void styleChanged(StyleDescriptor descriptor, String value)
+  public void styleChanged(StyleDescriptor descriptor, String value)
   {
     if(styles[descriptor.index] == null)
     {
       changes[descriptor.index] = true;
-      notifyExtendersOfChange(descriptor, value);
+      notifyObserversOfChange(descriptor, value);
     }
   }
 
@@ -140,11 +117,6 @@ public class RichStyle extends Style
         return value;
     }
     return null;
-  }
-
-  public boolean hasExtender(RichStyle style)
-  {
-    return extenders != null && extenders.contains(style);
   }
 
   public boolean hasExtension(RichStyle style)

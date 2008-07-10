@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public abstract class Style
 {
   public static final LinkedList<StyleDescriptor> STYLE_LIST = new LinkedList<StyleDescriptor>();
+  private LinkedList<StyleObserver> observers;
 
   public static StyleDescriptor descriptor(String name, String defaultValue)
   {
@@ -117,6 +118,33 @@ public abstract class Style
       if(changes[i])
         count++;
     return count;
+  }
+  
+  protected void removeObserver(StyleObserver observer)
+  {
+    if(observers != null)
+      observers.remove(observer);
+  }
+
+  protected void addObserver(StyleObserver observer)
+  {
+    if(observers == null)
+      observers = new LinkedList<StyleObserver>();
+    observers.add(observer);
+  }
+
+  protected void notifyObserversOfChange(StyleDescriptor descriptor, String value)
+  {
+    if(observers != null)
+    {
+      for(StyleObserver observer : observers)
+        observer.styleChanged(descriptor, value);
+    }
+  }
+
+  public boolean hasObserver(StyleObserver observer)
+  {
+    return observers != null && observers.contains(observer);
   }
 
   public int asInt(String value)

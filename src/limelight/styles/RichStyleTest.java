@@ -4,9 +4,6 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
-import limelight.styles.RichStyle;
-import limelight.styles.Style;
-import limelight.styles.StyleDescriptor;
 
 public class RichStyleTest extends TestCase
 {
@@ -44,11 +41,11 @@ public class RichStyleTest extends TestCase
   {
     style.addExtension(style2);
     assertEquals(true, style.hasExtension(style2));
-    assertEquals(true, style2.hasExtender(style));
+    assertEquals(true, style2.hasObserver(style));
 
     style.addExtension(style3);
     assertEquals(true, style.hasExtension(style3));
-    assertEquals(true, style3.hasExtender(style));
+    assertEquals(true, style3.hasObserver(style));
   }
 
   public void testRemoveExtension() throws Exception
@@ -166,9 +163,9 @@ public class RichStyleTest extends TestCase
     assertEquals(true, style2.hasExtension(style));
     assertEquals(true, style3.hasExtension(style));
     assertEquals(true, style4.hasExtension(style));
-    assertEquals(true, style.hasExtender(style2)); 
-    assertEquals(true, style.hasExtender(style3));
-    assertEquals(true, style.hasExtender(style4));
+    assertEquals(true, style.hasObserver(style2));
+    assertEquals(true, style.hasObserver(style3));
+    assertEquals(true, style.hasObserver(style4));
     assertEquals("100", style2.getWidth());
     assertEquals("100", style3.getWidth());
     assertEquals("100", style4.getWidth());

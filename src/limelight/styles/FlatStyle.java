@@ -5,17 +5,13 @@ package limelight.styles;
 
 import limelight.util.Util;
 
-import java.util.LinkedList;
-
 public class FlatStyle extends Style
 {
   private String[] styles;
-  private LinkedList<StyleObserver> observers;
 
   public FlatStyle()
 	{
     styles = new String[STYLE_COUNT];
-    observers = new LinkedList<StyleObserver>();
   }
 
   protected String get(int key)
@@ -36,7 +32,7 @@ public class FlatStyle extends Style
     if(!Util.equal(originalValue, value))
     {
       changes[descriptor.index] = true;
-      notifyObservers(descriptor);
+      notifyObserversOfChange(descriptor, value);
     }
   }
 
@@ -48,21 +44,5 @@ public class FlatStyle extends Style
   public String[] getStyles()
   {
     return styles;
-  }
-
-  public void addObserver(StyleObserver observer)
-  {
-    observers.add(observer);
-  }
-
-  private void notifyObservers(StyleDescriptor descriptor)
-  {
-    for(StyleObserver observer : observers)
-      observer.styleChanged(descriptor);
-  }
-
-  public void removeObserver(StyleObserver observer)
-  {
-    observers.remove(observer);
   }
 }
