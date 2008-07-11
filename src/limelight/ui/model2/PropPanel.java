@@ -1,24 +1,26 @@
 package limelight.ui.model2;
 
-import limelight.ui.Painter;
-import limelight.ui.PaintablePanel;
-import limelight.ui.api.PropablePanel;
-import limelight.ui.api.Prop;
-import limelight.ui.painting.BackgroundPainter;
-import limelight.ui.painting.BorderPainter;
-import limelight.ui.painting.Border;
-import limelight.ui.painting.PaintAction;
-import limelight.util.Box;
 import limelight.LimelightError;
 import limelight.styles.Style;
+import limelight.styles.StyleDescriptor;
+import limelight.styles.StyleObserver;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
+import limelight.ui.api.Prop;
+import limelight.ui.api.PropablePanel;
+import limelight.ui.painting.BackgroundPainter;
+import limelight.ui.painting.Border;
+import limelight.ui.painting.BorderPainter;
+import limelight.ui.painting.PaintAction;
+import limelight.util.Box;
+import limelight.util.Util;
 
-import java.util.LinkedList;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.LinkedList;
 
-public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel
+public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
 {
   private Prop prop;
   private PropPanelLayout layout;
@@ -37,6 +39,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     buildPainters();
     layout = new PropPanelLayout(this);
     textAccessor = new TextPaneTextAccessor(this);
+    getStyle().addObserver(this);
   }
 
   private void buildPainters()
@@ -53,6 +56,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void setText(String text) throws LimelightError
   {
+    if(!Util.equal(text, getText()))
+      markAsChanged();
     textAccessor.setText(text);
   }
 
@@ -83,8 +88,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     else if(sizeString.endsWith("%"))
     {
       double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-      int result = (int) ((percentage * 0.01) * (double) maxSize);
-      return result;
+      return (int) ((percentage * 0.01) * (double) maxSize);
     }
     else
     {
@@ -133,14 +137,14 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void doLayout()
-  {                   
+  {
     if(borderShaper != null)
       borderShaper.updateDimentions();
 
     layout.doLayout();
 
     //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
-    if (borderShaper != null)
+    if(borderShaper != null)
       borderShaper.setBounds(getBoxInsideMargins());
   }
 
@@ -148,7 +152,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     for(Painter painter : painters)
       painter.paint(graphics);
-    
+
     if(afterPaintAction != null)
       afterPaintAction.invoke(graphics);
   }
@@ -216,7 +220,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void mouseWheelMoved(MouseWheelEvent e)
-  {                
+  {
     getParent().mouseWheelMoved(e);
   }
 
@@ -233,10 +237,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 //      getParent().repaint();
 //    else
 //    {
-      doLayout();
-      PaintJob job = new PaintJob(getAbsoluteBounds());
-      job.paint(((RootPanel)getRoot()).getPanel()); //TODO - cast should not be neccessary here.
-      job.applyTo(getRoot().getGraphics());
+    doLayout();
+    PaintJob job = new PaintJob(getAbsoluteBounds());
+    job.paint(((RootPanel) getRoot()).getPanel()); //TODO - cast should not be neccessary here.
+    job.applyTo(getRoot().getGraphics());
 //    }
   }
 
@@ -277,5 +281,16 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     boxInsideBorders = null;
     boxInsidePadding = null;
   }
+
+  public boolean hasChanges()
+  {
+    return hasChanges;
+  }
+
+  public void styleChanged(StyleDescriptor descriptor, String value)
+  {
+    markAsChanged();
+  }
+
 }
 

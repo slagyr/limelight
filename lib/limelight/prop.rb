@@ -34,8 +34,8 @@ module Limelight
     def initialize(hash = {})
       @options = hash
       @children = []
-      @panel = UI::Model::Panel.new(self)
       @style = Styles::ScreenableStyle.new
+      @panel = UI::Model::Panel.new(self)
     end
     
     def add(child)
@@ -99,7 +99,8 @@ module Limelight
         return result if result
       end
       return nil
-    end
+    end                                                                                 
+
     
     def find_by_name(name, results = [])
       results << self if @name == name

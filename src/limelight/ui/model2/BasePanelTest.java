@@ -124,7 +124,7 @@ public class BasePanelTest extends TestCase
 
   private void createFamilyTree()
   {
-    root = new RootPanel(new Frame(new MockStage()));
+    root = new RootPanel(new MockFrame());
     parent = new MockPanel();
     root.setPanel(parent);
     child = new MockPanel();

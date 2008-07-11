@@ -8,6 +8,8 @@ import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.painting.VerboseRepaintManager;
 import limelight.ui.Panel;
+import limelight.ui.model2.FrameManager;
+import limelight.ui.model2.Frame;
 import limelight.task.TaskEngine;
 import limelight.task.RecurringTask;
 import limelight.caching.TimedCache;
@@ -17,6 +19,8 @@ import org.jruby.RubyInstanceConfig;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Main
 {
@@ -96,8 +100,11 @@ public class Main
     context.downloader = new Downloader(context.tempDirectory);
     context.taskEngine = new TaskEngine().started();
     context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
+    context.frameManager = new FrameManager();
 
     addBufferedImageCacheCleanerTask(context);
+    addPanelPainterTask(context);
+
 
     contextIsConfigured = true;
   }
@@ -108,6 +115,18 @@ public class Main
       protected void doPerform()
       {
         Context.instance().bufferedImageCache.clean();
+      }
+    });
+  }
+
+  private void addPanelPainterTask(Context context)
+  {
+    context.taskEngine.add(new RecurringTask("Panel Painter", 80) {
+      protected void doPerform()
+      {
+        Frame frame = Context.instance().frameManager.getActiveFrame();
+        if(frame != null)
+          frame.getRoot().repaintChangedPanels();
       }
     });
   }

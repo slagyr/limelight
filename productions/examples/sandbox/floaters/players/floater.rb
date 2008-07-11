@@ -43,10 +43,16 @@ module Floater
   def get_away_from(source_x, source_y)
     return if @sliding
     d = distance(x, y, source_x, source_y)
-puts "get_away_from(#{source_x}, #{source_y}) x: #{x}, y: #{y}, D = #{d}" 
     return if d > MAX_DISTANCE
     calculate_vector(source_x, source_y)
-    Thread.new { slide }
+    Thread.new do
+      begin
+        slide
+      rescue Exception => e
+        puts e
+        puts e.backtrace
+      end
+    end
   end
   
   def calculate_vector(sx, sy)
@@ -69,7 +75,7 @@ puts "get_away_from(#{source_x}, #{source_y}) x: #{x}, y: #{y}, D = #{d}"
       self.new_y = y2
       @velocity -= @velocity * FRICTION
       MUTEX.synchronize { parent.update_now }
-      Thread.pass
+      sleep(0.05)
     end
     @sliding = false
   end

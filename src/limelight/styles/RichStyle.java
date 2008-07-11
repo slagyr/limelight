@@ -41,6 +41,7 @@ public class RichStyle extends Style implements StyleObserver
     styles[descriptor.index] = value;
     if(!Util.equal(originalValue, value))
     {
+      styles[descriptor.index] = value;
       changes[descriptor.index] = true;
       notifyObserversOfChange(descriptor, value);
     }

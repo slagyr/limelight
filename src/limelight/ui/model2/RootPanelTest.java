@@ -2,24 +2,20 @@ package limelight.ui.model2;
 
 import junit.framework.TestCase;
 
-import limelight.ui.api.MockStage;
-import limelight.ui.MockPanel;
-
 import java.awt.*;
 import java.util.Arrays;
 
 public class RootPanelTest extends TestCase
 {
   private RootPanel root;
-  private Frame frame;
-  private MockPanel child;
+  private MockPropablePanel child;
   private Container contentPane;
 
   public void setUp() throws Exception
   {
-    frame = new Frame(new MockStage());
+    Frame frame = new MockFrame();
     root = new RootPanel(frame);
-    child = new MockPanel();
+    child = new MockPropablePanel();
     contentPane = frame.getContentPane();
   }
 
@@ -72,6 +68,44 @@ public class RootPanelTest extends TestCase
 
     root.destroy();
     assertEquals(false, root.isAlive());
+  }
+
+  public void testChangedPanelsEmpytByDefault() throws Exception
+  {
+    assertEquals(0, root.getChangedPanelCount());
+
+    root.addChangedPanel(child);
+
+    assertEquals(1, root.getChangedPanelCount());
+  }
+  
+  public void testCantAddSameChangedPanelMultipleTimes() throws Exception
+  {
+    root.addChangedPanel(child);
+    root.addChangedPanel(child);
+    assertEquals(1, root.getChangedPanelCount());
+  }
+  
+  public void testChangesPanelsIsClearedWhenDestroyed() throws Exception
+  {
+    root.setPanel(child);
+    root.addChangedPanel(child);
+
+    root.destroy();
+
+    assertEquals(0, root.getChangedPanelCount());
+  }
+
+  public void testRepaintChangedPanels() throws Exception
+  {
+    root.setPanel(child);
+    root.addChangedPanel(child);
+
+    root.repaintChangedPanels();
+
+    assertEquals(0, root.getChangedPanelCount());
+    assertEquals(true, child.wasRepainted);
+    assertEquals(true, child.changeMarkerWasReset);
   }
 
 }

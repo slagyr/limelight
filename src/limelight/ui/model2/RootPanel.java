@@ -4,6 +4,7 @@ import limelight.util.Box;
 import limelight.ui.Panel;
 import limelight.styles.Style;
 import java.util.LinkedList;
+import java.util.HashSet;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -14,10 +15,12 @@ public class RootPanel implements Panel
   private Container contentPane;
   private EventListener listener;
   private boolean alive;
+  private HashSet<Panel> changedPanels;
 
   public RootPanel(Frame frame)
   {
     contentPane = frame.getContentPane();
+    changedPanels = new HashSet<Panel>();
   }
 
   public Box getChildConsumableArea()
@@ -96,6 +99,7 @@ public class RootPanel implements Panel
     contentPane.removeKeyListener(listener);
     listener = null;
     panel.setParent(null);
+    changedPanels.clear();
     alive = false;
   }
 
@@ -127,11 +131,58 @@ public class RootPanel implements Panel
     job.applyTo(getGraphics());
   }
 
+
+  public void setCursor(Cursor cursor)
+  {
+    contentPane.setCursor(cursor);
+  }
+
   public Panel getPanel()
   {
     return panel;
   }
 
+  public boolean isAlive()
+  {
+    return alive;
+  }
+
+  public EventListener getListener()
+  {
+    return listener;
+  }
+
+  public synchronized void addChangedPanel(Panel panel)
+  {  
+    changedPanels.add(panel);
+  }
+
+  public synchronized int getChangedPanelCount()
+  {
+    return changedPanels.size();
+  }
+
+  //TODO MDM - This is not fully right.  Need to make sure we're not repainting a panel more than once.  So we need to remove from the set descendants of other panels in the list.
+  public synchronized void repaintChangedPanels()
+  {
+    for(Panel changedPanel : changedPanels)
+    {
+      Style style = changedPanel.getStyle();
+      boolean dimentionsChanged = style.changed(Style.WIDTH) || style.changed(Style.HEIGHT);
+      boolean locationChanged = "on".equals(style.getFloat()) && (style.changed(Style.X) || style.changed(Style.Y));
+      if(dimentionsChanged || locationChanged)
+        changedPanel.getParent().repaint();
+      else
+        changedPanel.repaint();
+      changedPanel.resetChangeMarker();
+    }
+    changedPanels.clear();
+  }
+
+  public synchronized boolean changedPanelsContains(Panel panel)
+  {
+    return changedPanels.contains(panel);
+  }
 
   /////////////////////////////////////////////
   /// NOT NEEDED
@@ -249,22 +300,11 @@ public class RootPanel implements Panel
   {
   }
 
+  public void resetChangeMarker()
+  {
+  }
+
   public void add(Panel child)
   {
-  }
-
-  public void setCursor(Cursor cursor)
-  {
-    contentPane.setCursor(cursor);
-  }
-
-  public boolean isAlive()
-  {
-    return alive;
-  }
-
-  public EventListener getListener()
-  {
-    return listener;
   }
 }

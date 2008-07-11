@@ -97,4 +97,30 @@ public class ScreenableStyleTest extends TestCase
       assertEquals("Screen already applied", e.getMessage());  
     }
   }
+
+  public void testNotifyObserversWhenAddingOrRemovingScreen() throws Exception
+  {
+    MockStyleObserver observer = new MockStyleObserver();
+    style.addObserver(observer);
+
+    style2.setWidth("123");
+    style2.setHeight("321");
+    style.applyScreen(style2);
+
+    assertEquals(2, observer.descriptorChanges.size());
+    assertEquals(2, observer.valueChanges.size());
+    assertEquals(Style.WIDTH, observer.descriptorChanges.get(0));
+    assertEquals(Style.HEIGHT, observer.descriptorChanges.get(1));
+    assertEquals("123", observer.valueChanges.get(0));
+    assertEquals("321", observer.valueChanges.get(1));
+
+    style.removeScreen();
+
+    assertEquals(4, observer.descriptorChanges.size());
+    assertEquals(4, observer.valueChanges.size());
+    assertEquals(Style.WIDTH, observer.descriptorChanges.get(2));
+    assertEquals(Style.HEIGHT, observer.descriptorChanges.get(3));
+    assertEquals("auto", observer.valueChanges.get(2));
+    assertEquals("auto", observer.valueChanges.get(3));
+  }
 }

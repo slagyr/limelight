@@ -1,8 +1,8 @@
 package limelight.ui.model2;
 
 import limelight.ui.api.MockProp;
+import limelight.ui.api.MockStage;
 import limelight.ui.Painter;
-import limelight.ui.MockPanel;
 import limelight.ui.MockGraphics;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
@@ -20,16 +20,16 @@ public class PropPanelTest extends TestCase
   private MockProp prop;
   private PropPanel panel;
   private FlatStyle style;
-  private MockPanel parent;
+  private RootPanel root;
 
   public void setUp() throws Exception
   {
-    parent = new MockPanel();
+    root = new RootPanel(new MockFrame());
 
     prop = new MockProp();
     style = prop.getStyle();
     panel = new PropPanel(prop);
-    parent.add(panel);
+    root.setPanel(panel);
   }
 
   public void testConstructor() throws Exception
@@ -71,7 +71,7 @@ public class PropPanelTest extends TestCase
 
   public void testSizeUsingAutoWidthAndHeight() throws Exception
   {
-    parent.setSize(100, 100);
+    root.setSize(100, 100);
     style.setWidth("auto");
     style.setHeight("auto");
     panel.snapToSize();
@@ -113,7 +113,7 @@ public class PropPanelTest extends TestCase
 
   public void testBorderGetUpdatedOnLayout() throws Exception
   {
-    parent.setSize(100, 100);
+    root.setSize(100, 100);
     Border border = panel.getBorderShaper();
     style.flushChanges();
 
@@ -153,5 +153,33 @@ public class PropPanelTest extends TestCase
     panel.paintOn(mockGraphics);
 
     assertEquals(true, invoked);
+  }
+
+  public void testHasChangesWhenaStyleIsChanged() throws Exception
+  {
+    style.setWidth("100%");
+
+    assertEquals(true, panel.hasChanges());
+  }
+
+  public void testHasChangesWhenaTextIsChanged() throws Exception
+  {
+    panel.setText("blah");
+    assertEquals(true, panel.hasChanges());
+
+    panel.resetChangeMarker();
+    panel.setText("blah");
+    assertEquals(false, panel.hasChanges());
+
+    panel.setText("new text");
+    assertEquals(true, panel.hasChanges());
+  }
+  
+  public void testMarkingAsChagedAddsPanelToChangeSet() throws Exception
+  {
+    assertEquals(0, root.getChangedPanelCount());
+    panel.markAsChanged();
+    assertEquals(1, root.getChangedPanelCount());
+    assertEquals(true, root.changedPanelsContains(panel));
   }
 }
