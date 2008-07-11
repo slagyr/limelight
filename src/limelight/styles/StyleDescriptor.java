@@ -16,4 +16,9 @@ public class StyleDescriptor
     this.name = name;
     this.defaultValue = defaultValue;
   }
+
+  public String toString()
+  {
+    return index + ": " + name;
+  }
 }

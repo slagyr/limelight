@@ -61,4 +61,6 @@ public interface Panel
   void mouseExited(MouseEvent e);
   void mouseMoved(MouseEvent e);
   void mouseWheelMoved(MouseWheelEvent e);
+
+  void resetChangeMarker();
 }

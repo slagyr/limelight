@@ -18,13 +18,13 @@ public class PropPanelLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new Frame(new MockStage()));
+    root = new RootPanel(new MockFrame());
 
     parent = new PropPanel(new MockProp());
+    root.setPanel(parent);
     parent.getProp().getStyle().setWidth("100");
     parent.getProp().getStyle().setHeight("100");
 
-    root.setPanel(parent);
 
     layout = new PropPanelLayout(parent);
   }
@@ -101,9 +101,9 @@ public class PropPanelLayoutTest extends TestCase
   public void testAutoSize() throws Exception
   {
     PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
-    parent.add(panel);
     MockPropablePanel child = new MockPropablePanel();
     child.prepForSnap(50, 50);
     panel.add(child);
@@ -117,9 +117,9 @@ public class PropPanelLayoutTest extends TestCase
   public void testAutoWidthOnly() throws Exception
   {
     PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("100");
-    parent.add(panel);
     MockPropablePanel child = new MockPropablePanel();
     child.prepForSnap(50, 50);
     panel.add(child);
@@ -133,9 +133,9 @@ public class PropPanelLayoutTest extends TestCase
   public void testAutoHeightOnly() throws Exception
   {
     PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
     panel.getStyle().setWidth("70%");
     panel.getStyle().setHeight("auto");
-    parent.add(panel);
     MockPropablePanel child = new MockPropablePanel();
     child.prepForSnap(50, 50);
     panel.add(child);
@@ -149,6 +149,7 @@ public class PropPanelLayoutTest extends TestCase
   public void testAutoSizeIncludesMarginPaddingAndBorder() throws Exception
   {
     PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
     panel.getStyle().setTopMargin("1");
@@ -163,7 +164,6 @@ public class PropPanelLayoutTest extends TestCase
     panel.getStyle().setLeftMargin("10");
     panel.getStyle().setLeftBorderWidth("11");
     panel.getStyle().setLeftPadding("12");
-    parent.add(panel);
     MockPropablePanel child = new MockPropablePanel();
     child.prepForSnap(50, 50);
     panel.add(child);
@@ -177,12 +177,12 @@ public class PropPanelLayoutTest extends TestCase
   public void testAutoSizeWithChildrenCentered() throws Exception
   {
     PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
     panel.getStyle().setHorizontalAlignment("center");
     panel.getStyle().setVerticalAlignment("center");
     panel.getStyle().setMargin("10");
-    parent.add(panel);
     MockPropablePanel child = new MockPropablePanel();
     child.prepForSnap(50, 50);
     panel.add(child);
@@ -198,9 +198,9 @@ public class PropPanelLayoutTest extends TestCase
   public void testAutoSizingWithNoChildren() throws Exception
   {
     PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
-    parent.add(panel);
 
     layout.doLayout();
 
@@ -228,9 +228,9 @@ public class PropPanelLayoutTest extends TestCase
   public void testFloatersDoNotInfluenceAutoSize() throws Exception
   {
     PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
-    parent.add(panel);
     MockPropablePanel child = new MockPropablePanel();
     child.prepForSnap(50, 50);
     panel.add(child);
@@ -260,5 +260,4 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(new Point(2, 3), floater.getLocation());
     assertEquals(new Point(0, 0), child.getLocation());
   }
-
 }

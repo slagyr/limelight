@@ -3,14 +3,19 @@ package limelight.ui.model2;
 import junit.framework.TestCase;
 import limelight.ui.api.MockStage;
 import limelight.ui.MockPanel;
+import limelight.Context;
 
 public class FrameTest extends TestCase
 {
   private MockStage stage;
   private Frame frame;
+  private FrameManager frameManager;
 
   public void setUp() throws Exception
   {
+    frameManager = new FrameManager();
+    Context.instance().frameManager = frameManager;
+
     stage = new MockStage();
     frame = new Frame(stage);
   }
@@ -47,5 +52,11 @@ public class FrameTest extends TestCase
     frame.load(panel2);
 
     assertEquals(false, firstRoot.isAlive());
+  }
+  
+  public void testAddsSelfToFrameManager() throws Exception
+  {
+    assertEquals(1, frameManager.getFrameCount());
+    assertEquals(true, frameManager.isWatching(frame));
   }
 }

@@ -24,16 +24,6 @@ public class FlatStyleTest extends TestCase
     assertEquals("auto", style.getWidth());
   }
 
-  private class MockStyleObserver implements StyleObserver
-  {
-    public StyleDescriptor changedStyle;
-
-    public void styleChanged(StyleDescriptor descriptor, String value)
-    {
-      changedStyle = descriptor;
-    }
-  }
-
   public void testObserving() throws Exception
   {
     MockStyleObserver observer = new MockStyleObserver();

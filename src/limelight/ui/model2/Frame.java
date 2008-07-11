@@ -2,6 +2,8 @@ package limelight.ui.model2;
 
 import limelight.ui.api.Stage;
 import limelight.ui.Panel;
+import limelight.Context;
+
 import javax.swing.*;
 
 public class Frame extends JFrame
@@ -9,9 +11,14 @@ public class Frame extends JFrame
   private Stage stage;
   private RootPanel root;
 
+  protected Frame()
+  {
+  }
+
   public Frame(Stage stage)
   {
     this.stage = stage;
+    Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
   }
 
@@ -40,6 +47,11 @@ public class Frame extends JFrame
   public Stage getStage()
   {
     return stage;
+  }
+
+  protected void setStage(Stage stage)
+  {
+    this.stage = stage;
   }
 
   public void alert(String message)

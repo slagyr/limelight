@@ -11,6 +11,7 @@ import limelight.task.RecurringTask;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
 import limelight.ui.Panel;
+import limelight.ui.model2.FrameManager;
 
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -75,5 +76,22 @@ public class MainTest extends TestCase
         return task;
     }
     return null;
+  }
+  
+  public void testFrameManagerIsAddedToContext() throws Exception
+  {
+    main.configureContext();
+
+    assertNotNull(Context.instance().frameManager);
+  }
+
+  public void testPainterTaskIsAddedToEngine() throws Exception
+  {
+    main.configureContext();
+
+    Task task = findTaskEngineHashTaskNamed("Panel Painter");
+    assertEquals(true, task instanceof RecurringTask);
+    assertEquals(80, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
+    assertEquals(false, ((RecurringTask)task).isStrict());
   }
 }

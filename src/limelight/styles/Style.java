@@ -120,13 +120,13 @@ public abstract class Style
     return count;
   }
   
-  protected void removeObserver(StyleObserver observer)
+  public void removeObserver(StyleObserver observer)
   {
     if(observers != null)
       observers.remove(observer);
   }
 
-  protected void addObserver(StyleObserver observer)
+  public void addObserver(StyleObserver observer)
   {
     if(observers == null)
       observers = new LinkedList<StyleObserver>();

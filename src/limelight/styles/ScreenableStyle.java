@@ -28,17 +28,24 @@ public class ScreenableStyle extends RichStyle
   {
     if(screen != null)
       throw new RuntimeException("Screen already applied");
-    applyChangesFromScreen(style);
+    applyChangesFromScreen(style, true);
     screen = style;
   }
 
-  private void applyChangesFromScreen(Style screen)
+  private void applyChangesFromScreen(Style screen, boolean in)
   {
     for(StyleDescriptor descriptor : STYLE_LIST)
     {
       String value = screen.get(descriptor.index);
-      if(value != null && !value.equals(get(descriptor.index)))
+      String originalValue = get(descriptor);
+      if(value != null && !value.equals(originalValue))
+      {
         changes[descriptor.index] = true;
+        if(in)
+          notifyObserversOfChange(descriptor, value);
+        else
+          notifyObserversOfChange(descriptor, originalValue);
+      }
     }
   }
 
@@ -48,6 +55,6 @@ public class ScreenableStyle extends RichStyle
       return;
     Style screen = this.screen;
     this.screen = null;
-    applyChangesFromScreen(screen);
+    applyChangesFromScreen(screen, false);
   }
 }

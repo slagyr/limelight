@@ -22,6 +22,7 @@ public class MockPropablePanel extends MockPanel implements PropablePanel
   private int prepForSnapWidth;
   private int prepForSnapHeight;
   public boolean wasLaidOut;
+  public boolean wasRepainted;
 
   public MockPropablePanel()
   {
@@ -47,6 +48,11 @@ public class MockPropablePanel extends MockPanel implements PropablePanel
 
   public void setText(String text)
   {
+  }
+
+  public void repaint()
+  {
+    wasRepainted = true;
   }
 
   public String getText()

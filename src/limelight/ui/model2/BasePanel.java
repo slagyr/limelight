@@ -20,6 +20,7 @@ public abstract class BasePanel implements Panel
   protected LinkedList<Panel> children;
   private boolean sterilized;
   protected Box boundingBox;
+  protected boolean hasChanges;
 
   protected BasePanel()
   {
@@ -140,8 +141,8 @@ public abstract class BasePanel implements Panel
 
   public Panel getRoot()
   {
-//    if(parent == null)
-//      return this;
+    if(parent == null)
+      return null;
     return parent.getRoot();
   }
 
@@ -325,5 +326,23 @@ public abstract class BasePanel implements Panel
   public boolean canBeBuffered()
   {
     return true;
+  }
+
+  public void markAsChanged()
+  {
+    if(!hasChanges)
+    {
+      Panel root = getRoot();
+      if(root != null)
+      {
+        ((RootPanel) root).addChangedPanel(this);
+        hasChanges = true;
+      }
+    }
+  }
+
+  public void resetChangeMarker()
+  {
+    hasChanges = false;
   }
 }
