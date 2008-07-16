@@ -1,9 +1,10 @@
 package limelight.ui.model2;
 
 import limelight.ui.api.MockProp;
-import limelight.ui.api.MockStage;
 import limelight.ui.Painter;
 import limelight.ui.MockGraphics;
+import limelight.ui.MockPanel;
+import limelight.ui.model2.inputs.ScrollBarPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
@@ -12,6 +13,7 @@ import limelight.styles.FlatStyle;
 import limelight.util.Box;
 import junit.framework.TestCase;
 
+import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
 
@@ -181,5 +183,79 @@ public class PropPanelTest extends TestCase
     panel.markAsChanged();
     assertEquals(1, root.getChangedPanelCount());
     assertEquals(true, root.changedPanelsContains(panel));
+  }
+
+  public void testAddingScrollBarChangesChildConsumableArea() throws Exception
+  {
+    int scrollWidth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
+    style.setWidth("100");
+    style.setHeight("100");
+    style.setMargin("0");
+    style.setPadding("0");
+    style.setBorderWidth("0");
+    panel.snapToSize();
+
+    panel.addVerticalScrollBar();
+    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().width);
+    assertEquals(100, panel.getChildConsumableArea().height);
+
+    panel.addHorizontalScrollBar();
+    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().width);
+    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().height);
+
+    panel.removeVerticalScrollBar();
+    assertEquals(100, panel.getChildConsumableArea().width);
+    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().height);
+
+    panel.removeHorizontalScrollBar();
+    assertEquals(100, panel.getChildConsumableArea().width);
+    assertEquals(100, panel.getChildConsumableArea().height);
+  }
+
+  public void testGetOwnerOfPointGivesPriorityToScrollBars() throws Exception
+  {
+    style.setWidth("100");
+    style.setHeight("100");
+    panel.snapToSize();
+
+    MockPanel child = new MockPanel();
+    child.setSize(100, 100);
+    child.setLocation(0, 0);
+    panel.add(child);
+
+    panel.addVerticalScrollBar();
+    ScrollBarPanel vertical = panel.getVerticalScrollBar();
+    vertical.setSize(15, 100);
+    vertical.setLocation(85, 0);
+    panel.addHorizontalScrollBar();
+    ScrollBarPanel horizontal = panel.getHorizontalScrollBar();
+    horizontal.setSize(100, 15);
+    horizontal.setLocation(0, 85);
+
+    assertSame(child, panel.getOwnerOfPoint(new Point(0, 0)));
+    assertSame(child, panel.getOwnerOfPoint(new Point(50, 50)));
+    assertSame(vertical, panel.getOwnerOfPoint(new Point(90, 50)));
+    assertSame(horizontal, panel.getOwnerOfPoint(new Point(50, 90)));
+  }
+
+  public void testGetOwnerOfPointGivesPriorityToFloaters() throws Exception
+  {
+    style.setWidth("100");
+    style.setHeight("100");
+    panel.snapToSize();
+
+    MockPanel child = new MockPanel();
+    child.setSize(100, 100);
+    child.setLocation(0, 0);
+    panel.add(child);
+
+    MockPropablePanel floater = new MockPropablePanel();
+    floater.setSize(50, 50);
+    floater.setLocation(25, 25);
+    floater.floater = true;
+    panel.add(floater);
+
+    assertSame(child, panel.getOwnerOfPoint(new Point(0, 0)));
+    assertSame(floater, panel.getOwnerOfPoint(new Point(50, 50)));
   }
 }

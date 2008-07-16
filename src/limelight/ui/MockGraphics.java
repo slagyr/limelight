@@ -29,7 +29,7 @@ public class MockGraphics extends java.awt.Graphics2D
   public int drawnImageY;
   public Rectangle drawnImageDestination;
   public Rectangle drawnImageSource;
-  private Box clippedRectangle;
+  public Box clippedRectangle;
 
   public class DrawnShape
 	{

@@ -341,8 +341,22 @@ public abstract class BasePanel implements Panel
     }
   }
 
+  public boolean isMarkedAsChanged()
+  {
+    return hasChanges;
+  }
+
   public void resetChangeMarker()
   {
     hasChanges = false;
+  }
+
+  //TODO This is little inefficient.  Reconsider what get's passed to props.
+  protected MouseEvent translatedEvent(MouseEvent e)
+  {
+    e = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getClickCount(), false);
+    Point absoluteLocation = getAbsoluteLocation();
+    e.translatePoint(absoluteLocation.x * -1, absoluteLocation.y * -1);
+    return e;
   }
 }

@@ -14,7 +14,7 @@ describe Limelight::Players::TextArea do
   
   it "should get rid of the all painters and add a TextAreaPainter" do
     @prop.panel.painters.size.should == 1
-    @prop.panel.painters.last.class.should == Limelight::UI::Painting::TextAreaPainter
+    @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::TextAreaPainter
   end
   
   it "should clear event listeners on the panel" do

@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.painting;
+package limelight.ui.model.painting;
 
 import junit.framework.TestCase;
 
@@ -15,24 +15,24 @@ import limelight.ui.api.MockProp;
 import limelight.ui.model.InputLayout;
 import limelight.ui.model.Panel;
 
-public class ButtonPainterTest extends TestCase
+public class RadioButtonPainterTest extends TestCase
 {
-  private Panel panel;
-  private ButtonPainter painter;
+  private limelight.ui.model.Panel panel;
+  private RadioButtonPainter painter;
   private MockProp prop;
 
   public void setUp() throws Exception
   {
     prop = new MockProp();
-    panel = new limelight.ui.model.Panel(prop);
-    painter = new ButtonPainter(panel);
+    panel = new Panel(prop);
+    painter = new RadioButtonPainter(panel);
     panel.getPainters().add(painter);
   }
 
   public void testThatACheckboxIsAddedToThePanel() throws Exception
   {
     assertEquals(1, panel.getComponents().length);
-    assertEquals(JButton.class, panel.getComponents()[0].getClass());
+    assertEquals(JRadioButton.class, panel.getComponents()[0].getClass());
   }
 
   public void testItsPanelIsSterilized() throws Exception
@@ -48,7 +48,7 @@ public class ButtonPainterTest extends TestCase
 
   public void testEvents() throws Exception
   {
-    JButton field = (JButton)panel.getComponents()[0];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
     assertEquals(1, field.getKeyListeners().length);
     KeyListener listener = field.getKeyListeners()[0];
 
@@ -66,7 +66,7 @@ public class ButtonPainterTest extends TestCase
 
   public void testMouseActions() throws Exception
   {
-    JButton field = (JButton)panel.getComponents()[0];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
     assertEquals(2, field.getMouseListeners().length);
     MouseListener listener = field.getMouseListeners()[1];
 
@@ -92,7 +92,7 @@ public class ButtonPainterTest extends TestCase
 
   public void testFocusEvents() throws Exception
   {
-    JButton field = (JButton)panel.getComponents()[0];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
     assertEquals(2, field.getFocusListeners().length);
     FocusListener listener = field.getFocusListeners()[1];
 
@@ -107,7 +107,7 @@ public class ButtonPainterTest extends TestCase
 
   public void testChangedStateEvent() throws Exception
   {
-    JButton field = (JButton)panel.getComponents()[0];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
     assertEquals(2, field.getChangeListeners().length);
     ChangeListener listener = field.getChangeListeners()[0];
 
@@ -119,7 +119,7 @@ public class ButtonPainterTest extends TestCase
 
   public void testButtonPressedEvent() throws Exception
   {
-    JButton field = (JButton)panel.getComponents()[0];
+    JRadioButton field = (JRadioButton)panel.getComponents()[0];
     assertEquals(1, field.getActionListeners().length);
     ActionListener listener = field.getActionListeners()[0];
 
@@ -127,17 +127,6 @@ public class ButtonPainterTest extends TestCase
 
     listener.actionPerformed(e);
     assertEquals(e, prop.pressedButton);
-  }
-  
-  public void testText() throws Exception
-  {
-    panel.getTextAccessor().setText("blah");
-
-    assertEquals("blah", painter.getButton().getText());
-
-    painter.getButton().setText("hubbub");
-
-    assertEquals("hubbub", panel.getTextAccessor().getText());
   }
 
 }

@@ -5,8 +5,7 @@ import junit.framework.TestCase;
 import java.awt.*;
 
 import limelight.ui.api.MockProp;
-import limelight.ui.api.MockStage;
-import limelight.ui.MockPanel;
+import limelight.ui.model2.inputs.ScrollBarPanel;
 
 import javax.swing.*;
 
@@ -15,6 +14,8 @@ public class PropPanelLayoutTest extends TestCase
   private PropPanel parent;
   private PropPanelLayout layout;
   private RootPanel root;
+  private int scrollGirth;
+
 
   public void setUp() throws Exception
   {
@@ -22,11 +23,12 @@ public class PropPanelLayoutTest extends TestCase
 
     parent = new PropPanel(new MockProp());
     root.setPanel(parent);
-    parent.getProp().getStyle().setWidth("100");
-    parent.getProp().getStyle().setHeight("100");
+    parent.getStyle().setWidth("100");
+    parent.getStyle().setHeight("100");
 
 
     layout = new PropPanelLayout(parent);
+    scrollGirth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
   }
 
   public void testLayoutWithOneFullSizedChild() throws Exception
@@ -259,5 +261,110 @@ public class PropPanelLayoutTest extends TestCase
     assertTrue(child.wasLaidOut);
     assertEquals(new Point(2, 3), floater.getLocation());
     assertEquals(new Point(0, 0), child.getLocation());
+  }
+  
+  public void testAddingScrollBars() throws Exception
+  {
+    assertEquals(0, parent.getChildren().size());
+    assertEquals(null, parent.getVerticalScrollBar());
+    assertEquals(null, parent.getHorizontalScrollBar());
+    parent.getStyle().setScrollBars("on");
+
+    layout.establishScrollBars();
+
+    assertEquals(2, parent.getChildren().size());
+    assertNotNull(parent.getVerticalScrollBar());
+    assertNotNull(parent.getHorizontalScrollBar());
+  }
+
+  public void testRemovingScrollBars() throws Exception
+  {
+    parent.getStyle().setScrollBars("on");
+    layout.establishScrollBars();
+    assertEquals(2, parent.getChildren().size());
+    assertNotNull(parent.getVerticalScrollBar());
+    assertNotNull(parent.getHorizontalScrollBar());
+
+    parent.getStyle().setScrollBars("off");
+    layout.establishScrollBars();
+    assertEquals(0, parent.getChildren().size());
+    assertNull(parent.getVerticalScrollBar());
+    assertNull(parent.getHorizontalScrollBar());
+  }
+  
+  public void testScrollBarLayout() throws Exception
+  {
+    parent.getStyle().setScrollBars("on");
+
+    layout.doLayout();
+
+    ScrollBarPanel verticalScrollBar = parent.getVerticalScrollBar();
+    assertEquals(100 - scrollGirth, verticalScrollBar.getX());
+    assertEquals(0, verticalScrollBar.getY());
+
+    ScrollBarPanel horizontalScrollBar = parent.getHorizontalScrollBar();
+    assertEquals(0, horizontalScrollBar.getX());
+    assertEquals(100 - scrollGirth, horizontalScrollBar.getY());
+  }
+
+  public void testAutoSizingWithNoChildrenAndScrollBars() throws Exception
+  {
+    PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
+    panel.getStyle().setWidth("auto");
+    panel.getStyle().setHeight("auto");
+    panel.getStyle().setScrollBars("on");
+
+    layout.doLayout();
+
+    assertEquals(0, panel.getWidth());
+    assertEquals(0, panel.getHeight());
+  }
+
+  public void testScrollBarsDontGetLayoutLikeOtherProps() throws Exception
+  {
+    parent.getStyle().setScrollBars("on");
+    layout.doLayout();
+
+    PropPanel panel = new PropPanel(new MockProp());
+    panel.getStyle().setWidth("100%");
+    panel.getStyle().setHeight("100%");
+    parent.add(panel);
+    layout.doLayout();
+
+    assertEquals(0, panel.getX());
+    assertEquals(0, panel.getY());
+  }
+
+  public void testScrollAdjusting() throws Exception
+  {
+    parent.getStyle().setScrollBars("on");
+    layout.doLayout();
+
+    PropPanel panel = new PropPanel(new MockProp());
+    panel.getStyle().setWidth("200");
+    panel.getStyle().setHeight("300");
+    parent.add(panel);
+    layout.doLayout();
+
+    assertEquals(200, parent.getHorizontalScrollBar().getMaximumValue());
+    assertEquals(100 - scrollGirth, parent.getHorizontalScrollBar().getVisibleAmount());
+  }
+
+  public void testLayoutRowsWithScrollOffsets() throws Exception
+  {
+    parent.getStyle().setScrollBars("on");
+    PropPanel panel = new PropPanel(new MockProp());
+    panel.getStyle().setWidth("200");
+    panel.getStyle().setHeight("300");
+    parent.add(panel);
+    layout.doLayout();
+
+    parent.getVerticalScrollBar().setValue(100);
+    parent.getHorizontalScrollBar().setValue(50);
+    layout.doLayout();
+
+    assertEquals(-50, panel.getX());
+    assertEquals(-100, panel.getY());
   }
 }

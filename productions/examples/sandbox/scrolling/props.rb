@@ -4,7 +4,7 @@
 __ :name => "sandbox"
 __install "header.rb"
 arena do
-  table do
+  table :scroll_bars => "on" do
     10.times do |y|
       row :id => y.to_s do
         10.times do |x|
@@ -15,7 +15,7 @@ arena do
       end
     end
   end
-  table do
+  table :vertical_scroll_bar => "off", :horizontal_scroll_bar => "on" do
     2.times do |y|
       row :id => y.to_s do
         10.times do |x|
@@ -26,7 +26,7 @@ arena do
       end
     end
   end
-  table do
+  table :vertical_scroll_bar => "on", :horizontal_scroll_bar => "off" do
     10.times do |y|
       row :id => y.to_s do
         2.times do |x|
@@ -36,5 +36,5 @@ arena do
         end
       end
     end
-  end
+  end                                       
 end

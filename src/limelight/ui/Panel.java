@@ -20,6 +20,7 @@ public interface Panel
   Point getAbsoluteLocation();
   Box getAbsoluteBounds();
   Box getChildConsumableArea();
+  Box getBoxInsidePadding();
   
   void add(Panel child);
   LinkedList<Panel> getChildren();
@@ -63,4 +64,5 @@ public interface Panel
   void mouseWheelMoved(MouseWheelEvent e);
 
   void resetChangeMarker();
+
 }

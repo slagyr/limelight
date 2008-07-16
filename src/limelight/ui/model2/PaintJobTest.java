@@ -166,12 +166,12 @@ public class PaintJobTest extends TestCase
     panel.childConsumableBox = new Box(12, 34, 56, 78);
     child.setLocation(123, 456);
     child.setSize(100, 200);
-    limelight.alt_ui.MockGraphics graphics = new limelight.alt_ui.MockGraphics();
+    MockGraphics graphics = new MockGraphics();
 
     job.paintChildren(panel, graphics);
 
     assertEquals(new Box(12, 34, 56, 78), graphics.clippedRectangle);
-    assertEquals(new Box(123, 456, 100, 200), graphics.createdGraphicsRectangle);
+    assertEquals(new Box(123, 456, 100, 200), graphics.createdGraphicsBox);
   }
 
   public void testFloaterArePutAtTheBackOfTheLine() throws Exception

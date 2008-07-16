@@ -1,9 +1,10 @@
 package limelight.ui.model2;
 
 import limelight.styles.Style;
-import limelight.util.Box;
-import limelight.util.Aligner;
 import limelight.ui.Panel;
+import limelight.ui.model2.inputs.ScrollBarPanel;
+import limelight.util.Aligner;
+import limelight.util.Box;
 
 import java.util.LinkedList;
 
@@ -20,32 +21,60 @@ public class PropPanelLayout
   {
     this.panel = panel;
     rows = new LinkedList<Row>();
-	}
+  }
 
   public void doLayout()
-	{
+  {
     Style style = panel.getProp().getStyle();
     if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT))
       panel.snapToSize();
 
-    if(panel.getChildren().size() == 0)
-    {
+    establishScrollBars();
+
+    if(!hasNonScrollBarChildren())
       collapseAutoDimensions();
-      return;
-    }
-
-    doLayoutOnChildren();
-    reset();
-    buildRows();
-    collapseAutoDimensions();
-
-    boolean switched = false;//switchToScrollModeIfNeeded();
-
-    if(!switched)
+    else
     {
+      doLayoutOnChildren();
+      reset();
+      buildRows();
+      collapseAutoDimensions();
       Aligner aligner = buildAligner(panel.getChildConsumableArea());
       layoutRows(aligner);
       layoutFloaters();
+    }
+    layoutScrollBars();
+  }
+
+  private boolean hasNonScrollBarChildren()
+  {
+    LinkedList<Panel> children = panel.getChildren();
+    if(children.size() == 0)
+      return false;
+    else if(children.size() == 1)
+      return !(children.contains(panel.getVerticalScrollBar()) || children.contains(panel.getHorizontalScrollBar()));
+    else if(children.size() == 2)
+      return !(children.contains(panel.getVerticalScrollBar()) && children.contains(panel.getHorizontalScrollBar()));
+    else
+      return true;
+  }
+
+  private void layoutScrollBars()
+  {
+    ScrollBarPanel vertical = panel.getVerticalScrollBar();
+    ScrollBarPanel horizontal = panel.getHorizontalScrollBar();
+    Box area = panel.getChildConsumableArea();
+    if(vertical != null)
+    {
+      vertical.setHeight(area.height);
+      vertical.setLocation(area.right() + 1, area.y);
+      vertical.configure(area.height, consumedHeight);
+    }
+    if(horizontal != null)
+    {
+      horizontal.setWidth(area.width);
+      horizontal.setLocation(area.x, area.bottom() + 1);
+      horizontal.configure(area.width, consumedWidth);
     }
   }
 
@@ -81,9 +110,13 @@ public class PropPanelLayout
   {
     aligner.addConsumedHeight(consumedHeight);
     int y = aligner.startingY();
+    if(panel.getVerticalScrollBar() != null)
+      y -= panel.getVerticalScrollBar().getValue();
     for(Row row : rows)
     {
       int x = aligner.startingX(row.width);
+      if(panel.getHorizontalScrollBar() != null)
+        x -= panel.getHorizontalScrollBar().getValue();
       row.layoutComponents(x, y);
       y += row.height;
     }
@@ -93,7 +126,7 @@ public class PropPanelLayout
   {
     if(floaters == null)
       return;
-    for (Panel floater : floaters)
+    for(Panel floater : floaters)
       layoutFloater(floater);
   }
 
@@ -114,10 +147,12 @@ public class PropPanelLayout
   }
 
   protected void buildRows()
-	{
+  {
     for(Panel child : panel.getChildren())
     {
-      if(child.isFloater())
+      if(child instanceof ScrollBarPanel)
+        ;//ignore
+      else if(child.isFloater())
         addFloater(child);
       else
         addToRow(child);
@@ -127,7 +162,7 @@ public class PropPanelLayout
 
   private void addToRow(Panel child)
   {
-    if (!currentRow.isEmpty() && !currentRow.fits(child))
+    if(!currentRow.isEmpty() && !currentRow.fits(child))
       newRow();
     currentRow.add(child);
   }
@@ -139,22 +174,22 @@ public class PropPanelLayout
   }
 
   protected void reset()
-	{
+  {
     rows.clear();
-		newRow();
-	}
+    newRow();
+  }
 
-	private void newRow()
-	{
-		currentRow = new Row(panel.getChildConsumableArea().width);
-		rows.add(currentRow);
-	}
+  private void newRow()
+  {
+    currentRow = new Row(panel.getChildConsumableArea().width);
+    rows.add(currentRow);
+  }
 
   private void calculateConsumedDimentions()
   {
     consumedWidth = 0;
     consumedHeight = 0;
-    for (Row row : rows)
+    for(Row row : rows)
     {
       consumedHeight += row.height;
       if(row.width > consumedWidth)
@@ -165,6 +200,20 @@ public class PropPanelLayout
   public PropPanel getPanel()
   {
     return panel;
+  }
+
+  public void establishScrollBars()
+  {
+    Style style = panel.getStyle();
+    if(panel.getVerticalScrollBar() == null && "on".equals(style.getVerticalScrollBar()))
+      panel.addVerticalScrollBar();
+    else if(panel.getVerticalScrollBar() != null && "off".equals(style.getVerticalScrollBar()))
+      panel.removeVerticalScrollBar();
+    if(panel.getHorizontalScrollBar() == null && "on".equals(style.getHorizontalScrollBar()))
+      panel.addHorizontalScrollBar();
+    else if(panel.getHorizontalScrollBar() != null && "off".equals(style.getHorizontalScrollBar()))
+      panel.removeHorizontalScrollBar();
+
   }
 
   private class Row
@@ -202,7 +251,7 @@ public class PropPanelLayout
 
     public void layoutComponents(int x, int y)
     {
-      for (Panel panel : items)
+      for(Panel panel : items)
       {
         panel.setLocation(x, y);
         x += panel.getWidth();

@@ -157,7 +157,7 @@ public class PropLayoutTest extends TestCase
     MockPanel child = new MockPanel();
     child.prepForSnap(500, 10);
     parent.add(child);
-    parent.getStyle().setHorizontalScrollbar("off");
+    parent.getStyle().setHorizontalScrollBar("off");
 
     layout.layoutContainer(parent);
 
@@ -170,7 +170,7 @@ public class PropLayoutTest extends TestCase
     MockPanel child = new MockPanel();
     child.prepForSnap(10, 500);
     parent.add(child);
-    parent.getStyle().setVerticalScrollbar("off");
+    parent.getStyle().setVerticalScrollBar("off");
 
     layout.layoutContainer(parent);
 

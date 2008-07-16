@@ -1,9 +1,6 @@
 package limelight.ui.model2;
 
-import limelight.util.Colors;
-import limelight.util.Util;
-import limelight.util.Box;
-import limelight.util.Aligner;
+import limelight.util.*;
 import limelight.ui.api.*;
 import limelight.ui.Panel;
 import limelight.styles.Style;
@@ -99,7 +96,7 @@ public class TextPanel extends BasePanel
     if(text != null && text.length() > 0)
     {
       String[] paragraphs = text.split("\n");
-      Font font = limelight.alt_ui.FontFactory.instance.createFont(getStyle());
+      Font font = FontFactory.instance.createFont(getStyle());
       for (String paragraph : paragraphs)
       {
         if(paragraph.length() != 0)
@@ -150,6 +147,11 @@ public class TextPanel extends BasePanel
   }
 
   public Box getChildConsumableArea()
+  {
+    return null;
+  }
+
+  public Box getBoxInsidePadding()
   {
     return null;
   }

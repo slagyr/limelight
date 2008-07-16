@@ -78,8 +78,8 @@ public class PropLayout implements LayoutManager
     if("auto".equals(panel.getStyle().getHeight()))
       area = new Box(area.x, area.y, area.width, consumedHeight);
 
-    boolean vertical_scrollbar_required = (consumedHeight > area.height) && !"off".equals(panel.getStyle().getVerticalScrollbar());
-    boolean horizontal_scrollbar_required = (consumedWidth > area.width) && !"off".equals(panel.getStyle().getHorizontalScrollbar());
+    boolean vertical_scrollbar_required = (consumedHeight > area.height) && !"off".equals(panel.getStyle().getVerticalScrollBar());
+    boolean horizontal_scrollbar_required = (consumedWidth > area.width) && !"off".equals(panel.getStyle().getHorizontalScrollBar());
     if(!inScrollMode && (vertical_scrollbar_required || horizontal_scrollbar_required))
       enterScrollMode();
     if(inScrollMode && consumedHeight <= area.height && consumedWidth <= area.width)
