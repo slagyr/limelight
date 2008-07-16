@@ -8,7 +8,7 @@ module Limelight
       class << self
         def extended(prop)
           prop.panel.painters.clear
-          painter = Java.limelight.ui.painting.ButtonPainter.new(prop.panel)
+          painter = Java.limelight.ui.model.painting.ButtonPainter.new(prop.panel)
           prop.button = painter.button
           prop.panel.painters << painter
           prop.panel.clear_event_listeners

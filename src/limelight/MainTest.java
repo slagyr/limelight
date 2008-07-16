@@ -11,10 +11,8 @@ import limelight.task.RecurringTask;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
 import limelight.ui.Panel;
-import limelight.ui.model2.FrameManager;
 
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
 
 public class MainTest extends TestCase
 {
@@ -62,12 +60,12 @@ public class MainTest extends TestCase
   {
     main.configureContext();
 
-    Task task = findTaskEngineHashTaskNamed("Buffered Image Cache Cleaner");
+    Task task = findTaskEngineTaskNamed("Buffered Image Cache Cleaner");
     assertEquals(true, task instanceof RecurringTask);
     assertEquals(1, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
   }
 
-  private Task findTaskEngineHashTaskNamed(String name)
+  private Task findTaskEngineTaskNamed(String name)
   {
     TaskEngine engine = Context.instance().taskEngine;
     for(Task task : engine.getTasks())
@@ -89,7 +87,7 @@ public class MainTest extends TestCase
   {
     main.configureContext();
 
-    Task task = findTaskEngineHashTaskNamed("Panel Painter");
+    Task task = findTaskEngineTaskNamed("Panel Painter");
     assertEquals(true, task instanceof RecurringTask);
     assertEquals(80, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
     assertEquals(false, ((RecurringTask)task).isStrict());

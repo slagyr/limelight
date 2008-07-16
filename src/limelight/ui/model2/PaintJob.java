@@ -103,7 +103,7 @@ public class PaintJob
   {
     if(panel.hasChildren())
     {
-      Box innards = panel.getChildConsumableArea();
+      Box innards = panel.getBoxInsidePadding();
       graphics.clipRect(innards.x, innards.y, innards.width, innards.height);
       for(Panel child : panel.getChildren())
         if(!child.isFloater())

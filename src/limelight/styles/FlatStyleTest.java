@@ -216,15 +216,15 @@ public class FlatStyleTest extends TestCase
 
   public void testScrollBars() throws Exception
   {
-    style.setScrollbars("on");
-    assertEquals("on", style.getVerticalScrollbar());
-    assertEquals("on", style.getHorizontalScrollbar());
+    style.setScrollBars("on");
+    assertEquals("on", style.getVerticalScrollBar());
+    assertEquals("on", style.getHorizontalScrollBar());
 
-    style.setVerticalScrollbar("off");
-    assertEquals("off", style.getVerticalScrollbar());
+    style.setVerticalScrollBar("off");
+    assertEquals("off", style.getVerticalScrollBar());
 
-    style.setHorizontalScrollbar("off");               
-    assertEquals("off", style.getHorizontalScrollbar());
+    style.setHorizontalScrollBar("off");
+    assertEquals("off", style.getHorizontalScrollBar());
   }
 
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds

@@ -4,8 +4,9 @@ import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
-import limelight.ui.PaintablePanel;
-import limelight.ui.Painter;
+import limelight.ui.*;
+import limelight.ui.Panel;
+import limelight.ui.model2.inputs.ScrollBarPanel;
 import limelight.ui.api.Prop;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.painting.BackgroundPainter;
@@ -30,8 +31,11 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private Box boxInsideMargins;
   private Box boxInsideBorders;
   private Box boxInsidePadding;
+  private Box childConsumableArea;
   private Style style;
   private PaintAction afterPaintAction;
+  private ScrollBarPanel verticalScrollBar;
+  private ScrollBarPanel horizontalScrollBar;
 
   public PropPanel(Prop prop)
   {
@@ -101,6 +105,25 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return prop;
   }
 
+  public Panel getOwnerOfPoint(Point point)
+  {
+    Point relativePoint = new Point(point.x - getX(), point.y - getY());
+    if(verticalScrollBar != null && verticalScrollBar.containsRelativePoint(relativePoint))
+      return verticalScrollBar;
+    else if(horizontalScrollBar != null && horizontalScrollBar.containsRelativePoint(relativePoint))
+      return horizontalScrollBar;
+
+    for (Panel panel : children)
+      if(panel.isFloater() && panel.containsRelativePoint(relativePoint))
+        return panel.getOwnerOfPoint(relativePoint);
+
+    for (Panel panel : children)
+      if(!panel.isFloater() && panel.containsRelativePoint(relativePoint))
+        return panel.getOwnerOfPoint(relativePoint);
+    
+    return this;
+  }
+
   public Box getBoxInsideMargins()
   {
     if(boxInsideMargins == null)
@@ -133,7 +156,14 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public Box getChildConsumableArea()
   {
-    return getBoxInsidePadding();
+    if(childConsumableArea == null)
+    {
+      getBoxInsidePadding();
+      int width = verticalScrollBar == null ? boxInsidePadding.width : boxInsidePadding.width - verticalScrollBar.getWidth();
+      int height = horizontalScrollBar == null ? boxInsidePadding.height : boxInsidePadding.height - horizontalScrollBar.getHeight();
+      childConsumableArea = new Box(boxInsidePadding.x, boxInsidePadding.y, width, height);
+    }
+    return childConsumableArea;
   }
 
   public void doLayout()
@@ -210,15 +240,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     getProp().mouse_moved(translatedEvent(e));
   }
 
-  //TODO This is little inefficient.  Reconsider what get's passed to props.
-  private MouseEvent translatedEvent(MouseEvent e)
-  {
-    e = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getClickCount(), false);
-    Point absoluteLocation = getAbsoluteLocation();
-    e.translatePoint(absoluteLocation.x * -1, absoluteLocation.y * -1);
-    return e;
-  }
-
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     getParent().mouseWheelMoved(e);
@@ -239,6 +260,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 //    {
     doLayout();
     PaintJob job = new PaintJob(getAbsoluteBounds());
+    //TODO Why are we painting the root panel here?  So wastful! Maybe. Transparency?
     job.paint(((RootPanel) getRoot()).getPanel()); //TODO - cast should not be neccessary here.
     job.applyTo(getRoot().getGraphics());
 //    }
@@ -280,6 +302,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     boxInsideMargins = null;
     boxInsideBorders = null;
     boxInsidePadding = null;
+    childConsumableArea = null;
   }
 
   public boolean hasChanges()
@@ -292,5 +315,42 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     markAsChanged();
   }
 
+  public ScrollBarPanel getVerticalScrollBar()
+  {
+    return verticalScrollBar;
+  }
+
+  public ScrollBarPanel getHorizontalScrollBar()
+  {
+    return horizontalScrollBar;
+  }
+
+  public void addVerticalScrollBar()
+  {
+    verticalScrollBar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
+    add(verticalScrollBar);
+    childConsumableArea = null;
+  }
+
+  public void addHorizontalScrollBar()
+  {
+    horizontalScrollBar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
+    add(horizontalScrollBar);
+    childConsumableArea = null;
+  }
+
+  public void removeVerticalScrollBar()
+  {
+    remove(verticalScrollBar);
+    verticalScrollBar = null;
+    childConsumableArea = null;
+  }
+
+  public void removeHorizontalScrollBar()
+  {
+    remove(horizontalScrollBar);
+    horizontalScrollBar = null;
+    childConsumableArea = null;
+  }
 }
 

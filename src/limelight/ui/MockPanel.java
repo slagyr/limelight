@@ -27,6 +27,11 @@ public class MockPanel extends BasePanel
     return new Box(0, 0, getWidth(), getHeight());
   }
 
+  public Box getBoxInsidePadding()
+  {
+    return getChildConsumableArea();
+  }
+
   public Style getStyle()
   {
     return style;

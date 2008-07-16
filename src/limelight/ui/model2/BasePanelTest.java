@@ -32,6 +32,11 @@ public class BasePanelTest extends TestCase
       return null;
     }
 
+    public Box getBoxInsidePadding()
+    {
+      return null;
+    }
+
     public Style getStyle()
     {
       return null;

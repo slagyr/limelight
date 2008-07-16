@@ -8,7 +8,7 @@ module Limelight
       class << self
         def extended(prop)
           prop.panel.painters.clear
-          painter = Java.limelight.ui.painting.ComboBoxPainter.new(prop.panel)
+          painter = Java.limelight.ui.model.painting.ComboBoxPainter.new(prop.panel)
           prop.combo_box = painter.combo_box
           prop.panel.painters << painter
           prop.panel.clear_event_listeners

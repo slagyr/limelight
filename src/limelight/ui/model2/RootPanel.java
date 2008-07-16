@@ -28,6 +28,11 @@ public class RootPanel implements Panel
     return new Box(getX(), getY(), contentPane.getWidth(), contentPane.getHeight());
   }
 
+  public Box getBoxInsidePadding()
+  {
+    return getChildConsumableArea();
+  }
+
   public void doLayout()
   {
     panel.doLayout();

@@ -716,28 +716,28 @@ public abstract class Style
     put(Y, value);
   }
 
-  public void setScrollbars(String value)
+  public void setScrollBars(String value)
   {
     put(VERTICAL_SCROLLBAR, value);
     put(HORIZONTAL_SCROLLBAR, value);
   }
 
-  public String getVerticalScrollbar()
+  public String getVerticalScrollBar()
   {
     return get(VERTICAL_SCROLLBAR);
   }
 
-  public String getHorizontalScrollbar()
+  public String getHorizontalScrollBar()
   {
     return get(HORIZONTAL_SCROLLBAR);
   }
 
-  public void setVerticalScrollbar(String value)
+  public void setVerticalScrollBar(String value)
   {
     put(VERTICAL_SCROLLBAR, value);
   }
 
-  public void setHorizontalScrollbar(String value)
+  public void setHorizontalScrollBar(String value)
   {
     put(HORIZONTAL_SCROLLBAR, value);
   }

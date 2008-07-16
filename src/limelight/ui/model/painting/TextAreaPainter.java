@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.painting;
+package limelight.ui.model.painting;
 
 import limelight.ui.*;
 import limelight.ui.model.*;
@@ -10,47 +10,45 @@ import limelight.LimelightException;
 import javax.swing.*;
 import java.awt.*;
 
-public class ComboBoxPainter extends Painter
+public class TextAreaPainter extends Painter
 {
-  private JComboBox comboBox;
+  private JTextArea textArea;
 
-  public ComboBoxPainter(limelight.ui.model.Panel panel)
+  public TextAreaPainter(limelight.ui.model.Panel panel)
   {
     super(panel);
-    panel.add(buildComboBox());
+    panel.add(buildTextArea());
     panel.sterilize();
     panel.setLayout(new InputLayout());
     panel.setTextAccessor(new TextAccessor() {
-
       public void setText(String text) throws LimelightException
       {
-        comboBox.setSelectedItem(text);
+        textArea.setText(text);
       }
 
       public String getText()
       {
-        return comboBox.getSelectedItem().toString();
+        return textArea.getText();
       }
     });
   }
 
-  private JComboBox buildComboBox()
+  private JTextArea buildTextArea()
   {
-    comboBox = new JComboBox();
+    textArea = new JTextArea();
     PropEventListener listener = new PropEventListener(panel.getProp());
-    comboBox.addKeyListener(listener);
-    comboBox.addMouseListener(listener);
-    comboBox.addFocusListener(listener);
-    comboBox.addItemListener(listener);
-    return comboBox;
+    textArea.addKeyListener(listener);
+    textArea.addMouseListener(listener);
+    textArea.addFocusListener(listener);
+    return textArea;
   }
 
   public void paint(Graphics2D graphics)
   {
   }
 
-  public JComboBox getComboBox()
+  public JTextArea getTextArea()
   {
-    return comboBox;
+    return textArea;
   }
 }

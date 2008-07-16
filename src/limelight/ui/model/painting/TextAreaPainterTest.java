@@ -1,7 +1,7 @@
 //- Copyright 2008 8th Light, Inc.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.painting;
+package limelight.ui.model.painting;
 
 import junit.framework.TestCase;
 
@@ -13,24 +13,24 @@ import limelight.ui.api.MockProp;
 import limelight.ui.model.InputLayout;
 import limelight.ui.model.Panel;
 
-public class TextBoxPainterTest extends TestCase
+public class TextAreaPainterTest extends TestCase
 {
   private limelight.ui.model.Panel panel;
-  private TextBoxPainter painter;
+  private TextAreaPainter painter;
   private MockProp prop;
 
   public void setUp() throws Exception
   {
     prop = new MockProp();
     panel = new Panel(prop);
-    painter = new TextBoxPainter(panel);
+    painter = new TextAreaPainter(panel);
     panel.getPainters().add(painter);
   }
 
-  public void testThatATextboxIsAddedToThePanel() throws Exception
+  public void testThatATextAreaIsAddedToThePanel() throws Exception
   {
     assertEquals(1, panel.getComponents().length);
-    assertEquals(JTextField.class, panel.getComponents()[0].getClass());
+    assertEquals(JTextArea.class, panel.getComponents()[0].getClass());
   }
 
   public void testItsPanelIsSterilized() throws Exception
@@ -46,11 +46,11 @@ public class TextBoxPainterTest extends TestCase
 
   public void testEvents() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(1, field.getKeyListeners().length);
-    KeyListener listener = field.getKeyListeners()[0];
+    JTextArea area = (JTextArea)panel.getComponents()[0];
+    assertEquals(1, area.getKeyListeners().length);
+    KeyListener listener = area.getKeyListeners()[0];
 
-    KeyEvent e = new KeyEvent(field, 1, 2, 3, 4, '5');
+    KeyEvent e = new KeyEvent(area, 1, 2, 3, 4, '5');
 
     listener.keyPressed(e);
     assertEquals(e, prop.pressedKey);
@@ -64,11 +64,11 @@ public class TextBoxPainterTest extends TestCase
 
   public void testMouseActions() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(4, field.getMouseListeners().length);
-    MouseListener listener = field.getMouseListeners()[3];
+    JTextArea area = (JTextArea)panel.getComponents()[0];
+    assertEquals(4, area.getMouseListeners().length);
+    MouseListener listener = area.getMouseListeners()[3];
 
-    MouseEvent e = new MouseEvent(field, 1, 2, 3, 4, 5, 6, false);
+    MouseEvent e = new MouseEvent(area, 1, 2, 3, 4, 5, 6, false);
 
     listener.mouseClicked(e);
     assertEquals(e, prop.clickedMouse);
@@ -92,20 +92,20 @@ public class TextBoxPainterTest extends TestCase
   {
     panel.getTextAccessor().setText("blah");
 
-    assertEquals("blah", painter.getTextField().getText());
+    assertEquals("blah", painter.getTextArea().getText());
 
-    painter.getTextField().setText("hubbub");
+    painter.getTextArea().setText("hubbub");
 
     assertEquals("hubbub", panel.getTextAccessor().getText());
   }
 
   public void testFocusEvents() throws Exception
   {
-    JTextField field = (JTextField)panel.getComponents()[0];
-    assertEquals(4, field.getFocusListeners().length);
-    FocusListener listener = field.getFocusListeners()[3];
+    JTextArea area = (JTextArea)panel.getComponents()[0];
+    assertEquals(4, area.getFocusListeners().length);
+    FocusListener listener = area.getFocusListeners()[3];
 
-    FocusEvent e = new FocusEvent(field, 1);
+    FocusEvent e = new FocusEvent(area, 1);
 
     listener.focusGained(e);
     assertEquals(e, prop.gainedFocus);
