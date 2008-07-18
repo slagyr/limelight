@@ -125,7 +125,7 @@ public class PaintJob
   }
 
   public void applyTo(Graphics graphics)
-  {
+  {  
     graphics.drawImage(buffer, clip.x, clip.y, null);
     Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
   }

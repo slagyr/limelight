@@ -15,6 +15,7 @@ public class MockPanel extends BasePanel
   public boolean wasPainted;
   public boolean canBeBuffered;
   public boolean changeMarkerWasReset;
+  public boolean wasLaidOut;
 
   public MockPanel()
   {
@@ -49,9 +50,14 @@ public class MockPanel extends BasePanel
     return canBeBuffered;
   }
 
-  public void resetChangeMarker()
+  public void resetNeededUpdate()
   {   
-    super.resetChangeMarker();
+    super.resetNeededUpdate();
     changeMarkerWasReset = true;
+  }
+
+  public void doLayout()
+  {
+    wasLaidOut = true;
   }
 }

@@ -23,6 +23,11 @@ public class RootPanel implements Panel
     changedPanels = new HashSet<Panel>();
   }
 
+  public Container getContentPane()
+  {
+    return contentPane;
+  }
+
   public Box getChildConsumableArea()
   {
     return new Box(getX(), getY(), contentPane.getWidth(), contentPane.getHeight());
@@ -85,8 +90,8 @@ public class RootPanel implements Panel
 
   public void setPanel(Panel child)
   { 
-    this.panel = child;
-    child.setParent(this);
+    panel = child;
+    panel.setParent(this);
 
     listener = new EventListener(panel);
     contentPane.addMouseListener(listener);
@@ -168,6 +173,7 @@ public class RootPanel implements Panel
   }
 
   //TODO MDM - This is not fully right.  Need to make sure we're not repainting a panel more than once.  So we need to remove from the set descendants of other panels in the list.
+  //TODO MDM - Also, we should not have to figure out if a parent needs the updating here.  That's not right.
   public synchronized void repaintChangedPanels()
   {
     for(Panel changedPanel : changedPanels)
@@ -175,11 +181,12 @@ public class RootPanel implements Panel
       Style style = changedPanel.getStyle();
       boolean dimentionsChanged = style.changed(Style.WIDTH) || style.changed(Style.HEIGHT);
       boolean locationChanged = "on".equals(style.getFloat()) && (style.changed(Style.X) || style.changed(Style.Y));
+      Update update = changedPanel.getNeededUpdate();
       if(dimentionsChanged || locationChanged)
-        changedPanel.getParent().repaint();
+        update.performUpdate(changedPanel.getParent());
       else
-        changedPanel.repaint();
-      changedPanel.resetChangeMarker();
+        update.performUpdate(changedPanel);
+      changedPanel.resetNeededUpdate();
     }
     changedPanels.clear();
   }
@@ -305,8 +312,13 @@ public class RootPanel implements Panel
   {
   }
 
-  public void resetChangeMarker()
+  public void resetNeededUpdate()
   {
+  }
+
+  public Update getNeededUpdate()
+  {
+    return null;
   }
 
   public void add(Panel child)

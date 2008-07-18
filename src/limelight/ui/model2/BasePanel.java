@@ -20,7 +20,7 @@ public abstract class BasePanel implements Panel
   protected LinkedList<Panel> children;
   private boolean sterilized;
   protected Box boundingBox;
-  protected boolean hasChanges;
+  protected Update neededUpdate;
 
   protected BasePanel()
   {
@@ -328,27 +328,34 @@ public abstract class BasePanel implements Panel
     return true;
   }
 
-  public void markAsChanged()
+  public void setNeededUpdate(Update update)
   {
-    if(!hasChanges)
+    if(neededUpdate == null)
     {
       Panel root = getRoot();
       if(root != null)
       {
         ((RootPanel) root).addChangedPanel(this);
-        hasChanges = true;
+        neededUpdate = update;
       }
     }
+    else if(update.isMoreSevereThan(neededUpdate))
+      neededUpdate = update;
   }
 
-  public boolean isMarkedAsChanged()
+  public boolean needsUpdating()
   {
-    return hasChanges;
+    return neededUpdate != null;
   }
 
-  public void resetChangeMarker()
+  public void resetNeededUpdate()
   {
-    hasChanges = false;
+    neededUpdate = null;
+  }
+
+  public Update getNeededUpdate()
+  {
+    return neededUpdate;
   }
 
   //TODO This is little inefficient.  Reconsider what get's passed to props.

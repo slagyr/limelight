@@ -2,6 +2,8 @@ package limelight.ui;
 
 import limelight.util.Box;
 import limelight.styles.Style;
+import limelight.ui.model2.Update;
+
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseEvent;
@@ -63,6 +65,7 @@ public interface Panel
   void mouseMoved(MouseEvent e);
   void mouseWheelMoved(MouseWheelEvent e);
 
-  void resetChangeMarker();
+  void resetNeededUpdate();
 
+  Update getNeededUpdate();
 }
