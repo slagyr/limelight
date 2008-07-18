@@ -39,8 +39,7 @@ public class PropPanelLayout
       reset();
       buildRows();
       collapseAutoDimensions();
-      Aligner aligner = buildAligner(panel.getChildConsumableArea());
-      layoutRows(aligner);
+      layoutRows();
       layoutFloaters();
     }
     layoutScrollBars();
@@ -106,8 +105,9 @@ public class PropPanelLayout
       child.doLayout();
   }
 
-  protected void layoutRows(Aligner aligner)
+  public void layoutRows()
   {
+    Aligner aligner = buildAligner(panel.getChildConsumableArea());
     aligner.addConsumedHeight(consumedHeight);
     int y = aligner.startingY();
     if(panel.getVerticalScrollBar() != null)

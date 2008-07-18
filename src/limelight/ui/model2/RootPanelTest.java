@@ -3,7 +3,12 @@ package limelight.ui.model2;
 import junit.framework.TestCase;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.util.Arrays;
+
+import limelight.ui.model2.updates.PaintUpdate;
+import limelight.ui.model2.updates.Updates;
+import limelight.ui.model2.updates.MockUpdate;
 
 public class RootPanelTest extends TestCase
 {
@@ -100,11 +105,14 @@ public class RootPanelTest extends TestCase
   {
     root.setPanel(child);
     root.addChangedPanel(child);
+    MockUpdate mockUpdate = new MockUpdate();
+    child.setNeededUpdate(mockUpdate);
 
     root.repaintChangedPanels();
 
     assertEquals(0, root.getChangedPanelCount());
-    assertEquals(true, child.wasRepainted);
+    assertEquals(true, mockUpdate.updatePerformed);
+    assertEquals(child, mockUpdate.updatedPanel);
     assertEquals(true, child.changeMarkerWasReset);
   }
 

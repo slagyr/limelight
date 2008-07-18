@@ -3,6 +3,7 @@ package limelight.ui.model2.inputs;
 import limelight.styles.Style;
 import limelight.ui.model2.BasePanel;
 import limelight.ui.model2.PropPanel;
+import limelight.ui.model2.updates.Updates;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,8 +26,7 @@ public class ScrollBarPanel extends BasePanel
       {
         if(!configuring)
         {
-          ((PropPanel)getParent()).markAsChanged();
-          markAsChanged();
+          ((PropPanel) getParent()).setNeededUpdate(Updates.scrollChangedUpdate);
         }
       }
     });
@@ -110,13 +110,9 @@ public class ScrollBarPanel extends BasePanel
     scrollBar.paint(graphics);
   }
 
-  //TODO MDM This is a bit too optimistic.  Scrollbars maybe covered by floaters so we can't just paint it directly
-  public void repaint()
+  public boolean canBeBuffered()
   {
-    limelight.util.Box ab = getAbsoluteBounds();
-    Graphics2D g = (Graphics2D) getRoot().getGraphics().create(ab.x, ab.y, ab.width, ab.height);
-    paintOn(g);
-    g.dispose();
+    return false;
   }
 
   public void setValue(int value)

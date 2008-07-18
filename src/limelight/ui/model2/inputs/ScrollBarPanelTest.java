@@ -97,7 +97,7 @@ public class ScrollBarPanelTest extends TestCase
     parent.add(panel);
     panel.setValue(50);
 
-    assertEquals(true, panel.isMarkedAsChanged());
+    assertEquals(true, parent.needsUpdating());
   }
 
   public void testParentIsMarkedAsChanged() throws Exception
@@ -109,7 +109,7 @@ public class ScrollBarPanelTest extends TestCase
 
     panel.setValue(50);
 
-    assertEquals(true, parent.isMarkedAsChanged());
+    assertEquals(true, parent.needsUpdating());
   }
 
   public void testConfigure() throws Exception
@@ -125,6 +125,11 @@ public class ScrollBarPanelTest extends TestCase
     assertEquals(1000, panel.getMaximumValue());
     assertEquals(50, panel.getUnitIncrement());
     assertEquals(450, panel.getBlockIncrement());
+  }
+
+  public void testCannotBeBuffered() throws Exception
+  {
+    assertEquals(false, panel.canBeBuffered());
   }
 
   private void addMouseMotionListener()

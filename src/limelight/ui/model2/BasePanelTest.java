@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
-import limelight.ui.api.MockStage;
 import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.util.Box;

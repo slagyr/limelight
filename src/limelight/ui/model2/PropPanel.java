@@ -4,18 +4,19 @@ import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
-import limelight.ui.*;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
 import limelight.ui.Panel;
-import limelight.ui.model2.inputs.ScrollBarPanel;
 import limelight.ui.api.Prop;
 import limelight.ui.api.PropablePanel;
+import limelight.ui.model2.inputs.ScrollBarPanel;
+import limelight.ui.model2.updates.Updates;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.util.Util;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -61,7 +62,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void setText(String text) throws LimelightError
   {
     if(!Util.equal(text, getText()))
-      markAsChanged();
+      setNeededUpdate(Updates.layoutAndPaintUpdate);
     textAccessor.setText(text);
   }
 
@@ -113,14 +114,14 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     else if(horizontalScrollBar != null && horizontalScrollBar.containsRelativePoint(relativePoint))
       return horizontalScrollBar;
 
-    for (Panel panel : children)
+    for(Panel panel : children)
       if(panel.isFloater() && panel.containsRelativePoint(relativePoint))
         return panel.getOwnerOfPoint(relativePoint);
 
-    for (Panel panel : children)
+    for(Panel panel : children)
       if(!panel.isFloater() && panel.containsRelativePoint(relativePoint))
         return panel.getOwnerOfPoint(relativePoint);
-    
+
     return this;
   }
 
@@ -242,7 +243,12 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void mouseWheelMoved(MouseWheelEvent e)
   {
-    getParent().mouseWheelMoved(e);
+    boolean isVertical = e.getModifiers() % 2 == 0;
+    ScrollBarPanel scrollBar = isVertical ? verticalScrollBar : horizontalScrollBar;
+    if(scrollBar != null)
+      scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
+    else
+      getParent().mouseWheelMoved(e);
   }
 
   public void setCursor(Cursor cursor)
@@ -305,14 +311,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     childConsumableArea = null;
   }
 
-  public boolean hasChanges()
-  {
-    return hasChanges;
-  }
-
   public void styleChanged(StyleDescriptor descriptor, String value)
   {
-    markAsChanged();
+    setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
 
   public ScrollBarPanel getVerticalScrollBar()

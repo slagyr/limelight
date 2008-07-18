@@ -5,6 +5,7 @@ import limelight.ui.Painter;
 import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
 import limelight.ui.model2.inputs.ScrollBarPanel;
+import limelight.ui.model2.updates.Updates;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
@@ -16,6 +17,7 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 
 public class PropPanelTest extends TestCase
 {
@@ -161,26 +163,26 @@ public class PropPanelTest extends TestCase
   {
     style.setWidth("100%");
 
-    assertEquals(true, panel.hasChanges());
+    assertEquals(true, panel.needsUpdating());
   }
 
   public void testHasChangesWhenaTextIsChanged() throws Exception
   {
     panel.setText("blah");
-    assertEquals(true, panel.hasChanges());
+    assertEquals(true, panel.needsUpdating());
 
-    panel.resetChangeMarker();
+    panel.resetNeededUpdate();
     panel.setText("blah");
-    assertEquals(false, panel.hasChanges());
+    assertEquals(false, panel.needsUpdating());
 
     panel.setText("new text");
-    assertEquals(true, panel.hasChanges());
+    assertEquals(true, panel.needsUpdating());
   }
   
   public void testMarkingAsChagedAddsPanelToChangeSet() throws Exception
   {
     assertEquals(0, root.getChangedPanelCount());
-    panel.markAsChanged();
+    panel.setNeededUpdate(Updates.layoutAndPaintUpdate);
     assertEquals(1, root.getChangedPanelCount());
     assertEquals(true, root.changedPanelsContains(panel));
   }
@@ -257,5 +259,41 @@ public class PropPanelTest extends TestCase
 
     assertSame(child, panel.getOwnerOfPoint(new Point(0, 0)));
     assertSame(floater, panel.getOwnerOfPoint(new Point(50, 50)));
+  }
+  
+  public void testVerticalMouseWheelMovement() throws Exception
+  {
+    panel.addVerticalScrollBar();
+    panel.getVerticalScrollBar().configure(100, 200);
+    panel.addHorizontalScrollBar();
+    panel.getHorizontalScrollBar().configure(100, 200);
+
+    int modifer = 0;
+    int scrollAmount = 8;
+    int wheelRotation = 2;
+    MouseWheelEvent e = new MouseWheelEvent(root.getContentPane(), 1, 2, modifer, 4, 5, 6, false, 7, scrollAmount, wheelRotation);
+
+    panel.mouseWheelMoved(e);
+
+    assertEquals(16, panel.getVerticalScrollBar().getScrollBar().getValue());
+    assertEquals(0, panel.getHorizontalScrollBar().getScrollBar().getValue());
+  }
+
+  public void testHorizontalMouseWheelMovement() throws Exception
+  {
+    panel.addVerticalScrollBar();
+    panel.getVerticalScrollBar().configure(100, 200);
+    panel.addHorizontalScrollBar();
+    panel.getHorizontalScrollBar().configure(100, 200);
+
+    int modifer = 1;
+    int scrollAmount = 8;
+    int wheelRotation = 2;
+    MouseWheelEvent e = new MouseWheelEvent(root.getContentPane(), 1, 2, modifer, 4, 5, 6, false, 7, scrollAmount, wheelRotation);
+
+    panel.mouseWheelMoved(e);
+
+    assertEquals(0, panel.getVerticalScrollBar().getScrollBar().getValue());
+    assertEquals(16, panel.getHorizontalScrollBar().getScrollBar().getValue());
   }
 }
