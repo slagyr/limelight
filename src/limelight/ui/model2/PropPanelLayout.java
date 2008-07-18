@@ -130,6 +130,7 @@ public class PropPanelLayout
       layoutFloater(floater);
   }
 
+  //TODO Floater need to change position when scrolled too.
   private void layoutFloater(Panel floater)
   {
     Style style = floater.getStyle();

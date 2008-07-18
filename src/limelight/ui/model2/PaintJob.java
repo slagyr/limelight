@@ -65,7 +65,7 @@ public class PaintJob
 
   public boolean panelIsInClip(Panel panel)
   {
-    Box panelClip = panel.getAbsoluteBounds();
+    Box panelClip = panel.getAbsoluteBounds();  
     return clip.intersects(panelClip);
   }
 
