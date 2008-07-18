@@ -25,12 +25,6 @@ public class FrameManagerTest extends TestCase
   {
     manager.watch(frame);
 
-    for(int i = 0; i < frame.getWindowFocusListeners().length; i++)
-    {
-      WindowFocusListener windowFocusListener = frame.getWindowFocusListeners()[i];
-      System.err.println("windowFocusListener = " + windowFocusListener);
-    }
-
     assertEquals(1, frame.getWindowFocusListeners().length);
     assertEquals(manager, frame.getWindowFocusListeners()[0]);
   }

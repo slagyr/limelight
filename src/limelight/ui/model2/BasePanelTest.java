@@ -420,5 +420,20 @@ public class BasePanelTest extends TestCase
   {
     assertEquals(true, panel.canBeBuffered());
   }
+
+  public void testClearingCacheIsRecursive() throws Exception
+  {
+    panel.setLocation(20, 21);
+    Box parentBounds = panel.getAbsoluteBounds();
+    MockPanel child = new MockPanel();
+    panel.add(child);
+    child.setLocation(10, 11);
+    Box childBounds = child.getAbsoluteBounds();
+
+    panel.setLocation(30, 31);
+
+    assertNotSame(parentBounds, panel.getAbsoluteBounds());
+    assertNotSame(childBounds, child.getAbsoluteBounds());
+  }
 }
 

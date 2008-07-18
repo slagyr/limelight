@@ -280,6 +280,10 @@ public class RootPanel implements Panel
     return this;
   }
 
+  public void clearCache()
+  {
+  }
+
   public void mousePressed(MouseEvent e)
   {
   }

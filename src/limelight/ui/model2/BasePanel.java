@@ -4,6 +4,7 @@ import limelight.ui.Panel;
 import limelight.util.Box;
 import limelight.LimelightError;
 import java.util.LinkedList;
+import java.util.Iterator;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -61,19 +62,19 @@ public abstract class BasePanel implements Panel
     }
   }
 
-  protected void clearCache()
+  public void clearCache()
   {
+    absoluteLocation = null;
     boundingBox = null;
     absoluteBounds = null;
+    for(Panel child : children)
+      child.clearCache();
   }
 
   public void setLocation(int x, int y)
   {
     if(x != this.x || y != this.y)
-    {
-      absoluteLocation = null;
-      absoluteBounds = null;
-    }
+      clearCache();
     this.x = x;
     this.y = y;
   }

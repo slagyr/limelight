@@ -302,7 +302,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return "on".equals(getStyle().getFloat());
   }
 
-  protected void clearCache()
+  //TODO super.clearCache() deals with absolut positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
+  public void clearCache()
   {
     super.clearCache();
     boxInsideMargins = null;
