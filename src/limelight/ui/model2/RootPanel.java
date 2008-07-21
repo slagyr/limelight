@@ -16,9 +16,11 @@ public class RootPanel implements Panel
   private EventListener listener;
   private boolean alive;
   private HashSet<Panel> changedPanels;
+  private Frame frame;
 
   public RootPanel(Frame frame)
   {
+    this.frame = frame;
     contentPane = frame.getContentPane();
     changedPanels = new HashSet<Panel>();
   }
@@ -327,5 +329,10 @@ public class RootPanel implements Panel
 
   public void add(Panel child)
   {
+  }
+
+  public Frame getFrame()
+  {
+    return frame;
   }
 }

@@ -21,7 +21,7 @@ public class RadioButtonPainter extends Painter
     panel.sterilize();
     panel.setLayout(new InputLayout());
     panel.setTextAccessor(new TextAccessor() {
-      public void setText(String text) throws LimelightException
+      public void setText(String text)
       {
         radioButton.setText(text);
       }

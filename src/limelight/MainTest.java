@@ -11,6 +11,7 @@ import limelight.task.RecurringTask;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
 import limelight.ui.Panel;
+import limelight.audio.RealAudioPlayer;
 
 import java.awt.image.BufferedImage;
 
@@ -91,5 +92,12 @@ public class MainTest extends TestCase
     assertEquals(true, task instanceof RecurringTask);
     assertEquals(80, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
     assertEquals(false, ((RecurringTask)task).isStrict());
+  }
+
+  public void testAudioPlayerIsAdded() throws Exception
+  {
+    main.configureContext();
+
+    assertEquals(RealAudioPlayer.class, Context.instance().audioPlayer.getClass());
   }
 }

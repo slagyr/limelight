@@ -5,6 +5,8 @@ import limelight.ui.api.MockStage;
 import limelight.ui.MockPanel;
 import limelight.Context;
 
+import javax.swing.*;
+
 public class FrameTest extends TestCase
 {
   private MockStage stage;
@@ -58,5 +60,10 @@ public class FrameTest extends TestCase
   {
     assertEquals(1, frameManager.getFrameCount());
     assertEquals(true, frameManager.isWatching(frame));
+  }
+  
+  public void testDefaultCloseOperations() throws Exception
+  {
+    assertEquals(WindowConstants.DISPOSE_ON_CLOSE, frame.getDefaultCloseOperation());
   }
 }

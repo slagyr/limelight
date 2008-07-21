@@ -6,21 +6,21 @@ package limelight;
 import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
-import limelight.ui.painting.VerboseRepaintManager;
 import limelight.ui.Panel;
 import limelight.ui.model2.FrameManager;
 import limelight.ui.model2.Frame;
 import limelight.task.TaskEngine;
 import limelight.task.RecurringTask;
 import limelight.caching.TimedCache;
+import limelight.audio.RealAudioPlayer;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 
+import javax.sound.sampled.Clip;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
-import java.util.Set;
+import java.awt.*;
 
 public class Main
 {
@@ -93,6 +93,9 @@ public class Main
   public void configureContext()
   {
 //VerboseRepaintManager.install();
+
+//    KeyboardFocusManager.setCurrentKeyboardFocusManager(new MyKeyboardFocusManager());
+
     if(contextIsConfigured)
       return;
     Context context = Context.instance();
@@ -101,6 +104,7 @@ public class Main
     context.taskEngine = new TaskEngine().started();
     context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
     context.frameManager = new FrameManager();
+    context.audioPlayer = new RealAudioPlayer();
 
     addBufferedImageCacheCleanerTask(context);
     addPanelPainterTask(context);
@@ -130,4 +134,5 @@ public class Main
       }
     });
   }
+
 }

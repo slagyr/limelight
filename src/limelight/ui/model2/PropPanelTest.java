@@ -12,6 +12,8 @@ import limelight.ui.painting.Border;
 import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
 import limelight.util.Box;
+import limelight.Context;
+import limelight.audio.MockAudioPlayer;
 import junit.framework.TestCase;
 
 import javax.swing.*;
@@ -295,5 +297,15 @@ public class PropPanelTest extends TestCase
 
     assertEquals(0, panel.getVerticalScrollBar().getScrollBar().getValue());
     assertEquals(16, panel.getHorizontalScrollBar().getScrollBar().getValue());
+  }
+
+  public void testPlayAudioFile() throws Exception
+  {
+    MockAudioPlayer audioPlayer = new MockAudioPlayer();
+    Context.instance().audioPlayer = audioPlayer;
+
+    panel.playSound("blah");
+
+    assertEquals("blah", audioPlayer.playedFile);
   }
 }

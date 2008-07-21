@@ -11,5 +11,6 @@ header do
   example_link :text => "Rounded Corners", :on_mouse_clicked => "scene.load('rounded_corners')"
   example_link :text => "Floaters", :on_mouse_clicked => "scene.load('floaters')"
   example_link :text => "Sketching", :on_mouse_clicked => "scene.load('sketching')"
+  example_link :text => "Sound", :on_mouse_clicked => "scene.load('sounds')"
 end
 
