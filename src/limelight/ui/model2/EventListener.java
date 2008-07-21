@@ -110,13 +110,34 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
 
   public void keyTyped(KeyEvent e)
   {
+    System.err.println("keyTyped");
+//    KeyListener[] keyListeners = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getKeyListeners();
+//    for(int i = 0; i < keyListeners.length; i++)
+//    {
+//      KeyListener keyListener = keyListeners[i];
+//      keyListener.keyTyped(e);
+//    }
   }
 
   public void keyPressed(KeyEvent e)
   {
+    System.err.println("keyPressed");
+//    KeyListener[] keyListeners = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getKeyListeners();
+//    for(int i = 0; i < keyListeners.length; i++)
+//    {
+//      KeyListener keyListener = keyListeners[i];
+//      keyListener.keyPressed(e);
+//    }
   }
 
   public void keyReleased(KeyEvent e)
   {
+    System.err.println("keyReleased");
+//    KeyListener[] keyListeners = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getKeyListeners();
+//    for(int i = 0; i < keyListeners.length; i++)
+//    {
+//      KeyListener keyListener = keyListeners[i];
+//      keyListener.keyReleased(e);
+//    }
   }
 }

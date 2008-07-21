@@ -164,6 +164,10 @@ module Limelight
       return Pen.new(panel.getGraphics)
     end
     
+    def play_sound(filename)
+      @panel.play_sound(@scene.loader.path_to(filename))
+    end
+    
     # GUI Events ##########################################
     
     def hover_on

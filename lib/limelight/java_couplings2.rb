@@ -23,7 +23,7 @@ module Limelight
       Frame = Java::limelight.ui.model2.Frame
       Panel = Java::limelight.ui.model2.PropPanel
       module Painting
-        TextBoxPainter = Java::limelight.ui.model.painting.TextBoxPainter
+        TextBoxPainter = Java::limelight.ui.model2.painting.TextBoxPainter
         ButtonPainter = Java::limelight.ui.model.painting.ButtonPainter
         CheckBoxPainter = Java::limelight.ui.model.painting.CheckBoxPainter
         ComboBoxPainter = Java::limelight.ui.model.painting.ComboBoxPainter

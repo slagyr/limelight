@@ -18,7 +18,7 @@ public class FrameManager implements WindowFocusListener, WindowListener
 
   public void windowGainedFocus(WindowEvent e)
   {
-    Window window = e.getWindow();
+    Window window = e.getWindow();  
     if(window instanceof Frame)
     {
       activeFrame = (Frame)window;

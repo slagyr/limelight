@@ -3,7 +3,6 @@
 
 package limelight.ui.model2;
 
-import limelight.ui.model.TextAccessor;
 import limelight.LimelightError;
 
 public class TextPaneTextAccessor implements TextAccessor

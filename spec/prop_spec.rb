@@ -211,6 +211,15 @@ describe Limelight::Prop do
     @prop.children[1].children.length.should == 1
     @prop.children[1].children[0].name.should == "three"
   end
+
+  it "should play sound" do
+    loader = make_mock("loader")
+    @scene.loader = loader
+    loader.should_receive(:path_to).with("some.au").and_return("/full/path/to/some.au");
+    @prop.panel.should_receive(:play_sound).with("/full/path/to/some.au");
+
+    @prop.play_sound("some.au")
+  end
   
 end
 

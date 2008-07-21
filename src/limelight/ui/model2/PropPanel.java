@@ -1,6 +1,7 @@
 package limelight.ui.model2;
 
 import limelight.LimelightError;
+import limelight.Context;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
@@ -28,7 +29,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private PropPanelLayout layout;
   private LinkedList<Painter> painters;
   private Border borderShaper;
-  private TextPaneTextAccessor textAccessor;
+  private TextAccessor textAccessor;
   private Box boxInsideMargins;
   private Box boxInsideBorders;
   private Box boxInsidePadding;
@@ -66,12 +67,12 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     textAccessor.setText(text);
   }
 
-  public TextPaneTextAccessor getTextAccessor()
+  public TextAccessor getTextAccessor()
   {
     return textAccessor;
   }
 
-  public void setTextAccessor(TextPaneTextAccessor textAccessor)
+  public void setTextAccessor(TextAccessor textAccessor)
   {
     this.textAccessor = textAccessor;
   }
@@ -353,6 +354,11 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     remove(horizontalScrollBar);
     horizontalScrollBar = null;
     childConsumableArea = null;
+  }
+
+  public void playSound(String filename)
+  {
+    Context.instance().audioPlayer.playAuFile(filename);
   }
 }
 

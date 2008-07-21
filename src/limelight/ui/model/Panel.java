@@ -387,5 +387,10 @@ if("application_list".equals(prop.getName()))
       super("The panel for prop named '" + name + "' has been sterilized and child components may not be added.");
     }
   }
+
+  public void playSound(String filename)
+  {
+    Context.instance().audioPlayer.playAuFile(filename);
+  }
 }
 

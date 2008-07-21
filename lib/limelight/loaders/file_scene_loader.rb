@@ -21,6 +21,7 @@ module Limelight
       end
       
       def path_to(path)
+        #TODO What about windoze?
         if(path[0] == "/"[0])
           return path
         else

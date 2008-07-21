@@ -6,9 +6,10 @@ module Limelight
     
     module TextBox
       class << self
+
         def extended(prop)
           prop.panel.painters.clear
-          prop.panel.painters << Java.limelight.ui.model.painting.TextBoxPainter.new(prop.panel)
+          prop.panel.painters << Limelight::UI::Model::Painting::TextBoxPainter.new(prop.panel)
           prop.panel.clear_event_listeners
           set_default_styles(prop)
         end
