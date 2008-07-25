@@ -51,23 +51,23 @@ public class Panel extends JPanel implements PaintablePanel
     textAccessor = new TextPaneTextAccessor(this);
   }
 
-  public Component add(Component comp)
-  {
-    if (sterilized)
-      throw new SterilePanelException(prop.getName());
-    if(((PropLayout)getLayout()).isInScrollMode())      // TODO MDM HACK HACK HACK!!!!
-      return ((PropLayout)getLayout()).getScrollView().add(comp);
-    else
-      return super.add(comp);
-  }
-
-  public void remove(Component comp)   // TODO HACK
-  {
-    if(((PropLayout)getLayout()).isInScrollMode())      // TODO MDM HACK HACK HACK!!!!
-      ((PropLayout)getLayout()).getScrollView().remove(comp);
-    else
-      super.remove(comp);
-  }
+//  public Component add(Component comp)
+//  {
+//    if (sterilized)
+//      throw new SterilePanelException(prop.getName());
+//    if(((PropLayout)getLayout()).isInScrollMode())      // TODO MDM HACK HACK HACK!!!!
+//      return ((PropLayout)getLayout()).getScrollView().add(comp);
+//    else
+//      return super.add(comp);
+//  }
+//
+//  public void remove(Component comp)   // TODO HACK
+//  {
+//    if(((PropLayout)getLayout()).isInScrollMode())      // TODO MDM HACK HACK HACK!!!!
+//      ((PropLayout)getLayout()).getScrollView().remove(comp);
+//    else
+//      super.remove(comp);
+//  }
 
   public boolean hasChild(Component child)
   {
