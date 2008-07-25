@@ -1,10 +1,7 @@
 package limelight.ui.model2.inputs;
 
 import limelight.ui.model2.BasePanel;
-import limelight.ui.model2.RootPanel;
 import limelight.ui.model2.updates.Updates;
-import limelight.ui.*;
-import limelight.ui.Panel;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.MyKeyboardFocusManager;
@@ -120,6 +117,11 @@ public class TextBoxPanel extends BasePanel
     public void repaint(Rectangle r)
     {
       setNeededUpdate(Updates.shallowPaintUpdate);
+    }
+
+    public boolean isShowing()
+    {
+      return true;
     }
   }
 }
