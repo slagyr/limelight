@@ -1,56 +1,42 @@
-//- Copyright 2008 8th Light, Inc.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight.ui.model.painting;
 
 import limelight.ui.*;
-import limelight.ui.model.*;
-import limelight.LimelightException;
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.TextAccessor;
+import limelight.ui.model.inputs.RadioButtonPanel;
+import limelight.ui.model.inputs.RadioButton;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class RadioButtonPainter extends Painter
 {
-  private JRadioButton radioButton;
+  private RadioButtonPanel radioButtonPanel;
 
-  public RadioButtonPainter(limelight.ui.model.Panel panel)
+  public RadioButtonPainter(PropPanel panel)
   {
     super(panel);
-    panel.add(buildTextBox());
+    radioButtonPanel = new RadioButtonPanel();
+    panel.add(radioButtonPanel);
     panel.sterilize();
-    panel.setLayout(new InputLayout());
     panel.setTextAccessor(new TextAccessor() {
       public void setText(String text)
       {
-        radioButton.setText(text);
+        radioButtonPanel.getRadioButton().setText(text);
       }
 
       public String getText()
       {
-        return radioButton.getText();
+        return radioButtonPanel.getRadioButton().getText();
       }
     });
-  }
-
-  private JRadioButton buildTextBox()
-  {
-    radioButton = new JRadioButton();
-    PropEventListener listener = new PropEventListener(panel.getProp());
-    radioButton.addKeyListener(listener);
-    radioButton.addMouseListener(listener);
-    radioButton.addActionListener(listener);
-    radioButton.addFocusListener(listener);
-    radioButton.addChangeListener(listener);
-    return radioButton;
   }
 
   public void paint(Graphics2D graphics)
   {
   }
 
-  public JRadioButton getRadioButton()
+  public RadioButton getRadioButton()
   {
-    return radioButton;
+    return radioButtonPanel.getRadioButton();
   }
 }

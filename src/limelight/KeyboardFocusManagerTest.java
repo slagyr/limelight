@@ -4,9 +4,9 @@ import junit.framework.TestCase;
 
 
 import limelight.ui.Panel;
-import limelight.ui.model2.inputs.InputPanel;
-import limelight.ui.model2.RootPanel;
-import limelight.ui.model2.MockFrame;
+import limelight.ui.model.inputs.InputPanel;
+import limelight.ui.model.RootPanel;
+import limelight.ui.model.MockFrame;
 import limelight.ui.MockPanel;
 
 import java.awt.*;

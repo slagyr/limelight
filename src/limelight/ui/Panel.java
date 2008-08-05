@@ -2,7 +2,7 @@ package limelight.ui;
 
 import limelight.util.Box;
 import limelight.styles.Style;
-import limelight.ui.model2.Update;
+import limelight.ui.model.Update;
 
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;

@@ -1,6 +1,6 @@
 package limelight.ui;
 
-import limelight.ui.model2.BasePanel;
+import limelight.ui.model.BasePanel;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;

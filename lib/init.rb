@@ -9,6 +9,4 @@ require File.expand_path(File.dirname(__FILE__) + "/limelight.jar")
 
 # ENV["GEM_HOME"] = ENV["GEM_PATH"] = File.expand_path(File.dirname(__FILE__) + "/../../jruby/lib/ruby/gems/1.8")
 require 'rubygems'
-#require 'limelight/java_couplings'
-require 'limelight/java_couplings2'
-#require 'limelight/alt_couplings'
+require 'limelight/java_couplings'

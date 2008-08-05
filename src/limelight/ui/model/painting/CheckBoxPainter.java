@@ -1,45 +1,43 @@
-//- Copyright 2008 8th Light, Inc.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight.ui.model.painting;
 
-import limelight.ui.model.PropEventListener;
-import limelight.ui.model.InputLayout;
-import limelight.ui.Painter;
+import limelight.ui.*;
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.inputs.CheckBoxPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CheckBoxPainter extends Painter
 {
-  private JCheckBox checkBox;
+  private CheckBoxPanel checkBoxPanel;
 
-  public CheckBoxPainter(limelight.ui.model.Panel panel)
+  public CheckBoxPainter(PropPanel panel)
   {
     super(panel);
-    panel.add(buildTextBox());
+    checkBoxPanel = new CheckBoxPanel();
+    panel.add(checkBoxPanel);
     panel.sterilize();
-    panel.setLayout(new InputLayout());
+//    panel.setLayout(new InputLayout());
+//    panel.setTextAccessor(new TextAccessor() {
+//
+//      public void setText(String text)
+//      {
+//        textField.setText(text);
+//      }
+//
+//      public String getText()
+//      {
+//        return textField.getText();
+//      }
+//    });
   }
-
-  private JCheckBox buildTextBox()
-  {
-    checkBox = new JCheckBox();
-    PropEventListener listener = new PropEventListener(panel.getProp());
-    checkBox.addKeyListener(listener);
-    checkBox.addMouseListener(listener);
-    checkBox.addActionListener(listener);
-    checkBox.addFocusListener(listener);
-    checkBox.addChangeListener(listener);
-    return checkBox;
-  }
-
+  
   public void paint(Graphics2D graphics)
   {
   }
 
   public JCheckBox getCheckBox()
   {
-    return checkBox;
+    return checkBoxPanel.getCheckBox();
   }
 }

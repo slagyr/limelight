@@ -4,7 +4,7 @@
 package limelight.ui.api;
 
 import limelight.styles.Style;
-import limelight.ui.model.Panel;
+import limelight.ui.Panel;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
