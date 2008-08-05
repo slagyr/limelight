@@ -7,11 +7,9 @@ module Limelight
     module RadioButton
       class << self
         def extended(prop)
-#          prop.panel.painters.clear
           painter = Limelight::UI::Model::Painting::RadioButtonPainter.new(prop.panel)
           prop.radio_button = painter.radio_button
           prop.panel.painters << painter
-#          prop.panel.clear_event_listeners
           set_default_styles(prop)
         end
         

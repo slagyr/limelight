@@ -14,6 +14,7 @@ public class PaintUpdate extends Update
 
   public void performUpdate(Panel panel)
   {
+//System.err.println("PaintUpdate: " + panel);
     paintPanel(panel);
   }
 

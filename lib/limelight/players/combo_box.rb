@@ -7,11 +7,9 @@ module Limelight
     module ComboBox
       class << self
         def extended(prop)
-#          prop.panel.painters.clear
           painter = Limelight::UI::Model::Painting::ComboBoxPainter.new(prop.panel)
           prop.combo_box = painter.combo_box
           prop.panel.painters << painter
-#          prop.panel.clear_event_listeners
           set_default_styles(prop)
         end
         

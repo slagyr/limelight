@@ -35,15 +35,26 @@ public class TaskEngine
 
   public void cycle()
   {
-//System.err.print(".");
     int tasksToPerform = tasks.size();
     for(int currentTask = 0; currentTask < tasksToPerform; currentTask++)
     {
       Task task = tasks.removeFirst();
       if(task.isReady())
-        task.perform();
+        performTask(task);
       else
         tasks.add(task);
+    }
+  }
+
+  private void performTask(Task task)
+  {
+    try
+    {
+      task.perform();
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
     }
   }
 

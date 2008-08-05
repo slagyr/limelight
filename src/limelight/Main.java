@@ -113,7 +113,14 @@ public class Main
     context.taskEngine.add(new RecurringTask("Buffered Image Cache Cleaner", 1) {
       protected void doPerform()
       {
-        Context.instance().bufferedImageCache.clean();
+        try
+        {
+          Context.instance().bufferedImageCache.clean();
+        }
+        catch(Exception e)
+        {
+          e.printStackTrace();
+        }
       }
     });
   }
@@ -123,9 +130,16 @@ public class Main
     context.taskEngine.add(new RecurringTask("Panel Painter", 80) {
       protected void doPerform()
       {
-        Frame frame = Context.instance().frameManager.getActiveFrame();
-        if(frame != null)
-          frame.getRoot().repaintChangedPanels();
+        try
+        {
+          Frame frame = Context.instance().frameManager.getActiveFrame();
+          if(frame != null)
+            frame.getRoot().repaintChangedPanels();
+        }
+        catch(Exception e)
+        {
+          e.printStackTrace();
+        }
       }
     });
   }
