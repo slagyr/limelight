@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import limelight.ui.model2.updates.PaintUpdate;
 import limelight.ui.model2.updates.Updates;
@@ -115,5 +116,4 @@ public class RootPanelTest extends TestCase
     assertEquals(child, mockUpdate.updatedPanel);
     assertEquals(true, child.changeMarkerWasReset);
   }
-
 }

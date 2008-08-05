@@ -30,7 +30,7 @@ public class TaskEngine
 
   public LinkedList<Task> getTasks()
   {
-    return tasks;
+    return new LinkedList<Task>(tasks);
   }
 
   public void cycle()

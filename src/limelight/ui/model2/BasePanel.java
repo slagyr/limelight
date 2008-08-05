@@ -49,7 +49,7 @@ public abstract class BasePanel implements Panel
   {
     return y;
   }
-  
+
   public void setSize(int w, int h)
   {
     w = h == 0 ? 0 : w;
@@ -366,5 +366,10 @@ public abstract class BasePanel implements Panel
     Point absoluteLocation = getAbsoluteLocation();
     e.translatePoint(absoluteLocation.x * -1, absoluteLocation.y * -1);
     return e;
+  }
+
+  public Iterator<Panel> iterator()
+  {
+    return new PanelIterator(this);
   }
 }

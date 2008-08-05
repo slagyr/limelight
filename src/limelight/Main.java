@@ -16,11 +16,9 @@ import limelight.audio.RealAudioPlayer;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 
-import javax.sound.sampled.Clip;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.awt.image.BufferedImage;
-import java.awt.*;
 
 public class Main
 {
@@ -93,12 +91,10 @@ public class Main
   public void configureContext()
   {
 //VerboseRepaintManager.install();
-
-//    KeyboardFocusManager.setCurrentKeyboardFocusManager(new MyKeyboardFocusManager());
-
     if(contextIsConfigured)
       return;
     Context context = Context.instance();
+    context.keyboardFocusManager = new KeyboardFocusManager().installed();
     context.tempDirectory = new TempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
     context.taskEngine = new TaskEngine().started();
@@ -108,7 +104,6 @@ public class Main
 
     addBufferedImageCacheCleanerTask(context);
     addPanelPainterTask(context);
-
 
     contextIsConfigured = true;
   }

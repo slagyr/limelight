@@ -51,15 +51,15 @@ public class Panel extends JPanel implements PaintablePanel
     textAccessor = new TextPaneTextAccessor(this);
   }
 
-//  public Component add(Component comp)
-//  {
-//    if (sterilized)
-//      throw new SterilePanelException(prop.getName());
+  public Component add(Component comp)
+  {
+    if (sterilized)
+      throw new SterilePanelException(prop.getName());
 //    if(((PropLayout)getLayout()).isInScrollMode())      // TODO MDM HACK HACK HACK!!!!
 //      return ((PropLayout)getLayout()).getScrollView().add(comp);
 //    else
-//      return super.add(comp);
-//  }
+      return super.add(comp);
+  }
 //
 //  public void remove(Component comp)   // TODO HACK
 //  {

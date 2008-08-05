@@ -308,4 +308,5 @@ public class PropPanelTest extends TestCase
 
     assertEquals("blah", audioPlayer.playedFile);
   }
+
 }

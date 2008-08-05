@@ -9,7 +9,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
-public interface Panel
+public interface Panel extends Iterable<Panel>
 {            
   void setLocation(int x, int y);
   Point getLocation();

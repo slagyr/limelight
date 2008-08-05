@@ -157,8 +157,8 @@ describe Limelight::Prop do
     
     @prop.children.length.should == 2
     @prop.children.should_not include(child2)
-    @prop.panel.components.length.should == 2
-    @prop.panel.components.should_not include(child2.panel)
+    @prop.panel.children.length.should == 2
+    @prop.panel.children.should_not include(child2.panel)
   end
   
   it "should make dimensions accessible" do

@@ -13,24 +13,24 @@ describe Limelight::Players::TextArea do
   end
   
   it "should get rid of the all painters and add a TextAreaPainter" do
-    @prop.panel.painters.size.should == 1
+#    @prop.panel.painters.size.should == 1
     @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::TextAreaPainter
   end
   
-  it "should clear event listeners on the panel" do
-    @prop.panel.mouse_listeners.length.should == 0
-    @prop.panel.key_listeners.length.should == 0
-  end
+#  it "should clear event listeners on the panel" do
+#    @prop.panel.mouse_listeners.length.should == 0
+#    @prop.panel.key_listeners.length.should == 0
+#  end
   
   it "should have a JTextArea" do
-    @prop.panel.components[0].class.should == javax.swing.JTextArea
+    @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::TextAreaPanel
   end
   
   it "should use the TextArea for the text accessor" do
     @prop.text = "blah"
-    @prop.panel.components[0].text.should == "blah"
+    @prop.panel.children[0].text.should == "blah"
     
-    @prop.panel.components[0].text = "harumph"
+    @prop.panel.children[0].text = "harumph"
     @prop.text.should == "harumph"
   end
 

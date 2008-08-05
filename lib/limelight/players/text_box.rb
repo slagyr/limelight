@@ -8,9 +8,9 @@ module Limelight
       class << self
 
         def extended(prop)
-          prop.panel.painters.clear
+#          prop.panel.painters.clear
           prop.panel.painters << Limelight::UI::Model::Painting::TextBoxPainter.new(prop.panel)
-          prop.panel.clear_event_listeners
+#          prop.panel.clear_event_listeners
           set_default_styles(prop)
         end
         
