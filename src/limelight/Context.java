@@ -9,7 +9,6 @@ import limelight.task.TaskEngine;
 import limelight.ui.Panel;
 import limelight.ui.model2.FrameManager;
 import limelight.caching.Cache;
-import javax.sound.sampled.Clip;
 import java.awt.image.BufferedImage;
 
 public class Context
@@ -22,6 +21,7 @@ public class Context
   public Cache<Panel, BufferedImage> bufferedImageCache;
   public FrameManager frameManager;
   public AudioPlayer audioPlayer;
+  public KeyboardFocusManager keyboardFocusManager;
 
   protected Context()
   {

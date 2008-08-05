@@ -11,6 +11,7 @@ import limelight.util.Box;
 import javax.swing.*;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 
 public class BasePanelTest extends TestCase
 {
@@ -40,6 +41,7 @@ public class BasePanelTest extends TestCase
     {
       return null;
     }
+
   }
 
   public void setUp() throws Exception
@@ -434,6 +436,13 @@ public class BasePanelTest extends TestCase
 
     assertNotSame(parentBounds, panel.getAbsoluteBounds());
     assertNotSame(childBounds, child.getAbsoluteBounds());
+  }
+
+  public void testIterator() throws Exception
+  {
+    Iterator<Panel> iterator = panel.iterator();
+
+    assertEquals(PanelIterator.class, iterator.getClass());
   }
 }
 

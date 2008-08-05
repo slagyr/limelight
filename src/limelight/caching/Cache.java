@@ -13,14 +13,14 @@ public abstract class Cache<KEY, VALUE>
     map = new HashMap<KEY, CacheEntry<VALUE>>();
   }
 
-  public void cache(KEY key, VALUE value)
+  synchronized public void cache(KEY key, VALUE value)
   {
     map.put(key, createEntry(value));
   }
 
   protected abstract CacheEntry<VALUE> createEntry(VALUE value);
 
-  public VALUE retrieve(KEY key)
+  synchronized public VALUE retrieve(KEY key)
   {
     CacheEntry<VALUE> entry = map.get(key);
     if(entry != null)
@@ -41,7 +41,7 @@ public abstract class Cache<KEY, VALUE>
     return map;
   }
 
-  public void clean()
+  synchronized public void clean()
   {
     ArrayList<KEY> deletes = new ArrayList<KEY>();
     for(Map.Entry<KEY, CacheEntry<VALUE>> mapEntry : map.entrySet())
@@ -54,7 +54,7 @@ public abstract class Cache<KEY, VALUE>
       map.remove(key);
   }
 
-  public void expire(KEY key)
+  synchronized public void expire(KEY key)
   {
     map.remove(key);
   }

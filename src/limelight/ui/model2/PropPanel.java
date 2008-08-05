@@ -288,6 +288,11 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     afterPaintAction = action;
   }
 
+  public PaintAction getAfterPaintAction()
+  {
+    return afterPaintAction;
+  }
+
   public PropPanelLayout getLayout()
   {
     return layout;

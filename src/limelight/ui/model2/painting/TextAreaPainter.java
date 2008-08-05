@@ -3,32 +3,31 @@ package limelight.ui.model2.painting;
 import limelight.ui.*;
 import limelight.ui.model2.PropPanel;
 import limelight.ui.model2.TextAccessor;
-import limelight.ui.model2.inputs.TextBoxPanel;
-import limelight.ui.model2.inputs.TextBox;
+import limelight.ui.model2.inputs.TextAreaPanel;
+import limelight.ui.model2.inputs.TextArea;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class TextBoxPainter extends Painter
+public class TextAreaPainter extends Painter
 {
-  private TextBoxPanel textPanel;
+  private TextAreaPanel textPanel;
 
-  public TextBoxPainter(PropPanel panel)
+  public TextAreaPainter(PropPanel panel)
   {
     super(panel);
-    textPanel = new TextBoxPanel();
+    textPanel = new TextAreaPanel();
     panel.add(textPanel);
     panel.sterilize();
     panel.setTextAccessor(new TextAccessor() {
 
       public void setText(String text)
       {
-        textPanel.getTextBox().setText(text);
+        textPanel.getTextArea().setText(text);
       }
 
       public String getText()
       {
-        return textPanel.getTextBox().getText();
+        return textPanel.getTextArea().getText();
       }
     });
   }
@@ -37,8 +36,8 @@ public class TextBoxPainter extends Painter
   {
   }
 
-  public TextBox getTextField()
+  public TextArea getTextField()
   {
-    return textPanel.getTextBox();
+    return textPanel.getTextArea();
   }
 }

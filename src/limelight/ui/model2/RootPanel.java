@@ -5,6 +5,7 @@ import limelight.ui.Panel;
 import limelight.styles.Style;
 import java.util.LinkedList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -198,6 +199,11 @@ public class RootPanel implements Panel
     return changedPanels.contains(panel);
   }
 
+  public Iterator<Panel> iterator()
+  {
+    return panel.iterator();
+  }
+
   /////////////////////////////////////////////
   /// NOT NEEDED
   /////////////////////////////////////////////
@@ -329,7 +335,7 @@ public class RootPanel implements Panel
 
   public void add(Panel child)
   {
-  }
+  }                               
 
   public Frame getFrame()
   {

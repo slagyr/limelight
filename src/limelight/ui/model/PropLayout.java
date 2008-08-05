@@ -139,6 +139,8 @@ public class PropLayout implements LayoutManager
 
   private void layoutFloater(limelight.ui.model.Panel floater)
   {
+    if(floater == null)
+      return;
     Style style = floater.getStyle();
     int x = style.asInt(style.getX());
     int y = style.asInt(style.getY());

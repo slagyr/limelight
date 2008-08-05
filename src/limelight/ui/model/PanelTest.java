@@ -165,7 +165,7 @@ public class PanelTest extends TestCase
     try
     {
       panel.add(new limelight.ui.model.Panel(new MockProp()));
-      fail("Should have thrown an exception");
+      fail("Should have thrown an error");
     }
     catch(Error e)
     {

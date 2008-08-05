@@ -7,17 +7,17 @@ module Limelight
     module ComboBox
       class << self
         def extended(prop)
-          prop.panel.painters.clear
-          painter = Java.limelight.ui.model.painting.ComboBoxPainter.new(prop.panel)
+#          prop.panel.painters.clear
+          painter = Limelight::UI::Model::Painting::ComboBoxPainter.new(prop.panel)
           prop.combo_box = painter.combo_box
           prop.panel.painters << painter
-          prop.panel.clear_event_listeners
+#          prop.panel.clear_event_listeners
           set_default_styles(prop)
         end
         
         def set_default_styles(prop)
           prop.style.width = "120"
-          prop.style.height = "22"
+          prop.style.height = "30"
         end
       end
       

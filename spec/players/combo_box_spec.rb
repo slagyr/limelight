@@ -15,17 +15,17 @@ describe Limelight::Players::ComboBox do
   end
   
   it "should get rid of the all painters and add a ComboBoxPainter" do
-    @prop.panel.painters.size.should == 1
+#    @prop.panel.painters.size.should == 1
     @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::ComboBoxPainter
   end
   
-  it "should clear event listeners on the panel" do
-    @prop.panel.mouse_listeners.length.should == 0
-    @prop.panel.key_listeners.length.should == 0
-  end
+#  it "should clear event listeners on the panel" do
+#    @prop.panel.mouse_listeners.length.should == 0
+#    @prop.panel.key_listeners.length.should == 0
+#  end
   
   it "should have a ComboBox" do
-    @prop.panel.components[0].class.should == javax.swing.JComboBox
+    @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::ComboBoxPanel
   end
   
   it "should have settable value" do
