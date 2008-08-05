@@ -3,30 +3,27 @@
 
 package limelight.ui.model;
 
-import limelight.ui.model.TextPane;
-import limelight.ui.model.TextAccessor;
-import limelight.ui.model.Panel;
-import limelight.LimelightException;
+import limelight.LimelightError;
 
 public class TextPaneTextAccessor implements TextAccessor
 {
-  private Panel panel;
-  private TextPane textPane;
+  private PropPanel panel;
+  private TextPanel textPane;
 
-  public TextPaneTextAccessor(Panel panel)
+  public TextPaneTextAccessor(PropPanel panel)
   {
     this.panel = panel;
   }
 
-  public void setText(String text) throws LimelightException
+  public void setText(String text) throws LimelightError
   {
     if(textPane == null)
     {
       if(text == null || text.length() == 0)
         return;
-      if(panel.getComponents().length > 0)
-        throw new LimelightException("You may only set text on empty props.");
-      textPane = new TextPane(panel, text);
+      if(panel.hasChildren())
+        throw new LimelightError("You may only set text on empty props.");
+      textPane = new TextPanel(panel, text);   
       panel.add(textPane);
       panel.sterilize();
     }

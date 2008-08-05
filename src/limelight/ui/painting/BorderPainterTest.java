@@ -6,7 +6,7 @@ package limelight.ui.painting;
 import junit.framework.TestCase;
 import limelight.styles.FlatStyle;
 import limelight.ui.MockGraphics;
-import limelight.ui.model.MockPanel;
+import limelight.ui.model.MockPropablePanel;
 import limelight.ui.api.MockProp;
 import limelight.util.Box;
 
@@ -16,13 +16,8 @@ import java.awt.geom.Line2D;
 
 public class BorderPainterTest extends TestCase
 {
-  public void testToKeepAntHappy() throws Exception
-  {
-    
-  }
-
   private MockProp prop;
-  private MockPanel panel;
+  private MockPropablePanel panel;
   private FlatStyle style;
   private BorderPainter painter;
   private Box border;
@@ -30,11 +25,11 @@ public class BorderPainterTest extends TestCase
 
   public void setUp() throws Exception
   {
-    panel = new MockPanel();
+    panel = new MockPropablePanel();
     prop = (MockProp)panel.getProp();
     style = prop.style;
     border = new Box(5, 5, 100, 100);
-    panel.boxInsideMargin = border;
+    panel.boxInsideMargins = border;
     painter = new BorderPainter(panel);
     graphics = new MockGraphics();
   }
@@ -64,7 +59,7 @@ public class BorderPainterTest extends TestCase
   public void testGetLinesFromBorderWithEven() throws Exception
   {
     border = new Box(0, 0, 100, 200);
-    panel.boxInsideMargin = border;
+    panel.boxInsideMargins = border;
     style.setBorderWidth("4");
     style.setBorderColor("blue");
 
@@ -79,7 +74,7 @@ public class BorderPainterTest extends TestCase
     public void testGetLinesFromBorderWithOdd() throws Exception
   {
     border = new Box(0, 0, 100, 200);
-    panel.boxInsideMargin = border;
+    panel.boxInsideMargins = border;
     style.setBorderWidth("5");
     style.setBorderColor("blue");
 

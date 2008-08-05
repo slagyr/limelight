@@ -1,28 +1,26 @@
-//- Copyright 2008 8th Light, Inc.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight.ui.model;
 
 import limelight.ui.api.Stage;
+import limelight.ui.Panel;
+import limelight.Context;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Frame extends JFrame
 {
   private Stage stage;
+  private RootPanel root;
+
+  protected Frame()
+  {
+  }
 
   public Frame(Stage stage)
   {
     this.stage = stage;
-    setLayout(null);
+    Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
-//    System.out.println("System.getProperty(\"mrj.version\") = " + System.getProperty("mrj.version"));
-  }
-
-  public void doLayout()
-  {
-    super.doLayout();
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   }
 
   public void close()
@@ -34,13 +32,17 @@ public class Frame extends JFrame
   public void open()
   {
     setVisible(true);
-    repaint();
+
+    root.doLayout();
+    root.repaint();
   }
 
-  public void load(Component child)
+  public void load(Panel child)
   {
-    getContentPane().removeAll();
-    add(child);
+    if(root != null)
+      root.destroy();
+    root = new RootPanel(this);
+    root.setPanel(child);
   }
 
   public Stage getStage()
@@ -48,8 +50,23 @@ public class Frame extends JFrame
     return stage;
   }
 
+  protected void setStage(Stage stage)
+  {
+    this.stage = stage;
+  }
+
   public void alert(String message)
   {
     JOptionPane.showMessageDialog(this, message, "Limelight Alert", JOptionPane.WARNING_MESSAGE);
+  }
+
+  public void setSize(int width, int height)
+  {
+    super.setSize(width, height);
+  }
+
+  public RootPanel getRoot()
+  {
+    return root;
   }
 }

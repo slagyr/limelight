@@ -1,55 +1,43 @@
-//- Copyright 2008 8th Light, Inc.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight.ui.model.painting;
 
 import limelight.ui.*;
-import limelight.ui.model.*;
-import limelight.LimelightException;
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.TextAccessor;
+import limelight.ui.model.inputs.TextBoxPanel;
+import limelight.ui.model.inputs.TextBox;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class TextBoxPainter extends Painter
 {
-  private JTextField textField;
+  private TextBoxPanel textPanel;
 
-  public TextBoxPainter(limelight.ui.model.Panel panel)
+  public TextBoxPainter(PropPanel panel)
   {
     super(panel);
-    panel.add(buildTextBox());
+    textPanel = new TextBoxPanel();
+    panel.add(textPanel);
     panel.sterilize();
-    panel.setLayout(new InputLayout());
     panel.setTextAccessor(new TextAccessor() {
 
-      public void setText(String text) throws LimelightException
+      public void setText(String text)
       {
-        textField.setText(text);
+        textPanel.getTextBox().setText(text);
       }
 
       public String getText()
       {
-        return textField.getText();
+        return textPanel.getTextBox().getText();
       }
     });
-  }
-
-  private JTextField buildTextBox()
-  {
-    textField = new JTextField();
-    PropEventListener listener = new PropEventListener(panel.getProp());
-    textField.addKeyListener(listener);
-    textField.addMouseListener(listener);
-    textField.addFocusListener(listener);
-    return textField;
   }
 
   public void paint(Graphics2D graphics)
   {
   }
 
-  public JTextField getTextField()
+  public TextBox getTextField()
   {
-    return textField;
+    return textPanel.getTextBox();
   }
 }

@@ -1,54 +1,43 @@
-//- Copyright 2008 8th Light, Inc.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight.ui.model.painting;
 
 import limelight.ui.*;
-import limelight.ui.model.*;
-import limelight.LimelightException;
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.TextAccessor;
+import limelight.ui.model.inputs.TextAreaPanel;
+import limelight.ui.model.inputs.TextArea;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class TextAreaPainter extends Painter
 {
-  private JTextArea textArea;
+  private TextAreaPanel textPanel;
 
-  public TextAreaPainter(limelight.ui.model.Panel panel)
+  public TextAreaPainter(PropPanel panel)
   {
     super(panel);
-    panel.add(buildTextArea());
+    textPanel = new TextAreaPanel();
+    panel.add(textPanel);
     panel.sterilize();
-    panel.setLayout(new InputLayout());
     panel.setTextAccessor(new TextAccessor() {
-      public void setText(String text) throws LimelightException
+
+      public void setText(String text)
       {
-        textArea.setText(text);
+        textPanel.getTextArea().setText(text);
       }
 
       public String getText()
       {
-        return textArea.getText();
+        return textPanel.getTextArea().getText();
       }
     });
-  }
-
-  private JTextArea buildTextArea()
-  {
-    textArea = new JTextArea();
-    PropEventListener listener = new PropEventListener(panel.getProp());
-    textArea.addKeyListener(listener);
-    textArea.addMouseListener(listener);
-    textArea.addFocusListener(listener);
-    return textArea;
   }
 
   public void paint(Graphics2D graphics)
   {
   }
 
-  public JTextArea getTextArea()
+  public TextArea getTextField()
   {
-    return textArea;
+    return textPanel.getTextArea();
   }
 }

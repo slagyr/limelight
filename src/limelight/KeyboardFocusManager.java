@@ -1,6 +1,6 @@
 package limelight;
 
-import limelight.ui.model2.inputs.InputPanel;
+import limelight.ui.model.inputs.InputPanel;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
