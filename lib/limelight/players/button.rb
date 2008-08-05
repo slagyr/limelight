@@ -7,11 +7,9 @@ module Limelight
     module Button
       class << self
         def extended(prop)
-#          prop.panel.painters.clear
           painter = Limelight::UI::Model::Painting::ButtonPainter.new(prop.panel)
           prop.button = painter.button
           prop.panel.painters << painter
-#          prop.panel.clear_event_listeners
           set_default_styles(prop)
         end
         

@@ -8,15 +8,13 @@ module Limelight
       class << self
 
         def extended(prop)
-#          prop.panel.painters.clear
           prop.panel.painters << Limelight::UI::Model::Painting::TextBoxPainter.new(prop.panel)
-#          prop.panel.clear_event_listeners
           set_default_styles(prop)
         end
         
         def set_default_styles(prop)
           prop.style.width = "120"
-          prop.style.height = "22"
+          prop.style.height = "28"
         end
       end
   

@@ -4,6 +4,7 @@ import limelight.Context;
 import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.Panel;
+import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.util.Box;
 
 import java.awt.*;

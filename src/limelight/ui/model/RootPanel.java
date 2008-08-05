@@ -3,6 +3,8 @@ package limelight.ui.model;
 import limelight.util.Box;
 import limelight.ui.Panel;
 import limelight.styles.Style;
+import limelight.Context;
+
 import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -106,6 +108,7 @@ public class RootPanel implements Panel
 
   public void destroy()
   {
+    removeKeyboardFocus();
     contentPane.removeMouseListener(listener);
     contentPane.removeMouseMotionListener(listener);
     contentPane.removeMouseWheelListener(listener);
@@ -114,6 +117,13 @@ public class RootPanel implements Panel
     panel.setParent(null);
     changedPanels.clear();
     alive = false;
+  }
+
+  private void removeKeyboardFocus()
+  {
+    Panel focuedPanel = Context.instance().keyboardFocusManager.getFocusedPanel();
+    if(focuedPanel != null && focuedPanel.getRoot() == this)
+      Context.instance().keyboardFocusManager.unfocusCurrentlyFocusedComponent();  
   }
 
   public Panel getRoot()

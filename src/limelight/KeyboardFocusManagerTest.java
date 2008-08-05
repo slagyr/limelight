@@ -92,7 +92,7 @@ public class KeyboardFocusManagerTest extends TestCase
     manager.focusPreviousComponent();
 
     assertSame(input1, manager.getFocusedPanel());
-  }
+  }         
 
   private static class MockComponent extends Component
   {

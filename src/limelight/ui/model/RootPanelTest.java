@@ -6,6 +6,8 @@ import java.awt.*;
 import java.util.Arrays;
 
 import limelight.ui.model.updates.MockUpdate;
+import limelight.ui.model.inputs.TextBoxPanel;
+import limelight.Context;
 
 public class RootPanelTest extends TestCase
 {
@@ -19,6 +21,7 @@ public class RootPanelTest extends TestCase
     root = new RootPanel(frame);
     child = new MockPropablePanel();
     contentPane = frame.getContentPane();
+    Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
   }
 
   public void testSetPanelSetsParentOnePanel() throws Exception
@@ -97,7 +100,19 @@ public class RootPanelTest extends TestCase
 
     assertEquals(0, root.getChangedPanelCount());
   }
+  
+  public void testKeyboardFocusIfLostWhenDestroyed() throws Exception
+  {
+    TextBoxPanel inputPanel = new TextBoxPanel();
+    child.add(inputPanel);
+    root.setPanel(child);
 
+    Context.instance().keyboardFocusManager.focusPanel(inputPanel);
+    root.destroy();
+
+    assertNotSame(inputPanel, Context.instance().keyboardFocusManager.getFocusedPanel());
+  }
+    
   public void testRepaintChangedPanels() throws Exception
   {
     root.setPanel(child);

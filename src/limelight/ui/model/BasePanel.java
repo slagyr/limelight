@@ -140,6 +140,7 @@ public abstract class BasePanel implements Panel
            point.y < absoluteLocation.y + height;
   }
 
+  //TODO  MDM Change my return type to RootPanel
   public Panel getRoot()
   {
     if(parent == null)
