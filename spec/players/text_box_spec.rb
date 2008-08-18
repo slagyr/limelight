@@ -11,16 +11,6 @@ describe Limelight::Players::TextBox do
     @prop = Limelight::Prop.new
     @prop.add_controller(Limelight::Players::TextBox)
   end
-  
-  it "should get rid of the all painters and add a TextboxPainter" do
-#    @prop.panel.painters.size.should == 1
-    @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::TextBoxPainter
-  end
-
-#  it "should clear event listeners on the panel" do
-#    @prop.panel.mouse_listeners.length.should == 0
-#    @prop.panel.key_listeners.length.should == 0
-#  end
 
   it "should have a TextField" do
     @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::TextBoxPanel

@@ -6,8 +6,11 @@ module Limelight
     
     module TextArea
       class << self
+
         def extended(prop)
-          prop.panel.painters << Limelight::UI::Model::Painting::TextAreaPainter.new(prop.panel)
+          text_area = Limelight::UI::Model::Inputs::TextAreaPanel.new
+          prop.panel.add(text_area)
+          prop.text_area = text_area.text_area
           set_default_styles(prop)
         end
         
@@ -15,7 +18,10 @@ module Limelight
           prop.style.width ||= "200"
           prop.style.height ||= "88"
         end
+
       end
+
+      attr_accessor :text_area
   
     end
   

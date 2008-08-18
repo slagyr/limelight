@@ -7,6 +7,7 @@ import limelight.ui.Panel;
 import limelight.ui.model.inputs.InputPanel;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.MockFrame;
+import limelight.ui.model.TextAccessor;
 import limelight.ui.MockPanel;
 
 import java.awt.*;
@@ -127,6 +128,11 @@ public class KeyboardFocusManagerTest extends TestCase
     protected Component createComponent()
     {
       return mockComponent = new MockComponent();
+    }
+
+    protected TextAccessor createTextAccessor()
+    {
+      return null;
     }
   }
 }

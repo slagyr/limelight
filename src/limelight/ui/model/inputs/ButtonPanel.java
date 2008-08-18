@@ -1,5 +1,10 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.*;
+import limelight.ui.Panel;
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.TextAccessor;
+
 import java.awt.*;
 
 
@@ -18,13 +23,33 @@ public class ButtonPanel extends InputPanel
     return button = new Button(this);
   }
 
+  protected TextAccessor createTextAccessor()
+  {
+    return new ButtonTextAccessor(button);
+  }
+
   public Button getButton()
   {
     return button;
   }
 
-  public boolean canBeBuffered()
+  private static class ButtonTextAccessor implements TextAccessor
   {
-    return false;
+    private Button button;
+
+    public ButtonTextAccessor(Button button)
+    {
+      this.button = button;
+    }
+
+    public void setText(String text)
+    {
+      button.setText(text);
+    }
+
+    public String getText()
+    {
+      return button.getText();
+    }
   }
 }

@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.MockFrame;
+import limelight.ui.model.TextAccessor;
 import limelight.ui.api.MockProp;
 import limelight.ui.MockPanel;
 import limelight.Context;
@@ -34,6 +35,11 @@ public class InputPanelTest extends TestCase
     protected Component createComponent()
     {
       return input = new JPanel();
+    }
+
+    protected TextAccessor createTextAccessor()
+    {
+      return null;
     }
 
   }

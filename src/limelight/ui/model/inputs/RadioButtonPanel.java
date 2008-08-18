@@ -1,5 +1,7 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.TextAccessor;
+
 import java.awt.*;
 
 public class RadioButtonPanel extends InputPanel
@@ -17,13 +19,33 @@ public class RadioButtonPanel extends InputPanel
     return radioButton = new RadioButton(this);
   }
 
+  protected TextAccessor createTextAccessor()
+  {
+    return new RadioButtonTextAccessor(radioButton);
+  }
+
   public RadioButton getRadioButton()
   {
     return radioButton;
   }
 
-  public boolean canBeBuffered()
+  private static class RadioButtonTextAccessor implements TextAccessor
   {
-    return false;
+    private RadioButton button;
+
+    public RadioButtonTextAccessor(RadioButton button)
+    {
+      this.button = button;
+    }
+
+    public void setText(String text)
+    {
+      button.setText(text);
+    }
+
+    public String getText()
+    {
+      return button.getText();
+    }
   }
 }

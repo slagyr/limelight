@@ -1,5 +1,7 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.TextAccessor;
+
 import java.awt.*;
 
 public class CheckBoxPanel extends InputPanel
@@ -17,13 +19,33 @@ public class CheckBoxPanel extends InputPanel
     return checkBox = new CheckBox(this);
   }
 
+  protected TextAccessor createTextAccessor()
+  {
+    return new CheckBoxTextAccessor(checkBox);
+  }
+
   public CheckBox getCheckBox()
   {
     return checkBox;
   }
 
-  public boolean canBeBuffered()
+  private static class CheckBoxTextAccessor implements TextAccessor
   {
-    return false;
+    private CheckBox checkBox;
+
+    public CheckBoxTextAccessor(CheckBox checkBox)
+    {
+      this.checkBox = checkBox;
+    }
+
+    public void setText(String text)
+    {
+      checkBox.setText(text);
+    }
+
+    public String getText()
+    {
+      return checkBox.getText();
+    }
   }
 }

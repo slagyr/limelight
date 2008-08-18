@@ -1,5 +1,7 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.TextAccessor;
+
 import java.awt.*;
 
 public class TextBoxPanel extends InputPanel
@@ -17,6 +19,11 @@ public class TextBoxPanel extends InputPanel
     return textBox = new TextBox(this);
   }
 
+  protected TextAccessor createTextAccessor()
+  {
+    return new TextBoxTextAccessor(textBox);
+  }
+
   public TextBox getTextBox()
   {
     return textBox;
@@ -32,8 +39,23 @@ public class TextBoxPanel extends InputPanel
     textBox.setText(text);
   }
 
-  public boolean canBeBuffered()
+  private static class TextBoxTextAccessor implements TextAccessor
   {
-    return false;
+    private TextBox textBox;
+
+    public TextBoxTextAccessor(TextBox textBox)
+    {
+      this.textBox = textBox;
+    }
+
+    public void setText(String text)
+    {
+      textBox.setText(text);
+    }
+
+    public String getText()
+    {
+      return textBox.getText();
+    }
   }
 }
