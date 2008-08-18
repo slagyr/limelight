@@ -8,7 +8,9 @@ module Limelight
       class << self
 
         def extended(prop)
-          prop.panel.painters << Limelight::UI::Model::Painting::TextBoxPainter.new(prop.panel)
+          text_box = Limelight::UI::Model::Inputs::TextBoxPanel.new
+          prop.panel.add(text_box)
+          prop.text_box = text_box.text_box
           set_default_styles(prop)
         end
         
@@ -16,7 +18,10 @@ module Limelight
           prop.style.width = "120"
           prop.style.height = "28"
         end
+
       end
+
+      attr_accessor :text_box
   
     end
   

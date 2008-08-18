@@ -1,5 +1,8 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.TextAccessor;
+
 import java.awt.*;
 
 public class ComboBoxPanel extends InputPanel
@@ -28,8 +31,28 @@ public class ComboBoxPanel extends InputPanel
     return comboBox;
   }
 
-  public boolean canBeBuffered()
+  protected TextAccessor createTextAccessor()
   {
-    return false;
+    return new ComboBoxTextAccessor(comboBox);
+  }
+
+  private static class ComboBoxTextAccessor implements TextAccessor
+  {
+    private ComboBox comboBox;
+
+    public ComboBoxTextAccessor(ComboBox comboBox)
+    {
+      this.comboBox = comboBox;
+    }
+
+    public void setText(String text)
+    {
+      comboBox.setSelectedItem(text);
+    }
+
+    public String getText()
+    {
+      return comboBox.getSelectedItem().toString();
+    }
   }
 }

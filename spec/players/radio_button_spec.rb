@@ -15,20 +15,10 @@ describe Limelight::Players::RadioButton do
     @prop.include_player(Limelight::Players::RadioButton)
   end
   
-  it "should get rid of the all painters and add a RadioButtonPainter" do
-#    @prop.panel.painters.size.should == 1
-    @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::RadioButtonPainter
-  end
-  
-#  it "should clear event listeners on the panel" do
-#    @prop.panel.mouse_listeners.length.should == 0
-#    @prop.panel.key_listeners.length.should == 0
-#  end
-  
   it "should have a RadioButton" do
     @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::RadioButtonPanel
   end
-  
+         
   it "should handled checked state" do
     @prop.checked?.should == false
     @prop.checked.should == false
@@ -41,7 +31,6 @@ describe Limelight::Players::RadioButton do
     @prop.checked.should == true
     @prop.selected?.should == true
     @prop.selected.should == true
-#    @prop.panel.children[0].is_selected.should == true
   end
   
   it "should belong to a button group" do

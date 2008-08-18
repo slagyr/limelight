@@ -7,9 +7,9 @@ module Limelight
     module CheckBox
       class << self
         def extended(prop)
-          painter = Limelight::UI::Model::Painting::CheckBoxPainter.new(prop.panel)
-          prop.check_box = painter.check_box
-          prop.panel.painters << painter
+          check_box = Limelight::UI::Model::Inputs::CheckBoxPanel.new
+          prop.panel.add(check_box)
+          prop.check_box = check_box.check_box
           set_default_styles(prop)
         end
         
@@ -26,7 +26,7 @@ module Limelight
       end
       
       def checked
-        return check_box.is_selected
+        return check_box.selected?
       end
       alias :checked? :checked
   

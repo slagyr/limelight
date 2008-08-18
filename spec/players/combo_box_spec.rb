@@ -14,16 +14,6 @@ describe Limelight::Players::ComboBox do
     @prop.include_player(Limelight::Players::ComboBox)
   end
   
-  it "should get rid of the all painters and add a ComboBoxPainter" do
-#    @prop.panel.painters.size.should == 1
-    @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::ComboBoxPainter
-  end
-  
-#  it "should clear event listeners on the panel" do
-#    @prop.panel.mouse_listeners.length.should == 0
-#    @prop.panel.key_listeners.length.should == 0
-#  end
-  
   it "should have a ComboBox" do
     @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::ComboBoxPanel
   end

@@ -14,16 +14,6 @@ describe Limelight::Players::Button do
     @prop.include_player(Limelight::Players::Button)
   end
   
-  it "should get rid of the all painters and add a ButtonPainter" do
-#    @prop.panel.painters.size.should == 1
-    @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::ButtonPainter
-  end
-  
-#  it "should clear event listeners on the panel" do
-#    @prop.panel.mouse_listeners.length.should == 0
-#    @prop.panel.key_listeners.length.should == 0
-#  end
-  
   it "should have a Button" do
     @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::ButtonPanel
   end

@@ -2,6 +2,8 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
 import limelight.ui.model.BasePanel;
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.TextAccessor;
 import limelight.ui.model.updates.Updates;
 import limelight.util.Box;
 import limelight.styles.Style;
@@ -22,10 +24,27 @@ public abstract class InputPanel extends BasePanel
   }
 
   protected abstract Component createComponent();
+  protected abstract TextAccessor createTextAccessor();
 
   public Component getComponent()
   {
     return component;
+  }
+
+  public boolean canBeBuffered()
+  {
+    return false;
+  }
+
+  public void setParent(limelight.ui.Panel panel)
+  {
+    super.setParent(panel);
+    if(panel instanceof PropPanel)
+    {
+      PropPanel propPanel = (PropPanel) panel;
+      propPanel.sterilize();
+      propPanel.setTextAccessor(createTextAccessor());
+    }
   }
 
   public void setSize(int w, int h)

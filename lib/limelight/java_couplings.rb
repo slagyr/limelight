@@ -22,14 +22,6 @@ module Limelight
     module Model
       Frame = Java::limelight.ui.model.Frame
       Panel = Java::limelight.ui.model.PropPanel
-      module Painting
-        TextBoxPainter = Java::limelight.ui.model.painting.TextBoxPainter
-        ButtonPainter = Java::limelight.ui.model.painting.ButtonPainter
-        CheckBoxPainter = Java::limelight.ui.model.painting.CheckBoxPainter
-        ComboBoxPainter = Java::limelight.ui.model.painting.ComboBoxPainter
-        RadioButtonPainter = Java::limelight.ui.model.painting.RadioButtonPainter
-        TextAreaPainter = Java::limelight.ui.model.painting.TextAreaPainter
-      end
       module Inputs
        ButtonPanel = Java::limelight.ui.model.inputs.ButtonPanel
        CheckBoxPanel = Java::limelight.ui.model.inputs.CheckBoxPanel

@@ -6,10 +6,11 @@ module Limelight
     
     module Button
       class << self
+
         def extended(prop)
-          painter = Limelight::UI::Model::Painting::ButtonPainter.new(prop.panel)
-          prop.button = painter.button
-          prop.panel.painters << painter
+          button = Limelight::UI::Model::Inputs::ButtonPanel.new
+          prop.panel.add(button)
+          prop.button = button.button
           set_default_styles(prop)
         end
         

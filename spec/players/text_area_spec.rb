@@ -12,16 +12,6 @@ describe Limelight::Players::TextArea do
     @prop.add_controller(Limelight::Players::TextArea)
   end
   
-  it "should get rid of the all painters and add a TextAreaPainter" do
-#    @prop.panel.painters.size.should == 1
-    @prop.panel.painters.last.class.should == Limelight::UI::Model::Painting::TextAreaPainter
-  end
-  
-#  it "should clear event listeners on the panel" do
-#    @prop.panel.mouse_listeners.length.should == 0
-#    @prop.panel.key_listeners.length.should == 0
-#  end
-  
   it "should have a JTextArea" do
     @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::TextAreaPanel
   end
