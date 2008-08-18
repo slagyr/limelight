@@ -60,4 +60,9 @@ public class MockPanel extends BasePanel
   {
     wasLaidOut = true;
   }
+
+  public void stubAbsoluteLocation(Point location)
+  {
+    absoluteLocation = location;
+  }
 }

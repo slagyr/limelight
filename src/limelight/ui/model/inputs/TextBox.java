@@ -1,6 +1,8 @@
 package limelight.ui.model.inputs;
 
+import limelight.util.Box;
 import limelight.ui.model.updates.Updates;
+import limelight.ui.model.updates.BoundedPaintUpdate;
 import limelight.ui.model.updates.BoundedShallowPaintUpdate;
 
 import javax.swing.*;
@@ -17,23 +19,20 @@ public class TextBox extends JTextField
 
   public void repaint()
   {
-//    System.err.println("repaint");
     if(panel != null)
-      panel.setNeededUpdate(Updates.shallowPaintUpdate);
+      panel.setNeededUpdate(Updates.paintUpdate);
   }
 
   public void repaint(long tm, int x, int y, int width, int height)
   {
-//    System.err.println("repaint " + x + ", " + y + ", " + width + ", " + height);
     if(panel != null)
-      panel.setNeededUpdate(new BoundedShallowPaintUpdate(new Rectangle(x, y, width, height)));
+      panel.setNeededUpdate(new BoundedPaintUpdate(x, y, width, height));
   }
 
   public void repaint(Rectangle r)
   {
-//    System.err.println("repaint " + r);
     if(panel != null)
-      panel.setNeededUpdate(new BoundedShallowPaintUpdate(r));
+      panel.setNeededUpdate(new BoundedPaintUpdate(r));
   }
 
   public boolean isShowing()

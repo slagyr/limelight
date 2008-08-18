@@ -22,4 +22,9 @@ public abstract class Update
   {
     return this.getSeverity() > other.getSeverity();
   }
+
+  public Update prioritize(Update other)
+  {
+    return this.isMoreSevereThan(other) ? this : other;
+  }
 }

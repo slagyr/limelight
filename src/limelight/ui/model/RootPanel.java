@@ -75,12 +75,13 @@ public class RootPanel implements Panel
 
   public Box getAbsoluteBounds()
   {
-    return new Box(contentPane.getBounds());
+    Rectangle bounds = contentPane.getBounds();
+    return new Box(0, 0, bounds.width, bounds.height);
   }
 
   public Point getAbsoluteLocation()
   {
-    return contentPane.getLocation();
+    return new Point(0, 0);
   }
 
   public int getX()

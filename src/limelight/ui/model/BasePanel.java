@@ -341,8 +341,8 @@ public abstract class BasePanel implements Panel
         neededUpdate = update;
       }
     }
-    else if(update.isMoreSevereThan(neededUpdate))
-      neededUpdate = update;
+    else
+      neededUpdate = neededUpdate.prioritize(update);
   }
 
   public boolean needsUpdating()

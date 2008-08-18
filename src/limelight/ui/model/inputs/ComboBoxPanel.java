@@ -10,7 +10,7 @@ public class ComboBoxPanel extends InputPanel
   public ComboBoxPanel()
   {
     super();
-    comboBox.setSize(120, comboBox.getPreferredSize().height);
+    setSize(120, comboBox.getPreferredSize().height);
   }
 
   public ComboBox getComboBox()
@@ -28,4 +28,8 @@ public class ComboBoxPanel extends InputPanel
     return comboBox;
   }
 
+  public boolean canBeBuffered()
+  {
+    return false;
+  }
 }

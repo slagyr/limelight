@@ -9,7 +9,7 @@ public class TextBoxPanel extends InputPanel
   public TextBoxPanel()
   {
     super();
-    textBox.setSize(100, textBox.getPreferredSize().height);
+    setSize(100, textBox.getPreferredSize().height);
   }
 
   protected Component createComponent()
@@ -30,5 +30,10 @@ public class TextBoxPanel extends InputPanel
   public void setText(String text)
   {
     textBox.setText(text);
+  }
+
+  public boolean canBeBuffered()
+  {
+    return false;
   }
 }

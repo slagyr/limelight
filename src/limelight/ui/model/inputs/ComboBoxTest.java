@@ -1,34 +1,49 @@
 package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
+import limelight.ui.model.RootPanel;
+import limelight.ui.model.MockFrame;
+import limelight.ui.model.updates.PaintUpdate;
+import limelight.ui.model.updates.BoundedPaintUpdate;
+
+import java.awt.*;
 
 public class ComboBoxTest extends TestCase
 {
+  private ComboBoxPanel panel;
+  private ComboBox comboBox;
+  private RootPanel root;
 
-
-  public void testUsingIt() throws Exception
+  public void setUp() throws Exception
   {
-//    Main.initializeContext();
-//    Frame frame = new Frame(new MockStage());
-//
-//    MockProp prop = new MockProp();
-//    Style style = prop.getStyle();
-//    Panel root = new PropPanel(prop);
-//
-//    style.setWidth("200");
-//    style.setHeight("50");
-//
-//    ComboBoxPanel comboBox = new ComboBoxPanel();
-//    root.add(comboBox);
-//
-//    comboBox.getComboBox().addItem("One");
-//    comboBox.getComboBox().addItem("Two");
-//
-//    frame.load(root);
-//    frame.setSize(200, 200);
-//    frame.open();
-//
-//    Thread.sleep(5000);
+    root = new RootPanel(new MockFrame());
+    panel = new ComboBoxPanel();
+    comboBox = new ComboBox(panel);
+    root.setPanel(panel);
+  }
+
+  public void testRepaint() throws Exception
+  {
+    comboBox.repaint();
+
+    assertEquals(true, root.changedPanelsContains(panel));
+    assertEquals(PaintUpdate.class, panel.getNeededUpdate().getClass());
+  }
+
+  public void testRapaintWithParams() throws Exception
+  {
+    comboBox.repaint(1, 2, 3, 4);
+
+    assertEquals(true, root.changedPanelsContains(panel));
+    assertEquals(BoundedPaintUpdate.class, panel.getNeededUpdate().getClass());
+  }
+
+  public void testRapaintWithRectangle() throws Exception
+  {
+    comboBox.repaint(new Rectangle(1, 2, 3, 4));
+
+    assertEquals(true, root.changedPanelsContains(panel));
+    assertEquals(BoundedPaintUpdate.class, panel.getNeededUpdate().getClass());
   }
 
 }

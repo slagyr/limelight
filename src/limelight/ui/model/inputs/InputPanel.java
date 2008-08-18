@@ -28,6 +28,18 @@ public abstract class InputPanel extends BasePanel
     return component;
   }
 
+  public void setSize(int w, int h)
+  {
+    super.setSize(w, h);
+    component.setSize(w, h);
+  }
+
+  public void setLocation(int x, int y)
+  {
+    super.setLocation(x, y);
+    component.setLocation(x, y);
+  }
+
   public Box getChildConsumableArea()
   {
     return getBoundingBox();
@@ -60,31 +72,35 @@ public abstract class InputPanel extends BasePanel
 
   public void mousePressed(MouseEvent e)
   {
+    e = translatedEvent(e);
     e.setSource(component);
     for(MouseListener mouseListener : component.getMouseListeners())
-      mouseListener.mousePressed(translatedEvent(e));
+      mouseListener.mousePressed(e);
   }
 
   public void mouseReleased(MouseEvent e)
   {
+    e = translatedEvent(e);
     e.setSource(component);
     for(MouseListener mouseListener : component.getMouseListeners())
-      mouseListener.mouseReleased(translatedEvent(e));
+      mouseListener.mouseReleased(e);
   }
 
   public void mouseClicked(MouseEvent e)
   {
+    e = translatedEvent(e);
     Context.instance().keyboardFocusManager.focusPanel(this);
     for(MouseListener mouseListener : component.getMouseListeners())
-      mouseListener.mouseClicked(translatedEvent(e));
+      mouseListener.mouseClicked(e);
     setNeededUpdate(Updates.shallowPaintUpdate);
   }
 
   public void mouseDragged(MouseEvent e)
   {
+    e = translatedEvent(e);
     e.setSource(component);
     for(MouseMotionListener mouseListener : component.getMouseMotionListeners())
-      mouseListener.mouseDragged(translatedEvent(e));
+      mouseListener.mouseDragged(e);
   }
 
   public InputPanel nextInputPanel()
