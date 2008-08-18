@@ -4,7 +4,6 @@ import limelight.Context;
 import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -66,7 +65,7 @@ public class PaintJob
 
   public boolean panelIsInClip(Panel panel)
   {
-    Box panelClip = panel.getAbsoluteBounds();  
+    Box panelClip = panel.getAbsoluteBounds();
     return clip.intersects(panelClip);
   }
 
@@ -126,9 +125,12 @@ public class PaintJob
   }
 
   public void applyTo(Graphics graphics)
-  {  
-    graphics.drawImage(buffer, clip.x, clip.y, null);
-    Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
+  {
+    if(graphics != null)
+    {
+      graphics.drawImage(buffer, clip.x, clip.y, null);
+      Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
+    }
   }
 
 //    // MDM - Purely for debuggin graphics

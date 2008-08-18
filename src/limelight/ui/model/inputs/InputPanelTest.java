@@ -127,6 +127,24 @@ public class InputPanelTest extends TestCase
     assertSame(input3, input.previousInputPanel());
   }
 
+  public void testSetSize() throws Exception
+  {
+    input.setSize(100, 200);
+    assertEquals(100, input.getWidth());
+    assertEquals(200, input.getHeight());
+    assertEquals(100, input.getComponent().getWidth());
+    assertEquals(200, input.getComponent().getHeight());
+  }
+  
+  public void testSetLocation() throws Exception
+  {
+    input.setLocation(123, 456);
+    assertEquals(123, input.getX());
+    assertEquals(456, input.getY());
+    assertEquals(123, input.getComponent().getX());
+    assertEquals(456, input.getComponent().getY());
+  }
+
   private void addMouseMotionListener()
   {
     input.getComponent().addMouseMotionListener(new MouseMotionListener(){

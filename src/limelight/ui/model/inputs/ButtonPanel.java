@@ -10,7 +10,7 @@ public class ButtonPanel extends InputPanel
   public ButtonPanel()
   {
     super();
-    button.setSize(100, button.getPreferredSize().height);
+    setSize(100, button.getPreferredSize().height);
   }
 
   protected Component createComponent()
@@ -21,5 +21,10 @@ public class ButtonPanel extends InputPanel
   public Button getButton()
   {
     return button;
+  }
+
+  public boolean canBeBuffered()
+  {
+    return false;
   }
 }

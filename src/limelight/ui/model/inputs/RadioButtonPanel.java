@@ -9,7 +9,7 @@ public class RadioButtonPanel extends InputPanel
   public RadioButtonPanel()
   {
     super();
-    radioButton.setSize(radioButton.getPreferredSize().width, radioButton.getPreferredSize().height);
+    setSize(radioButton.getPreferredSize().width, radioButton.getPreferredSize().height);
   }
 
   protected Component createComponent()
@@ -20,5 +20,10 @@ public class RadioButtonPanel extends InputPanel
   public RadioButton getRadioButton()
   {
     return radioButton;
+  }
+
+  public boolean canBeBuffered()
+  {
+    return false;
   }
 }

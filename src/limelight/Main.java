@@ -133,7 +133,7 @@ public class Main
         try
         {
           Frame frame = Context.instance().frameManager.getActiveFrame();
-          if(frame != null)
+          if(frame != null && frame.getRoot() != null)
             frame.getRoot().repaintChangedPanels();
         }
         catch(Exception e)

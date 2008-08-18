@@ -16,11 +16,14 @@ public class ShallowPaintUpdate extends Update
   public void performUpdate(Panel panel)
   {
     Rectangle ab = panel.getAbsoluteBounds();
-//System.err.println(getClass().getName() + ": " + panel + " " + ab);
-    Graphics2D g = (Graphics2D) panel.getRoot().getGraphics().create(ab.x, ab.y, ab.width, ab.height);
-    modifyGraphics(g);
-    panel.paintOn(g);
-    g.dispose();
+    Graphics2D rootGraphics = panel.getRoot().getGraphics();
+    if(rootGraphics != null)
+    {
+      Graphics2D g = (Graphics2D) rootGraphics.create(ab.x, ab.y, ab.width, ab.height);
+      modifyGraphics(g);
+      panel.paintOn(g);
+      g.dispose();
+    }
   }
 
   protected void modifyGraphics(Graphics2D g)

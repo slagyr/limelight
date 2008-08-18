@@ -15,7 +15,7 @@ module Limelight
         
         def set_default_styles(prop)
           prop.style.width = "100"
-          prop.style.height = "25"
+          prop.style.height = "29"
         end
       end
   

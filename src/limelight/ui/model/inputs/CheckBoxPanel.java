@@ -9,7 +9,7 @@ public class CheckBoxPanel extends InputPanel
   public CheckBoxPanel()
   {
     super();
-    checkBox.setSize(checkBox.getPreferredSize().width, checkBox.getPreferredSize().height);
+    setSize(checkBox.getPreferredSize().width, checkBox.getPreferredSize().height);
   }
 
   protected Component createComponent()
@@ -20,5 +20,10 @@ public class CheckBoxPanel extends InputPanel
   public CheckBox getCheckBox()
   {
     return checkBox;
+  }
+
+  public boolean canBeBuffered()
+  {
+    return false;
   }
 }

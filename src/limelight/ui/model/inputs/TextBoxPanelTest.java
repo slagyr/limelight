@@ -15,5 +15,10 @@ public class TextBoxPanelTest extends TestCase
   {
     assertEquals(panel.getTextBox().getClass(), TextBox.class);    
   }
+  
+  public void testCanBeBuffered() throws Exception
+  {
+    assertEquals(false, panel.canBeBuffered());
+  }
 
 }

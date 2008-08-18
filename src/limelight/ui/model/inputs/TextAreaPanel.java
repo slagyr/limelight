@@ -1,5 +1,6 @@
 package limelight.ui.model.inputs;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class TextAreaPanel extends InputPanel
@@ -9,12 +10,13 @@ public class TextAreaPanel extends InputPanel
   public TextAreaPanel()
   {
     super();
-    textArea.setSize(200, 88);
+    setSize(200, 88);
   }
 
   protected Component createComponent()
   {
-    return textArea = new TextArea(this);
+    textArea = new TextArea(this);
+    return textArea;
   }
 
   public TextArea getTextArea()
@@ -32,4 +34,8 @@ public class TextAreaPanel extends InputPanel
     textArea.setText(value);
   }
 
+  public boolean canBeBuffered()
+  {
+    return false;
+  }
 }
