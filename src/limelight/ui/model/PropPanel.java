@@ -19,10 +19,7 @@ import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.util.Util;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.LinkedList;
 
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
@@ -277,6 +274,16 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void keyReleased(KeyEvent e)
   {
     getProp().key_released(e);
+  }
+
+  public void buttonPressed(ActionEvent e)
+  {
+    getProp().button_pressed(e);
+  }
+
+  public void valueChanged(Object e)
+  {
+    getProp().value_changed(e);
   }
 
   public void setCursor(Cursor cursor)

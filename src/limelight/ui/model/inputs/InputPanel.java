@@ -8,6 +8,7 @@ import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.Context;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -19,6 +20,8 @@ public abstract class InputPanel extends BasePanel
   {
     component = createComponent();
     component.addKeyListener(new InputPanelKeyListener(this));
+    if(component instanceof AbstractButton)
+      ((AbstractButton)component).addActionListener(new ButtonActionListener(this));
   }
 
   protected abstract Component createComponent();
@@ -203,6 +206,21 @@ public abstract class InputPanel extends BasePanel
     public void keyReleased(KeyEvent e)
     {
       panel.keyReleased(e);
+    }
+  }
+
+  private static class ButtonActionListener implements ActionListener
+  {
+    private InputPanel panel;
+
+    public ButtonActionListener(InputPanel inputPanel)
+    {
+      this.panel = inputPanel;
+    }
+
+    public void actionPerformed(ActionEvent e)
+    {
+      panel.buttonPressed(e);
     }
   }
 }

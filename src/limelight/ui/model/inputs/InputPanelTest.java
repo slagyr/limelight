@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
 import java.awt.*;
 
 public class InputPanelTest extends TestCase
@@ -210,6 +211,25 @@ public class InputPanelTest extends TestCase
 
     assertNotNull(prop.clickedMouse);
     assertEquals(input.getComponent(), ((MouseEvent)prop.clickedMouse).getSource());
+  }
+
+  public void testButtonPressedEventsGetPassedToParent() throws Exception
+  {
+    input = new TestableInputPanel() {
+      protected Component createComponent()
+      {
+        return input = new JButton();
+      }
+    };
+    parent = new PropPanel(new MockProp());
+    parent.add(input);
+
+    MockProp prop = (MockProp)parent.getProp();
+    ActionEvent event = new ActionEvent(input.getComponent(), 1, "blah");
+    ((JButton)input.getComponent()).getActionListeners()[0].actionPerformed(event);
+
+    assertNotNull(prop.pressedButton);
+    assertEquals(input.getComponent(), ((ActionEvent)prop.pressedButton).getSource());
   }
 
   private void addMouseMotionListener()
