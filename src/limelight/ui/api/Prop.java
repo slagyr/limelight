@@ -32,7 +32,6 @@ public interface Prop
   void key_released(KeyEvent e);
   void focus_gained(FocusEvent e);
   void focus_lost(FocusEvent e);
-  void state_changed(ChangeEvent e);
   void button_pressed(ActionEvent e);
   void item_state_changed(ItemEvent e);
 }

@@ -181,6 +181,36 @@ public class InputPanelTest extends TestCase
     assertEquals("123", parent.getStyle().getWidth());
     assertEquals("456", parent.getStyle().getHeight());
   }
+  
+  public void testMousePressedEventsGetPassedToParent() throws Exception
+  {
+    MockProp prop = (MockProp)parent.getProp();
+    MouseEvent event = new MouseEvent(input.getComponent(), 1, 2, 3, 4, 5, 6, false);
+    input.mousePressed(event);
+
+    assertNotNull(prop.pressedMouse);
+    assertEquals(input.getComponent(), ((MouseEvent)prop.pressedMouse).getSource());
+  }
+
+  public void testMouseReleasedEventsGetPassedToParent() throws Exception
+  {
+    MockProp prop = (MockProp)parent.getProp();
+    MouseEvent event = new MouseEvent(input.getComponent(), 1, 2, 3, 4, 5, 6, false);
+    input.mouseReleased(event);
+
+    assertNotNull(prop.releasedMouse);
+    assertEquals(input.getComponent(), ((MouseEvent)prop.releasedMouse).getSource());
+  }
+
+  public void testMouseClickedEventsGetPassedToParent() throws Exception
+  {
+    MockProp prop = (MockProp)parent.getProp();
+    MouseEvent event = new MouseEvent(input.getComponent(), 1, 2, 3, 4, 5, 6, false);
+    input.mouseClicked(event);
+
+    assertNotNull(prop.clickedMouse);
+    assertEquals(input.getComponent(), ((MouseEvent)prop.clickedMouse).getSource());
+  }
 
   private void addMouseMotionListener()
   {
