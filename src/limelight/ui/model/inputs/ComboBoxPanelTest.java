@@ -4,6 +4,10 @@ import junit.framework.TestCase;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.ItemEvent;
+import java.awt.*;
+
 public class ComboBoxPanelTest extends TestCase
 {
   private ComboBoxPanel panel;
@@ -32,5 +36,15 @@ public class ComboBoxPanelTest extends TestCase
   public void testSettingParentSteralizesParent() throws Exception
   {
     assertEquals(true, parent.isSterilized());
+  }
+
+  public void testMouseClickedEventsGetPassedToParent() throws Exception
+  {
+    MockProp prop = (MockProp)parent.getProp();
+    ItemEvent event = new ItemEvent(panel.getComboBox(), 1, "blah", 0);
+    panel.getComboBox().getItemListeners()[0].itemStateChanged(event);
+
+    assertNotNull(prop.changedValue);
+    assertEquals(panel.getComponent(), ((AWTEvent)prop.changedValue).getSource());
   }
 }

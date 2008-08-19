@@ -5,6 +5,8 @@ import limelight.ui.model.TextAccessor;
 import limelight.styles.Style;
 
 import java.awt.*;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class ComboBoxPanel extends InputPanel
 {
@@ -22,6 +24,8 @@ public class ComboBoxPanel extends InputPanel
 
     container = new ContainerStub(this);
     container.add(comboBox);
+
+    comboBox.addItemListener(new ComboBoxPanelItemListener(this));
 
     return comboBox;
   }
@@ -54,6 +58,21 @@ public class ComboBoxPanel extends InputPanel
     public String getText()
     {
       return comboBox.getSelectedItem().toString();
+    }
+  }
+
+  private class ComboBoxPanelItemListener implements ItemListener
+  {
+    private ComboBoxPanel panel;
+
+    public ComboBoxPanelItemListener(ComboBoxPanel comboBoxPanel)
+    {
+      this.panel = comboBoxPanel;
+    }
+
+    public void itemStateChanged(ItemEvent e)
+    {
+      panel.valueChanged(e);
     }
   }
 }

@@ -6,7 +6,6 @@ package limelight.ui.api;
 import limelight.styles.FlatStyle;
 import limelight.ui.Panel;
 
-import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
 public class MockProp implements Prop
@@ -27,9 +26,8 @@ public class MockProp implements Prop
   public Object movedMouse;
   public Object gainedFocus;
   public Object lostFocus;
-  public Object changedState;
   public Object pressedButton;
-  public Object changedItemState;
+  public Object changedValue;
 
   public MockProp()
   {
@@ -142,18 +140,13 @@ public class MockProp implements Prop
     lostFocus = e;
   }
 
-  public void state_changed(ChangeEvent e)
-  {
-    changedState = e;
-  }
-
-  public void button_pressed(ActionEvent e)
+  public void button_pressed(Object e)
   {
     pressedButton = e;
   }
 
-  public void item_state_changed(ItemEvent e)
+  public void value_changed(Object e)
   {
-    changedItemState = e;
+    changedValue = e;
   }
 }

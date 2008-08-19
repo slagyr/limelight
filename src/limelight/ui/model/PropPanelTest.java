@@ -19,9 +19,7 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class PropPanelTest extends TestCase
 {
@@ -351,5 +349,21 @@ public class PropPanelTest extends TestCase
     panel.keyReleased(event);
 
     assertSame(event, prop.releasedKey);
+  }
+
+  public void testButtonPressedEvent() throws Exception
+  {
+    ActionEvent event = new ActionEvent(new JPanel(), 1, "blah");
+    panel.buttonPressed(event);
+
+    assertSame(event, prop.pressedButton);
+  }
+
+  public void testValueChangedEvent() throws Exception
+  {
+    Object event = "blah";
+    panel.valueChanged(event);
+
+    assertSame(event, prop.changedValue);
   }
 }

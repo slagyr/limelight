@@ -6,10 +6,7 @@ import limelight.LimelightError;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public abstract class BasePanel implements Panel
 {
@@ -250,6 +247,16 @@ public abstract class BasePanel implements Panel
   public void keyReleased(KeyEvent e)
   {
     parent.keyReleased(e);
+  }
+
+  public void buttonPressed(ActionEvent e)
+  {
+    parent.buttonPressed(e);
+  }
+
+  public void valueChanged(Object e)
+  {
+    parent.valueChanged(e);
   }
 
   public void add(Panel panel)

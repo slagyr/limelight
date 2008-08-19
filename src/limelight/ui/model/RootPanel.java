@@ -9,10 +9,7 @@ import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class RootPanel implements Panel
 {
@@ -355,6 +352,14 @@ public class RootPanel implements Panel
 
   public void keyReleased(KeyEvent e)
   {
+  }
+
+  public void buttonPressed(ActionEvent e)
+  {
+  }
+
+  public void valueChanged(Object e)
+  { 
   }
 
   public void resetNeededUpdate()

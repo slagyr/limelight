@@ -23,8 +23,8 @@ module ComboBoxInput
     print("lost focus")
   end
   
-  def item_state_changed(e)
-    print("Item State Changed")
+  def value_changed(e)
+    print("Value Changed")
   end
   
   def print(value)
