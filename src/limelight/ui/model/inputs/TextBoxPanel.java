@@ -1,18 +1,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.model.TextAccessor;
+import limelight.styles.Style;
 
 import java.awt.*;
 
 public class TextBoxPanel extends InputPanel
 {
   private TextBox textBox;
-
-  public TextBoxPanel()
-  {
-    super();
-    setSize(100, textBox.getPreferredSize().height);
-  }
 
   protected Component createComponent()
   {
@@ -22,6 +17,12 @@ public class TextBoxPanel extends InputPanel
   protected TextAccessor createTextAccessor()
   {
     return new TextBoxTextAccessor(textBox);
+  }
+
+  protected void setDefaultStyles(Style style)
+  {
+    style.setDefault(Style.WIDTH, "100");
+    style.setDefault(Style.HEIGHT, "" + textBox.getPreferredSize().height);
   }
 
   public TextBox getTextBox()

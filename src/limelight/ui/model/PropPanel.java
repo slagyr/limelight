@@ -257,6 +257,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     getRoot().setCursor(cursor);
   }
 
+  //TODO I don't think this is needed any longer.
   public void repaint()
   {
 //System.err.println("repaint: " + this + ": " + (getParent() != null) + ", " + (getStyle().changed(Style.WIDTH) || getStyle().changed(Style.WIDTH)));

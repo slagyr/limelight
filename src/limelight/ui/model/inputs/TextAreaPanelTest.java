@@ -31,5 +31,4 @@ public class TextAreaPanelTest extends TestCase
   {
     assertEquals(true, parent.isSterilized());
   }
-
 }

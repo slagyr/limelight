@@ -15,7 +15,7 @@ public class ScreenableStyle extends RichStyle
       if(value != null)
         return value;
     }
-      
+
     return super.get(key);
   }
 

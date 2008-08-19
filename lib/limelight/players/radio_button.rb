@@ -10,12 +10,6 @@ module Limelight
           radio_button = Limelight::UI::Model::Inputs::RadioButtonPanel.new
           prop.panel.add(radio_button)
           prop.radio_button = radio_button.radio_button
-          set_default_styles(prop)
-        end
-        
-        def set_default_styles(prop)
-          prop.style.width = "22"
-          prop.style.height = "22"
         end
       end
   

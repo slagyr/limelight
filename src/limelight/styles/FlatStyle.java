@@ -30,10 +30,7 @@ public class FlatStyle extends Style
     String originalValue = styles[descriptor.index];
     styles[descriptor.index] = value;
     if(!Util.equal(originalValue, value))
-    {
-      changes[descriptor.index] = true;
-      notifyObserversOfChange(descriptor, value);
-    }
+      recordChange(descriptor, value);
   }
 
   protected boolean has(int key)

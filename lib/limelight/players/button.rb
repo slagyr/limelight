@@ -11,12 +11,6 @@ module Limelight
           button = Limelight::UI::Model::Inputs::ButtonPanel.new
           prop.panel.add(button)
           prop.button = button.button
-          set_default_styles(prop)
-        end
-        
-        def set_default_styles(prop)
-          prop.style.width = "100"
-          prop.style.height = "29"
         end
       end
   

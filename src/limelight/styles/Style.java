@@ -71,6 +71,7 @@ public abstract class Style
   protected static final int STYLE_COUNT = STYLE_LIST.size();
 
   protected boolean[] changes;
+  private String[] defaults;
 
   public Style()
   {
@@ -85,9 +86,35 @@ public abstract class Style
   {
     String value = get(descriptor.index);
     if(value == null)
-      return descriptor.defaultValue;
+      return getDefaultValue(descriptor);
     else
       return value;
+  }
+
+  public void setDefault(StyleDescriptor descriptor, String value)
+  {
+    if(defaults == null)
+      defaults = new String[Style.STYLE_COUNT];
+    defaults[descriptor.index] = value;
+    if(get(descriptor.index) == null && value != null && !value.equals(descriptor.defaultValue))
+      recordChange(descriptor, value);
+  }
+
+  protected String getDefaultValue(StyleDescriptor descriptor)
+  {
+    if(defaults != null)
+    {
+      String value = defaults[descriptor.index];
+      if(value != null)
+        return value;
+    }
+    return descriptor.defaultValue;
+  }
+
+  protected void recordChange(StyleDescriptor descriptor, String value)
+  {
+    changes[descriptor.index] = true;
+    notifyObserversOfChange(descriptor, value);
   }
 
   public boolean changed()

@@ -25,6 +25,7 @@ public abstract class InputPanel extends BasePanel
 
   protected abstract Component createComponent();
   protected abstract TextAccessor createTextAccessor();
+  protected abstract void setDefaultStyles(Style style);
 
   public Component getComponent()
   {
@@ -44,7 +45,15 @@ public abstract class InputPanel extends BasePanel
       PropPanel propPanel = (PropPanel) panel;
       propPanel.sterilize();
       propPanel.setTextAccessor(createTextAccessor());
+      setDefaultStyles(propPanel.getStyle());
     }
+  }
+
+  public void doLayout()
+  {
+    Box bounds = getParent().getBoxInsidePadding();
+    setLocation(bounds.x, bounds.y);
+    setSize(bounds.width, bounds.height);
   }
 
   public void setSize(int w, int h)

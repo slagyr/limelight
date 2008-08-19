@@ -4,6 +4,7 @@ import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.TextAccessor;
+import limelight.styles.Style;
 
 import java.awt.*;
 
@@ -11,12 +12,6 @@ import java.awt.*;
 public class ButtonPanel extends InputPanel
 {
   private Button button;
-
-  public ButtonPanel()
-  {
-    super();
-    setSize(100, button.getPreferredSize().height);
-  }
 
   protected Component createComponent()
   {
@@ -26,6 +21,12 @@ public class ButtonPanel extends InputPanel
   protected TextAccessor createTextAccessor()
   {
     return new ButtonTextAccessor(button);
+  }
+
+  protected void setDefaultStyles(Style style)
+  {
+    style.setDefault(Style.WIDTH, "100");
+    style.setDefault(Style.HEIGHT, "" + button.getPreferredSize().height);
   }
 
   public Button getButton()

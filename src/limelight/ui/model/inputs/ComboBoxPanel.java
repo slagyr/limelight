@@ -2,6 +2,7 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.TextAccessor;
+import limelight.styles.Style;
 
 import java.awt.*;
 
@@ -9,12 +10,6 @@ public class ComboBoxPanel extends InputPanel
 {
   private ComboBox comboBox;
   private ContainerStub container;
-
-  public ComboBoxPanel()
-  {
-    super();
-    setSize(120, comboBox.getPreferredSize().height);
-  }
 
   public ComboBox getComboBox()
   {
@@ -34,6 +29,12 @@ public class ComboBoxPanel extends InputPanel
   protected TextAccessor createTextAccessor()
   {
     return new ComboBoxTextAccessor(comboBox);
+  }
+
+  protected void setDefaultStyles(Style style)
+  {
+    style.setDefault(Style.WIDTH, "120");
+    style.setDefault(Style.HEIGHT, "" + comboBox.getPreferredSize().height);
   }
 
   private static class ComboBoxTextAccessor implements TextAccessor

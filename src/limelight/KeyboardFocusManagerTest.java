@@ -9,6 +9,7 @@ import limelight.ui.model.RootPanel;
 import limelight.ui.model.MockFrame;
 import limelight.ui.model.TextAccessor;
 import limelight.ui.MockPanel;
+import limelight.styles.Style;
 
 import java.awt.*;
 import java.awt.event.FocusListener;
@@ -133,6 +134,10 @@ public class KeyboardFocusManagerTest extends TestCase
     protected TextAccessor createTextAccessor()
     {
       return null;
+    }
+
+    protected void setDefaultStyles(Style style)
+    {
     }
   }
 }
