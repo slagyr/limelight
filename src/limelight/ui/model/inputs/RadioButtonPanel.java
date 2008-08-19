@@ -1,18 +1,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.model.TextAccessor;
+import limelight.styles.Style;
 
 import java.awt.*;
 
 public class RadioButtonPanel extends InputPanel
 {
   private RadioButton radioButton;
-
-  public RadioButtonPanel()
-  {
-    super();
-    setSize(radioButton.getPreferredSize().width, radioButton.getPreferredSize().height);
-  }
 
   protected Component createComponent()
   {
@@ -22,6 +17,12 @@ public class RadioButtonPanel extends InputPanel
   protected TextAccessor createTextAccessor()
   {
     return new RadioButtonTextAccessor(radioButton);
+  }
+
+  protected void setDefaultStyles(Style style)
+  {
+    style.setDefault(Style.WIDTH, "" + radioButton.getPreferredSize().width);
+    style.setDefault(Style.HEIGHT, "" + radioButton.getPreferredSize().height);
   }
 
   public RadioButton getRadioButton()

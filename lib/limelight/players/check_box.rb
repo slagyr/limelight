@@ -10,12 +10,6 @@ module Limelight
           check_box = Limelight::UI::Model::Inputs::CheckBoxPanel.new
           prop.panel.add(check_box)
           prop.check_box = check_box.check_box
-          set_default_styles(prop)
-        end
-        
-        def set_default_styles(prop)
-          prop.style.width = "22"
-          prop.style.height = "22"
         end
       end
       

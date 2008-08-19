@@ -8,6 +8,7 @@ import limelight.ui.model.TextAccessor;
 import limelight.ui.api.MockProp;
 import limelight.ui.MockPanel;
 import limelight.Context;
+import limelight.styles.Style;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -42,6 +43,11 @@ public class InputPanelTest extends TestCase
       return null;
     }
 
+    protected void setDefaultStyles(Style style)
+    {
+      style.setWidth("123");
+      style.setHeight("456");
+    }
   }
 
   public void setUp() throws Exception
@@ -106,15 +112,19 @@ public class InputPanelTest extends TestCase
 
   private void buildInputTree()
   {
-    root = new RootPanel(new MockFrame());
-    rootPanel = new MockPanel();
-    root.setPanel(rootPanel);
-
-    rootPanel.add(parent);
+    attatchRoot();
     input2 = new TestableInputPanel();
     input3 = new TestableInputPanel();
     rootPanel.add(input2);
     rootPanel.add(input3);
+  }
+
+  private void attatchRoot()
+  {
+    root = new RootPanel(new MockFrame());
+    rootPanel = new MockPanel();
+    root.setPanel(rootPanel);
+    rootPanel.add(parent);
   }
 
   public void testFindNextInput() throws Exception
@@ -149,6 +159,27 @@ public class InputPanelTest extends TestCase
     assertEquals(456, input.getY());
     assertEquals(123, input.getComponent().getX());
     assertEquals(456, input.getComponent().getY());
+  }
+  
+  public void testDoLayout() throws Exception
+  {
+    attatchRoot();
+    parent.getStyle().setWidth("100");
+    parent.getStyle().setHeight("200");
+    parent.getStyle().setMargin("5");
+    parent.getStyle().setPadding("2");
+    parent.doLayout();
+
+    input.doLayout();
+    assertEquals(new Point(7, 7), input.getLocation());
+    assertEquals(86, input.getWidth());
+    assertEquals(186, input.getHeight());
+  }
+  
+  public void testSettingParentAlsoSetsDefaultStyles() throws Exception
+  {
+    assertEquals("123", parent.getStyle().getWidth());
+    assertEquals("456", parent.getStyle().getHeight());
   }
 
   private void addMouseMotionListener()

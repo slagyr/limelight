@@ -10,12 +10,6 @@ module Limelight
           combo_box = Limelight::UI::Model::Inputs::ComboBoxPanel.new
           prop.panel.add(combo_box)
           prop.combo_box = combo_box.combo_box
-          set_default_styles(prop)
-        end
-        
-        def set_default_styles(prop)
-          prop.style.width = "120"
-          prop.style.height = "30"
         end
       end
       

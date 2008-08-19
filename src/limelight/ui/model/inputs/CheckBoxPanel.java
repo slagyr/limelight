@@ -1,18 +1,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.model.TextAccessor;
+import limelight.styles.Style;
 
 import java.awt.*;
 
 public class CheckBoxPanel extends InputPanel
 {
   private CheckBox checkBox;
-
-  public CheckBoxPanel()
-  {
-    super();
-    setSize(checkBox.getPreferredSize().width, checkBox.getPreferredSize().height);
-  }
 
   protected Component createComponent()
   {
@@ -22,6 +17,12 @@ public class CheckBoxPanel extends InputPanel
   protected TextAccessor createTextAccessor()
   {
     return new CheckBoxTextAccessor(checkBox);
+  }
+
+  protected void setDefaultStyles(Style style)
+  {
+    style.setDefault(Style.WIDTH, "" + checkBox.getPreferredSize().width);
+    style.setDefault(Style.HEIGHT, "" + checkBox.getPreferredSize().height);
   }
 
   public CheckBox getCheckBox()

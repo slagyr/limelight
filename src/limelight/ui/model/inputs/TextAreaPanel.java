@@ -1,19 +1,13 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.PropPanel;
 import limelight.ui.model.TextAccessor;
+import limelight.styles.Style;
 
 import java.awt.*;
 
 public class TextAreaPanel extends InputPanel
 {
   private TextArea textArea;
-
-  public TextAreaPanel()
-  {
-    super();
-    setSize(200, 88);
-  }
 
   protected Component createComponent()
   {
@@ -24,6 +18,12 @@ public class TextAreaPanel extends InputPanel
   protected TextAccessor createTextAccessor()
   {
     return new TextAreaTextAccessor(textArea);
+  }
+
+  protected void setDefaultStyles(Style style)
+  {
+    style.setDefault(Style.WIDTH, "200");
+    style.setDefault(Style.HEIGHT, "88");
   }
 
   public TextArea getTextArea()

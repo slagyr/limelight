@@ -11,12 +11,6 @@ module Limelight
           text_area = Limelight::UI::Model::Inputs::TextAreaPanel.new
           prop.panel.add(text_area)
           prop.text_area = text_area.text_area
-          set_default_styles(prop)
-        end
-        
-        def set_default_styles(prop)
-          prop.style.width ||= "200"
-          prop.style.height ||= "88"
         end
 
       end
