@@ -20,6 +20,8 @@ import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 
 public class PropPanelTest extends TestCase
 {
@@ -309,4 +311,45 @@ public class PropPanelTest extends TestCase
     assertEquals("blah", audioPlayer.playedFile);
   }
 
+  public void testFocusGained() throws Exception
+  {
+    FocusEvent event = new FocusEvent(new JPanel(), 1);
+    panel.focusGained(event);
+
+    assertNotNull(prop.gainedFocus);
+    assertSame(event, prop.gainedFocus);
+  }
+
+  public void testFocusLost() throws Exception
+  {
+    FocusEvent event = new FocusEvent(new JPanel(), 1);
+    panel.focusLost(event);
+
+    assertNotNull(prop.lostFocus);
+    assertSame(event, prop.lostFocus);
+  }
+
+  public void testKeyPressedEvent() throws Exception
+  {
+    KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
+    panel.keyPressed(event);
+
+    assertSame(event, prop.pressedKey);
+  }
+
+  public void testKeyTypedEvent() throws Exception
+  {
+    KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
+    panel.keyTyped(event);
+
+    assertSame(event, prop.typedKey);
+  }
+  
+  public void testKeyReleasedEvent() throws Exception
+  {
+    KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
+    panel.keyReleased(event);
+
+    assertSame(event, prop.releasedKey);
+  }
 }

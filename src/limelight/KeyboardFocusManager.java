@@ -1,7 +1,6 @@
 package limelight;
 
 import limelight.ui.model.inputs.InputPanel;
-import limelight.ui.model.RootPanel;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -22,6 +21,7 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     {
       focusComponent(inputPanel.getComponent());
       focusedPanel = inputPanel;
+      focusedPanel.focusGained(null);
     }
   }
 
@@ -45,7 +45,11 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     if(focued != null)
     {
       setGlobalFocusOwner(null);
-      focusedPanel = null;
+      if(focusedPanel != null)
+      {
+        focusedPanel.focusLost(null);
+        focusedPanel = null;
+      }
       FocusEvent gained = new FocusEvent(focued, FocusEvent.FOCUS_LOST);
       FocusListener[] listeners = focued.getFocusListeners();
       for(FocusListener listener : listeners)

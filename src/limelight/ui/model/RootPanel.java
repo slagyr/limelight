@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 
 public class RootPanel implements Panel
 {
@@ -199,7 +201,7 @@ public class RootPanel implements Panel
       if(dimentionsChanged || locationChanged)
         update.performUpdate(changedPanel.getParent());
       else
-        update.performUpdate(changedPanel);
+        update.performUpdate(changedPanel); //TODO Got a null pointer here.  The update must have been null.  Threading issue?
       changedPanel.resetNeededUpdate();
     }
     changedPanels.clear();
@@ -332,6 +334,26 @@ public class RootPanel implements Panel
   }
 
   public void mouseWheelMoved(MouseWheelEvent e)
+  {
+  }
+
+  public void focusGained(FocusEvent e)
+  {
+  }
+
+  public void focusLost(FocusEvent e)
+  {
+  }
+
+  public void keyTyped(KeyEvent e)
+  {
+  }
+
+  public void keyPressed(KeyEvent e)
+  {
+  }
+
+  public void keyReleased(KeyEvent e)
   {
   }
 

@@ -21,6 +21,8 @@ import limelight.util.Util;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
@@ -250,6 +252,31 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
     else
       getParent().mouseWheelMoved(e);
+  }
+
+  public void focusLost(FocusEvent e)
+  {
+    getProp().focus_lost(e);
+  }
+
+  public void focusGained(FocusEvent e)
+  {
+    getProp().focus_gained(e);
+  }
+
+  public void keyTyped(KeyEvent e)
+  {
+    getProp().key_typed(e);
+  }
+
+  public void keyPressed(KeyEvent e)
+  {
+    getProp().key_pressed(e);
+  }
+
+  public void keyReleased(KeyEvent e)
+  {
+    getProp().key_released(e);
   }
 
   public void setCursor(Cursor cursor)

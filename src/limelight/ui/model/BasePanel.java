@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 
 public abstract class BasePanel implements Panel
 {
@@ -223,6 +225,31 @@ public abstract class BasePanel implements Panel
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     parent.mouseWheelMoved(e);
+  }
+
+  public void focusLost(FocusEvent e)
+  {
+    parent.focusLost(e);
+  }
+
+  public void focusGained(FocusEvent e)
+  {
+    parent.focusGained(e);
+  }
+
+  public void keyTyped(KeyEvent e)
+  {
+    parent.keyTyped(e);
+  }
+
+  public void keyPressed(KeyEvent e)
+  {
+    parent.keyPressed(e);
+  }
+
+  public void keyReleased(KeyEvent e)
+  {
+    parent.keyReleased(e);
   }
 
   public void add(Panel panel)

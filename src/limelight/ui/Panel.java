@@ -7,6 +7,8 @@ import limelight.ui.model.Update;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 public interface Panel extends Iterable<Panel>
@@ -67,4 +69,9 @@ public interface Panel extends Iterable<Panel>
   void mouseExited(MouseEvent e);
   void mouseMoved(MouseEvent e);
   void mouseWheelMoved(MouseWheelEvent e);
+  void focusGained(FocusEvent e);
+  void focusLost(FocusEvent e);
+  void keyTyped(KeyEvent e);
+  void keyPressed(KeyEvent e);
+  void keyReleased(KeyEvent e);
 }

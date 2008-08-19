@@ -4,15 +4,12 @@ import limelight.ui.Panel;
 import limelight.ui.model.BasePanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.TextAccessor;
-import limelight.ui.model.updates.Updates;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.Context;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 public abstract class InputPanel extends BasePanel
 {
@@ -21,6 +18,7 @@ public abstract class InputPanel extends BasePanel
   protected InputPanel()
   {
     component = createComponent();
+    component.addKeyListener(new InputPanelKeyListener(this));
   }
 
   protected abstract Component createComponent();
@@ -104,6 +102,7 @@ public abstract class InputPanel extends BasePanel
     e.setSource(component);
     for(MouseListener mouseListener : component.getMouseListeners())
       mouseListener.mousePressed(e);
+    getParent().mousePressed(e);
   }
 
   public void mouseReleased(MouseEvent e)
@@ -112,6 +111,7 @@ public abstract class InputPanel extends BasePanel
     e.setSource(component);
     for(MouseListener mouseListener : component.getMouseListeners())
       mouseListener.mouseReleased(e);
+    getParent().mouseReleased(e);
   }
 
   public void mouseClicked(MouseEvent e)
@@ -120,7 +120,7 @@ public abstract class InputPanel extends BasePanel
     Context.instance().keyboardFocusManager.focusPanel(this);
     for(MouseListener mouseListener : component.getMouseListeners())
       mouseListener.mouseClicked(e);
-    setNeededUpdate(Updates.shallowPaintUpdate);
+    getParent().mouseClicked(e);
   }
 
   public void mouseDragged(MouseEvent e)
@@ -179,5 +179,30 @@ public abstract class InputPanel extends BasePanel
     }
 
     return previous;
+  }
+
+  private static class InputPanelKeyListener implements KeyListener
+  {
+    private InputPanel panel;
+
+    public InputPanelKeyListener(InputPanel inputPanel)
+    {
+      this.panel = inputPanel;
+    }
+
+    public void keyTyped(KeyEvent e)
+    {
+      panel.keyTyped(e);
+    }
+
+    public void keyPressed(KeyEvent e)
+    {
+      panel.keyPressed(e);
+    }
+
+    public void keyReleased(KeyEvent e)
+    {
+      panel.keyReleased(e);
+    }
   }
 }

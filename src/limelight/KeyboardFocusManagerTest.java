@@ -41,6 +41,7 @@ public class KeyboardFocusManagerTest extends TestCase
     assertEquals(1, component.mockFocusListener.gained);
     assertEquals(panel, manager.getFocusedPanel());
     assertEquals(component, manager.getFocuedComponent());
+    assertEquals(true, panel.hasFocus);
   }
 
   public void testFocusWhenComponentIsAlreadyFocused() throws Exception
@@ -62,6 +63,8 @@ public class KeyboardFocusManagerTest extends TestCase
     assertEquals(1, component.mockFocusListener.lost);
     assertEquals(1, panel2.mockComponent.mockFocusListener.gained);
     assertEquals(panel2, manager.getFocusedPanel());
+    assertEquals(false, panel.hasFocus);
+    assertEquals(true, panel2.hasFocus);
   }
 
   public void testFocusNextComponent() throws Exception
@@ -125,6 +128,7 @@ public class KeyboardFocusManagerTest extends TestCase
   private class MockInputPanel extends InputPanel
   {
     public MockComponent mockComponent;
+    public boolean hasFocus;
 
     protected Component createComponent()
     {
@@ -138,6 +142,16 @@ public class KeyboardFocusManagerTest extends TestCase
 
     protected void setDefaultStyles(Style style)
     {
+    }
+
+    public void focusLost(FocusEvent e)
+    {
+      hasFocus = false;
+    }
+
+    public void focusGained(FocusEvent e)
+    {
+      hasFocus = true;
     }
   }
 }
