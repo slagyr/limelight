@@ -55,6 +55,7 @@ public interface Panel extends Iterable<Panel>
   
   boolean isFloater();
 
+  void setNeededUpdate(Update update);
   void resetNeededUpdate();
   Update getNeededUpdate();
   

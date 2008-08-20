@@ -1,6 +1,7 @@
 package limelight.ui.model;
 
 import limelight.ui.Panel;
+import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.util.Box;
 import limelight.LimelightError;
 import java.util.LinkedList;
@@ -175,7 +176,8 @@ public abstract class BasePanel implements Panel
 
   public Graphics2D getGraphics()
   {
-    return getRoot().getGraphics();
+    Box bounds = getAbsoluteBounds();
+    return (Graphics2D)getRoot().getGraphics().create(bounds.x, bounds.y, bounds.width, bounds.height);
   }
 
   public void paintOn(Graphics2D graphics)

@@ -4,7 +4,6 @@
 toolbar {
   width "100%"
   height :auto
-  margin 25
   horizontal_alignment :center
 }
 

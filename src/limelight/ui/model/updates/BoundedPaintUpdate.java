@@ -3,6 +3,7 @@ package limelight.ui.model.updates;
 import limelight.util.Box;
 import limelight.ui.Panel;
 import limelight.ui.model.Update;
+import limelight.ui.model.inputs.TextBoxPanel;
 
 import java.awt.*;
 
@@ -24,6 +25,13 @@ public class BoundedPaintUpdate extends PaintUpdate
   public BoundedPaintUpdate(int x, int y, int width, int height)
   {
     this(new Box(x, y, width, height));
+  }
+
+  public void performUpdate(Panel panel)
+  {
+    if(panel instanceof TextBoxPanel)
+      ;
+    super.performUpdate(panel);
   }
 
   protected Box getAbsoluteBounds(Panel panel)
