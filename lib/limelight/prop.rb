@@ -185,7 +185,7 @@ module Limelight
     end
     
     EVENTS = [:mouse_clicked, :mouse_entered, :mouse_exited, :mouse_pressed, :mouse_released, :mouse_dragged, :mouse_moved,
-         :key_typed, :key_pressed, :key_released, :focus_gained, :focus_lost, :state_changed, :button_pressed, :item_state_changed]
+         :key_typed, :key_pressed, :key_released, :focus_gained, :focus_lost, :button_pressed, :value_changed]
          
     event *EVENTS
    

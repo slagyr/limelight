@@ -1,15 +1,15 @@
 package limelight.ui.model;
 
-import limelight.util.Box;
-import limelight.ui.Panel;
-import limelight.styles.Style;
 import limelight.Context;
+import limelight.styles.Style;
+import limelight.ui.Panel;
+import limelight.util.Box;
 
-import java.util.LinkedList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class RootPanel implements Panel
 {
@@ -94,7 +94,7 @@ public class RootPanel implements Panel
   }
 
   public void setPanel(Panel child)
-  { 
+  {
     panel = child;
     panel.setParent(this);
 
@@ -123,7 +123,7 @@ public class RootPanel implements Panel
   {
     Panel focuedPanel = Context.instance().keyboardFocusManager.getFocusedPanel();
     if(focuedPanel != null && focuedPanel.getRoot() == this)
-      Context.instance().keyboardFocusManager.unfocusCurrentlyFocusedComponent();  
+      Context.instance().keyboardFocusManager.unfocusCurrentlyFocusedComponent();
   }
 
   public Panel getRoot()
@@ -133,7 +133,7 @@ public class RootPanel implements Panel
 
   public Graphics2D getGraphics()
   {
-    return (Graphics2D)contentPane.getGraphics();
+    return (Graphics2D) contentPane.getGraphics();
   }
 
   public boolean isAncestor(Panel panel)
@@ -176,7 +176,7 @@ public class RootPanel implements Panel
   }
 
   public synchronized void addChangedPanel(Panel panel)
-  {  
+  {
     changedPanels.add(panel);
   }
 
@@ -189,19 +189,23 @@ public class RootPanel implements Panel
   //TODO MDM - Also, we should not have to figure out if a parent needs the updating here.  That's not right.
   public synchronized void repaintChangedPanels()
   {
-    for(Panel changedPanel : changedPanels)
+    if(changedPanels.size() > 0)
     {
-      Style style = changedPanel.getStyle();
-      boolean dimentionsChanged = style.changed(Style.WIDTH) || style.changed(Style.HEIGHT);
-      boolean locationChanged = "on".equals(style.getFloat()) && (style.changed(Style.X) || style.changed(Style.Y));
-      Update update = changedPanel.getNeededUpdate();
-      if(dimentionsChanged || locationChanged)
-        update.performUpdate(changedPanel.getParent());
-      else
-        update.performUpdate(changedPanel); //TODO Got a null pointer here.  The update must have been null.  Threading issue?
-      changedPanel.resetNeededUpdate();
+      LinkedList<Panel> panelsToUpdates = new LinkedList<Panel>(changedPanels);
+      changedPanels.clear();
+      for(Panel changedPanel : panelsToUpdates)
+      {
+        Style style = changedPanel.getStyle();
+        boolean dimentionsChanged = style.changed(Style.WIDTH) || style.changed(Style.HEIGHT);
+        boolean locationChanged = "on".equals(style.getFloat()) && (style.changed(Style.X) || style.changed(Style.Y));
+        Update update = changedPanel.getNeededUpdate();
+        if(dimentionsChanged || locationChanged)
+          update.performUpdate(changedPanel.getParent());
+        else
+          update.performUpdate(changedPanel); //TODO Got a null pointer here.  The update must have been null.  Threading issue?
+        changedPanel.resetNeededUpdate();
+      }
     }
-    changedPanels.clear();
   }
 
   public synchronized boolean changedPanelsContains(Panel panel)
@@ -359,7 +363,11 @@ public class RootPanel implements Panel
   }
 
   public void valueChanged(Object e)
-  { 
+  {
+  }
+
+  public void setNeededUpdate(Update update)
+  {
   }
 
   public void resetNeededUpdate()
@@ -373,7 +381,7 @@ public class RootPanel implements Panel
 
   public void add(Panel child)
   {
-  }                               
+  }
 
   public Frame getFrame()
   {

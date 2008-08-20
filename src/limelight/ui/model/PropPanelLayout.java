@@ -25,8 +25,8 @@ public class PropPanelLayout
 
   synchronized public void doLayout()
   {
-    Style style = panel.getProp().getStyle();
-    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT))
+    Style style = panel.getStyle();
+    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT) || hasPercentageDimension())
       panel.snapToSize();
 
     establishScrollBars();
@@ -43,6 +43,11 @@ public class PropPanelLayout
       layoutFloaters();
     }
     layoutScrollBars();
+  }
+
+  private boolean hasPercentageDimension()
+  {
+    return panel.getStyle().getWidth().contains("%") || panel.getStyle().getHeight().contains("%");
   }
 
   private boolean hasNonScrollBarChildren()

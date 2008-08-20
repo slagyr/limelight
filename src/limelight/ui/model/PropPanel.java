@@ -191,9 +191,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public Style getStyle()
   {
     if(style == null)
-    {
       style = prop.getStyle();
-    }
     return style;
   }
 

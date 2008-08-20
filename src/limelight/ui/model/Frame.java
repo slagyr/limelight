@@ -2,6 +2,7 @@ package limelight.ui.model;
 
 import limelight.ui.api.Stage;
 import limelight.ui.Panel;
+import limelight.ui.model.updates.Updates;
 import limelight.Context;
 
 import javax.swing.*;
@@ -23,6 +24,12 @@ public class Frame extends JFrame
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   }
 
+  public void doLayout()
+  {
+    super.doLayout();
+    root.getPanel().setNeededUpdate(Updates.layoutAndPaintUpdate);  //TODO TEST ME!!!
+  }
+
   public void close()
   {
     setVisible(false);
@@ -32,9 +39,7 @@ public class Frame extends JFrame
   public void open()
   {
     setVisible(true);
-
-    root.doLayout();
-    root.repaint();
+    root.getPanel().setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
 
   public void load(Panel child)

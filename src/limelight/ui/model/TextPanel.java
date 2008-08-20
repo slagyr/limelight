@@ -118,7 +118,9 @@ public class TextPanel extends BasePanel
             }
           }
           else
-            lines.add(new TextLayout(" ", font, graphics.getFontRenderContext()));
+          {
+            lines.add(new TextLayout(" ", font, getGraphics().getFontRenderContext()));
+          }
         }
       }
     }
