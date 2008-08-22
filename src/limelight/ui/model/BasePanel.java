@@ -366,7 +366,7 @@ public abstract class BasePanel implements Panel
     return true;
   }
 
-  public void setNeededUpdate(Update update)
+  public synchronized void setNeededUpdate(Update update)
   {
     if(neededUpdate == null)
     {
@@ -381,17 +381,25 @@ public abstract class BasePanel implements Panel
       neededUpdate = neededUpdate.prioritize(update);
   }
 
-  public boolean needsUpdating()
+  public synchronized Update getAndClearNeededUpdate()
+  {
+    Update update = neededUpdate;
+    neededUpdate = null;
+    return update;
+  }
+
+
+  public synchronized boolean needsUpdating()
   {
     return neededUpdate != null;
   }
 
-  public void resetNeededUpdate()
+  public synchronized void resetNeededUpdate()
   {
     neededUpdate = null;
   }
 
-  public Update getNeededUpdate()
+  public synchronized Update getNeededUpdate()
   {
     return neededUpdate;
   }
