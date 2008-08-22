@@ -122,7 +122,7 @@ public class RootPanel implements Panel
   private void removeKeyboardFocus()
   {
     Panel focuedPanel = Context.instance().keyboardFocusManager.getFocusedPanel();
-    if(focuedPanel != null && focuedPanel.getRoot() == this)
+    if (focuedPanel != null && focuedPanel.getRoot() == this)
       Context.instance().keyboardFocusManager.unfocusCurrentlyFocusedComponent();
   }
 
@@ -187,25 +187,35 @@ public class RootPanel implements Panel
 
   //TODO MDM - This is not fully right.  Need to make sure we're not repainting a panel more than once.  So we need to remove from the set descendants of other panels in the list.
   //TODO MDM - Also, we should not have to figure out if a parent needs the updating here.  That's not right.
-  public synchronized void repaintChangedPanels()
+  public void repaintChangedPanels()
   {
-    if(changedPanels.size() > 0)
+    LinkedList<Panel> panelsToUpdates = getAndClearPanelsToUpdate();
+
+    if (panelsToUpdates != null)
     {
-      LinkedList<Panel> panelsToUpdates = new LinkedList<Panel>(changedPanels);
-      changedPanels.clear();
-      for(Panel changedPanel : panelsToUpdates)
+      for (Panel changedPanel : panelsToUpdates)
       {
         Style style = changedPanel.getStyle();
         boolean dimentionsChanged = style.changed(Style.WIDTH) || style.changed(Style.HEIGHT);
         boolean locationChanged = "on".equals(style.getFloat()) && (style.changed(Style.X) || style.changed(Style.Y));
-        Update update = changedPanel.getNeededUpdate();
-        if(dimentionsChanged || locationChanged)
+        Update update = changedPanel.getAndClearNeededUpdate();
+        if (dimentionsChanged || locationChanged)
           update.performUpdate(changedPanel.getParent());
         else
           update.performUpdate(changedPanel); //TODO Got a null pointer here.  The update must have been null.  Threading issue?
-        changedPanel.resetNeededUpdate();
       }
     }
+  }
+
+  private synchronized LinkedList<Panel> getAndClearPanelsToUpdate()
+  {
+    LinkedList<Panel> panelsToUpdates = null;
+    if (changedPanels.size() > 0)
+    {
+      panelsToUpdates = new LinkedList<Panel>(changedPanels);
+      changedPanels.clear();
+    }
+    return panelsToUpdates;
   }
 
   public synchronized boolean changedPanelsContains(Panel panel)
@@ -297,7 +307,7 @@ public class RootPanel implements Panel
   public Panel getOwnerOfPoint(Point point)
   {
     point = new Point(point.x - getX(), point.y - getY());
-    if(panel.containsRelativePoint(point))
+    if (panel.containsRelativePoint(point))
       return panel.getOwnerOfPoint(point);
     return this;
   }
@@ -375,6 +385,11 @@ public class RootPanel implements Panel
   }
 
   public Update getNeededUpdate()
+  {
+    return null;
+  }
+
+  public Update getAndClearNeededUpdate()
   {
     return null;
   }

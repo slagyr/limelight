@@ -58,6 +58,7 @@ public interface Panel extends Iterable<Panel>
   void setNeededUpdate(Update update);
   void resetNeededUpdate();
   Update getNeededUpdate();
+  Update getAndClearNeededUpdate();
   
   void mousePressed(MouseEvent e);
   void mouseReleased(MouseEvent e);

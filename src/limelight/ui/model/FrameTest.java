@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import limelight.ui.api.MockStage;
 import limelight.ui.MockPanel;
 import limelight.Context;
+import limelight.KeyboardFocusManager;
 
 import javax.swing.*;
 
@@ -17,6 +18,7 @@ public class FrameTest extends TestCase
   {
     frameManager = new FrameManager();
     Context.instance().frameManager = frameManager;
+    Context.instance().keyboardFocusManager = new KeyboardFocusManager();
 
     stage = new MockStage();
     frame = new Frame(stage);

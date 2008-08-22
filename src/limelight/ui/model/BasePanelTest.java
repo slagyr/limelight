@@ -444,5 +444,36 @@ public class BasePanelTest extends TestCase
 
     assertEquals(PanelIterator.class, iterator.getClass());
   }
+  public void testNeededUpdate() throws Exception
+  {
+    panel.setParent(new RootPanel(new MockFrame()));
+    Update update = newUpdate();
+
+    panel.setNeededUpdate(update);
+    assertSame(update, panel.getNeededUpdate());
+
+  }
+
+  private Update newUpdate()
+  {
+    Update update = new Update(1) {
+      public void performUpdate(Panel panel)
+      {
+      }
+    };
+    return update;
+  }
+
+  public void testGetAndClearNeededUpdate() throws Exception
+  {
+    panel.setParent(new RootPanel(new MockFrame()));
+    Update update = newUpdate();
+
+    panel.setNeededUpdate(update);
+    Update gottenUpdate = panel.getAndClearNeededUpdate();
+
+    assertNull(panel.getNeededUpdate());
+    assertSame(update, gottenUpdate);
+  }
 }
 
