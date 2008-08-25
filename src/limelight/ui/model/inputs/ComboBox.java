@@ -11,6 +11,7 @@ import java.awt.*;
 public class ComboBox extends JComboBox
 {
   private ComboBoxPanel panel;
+  private boolean inPaintChildren;
 
   public ComboBox(ComboBoxPanel panel)
   {
@@ -42,19 +43,19 @@ public class ComboBox extends JComboBox
 
   public void repaint()
   {
-    if(panel != null)
+    if(panel != null && !inPaintChildren)
       panel.setNeededUpdate(Updates.paintUpdate);
   }
 
   public void repaint(long tm, int x, int y, int width, int height)
   {
-    if(panel != null)
+    if(panel != null && !inPaintChildren)
       panel.setNeededUpdate(new BoundedPaintUpdate(x, y, width, height));
   }
 
   public void repaint(Rectangle r)
   {
-    if(panel != null)
+    if(panel != null && !inPaintChildren)
       panel.setNeededUpdate(new BoundedPaintUpdate(r));
   }
 
@@ -66,6 +67,7 @@ public class ComboBox extends JComboBox
 
   protected void paintChildren(Graphics g)
   {
+    inPaintChildren = true;
     for(Component comp : getComponents())
     {
       comp.setVisible(true);
@@ -89,6 +91,7 @@ public class ComboBox extends JComboBox
         }
       }
     }
+    inPaintChildren = false;
   }
 
   public boolean isShowing()

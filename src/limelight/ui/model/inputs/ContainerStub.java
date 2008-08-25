@@ -45,4 +45,20 @@ public class ContainerStub extends Container
     else
       return panel.getAbsoluteLocation();
   }
+
+  public void repaint()
+  {
+  }
+
+  public void repaint(long tm)
+  {
+  }
+
+  public void repaint(int x, int y, int width, int height)
+  {
+  }
+
+  public void repaint(long tm, int x, int y, int width, int height)
+  {
+  }
 }
