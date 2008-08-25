@@ -1,12 +1,10 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.PropPanel;
-import limelight.ui.model.TextAccessor;
 import limelight.styles.Style;
-
+import limelight.ui.model.TextAccessor;
 import java.awt.*;
-import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class ComboBoxPanel extends InputPanel
 {

@@ -2,7 +2,6 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
 import limelight.ui.model.RootPanel;
-
 import java.awt.*;
 
 public class ContainerStub extends Container
@@ -35,7 +34,10 @@ public class ContainerStub extends Container
     if(panel == null || panel.getRoot() == null)
       return 0;
     else
-      return panel.getAbsoluteLocation().y;
+    {
+      int y = panel.getAbsoluteLocation().y;
+      return y;
+    }
   }
 
   public Point getLocation(Point rv)
