@@ -10,6 +10,8 @@ public abstract class RecurringTask extends Task
   private NanoTimer timer;
   private boolean strict;
   private double performancesPerSecond;
+  private int performances;
+  private long lastPerformanceCheckTime;
 
   public RecurringTask(String name, int performancesPerSecond)
   {
@@ -40,14 +42,32 @@ public abstract class RecurringTask extends Task
       makeupMissedPerformances();
     timer.markTime();
     doPerform();
+    performances++;
+    checkPerformances();
     getEngine().add(this);
+  }
+
+  private void checkPerformances()
+  {
+    boolean timeSinceLastCheck = (System.nanoTime() - lastPerformanceCheckTime) > (1000000000l);
+    if(timeSinceLastCheck)
+    {
+      if(lastPerformanceCheckTime != 0)
+//      System.err.println(getName() + " performances/sec: " + performances);
+      lastPerformanceCheckTime = System.nanoTime();
+      performances = 0;
+
+    }
   }
 
   private void makeupMissedPerformances()
   {
     long missedPerformances = nanosSinceLastPerformance() / delay;
     for(int i = 1; i < missedPerformances && i < (MaxMakeups + 1); i++)
-      doPerform();  
+    {
+      doPerform();
+      performances++;
+    }
   }
 
   protected abstract void doPerform();

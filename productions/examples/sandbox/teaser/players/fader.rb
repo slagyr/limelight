@@ -19,7 +19,6 @@ module Fader
     @should_loop = false
     @thread.join
     style.background_color = @color
-    update
   end
   
   def do_shading
@@ -52,7 +51,6 @@ module Fader
       alpha_string = "0" + alpha_string if alpha < 16
     end
     style.background_color = "#000000#{alpha_string}"
-    update_now
   end
   
 end
