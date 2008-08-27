@@ -8,7 +8,6 @@ import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
-import limelight.ui.model.Frame;
 import limelight.task.TaskEngine;
 import limelight.task.RecurringTask;
 import limelight.caching.TimedCache;
@@ -103,7 +102,7 @@ public class Main
     context.audioPlayer = new RealAudioPlayer();
 
     addBufferedImageCacheCleanerTask(context);
-    addPanelPainterTask(context);
+    context.taskEngine.add(new PanelPainterTask());
 
     contextIsConfigured = true;
   }
@@ -116,25 +115,6 @@ public class Main
         try
         {
           Context.instance().bufferedImageCache.clean();
-        }
-        catch(Exception e)
-        {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
-
-  private void addPanelPainterTask(Context context)
-  {
-    context.taskEngine.add(new RecurringTask("Panel Painter", 80) {
-      protected void doPerform()
-      {
-        try
-        {
-          Frame frame = Context.instance().frameManager.getActiveFrame();
-          if(frame != null && frame.getRoot() != null)
-            frame.getRoot().repaintChangedPanels();
         }
         catch(Exception e)
         {

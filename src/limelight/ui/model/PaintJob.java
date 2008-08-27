@@ -21,7 +21,7 @@ public class PaintJob
   {
     bufferCache = Context.instance().bufferedImageCache;
     this.clip = clip;
-    buffer = new BufferedImage(clip.width, clip.height, BufferedImage.TYPE_4BYTE_ABGR);
+    buffer = new BufferedImage(clip.width, clip.height, BufferedImage.TYPE_INT_ARGB);
     rootGraphics = (Graphics2D) buffer.getGraphics();
     rootGraphics.setBackground(Color.white);
     rootGraphics.clearRect(0, 0, clip.width, clip.height);
