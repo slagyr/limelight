@@ -10,7 +10,7 @@ import javax.swing.*;
 public class Frame extends JFrame
 {
   private Stage stage;
-  private RootPanel root;
+  protected RootPanel root;
 
   protected Frame()
   {

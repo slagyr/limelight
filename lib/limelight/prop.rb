@@ -4,6 +4,7 @@
 require 'limelight/java_util'
 require 'limelight/pen'
 require 'limelight/paint_action'
+require 'limelight/animation'
 
 module Limelight
   class Prop
@@ -166,6 +167,12 @@ module Limelight
     
     def play_sound(filename)
       @panel.play_sound(@scene.loader.path_to(filename))
+    end
+
+    def animate(options={}, &block)
+      animation = Animation.new(self, block, options)
+      animation.start
+      return animation
     end
     
     # GUI Events ##########################################

@@ -140,4 +140,13 @@ public class TaskEngineTest extends TestCase
     
     checkFor100PerformancesInaSecond();
   }
+
+  public void testRemoveTask() throws Exception
+  {
+    engine.add(task);
+    engine.remove(task);
+
+    assertEquals(false, engine.getTasks().contains(task));
+    assertEquals(null, task.getEngine());
+  }
 }

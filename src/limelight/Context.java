@@ -8,6 +8,7 @@ import limelight.io.Downloader;
 import limelight.task.TaskEngine;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
+import limelight.ui.model.Frame;
 import limelight.caching.Cache;
 import java.awt.image.BufferedImage;
 
@@ -37,5 +38,10 @@ public class Context
   public static void removeInstance()
   {
     instance = null;
+  }
+
+  public static Frame getActiveFrame()
+  {
+    return instance().frameManager.getActiveFrame();
   }
 }

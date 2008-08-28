@@ -14,7 +14,7 @@ class PanelPainterTask extends RecurringTask
   {
     try
     {
-      Frame frame = Context.instance().frameManager.getActiveFrame();
+      Frame frame = Context.getActiveFrame();
       if(frame != null && frame.getRoot() != null)
         frame.getRoot().repaintChangedPanels();
     }

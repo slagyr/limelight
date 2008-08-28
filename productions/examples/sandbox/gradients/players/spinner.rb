@@ -4,20 +4,13 @@
 module Spinner
   
   def mouse_entered(e)
-    @active = true
-    @thread = Thread.new { spin }
+    @animation = animate(:updates_per_second => 30) do
+      style.gradient_angle = (style.gradient_angle.to_i + 1).to_s
+    end
   end
   
   def mouse_exited(e)
-    @active = false
-  end
-  
-  def spin
-    while @active
-      style.gradient_angle = (style.gradient_angle.to_i + 1).to_s
-      update_now
-      sleep(0.02)
-    end
+    @animation.stop
   end
   
 end

@@ -44,7 +44,8 @@ public abstract class RecurringTask extends Task
     doPerform();
     performances++;
     checkPerformances();
-    getEngine().add(this);
+    if(getEngine() != null)
+      getEngine().add(this);
   }
 
   private void checkPerformances()
