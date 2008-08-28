@@ -9,25 +9,32 @@ module Fader
   def mouse_entered(e)
     @color = style.background_color
     @base_alpha = (style.background_color[4..-1] + style.background_color[4..-1]).hex
-    @step = (255 - @base_alpha) / 80
+
+    @step = (255 - @base_alpha) / 50
     @step = 1 if @step == 0
-    @should_loop = true
-    @thread = Thread.new { do_shading }
-  end
-  
-  def mouse_exited(e)
-    @should_loop = false
-    @thread.join
-    style.background_color = @color
-  end
-  
-  def do_shading
-    while @should_loop
-      shade_up 
-      shade_down
+    @current_alpha = @base_alpha
+    @lastUpdate = Time.now
+    @animation = animate(:updates_per_second => 25) do
+      puts "last update delay: #{Time.now - @lastUpdate}"
+      @lastUpdate = Time.now
+      @current_alpha += @step
+      if @current_alpha < @base_alpha
+        @current_alpha = @base_alpha
+        @step *= -1
+      end
+      if @current_alpha > 255
+        @current_alpha = 255
+        @step *= -1
+      end
+      update_with_alpha(@current_alpha)
     end
   end
   
+  def mouse_exited(e)
+    @animation.stop
+    style.background_color = @color
+  end
+
   def shade_up
     current_alpha = @base_alpha
     while @should_loop and current_alpha < 255

@@ -3,6 +3,7 @@ module Limelight
   Main = Java::limelight.Main
   SceneLoader = Java::limelight.SceneLoader
   Context = Java::limelight.Context
+  AnimationTask = Java::limelight.AnimationTask
 
   module Styles
     Style = Java::limelight.styles.Style

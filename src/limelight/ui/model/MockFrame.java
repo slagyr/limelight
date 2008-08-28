@@ -24,4 +24,9 @@ public class MockFrame extends Frame
   {
     return contentPanel;
   }
+
+  public void setRoot(RootPanel root)
+  {
+    this.root = root;
+  }
 }

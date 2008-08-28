@@ -3,6 +3,7 @@ package limelight.task;
 import limelight.util.NanoTimer;
 
 import java.util.LinkedList;
+import java.util.Iterator;
 
 public class TaskEngine
 {
@@ -22,10 +23,16 @@ public class TaskEngine
     sleepPeriod = 1000000000 / CyclesPerSecond;
   }
 
-  public void add(Task task)
+  public synchronized void add(Task task)
   {
     tasks.add(task);
     task.setEngine(this);
+  }
+
+  public synchronized void remove(Task task)
+  {
+    tasks.remove(task);
+    task.setEngine(null);
   }
 
   public LinkedList<Task> getTasks()
@@ -35,15 +42,20 @@ public class TaskEngine
 
   public void cycle()
   {
-    int tasksToPerform = tasks.size();
-    for(int currentTask = 0; currentTask < tasksToPerform; currentTask++)
+    for(Task task : getTasksToCycle())
     {
-      Task task = tasks.removeFirst();
       if(task.isReady())
         performTask(task);
       else
         tasks.add(task);
     }
+  }
+
+  private synchronized LinkedList<Task> getTasksToCycle()
+  {
+    LinkedList<Task> list = new LinkedList<Task>(tasks);
+    tasks.clear();
+    return list;
   }
 
   private void performTask(Task task)

@@ -1,13 +1,10 @@
 #- Copyright 2008 8th Light, Inc.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'thread'
-
 module Floater
   
   FRICTION = 0.1
   MAX_DISTANCE = 85
-  MUTEX = Mutex.new
   
   attr_reader :sliding
   
@@ -45,12 +42,15 @@ module Floater
     d = distance(x, y, source_x, source_y)
     return if d > MAX_DISTANCE
     calculate_vector(source_x, source_y)
-    Thread.new do
+
+    @sliding = true
+    @animation = animate(:updates_per_second => 30) do
       begin
         slide
       rescue Exception => e
         puts e
         puts e.backtrace
+        @animation.stop
       end
     end
   end
@@ -63,10 +63,9 @@ module Floater
     @velocity = 20
     find_bounds if @max_x.nil?
   end
-  
+
   def slide
-    @sliding = true
-    while @velocity > 1   
+    if @velocity > 1
       @x_coefficient *= -1 if(x < @min_x || x > @max_x)
       @y_coefficient *= -1 if(y < @min_y || y > @max_y)
       x2 = x + (@x_coefficient * @velocity)
@@ -74,10 +73,10 @@ module Floater
       self.new_x = x2
       self.new_y = y2
       @velocity -= @velocity * FRICTION
-      MUTEX.synchronize { parent.update_now }
-      sleep(0.05)
+    else
+      @sliding = false
+      @animation.stop
     end
-    @sliding = false
   end
   
   def find_bounds

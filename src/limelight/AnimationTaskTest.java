@@ -1,0 +1,71 @@
+package limelight;
+
+import junit.framework.TestCase;
+import limelight.ui.MockPanel;
+import limelight.ui.Panel;
+import limelight.ui.model.RootPanel;
+import limelight.ui.model.MockFrame;
+import limelight.ui.model.MockFrameManager;
+import limelight.task.TaskEngine;
+
+public class AnimationTaskTest extends TestCase
+{
+  private MockPanel panel;
+  private TestableAnimationTask task;
+  private MockFrameManager frameManager;
+  private TaskEngine taskEngine;
+
+  public void setUp() throws Exception
+  {
+    panel = new MockPanel();
+    task = new TestableAnimationTask("name", 20, panel);
+
+    frameManager = new MockFrameManager();
+    Context.instance().frameManager = frameManager;
+    taskEngine = new TaskEngine();
+    Context.instance().taskEngine = taskEngine;
+  }
+
+  public void testIsStrict() throws Exception
+  {
+    assertEquals(true, task.isStrict());
+  }
+
+  private class TestableAnimationTask extends AnimationTask
+  {
+    public TestableAnimationTask(String name, int updatesPerSecond, Panel panel)
+    {
+      super(name, updatesPerSecond, panel);
+    }
+
+    protected void doPerform()
+    {
+    }
+  }
+
+  public void testShouldPerformOnlyIfPanelIsPartOfActiveRoot() throws Exception
+  {
+    MockFrame frame = new MockFrame();
+    RootPanel root = new RootPanel(frame);
+    frame.setRoot(root);
+    frameManager.activeFrame = frame;
+
+    assertEquals(false, task.isReady());
+
+    root.setPanel(panel);
+    assertEquals(true, task.isReady());
+  }
+
+  public void testStartAndStop() throws Exception
+  {
+    assertEquals(false, taskEngine.getTasks().contains(task));
+
+    task.start();
+
+    assertEquals(true, taskEngine.getTasks().contains(task));
+
+    task.stop();
+
+    assertEquals(false, taskEngine.getTasks().contains(task));
+  }
+}
