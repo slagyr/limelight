@@ -3,8 +3,19 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.util.Box;
 import limelight.styles.Style;
+import limelight.styles.FlatStyle;
+import limelight.ui.api.MockScene;
 
 import javax.swing.*;
+import java.awt.font.TextLayout;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.*;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 public class TextPanelTest extends TestCase
 {
@@ -102,4 +113,78 @@ public class TextPanelTest extends TestCase
   {
     assertEquals(false, panel.canBeBuffered());
   }
+
+  public void testBuildingLines() throws Exception
+  {
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
+    panel.setText("some text");
+    panel.buildLines();
+
+    List<TextLayout> lines = panel.getLines();
+
+    assertEquals(1, lines.size());
+    TextLayout layout = lines.get(0);
+    assertEquals(9, layout.getCharacterCount());
+    assertSubString("family=Arial", layout.toString());
+    assertSubString("name=Arial", layout.toString());
+    assertSubString("size=12", layout.toString());
+  }
+
+  public void testStylingAppliedToLine() throws Exception
+  {
+    parent.prop.scene = new MockScene();
+    FlatStyle myStyle = new FlatStyle();
+    ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
+    myStyle.setFontFace("Helvetica");
+    myStyle.setFontStyle("bold");
+    myStyle.setFontSize("20");
+
+    parent.setSize(200, 100);
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
+    panel.setText("<my_style>some text</my_style>");
+    panel.buildLines();
+
+
+    List<TextLayout> lines = panel.getLines();
+
+    TextLayout layout = lines.get(0);
+    assertEquals(1, lines.size());
+    assertEquals(9, layout.getCharacterCount());
+    assertSubString("family=Helvetica", layout.toString());
+    assertSubString("name=Helvetica", layout.toString());
+    assertSubString("style=bold", layout.toString());
+    assertSubString("size=20", layout.toString());
+  }
+
+  private void assertSubString(String subString, String fullString)
+  {
+    int i = fullString.indexOf(subString);
+    assertTrue(subString + " not found in " + fullString, i > -1);
+  }
+
+  public void testTagRegex() throws Exception
+  {
+    Matcher matcher = TextPanel.TAG_REGEX.matcher("<abc>123</abc>");
+    assertEquals(true, matcher.find());
+    assertEquals("<abc>123</abc>", matcher.group(0));
+    assertEquals("abc", matcher.group(1));
+    assertEquals("123", matcher.group(2));
+  }
+
+  public void testUnmatchedTagRegex() throws Exception
+  {
+    Matcher matcher = TextPanel.TAG_REGEX.matcher("<abc>123</def>");
+    assertEquals(false, matcher.find());
+  }
+
+  public void testMultilineContentCapture() throws Exception
+  {
+    Matcher matcher = TextPanel.TAG_REGEX.matcher("<abc>123\n456</abc>");
+    assertEquals(true, matcher.find());
+    assertEquals("123\n456", matcher.group(2));
+  }
+
+
 }
+
+

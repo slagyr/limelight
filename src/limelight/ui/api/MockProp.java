@@ -28,6 +28,7 @@ public class MockProp implements Prop
   public Object lostFocus;
   public Object pressedButton;
   public Object changedValue;
+  public Scene scene;
 
   public MockProp()
   {
@@ -62,7 +63,7 @@ public class MockProp implements Prop
 
   public Scene getScene()
   {
-    return null;
+    return scene;
   }
 
   public void setText(String value)

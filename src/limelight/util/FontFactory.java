@@ -7,6 +7,7 @@ import limelight.styles.Style;
 
 import java.awt.*;
 
+//TODO Get rid of this singleton
 public class FontFactory
 {
   public static FontFactory instance;

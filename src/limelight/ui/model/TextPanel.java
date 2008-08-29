@@ -3,17 +3,24 @@ package limelight.ui.model;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
+import limelight.ui.api.Prop;
+import limelight.ui.api.Scene;
 import limelight.util.*;
 
 import java.awt.*;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
+import java.awt.font.FontRenderContext;
 import java.text.AttributedString;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class TextPanel extends BasePanel
 {
+  public static final Pattern TAG_REGEX = Pattern.compile("<(\\w+)>(.*)</(\\1)>", Pattern.MULTILINE | Pattern.DOTALL);
   public static double widthPadding = 2.0; // The text measuerments aren't always quite right.  This helps.
 
   private String text;
@@ -24,6 +31,7 @@ public class TextPanel extends BasePanel
   private Graphics2D graphics;
   private boolean textChanged;
   private boolean compiled;
+  private FontRenderContext renderContext;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
   public TextPanel(PropablePanel panel, String text)
@@ -93,7 +101,7 @@ public class TextPanel extends BasePanel
     return new Aligner(new Box(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
   }
 
-  private void buildLines()
+  public void buildLines()
   {
     synchronized(this)
     {
@@ -104,11 +112,26 @@ public class TextPanel extends BasePanel
         Font font = FontFactory.instance.createFont(getStyle());
         for(String paragraph : paragraphs)
         {
+          Matcher matcher = TAG_REGEX.matcher(paragraph);
+          if(matcher.find())
+          {
+            paragraph = matcher.group(2);
+            String tagName = matcher.group(1);
+            Prop prop = ((PropablePanel) getPanel()).getProp();
+            Scene scene = prop.getScene();
+            Map styles = scene.getStyles();
+            Style tagStyle = (Style) styles.get(tagName);
+            if(tagStyle != null)
+              font = FontFactory.instance.createFont(tagStyle);
+            else
+              System.out.println("no style for tag: " + tagName);
+          }
+
           if(paragraph.length() != 0)
           {
             AttributedString aText = new AttributedString(paragraph);
             aText.addAttribute(TextAttribute.FONT, font);
-            LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getGraphics().getFontRenderContext());
+            LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getRenderContext());
             while(lbm.getPosition() < paragraph.length())
             {
               //TODO MDM - Wow! This is inefficient. The getChildConsumableArea has to be calculated every time!
@@ -119,11 +142,20 @@ public class TextPanel extends BasePanel
           }
           else
           {
-            lines.add(new TextLayout(" ", font, getGraphics().getFontRenderContext()));
+            lines.add(new TextLayout(" ", font, getRenderContext()));
           }
         }
       }
     }
+  }
+
+  private FontRenderContext getRenderContext()
+  {
+    if (renderContext == null)
+    {
+      renderContext = getGraphics().getFontRenderContext();
+    }
+    return renderContext;
   }
 
   private void calculateDimentions()
@@ -183,5 +215,15 @@ public class TextPanel extends BasePanel
   public boolean canBeBuffered()
   {
     return false;
+  }
+
+  public List<TextLayout> getLines()
+  {
+    return lines;
+  }
+
+  public void setRenderContext(FontRenderContext renderContext)
+  {
+    this.renderContext = renderContext;
   }
 }

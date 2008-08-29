@@ -89,6 +89,12 @@ section_title {
 	font_size 20
 	font_style "bold"
 }
+
+sub_title {
+    text_color "#0049F4"
+    font_size 32
+    font_face "Courier"
+}
 	
 section_body {
 	width 823

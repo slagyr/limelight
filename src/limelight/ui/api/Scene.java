@@ -5,9 +5,12 @@ package limelight.ui.api;
 
 import limelight.SceneLoader;
 
+import java.util.Map;
+
 public interface Scene extends Prop
 {
   SceneLoader getLoader();
+  Map getStyles();
 }
 
 
