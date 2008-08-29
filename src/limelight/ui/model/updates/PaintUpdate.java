@@ -27,6 +27,7 @@ public class PaintUpdate extends Update
     RootPanel rootPanel = (RootPanel) panel.getRoot();
     job.paint(rootPanel.getPanel());
     job.applyTo(rootPanel.getGraphics());
+    job.dispose();
   }
 
   protected Box getAbsoluteBounds(Panel panel)

@@ -23,6 +23,7 @@ public class Context
   public FrameManager frameManager;
   public AudioPlayer audioPlayer;
   public KeyboardFocusManager keyboardFocusManager;
+  public BufferedImagePool bufferedImagePool;
 
   protected Context()
   {
