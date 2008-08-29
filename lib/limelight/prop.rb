@@ -15,7 +15,7 @@ module Limelight
         @events ||= []
         syms.each do |sym|
           @events << sym unless @events.include?(sym)
-          define_method(sym) { |event| } # do nothing by default
+          define_method(sym) { |event|  } # do nothing by default
         end
       end
 

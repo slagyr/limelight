@@ -4,6 +4,7 @@
 module Fader
   
   def self.extended(extended_block)
+    puts "#{self}.extended by #{extended_block}"
   end
   
   def mouse_entered(e)

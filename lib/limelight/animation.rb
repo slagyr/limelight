@@ -10,6 +10,9 @@ class Animation < Limelight::AnimationTask
 
   def doPerform
     @block.call 
-  end
+  end        
 
+  def running?
+    return is_running
+  end
 end

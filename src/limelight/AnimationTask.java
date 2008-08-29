@@ -7,6 +7,7 @@ import limelight.ui.model.RootPanel;
 public abstract class AnimationTask extends RecurringTask
 {
   private Panel panel;
+  private boolean running;
 
   public AnimationTask(String name, int updatesPerSecond, Panel panel)
   {
@@ -23,11 +24,18 @@ public abstract class AnimationTask extends RecurringTask
 
   public void start()
   {
+    running = true;
     Context.instance().taskEngine.add(this);
   }
 
   public void stop()
   {
     Context.instance().taskEngine.remove(this);
+    running = false;
+  }
+
+  public boolean isRunning()
+  {
+    return running;
   }
 }

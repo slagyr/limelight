@@ -4,16 +4,20 @@
 module Homer
   
   def mouse_entered(e)
-    100.times do |i|
-      style.transparency = (100 - i).to_s
-      update_now
-    end
+    start_fading(100, -1)
   end
   
   def mouse_exited(e)
-    100.times do |i|
-      style.transparency = i.to_s
-      update_now
+    start_fading(0, 1)
+  end
+
+  def start_fading(start, direction)
+    return if !@animation.nil? && @animation.running?
+    @transparency = start
+    @animation = animate(:updates_per_second => 50) do
+      style.transparency = @transparency.to_s
+      @transparency += direction
+      @animation.stop if @transparency > 100 || @transparency < 0
     end
   end
   
