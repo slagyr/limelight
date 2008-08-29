@@ -308,6 +308,8 @@ public class RootPanel implements Panel
 
   public Panel getOwnerOfPoint(Point point)
   {
+//    System.err.println("RootPanel.getOwnerOfPoint()");
+//    throw new RuntimeException("RootPanel.getOwnerOfPoint()");
     point = new Point(point.x - getX(), point.y - getY());
     if (panel.containsRelativePoint(point))
       return panel.getOwnerOfPoint(point);

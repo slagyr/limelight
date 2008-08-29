@@ -17,7 +17,7 @@ task :jar do
 end
 
 task :init_jruby do
-  JRUBY_TAG = "jruby-1_1_4"
+  JRUBY_TAG = "jruby-1_1_3"
   jruby_bin_path = File.join(PROJECT_ROOT, 'jruby', 'bin')
   jruby_ruby_path = File.join(PROJECT_ROOT, 'jruby', 'lib', 'ruby')
   FileUtils.rm_r(jruby_bin_path, :force => true)
