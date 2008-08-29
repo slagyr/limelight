@@ -121,7 +121,7 @@ public class PaintJobTest extends TestCase
     assertSame(buffer, bufferedImageCache.retrieve(panel));
     assertEquals(panel.getWidth(), buffer.getWidth());
     assertEquals(panel.getHeight(), buffer.getHeight());
-    assertEquals(BufferedImage.TYPE_4BYTE_ABGR, buffer.getType());
+    assertEquals(BufferedImage.TYPE_INT_ARGB, buffer.getType());
   }
 
   public void testShouldBuildBufferWhenStyleChanges() throws Exception
