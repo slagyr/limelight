@@ -12,7 +12,7 @@ module Limelight
   
     attr_reader :button_groups, :styles, :casting_director
     attr_accessor :stage, :loader, :visible, :path, :production
-    getters :stage, :loader
+    getters :stage, :loader, :styles
     setters :stage
     event :scene_opened
     

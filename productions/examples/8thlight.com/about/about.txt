@@ -1,20 +1,20 @@
 You may ask, "Where does the name '8th Light' come from?" To answer that, let's first discuss the foundational principles held by 8th Light.
 
-Craftsmanship
+<sub_title>Craftsmanship</sub_title>
 The folks at 8th Light consider themselves as software craftsmen rather than software engineers or software scientists. Clearly, engineering skills and scientific understanding are required to write good software. It is the application of these skills in combination with a pragmatic attitude and a sense of quality that define craftsmanship.
 
 As craftsmen, our style of software development differs from traditional styles of software development. For one, we maintain close collaboration with the customers or end users of the systems we build. We are continually refining and improving every bit of the code base as the system evolves. Every member of our team works together in an open and synergistic workspace. To ensure a well designed system with almost no defects we drive development though tests. Feedback during development is extremely valuable which is why we work in iterations delivering working functionality regularly.
 
 Perhaps the most important aspect of our work is pride. We build software that we are proud to have built and that our clients are proud to have.
 
-Apprenticeship
+<sub_title>Apprenticeship</sub_title>
 It has been known for decades that the best way to become a good software developer is to learn from a good software developer. This is in line with the craftsmanship model. In any craft, newcomers start out as apprentices. 8th Light hires only apprentices.
 
 This serves two purposes. The first is that of maintaining quality. Starting out as an apprentice allows newcomers to focus on nothing but learning as much as possible by working with senior 8th Light developers. When an apprentice concludes his apprenticeship he is able to build quality software.
 
 The second reason is uniformity and consistency. Studies have shown that good developers are consistent and uniform in their style of coding. Every good developer has a different style but each one is consistent with themself. Inconsistencies in a software system add complexity and decrease productivity. Therefore, 8th Light strives to build development teams that practice the same style of development. In this way our teams remain productive and our software remains simple.
 
-8th Light
+<sub_title>8th Light</sub_title>
 The values described above are not unlike those of martial arts. The name '8th Light' holds special meaning to Micah (the company's founder) who trained in the Eighth Light school of Jujitsu called Hakkoryu. 8th Light was chosen as a name for this company because we share much of the spirit and values of martial arts, particularly Hakkoryu Jujitsu.
 
 "The name "Hakkoryu" is based on a philosophical Japanese view of the color spectrum as being divided into nine bands of light. The eighth shade is infrared, which is invisible to the naked eye but extremely powerful, as are Hakkoryu techniques. The number eight in Japan also has associated with it numerous philosophical and religious meanings that are beyond the scope of this brief introduction."
