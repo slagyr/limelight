@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class RootPanel implements Panel
 {
@@ -19,12 +20,14 @@ public class RootPanel implements Panel
   private boolean alive;
   private HashSet<Panel> changedPanels;
   private Frame frame;
+  private ArrayList<Panel> panelsToUpdateBuffer;
 
   public RootPanel(Frame frame)
   {
     this.frame = frame;
     contentPane = frame.getContentPane();
     changedPanels = new HashSet<Panel>();
+    panelsToUpdateBuffer = new ArrayList<Panel>(50);
   }
 
   public Container getContentPane()
@@ -189,11 +192,11 @@ public class RootPanel implements Panel
   //TODO MDM - Also, we should not have to figure out if a parent needs the updating here.  That's not right.
   public void repaintChangedPanels()
   {
-    LinkedList<Panel> panelsToUpdates = getAndClearPanelsToUpdate();
+    loadPanelsToUpdate();
 
-    if (panelsToUpdates != null)
+    if (panelsToUpdateBuffer.size() > 0)
     {
-      for (Panel changedPanel : panelsToUpdates)
+      for (Panel changedPanel : panelsToUpdateBuffer)
       {
         Style style = changedPanel.getStyle();
         boolean dimentionsChanged = style.changed(Style.WIDTH) || style.changed(Style.HEIGHT);
@@ -207,15 +210,14 @@ public class RootPanel implements Panel
     }
   }
 
-  private synchronized LinkedList<Panel> getAndClearPanelsToUpdate()
+  private synchronized void loadPanelsToUpdate()
   {
-    LinkedList<Panel> panelsToUpdates = null;
-    if (changedPanels.size() > 0)
+    panelsToUpdateBuffer.clear();
+    if(changedPanels.size() > 0)
     {
-      panelsToUpdates = new LinkedList<Panel>(changedPanels);
+      panelsToUpdateBuffer.addAll(changedPanels);
       changedPanels.clear();
     }
-    return panelsToUpdates;
   }
 
   public synchronized boolean changedPanelsContains(Panel panel)

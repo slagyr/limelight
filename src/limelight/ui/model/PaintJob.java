@@ -1,6 +1,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.BufferedImagePool;
 import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.Panel;
@@ -16,13 +17,15 @@ public class PaintJob
   private Graphics2D rootGraphics;
   private Composite composite;
   private Cache<Panel, BufferedImage> bufferCache;
+  private BufferedImagePool bufferedImagePool;
 
   public PaintJob(Box clip)
   {
     bufferCache = Context.instance().bufferedImageCache;
+    bufferedImagePool = Context.instance().bufferedImagePool;
     this.clip = clip;
-    buffer = new BufferedImage(clip.width, clip.height, BufferedImage.TYPE_INT_ARGB);
-    rootGraphics = (Graphics2D) buffer.getGraphics();
+    buffer = bufferedImagePool.acquire(clip.getSize());
+    rootGraphics = buffer.createGraphics();
     rootGraphics.setBackground(Color.white);
     rootGraphics.clearRect(0, 0, clip.width, clip.height);
     composite = rootGraphics.getComposite();
@@ -75,7 +78,10 @@ public class PaintJob
     {
       BufferedImage panelBuffer = bufferCache.retrieve(panel);
       if(shouldBuildBufferFor(panel, panelBuffer))
+      {
+        bufferedImagePool.recycle(panelBuffer);
         panelBuffer = buildBufferFor(panel);
+      }
       graphics.drawImage(panelBuffer, 0, 0, null);
     }
     else
@@ -133,20 +139,6 @@ public class PaintJob
     }
   }
 
-//    // MDM - Purely for debuggin graphics
-//  private void showClip(final Box clip, final BufferedImage buffer, String title)
-//  {
-//    JFrame jframe = new JFrame(title);
-//    jframe.setSize(clip.width,  clip.height + 30);
-//    jframe.add(new JPanel() {
-//      public void paint(Graphics g)
-//      {
-//        g.drawImage(buffer, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, clip.x, clip.y, clip.x + clip.width, clip.y + clip.height, null);
-//      }
-//    });
-//    jframe.setVisible(true);
-//  }
-
   public void substituteGraphics(Graphics2D graphics)
   {
     this.rootGraphics = graphics;
@@ -167,13 +159,20 @@ public class PaintJob
 
   public BufferedImage buildBufferFor(Panel panel)
   {
-    BufferedImage buffer = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    BufferedImage buffer = bufferedImagePool.acquire(new Dimension(panel.getWidth(), panel.getHeight()));
     Graphics2D graphics = buffer.createGraphics();
+    graphics.setBackground(new Color(0, 0, 0, 0));
+    graphics.clearRect(0, 0, panel.getWidth(), panel.getHeight());
     panel.paintOn(graphics);
     graphics.dispose();
     panel.getStyle().flushChanges(); //TODO Maybe called redundantly because Panel.paintOn() should also flushChanges. 
     bufferCache.cache(panel, buffer);
     return buffer;
+  }
+
+  public void dispose()
+  {
+    Context.instance().bufferedImagePool.recycle(buffer);
   }
 }
 

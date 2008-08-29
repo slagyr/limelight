@@ -107,4 +107,20 @@ public class MainTest extends TestCase
 
     assertSame(Context.instance().keyboardFocusManager, java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager());
   }
+
+  public void testBufferedImagePoolIsInstalled() throws Exception
+  {
+    main.configureContext();
+
+    assertNotNull(Context.instance().bufferedImagePool);
+  }
+  
+  public void testRecurringTaskAddedForCleaningTheBufferedImagePool() throws Exception
+  {
+    main.configureContext();
+
+    Task task = findTaskEngineTaskNamed("Buffered Image Pool Cleaner");
+    assertEquals(true, task instanceof RecurringTask);
+    assertEquals(1, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
+  }
 }

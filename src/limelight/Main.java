@@ -100,8 +100,10 @@ public class Main
     context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
     context.frameManager = new FrameManager();
     context.audioPlayer = new RealAudioPlayer();
+    context.bufferedImagePool = new BufferedImagePool(1);
 
     addBufferedImageCacheCleanerTask(context);
+    addBufferedImagePoolCleanerTask(context);
     context.taskEngine.add(new PanelPainterTask());
 
     contextIsConfigured = true;
@@ -115,6 +117,24 @@ public class Main
         try
         {
           Context.instance().bufferedImageCache.clean();
+        }
+        catch(Exception e)
+        {
+          e.printStackTrace();
+        }
+      }
+    });
+  }
+
+
+  private void addBufferedImagePoolCleanerTask(Context context)
+  {
+    context.taskEngine.add(new RecurringTask("Buffered Image Pool Cleaner", 1) {
+      protected void doPerform()
+      {
+        try
+        {
+          Context.instance().bufferedImagePool.clean();
         }
         catch(Exception e)
         {

@@ -2,23 +2,25 @@ package limelight.task;
 
 import limelight.util.NanoTimer;
 
-import java.util.LinkedList;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskEngine
 {
   private final static int CyclesPerSecond = 100;
 
-  private LinkedList<Task> tasks;
+  private ArrayList<Task> tasks;
   private boolean running;
   private Thread thread;
   private boolean stopped;
   private NanoTimer timer;
   private long sleepPeriod;
+  private ArrayList<Task> taskBuffer;
 
   public TaskEngine()
   {
-    tasks = new LinkedList<Task>();
+    tasks = new ArrayList<Task>();
+    taskBuffer = new ArrayList<Task>(50);
     timer = new NanoTimer();
     sleepPeriod = 1000000000 / CyclesPerSecond;
   }
@@ -35,9 +37,9 @@ public class TaskEngine
     task.setEngine(null);
   }
 
-  public LinkedList<Task> getTasks()
+  public List<Task> getTasks()
   {
-    return new LinkedList<Task>(tasks);
+    return new ArrayList<Task>(tasks);
   }
 
   public void cycle()
@@ -51,11 +53,12 @@ public class TaskEngine
     }
   }
 
-  private synchronized LinkedList<Task> getTasksToCycle()
+  private synchronized List<Task> getTasksToCycle()
   {
-    LinkedList<Task> list = new LinkedList<Task>(tasks);
+    taskBuffer.clear();
+    taskBuffer.addAll(tasks);
     tasks.clear();
-    return list;
+    return taskBuffer;
   }
 
   private void performTask(Task task)
@@ -104,6 +107,14 @@ public class TaskEngine
   public void stop()
   {
     stopped = true;
+    try
+    {
+      thread.join();
+    }
+    catch(InterruptedException e)
+    {
+      //do nothing
+    }
   }
 
   public boolean isRunning()

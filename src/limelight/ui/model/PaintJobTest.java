@@ -7,6 +7,7 @@ import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.styles.FlatStyle;
 import limelight.Context;
+import limelight.BufferedImagePool;
 import limelight.caching.SimpleCache;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,11 +19,15 @@ public class PaintJobTest extends TestCase
   private FlatStyle style;
   private MockGraphics graphics;
   private SimpleCache<Panel,BufferedImage> bufferedImageCache;
+  private BufferedImagePool pool;
 
   public void setUp() throws Exception
   {
     bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
+    pool = new BufferedImagePool(1);
     Context.instance().bufferedImageCache = bufferedImageCache;
+    Context.instance().bufferedImagePool = pool;
+
     job = new PaintJob(new Box(100, 200, 300, 400));
     panel = new MockPropablePanel();
     style = panel.style;
@@ -201,5 +206,14 @@ public class PaintJobTest extends TestCase
     assertEquals(2, child5.paintIndex);
     assertEquals(3, child1.paintIndex);
     assertEquals(4, child3.paintIndex);
+  }
+  
+  public void testDispose() throws Exception
+  {
+    BufferedImage image = job.getBuffer();
+
+    job.dispose();
+
+    assertSame(image, pool.acquire(job.getClip().getSize()));
   }
 }
