@@ -15,11 +15,13 @@ import limelight.audio.RealAudioPlayer;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 
+import javax.swing.*;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.awt.image.BufferedImage;
 
-public class Main
+public class
+    Main
 {
   public static String LIMELIGHT_HOME = System.getProperty("limelight.home");
   private RubyInstanceConfig config;
@@ -40,6 +42,7 @@ public class Main
   {
     configureSystemProperties();
     processArgs(args);
+    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     runtime = Ruby.newInstance(config);
     configureContext();
     startJrubyRuntime(getStartupProduction());

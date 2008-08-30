@@ -231,6 +231,11 @@ public class InputPanelTest extends TestCase
     assertNotNull(prop.pressedButton);
     assertEquals(input.getComponent(), ((ActionEvent)prop.pressedButton).getSource());
   }
+  
+  public void testBackgroundIsTransparentByDefault() throws Exception
+  {
+    assertEquals(0, input.getComponent().getBackground().getAlpha());
+  }
 
   private void addMouseMotionListener()
   {

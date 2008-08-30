@@ -15,7 +15,7 @@ public class TextArea extends JTextArea
   {
     this.panel = panel;
     setLineWrap(true);
-    setBorder(BorderFactory.createEtchedBorder());
+    setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.gray));
   }
 
   public void repaint()
