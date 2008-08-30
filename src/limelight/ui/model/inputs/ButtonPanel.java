@@ -26,7 +26,10 @@ public class ButtonPanel extends InputPanel
   protected void setDefaultStyles(Style style)
   {
     style.setDefault(Style.WIDTH, "100");
-    style.setDefault(Style.HEIGHT, "" + button.getPreferredSize().height);
+    int defaultHeight = button.getPreferredSize().height;
+    if(defaultHeight < 16)    // Windows default prefered height is rediculously small
+      defaultHeight = 24;
+    style.setDefault(Style.HEIGHT, "" + defaultHeight);
   }
 
   public Button getButton()

@@ -15,10 +15,12 @@ import java.awt.event.*;
 public abstract class InputPanel extends BasePanel
 {
   private Component component;
+  private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
   protected InputPanel()
   {
     component = createComponent();
+    component.setBackground(TRANSPARENT);
     component.addKeyListener(new InputPanelKeyListener(this));
     if(component instanceof AbstractButton)
       ((AbstractButton)component).addActionListener(new ButtonActionListener(this));
