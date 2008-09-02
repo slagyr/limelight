@@ -6,6 +6,25 @@ import limelight.ui.model.updates.Updates;
 import limelight.Context;
 
 import javax.swing.*;
+import javax.swing.event.AncestorListener;
+import javax.swing.border.Border;
+import javax.swing.plaf.PanelUI;
+import javax.swing.plaf.ComponentUI;
+import javax.accessibility.AccessibleContext;
+import java.awt.*;
+import java.awt.im.InputMethodRequests;
+import java.awt.im.InputContext;
+import java.awt.image.*;
+import java.awt.dnd.DropTarget;
+import java.awt.peer.ComponentPeer;
+import java.awt.event.*;
+import java.util.*;
+import java.util.EventListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.beans.PropertyChangeListener;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 public class Frame extends JFrame
 {
@@ -22,12 +41,13 @@ public class Frame extends JFrame
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    RepaintManager.currentManager(this).setDoubleBufferingEnabled(false); // Solves "(permanent) grey rect" problem on windows
   }
 
   public void doLayout()
   {
     super.doLayout();
-    root.getPanel().setNeededUpdate(Updates.layoutAndPaintUpdate);  //TODO TEST ME!!!
+    refresh();
   }
 
   public void close()
@@ -39,6 +59,11 @@ public class Frame extends JFrame
   public void open()
   {
     setVisible(true);
+    refresh();
+  }
+
+  public void refresh()
+  {
     root.getPanel().setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
 
