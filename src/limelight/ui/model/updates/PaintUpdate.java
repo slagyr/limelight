@@ -6,6 +6,8 @@ import limelight.ui.model.RootPanel;
 import limelight.ui.model.Update;
 import limelight.util.Box;
 
+import java.awt.*;
+
 public class PaintUpdate extends Update
 {
   protected PaintUpdate(int severity)
@@ -26,7 +28,8 @@ public class PaintUpdate extends Update
     PaintJob job = new PaintJob(bounds);
     RootPanel rootPanel = (RootPanel) panel.getRoot();
     job.paint(rootPanel.getPanel());
-    job.applyTo(rootPanel.getGraphics());
+    Graphics2D rootGraphics = rootPanel.getGraphics();
+    job.applyTo(rootGraphics);
     job.dispose();
   }
 

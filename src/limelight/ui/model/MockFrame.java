@@ -8,6 +8,7 @@ import java.awt.*;
 public class MockFrame extends Frame
 {
   private Container contentPanel;
+  public boolean wasRefreshed;
 
   public MockFrame()
   {
@@ -28,5 +29,10 @@ public class MockFrame extends Frame
   public void setRoot(RootPanel root)
   {
     this.root = root;
+  }
+
+  public void refresh()
+  {
+    wasRefreshed = true;
   }
 }

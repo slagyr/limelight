@@ -68,4 +68,9 @@ public class FrameTest extends TestCase
   {
     assertEquals(WindowConstants.DISPOSE_ON_CLOSE, frame.getDefaultCloseOperation());
   }
+  
+  public void testRepaintManagerIsNotDoubleBuffered() throws Exception
+  {
+    assertEquals(false, RepaintManager.currentManager(frame).isDoubleBufferingEnabled());
+  }
 }

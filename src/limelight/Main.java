@@ -7,6 +7,7 @@ import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
+import limelight.ui.painting.VerboseRepaintManager;
 import limelight.ui.model.FrameManager;
 import limelight.task.TaskEngine;
 import limelight.task.RecurringTask;

@@ -18,91 +18,97 @@ public class VerboseRepaintManager extends RepaintManager
 
   public synchronized void addInvalidComponent(JComponent invalidComponent)
   {
-    System.out.println("addInvalidComponent(" + invalidComponent + ")");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.addInvalidComponent");
     super.addInvalidComponent(invalidComponent);
   }
 
   public synchronized void removeInvalidComponent(JComponent component)
   {
-    System.out.println("removeInvalidComponent(" + component + ")");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.removeInvalidComponent");
     super.removeInvalidComponent(component);
   }
 
   public void addDirtyRegion(JComponent c, int x, int y, int w, int h)
   {
-    System.out.println("addDirtyRegion(" + c + ")");
-    new Exception().printStackTrace();
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.addDirtyRegion");
     super.addDirtyRegion(c, x, y, w, h);
   }
 
   public Rectangle getDirtyRegion(JComponent aComponent)
   {
-    System.out.println("getDirtyRegion(" + aComponent + ")");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.getDirtyRegion");
     return super.getDirtyRegion(aComponent);
   }
 
   public void markCompletelyDirty(JComponent aComponent)
   {
-    System.out.println("markCompletelyDirty(" + aComponent + ")");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.markCompletelyDirty");
     super.markCompletelyDirty(aComponent);
   }
 
   public void markCompletelyClean(JComponent aComponent)
   {
-    System.out.println("markCompletelyClean(" + aComponent + ")");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.markCompletelyClean");
     super.markCompletelyClean(aComponent);
   }
 
   public boolean isCompletelyDirty(JComponent aComponent)
   {
-    System.out.println("isCompletelyDirty(" + aComponent + ")");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.isCompletelyDirty");
     return super.isCompletelyDirty(aComponent);
   }
 
   public void validateInvalidComponents()
   {
-    System.out.println("validateInvalidComponents()");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.validateInvalidComponents");
     super.validateInvalidComponents();
   }
 
   public void paintDirtyRegions()
   {
-    System.out.println("paintDirtyRegions()");
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.paintDirtyRegions");
     super.paintDirtyRegions();
   }
 
   public synchronized String toString()
   {
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.toString");
     return super.toString();
   }
 
   public Image getOffscreenBuffer(Component c, int proposedWidth, int proposedHeight)
   {
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.getOffscreenBuffer");
     return super.getOffscreenBuffer(c, proposedWidth, proposedHeight);
   }
 
   public Image getVolatileOffscreenBuffer(Component c, int proposedWidth, int proposedHeight)
   {
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.getVolatileOffscreenBuffer");
     return super.getVolatileOffscreenBuffer(c, proposedWidth, proposedHeight);
   }
 
   public void setDoubleBufferMaximumSize(Dimension d)
   {
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.setDoubleBufferMaximumSize");
     super.setDoubleBufferMaximumSize(d);
   }
 
   public Dimension getDoubleBufferMaximumSize()
   {
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.getDoubleBufferMaximumSize");
     return super.getDoubleBufferMaximumSize();
   }
 
   public void setDoubleBufferingEnabled(boolean aFlag)
   {
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.setDoubleBufferingEnabled");
     super.setDoubleBufferingEnabled(aFlag);
   }
 
   public boolean isDoubleBufferingEnabled()
   {
+    System.err.println("limelight.ui.painting.VerboseRepaintManager.isDoubleBufferingEnabled");
     return super.isDoubleBufferingEnabled();
   }
 }

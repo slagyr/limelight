@@ -39,5 +39,15 @@ public class FrameManagerTest extends TestCase
 
     assertSame(frame, manager.getActiveFrame());
   }
+  
+  public void testRefreshesFrameUponActivation() throws Exception
+  {
+    MockFrame frame = new MockFrame();
+    manager.watch(frame);
+
+    manager.windowActivated(new WindowEvent(frame, 123));
+
+    assertEquals(true, frame.wasRefreshed);
+  }
 
 }
