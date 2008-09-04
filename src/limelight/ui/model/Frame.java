@@ -4,6 +4,8 @@ import limelight.ui.api.Stage;
 import limelight.ui.Panel;
 import limelight.ui.model.updates.Updates;
 import limelight.Context;
+import limelight.util.*;
+import limelight.util.Box;
 
 import javax.swing.*;
 import javax.swing.event.AncestorListener;
@@ -38,10 +40,11 @@ public class Frame extends JFrame
   public Frame(Stage stage)
   {
     this.stage = stage;
+    setContentPane(new LimelightContentPane(this));
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    RepaintManager.currentManager(this).setDoubleBufferingEnabled(false); // Solves "(permanent) grey rect" problem on windows
+
   }
 
   public void doLayout()
@@ -98,5 +101,20 @@ public class Frame extends JFrame
   public RootPanel getRoot()
   {
     return root;
+  }
+
+  private class LimelightContentPane extends JPanel
+  {
+    private Frame frame;
+
+    public LimelightContentPane(Frame frame)
+    {
+      this.frame = frame;
+    }
+
+    public void paint(Graphics g)
+    {
+      frame.getRoot().getPanel().setNeededUpdate(Updates.paintUpdate);
+    }
   }
 }

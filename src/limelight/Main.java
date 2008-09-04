@@ -3,26 +3,26 @@
 
 package limelight;
 
+import limelight.audio.RealAudioPlayer;
+import limelight.caching.TimedCache;
 import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
+import limelight.task.RecurringTask;
+import limelight.task.TaskEngine;
 import limelight.ui.Panel;
 import limelight.ui.painting.VerboseRepaintManager;
+import limelight.ui.painting.LimelightRepaintManager;
 import limelight.ui.model.FrameManager;
-import limelight.task.TaskEngine;
-import limelight.task.RecurringTask;
-import limelight.caching.TimedCache;
-import limelight.audio.RealAudioPlayer;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.awt.image.BufferedImage;
 
-public class
-    Main
+public class Main
 {
   public static String LIMELIGHT_HOME = System.getProperty("limelight.home");
   private RubyInstanceConfig config;
@@ -40,7 +40,7 @@ public class
   }
 
   public void run(String[] args) throws Exception
-  {
+  {                                              
     configureSystemProperties();
     processArgs(args);
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -115,7 +115,8 @@ public class
 
   private void addBufferedImageCacheCleanerTask(Context context)
   {
-    context.taskEngine.add(new RecurringTask("Buffered Image Cache Cleaner", 1) {
+    context.taskEngine.add(new RecurringTask("Buffered Image Cache Cleaner", 1)
+    {
       protected void doPerform()
       {
         try
@@ -133,7 +134,8 @@ public class
 
   private void addBufferedImagePoolCleanerTask(Context context)
   {
-    context.taskEngine.add(new RecurringTask("Buffered Image Pool Cleaner", 1) {
+    context.taskEngine.add(new RecurringTask("Buffered Image Pool Cleaner", 1)
+    {
       protected void doPerform()
       {
         try
