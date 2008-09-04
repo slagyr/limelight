@@ -99,7 +99,7 @@ public class VerboseRepaintManager extends RepaintManager
     System.err.println("limelight.ui.painting.VerboseRepaintManager.getDoubleBufferMaximumSize");
     return super.getDoubleBufferMaximumSize();
   }
-
+         
   public void setDoubleBufferingEnabled(boolean aFlag)
   {
     System.err.println("limelight.ui.painting.VerboseRepaintManager.setDoubleBufferingEnabled");
@@ -108,7 +108,7 @@ public class VerboseRepaintManager extends RepaintManager
 
   public boolean isDoubleBufferingEnabled()
   {
-    System.err.println("limelight.ui.painting.VerboseRepaintManager.isDoubleBufferingEnabled");
+//    System.err.println("limelight.ui.painting.VerboseRepaintManager.isDoubleBufferingEnabled");
     return super.isDoubleBufferingEnabled();
   }
 }

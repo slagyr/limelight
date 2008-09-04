@@ -66,7 +66,6 @@ public class FrameManager implements WindowFocusListener, WindowListener
 
   public void windowActivated(WindowEvent e)
   {
-    ((Frame)e.getWindow()).refresh();
   }
 
   public void windowDeactivated(WindowEvent e)
