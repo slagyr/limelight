@@ -11,8 +11,6 @@ import limelight.io.TempDirectory;
 import limelight.task.RecurringTask;
 import limelight.task.TaskEngine;
 import limelight.ui.Panel;
-import limelight.ui.painting.VerboseRepaintManager;
-import limelight.ui.painting.LimelightRepaintManager;
 import limelight.ui.model.FrameManager;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;

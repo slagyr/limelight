@@ -306,6 +306,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 //    }
   }
 
+  //TODO I don't think this is needed any longer.
   public void paintImmediately(int a, int b, int c, int d)
   {
     repaint();
@@ -341,7 +342,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return "on".equals(getStyle().getFloat());
   }
 
-  //TODO super.clearCache() deals with absolut positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
+  //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
   public void clearCache()
   {
     super.clearCache();
@@ -351,8 +352,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     childConsumableArea = null;
   }
 
+
   public void styleChanged(StyleDescriptor descriptor, String value)
   {
+    //TODO - Based on style changed, we don't always have to do a layout with the paint.
     setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
 

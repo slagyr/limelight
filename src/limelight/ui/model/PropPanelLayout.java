@@ -3,6 +3,7 @@ package limelight.ui.model;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
+import limelight.ui.model.updates.Updates;
 import limelight.util.Aligner;
 import limelight.util.Box;
 
@@ -25,9 +26,12 @@ public class PropPanelLayout
 
   synchronized public void doLayout()
   {
-
+    resetConsumedDimensions();
+    boolean startsWithVisibleDimensions = panel.getWidth() != 0 && panel.getHeight() != 0;
+    
     Style style = panel.getStyle();
-    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT) || hasPercentageDimension())
+    
+    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT) || hasPercentageDimension() || hasAutoDimensions())
       panel.snapToSize();
 
     establishScrollBars();
@@ -37,13 +41,23 @@ public class PropPanelLayout
     else
     {
       doLayoutOnChildren();
-      reset();
       buildRows();
       collapseAutoDimensions();
       layoutRows();
       layoutFloaters();
     }
     layoutScrollBars();
+
+
+    boolean endsWithVisibleDimensions = panel.getWidth() != 0 && panel.getHeight() != 0;
+
+    if(startsWithVisibleDimensions != endsWithVisibleDimensions)
+      panel.getParent().setNeededUpdate(Updates.layoutAndPaintUpdate);
+  }
+
+  private boolean hasAutoDimensions()
+  {
+    return "auto".equals(panel.getStyle().getWidth()) ||   "auto".equals(panel.getStyle().getHeight());
   }
 
   private boolean hasPercentageDimension()
@@ -87,6 +101,7 @@ public class PropPanelLayout
   {
     boolean hasAutoWidth = "auto".equals(panel.getStyle().getWidth());
     boolean hasAutoHeight = "auto".equals(panel.getStyle().getHeight());
+
     if(hasAutoWidth && hasAutoHeight)
       panel.setSize(consumedWidth + horizontalInsets(), consumedHeight + verticalInsets());
     else if(hasAutoWidth)
@@ -155,6 +170,7 @@ public class PropPanelLayout
 
   protected void buildRows()
   {
+    resetRows();
     for(Panel child : panel.getChildren())
     {
       if(child instanceof ScrollBarPanel)
@@ -180,7 +196,7 @@ public class PropPanelLayout
     return new Aligner(rectangle, style.getHorizontalAlignment(), style.getVerticalAlignment());
   }
 
-  protected void reset()
+  protected void resetRows()
   {
     rows.clear();
     newRow();
@@ -194,14 +210,19 @@ public class PropPanelLayout
 
   private void calculateConsumedDimentions()
   {
-    consumedWidth = 0;
-    consumedHeight = 0;
+    resetConsumedDimensions();
     for(Row row : rows)
     {
       consumedHeight += row.height;
       if(row.width > consumedWidth)
         consumedWidth = row.width;
     }
+  }
+
+  private void resetConsumedDimensions()
+  {
+    consumedWidth = 0;
+    consumedHeight = 0;
   }
 
   public PropPanel getPanel()

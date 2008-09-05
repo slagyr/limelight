@@ -3,6 +3,7 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
+import limelight.ui.model.updates.LayoutAndPaintUpdate;
 import limelight.ui.api.MockProp;
 import limelight.LimelightError;
 import limelight.styles.Style;
@@ -46,7 +47,9 @@ public class BasePanelTest extends TestCase
 
   public void setUp() throws Exception
   {
+    RootPanel root = new RootPanel(new MockFrame());
     panel = new TestableBasePanel();
+    root.setPanel(panel);
   }
 
   public void testPanelHasDefaultSize() throws Exception
@@ -281,23 +284,6 @@ public class BasePanelTest extends TestCase
     assertTrue(panel.isSterilized());
   }
 
-  public void testReplacePanel() throws Exception
-  {
-    MockPanel panel1 = new MockPanel();
-    MockPanel panel2 = new MockPanel();
-    MockPanel panel3 = new MockPanel();
-    MockPanel panel4 = new MockPanel();
-
-    panel.add(panel1);
-    panel.add(panel2);
-    panel.add(panel3);
-
-    panel.replace(panel2, panel4);
-
-    assertEquals(3, panel.getChildren().size());
-    assertSame(panel4, panel.getChildren().get(1));
-  }
-
   public void testRemovePanel() throws Exception
   {
     MockPanel panel1 = new MockPanel();
@@ -474,6 +460,58 @@ public class BasePanelTest extends TestCase
 
     assertNull(panel.getNeededUpdate());
     assertSame(update, gottenUpdate);
+  }
+
+  public void testAddingPanelsRequiresUpdate() throws Exception
+  {
+    Panel child = new MockPanel();
+
+    panel.add(child);
+
+    assertEquals(true, panel.needsUpdating());
+    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+  }
+
+  public void testRemoveRequiresUpdate() throws Exception
+  {
+    Panel child = new MockPanel();
+    panel.add(child);
+    panel.resetNeededUpdate();
+
+    panel.remove(child);
+
+    assertEquals(true, panel.needsUpdating());
+    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+  }
+
+  public void testRemoveoesntRequireUpdateIfNoChildWasRemoved() throws Exception
+  {
+    Panel child = new MockPanel();
+    panel.add(child);
+    panel.resetNeededUpdate();
+
+    panel.remove(new MockPanel());
+
+    assertEquals(false, panel.needsUpdating());
+  }
+
+  public void testRemoveAllRequiresUpdate() throws Exception
+  {
+    Panel child = new MockPanel();
+    panel.add(child);
+    panel.resetNeededUpdate();
+
+    panel.removeAll();
+
+    assertEquals(true, panel.needsUpdating());
+    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+  }
+
+  public void testRemoveAllDoesntRequireUpdateIfNoChildWasRemoved() throws Exception
+  {
+    panel.removeAll();
+
+    assertEquals(false, panel.needsUpdating());
   }
 }
 
