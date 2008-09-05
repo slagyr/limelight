@@ -7,6 +7,10 @@ module Floater
   MAX_DISTANCE = 85
   
   attr_reader :sliding
+
+  def mouse_clicked(e)
+    puts "You caught " + text
+  end
   
   def width
     @width = style.width.to_i if @width.nil?

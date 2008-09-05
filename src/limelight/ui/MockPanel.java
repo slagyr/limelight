@@ -17,6 +17,7 @@ public class MockPanel extends BasePanel
   public boolean canBeBuffered;
   public boolean changeMarkerWasReset;
   public boolean wasLaidOut;
+  public boolean floater;
 
   public MockPanel()
   {
@@ -66,5 +67,10 @@ public class MockPanel extends BasePanel
   public void stubAbsoluteLocation(Point location)
   {
     absoluteLocation = location;
+  }
+
+  public boolean isFloater()
+  {
+    return floater;
   }
 }
