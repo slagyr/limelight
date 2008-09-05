@@ -146,6 +146,16 @@ describe Limelight::Prop do
     
     prop.foo.should == "bar"
   end
+
+  it "should set styles upon illuminating, and convert them to strings" do
+    prop = Limelight::Prop.new(:width => "100", :height => 200, :horizontal_alignment => :center)
+
+    @scene << prop
+
+    prop.style.width.should == "100"
+    prop.style.height.should == "200"
+    prop.style.horizontal_alignment.should == "center"
+  end
   
   it "should be able to remove children" do
     child1 = Limelight::Prop.new()

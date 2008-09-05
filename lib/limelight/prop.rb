@@ -218,7 +218,7 @@ module Limelight
         if self.respond_to?(setter_sym)
           self.send(setter_sym, value) 
         elsif self.style.respond_to?(setter_sym)
-          self.style.send(setter_sym, value)
+          self.style.send(setter_sym, value.to_s)
         elsif is_event_setter(key)
           define_event(key, value)
         end
