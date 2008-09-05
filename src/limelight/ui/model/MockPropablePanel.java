@@ -17,7 +17,6 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   public MockProp prop;
   public FlatStyle style;
   public Box childConsumableBox;
-  public boolean floater;
   private int prepForSnapWidth;
   private int prepForSnapHeight;
   public boolean wasLaidOut;
@@ -93,11 +92,6 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
     for(Panel child : children)
       child.doLayout();
     wasLaidOut = true;
-  }
-
-  public boolean isFloater()
-  {
-    return floater;
   }
 
   public void prepForSnap(int width, int height)

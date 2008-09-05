@@ -42,7 +42,6 @@ public class BasePanelTest extends TestCase
     {
       return null;
     }
-
   }
 
   public void setUp() throws Exception
@@ -264,6 +263,47 @@ public class BasePanelTest extends TestCase
     panel1.add(panel2);
 
     assertSame(panel2, panel.getOwnerOfPoint(new Point(55, 55)));
+  }
+
+  public void testGetOwnerOfPointWithAFloater() throws Exception
+  {
+    MockPanel child1 = new MockPanel();
+    child1.setLocation(0, 0);
+    child1.setSize(100, 100);
+    MockPanel floater = new MockPanel();
+    floater.floater = true;
+    floater.setLocation(25, 25);
+    floater.setSize(50, 50);
+
+    panel.add(child1);
+    panel.add(floater);
+
+    assertSame(child1, panel.getOwnerOfPoint(new Point(0, 0)));
+    assertSame(floater, panel.getOwnerOfPoint(new Point(50, 50)));
+  }
+
+  public void testGetOwnerOfPointWithOverlappingFloaters() throws Exception
+  {
+    MockPanel child1 = new MockPanel();
+    child1.setLocation(0, 0);
+    child1.setSize(100, 100);
+    MockPanel floater1 = new MockPanel();
+    floater1.floater = true;
+    floater1.setLocation(10, 10);
+    floater1.setSize(50, 50);
+    MockPanel floater2 = new MockPanel();
+    floater2.floater = true;
+    floater2.setLocation(40, 40);
+    floater2.setSize(50, 50);
+
+    panel.add(child1);
+    panel.add(floater1);
+    panel.add(floater2);
+
+    assertSame(child1, panel.getOwnerOfPoint(new Point(0, 0)));
+    assertSame(floater2, panel.getOwnerOfPoint(new Point(50, 50)));
+    assertSame(floater1, panel.getOwnerOfPoint(new Point(20, 20)));
+    assertSame(floater2, panel.getOwnerOfPoint(new Point(80, 80)));
   }
 
   public void testSterilization() throws Exception
@@ -512,6 +552,50 @@ public class BasePanelTest extends TestCase
     panel.removeAll();
 
     assertEquals(false, panel.needsUpdating());
+  }
+
+  public void testAddingChildrenAtIndex() throws Exception
+  {
+    Panel childA = new MockPanel();
+    Panel childB = new MockPanel();
+    Panel childC = new MockPanel();
+
+    panel.add(0, childA);
+    panel.add(0, childB);
+    panel.add(1, childC);
+
+    assertSame(childA, panel.getChildren().get(2));
+    assertSame(childB, panel.getChildren().get(0));
+    assertSame(childC, panel.getChildren().get(1));
+    assertSame(panel, childA.getParent());
+    assertSame(panel, childB.getParent());
+    assertSame(panel, childC.getParent());
+  }
+  
+  public void testAddingChildAtIndexWhenSteralizedThrowsException() throws Exception
+  {
+    panel.sterilize();
+    try
+    {
+      panel.add(0, panel);
+      fail("should have thrown exception");
+    }
+    catch(Error e)
+    {
+      //should get exception
+    }
+  }
+
+  public void testAddingPanelsAtIndexRequiresUpdate() throws Exception
+  {
+    Panel childA = new MockPanel();
+    Panel childB = new MockPanel();
+
+    panel.add(childA);
+    panel.add(0, childB);
+
+    assertEquals(true, panel.needsUpdating());
+    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
   }
 }
 

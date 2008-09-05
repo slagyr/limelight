@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public abstract class BasePanel implements Panel
 {
@@ -264,10 +265,18 @@ public abstract class BasePanel implements Panel
 
   public void add(Panel panel)
   {
+    add(-1, panel);
+  }
+
+  public void add(int index, Panel child)
+  {
     if(sterilized)
       throw new SterilePanelException("Propless Panel");
-    children.add(panel);
-    panel.setParent(this);
+    if(index == -1)
+      children.add(child);
+    else
+      children.add(index, child);
+    child.setParent(this);
     setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
 
@@ -299,10 +308,23 @@ public abstract class BasePanel implements Panel
   public Panel getOwnerOfPoint(Point point)
   {
     point = new Point(point.x - getX(), point.y - getY());
-    for(Panel panel : children)
+    if(children.size() > 0)
     {
-      if(panel.containsRelativePoint(point))
-        return panel.getOwnerOfPoint(point);
+      for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
+      {
+        Panel panel = iterator.previous();
+if(this instanceof PropPanel && "surface".equals(((PropPanel)this).getProp().getName()))
+{
+  System.err.println("panel = " + panel + " panel.isFloater() = " + panel.isFloater() + " panel.containsRelativePoint(point) = " + panel.containsRelativePoint(point));
+}
+        if(panel.isFloater() && panel.containsRelativePoint(point))
+          return panel.getOwnerOfPoint(point);
+      }
+      for(Panel panel : children)
+      {
+        if(!panel.isFloater() && panel.containsRelativePoint(point))
+          return panel.getOwnerOfPoint(point);
+      }
     }
     return this;
   }

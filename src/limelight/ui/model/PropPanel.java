@@ -114,15 +114,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     else if(horizontalScrollBar != null && horizontalScrollBar.containsRelativePoint(relativePoint))
       return horizontalScrollBar;
 
-    for(Panel panel : children)
-      if(panel.isFloater() && panel.containsRelativePoint(relativePoint))
-        return panel.getOwnerOfPoint(relativePoint);
-
-    for(Panel panel : children)
-      if(!panel.isFloater() && panel.containsRelativePoint(relativePoint))
-        return panel.getOwnerOfPoint(relativePoint);
-
-    return this;
+    return super.getOwnerOfPoint(point);
   }
 
   public Box getBoxInsideMargins()

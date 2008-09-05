@@ -13,5 +13,9 @@ module Surface
     y = e.y
     floaters.each { |floater| floater.get_away_from(x, y) }
   end
+
+  def mouse_clicked(e)
+    puts "You missed"
+  end
   
 end
