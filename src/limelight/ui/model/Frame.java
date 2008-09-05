@@ -44,7 +44,6 @@ public class Frame extends JFrame
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
   }
 
   public void doLayout()

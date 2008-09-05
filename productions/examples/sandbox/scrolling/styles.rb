@@ -23,3 +23,12 @@ cell {
   vertical_alignment :center
   horizontal_alignment :center
 }
+
+buttons_panel {
+  horizontal_alignment :center
+  width "100%"
+}
+
+add_button {
+  width 214
+}

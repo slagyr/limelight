@@ -35,7 +35,7 @@ public interface Panel extends Iterable<Panel>
   
   void add(Panel child);
   LinkedList<Panel> getChildren();
-  void replace(Panel child, Panel newChild);
+
   boolean remove(Panel child);
   void removeAll();
   void sterilize();

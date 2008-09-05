@@ -6,6 +6,7 @@ import java.awt.*;
 
 import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.ScrollBarPanel;
+import limelight.ui.model.updates.LayoutAndPaintUpdate;
 
 import javax.swing.*;
 
@@ -366,5 +367,59 @@ public class PropPanelLayoutTest extends TestCase
 
     assertEquals(-50, panel.getX());
     assertEquals(-100, panel.getY());
+  }
+  
+  public void testParentNeedsUpdateWhenSizeGoesToZero() throws Exception
+  {
+    PropPanel child = new PropPanel(new MockProp());
+    parent.add(child);
+    parent.resetNeededUpdate();
+    child.setSize(50, 50);
+    child.getStyle().setHeight("auto");
+
+    child.doLayout();
+
+    assertEquals(0, child.getWidth());
+    assertEquals(0, child.getHeight());
+    assertEquals(true, parent.needsUpdating());
+    assertEquals(LayoutAndPaintUpdate.class, parent.getNeededUpdate().getClass());
+  }
+
+  public void testParentShouldNotBeUodatedWhenSizeIsAlreadyZero() throws Exception
+  {
+    PropPanel child = new PropPanel(new MockProp());
+    parent.add(child);
+    parent.resetNeededUpdate();
+    child.setSize(0, 0);
+    child.getStyle().setHeight("auto");
+
+    child.doLayout();
+
+    assertEquals(false, parent.needsUpdating());
+  }
+
+  public void testShouldEnlargePropsWithZeroDimensionsWhenItHasChildren() throws Exception
+  {
+    PropPanel child = new PropPanel(new MockProp());
+    parent.add(child);
+    parent.resetNeededUpdate();
+    parent.setSize(100,100);
+    child.setSize(0, 0);
+    child.getStyle().setHeight("auto");
+    child.getStyle().flushChanges();
+    PropPanel grandChild1 = new PropPanel(new MockProp());
+    grandChild1.getStyle().setWidth("50");
+    grandChild1.getStyle().setHeight("50");
+    PropPanel grandChild2 = new PropPanel(new MockProp());
+    grandChild2.getStyle().setWidth("50");
+    grandChild2.getStyle().setHeight("50");
+    child.add(grandChild1);
+    child.add(grandChild2);
+
+    child.doLayout();
+
+    assertEquals(100, child.getWidth());
+    assertEquals(50, child.getHeight());
+    assertEquals(true, parent.needsUpdating());
   }
 }

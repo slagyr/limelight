@@ -1,13 +1,14 @@
 package limelight.ui.model;
 
-import limelight.ui.Panel;
-import limelight.ui.model.inputs.TextBoxPanel;
-import limelight.util.Box;
 import limelight.LimelightError;
-import java.util.LinkedList;
-import java.util.Iterator;
+import limelight.ui.Panel;
+import limelight.ui.model.updates.Updates;
+import limelight.util.Box;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public abstract class BasePanel implements Panel
 {
@@ -126,18 +127,18 @@ public abstract class BasePanel implements Panel
   public boolean containsRelativePoint(Point point)
   {
     return point.x >= x &&
-           point.x < x + width &&
-           point.y >= y &&
-           point.y < y + height;
+        point.x < x + width &&
+        point.y >= y &&
+        point.y < y + height;
   }
 
   public boolean containsAbsolutePoint(Point point)
   {
     Point absoluteLocation = getAbsoluteLocation();
     return point.x >= absoluteLocation.x &&
-           point.x < absoluteLocation.x + width &&
-           point.y >= absoluteLocation.y &&
-           point.y < absoluteLocation.y + height;
+        point.x < absoluteLocation.x + width &&
+        point.y >= absoluteLocation.y &&
+        point.y < absoluteLocation.y + height;
   }
 
   //TODO  MDM Change my return type to RootPanel
@@ -177,7 +178,7 @@ public abstract class BasePanel implements Panel
   public Graphics2D getGraphics()
   {
     Box bounds = getAbsoluteBounds();
-    return (Graphics2D)getRoot().getGraphics().create(bounds.x, bounds.y, bounds.width, bounds.height);
+    return (Graphics2D) getRoot().getGraphics().create(bounds.x, bounds.y, bounds.width, bounds.height);
   }
 
   public void paintOn(Graphics2D graphics)
@@ -263,23 +264,11 @@ public abstract class BasePanel implements Panel
 
   public void add(Panel panel)
   {
-    if (sterilized)
+    if(sterilized)
       throw new SterilePanelException("Propless Panel");
     children.add(panel);
     panel.setParent(this);
-  }
-
-  protected boolean addUnchecked(Panel child)
-  {
-    try
-    {
-      add(child);
-      return true;
-    }
-    catch (SterilePanelException e)
-    {
-      return false;
-    }
+    setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
 
   public boolean hasChildren()
@@ -310,7 +299,7 @@ public abstract class BasePanel implements Panel
   public Panel getOwnerOfPoint(Point point)
   {
     point = new Point(point.x - getX(), point.y - getY());
-    for (Panel panel : children)
+    for(Panel panel : children)
     {
       if(panel.containsRelativePoint(point))
         return panel.getOwnerOfPoint(point);
@@ -325,28 +314,22 @@ public abstract class BasePanel implements Panel
 
   public boolean remove(Panel child)
   {
-    return children.remove(child);
+    if(children.remove(child))
+    {
+      setNeededUpdate(Updates.layoutAndPaintUpdate);
+      return true;
+    }
+    return false;
   }
 
   public void removeAll()
   {
-    children.clear();
-  }
-
-  public void replace(Panel existing, Panel replacement)
-  {
-    int index = children.indexOf(existing);
-    if(index > 0)
+    if(children.size() > 0)
     {
-      children.remove(index);
-      children.add(index, replacement);
+      children.clear();
+      sterilized = false;
+      setNeededUpdate(Updates.layoutAndPaintUpdate);
     }
-  }
-
-  public void clearChildren()
-  {
-    children.clear();
-    sterilized = false;
   }
 
   public Box getBoundingBox()
