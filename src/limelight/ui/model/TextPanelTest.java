@@ -35,6 +35,8 @@ public class TextPanelTest extends TestCase
     style = parent.getProp().getStyle();
     panel = new TextPanel(parent, "Some Text");
     style.setTextColor("black");
+    
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
   }
 
   public void tearDown()
@@ -62,7 +64,7 @@ public class TextPanelTest extends TestCase
     useFrame();
     panel.setText("Once upon a time, there was a developer working on a tool called Limelight.");
     panel.doLayout();
-    assertEquals(99, panel.getWidth());
+    assertEquals(98, panel.getWidth());
     assertEquals(69, panel.getHeight());
   }
 
@@ -80,7 +82,7 @@ public class TextPanelTest extends TestCase
     useFrame();
     panel.setText("1\n2\n3\nlongest");
     panel.doLayout();
-    assertEquals(41, panel.getWidth());
+    assertEquals(39, panel.getWidth());
     assertEquals(55, panel.getHeight());
   }
 

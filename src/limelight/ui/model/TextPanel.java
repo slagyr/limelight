@@ -70,6 +70,7 @@ public class TextPanel extends BasePanel
       {
         y += textLayout.getAscent();
         textLayout.draw(graphics, aligner.startingX(textLayout.getBounds().getWidth()), y);
+//System.err.println(text + ": textLayout.getBounds().getWidth() = " + textLayout.getBounds().getWidth());
         y += textLayout.getDescent() + textLayout.getLeading();
       }
     }
@@ -137,6 +138,7 @@ public class TextPanel extends BasePanel
               //TODO MDM - Wow! This is inefficient. The getChildConsumableArea has to be calculated every time!
               float width1 = (float) panel.getChildConsumableArea().width;
               TextLayout layout = lbm.nextLayout(width1);
+//System.err.println(text + ": available = " + width1 + " layout.getBounds().getWidth() = " + layout.getBounds().getWidth());
               lines.add(layout);
             }
           }
@@ -153,7 +155,7 @@ public class TextPanel extends BasePanel
   {
     if (renderContext == null)
     {
-      renderContext = getGraphics().getFontRenderContext();
+      renderContext = getRoot().getGraphics().getFontRenderContext();
     }
     return renderContext;
   }
