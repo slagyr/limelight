@@ -24,7 +24,7 @@ public class BufferedImagePool
   }
 
   public synchronized BufferedImage acquire(Dimension dimension)
-  {
+  {    
     TimedCacheEntry<BufferedImage> match = null;
     for(TimedCacheEntry<BufferedImage> entry : entries)
     {
@@ -42,7 +42,25 @@ public class BufferedImagePool
     }
     else
     {
+      return allocateNewBufferedImage(dimension, 3);
+    }
+  }
+
+  private BufferedImage allocateNewBufferedImage(Dimension dimension, int attemtps)
+  {
+    try
+    {
       return new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+    }
+    catch(OutOfMemoryError e)
+    {
+      if(attemtps > 1)
+      {
+        entries.clear();
+        System.gc(); 
+        return allocateNewBufferedImage(dimension, attemtps - 1);
+      }
+      throw e;
     }
   }
 
