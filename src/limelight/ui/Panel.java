@@ -3,6 +3,7 @@ package limelight.ui;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.ui.model.Update;
+import limelight.ui.model.RootPanel;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,7 +30,7 @@ public interface Panel extends Iterable<Panel>
 
   Panel getParent();
   void setParent(Panel panel);
-  Panel getRoot();
+  RootPanel getRoot();
   boolean isAncestor(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
   
@@ -41,8 +42,6 @@ public interface Panel extends Iterable<Panel>
   void sterilize();
   boolean isSterilized();
   boolean hasChildren();
-
-  void setCursor(Cursor cursor);
 
   void repaint();     
   Graphics2D getGraphics();

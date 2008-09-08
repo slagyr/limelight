@@ -143,7 +143,7 @@ public abstract class BasePanel implements Panel
   }
 
   //TODO  MDM Change my return type to RootPanel
-  public Panel getRoot()
+  public RootPanel getRoot()
   {
     if(parent == null)
       return null;
@@ -170,10 +170,6 @@ public abstract class BasePanel implements Panel
       throw new LimelightError("No common ancestor found! Do the panels belong to the same tree?");
 
     return ancestor;
-  }
-
-  public void setCursor(Cursor cursor)
-  {
   }
 
   public Graphics2D getGraphics()

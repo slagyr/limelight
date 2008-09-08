@@ -217,13 +217,13 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void mouseEntered(MouseEvent e)
   {
     getProp().mouse_entered(translatedEvent(e));
-    getProp().hover_on();
+    hoverOn();
   }
 
   public void mouseExited(MouseEvent e)
   {
     getProp().mouse_exited(translatedEvent(e));
-    getProp().hover_off();
+    hoverOff();
   }
 
   public void mouseMoved(MouseEvent e)
@@ -392,6 +392,26 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void playSound(String filename)
   {
     Context.instance().audioPlayer.playAuFile(filename);
+  }
+
+  private void hoverOn()
+  {
+    Style hoverStyle = getProp().getHoverStyle();
+    if(hoverStyle != null)
+    {
+      getProp().getStyle().applyScreen(hoverStyle);
+      getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+  }
+
+  private void hoverOff()
+  {
+    Style hoverStyle = getProp().getHoverStyle();
+    if(hoverStyle != null)
+    {
+      getProp().getStyle().removeScreen();
+      getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
   }
 }
 

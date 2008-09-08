@@ -17,7 +17,7 @@ public interface PropablePanel extends limelight.ui.Panel
   void setAfterPaintAction(PaintAction action);
   void setText(String text);
   String getText();
-  void setCursor(Cursor cursor);
+
   Box getBoundingBox();
   Box getBoxInsideBorders();
   Graphics2D getGraphics();

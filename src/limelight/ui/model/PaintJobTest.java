@@ -6,6 +6,7 @@ import limelight.util.Box;
 import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.styles.FlatStyle;
+import limelight.styles.Style;
 import limelight.Context;
 import limelight.BufferedImagePool;
 import limelight.caching.SimpleCache;
@@ -16,7 +17,7 @@ public class PaintJobTest extends TestCase
 {
   private PaintJob job;
   private MockPropablePanel panel;
-  private FlatStyle style;
+  private Style style;
   private MockGraphics graphics;
   private SimpleCache<Panel,BufferedImage> bufferedImageCache;
   private BufferedImagePool pool;
