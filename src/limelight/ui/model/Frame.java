@@ -4,29 +4,9 @@ import limelight.ui.api.Stage;
 import limelight.ui.Panel;
 import limelight.ui.model.updates.Updates;
 import limelight.Context;
-import limelight.util.*;
-import limelight.util.Box;
 
 import javax.swing.*;
-import javax.swing.event.AncestorListener;
-import javax.swing.border.Border;
-import javax.swing.plaf.PanelUI;
-import javax.swing.plaf.ComponentUI;
-import javax.accessibility.AccessibleContext;
 import java.awt.*;
-import java.awt.im.InputMethodRequests;
-import java.awt.im.InputContext;
-import java.awt.image.*;
-import java.awt.dnd.DropTarget;
-import java.awt.peer.ComponentPeer;
-import java.awt.event.*;
-import java.util.*;
-import java.util.EventListener;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
-import java.beans.PropertyChangeListener;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 
 public class Frame extends JFrame
 {

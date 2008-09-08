@@ -129,7 +129,7 @@ public class RootPanel implements Panel
       Context.instance().keyboardFocusManager.unfocusCurrentlyFocusedComponent();
   }
 
-  public Panel getRoot()
+  public RootPanel getRoot()
   {
     return this;
   }

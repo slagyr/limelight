@@ -3,14 +3,16 @@
 
 package limelight.ui.api;
 
-import limelight.styles.FlatStyle;
+import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.Panel;
 
 import java.awt.event.*;
 
 public class MockProp implements Prop
 {
-  public FlatStyle style;
+  public ScreenableStyle style;
+  public Style hoverStyle;
   public String text;
   public String name;
   public Object pressedKey;
@@ -32,7 +34,7 @@ public class MockProp implements Prop
 
   public MockProp()
   {
-    style = new FlatStyle();
+    style = new ScreenableStyle();
   }
 
   public MockProp(String name)
@@ -46,9 +48,14 @@ public class MockProp implements Prop
     return null;
   }
 
-  public FlatStyle getStyle()
+  public ScreenableStyle getStyle()
   {
     return style;
+  }
+
+  public Style getHoverStyle()
+  {
+    return hoverStyle;
   }
 
   public String getName()

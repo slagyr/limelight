@@ -5,6 +5,7 @@ package limelight.ui.painting;
 
 import junit.framework.TestCase;
 import limelight.styles.FlatStyle;
+import limelight.styles.Style;
 import limelight.ui.MockGraphics;
 import limelight.ui.model.MockPropablePanel;
 import limelight.ui.api.MockProp;
@@ -18,7 +19,7 @@ public class BorderPainterTest extends TestCase
 {
   private MockProp prop;
   private MockPropablePanel panel;
-  private FlatStyle style;
+  private Style style;
   private BorderPainter painter;
   private Box border;
   private MockGraphics graphics;

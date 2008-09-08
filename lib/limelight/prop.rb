@@ -27,9 +27,9 @@ module Limelight
     
     include UI::Api::Prop
   
-    attr_reader :panel, :style, :children, :scene, :parent
+    attr_reader :panel, :style, :hover_style, :children, :scene, :parent
     attr_reader :name, :id, :players
-    getters :panel, :style, :scene, :name, :text
+    getters :panel, :style, :hover_style, :scene, :name, :text
     setters :text
     
     def initialize(hash = {})
@@ -176,20 +176,6 @@ module Limelight
     end
     
     # GUI Events ##########################################
-    
-    def hover_on
-      return nil if @hover_style.nil?
-      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::HAND_CURSOR))
-      style.applyScreen(@hover_style)
-      update
-    end
-    
-    def hover_off
-      return nil if @hover_style.nil?
-      @panel.setCursor(java.awt.Cursor.new(java.awt.Cursor::DEFAULT_CURSOR))
-      @style.removeScreen()
-      update
-    end
     
     EVENTS = [:mouse_clicked, :mouse_entered, :mouse_exited, :mouse_pressed, :mouse_released, :mouse_dragged, :mouse_moved,
          :key_typed, :key_pressed, :key_released, :focus_gained, :focus_lost, :button_pressed, :value_changed]

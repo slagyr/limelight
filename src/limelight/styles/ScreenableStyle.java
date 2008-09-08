@@ -24,7 +24,7 @@ public class ScreenableStyle extends RichStyle
     return screen;
   }
 
-  public void applyScreen(RichStyle style)
+  public void applyScreen(Style style)
   {
     if(screen != null)
       throw new RuntimeException("Screen already applied");

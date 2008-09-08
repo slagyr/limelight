@@ -4,6 +4,7 @@ import limelight.ui.model.TextAccessor;
 import limelight.styles.Style;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class TextAreaPanel extends InputPanel
 {
@@ -59,5 +60,15 @@ public class TextAreaPanel extends InputPanel
     {
       return textArea.getText();
     }
+  }
+
+  public void mouseEntered(MouseEvent e)
+  {
+    getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+  }
+
+  public void mouseExited(MouseEvent e)
+  {
+    getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
   }
 }

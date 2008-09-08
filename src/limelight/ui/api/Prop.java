@@ -4,15 +4,16 @@
 package limelight.ui.api;
 
 import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.Panel;
 
-import javax.swing.event.ChangeEvent;
 import java.awt.event.*;
 
 public interface Prop
 {
   Panel getPanel();
-  Style getStyle();
+  ScreenableStyle getStyle();
+  Style getHoverStyle();
   String getName();
   String getText();
   Scene getScene();

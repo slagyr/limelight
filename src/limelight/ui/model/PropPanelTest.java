@@ -11,6 +11,8 @@ import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
+import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
 import limelight.util.Box;
 import limelight.Context;
 import limelight.audio.MockAudioPlayer;
@@ -25,7 +27,7 @@ public class PropPanelTest extends TestCase
 {
   private MockProp prop;
   private PropPanel panel;
-  private FlatStyle style;
+  private ScreenableStyle style;
   private RootPanel root;
 
   public void setUp() throws Exception
@@ -365,5 +367,51 @@ public class PropPanelTest extends TestCase
     panel.valueChanged(event);
 
     assertSame(event, prop.changedValue);
+  }
+
+  public void testHoverOnWithHoverStyle() throws Exception
+  {
+    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
+    prop.hoverStyle = new FlatStyle();
+
+    panel.mouseEntered(event);
+
+    assertEquals(Cursor.HAND_CURSOR, root.getContentPane().getCursor().getType());
+    assertSame(prop.hoverStyle, style.getScreen());
+  }
+
+  public void testHoverOnWithoutHoverStyle() throws Exception
+  {
+    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
+    prop.hoverStyle = null;
+
+    panel.mouseEntered(event);
+
+    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(null, style.getScreen());
+  }
+
+  public void testHoverOffWithHoverStyle() throws Exception
+  {
+    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
+    prop.hoverStyle = new FlatStyle();
+
+    panel.mouseEntered(event);
+    panel.mouseExited(event);
+
+    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(null, style.getScreen());
+  }
+
+  public void testHoverOffWithoutHoverStyle() throws Exception
+  {
+    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
+    prop.hoverStyle = null;
+
+    panel.mouseEntered(event);
+    panel.mouseExited(event);
+
+    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(null, style.getScreen());
   }
 }
