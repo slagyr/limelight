@@ -61,10 +61,13 @@ module Limelight
     end
     
     def load_builtin_player(player_name)
-      module_name = player_name.camalized
-      return if !Limelight::Players.const_defined?(module_name)
-      mod = Limelight::Players.const_get(module_name)
-      @known_players[player_name] = mod
+      begin
+        module_name = player_name.camalized
+        return if !Limelight::Players.const_defined?(module_name)
+        mod = Limelight::Players.const_get(module_name)
+        @known_players[player_name] = mod
+      rescue NameError
+      end
     end
     
   end

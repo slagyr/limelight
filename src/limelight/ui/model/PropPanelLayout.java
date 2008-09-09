@@ -8,6 +8,7 @@ import limelight.util.Aligner;
 import limelight.util.Box;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class PropPanelLayout
 {
@@ -67,7 +68,7 @@ public class PropPanelLayout
 
   private boolean hasNonScrollBarChildren()
   {
-    LinkedList<Panel> children = panel.getChildren();
+    List<Panel> children = panel.getChildren();
     if(children.size() == 0)
       return false;
     else if(children.size() == 1)

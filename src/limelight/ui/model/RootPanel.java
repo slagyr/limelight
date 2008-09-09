@@ -7,10 +7,7 @@ import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ArrayList;
+import java.util.*;
 
 public class RootPanel implements Panel
 {
@@ -157,7 +154,6 @@ public class RootPanel implements Panel
     job.applyTo(getGraphics());
   }
 
-
   public void setCursor(Cursor cursor)
   {
     contentPane.setCursor(cursor);
@@ -206,6 +202,7 @@ public class RootPanel implements Panel
           update.performUpdate(changedPanel.getParent());
         else
           update.performUpdate(changedPanel); //TODO Got a null pointer here.  The update must have been null.  Threading issue?
+
       }
     }
   }
@@ -248,7 +245,7 @@ public class RootPanel implements Panel
     return true;
   }
 
-  public LinkedList<Panel> getChildren()
+  public java.util.List<Panel> getChildren()
   {
     LinkedList<Panel> panels = new LinkedList<Panel>();
     panels.add(panel);

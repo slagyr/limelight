@@ -1,62 +1,64 @@
 <project name="LimeLight" default="jar" basedir=".">
-    <description>
-		LimeLight
-	</description>
+  <description>
+    LimeLight
+  </description>
 
-    <property name="src" location="src" />
-    <property name="classes" location="classes" />
-    <property name="lib" location="lib" />
+  <property name="src" location="src"/>
+  <property name="classes" location="classes"/>
+  <property name="lib" location="lib"/>
 
-    <path id="classpath">
-        <pathelement path="${classes}" />
-        <fileset dir="${lib}">
-            <include name="*.jar" />
+  <path id="classpath">
+    <pathelement path="${classes}"/>
+    <fileset dir="${lib}">
+      <include name="*.jar"/>
+      <exclude name="limelight.jar"/>
+    </fileset>
+    <fileset file="jruby/lib/jruby.jar"/>
+  </path>
+
+  <target name="build" depends="clean, compile" description="clean, then compile the source"/>
+
+  <target name="testbuild" depends="clean, unit_test"
+          description="Run this target any time you change code or acceptance tests. It will clean, then compile the source, run all the unit test and fintesse acceptance tests."/>
+
+  <target name="jar" depends="build" description="generate the jar file">
+    <delete file="${lib}/limelight.jar"/>
+
+    <jar jarfile="${lib}/limelight.jar" basedir="classes">
+      <include name="**/*"/>
+      <exclude name="**/*Test.class"/>
+      <manifest>
+        <attribute name="Built-By" value="Micah Martin"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source (make)">
+    <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="true"/>
+  </target>
+
+  <target name="clean" description="delete everything in the classes directory">
+    <mkdir dir="${classes}"/>
+    <delete includeemptydirs="true">
+      <fileset dir="${classes}" includes="**/"/>
+    </delete>
+  </target>
+
+  <target name="unit_test" depends="compile" description="run the unit tests">
+    <junit fork="yes" printsummary="on" haltonfailure="yes" haltonerror="yes">
+      <classpath refid="classpath"/>
+      <!--<formatter type="xml" usefile="false" />-->
+      <formatter type="brief" usefile="false"/>
+      <batchtest fork="no" todir="etc/test_reports">
+        <fileset dir="${src}">
+          <include name="**/*Test.java"/>
         </fileset>
-        <fileset file="jruby/lib/jruby.jar"/>
-    </path>
+      </batchtest>
+    </junit>
+  </target>
 
-    <target name="build" depends="clean, compile" description="clean, then compile the source" />
-
-    <target name="testbuild" depends="clean, unit_test" description="Run this target any time you change code or acceptance tests. It will clean, then compile the source, run all the unit test and fintesse acceptance tests." />
-
-    <target name="jar" depends="build" description="generate the jar file">
-        <delete file="${lib}/limelight.jar" />
-
-        <jar jarfile="${lib}/limelight.jar" basedir="classes">
-            <include name="**/*" />
-            <exclude name="**/*Test.class" />
-            <manifest>
-                <attribute name="Built-By" value="Micah Martin" />
-            </manifest>
-        </jar>
-    </target>
-
-    <target name="compile" depends="init" description="compile the source (make)">
-        <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="true" />
-    </target>
-
-    <target name="clean" description="delete everything in the classes directory">
-        <mkdir dir="${classes}" />
-        <delete includeemptydirs="true">
-            <fileset dir="${classes}" includes="**/" />
-        </delete>
-    </target>
-
-    <target name="unit_test" depends="compile" description="run the unit tests">
-        <junit fork="yes" printsummary="on" haltonfailure="yes" haltonerror="yes">
-            <classpath refid="classpath" />
-            <formatter type="xml" usefile="true" />
-            <formatter type="plain" usefile="false" />
-			<batchtest fork="no" todir="etc/test_reports">
-				<fileset dir="${src}">
-					<include name="**/*Test.java"/>
-				</fileset>
-			</batchtest>
-        </junit>
-    </target>
-
-    <target name="init">
-        <mkdir dir="${classes}" />
-    </target>
+  <target name="init">
+    <mkdir dir="${classes}"/>
+  </target>
 
 </project>

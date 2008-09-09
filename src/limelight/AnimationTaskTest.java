@@ -18,7 +18,7 @@ public class AnimationTaskTest extends TestCase
   public void setUp() throws Exception
   {
     panel = new MockPanel();
-    task = new TestableAnimationTask("name", 20, panel);
+    task = new TestableAnimationTask("name", 2000, panel);
 
     frameManager = new MockFrameManager();
     Context.instance().frameManager = frameManager;
@@ -52,7 +52,7 @@ public class AnimationTaskTest extends TestCase
 
     assertEquals(false, task.isReady());
 
-    root.setPanel(panel);
+    root.setPanel(panel);   
     assertEquals(true, task.isReady());
   }
 

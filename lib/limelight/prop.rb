@@ -40,9 +40,9 @@ module Limelight
     end
     
     def add(child)
+      child.set_parent(self)
       @children << child
       @panel.add(child.panel)
-      child.set_parent(self)
     end
      
     def <<(child)

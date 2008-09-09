@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
+import java.util.List;
 
 public class BasePanelTest extends TestCase
 {
@@ -482,12 +483,11 @@ public class BasePanelTest extends TestCase
 
   private Update newUpdate()
   {
-    Update update = new Update(1) {
+    return new Update(1) {
       public void performUpdate(Panel panel)
       {
       }
     };
-    return update;
   }
 
   public void testGetAndClearNeededUpdate() throws Exception
@@ -596,6 +596,38 @@ public class BasePanelTest extends TestCase
 
     assertEquals(true, panel.needsUpdating());
     assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+  }
+
+  public void testGetChildrenReturnsACopiedList() throws Exception
+  {
+    Panel child = new MockPanel();
+    panel.add(child);
+
+    List<Panel> children = panel.getChildren();
+    panel.remove(child);
+
+    List<Panel> children2 = panel.getChildren();
+
+    assertNotSame(children, children2);
+    assertEquals(1, children.size());
+    assertEquals(0, children2.size());
+  }
+
+  public void testGetChildrenProvidesReadonlyList() throws Exception
+  {
+    Panel child = new MockPanel();
+    panel.add(child);
+
+    List<Panel> children = panel.getChildren();
+
+    try
+    {
+      children.add(new MockPanel());
+      fail("Should have thrown exception");
+    }
+    catch(UnsupportedOperationException e)
+    {
+    }
   }
 }
 

@@ -2,9 +2,12 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
 import limelight.ui.model.TextAccessor;
+import limelight.Context;
+
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
 
 public class ComboBoxPanel extends InputPanel
 {
@@ -72,5 +75,24 @@ public class ComboBoxPanel extends InputPanel
     {
       panel.valueChanged(e);
     }
+  }
+
+  public void mousePressed(MouseEvent e)
+  {
+    Context.instance().keyboardFocusManager.focusPanel(this);
+    e = translatedEvent(e);    
+    getParent().mousePressed(e);
+  }
+
+  public void mouseClicked(MouseEvent e)
+  {
+    e = translatedEvent(e);
+    getParent().mouseClicked(e);
+  }
+
+  public void mouseReleased(MouseEvent e)
+  {
+    e = translatedEvent(e);
+    getParent().mouseReleased(e);
   }
 }
