@@ -14,6 +14,8 @@ limelight_players_combo_box_popup_list {
   border_width 1
   border_color "#dcdcdc"
   vertical_scroll_bar :on
+  min_height 50
+  max_height 200
 }
 
 limelight_players_combo_box_popup_list_item {

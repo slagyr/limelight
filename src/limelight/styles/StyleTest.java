@@ -103,4 +103,12 @@ public class StyleTest extends TestCase
     assertEquals("black", Style.BOTTOM_LEFT_BORDER_COLOR.defaultValue);
     assertEquals("black", Style.TOP_LEFT_BORDER_COLOR.defaultValue);
   }
+
+  public void testMinAndMaxWidthAndHeight() throws Exception
+  {
+    assertEquals("none", Style.MIN_WIDTH.defaultValue);
+    assertEquals("none", Style.MIN_HEIGHT.defaultValue);
+    assertEquals("none", Style.MAX_WIDTH.defaultValue);
+    assertEquals("none", Style.MAX_HEIGHT.defaultValue);
+  }
 }

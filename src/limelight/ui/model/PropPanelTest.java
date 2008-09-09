@@ -98,6 +98,48 @@ public class PropPanelTest extends TestCase
     assertEquals(42, panel.getWidth());
     assertEquals(100, panel.getHeight());
   }
+  
+  public void testSnapToSizeWithMaxSizeAgainstAutoSizing() throws Exception
+  {
+    root.setSize(100, 100);
+    style.setWidth("auto");
+    style.setHeight("auto");
+    style.setMaxWidth("75");
+    style.setMaxHeight("82");
+
+    panel.snapToSize();
+
+    assertEquals(75, panel.getWidth());
+    assertEquals(82, panel.getHeight());
+  }
+
+  public void testSnapToSizeWithMaxSizeAgainstPercentageSizing() throws Exception
+  {
+    root.setSize(100, 100);
+    style.setWidth("90%");
+    style.setHeight("90%");
+    style.setMaxWidth("75");
+    style.setMaxHeight("82");
+
+    panel.snapToSize();
+
+    assertEquals(75, panel.getWidth());
+    assertEquals(82, panel.getHeight());
+  }
+
+  public void testSnapToSizeWithMinSizeAgainstPercentageSizing() throws Exception
+  {
+    root.setSize(100, 100);
+    style.setWidth("20%");
+    style.setHeight("20%");
+    style.setMinWidth("42");
+    style.setMinHeight("51");
+
+    panel.snapToSize();
+
+    assertEquals(42, panel.getWidth());
+    assertEquals(51, panel.getHeight());
+  }
 
   public void testRactanglesAreCached() throws Exception
   {
