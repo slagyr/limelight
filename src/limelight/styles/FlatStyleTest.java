@@ -238,6 +238,30 @@ public class FlatStyleTest extends TestCase
     assertEquals(true, style.changed(Style.WIDTH));
   }
 
+  public void testMaxWidthAndHeight() throws Exception
+  {
+    assertEquals("none", style.getMaxWidth());
+    assertEquals("none", style.getMaxHeight());
+
+    style.setMaxWidth("100");
+    style.setMaxHeight("200");
+
+    assertEquals("100", style.getMaxWidth());
+    assertEquals("200", style.getMaxHeight());
+  }
+
+  public void testMinWidthAndHeight() throws Exception
+  {
+    assertEquals("none", style.getMinWidth());
+    assertEquals("none", style.getMinHeight());
+
+    style.setMinWidth("100");
+    style.setMinHeight("200");
+
+    assertEquals("100", style.getMinWidth());
+    assertEquals("200", style.getMinHeight());
+  }
+
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds
 //  // Array based: 3800000 sets and 3500000 gets took = 1863.0 milliseconds
 //  public void testPerformance() throws Exception

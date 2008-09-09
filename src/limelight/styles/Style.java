@@ -19,6 +19,10 @@ public abstract class Style
 
   public static final StyleDescriptor WIDTH = descriptor("Width", "auto");
   public static final StyleDescriptor HEIGHT = descriptor("Height", "auto");
+  public static final StyleDescriptor MIN_WIDTH = descriptor("Min Width", "none");
+  public static final StyleDescriptor MIN_HEIGHT = descriptor("Min Height", "none");
+  public static final StyleDescriptor MAX_WIDTH = descriptor("Max Width", "none");
+  public static final StyleDescriptor MAX_HEIGHT = descriptor("Max Height", "none");
   public static final StyleDescriptor VERTICAL_SCROLLBAR = descriptor("Vertical Scrollbar", "auto");
   public static final StyleDescriptor HORIZONTAL_SCROLLBAR = descriptor("Horizontal Scrollbar", "auto");
   public static final StyleDescriptor TOP_BORDER_COLOR = descriptor("Top Border Color", "black");
@@ -209,6 +213,46 @@ public abstract class Style
   public String getHeight()
   {
     return get(HEIGHT);
+  }
+
+  public void setMinWidth(String value)
+  {
+    put(MIN_WIDTH, value);
+  }
+
+  public String getMinWidth()
+  {
+    return get(MIN_WIDTH);
+  }
+
+  public void setMinHeight(String value)
+  {
+    put(MIN_HEIGHT, value);
+  }
+
+  public String getMinHeight()
+  {
+    return get(MIN_HEIGHT);
+  }
+
+  public void setMaxWidth(String value)
+  {
+    put(MAX_WIDTH, value);
+  }
+
+  public String getMaxWidth()
+  {
+    return get(MAX_WIDTH);
+  }
+
+  public void setMaxHeight(String value)
+  {
+    put(MAX_HEIGHT, value);
+  }
+
+  public String getMaxHeight()
+  {
+    return get(MAX_HEIGHT);
   }
 
   public void setTextColor(String value)

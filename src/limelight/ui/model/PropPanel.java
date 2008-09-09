@@ -79,21 +79,34 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void snapToSize()
   {
     Box r = getParent().getChildConsumableArea();
-    int newWidth = translateDimension(getProp().getStyle().getWidth(), r.width);
-    int newHeight = translateDimension(getProp().getStyle().getHeight(), r.height);
+    Style style = getProp().getStyle();
+    int newWidth = translateDimension(style.getWidth(), r.width, style.getMinWidth(), style.getMaxWidth());
+    int newHeight = translateDimension(style.getHeight(), r.height, style.getMinHeight(), style.getMaxHeight());
     setSize(newWidth, newHeight);
   }
 
-  private int translateDimension(String sizeString, int maxSize)
+  private int translateDimension(String sizeString, int consumableSize, String minSizeString, String maxSizeString)
   {
     if(sizeString == null)
       return 0;
     else if("auto".equals(sizeString))
-      return maxSize;
+    {
+      if("none".equals(maxSizeString))
+        return consumableSize;
+      else
+        return Math.min(consumableSize, Integer.parseInt(maxSizeString));
+    }
     else if(sizeString.endsWith("%"))
     {
       double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-      return (int) ((percentage * 0.01) * (double) maxSize);
+      int calculatedSize = (int) ((percentage * 0.01) * (double) consumableSize);
+
+      if(!"none".equals(maxSizeString))
+        calculatedSize = Math.min(calculatedSize, Integer.parseInt(maxSizeString));
+      if(!"none".equals(minSizeString))
+        calculatedSize = Math.max(calculatedSize, Integer.parseInt(minSizeString));
+
+      return calculatedSize;
     }
     else
     {

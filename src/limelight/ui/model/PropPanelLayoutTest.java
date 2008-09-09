@@ -211,6 +211,42 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(0, panel.getHeight());
   }
 
+  public void testAutoSizeWithMinDimensions() throws Exception
+  {
+    PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
+    panel.getStyle().setWidth("auto");
+    panel.getStyle().setHeight("auto");
+    panel.getStyle().setMinWidth("20");
+    panel.getStyle().setMinHeight("15");
+    MockPropablePanel child = new MockPropablePanel();
+    child.prepForSnap(5, 5);
+    panel.add(child);
+
+    layout.doLayout();
+
+    assertEquals(20, panel.getWidth());
+    assertEquals(15, panel.getHeight());
+  }
+
+  public void testAutoDimensionsWithMaxHeightAndWidth() throws Exception
+  {
+    PropPanel panel = new PropPanel(new MockProp());
+    parent.add(panel);
+    panel.getStyle().setWidth("auto");
+    panel.getStyle().setHeight("auto");
+    panel.getStyle().setMaxWidth("75");
+    panel.getStyle().setMaxHeight("86");
+    MockPropablePanel child = new MockPropablePanel();
+    child.prepForSnap(90, 90);
+    panel.add(child);
+
+    layout.doLayout();
+
+    assertEquals(75, panel.getWidth());
+    assertEquals(86, panel.getHeight());
+  }
+
   public void testFloatersAreNoConsideredInDeterminingScrollMode() throws Exception
   {
     MockPropablePanel child = new MockPropablePanel();

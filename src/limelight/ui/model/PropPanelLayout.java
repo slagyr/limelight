@@ -100,15 +100,29 @@ public class PropPanelLayout
 
   private void collapseAutoDimensions()
   {
-    boolean hasAutoWidth = "auto".equals(panel.getStyle().getWidth());
-    boolean hasAutoHeight = "auto".equals(panel.getStyle().getHeight());
+    Style style = panel.getStyle();
+    
+    int width = panel.getWidth();
+    int height = panel.getHeight();
 
-    if(hasAutoWidth && hasAutoHeight)
-      panel.setSize(consumedWidth + horizontalInsets(), consumedHeight + verticalInsets());
-    else if(hasAutoWidth)
-      panel.setSize(consumedWidth + horizontalInsets(), panel.getHeight());
-    else if(hasAutoHeight)
-      panel.setSize(panel.getWidth(), consumedHeight + verticalInsets());
+    if("auto".equals(style.getWidth()))
+    {
+      width = consumedWidth + horizontalInsets();
+      if(!"none".equals(style.getMinWidth()))
+        width = Math.max(width, Integer.parseInt(style.getMinWidth()));
+      if(!"none".equals(style.getMaxWidth()))
+        width = Math.min(width, Integer.parseInt(style.getMaxWidth()));
+    }
+    if("auto".equals(style.getHeight()))
+    {
+      height = consumedHeight + verticalInsets();
+      if(!"none".equals(style.getMinHeight()))
+        height = Math.max(height, Integer.parseInt(style.getMinHeight()));
+      if(!"none".equals(style.getMaxHeight()))
+        height = Math.min(height, Integer.parseInt(style.getMaxHeight()));
+    }
+
+    panel.setSize(width, height);
   }
 
   public int horizontalInsets()
