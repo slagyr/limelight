@@ -16,6 +16,7 @@ public abstract class InputPanel extends BasePanel
 {
   private Component component;
   private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+  private boolean inPaintOn;
 
   protected InputPanel()
   {
@@ -98,7 +99,14 @@ public abstract class InputPanel extends BasePanel
 
   public void paintOn(Graphics2D graphics)
   {
+    inPaintOn = true;
     component.paint(graphics);
+    inPaintOn = false;
+  }
+
+  public boolean isInPaintOn()
+  {
+    return inPaintOn;
   }
 
   public void mousePressed(MouseEvent e)

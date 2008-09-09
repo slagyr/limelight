@@ -117,7 +117,39 @@ describe Limelight::StylesBuilder do
 
   it "should raise an exception when attempting to extend a missing style" do
     lambda { Limelight.build_styles { one { extends :blah } } }.should raise_error(Limelight::StyleBuilderException, "Can't extend missing style: 'blah'")
+  end
+
+  it "should allow styles to be repopened" do
+    styles = Limelight.build_styles do
+      one { width 100 }
+      one { height 200 }
+      one { x 300 }
     end
+
+    styles.size.should == 1
+    one = styles["one"]
+    one.width.should == "100"
+    one.height.should == "200"
+    one.x.should == "300"
+  end
+
+  it "should be able to start with an existing styles hash" do
+    styles1 = Limelight.build_styles do
+      one { width 100 }
+    end
+    styles2 = Limelight.build_styles(styles1) do
+      one { height 200 }
+      two { width 123 }
+    end
+
+    styles1.should == styles2
+    styles2.size.should == 2
+    one = styles2["one"]
+    two = styles2["two"]
+    one.width.should == "100"
+    one.height.should == "200"
+    two.width.should == "123"
+  end
 
 end
 

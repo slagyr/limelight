@@ -31,10 +31,10 @@ task :init => [:jar, :init_jruby, :gems] do
 end
 
 task :spec do
-  ARGV.clear
-  ARGV << "spec"
   gem 'rspec'
-  load 'spec'
+  require 'spec/rake/spectask'
+  Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
+  Rake::Task[:lib_specs].invoke
 end
 
 task :junit do

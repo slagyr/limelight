@@ -7,6 +7,7 @@ import limelight.ui.model.Update;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.Context;
+import limelight.BufferedImagePool;
 import limelight.caching.SimpleCache;
 
 import java.awt.image.BufferedImage;
@@ -20,6 +21,7 @@ public class ScrollChangedUpdateTest extends TestCase
   public void setUp() throws Exception
   {
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
+    Context.instance().bufferedImagePool = new BufferedImagePool(1);
     update = new LayoutAndPaintUpdate(5);
     root = new RootPanel(new MockFrame());
     panel = new MockPanel();

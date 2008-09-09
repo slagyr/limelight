@@ -3,8 +3,8 @@
 
 module Limelight
   
-  def self.build_styles(&block)
-    builder = StylesBuilder.new
+  def self.build_styles(style_hash = nil, &block)
+    builder = StylesBuilder.new(style_hash)
     builder.instance_eval(&block) if block
     return builder.__styles
   end
@@ -12,8 +12,8 @@ module Limelight
   class StylesBuilder
     attr_reader :__styles
     
-    def initialize
-      @__styles = {}
+    def initialize(style_hash = nil)
+      @__styles = style_hash || {}
     end
     
     def method_missing(sym, &block)
@@ -30,10 +30,10 @@ module Limelight
   class StyleBuilder
     attr_reader :__style
     
-    def initialize(name, styles_builder)
-      @__style = Styles::RichStyle.new
+    def initialize(name, styles_builder, options = {})
       @__name = name
       @__styles_builder = styles_builder
+      @__style = @__styles_builder.__styles[name] || Styles::RichStyle.new
     end
     
     def hover(&block)

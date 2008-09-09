@@ -7,7 +7,7 @@ import limelight.ui.model.RootPanel;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.LinkedList;
+import java.util.List;
 
 public interface Panel extends Iterable<Panel>
 {            
@@ -35,7 +35,7 @@ public interface Panel extends Iterable<Panel>
   Panel getClosestCommonAncestor(Panel panel);
   
   void add(Panel child);
-  LinkedList<Panel> getChildren();
+  List<Panel> getChildren();
 
   boolean remove(Panel child);
   void removeAll();

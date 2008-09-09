@@ -7,9 +7,8 @@ import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.*;
+import java.util.List;
 
 public abstract class BasePanel implements Panel
 {
@@ -24,6 +23,8 @@ public abstract class BasePanel implements Panel
   private boolean sterilized;
   protected Box boundingBox;
   protected Update neededUpdate;
+  private List<Panel> readonlyChildren;
+  private boolean allowUpdates = true;
 
   protected BasePanel()
   {
@@ -268,10 +269,13 @@ public abstract class BasePanel implements Panel
   {
     if(sterilized)
       throw new SterilePanelException("Propless Panel");
+
     if(index == -1)
       children.add(child);
     else
       children.add(index, child);
+    readonlyChildren = null;
+
     child.setParent(this);
     setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
@@ -281,9 +285,11 @@ public abstract class BasePanel implements Panel
     return children.size() > 0;
   }
 
-  public LinkedList<Panel> getChildren()
+  public List<Panel> getChildren()
   {
-    return children;
+    if(readonlyChildren == null)
+      readonlyChildren = Collections.unmodifiableList(new ArrayList<Panel>(children));
+    return readonlyChildren;
   }
 
   public void sterilize()
@@ -309,10 +315,6 @@ public abstract class BasePanel implements Panel
       for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
       {
         Panel panel = iterator.previous();
-if(this instanceof PropPanel && "surface".equals(((PropPanel)this).getProp().getName()))
-{
-  System.err.println("panel = " + panel + " panel.isFloater() = " + panel.isFloater() + " panel.containsRelativePoint(point) = " + panel.containsRelativePoint(point));
-}
         if(panel.isFloater() && panel.containsRelativePoint(point))
           return panel.getOwnerOfPoint(point);
       }
@@ -334,6 +336,7 @@ if(this instanceof PropPanel && "surface".equals(((PropPanel)this).getProp().get
   {
     if(children.remove(child))
     {
+      readonlyChildren = null;
       setNeededUpdate(Updates.layoutAndPaintUpdate);
       return true;
     }
@@ -345,6 +348,7 @@ if(this instanceof PropPanel && "surface".equals(((PropPanel)this).getProp().get
     if(children.size() > 0)
     {
       children.clear();
+      readonlyChildren = null;
       sterilized = false;
       setNeededUpdate(Updates.layoutAndPaintUpdate);
     }
@@ -417,5 +421,10 @@ if(this instanceof PropPanel && "surface".equals(((PropPanel)this).getProp().get
   public Iterator<Panel> iterator()
   {
     return new PanelIterator(this);
+  }
+
+  public void setAllowUpdates(boolean allowUpdates)
+  {
+    this.allowUpdates = allowUpdates;
   }
 }

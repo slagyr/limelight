@@ -92,7 +92,7 @@ public class Frame extends JFrame
     }
 
     public void paint(Graphics g)
-    {
+    {     
       frame.getRoot().getPanel().setNeededUpdate(Updates.paintUpdate);
     }
   }

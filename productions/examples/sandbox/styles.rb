@@ -2,20 +2,20 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 sandbox {
-	width 900
-	height 900
-	vertical_alignment :top
+	width "100%"
+	height "100%"
+	vertical_alignment :top 
 }
 
 arena {
-  width 900
+  width "100%"
 	height 800
 	horizontal_alignment :center
 	vertical_alignment :center
 }
 
 header {
-  width 900
+  width "100%"
   height 100
   background_color "#888"
   border_color :blue

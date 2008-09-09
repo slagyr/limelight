@@ -22,6 +22,7 @@ module Limelight
     end
     
     attr_reader :loader, :theater, :production
+    attr_writer :builtin_styles
     
     def initialize(root_path, theater=nil, production=nil)
       if(root_path[-4..-1] == ".llp")
@@ -84,11 +85,12 @@ module Limelight
     end
     
     def load_styles(path)
-      return {} if path.nil?
+      styles = builtin_styles
+      return styles if path.nil?
       filename = File.join(path, "styles.rb")
-      return {} if not @loader.exists?(filename)
+      return styles if not @loader.exists?(filename)
       content = @loader.load(filename)
-      return  Limelight.build_styles do
+      return Limelight.build_styles(styles) do
         begin
           eval content
         rescue Exception => e
@@ -134,6 +136,20 @@ module Limelight
     def unpack_production(production_name)
       packer = Limelight::Util::Packer.new()
       return packer.unpack(production_name)
+    end
+
+    def builtin_styles
+      return @builtin_styles if @builtin_styles 
+      builtin_styles_file = File.join(LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
+      content = IO.read(builtin_styles_file)
+      @builtin_styles = Limelight.build_styles do
+        begin
+          eval content
+        rescue Exception => e
+          raise BuildException.new(filename, content, e)
+        end
+      end
+      return @builtin_styles
     end
 
   end

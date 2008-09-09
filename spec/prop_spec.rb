@@ -14,6 +14,18 @@ describe Limelight::Prop do
     @prop = Limelight::Prop.new(:id => "root", :name => "root_class")
     @scene << @prop
   end
+
+  it "should set the childs parent before adding the child to the parent" do
+    # This is important because a child must be illuminated before a parent knows about it
+    child = Limelight::Prop.new(:id => "child", :name => "child_class")
+
+    child.should_receive(:set_parent) do
+      @prop.children.size.should == 0
+    end
+    @prop.add(child)
+
+    @prop.children.size.should == 1
+  end
   
   it "should extend added controllers and invoke the extended hook" do
     module TestController

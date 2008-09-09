@@ -5,6 +5,9 @@ require File.expand_path(File.dirname(__FILE__) + "/../lib/init")
 
 require 'spec'
 
+context = Limelight::Context.instance
+context.frameManager = Java::limelight.ui.model.FrameManager.new
+
 def make_mock(name, stubs = {})
   the_mock = mock(name)
   the_mock.stubs!(stubs)

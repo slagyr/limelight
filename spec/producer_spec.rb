@@ -44,8 +44,17 @@ describe Limelight::Producer do
     scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
     scene.children.size.should == 0
   end
+
+  it "should load builtin styles" do
+    @loader.should_receive(:exists?).with("./styles.rb").and_return(false)
+
+    styles = @producer.load_styles(".")
+
+    styles["limelight_players_combo_box_popup_list"].should_not == nil
+  end
   
   it "should load styles" do
+    @producer.builtin_styles = {}
     @loader.should_receive(:exists?).with("./styles.rb").and_return(true)
     @loader.should_receive(:load).with("./styles.rb").and_return("alpha { width 100 }")
     
@@ -126,6 +135,7 @@ describe Limelight::Producer do
   end
   
   it "should load empty styles if styles.rb doesn't exist" do
+    @producer.builtin_styles = {}
     @loader.should_receive(:exists?).with("./styles.rb").and_return(false)
     
     @producer.load_styles(".").should == {}
