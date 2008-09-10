@@ -83,7 +83,7 @@ browse_button {
 url_field {
   top_padding 5
   width 500
-#  height 35
+  height 30
 }
 
 download_button {
