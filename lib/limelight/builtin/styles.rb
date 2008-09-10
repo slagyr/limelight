@@ -1,4 +1,4 @@
-limelight_players_curtains {
+limelight_builtin_players_curtains {
   float :on
   x 0
   y 0
@@ -7,7 +7,7 @@ limelight_players_curtains {
   background_color "#FFF0"
 }
 
-limelight_players_combo_box_popup_list {
+limelight_builtin_players_combo_box_popup_list {
   float "on"
   background_color "#EEED"
   rounded_corner_radius 5
@@ -18,7 +18,7 @@ limelight_players_combo_box_popup_list {
   max_height 200
 }
 
-limelight_players_combo_box_popup_list_item {
+limelight_builtin_players_combo_box_popup_list_item {
   width "100%"
   padding 3
   left_padding 10

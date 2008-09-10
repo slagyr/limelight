@@ -50,7 +50,7 @@ describe Limelight::Producer do
 
     styles = @producer.load_styles(".")
 
-    styles["limelight_players_combo_box_popup_list"].should_not == nil
+    styles["limelight_builtin_players_combo_box_popup_list"].should_not == nil
   end
   
   it "should load styles" do
