@@ -189,6 +189,7 @@ module Limelight
       @id = @options.delete(:id)
       @name = @options.delete(:name)
       @players = @options.delete(:players)
+      @additional_styles = @options.delete(:styles)
       
       inherit_styles
       @scene.casting_director.fill_cast(self)
@@ -221,18 +222,30 @@ module Limelight
     end
     
     def inherit_styles
-      return if @name.nil?
-      new_style = @scene.styles[@name]
-      @style.add_extension(new_style) if new_style
-      @hover_style = scene.styles["#{@name}.hover"]
+      style_names = []
+      style_names << @name unless @name.nil?
+      style_names += @additional_styles.gsub(',', ' ').split(' ') unless @additional_styles.nil?
+      style_names.each do |style_name|
+        new_style = @scene.styles[style_name]
+        @style.add_extension(new_style) if new_style
+        new_hover_style = scene.styles["#{style_name}.hover"]
+        if new_hover_style
+          if @hover_style.nil?
+            @hover_style = new_hover_style
+          else
+            @hover_style.add_extension(new_hover_style)
+          end
+        end
+      end
     end
-    
-    def disinherit_styles
-      return if @name.nil?
-      old_style = @scene.styles[@name]
-      @style.remove_extension(old_style) if old_style
-      @hover_style = nil
-    end
+
+# Why is this method here?  No one appears to use it.
+#    def disinherit_styles
+#      return if @name.nil?
+#      old_style = @scene.styles[@name]
+#      @style.remove_extension(old_style) if old_style
+#      @hover_style = nil
+#    end
     
   end
 end
