@@ -1,15 +1,15 @@
 #- Copyright 2008 8th Light, Inc.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 require 'limelight/prop'
-require 'limelight/players/text_box'
+require 'limelight/builtin/players/text_box'
 
-describe Limelight::Players::TextBox do
+describe Limelight::Builtin::Players::TextBox do
 
   before(:each) do
     @prop = Limelight::Prop.new
-    @prop.add_controller(Limelight::Players::TextBox)
+    @prop.add_controller(Limelight::Builtin::Players::TextBox)
   end
 
   it "should have a TextField" do

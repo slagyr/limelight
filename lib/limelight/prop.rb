@@ -100,8 +100,7 @@ module Limelight
         return result if result
       end
       return nil
-    end                                                                                 
-
+    end   
     
     def find_by_name(name, results = [])
       results << self if @name == name
