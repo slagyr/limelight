@@ -1,7 +1,7 @@
 #- Copyright 2008 8th Light, Inc.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/players'
+require 'limelight/builtin/players'
 
 module Limelight
   
@@ -63,8 +63,8 @@ module Limelight
     def load_builtin_player(player_name)
       begin
         module_name = player_name.camalized
-        return if !Limelight::Players.const_defined?(module_name)
-        mod = Limelight::Players.const_get(module_name)
+        return if !Limelight::Builtin::Players.const_defined?(module_name)
+        mod = Limelight::Builtin::Players.const_get(module_name)
         @known_players[player_name] = mod
       rescue NameError
       end

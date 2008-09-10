@@ -1,18 +1,18 @@
 #- Copyright 2008 8th Light, Inc.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 require 'limelight/scene'
 require 'limelight/prop'
-require 'limelight/players/radio_button'
+require 'limelight/builtin/players/radio_button'
 
-describe Limelight::Players::RadioButton do
+describe Limelight::Builtin::Players::RadioButton do
 
   before(:each) do
     @scene = Limelight::Scene.new(:casting_director => make_mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new
     @scene << @prop
-    @prop.include_player(Limelight::Players::RadioButton)
+    @prop.include_player(Limelight::Builtin::Players::RadioButton)
   end
   
   it "should have a RadioButton" do
@@ -38,12 +38,12 @@ describe Limelight::Players::RadioButton do
     
     prop2 = Limelight::Prop.new
     @scene << prop2
-    prop2.add_controller(Limelight::Players::RadioButton)
+    prop2.add_controller(Limelight::Builtin::Players::RadioButton)
     prop2.group = "group 1"
     
     prop3 = Limelight::Prop.new
     @scene << prop3
-    prop3.add_controller(Limelight::Players::RadioButton)
+    prop3.add_controller(Limelight::Builtin::Players::RadioButton)
     prop3.group = "group 2"
     
     group1 = @scene.button_groups["group 1"]

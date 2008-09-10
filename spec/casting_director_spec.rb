@@ -64,7 +64,7 @@ describe Limelight::CastingDirector do
     
     @casting_director.fill_cast(@root)
     
-    @root.is_a?(Limelight::Players::Button).should == true
+    @root.is_a?(Limelight::Builtin::Players::Button).should == true
   end
   
   it "should load custom players" do
@@ -86,7 +86,7 @@ describe Limelight::CastingDirector do
     
     @root.should_receive(:include_player).with("root module")
     @root.should_receive(:include_player).with("custom_player module")
-    @root.should_receive(:include_player).with(Limelight::Players::Button)
+    @root.should_receive(:include_player).with(Limelight::Builtin::Players::Button)
     
     @casting_director.fill_cast(@root)
   end
