@@ -80,13 +80,10 @@ browse_button {
   }
 }
 
-field_wrapper {
-  top_padding 4
-}
-
 url_field {
-  top_padding 10
+  top_padding 5
   width 500
+#  height 35
 }
 
 download_button {

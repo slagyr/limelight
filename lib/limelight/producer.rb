@@ -140,7 +140,7 @@ module Limelight
 
     def builtin_styles
       return @builtin_styles if @builtin_styles 
-      builtin_styles_file = File.join(LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
+      builtin_styles_file = File.join($LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
       content = IO.read(builtin_styles_file)
       @builtin_styles = Limelight.build_styles do
         begin
