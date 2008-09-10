@@ -74,6 +74,7 @@ public class Main
 
   private void configureSystemProperties()
   {
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
     System.setProperty("jruby.base", "");
     System.setProperty("jruby.home", LIMELIGHT_HOME + "/jruby");
     System.setProperty("jruby.lib", LIMELIGHT_HOME + "/jruby/lib");
