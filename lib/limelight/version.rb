@@ -5,8 +5,8 @@ module Limelight
   module VERSION #:nodoc:
     unless defined? MAJOR
       MAJOR  = 0
-      MINOR  = 1
-      TINY   = 1
+      MINOR  = 2
+      TINY   = 0
 
       STRING = [MAJOR, MINOR, TINY].join('.')
       TAG    = "REL_" + [MAJOR, MINOR, TINY].join('_')
