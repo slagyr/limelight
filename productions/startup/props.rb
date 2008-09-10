@@ -11,10 +11,8 @@ section do
 end
 section do
   section_title :text => "2. Download and Open a Production From the Internet"
-  section_label :text => "URL:."
-  field_wrapper do
-    url_field :players => "text_box", :width => "500", :id => "url_field"
-  end
+  section_label :text => "URL:"
+  url_field :players => "text_box",  :id => "url_field"
   download_button :text => "Download"
 end
 section do
