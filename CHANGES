@@ -1,5 +1,11 @@
 = Limelight Changelog
 
+== Version 0.2.0
+
+Redesigned Model
+* The UI model was redesigned to avoid such of Swing's hierarchy
+* Changes listed here: http://limelight.lighthouseapp.com/projects/12073-limelight/tickets?q=milestone%3A%22Limelight+0.2%22&filter=all
+
 == Version 0.1.0
 
 First Beta release
