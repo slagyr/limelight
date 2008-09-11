@@ -257,6 +257,14 @@
             <serializedBean>
               <java class="java.beans.XMLDecoder">
                 <object class="com.install4j.runtime.beans.screens.UninstallWelcomeScreen">
+                  <void property="bannerBackground">
+                    <object class="java.awt.Color">
+                      <int>255</int>
+                      <int>255</int>
+                      <int>255</int>
+                      <int>255</int>
+                    </object>
+                  </void>
                   <void property="bannerImageFile">
                     <object class="com.install4j.api.beans.ExternalFile">
                       <string>./images/welcome_logo.png</string>

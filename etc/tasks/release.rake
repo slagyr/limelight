@@ -25,8 +25,8 @@ end
 
 desc "Creates a tag in svn"
 task :tag do
-  puts "Creating tag in SVN"
-  `svn cp https://svn.8thlight.com/limelight/trunk https://svn.8thlight.com/limelight/tags/#{PKG_VERSION} -m "Tag release #{PKG_TAG}"`
+  puts "Creating tag in git"
+  system "git tag -a -m '#{PKG_TAG}' #{PKG_TAG}"
   puts "Done!"
 end
 
@@ -44,8 +44,8 @@ task :publish_packages => [:verify_user, :verify_password, :package] do
   require 'rake/contrib/xforge'
   release_files = FileList[
     "pkg/#{PKG_FILE_NAME}-java.gem",
-    "etc/installers/limelight-0.1.0.msi",
-    "etc/installers/limelight-0.1.0.dmg"
+    "etc/installers/Limelight_windows#{PKG_TAG.gsub('REL', '')}.exe",
+    "etc/installers/Limelight_macos#{PKG_TAG.gsub('REL', '')}.dmg"
   ]
 
   Rake::XForge::Release.new(MetaProject::Project::XForge::RubyForge.new(PKG_NAME)) do |xf|
