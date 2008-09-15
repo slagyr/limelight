@@ -29,10 +29,13 @@ public class PaintUpdate extends Update
     if(bounds.width == 0 || bounds.height == 0)
       return;
     PaintJob job = new PaintJob(bounds);
-    RootPanel rootPanel = (RootPanel) panel.getRoot();
-    job.paint(rootPanel.getPanel());
-    Graphics2D rootGraphics = rootPanel.getGraphics();
-    job.applyTo(rootGraphics);
+    RootPanel rootPanel = panel.getRoot();
+    if(rootPanel != null)
+    {
+      job.paint(rootPanel.getPanel());
+      Graphics2D rootGraphics = rootPanel.getGraphics();
+      job.applyTo(rootGraphics);
+    }
     job.dispose();
   }
 

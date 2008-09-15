@@ -9,47 +9,51 @@ module Limelight
   def self.build_stages(theater, &block)
     builder = StagesBuilder.new(theater)
     builder.instance_eval(&block) if block
-    return builder.stages
+    return builder.__stages__
   end
   
   class StagesBuilder
-    
-    attr_reader :stages
+
+    Limelight::Util.lobotomize(self)
+
+    attr_reader :__stages__
     
     def initialize(theater)
-      @theater = theater
-      @stages = []
+      @__theater__ = theater
+      @__stages__ = []
     end
     
     def stage(name, &block)
-      stage_builder = StageBuilder.new(@theater, name)
+      stage_builder = StageBuilder.new(@__theater__, name)
       stage_builder.instance_eval(&block) if block
-      @stages << stage_builder.stage
+      @__stages__ << stage_builder.__stage__
     end
     
   end
   
   class StageBuilder
+
+    Limelight::Util.lobotomize(self)
     
-    attr_reader :stage
+    attr_reader :__stage__
     
     def initialize(theater, name)
       if theater[name]
-        @stage = theater[name]
+        @__stage__ = theater[name]
       else
-        @stage = Stage.new(theater, name)
-        theater.add_stage(@stage)
+        @__stage__ = Stage.new(theater, name)
+        theater.add_stage(@__stage__)
       end
     end
     
     def default_scene(scene_name)
-      @stage.default_scene = scene_name
+      @__stage__.default_scene = scene_name
     end
     
     def method_missing(sym, value)
       setter_sym = "#{sym}=".to_s
-      raise StageBuilderException.new(sym) if !@stage.respond_to?(setter_sym)
-      @stage.send(setter_sym, value)
+      raise StageBuilderException.new(sym) if !@__stage__.respond_to?(setter_sym)
+      @__stage__.send(setter_sym, value)
     end
   end
 

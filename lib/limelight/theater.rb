@@ -12,20 +12,20 @@ module Limelight
     attr_reader :active_stage
     
     def initialize
-      @stages = {}
+      @__stages__ = {}
     end
     
     def stages
-      return @stages.values
+      return @__stages__.values
     end
     
     def [](stage_name)
-      return @stages[stage_name]
+      return @__stages__[stage_name]
     end
     
     def add_stage(stage)
-      raise LimelightException.new("Duplicate stage name: '#{stage.name}'") if @stages[stage.name]
-      @stages[stage.name] = stage
+      raise LimelightException.new("Duplicate stage name: '#{stage.name}'") if @__stages__[stage.name]
+      @__stages__[stage.name] = stage
     end
     
     def stage_activated(stage)
