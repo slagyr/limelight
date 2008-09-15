@@ -1,6 +1,5 @@
 #!/usr/bin/env jruby
 require File.expand_path(File.dirname(__FILE__) + "/../lib/init")
-require 'limelight/commands'
+require 'limelight/main'
 
-Limelight::Commands.run(ARGV)
-
+Limelight::Main.run(ARGV)Œ

@@ -1,0 +1,24 @@
+= Limelight
+
+simple, dynamic, user interfaces. 
+
+== API
+
+Where to start:
+
+* Limelight::Main
+* Limelight::Producer
+* Limelight::Prop
+* Limelight::Scene
+
+== More Documentation
+
+This RDoc for Limelight is for reference only.  More complete documentation can be found
+on the official Limelight website: http://limelight.8thlight.com
+
+== License
+
+Copyright 2008 8th Light, Inc. All Rights Reserved.
+Limelight and all included source files are distributed under terms of the GNU LGPL.
+
+See license.txt

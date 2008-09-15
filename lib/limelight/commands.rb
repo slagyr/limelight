@@ -38,28 +38,6 @@ module Limelight
         "pack" => PackProduction
     }
 
-    class << self
-      def run(args)
-        command_name = args.shift
-        command = COMMANDS[command_name]
-        if command
-          command.new.run(args)
-        else
-          usage
-        end
-      end
-
-      def usage
-        puts "Usage: limelight <command> [options] [params]"
-        puts "commands:"
-        COMMANDS.keys.sort.each do |key|
-          command = COMMANDS[key]
-          puts "\t#{key}\t\t#{command.description}"
-        end
-      end
-    end
-
-
   end
 
 
