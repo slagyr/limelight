@@ -4,6 +4,7 @@
 require 'limelight/prop'
 require 'limelight/scene'
 require 'limelight/build_exception'
+require 'limelight/util'
 
 module Limelight
   
@@ -15,7 +16,10 @@ module Limelight
     return builder.__prop__
   end
   
-  class PropBuilder
+  class PropBuilder   
+
+    Limelight::Util.lobotomize(self)
+
     attr_reader :__prop__
     attr_accessor :__loader__
     

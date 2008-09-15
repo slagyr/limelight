@@ -9,14 +9,14 @@ describe Limelight::Theater do
 
   before(:each) do
     @theater = Limelight::Theater.new
-    @stage = Limelight::Stage.new(@theater, "default")
+    @__stage__ = Limelight::Stage.new(@theater, "default")
   end
   
   it "should allow adding of stages" do
-    @theater.add_stage(@stage)
+    @theater.add_stage(@__stage__)
     
     @theater.stages.length.should == 1
-    @theater.stages[0].should == @stage
+    @theater.stages[0].should == @__stage__
   end
   
   it "should not return the actual_list of stages" do
@@ -26,24 +26,24 @@ describe Limelight::Theater do
   it "should know it's active stage" do
     stage2 = Limelight::Stage.new(@theater, "two")
     
-    @theater.add_stage(@stage)
+    @theater.add_stage(@__stage__)
     @theater.add_stage(stage2)
     
     @theater.active_stage.should == nil
     @theater.stage_activated(stage2)
     @theater.active_stage.should == stage2
-    @theater.stage_activated(@stage)
-    @theater.active_stage.should == @stage
+    @theater.stage_activated(@__stage__)
+    @theater.active_stage.should == @__stage__
   end
   
   it "should allow recalling stage by name" do
     stage2 = Limelight::Stage.new(@theater, "two")
     stage3 = Limelight::Stage.new(@theater, "three")
-    @theater.add_stage(@stage)
+    @theater.add_stage(@__stage__)
     @theater.add_stage(stage2)
     @theater.add_stage(stage3)
   
-    @theater["default"].should == @stage
+    @theater["default"].should == @__stage__
     @theater["two"].should == stage2
     @theater["three"].should == stage3
   end

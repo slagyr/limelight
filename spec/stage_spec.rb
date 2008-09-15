@@ -8,7 +8,7 @@ describe Limelight::Stage do
 
   before(:each) do
     @theater = make_mock("theater")
-    @stage = Limelight::Stage.new(@theater, "George")
+    @__stage__ = Limelight::Stage.new(@theater, "George")
   end
   
   it "should have a name" do
@@ -18,40 +18,40 @@ describe Limelight::Stage do
   end
   
   it "should have a title which default to it's name" do
-    @stage.title.should == "George"
+    @__stage__.title.should == "George"
     
-    @stage.title = "Once Upon a Test"
+    @__stage__.title = "Once Upon a Test"
     
-    @stage.title.should == "Once Upon a Test"
+    @__stage__.title.should == "Once Upon a Test"
   end
   
   it "should have size" do
-    @stage.size.should == [800, 800]
+    @__stage__.size.should == [800, 800]
     
-    @stage.size = 123, 456
+    @__stage__.size = 123, 456
     
-    @stage.size.should == [123, 456]
+    @__stage__.size.should == [123, 456]
   end
   
   it "should have size" do
-    @stage.location.should == [200, 25]
+    @__stage__.location.should == [200, 25]
     
-    @stage.location = 123, 456
+    @__stage__.location = 123, 456
     
-    @stage.location.should == [123, 456]
+    @__stage__.location.should == [123, 456]
   end
   
   it "should not allow name changes" do
-    lambda { @stage.name = "new name" }.should raise_error
+    lambda { @__stage__.name = "new name" }.should raise_error
   end
 
   it "should call scene.scene_opened at the end of opening a scene" do
     scene = make_mock("scene", :visible= => nil)
     scene.should_receive(:scene_opened)
 
-    @stage.frame.stub!(:open)
-    @stage.stub!(:load_scene)
-    @stage.open(scene)
+    @__stage__.frame.stub!(:open)
+    @__stage__.stub!(:load_scene)
+    @__stage__.open(scene)
   end
 
 end
