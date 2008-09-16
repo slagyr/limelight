@@ -100,7 +100,7 @@ module Limelight
       scene.stage = self
       scene.panel.snap_to_size
       if(has_static_size?(scene.style))
-        @frame.set_size(scene.panel.width, scene.panel.height)
+        @frame.set_size(scene.panel.width + @frame.getHorizontalInsetWidth, scene.panel.height + @frame.getVerticalInsetWidth)
       end
       @current_scene = scene
     end
@@ -135,7 +135,7 @@ module Limelight
 
     def has_static_size?(style)
       return is_static?(style.get_width) && is_static?(style.get_height)
-    end   
+    end
 
     def is_static?(value)
       return !(value.to_s.include?("%")) && !(value.to_s == "auto")

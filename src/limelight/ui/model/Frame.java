@@ -15,6 +15,7 @@ public class Frame extends JFrame
 {
   private Stage stage;
   protected RootPanel root;
+  private Insets insets;
 
   protected Frame()
   {
@@ -24,6 +25,7 @@ public class Frame extends JFrame
   {
     this.stage = stage;
     setContentPane(new LimelightContentPane(this));
+
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -49,7 +51,8 @@ public class Frame extends JFrame
 
   public void refresh()
   {
-    root.getPanel().setNeededUpdate(Updates.layoutAndPaintUpdate);
+    if(root != null)
+      root.getPanel().setNeededUpdate(Updates.layoutAndPaintUpdate);
   }
 
   public void load(Panel child)
@@ -85,6 +88,30 @@ public class Frame extends JFrame
     return root;
   }
 
+  public int getVerticalInsetWidth()
+  {
+    if(insets == null)
+      calculateInsets();
+    return getInsets().top + getInsets().bottom;
+  }
+
+  public int getHorizontalInsetWidth()
+  {
+    if(insets == null)
+      calculateInsets();
+    return getInsets().left + getInsets().right;
+  }
+
+  private void calculateInsets()
+  {
+    Dimension size = getSize();
+    setSize(0, 0);
+    setVisible(true);
+    insets = getInsets();
+    setVisible(false);
+    setSize(size);
+  }
+
   private class LimelightContentPane extends JPanel
   {
     private Frame frame;
@@ -95,8 +122,9 @@ public class Frame extends JFrame
     }
 
     public void paint(Graphics g)
-    {     
-      frame.getRoot().getPanel().setNeededUpdate(Updates.paintUpdate);
+    {
+      if(frame.getRoot() != null)
+        frame.getRoot().getPanel().setNeededUpdate(Updates.paintUpdate);
     }
   }
 }
