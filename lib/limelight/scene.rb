@@ -62,7 +62,7 @@ module Limelight
     end
     
     def load(path)
-      @production.producer.open_scene(path, @__stage__)
+      @production.producer.open_scene(path, @stage)
     end
     
     private ###############################################

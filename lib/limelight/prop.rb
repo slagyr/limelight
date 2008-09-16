@@ -7,16 +7,22 @@ require 'limelight/paint_action'
 require 'limelight/animation'
 
 module Limelight
+
+  # Prop is the fundamental building block of a scene.  A prop represents a rectangular area in the scene, of almost any dimension.
+  # It may have borders, backgrounds, margin, padding, and it may contain other props or text.  However it is the props'
+  # Styles that determine their size and appearance.
+  #
+  # A Prop may have one parent and many children.  Hense, when put together, they form a tree structure.  The Scene is
+  # the root Prop of a tree.
+  #
   class Prop
     
     class << self
 
-      def event(*syms)       
+      def event(event_symbol)
         @events ||= []
-        syms.each do |sym|
-          @events << sym unless @events.include?(sym)
-          define_method(sym) { |event|  } # do nothing by default
-        end
+        @events << event_symbol unless @events.include?(event_symbol)
+        define_method(event_symbol) { |event|  } # do nothing by default
       end
 
       def events
@@ -27,72 +33,100 @@ module Limelight
     
     include UI::Api::Prop
   
-    attr_reader :panel, :style, :hover_style, :children, :scene, :parent
-    attr_reader :name, :id, :players
-    getters :panel, :style, :hover_style, :scene, :name, :text
-    setters :text
-    
+    attr_reader :panel #:nodoc:
+    attr_reader :style, :hover_style, :children, :scene, :parent, :name, :id, :players
+    getters :panel, :style, :hover_style, :scene, :name, :text  #:nodoc:
+    setters :text #:nodoc:
+
+    # When creating a Prop, an optional Hash is accepted. These are called initialization options.
+    # The key/value pairs in the initialiaztion options will be used to
+    # set properties on the Prop, it Style, or included Player properties. These properties are not set
+    # until the prop is added to a Prop tree with a Scene.
+    #
     def initialize(hash = {})
       @options = hash
       @children = []
       @style = Styles::ScreenableStyle.new
       @panel = UI::Model::Panel.new(self)
     end
-    
+
+    # Add a Prop as a child of this Prop.
+    #
     def add(child)
       child.set_parent(self)
       @children << child
       @panel.add(child.panel)
     end
-     
+
+    # Same as add.  Returns self so adding may be chained.
+    #
+    #   prop << child1 << child2 << child3
+    #
     def <<(child)
       add(child)
       return self
     end
-    
+
+    # Allows the adding of child Props using the PropBuilder DSL.
+    #
+    #    prop.build do
+    #      child1 do
+    #        grand_child
+    #      end
+    #      child2
+    #    end
+    #
     def build(&block)
       require 'limelight/prop_builder'
       builder = Limelight::PropBuilder.new(self)
       builder.instance_eval(&block)
     end
-    
+
+    # Removes a child Prop.  The child Prop will be parentless after removal.
+    #
     def remove(child)
       if children.delete(child)
         @panel.remove(child.panel)
       end
     end
-    
+
+    # Removes all child Props.
+    #
     def remove_all
       @panel.remove_all
       @children = []
     end
-    
-    def add_controller(controller_module)
-      extend controller_module unless self.is_a?(controller_module)
+
+    # Injects the behavior of the specified Player into the Prop.  The Player must be a Module.
+    #
+    def include_player(player_module)
+      extend player_module unless self.is_a?(player_module)
     end
     
-    alias :include_player :add_controller
-    
-    def update
+    def update #:nodoc:
       return if(@scene.nil? || !@scene.visible)
       @panel.doLayout
       @panel.repaint
     end
     
-    def update_now
+    def update_now #:nodoc:
       return if(@scene.nil? || !@scene.visible)
       @panel.doLayout()
       @panel.paintImmediately(0, 0, @panel.width, @panel.height)
     end    
-    
+
+    # A hook to invoke behavior after a Prop is painted.
+    #
     def after_painting(flag = true, &block)
       if flag
         @panel.after_paint_action = PaintAction.new(&block)
       else
         @panel.after_paint_action = nil
       end
-    end 
-    
+    end
+
+    # Searches all children for a Prop with the given id.  Returns the desired Prop if found, nil otherwise.
+    #
     def find(id)
       return self if @id == id
       @children.each do |child|
@@ -101,73 +135,111 @@ module Limelight
       end
       return nil
     end   
-    
+
+    # Searches all children for Props with the specified name.  Returns an Array of matching Props. Returns an
+    # empty Array is none are found.
+    #
     def find_by_name(name, results = [])
       results << self if @name == name
       @children.each { |child| child.find_by_name(name, results) }
       return results
     end
-    
+
+    # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
+    # Some Players such as text_box, will cause the text to appear in the text_box.
+    #
     def text=(value)
       @panel.text = value
     end
-    
+
+    # Returns the text of the Prop.
+    #
     def text
       return panel.text
     end
     
     #TODO - MDM - DELETE ME
-    def stage
+    def stage #:nodoc:
       return scene.stage
     end
-    
+
+    # Returns the current Production this Prop lives in.
+    #
     def production
       return scene.production
     end
     
-    def to_s
+    def to_s #:nodoc:
       return "#{self.class.name}[id: #{@id}, name: #{@name}]"
     end
     
-    def inspect
+    def inspect #:nodoc:
       return self.to_s
     end
     
     # unusual name because it's not part of public api
-    def set_parent(parent)
+    def set_parent(parent) #:nodoc:
       @parent = parent
       set_scene parent.scene
     end
     
     # unusual name because it's not part of public api
-    def set_scene(scene)
+    def set_scene(scene) #:nodoc:
       return if scene == @scene || scene.nil?
       @scene = scene
       illuminate
       children.each { |child| child.set_scene(scene) }
     end
-    
+
+    # Allows the addition of extra initialization options.  Will raise an exception if the Prop has already been
+    # illuminated (added to a scene).
+    #
     def add_options(more_options)
       raise "Too late to add options" if @options.nil?
       @options.merge!(more_options)
     end
-    
+
+    # Returns a Box representing the relative bounds of the Prop. Is useful with usign the Pen.
+    #
+    #   box = prop.area
+    #   box.x, box.y # represents the Prop's location within its parent Prop
+    #   box.width, box.height # represents the Prop's dimensions
+    #
     def area
       return panel.get_box.clone
     end
-    
+
+    # Returns a Box representing the bounds inside the borders of the prop.  If the Prop's style has no margin or
+    # border_width, then this will be equivalant to area.
+    #
     def bordered_area
       return panel.get_box_inside_borders.clone
     end
-    
+
+    # Returns a Pen object. Pen objects allow to you to draw directly on the screen, withing to bounds of this Prop.
+    #
     def pen
       return Pen.new(panel.getGraphics)
     end
-    
+
+    # Plays a sound on the computers audio output.  The parameter is the filename of a .au sound file.
+    # This filename should relative to the root directory of the current Production, or an absolute path.
+    #
     def play_sound(filename)
       @panel.play_sound(@scene.loader.path_to(filename))
     end
 
+    # Initiate an animation loop.  Options may include :name (string), :updates_per_second (int: defaults to 60)
+    # An Animation object is returned.
+    # The provided block will be invoked :updates_per_second times per second until the Animation is stopped.
+    #
+    #    @animation = prop.animate(:updates_per_second => 20) do
+    #      prop.style.border_width = (prop.style.top_border_width.to_i + 1).to_s
+    #      @animation.stop if prop.style.top_border_width.to_i > 60
+    #    end
+    #
+    # This above example will cause the Prop's border to grow until it is 60 pixels wide.
+    #
     def animate(options={}, &block)
       animation = Animation.new(self, block, options)
       animation.start
@@ -175,11 +247,21 @@ module Limelight
     end
     
     # GUI Events ##########################################
-    
-    EVENTS = [:mouse_clicked, :mouse_entered, :mouse_exited, :mouse_pressed, :mouse_released, :mouse_dragged, :mouse_moved,
-         :key_typed, :key_pressed, :key_released, :focus_gained, :focus_lost, :button_pressed, :value_changed]
-         
-    event *EVENTS
+
+    event :mouse_clicked
+    event :mouse_entered
+    event :mouse_exited
+    event :mouse_pressed
+    event :mouse_released
+    event :mouse_dragged
+    event :mouse_moved
+    event :key_typed
+    event :key_pressed
+    event :key_released
+    event :focus_gained
+    event :focus_lost
+    event :button_pressed
+    event :value_changed
    
     private ###############################################
     

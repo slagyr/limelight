@@ -40,7 +40,7 @@ describe Limelight::Prop do
       end
     end
     
-    @prop.add_controller(TestController)
+    @prop.include_player(TestController)
     
     TestController.extended_prop.should == @prop
     @prop.respond_to?(:test_method).should == true
