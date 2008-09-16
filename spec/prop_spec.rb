@@ -85,6 +85,10 @@ describe Limelight::Prop do
   it "should get and set text" do
     @prop.text = "blah"
     @prop.text.should == "blah"
+    @prop.text = 123
+    @prop.text.should == "123"
+    @prop.text = nil
+    @prop.text.should == ""
   end
   
   it "should have controllers" do

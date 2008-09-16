@@ -149,7 +149,7 @@ module Limelight
     # Some Players such as text_box, will cause the text to appear in the text_box.
     #
     def text=(value)
-      @panel.text = value
+      @panel.text = value.to_s
     end
 
     # Returns the text of the Prop.

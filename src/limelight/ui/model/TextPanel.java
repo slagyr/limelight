@@ -24,7 +24,8 @@ import java.util.regex.Matcher;
 public class TextPanel extends BasePanel
 {
   public static final Pattern TAG_REGEX = Pattern.compile("<(\\w+)>(.*)</(\\1)>", Pattern.MULTILINE | Pattern.DOTALL);
-  public static double widthPadding = 2.0; // The text measuerments aren't always quite right.  This helps.
+  public static double widthPadding = 0; // The text measuerments aren't always quite right.  This helps.
+  //TODO widthPadding might not be needed any more... Was not calculating width the same way in two places.
 
   private String text;
   private PropablePanel panel;
@@ -72,8 +73,7 @@ public class TextPanel extends BasePanel
       for(TextLayout textLayout : lines)
       {
         y += textLayout.getAscent();
-        textLayout.draw(graphics, aligner.startingX(textLayout.getBounds().getWidth()), y);
-//System.err.println(text + ": textLayout.getBounds().getWidth() = " + textLayout.getBounds().getWidth());
+        textLayout.draw(graphics, aligner.startingX(widthOf(textLayout)), y);
         y += textLayout.getDescent() + textLayout.getLeading();
       }
     }
@@ -138,10 +138,8 @@ public class TextPanel extends BasePanel
             LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getRenderContext());
             while(lbm.getPosition() < paragraph.length())
             {
-              //TODO MDM - Wow! This is inefficient. The getChildConsumableArea has to be calculated every time!
               float width1 = (float) panel.getChildConsumableArea().width;
               TextLayout layout = lbm.nextLayout(width1);
-//System.err.println(text + ": available = " + width1 + " layout.getBounds().getWidth() = " + layout.getBounds().getWidth());
               lines.add(layout);
             }
           }
@@ -172,11 +170,16 @@ public class TextPanel extends BasePanel
       for(TextLayout layout : lines)
       {
         consumedHeight += (layout.getAscent() + layout.getDescent() + layout.getLeading());
-        double lineWidth = layout.getBounds().getWidth() + widthPadding;
+        double lineWidth = widthOf(layout);
         if(lineWidth > consumedWidth)
           consumedWidth = lineWidth;
       }
     }
+  }
+
+  private double widthOf(TextLayout layout)
+  {
+    return layout.getBounds().getWidth() + layout.getBounds().getX() + widthPadding;
   }
 
   public void setGraphics(Graphics graphics)
