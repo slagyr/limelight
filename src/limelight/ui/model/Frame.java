@@ -92,7 +92,10 @@ public class Frame extends JFrame
   {
     if(insets == null)
       calculateInsets();
-    return getInsets().top + getInsets().bottom;
+    int width = getInsets().top + getInsets().bottom;
+    if(getJMenuBar() != null)
+      width = width + getJMenuBar().getHeight();
+    return width;
   }
 
   public int getHorizontalInsetWidth()
