@@ -1,4 +1,5 @@
 
+require 'rake/rdoctask'
 
 task :release => [:verify_committed, :verify_user, :verify_password, :publish_packages, :tag, :publish_news]
 
@@ -11,19 +12,27 @@ task :verify_committed do
   end
 end
 
+desc 'Generate RDoc'
+rd = Rake::RDocTask.new do |rdoc|
+  rdoc.rdoc_dir = 'etc/rubyforge_site/rdoc'
+  rdoc.options << '--title' << 'Limelight' << '--line-numbers' << '--inline-source' << '--main' << 'README'
+  rdoc.rdoc_files.include('README', 'CHANGES', 'lib/**/*.rb')
+end
+task :rdoc
+
 desc "Upload Website to RubyForge"
-task :publish_website => [:verify_user, :verify_password] do
+task :publish_rubyforge_site => [:verify_user, :verify_password] do
   require 'rake/contrib/rubyforgepublisher'
   publisher = Rake::SshDirPublisher.new(
     "#{ENV['RUBYFORGE_USER']}@rubyforge.org",
     "/var/www/gforge-projects/#{PKG_NAME}",
-    "doc/rubyforge_site"
+    "etc/rubyforge_site"
   )
 
   publisher.upload
 end
 
-desc "Creates a tag in svn"
+desc "Creates a tag in git"
 task :tag do
   puts "Creating tag in git"
   system "git tag -a -m '#{PKG_TAG}' #{PKG_TAG}"
