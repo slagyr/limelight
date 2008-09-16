@@ -9,7 +9,7 @@ describe Limelight::Builtin::Players::TextArea do
 
   before(:each) do
     @prop = Limelight::Prop.new
-    @prop.add_controller(Limelight::Builtin::Players::TextArea)
+    @prop.include_player(Limelight::Builtin::Players::TextArea)
   end
   
   it "should have a JTextArea" do

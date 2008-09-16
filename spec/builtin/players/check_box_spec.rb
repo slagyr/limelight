@@ -9,7 +9,7 @@ describe Limelight::Builtin::Players::CheckBox do
 
   before(:each) do
     @prop = Limelight::Prop.new
-    @prop.add_controller(Limelight::Builtin::Players::CheckBox)
+    @prop.include_player(Limelight::Builtin::Players::CheckBox)
   end
   
   it "should have a TextField" do

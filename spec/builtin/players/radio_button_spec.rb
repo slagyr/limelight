@@ -38,12 +38,12 @@ describe Limelight::Builtin::Players::RadioButton do
     
     prop2 = Limelight::Prop.new
     @scene << prop2
-    prop2.add_controller(Limelight::Builtin::Players::RadioButton)
+    prop2.include_player(Limelight::Builtin::Players::RadioButton)
     prop2.group = "group 1"
     
     prop3 = Limelight::Prop.new
     @scene << prop3
-    prop3.add_controller(Limelight::Builtin::Players::RadioButton)
+    prop3.include_player(Limelight::Builtin::Players::RadioButton)
     prop3.group = "group 2"
     
     group1 = @scene.button_groups["group 1"]

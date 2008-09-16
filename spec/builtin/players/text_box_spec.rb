@@ -9,7 +9,7 @@ describe Limelight::Builtin::Players::TextBox do
 
   before(:each) do
     @prop = Limelight::Prop.new
-    @prop.add_controller(Limelight::Builtin::Players::TextBox)
+    @prop.include_player(Limelight::Builtin::Players::TextBox)
   end
 
   it "should have a TextField" do

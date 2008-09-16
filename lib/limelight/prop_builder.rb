@@ -16,7 +16,7 @@ module Limelight
     loader = options.delete(:build_loader)
     builder = SceneBuilder.new(options)
     builder.__loader__ = loader
-    builder.instance_eval(&block) if block
+    builder.instance_eval(&block) if block 
     return builder.__prop__
   end
 
