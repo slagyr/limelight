@@ -1,32 +1,33 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
-module Limelight
+    
+module Limelight #:nodoc:
 
   Main = Java::limelight.Main
   SceneLoader = Java::limelight.SceneLoader
   Context = Java::limelight.Context
   AnimationTask = Java::limelight.AnimationTask
 
-  module Styles
+  module Styles #:nodoc:
     Style = Java::limelight.styles.Style
     FlatStyle = Java::limelight.styles.FlatStyle
     RichStyle = Java::limelight.styles.RichStyle
     ScreenableStyle = Java::limelight.styles.ScreenableStyle
   end
 
-  module Util
+  module Util #:nodoc:
     Colors = Java::limelight.util.Colors
   end
 
-  module UI
+  module UI #:nodoc:
 
     ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
 
-    module Model
+    module Model #:nodoc:
       Frame = Java::limelight.ui.model.Frame
       Panel = Java::limelight.ui.model.PropPanel
-      module Inputs
+
+      module Inputs #:nodoc:
        ButtonPanel = Java::limelight.ui.model.inputs.ButtonPanel
        CheckBoxPanel = Java::limelight.ui.model.inputs.CheckBoxPanel
        ComboBoxPanel = Java::limelight.ui.model.inputs.ComboBoxPanel
@@ -36,20 +37,20 @@ module Limelight
       end
     end
 
-    module Api
+    module Api #:nodoc:
       Scene = Java::limelight.ui.api.Scene
       Prop = Java::limelight.ui.api.Prop
       Stage = Java::limelight.ui.api.Stage
       Theater = Java::limelight.ui.api.Theater
     end
 
-    module Painting
+    module Painting #:nodoc:
       PaintAction = Java::limelight.ui.painting.PaintAction
     end
 
   end
 
-  module Util
+  module Util #:nodoc:
 
     Packer = Java::limelight.io.Packer
 

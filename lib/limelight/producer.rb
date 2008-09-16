@@ -14,8 +14,15 @@ require 'limelight/production'
 
 module Limelight
 
+  # A Producer has the hefty responsibility of producing Productions.  Given a directory, it will load the neccessary
+  # files and create all the neccessary objects to bring a Production to life.
+  #
+  # For directory structures, see Limelight::Main
+  #
   class Producer
 
+    # Creates a new Producer and has it open a Production by specified name.
+    #
     def self.open(production_name)
       producer = new(production_name)
       producer.open
@@ -23,7 +30,10 @@ module Limelight
     
     attr_reader :loader, :theater, :production
     attr_writer :builtin_styles
-    
+
+    # A Production name, or root directory, must be provided. If not Theater is provided, one will be created.
+    # You may also provide an existing Production for which this Producer will interact.
+    #
     def initialize(root_path, theater=nil, production=nil)
       if(root_path[-4..-1] == ".llp")
         root_path = unpack_production(root_path)
@@ -32,12 +42,17 @@ module Limelight
       @theater = theater.nil? ? Theater.new : theater
       @production = production
     end
-    
+
+    # Returns the CastingDirector for this Production.
+    #
     def casting_director
       @casting_director = CastingDirector.new(loader) if not @casting_director
       return @casting_director
     end
-    
+
+    # Opens the Production specified during construction. If the file 'init.rb' exists in the root directory of the
+    # Production, it will be loaded before anything else.
+    #
     def open()
       establish_production
       Kernel.load(@loader.path_to("init.rb")) if @loader.exists?("init.rb")
@@ -49,6 +64,8 @@ module Limelight
       @casting_director = nil
     end
 
+    # Opens the specified Scene onto the Spcified Stage.
+    #
     def open_scene(path, stage)
       styles = load_styles(path)
       merge_with_root_styles(styles)
@@ -57,7 +74,9 @@ module Limelight
 
       stage.open(scene)
     end
-    
+
+    # Loads the 'stages.rb' file and configures all the Stages in the Production.
+    #
     def load_stages
       content = @loader.load("stages.rb")
       stages = Limelight.build_stages(@theater) do
@@ -69,7 +88,9 @@ module Limelight
       end
       return stages
     end
-    
+
+    # Loads of the 'props.rb' file for a particular Scene and creates all the Prop objects and Scene.
+    #
     def load_props(path, options = {})
       return Scene.new(options) if path.nil?
       filename = File.join(path, "props.rb")
@@ -83,7 +104,9 @@ module Limelight
         end
       end
     end
-    
+
+    # Loads the specified 'styles.rb' file and created a Hash of Styles.
+    #
     def load_styles(path)
       styles = builtin_styles
       return styles if path.nil?
@@ -98,7 +121,9 @@ module Limelight
         end
       end
     end
-    
+
+    # Loads the 'production.rb' file if it exists and configures the Production.
+    #
     def establish_production
       return if @production
       if @loader.exists?("production.rb")
@@ -115,6 +140,9 @@ module Limelight
       end      
     end
 
+    # A production with multiple Scenes may have a 'styles.rb' file in the root directory.  This is called the
+    # root_style.  This method loads the root_styles, if they haven't already been loaded, and returns them.
+    #
     def root_styles
       return @root_syles if @root_syles
       if @loader.exists?('styles.rb')

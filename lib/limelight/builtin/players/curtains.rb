@@ -5,7 +5,7 @@ module Limelight
   module Builtin
     module Players
 
-      module Curtains
+      module Curtains #:nodoc:
 
         def open
           scene.remove(self)

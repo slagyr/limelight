@@ -4,7 +4,7 @@
 module BrowseButton
 
   def mouse_clicked(e)
-    scene.open_chosen_scene
+    scene.open_chosen_production
   end
 
 end

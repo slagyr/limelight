@@ -5,7 +5,7 @@ module Limelight
   module Builtin
     module Players
 
-      module ComboBoxPopupList
+      module ComboBoxPopupList #:nodoc:
 
         attr_accessor :curtains
 

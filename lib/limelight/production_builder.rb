@@ -5,13 +5,26 @@ require 'limelight/production'
 require 'limelight/limelight_exception'
 
 module Limelight
-  
+
+  # A trigger to configure Production objects using the ProductionBuilder DSL.
+  #
+  # See Limelight::ProductionBuilder
+  #
   def self.build_production(producer, theater, &block)
     builder = ProductionBuilder.new(producer, theater)
     builder.instance_eval(&block) if block
     return builder.__production__
   end
-  
+
+  # The basis of the DSL for building Style objects.
+  #
+  #  name "Stage Composer"
+  #  attribute :controller
+  #  attribute :inspector
+  #
+  # The above example names the Production 'Stage Composer' and creates two attributes on the Production: 'controller'
+  # and 'inspector'
+  #
   class ProductionBuilder
     
     class << self
@@ -26,12 +39,14 @@ module Limelight
       @__production__ = Production.new(producer, theater)
     end
     
-    def method_missing(sym, value)
+    def method_missing(sym, value) #:nodoc:
       setter_sym = "#{sym}=".to_s
       raise ProductionBuilderException.new(sym) if !@__production__.respond_to?(setter_sym)
       @__production__.send(setter_sym, value)
     end
-    
+
+    # Creates an attribute on the Production
+    #
     def attribute(sym)
       ProductionBuilder.current_attribute = sym
       class << @__production__
@@ -39,7 +54,9 @@ module Limelight
       end
     end
   end
-  
+
+  # Thrown if there is an error in the ProductionBuilder DSL
+  #
   class ProductionBuilderException < LimelightException
     def initialize(name)
       super("'#{name}' is not a valid production property")

@@ -110,8 +110,7 @@ module Limelight
     end
   end
 
-  # :nodoc:
-  class SceneBuilder < PropBuilder
+  class SceneBuilder < PropBuilder # :nodoc:
     def initialize(options)
       @__prop__ = Scene.new(options)
     end

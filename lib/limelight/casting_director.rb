@@ -4,7 +4,12 @@
 require 'limelight/builtin/players'
 
 module Limelight
-  
+
+  # The CastingDirector is responsible for finding Players for Props within a Production.
+  # Each Producer has an instance of a CastingDirector
+  #
+  # Users of Limelight need not be concerned with this class.
+  #
   class CastingDirector
     
     def initialize(loader)

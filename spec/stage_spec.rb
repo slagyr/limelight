@@ -33,7 +33,7 @@ describe Limelight::Stage do
     @__stage__.size.should == [123, 456]
   end
   
-  it "should have size" do
+  it "should have location" do
     @__stage__.location.should == [200, 25]
     
     @__stage__.location = 123, 456
