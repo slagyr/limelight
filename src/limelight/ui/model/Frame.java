@@ -92,17 +92,14 @@ public class Frame extends JFrame
   {
     if(insets == null)
       calculateInsets();
-    int width = getInsets().top + getInsets().bottom;
-    if(getJMenuBar() != null)
-      width = width + getJMenuBar().getHeight();
-    return width;
+    return insets.top + insets.bottom;
   }
 
   public int getHorizontalInsetWidth()
   {
     if(insets == null)
       calculateInsets();
-    return getInsets().left + getInsets().right;
+    return insets.left + insets.right;
   }
 
   private void calculateInsets()
@@ -113,6 +110,8 @@ public class Frame extends JFrame
     insets = getInsets();
     setVisible(false);
     setSize(size);
+    if(getJMenuBar() != null)
+      insets.top += getJMenuBar().getHeight();
   }
 
   private class LimelightContentPane extends JPanel

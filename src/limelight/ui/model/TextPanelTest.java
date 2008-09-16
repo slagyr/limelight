@@ -13,12 +13,8 @@ import javax.swing.*;
 import java.awt.font.TextLayout;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
-import java.awt.*;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 
 public class TextPanelTest extends TestCase
 {
@@ -76,7 +72,7 @@ public class TextPanelTest extends TestCase
     useFrame();
     style.setFontSize("40");
     panel.doLayout();
-    assertEquals(79, panel.getWidth());
+    assertEquals(80, panel.getWidth());
     assertEquals(138, panel.getHeight());
   }
 
