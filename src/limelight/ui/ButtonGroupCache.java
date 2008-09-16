@@ -19,7 +19,7 @@ public class ButtonGroupCache
   {
     if(!cache.containsKey(groupName))
       cache.put(groupName, new ButtonGroup());
-     return cache.get(groupName);
+    return cache.get(groupName);
   }
 
   public Hashtable<String, ButtonGroup> getCache()

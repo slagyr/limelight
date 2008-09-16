@@ -2,8 +2,8 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 module Limelight
-  ButtonGroupCache = UI::ButtonGroupCache
-  class ButtonGroupCache
+  ButtonGroupCache = UI::ButtonGroupCache #:nodoc:
+  class ButtonGroupCache #:nodoc:
     def [](key)
       return self.get(key)
     end

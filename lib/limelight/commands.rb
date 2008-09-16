@@ -1,14 +1,18 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'optparse'
-
 module Limelight
 
   DEFAULT_PRODUCTION = File.expand_path(File.dirname(__FILE__) + "/../../productions/startup")
 
+  # Commands used in the Main method.
+  #
   module Commands
 
+    # Opens a Production
+    #
+    #   jruby -S limelight open <production_name>
+    #
     class OpenProduction
       def self.description
         return "Open a limelight production or scene."
@@ -22,6 +26,10 @@ module Limelight
       end
     end
 
+    # Compresses the specified Production into a single .llp file.
+    #
+    #   jruby -S limelight pack <production_name>
+    #
     class PackProduction
       def self.description
         return "Pack the designated limelight production into a .llp file."

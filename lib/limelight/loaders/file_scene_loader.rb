@@ -4,7 +4,7 @@
 module Limelight
   module Loaders
     
-    class FileSceneLoader
+    class FileSceneLoader #:nodoc:
       
       include SceneLoader
     

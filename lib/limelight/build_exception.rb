@@ -2,6 +2,9 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 module Limelight
+
+  # An Exception used by many of the DSL Builders.  Allows nice errors messages, with line numbers, to be printed.
+  #
   class BuildException < Exception
 
     attr_reader :filename, :line_number

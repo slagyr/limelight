@@ -3,16 +3,24 @@
 
 module Limelight
 
+  # Utility methods for Limelight
+  #
   module Util
 
+    # Returns true if the specified file is a directory and has the structure of a Scene.
+    #
     def self.is_limelight_scene?(file)
       return is_directory_containing_file?(file, "props.rb")
     end
 
+    # Returns true if the specified file is a directory and has the structure of a Production.
+    #
     def self.is_limelight_production?(file)
       return is_directory_containing_file?(file, "stages.rb")
     end
 
+    # Returns true of the file is a directory containing an entry named file_name.
+    #
     def self.is_directory_containing_file?(file, file_name)
       if file.is_a? String
         return File.directory?(file) && File.exists?(File.join(file, file_name))
@@ -21,6 +29,9 @@ module Limelight
       end
     end
 
+    # Removed all methods from a class except instance_eval and methods starting with __.
+    # This is used by the DSL Builder classes to minimize reserved keywords.
+    #
     def self.lobotomize(klass)
       klass.methods.each do |method_name|
         unless method_name[0..1] == "__" || method_name == "instance_eval"

@@ -5,7 +5,7 @@ module Limelight
   module Builtin
     module Players
 
-      module ComboBoxPopupListItem
+      module ComboBoxPopupListItem #:nodoc:
 
         attr_accessor :combo_box
 

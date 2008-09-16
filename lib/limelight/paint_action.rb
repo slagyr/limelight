@@ -4,8 +4,10 @@
 require 'limelight/pen'
 
 module Limelight
-  
-  class PaintAction 
+
+  # A PaintAction is created by Prop.after_painting.
+  #
+  class PaintAction #:nodoc:
     
     include UI::Painting::PaintAction
     

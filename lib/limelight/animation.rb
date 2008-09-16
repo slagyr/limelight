@@ -1,20 +1,40 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-class Animation < Limelight::AnimationTask
+module Limelight
 
-  def initialize(prop, block, options={})
-    @block = block
-    name = options[:name] || "#{prop.to_s} animation"
-    updates_per_second = options[:updates_per_second] || 60
-    super(name, updates_per_second, prop.panel)
+  # An object to manage a seqeunce of changes, assuably to a prop.  The Animation object is constructed with options
+  # and a block.  Once the Animation is started, the block is invoked repeatedly until the Animation is stopped.
+  #
+  # Although, this object does not update the screen, it provides a means to perform sequential updates in evenly
+  # spaced time frames.
+  #
+  class Animation < Limelight::AnimationTask
+
+    # A Prop and block are required to construct an Animation.  Options may include :name (string), :updates_per_second
+    # (int defaults to 60)
+    #
+    #   animation = Animation.new(prop, Proc.new { "do something"}, :updates_per_second => 20)
+    #   animation.start
+    #   # time passes
+    #   animation.stop
+    #
+    def initialize(prop, block, options={})
+      @block = block
+      name = options[:name] || "#{prop.to_s} animation"
+      updates_per_second = options[:updates_per_second] || 60
+      super(name, updates_per_second, prop.panel)
+    end
+
+    def doPerform #:nodoc:
+      @block.call
+    end
+
+    # Lets you know if the animation is currently running or not.
+    #
+    def running?
+      return is_running
+    end
   end
 
-  def doPerform
-    @block.call 
-  end        
-
-  def running?
-    return is_running
-  end
 end
