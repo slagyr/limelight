@@ -4,6 +4,10 @@
 
 Minor Fixes
 * stripped DSL builder of all methods except those needed.
+* catch uneeded paint updates
+* text measurement fixed
+* frame insets detectable and used in sizing
+* rdoc
 
 == Version 0.2.0
 
