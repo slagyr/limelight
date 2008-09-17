@@ -26,7 +26,7 @@ public class PaintUpdate extends Update
   protected void paintPanel(Panel panel)
   {
     Box bounds = getAbsoluteBounds(panel);
-    if(bounds.width == 0 || bounds.height == 0)
+    if(bounds.width <= 0 || bounds.height <= 0)
       return;
     PaintJob job = new PaintJob(bounds);
     RootPanel rootPanel = panel.getRoot();
