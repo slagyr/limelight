@@ -9,19 +9,19 @@ module Limelight
 
     # Returns true if the specified file is a directory and has the structure of a Scene.
     #
-    def self.is_limelight_scene?(file)
-      return is_directory_containing_file?(file, "props.rb")
+    def self.is_limelight_scene?(dir)
+      return directory_contains_file(dir, "props.rb")
     end
 
     # Returns true if the specified file is a directory and has the structure of a Production.
-    #
+    dir
     def self.is_limelight_production?(file)
-      return is_directory_containing_file?(file, "stages.rb")
+      return directory_contains_file(dir, "stages.rb")
     end
 
     # Returns true of the file is a directory containing an entry named file_name.
     #
-    def self.is_directory_containing_file?(file, file_name)
+    def self.directory_contains_file(file, file_name)
       if file.is_a? String
         return File.directory?(file) && File.exists?(File.join(file, file_name))
       else

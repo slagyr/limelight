@@ -5,7 +5,7 @@ module Limelight
 
   # This module is for reference only.  The Style class is a java class for various reasons.
   #
-  module Styles
+  class Styles
     # Specifies the Width of a prop.
     #
     #   style.width = <value>
