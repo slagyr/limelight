@@ -1,6 +1,16 @@
 = Limelight
 
-simple, dynamic, user interfaces. 
+simple, dynamic, user interfaces.
+
+== Preparing Development Environment
+  git clone git://github.com/slagyr/limelight.git
+  cd limelight
+  ant
+  jruby -S rake init
+  jruby -S rake tests
+
+Try it out:
+   bin/limelight open productions/examples/sandbox
 
 == API
 
