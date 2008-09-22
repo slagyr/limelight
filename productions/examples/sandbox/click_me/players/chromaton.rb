@@ -18,7 +18,6 @@ module Chromaton
     new_random_color
     new_random_size
     update_text
-    parent.update
   end
   
   private

@@ -16,7 +16,7 @@ limelight_builtin_players_combo_box_popup_list {
   rounded_corner_radius 5
   border_width 1
   border_color "#dcdcdc"
-  vertical_scroll_bar :on
+  vertical_scrollbar :on
   min_height 50
   max_height 200
 }

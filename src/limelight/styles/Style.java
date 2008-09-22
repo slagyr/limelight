@@ -23,8 +23,8 @@ public abstract class Style
   public static final StyleDescriptor MIN_HEIGHT = descriptor("Min Height", "none");
   public static final StyleDescriptor MAX_WIDTH = descriptor("Max Width", "none");
   public static final StyleDescriptor MAX_HEIGHT = descriptor("Max Height", "none");
-  public static final StyleDescriptor VERTICAL_SCROLLBAR = descriptor("Vertical Scrollbar", "auto");
-  public static final StyleDescriptor HORIZONTAL_SCROLLBAR = descriptor("Horizontal Scrollbar", "auto");
+  public static final StyleDescriptor VERTICAL_SCROLLBAR = descriptor("Vertical Scrollbar", "off");
+  public static final StyleDescriptor HORIZONTAL_SCROLLBAR = descriptor("Horizontal Scrollbar", "off");
   public static final StyleDescriptor TOP_BORDER_COLOR = descriptor("Top Border Color", "black");
   public static final StyleDescriptor RIGHT_BORDER_COLOR = descriptor("Right Border Color", "black");
   public static final StyleDescriptor BOTTOM_BORDER_COLOR = descriptor("Bottom Border Color", "black");
@@ -787,28 +787,28 @@ public abstract class Style
     put(Y, value);
   }
 
-  public void setScrollBars(String value)
+  public void setScrollbars(String value)
   {
     put(VERTICAL_SCROLLBAR, value);
     put(HORIZONTAL_SCROLLBAR, value);
   }
 
-  public String getVerticalScrollBar()
+  public String getVerticalScrollbar()
   {
     return get(VERTICAL_SCROLLBAR);
   }
 
-  public String getHorizontalScrollBar()
+  public String getHorizontalScrollbar()
   {
     return get(HORIZONTAL_SCROLLBAR);
   }
 
-  public void setVerticalScrollBar(String value)
+  public void setVerticalScrollbar(String value)
   {
     put(VERTICAL_SCROLLBAR, value);
   }
 
-  public void setHorizontalScrollBar(String value)
+  public void setHorizontalScrollbar(String value)
   {
     put(HORIZONTAL_SCROLLBAR, value);
   }

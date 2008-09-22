@@ -14,8 +14,7 @@ module Limelight
     end
 
     # Returns true if the specified file is a directory and has the structure of a Production.
-    dir
-    def self.is_limelight_production?(file)
+    def self.is_limelight_production?(dir)
       return directory_contains_file(dir, "stages.rb")
     end
 

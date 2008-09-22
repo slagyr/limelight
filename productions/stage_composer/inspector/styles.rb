@@ -60,8 +60,8 @@ style_name {
   height "100%"
   vertical_alignment :center
   horizontal_alignment :right
-  getHorizontalScrollBar :off
-  getVerticalScrollBar :off
+  horizontal_scrollbar :off
+  vertical_scrollbar :off
 }
 
 style_value {
