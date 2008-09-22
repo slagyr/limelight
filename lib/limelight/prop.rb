@@ -86,6 +86,7 @@ module Limelight
     #
     def remove(child)
       if children.delete(child)
+        @scene.unindex_prop(child) if @scene
         @panel.remove(child.panel)
       end
     end
@@ -94,6 +95,7 @@ module Limelight
     #
     def remove_all
       @panel.remove_all
+      @children.each { |child| @scene.unindex_prop(child) } if @scene
       @children = []
     end
 
@@ -124,17 +126,6 @@ module Limelight
         @panel.after_paint_action = nil
       end
     end
-
-    # Searches all children for a Prop with the given id.  Returns the desired Prop if found, nil otherwise.
-    #
-    def find(id)
-      return self if @id == id
-      @children.each do |child|
-        result = child.find(id)
-        return result if result
-      end
-      return nil
-    end   
 
     # Searches all children for Props with the specified name.  Returns an Array of matching Props. Returns an
     # empty Array is none are found.
@@ -268,7 +259,7 @@ module Limelight
     def illuminate     
       return if @options.nil?
 
-      @id = @options.delete(:id)
+      set_id(@options.delete(:id))
       @name = @options.delete(:name)
       @players = @options.delete(:players)
       @additional_styles = @options.delete(:styles)
@@ -278,6 +269,12 @@ module Limelight
       apply_options
       
       @options = nil
+    end
+
+    def set_id(id)
+      return if id.nil? || id.to_s.empty?
+      @id = id.to_s
+      @scene.index_prop(self)
     end
     
     def apply_options

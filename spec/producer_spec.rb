@@ -35,7 +35,7 @@ describe Limelight::Producer do
     scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
     scene.children.size.should == 1
     scene.children[0].name.should == "child"
-    scene.children[0].id.should == 321
+    scene.children[0].id.should == "321"
   end
 
   it "should load props even when props.rd doesn't exist." do
