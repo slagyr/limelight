@@ -341,7 +341,7 @@
       <exclude />
       <variables />
     </win32>
-    <macos name="Mac OS X Single Bundle" id="25" mediaFileName="" installDir="Limelight 0.2.0" overridePrincipalLanguage="false" requires64bit="false" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" launcherId="18">
+    <macos name="Mac OS X Single Bundle" id="25" mediaFileName="" installDir="Limelight" overridePrincipalLanguage="false" requires64bit="false" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" launcherId="18">
       <excludedComponents />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />

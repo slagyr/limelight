@@ -22,7 +22,7 @@ input_log {
 	width "100%"
 	background_color "#999"
 	text_color "black"
-#  vertical_scroll_bar :on
+#  vertical_scrollbar :on
 }
 	
 input_results {

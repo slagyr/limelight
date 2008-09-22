@@ -32,5 +32,19 @@ describe Limelight::Styles do
 #    end
 #  end
 
+#  it "should generate code" do
+#    Limelight::Styles::Style::STYLE_LIST.each do |descriptor|
+#      const_name = const_format(descriptor.name)
+#      method_name = method_format(descriptor.name)
+#      spaces = 40 - const_name.length
+#      puts "<tr>"
+#      puts "\t<td>'''#{method_name}'''</td>"
+#      puts "\t<td></td>"
+#      puts "\t<td>#{descriptor.defaultValue}</td>"
+#      puts "\t<td></td>"
+#      puts "</tr>"
+#    end
+#  end
+
 
 end

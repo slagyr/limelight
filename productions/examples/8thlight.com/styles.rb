@@ -6,7 +6,7 @@ page {
 	height "100%"
 	horizontal_alignment "center"
 	background_image "images/bg.jpg"
-  vertical_scroll_bar :on
+  vertical_scrollbar :on
 }
 	
 main_column {

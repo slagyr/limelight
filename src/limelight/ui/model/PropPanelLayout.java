@@ -251,13 +251,13 @@ public class PropPanelLayout
   public void establishScrollBars()
   {
     Style style = panel.getStyle();
-    if(panel.getVerticalScrollBar() == null && "on".equals(style.getVerticalScrollBar()))
+    if(panel.getVerticalScrollBar() == null && "on".equals(style.getVerticalScrollbar()))
       panel.addVerticalScrollBar();
-    else if(panel.getVerticalScrollBar() != null && "off".equals(style.getVerticalScrollBar()))
+    else if(panel.getVerticalScrollBar() != null && "off".equals(style.getVerticalScrollbar()))
       panel.removeVerticalScrollBar();
-    if(panel.getHorizontalScrollBar() == null && "on".equals(style.getHorizontalScrollBar()))
+    if(panel.getHorizontalScrollBar() == null && "on".equals(style.getHorizontalScrollbar()))
       panel.addHorizontalScrollBar();
-    else if(panel.getHorizontalScrollBar() != null && "off".equals(style.getHorizontalScrollBar()))
+    else if(panel.getHorizontalScrollBar() != null && "off".equals(style.getHorizontalScrollbar()))
       panel.removeHorizontalScrollBar();
 
   }

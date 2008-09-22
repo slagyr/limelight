@@ -23,8 +23,8 @@ public class StyleTest extends TestCase
 
   public void testScrolling() throws Exception
   {
-    assertEquals("auto", Style.VERTICAL_SCROLLBAR.defaultValue);
-    assertEquals("auto", Style.HORIZONTAL_SCROLLBAR.defaultValue);
+    assertEquals("off", Style.VERTICAL_SCROLLBAR.defaultValue);
+    assertEquals("off", Style.HORIZONTAL_SCROLLBAR.defaultValue);
   }
 
   public void testBackgroundDefaults() throws Exception

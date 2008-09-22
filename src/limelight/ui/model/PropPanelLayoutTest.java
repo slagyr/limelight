@@ -308,7 +308,7 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(0, parent.getChildren().size());
     assertEquals(null, parent.getVerticalScrollBar());
     assertEquals(null, parent.getHorizontalScrollBar());
-    parent.getStyle().setScrollBars("on");
+    parent.getStyle().setScrollbars("on");
 
     layout.establishScrollBars();
 
@@ -319,13 +319,13 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testRemovingScrollBars() throws Exception
   {
-    parent.getStyle().setScrollBars("on");
+    parent.getStyle().setScrollbars("on");
     layout.establishScrollBars();
     assertEquals(2, parent.getChildren().size());
     assertNotNull(parent.getVerticalScrollBar());
     assertNotNull(parent.getHorizontalScrollBar());
 
-    parent.getStyle().setScrollBars("off");
+    parent.getStyle().setScrollbars("off");
     layout.establishScrollBars();
     assertEquals(0, parent.getChildren().size());
     assertNull(parent.getVerticalScrollBar());
@@ -334,7 +334,7 @@ public class PropPanelLayoutTest extends TestCase
   
   public void testScrollBarLayout() throws Exception
   {
-    parent.getStyle().setScrollBars("on");
+    parent.getStyle().setScrollbars("on");
 
     layout.doLayout();
 
@@ -353,7 +353,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
-    panel.getStyle().setScrollBars("on");
+    panel.getStyle().setScrollbars("on");
 
     layout.doLayout();
 
@@ -363,7 +363,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testScrollBarsDontGetLayoutLikeOtherProps() throws Exception
   {
-    parent.getStyle().setScrollBars("on");
+    parent.getStyle().setScrollbars("on");
     layout.doLayout();
 
     PropPanel panel = new PropPanel(new MockProp());
@@ -378,7 +378,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testScrollAdjusting() throws Exception
   {
-    parent.getStyle().setScrollBars("on");
+    parent.getStyle().setScrollbars("on");
     layout.doLayout();
 
     PropPanel panel = new PropPanel(new MockProp());
@@ -393,7 +393,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testLayoutRowsWithScrollOffsets() throws Exception
   {
-    parent.getStyle().setScrollBars("on");
+    parent.getStyle().setScrollbars("on");
     PropPanel panel = new PropPanel(new MockProp());
     panel.getStyle().setWidth("200");
     panel.getStyle().setHeight("300");
