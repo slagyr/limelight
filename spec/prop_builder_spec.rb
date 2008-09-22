@@ -117,11 +117,11 @@ describe Limelight::SceneBuilder do
       __install "external.rb"
     end
 
-    root.id.should == 321
+    root.id.should == "321"
     root.children.size.should == 1
     child = root.children[0]
     child.name.should == "child"
-    child.id.should == 123
+    child.id.should == "123"
   end
 
   it "should fail if no loader is provided" do

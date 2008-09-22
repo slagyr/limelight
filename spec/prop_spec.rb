@@ -65,14 +65,14 @@ describe Limelight::Prop do
   
   it "should find children by id" do
     build_prop_tree
-    @prop.find("blah").should == nil
-    @prop.find("root").should be(@prop)
-    @prop.find("child1").should be(@child1)
-    @prop.find("child2").should be(@child2)
-    @prop.find("grand_child1").should be(@grand_child1)
-    @prop.find("grand_child2").should be(@grand_child2)
-    @prop.find("grand_child3").should be(@grand_child3)
-    @prop.find("grand_child4").should be(@grand_child4)
+    @scene.find("blah").should == nil
+    @scene.find("root").should be(@prop)
+    @scene.find("child1").should be(@child1)
+    @scene.find("child2").should be(@child2)
+    @scene.find("grand_child1").should be(@grand_child1)
+    @scene.find("grand_child2").should be(@grand_child2)
+    @scene.find("grand_child3").should be(@grand_child3)
+    @scene.find("grand_child4").should be(@grand_child4)
   end
   
   it "should find children by name" do
@@ -276,6 +276,36 @@ describe Limelight::Prop do
 
     @prop.play_sound("some.au")
   end
+
+  #TODO remove_all should not remove scrollbars
+
+  describe "id" do
+
+    it "should index its id when illuminated" do
+      @scene.find("root").should == @prop  
+    end
+
+    it "should unindex ids when removing children" do
+      child = Limelight::Prop.new(:id => "child")
+      @prop << child
+      @scene.find("child").should == child
+
+      @prop.remove(child)
+
+      @scene.find("child").should == nil
+    end
+
+    it "should unindex ids when removing all children" do
+      child1 = Limelight::Prop.new(:id => "child1")
+      child2 = Limelight::Prop.new(:id => "child2")
+      @prop << child1 << child2
+
+      @prop.remove_all
+
+      @scene.find("child1").should == nil
+      @scene.find("child2").should == nil
+    end
+
+  end
   
 end
-

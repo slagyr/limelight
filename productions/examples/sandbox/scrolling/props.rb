@@ -6,33 +6,33 @@ __install "header.rb"
 arena do
   table :scrollbars => "on", :id => "one_table" do
     10.times do |y|
-      row :id => y.to_s do
+      row :id => "a_#{y}" do
         10.times do |x|
-          id = "#{x},#{y}"
+          id = "a_#{x},#{y}"
           bg_color = ( (x + y) % 2 == 0 ) ? "blue" : "#DDDDDD"
-          cell :id => id, :text => id, :background_color => bg_color
+          cell :id => id, :text => "#{x},#{y}", :background_color => bg_color
         end
       end
     end
   end
   table :vertical_scrollbar => "off", :horizontal_scrollbar => "on", :id => "two_table" do
     2.times do |y|
-      row :id => y.to_s do
+      row :id => "b_#{y}" do
         10.times do |x|
-          id = "#{x},#{y}"
+          id = "b_#{x},#{y}"
           bg_color = ( (x + y) % 2 == 0 ) ? "blue" : "#DDDDDD"
-          cell :id => id, :text => id, :background_color => bg_color
+          cell :id => id, :text => "#{x},#{y}", :background_color => bg_color
         end
       end
     end
   end
   table :vertical_scrollbar => "on", :horizontal_scrollbar => "off", :id => "three_table" do
     10.times do |y|
-      row :id => y.to_s do
+      row :id => "c_#{y}" do
         2.times do |x|
-          id = "#{x},#{y}"
+          id = "c_#{x},#{y}"
           bg_color = ( (x + y) % 2 == 0 ) ? "blue" : "#DDDDDD"
-          cell :id => id, :text => id, :background_color => bg_color
+          cell :id => id, :text => "#{x},#{y}", :background_color => bg_color
         end
       end
     end

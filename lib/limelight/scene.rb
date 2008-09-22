@@ -4,6 +4,7 @@
 require 'limelight/java_util'
 require 'limelight/prop'
 require 'limelight/button_group_cache'
+require 'limelight/limelight_exception'
 
 module Limelight
 
@@ -24,6 +25,7 @@ module Limelight
       super(options)
       @scene = self
       @button_groups = ButtonGroupCache.new
+      @prop_index = {}
       illuminate
     end
   
@@ -65,6 +67,30 @@ module Limelight
     #
     def load(scene_name)
       @production.producer.open_scene(scene_name, @stage)
+    end
+
+    # Add the Prop to the index.  Provides fast lookup by id.
+    #
+    def index_prop(prop)
+      return if prop.id.nil? || prop.id.empty?
+      indexee = @prop_index[prop.id]
+      if indexee.nil?
+        @prop_index[prop.id] = prop
+      else
+        raise LimelightException.new("Duplicate id: #{prop.id}") if indexee != prop
+      end
+    end
+
+    # Removed the Prop from the index.
+    #
+    def unindex_prop(prop)
+     @prop_index.delete(prop.id) if prop.id
+    end
+
+    # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene. 
+    #
+    def find(id)
+     return @prop_index[id.to_s]
     end
     
     private ###############################################
