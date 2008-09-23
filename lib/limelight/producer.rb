@@ -59,7 +59,7 @@ module Limelight
       if @loader.exists?("stages.rb")
         load_stages.each { |stage| open_scene(stage.default_scene, stage) }
       else
-        open_scene('.', @theater.default_stage)
+        open_scene(@loader.root, @theater.default_stage)
       end
       @casting_director = nil
     end
@@ -128,7 +128,7 @@ module Limelight
       return if @production
       if @loader.exists?("production.rb")
         content = @loader.load("production.rb")
-        @production = Limelight.build_production(self, @theater) do
+        @production = Limelight.build_production(@loader.root, self, @theater) do
           begin
             eval content
           rescue Exception => e
@@ -136,7 +136,7 @@ module Limelight
           end
         end
       else
-        @production = Production.new(self, @theater)
+        @production = Production.new(@loader.root, self, @theater)
       end      
     end
 

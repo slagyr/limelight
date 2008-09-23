@@ -51,11 +51,12 @@ module Limelight
       
     end
     
-    attr_reader :producer, :theater, :name
+    attr_reader :path, :producer, :theater, :name
 
     # Users typically need not create Production objects.
     #
-    def initialize(producer, theater)
+    def initialize(path, producer, theater)
+      @path = path
       @producer = producer
       @theater = theater
       self.class.index(self)

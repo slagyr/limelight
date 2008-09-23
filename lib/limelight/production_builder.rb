@@ -10,8 +10,8 @@ module Limelight
   #
   # See Limelight::ProductionBuilder
   #
-  def self.build_production(producer, theater, &block)
-    builder = ProductionBuilder.new(producer, theater)
+  def self.build_production(path, producer, theater, &block)
+    builder = ProductionBuilder.new(path, producer, theater)
     builder.instance_eval(&block) if block
     return builder.__production__
   end
@@ -35,8 +35,8 @@ module Limelight
     
     attr_reader :__production__
     
-    def initialize(producer, theater)
-      @__production__ = Production.new(producer, theater)
+    def initialize(path, producer, theater)
+      @__production__ = Production.new(path, producer, theater)
     end
     
     def method_missing(sym, value) #:nodoc:
