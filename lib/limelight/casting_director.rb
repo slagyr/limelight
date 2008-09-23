@@ -11,77 +11,105 @@ module Limelight
   # Users of Limelight need not be concerned with this class.
   #
   class CastingDirector
-    
+
     def initialize(loader)
       @loader = loader
       @known_players = {}
     end
-    
+
     def fill_cast(prop)
+      raise LimelightException.new("Cannot cast a Prop without a Scene.") if prop.scene.nil?
       cast_default_player(prop)
       cast_additional_players(prop)
     end
-    
+
     private ###############################################
-    
+
     def cast_default_player(prop)
       return if prop.name.nil? || prop.name.empty?
-      prop.include_player(@known_players[prop.name]) if player_exists?(prop, prop.name)
+      cast_player(prop, prop.name)
     end
-    
+
     def cast_additional_players(prop)
       return if prop.players.nil? || prop.players.empty?
       player_names = prop.players.split(/[ ,]/)
       player_names.each do |player_name|
-        apply_player(prop, player_name)
+        cast_player(prop, player_name)
       end
     end
-    
-    def apply_player(prop, player_name)
-      prop.include_player(@known_players[player_name]) if player_exists?(prop, player_name)
+
+    def cast_player(prop, player_name)
+      recruiter = Recruiter.new(prop, player_name, @loader)
+      prop.include_player(recruiter.player) if recruiter.player_exists?
     end
-    
-    def player_exists?(prop, player_name)
-      load_player_by_name(prop, player_name) if !@known_players.has_key?(player_name)
-      return @known_players[player_name] != :does_not_exist
+  end
+
+  class Recruiter
+
+    def initialize(prop, player_name, loader)
+      @prop = prop
+      @cast = prop.scene.cast
+      @player_name = player_name
+      @module_name = player_name.camalized
+      @loader = loader
     end
-    
-    def load_player_by_name(prop, player_name)
-      load_custom_player(prop, player_name)
-      load_builtin_player(player_name) if !@known_players.has_key?(player_name)
-      @known_players[player_name] = :does_not_exist if !@known_players.has_key?(player_name)
+
+    def player
+      return @cast.const_get(@module_name)
     end
-    
-    def load_custom_player(prop, player_name)
-      player_filename = File.join([prop.scene.path.to_s, "players", "#{player_name}.rb"])
-      if !@loader.exists?(player_filename)
-        if prop.scene.production && prop.scene.path != prop.scene.production.path
-          player_filename = File.join([prop.scene.production.path.to_s, "players", "#{player_name}.rb"])
-          return if !@loader.exists?(player_filename)
-        else
-          return
-        end
-      end
-      
-      Kernel.load @loader.path_to(player_filename)
-      
-      module_name = player_name.camalized
-      return if !Object.const_defined?(module_name)
-      
-      mod = Object.const_get(module_name)
-      @known_players[player_name] = mod
+
+    def player_already_exists?
+      return @cast.const_defined?(@module_name)
     end
-    
-    def load_builtin_player(player_name)
+
+    def player_exists?
+      recruit_player if !player_already_exists?
+      return @cast.const_get(@module_name) != :does_not_exist
+    end
+
+    def recruit_player
+      recruit_custom_player
+      recruit_builtin_player if !player_already_exists?
+      @cast.const_set(@module_name, :does_not_exist) if !player_already_exists?
+    end
+
+    def recruit_custom_player
+      player_filename = locate_player
+      load_player(player_filename) if player_filename
+    end
+
+    def recruit_builtin_player
       begin
-        module_name = player_name.camalized
-        return if !Limelight::Builtin::Players.const_defined?(module_name)
-        mod = Limelight::Builtin::Players.const_get(module_name)
-        @known_players[player_name] = mod
+        return if !Limelight::Builtin::Players.const_defined?(@module_name)
+        @cast.const_set(@module_name, Limelight::Builtin::Players.const_get(@module_name))
       rescue NameError
       end
     end
-    
+
+    private ###############################################
+
+    def locate_player
+      player_filename = File.join(@prop.scene.path.to_s, "players", "#{@player_name}.rb")
+      if !@loader.exists?(player_filename)
+        if @prop.scene.production && @prop.scene.path != @prop.scene.production.path
+          player_filename = File.join(@prop.scene.production.path.to_s, "players", "#{@player_name}.rb")
+          return nil if !@loader.exists?(player_filename)
+        else
+          return nil
+        end
+      end
+      return player_filename
+    end
+
+    def load_player(player_filename)
+      src = IO.read(@loader.path_to(player_filename))
+      begin
+        @cast.module_eval(src)
+      rescue Exception => e
+        raise BuildException.new(player_filename, src, e)
+      end
+    end
+
   end
-  
+
 end
