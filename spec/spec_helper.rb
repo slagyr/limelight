@@ -19,3 +19,33 @@ class Object
     stubs.each_pair { |key, value| self.stub!(key).and_return(value) }
   end
 end
+
+
+require 'fileutils'
+class TestDir
+
+  class << self
+
+    def root
+      @root = File.expand_path(File.dirname(__FILE__) + "/../etc/tmp") if @filename.nil?
+      return @root
+    end
+
+    def delete
+      FileUtils.rm_r(root, :force => true)
+    end
+
+    def create_file(path, content)
+      filename = File.join(root, path)
+      establish_dir(File.dirname(filename))
+      File.open(filename, 'w') { |file| file.write content }
+    end
+
+    def establish_dir(path)
+      if !File.exists?(path)
+        establish_dir(File.dirname(path))
+        Dir.mkdir(path)
+      end
+    end
+  end
+end

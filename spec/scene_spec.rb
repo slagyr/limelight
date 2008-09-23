@@ -32,6 +32,11 @@ describe Limelight::Scene do
     @scene.should respond_to(:scene_opened)
   end
 
+  it "should have a cast" do
+    @scene.cast.should_not == nil
+    @scene.cast.is_a?(Module).should == true
+  end
+
   describe Limelight::Scene, "Prop Indexing" do
 
     it "should index props" do

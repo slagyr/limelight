@@ -15,7 +15,7 @@ module Limelight
     
     include UI::Api::Scene
   
-    attr_reader :button_groups, :styles, :casting_director
+    attr_reader :button_groups, :styles, :casting_director, :cast
     attr_accessor :stage, :loader, :visible, :path, :production
     getters :stage, :loader, :styles
     setters :stage
@@ -26,6 +26,7 @@ module Limelight
       @scene = self
       @button_groups = ButtonGroupCache.new
       @prop_index = {}
+      @cast = Module.new
       illuminate
     end
   

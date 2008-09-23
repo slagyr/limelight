@@ -17,6 +17,7 @@ public class DirectoryZipperTest extends TestCase
   public void setUp() throws Exception
   {
     deleteRoot();
+    FileUtil.makeDir(TestUtil.TMP_DIR);
     assertTrue(new File(TestUtil.TMP_DIR).exists());
   }
 
