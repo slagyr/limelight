@@ -106,7 +106,7 @@ describe Limelight::Producer do
     @loader.should_receive(:exists?).with("init.rb").and_return(false)
     @loader.should_receive(:exists?).with("stages.rb").and_return false
     @producer.should_not_receive(:open_stages)
-    @producer.should_receive(:open_scene).with(".", anything)
+    @producer.should_receive(:open_scene).with("/tmp", anything)
     
     @producer.open
   end

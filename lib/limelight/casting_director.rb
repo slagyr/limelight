@@ -54,7 +54,14 @@ module Limelight
     
     def load_custom_player(prop, player_name)
       player_filename = File.join([prop.scene.path.to_s, "players", "#{player_name}.rb"])
-      return if !@loader.exists?(player_filename)
+      if !@loader.exists?(player_filename)
+        if prop.scene.production && prop.scene.path != prop.scene.production.path
+          player_filename = File.join([prop.scene.production.path.to_s, "players", "#{player_name}.rb"])
+          return if !@loader.exists?(player_filename)
+        else
+          return
+        end
+      end
       
       Kernel.load @loader.path_to(player_filename)
       

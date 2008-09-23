@@ -4,6 +4,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/casting_director'
 require 'limelight/prop_builder'
+require 'limelight/production'
 
 describe Limelight::CastingDirector do
 
@@ -19,7 +20,7 @@ describe Limelight::CastingDirector do
   end
   
   it "should include default players" do
-    prepare_fake_player("root")
+    prepare_fake_player("scene_path", "root")
     make_root(:name => "root")
     
     @root.should_receive(:include_player).with("root module")
@@ -27,10 +28,10 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
   end
   
-  def prepare_fake_player(name)
-    @loader.should_receive(:exists?).with("scene_path/players/#{name}.rb").and_return(true)
-    @loader.should_receive(:path_to).with("scene_path/players/#{name}.rb").and_return("scene_path/players/#{name}.rb")
-    Kernel.should_receive(:load).with("scene_path/players/#{name}.rb").and_return(true)
+  def prepare_fake_player(location, name)
+    @loader.should_receive(:exists?).with("#{location}/players/#{name}.rb").and_return(true)
+    @loader.should_receive(:path_to).with("#{location}/players/#{name}.rb").and_return("#{location}/players/#{name}.rb")
+    Kernel.should_receive(:load).with("#{location}/players/#{name}.rb").and_return(true)
     Object.should_receive(:const_defined?).with(name.camalized).and_return(true)
     Object.should_receive(:const_get).with(name.camalized).and_return("#{name} module")
   end
@@ -69,18 +70,33 @@ describe Limelight::CastingDirector do
   
   it "should load custom players" do
     @loader.stub!(:exists?).and_return(false)
-    prepare_fake_player("custom_player")
+    prepare_fake_player("scene_path", "custom_player")
     make_root(:name => "root", :players => "custom_player")
     
     @root.should_receive(:include_player).with("custom_player module")
     
     @casting_director.fill_cast(@root)
   end
+
+  it "should load shared custom players" do
+    production = Limelight::Production.new("production_path", make_mock("producer"), make_mock("theater"))
+    @scene.production = production
+
+    @loader.should_receive(:exists?).with("scene_path/players/shared_player.rb").and_return(false)
+    prepare_fake_player("scene_path", "root")
+    prepare_fake_player("production_path", "shared_player")
+    make_root(:name => "root", :players => "shared_player")
+    
+    @root.should_receive(:include_player).with("root module")
+    @root.should_receive(:include_player).with("shared_player module")
+
+    @casting_director.fill_cast(@root)
+  end
   
   it "should handle multiple players" do
     @loader.stub!(:exists?).and_return(false)
-    prepare_fake_player("root")
-    prepare_fake_player("custom_player")
+    prepare_fake_player("scene_path", "root")
+    prepare_fake_player("scene_path", "custom_player")
     
     make_root(:name => "root", :players => "custom_player button")
     

@@ -9,12 +9,13 @@ describe Limelight::Production, "Instance methods" do
   before(:each) do
     @producer = make_mock("producer")
     @theater = make_mock("theater")
-    @production = Limelight::Production.new(@producer, @theater)
+    @production = Limelight::Production.new("/tmp", @producer, @theater)
   end
   
-  it "should know it producder and theater" do
+  it "should know it path, producer, and theater" do
     @production.producer.should == @producer
     @production.theater.should == @theater
+    @production.path.should == "/tmp"
   end
   
   it "should be indexed" do
@@ -24,7 +25,7 @@ describe Limelight::Production, "Instance methods" do
   it "should raise an error when setting the name to a duplicate name" do
     @production.name = "Bill"
     
-    production = Limelight::Production.new(@producer, @theater)
+    production = Limelight::Production.new("/tmp", @producer, @theater)
     lambda { production.name = "Bill" }.should raise_error(Limelight::LimelightException, "Production name 'Bill' is already taken")
   end
 

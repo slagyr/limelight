@@ -12,15 +12,16 @@ describe Limelight::ProductionBuilder do
   end
   
   it "should build a production" do
-    result = Limelight.build_production(@producer, @theater)
+    result = Limelight.build_production("/tmp", @producer, @theater)
     
     result.class.should == Limelight::Production
+    result.path.should == "/tmp"
     result.producer.should == @producer
     result.theater.should == @theater
   end
   
   it "should build able to set the production's name" do
-    result = Limelight.build_production(@producer, @theater) do
+    result = Limelight.build_production("/tmp", @producer, @theater) do
       name "My Production"
     end
     
@@ -28,7 +29,7 @@ describe Limelight::ProductionBuilder do
   end
   
   it "should build attribute accessors" do
-    result = Limelight.build_production(@producer, @theater) do
+    result = Limelight.build_production("/tmp", @producer, @theater) do
       name "My Production2"
       attribute :foo
     end  
@@ -40,7 +41,7 @@ describe Limelight::ProductionBuilder do
   
   it "should raise an exception when setting an invalid property" do
     lambda do
-      Limelight::build_production(@producer, @theater) do
+      Limelight::build_production("/tmp", @producer, @theater) do
         blah "blah"
       end
     end.should raise_error(Limelight::ProductionBuilderException, "'blah' is not a valid production property")
