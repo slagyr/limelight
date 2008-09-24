@@ -57,6 +57,17 @@ class String
     value = value[0..0].upcase + value[1..-1] if starting_case == :upper
     return value
   end
+
+  # Converts Java camel case names to ruby style underscored names.
+  #
+  #   "FourScore".underscored # => "four_score"
+  #   "andSevenYears".underscored # => "and_seven_years"
+  #
+  def underscored
+    value = self[0..0].downcase + self[1..-1]
+    value = value.gsub(/[A-Z]/) { |cap| "_#{cap.downcase}" }
+    return value
+  end
   
 end
   

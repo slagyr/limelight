@@ -10,6 +10,7 @@ import limelight.ui.MockGraphics;
 import limelight.ui.model.MockPropablePanel;
 import limelight.ui.api.MockProp;
 import limelight.util.Box;
+import limelight.util.Colors;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
@@ -55,7 +56,6 @@ public class BorderPainterTest extends TestCase
     checkLine(graphics.drawnShapes.get(2), 1, Color.blue, 104, 104, 5, 104);
     checkLine(graphics.drawnShapes.get(3), 1, Color.blue, 5, 104, 5, 5);
   }
-
 
   public void testGetLinesFromBorderWithEven() throws Exception
   {
@@ -118,7 +118,7 @@ public class BorderPainterTest extends TestCase
     assertEquals(4, graphics.drawnShapes.size());
 
     checkLine(graphics.drawnShapes.get(0), 1, Color.red, 7, 5, 104, 5);
-    checkLine(graphics.drawnShapes.get(1), 2, Color.green, 104, 5, 104, 103);
+    checkLine(graphics.drawnShapes.get(1), 2, Colors.resolve("green"), 104, 5, 104, 103);
     checkLine(graphics.drawnShapes.get(2), 3, Color.blue, 104, 103, 7, 103);
     checkLine(graphics.drawnShapes.get(3), 4, Color.black, 7, 103, 7, 5);
   }

@@ -49,5 +49,12 @@ describe String do
     "AbC_eFg_hiJ".camalized(:lower).should == "abcEfgHij"
     "with spaces".camalized(:lower).should == "withSpaces"
   end
+
+  it "should underscore a name" do
+    "ClassName".underscored.should == "class_name"
+    "OneTwoThree".underscored.should == "one_two_three"
+    "One".underscored.should == "one"
+  end
+
   
 end
