@@ -20,8 +20,19 @@ public class ColorsTest extends TestCase
 		assertEquals(Color.red, Colors.resolve("RED"));
 		assertEquals(Color.red, Colors.resolve("Red"));
 	}
+  
+  public void testResolvedNamedColorsInWrongFormat() throws Exception
+  {
+    assertEquals(Colors.resolve("yellow"), Colors.resolve("Yellow"));
+    assertEquals(Colors.resolve("yellow"), Colors.resolve("YELLOW"));
+    assertEquals(Colors.resolve("lime_green"), Colors.resolve("LimeGreen"));
+    assertEquals(Colors.resolve("lime_green"), Colors.resolve("Lime Green"));
+    assertEquals(Colors.resolve("lime_green"), Colors.resolve("lime green"));
+    assertEquals(Colors.resolve("lime_green"), Colors.resolve("LIME_GREEN"));
+    assertEquals(Colors.resolve("lime_green"), Colors.resolve("LIME GREEN"));
+  }
 
-	public void testResolveFullHexColors() throws Exception
+  public void testResolveFullHexColors() throws Exception
 	{
 		checkColor(Colors.resolve("#000000"), 0, 0, 0, 0xFF);
 		checkColor(Colors.resolve("#ffffff"), 0xFF, 0xFF, 0xFF, 0xFF);
@@ -58,6 +69,14 @@ public class ColorsTest extends TestCase
 		checkColor(Colors.resolve("#aAaA"), 0xAA, 0xAA, 0xAA, 0xAA);
 		checkColor(Colors.resolve("#B2B2"), 0xBB, 0x22, 0xBB, 0x22);
 	}
+  
+  public void testHexColorsWithoutHash() throws Exception
+  {
+		checkColor(Colors.resolve("123456"), 0x12, 0x34, 0x56, 0xFF);
+		checkColor(Colors.resolve("12345678"), 0x12, 0x34, 0x56, 0x78);
+		checkColor(Colors.resolve("123"), 0x11, 0x22, 0x33, 0xFF);
+		checkColor(Colors.resolve("1234"), 0x11, 0x22, 0x33, 0x44);
+  }
 
   public void checkColor(Color color, int red, int green, int blue, int alpha)
 	{
