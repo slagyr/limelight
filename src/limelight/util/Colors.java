@@ -78,7 +78,7 @@ public class Colors
     namedColors.put("golden_rod", Color.decode("#DAA520"));
     namedColors.put("gray", Color.decode("#808080"));
     namedColors.put("grey", Color.decode("#808080"));
-    namedColors.put("green", Color.decode("#008000"));
+    namedColors.put("green", Color.decode("#00FF00"));
     namedColors.put("green_yellow", Color.decode("#ADFF2F"));
     namedColors.put("honey_dew", Color.decode("#F0FFF0"));
     namedColors.put("hot_pink", Color.decode("#FF69B4"));

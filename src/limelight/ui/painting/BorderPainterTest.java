@@ -118,7 +118,7 @@ public class BorderPainterTest extends TestCase
     assertEquals(4, graphics.drawnShapes.size());
 
     checkLine(graphics.drawnShapes.get(0), 1, Color.red, 7, 5, 104, 5);
-    checkLine(graphics.drawnShapes.get(1), 2, Colors.resolve("green"), 104, 5, 104, 103);
+    checkLine(graphics.drawnShapes.get(1), 2, Color.green, 104, 5, 104, 103);
     checkLine(graphics.drawnShapes.get(2), 3, Color.blue, 104, 103, 7, 103);
     checkLine(graphics.drawnShapes.get(3), 4, Color.black, 7, 103, 7, 5);
   }
