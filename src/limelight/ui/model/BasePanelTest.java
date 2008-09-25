@@ -475,37 +475,6 @@ public class BasePanelTest extends TestCase
     assertEquals(PanelIterator.class, iterator.getClass());
   }
 
-  public void testNeededUpdate() throws Exception
-  {
-    panel.setParent(new RootPanel(new MockFrame()));
-    Update update = newUpdate();
-
-    panel.setNeededUpdate(update);
-    assertSame(update, panel.getNeededUpdate());
-  }
-
-  private Update newUpdate()
-  {
-    return new Update(1)
-    {
-      public void performUpdate(Panel panel)
-      {
-      }
-    };
-  }
-
-  public void testGetAndClearNeededUpdate() throws Exception
-  {
-    panel.setParent(new RootPanel(new MockFrame()));
-    Update update = newUpdate();
-
-    panel.setNeededUpdate(update);
-    Update gottenUpdate = panel.getAndClearNeededUpdate();
-
-    assertNull(panel.getNeededUpdate());
-    assertSame(update, gottenUpdate);
-  }
-
   public void testAddingPanelsRequiresUpdate() throws Exception
   {
     Panel child = new MockPanel();
@@ -519,29 +488,29 @@ public class BasePanelTest extends TestCase
   {
     Panel child = new MockPanel();
     panel.add(child);
-    panel.resetNeededUpdate();
+    panel.doLayout();
 
     panel.remove(child);
 
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testRemoveoesntRequireUpdateIfNoChildWasRemoved() throws Exception
+  public void testRemoveDoesntRequireLayoutIfNoChildWasRemoved() throws Exception
   {
     Panel child = new MockPanel();
     panel.add(child);
-    panel.resetNeededUpdate();
+    panel.doLayout();
 
     panel.remove(new MockPanel());
 
-    assertEquals(false, panel.needsUpdating());
+    assertEquals(false, panel.needsLayout());
   }
 
   public void testRemoveAllRequiresUpdate() throws Exception
   {
     Panel child = new MockPanel();
     panel.add(child);
-    panel.resetNeededUpdate();
+    panel.doLayout();
 
     panel.removeAll();
 
@@ -550,9 +519,11 @@ public class BasePanelTest extends TestCase
 
   public void testRemoveAllDoesntRequireUpdateIfNoChildWasRemoved() throws Exception
   {
+    panel.doLayout();
+
     panel.removeAll();
 
-    assertEquals(false, panel.needsUpdating());
+    assertEquals(false, panel.needsLayout());
   }
 
   public void testAddingChildrenAtIndex() throws Exception

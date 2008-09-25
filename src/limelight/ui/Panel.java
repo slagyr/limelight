@@ -5,7 +5,6 @@ package limelight.ui;
 
 import limelight.util.Box;
 import limelight.styles.Style;
-import limelight.ui.model.Update;
 import limelight.ui.model.RootPanel;
 
 import java.awt.*;
@@ -57,10 +56,6 @@ public interface Panel extends Iterable<Panel>
   
   boolean isFloater();
 
-  void setNeededUpdate(Update update);
-  void resetNeededUpdate();
-  Update getNeededUpdate();
-  Update getAndClearNeededUpdate();
   boolean needsLayout();
   void setNeedsLayout();
   

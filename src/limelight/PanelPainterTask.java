@@ -31,7 +31,6 @@ class PanelPainterTask extends RecurringTask
       Frame frame = Context.getActiveFrame();
       if(frame != null && frame.getRoot() != null)
       {
-//        doAllUpdates(frame.getRoot());
         doAllLayout(frame.getRoot());
         paintDirtyRegions(frame.getRoot());
       }
@@ -48,7 +47,6 @@ class PanelPainterTask extends RecurringTask
     root.getAndClearDirtyRegions(regionBuffer);
     for(Rectangle rectangle : regionBuffer)
     {
-System.err.println("dirty region: " + rectangle);      
       if(rectangle.width <= 0 || rectangle.height <= 0)
         return;
       PaintJob job = new PaintJob(new Box(rectangle));
@@ -65,14 +63,6 @@ System.err.println("dirty region: " + rectangle);
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);
     for(Panel panel : panelBuffer)
-    {
-System.err.println("laying out = " + panel);      
       panel.doLayout();
-    }
-  }
-
-  private void doAllUpdates(RootPanel root)
-  {
-    root.repaintChangedPanels();
   }
 }
