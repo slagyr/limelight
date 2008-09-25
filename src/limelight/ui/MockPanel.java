@@ -4,7 +4,6 @@
 package limelight.ui;
 
 import limelight.ui.model.BasePanel;
-import limelight.ui.model.Update;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
@@ -53,13 +52,6 @@ public class MockPanel extends BasePanel
   public boolean canBeBuffered()
   {
     return canBeBuffered;
-  }
-
-  public Update getAndClearNeededUpdate()
-  {   
-    Update u = super.getAndClearNeededUpdate();
-    changeMarkerWasReset = true;
-    return u;
   }
 
   public void doLayout()

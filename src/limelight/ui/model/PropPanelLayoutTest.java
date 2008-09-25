@@ -409,7 +409,6 @@ public class PropPanelLayoutTest extends TestCase
   {
     PropPanel child = new PropPanel(new MockProp());
     parent.add(child);
-    parent.resetNeededUpdate();
     child.setSize(50, 50);
     child.getStyle().setHeight("auto");
 
@@ -420,24 +419,11 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(true, parent.needsLayout());
   }
 
-  public void testParentShouldNotBeUodatedWhenSizeIsAlreadyZero() throws Exception
-  {
-    PropPanel child = new PropPanel(new MockProp());
-    parent.add(child);
-    parent.resetNeededUpdate();
-    child.setSize(0, 0);
-    child.getStyle().setHeight("auto");
-
-    child.doLayout();
-
-    assertEquals(false, parent.needsUpdating());
-  }
-
   public void testShouldEnlargePropsWithZeroDimensionsWhenItHasChildren() throws Exception
   {
     PropPanel child = new PropPanel(new MockProp());
     parent.add(child);
-    parent.resetNeededUpdate();
+    parent.doLayout();
     parent.setSize(100, 100);
     child.setSize(0, 0);
     child.getStyle().setHeight("auto");

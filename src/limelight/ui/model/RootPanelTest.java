@@ -76,32 +76,6 @@ public class RootPanelTest extends TestCase
     root.destroy();
     assertEquals(false, root.isAlive());
   }
-
-  public void testChangedPanelsEmpytByDefault() throws Exception
-  {
-    assertEquals(0, root.getChangedPanelCount());
-
-    root.addChangedPanel(child);
-
-    assertEquals(1, root.getChangedPanelCount());
-  }
-  
-  public void testCantAddSameChangedPanelMultipleTimes() throws Exception
-  {
-    root.addChangedPanel(child);
-    root.addChangedPanel(child);
-    assertEquals(1, root.getChangedPanelCount());
-  }
-  
-  public void testChangesPanelsIsClearedWhenDestroyed() throws Exception
-  {
-    root.setPanel(child);
-    root.addChangedPanel(child);
-
-    root.destroy();
-
-    assertEquals(0, root.getChangedPanelCount());
-  }
   
   public void testKeyboardFocusIfLostWhenDestroyed() throws Exception
   {

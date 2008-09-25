@@ -6,7 +6,6 @@ package limelight.ui.model;
 import limelight.Context;
 import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.ComboBoxPanel;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -176,54 +175,6 @@ public class RootPanel implements Panel
   public EventListener getListener()
   {
     return listener;
-  }
-
-  public synchronized void addChangedPanel(Panel panel)
-  {
-    changedPanels.add(panel);
-  }
-
-  public synchronized int getChangedPanelCount()
-  {
-    return changedPanels.size();
-  }
-
-  //TODO MDM - This is not fully right.  Need to make sure we're not repainting a panel more than once.  So we need to remove from the set descendants of other panels in the list.
-  //TODO MDM - Also, we should not have to figure out if a parent needs the updating here.  That's not right.
-  public void repaintChangedPanels()
-  {
-    loadPanelsToUpdate();
-
-    if (panelsToUpdateBuffer.size() > 0)
-    {
-      for (Panel changedPanel : panelsToUpdateBuffer)
-      {
-        Style style = changedPanel.getStyle();
-        boolean dimentionsChanged = style.changed(Style.WIDTH) || style.changed(Style.HEIGHT);
-        boolean locationChanged = "on".equals(style.getFloat()) && (style.changed(Style.X) || style.changed(Style.Y));
-        Update update = changedPanel.getAndClearNeededUpdate();
-        if (dimentionsChanged || locationChanged)
-          update.performUpdate(changedPanel.getParent());
-        else
-          update.performUpdate(changedPanel); //TODO Got a null pointer here.  The update must have been null.  Threading issue?
-
-      }
-    }
-  }
-
-  private synchronized void loadPanelsToUpdate()
-  {
-    panelsToUpdateBuffer.clear();
-    if(changedPanels.size() > 0)
-    {
-      panelsToUpdateBuffer.addAll(changedPanels);
-      changedPanels.clear();
-    }
-  }
-
-  public synchronized boolean changedPanelsContains(Panel panel)
-  {
-    return changedPanels.contains(panel);
   }
 
   public Iterator<Panel> iterator()
@@ -444,24 +395,6 @@ public class RootPanel implements Panel
 
   public void valueChanged(Object e)
   {
-  }
-
-  public void setNeededUpdate(Update update)
-  {
-  }
-
-  public void resetNeededUpdate()
-  {
-  }
-
-  public Update getNeededUpdate()
-  {
-    return null;
-  }
-
-  public Update getAndClearNeededUpdate()
-  {
-    return null;
   }
 
   public boolean needsLayout()

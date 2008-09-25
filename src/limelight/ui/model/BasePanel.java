@@ -24,9 +24,7 @@ public abstract class BasePanel implements Panel
   protected LinkedList<Panel> children;
   private boolean sterilized;
   protected Box boundingBox;
-  protected Update neededUpdate;
   private List<Panel> readonlyChildren;
-  private boolean allowUpdates = true;
   private boolean needsLayout = true;
 
   protected BasePanel()
@@ -375,44 +373,6 @@ public abstract class BasePanel implements Panel
     return true;
   }
 
-  public synchronized void setNeededUpdate(Update update)
-  {
-    if(neededUpdate == null)
-    {
-      Panel root = getRoot();
-      if(root != null)
-      {
-        ((RootPanel) root).addChangedPanel(this);
-        neededUpdate = update;
-      }
-    }
-    else
-      neededUpdate = neededUpdate.prioritize(update);
-  }
-
-  public synchronized Update getAndClearNeededUpdate()
-  {
-    Update update = neededUpdate;
-    neededUpdate = null;
-    return update;
-  }
-
-
-  public synchronized boolean needsUpdating()
-  {
-    return neededUpdate != null;
-  }
-
-  public synchronized void resetNeededUpdate()
-  {
-    neededUpdate = null;
-  }
-
-  public synchronized Update getNeededUpdate()
-  {
-    return neededUpdate;
-  }
-
   public void setNeedsLayout()
   {
     needsLayout = true;
@@ -437,10 +397,5 @@ public abstract class BasePanel implements Panel
   public Iterator<Panel> iterator()
   {
     return new PanelIterator(this);
-  }
-
-  public void setAllowUpdates(boolean allowUpdates)
-  {
-    this.allowUpdates = allowUpdates;
   }
 }
