@@ -3,8 +3,8 @@
 
 package limelight.ui.model;
 
-import limelight.LimelightError;
 import limelight.Context;
+import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
@@ -14,13 +14,13 @@ import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.ui.model.updates.Updates;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.util.Util;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedList;
@@ -65,7 +65,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void setText(String text) throws LimelightError
   {
     if(!Util.equal(text, getText()))
-      setNeededUpdate(Updates.layoutAndPaintUpdate);
+    {
+      setNeedsLayout(); // This is questionable...  The text panel would know if layout is needed.
+    }
     textAccessor.setText(text);
   }
 
@@ -185,6 +187,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
     if(borderShaper != null)
       borderShaper.setBounds(getBoxInsideMargins());
+
+    super.doLayout();
+    getRoot().addDirtyRegion(getAbsoluteBounds());
   }
 
   public void paintOn(Graphics2D graphics)
@@ -363,8 +368,20 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void styleChanged(StyleDescriptor descriptor, String value)
   {
-    //TODO - Based on style changed, we don't always have to do a layout with the paint.
-    setNeededUpdate(Updates.layoutAndPaintUpdate);
+//TEST ME!
+    if(getParent() != null && getRoot() != null)
+    {
+      if(descriptor == Style.WIDTH || descriptor == Style.HEIGHT)
+      {
+        setNeedsLayout();
+        getParent().setNeedsLayout();
+      }
+      else if(descriptor == Style.X || descriptor == Style.Y)
+        getParent().setNeedsLayout();
+      else
+        getRoot().addDirtyRegion(getAbsoluteBounds());
+    }
+
   }
 
   public ScrollBarPanel getVerticalScrollBar()

@@ -26,8 +26,14 @@ module Chromaton
     r = rand(255)
     g = rand(255)
     b = rand(255)
-    @new_color = sprintf("#%x%x%x", r, g, b)
+    @new_color = "##{as_2_digit_hex(r)}#{as_2_digit_hex(g)}#{as_2_digit_hex(b)}"
     style.background_color = @new_color
+  end
+
+  def as_2_digit_hex(number)
+    value = sprintf("%x", number)
+    value << "0" if value.length == 1
+    return value;
   end
   
   def new_random_size

@@ -5,21 +5,22 @@ package limelight.ui.model;
 
 import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
+import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Scene;
 import limelight.util.*;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
-import java.awt.font.FontRenderContext;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextPanel extends BasePanel
 {
@@ -36,12 +37,14 @@ public class TextPanel extends BasePanel
   private boolean textChanged;
   private boolean compiled;
   private FontRenderContext renderContext;
+  public static FontRenderContext staticFontRenderingContext;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
   public TextPanel(PropablePanel panel, String text)
   {
     this.panel = panel;
     this.text = text;
+    setNeedsLayout();
   }
 
   public String getText()
@@ -51,9 +54,12 @@ public class TextPanel extends BasePanel
 
   public void setText(String text)
   {
-    if(!textChanged && !Util.equal(text, this.text))
+    boolean differentText = !Util.equal(text, this.text);
+    if(!textChanged && differentText)
       textChanged = true;
     this.text = text;
+    if(differentText)
+      setNeedsLayout();
   }
 
   public Panel getPanel()
@@ -93,6 +99,7 @@ public class TextPanel extends BasePanel
       compiled = true;
     }
     snapToSize();
+    super.doLayout();
   }
 
   public void snapToSize()
@@ -154,9 +161,12 @@ public class TextPanel extends BasePanel
 
   private FontRenderContext getRenderContext()
   {
-    if (renderContext == null)
+    if(renderContext == null)
     {
-      renderContext = getRoot().getGraphics().getFontRenderContext();
+      if(staticFontRenderingContext != null)
+        renderContext = staticFontRenderingContext;
+      else
+        renderContext = getRoot().getGraphics().getFontRenderContext();
     }
     return renderContext;
   }

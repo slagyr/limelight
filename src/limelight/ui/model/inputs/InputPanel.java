@@ -61,6 +61,7 @@ public abstract class InputPanel extends BasePanel
     Box bounds = getParent().getBoxInsidePadding();
     setLocation(bounds.x, bounds.y);
     setSize(bounds.width, bounds.height);
+    super.doLayout();
   }
 
   public void setSize(int w, int h)
