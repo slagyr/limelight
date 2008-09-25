@@ -403,7 +403,7 @@ public abstract class BasePanel implements Panel
     return new PanelIterator(this);
   }
 
-  private void propogateSizeChange(Panel panel)
+  protected void propogateSizeChange(Panel panel)
   {
     if(panel == null || panel.needsLayout() || panel instanceof RootPanel)
       return;

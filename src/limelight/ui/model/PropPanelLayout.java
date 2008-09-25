@@ -30,7 +30,6 @@ public class PropPanelLayout
   synchronized public void doLayout()
   {
     resetConsumedDimensions();
-    boolean startsWithVisibleDimensions = panel.getWidth() != 0 && panel.getHeight() != 0;
 
     Style style = panel.getStyle();
 
@@ -50,14 +49,6 @@ public class PropPanelLayout
       layoutFloaters();
     }
     layoutScrollBars();
-
-
-    boolean endsWithVisibleDimensions = panel.getWidth() != 0 && panel.getHeight() != 0;
-
-    if(startsWithVisibleDimensions != endsWithVisibleDimensions)
-    {
-      panel.getParent().setNeedsLayout(); // This strategy needs rework
-    }
   }
 
   private boolean hasAutoDimensions()

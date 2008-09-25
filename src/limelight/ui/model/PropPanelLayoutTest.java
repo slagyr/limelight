@@ -404,43 +404,4 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(-50, panel.getX());
     assertEquals(-100, panel.getY());
   }
-
-  public void testParentNeedsLayoutWhenSizeGoesToZero() throws Exception
-  {
-    PropPanel child = new PropPanel(new MockProp());
-    parent.add(child);
-    child.setSize(50, 50);
-    child.getStyle().setHeight("auto");
-
-    child.doLayout();
-
-    assertEquals(0, child.getWidth());
-    assertEquals(0, child.getHeight());
-    assertEquals(true, parent.needsLayout());
-  }
-
-  public void testShouldEnlargePropsWithZeroDimensionsWhenItHasChildren() throws Exception
-  {
-    PropPanel child = new PropPanel(new MockProp());
-    parent.add(child);
-    parent.doLayout();
-    parent.setSize(100, 100);
-    child.setSize(0, 0);
-    child.getStyle().setHeight("auto");
-    child.getStyle().flushChanges();
-    PropPanel grandChild1 = new PropPanel(new MockProp());
-    grandChild1.getStyle().setWidth("50");
-    grandChild1.getStyle().setHeight("50");
-    PropPanel grandChild2 = new PropPanel(new MockProp());
-    grandChild2.getStyle().setWidth("50");
-    grandChild2.getStyle().setHeight("50");
-    child.add(grandChild1);
-    child.add(grandChild2);
-
-    child.doLayout();
-
-    assertEquals(100, child.getWidth());
-    assertEquals(50, child.getHeight());
-    assertEquals(true, parent.needsLayout());
-  }
 }

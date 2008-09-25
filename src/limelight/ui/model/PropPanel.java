@@ -368,13 +368,13 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void styleChanged(StyleDescriptor descriptor, String value)
   {
-//TEST ME!
     if(getParent() != null && getRoot() != null)
     {
       if(descriptor == Style.WIDTH || descriptor == Style.HEIGHT)
       {
         setNeedsLayout();
         getParent().setNeedsLayout();
+        propogateSizeChange(getParent());
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
         getParent().setNeedsLayout();
