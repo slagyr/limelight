@@ -4,17 +4,17 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.ui.MockPanel;
-import limelight.ui.Panel;
-import limelight.ui.model.updates.LayoutAndPaintUpdate;
-import limelight.ui.api.MockProp;
 import limelight.LimelightError;
 import limelight.styles.Style;
+import limelight.ui.MockPanel;
+import limelight.ui.Panel;
+import limelight.ui.api.MockProp;
 import limelight.util.Box;
 
 import javax.swing.*;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class BasePanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    RootPanel root = new RootPanel(new MockFrame());
+    root = new RootPanel(new MockFrame());
     panel = new TestableBasePanel();
     root.setPanel(panel);
   }
@@ -207,7 +207,7 @@ public class BasePanelTest extends TestCase
     assertTrue(grandChild.containsAbsolutePoint(new Point(17, 89)));
     assertTrue(grandChild.containsAbsolutePoint(new Point(15, 85)));
   }
-  
+
   public void testGetRoot() throws Exception
   {
     createFamilyTree();
@@ -340,7 +340,7 @@ public class BasePanelTest extends TestCase
     assertEquals(1, panel.getChildren().size());
     assertSame(panel2, panel.getChildren().get(0));
   }
-  
+
   public void testRemoveAll() throws Exception
   {
     MockPanel panel1 = new MockPanel();
@@ -364,7 +364,7 @@ public class BasePanelTest extends TestCase
 
     assertNotSame(rectangle, panel.getBoundingBox());
   }
-  
+
   public void testAbsoluteLocationGetsChanged() throws Exception
   {
     Point location = panel.getAbsoluteLocation();
@@ -375,7 +375,7 @@ public class BasePanelTest extends TestCase
     assertEquals(123, panel.getAbsoluteLocation().x);
     assertEquals(456, panel.getAbsoluteLocation().y);
   }
-  
+
   public void testAbsoluteBoundsChangesWhenLocationChanges() throws Exception
   {
     Box bounds = panel.getAbsoluteBounds();
@@ -386,7 +386,7 @@ public class BasePanelTest extends TestCase
     assertEquals(123, panel.getAbsoluteBounds().x);
     assertEquals(456, panel.getAbsoluteBounds().y);
   }
-  
+
   public void testAbsoluteBoundsChangesWhenSizeChanges() throws Exception
   {
     Box bounds = panel.getAbsoluteBounds();
@@ -407,7 +407,7 @@ public class BasePanelTest extends TestCase
     propPanel.add(panel);
     mouseEvent = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
   }
-  
+
   public void testMousePressed() throws Exception
   {
     addPropPanel();
@@ -415,7 +415,7 @@ public class BasePanelTest extends TestCase
 
     assertNotNull(prop.pressedMouse);
   }
-         
+
   public void testMouseReleased() throws Exception
   {
     addPropPanel();
@@ -423,7 +423,7 @@ public class BasePanelTest extends TestCase
 
     assertNotNull(prop.releasedMouse);
   }
-         
+
   public void testMouseClicked() throws Exception
   {
     addPropPanel();
@@ -431,7 +431,7 @@ public class BasePanelTest extends TestCase
 
     assertNotNull(prop.clickedMouse);
   }
-         
+
   public void testMouseDragged() throws Exception
   {
     addPropPanel();
@@ -439,7 +439,7 @@ public class BasePanelTest extends TestCase
 
     assertNotNull(prop.draggedMouse);
   }
-         
+
   public void testMouseMoved() throws Exception
   {
     addPropPanel();
@@ -474,6 +474,7 @@ public class BasePanelTest extends TestCase
 
     assertEquals(PanelIterator.class, iterator.getClass());
   }
+
   public void testNeededUpdate() throws Exception
   {
     panel.setParent(new RootPanel(new MockFrame()));
@@ -481,12 +482,12 @@ public class BasePanelTest extends TestCase
 
     panel.setNeededUpdate(update);
     assertSame(update, panel.getNeededUpdate());
-
   }
 
   private Update newUpdate()
   {
-    return new Update(1) {
+    return new Update(1)
+    {
       public void performUpdate(Panel panel)
       {
       }
@@ -511,8 +512,7 @@ public class BasePanelTest extends TestCase
 
     panel.add(child);
 
-    assertEquals(true, panel.needsUpdating());
-    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+    assertEquals(true, panel.needsLayout());
   }
 
   public void testRemoveRequiresUpdate() throws Exception
@@ -523,8 +523,7 @@ public class BasePanelTest extends TestCase
 
     panel.remove(child);
 
-    assertEquals(true, panel.needsUpdating());
-    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+    assertEquals(true, panel.needsLayout());
   }
 
   public void testRemoveoesntRequireUpdateIfNoChildWasRemoved() throws Exception
@@ -546,8 +545,7 @@ public class BasePanelTest extends TestCase
 
     panel.removeAll();
 
-    assertEquals(true, panel.needsUpdating());
-    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+    assertEquals(true, panel.needsLayout());
   }
 
   public void testRemoveAllDoesntRequireUpdateIfNoChildWasRemoved() throws Exception
@@ -574,7 +572,7 @@ public class BasePanelTest extends TestCase
     assertSame(panel, childB.getParent());
     assertSame(panel, childC.getParent());
   }
-  
+
   public void testAddingChildAtIndexWhenSteralizedThrowsException() throws Exception
   {
     panel.sterilize();
@@ -589,7 +587,7 @@ public class BasePanelTest extends TestCase
     }
   }
 
-  public void testAddingPanelsAtIndexRequiresUpdate() throws Exception
+  public void testAddingPanelsAtIndexRequiresLayout() throws Exception
   {
     Panel childA = new MockPanel();
     Panel childB = new MockPanel();
@@ -597,8 +595,7 @@ public class BasePanelTest extends TestCase
     panel.add(childA);
     panel.add(0, childB);
 
-    assertEquals(true, panel.needsUpdating());
-    assertEquals(LayoutAndPaintUpdate.class, panel.getNeededUpdate().getClass());
+    assertEquals(true, panel.needsLayout());
   }
 
   public void testGetChildrenReturnsACopiedList() throws Exception
@@ -631,6 +628,26 @@ public class BasePanelTest extends TestCase
     catch(UnsupportedOperationException e)
     {
     }
+  }
+
+  public void testNeedsLayoutByDefault() throws Exception
+  {
+    assertEquals(true, panel.needsLayout());
+  }
+
+  public void testNeedsLayout() throws Exception
+  {
+    panel.setNeedsLayout();
+
+    assertEquals(true, panel.needsLayout());
+    ArrayList<Panel> buffer = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(buffer);
+    assertEquals(1, buffer.size());
+    assertSame(panel, buffer.get(0));
+
+    panel.doLayout();
+
+    assertEquals(false, panel.needsLayout());
   }
 }
 

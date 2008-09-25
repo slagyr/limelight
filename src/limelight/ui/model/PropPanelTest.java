@@ -8,13 +8,11 @@ import limelight.ui.Painter;
 import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.ui.model.updates.Updates;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
-import limelight.styles.Style;
 import limelight.styles.ScreenableStyle;
 import limelight.util.Box;
 import limelight.Context;
@@ -24,6 +22,8 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.font.FontRenderContext;
 import java.awt.event.*;
 
 public class PropPanelTest extends TestCase
@@ -212,28 +212,23 @@ public class PropPanelTest extends TestCase
   {
     style.setWidth("100%");
 
-    assertEquals(true, panel.needsUpdating());
+    assertEquals(true, panel.needsLayout());
   }
 
   public void testHasChangesWhenaTextIsChanged() throws Exception
   {
-    panel.setText("blah");
-    assertEquals(true, panel.needsUpdating());
+    TextPanel.staticFontRenderingContext = new FontRenderContext(new AffineTransform(), true, true);
+    panel.doLayout();
 
-    panel.resetNeededUpdate();
     panel.setText("blah");
-    assertEquals(false, panel.needsUpdating());
+    assertEquals(true, panel.needsLayout());
+
+    panel.doLayout();
+    panel.setText("blah");
+    assertEquals(false, panel.needsLayout());
 
     panel.setText("new text");
-    assertEquals(true, panel.needsUpdating());
-  }
-  
-  public void testMarkingAsChagedAddsPanelToChangeSet() throws Exception
-  {
-    assertEquals(0, root.getChangedPanelCount());
-    panel.setNeededUpdate(Updates.layoutAndPaintUpdate);
-    assertEquals(1, root.getChangedPanelCount());
-    assertEquals(true, root.changedPanelsContains(panel));
+    assertEquals(true, panel.needsLayout());
   }
 
   public void testAddingScrollBarChangesChildConsumableArea() throws Exception

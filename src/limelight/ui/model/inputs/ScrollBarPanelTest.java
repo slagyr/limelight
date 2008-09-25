@@ -98,9 +98,10 @@ public class ScrollBarPanelTest extends TestCase
     PropPanel parent = new PropPanel(new MockProp());
     root.setPanel(parent);
     parent.add(panel);
+    parent.doLayout();
     panel.setValue(50);
 
-    assertEquals(true, parent.needsUpdating());
+    assertEquals(true, parent.needsLayout());
   }
 
   public void testParentIsMarkedAsChanged() throws Exception
@@ -109,10 +110,11 @@ public class ScrollBarPanelTest extends TestCase
     PropPanel parent = new PropPanel(new MockProp());
     root.setPanel(parent);
     parent.add(panel);
+    parent.doLayout();
 
     panel.setValue(50);
 
-    assertEquals(true, parent.needsUpdating());
+    assertEquals(true, parent.needsLayout());
   }
 
   public void testConfigure() throws Exception

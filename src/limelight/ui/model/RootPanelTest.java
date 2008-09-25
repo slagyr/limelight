@@ -4,13 +4,12 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-
-import java.awt.*;
-import java.util.Arrays;
-
-import limelight.ui.model.updates.MockUpdate;
 import limelight.ui.model.inputs.TextBoxPanel;
+import limelight.ui.Panel;
 import limelight.Context;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.awt.*;
 
 public class RootPanelTest extends TestCase
 {
@@ -115,19 +114,65 @@ public class RootPanelTest extends TestCase
 
     assertNotSame(inputPanel, Context.instance().keyboardFocusManager.getFocusedPanel());
   }
-    
-  public void testRepaintChangedPanels() throws Exception
+
+  public void testAddPanelNeedingLayout() throws Exception
   {
-    root.setPanel(child);
-    root.addChangedPanel(child);
-    MockUpdate mockUpdate = new MockUpdate();
-    child.setNeededUpdate(mockUpdate);
+    root.addPanelNeedingLayout(child);
 
-    root.repaintChangedPanels();
+    ArrayList<Panel> panels = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(panels);
 
-    assertEquals(0, root.getChangedPanelCount());
-    assertEquals(true, mockUpdate.updatePerformed);
-    assertEquals(child, mockUpdate.updatedPanel);
-    assertEquals(true, child.changeMarkerWasReset);
+    assertEquals(1, panels.size());
+    assertEquals(child, panels.get(0));
+
+    panels.clear();
+    root.getAndClearPanelsNeedingLayout(panels);
+
+    assertEquals(0, panels.size());
+  }
+
+  public void testAddDirtyRegion() throws Exception
+  {
+    Rectangle rectangle = new Rectangle(1, 2, 3, 4);
+    root.addDirtyRegion(rectangle);
+
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    root.getAndClearDirtyRegions(regions);
+
+    assertEquals(1, regions.size());
+    assertEquals(rectangle, regions.get(0));
+
+    regions.clear();
+    root.getAndClearDirtyRegions(regions);
+
+    assertEquals(0, regions.size());
+  }
+
+  public void testWontAddDirtyRegionIfAlreadyCovered() throws Exception
+  {
+    Rectangle big = new Rectangle(0, 0, 100, 100);
+    Rectangle small = new Rectangle(1, 2, 3, 4);
+    root.addDirtyRegion(big);
+    root.addDirtyRegion(small);
+
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    root.getAndClearDirtyRegions(regions);
+
+    assertEquals(1, regions.size());
+    assertEquals(big, regions.get(0));  
+  }
+
+  public void testWillRemoveSmallerRegionsWhenCoveredByLarger() throws Exception
+  {
+    Rectangle big = new Rectangle(0, 0, 100, 100);
+    Rectangle small = new Rectangle(1, 2, 3, 4);
+    root.addDirtyRegion(small);
+    root.addDirtyRegion(big);
+
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    root.getAndClearDirtyRegions(regions);
+
+    assertEquals(1, regions.size());
+    assertEquals(big, regions.get(0));
   }
 }

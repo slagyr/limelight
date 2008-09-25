@@ -13,7 +13,7 @@ import java.awt.event.*;
 import java.util.List;
 
 public interface Panel extends Iterable<Panel>
-{            
+{
   void setLocation(int x, int y);
   Point getLocation();
   void setSize(int width, int height);
@@ -61,6 +61,8 @@ public interface Panel extends Iterable<Panel>
   void resetNeededUpdate();
   Update getNeededUpdate();
   Update getAndClearNeededUpdate();
+  boolean needsLayout();
+  void setNeedsLayout();
   
   void mousePressed(MouseEvent e);
   void mouseReleased(MouseEvent e);

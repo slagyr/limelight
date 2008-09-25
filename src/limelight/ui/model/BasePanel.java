@@ -5,7 +5,6 @@ package limelight.ui.model;
 
 import limelight.LimelightError;
 import limelight.ui.Panel;
-import limelight.ui.model.updates.Updates;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -28,6 +27,7 @@ public abstract class BasePanel implements Panel
   protected Update neededUpdate;
   private List<Panel> readonlyChildren;
   private boolean allowUpdates = true;
+  private boolean needsLayout = true;
 
   protected BasePanel()
   {
@@ -188,6 +188,7 @@ public abstract class BasePanel implements Panel
 
   public void doLayout()
   {
+    needsLayout = false;
   }
 
   public void mousePressed(MouseEvent e)
@@ -280,7 +281,7 @@ public abstract class BasePanel implements Panel
     readonlyChildren = null;
 
     child.setParent(this);
-    setNeededUpdate(Updates.layoutAndPaintUpdate);
+    setNeedsLayout();
   }
 
   public boolean hasChildren()
@@ -340,7 +341,7 @@ public abstract class BasePanel implements Panel
     if(children.remove(child))
     {
       readonlyChildren = null;
-      setNeededUpdate(Updates.layoutAndPaintUpdate);
+      setNeedsLayout();
       return true;
     }
     return false;
@@ -353,7 +354,7 @@ public abstract class BasePanel implements Panel
       children.clear();
       readonlyChildren = null;
       sterilized = false;
-      setNeededUpdate(Updates.layoutAndPaintUpdate);
+      setNeedsLayout();
     }
   }
 
@@ -410,6 +411,18 @@ public abstract class BasePanel implements Panel
   public synchronized Update getNeededUpdate()
   {
     return neededUpdate;
+  }
+
+  public void setNeedsLayout()
+  {
+    needsLayout = true;
+    if(getRoot() != null)
+      getRoot().addPanelNeedingLayout(this);
+  }
+
+  public boolean needsLayout()
+  {
+    return needsLayout;
   }
 
   //TODO This is little inefficient.  Reconsider what get's passed to props.

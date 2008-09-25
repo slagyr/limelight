@@ -6,6 +6,7 @@ package limelight.ui.model;
 import limelight.Context;
 import limelight.styles.Style;
 import limelight.ui.Panel;
+import limelight.ui.model.inputs.ComboBoxPanel;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -18,16 +19,16 @@ public class RootPanel implements Panel
   private Container contentPane;
   private EventListener listener;
   private boolean alive;
-  private HashSet<Panel> changedPanels;
   private Frame frame;
-  private ArrayList<Panel> panelsToUpdateBuffer;
+  private HashSet<Panel> changedPanels = new HashSet<Panel>();
+  private ArrayList<Panel> panelsToUpdateBuffer = new ArrayList<Panel>(50);
+  private ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
+  private ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
 
   public RootPanel(Frame frame)
   {
     this.frame = frame;
     contentPane = frame.getContentPane();
-    changedPanels = new HashSet<Panel>();
-    panelsToUpdateBuffer = new ArrayList<Panel>(50);
   }
 
   public Container getContentPane()
@@ -47,7 +48,7 @@ public class RootPanel implements Panel
 
   public void doLayout()
   {
-    panel.doLayout();
+    panel.doLayout();  
   }
 
   public int getWidth()
@@ -230,6 +231,71 @@ public class RootPanel implements Panel
     return panel.iterator();
   }
 
+  public synchronized void addPanelNeedingLayout(Panel child)
+  {
+    boolean shouldAdd = true;
+    for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext();)
+    {
+      Panel panel = iterator.next();
+      if(child == panel)
+      {
+        shouldAdd = false;
+        break;
+      }
+      else if(child.isAncestor(panel))
+      {
+        shouldAdd = false;
+        break;
+      }
+      else if(panel.isAncestor(child))
+      {
+        iterator.remove();
+      }
+    }
+    if(shouldAdd)
+      panelsNeedingLayout.add(child);
+  }
+
+  public synchronized void getAndClearPanelsNeedingLayout(ArrayList<Panel> buffer)
+  {
+    buffer.addAll(panelsNeedingLayout);
+    panelsNeedingLayout.clear();
+  }
+
+  public boolean panelsNeedingUpdateContains(Panel panel)
+  {
+    return panelsNeedingLayout.contains(panel);
+  }
+
+  public synchronized void addDirtyRegion(Rectangle region)
+  {
+    boolean shouldAdd = true;
+    for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext();)
+    {
+      Rectangle dirtyRegion = iterator.next();
+      if(dirtyRegion.contains(region))
+      {
+        shouldAdd = false;
+        break;
+      }
+      else if(region.contains(dirtyRegion))
+        iterator.remove();
+    }
+    if(shouldAdd)
+      dirtyRegions.add(region);
+  }
+
+  public synchronized void getAndClearDirtyRegions(ArrayList<Rectangle> buffer)
+  {
+    buffer.addAll(dirtyRegions);
+    dirtyRegions.clear();
+  }
+
+  public boolean dirtyRegionsContains(Rectangle region)
+  {
+    return dirtyRegions.contains(region);
+  }
+
   /////////////////////////////////////////////
   /// NOT NEEDED
   /////////////////////////////////////////////
@@ -396,6 +462,15 @@ public class RootPanel implements Panel
   public Update getAndClearNeededUpdate()
   {
     return null;
+  }
+
+  public boolean needsLayout()
+  {
+    return false;
+  }
+
+  public void setNeedsLayout()
+  {
   }
 
   public void add(Panel child)

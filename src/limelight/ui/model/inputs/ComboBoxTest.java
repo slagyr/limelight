@@ -6,8 +6,6 @@ package limelight.ui.model.inputs;
 import junit.framework.TestCase;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.MockFrame;
-import limelight.ui.model.updates.PaintUpdate;
-import limelight.ui.model.updates.BoundedPaintUpdate;
 
 import java.awt.*;
 
@@ -29,24 +27,21 @@ public class ComboBoxTest extends TestCase
   {
     comboBox.repaint();
 
-    assertEquals(true, root.changedPanelsContains(panel));
-    assertEquals(PaintUpdate.class, panel.getNeededUpdate().getClass());
+    assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
   }
 
   public void testRapaintWithParams() throws Exception
   {
     comboBox.repaint(1, 2, 3, 4);
 
-    assertEquals(true, root.changedPanelsContains(panel));
-    assertEquals(BoundedPaintUpdate.class, panel.getNeededUpdate().getClass());
+    assertEquals(true, root.dirtyRegionsContains(new Rectangle(1, 2, 3, 4)));
   }
 
   public void testRapaintWithRectangle() throws Exception
   {
     comboBox.repaint(new Rectangle(1, 2, 3, 4));
 
-    assertEquals(true, root.changedPanelsContains(panel));
-    assertEquals(BoundedPaintUpdate.class, panel.getNeededUpdate().getClass());
+    assertEquals(true, root.dirtyRegionsContains(new Rectangle(1, 2, 3, 4)));
   }
 
 }

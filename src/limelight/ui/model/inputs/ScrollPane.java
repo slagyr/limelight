@@ -3,8 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.updates.Updates;
-import limelight.ui.model.updates.BoundedPaintUpdate;
 import limelight.ui.model.BasePanel;
 
 import java.awt.*;
@@ -21,19 +19,22 @@ public class ScrollPane
   public void repaint()
   {
     if(panel != null)
-      panel.setNeededUpdate(Updates.paintUpdate);
+      panel.getRoot().addDirtyRegion(panel.getAbsoluteBounds());
   }
 
   public void repaint(long tm, int x, int y, int width, int height)
   {
-    if(panel != null)
-      panel.setNeededUpdate(new BoundedPaintUpdate(x, y, width, height));
+    repaint(new Rectangle(x, y, width, height));
   }
 
-  public void repaint(Rectangle r)
+  public void repaint(Rectangle dirtyBounds)
   {
-    if(panel != null)
-      panel.setNeededUpdate(new BoundedPaintUpdate(r));
+    if(panel != null && panel.getRoot() != null)
+    {
+      Point location = panel.getAbsoluteLocation();
+      dirtyBounds.translate(location.x, location.y);
+      panel.getRoot().addDirtyRegion(dirtyBounds);
+    }
   }
 
   public boolean isShowing()

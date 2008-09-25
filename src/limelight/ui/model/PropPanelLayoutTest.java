@@ -4,14 +4,11 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-
-import java.awt.*;
-
 import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.ui.model.updates.LayoutAndPaintUpdate;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class PropPanelLayoutTest extends TestCase
 {
@@ -286,7 +283,7 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(50, panel.getWidth());
     assertEquals(50, panel.getHeight());
   }
-  
+
   public void testFloatersAreLaidOut() throws Exception
   {
     MockPropablePanel floater = createAndAddChildWithSize(50, 50);
@@ -302,7 +299,7 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(new Point(2, 3), floater.getLocation());
     assertEquals(new Point(0, 0), child.getLocation());
   }
-  
+
   public void testAddingScrollBars() throws Exception
   {
     assertEquals(0, parent.getChildren().size());
@@ -331,7 +328,7 @@ public class PropPanelLayoutTest extends TestCase
     assertNull(parent.getVerticalScrollBar());
     assertNull(parent.getHorizontalScrollBar());
   }
-  
+
   public void testScrollBarLayout() throws Exception
   {
     parent.getStyle().setScrollbars("on");
@@ -407,8 +404,8 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(-50, panel.getX());
     assertEquals(-100, panel.getY());
   }
-  
-  public void testParentNeedsUpdateWhenSizeGoesToZero() throws Exception
+
+  public void testParentNeedsLayoutWhenSizeGoesToZero() throws Exception
   {
     PropPanel child = new PropPanel(new MockProp());
     parent.add(child);
@@ -420,8 +417,7 @@ public class PropPanelLayoutTest extends TestCase
 
     assertEquals(0, child.getWidth());
     assertEquals(0, child.getHeight());
-    assertEquals(true, parent.needsUpdating());
-    assertEquals(LayoutAndPaintUpdate.class, parent.getNeededUpdate().getClass());
+    assertEquals(true, parent.needsLayout());
   }
 
   public void testParentShouldNotBeUodatedWhenSizeIsAlreadyZero() throws Exception
@@ -442,7 +438,7 @@ public class PropPanelLayoutTest extends TestCase
     PropPanel child = new PropPanel(new MockProp());
     parent.add(child);
     parent.resetNeededUpdate();
-    parent.setSize(100,100);
+    parent.setSize(100, 100);
     child.setSize(0, 0);
     child.getStyle().setHeight("auto");
     child.getStyle().flushChanges();
@@ -459,6 +455,6 @@ public class PropPanelLayoutTest extends TestCase
 
     assertEquals(100, child.getWidth());
     assertEquals(50, child.getHeight());
-    assertEquals(true, parent.needsUpdating());
+    assertEquals(true, parent.needsLayout());
   }
 }

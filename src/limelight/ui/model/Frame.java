@@ -3,10 +3,9 @@
 
 package limelight.ui.model;
 
-import limelight.ui.api.Stage;
-import limelight.ui.Panel;
-import limelight.ui.model.updates.Updates;
 import limelight.Context;
+import limelight.ui.Panel;
+import limelight.ui.api.Stage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +51,9 @@ public class Frame extends JFrame
   public void refresh()
   {
     if(root != null)
-      root.getPanel().setNeededUpdate(Updates.layoutAndPaintUpdate);
+    {
+      root.getPanel().setNeedsLayout();
+    }
   }
 
   public void load(Panel child)
@@ -61,6 +62,7 @@ public class Frame extends JFrame
       root.destroy();
     root = new RootPanel(this);
     root.setPanel(child);
+    refresh();
   }
 
   public Stage getStage()
@@ -126,7 +128,9 @@ public class Frame extends JFrame
     public void paint(Graphics g)
     {
       if(frame.getRoot() != null)
-        frame.getRoot().getPanel().setNeededUpdate(Updates.paintUpdate);
+      {
+        frame.getRoot().addDirtyRegion(frame.getRoot().getPanel().getAbsoluteBounds());
+      }
     }
   }
 }

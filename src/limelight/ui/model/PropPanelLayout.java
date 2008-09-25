@@ -6,7 +6,6 @@ package limelight.ui.model;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.ui.model.updates.Updates;
 import limelight.util.Aligner;
 import limelight.util.Box;
 
@@ -32,9 +31,9 @@ public class PropPanelLayout
   {
     resetConsumedDimensions();
     boolean startsWithVisibleDimensions = panel.getWidth() != 0 && panel.getHeight() != 0;
-    
+
     Style style = panel.getStyle();
-    
+
     if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT) || hasPercentageDimension() || hasAutoDimensions())
       panel.snapToSize();
 
@@ -56,12 +55,14 @@ public class PropPanelLayout
     boolean endsWithVisibleDimensions = panel.getWidth() != 0 && panel.getHeight() != 0;
 
     if(startsWithVisibleDimensions != endsWithVisibleDimensions)
-      panel.getParent().setNeededUpdate(Updates.layoutAndPaintUpdate);
+    {
+      panel.getParent().setNeedsLayout(); // This strategy needs rework
+    }
   }
 
   private boolean hasAutoDimensions()
   {
-    return "auto".equals(panel.getStyle().getWidth()) ||   "auto".equals(panel.getStyle().getHeight());
+    return "auto".equals(panel.getStyle().getWidth()) || "auto".equals(panel.getStyle().getHeight());
   }
 
   private boolean hasPercentageDimension()
@@ -104,7 +105,7 @@ public class PropPanelLayout
   private void collapseAutoDimensions()
   {
     Style style = panel.getStyle();
-    
+
     int width = panel.getWidth();
     int height = panel.getHeight();
 
@@ -141,7 +142,13 @@ public class PropPanelLayout
   protected void doLayoutOnChildren()
   {
     for(Panel child : panel.getChildren())
-      child.doLayout();
+    {
+
+      if(child.needsLayout())
+      {
+        child.doLayout();
+      }
+    }
   }
 
   public void layoutRows()
