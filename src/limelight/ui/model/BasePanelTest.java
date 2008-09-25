@@ -6,6 +6,7 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.LimelightError;
 import limelight.styles.Style;
+import limelight.styles.FlatStyle;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
@@ -26,12 +27,13 @@ public class BasePanelTest extends TestCase
   private MockPanel grandChild;
   private MockPanel sibling;
   private MockProp prop;
-  private PropPanel propPanel;
   private MouseEvent mouseEvent;
   private RootPanel root;
 
   class TestableBasePanel extends BasePanel
   {
+    public Style style = new FlatStyle();
+
     public Box getChildConsumableArea()
     {
       return null;
@@ -44,7 +46,7 @@ public class BasePanelTest extends TestCase
 
     public Style getStyle()
     {
-      return null;
+      return style;
     }
   }
 
@@ -403,7 +405,7 @@ public class BasePanelTest extends TestCase
   void addPropPanel()
   {
     prop = new MockProp();
-    propPanel = new PropPanel(prop);
+    PropPanel propPanel = new PropPanel(prop);
     propPanel.add(panel);
     mouseEvent = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
   }
@@ -608,6 +610,7 @@ public class BasePanelTest extends TestCase
 
   public void testNeedsLayout() throws Exception
   {
+    panel.doLayout();
     panel.setNeedsLayout();
 
     assertEquals(true, panel.needsLayout());
@@ -619,6 +622,75 @@ public class BasePanelTest extends TestCase
     panel.doLayout();
 
     assertEquals(false, panel.needsLayout());
+  }
+  
+  public void testNeedsLayoutIgnoredOnSubsequentCalls() throws Exception
+  {
+    panel.setNeedsLayout();
+
+    assertEquals(true, panel.needsLayout());
+    ArrayList<Panel> buffer = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(buffer);
+
+    panel.setNeedsLayout();
+    buffer.clear();
+    root.getAndClearPanelsNeedingLayout(buffer);
+
+    assertEquals(0, buffer.size());
+    assertEquals(true, panel.needsLayout());
+  }
+  
+  public void testAncestorsWithAutoDimensionsRequireLayoutWhenChildrenAdded() throws Exception
+  {
+    createFamilyTree();
+    parent.doLayout();
+    child.doLayout();
+    grandChild.doLayout();
+
+    PropPanel newPanel = new PropPanel(new MockProp());
+    grandChild.add(newPanel);
+
+    assertEquals(true, grandChild.needsLayout());
+    assertEquals(true, child.needsLayout());
+    assertEquals(true, parent.needsLayout());
+  }
+
+  public void testAncestorsWithAutoDimensionsRequireLayoutWhenChildrenRemoved() throws Exception
+  {
+    createFamilyTree();
+    parent.doLayout();
+    child.doLayout();
+    grandChild.doLayout();
+
+    MockPanel newPanel = new MockPanel();
+    grandChild.add(newPanel);
+    parent.doLayout();
+    child.doLayout();
+    grandChild.doLayout();
+    grandChild.remove(newPanel);
+
+    assertEquals(true, grandChild.needsLayout());
+    assertEquals(true, child.needsLayout());
+    assertEquals(true, parent.needsLayout());
+  }
+
+  public void testAncestorsWithAutoDimensionsRequireLayoutWhenAllChildrenRemoved() throws Exception
+  {
+    createFamilyTree();
+    parent.doLayout();
+    child.doLayout();
+    grandChild.doLayout();
+
+    MockPanel newPanel = new MockPanel();
+    grandChild.add(newPanel);
+    parent.doLayout();
+    child.doLayout();
+    grandChild.doLayout();
+    grandChild.removeAll();
+
+    assertEquals(true, grandChild.needsLayout());
+    assertEquals(true, child.needsLayout());
+    assertEquals(true, parent.needsLayout());
   }
 }
 

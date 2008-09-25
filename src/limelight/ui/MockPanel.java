@@ -56,6 +56,7 @@ public class MockPanel extends BasePanel
 
   public void doLayout()
   {
+    super.doLayout();
     wasLaidOut = true;
   }
 
