@@ -105,6 +105,51 @@ public class RootPanelTest extends TestCase
     assertEquals(0, panels.size());
   }
 
+  public void testAddPanelNeedingLayoutDoesntAllowDuplicates() throws Exception
+  {
+    root.addPanelNeedingLayout(child);
+    root.addPanelNeedingLayout(child);
+
+    ArrayList<Panel> panels = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(panels);
+
+    assertEquals(1, panels.size());
+    assertEquals(child, panels.get(0));
+
+    panels.clear();
+    root.getAndClearPanelsNeedingLayout(panels);
+  }
+
+  public void testAddPanelNeedingLayoutWontAddWhenAncestorIsAlreadyInTheList() throws Exception
+  {
+    MockPropablePanel grandChild = new MockPropablePanel();
+    child.add(grandChild);
+
+    root.addPanelNeedingLayout(child);
+    root.addPanelNeedingLayout(grandChild);
+
+    ArrayList<Panel> panels = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(panels);
+
+    assertEquals(1, panels.size());
+    assertEquals(child, panels.get(0));
+  }
+
+  public void testAddPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
+  {
+    MockPropablePanel grandChild = new MockPropablePanel();
+    child.add(grandChild);
+
+    root.addPanelNeedingLayout(grandChild);
+    root.addPanelNeedingLayout(child);
+
+    ArrayList<Panel> panels = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(panels);
+
+    assertEquals(1, panels.size());
+    assertEquals(child, panels.get(0));
+  }
+
   public void testAddDirtyRegion() throws Exception
   {
     Rectangle rectangle = new Rectangle(1, 2, 3, 4);
@@ -148,5 +193,18 @@ public class RootPanelTest extends TestCase
 
     assertEquals(1, regions.size());
     assertEquals(big, regions.get(0));
+  }
+
+  public void testRegionsWithNoORNegativeDimensionsAreNotAdded() throws Exception
+  {
+    root.addDirtyRegion(new Rectangle(0, 0, 0, 0));
+    root.addDirtyRegion(new Rectangle(10, 10, 0, 0));
+    root.addDirtyRegion(new Rectangle(1, 2, -10, -10));
+    root.addDirtyRegion(new Rectangle(1, 2, 3, -4));
+
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    root.getAndClearDirtyRegions(regions);
+
+    assertEquals(0, regions.size());
   }
 }

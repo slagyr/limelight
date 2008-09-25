@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.LimelightError;
+import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.util.Box;
 
@@ -279,6 +280,7 @@ public abstract class BasePanel implements Panel
     readonlyChildren = null;
 
     child.setParent(this);
+    propogateSizeChange(this);
     setNeedsLayout();
   }
 
@@ -339,6 +341,7 @@ public abstract class BasePanel implements Panel
     if(children.remove(child))
     {
       readonlyChildren = null;
+      propogateSizeChange(this);
       setNeedsLayout();
       return true;
     }
@@ -352,6 +355,7 @@ public abstract class BasePanel implements Panel
       children.clear();
       readonlyChildren = null;
       sterilized = false;
+      propogateSizeChange(this);
       setNeedsLayout();
     }
   }
@@ -375,9 +379,9 @@ public abstract class BasePanel implements Panel
 
   public void setNeedsLayout()
   {
-    needsLayout = true;
-    if(getRoot() != null)
+    if(!needsLayout && getRoot() != null)
       getRoot().addPanelNeedingLayout(this);
+    needsLayout = true;
   }
 
   public boolean needsLayout()
@@ -397,5 +401,27 @@ public abstract class BasePanel implements Panel
   public Iterator<Panel> iterator()
   {
     return new PanelIterator(this);
+  }
+
+  private void propogateSizeChange(Panel panel)
+  {
+    if(panel == null || panel.needsLayout() || panel instanceof RootPanel)
+      return;
+    else
+    {
+      if(hasAutoDimensions(panel))
+      {
+        propogateSizeChange(panel.getParent());
+        panel.getParent().setNeedsLayout();
+      }
+    }
+  }
+
+  private boolean hasAutoDimensions(Panel panel)
+  {
+    if(panel == null || panel.getStyle() == null)
+      return false;
+    Style style = panel.getStyle();
+    return "auto".equals(style.getWidth()) || "auto".equals(style.getHeight());
   }
 }

@@ -107,6 +107,7 @@ public class RootPanel implements Panel
     contentPane.addMouseWheelListener(listener);
     contentPane.addKeyListener(listener);
     alive = true;
+    addPanelNeedingLayout(child);
   }
 
   public void destroy()

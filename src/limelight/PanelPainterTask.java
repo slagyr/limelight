@@ -63,7 +63,7 @@ class PanelPainterTask extends RecurringTask
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);
     for(Panel panel : panelBuffer)
-    {
+    {  
       panel.doLayout();
     }
   }
