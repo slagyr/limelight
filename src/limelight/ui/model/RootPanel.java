@@ -10,7 +10,9 @@ import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class RootPanel implements Panel
 {
@@ -19,8 +21,6 @@ public class RootPanel implements Panel
   private EventListener listener;
   private boolean alive;
   private Frame frame;
-  private HashSet<Panel> changedPanels = new HashSet<Panel>();
-  private ArrayList<Panel> panelsToUpdateBuffer = new ArrayList<Panel>(50);
   private ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
 
@@ -47,7 +47,7 @@ public class RootPanel implements Panel
 
   public void doLayout()
   {
-    panel.doLayout();  
+    panel.doLayout();
   }
 
   public int getWidth()
@@ -118,14 +118,13 @@ public class RootPanel implements Panel
     contentPane.removeKeyListener(listener);
     listener = null;
     panel.setParent(null);
-    changedPanels.clear();
     alive = false;
   }
 
   private void removeKeyboardFocus()
   {
     Panel focuedPanel = Context.instance().keyboardFocusManager.getFocusedPanel();
-    if (focuedPanel != null && focuedPanel.getRoot() == this)
+    if(focuedPanel != null && focuedPanel.getRoot() == this)
       Context.instance().keyboardFocusManager.unfocusCurrentlyFocusedComponent();
   }
 
@@ -221,16 +220,21 @@ public class RootPanel implements Panel
   public synchronized void addDirtyRegion(Rectangle region)
   {
     boolean shouldAdd = true;
-    for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext();)
+    if(region.width <= 0 || region.height <= 0)
+      shouldAdd = false;
+    else
     {
-      Rectangle dirtyRegion = iterator.next();
-      if(dirtyRegion.contains(region))
+      for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext();)
       {
-        shouldAdd = false;
-        break;
+        Rectangle dirtyRegion = iterator.next();
+        if(dirtyRegion.contains(region))
+        {
+          shouldAdd = false;
+          break;
+        }
+        else if(region.contains(dirtyRegion))
+          iterator.remove();
       }
-      else if(region.contains(dirtyRegion))
-        iterator.remove();
     }
     if(shouldAdd)
       dirtyRegions.add(region);
@@ -328,7 +332,7 @@ public class RootPanel implements Panel
 //    System.err.println("RootPanel.getOwnerOfPoint()");
 //    throw new RuntimeException("RootPanel.getOwnerOfPoint()");
     point = new Point(point.x - getX(), point.y - getY());
-    if (panel.containsRelativePoint(point))
+    if(panel.containsRelativePoint(point))
       return panel.getOwnerOfPoint(point);
     return this;
   }

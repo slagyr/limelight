@@ -25,6 +25,7 @@ public class CheckBoxTest extends TestCase
 
   public void testRepaint() throws Exception
   {
+    panel.setSize(100, 100);
     checkBox.repaint();
 
     assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));

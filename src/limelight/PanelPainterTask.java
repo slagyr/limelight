@@ -48,7 +48,7 @@ class PanelPainterTask extends RecurringTask
     for(Rectangle rectangle : regionBuffer)
     {
       if(rectangle.width <= 0 || rectangle.height <= 0)
-        return;
+        continue;
       PaintJob job = new PaintJob(new Box(rectangle));
 
       job.paint(root.getPanel());
@@ -63,6 +63,8 @@ class PanelPainterTask extends RecurringTask
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);
     for(Panel panel : panelBuffer)
+    {
       panel.doLayout();
+    }
   }
 }
