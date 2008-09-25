@@ -25,6 +25,7 @@ public class ComboBoxTest extends TestCase
 
   public void testRepaint() throws Exception
   {
+    panel.setSize(100, 100);
     comboBox.repaint();
 
     assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));

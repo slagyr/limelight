@@ -25,6 +25,7 @@ public class RadioButtonTest extends TestCase
 
   public void testRepaint() throws Exception
   {
+    panel.setSize(100, 100);
     radioButton.repaint();
 
     assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));

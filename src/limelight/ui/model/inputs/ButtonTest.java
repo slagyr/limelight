@@ -25,6 +25,7 @@ public class ButtonTest extends TestCase
 
   public void testRepaint() throws Exception
   {
+    panel.setSize(100, 100);
     button.repaint();
 
     assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));

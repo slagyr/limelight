@@ -62,7 +62,6 @@ public class Frame extends JFrame
       root.destroy();
     root = new RootPanel(this);
     root.setPanel(child);
-    refresh();
   }
 
   public Stage getStage()
