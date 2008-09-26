@@ -51,7 +51,7 @@
           <versionLine x="20" y="40" text="version ${compiler:sys.version}" font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
         </text>
       </splashScreen>
-      <java mainClass="limelight.Main" vmParameters="&quot;-Dlimelight.home=${launcher:sys.launcherDirectory}&quot;" arguments="" allowVMPassthroughParameters="true" preferredVM="">
+      <java mainClass="limelight.Main" vmParameters="&quot;-Dlimelight.home=${launcher:sys.launcherDirectory}&quot; -Dlimelight.as.app=true" arguments="" allowVMPassthroughParameters="true" preferredVM="">
         <classPath>
           <archive location="lib/limelight.jar" failOnError="false" />
           <archive location="jruby/lib/jruby.jar" failOnError="false" />
@@ -165,6 +165,19 @@
             <actions />
             <formComponents />
           </screen>
+          <screen name="" id="65" beanClass="com.install4j.runtime.beans.screens.FileAssociationsScreen" enabled="true" commentSet="false" comment="" rollbackBarrier="false" backButton="2" finishScreen="false">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.FileAssociationsScreen" />
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
+            <formComponents />
+          </screen>
           <screen name="" id="6" beanClass="com.install4j.runtime.beans.screens.InstallationScreen" enabled="true" commentSet="false" comment="" rollbackBarrier="true" backButton="2" finishScreen="false">
             <serializedBean>
               <java class="java.beans.XMLDecoder">
@@ -207,6 +220,34 @@
                       </void>
                       <void property="itemName">
                         <string>${compiler:sys.fullName} ${compiler:sys.version}</string>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+              <action name="" id="67" beanClass="com.install4j.runtime.beans.actions.desktop.CreateFileAssociationAction" enabled="true" commentSet="false" comment="" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.desktop.CreateFileAssociationAction">
+                      <void property="description">
+                        <string>Limelight Production</string>
+                      </void>
+                      <void property="extension">
+                        <string>llp</string>
+                      </void>
+                      <void property="launcherId">
+                        <string>18</string>
+                      </void>
+                      <void property="macIconFile">
+                        <object class="com.install4j.api.beans.ExternalFile">
+                          <string>./images/limelight.icns</string>
+                        </object>
+                      </void>
+                      <void property="windowsIconFile">
+                        <object class="com.install4j.api.beans.ExternalFile">
+                          <string>./images/icon.ico</string>
+                        </object>
                       </void>
                     </object>
                   </java>

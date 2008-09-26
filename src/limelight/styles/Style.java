@@ -8,7 +8,6 @@ import java.util.LinkedList;
 public abstract class Style
 {
   public static final LinkedList<StyleDescriptor> STYLE_LIST = new LinkedList<StyleDescriptor>();
-  private LinkedList<StyleObserver> observers;
 
   public static StyleDescriptor descriptor(String name, String defaultValue)
   {
@@ -74,17 +73,17 @@ public abstract class Style
 
   protected static final int STYLE_COUNT = STYLE_LIST.size();
 
-  protected boolean[] changes;
-  private String[] defaults;
-
-  public Style()
-  {
-    changes = new boolean[STYLE_COUNT];
-  }
-
   protected abstract String get(int key);
   public abstract void put(StyleDescriptor descriptor, String value);
-  protected abstract boolean has(int key);  //TODO  MDM,  Delete ME!
+  public abstract void setDefault(StyleDescriptor descriptor, String value);
+  protected abstract String getDefaultValue(StyleDescriptor descriptor);
+  public abstract boolean changed();
+  public abstract boolean changed(StyleDescriptor descriptor);
+  public abstract void flushChanges();
+  public abstract int getChangedCount();
+  public abstract void removeObserver(StyleObserver observer);
+  public abstract void addObserver(StyleObserver observer);
+  public abstract boolean hasObserver(StyleObserver observer);
 
   public String get(StyleDescriptor descriptor)
   {
@@ -93,89 +92,6 @@ public abstract class Style
       return getDefaultValue(descriptor);
     else
       return value;
-  }
-
-  public void setDefault(StyleDescriptor descriptor, String value)
-  {
-    if(defaults == null)
-      defaults = new String[Style.STYLE_COUNT];
-    defaults[descriptor.index] = value;
-    if(get(descriptor.index) == null && value != null && !value.equals(descriptor.defaultValue))
-      recordChange(descriptor, value);
-  }
-
-  protected String getDefaultValue(StyleDescriptor descriptor)
-  {
-    if(defaults != null)
-    {
-      String value = defaults[descriptor.index];
-      if(value != null)
-        return value;
-    }
-    return descriptor.defaultValue;
-  }
-
-  protected void recordChange(StyleDescriptor descriptor, String value)
-  {
-    changes[descriptor.index] = true;
-    notifyObserversOfChange(descriptor, value);
-  }
-
-  public boolean changed()
-  {
-    for(int i = 0; i < changes.length; i++)
-    {
-      if(changes[i])
-        return true;
-    }
-    return false;
-  }
-
-  public boolean changed(StyleDescriptor descriptor)
-  {
-    return changes[descriptor.index];
-  }
-
-  public void flushChanges()
-  {
-    for (int i = 0; i < changes.length; i++)
-      changes[i] = false;
-  }
-
-  public int getChangedCount()
-  {
-    int count = 0;
-    for (int i = 0; i < changes.length; i++)
-      if(changes[i])
-        count++;
-    return count;
-  }
-  
-  public void removeObserver(StyleObserver observer)
-  {
-    if(observers != null)
-      observers.remove(observer);
-  }
-
-  public void addObserver(StyleObserver observer)
-  {
-    if(observers == null)
-      observers = new LinkedList<StyleObserver>();
-    observers.add(observer);
-  }
-
-  protected void notifyObserversOfChange(StyleDescriptor descriptor, String value)
-  {
-    if(observers != null)
-    {
-      for(StyleObserver observer : observers)
-        observer.styleChanged(descriptor, value);
-    }
-  }
-
-  public boolean hasObserver(StyleObserver observer)
-  {
-    return observers != null && observers.contains(observer);
   }
 
   public int asInt(String value)

@@ -26,7 +26,7 @@ public class Frame extends JFrame
     setContentPane(new LimelightContentPane(this));
 
     Context.instance().frameManager.watch(this);
-    setIconImage(new ImageIcon(System.getProperty("limelight.home") + "/bin/icon_48.gif").getImage());
+    setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   }
 

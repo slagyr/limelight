@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
 import limelight.ui.api.MockScene;
@@ -19,7 +18,6 @@ import java.util.regex.Matcher;
 public class TextPanelTest extends TestCase
 {
   private TextPanel panel;
-  private Box bounds;
   private Style style;
   private JFrame frame;
   private MockPropablePanel parent;
@@ -27,7 +25,6 @@ public class TextPanelTest extends TestCase
   public void setUp() throws Exception
   {
     TextPanel.widthPadding = 0;
-    bounds = new Box(0, 0, 100, 100);
     parent = new MockPropablePanel();
     parent.setLocation(0, 0);
     parent.setSize(100, 100);

@@ -5,7 +5,7 @@ package limelight.styles;
 
 import limelight.util.Util;
 
-public class FlatStyle extends Style
+public class FlatStyle extends BaseStyle
 {
   private String[] styles;
 
@@ -31,11 +31,6 @@ public class FlatStyle extends Style
     styles[descriptor.index] = value;
     if(!Util.equal(originalValue, value))
       recordChange(descriptor, value);
-  }
-
-  protected boolean has(int key)
-  {
-    return styles[key] != null && styles[key].length() > 0;
   }
 
   public String[] getStyles()
