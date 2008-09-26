@@ -59,6 +59,20 @@ public class FileUtil
 		return file;
 	}
 
+  public static void appendToFile(String filename, String content)
+  {
+   	try
+		{
+			FileOutputStream fileOutput = new FileOutputStream(filename, true);
+			fileOutput.write(content.getBytes());
+			fileOutput.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+  }
+
   public static File makeDir(String path)
 	{
     File dir = new File(path);

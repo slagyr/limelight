@@ -7,7 +7,7 @@ import limelight.util.Util;
 
 import java.util.LinkedList;
 
-public class RichStyle extends Style implements StyleObserver
+public class RichStyle extends BaseStyle implements StyleObserver
 {
   private String[] styles;
   private LinkedList<RichStyle> extensions;
@@ -45,11 +45,6 @@ public class RichStyle extends Style implements StyleObserver
       changes[descriptor.index] = true;
       notifyObserversOfChange(descriptor, value);
     }
-  }
-
-  protected boolean has(int key)
-  {
-    return styles[key] != null;
   }
 
   public void removeExtension(RichStyle extension)

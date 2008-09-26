@@ -42,6 +42,7 @@ module Limelight #:nodoc:
       Prop = Java::limelight.ui.api.Prop
       Stage = Java::limelight.ui.api.Stage
       Theater = Java::limelight.ui.api.Theater
+      Studio = Java::limelight.ui.api.Studio
     end
 
     module Painting #:nodoc:

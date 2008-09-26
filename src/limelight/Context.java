@@ -7,6 +7,7 @@ import limelight.io.TempDirectory;
 import limelight.io.Downloader;
 import limelight.task.TaskEngine;
 import limelight.ui.Panel;
+import limelight.ui.api.Studio;
 import limelight.ui.model.FrameManager;
 import limelight.ui.model.Frame;
 import limelight.caching.Cache;
@@ -15,7 +16,10 @@ import java.awt.image.BufferedImage;
 public class Context
 {
   private static Context instance;
-  
+
+  public String limelightHome;
+  public String os;
+  public boolean runningAsApp;
   public TempDirectory tempDirectory;
   public Downloader downloader;
   public TaskEngine taskEngine;
@@ -24,9 +28,16 @@ public class Context
   public AudioPlayer audioPlayer;
   public KeyboardFocusManager keyboardFocusManager;
   public BufferedImagePool bufferedImagePool;
+  public Studio studio;
 
   protected Context()
   {
+    limelightHome = System.getProperty("limelight.home");
+    runningAsApp = "true".equals(System.getProperty("limelight.as.app"));
+    if(System.getProperty("mrj.version") == null)
+      os = "windows";
+    else
+      os = "osx";
   }
 
   public static Context instance()
@@ -44,5 +55,15 @@ public class Context
   public static Frame getActiveFrame()
   {
     return instance().frameManager.getActiveFrame();
+  }
+
+  public boolean isWindows()
+  {
+    return "windows".equals(os);
+  }
+
+  public boolean isOsx()
+  {
+    return "osx".equals(os);
   }
 }

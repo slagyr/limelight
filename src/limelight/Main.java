@@ -14,18 +14,18 @@ import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
-
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 
+
 public class Main
 {
-  public static String LIMELIGHT_HOME = System.getProperty("limelight.home");
   private RubyInstanceConfig config;
   private Ruby runtime;
   private boolean contextIsConfigured;
+  private Context context;
 
   public static void main(String[] args) throws Exception
   {
@@ -38,21 +38,30 @@ public class Main
   }
 
   public void run(String[] args) throws Exception
-  {                                              
+  {
+    context = Context.instance();
+
+    boolean usingStartupNotifications = context.isOsx() && context.runningAsApp;
+    if(usingStartupNotifications)
+      StartupListener.register();
+
     configureSystemProperties();
     processArgs(args);
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     runtime = Ruby.newInstance(config);
     configureContext();
-    startJrubyRuntime(getStartupProduction());
+    startJrubyRuntime();
+
+    if(!usingStartupNotifications)
+      Context.instance().studio.open(getStartupProduction());
   }
 
-  private void startJrubyRuntime(String startupProduction) throws FileNotFoundException
+  private void startJrubyRuntime() throws FileNotFoundException
   {
     StringBuffer startupRuby = new StringBuffer();
-    startupRuby.append("require '").append(FileUtil.pathTo(LIMELIGHT_HOME, "lib", "init")).append("'").append("\n");
-    startupRuby.append("require 'limelight/producer'").append("\n");
-    startupRuby.append("Limelight::Producer.open('").append(startupProduction).append("')").append("\n");
+    startupRuby.append("require '").append(FileUtil.pathTo(context.limelightHome, "lib", "init")).append("'").append("\n");
+    startupRuby.append("require 'limelight/studio'").append("\n");
+    startupRuby.append("Limelight::Studio.install").append("\n");
 
     ByteArrayInputStream input = new ByteArrayInputStream(startupRuby.toString().getBytes());
     runtime.runFromMain(input, "limelight_pseudo_main");
@@ -60,7 +69,7 @@ public class Main
 
   private String getStartupProduction()
   {
-    String productionName = LIMELIGHT_HOME + "/productions/startup";
+    String productionName = context.limelightHome + "/productions/startup";
     if(config.getScriptFileName() != null)
       productionName = config.getScriptFileName();
     return productionName;
@@ -76,14 +85,14 @@ public class Main
   {
 //    System.setProperty("apple.laf.useScreenMenuBar", "true");
     System.setProperty("jruby.base", "");
-    System.setProperty("jruby.home", LIMELIGHT_HOME + "/jruby");
-    System.setProperty("jruby.lib", LIMELIGHT_HOME + "/jruby/lib");
-    if(System.getProperty("mrj.version") == null)  // WINDOWS
+    System.setProperty("jruby.home", context.limelightHome + "/jruby");
+    System.setProperty("jruby.lib", context.limelightHome + "/jruby/lib");
+    if(context.isWindows())
     {
       System.setProperty("jruby.shell", "cmd.exe");
       System.setProperty("jruby.script", "jruby.bat org.jruby.Main");
     }
-    else // OS X
+    else
     {
       System.setProperty("jruby.shell", "/bin/sh");
       System.setProperty("jruby.script", "jruby");
