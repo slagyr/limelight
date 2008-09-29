@@ -4,9 +4,15 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 public class ScreenableStyleTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+  
   private ScreenableStyle style;
   private RichStyle style2;
   private RichStyle style3;
@@ -65,7 +71,6 @@ public class ScreenableStyleTest extends TestCase
     assertEquals(0, style.getChangedCount());
   }
 
-
   public void testRemovingFullScreenAppliesChanges() throws Exception
   {
     style.setWidth("100");
@@ -111,8 +116,8 @@ public class ScreenableStyleTest extends TestCase
     assertEquals(2, observer.valueChanges.size());
     assertEquals(Style.WIDTH, observer.descriptorChanges.get(0));
     assertEquals(Style.HEIGHT, observer.descriptorChanges.get(1));
-    assertEquals("123", observer.valueChanges.get(0));
-    assertEquals("321", observer.valueChanges.get(1));
+    assertEquals("123", observer.valueChanges.get(0).toString());
+    assertEquals("321", observer.valueChanges.get(1).toString());
 
     style.removeScreen();
 
@@ -120,7 +125,7 @@ public class ScreenableStyleTest extends TestCase
     assertEquals(4, observer.valueChanges.size());
     assertEquals(Style.WIDTH, observer.descriptorChanges.get(2));
     assertEquals(Style.HEIGHT, observer.descriptorChanges.get(3));
-    assertEquals("auto", observer.valueChanges.get(2));
-    assertEquals("auto", observer.valueChanges.get(3));
+    assertEquals("auto", observer.valueChanges.get(2).toString());
+    assertEquals("auto", observer.valueChanges.get(3).toString());
   }
 }

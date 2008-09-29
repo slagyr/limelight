@@ -29,7 +29,7 @@ public class BackgroundPainter extends Painter
 
     if(style.isOn(style.getGradient()))
       new GradientPainter(panel).paint(graphics);
-    else if(!"transparent".equals(style.getBackgroundColor()))
+    else if(Colors.resolve(style.getBackgroundColor()).getAlpha() > 0)
     {
       Color color = Colors.resolve(style.getBackgroundColor());
       graphics.setColor(color);

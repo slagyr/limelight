@@ -4,24 +4,20 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 public class FlatStyleTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+  
   private FlatStyle style;
 
   public void setUp() throws Exception
   {
     style = new FlatStyle();
-  }
-
-  public void testSettingEmptyStringIsSameAsNull() throws Exception
-  {
-    style.setWidth("");
-    assertEquals("auto", style.getWidth());
-    style.setWidth("      ");
-    assertEquals("auto", style.getWidth());
-    style.setWidth(null);
-    assertEquals("auto", style.getWidth());
   }
 
   public void testObserving() throws Exception
@@ -141,14 +137,14 @@ public class FlatStyleTest extends TestCase
   {
     style.setBorderColor("blue");
 
-    assertEquals("blue", style.getTopBorderColor());
-    assertEquals("blue", style.getTopRightBorderColor());
-    assertEquals("blue", style.getRightBorderColor());
-    assertEquals("blue", style.getBottomRightBorderColor());
-    assertEquals("blue", style.getBottomBorderColor());
-    assertEquals("blue", style.getBottomLeftBorderColor());
-    assertEquals("blue", style.getLeftBorderColor());
-    assertEquals("blue", style.getTopLeftBorderColor());
+    assertEquals("#0000ffff", style.getTopBorderColor());
+    assertEquals("#0000ffff", style.getTopRightBorderColor());
+    assertEquals("#0000ffff", style.getRightBorderColor());
+    assertEquals("#0000ffff", style.getBottomRightBorderColor());
+    assertEquals("#0000ffff", style.getBottomBorderColor());
+    assertEquals("#0000ffff", style.getBottomLeftBorderColor());
+    assertEquals("#0000ffff", style.getLeftBorderColor());
+    assertEquals("#0000ffff", style.getTopLeftBorderColor());
   }
 
   public void testSettingRoundedCorderRadiusSetsRadiusOnAllCorders() throws Exception

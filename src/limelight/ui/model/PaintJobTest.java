@@ -10,6 +10,7 @@ import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.styles.FlatStyle;
 import limelight.styles.Style;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.Context;
 import limelight.BufferedImagePool;
 import limelight.caching.SimpleCache;
@@ -18,6 +19,11 @@ import java.awt.image.BufferedImage;
 
 public class PaintJobTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+  
   private PaintJob job;
   private MockPropablePanel panel;
   private Style style;
@@ -86,10 +92,6 @@ public class PaintJobTest extends TestCase
   {
     Graphics2D graphics = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR).createGraphics();
 
-    job.applyAlphaCompositeFor(panel, graphics);
-    assertEquals(1.0, ((AlphaComposite) graphics.getComposite()).getAlpha(), 0.001);
-
-    style.setTransparency("");
     job.applyAlphaCompositeFor(panel, graphics);
     assertEquals(1.0, ((AlphaComposite) graphics.getComposite()).getAlpha(), 0.001);
 

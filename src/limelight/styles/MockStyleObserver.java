@@ -9,9 +9,9 @@ class MockStyleObserver implements StyleObserver
 {
   public StyleDescriptor changedStyle;
   public LinkedList<StyleDescriptor> descriptorChanges = new LinkedList<StyleDescriptor>();
-  public LinkedList<String> valueChanges = new LinkedList<String>();
+  public LinkedList<StyleAttribute> valueChanges = new LinkedList<StyleAttribute>();
 
-  public void styleChanged(StyleDescriptor descriptor, String value)
+  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
     changedStyle = descriptor;
     descriptorChanges.add(descriptor);

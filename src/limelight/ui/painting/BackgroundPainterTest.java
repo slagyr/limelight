@@ -9,11 +9,17 @@ import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
 import limelight.ui.model.MockPropablePanel;
 import limelight.styles.Style;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.awt.*;
 
 public class BackgroundPainterTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private MockPropablePanel panel;
   private Style style;
   private BackgroundPainter painter;

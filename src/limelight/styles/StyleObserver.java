@@ -5,5 +5,5 @@ package limelight.styles;
 
 public interface StyleObserver
 {
-  void styleChanged(StyleDescriptor descriptor, String value);
+  void styleChanged(StyleDescriptor descriptor, StyleAttribute value);
 }

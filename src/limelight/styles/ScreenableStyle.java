@@ -7,11 +7,11 @@ public class ScreenableStyle extends RichStyle
 {
   private Style screen;
 
-  public String get(int key)
+  public StyleAttribute get(int key)
   {
     if(screen != null)
     {
-      String value = screen.get(key);
+      StyleAttribute value = screen.get(key);
       if(value != null)
         return value;
     }
@@ -36,8 +36,8 @@ public class ScreenableStyle extends RichStyle
   {
     for(StyleDescriptor descriptor : STYLE_LIST)
     {
-      String value = screen.get(descriptor.index);
-      String originalValue = get(descriptor);
+      StyleAttribute value = screen.get(descriptor.index);
+      StyleAttribute originalValue = getCompiled(descriptor);
       if(value != null && !value.equals(originalValue))
       {
         changes[descriptor.index] = true;
