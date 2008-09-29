@@ -7,18 +7,25 @@ public class StyleDescriptor
 {
 
   public final int index;
-  public final String defaultValue;
   public final String name;
+  public final StyleAttributeCompiler compiler; 
+  public final StyleAttribute defaultValue;
 
-  public StyleDescriptor(int i, String name, String defaultValue)
+  public StyleDescriptor(int i, String name, StyleAttributeCompiler compiler, StyleAttribute defaultValue)
   {
     index = i;
     this.name = name;
+    this.compiler = compiler;
     this.defaultValue = defaultValue;
   }
 
   public String toString()
   {
     return index + ": " + name;
+  }
+
+  public StyleAttribute compile(String value)
+  {
+    return compiler.compile(value);
   }
 }

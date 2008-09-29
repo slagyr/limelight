@@ -7,16 +7,17 @@ import limelight.util.Util;
 
 public class FlatStyle extends BaseStyle
 {
-  private String[] styles;
+  private StyleAttribute[] styles;
 
   public FlatStyle()
 	{
-    styles = new String[STYLE_COUNT];
+    styles = new StyleAttribute[STYLE_COUNT];
   }
 
-  protected String get(int key)
+  protected StyleAttribute get(int key)
 	{
-		return styles[key];
+    StyleAttribute style = styles[key];
+    return style == null ? null : style;
 	}
 
 	public void put(StyleDescriptor descriptor, String value)
@@ -26,14 +27,15 @@ public class FlatStyle extends BaseStyle
     value = value.trim();
     if(value.length() == 0)
       value = null;
+    StyleAttribute compiledValue = descriptor.compile(value);
 
-    String originalValue = styles[descriptor.index];
-    styles[descriptor.index] = value;
-    if(!Util.equal(originalValue, value))
-      recordChange(descriptor, value);
+    StyleAttribute originalValue = styles[descriptor.index];
+    styles[descriptor.index] = compiledValue;
+    if(!Util.equal(originalValue, compiledValue))
+      recordChange(descriptor, compiledValue);
   }
 
-  public String[] getStyles()
+  public StyleAttribute[] getStyles()
   {
     return styles;
   }

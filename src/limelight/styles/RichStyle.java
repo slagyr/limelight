@@ -9,15 +9,15 @@ import java.util.LinkedList;
 
 public class RichStyle extends BaseStyle implements StyleObserver
 {
-  private String[] styles;
+  private StyleAttribute[] styles;
   private LinkedList<RichStyle> extensions;
 
   public RichStyle()
   {
-    styles = new String[STYLE_COUNT];
+    styles = new StyleAttribute[STYLE_COUNT];
   }
 
-  public String get(int key)
+  public StyleAttribute get(int key)
   {
     if(styles[key] != null)
       return styles[key];
@@ -37,13 +37,14 @@ public class RichStyle extends BaseStyle implements StyleObserver
     if(value.length() == 0)
       value = null;
 
-    String originalValue = styles[descriptor.index];
-    styles[descriptor.index] = value;
-    if(!Util.equal(originalValue, value))
+    StyleAttribute originalValue = styles[descriptor.index];
+    StyleAttribute compiledValue = descriptor.compile(value);
+    styles[descriptor.index] = compiledValue;
+    if(!Util.equal(originalValue, compiledValue))
     {
-      styles[descriptor.index] = value;
+      styles[descriptor.index] = compiledValue;
       changes[descriptor.index] = true;
-      notifyObserversOfChange(descriptor, value);
+      notifyObserversOfChange(descriptor, compiledValue);
     }
   }
 
@@ -71,7 +72,7 @@ public class RichStyle extends BaseStyle implements StyleObserver
     }
   }
 
-  public void styleChanged(StyleDescriptor descriptor, String value)
+  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
     if(styles[descriptor.index] == null)
     {
@@ -86,7 +87,7 @@ public class RichStyle extends BaseStyle implements StyleObserver
 
     for(StyleDescriptor descriptor : STYLE_LIST)
     {
-      String value = style.get(descriptor.index);
+      StyleAttribute value = style.get(descriptor.index);
       if(value != null && getFrom(seniorExtensions, descriptor.index) == null)
         styleChanged(descriptor, value);
     }
@@ -104,11 +105,11 @@ public class RichStyle extends BaseStyle implements StyleObserver
     return seniorExtensions;
   }
 
-  private String getFrom(LinkedList<RichStyle> extensions, int key)
+  private StyleAttribute getFrom(LinkedList<RichStyle> extensions, int key)
   {
     for(Style style : extensions)
     {
-      String value = style.get(key);
+      StyleAttribute value = style.get(key);
       if(value != null)
         return value;
     }

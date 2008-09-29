@@ -14,6 +14,7 @@ import limelight.ui.painting.Border;
 import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
 import limelight.styles.ScreenableStyle;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.util.Box;
 import limelight.Context;
 import limelight.audio.MockAudioPlayer;
@@ -28,6 +29,11 @@ import java.awt.event.*;
 
 public class PropPanelTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private MockProp prop;
   private PropPanel panel;
   private ScreenableStyle style;

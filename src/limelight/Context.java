@@ -11,6 +11,9 @@ import limelight.ui.api.Studio;
 import limelight.ui.model.FrameManager;
 import limelight.ui.model.Frame;
 import limelight.caching.Cache;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.styles.StyleAttributeCompilerFactory;
+
 import java.awt.image.BufferedImage;
 
 public class Context
@@ -29,6 +32,7 @@ public class Context
   public KeyboardFocusManager keyboardFocusManager;
   public BufferedImagePool bufferedImagePool;
   public Studio studio;
+  public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
 
   protected Context()
   {

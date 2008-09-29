@@ -12,6 +12,7 @@ import limelight.task.RecurringTask;
 import limelight.task.TaskEngine;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 import javax.swing.*;
@@ -104,6 +105,7 @@ public class Main
 //VerboseRepaintManager.install();
     if(contextIsConfigured)
       return;
+    RealStyleAttributeCompilerFactory.install();
     Context context = Context.instance();
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     context.tempDirectory = new TempDirectory();

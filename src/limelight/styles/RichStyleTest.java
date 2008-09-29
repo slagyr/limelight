@@ -27,14 +27,14 @@ public class RichStyleTest extends TestCase
   public void testHasDefaultsFirst() throws Exception
   {
     for(StyleDescriptor descriptor : Style.STYLE_LIST)
-      assertEquals(descriptor.defaultValue, style.get(descriptor));
+      assertEquals(descriptor.defaultValue, style.getCompiled(descriptor));
   }
   
   public void testCanSetNewValues() throws Exception
   {
     style.setBackgroundColor("blue");
-    assertEquals("blue", style.getBackgroundColor());
-    assertEquals("blue", style.get(Style.BACKGROUND_COLOR));
+    assertEquals("#0000ffff", style.getBackgroundColor());
+    assertEquals("#0000ffff", style.get(Style.BACKGROUND_COLOR));
   }
 
   public void testInsetNext() throws Exception

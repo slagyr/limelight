@@ -24,7 +24,7 @@ public class GradientPainter extends Painter
     Color color1 = Colors.resolve(style.getBackgroundColor());
     Color color2 = Colors.resolve(style.getSecondaryBackgroundColor());
     int angle = Integer.parseInt(style.getGradientAngle());
-    int penetration = Integer.parseInt(style.getGradientPenetration());
+    int penetration = Integer.parseInt(style.getGradientPenetration().replace("%", ""));
     boolean cyclic = "on".equals(style.getCyclicGradient());
     int x1, y1, x2, y2;
     if(angle == 90)

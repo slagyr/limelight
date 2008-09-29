@@ -8,6 +8,7 @@ import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
+import limelight.styles.StyleAttribute;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
@@ -366,7 +367,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
 
-  public void styleChanged(StyleDescriptor descriptor, String value)
+  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
     if(getParent() != null && getRoot() != null)
     {

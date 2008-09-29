@@ -6,7 +6,7 @@ public abstract class BaseStyle extends Style
 {
   private LinkedList<StyleObserver> observers;
   protected boolean[] changes;
-  private String[] defaults;
+  private StyleAttribute[] defaults;
 
   public BaseStyle()
   {
@@ -16,24 +16,26 @@ public abstract class BaseStyle extends Style
   public void setDefault(StyleDescriptor descriptor, String value)
   {
     if(defaults == null)
-      defaults = new String[Style.STYLE_COUNT];
-    defaults[descriptor.index] = value;
-    if(get(descriptor.index) == null && value != null && !value.equals(descriptor.defaultValue))
-      recordChange(descriptor, value);
+      defaults = new StyleAttribute[Style.STYLE_COUNT];
+
+    StyleAttribute compiledValue = descriptor.compile(value);
+    defaults[descriptor.index] = compiledValue;
+    if(get(descriptor.index) == null && value != null && !compiledValue.equals(descriptor.defaultValue))
+      recordChange(descriptor, compiledValue);
   }
 
-  protected String getDefaultValue(StyleDescriptor descriptor)
+  protected StyleAttribute getDefaultValue(StyleDescriptor descriptor)
   {
     if(defaults != null)
     {
-      String value = defaults[descriptor.index];
+      StyleAttribute value = defaults[descriptor.index];
       if(value != null)
         return value;
     }
     return descriptor.defaultValue;
   }
 
-  protected void recordChange(StyleDescriptor descriptor, String value)
+  protected void recordChange(StyleDescriptor descriptor, StyleAttribute value)
   {
     changes[descriptor.index] = true;
     notifyObserversOfChange(descriptor, value);
@@ -82,7 +84,7 @@ public abstract class BaseStyle extends Style
     observers.add(observer);
   }
 
-  protected void notifyObserversOfChange(StyleDescriptor descriptor, String value)
+  protected void notifyObserversOfChange(StyleDescriptor descriptor, StyleAttribute value)
   {
     if(observers != null)
     {

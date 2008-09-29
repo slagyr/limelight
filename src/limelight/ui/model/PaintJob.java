@@ -94,7 +94,7 @@ public class PaintJob
   public void applyAlphaCompositeFor(Panel panel, Graphics2D graphics)
   {
     Style style = panel.getStyle();
-    int alphaPercentage = style.asInt(style.getTransparency());
+    int alphaPercentage = style.asInt(style.getTransparency().replace("%", ""));
     if(alphaPercentage > 0)
     {
       float alpha = 1.0f - (alphaPercentage / 100.0f);

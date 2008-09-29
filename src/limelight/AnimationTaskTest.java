@@ -10,9 +10,15 @@ import limelight.ui.model.RootPanel;
 import limelight.ui.model.MockFrame;
 import limelight.ui.model.MockFrameManager;
 import limelight.task.TaskEngine;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 public class AnimationTaskTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private MockPanel panel;
   private TestableAnimationTask task;
   private MockFrameManager frameManager;
