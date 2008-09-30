@@ -1,6 +1,8 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.DimensionAttribute;
+import limelight.styles.abstrstyling.IntegerAttribute;
+import limelight.styles.abstrstyling.NoneableAttribute;
 
 public class AutoDimensionAttribute implements DimensionAttribute
 {
@@ -15,5 +17,34 @@ public class AutoDimensionAttribute implements DimensionAttribute
       return true;
     else
       return false;
+  }
+
+  public boolean isAuto()
+  {
+    return true;
+  }
+
+  public boolean isPercentage()
+  {
+    return false;
+  }
+
+  public int calculateDimension(int consumableSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max)
+  {
+    if(max.isNone())
+      return consumableSize;
+    else
+      return Math.min(consumableSize, max.getAttribute().getValue());
+  }
+
+  public int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max)
+  {
+    int size = consumedSize;
+    if(!min.isNone())
+      size = Math.max(size, min.getAttribute().getValue());
+    if(!max.isNone())
+      size = Math.min(size, max.getAttribute().getValue());
+
+    return size;
   }
 }

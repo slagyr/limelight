@@ -8,10 +8,10 @@ import limelight.util.Aligner;
 
 public class AlignerTest extends TestCase
 {
-  public void testDefaultAlignmentIsSameAsTopLeft() throws Exception
+  public void testTopLeft() throws Exception
   {
     Box area = new Box(0, 0, 100, 100);
-    Aligner aligner = new Aligner(area, null, null);
+    Aligner aligner = new Aligner(area, Aligner.LEFT, Aligner.TOP);
 
     assertEquals(0, aligner.startingX(0));
     assertEquals(0, aligner.startingY());
@@ -24,7 +24,7 @@ public class AlignerTest extends TestCase
   public void testCenterAlignments() throws Exception
   {
     Box area = new Box(0, 0, 100, 100);
-    Aligner aligner = new Aligner(area, "center", "center");
+    Aligner aligner = new Aligner(area, Aligner.HORIZONTAL_CENTER, Aligner.VERTICAL_CENTER);
 
     assertEquals(50, aligner.startingX(0));
     assertEquals(50, aligner.startingY());
@@ -37,7 +37,7 @@ public class AlignerTest extends TestCase
   public void testBottomRightAlignment() throws Exception
   {
     Box area = new Box(0, 0, 100, 100);
-    Aligner aligner = new Aligner(area, "right", "bottom");
+    Aligner aligner = new Aligner(area, Aligner.RIGHT, Aligner.BOTTOM);
 
     assertEquals(100, aligner.startingX(0));
     assertEquals(100, aligner.startingY());
@@ -50,7 +50,7 @@ public class AlignerTest extends TestCase
   public void testTopLeftNotStartingAtZero() throws Exception
   {
     Box area = new Box(5, 5, 100, 100);
-    Aligner aligner = new Aligner(area, null, null);
+    Aligner aligner = new Aligner(area, Aligner.LEFT, Aligner.TOP);
 
     assertEquals(5, aligner.startingX(0));
     assertEquals(5, aligner.startingY());
@@ -63,7 +63,7 @@ public class AlignerTest extends TestCase
   public void testCenterAlignmentsNotStartingAtZero() throws Exception
   {
     Box area = new Box(5, 5, 100, 100);
-    Aligner aligner = new Aligner(area, "center", "center");
+    Aligner aligner = new Aligner(area, Aligner.HORIZONTAL_CENTER, Aligner.VERTICAL_CENTER);
 
     assertEquals(55, aligner.startingX(0));
     assertEquals(55, aligner.startingY());
@@ -76,7 +76,7 @@ public class AlignerTest extends TestCase
   public void testBottomRightAlignmentNotStartingAtZero() throws Exception
   {
     Box area = new Box(5, 5, 100, 100);
-    Aligner aligner = new Aligner(area, "right", "bottom");
+    Aligner aligner = new Aligner(area, Aligner.RIGHT, Aligner.BOTTOM);
 
     assertEquals(105, aligner.startingX(0));
     assertEquals(105, aligner.startingY());

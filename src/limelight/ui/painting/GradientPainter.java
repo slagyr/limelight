@@ -21,11 +21,11 @@ public class GradientPainter extends Painter
   {
     Style style = getStyle();
     Box r = panel.getBoxInsideBorders();
-    Color color1 = Colors.resolve(style.getBackgroundColor());
-    Color color2 = Colors.resolve(style.getSecondaryBackgroundColor());
-    int angle = Integer.parseInt(style.getGradientAngle());
-    int penetration = Integer.parseInt(style.getGradientPenetration().replace("%", ""));
-    boolean cyclic = "on".equals(style.getCyclicGradient());
+    Color color1 = style.getCompiledBackgroundColor().getColor();
+    Color color2 = style.getCompiledSecondaryBackgroundColor().getColor();
+    int angle = style.getCompiledGradientAngle().getDegrees();
+    int penetration = style.getCompiledGradientPenetration().getPercentage();
+    boolean cyclic = style.getCompiledCyclicGradient().isOn();
     int x1, y1, x2, y2;
     if(angle == 90)
     {

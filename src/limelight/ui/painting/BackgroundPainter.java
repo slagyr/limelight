@@ -5,6 +5,8 @@ package limelight.ui.painting;
 
 import limelight.ui.*;
 import limelight.styles.Style;
+import limelight.styles.abstrstyling.StringAttribute;
+import limelight.styles.abstrstyling.NoneableAttribute;
 import limelight.util.Colors;
 import limelight.util.Box;
 
@@ -27,27 +29,32 @@ public class BackgroundPainter extends Painter
     Border border = panel.getBorderShaper();
     Shape insideBorder = border.getShapeInsideBorder();
 
-    if(style.isOn(style.getGradient()))
-      new GradientPainter(panel).paint(graphics);
-    else if(Colors.resolve(style.getBackgroundColor()).getAlpha() > 0)
-    {
-      Color color = Colors.resolve(style.getBackgroundColor());
-      graphics.setColor(color);
+    Color backgroundColor = style.getCompiledBackgroundColor().getColor();
 
-      graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      graphics.fill(insideBorder);
-      graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+    if(style.getCompiledGradient().isOn())
+      new GradientPainter(panel).paint(graphics);
+    else
+    {
+      if(backgroundColor.getAlpha() > 0)
+      {
+        graphics.setColor(backgroundColor);
+
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.fill(insideBorder);
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+      }
     }
 
-    if (!"none".equals(style.getBackgroundImage()))
+    NoneableAttribute<StringAttribute> backgroundImageAttribute = style.getCompiledBackgroundImage();
+    if (!backgroundImageAttribute.isNone())
     {
       try
       {
         Box borderFrame = panel.getBoxInsideBorders();
-        String imageFilename = panel.getProp().getScene().getLoader().pathTo(style.getBackgroundImage());      
+        String imageFilename = panel.getProp().getScene().getLoader().pathTo(backgroundImageAttribute.getAttribute().getValue());
         BufferedImage image = ImageIO.read(new File(imageFilename));
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);
-        ImageFillStrategies.get(style.getBackgroundImageFillStrategy()).fill(borderedGraphics, image);
+        style.getCompiledBackgroundImageFillStrategy().getStrategy().fill(borderedGraphics, image);
       }
       catch (IOException e)
       {

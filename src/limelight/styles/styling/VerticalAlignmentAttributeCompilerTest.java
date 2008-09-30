@@ -2,6 +2,7 @@ package limelight.styles.styling;
 
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
+import limelight.util.Aligner;
 
 public class VerticalAlignmentAttributeCompilerTest extends TestCase
 {
@@ -15,7 +16,7 @@ public class VerticalAlignmentAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals("top", ((SimpleVerticalAlignmentAttribute) compiler.compile("top")).getAlignment());
+    assertEquals(Aligner.TOP, ((SimpleVerticalAlignmentAttribute) compiler.compile("top")).getAlignment());
   }
 
   public void testInvalidValue() throws Exception

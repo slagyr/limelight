@@ -405,23 +405,16 @@ public abstract class BasePanel implements Panel
 
   protected void propogateSizeChange(Panel panel)
   {
-    if(panel == null || panel.needsLayout() || panel instanceof RootPanel)
+    if(panel == null || panel.needsLayout() || !(panel instanceof BasePanel))
       return;
     else
     {
-      if(hasAutoDimensions(panel))
+      Style style = panel.getStyle();
+      if(style != null && style.hasAutoDimension())
       {
         propogateSizeChange(panel.getParent());
         panel.getParent().setNeedsLayout();
       }
     }
-  }
-
-  private boolean hasAutoDimensions(Panel panel)
-  {
-    if(panel == null || panel.getStyle() == null)
-      return false;
-    Style style = panel.getStyle();
-    return "auto".equals(style.getWidth()) || "auto".equals(style.getHeight());
   }
 }

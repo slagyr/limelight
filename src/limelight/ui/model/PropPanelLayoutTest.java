@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.ScrollBarPanel;
 
@@ -12,6 +13,11 @@ import java.awt.*;
 
 public class PropPanelLayoutTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private PropPanel parent;
   private PropPanelLayout layout;
   private RootPanel root;

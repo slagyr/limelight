@@ -23,20 +23,20 @@ public class BorderPainter extends Painter
     Border border = panel.getBorderShaper();
 
     if(border.hasTopBorder())
-      pen.withColor(Colors.resolve(style.getTopBorderColor())).withStroke(border.getTopWidth()).withAntialiasing(false).draw(border.getTopLine());
+      pen.withColor(style.getCompiledTopBorderColor().getColor()).withStroke(border.getTopWidth()).withAntialiasing(false).draw(border.getTopLine());
     if(border.hasTopRightCorner())
-      pen.withColor(Colors.resolve(style.getTopRightBorderColor())).withStroke(border.getTopRightWidth()).withAntialiasing(true).draw(border.getTopRightArc());
+      pen.withColor(style.getCompiledTopRightBorderColor().getColor()).withStroke(border.getTopRightWidth()).withAntialiasing(true).draw(border.getTopRightArc());
     if(border.hasRightBorder())
-      pen.withColor(Colors.resolve(style.getRightBorderColor())).withStroke(border.getRightWidth()).withAntialiasing(false).draw(border.getRightLine());
+      pen.withColor(style.getCompiledRightBorderColor().getColor()).withStroke(border.getRightWidth()).withAntialiasing(false).draw(border.getRightLine());
     if(border.hasBottomRightCorner())
-      pen.withColor(Colors.resolve(style.getBottomRightBorderColor())).withStroke(border.getBottomRightWidth()).withAntialiasing(true).draw(border.getBottomRightArc());
+      pen.withColor(style.getCompiledBottomRightBorderColor().getColor()).withStroke(border.getBottomRightWidth()).withAntialiasing(true).draw(border.getBottomRightArc());
     if(border.hasBottomBorder())
-      pen.withColor(Colors.resolve(style.getBottomBorderColor())).withStroke(border.getBottomWidth()).withAntialiasing(false).draw(border.getBottomLine());
+      pen.withColor(style.getCompiledBottomBorderColor().getColor()).withStroke(border.getBottomWidth()).withAntialiasing(false).draw(border.getBottomLine());
     if(border.hasBottomLeftCorner())
-      pen.withColor(Colors.resolve(style.getBottomLeftBorderColor())).withStroke(border.getBottomLeftWidth()).withAntialiasing(true).draw(border.getBottomLeftArc());
+      pen.withColor(style.getCompiledBottomLeftBorderColor().getColor()).withStroke(border.getBottomLeftWidth()).withAntialiasing(true).draw(border.getBottomLeftArc());
     if(border.hasLeftBorder())
-      pen.withColor(Colors.resolve(style.getLeftBorderColor())).withStroke(border.getLeftWidth()).withAntialiasing(false).draw(border.getLeftLine());
+      pen.withColor(style.getCompiledLeftBorderColor().getColor()).withStroke(border.getLeftWidth()).withAntialiasing(false).draw(border.getLeftLine());
     if(border.hasTopLeftCorner())
-      pen.withColor(Colors.resolve(style.getTopLeftBorderColor())).withStroke(border.getTopLeftWidth()).withAntialiasing(true).draw(border.getTopLeftArc());
+      pen.withColor(style.getCompiledTopLeftBorderColor().getColor()).withStroke(border.getTopLeftWidth()).withAntialiasing(true).draw(border.getTopLeftArc());
   }
 }

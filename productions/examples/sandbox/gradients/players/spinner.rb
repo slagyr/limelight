@@ -5,7 +5,11 @@ module Spinner
   
   def mouse_entered(e)
     @animation = animate(:updates_per_second => 30) do
-      style.gradient_angle = (style.gradient_angle.to_i + 1).to_s
+      if style.gradient_angle == "359"
+        style.gradient_angle = "0"
+      else
+        style.gradient_angle = (style.gradient_angle.to_i + 1).to_s
+      end
     end
   end
   

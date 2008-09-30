@@ -33,7 +33,7 @@ public class PropPanelLayout
 
     Style style = panel.getStyle();
 
-    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT) || hasPercentageDimension() || hasAutoDimensions())
+    if(style.changed(Style.WIDTH) || style.changed(Style.HEIGHT) || style.hasPercentageDimension() || style.hasAutoDimension())
       panel.snapToSize();
 
     establishScrollBars();
@@ -49,16 +49,6 @@ public class PropPanelLayout
       layoutFloaters();
     }
     layoutScrollBars();
-  }
-
-  private boolean hasAutoDimensions()
-  {
-    return "auto".equals(panel.getStyle().getWidth()) || "auto".equals(panel.getStyle().getHeight());
-  }
-
-  private boolean hasPercentageDimension()
-  {
-    return panel.getStyle().getWidth().contains("%") || panel.getStyle().getHeight().contains("%");
   }
 
   private boolean hasNonScrollBarChildren()
@@ -97,25 +87,8 @@ public class PropPanelLayout
   {
     Style style = panel.getStyle();
 
-    int width = panel.getWidth();
-    int height = panel.getHeight();
-
-    if("auto".equals(style.getWidth()))
-    {
-      width = consumedWidth + horizontalInsets();
-      if(!"none".equals(style.getMinWidth()))
-        width = Math.max(width, Integer.parseInt(style.getMinWidth()));
-      if(!"none".equals(style.getMaxWidth()))
-        width = Math.min(width, Integer.parseInt(style.getMaxWidth()));
-    }
-    if("auto".equals(style.getHeight()))
-    {
-      height = consumedHeight + verticalInsets();
-      if(!"none".equals(style.getMinHeight()))
-        height = Math.max(height, Integer.parseInt(style.getMinHeight()));
-      if(!"none".equals(style.getMaxHeight()))
-        height = Math.min(height, Integer.parseInt(style.getMaxHeight()));
-    }
+    int width = style.getCompiledWidth().collapseExcess(panel.getWidth(), consumedWidth + horizontalInsets(), style.getCompiledMinWidth(), style.getCompiledMaxWidth());
+    int height = style.getCompiledHeight().collapseExcess(panel.getHeight(), consumedHeight + verticalInsets(), style.getCompiledMinHeight(), style.getCompiledMaxHeight());
 
     panel.setSize(width, height);
   }
@@ -171,8 +144,8 @@ public class PropPanelLayout
   private void layoutFloater(Panel floater)
   {
     Style style = floater.getStyle();
-    int x = style.asInt(style.getX());
-    int y = style.asInt(style.getY());
+    int x = style.getCompiledX().getValue();
+    int y = style.getCompiledY().getValue();
     Box area = panel.getChildConsumableArea();
     floater.setLocation(area.x + x, area.y + y);
   }
@@ -209,7 +182,7 @@ public class PropPanelLayout
   protected Aligner buildAligner(Box rectangle)
   {
     Style style = panel.getProp().getStyle();
-    return new Aligner(rectangle, style.getHorizontalAlignment(), style.getVerticalAlignment());
+    return new Aligner(rectangle, style.getCompiledHorizontalAlignment().getAlignment(), style.getCompiledVerticalAlignment().getAlignment());
   }
 
   protected void resetRows()
@@ -249,13 +222,13 @@ public class PropPanelLayout
   public void establishScrollBars()
   {
     Style style = panel.getStyle();
-    if(panel.getVerticalScrollBar() == null && "on".equals(style.getVerticalScrollbar()))
+    if(panel.getVerticalScrollBar() == null && style.getCompiledVerticalScrollbar().isOn())
       panel.addVerticalScrollBar();
-    else if(panel.getVerticalScrollBar() != null && "off".equals(style.getVerticalScrollbar()))
+    else if(panel.getVerticalScrollBar() != null &&  style.getCompiledVerticalScrollbar().isOff())
       panel.removeVerticalScrollBar();
-    if(panel.getHorizontalScrollBar() == null && "on".equals(style.getHorizontalScrollbar()))
+    if(panel.getHorizontalScrollBar() == null &&  style.getCompiledHorizontalScrollbar().isOn())
       panel.addHorizontalScrollBar();
-    else if(panel.getHorizontalScrollBar() != null && "off".equals(style.getHorizontalScrollbar()))
+    else if(panel.getHorizontalScrollBar() != null && style.getCompiledHorizontalScrollbar().isOff())
       panel.removeHorizontalScrollBar();
 
   }
