@@ -11,8 +11,7 @@ import limelight.ui.api.Studio;
 import limelight.ui.model.FrameManager;
 import limelight.ui.model.Frame;
 import limelight.caching.Cache;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
-import limelight.styles.StyleAttributeCompilerFactory;
+import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
 
 import java.awt.image.BufferedImage;
 

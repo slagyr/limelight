@@ -1,8 +1,8 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.StyleAttribute;
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class IntegerAttributeCompilerTest extends TestCase
 {
@@ -18,7 +18,7 @@ public class IntegerAttributeCompilerTest extends TestCase
   {
     StyleAttribute attr = compiler.compile("123");
 
-    assertEquals(123, ((IntegerAttribute)attr).getValue());
+    assertEquals(123, ((SimpleIntegerAttribute)attr).getValue());
   }
 
   public void testInvalidValue() throws Exception

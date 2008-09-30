@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class FontStyleAttributeCompilerTest extends TestCase
 {
@@ -15,7 +15,7 @@ public class FontStyleAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(true, ((FontStyleAttribute) compiler.compile("bold")).isBold());
+    assertEquals(true, ((SimpleFontStyleAttribute) compiler.compile("bold")).isBold());
   }
 
   public void testInvalidValue() throws Exception

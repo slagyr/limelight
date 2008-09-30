@@ -3,6 +3,8 @@
 
 package limelight.styles;
 
+import limelight.styles.abstrstyling.StyleAttribute;
+
 import java.util.LinkedList;
 
 class MockStyleObserver implements StyleObserver

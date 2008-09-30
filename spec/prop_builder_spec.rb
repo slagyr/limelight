@@ -75,7 +75,7 @@ describe Limelight::SceneBuilder do
     child = root.children[0]
     child.style.width.should == "100"
     child.style.font_size.should == "10"
-    child.style.top_border_color.should == "blue"
+    child.style.top_border_color.should == "#0000ffff"
   end
 
   it "should allow defining events through constructor" do

@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class DimensionAttributeCompilerTest extends TestCase
 {

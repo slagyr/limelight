@@ -1,8 +1,8 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.StyleAttribute;
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 import java.awt.*;
 
@@ -20,7 +20,7 @@ public class ColorAttributeCompilerTest extends TestCase
   {
     StyleAttribute attr = compiler.compile("red");
 
-    assertEquals(Color.red, ((ColorAttribute)attr).getColor());
+    assertEquals(Color.red, ((SimpleColorAttribute)attr).getColor());
   }
 
   public void testInvalidValue() throws Exception

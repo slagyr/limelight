@@ -1,6 +1,6 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttribute;
 import junit.framework.TestCase;
 
 public class StaticDimensionAttributeTest extends TestCase

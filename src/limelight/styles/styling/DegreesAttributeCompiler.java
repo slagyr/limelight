@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttribute;
-import limelight.styles.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
 
 public class DegreesAttributeCompiler extends StyleAttributeCompiler
 {
@@ -11,7 +11,7 @@ public class DegreesAttributeCompiler extends StyleAttributeCompiler
     {
       int intValue = Integer.parseInt(value);
       if(0 <= intValue && intValue <= 360)
-        return new DegreesAttribute(intValue);
+        return new SimpleDegreesAttribute(intValue);
       else
         throw makeError(value);
     }

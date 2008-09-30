@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttributeCompiler;
-import limelight.styles.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttribute;
 
 public class VerticalAlignmentAttributeCompiler extends StyleAttributeCompiler
 {
@@ -9,7 +9,7 @@ public class VerticalAlignmentAttributeCompiler extends StyleAttributeCompiler
   {
     String lowerCase = value.toLowerCase().trim();
     if("top".equals(lowerCase) || "center".equals(lowerCase) || "bottom".equals(lowerCase))
-      return new VerticalAlignmentAttribute(lowerCase);
+      return new SimpleVerticalAlignmentAttribute(lowerCase);
     else
       throw makeError(value);
 

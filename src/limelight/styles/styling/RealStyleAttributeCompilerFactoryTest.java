@@ -1,8 +1,8 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.Style;
-import limelight.styles.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.NoneableAttributeCompiler;
 import limelight.Context;
 
 public class RealStyleAttributeCompilerFactoryTest extends TestCase

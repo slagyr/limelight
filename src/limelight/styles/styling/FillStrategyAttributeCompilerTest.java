@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class FillStrategyAttributeCompilerTest extends TestCase
 {
@@ -15,8 +15,8 @@ public class FillStrategyAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals("static", ((FillStrategyAttribute) compiler.compile("static")).getName());
-    assertEquals("repeat", ((FillStrategyAttribute) compiler.compile("repeat")).getName());
+    assertEquals("static", ((SimpleFillStrategyAttribute) compiler.compile("static")).getName());
+    assertEquals("repeat", ((SimpleFillStrategyAttribute) compiler.compile("repeat")).getName());
   }
 
   public void testInvalidValue() throws Exception

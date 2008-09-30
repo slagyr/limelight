@@ -1,5 +1,7 @@
 package limelight.styles;
 
+import limelight.styles.abstrstyling.StyleAttribute;
+
 import java.util.LinkedList;
 
 public abstract class BaseStyle extends Style

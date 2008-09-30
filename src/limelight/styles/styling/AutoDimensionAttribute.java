@@ -1,6 +1,6 @@
 package limelight.styles.styling;
 
-import limelight.styles.DimensionAttribute;
+import limelight.styles.abstrstyling.DimensionAttribute;
 
 public class AutoDimensionAttribute implements DimensionAttribute
 {
