@@ -1,8 +1,8 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttributeCompiler;
-import limelight.styles.StyleAttribute;
-import limelight.styles.DimensionAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.DimensionAttribute;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;

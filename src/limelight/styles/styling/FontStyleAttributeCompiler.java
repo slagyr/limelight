@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttributeCompiler;
-import limelight.styles.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttribute;
 
 public class FontStyleAttributeCompiler extends StyleAttributeCompiler
 {
@@ -10,7 +10,7 @@ public class FontStyleAttributeCompiler extends StyleAttributeCompiler
     String lowerCase = value.toLowerCase().trim();
 
     if("plain".equals(lowerCase))
-      return new FontStyleAttribute("plain");
+      return new SimpleFontStyleAttribute("plain");
     else
     {
       String[] tokens = lowerCase.split(" ");
@@ -19,7 +19,7 @@ public class FontStyleAttributeCompiler extends StyleAttributeCompiler
         if(!"bold".equals(token) && !"italic".equals(token))
           throw makeError(value);
       }
-      return new FontStyleAttribute(lowerCase);
+      return new SimpleFontStyleAttribute(lowerCase);
     }
 
   }

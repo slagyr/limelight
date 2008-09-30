@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttribute;
-import limelight.styles.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,17 +30,17 @@ public class PercentageAttributeCompiler extends StyleAttributeCompiler
     String value = removePercentageSymbol(rawValue);
     int intValue = Integer.parseInt(value);
     if(isValidRange(intValue))
-      return new PercentageAttribute(intValue);
+      return new SimplePercentageAttribute(intValue);
     else
       throw makeError(rawValue);
   }
 
-  private PercentageAttribute compileDecimalValue(String value)
+  private SimplePercentageAttribute compileDecimalValue(String value)
   {
     double doubleValue = Double.parseDouble(value);
     int intValue = (int) (doubleValue * 100);
     if(isValidRange(intValue))
-      return new PercentageAttribute(intValue);
+      return new SimplePercentageAttribute(intValue);
     else
       throw makeError(value);
   }

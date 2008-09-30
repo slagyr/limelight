@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class HorizontalAlignmentAttributeCompilerTest extends TestCase
 {
@@ -15,7 +15,7 @@ public class HorizontalAlignmentAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals("left", ((HorizontalAlignmentAttribute) compiler.compile("left")).getAlignment());
+    assertEquals("left", ((SimpleHorizontalAlignmentAttribute) compiler.compile("left")).getAlignment());
   }
 
   public void testInvalidValue() throws Exception

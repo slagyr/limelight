@@ -3,6 +3,8 @@
 
 package limelight.styles;
 
+import limelight.styles.abstrstyling.StyleAttribute;
+
 public class ScreenableStyle extends RichStyle
 {
   private Style screen;

@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class PercentageAttributeCompilerTest extends TestCase
 {
@@ -15,13 +15,13 @@ public class PercentageAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(0, ((PercentageAttribute) compiler.compile("0")).getPercentage());
-    assertEquals(50, ((PercentageAttribute) compiler.compile("50")).getPercentage());
-    assertEquals(100, ((PercentageAttribute) compiler.compile("100")).getPercentage());
-    assertEquals(100, ((PercentageAttribute) compiler.compile("100%")).getPercentage());
-    assertEquals(50, ((PercentageAttribute) compiler.compile("50%")).getPercentage());
-    assertEquals(25, ((PercentageAttribute) compiler.compile("0.25")).getPercentage());
-    assertEquals(50, ((PercentageAttribute) compiler.compile(".5")).getPercentage());
+    assertEquals(0, ((SimplePercentageAttribute) compiler.compile("0")).getPercentage());
+    assertEquals(50, ((SimplePercentageAttribute) compiler.compile("50")).getPercentage());
+    assertEquals(100, ((SimplePercentageAttribute) compiler.compile("100")).getPercentage());
+    assertEquals(100, ((SimplePercentageAttribute) compiler.compile("100%")).getPercentage());
+    assertEquals(50, ((SimplePercentageAttribute) compiler.compile("50%")).getPercentage());
+    assertEquals(25, ((SimplePercentageAttribute) compiler.compile("0.25")).getPercentage());
+    assertEquals(50, ((SimplePercentageAttribute) compiler.compile(".5")).getPercentage());
   }
 
   public void testInvalidValue() throws Exception

@@ -23,6 +23,11 @@ import java.io.FileNotFoundException;
 
 public class Main
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private RubyInstanceConfig config;
   private Ruby runtime;
   private boolean contextIsConfigured;
@@ -105,7 +110,6 @@ public class Main
 //VerboseRepaintManager.install();
     if(contextIsConfigured)
       return;
-    RealStyleAttributeCompilerFactory.install();
     Context context = Context.instance();
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     context.tempDirectory = new TempDirectory();

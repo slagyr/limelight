@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttribute;
 
 public class PercentageDimensionAttributeTest extends TestCase
 {

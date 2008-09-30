@@ -4,6 +4,7 @@
 package limelight.styles;
 
 import limelight.util.Util;
+import limelight.styles.abstrstyling.StyleAttribute;
 
 import java.util.LinkedList;
 

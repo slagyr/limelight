@@ -1,8 +1,8 @@
 package limelight.styles.styling;
 
-import limelight.styles.DimensionAttribute;
+import limelight.styles.abstrstyling.DimensionAttribute;
 
-public class StaticDimensionAttribute extends IntegerAttribute implements DimensionAttribute
+public class StaticDimensionAttribute extends SimpleIntegerAttribute implements DimensionAttribute
 {
   public StaticDimensionAttribute(int pixels)
   {

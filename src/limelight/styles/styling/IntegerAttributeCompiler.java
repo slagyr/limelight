@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttributeCompiler;
-import limelight.styles.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttribute;
 
 public class IntegerAttributeCompiler extends StyleAttributeCompiler
 {
@@ -10,7 +10,7 @@ public class IntegerAttributeCompiler extends StyleAttributeCompiler
     try
     {
       int intValue = Integer.parseInt(value);
-      return new IntegerAttribute(intValue);
+      return new SimpleIntegerAttribute(intValue);
     }
     catch(NumberFormatException e)
     {

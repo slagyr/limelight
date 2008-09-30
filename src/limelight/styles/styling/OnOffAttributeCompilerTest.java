@@ -1,6 +1,6 @@
 package limelight.styles.styling;
 
-import limelight.styles.InvalidStyleAttributeError;
+import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import junit.framework.TestCase;
 
 public class OnOffAttributeCompilerTest extends TestCase
@@ -15,13 +15,13 @@ public class OnOffAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(true, ((OnOffAttribute) compiler.compile("on")).isOn());
-    assertEquals(true, ((OnOffAttribute) compiler.compile("ON")).isOn());
-    assertEquals(true, ((OnOffAttribute) compiler.compile("oN")).isOn());
-    assertEquals(true, ((OnOffAttribute) compiler.compile("On")).isOn());
-    assertEquals(false, ((OnOffAttribute) compiler.compile("off")).isOn());
-    assertEquals(false, ((OnOffAttribute) compiler.compile("OFF")).isOn());
-    assertEquals(false, ((OnOffAttribute) compiler.compile("Off")).isOn());
+    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("on")).isOn());
+    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("ON")).isOn());
+    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("oN")).isOn());
+    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("On")).isOn());
+    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("off")).isOn());
+    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("OFF")).isOn());
+    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("Off")).isOn());
   }
 
   public void testInvalidValue() throws Exception

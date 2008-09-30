@@ -37,7 +37,7 @@ describe Limelight::StylesBuilder do
     result.size.should == 1
     style = result["root"]
     style.width.should == "100"
-    style.top_border_color.should == "blue"
+    style.top_border_color.should == "#0000ffff"
     style.transparency.should == "50%"
   end
   

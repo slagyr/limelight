@@ -5,7 +5,7 @@ package limelight.styles;
 
 import junit.framework.TestCase;
 import limelight.styles.styling.IntegerAttributeCompiler;
-import limelight.styles.styling.IntegerAttribute;
+import limelight.styles.styling.SimpleIntegerAttribute;
 
 public class StyleDescriptorTest extends TestCase
 {
@@ -16,11 +16,11 @@ public class StyleDescriptorTest extends TestCase
 
   public void testConstruction() throws Exception
   {
-    StyleDescriptor descriptor = new StyleDescriptor(1, "NAME", new IntegerAttributeCompiler(), new IntegerAttribute(50));
+    StyleDescriptor descriptor = new StyleDescriptor(1, "NAME", new IntegerAttributeCompiler(), new SimpleIntegerAttribute(50));
 
     assertEquals(1, descriptor.index);
     assertEquals("NAME", descriptor.name);
     assertEquals(IntegerAttributeCompiler.class, descriptor.compiler.getClass());
-    assertEquals(50, ((IntegerAttribute)descriptor.defaultValue).getValue());
+    assertEquals(50, ((SimpleIntegerAttribute)descriptor.defaultValue).getValue());
   }
 }

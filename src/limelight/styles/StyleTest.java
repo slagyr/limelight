@@ -5,7 +5,7 @@ package limelight.styles;
 
 import junit.framework.TestCase;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
-import limelight.styles.styling.ColorAttribute;
+import limelight.styles.styling.SimpleColorAttribute;
 import limelight.util.Colors;
 
 import java.awt.*;
@@ -27,7 +27,7 @@ public class StyleTest extends TestCase
   {
     assertEquals("Arial", Style.FONT_FACE.defaultValue.toString());
     assertEquals("12", Style.FONT_SIZE.defaultValue.toString());
-    assertEquals(Color.black, ((ColorAttribute)Style.TEXT_COLOR.defaultValue).getColor());
+    assertEquals(Color.black, ((SimpleColorAttribute)Style.TEXT_COLOR.defaultValue).getColor());
     assertEquals("plain", Style.FONT_STYLE.defaultValue.toString());
   }
 
@@ -39,7 +39,7 @@ public class StyleTest extends TestCase
 
   public void testBackgroundDefaults() throws Exception
   {
-    assertEquals(Colors.resolve("transparent"), ((ColorAttribute)Style.BACKGROUND_COLOR.defaultValue).getColor());
+    assertEquals(Colors.resolve("transparent"), ((SimpleColorAttribute)Style.BACKGROUND_COLOR.defaultValue).getColor());
     assertEquals("none", Style.BACKGROUND_IMAGE.defaultValue.toString());
     assertEquals("repeat", Style.BACKGROUND_IMAGE_FILL_STRATEGY.defaultValue.toString());
   }
@@ -47,7 +47,7 @@ public class StyleTest extends TestCase
   public void testGradientDefaults() throws Exception
   {
     assertEquals("off", Style.GRADIENT.defaultValue.toString());
-    assertEquals(Colors.resolve("transparent"), ((ColorAttribute)Style.SECONDARY_BACKGROUND_COLOR.defaultValue).getColor());
+    assertEquals(Colors.resolve("transparent"), ((SimpleColorAttribute)Style.SECONDARY_BACKGROUND_COLOR.defaultValue).getColor());
     assertEquals("90", Style.GRADIENT_ANGLE.defaultValue.toString());
     assertEquals("100%", Style.GRADIENT_PENETRATION.defaultValue.toString());
     assertEquals("off", Style.CYCLIC_GRADIENT.defaultValue.toString());

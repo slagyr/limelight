@@ -3,6 +3,9 @@
 
 package limelight.styles;
 
+import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+
 public class StyleDescriptor
 {
 

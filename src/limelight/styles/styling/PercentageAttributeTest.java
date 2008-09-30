@@ -1,17 +1,17 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttribute;
 
 public class PercentageAttributeTest extends TestCase
 {
-  private PercentageAttribute fiftyPercent;
-  private PercentageAttribute hundredPercent;
+  private SimplePercentageAttribute fiftyPercent;
+  private SimplePercentageAttribute hundredPercent;
 
   public void setUp() throws Exception
   {
-    fiftyPercent = new PercentageAttribute(50);
-    hundredPercent = new PercentageAttribute(100);
+    fiftyPercent = new SimplePercentageAttribute(50);
+    hundredPercent = new SimplePercentageAttribute(100);
   }
 
   public void testCreation() throws Exception
@@ -30,7 +30,7 @@ public class PercentageAttributeTest extends TestCase
   public void testEquality() throws Exception
   {
     assertEquals(true, fiftyPercent.equals(fiftyPercent));
-    assertEquals(true, fiftyPercent.equals(new PercentageAttribute(50)));
+    assertEquals(true, fiftyPercent.equals(new SimplePercentageAttribute(50)));
     assertEquals(false, fiftyPercent.equals(hundredPercent));
     assertEquals(false, fiftyPercent.equals(null));
   }

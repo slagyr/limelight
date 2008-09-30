@@ -1,7 +1,7 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttributeCompiler;
-import limelight.styles.StyleAttribute;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.util.Colors;
 import limelight.LimelightError;
 
@@ -14,7 +14,7 @@ public class ColorAttributeCompiler extends StyleAttributeCompiler
     try
     {
       Color color = Colors.resolve(value);
-      return new ColorAttribute(color);
+      return new SimpleColorAttribute(color);
     }
     catch(LimelightError e)
     {

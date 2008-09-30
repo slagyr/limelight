@@ -110,7 +110,7 @@ describe Limelight::Prop do
     @scene << prop
     
     prop.style.width.should == "100"
-    prop.style.text_color.should == "white"
+    prop.style.text_color.should == "#ffffffff"
     prop.style.background_image.should == "apple.jpg"
   end
   

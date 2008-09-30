@@ -1,7 +1,9 @@
 package limelight.styles.styling;
 
-import limelight.styles.StyleAttributeCompiler;
-import limelight.styles.StyleAttributeCompilerFactory;
+import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
+import limelight.styles.abstrstyling.NoneableAttributeCompiler;
+import limelight.styles.abstrstyling.StringAttribute;
 import limelight.LimelightError;
 import limelight.Context;
 
@@ -37,7 +39,7 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
     else if("vertical alignment".equals(name))
       return new VerticalAlignmentAttributeCompiler();
     else if("noneable integer".equals(name))
-      return new NoneableAttributeCompiler<IntegerAttribute>(new IntegerAttributeCompiler());
+      return new NoneableAttributeCompiler<SimpleIntegerAttribute>(new IntegerAttributeCompiler());
     else if("noneable string".equals(name))
       return new NoneableAttributeCompiler<StringAttribute>(new StringAttributeCompiler());
     else
