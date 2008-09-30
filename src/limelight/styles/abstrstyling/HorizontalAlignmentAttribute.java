@@ -1,6 +1,8 @@
 package limelight.styles.abstrstyling;
 
+import limelight.util.Aligner;
+
 public interface HorizontalAlignmentAttribute extends StyleAttribute
 {
-  String getAlignment();
+  Aligner.HorizontalAligner getAlignment();
 }

@@ -2,6 +2,7 @@ package limelight.styles.styling;
 
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.util.Aligner;
 
 public class SimpleHorizontalAlignmentAttributeTest extends TestCase
 {
@@ -11,15 +12,15 @@ public class SimpleHorizontalAlignmentAttributeTest extends TestCase
 
   public void setUp() throws Exception
   {
-    left = new SimpleHorizontalAlignmentAttribute("left");
-    center = new SimpleHorizontalAlignmentAttribute("center");
-    right = new SimpleHorizontalAlignmentAttribute("right");
+    left = new SimpleHorizontalAlignmentAttribute(Aligner.LEFT);
+    center = new SimpleHorizontalAlignmentAttribute(Aligner.HORIZONTAL_CENTER);
+    right = new SimpleHorizontalAlignmentAttribute(Aligner.RIGHT);
   }
 
   public void testCreation() throws Exception
   {
     assertEquals(true, (left instanceof StyleAttribute));
-    assertEquals("left", left.getAlignment());
+    assertEquals(Aligner.LEFT, left.getAlignment());
   }
 
   public void testToString() throws Exception
@@ -32,7 +33,7 @@ public class SimpleHorizontalAlignmentAttributeTest extends TestCase
   public void testEquality() throws Exception
   {
     assertEquals(true, left.equals(left));
-    assertEquals(true, left.equals(new SimpleHorizontalAlignmentAttribute("left")));
+    assertEquals(true, left.equals(new SimpleHorizontalAlignmentAttribute(Aligner.LEFT)));
     assertEquals(false, left.equals(right));
     assertEquals(false, left.equals(null));
   }

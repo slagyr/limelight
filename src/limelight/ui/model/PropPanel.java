@@ -86,38 +86,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     Box r = getParent().getChildConsumableArea();
     Style style = getProp().getStyle();
-    int newWidth = translateDimension(style.getWidth(), r.width, style.getMinWidth(), style.getMaxWidth());
-    int newHeight = translateDimension(style.getHeight(), r.height, style.getMinHeight(), style.getMaxHeight());
+    int newWidth = style.getCompiledWidth().calculateDimension(r.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
+    int newHeight = style.getCompiledHeight().calculateDimension(r.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
     setSize(newWidth, newHeight);
-  }
-
-  private int translateDimension(String sizeString, int consumableSize, String minSizeString, String maxSizeString)
-  {
-    if(sizeString == null)
-      return 0;
-    else if("auto".equals(sizeString))
-    {
-      if("none".equals(maxSizeString))
-        return consumableSize;
-      else
-        return Math.min(consumableSize, Integer.parseInt(maxSizeString));
-    }
-    else if(sizeString.endsWith("%"))
-    {
-      double percentage = Double.parseDouble(sizeString.substring(0, sizeString.length() - 1));
-      int calculatedSize = (int) ((percentage * 0.01) * (double) consumableSize);
-
-      if(!"none".equals(maxSizeString))
-        calculatedSize = Math.min(calculatedSize, Integer.parseInt(maxSizeString));
-      if(!"none".equals(minSizeString))
-        calculatedSize = Math.max(calculatedSize, Integer.parseInt(minSizeString));
-
-      return calculatedSize;
-    }
-    else
-    {
-      return Integer.parseInt(sizeString);
-    }
   }
 
   public Prop getProp()
@@ -141,7 +112,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(boxInsideMargins == null)
     {
       boxInsideMargins = (Box) getBoundingBox().clone();
-      boxInsideMargins.shave(getStyle().asInt(getStyle().getTopMargin()), getStyle().asInt(getStyle().getRightMargin()), getStyle().asInt(getStyle().getBottomMargin()), getStyle().asInt(getStyle().getLeftMargin()));
+      Style style = getStyle();
+      boxInsideMargins.shave(style.getCompiledTopMargin().getValue(), style.getCompiledRightMargin().getValue(), style.getCompiledBottomMargin().getValue(), style.getCompiledLeftMargin().getValue());
     }
     return boxInsideMargins;
   }
@@ -151,7 +123,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(boxInsideBorders == null)
     {
       boxInsideBorders = (Box) getBoxInsideMargins().clone();
-      boxInsideBorders.shave(getStyle().asInt(getStyle().getTopBorderWidth()), getStyle().asInt(getStyle().getRightBorderWidth()), getStyle().asInt(getStyle().getBottomBorderWidth()), getStyle().asInt(getStyle().getLeftBorderWidth()));
+      Style style = getStyle();
+      boxInsideBorders.shave(style.getCompiledTopBorderWidth().getValue(), style.getCompiledRightBorderWidth().getValue(), style.getCompiledBottomBorderWidth().getValue(), style.getCompiledLeftBorderWidth().getValue());
     }
     return boxInsideBorders;
   }
@@ -161,7 +134,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(boxInsidePadding == null)
     {
       boxInsidePadding = (Box) getBoxInsideBorders().clone();
-      boxInsidePadding.shave(getStyle().asInt(getStyle().getTopPadding()), getStyle().asInt(getStyle().getRightPadding()), getStyle().asInt(getStyle().getBottomPadding()), getStyle().asInt(getStyle().getLeftPadding()));
+      Style style = getStyle();
+      boxInsidePadding.shave(style.getCompiledTopPadding().getValue(), style.getCompiledRightPadding().getValue(), style.getCompiledBottomPadding().getValue(), style.getCompiledLeftPadding().getValue());
     }
     return boxInsidePadding;
   }
@@ -353,7 +327,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public boolean isFloater()
   {
-    return "on".equals(getStyle().getFloat());
+    return getStyle().getCompiledFloat().isOn();
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.

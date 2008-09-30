@@ -4,4 +4,5 @@ public interface FontStyleAttribute extends StyleAttribute
 {
   boolean isBold();
   boolean isItalic();
+  int toInt();
 }

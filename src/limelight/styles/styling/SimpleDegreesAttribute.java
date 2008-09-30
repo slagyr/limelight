@@ -1,6 +1,8 @@
 package limelight.styles.styling;
 
-public class SimpleDegreesAttribute extends SimpleIntegerAttribute
+import limelight.styles.abstrstyling.DegreesAttribute;
+
+public class SimpleDegreesAttribute extends SimpleIntegerAttribute implements DegreesAttribute
 {
   public SimpleDegreesAttribute(int degrees)
   {

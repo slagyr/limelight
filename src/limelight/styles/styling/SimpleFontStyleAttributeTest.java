@@ -3,6 +3,8 @@ package limelight.styles.styling;
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.StyleAttribute;
 
+import java.awt.*;
+
 public class SimpleFontStyleAttributeTest extends TestCase
 {
   private SimpleFontStyleAttribute plain;
@@ -50,5 +52,12 @@ public class SimpleFontStyleAttributeTest extends TestCase
     assertEquals(false, bold.equals(plain));
     assertEquals(false, bold.equals(null));
   }
-
+  
+  public void testStyleAsInt() throws Exception
+  {
+    assertEquals(Font.BOLD | Font.ITALIC, boldItalic.toInt());
+    assertEquals(Font.BOLD, bold.toInt());
+    assertEquals(Font.ITALIC, italic.toInt());
+    assertEquals(0, plain.toInt());
+  }
 }

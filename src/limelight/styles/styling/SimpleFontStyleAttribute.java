@@ -2,6 +2,8 @@ package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.FontStyleAttribute;
 
+import java.awt.*;
+
 public class SimpleFontStyleAttribute implements FontStyleAttribute
 {
   private boolean bold;
@@ -48,14 +50,26 @@ public class SimpleFontStyleAttribute implements FontStyleAttribute
   {
     if(obj instanceof SimpleFontStyleAttribute)
     {
-      SimpleFontStyleAttribute other = (SimpleFontStyleAttribute)obj;
+      SimpleFontStyleAttribute other = (SimpleFontStyleAttribute) obj;
       if(bold != other.bold)
         return false;
       if(italic != other.italic)
         return false;
-      
+
       return true;
     }
     return false;
+  }
+
+  public int toInt()
+  {
+    int value = 0;
+    
+    if(bold)
+      value |= Font.BOLD;
+    if(italic)
+      value |= Font.ITALIC;
+
+    return value;
   }
 }

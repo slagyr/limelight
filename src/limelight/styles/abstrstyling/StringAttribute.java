@@ -23,4 +23,9 @@ public class StringAttribute implements StyleAttribute
     else
       return false;
   }
+
+  public String getValue()
+  {
+    return stringValue;
+  }
 }

@@ -11,7 +11,8 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
 {
   public static void install()
   {
-    Context.instance().styleAttributeCompilerFactory = new RealStyleAttributeCompilerFactory();
+    if(Context.instance().styleAttributeCompilerFactory == null)
+      Context.instance().styleAttributeCompilerFactory = new RealStyleAttributeCompilerFactory();
   }
 
   public StyleAttributeCompiler compiler(String name)

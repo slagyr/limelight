@@ -70,7 +70,7 @@ public class TextPanel extends BasePanel
   public void paintOn(Graphics2D graphics)
   {
     Aligner aligner = createAligner();
-    graphics.setColor(Colors.resolve(getStyle().getTextColor()));
+    graphics.setColor(getStyle().getCompiledTextColor().getColor());
     float y = 0;
     if(lines == null)
       return;
@@ -109,7 +109,7 @@ public class TextPanel extends BasePanel
 
   private Aligner createAligner()
   {
-    return new Aligner(new Box(0, 0, getWidth(), getHeight()), getStyle().getHorizontalAlignment(), getStyle().getVerticalAlignment());
+    return new Aligner(new Box(0, 0, getWidth(), getHeight()), getStyle().getCompiledHorizontalAlignment().getAlignment(), getStyle().getCompiledVerticalAlignment().getAlignment());
   }
 
   public void buildLines()
@@ -120,7 +120,8 @@ public class TextPanel extends BasePanel
       if(text != null && text.length() > 0)
       {
         String[] paragraphs = text.split("\n");
-        Font font = FontFactory.instance.createFont(getStyle());
+        Style style = getStyle();
+        Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
         for(String paragraph : paragraphs)
         {
           Matcher matcher = TAG_REGEX.matcher(paragraph);
@@ -133,7 +134,7 @@ public class TextPanel extends BasePanel
             Map styles = scene.getStyles();
             Style tagStyle = (Style) styles.get(tagName);
             if(tagStyle != null)
-              font = FontFactory.instance.createFont(tagStyle);
+              font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
             else
               System.out.println("no style for tag: " + tagName);
           }

@@ -114,21 +114,14 @@ public abstract class Style
       return value;
   }
 
-  public int asInt(String value)
+  public boolean hasAutoDimension()
   {
-    try
-    {
-      return Integer.parseInt(value);
-    }
-    catch(NumberFormatException e)
-    {
-      return 0;
-    }
+    return getCompiledWidth().isAuto() || getCompiledHeight().isAuto();
   }
 
-  public boolean isOn(String value)
+  public boolean hasPercentageDimension()
   {
-    return "on".equals(value);
+    return getCompiledWidth().isPercentage() || getCompiledHeight().isPercentage();
   }
 
   public void setWidth(String value)
@@ -791,9 +784,9 @@ public abstract class Style
     return get(TOP_RIGHT_BORDER_COLOR);
   }
 
-  public IntegerAttribute getCompiledTopRightBorderColor()
+  public ColorAttribute getCompiledTopRightBorderColor()
   {
-    return (IntegerAttribute)getCompiled(TOP_RIGHT_BORDER_COLOR);
+    return (ColorAttribute)getCompiled(TOP_RIGHT_BORDER_COLOR);
   }
 
   public void setTopRightBorderColor(String value)
@@ -806,9 +799,9 @@ public abstract class Style
     return get(BOTTOM_RIGHT_BORDER_COLOR);
   }
 
-  public IntegerAttribute getCompiledBottomRightBorderColor()
+  public ColorAttribute getCompiledBottomRightBorderColor()
   {
-    return (IntegerAttribute)getCompiled(BOTTOM_RIGHT_BORDER_COLOR);
+    return (ColorAttribute)getCompiled(BOTTOM_RIGHT_BORDER_COLOR);
   }
 
   public void setBottomRightBorderColor(String value)
@@ -821,9 +814,9 @@ public abstract class Style
     return get(BOTTOM_LEFT_BORDER_COLOR);
   }
 
-  public IntegerAttribute getCompiledBottomLeftBorderColor()
+  public ColorAttribute getCompiledBottomLeftBorderColor()
   {
-    return (IntegerAttribute)getCompiled(BOTTOM_LEFT_BORDER_COLOR);
+    return (ColorAttribute)getCompiled(BOTTOM_LEFT_BORDER_COLOR);
   }
 
   public void setBottomLeftBorderColor(String value)
@@ -836,9 +829,9 @@ public abstract class Style
     return get(TOP_LEFT_BORDER_COLOR);
   }
 
-  public IntegerAttribute getCompiledTopLeftBorderColor()
+  public ColorAttribute getCompiledTopLeftBorderColor()
   {
-    return (IntegerAttribute)getCompiled(TOP_LEFT_BORDER_COLOR);
+    return (ColorAttribute)getCompiled(TOP_LEFT_BORDER_COLOR);
   }
 
   public void setTopLeftBorderColor(String value)

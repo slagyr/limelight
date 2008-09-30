@@ -1,24 +1,33 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.HorizontalAlignmentAttribute;
+import limelight.util.Aligner;
+import limelight.LimelightError;
 
 public class SimpleHorizontalAlignmentAttribute implements HorizontalAlignmentAttribute
 {
-  private String alignment;
+  private Aligner.HorizontalAligner alignment;
 
-  public SimpleHorizontalAlignmentAttribute(String alignment)
+  public SimpleHorizontalAlignmentAttribute(Aligner.HorizontalAligner alignment)
   {
     this.alignment = alignment;
   }
 
-  public String getAlignment()
+  public Aligner.HorizontalAligner getAlignment()
   {
     return alignment;
   }
 
   public String toString()
   {
-    return alignment;
+    if(alignment == Aligner.LEFT)
+      return "left";
+    else if(alignment == Aligner.HORIZONTAL_CENTER)
+      return "center";
+    else if(alignment == Aligner.RIGHT)
+      return "right";
+    else
+      throw new LimelightError("Unknown Horizontal Alignment: " + alignment);
   }
 
   public boolean equals(Object obj)

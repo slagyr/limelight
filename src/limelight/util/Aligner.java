@@ -5,12 +5,66 @@ package limelight.util;
 
 public class Aligner
 {
+  public static interface HorizontalAligner
+  {
+    int startingX(Box area, double consumedWidth);
+  }
+
+  public static interface VerticalAligner
+  {
+    int startingY(Box area, int consumedHeight);
+  }
+
+  public static VerticalAligner TOP = new VerticalAligner()
+  {
+    public int startingY(Box area, int consumedHeight)
+    {
+      return area.y;
+    }
+  };
+  public static VerticalAligner VERTICAL_CENTER = new VerticalAligner()
+  {
+    public int startingY(Box area, int consumedHeight)
+    {
+      return area.y + ( (area.height - consumedHeight) / 2 );
+    }
+  };
+  public static VerticalAligner BOTTOM = new VerticalAligner()
+  {
+    public int startingY(Box area, int consumedHeight)
+    {
+      return area.y + area.height - consumedHeight;
+    }
+  };
+  public static HorizontalAligner LEFT = new HorizontalAligner(){
+
+    public int startingX(Box area, double consumedWidth)
+    {
+      return area.x;
+    }
+  };
+  public static HorizontalAligner HORIZONTAL_CENTER = new HorizontalAligner(){
+
+    public int startingX(Box area, double consumedWidth)
+    {
+      return area.x + (area.width - (int) (consumedWidth + 0.5)) / 2;
+    }
+  };
+  public static HorizontalAligner RIGHT = new HorizontalAligner(){
+
+    public int startingX(Box area, double consumedWidth)
+    {
+      return area.x + (area.width - (int) (consumedWidth + 0.5));
+    }
+  };
+
+
   private Box area;
-  private String horizontalAlignment;
-  private String verticalAlignment;
+  private HorizontalAligner horizontalAlignment;
+  private VerticalAligner verticalAlignment;
   private int consumedHeight;
 
-  public Aligner(Box area, String horizontalAlignment, String verticalAlignment)
+  public Aligner(Box area, HorizontalAligner horizontalAlignment, VerticalAligner verticalAlignment)
   {
     this.area = area;
     this.horizontalAlignment = horizontalAlignment;
@@ -20,24 +74,12 @@ public class Aligner
 
   public int startingX(double consumedWidth)
   {
-    int diff = area.width - (int) (consumedWidth + 0.5);
-    if("center".equals(horizontalAlignment))
-      return area.x + diff / 2;
-    else if("right".equals(horizontalAlignment))
-      return area.x + diff;
-    else
-      return area.x;
+    return horizontalAlignment.startingX(area, consumedWidth);
   }
 
   public int startingY()
   {
-    int diff = area.height - consumedHeight;
-    if("center".equals(verticalAlignment))
-      return area.y + diff / 2;
-    else if("bottom".equals(verticalAlignment))
-      return area.y + diff;
-    else
-      return area.y;
+    return verticalAlignment.startingY(area, consumedHeight);
   }
 
   public int getWidth()
@@ -58,15 +100,5 @@ public class Aligner
   public Box getArea()
   {
     return area;
-  }
-
-  public String getHorizontalAlignment()
-  {
-    return horizontalAlignment;
-  }
-
-  public String getVerticalAlignment()
-  {
-    return verticalAlignment;
   }
 }

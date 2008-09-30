@@ -6,6 +6,7 @@ package limelight.ui.painting;
 import junit.framework.TestCase;
 import limelight.styles.FlatStyle;
 import limelight.styles.Style;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -16,6 +17,11 @@ import java.awt.geom.PathIterator;
 
 public class BorderTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private Style style;
   private Border border;
   private Box insideMargin;
