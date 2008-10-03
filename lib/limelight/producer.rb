@@ -1,7 +1,7 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/loaders/file_scene_loader'
+require 'limelight/file_loader'
 require 'limelight/prop_builder'
 require 'limelight/styles_builder'
 require 'limelight/stage_builder'
@@ -38,7 +38,7 @@ module Limelight
       if(root_path[-4..-1] == ".llp")
         root_path = unpack_production(root_path)
       end
-      @loader = Loaders::FileSceneLoader.for_root(root_path)
+      @loader = FileLoader.for_root(root_path)
       @theater = theater.nil? ? Theater.new : theater
       @production = production
     end

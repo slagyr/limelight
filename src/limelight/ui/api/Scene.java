@@ -3,13 +3,13 @@
 
 package limelight.ui.api;
 
-import limelight.SceneLoader;
+import limelight.ResourceLoader;
 
 import java.util.Map;
 
 public interface Scene extends Prop
 {
-  SceneLoader getLoader();
+  ResourceLoader getLoader();
   Map getStyles();
 }
 

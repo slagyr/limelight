@@ -3,7 +3,7 @@
 
 package limelight;
 
-public interface SceneLoader
+public interface ResourceLoader
 {
   String pathTo(String relativePath);
 }
