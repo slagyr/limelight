@@ -5,7 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/casting_director'
 require 'limelight/prop_builder'
 require 'limelight/production'
-require 'limelight/loaders/file_scene_loader'
+require 'limelight/file_loader'
 
 describe Limelight::CastingDirector do
 
@@ -13,7 +13,7 @@ describe Limelight::CastingDirector do
     $casted_props = []
     $casted_players = []
     @scene = Limelight::Scene.new(:casting_director => make_mock("casting_director", :fill_cast => nil), :path => "scene_path")
-    @loader = Limelight::Loaders::FileSceneLoader.for_root(TestDir.root)
+    @loader = Limelight::FileLoader.for_root(TestDir.root)
     @casting_director = Limelight::CastingDirector.new(@loader)
   end
 

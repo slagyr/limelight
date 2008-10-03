@@ -3,7 +3,6 @@
 
 require 'limelight/java_util'
 require 'limelight/menu_bar'
-require 'limelight/loaders/file_scene_loader'
 require 'limelight/file_chooser'
 require 'limelight/util'
 
