@@ -70,7 +70,8 @@ module Limelight
       styles = load_styles(path)
       merge_with_root_styles(styles)
 
-      scene = load_props(path, :styles => styles, :production => @production, :casting_director => casting_director, :loader => @loader, :path => path)
+      scene_name = path.nil? ? "default" : File.basename(path)
+      scene = load_props(path, :styles => styles, :production => @production, :casting_director => casting_director, :loader => @loader, :path => path, :name => scene_name)
 
       stage.open(scene)
     end
