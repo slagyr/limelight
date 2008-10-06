@@ -1,7 +1,6 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/java_util'
 require 'limelight/menu_bar'
 require 'limelight/file_chooser'
 require 'limelight/util'

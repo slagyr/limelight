@@ -31,8 +31,10 @@ class TestDir
       return @root
     end
 
-    def delete
-      FileUtils.rm_r(root, :force => true)
+    def clean
+      Dir.entries(root).each do |file|
+        FileUtils.rm_r(File.join(root, file), :force => true) unless (file == '.' || file == '..')
+      end
     end
 
     def create_file(path, content)
