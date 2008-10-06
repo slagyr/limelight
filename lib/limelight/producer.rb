@@ -23,7 +23,7 @@ module Limelight
 
     # Creates a new Producer and has it open a Production by specified name.
     #
-    def self.open(production_name)
+    def self.open(production_name)   
       producer = new(production_name)
       producer.open
     end

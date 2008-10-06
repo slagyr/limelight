@@ -1,7 +1,7 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/commands'
+require 'limelight/commands/command'
 
 module Limelight
 
@@ -81,7 +81,7 @@ module Limelight
       #
       def run(args)
         command_name = args.shift
-        command = Commands::COMMANDS[command_name]
+        command = Commands[command_name]
         if command
           command.new.run(args)
         else
@@ -94,10 +94,11 @@ module Limelight
       def usage
         puts "Usage: limelight <command> [options] [params]"
         puts "commands:"
-        Commands::COMMANDS.keys.sort.each do |key|
-          command = Commands::COMMANDS[key]
+        Commands::LISTING.keys.sort.each do |key|
+          command = Commands[key]
           puts "\t#{key}\t\t#{command.description}"
         end
+        exit -1
       end
     end
 

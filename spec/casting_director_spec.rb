@@ -18,7 +18,7 @@ describe Limelight::CastingDirector do
   end
 
   after(:each) do
-    TestDir.delete
+    TestDir.clean
   end
   
   def make_root(options={})
