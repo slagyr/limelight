@@ -128,10 +128,10 @@ describe Limelight::Producer do
     scene = make_mock("scene")
     @producer.should_receive(:load_styles).and_return("styles")
     @producer.should_receive(:merge_with_root_styles).with("styles")
-    @producer.should_receive(:load_props).with("some path", :styles => "styles", :production => @producer.production, :casting_director => anything, :loader => @loader, :path => "some path").and_return(scene)
+    @producer.should_receive(:load_props).with("some/path", :styles => "styles", :production => @producer.production, :casting_director => anything, :loader => @loader, :path => "some/path", :name => "path").and_return(scene)
     stage.should_receive(:open).with(scene)
     
-    @producer.open_scene("some path", stage)
+    @producer.open_scene("some/path", stage)
   end
   
   it "should load empty styles if styles.rb doesn't exist" do
