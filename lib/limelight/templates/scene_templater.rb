@@ -9,8 +9,8 @@ module Limelight
       attr_reader :tokens
 
       def initialize(scene_path)
-        super("", Templater.source_dir)
-        @scene_path = scene_path
+        super(File.dirname(scene_path), Templater.source_dir)
+        @scene_path = File.basename(scene_path)
         scene_name = File.basename(scene_path)
         @tokens = {}
         @tokens[:SCENE_NAME] = scene_name

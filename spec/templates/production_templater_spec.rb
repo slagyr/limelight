@@ -6,7 +6,7 @@ describe Limelight::Templates::ProductionTemplater do
   it "should initialize settings" do
     templater = Limelight::Templates::ProductionTemplater.new("some_production", "default_scene")
 
-    templater.target_root.should == ""
+    templater.target_root.should == "."
     templater.source_root.should == Limelight::Templates::Templater.source_dir
     templater.tokens[:PRODUCTION_NAME].should == "Some Production"
     templater.tokens[:DEFAULT_SCENE_NAME].should == "default_scene"
@@ -15,7 +15,16 @@ describe Limelight::Templates::ProductionTemplater do
   it "should initialize settings for deep dir name" do
     templater = Limelight::Templates::ProductionTemplater.new("dir1/dir2/some_production", "default_scene")
 
-    templater.target_root.should == ""
+    templater.target_root.should == "./dir1/dir2"
+    templater.source_root.should == Limelight::Templates::Templater.source_dir
+    templater.tokens[:PRODUCTION_NAME].should == "Some Production"
+    templater.tokens[:DEFAULT_SCENE_NAME].should == "default_scene"
+  end
+
+  it "should initialize settings for root path" do
+    templater = Limelight::Templates::ProductionTemplater.new("/some_production", "default_scene")
+
+    templater.target_root.should == "/"
     templater.source_root.should == Limelight::Templates::Templater.source_dir
     templater.tokens[:PRODUCTION_NAME].should == "Some Production"
     templater.tokens[:DEFAULT_SCENE_NAME].should == "default_scene"

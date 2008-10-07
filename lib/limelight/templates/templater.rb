@@ -9,12 +9,18 @@ module Limelight
         return File.join(File.dirname(__FILE__), "sources")
       end
 
+      def self.clarify(path)
+        return path if path[0..0] == '.'
+        return path if path == File.expand_path(path)
+        return File.join(".", path)
+      end
+
       attr_reader :target_root, :source_root
       attr_accessor :logger
 
       def initialize(target_root, source_root)
         @logger = TemplaterLogger.new
-        @target_root = target_root
+        @target_root = Templater.clarify(target_root)
         @source_root = source_root
       end
 
