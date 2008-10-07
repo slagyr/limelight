@@ -77,6 +77,7 @@ module Limelight
     # See load_scene
     #
     def open(scene)
+      scene.illuminate
       load_scene(scene)
       @frame.open
       scene.visible = true
@@ -98,7 +99,7 @@ module Limelight
       scene.stage = self
 #      scene.panel.snap_to_size  # What's this for?
       if(has_static_size?(scene.style))
-        @frame.set_size(scene.panel.width + @frame.getHorizontalInsetWidth, scene.panel.height + @frame.getVerticalInsetWidth)
+        @frame.set_size(scene.style.compiled_width.value + @frame.getHorizontalInsetWidth, scene.style.compiled_height.value + @frame.getVerticalInsetWidth)
       end
       @current_scene = scene
     end

@@ -17,12 +17,12 @@ module Log
   end
   
   def count
-    @count = self.find("count") if not @count
+    @count = scene.find("count") if not @count
     return @count
   end
   
   def location
-    @location = self.find("location") if not @location
+    @location = scene.find("location") if not @location
     return @location
   end
   
