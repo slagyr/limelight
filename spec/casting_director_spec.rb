@@ -13,6 +13,7 @@ describe Limelight::CastingDirector do
     $casted_props = []
     $casted_players = []
     @scene = Limelight::Scene.new(:casting_director => make_mock("casting_director", :fill_cast => nil), :path => "scene_path")
+    @scene.illuminate
     @loader = Limelight::FileLoader.for_root(TestDir.root)
     @casting_director = Limelight::CastingDirector.new(@loader)
   end

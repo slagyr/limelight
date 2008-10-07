@@ -12,6 +12,7 @@ describe Limelight::Prop do
     @casting_director = make_mock("casting_director", :fill_cast => nil)
     @scene = Limelight::Scene.new(:casting_director => @casting_director)
     @prop = Limelight::Prop.new(:id => "root", :name => "root_class")
+    @scene.illuminate
     @scene << @prop
   end
 
@@ -47,6 +48,7 @@ describe Limelight::Prop do
   end
   
   it "should have an id" do
+    @prop.illuminate
     @prop.id.should == "root"
   end
   
@@ -138,6 +140,7 @@ describe Limelight::Prop do
     styles = Limelight::build_styles { child { width 123 } }
     scene = Limelight::Scene.new(:casting_director => @casting_director, :styles => styles)
     prop = Limelight::Prop.new(:name => "child")
+    scene.illuminate
     
     scene << prop
     
@@ -252,7 +255,7 @@ describe Limelight::Prop do
     
     @prop.panel.after_paint_action.should == nil
   end
-  
+
   it "should build children" do
     @prop.build do
       one
@@ -276,6 +279,14 @@ describe Limelight::Prop do
 
     @prop.play_sound("some.au")
   end
+
+#  it "should remember when it has been illuminated" do
+#    @prop.illuminated?.should == false;
+#
+#    @prop.illuminate
+#
+#    @prop.illuminated?.should == false;
+#  end
 
   #TODO remove_all should not remove scrollbars
 

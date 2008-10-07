@@ -12,28 +12,33 @@ module Limelight
   # few extra attributes and behaviors.
   #
   class Scene < Prop
-    
+
     include UI::Api::Scene
-  
-    attr_reader :button_groups, :styles, :casting_director, :cast
-    attr_accessor :stage, :loader, :visible, :path, :production
+
+    attr_reader :stage, :button_groups, :styles, :casting_director, :cast
+    attr_accessor :loader, :visible, :path, :production
     getters :stage, :loader, :styles
     setters :stage
     event :scene_opened
-    
+
     def initialize(options={})
       super(options)
-      @scene = self
       @button_groups = ButtonGroupCache.new
       @prop_index = {}
       @cast = Module.new
-      illuminate
+#      illuminate
     end
-  
-    def add_options(options) #:nodoc:
-      @options = options
-      illuminate
+
+    # Returns self.  A Scene is it's own scene.
+    #
+    def scene
+      return self
     end
+
+    #    def add_options(options) #:nodoc:
+    #      @options = options
+    #      illuminate
+    #    end
 
     # Creates the menu bar for the Scene 
     #
@@ -85,26 +90,33 @@ module Limelight
     # Removed the Prop from the index.
     #
     def unindex_prop(prop)
-     @prop_index.delete(prop.id) if prop.id
+      @prop_index.delete(prop.id) if prop.id
     end
 
     # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene. 
     #
     def find(id)
-     return @prop_index[id.to_s]
+      return @prop_index[id.to_s]
     end
-    
-    private ###############################################
-    
-    def illuminate
+
+    # Sets the stage that this scene belongs to.
+    #
+    def stage=(stage)
+      @stage = stage
+      illuminate
+    end
+
+    def illuminate #:nodoc:
       @styles = @options.has_key?(:styles) ? @options.delete(:styles) : (@styles || {})
       @casting_director = @options.delete(:casting_director) if @options.has_key?(:casting_director)
       super
     end
-    
+
+    private ###############################################
+
     def reload
       load(@path)
     end
-  
+
   end
 end

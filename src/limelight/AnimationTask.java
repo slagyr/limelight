@@ -31,6 +31,7 @@ public abstract class AnimationTask extends RecurringTask
     Context.instance().taskEngine.add(this);
   }
 
+  // TODO - There is a race condition here. Stop should wait for the current doPerform call to complete if it's running.
   public void stop()
   {
     Context.instance().taskEngine.remove(this);
