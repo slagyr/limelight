@@ -104,7 +104,7 @@ module Limelight
     def load_player(player_filename)
       src = IO.read(@loader.path_to(player_filename))
       begin
-        @cast.module_eval(src)
+        @cast.module_eval(src, player_filename)
       rescue Exception => e
         raise BuildException.new(player_filename, src, e)
       end

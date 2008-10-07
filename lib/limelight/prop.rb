@@ -177,16 +177,7 @@ module Limelight
     def set_parent(parent) #:nodoc:
       @parent = parent
       illuminate if @parent.illuminated?
-#      set_scene parent.scene
     end
-
-#    # unusual name because it's not part of public api
-#    def set_scene(scene) #:nodoc:
-#      return if scene == @scene || scene.nil?
-#      @scene = scene
-#      illuminate if @scene && @scene.illuminated?
-#      children.each { |child| child.set_scene(scene) }
-#    end
 
     # Allows the addition of extra initialization options.  Will raise an exception if the Prop has already been
     # illuminated (added to a scene).
