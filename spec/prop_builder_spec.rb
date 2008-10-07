@@ -13,6 +13,7 @@ describe Limelight::SceneBuilder do
 
   it "should build root" do
     root = Limelight.build_scene(@options)
+    root.illuminate
 
     root.class.should == Limelight::Scene
     root.name.should == "root"
@@ -24,6 +25,7 @@ describe Limelight::SceneBuilder do
     root = Limelight::build_scene(@options) do
       child
     end
+    root.illuminate
 
     root.children.size.should == 1
     child = root.children[0]
@@ -38,6 +40,7 @@ describe Limelight::SceneBuilder do
       child1
       child2
     end
+    root.illuminate
 
     root.children.size.should == 2
     root.children[0].name.should == "child1"
@@ -50,6 +53,7 @@ describe Limelight::SceneBuilder do
         grandchild
       end
     end
+    root.illuminate
 
     root.children.size.should == 1
     root.children[0].name.should == "child"
@@ -61,6 +65,7 @@ describe Limelight::SceneBuilder do
     root = Limelight::build_scene(@options) do
       child :id => "child_1", :players => "x, y, z"
     end
+    root.illuminate
 
     child = root.children[0]
     child.id.should == "child_1"
@@ -71,6 +76,7 @@ describe Limelight::SceneBuilder do
     root = Limelight::build_scene(@options) do
       child :width => "100", :font_size => "10", :top_border_color => "blue"
     end
+    root.illuminate
 
     child = root.children[0]
     child.style.width.should == "100"
@@ -82,6 +88,7 @@ describe Limelight::SceneBuilder do
     root = Limelight::build_scene(@options) do
       child :on_mouse_entered => "return [self, event]"
     end
+    root.illuminate
 
     child = root.children[0]
     child.mouse_entered("blah").should == [child, "blah"]
@@ -91,6 +98,7 @@ describe Limelight::SceneBuilder do
     root = Limelight::build_scene(@options) do
       __ :name => "root", :id => "123"
     end
+    root.illuminate
 
     root.children.size.should == 0
     root.name.should == "root"
@@ -116,6 +124,7 @@ describe Limelight::SceneBuilder do
     root = Limelight::build_scene(:id => 321, :build_loader => loader, :casting_director => @caster) do
       __install "external.rb"
     end
+    root.illuminate
 
     root.id.should == "321"
     root.children.size.should == 1
@@ -163,10 +172,12 @@ describe Limelight::SceneBuilder do
 
   it "should build onto an existing block" do
     prop = Limelight::Prop.new
-    prop.set_scene(Limelight::Scene.new(:casting_director => make_mock(:casting_director, :fill_cast => nil)))
+    scene = Limelight::Scene.new(:casting_director => make_mock(:casting_director, :fill_cast => nil))
+    scene << prop
     builder = Limelight::PropBuilder.new(prop)
     block = Proc.new { one; two { three } }
     builder.instance_eval(&block)
+    scene.illuminate
 
     prop.children.length.should == 2
     prop.children[0].name.should == "one"
@@ -179,6 +190,7 @@ describe Limelight::SceneBuilder do
     root = Limelight::build_scene(@options) do
       display :id => "display"
     end
+    root.illuminate
 
     root.children.size.should == 1
     display = root.children[0]

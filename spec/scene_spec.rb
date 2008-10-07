@@ -12,6 +12,7 @@ describe Limelight::Scene do
   end
 
   it "should have a styles hash" do
+    @scene.illuminate
     @scene.styles.should_not == nil
     @scene.styles.size.should == 0
   end
@@ -23,6 +24,7 @@ describe Limelight::Scene do
 
   it "should pullout sytles and casting_director from options" do
     scene = Limelight::Scene.new(:styles => "styles", :casting_director => @casting_director)
+    scene.illuminate
 
     scene.styles.should == "styles"
     scene.casting_director.should == @casting_director
@@ -37,7 +39,19 @@ describe Limelight::Scene do
     @scene.cast.is_a?(Module).should == true
   end
 
+  it "should illuminate itself when put on stage" do
+    @scene.illuminated?.should == false
+
+    @scene.stage = make_mock("stage")
+
+    @scene.illuminated?.should == true
+  end
+
   describe Limelight::Scene, "Prop Indexing" do
+
+    before(:each) do
+      @scene.illuminate
+    end
 
     it "should index props" do
       prop = Limelight::Prop.new(:id => "some_id")

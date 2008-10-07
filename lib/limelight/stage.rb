@@ -96,7 +96,7 @@ module Limelight
       @frame.setJMenuBar(scene.menu_bar)
       @frame.load(scene.panel)
       scene.stage = self
-      scene.panel.snap_to_size
+#      scene.panel.snap_to_size  # What's this for?
       if(has_static_size?(scene.style))
         @frame.set_size(scene.panel.width + @frame.getHorizontalInsetWidth, scene.panel.height + @frame.getVerticalInsetWidth)
       end

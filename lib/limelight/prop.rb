@@ -16,7 +16,7 @@ module Limelight
   # the root Prop of a tree.
   #
   class Prop
-    
+
     class << self
 
       def event(event_symbol)
@@ -30,12 +30,12 @@ module Limelight
       end
 
     end
-    
+
     include UI::Api::Prop
-  
+
     attr_reader :panel #:nodoc:
-    attr_reader :style, :hover_style, :children, :scene, :parent, :name, :id, :players
-    getters :panel, :style, :hover_style, :scene, :name, :text  #:nodoc:
+    attr_reader :style, :hover_style, :children, :parent, :name, :id, :players
+    getters :panel, :style, :hover_style, :name, :text  #:nodoc:
     setters :text #:nodoc:
 
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.
@@ -48,6 +48,7 @@ module Limelight
       @children = []
       @style = Styles::ScreenableStyle.new
       @panel = UI::Model::Panel.new(self)
+      @illuminated = false
     end
 
     # Add a Prop as a child of this Prop.
@@ -86,7 +87,7 @@ module Limelight
     #
     def remove(child)
       if children.delete(child)
-        @scene.unindex_prop(child) if @scene
+        scene.unindex_prop(child) if scene
         @panel.remove(child.panel)
       end
     end
@@ -95,7 +96,7 @@ module Limelight
     #
     def remove_all
       @panel.remove_all
-      @children.each { |child| @scene.unindex_prop(child) } if @scene
+      @children.each { |child| scene.unindex_prop(child) } if scene
       @children = []
     end
 
@@ -104,18 +105,18 @@ module Limelight
     def include_player(player_module)
       extend player_module unless self.is_a?(player_module)
     end
-    
+
     def update #:nodoc:
-      return if(@scene.nil? || !@scene.visible)
+      return if (scene.nil? || !scene.visible)
       @panel.doLayout
       @panel.repaint
     end
-    
+
     def update_now #:nodoc:
-      return if(@scene.nil? || !@scene.visible)
+      return if (scene.nil? || !scene.visible)
       @panel.doLayout()
       @panel.paintImmediately(0, 0, @panel.width, @panel.height)
-    end    
+    end
 
     # A hook to invoke behavior after a Prop is painted.
     #
@@ -148,39 +149,44 @@ module Limelight
     def text
       return panel.text
     end
-    
-    #TODO - MDM - DELETE ME
-    def stage #:nodoc:
-      return scene.stage
+
+    # Returns the scene to which this prop belongs to.
+    #
+    def scene
+      return nil if @parent.nil?
+      @scene = @parent.scene if @scene.nil?
+      return @scene
     end
+    alias :getScene :scene
 
     # Returns the current Production this Prop lives in.
     #
     def production
       return scene.production
     end
-    
+
     def to_s #:nodoc:
       return "#{self.class.name}[id: #{@id}, name: #{@name}]"
     end
-    
+
     def inspect #:nodoc:
       return self.to_s
     end
-    
+
     # unusual name because it's not part of public api
     def set_parent(parent) #:nodoc:
       @parent = parent
-      set_scene parent.scene
+      illuminate if @parent.illuminated?
+#      set_scene parent.scene
     end
-    
-    # unusual name because it's not part of public api
-    def set_scene(scene) #:nodoc:
-      return if scene == @scene || scene.nil?
-      @scene = scene
-      illuminate
-      children.each { |child| child.set_scene(scene) }
-    end
+
+#    # unusual name because it's not part of public api
+#    def set_scene(scene) #:nodoc:
+#      return if scene == @scene || scene.nil?
+#      @scene = scene
+#      illuminate if @scene && @scene.illuminated?
+#      children.each { |child| child.set_scene(scene) }
+#    end
 
     # Allows the addition of extra initialization options.  Will raise an exception if the Prop has already been
     # illuminated (added to a scene).
@@ -217,7 +223,7 @@ module Limelight
     # This filename should relative to the root directory of the current Production, or an absolute path.
     #
     def play_sound(filename)
-      @panel.play_sound(@scene.loader.path_to(filename))
+      @panel.play_sound(scene.loader.path_to(filename))
     end
 
     # Initiate an animation loop.  Options may include :name (string), :updates_per_second (int: defaults to 60)
@@ -236,7 +242,7 @@ module Limelight
       animation.start
       return animation
     end
-    
+
     # GUI Events ##########################################
 
     event :mouse_clicked
@@ -253,35 +259,47 @@ module Limelight
     event :focus_lost
     event :button_pressed
     event :value_changed
-   
-    private ###############################################
-    
-    def illuminate     
+
+    # TODO Try to get me our of public scope
+    #
+    def illuminate #:nodoc:     
       return if @options.nil?
 
       set_id(@options.delete(:id))
       @name = @options.delete(:name)
       @players = @options.delete(:players)
       @additional_styles = @options.delete(:styles)
-      
+
       inherit_styles
-      @scene.casting_director.fill_cast(self)
+      scene.casting_director.fill_cast(self)
       apply_options
-      
+
       @options = nil
+
+      @illuminated = true
+
+      children.each do |child|
+        child.illuminate unless child.illuminated?
+      end
     end
+
+    def illuminated? #:nodoc:
+      return @illuminated
+    end
+
+    private ###############################################
 
     def set_id(id)
       return if id.nil? || id.to_s.empty?
       @id = id.to_s
-      @scene.index_prop(self)
+      scene.index_prop(self)
     end
-    
+
     def apply_options
       @options.each_pair do |key, value|
-        setter_sym = "#{key.to_s}=".to_sym        
+        setter_sym = "#{key.to_s}=".to_sym
         if self.respond_to?(setter_sym)
-          self.send(setter_sym, value) 
+          self.send(setter_sym, value)
         elsif self.style.respond_to?(setter_sym)
           self.style.send(setter_sym, value.to_s)
         elsif is_event_setter(key)
@@ -289,23 +307,23 @@ module Limelight
         end
       end
     end
-    
+
     def is_event_setter(symbol)
       string_value = symbol.to_s
       return string_value[0..2] == "on_" and self.events.include?(string_value[3..-1].to_sym)
     end
-    
+
     def define_event(symbol, value)
       event_name = symbol.to_s[3..-1]
       self.instance_eval "def #{event_name}(event); #{value}; end"
     end
-    
+
     def inherit_styles
       style_names = []
       style_names << @name unless @name.nil?
       style_names += @additional_styles.gsub(',', ' ').split(' ') unless @additional_styles.nil?
-      style_names.each do |style_name|
-        new_style = @scene.styles[style_name]
+      style_names.each do |style_name|    
+        new_style = scene.styles[style_name]
         @style.add_extension(new_style) if new_style
         new_hover_style = scene.styles["#{style_name}.hover"]
         if new_hover_style
@@ -318,13 +336,13 @@ module Limelight
       end
     end
 
-# Why is this method here?  No one appears to use it.
-#    def disinherit_styles
-#      return if @name.nil?
-#      old_style = @scene.styles[@name]
-#      @style.remove_extension(old_style) if old_style
-#      @hover_style = nil
-#    end
-    
+    # Why is this method here?  No one appears to use it.
+    #    def disinherit_styles
+    #      return if @name.nil?
+    #      old_style = scene.styles[@name]
+    #      @style.remove_extension(old_style) if old_style
+    #      @hover_style = nil
+    #    end
+
   end
 end

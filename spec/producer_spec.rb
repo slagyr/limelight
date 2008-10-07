@@ -33,6 +33,7 @@ describe Limelight::Producer do
     @loader.should_receive(:load).with("./props.rb").and_return("child :id => 321")
     
     scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
+    scene.illuminate
     scene.children.size.should == 1
     scene.children[0].name.should == "child"
     scene.children[0].id.should == "321"

@@ -46,7 +46,7 @@ describe Limelight::Stage do
   end
 
   it "should call scene.scene_opened at the end of opening a scene" do
-    scene = make_mock("scene", :visible= => nil)
+    scene = make_mock("scene", :visible= => nil, :illuminate => nil)
     scene.should_receive(:scene_opened)
 
     @__stage__.frame.stub!(:open)

@@ -3,21 +3,15 @@
 
 module Fader
   
-  def self.extended(extended_block)
-    puts "#{self}.extended by #{extended_block}"
-  end
-  
   def mouse_entered(e)
     @color = style.background_color
-    @base_alpha = (style.background_color[4..-1] + style.background_color[4..-1]).hex
+    @base_alpha = @color[7..-1].hex
 
     @step = (255 - @base_alpha) / 50
     @step = 1 if @step == 0
     @current_alpha = @base_alpha
-    @lastUpdate = Time.now
+
     @animation = animate(:updates_per_second => 25) do
-      puts "last update delay: #{Time.now - @lastUpdate}"
-      @lastUpdate = Time.now
       @current_alpha += @step
       if @current_alpha < @base_alpha
         @current_alpha = @base_alpha
