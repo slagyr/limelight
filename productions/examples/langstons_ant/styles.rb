@@ -23,7 +23,7 @@ title {
 	text_color "orange"
 	font_size 30
 	font_face "Arial"
-	font_style "bold italics"
+	font_style "bold italic"
 }
 	
 world {

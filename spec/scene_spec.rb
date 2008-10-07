@@ -39,14 +39,6 @@ describe Limelight::Scene do
     @scene.cast.is_a?(Module).should == true
   end
 
-  it "should illuminate itself when put on stage" do
-    @scene.illuminated?.should == false
-
-    @scene.stage = make_mock("stage")
-
-    @scene.illuminated?.should == true
-  end
-
   describe Limelight::Scene, "Prop Indexing" do
 
     before(:each) do

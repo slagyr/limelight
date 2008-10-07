@@ -1,33 +1,7 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-load File.expand_path(File.dirname(__FILE__) + "/ant.rb")
-  
 module World
-  
-#   def self.extended(prop)
-# create_time = 0
-# add_time = 0
-#     
-#     prop.cell_index = {}
-#     50.times do |y|
-#       50.times do |x|
-#         id = "#{x},#{y}"
-# start = Time.now
-#         cell = Limelight::Prop.new(:name => "cell", :id => id)
-# create_time += Time.now - start
-# start = Time.now
-#         prop.add(cell)
-# add_time += Time.now - start        
-#         prop.cell_index[id] = cell
-#       end
-#     end
-# puts "create_time: #{create_time}"    
-# puts "add_time: #{add_time}"
-# # create_time: 3.2059999999998325
-# # add_time: 0.5010000000000002
-# 
-#   end
 
   def self.extended(prop)
     prop.cells = {}

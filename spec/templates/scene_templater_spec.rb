@@ -6,7 +6,7 @@ describe Limelight::Templates::SceneTemplater do
   it "should initialize" do
     templater = Limelight::Templates::SceneTemplater.new("prod/some_scene")
 
-    templater.target_root.should == "."
+    templater.target_root.should == ""
     templater.source_root.should == Limelight::Templates::Templater.source_dir
     templater.tokens[:SCENE_NAME].should == "some_scene"
     templater.tokens[:SCENE_TITLE].should == "Some Scene"

@@ -54,4 +54,13 @@ describe Limelight::Stage do
     @__stage__.open(scene)
   end
 
+  it "should illuminate the scene when opening it" do
+    scene = make_mock("scene", :visible= => nil, :scene_opened => nil)
+    scene.should_receive(:illuminate)
+
+    @__stage__.frame.stub!(:open)
+    @__stage__.stub!(:load_scene)
+    @__stage__.open(scene)
+  end
+
 end
