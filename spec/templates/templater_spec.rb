@@ -22,6 +22,14 @@ describe Limelight::Templates::Templater do
     @templater.source_root.should == @src_dir
   end
 
+  it "should prefix target root with dot if not absolute" do
+    Limelight::Templates::Templater.clarify("blah").should == "./blah"
+    Limelight::Templates::Templater.clarify("one/two").should == "./one/two"
+    Limelight::Templates::Templater.clarify("/root").should == "/root"
+    Limelight::Templates::Templater.clarify("./blah").should == "./blah"
+    Limelight::Templates::Templater.clarify("../blah").should == "../blah"
+  end
+
   it "should create a directory" do
     @logger.should_receive(:creating_directory).with("#{TestDir.root}/blah")
     

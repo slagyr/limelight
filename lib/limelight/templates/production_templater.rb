@@ -9,8 +9,8 @@ module Limelight
       attr_reader :tokens
 
       def initialize(production_path, default_scene_name)
-        super("", Templater.source_dir)
-        @production_path = production_path
+        super(File.dirname(production_path), Templater.source_dir)
+        @production_path = File.basename(production_path)
         @tokens = {}
         @tokens[:DEFAULT_SCENE_NAME] = default_scene_name
         @tokens[:PRODUCTION_NAME] = File.basename(production_path).titleized
