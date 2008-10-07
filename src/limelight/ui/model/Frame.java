@@ -60,6 +60,7 @@ public class Frame extends JFrame
   {
     if(root != null)
       root.destroy();
+    getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     root = new RootPanel(this);
     root.setPanel(child);
   }

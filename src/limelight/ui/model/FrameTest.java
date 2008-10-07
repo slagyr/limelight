@@ -8,11 +8,18 @@ import limelight.ui.api.MockStage;
 import limelight.ui.MockPanel;
 import limelight.Context;
 import limelight.KeyboardFocusManager;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class FrameTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private MockStage stage;
   private Frame frame;
   private FrameManager frameManager;
@@ -45,6 +52,15 @@ public class FrameTest extends TestCase
     RootPanel root = frame.getRoot();
 
     assertSame(panel, root.getPanel());
+  }
+
+  public void testLoadSetsDefaultCursor() throws Exception
+  {
+    frame.getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    MockPanel panel = new MockPanel();
+    frame.load(panel);
+
+    assertEquals(Cursor.DEFAULT_CURSOR, frame.getContentPane().getCursor().getType());
   }
 
   public void testLoadWillDestroyPreviousRoots() throws Exception
