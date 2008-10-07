@@ -69,7 +69,8 @@ module Limelight
       producer.open
     end
 
-    # Opens the specified Scene on the Stage currently occupied by this Scene.s
+    # Opens the specified Scene on the Stage currently occupied by this Scene.
+    # TODO It doesn't quite make sense that a scene loads other scene.  It has to replace itself?
     #
     def load(scene_name)
       @production.producer.open_scene(scene_name, @stage)
