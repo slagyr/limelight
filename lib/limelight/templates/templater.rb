@@ -18,7 +18,7 @@ module Limelight
       attr_reader :target_root, :source_root
       attr_accessor :logger
 
-      def initialize(target_root, source_root)
+      def initialize(target_root, source_root=Templater.source_dir)
         @logger = TemplaterLogger.new
         @target_root = Templater.clarify(target_root)
         @source_root = source_root

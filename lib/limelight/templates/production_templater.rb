@@ -17,10 +17,10 @@ module Limelight
       end
 
       def generate
-        file(File.join(@production_path, "production.rb"), "production.rb.template", @tokens)
-        file(File.join(@production_path, "init.rb"), "init.rb.template", @tokens)
-        file(File.join(@production_path, "stages.rb"), "stages.rb.template", @tokens)
-        file(File.join(@production_path, "styles.rb"), "styles.rb.template", @tokens)
+        file(File.join(@production_path, "production.rb"), "production/production.rb.template", @tokens)
+        file(File.join(@production_path, "init.rb"), "production/init.rb.template", @tokens)
+        file(File.join(@production_path, "stages.rb"), "production/stages.rb.template", @tokens)
+        file(File.join(@production_path, "styles.rb"), "production/styles.rb.template", @tokens)
       end
 
     end

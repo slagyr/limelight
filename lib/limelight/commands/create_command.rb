@@ -15,46 +15,43 @@ module Limelight
         return "Creates the directories and files for a production and/or scene."
       end
 
-      def run(args)
-        do_requires
-        begin
-          template_type = args.shift
-          if template_type == "production"
-            create_production(args)
-          elsif template_type == "scene"
-            create_scene(args)
-          else
-            raise "Unknown template type: #{template_type}"
-          end
-        rescue Exception => e
-          usage(e)
+      protected ###########################################
+
+      def process
+        if @template_type == "production"
+          create_production
+        elsif @template_type == "scene"
+          create_scene
+        else
+          raise "Unknown template type: #{@template_type}"
         end
       end
 
-      private #############################################
-
-      def usage(exception = nil)
-        puts exception if exception
-        puts "Usage: limelight create [production|scene] <path>"
-        exit -1
+      def parameter_description
+        return "[production|scene] <path>"
       end
 
-      def create_production(args)
-        production_path = args.shift
-        raise "Missing path parameter" if production_path.nil?
-        Templates::ProductionTemplater.new(production_path, "default_scene").generate
-        Templates::SceneTemplater.new("#{production_path}/default_scene").generate
-      end
-
-      def create_scene(args)
-        scene_path = args.shift
-        raise "Missing path parameter" if scene_path.nil?
-        Templates::SceneTemplater.new(scene_path).generate
+      def parse_remainder(args)
+        @template_type = args.shift
+        raise "Missing template type" if @template_type.nil?
+        @path = args.shift
+        raise "Missing path parameter" if @path.nil?
       end
 
       def do_requires
         require 'limelight/templates/production_templater'
         require 'limelight/templates/scene_templater'
+      end
+
+      private #############################################
+
+      def create_production
+        Templates::ProductionTemplater.new(@path, "default_scene").generate
+        Templates::SceneTemplater.new("#{@path}/default_scene").generate
+      end
+
+      def create_scene
+        Templates::SceneTemplater.new(@path).generate
       end
 
     end

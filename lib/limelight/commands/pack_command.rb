@@ -15,13 +15,25 @@ module Limelight
       install_as "pack"
 
       def self.description
-        return "Pack the designated limelight production into a .llp file."
+        return "Pack a limelight production into a .llp file."
       end
 
-      def run(args)
-        packer = Limelight::Util::Packer.new
-        packer.pack(args.shift)
+      protected ###########################################
+
+      def parameter_description
+        return "<production_path>"
       end
+
+      def parse_remainder(args)
+        @production_path = args.shift
+        raise "Missing production path" if @production_path.nil?
+      end
+
+      def process
+        packer = Limelight::Util::Packer.new
+        packer.pack(@production_path)
+      end
+
     end
 
   end
