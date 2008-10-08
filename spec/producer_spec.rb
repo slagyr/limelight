@@ -71,7 +71,7 @@ describe Limelight::Producer do
     begin
       result = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
       result.should == nil # should never perform
-    rescue Limelight::BuildException => e
+    rescue Limelight::DSL::BuildException => e
       e.line_number.should == 3
       e.filename.should == "./props.rb"
       e.message.should include("./props.rb:3: undefined method `+@' for ")
@@ -85,7 +85,7 @@ describe Limelight::Producer do
     begin
       result = @producer.load_styles(".")
       result.should == nil # should never perform
-    rescue Limelight::BuildException => e
+    rescue Limelight::DSL::BuildException => e
       e.line_number.should == 4
       e.filename.should == "./styles.rb"
       e.message.should include("./styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x")

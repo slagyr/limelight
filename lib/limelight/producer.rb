@@ -2,13 +2,13 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/file_loader'
-require 'limelight/prop_builder'
-require 'limelight/styles_builder'
-require 'limelight/stage_builder'
-require 'limelight/production_builder'
+require 'limelight/dsl/prop_builder'
+require 'limelight/dsl/styles_builder'
+require 'limelight/dsl/stage_builder'
+require 'limelight/dsl/production_builder'
 require 'limelight/casting_director'
 require 'limelight/stage'
-require 'limelight/build_exception'
+require 'limelight/dsl/build_exception'
 require 'limelight/theater'
 require 'limelight/production'
 
@@ -101,7 +101,7 @@ module Limelight
         begin
           eval content
         rescue Exception => e
-          raise BuildException.new(filename, content, e)
+          raise DSL::BuildException.new(filename, content, e)
         end
       end
     end
@@ -118,7 +118,7 @@ module Limelight
         begin
           eval content
         rescue Exception => e
-          raise BuildException.new(filename, content, e)
+          raise DSL::BuildException.new(filename, content, e)
         end
       end
     end

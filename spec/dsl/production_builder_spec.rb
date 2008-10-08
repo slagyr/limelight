@@ -1,10 +1,10 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'limelight/production_builder'
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require 'limelight/dsl/production_builder'
 
-describe Limelight::ProductionBuilder do
+describe Limelight::DSL::ProductionBuilder do
 
   before(:each) do
     @producer = make_mock("producer")
@@ -44,6 +44,6 @@ describe Limelight::ProductionBuilder do
       Limelight::build_production("/tmp", @producer, @theater) do
         blah "blah"
       end
-    end.should raise_error(Limelight::ProductionBuilderException, "'blah' is not a valid production property")
+    end.should raise_error(Limelight::DSL::ProductionBuilderException, "'blah' is not a valid production property")
   end
 end

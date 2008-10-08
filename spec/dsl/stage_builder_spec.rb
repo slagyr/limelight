@@ -1,11 +1,11 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'limelight/stage_builder'
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require 'limelight/dsl/stage_builder'
 require 'limelight/theater'
 
-describe Limelight::StageBuilder do
+describe Limelight::DSL::StageBuilder do
   
   before(:each) do
     @theater = Limelight::Theater.new
@@ -57,7 +57,7 @@ describe Limelight::StageBuilder do
           blah "blah"
         end
       end
-    end.should raise_error(Limelight::StageBuilderException, "'blah' is not a valid stage property")
+    end.should raise_error(Limelight::DSL::StageBuilderException, "'blah' is not a valid stage property")
   end
 
   it "should add stages to the theater" do

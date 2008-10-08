@@ -43,7 +43,7 @@ module Limelight
     # Creates the menu bar for the Scene 
     #
     def menu_bar
-      return MenuBar.build(self) do
+      return DSL::MenuBar.build(self) do
         menu("File") do
           item("Open", :open_chosen_production)
           item("Refresh", :reload)

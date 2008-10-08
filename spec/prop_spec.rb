@@ -3,7 +3,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/prop'
-require 'limelight/styles_builder'
+require 'limelight/dsl/styles_builder'
 require 'limelight/scene'
 
 describe Limelight::Prop do

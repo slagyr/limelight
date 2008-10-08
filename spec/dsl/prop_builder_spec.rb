@@ -1,10 +1,10 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'limelight/prop_builder'
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require 'limelight/dsl/prop_builder'
 
-describe Limelight::SceneBuilder do
+describe Limelight::DSL::SceneBuilder do
 
   before(:each) do
     @caster = make_mock("caster", :fill_cast => nil)
@@ -165,7 +165,7 @@ describe Limelight::SceneBuilder do
       root = Limelight::build_scene(@options.merge(:id => 321, :build_loader => loader)) do
         __install "external.rb"
       end
-    rescue Limelight::BuildException => e
+    rescue Limelight::DSL::BuildException => e
       e.message.should include("external.rb:1: (eval):1: , unexpected end-of-file")
     end
   end
@@ -174,7 +174,7 @@ describe Limelight::SceneBuilder do
     prop = Limelight::Prop.new
     scene = Limelight::Scene.new(:casting_director => make_mock(:casting_director, :fill_cast => nil))
     scene << prop
-    builder = Limelight::PropBuilder.new(prop)
+    builder = Limelight::DSL::PropBuilder.new(prop)
     block = Proc.new { one; two { three } }
     builder.instance_eval(&block)
     scene.illuminate

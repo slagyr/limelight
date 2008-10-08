@@ -78,8 +78,8 @@ module Limelight
     #    end
     #
     def build(&block)
-      require 'limelight/prop_builder'
-      builder = Limelight::PropBuilder.new(self)
+      require 'limelight/dsl/prop_builder'
+      builder = Limelight::DSL::PropBuilder.new(self)
       builder.instance_eval(&block)
     end
 
