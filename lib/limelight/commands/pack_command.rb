@@ -6,30 +6,33 @@ require 'limelight/commands/command'
 module Limelight
   module Commands
 
-    # Compresses the specified Production into a single .llp file.
+    # See the following usage summary.
     #
-    #   jruby -S limelight pack <production_name>
+    #  Usage: limelight pack <production_path>
+    #      Pack a limelight production into a .llp file.
+    #      options:
+    #      -h, --help                       Prints this usage summary.
     #
     class PackCommand < Command
 
       install_as "pack"
 
-      def self.description
+      def self.description #:nodoc:
         return "Pack a limelight production into a .llp file."
       end
 
       protected ###########################################
 
-      def parameter_description
+      def parameter_description #:nodoc:
         return "<production_path>"
       end
 
-      def parse_remainder(args)
+      def parse_remainder(args) #:nodoc:
         @production_path = args.shift
         raise "Missing production path" if @production_path.nil?
       end
 
-      def process
+      def process #:nodoc:
         packer = Limelight::Util::Packer.new
         packer.pack(@production_path)
       end

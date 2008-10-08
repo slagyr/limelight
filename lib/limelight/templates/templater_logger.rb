@@ -1,8 +1,12 @@
 module Limelight
   module Templates
 
+    # Templaters uses this class to log activity.  
+    #
     class TemplaterLogger
 
+      # An accessor to the output IO. Defaults to STDOUT
+      #
       attr_accessor :output
 
       def initialize

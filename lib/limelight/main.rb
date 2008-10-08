@@ -92,8 +92,9 @@ module Limelight
       # Prints the usage of the limelight command.
       #
       def usage
+        puts ""
         puts "Usage: limelight <command> [options] [params]"
-        puts "commands:"
+        puts "  commands:"
         Commands::LISTING.keys.sort.each do |key|
           command = Commands[key]
           puts "\t#{key}\t\t#{command.description}"

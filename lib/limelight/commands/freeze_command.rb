@@ -6,51 +6,56 @@ module Limelight
     # Freeze a gem into the production.  Frozen gems are unpacked into the root level gem directory.
     # Limelight will automatically require a production's frozen gems when loaded.
     #
-    #   jruby -S limelight freeze <gem_name|gem_file>
+    #  Usage: limelight freeze [options] <gem_name|gem_file>
+    #      freeze a gem into a production.
+    #      options:
+    #      -h, --help                       Prints this usage summary.
+    #      -p, --production=<production>    Specify the production where the gem will be frozen.  Default is '.'.
+    #      -v, --version=<version>          Specify the gem version. Defaults to latest. Ignored if file provided.
     #
     class FreezeCommand < Command
 
       install_as "freeze"
 
-      def self.description
+      def self.description #:nodoc:
         return "freeze a gem into a production."
       end
 
       attr_reader :gem_name, :production_path, :gem_version
 
-      def initialize()
+      def initialize() #:nodoc:
         @production_path = "."
-        self.print_backtrace = true
+#        self.print_backtrace = true
       end
 
-      def is_gem_file?(name)
+      def is_gem_file?(name) #:nodoc:
         return File.extname(name) == ".gem"
       end
 
       protected ###########################################
 
-      def process
+      def process  #:nodoc:
         check_production_path
         gem_path = is_gem_file?(@gem_name) ? @gem_name : find_system_gem
         raise "Gem file does not exist: #{gem_path}" if !File.exists?(gem_path)
         freeze_gem(gem_path)
       end
 
-      def parse_remainder(args)
+      def parse_remainder(args) #:nodoc:
         @gem_name = args.shift
         raise "Gem name paramter missing." if @gem_name.nil?
       end
 
-      def build_options(spec)
+      def build_options(spec) #:nodoc:
         spec.on("-p <production>", "--production=<production>", "Specify the production where the gem will be frozen.  Default is '.'.") { |value| @production_path = value }
         spec.on("-v <version>", "--version=<version>", "Specify the gem version. Defaults to latest. Ignored if file provided.") { |value| @gem_version = value }
       end
 
-      def parameter_description
+      def parameter_description #:nodoc:
         return "[options] <gem_name|gem_file>"
       end
 
-      def do_requires
+      def do_requires #:nodoc:
         require 'limelight/util'
         require 'limelight/templates/templater'
         require 'rubygems'
@@ -98,7 +103,7 @@ module Limelight
       end
 
       def install_limelight_hook
-        tokens = { :GEM_NAME => @gem_dir_name, :PATHS => @gem_spec.require_paths }
+        tokens = { :GEM_NAME => @gem_dir_name, :PATHS => @gem_spec.require_paths.inspect }
         @templater.file(File.join("gems", @gem_dir_name, "limelight_init.rb"), "freezing/limelight_init.rb.template", tokens)
       end
 
