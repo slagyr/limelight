@@ -3,15 +3,22 @@ require 'limelight/commands/command'
 module Limelight
   module Commands
 
-    # Opens a Production
+    # See the following usage summary.
     #
-    #   jruby -S limelight open <production_name>
+    #    Usage: limelight open <production_path>
+    #        Open a limelight production.
+    #        options:
+    #        -h, --help                       Prints this usage summary.
     #
     class OpenCommand < Command
 
       install_as "open"
 
       DEFAULT_PRODUCTION = File.expand_path($LIMELIGHT_HOME + "/productions/startup")
+
+      def initialize
+        self.print_backtrace = true
+      end
 
       def self.description
         return "Open a limelight production."

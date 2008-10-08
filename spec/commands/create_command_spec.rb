@@ -12,7 +12,7 @@ describe Limelight::Commands::CreateCommand do
 
   before(:each) do
     @command = @command_class.new
-    @command.instance_eval("def usage(e=nil); raise 'Usage called! ' + e + e.backtrace.inspect; end;")
+    @command.instance_eval("def parse_error(e=nil); raise 'Usage called! ' + e + e.backtrace.inspect; end;")
   end
 
   it "should be listed" do
@@ -40,15 +40,35 @@ describe Limelight::Commands::CreateCommand do
   end
 
   it "should print useage on invalid template type" do
-    @command.should_receive(:usage).at_least(:once)
+    @command.should_receive(:parse_error).at_least(:once)
 
     @command.run(["blah"])
   end
 
   it "should print useage on missing paths" do
-    @command.should_receive(:usage).at_least(:once)
+    @command.should_receive(:parse_error).at_least(:once)
 
     @command.run(["production"])
+  end
+
+  it "should have a default scene name" do
+    @command.parse ["production", "blah"]
+
+    @command.default_scene_name.should == "default_scene"
+    @command.template_type.should == "production"
+    @command.path.should == "blah"
+  end
+
+  it "should parse a scene option" do
+    @command.parse ["-s", "scene_name", "production", "blah"]
+    @command.default_scene_name.should == "scene_name"
+    @command.template_type.should == "production"
+    @command.path.should == "blah"
+
+    @command.parse ["--scene=another_scene", "production", "blah"]
+    @command.default_scene_name.should == "another_scene"
+    @command.template_type.should == "production"
+    @command.path.should == "blah"
   end
 
 end
