@@ -14,15 +14,28 @@ module Limelight
       DEFAULT_PRODUCTION = File.expand_path($LIMELIGHT_HOME + "/productions/startup")
 
       def self.description
-        return "Open a limelight production or scene."
+        return "Open a limelight production."
       end
 
-      def run(args)
+      protected ###########################################
+
+      def parameter_description
+        return "<production_path>"
+      end
+
+      def do_requires
         Main.initialize_context
         require 'limelight/producer'
-        production = args.length > 0 ? args[0] : DEFAULT_PRODUCTION
-        Limelight::Producer.open(production)
       end
+
+      def parse_remainder(args)
+        @production_path = args.shift || DEFAULT_PRODUCTION
+      end
+
+      def process
+        Limelight::Producer.open(@production_path)
+      end
+
     end
     
   end

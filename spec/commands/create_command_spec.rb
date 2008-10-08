@@ -8,7 +8,11 @@ describe Limelight::Commands::CreateCommand do
 
   before(:all) do
     @command_class = Limelight::Commands::CreateCommand
+  end
+
+  before(:each) do
     @command = @command_class.new
+    @command.instance_eval("def usage(e=nil); raise 'Usage called! ' + e + e.backtrace.inspect; end;")
   end
 
   it "should be listed" do
@@ -36,13 +40,13 @@ describe Limelight::Commands::CreateCommand do
   end
 
   it "should print useage on invalid template type" do
-    @command.should_receive(:usage)
+    @command.should_receive(:usage).at_least(:once)
 
     @command.run(["blah"])
   end
 
   it "should print useage on missing paths" do
-    @command.should_receive(:usage)
+    @command.should_receive(:usage).at_least(:once)
 
     @command.run(["production"])
   end

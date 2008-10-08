@@ -21,6 +21,11 @@ module Limelight
         @output.puts "\tfile already exists: #{name}"
       end
 
+      def log(message, name)
+        spaces = 21 - message.length - 1
+        @output.puts "\t#{message}:#{' '*spaces}#{name}"
+      end
+
     end
     
   end

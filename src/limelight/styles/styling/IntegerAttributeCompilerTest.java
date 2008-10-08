@@ -21,6 +21,16 @@ public class IntegerAttributeCompilerTest extends TestCase
     assertEquals(123, ((SimpleIntegerAttribute)attr).getValue());
   }
 
+  public void testFloatValues() throws Exception
+  {
+    assertEquals(123, ((SimpleIntegerAttribute) compiler.compile("123")).getValue());
+    assertEquals(123, ((SimpleIntegerAttribute) compiler.compile("123.0")).getValue());
+    assertEquals(123, ((SimpleIntegerAttribute) compiler.compile("123.44123423456367")).getValue());
+    assertEquals(124, ((SimpleIntegerAttribute) compiler.compile("123.5")).getValue());
+    assertEquals(0, ((SimpleIntegerAttribute) compiler.compile("0.0")).getValue());
+    assertEquals(1, ((SimpleIntegerAttribute) compiler.compile("0.5")).getValue());
+  }
+
   public void testInvalidValue() throws Exception
   {
     try
