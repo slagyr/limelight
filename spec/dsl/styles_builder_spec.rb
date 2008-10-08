@@ -1,10 +1,10 @@
 #- Copyright 2008 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'limelight/styles_builder'
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require 'limelight/dsl/styles_builder'
 
-describe Limelight::StylesBuilder do
+describe Limelight::DSL::StylesBuilder do
 
   before(:each) do
   end
@@ -48,7 +48,7 @@ describe Limelight::StylesBuilder do
           blah 100
         end
       end
-    end.should raise_error(Limelight::StyleBuilderException)
+    end.should raise_error(Limelight::DSL::StyleBuilderException)
   end
   
   it "should build multiple styles" do
@@ -116,7 +116,7 @@ describe Limelight::StylesBuilder do
   end
 
   it "should raise an exception when attempting to extend a missing style" do
-    lambda { Limelight.build_styles { one { extends :blah } } }.should raise_error(Limelight::StyleBuilderException, "Can't extend missing style: 'blah'")
+    lambda { Limelight.build_styles { one { extends :blah } } }.should raise_error(Limelight::DSL::StyleBuilderException, "Can't extend missing style: 'blah'")
   end
 
   it "should allow styles to be repopened" do

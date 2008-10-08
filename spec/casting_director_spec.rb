@@ -3,7 +3,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/casting_director'
-require 'limelight/prop_builder'
+require 'limelight/dsl/prop_builder'
 require 'limelight/production'
 require 'limelight/file_loader'
 
