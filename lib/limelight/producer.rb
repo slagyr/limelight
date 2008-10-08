@@ -11,6 +11,7 @@ require 'limelight/stage'
 require 'limelight/dsl/build_exception'
 require 'limelight/theater'
 require 'limelight/production'
+require 'limelight/gems'
 
 module Limelight
 
@@ -55,6 +56,7 @@ module Limelight
     #
     def open()
       establish_production
+      Gems.install_gems_in_production(@loader.root)
       Kernel.load(@loader.path_to("init.rb")) if @loader.exists?("init.rb")
       if @loader.exists?("stages.rb")
         load_stages.each { |stage| open_scene(stage.default_scene, stage) }

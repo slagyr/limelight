@@ -98,6 +98,7 @@ describe Limelight::Producer do
     @loader.should_receive(:exists?).with("stages.rb").and_return true
     @producer.should_receive(:load_stages).and_return([make_mock("stage", :default_scene => "abc", :name => "Default")])
     @producer.should_receive(:open_scene).with("abc", anything)
+    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
     
     @producer.open
   end
@@ -108,6 +109,7 @@ describe Limelight::Producer do
     @loader.should_receive(:exists?).with("stages.rb").and_return false
     @producer.should_not_receive(:open_stages)
     @producer.should_receive(:open_scene).with("/tmp", anything)
+    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
     
     @producer.open
   end
@@ -117,6 +119,7 @@ describe Limelight::Producer do
     @loader.should_receive(:exists?).with("init.rb").and_return(false)
     @loader.should_receive(:exists?).with("stages.rb").and_return false
     @producer.stub!(:open_scene)
+    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
     
     @producer.open
     
@@ -148,6 +151,7 @@ describe Limelight::Producer do
     @loader.should_receive(:load).with("production.rb").and_return("name 'Fido'")
     @loader.should_receive(:exists?).with("stages.rb").and_return(false)
     @producer.stub!(:open_scene)
+    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
 
     @producer.open
 
@@ -161,6 +165,7 @@ describe Limelight::Producer do
     @loader.should_receive(:exists?).with("stages.rb").and_return(false)
     @producer.stub!(:open_scene)
     Kernel.should_receive(:load).with("/tmp/init.rb")
+    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
     
     @producer.open
   end

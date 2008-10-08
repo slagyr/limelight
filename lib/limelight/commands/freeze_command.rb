@@ -98,13 +98,8 @@ module Limelight
       end
 
       def install_limelight_hook
-        init_source = ""
-        @gem_spec.require_paths.each do |path|
-          absolute_lib_path = File.expand_path(File.join(@gem_dir_path, path))
-          init_source << "$:.unshift '#{absolute_lib_path}'\n"
-        end
-
-        @templater.file(File.join("gems", @gem_dir_name, "limelight_init.rb"), "freezing/limelight_init.rb.template", :SOURCE => init_source)
+        tokens = { :GEM_NAME => @gem_dir_name, :PATHS => @gem_spec.require_paths }
+        @templater.file(File.join("gems", @gem_dir_name, "limelight_init.rb"), "freezing/limelight_init.rb.template", tokens)
       end
 
     end
