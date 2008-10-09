@@ -6,7 +6,7 @@ module Limelight #:nodoc:
   Main = Java::limelight.Main
   ResourceLoader = Java::limelight.ResourceLoader
   Context = Java::limelight.Context
-  AnimationTask = Java::limelight.AnimationTask
+  JAnimation = Java::limelight.Animation
 
   module Styles #:nodoc:
     Style = Java::limelight.styles.Style

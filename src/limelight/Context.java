@@ -22,9 +22,15 @@ public class Context
   public String limelightHome;
   public String os;
   public boolean runningAsApp;
+
   public TempDirectory tempDirectory;
   public Downloader downloader;
   public TaskEngine taskEngine;
+
+  public IdleThreadLoop panelPanter;
+  public AnimationLoop animationLoop;
+  public CacheCleanerLoop cacheCleaner;
+
   public Cache<Panel, BufferedImage> bufferedImageCache;
   public FrameManager frameManager;
   public AudioPlayer audioPlayer;
@@ -57,7 +63,10 @@ public class Context
 
   public static Frame getActiveFrame()
   {
-    return instance().frameManager.getActiveFrame();
+    if(instance().frameManager != null)
+      return instance().frameManager.getActiveFrame();
+    else
+      return null;
   }
 
   public boolean isWindows()
@@ -68,5 +77,11 @@ public class Context
   public boolean isOsx()
   {
     return "osx".equals(os);
+  }
+
+  public static void kickPainter()
+  {
+    if(instance().panelPanter != null)
+      instance().panelPanter.go();
   }
 }

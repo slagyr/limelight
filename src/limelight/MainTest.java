@@ -40,14 +40,6 @@ public class MainTest extends TestCase
     assertSame(Context.instance().tempDirectory, downloader.getTempDirectory());
   }
 
-  public void testTaskEngineIsAddedToContextAndStarted() throws Exception
-  {
-    main.configureContext();
-
-    TaskEngine engine = Context.instance().taskEngine;
-    assertEquals(true, engine.isRunning());
-  }
-  
   public void testBufferedImageCacheIsAddedToContext() throws Exception
   {
     main.configureContext();
@@ -55,15 +47,6 @@ public class MainTest extends TestCase
     Cache<Panel, BufferedImage> cache = Context.instance().bufferedImageCache;
     assertEquals(TimedCache.class, cache.getClass());
     assertEquals(1, ((TimedCache)cache).getTimeoutSeconds(), 0.01);
-  }
-
-  public void testRecurringTaskAddedForCleaningTheBufferedImageCache() throws Exception
-  {
-    main.configureContext();
-
-    Task task = findTaskEngineTaskNamed("Buffered Image Cache Cleaner");
-    assertEquals(true, task instanceof RecurringTask);
-    assertEquals(1, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
   }
 
   private Task findTaskEngineTaskNamed(String name)
@@ -82,16 +65,6 @@ public class MainTest extends TestCase
     main.configureContext();
 
     assertNotNull(Context.instance().frameManager);
-  }
-
-  public void testPainterTaskIsAddedToEngine() throws Exception
-  {
-    main.configureContext();
-
-    Task task = findTaskEngineTaskNamed("Panel Painter");
-    assertEquals(true, task instanceof RecurringTask);
-    assertEquals(80, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
-    assertEquals(false, ((RecurringTask)task).isStrict());
   }
 
   public void testAudioPlayerIsAdded() throws Exception
@@ -113,14 +86,5 @@ public class MainTest extends TestCase
     main.configureContext();
 
     assertNotNull(Context.instance().bufferedImagePool);
-  }
-  
-  public void testRecurringTaskAddedForCleaningTheBufferedImagePool() throws Exception
-  {
-    main.configureContext();
-
-    Task task = findTaskEngineTaskNamed("Buffered Image Pool Cleaner");
-    assertEquals(true, task instanceof RecurringTask);
-    assertEquals(1, ((RecurringTask)task).getPerformancesPerSecond(), 0.01);
   }
 }

@@ -9,7 +9,7 @@ module Limelight
   # Although, this object does not update the screen, it provides a means to perform sequential updates in evenly
   # spaced time frames.
   #
-  class Animation < Limelight::AnimationTask
+  class Animation < Limelight::JAnimation
 
     # A Prop and block are required to construct an Animation.  Options may include :name (string), :updates_per_second
     # (int defaults to 60)
@@ -23,10 +23,10 @@ module Limelight
       @block = block
       name = options[:name] || "#{prop.to_s} animation"
       updates_per_second = options[:updates_per_second] || 60
-      super(name, updates_per_second, prop.panel)
+      super(updates_per_second)
     end
 
-    def doPerform #:nodoc:
+    def doUpdate #:nodoc:
       @block.call
     end
 

@@ -111,57 +111,21 @@ public class Main
     if(contextIsConfigured)
       return;
     Context context = Context.instance();
+    
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     context.tempDirectory = new TempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
-    context.taskEngine = new TaskEngine().started();
-    context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
     context.frameManager = new FrameManager();
     context.audioPlayer = new RealAudioPlayer();
+
+    context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
     context.bufferedImagePool = new BufferedImagePool(1);
 
-    addBufferedImageCacheCleanerTask(context);
-    addBufferedImagePoolCleanerTask(context);
-    context.taskEngine.add(new PanelPainterTask());
+    context.panelPanter = new PanelPainterLoop().started();
+    context.animationLoop = new AnimationLoop().started();
+    context.cacheCleaner = new CacheCleanerLoop().started();
 
     contextIsConfigured = true;
-  }
-
-  private void addBufferedImageCacheCleanerTask(Context context)
-  {
-    context.taskEngine.add(new RecurringTask("Buffered Image Cache Cleaner", 1)
-    {
-      protected void doPerform()
-      {
-        try
-        {
-          Context.instance().bufferedImageCache.clean();
-        }
-        catch(Exception e)
-        {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
-
-
-  private void addBufferedImagePoolCleanerTask(Context context)
-  {
-    context.taskEngine.add(new RecurringTask("Buffered Image Pool Cleaner", 1)
-    {
-      protected void doPerform()
-      {
-        try
-        {
-          Context.instance().bufferedImagePool.clean();
-        }
-        catch(Exception e)
-        {
-          e.printStackTrace();
-        }
-      }
-    });
   }
 
 }

@@ -5,119 +5,93 @@ package limelight;
 
 import limelight.util.NanoTimer;
 
-public abstract class AnimationLoop
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class AnimationLoop extends IdleThreadLoop
 {
-  private static final int MAX_ITERATIONS_WITHOUT_YIELDING = 5;
-  private static final int MAX_EXTRA_UPDATES = 5;
+  private LinkedList<Animation> animations = new LinkedList<Animation>();
+  private ArrayList<Animation> buffer = new ArrayList<Animation>(50);
+  private long optimalSleepNanos = 1000000000;
+  private NanoTimer timer = new NanoTimer();
+  private long lastExecutionDuration;
 
-  private int framesPerSecond;
-  private int updatesPerSecond;
-  private Thread loopThread;
-  private volatile boolean running;
-  private long sleepPeriod;
-  private NanoTimer timer;
-  protected int roundsWithoutYielding;
-  private int missedUpdates;
-
-  public AnimationLoop()
+  public boolean shouldBeIdle()
   {
-    setFramesPerSecond(80);
-    setUpdatesPerSecond(80);
-    timer = new NanoTimer();
+    return animations.isEmpty();
   }
 
-  public int getFramesPerSecond()
+  protected void execute()
   {
-    return framesPerSecond;
+    timer.markTime();
+    updateAnimations();
+    lastExecutionDuration = timer.getIdleNanos();
   }
 
-  public int getUpdatesPerSecond()
+  protected void delay()
   {
-    return updatesPerSecond;
+    timer.sleep(optimalSleepNanos - lastExecutionDuration);
   }
 
-  public void setFramesPerSecond(int value)
+  public void add(Animation animation)
   {
-    framesPerSecond = value;
-    sleepPeriod = 1000000000 / framesPerSecond;
-  }
-
-  public void setUpdatesPerSecond(int value)
-  {
-    updatesPerSecond = value;
-  }
-
-  public void start()
-  {
-    loopThread = new Thread(new SimpleRunnable());
-    running = true;
-    loopThread.start();
-  }
-
-  public boolean isRunning()
-  {
-    return running;
-  }
-
-  public long getSleepPeriod()
-  {
-    return sleepPeriod;
-  }
-
-  private class SimpleRunnable implements Runnable
-  {
-    public void run()
+    synchronized(animations)
     {
-      loop();
+      animations.add(animation);
+      calculateOptimalSleepTime();
     }
   }
 
-  public void stop()
+  public void remove(Animation animation)
   {
-    running = false;
-  }
-
-  private void loop()
-  {
-    while(running)
+    synchronized(animations)
     {
-      timer.markTime();
-
-      update();
-      refresh();
-
-      long adjustedSleepTime = sleepPeriod - timer.getIdleNanos() + timer.getSleepJiggle();
-      if(adjustedSleepTime > 0)
-      {
-        timer.sleep(adjustedSleepTime);
-        roundsWithoutYielding = 0;
-      }
-      else
-      {
-        catchUpOnUpdatesIfNeeded(adjustedSleepTime);
-        yieldIfNeeded();
-      }
+      boolean wasRemoved = animations.remove(animation);
+      if(wasRemoved)
+        calculateOptimalSleepTime();
     }
   }
 
-  private void catchUpOnUpdatesIfNeeded(long adjustedSleepTime)
+  private void calculateOptimalSleepTime()
   {
-    missedUpdates += (int)((adjustedSleepTime * -1) / sleepPeriod);
-    for(int extraUpdates = 0; (missedUpdates > 0 && extraUpdates < MAX_EXTRA_UPDATES); missedUpdates--, extraUpdates++)
-      update();
+    long min = 1000000000;
+    for(Animation animation : animations)
+    {
+      if(animation.getDelayNanos() < min)
+        min = animation.getDelayNanos();
+    }
+    optimalSleepNanos = min;
   }
 
-  // MDM - We need to yield at some point to let other threads get some work done.
-  private void yieldIfNeeded()
+  public long getOptimalSleepNanos()
   {
-    roundsWithoutYielding++;  
-    if(roundsWithoutYielding > MAX_ITERATIONS_WITHOUT_YIELDING)
+    return optimalSleepNanos;
+  }
+
+  public void updateAnimations()
+  {
+    buffer.clear();
+    synchronized(animations)
     {
-      Thread.yield();
-      roundsWithoutYielding = 0;
+      buffer.addAll(animations);
+    }
+    
+    for(Animation animation : buffer)
+    {
+      if(animation.isReady())
+        animation.update();
     }
   }
 
-  protected abstract void update();
-  protected abstract void refresh();
+  public List<Animation> getAnimations()
+  {
+    return animations;
+  }
+
+  public AnimationLoop started()
+  {
+    start();
+    return this;
+  }
 }

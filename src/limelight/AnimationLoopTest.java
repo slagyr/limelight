@@ -7,152 +7,86 @@ import junit.framework.TestCase;
 
 import java.util.LinkedList;
 
+import limelight.ui.MockPanel;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+
 public class AnimationLoopTest extends TestCase
 {
-  private TestableAnimationLoop loop;
-
-  private class TestableAnimationLoop extends AnimationLoop
+  static
   {
-    public int updates;
-    public int refreshes;
-    private int delay;
-    public LinkedList<Integer> record;
-
-    public TestableAnimationLoop()
-    {
-      record = new LinkedList<Integer>();
-    }
-
-    protected void update()
-    {
-      updates++;
-    }
-
-    protected void refresh()
-    {
-      try
-      {
-        Thread.sleep(delay);
-      }
-      catch(InterruptedException e)
-      {
-        e.printStackTrace();
-      }
-      record.add(loop.getRoundsWithoutYielding());
-      refreshes++;
-    }
-
-    public int getRoundsWithoutYielding()
-    {
-      return roundsWithoutYielding;
-    }
-
+    RealStyleAttributeCompilerFactory.install();
   }
+
+  private AnimationLoop loop;
+  private MockAnimation animation20;
+  private MockAnimation animation30;
+  private MockAnimation animation10;
 
   public void setUp() throws Exception
   {
-    loop = new TestableAnimationLoop();
+    loop = new AnimationLoop();
+    animation20 = new MockAnimation(20, new MockPanel());
+    animation30 = new MockAnimation(30, new MockPanel());
+    animation10 = new MockAnimation(10, new MockPanel());
   }
-  
-  public void testSettingsDefaults() throws Exception
+
+  public void testShouldBeAnIdleThreadLoop() throws Exception
   {
-    assertEquals(80, loop.getFramesPerSecond());
-    assertEquals(80, loop.getUpdatesPerSecond());
+    assertEquals(true, loop instanceof IdleThreadLoop);
   }
 
-  public void testSettingSettings() throws Exception
+  public void testShouldBeIdleWithoutAnimationTasks() throws Exception
   {
-    loop.setFramesPerSecond(100);
-    assertEquals(100, loop.getFramesPerSecond());
-
-    loop.setUpdatesPerSecond(100);
-    assertEquals(100, loop.getUpdatesPerSecond());
+    assertEquals(true, loop.shouldBeIdle());
   }
-  
-  public void testRunning() throws Exception
+
+  public void testShouldNotBeIdleWithAnimationTasks() throws Exception
   {
-    assertEquals(false, loop.isRunning());
-    loop.start();
-    assertEquals(true, loop.isRunning());
-    loop.stop();
-    assertEquals(false, loop.isRunning());
+    loop.add(new MockAnimation(20, new MockPanel()));
+
+    assertEquals(false, loop.shouldBeIdle());
   }
 
-  public void testRunningForShortTimeCallUpdateAndRefresh() throws Exception
+  public void testCalulateOptimalSleepTimeWhenAddingTasks() throws Exception
   {
-    loop.start();
-    Thread.sleep(10);
-    loop.stop();
+    assertEquals(1000000000, loop.getOptimalSleepNanos());
 
-    assertEquals(true, loop.updates > 0);
-    assertEquals(true, loop.refreshes > 0);
+    loop.add(animation20);
+    assertEquals(1000000000 / 20, loop.getOptimalSleepNanos());
+
+    loop.add(animation30);
+    assertEquals(1000000000 / 30, loop.getOptimalSleepNanos());
+
+    loop.add(animation10);
+    assertEquals(1000000000 / 30, loop.getOptimalSleepNanos());
   }
 
-  public void testNanosToSleep() throws Exception
+  public void testShouldRecalculateOptimalSleepTimeWhenRemovingTasks() throws Exception
   {
-    loop.setFramesPerSecond(10);
-    assertEquals(100 * 1000000, loop.getSleepPeriod());
+    loop.add(animation20);
+    loop.add(animation30);
+    loop.add(animation10);
 
-    loop.setFramesPerSecond(100);
-    assertEquals(10 * 1000000, loop.getSleepPeriod());
+    assertEquals(1000000000 / 30, loop.getOptimalSleepNanos());
+    loop.remove(animation30);
+    assertEquals(1000000000 / 20, loop.getOptimalSleepNanos());
+    loop.remove(animation10);
+    assertEquals(1000000000 / 20, loop.getOptimalSleepNanos());
+    loop.remove(animation20);
+    assertEquals(1000000000, loop.getOptimalSleepNanos());
   }
 
-  public void testFramesPerSecondIsCloselyUpheld() throws Exception
+  public void testExecute() throws Exception
   {
-    loop.start();
-    Thread.sleep(100);
-    loop.stop();
+    loop.add(animation20);
+    loop.add(animation30);
+    loop.add(animation10);
 
-    assertEquals("Expected 8 refreshes but got " + loop.refreshes, true, loop.refreshes >= 6 && loop.refreshes <= 10);
-    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
+    loop.updateAnimations();
+
+    assertEquals(1, animation20.updates);
+    assertEquals(1, animation10.updates);
+    assertEquals(1, animation30.updates);
   }
 
-  public void testFramesPerSecondWhenPaitingIsTimerConsuming() throws Exception
-  {
-    loop.delay = 10;
-    loop.start();
-    Thread.sleep(100);
-    loop.stop();
-
-    assertEquals("Expected 8 refreshes but got " + loop.refreshes, true, loop.refreshes >= 6 && loop.refreshes <= 10);
-    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
-  }
-
-  public void testRoundsWithoutYielding() throws Exception
-  {
-    loop.delay = 15;
-    loop.start();
-    Thread.sleep(200);
-    loop.stop();
-
-    assertEquals("record has " + loop.record.size() + " entries", true, loop.record.size() > 5);                                                       
-    assertEquals(0, (int)loop.record.get(0));
-    assertEquals(1, (int)loop.record.get(1));
-    assertEquals(2, (int)loop.record.get(2));
-    assertEquals(3, (int)loop.record.get(3));
-    assertEquals(4, (int)loop.record.get(4));
-    assertEquals(5, (int)loop.record.get(5));
-    assertEquals(0, (int)loop.record.get(6));
-  }
-
-  public void testUpdatesWillCatchUp() throws Exception
-  {
-    loop.delay = 25;
-    loop.start();
-    Thread.sleep(100);
-    loop.stop();
-
-    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
-  }
-
-  public void testUpdatesWillCatchUpButNotMoreThanMax() throws Exception
-  {
-    loop.delay = 90;
-    loop.start();
-    Thread.sleep(200);
-    loop.stop();
-
-    assertEquals(13, loop.updates);
-//    assertEquals("Expected 8 updates but got " + loop.updates, true, loop.updates >= 6 && loop.updates <= 10); // should be 8
-  }
 }
