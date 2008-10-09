@@ -182,74 +182,110 @@ public class RootPanel implements Panel
     return panel.iterator();
   }
 
-  public synchronized void addPanelNeedingLayout(Panel child)
+  public void addPanelNeedingLayout(Panel child)
   {
-    boolean shouldAdd = true;
-    for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext();)
+    synchronized(panelsNeedingLayout)
     {
-      Panel panel = iterator.next();
-      if(child == panel)
+      boolean shouldAdd = true;
+      for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext();)
       {
-        shouldAdd = false;
-        break;
-      }
-      else if(child.isAncestor(panel))
-      {
-        shouldAdd = false;
-        break;
-      }
-      else if(panel.isAncestor(child))
-      {
-        iterator.remove();
-      }
-    }
-    if(shouldAdd)
-      panelsNeedingLayout.add(child);
-  }
-
-  public synchronized void getAndClearPanelsNeedingLayout(ArrayList<Panel> buffer)
-  {
-    buffer.addAll(panelsNeedingLayout);
-    panelsNeedingLayout.clear();
-  }
-
-  public boolean panelsNeedingUpdateContains(Panel panel)
-  {
-    return panelsNeedingLayout.contains(panel);
-  }
-
-  public synchronized void addDirtyRegion(Rectangle region)
-  {
-    boolean shouldAdd = true;
-    if(region.width <= 0 || region.height <= 0)
-      shouldAdd = false;
-    else
-    {
-      for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext();)
-      {
-        Rectangle dirtyRegion = iterator.next();
-        if(dirtyRegion.contains(region))
+        Panel panel = iterator.next();
+        if(child == panel)
         {
           shouldAdd = false;
           break;
         }
-        else if(region.contains(dirtyRegion))
+        else if(child.isAncestor(panel))
+        {
+          shouldAdd = false;
+          break;
+        }
+        else if(panel.isAncestor(child))
+        {
           iterator.remove();
+        }
       }
+      if(shouldAdd)
+        panelsNeedingLayout.add(child);
     }
-    if(shouldAdd)
-      dirtyRegions.add(region);
+    Context.kickPainter();
   }
 
-  public synchronized void getAndClearDirtyRegions(ArrayList<Rectangle> buffer)
+  public boolean hasPanelsNeedingLayout()
   {
-    buffer.addAll(dirtyRegions);
-    dirtyRegions.clear();
+    synchronized(panelsNeedingLayout)
+    {
+      return panelsNeedingLayout.size() > 0;
+    }
+  }
+
+  public void getAndClearPanelsNeedingLayout(ArrayList<Panel> buffer)
+  {
+    synchronized(panelsNeedingLayout)
+    {
+      buffer.addAll(panelsNeedingLayout);
+      panelsNeedingLayout.clear();
+    }
+  }
+
+  public boolean panelsNeedingUpdateContains(Panel panel)
+  {
+    synchronized(panelsNeedingLayout)
+    {
+      return panelsNeedingLayout.contains(panel);
+    }
+  }
+
+  public void addDirtyRegion(Rectangle region)
+  {
+    synchronized(dirtyRegions)
+    {
+      boolean shouldAdd = true;
+      if(region.width <= 0 || region.height <= 0)
+        shouldAdd = false;
+      else
+      {
+        for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext();)
+        {
+          Rectangle dirtyRegion = iterator.next();
+          if(dirtyRegion.contains(region))
+          {
+            shouldAdd = false;
+            break;
+          }
+          else if(region.contains(dirtyRegion))
+            iterator.remove();
+        }
+      }
+      if(shouldAdd)
+        dirtyRegions.add(region);
+    }
+    Context.kickPainter();
+  }
+
+  public boolean hasDirtyRegions()
+  {
+    synchronized(dirtyRegions)
+    {
+      return dirtyRegions.size() > 0;
+    }
+  }
+
+  public void getAndClearDirtyRegions(ArrayList<Rectangle> buffer)
+  {
+    synchronized(dirtyRegions)
+    {
+      buffer.addAll(dirtyRegions);
+      dirtyRegions.clear();
+    }
   }
 
   public boolean dirtyRegionsContains(Rectangle region)
   {
-    return dirtyRegions.contains(region);
+    synchronized(dirtyRegions)
+    {
+      return dirtyRegions.contains(region);
+    }
   }
 
   /////////////////////////////////////////////

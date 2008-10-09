@@ -7,12 +7,19 @@ import junit.framework.TestCase;
 import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.ui.Panel;
 import limelight.Context;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.awt.*;
 
 public class RootPanelTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+  
   private RootPanel root;
   private MockPropablePanel child;
   private Container contentPane;

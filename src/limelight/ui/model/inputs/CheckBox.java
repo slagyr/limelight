@@ -31,8 +31,7 @@ public class CheckBox extends JCheckBox
     if(panel != null && panel.getRoot() != null)
     {
       Point location = panel.getAbsoluteLocation();
-      dirtyBounds.translate(location.x, location.y);
-System.err.println("dirtyBounds = " + dirtyBounds);      
+      dirtyBounds.translate(location.x, location.y);   
       panel.getRoot().addDirtyRegion(dirtyBounds);
     }
   }

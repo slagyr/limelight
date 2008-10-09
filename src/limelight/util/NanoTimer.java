@@ -19,6 +19,11 @@ public class NanoTimer
     timeOfLastActivity = System.nanoTime();
   }
 
+  public void setMark(long nanosAgo)
+  {
+    this.timeOfLastActivity = System.nanoTime() - nanosAgo;
+  }
+
   public long getTimeOfLastActivity()
   {
     return timeOfLastActivity;
@@ -35,6 +40,7 @@ public class NanoTimer
       performSleep(nanosToSleep);
     else
     {
+      Thread.yield();
       markTime();
       actualSleepDuration = 0;
       sleepJiggle = 0;
