@@ -4,15 +4,22 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 public class RichStyleTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+  
   private RichStyle style;
   private RichStyle style2;
   private RichStyle style3;
   private RichStyle style4;
   private RichStyle newStyle;
   private RichStyle anotherNewStyle;
+  private MockStyleObserver observer;
 
   public void setUp() throws Exception
   {
@@ -22,6 +29,9 @@ public class RichStyleTest extends TestCase
     style4 = new RichStyle();
     newStyle = new RichStyle();
     anotherNewStyle = new RichStyle();
+
+    observer = new MockStyleObserver();
+    style.addObserver(observer);
   }
 
   public void testHasDefaultsFirst() throws Exception
@@ -63,8 +73,8 @@ public class RichStyleTest extends TestCase
   {
     style.setWidth("100");
     assertEquals("100", style.getWidth());
-    assertEquals(true, style.changed());
-    assertEquals(true, style.changed(Style.WIDTH));
+    assertEquals(true, observer.changed());
+    assertEquals(true, observer.changed(Style.WIDTH));
   }
 
   public void testChangesFromBelow() throws Exception
@@ -72,67 +82,67 @@ public class RichStyleTest extends TestCase
     style.addExtension(style2);
     style.addExtension(style3);
 
-    assertFalse(style.changed());
+    assertFalse(observer.changed());
 
     style.setWidth("123");
-    assertTrue(style.changed());
+    assertTrue(observer.changed());
 
-    style.flushChanges();
-    assertFalse(style.changed());
+    observer.flushChanges();
+    assertFalse(observer.changed());
 
     style2.setWidth("123");
-    assertFalse(style.changed());
+    assertFalse(observer.changed());
 
-    style.flushChanges();
-    assertFalse(style.changed());
+    observer.flushChanges();
+    assertFalse(observer.changed());
 
     style3.setWidth("123");
-    assertFalse(style.changed());
+    assertFalse(observer.changed());
 
     style3.setHeight("321");
-    assertTrue(style.changed());
+    assertTrue(observer.changed());
 
-    style.flushChanges();
-    assertFalse(style.changed());
+    observer.flushChanges();
+    assertFalse(observer.changed());
   }
 
   public void testSpecificChanges() throws Exception
   {
     style.addExtension(style2);
     style.addExtension(style3);
-    
-    assertFalse(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
+
+    assertFalse(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
 
     style3.setWidth("123");
-    assertTrue(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
-    style.flushChanges();
-    assertFalse(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
+    assertTrue(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
+    observer.flushChanges();
+    assertFalse(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
 
     style2.setWidth("123");
-    assertTrue(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
-    style.flushChanges();
-    assertFalse(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
+    assertTrue(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
+    observer.flushChanges();
+    assertFalse(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
   }
 
   public void testAddingToBottomAffectsChanges() throws Exception
   {
     style.setWidth("100");
-    style.flushChanges();
+    observer.flushChanges();
 
     newStyle.setWidth("200");
 
     style.addExtension(newStyle);
-    assertFalse(style.changed());
+    assertFalse(observer.changed());
 
     anotherNewStyle.setHeight("100");
     style.addExtension(anotherNewStyle);
-    assertTrue(style.changed());
-    assertTrue(style.changed(Style.HEIGHT));
+    assertTrue(observer.changed());
+    assertTrue(observer.changed(Style.HEIGHT));
   }
 
   public void testRemoveFromBottomAffectsChanges() throws Exception
@@ -142,14 +152,14 @@ public class RichStyleTest extends TestCase
 
     style.addExtension(newStyle);
     style.addExtension(anotherNewStyle);
-    style.flushChanges();
+    observer.flushChanges();
 
     style.removeExtension(anotherNewStyle);
-    assertFalse(style.changed());
+    assertFalse(observer.changed());
 
     style.removeExtension(newStyle);
-    assertTrue(style.changed());
-    assertTrue(style.changed(Style.WIDTH));
+    assertTrue(observer.changed());
+    assertTrue(observer.changed(Style.WIDTH));
   }
 
   public void testCanHaveLotsOfExtenders() throws Exception

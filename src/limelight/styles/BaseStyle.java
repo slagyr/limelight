@@ -7,13 +7,7 @@ import java.util.LinkedList;
 public abstract class BaseStyle extends Style
 {
   private LinkedList<StyleObserver> observers;
-  protected boolean[] changes;
   private StyleAttribute[] defaults;
-
-  public BaseStyle()
-  {
-    changes = new boolean[Style.STYLE_COUNT];
-  }
 
   public void setDefault(StyleDescriptor descriptor, String value)
   {
@@ -39,38 +33,7 @@ public abstract class BaseStyle extends Style
 
   protected void recordChange(StyleDescriptor descriptor, StyleAttribute value)
   {
-    changes[descriptor.index] = true;
     notifyObserversOfChange(descriptor, value);
-  }
-
-  public boolean changed()
-  {
-    for(int i = 0; i < changes.length; i++)
-    {
-      if(changes[i])
-        return true;
-    }
-    return false;
-  }
-
-  public boolean changed(StyleDescriptor descriptor)
-  {
-    return changes[descriptor.index];
-  }
-
-  public void flushChanges()
-  {
-    for (int i = 0; i < changes.length; i++)
-      changes[i] = false;
-  }
-
-  public int getChangedCount()
-  {
-    int count = 0;
-    for (int i = 0; i < changes.length; i++)
-      if(changes[i])
-        count++;
-    return count;
   }
 
   public void removeObserver(StyleObserver observer)

@@ -35,7 +35,12 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
 
   private DimensionAttribute attemptStaticAttribute(String value)
   {
-    int intValue = Integer.parseInt(value);
+    int intValue = -1;
+    if(value.indexOf(".") != -1)
+      intValue = (int)(Double.parseDouble(value) + 0.5);
+    else
+      intValue = Integer.parseInt(value);
+    
     if(intValue >= 0)
       return new StaticDimensionAttribute(intValue);
     else

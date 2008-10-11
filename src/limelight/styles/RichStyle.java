@@ -44,7 +44,6 @@ public class RichStyle extends BaseStyle implements StyleObserver
     if(!Util.equal(originalValue, compiledValue))
     {
       styles[descriptor.index] = compiledValue;
-      changes[descriptor.index] = true;
       notifyObserversOfChange(descriptor, compiledValue);
     }
   }
@@ -76,10 +75,7 @@ public class RichStyle extends BaseStyle implements StyleObserver
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
     if(styles[descriptor.index] == null)
-    {
-      changes[descriptor.index] = true;
       notifyObserversOfChange(descriptor, value);
-    }
   }
 
   private void applyChangesFromExtension(RichStyle style)

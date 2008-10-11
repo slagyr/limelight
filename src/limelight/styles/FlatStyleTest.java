@@ -14,10 +14,13 @@ public class FlatStyleTest extends TestCase
   }
   
   private FlatStyle style;
+  private MockStyleObserver observer;
 
   public void setUp() throws Exception
   {
     style = new FlatStyle();
+    observer = new MockStyleObserver();
+    style.addObserver(observer);
   }
 
   public void testObserving() throws Exception
@@ -70,53 +73,39 @@ public class FlatStyleTest extends TestCase
 
   public void testChanges() throws Exception
   {
-    assertFalse(style.changed());
+    assertFalse(observer.changed());
 
     style.setWidth("123");
-    assertTrue(style.changed());
+    assertTrue(observer.changed());
 
-    style.flushChanges();
-    assertFalse(style.changed());
+    observer.flushChanges();
+    assertFalse(observer.changed());
 
     style.setHeight("123");
-    assertTrue(style.changed());
+    assertTrue(observer.changed());
 
-    style.flushChanges();
-    assertFalse(style.changed());
+    observer.flushChanges();
+    assertFalse(observer.changed());
   }
 
   public void testSpecificChanges() throws Exception
   {
-    assertFalse(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
+    assertFalse(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
 
     style.setWidth("123");
-    assertTrue(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
-    style.flushChanges();
-    assertFalse(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
+    assertTrue(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
+    observer.flushChanges();
+    assertFalse(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
 
     style.setHeight("321");
-    assertFalse(style.changed(Style.WIDTH));
-    assertTrue(style.changed(Style.HEIGHT));
-    style.flushChanges();
-    assertFalse(style.changed(Style.WIDTH));
-    assertFalse(style.changed(Style.HEIGHT));
-  }
-
-  public void testChangeCount() throws Exception
-  {
-    assertEquals(0, style.getChangedCount());
-
-    style.setWidth("123");
-    assertEquals(1, style.getChangedCount());
-
-    style.setHeight("123");
-    assertEquals(2, style.getChangedCount());
-
-    style.flushChanges();
-    assertEquals(0, style.getChangedCount());
+    assertFalse(observer.changed(Style.WIDTH));
+    assertTrue(observer.changed(Style.HEIGHT));
+    observer.flushChanges();
+    assertFalse(observer.changed(Style.WIDTH));
+    assertFalse(observer.changed(Style.HEIGHT));
   }
 
   public void testSetBorderWidthSetsWidthOnSidesAllCorners() throws Exception
@@ -225,13 +214,13 @@ public class FlatStyleTest extends TestCase
 
   public void testSettingDefaultAffecsChanges() throws Exception
   {
-    assertEquals(false, style.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.WIDTH));
 
     style.setDefault(Style.WIDTH, style.getWidth());
-    assertEquals(false, style.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.WIDTH));
 
     style.setDefault(Style.WIDTH, "123");
-    assertEquals(true, style.changed(Style.WIDTH));
+    assertEquals(true, observer.changed(Style.WIDTH));
   }
 
   public void testMaxWidthAndHeight() throws Exception

@@ -98,7 +98,7 @@ module Limelight
           puts "!!! #{exception}"
           puts exception.backtrace if @print_backtrace
         end
-        print_help
+        usage
         exit -1
       end
 

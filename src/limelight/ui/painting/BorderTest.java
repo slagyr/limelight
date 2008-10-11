@@ -292,67 +292,54 @@ public class BorderTest extends TestCase
   {
     style.setBorderWidth("1");
     style.setRoundedCornerRadius("1");
-    style.flushChanges();
     border = new Border(style, insideMargin);
 
     style.setTopBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getTopWidth());
-    style.flushChanges();
 
     style.setRightBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getRightWidth());
-    style.flushChanges();
 
     style.setBottomBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getBottomWidth());
-    style.flushChanges();
 
     style.setLeftBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getLeftWidth());
-    style.flushChanges();
 
     style.setTopRightBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getTopRightWidth());
-    style.flushChanges();
 
     style.setTopRightRoundedCornerRadius("2");
     border.updateDimentions();
     assertEquals(2, border.getTopRightRadius());
-    style.flushChanges();
 
     style.setBottomRightBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getBottomRightWidth());
-    style.flushChanges();
 
     style.setBottomRightRoundedCornerRadius("2");
     border.updateDimentions();
     assertEquals(2, border.getBottomRightRadius());
-    style.flushChanges();
 
     style.setBottomLeftBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getBottomLeftWidth());
-    style.flushChanges();
 
     style.setBottomLeftRoundedCornerRadius("2");
     border.updateDimentions();
     assertEquals(2, border.getBottomLeftRadius());
-    style.flushChanges();
 
     style.setTopLeftBorderWidth("2");
     border.updateDimentions();
     assertEquals(2, border.getTopLeftWidth());
-    style.flushChanges();
 
     style.setTopLeftRoundedCornerRadius("2");
     border.updateDimentions();
     assertEquals(2, border.getTopLeftRadius());
-    style.flushChanges();
   }
 }

@@ -43,7 +43,7 @@ public class PaintJobTest extends TestCase
     style = panel.style;
     graphics = new MockGraphics();
   }
-
+        
   public void testCreation() throws Exception
   {
     Box clip = new Box(1, 2, 3, 4);
@@ -128,19 +128,6 @@ public class PaintJobTest extends TestCase
     assertEquals(panel.getWidth(), buffer.getWidth());
     assertEquals(panel.getHeight(), buffer.getHeight());
     assertEquals(BufferedImage.TYPE_INT_ARGB, buffer.getType());
-  }
-
-  public void testShouldBuildBufferWhenStyleChanges() throws Exception
-  {
-    assertEquals(true, job.shouldBuildBufferFor(panel, null));
-
-    BufferedImage buffer = job.buildBufferFor(panel);
-    assertEquals(false, job.shouldBuildBufferFor(panel, buffer));
-
-    style.setWidth("101");
-    assertEquals(true, job.shouldBuildBufferFor(panel, buffer));
-    buffer = job.buildBufferFor(panel);
-    assertEquals(false, job.shouldBuildBufferFor(panel, buffer));
   }
 
   public void testShouldNotBuildBufferWhenTransparencyChanges() throws Exception

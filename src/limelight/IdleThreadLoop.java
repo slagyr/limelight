@@ -1,11 +1,15 @@
 package limelight;
 
+import limelight.util.NanoTimer;
+
 public abstract class IdleThreadLoop
 {
   private boolean running;
   private boolean isIdle;
   private Thread thread;
   private final Object lock = new Object();
+
+  private NanoTimer timer = new NanoTimer();
 
   public abstract boolean shouldBeIdle();
 
@@ -71,6 +75,8 @@ public abstract class IdleThreadLoop
       {
         try
         {
+
+timer.log("about to execute:                 " + this);
           execute();
           delay();
         }
@@ -85,6 +91,7 @@ public abstract class IdleThreadLoop
 
   private void idle()
   {
+timer.log("going idle:                       " + this);
     isIdle = true;   
     synchronized(lock)
     {
@@ -97,12 +104,15 @@ public abstract class IdleThreadLoop
         //okay
       }
     }
+timer.log("back in gear:                     " + this);
   }
 
   public void go()
   {
     if(isIdle)
     {
+
+timer.log("getting back into gear:           " + this);      
       isIdle = false;
       synchronized(lock)
       {

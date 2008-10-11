@@ -42,7 +42,6 @@ public class ScreenableStyle extends RichStyle
       StyleAttribute originalValue = getCompiled(descriptor);
       if(value != null && !value.equals(originalValue))
       {
-        changes[descriptor.index] = true;
         if(in)
           notifyObserversOfChange(descriptor, value);
         else

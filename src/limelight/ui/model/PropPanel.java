@@ -41,6 +41,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private PaintAction afterPaintAction;
   private ScrollBarPanel verticalScrollBar;
   private ScrollBarPanel horizontalScrollBar;
+  private boolean sizeChanged = true;
+  private boolean borderChanged = true;
 
   public PropPanel(Prop prop)
   {
@@ -89,6 +91,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     int newWidth = style.getCompiledWidth().calculateDimension(r.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
     int newHeight = style.getCompiledHeight().calculateDimension(r.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
     setSize(newWidth, newHeight);
+    sizeChanged = false;
   }
 
   public Prop getProp()
@@ -154,8 +157,11 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void doLayout()
   {
-    if(borderShaper != null)
+    if(borderShaper != null && borderChanged)
+    {
       borderShaper.updateDimentions();
+      borderChanged = false;
+    }
 
     layout.doLayout();
 
@@ -340,16 +346,24 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     childConsumableArea = null;
   }
 
-
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
+    if(descriptor != Style.TRANSPARENCY && Context.instance().bufferedImageCache != null)
+      Context.instance().bufferedImageCache.expire(this);
+
     if(getParent() != null && getRoot() != null)
     {
       if(descriptor == Style.WIDTH || descriptor == Style.HEIGHT)
       {
+        sizeChanged = true;
         setNeedsLayout();
         getParent().setNeedsLayout();
         propogateSizeChange(getParent());
+      }
+      else if(isBorderDescriptor(descriptor))
+      {
+        borderChanged = true;
+        setNeedsLayout();
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
         getParent().setNeedsLayout();
@@ -357,6 +371,22 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
         getRoot().addDirtyRegion(getAbsoluteBounds());
     }
 
+  }
+
+  private boolean isBorderDescriptor(StyleDescriptor descriptor)
+  {
+    return descriptor == Style.TOP_BORDER_WIDTH ||
+           descriptor == Style.RIGHT_BORDER_WIDTH ||
+           descriptor == Style.BOTTOM_BORDER_WIDTH ||
+           descriptor == Style.LEFT_BORDER_WIDTH ||
+           descriptor == Style.TOP_RIGHT_BORDER_WIDTH ||
+           descriptor == Style.BOTTOM_RIGHT_BORDER_WIDTH ||
+           descriptor == Style.BOTTOM_LEFT_BORDER_WIDTH ||
+           descriptor == Style.TOP_LEFT_BORDER_WIDTH ||
+           descriptor == Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS ||
+           descriptor == Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS ||
+           descriptor == Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS ||
+           descriptor == Style.TOP_LEFT_ROUNDED_CORNER_RADIUS;
   }
 
   public ScrollBarPanel getVerticalScrollBar()
@@ -420,6 +450,16 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       getProp().getStyle().removeScreen();
       getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
+  }
+
+  public boolean sizeChanged()
+  {
+    return sizeChanged;
+  }
+
+  public boolean borderChanged()
+  {
+    return borderChanged;
   }
 }
 
