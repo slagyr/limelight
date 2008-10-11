@@ -10,8 +10,6 @@ public abstract class Animation
   private long delayNanos;
   private NanoTimer timer = new NanoTimer();
   private boolean running;
-//  private int updates = 0;
-//  private long lastCheckTime;
 
   public Animation(int updatesPerSecond)
   {
@@ -36,8 +34,6 @@ public abstract class Animation
     makeupMissedUpdates();
     timer.markTime();
     doUpdate();
-//    updates++;
-//    checkUpdates();
   }
 
   public boolean isReady()
@@ -56,7 +52,6 @@ public abstract class Animation
     for(int i = 1; i < missedUpdates && i < (MaxMakeups + 1); i++)
     {
       doUpdate();
-//      updates++;
     }
   }
 
@@ -64,18 +59,6 @@ public abstract class Animation
   {
     timer.markTime();
   }
-
-//  private void checkUpdates()
-//  {
-//    boolean timeSinceLastCheck = (System.nanoTime() - lastCheckTime) > (1000000000l);
-//    if(timeSinceLastCheck)
-//    {
-//      if(lastCheckTime != 0)
-////      System.err.println(getName() + " performances/sec: " + performances);
-//      lastCheckTime = System.nanoTime();
-//      updates = 0;
-//    }
-//  }
 
   public void start()
   {

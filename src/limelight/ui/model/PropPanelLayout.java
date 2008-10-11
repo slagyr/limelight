@@ -34,10 +34,7 @@ public class PropPanelLayout
     Style style = panel.getStyle();
 
     if(panel.sizeChanged() || style.hasPercentageDimension() || style.hasAutoDimension())
-    {
-System.err.println("snapping = " + panel);      
       panel.snapToSize();
-    }
 
     establishScrollBars();
 

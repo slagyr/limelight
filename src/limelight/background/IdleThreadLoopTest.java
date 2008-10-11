@@ -54,7 +54,7 @@ public class IdleThreadLoopTest extends TestCase
       stopThread.join(1000);
       if(loop.getThread().isAlive())
       {
-        System.err.println("IdleThreadLoopTest: interrupting loop because it wont stop.");
+//        System.err.println("IdleThreadLoopTest: interrupting loop because it wont stop.");
         loop.getThread().interrupt();
       }
     }
