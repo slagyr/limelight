@@ -48,6 +48,7 @@ module Floater
     calculate_vector(source_x, source_y)
 
     @sliding = true
+puts "STARTING A SLIDE!"
     @animation = animate(:updates_per_second => 30) do
       begin
         slide
@@ -79,7 +80,10 @@ module Floater
       @velocity -= @velocity * FRICTION
     else
       @sliding = false
+
       @animation.stop
+
+puts "Slide Stopped"      
     end
   end
   

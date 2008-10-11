@@ -53,7 +53,10 @@ public class BufferedImagePool
   {
     try
     {
-      return new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+long before = System.currentTimeMillis();
+      BufferedImage image = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+//System.err.println("New buffer " + dimension.width + ", " + dimension.height + " in " + ((double)(System.currentTimeMillis() - (double)before) / 1000.0) + " secs");
+      return image;
     }
     catch(OutOfMemoryError e)
     {

@@ -86,14 +86,6 @@ public abstract class Style
 
   protected abstract StyleAttribute getDefaultValue(StyleDescriptor descriptor);
 
-  public abstract boolean changed();
-
-  public abstract boolean changed(StyleDescriptor descriptor);
-
-  public abstract void flushChanges();
-
-  public abstract int getChangedCount();
-
   public abstract void removeObserver(StyleObserver observer);
 
   public abstract void addObserver(StyleObserver observer);

@@ -16,6 +16,7 @@ public class DimensionAttributeCompilerTest extends TestCase
   public void testValidValue() throws Exception
   {
     assertEquals(StaticDimensionAttribute.class, compiler.compile("123").getClass());
+    assertEquals(StaticDimensionAttribute.class, compiler.compile("123.567").getClass());
     assertEquals(PercentageDimensionAttribute.class, compiler.compile("50%").getClass());
     assertEquals(AutoDimensionAttribute.class, compiler.compile("auto").getClass());
 

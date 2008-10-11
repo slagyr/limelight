@@ -210,31 +210,19 @@ public class Border
   }
 
   public void updateDimentions()
-  {    
-    if(style.changed(Style.TOP_BORDER_WIDTH))
-      topWidth = style.getCompiledTopBorderWidth().getValue();
-    if(style.changed(Style.RIGHT_BORDER_WIDTH))
-      rightWidth = style.getCompiledRightBorderWidth().getValue();
-    if(style.changed(Style.BOTTOM_BORDER_WIDTH))
-      bottomWidth = style.getCompiledBottomBorderWidth().getValue();
-    if(style.changed(Style.LEFT_BORDER_WIDTH))
-      leftWidth = style.getCompiledLeftBorderWidth().getValue();
-    if(style.changed(Style.TOP_RIGHT_BORDER_WIDTH))
-      topRightWidth = style.getCompiledTopRightBorderWidth().getValue();
-    if(style.changed(Style.BOTTOM_RIGHT_BORDER_WIDTH))
-      bottomRightWidth = style.getCompiledBottomRightBorderWidth().getValue();
-    if(style.changed(Style.BOTTOM_LEFT_BORDER_WIDTH))
-      bottomLeftWidth = style.getCompiledBottomLeftBorderWidth().getValue();
-    if(style.changed(Style.TOP_LEFT_BORDER_WIDTH))
-      topLeftWidth = style.getCompiledTopLeftBorderWidth().getValue();
-    if(style.changed(Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS))
-      topRightRadius = style.getCompiledTopRightRoundedCornerRadius().getValue();
-    if(style.changed(Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS))
-      bottomRightRadius = style.getCompiledBottomRightRoundedCornerRadius().getValue();
-    if(style.changed(Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS))
-      bottomLeftRadius = style.getCompiledBottomLeftRoundedCornerRadius().getValue();
-    if(style.changed(Style.TOP_LEFT_ROUNDED_CORNER_RADIUS))
-      topLeftRadius = style.getCompiledTopLeftRoundedCornerRadius().getValue();
+  {
+    topWidth = style.getCompiledTopBorderWidth().getValue();
+    rightWidth = style.getCompiledRightBorderWidth().getValue();
+    bottomWidth = style.getCompiledBottomBorderWidth().getValue();
+    leftWidth = style.getCompiledLeftBorderWidth().getValue();
+    topRightWidth = style.getCompiledTopRightBorderWidth().getValue();
+    bottomRightWidth = style.getCompiledBottomRightBorderWidth().getValue();
+    bottomLeftWidth = style.getCompiledBottomLeftBorderWidth().getValue();
+    topLeftWidth = style.getCompiledTopLeftBorderWidth().getValue();
+    topRightRadius = style.getCompiledTopRightRoundedCornerRadius().getValue();
+    bottomRightRadius = style.getCompiledBottomRightRoundedCornerRadius().getValue();
+    bottomLeftRadius = style.getCompiledBottomLeftRoundedCornerRadius().getValue();
+    topLeftRadius = style.getCompiledTopLeftRoundedCornerRadius().getValue();
   }
 
   private abstract static class Jig

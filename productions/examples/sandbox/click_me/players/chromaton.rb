@@ -38,6 +38,7 @@ module Chromaton
   
   def new_random_size
     @size = rand(500) + 50
+puts "@size: #{@size}"    
     style.width = @size.to_s
     style.height = @size.to_s
   end

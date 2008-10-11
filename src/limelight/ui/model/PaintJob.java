@@ -151,10 +151,7 @@ public class PaintJob
   {
     if(buffer == null)
       return true;
-    Style style = panel.getStyle();
     if(panel.getWidth() != buffer.getWidth() || panel.getHeight() != buffer.getHeight())
-      return true;
-    else if(style.changed() && !(style.getChangedCount() == 1 && style.changed(Style.TRANSPARENCY)))
       return true;
     else
       return false;
@@ -168,7 +165,7 @@ public class PaintJob
     graphics.clearRect(0, 0, panel.getWidth(), panel.getHeight());
     panel.paintOn(graphics);
     graphics.dispose();
-    panel.getStyle().flushChanges(); //TODO Maybe called redundantly because Panel.paintOn() should also flushChanges. 
+System.err.println("flushing style changes = " + panel);     
     bufferCache.cache(panel, buffer);
     return buffer;
   }

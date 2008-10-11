@@ -4,9 +4,7 @@
 package limelight.ui.model;
 
 import limelight.ui.api.MockProp;
-import limelight.ui.Painter;
-import limelight.ui.MockGraphics;
-import limelight.ui.MockPanel;
+import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
@@ -14,15 +12,25 @@ import limelight.ui.painting.Border;
 import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
 import limelight.styles.ScreenableStyle;
+import limelight.styles.Style;
+import limelight.styles.StyleDescriptor;
+import limelight.styles.abstrstyling.DimensionAttribute;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.styles.styling.StaticDimensionAttribute;
+import limelight.styles.styling.SimpleIntegerAttribute;
+import limelight.styles.styling.SimplePercentageAttribute;
 import limelight.util.Box;
 import limelight.Context;
+import limelight.caching.Cache;
+import limelight.caching.SimpleCache;
 import limelight.audio.MockAudioPlayer;
 import junit.framework.TestCase;
 
 import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
+import java.awt.Panel;
+import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
 import java.awt.event.*;
@@ -174,7 +182,6 @@ public class PropPanelTest extends TestCase
   {
     root.setSize(100, 100);
     Border border = panel.getBorderShaper();
-    style.flushChanges();
 
     style.setBorderWidth("21");
     panel.doLayout();
@@ -459,5 +466,63 @@ public class PropPanelTest extends TestCase
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
     assertEquals(null, style.getScreen());
+  }
+
+  public void testWidthOrHeightChanges() throws Exception
+  {
+    panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
+    assertEquals(true, panel.sizeChanged());
+    panel.snapToSize();
+    assertEquals(false, panel.sizeChanged());
+
+    panel.styleChanged(Style.HEIGHT, new StaticDimensionAttribute(20));
+    assertEquals(true, panel.sizeChanged());
+    panel.snapToSize();
+    assertEquals(false, panel.sizeChanged());
+  }
+
+  public void testBorderStyleChanges() throws Exception
+  {
+    panel.getBorderShaper();
+    checkBorderChanged(Style.TOP_BORDER_WIDTH);
+    checkBorderChanged(Style.RIGHT_BORDER_WIDTH);
+    checkBorderChanged(Style.BOTTOM_BORDER_WIDTH);
+    checkBorderChanged(Style.LEFT_BORDER_WIDTH);
+    checkBorderChanged(Style.TOP_RIGHT_BORDER_WIDTH);
+    checkBorderChanged(Style.BOTTOM_RIGHT_BORDER_WIDTH);
+    checkBorderChanged(Style.BOTTOM_LEFT_BORDER_WIDTH);
+    checkBorderChanged(Style.TOP_LEFT_BORDER_WIDTH);
+    checkBorderChanged(Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS);
+    checkBorderChanged(Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
+    checkBorderChanged(Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
+    checkBorderChanged(Style.TOP_LEFT_ROUNDED_CORNER_RADIUS);
+  }
+
+  private void checkBorderChanged(StyleDescriptor styleDescriptor)
+  {
+    panel.styleChanged(styleDescriptor, new SimpleIntegerAttribute(5));
+    assertEquals(true, panel.borderChanged());
+    panel.doLayout();
+    assertEquals(false, panel.borderChanged());
+  }
+
+  public void testShouldBuildBufferWhenStyleChanges() throws Exception
+  {
+    SimpleCache<limelight.ui.Panel, BufferedImage> cache = new SimpleCache<limelight.ui.Panel, BufferedImage>();
+    Context.instance().bufferedImageCache = cache;
+    cache.cache(panel, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+
+    panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
+    assertEquals(null, cache.retrieve(panel));
+  }
+
+  public void testShouldNotBuildBufferWhenTransparencyChanges() throws Exception
+  {
+    SimpleCache<limelight.ui.Panel, BufferedImage> cache = new SimpleCache<limelight.ui.Panel, BufferedImage>();
+    Context.instance().bufferedImageCache = cache;
+    cache.cache(panel, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+
+    panel.styleChanged(Style.TRANSPARENCY, new SimplePercentageAttribute(20));
+    assertNotNull(cache.retrieve(panel));
   }
 }
