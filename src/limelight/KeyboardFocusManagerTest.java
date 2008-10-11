@@ -13,6 +13,7 @@ import limelight.ui.model.MockFrame;
 import limelight.ui.model.TextAccessor;
 import limelight.ui.MockPanel;
 import limelight.styles.Style;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.awt.*;
 import java.awt.event.FocusListener;
@@ -20,6 +21,11 @@ import java.awt.event.FocusEvent;
 
 public class KeyboardFocusManagerTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   private KeyboardFocusManager manager;
   private MockComponent component;
   private MockInputPanel panel;

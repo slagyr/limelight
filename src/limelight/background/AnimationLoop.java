@@ -1,9 +1,10 @@
 //- Copyright 2008 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight;
+package limelight.background;
 
 import limelight.util.NanoTimer;
+import limelight.background.IdleThreadLoop;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

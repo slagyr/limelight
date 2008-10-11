@@ -1,4 +1,4 @@
-package limelight;
+package limelight.background;
 
 import junit.framework.TestCase;
 import limelight.ui.model.MockFrameManager;
@@ -6,6 +6,7 @@ import limelight.ui.model.MockFrame;
 import limelight.ui.model.RootPanel;
 import limelight.ui.MockPanel;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.Context;
 
 import java.awt.*;
 

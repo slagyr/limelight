@@ -11,6 +11,9 @@ import limelight.ui.model.FrameManager;
 import limelight.ui.model.Frame;
 import limelight.caching.Cache;
 import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
+import limelight.background.AnimationLoop;
+import limelight.background.IdleThreadLoop;
+import limelight.background.CacheCleanerLoop;
 
 import java.awt.image.BufferedImage;
 

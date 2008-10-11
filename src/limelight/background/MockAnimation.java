@@ -1,6 +1,7 @@
-package limelight;
+package limelight.background;
 
 import limelight.ui.Panel;
+import limelight.background.Animation;
 
 public class MockAnimation extends Animation
 {

@@ -1,4 +1,4 @@
-package limelight;
+package limelight.background;
 
 public class MockIdleLoopThread extends IdleThreadLoop
 {
