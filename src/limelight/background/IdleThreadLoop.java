@@ -10,6 +10,8 @@ public abstract class IdleThreadLoop
   private final Object lock = new Object();
 
   private NanoTimer timer = new NanoTimer();
+  private long lastCheckTime;
+  private int executions;
 
   public abstract boolean shouldBeIdle();
 
@@ -76,9 +78,11 @@ public abstract class IdleThreadLoop
         try
         {
 
-timer.log("about to execute:                 " + this);
+//timer.log("about to execute:                 " + this);
           execute();
           delay();
+          executions++;
+          checkExecutions();
         }
         catch(Exception e)
         {
@@ -91,7 +95,7 @@ timer.log("about to execute:                 " + this);
 
   private void idle()
   {
-timer.log("going idle:                       " + this);
+//timer.log("going idle:                       " + this);
     isIdle = true;   
     synchronized(lock)
     {
@@ -104,7 +108,7 @@ timer.log("going idle:                       " + this);
         //okay
       }
     }
-timer.log("back in gear:                     " + this);
+//timer.log("back in gear:                     " + this);
   }
 
   public void go()
@@ -112,12 +116,24 @@ timer.log("back in gear:                     " + this);
     if(isIdle)
     {
 
-timer.log("getting back into gear:           " + this);      
+//timer.log("getting back into gear:           " + this);
       isIdle = false;
       synchronized(lock)
       {
         lock.notify();
       }
+    }
+  }
+
+  private void checkExecutions()
+  {
+    boolean timeSinceLastCheck = (System.nanoTime() - lastCheckTime) > (1000000000l);
+    if(timeSinceLastCheck)
+    {
+      if(lastCheckTime != 0)
+//System.err.println(getClass().getName() + " executions/sec: " + executions);
+      lastCheckTime = System.nanoTime();
+      executions = 0;
     }
   }
 }

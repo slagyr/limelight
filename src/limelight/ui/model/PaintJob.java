@@ -164,8 +164,7 @@ public class PaintJob
     graphics.setBackground(new Color(0, 0, 0, 0));
     graphics.clearRect(0, 0, panel.getWidth(), panel.getHeight());
     panel.paintOn(graphics);
-    graphics.dispose();
-System.err.println("flushing style changes = " + panel);     
+    graphics.dispose();  
     bufferCache.cache(panel, buffer);
     return buffer;
   }

@@ -59,7 +59,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     RootPanel root = getActiveRoot();
     if(root != null)
     {
-System.err.println("PanelPainter.execute!!!!");      
+//System.err.println("PanelPainter.execute!!!!");
       doAllLayouts(root);
       paintDirtyRegions(root);
     }
@@ -86,7 +86,7 @@ System.err.println("PanelPainter.execute!!!!");
     root.getAndClearDirtyRegions(regionBuffer);
     for(Rectangle rectangle : regionBuffer)
     {
-System.err.println("dirty region = " + rectangle);      
+//System.err.println("dirty region = " + rectangle);
       if(rectangle.width <= 0 || rectangle.height <= 0)
         continue;
       
@@ -104,7 +104,7 @@ System.err.println("dirty region = " + rectangle);
     root.getAndClearPanelsNeedingLayout(panelBuffer);
     for(limelight.ui.Panel panel : panelBuffer)
     {
-System.err.println("layout = " + panel);      
+//System.err.println("layout = " + panel);
       panel.doLayout();
     }
   }
