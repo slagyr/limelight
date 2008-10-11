@@ -1,6 +1,7 @@
-package limelight;
+package limelight.background;
 
 import limelight.util.NanoTimer;
+import limelight.Context;
 
 public abstract class Animation
 {

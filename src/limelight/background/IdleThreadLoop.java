@@ -1,4 +1,4 @@
-package limelight;
+package limelight.background;
 
 import limelight.util.NanoTimer;
 

@@ -1,14 +1,14 @@
 //- Copyright 2008 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight;
+package limelight.background;
 
 import junit.framework.TestCase;
 
-import java.util.LinkedList;
-
 import limelight.ui.MockPanel;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.background.MockAnimation;
+import limelight.background.IdleThreadLoop;
 
 public class AnimationLoopTest extends TestCase
 {

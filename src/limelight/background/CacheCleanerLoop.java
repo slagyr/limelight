@@ -1,4 +1,6 @@
-package limelight;
+package limelight.background;
+
+import limelight.Context;
 
 public class CacheCleanerLoop extends IdleThreadLoop
 {

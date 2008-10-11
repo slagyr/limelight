@@ -1,4 +1,4 @@
-package limelight;
+package limelight.background;
 
 import limelight.ui.Panel;
 import limelight.ui.model.Frame;
@@ -6,6 +6,7 @@ import limelight.ui.model.PaintJob;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
+import limelight.Context;
 
 import java.awt.*;
 import java.util.ArrayList;
