@@ -8,8 +8,6 @@ import limelight.caching.TimedCache;
 import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
-import limelight.task.RecurringTask;
-import limelight.task.TaskEngine;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
