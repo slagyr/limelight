@@ -5,7 +5,6 @@ package limelight;
 
 import limelight.io.TempDirectory;
 import limelight.io.Downloader;
-import limelight.task.TaskEngine;
 import limelight.ui.Panel;
 import limelight.ui.api.Studio;
 import limelight.ui.model.FrameManager;
@@ -25,7 +24,6 @@ public class Context
 
   public TempDirectory tempDirectory;
   public Downloader downloader;
-  public TaskEngine taskEngine;
 
   public IdleThreadLoop panelPanter;
   public AnimationLoop animationLoop;
