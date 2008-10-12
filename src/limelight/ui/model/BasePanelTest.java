@@ -450,10 +450,10 @@ public class BasePanelTest extends TestCase
     assertNotNull(prop.movedMouse);
   }
 
-  public void testCanBeBuffered() throws Exception
-  {
-    assertEquals(true, panel.canBeBuffered());
-  }
+//  public void testCanBeBuffered() throws Exception
+//  {
+//    assertEquals(true, panel.canBeBuffered());
+//  }
 
   public void testClearingCacheIsRecursive() throws Exception
   {

@@ -86,4 +86,13 @@ public class AnimationTest extends TestCase
     animation.stop();
     assertEquals(0, loop.getAnimations().size());
   }
+
+  public void testTolerance() throws Exception
+  {
+    animation = new MockAnimation(100, new MockPanel());
+
+    long delay = animation.getDelayNanos();
+    long tolerableDelay = (long)( delay * 0.95);
+    assertEquals(tolerableDelay, animation.getTolerableDelay());
+  }
 }

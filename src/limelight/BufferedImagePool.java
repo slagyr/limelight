@@ -4,6 +4,8 @@
 package limelight;
 
 import limelight.caching.TimedCacheEntry;
+import limelight.util.NanoTimer;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -53,9 +55,9 @@ public class BufferedImagePool
   {
     try
     {
-long before = System.currentTimeMillis();
+Debug.alloc.mark();
       BufferedImage image = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-//System.err.println("New buffer " + dimension.width + ", " + dimension.height + " in " + ((double)(System.currentTimeMillis() - (double)before) / 1000.0) + " secs");
+Debug.alloc.log("created buffer of size " + dimension);
       return image;
     }
     catch(OutOfMemoryError e)

@@ -31,7 +31,7 @@ module Limelight
 
     # Returns self.  A Scene is it's own scene.
     #
-    def scene
+    def scene 
       return self
     end
 

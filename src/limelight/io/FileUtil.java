@@ -14,24 +14,14 @@ public class FileUtil
     return System.getProperty("file.separator");
   }
 
-  public static String buildPath(String[] parts)
+  public static String buildPath(String... parts)
 	{
 		return StringUtil.join(parts, seperator());
 	}
 
-  public static String pathTo(String dir, String file)
+  public static String pathTo(String... parts)
   {
-    return buildPath(new String[] {dir, file} );
-  }
-
-  public static String pathTo(String dir1, String dir2, String file)
-  {
-    return buildPath(new String[] {dir1, dir2, file} );
-  }
-
-  public static String pathTo(String dir1, String dir2, String dir3, String file)
-  {
-    return buildPath(new String[] {dir1, dir2, dir3, file} );
+    return buildPath(parts);
   }
 
   public static String currentPath()

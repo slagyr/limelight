@@ -6,6 +6,7 @@ package limelight.ui.api;
 import limelight.styles.Style;
 import limelight.styles.ScreenableStyle;
 import limelight.ui.Panel;
+import limelight.ResourceLoader;
 
 import java.awt.event.*;
 
@@ -15,9 +16,8 @@ public interface Prop
   ScreenableStyle getStyle();
   Style getHoverStyle();
   String getName();
-  String getText();
   Scene getScene();
-  void setText(String value);
+  ResourceLoader getLoader();
 
   void hover_on();
   void hover_off();

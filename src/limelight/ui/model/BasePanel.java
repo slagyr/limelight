@@ -374,7 +374,8 @@ public abstract class BasePanel implements Panel
 
   public boolean canBeBuffered()
   {
-    return true;
+//    return true;
+    return false;  // Seems to be twice as fast without buffering.
   }
 
   public void setNeedsLayout()

@@ -4,12 +4,12 @@
 package limelight.ui.api;
 
 import limelight.ResourceLoader;
+import limelight.MockResourceLoader;
 
 import java.util.Map;
 
 public interface Scene extends Prop
 {
-  ResourceLoader getLoader();
   Map getStyles();
 }
 

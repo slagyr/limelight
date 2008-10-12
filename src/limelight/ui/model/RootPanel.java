@@ -4,8 +4,13 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.ResourceLoader;
+import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.Panel;
+import limelight.ui.api.PropablePanel;
+import limelight.ui.api.Prop;
+import limelight.ui.api.Scene;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -23,6 +28,7 @@ public class RootPanel implements Panel
   private Frame frame;
   private ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
+  private ImageCache imageCache;
 
   public RootPanel(Frame frame)
   {
@@ -286,6 +292,17 @@ public class RootPanel implements Panel
     {
       return dirtyRegions.contains(region);
     }
+  }
+  
+  public ImageCache getImageCache()
+  {
+    if(imageCache == null)
+    {
+      Prop prop = ((PropablePanel) getPanel()).getProp();     
+      ResourceLoader loader = prop.getLoader();
+      imageCache = new ImageCache(loader);
+    }
+    return imageCache;
   }
 
   /////////////////////////////////////////////

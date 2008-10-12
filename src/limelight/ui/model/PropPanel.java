@@ -347,8 +347,11 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
-  {
-    if(descriptor != Style.TRANSPARENCY && Context.instance().bufferedImageCache != null)
+  {    
+    if(Context.instance().bufferedImageCache != null &&
+        descriptor != Style.TRANSPARENCY &&
+        descriptor != Style.X &&
+        descriptor != Style.Y)
       Context.instance().bufferedImageCache.expire(this);
 
     if(getParent() != null && getRoot() != null)

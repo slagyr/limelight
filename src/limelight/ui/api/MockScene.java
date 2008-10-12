@@ -4,6 +4,7 @@
 package limelight.ui.api;
 
 import limelight.ResourceLoader;
+import limelight.MockResourceLoader;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -11,10 +12,11 @@ import java.util.HashMap;
 public class MockScene extends MockProp implements Scene
 {
   public Map styles = new HashMap();
+  public ResourceLoader loader;
 
   public ResourceLoader getLoader()
   {
-    throw new RuntimeException("MockScene.getLoader() not implemented");
+    return loader;
   }
 
   public Map getStyles()

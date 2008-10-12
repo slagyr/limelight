@@ -6,7 +6,9 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.ui.Panel;
+import limelight.ui.api.MockScene;
 import limelight.Context;
+import limelight.MockResourceLoader;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.util.Arrays;
@@ -213,5 +215,14 @@ public class RootPanelTest extends TestCase
     root.getAndClearDirtyRegions(regions);
 
     assertEquals(0, regions.size());
+  }
+
+  public void testHasAnImageCache() throws Exception
+  {
+    MockScene scene = new MockScene();
+    child.prop.scene = scene;
+    scene.loader = new MockResourceLoader();
+    root.setPanel(child);
+    assertNotNull(root.getImageCache());
   }
 }

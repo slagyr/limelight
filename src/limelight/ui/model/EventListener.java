@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.ui.Panel;
+
 import java.awt.event.*;
 import java.awt.*;
 
@@ -39,7 +40,9 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
     Panel releasedPanel = panelFor(e.getPoint());
     releasedPanel.mouseReleased(e);
     if(releasedPanel == pressedPanel)
+    {
       releasedPanel.mouseClicked(e);
+    }
   }
 
   public void mouseEntered(MouseEvent e)
