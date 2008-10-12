@@ -4,11 +4,13 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
+import limelight.ui.api.PropablePanel;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.StringAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
 import limelight.util.Colors;
 import limelight.util.Box;
+import limelight.util.NanoTimer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -51,8 +53,9 @@ public class BackgroundPainter extends Painter
       try
       {
         Box borderFrame = panel.getBoxInsideBorders();
-        String imageFilename = panel.getProp().getScene().getLoader().pathTo(backgroundImageAttribute.getAttribute().getValue());
-        BufferedImage image = ImageIO.read(new File(imageFilename));
+        Image image = ((PropablePanel)panel).getRoot().getImageCache().getImage(backgroundImageAttribute.getAttribute().getValue());
+//        String imageFilename = panel.getProp().getScene().getLoader().pathTo(backgroundImageAttribute.getAttribute().getValue());
+//        BufferedImage image = ImageIO.read(new File(imageFilename));
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);
         style.getCompiledBackgroundImageFillStrategy().getStrategy().fill(borderedGraphics, image);
       }

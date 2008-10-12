@@ -6,6 +6,7 @@ package limelight.ui.api;
 import limelight.styles.Style;
 import limelight.styles.ScreenableStyle;
 import limelight.ui.Panel;
+import limelight.ResourceLoader;
 
 import java.awt.event.*;
 
@@ -31,6 +32,7 @@ public class MockProp implements Prop
   public Object pressedButton;
   public Object changedValue;
   public Scene scene;
+  public ResourceLoader loader;
 
   public MockProp()
   {
@@ -71,6 +73,11 @@ public class MockProp implements Prop
   public Scene getScene()
   {
     return scene;
+  }
+
+  public ResourceLoader getLoader()
+  {
+    return loader;
   }
 
   public void setText(String value)

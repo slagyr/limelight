@@ -48,7 +48,6 @@ module Floater
     calculate_vector(source_x, source_y)
 
     @sliding = true
-puts "STARTING A SLIDE!"
     @animation = animate(:updates_per_second => 30) do
       begin
         slide
@@ -63,8 +62,9 @@ puts "STARTING A SLIDE!"
   def calculate_vector(sx, sy)
     dx = (x - sx)
     dy = (y - sy)
-    @x_coefficient = dx / (dx.abs + dy.abs)
-    @y_coefficient = dy / (dx.abs + dy.abs)
+    abs_delta = (dx.abs + dy.abs).to_f
+    @x_coefficient = dx / abs_delta
+    @y_coefficient = dy / abs_delta
     @velocity = 20
     find_bounds if @max_x.nil?
   end
@@ -82,8 +82,6 @@ puts "STARTING A SLIDE!"
       @sliding = false
 
       @animation.stop
-
-puts "Slide Stopped"      
     end
   end
   

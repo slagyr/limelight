@@ -52,7 +52,7 @@ public class NanoTimer
   private void performSleep(long nanosToSleep)
   {
     long milisToSleep = nanosToSleep / 1000000l;
-    int remainder = (int)(nanosToSleep % 1000000);
+    int remainder = (int) (nanosToSleep % 1000000);
     markTime();
     try
     {
@@ -76,14 +76,5 @@ public class NanoTimer
   public long getSleepJiggle()
   {
     return sleepJiggle;
-  }
-
-  private static DecimalFormat format = new DecimalFormat("0.0###############");
-  public void log(String message)
-  {
-//    double secs = getIdleNanos() / 1000000000.0;
-////    if(secs > 0.1)
-//      System.err.println(format.format(secs) + ": " + message);
-//    markTime();
   }
 }

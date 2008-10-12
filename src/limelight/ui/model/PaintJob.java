@@ -8,7 +8,9 @@ import limelight.BufferedImagePool;
 import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.Panel;
+import limelight.ui.Painter;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -85,10 +87,16 @@ public class PaintJob
         bufferedImagePool.recycle(panelBuffer);
         panelBuffer = buildBufferFor(panel);
       }
+Debug.copy.mark();
       graphics.drawImage(panelBuffer, 0, 0, null);
+Debug.copy.log("copied buffer for " + panel);      
     }
     else
+    {
+Debug.paint.mark();      
       panel.paintOn(graphics);
+Debug.paint.log("painted " + panel);
+    }
   }
 
   public void applyAlphaCompositeFor(Panel panel, Graphics2D graphics)
@@ -159,11 +167,14 @@ public class PaintJob
 
   public BufferedImage buildBufferFor(Panel panel)
   {
-    BufferedImage buffer = bufferedImagePool.acquire(new Dimension(panel.getWidth(), panel.getHeight()));
+    Dimension dimension = new Dimension(panel.getWidth(), panel.getHeight());
+    BufferedImage buffer = bufferedImagePool.acquire(dimension);
     Graphics2D graphics = buffer.createGraphics();
     graphics.setBackground(new Color(0, 0, 0, 0));
     graphics.clearRect(0, 0, panel.getWidth(), panel.getHeight());
+Debug.paint.mark();
     panel.paintOn(graphics);
+Debug.paint.log("painted " + panel);    
     graphics.dispose();  
     bufferCache.cache(panel, buffer);
     return buffer;

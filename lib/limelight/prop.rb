@@ -35,8 +35,7 @@ module Limelight
 
     attr_reader :panel #:nodoc:
     attr_reader :style, :hover_style, :children, :parent, :name, :id, :players
-    getters :panel, :style, :hover_style, :name, :text  #:nodoc:
-    setters :text #:nodoc:
+    getters :panel, :style, :hover_style, :name, :scene, :loader #:nodoc:
 
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.
     # The key/value pairs in the initialiaztion options will be used to
@@ -152,12 +151,15 @@ module Limelight
 
     # Returns the scene to which this prop belongs to.
     #
-    def scene
+    def scene 
       return nil if @parent.nil?
       @scene = @parent.scene if @scene.nil?
       return @scene
     end
-    alias :getScene :scene
+
+    def loader
+      return scene.loader;
+    end
 
     # Returns the current Production this Prop lives in.
     #

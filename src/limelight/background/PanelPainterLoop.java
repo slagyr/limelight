@@ -6,6 +6,7 @@ import limelight.ui.model.PaintJob;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
+import limelight.util.Debug;
 import limelight.Context;
 
 import java.awt.*;
@@ -55,15 +56,20 @@ public class PanelPainterLoop extends IdleThreadLoop
 
   protected void execute()
   {
-    timer.markTime();
+//Debug.debug1.log("Paiting begun");
+//Debug.debug2.mark();
+//    timer.markTime();
     RootPanel root = getActiveRoot();
     if(root != null)
     {
-//System.err.println("PanelPainter.execute!!!!");
+//Debug.debug2.log("  about to layout");
       doAllLayouts(root);
+//Debug.debug2.log("  laidout");
       paintDirtyRegions(root);
+//Debug.debug2.log("  painted dirty regions");
     }
     lastExecutionDuration = timer.getIdleNanos();
+//Debug.debug1.log("Paiting completed");
   }
 
   protected void delay()
@@ -86,14 +92,16 @@ public class PanelPainterLoop extends IdleThreadLoop
     root.getAndClearDirtyRegions(regionBuffer);
     for(Rectangle rectangle : regionBuffer)
     {
-//System.err.println("dirty region = " + rectangle);
       if(rectangle.width <= 0 || rectangle.height <= 0)
         continue;
-      
+//NanoTimer timer = new NanoTimer();
       PaintJob job = new PaintJob(new Box(rectangle));
+//timer.log("paint job creates");
       job.paint(root.getPanel());
+//timer.log("root painted");
       Graphics2D rootGraphics = root.getGraphics();
       job.applyTo(rootGraphics);
+//timer.log("applied painting to graphics");
       job.dispose();
     }
   }
@@ -104,7 +112,6 @@ public class PanelPainterLoop extends IdleThreadLoop
     root.getAndClearPanelsNeedingLayout(panelBuffer);
     for(limelight.ui.Panel panel : panelBuffer)
     {
-//System.err.println("layout = " + panel);
       panel.doLayout();
     }
   }

@@ -10,6 +10,7 @@ public abstract class Animation
   private long delayNanos;
   private NanoTimer timer = new NanoTimer();
   private boolean running;
+  private long tolerableDelay;
 
   public Animation(int updatesPerSecond)
   {
@@ -22,6 +23,7 @@ public abstract class Animation
   public void setUpdatesPerSecond(int updatesPerSecond)
   {
     delayNanos = 1000000000 / updatesPerSecond;
+    tolerableDelay = (long)(delayNanos * 0.95);
   }
 
   public long getDelayNanos()
@@ -38,7 +40,8 @@ public abstract class Animation
 
   public boolean isReady()
   {
-    return nanosSinceLastUpdate() >= delayNanos;
+    long nanos = nanosSinceLastUpdate();
+    return nanos >= tolerableDelay;
   }
 
   public long nanosSinceLastUpdate()
@@ -77,5 +80,10 @@ public abstract class Animation
   public boolean isRunning()
   {
     return running;
+  }
+
+  public long getTolerableDelay()
+  {
+    return tolerableDelay;
   }
 }

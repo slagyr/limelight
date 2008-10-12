@@ -4,6 +4,7 @@
 package limelight.background;
 
 import limelight.util.NanoTimer;
+import limelight.util.Debug;
 import limelight.background.IdleThreadLoop;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class AnimationLoop extends IdleThreadLoop
 {
   private LinkedList<Animation> animations = new LinkedList<Animation>();
   private ArrayList<Animation> buffer = new ArrayList<Animation>(50);
-  private long optimalSleepNanos = 1000000000;
+  private long optimalSleepNanos = -1;
   private NanoTimer timer = new NanoTimer();
   private long lastExecutionDuration;
 
@@ -56,10 +57,10 @@ public class AnimationLoop extends IdleThreadLoop
 
   private void calculateOptimalSleepTime()
   {
-    long min = 1000000000;
+    long min = -1;
     for(Animation animation : animations)
     {
-      if(animation.getDelayNanos() < min)
+      if(min == -1 || animation.getDelayNanos() < min)
         min = animation.getDelayNanos();
     }
     optimalSleepNanos = min;
@@ -79,7 +80,7 @@ public class AnimationLoop extends IdleThreadLoop
     }
     
     for(Animation animation : buffer)
-    {
+    {  
       if(animation.isReady())
         animation.update();
     }

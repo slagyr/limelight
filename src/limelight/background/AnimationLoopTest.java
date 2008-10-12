@@ -49,7 +49,7 @@ public class AnimationLoopTest extends TestCase
 
   public void testCalulateOptimalSleepTimeWhenAddingTasks() throws Exception
   {
-    assertEquals(1000000000, loop.getOptimalSleepNanos());
+    assertEquals(-1, loop.getOptimalSleepNanos());
 
     loop.add(animation20);
     assertEquals(1000000000 / 20, loop.getOptimalSleepNanos());
@@ -73,7 +73,7 @@ public class AnimationLoopTest extends TestCase
     loop.remove(animation10);
     assertEquals(1000000000 / 20, loop.getOptimalSleepNanos());
     loop.remove(animation20);
-    assertEquals(1000000000, loop.getOptimalSleepNanos());
+    assertEquals(-1, loop.getOptimalSleepNanos());
   }
 
   public void testExecute() throws Exception
