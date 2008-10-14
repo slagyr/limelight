@@ -3,6 +3,7 @@
 
 require 'limelight/production'
 require 'limelight/limelight_exception'
+require 'limelight/util'
 
 module Limelight
 
@@ -10,8 +11,8 @@ module Limelight
   #
   # See Limelight::ProductionBuilder
   #
-  def self.build_production(path, producer, theater, &block)
-    builder = DSL::ProductionBuilder.new(path, producer, theater)
+  def self.build_production(production, &block)
+    builder = DSL::ProductionBuilder.new(production)
     builder.instance_eval(&block) if block
     return builder.__production__
   end
@@ -27,6 +28,8 @@ module Limelight
     # and 'inspector'
     #
     class ProductionBuilder
+      
+      Limelight::Util.lobotomize(self)
 
       class << self
 
@@ -36,8 +39,8 @@ module Limelight
 
       attr_reader :__production__
 
-      def initialize(path, producer, theater)
-        @__production__ = Production.new(path, producer, theater)
+      def initialize(production)
+        @__production__ = production
       end
 
       def method_missing(sym, value) #:nodoc:

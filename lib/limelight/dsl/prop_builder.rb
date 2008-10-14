@@ -12,12 +12,13 @@ module Limelight
   #
   # See Limelight::PropBuilder
   #
-  def self.build_scene(options={}, &block)
+  def self.build_scene(root, options={}, &block)
     loader = options.delete(:build_loader)
-    builder = DSL::SceneBuilder.new(options)
+    root.add_options(options)
+    builder = DSL::PropBuilder.new(root)
     builder.__loader__ = loader
     builder.instance_eval(&block) if block
-    return builder.__prop__
+    return root
   end
 
   module DSL
@@ -109,12 +110,6 @@ module Limelight
         builder.__loader__ = @__loader__
         builder.instance_eval(&prop) if prop
         @__prop__.add(builder.__prop__)
-      end
-    end
-
-    class SceneBuilder < PropBuilder # :nodoc:
-      def initialize(options)
-        @__prop__ = Scene.new(options)
       end
     end
 

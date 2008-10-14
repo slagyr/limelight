@@ -31,6 +31,10 @@ class TestDir
       return @root
     end
 
+    def path(path)
+      return File.join(root, path)
+    end
+
     def clean
       Dir.entries(root).each do |file|
         FileUtils.rm_r(File.join(root, file), :force => true) unless (file == '.' || file == '..')
@@ -38,7 +42,7 @@ class TestDir
     end
 
     def create_file(path, content)
-      filename = File.join(root, path)
+      filename =  self.path(path)
       establish_dir(File.dirname(filename))
       File.open(filename, 'w') { |file| file.write content }
     end

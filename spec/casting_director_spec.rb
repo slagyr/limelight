@@ -10,16 +10,13 @@ require 'limelight/file_loader'
 describe Limelight::CastingDirector do
 
   before(:each) do
+    TestDir.clean
     $casted_props = []
     $casted_players = []
-    @scene = Limelight::Scene.new(:casting_director => make_mock("casting_director", :fill_cast => nil), :path => "scene_path")
+    @scene = Limelight::Scene.new(:casting_director => make_mock("casting_director", :fill_cast => nil), :path => TestDir.path("scene_path"))
     @scene.illuminate
     @loader = Limelight::FileLoader.for_root(TestDir.root)
     @casting_director = Limelight::CastingDirector.new(@loader)
-  end
-
-  after(:each) do
-    TestDir.clean
   end
   
   def make_root(options={})
@@ -113,7 +110,7 @@ describe Limelight::CastingDirector do
   end
 
   it "should load shared custom players" do
-    production = Limelight::Production.new(TestDir.root, make_mock("producer"), make_mock("theater"))
+    production = Limelight::Production.new(TestDir.root)
     @scene.production = production
 
     prepare_player("scene_path", "root")

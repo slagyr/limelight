@@ -39,6 +39,31 @@ describe Limelight::Scene do
     @scene.cast.is_a?(Module).should == true
   end
 
+  it "should have a cast" do
+    @scene.cast.should_not == nil
+    @scene.cast.is_a?(Module).should == true
+  end
+
+  it "should have an acceptible path when none is provided" do
+    Limelight::Scene.new().path.should == File.expand_path("")
+  end
+
+  describe Limelight::Scene, "paths" do
+
+    before(:each) do
+      @scene = Limelight::Scene.new(:path => "/tmp")
+    end
+
+    it "should know it's props file" do
+      @scene.props_file.should == "/tmp/props.rb"
+    end
+
+    it "should know it's styles file" do
+      @scene.styles_file.should == "/tmp/styles.rb"
+    end
+
+  end
+
   describe Limelight::Scene, "Prop Indexing" do
 
     before(:each) do
