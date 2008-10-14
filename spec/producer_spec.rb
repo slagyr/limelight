@@ -7,13 +7,14 @@ require 'limelight/producer'
 describe Limelight::Producer do
   
   before(:each) do
+    TestDir.clean
     Limelight::Production.clear_index
-    @producer = Limelight::Producer.new("/tmp")
-    @loader = @producer.loader
+    @root_dir = TestDir.path("test_prod")
+    @producer = Limelight::Producer.new(@root_dir)
   end
   
   it "should have loader on creation" do
-    @producer.loader.root.should == "/tmp"
+    @producer.production.root.root.should == @root_dir
   end
   
   it "should take an optional theater on creation" do
@@ -29,10 +30,9 @@ describe Limelight::Producer do
   end
   
   it "should load props" do
-    @loader.should_receive(:exists?).with("./props.rb").and_return(true)
-    @loader.should_receive(:load).with("./props.rb").and_return("child :id => 321")
+    TestDir.create_file("test_prod/props.rb", "child :id => 321")
     
-    scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
+    scene = @producer.load_props(:path => TestDir.path("test_prod"), :casting_director => make_mock("casting_director", :fill_cast => nil))
     scene.illuminate
     scene.children.size.should == 1
     scene.children[0].name.should == "child"
@@ -40,86 +40,71 @@ describe Limelight::Producer do
   end
 
   it "should load props even when props.rd doesn't exist." do
-    @loader.should_receive(:exists?).with("./props.rb").and_return(false)
-
-    scene = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
+    scene = @producer.load_props(:path => TestDir.path("test_prod"), :casting_director => make_mock("casting_director", :fill_cast => nil))
     scene.children.size.should == 0
   end
 
   it "should load builtin styles" do
-    @loader.should_receive(:exists?).with("./styles.rb").and_return(false)
-
-    styles = @producer.load_styles(".")
+    styles = @producer.load_styles(Limelight::Scene.new())
 
     styles["limelight_builtin_players_combo_box_popup_list"].should_not == nil
   end
   
   it "should load styles" do
+    TestDir.create_file("test_prod/styles.rb", "alpha { width 100 }")
     @producer.builtin_styles = {}
-    @loader.should_receive(:exists?).with("./styles.rb").and_return(true)
-    @loader.should_receive(:load).with("./styles.rb").and_return("alpha { width 100 }")
     
-    styles = @producer.load_styles(".")
+    styles = @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod")))
     styles.size.should == 1
     styles["alpha"].width.should == "100"
   end
   
   it "should format prop errors well" do
-    @loader.should_receive(:exists?).with("./props.rb").and_return(true)
-    @loader.should_receive(:load).with("./props.rb").and_return("one\n+\nthree")
+    TestDir.create_file("test_prod/props.rb", "one\n+\nthree")
     
     begin
-      result = @producer.load_props(".", :casting_director => make_mock("casting_director", :fill_cast => nil))
+      result = @producer.load_props(:path => TestDir.path("test_prod"), :casting_director => make_mock("casting_director", :fill_cast => nil))
       result.should == nil # should never perform
     rescue Limelight::DSL::BuildException => e
       e.line_number.should == 3
-      e.filename.should == "./props.rb"
-      e.message.should include("./props.rb:3: undefined method `+@' for ")
+      e.filename.should == TestDir.path("test_prod/props.rb")
+      e.message.should include("/props.rb:3: undefined method `+@' for ")
     end
   end
   
   it "should format styles errors well" do
-    @loader.should_receive(:exists?).with("./styles.rb").and_return(true)
-    @loader.should_receive(:load).with("./styles.rb").and_return("one {}\ntwo {}\n-\nthree {}")
+    TestDir.create_file("test_prod/styles.rb", "one {}\ntwo {}\n-\nthree {}")
     
     begin
-      result = @producer.load_styles(".")
+      result = @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod")))
       result.should == nil # should never perform
     rescue Limelight::DSL::BuildException => e
       e.line_number.should == 4
-      e.filename.should == "./styles.rb"
-      e.message.should include("./styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x")
+      e.filename.should == TestDir.path("test_prod/styles.rb")
+      e.message.should include("/styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x")
     end
   end
   
   it "should load a stage when stages.rb exists" do
-    @loader.should_receive(:exists?).with("production.rb").and_return(false)
-    @loader.should_receive(:exists?).with("init.rb").and_return(false)
-    @loader.should_receive(:exists?).with("stages.rb").and_return true
+    TestDir.create_file("test_prod/stages.rb", "")
     @producer.should_receive(:load_stages).and_return([make_mock("stage", :default_scene => "abc", :name => "Default")])
     @producer.should_receive(:open_scene).with("abc", anything)
-    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
+    Limelight::Gems.should_receive(:install_gems_in_production)
     
     @producer.open
   end
   
   it "should load a scene when stages.rb doesn't exists" do
-    @loader.should_receive(:exists?).with("production.rb").and_return(false)
-    @loader.should_receive(:exists?).with("init.rb").and_return(false)
-    @loader.should_receive(:exists?).with("stages.rb").and_return false
     @producer.should_not_receive(:open_stages)
-    @producer.should_receive(:open_scene).with("/tmp", anything)
-    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
+    @producer.should_receive(:open_scene).with(:root, anything)
+    Limelight::Gems.should_receive(:install_gems_in_production)
     
     @producer.open
   end
   
   it "should have one default stage when no stages.rb is provided" do
-    @loader.should_receive(:exists?).with("production.rb").and_return(false)
-    @loader.should_receive(:exists?).with("init.rb").and_return(false)
-    @loader.should_receive(:exists?).with("stages.rb").and_return false
     @producer.stub!(:open_scene)
-    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
+    Limelight::Gems.should_receive(:install_gems_in_production)
     
     @producer.open
     
@@ -130,28 +115,25 @@ describe Limelight::Producer do
   it "should open a scene" do
     stage = make_mock("stage")
     scene = make_mock("scene")
+    @producer.should_receive(:load_props).with(:production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
     @producer.should_receive(:load_styles).and_return("styles")
     @producer.should_receive(:merge_with_root_styles).with("styles")
-    @producer.should_receive(:load_props).with("some/path", :styles => "styles", :production => @producer.production, :casting_director => anything, :loader => @loader, :path => "some/path", :name => "path").and_return(scene)
+    scene.should_receive(:styles=)
     stage.should_receive(:open).with(scene)
     
-    @producer.open_scene("some/path", stage)
+    @producer.open_scene("name", stage)
   end
   
   it "should load empty styles if styles.rb doesn't exist" do
     @producer.builtin_styles = {}
-    @loader.should_receive(:exists?).with("./styles.rb").and_return(false)
     
-    @producer.load_styles(".").should == {}
+    @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod"))).should == {}
   end
 
   it "should use the ProductionBuilder if production.rb is present" do
-    @loader.should_receive(:exists?).with("production.rb").and_return(true)
-    @loader.should_receive(:exists?).with("init.rb").and_return(false)
-    @loader.should_receive(:load).with("production.rb").and_return("name 'Fido'")
-    @loader.should_receive(:exists?).with("stages.rb").and_return(false)
+    TestDir.create_file("test_prod/production.rb", "name 'Fido'")
     @producer.stub!(:open_scene)
-    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
+    Limelight::Gems.should_receive(:install_gems_in_production)
 
     @producer.open
 
@@ -159,13 +141,12 @@ describe Limelight::Producer do
   end
   
   it "should load init.rb if it exists" do
-    @loader.should_receive(:exists?).with("production.rb").and_return(true)
-    @loader.should_receive(:exists?).with("init.rb").and_return(true)
-    @loader.should_receive(:load).with("production.rb").and_return("name 'Fido'")
-    @loader.should_receive(:exists?).with("stages.rb").and_return(false)
+    TestDir.create_file("test_prod/production.rb", "name 'Fido'")
+    TestDir.create_file("test_prod/init.rb", "")
+    
     @producer.stub!(:open_scene)
-    Kernel.should_receive(:load).with("/tmp/init.rb")
-    Limelight::Gems.should_receive(:install_gems_in_production).with("/tmp")
+    Kernel.should_receive(:load).with(TestDir.path("test_prod/init.rb"))
+    Limelight::Gems.should_receive(:install_gems_in_production)
     
     @producer.open
   end

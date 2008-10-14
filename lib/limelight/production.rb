@@ -2,6 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/limelight_exception'
+require 'limelight/file_loader'
 
 module Limelight
 
@@ -51,14 +52,13 @@ module Limelight
       
     end
     
-    attr_reader :path, :producer, :theater, :name
+    attr_reader :name, :root 
+    attr_accessor :producer, :theater
 
     # Users typically need not create Production objects.
     #
-    def initialize(path, producer, theater)
-      @path = path
-      @producer = producer
-      @theater = theater
+    def initialize(path)
+      @root = FileLoader.for_root(path)
       self.class.index(self)
     end
 
@@ -67,6 +67,43 @@ module Limelight
     def name=(value)
       self.class.error_if_duplicate_name(value)
       @name = value
+    end
+
+    # Return the path to the root directory of the production
+    #
+    def path
+      return @root.root
+    end
+
+    # Returns the path to the production's init file
+    #
+    def init_file
+      return @root.path_to("init.rb")
+    end
+
+    # Returns the path to the production's stages file
+    #
+    def stages_file
+      return @root.path_to("stages.rb")
+    end
+
+    # Returns the path to the production's styles file
+    #
+    def styles_file
+      return @root.path_to("styles.rb")
+    end
+
+    # Returns the path to the production's gems directory
+    #
+    def gems_directory
+      return @root.path_to("__resources/gems")
+    end
+
+    # Returns the path to the named Scene's directory within the Production
+    #
+    def scene_directory(name)
+      return @root.root if name == :root
+      return @root.path_to(name)
     end
     
   end

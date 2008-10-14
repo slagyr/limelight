@@ -7,21 +7,18 @@ require 'limelight/dsl/production_builder'
 describe Limelight::DSL::ProductionBuilder do
 
   before(:each) do
-    @producer = make_mock("producer")
-    @theater = make_mock("theater")
+    @production = Limelight::Production.new("/tmp")
   end
   
   it "should build a production" do
-    result = Limelight.build_production("/tmp", @producer, @theater)
+    result = Limelight.build_production(@production)
     
-    result.class.should == Limelight::Production
+    result.should == @production
     result.path.should == "/tmp"
-    result.producer.should == @producer
-    result.theater.should == @theater
   end
   
   it "should build able to set the production's name" do
-    result = Limelight.build_production("/tmp", @producer, @theater) do
+    result = Limelight.build_production(@production) do
       name "My Production"
     end
     
@@ -29,7 +26,7 @@ describe Limelight::DSL::ProductionBuilder do
   end
   
   it "should build attribute accessors" do
-    result = Limelight.build_production("/tmp", @producer, @theater) do
+    result = Limelight.build_production(@production) do
       name "My Production2"
       attribute :foo
     end  
@@ -41,7 +38,7 @@ describe Limelight::DSL::ProductionBuilder do
   
   it "should raise an exception when setting an invalid property" do
     lambda do
-      Limelight::build_production("/tmp", @producer, @theater) do
+      Limelight::build_production(@production) do
         blah "blah"
       end
     end.should raise_error(Limelight::DSL::ProductionBuilderException, "'blah' is not a valid production property")

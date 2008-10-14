@@ -9,7 +9,9 @@ describe Limelight::Production, "Instance methods" do
   before(:each) do
     @producer = make_mock("producer")
     @theater = make_mock("theater")
-    @production = Limelight::Production.new("/tmp", @producer, @theater)
+    @production = Limelight::Production.new("/tmp")
+    @production.producer = @producer
+    @production.theater = @theater
   end
   
   it "should know it path, producer, and theater" do
@@ -25,8 +27,30 @@ describe Limelight::Production, "Instance methods" do
   it "should raise an error when setting the name to a duplicate name" do
     @production.name = "Bill"
     
-    production = Limelight::Production.new("/tmp", @producer, @theater)
+    production = Limelight::Production.new("/tmp")
     lambda { production.name = "Bill" }.should raise_error(Limelight::LimelightException, "Production name 'Bill' is already taken")
+  end
+
+  it "should know it's init file" do
+    @production.init_file.should == "/tmp/init.rb"
+  end
+
+  it "should know it's stages file" do
+    @production.stages_file.should == "/tmp/stages.rb"
+  end
+
+  it "should know it's styles file" do
+    @production.styles_file.should == "/tmp/styles.rb"
+  end
+
+  it "should know it's gems directory" do
+    @production.gems_directory.should == "/tmp/__resources/gems"
+  end
+
+  it "should provide paths to it's scenes" do
+    @production.scene_directory("one").should == "/tmp/one"
+    @production.scene_directory("two").should == "/tmp/two"
+    @production.scene_directory(:root).should == "/tmp"
   end
 
 end

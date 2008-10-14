@@ -3,7 +3,7 @@ module Limelight
 
     class << self
 
-      attr_accessor :current_production_path
+      attr_accessor :current_production
 
       def load_path
         @load_path = $: if @load_path.nil?
@@ -13,14 +13,14 @@ module Limelight
       def install(gem_name, paths)
         stack = paths.dup
         while !stack.empty?
-          load_path.unshift File.join(current_production_path, "__resources", "gems", gem_name, stack.pop)
+          load_path.unshift File.join(current_production.gems_directory, gem_name, stack.pop)
         end
       end
 
-      def install_gems_in_production(production_path)
-        self.current_production_path = production_path
+      def install_gems_in_production(production)
+        self.current_production = production
 
-        gems_dir = File.join(production_path, "__resources", "gems")
+        gems_dir = current_production.gems_directory
         if File.exists?(gems_dir) && File.directory?(gems_dir)
           gems = Dir.entries(gems_dir).select { |dir| dir != "." && dir != ".." }
           gems.sort!
@@ -35,7 +35,7 @@ module Limelight
           end
         end
 
-        self.current_production_path = nil
+        self.current_production = nil
       end
 
     end

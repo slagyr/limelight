@@ -5,6 +5,7 @@ require 'limelight/java_util'
 require 'limelight/prop'
 require 'limelight/button_group_cache'
 require 'limelight/limelight_exception'
+require 'limelight/file_loader'
 
 module Limelight
 
@@ -15,13 +16,15 @@ module Limelight
 
     include UI::Api::Scene
 
-    attr_reader :button_groups, :styles, :casting_director, :cast
-    attr_accessor :stage, :loader, :visible, :path, :production
+    attr_reader :button_groups, :casting_director, :cast
+    attr_accessor :stage, :visible, :production, :styles
     getters :stage, :loader, :styles
     setters :stage
     event :scene_opened
 
     def initialize(options={})
+      path = options.delete(:path) || ""
+      @root = FileLoader.for_root(path)
       super(options)
       @button_groups = ButtonGroupCache.new
       @prop_index = {}
@@ -33,6 +36,24 @@ module Limelight
     #
     def scene 
       return self
+    end
+
+    # Returns the path to the root directory of the Scene
+    #
+    def path
+      return @root.root
+    end
+
+    # Returns the path to the Scene's props file
+    #
+    def props_file
+      return @root.path_to("props.rb")
+    end
+
+    # Returns the path to the Scene's props file
+    #
+    def styles_file
+      return @root.path_to("styles.rb")
     end
 
     #    def add_options(options) #:nodoc:

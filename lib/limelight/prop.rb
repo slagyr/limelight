@@ -157,8 +157,9 @@ module Limelight
       return @scene
     end
 
+    # TODO get rid of me.... The Java Prop interface declares this method.
     def loader
-      return scene.loader;
+      return scene.production.root;
     end
 
     # Returns the current Production this Prop lives in.
