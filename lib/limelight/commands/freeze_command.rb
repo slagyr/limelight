@@ -97,14 +97,14 @@ module Limelight
 
       def establish_gem_dir
         @templater = Templates::Templater.new(@production_path)
-        @gem_dir_path = File.join(@production_path, "gems", @gem_dir_name)
+        @gem_dir_path = File.join(@production_path, "__resources", "gems", @gem_dir_name)
         raise "The gem (#{@gem_dir_name}) is already frozen." if File.exists?(@gem_dir_path)
-        @templater.directory(File.join("gems", @gem_dir_name))
+        @templater.directory(File.join("__resources", "gems", @gem_dir_name))
       end
 
       def install_limelight_hook
         tokens = { :GEM_NAME => @gem_dir_name, :PATHS => @gem_spec.require_paths.inspect }
-        @templater.file(File.join("gems", @gem_dir_name, "limelight_init.rb"), "freezing/limelight_init.rb.template", tokens)
+        @templater.file(File.join("__resources", "gems", @gem_dir_name, "limelight_init.rb"), "freezing/limelight_init.rb.template", tokens)
       end
 
     end
