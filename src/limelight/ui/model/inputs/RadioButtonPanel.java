@@ -35,7 +35,7 @@ public class RadioButtonPanel extends InputPanel
 
   private static class RadioButtonTextAccessor implements TextAccessor
   {
-    private RadioButton button;
+    private final RadioButton button;
 
     public RadioButtonTextAccessor(RadioButton button)
     {

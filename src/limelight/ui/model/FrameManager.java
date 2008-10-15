@@ -12,7 +12,7 @@ import java.util.HashSet;
 public class FrameManager implements WindowFocusListener, WindowListener
 {
   private Frame activeFrame;
-  private HashSet<Frame> frames;
+  private final HashSet<Frame> frames;
 
   public FrameManager()
   {

@@ -16,10 +16,10 @@ import java.util.*;
 public class MockGraphics extends java.awt.Graphics2D
 {
 	public Color color;
-	public LinkedList<DrawnShape> drawnShapes;
-	public LinkedList<DrawnShape> filledShapes;
+	public final LinkedList<DrawnShape> drawnShapes;
+	public final LinkedList<DrawnShape> filledShapes;
   public BasicStroke stroke;
-  public Hashtable<Object, Object> hints;
+  public final Hashtable<Object, Object> hints;
   public Box clip;
   public Paint paint;
   public Box createdGraphicsBox;
@@ -33,10 +33,10 @@ public class MockGraphics extends java.awt.Graphics2D
 
   public class DrawnShape
 	{
-		public Color color;
-		public Shape shape;
-		public BasicStroke stroke;
-    public boolean antialiasing;
+		public final Color color;
+		public final Shape shape;
+		public final BasicStroke stroke;
+    public final boolean antialiasing;
     public Paint paint;
 
     public DrawnShape(Shape shape, BasicStroke stroke, Color color, boolean antialiasing)
@@ -276,8 +276,7 @@ public class MockGraphics extends java.awt.Graphics2D
   public Graphics create(int x, int y, int width, int height)
   {
     createdGraphicsBox = new Box(x, y, width, height);
-    Graphics graphics = super.create(x, y, width, height);
-    return graphics;
+    return super.create(x, y, width, height);
   }
 
   public Color getColor()

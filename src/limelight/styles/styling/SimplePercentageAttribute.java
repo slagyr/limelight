@@ -4,7 +4,7 @@ import limelight.styles.abstrstyling.PercentageAttribute;
 
 public class SimplePercentageAttribute implements PercentageAttribute
 {
-  private int percentage;
+  private final int percentage;
 
   public SimplePercentageAttribute(int percentage)
   {

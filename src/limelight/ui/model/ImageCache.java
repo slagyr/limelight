@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class ImageCache extends SimpleCache<String, Image>
 {
-  private ResourceLoader loader;
+  private final ResourceLoader loader;
 
   public ImageCache(ResourceLoader loader)
   {

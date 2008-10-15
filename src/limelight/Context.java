@@ -21,9 +21,9 @@ public class Context
 {
   private static Context instance;
 
-  public String limelightHome;
-  public String os;
-  public boolean runningAsApp;
+  public final String limelightHome;
+  public final String os;
+  public final boolean runningAsApp;
 
   public TempDirectory tempDirectory;
   public Downloader downloader;
@@ -40,7 +40,7 @@ public class Context
   public Studio studio;
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
 
-  protected Context()
+  private Context()
   {
     limelightHome = System.getProperty("limelight.home");
     runningAsApp = "true".equals(System.getProperty("limelight.as.app"));

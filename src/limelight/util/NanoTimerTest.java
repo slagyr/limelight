@@ -7,10 +7,10 @@ import junit.framework.TestCase;
 
 public class NanoTimerTest extends TestCase
 {
-  private int ONE_MILLION = 1000000;
-  private int TEN_MILLION = 10 * ONE_MILLION;
-  private int NINE_MILLION = 9 * ONE_MILLION;
-  private int ELEVEN_MILLION = 11 * ONE_MILLION;
+  private final int ONE_MILLION = 1000000;
+  private final int TEN_MILLION = 10 * ONE_MILLION;
+  private final int NINE_MILLION = 9 * ONE_MILLION;
+  private final int ELEVEN_MILLION = 11 * ONE_MILLION;
 
   private NanoTimer timer;
 

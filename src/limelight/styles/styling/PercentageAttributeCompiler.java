@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class PercentageAttributeCompiler extends StyleAttributeCompiler
 {
-  private static Pattern percentagePattern = Pattern.compile("(\\d+)%");
+  private static final Pattern percentagePattern = Pattern.compile("(\\d+)%");
 
   public StyleAttribute compile(String value)
   {

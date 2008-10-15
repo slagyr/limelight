@@ -9,7 +9,7 @@ import limelight.styles.abstrstyling.FillStrategyAttribute;
 public class SimpleFillStrategyAttribute implements FillStrategyAttribute
 {
   private ImageFillStrategy strategy;
-  private String name;
+  private final String name;
 
   public SimpleFillStrategyAttribute(String name)
   {

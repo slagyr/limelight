@@ -2,7 +2,7 @@ package limelight.styles.abstrstyling;
 
 public class NoneableAttribute<T> implements StyleAttribute
 {
-  private T attribute;
+  private final T attribute;
 
   public NoneableAttribute(T attribute)
   {

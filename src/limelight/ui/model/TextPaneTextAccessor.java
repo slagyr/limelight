@@ -7,7 +7,7 @@ import limelight.LimelightError;
 
 public class TextPaneTextAccessor implements TextAccessor
 {
-  private PropPanel panel;
+  private final PropPanel panel;
   private TextPanel textPane;
 
   public TextPaneTextAccessor(PropPanel panel)

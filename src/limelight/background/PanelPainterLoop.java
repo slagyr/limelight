@@ -14,11 +14,11 @@ import java.util.ArrayList;
 
 public class PanelPainterLoop extends IdleThreadLoop
 {
-  private ArrayList<Panel> panelBuffer = new ArrayList<Panel>(50);
-  private ArrayList<Rectangle> regionBuffer = new ArrayList<Rectangle>(50);
+  private final ArrayList<Panel> panelBuffer = new ArrayList<Panel>(50);
+  private final ArrayList<Rectangle> regionBuffer = new ArrayList<Rectangle>(50);
   private int updatesPerSecond;
   private int optimalDelayTimeNanos;
-  private NanoTimer timer;
+  private final NanoTimer timer;
   private long lastExecutionDuration;
 
   public PanelPainterLoop()

@@ -5,7 +5,7 @@ import limelight.styles.abstrstyling.StyleAttribute;
 
 public class NoneableAttributeCompiler<A extends StyleAttribute> extends StyleAttributeCompiler
 {
-  private StyleAttributeCompiler target;
+  private final StyleAttributeCompiler target;
 
   public NoneableAttributeCompiler(StyleAttributeCompiler target)
   {

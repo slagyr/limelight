@@ -20,14 +20,13 @@ public class BackgroundPainterTest extends TestCase
     RealStyleAttributeCompilerFactory.install();
   }
 
-  private MockPropablePanel panel;
   private Style style;
   private BackgroundPainter painter;
   private MockGraphics graphics;
 
   public void setUp() throws Exception
   {
-    panel = new MockPropablePanel();
+    MockPropablePanel panel = new MockPropablePanel();
     style = panel.getStyle();
     painter = new BackgroundPainter(panel);
     graphics = new MockGraphics();

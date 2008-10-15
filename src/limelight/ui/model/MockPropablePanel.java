@@ -17,7 +17,7 @@ import limelight.styles.Style;
 
 public class MockPropablePanel extends MockPanel implements PropablePanel, PaintablePanel
 {
-  public MockProp prop;
+  public final MockProp prop;
   public Style style;
   public Box childConsumableBox;
   private int prepForSnapWidth;

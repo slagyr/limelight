@@ -47,7 +47,7 @@ public class TextAreaPanel extends InputPanel
 
   private static class TextAreaTextAccessor implements TextAccessor
   {
-    private TextArea textArea;
+    private final TextArea textArea;
 
     public TextAreaTextAccessor(TextArea textArea)
     {

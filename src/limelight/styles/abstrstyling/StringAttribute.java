@@ -4,7 +4,7 @@ import limelight.util.Util;
 
 public class StringAttribute implements StyleAttribute
 {
-  private String stringValue;
+  private final String stringValue;
 
   public StringAttribute(String value)
   {

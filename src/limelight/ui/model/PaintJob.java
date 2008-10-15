@@ -17,12 +17,12 @@ import java.awt.image.BufferedImage;
 
 public class PaintJob
 {
-  private Box clip;
-  private BufferedImage buffer;
+  private final Box clip;
+  private final BufferedImage buffer;
   private Graphics2D rootGraphics;
-  private Composite composite;
-  private Cache<Panel, BufferedImage> bufferCache;
-  private BufferedImagePool bufferedImagePool;
+  private final Composite composite;
+  private final Cache<Panel, BufferedImage> bufferCache;
+  private final BufferedImagePool bufferedImagePool;
 
   public PaintJob(Box clip)
   {

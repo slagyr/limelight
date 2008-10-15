@@ -80,11 +80,6 @@ public class Frame extends JFrame
     JOptionPane.showMessageDialog(this, message, "Limelight Alert", JOptionPane.WARNING_MESSAGE);
   }
 
-  public void setSize(int width, int height)
-  {
-    super.setSize(width, height);
-  }
-
   public RootPanel getRoot()
   {
     return root;
@@ -118,7 +113,7 @@ public class Frame extends JFrame
 
   private class LimelightContentPane extends JPanel
   {
-    private Frame frame;
+    private final Frame frame;
 
     public LimelightContentPane(Frame frame)
     {

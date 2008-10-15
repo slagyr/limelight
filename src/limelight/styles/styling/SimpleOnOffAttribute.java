@@ -4,7 +4,7 @@ import limelight.styles.abstrstyling.OnOffAttribute;
 
 public class SimpleOnOffAttribute implements OnOffAttribute
 {
-  private boolean isOn;
+  private final boolean isOn;
 
   public SimpleOnOffAttribute(boolean isOn)
   {

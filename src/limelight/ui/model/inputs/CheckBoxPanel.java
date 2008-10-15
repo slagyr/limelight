@@ -35,7 +35,7 @@ public class CheckBoxPanel extends InputPanel
 
   private static class CheckBoxTextAccessor implements TextAccessor
   {
-    private CheckBox checkBox;
+    private final CheckBox checkBox;
 
     public CheckBoxTextAccessor(CheckBox checkBox)
     {

@@ -10,7 +10,7 @@ public class IdleThreadLoopTest extends TestCase
   {
     public boolean shouldIdle;
     public int executions;
-    public long delay = 0;
+    public final long delay = 0;
 
     public boolean shouldBeIdle()
     {
@@ -30,6 +30,7 @@ public class IdleThreadLoopTest extends TestCase
       }
       catch(InterruptedException e)
       {
+        //okay
       }
     }
   }

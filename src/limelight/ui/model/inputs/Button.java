@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class Button extends JButton
 {
-  private ButtonPanel panel;
+  private final ButtonPanel panel;
 
   public Button(ButtonPanel panel)
   {

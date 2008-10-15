@@ -8,7 +8,7 @@ import java.util.Hashtable;
 
 public class ButtonGroupCache
 {
-  private Hashtable<String, ButtonGroup> cache;
+  private final Hashtable<String, ButtonGroup> cache;
 
   public ButtonGroupCache()
   {

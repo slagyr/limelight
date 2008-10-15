@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class ScrollPane
 {
-  private BasePanel panel;
+  private final BasePanel panel;
 
   public ScrollPane(BasePanel panel)
   {

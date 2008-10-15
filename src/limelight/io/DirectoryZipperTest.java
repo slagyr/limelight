@@ -12,7 +12,7 @@ import java.io.File;
 
 public class DirectoryZipperTest extends TestCase
 {
-  public static final String ROOT_DIR = FileUtil.buildPath(new String[] {TestUtil.TMP_DIR, "test_rootdir"});
+  private static final String ROOT_DIR = FileUtil.buildPath(TestUtil.TMP_DIR, "test_rootdir");
 
   public void setUp() throws Exception
   {

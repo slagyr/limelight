@@ -9,7 +9,7 @@ public class IntegerAttributeCompiler extends StyleAttributeCompiler
   {
     try
     {
-      int intValue = -1;
+      int intValue;
       if(value.indexOf(".") != -1)
         intValue = (int)(Double.parseDouble(value) + 0.5);
       else

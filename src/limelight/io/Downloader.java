@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 
 public class Downloader
 {
-  private TempDirectory tempDirectory;
+  private final TempDirectory tempDirectory;
 
   public Downloader(TempDirectory tempDirectory)
   {

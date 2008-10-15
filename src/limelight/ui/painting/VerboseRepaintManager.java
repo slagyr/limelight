@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class VerboseRepaintManager extends RepaintManager
 {
-  public VerboseRepaintManager()
+  private VerboseRepaintManager()
   {
     super();
   }

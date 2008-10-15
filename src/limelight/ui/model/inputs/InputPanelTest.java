@@ -28,7 +28,6 @@ public class InputPanelTest extends TestCase
   private boolean pressed;
   private boolean released;
   private boolean clicked;
-  private RootPanel root;
   private MockPanel rootPanel;
   private TestableInputPanel input2;
   private TestableInputPanel input3;
@@ -125,7 +124,7 @@ public class InputPanelTest extends TestCase
 
   private void attatchRoot()
   {
-    root = new RootPanel(new MockFrame());
+    RootPanel root = new RootPanel(new MockFrame());
     rootPanel = new MockPanel();
     root.setPanel(rootPanel);
     rootPanel.add(parent);

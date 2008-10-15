@@ -14,11 +14,11 @@ import java.util.List;
 
 public class PropPanelLayout
 {
-  private LinkedList<Row> rows;
+  private final LinkedList<Row> rows;
   private Row currentRow;
-  protected PropPanel panel;
-  protected int consumedHeight;
-  protected int consumedWidth;
+  private final PropPanel panel;
+  private int consumedHeight;
+  private int consumedWidth;
   private LinkedList<Panel> floaters;
 
   public PropPanelLayout(PropPanel panel)
@@ -235,8 +235,8 @@ public class PropPanelLayout
 
   private class Row
   {
-    private LinkedList<Panel> items;
-    private int maxWidth;
+    private final LinkedList<Panel> items;
+    private final int maxWidth;
     public int width;
     public int height;
 

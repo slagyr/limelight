@@ -12,24 +12,24 @@ public class FileUtilTest extends TestCase
 {
   public void testBuildPathEmpty() throws Exception
 	{
-		assertEquals("", FileUtil.buildPath(new String[]{}));
+		assertEquals("", FileUtil.buildPath());
 	}
 
 	public void testBuildPathOneElement() throws Exception
 	{
-		assertEquals("a", FileUtil.buildPath(new String[]{"a"}));
+		assertEquals("a", FileUtil.buildPath("a"));
 	}
 
 	public void testBuildPathThreeElements() throws Exception
 	{
 		String separator = System.getProperty("file.separator");
-		assertEquals("a" + separator + "b" + separator + "c", FileUtil.buildPath(new String[]{"a", "b", "c"}));
+		assertEquals("a" + separator + "b" + separator + "c", FileUtil.buildPath("a", "b", "c"));
 	}
 
   public void testCurrentPath() throws Exception
   {
     String currentPath = FileUtil.currentPath();
-    File currentPathFile = new File(FileUtil.buildPath(new String[] {currentPath, "."} ));
+    File currentPathFile = new File(FileUtil.buildPath(currentPath, "."));
     File dotFile = new File(".");
     assertEquals(dotFile.getAbsolutePath(), currentPathFile.getAbsolutePath());
   }

@@ -13,10 +13,10 @@ import java.util.List;
 
 public class AnimationLoop extends IdleThreadLoop
 {
-  private LinkedList<Animation> animations = new LinkedList<Animation>();
-  private ArrayList<Animation> buffer = new ArrayList<Animation>(50);
+  private final LinkedList<Animation> animations = new LinkedList<Animation>();
+  private final ArrayList<Animation> buffer = new ArrayList<Animation>(50);
   private long optimalSleepNanos = -1;
-  private NanoTimer timer = new NanoTimer();
+  private final NanoTimer timer = new NanoTimer();
   private long lastExecutionDuration;
 
   public boolean shouldBeIdle()

@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class TextArea extends JTextArea
 {
-  private TextAreaPanel panel;
+  private final TextAreaPanel panel;
 
   public TextArea(TextAreaPanel panel)
   {
