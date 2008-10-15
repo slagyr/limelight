@@ -160,19 +160,8 @@ module Limelight
       return @root_styles
     end
 
-    private ###############################################
-
-    def merge_with_root_styles(styles)
-      root_styles.each_pair do |key, value|
-        styles[key] = value if !styles.has_key?(key)
-      end
-    end
-
-    def unpack_production(production_name)
-      packer = Limelight::Util::Packer.new()
-      return packer.unpack(production_name)
-    end
-
+    # Returns a hash of all the built-in Limglight Styles
+    #
     def builtin_styles
       return @builtin_styles if @builtin_styles
       builtin_styles_file = File.join($LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
@@ -184,7 +173,20 @@ module Limelight
           raise BuildException.new(filename, content, e)
         end
       end
-      return @builtin_styles
+      return @builtin_styles.dup
+    end
+
+    private ###############################################
+
+    def merge_with_root_styles(styles)
+      root_styles.each_pair do |key, value|
+        styles[key] = value if !styles.has_key?(key)
+      end
+    end
+
+    def unpack_production(production_name)
+      packer = Limelight::Util::Packer.new()
+      return packer.unpack(production_name)
     end
 
   end

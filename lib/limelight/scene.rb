@@ -131,7 +131,7 @@ module Limelight
     private ###############################################
 
     def reload
-      load(@path)
+      load(File.basename(path))
     end
 
   end
