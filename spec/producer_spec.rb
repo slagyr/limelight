@@ -150,5 +150,9 @@ describe Limelight::Producer do
     
     @producer.open
   end
+
+  it "should give the same buildin_styles hash twice" do
+    @producer.builtin_styles.should_not be(@producer.builtin_styles)
+  end
   
 end

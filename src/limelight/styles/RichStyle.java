@@ -117,4 +117,19 @@ public class RichStyle extends BaseStyle implements StyleObserver
   {
     return extensions != null && extensions.contains(style);
   }
+
+  public String toString()
+  {
+    StringBuffer buffer = new StringBuffer(super.toString());
+    for(int i = 0; i < styles.length; i++)
+    {
+      StyleAttribute style = styles[i];
+      if(style != null)
+      {
+        StyleDescriptor descriptor = Style.STYLE_LIST.get(i);
+        buffer.append("\n\t").append(descriptor.name).append(": ").append(style);
+      }
+    }
+    return buffer.toString();
+  }
 }
