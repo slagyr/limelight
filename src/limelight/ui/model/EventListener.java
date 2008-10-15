@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class EventListener implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener
 {
-  private Panel panel;
+  private final Panel panel;
   public Panel pressedPanel;
   public Panel hooveredPanel;
 
@@ -96,8 +96,10 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
     while(descendant != ancestor && !(descendant instanceof RootPanel))
     {
       if(descendant != null)
+      {
         descendant.mouseExited(e);
-      descendant = descendant.getParent();
+        descendant = descendant.getParent();
+      }
     }
   }
 

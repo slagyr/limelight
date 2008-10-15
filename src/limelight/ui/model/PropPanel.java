@@ -28,8 +28,8 @@ import java.util.LinkedList;
 
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
 {
-  private Prop prop;
-  private PropPanelLayout layout;
+  private final Prop prop;
+  private final PropPanelLayout layout;
   private LinkedList<Painter> painters;
   private Border borderShaper;
   private TextAccessor textAccessor;
@@ -295,7 +295,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     doLayout();
     PaintJob job = new PaintJob(getAbsoluteBounds());
     //TODO Why are we painting the root panel here?  So wastful! Maybe. Transparency?
-    job.paint(((RootPanel) getRoot()).getPanel()); //TODO - cast should not be neccessary here.
+    job.paint((getRoot()).getPanel()); //TODO - cast should not be neccessary here.
     job.applyTo(getRoot().getGraphics());
 //    }
   }
@@ -347,7 +347,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
-  {    
+  {
     if(Context.instance().bufferedImageCache != null &&
         descriptor != Style.TRANSPARENCY &&
         descriptor != Style.X &&

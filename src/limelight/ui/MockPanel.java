@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class MockPanel extends BasePanel
 {
-  public FlatStyle style;
+  public final FlatStyle style;
   public static int paintCount;
   public int paintIndex;
   public boolean wasPainted;

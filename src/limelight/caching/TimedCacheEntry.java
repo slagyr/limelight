@@ -5,7 +5,7 @@ package limelight.caching;
 
 public class TimedCacheEntry<T> extends CacheEntry<T>
 {
-  private double timeoutSeconds;
+  private final double timeoutSeconds;
   private double expirationDate;
 
   public TimedCacheEntry(T value, double timeout)

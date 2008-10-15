@@ -14,13 +14,12 @@ public class FrameManagerTest extends TestCase
 {
   private FrameManager manager;
   private Frame frame;
-  private MockStage stage;
 
   public void setUp() throws Exception
   {
     manager = new FrameManager();
     Context.instance().frameManager = manager;
-    stage = new MockStage();
+    MockStage stage = new MockStage();
     frame = new Frame(stage);
   }
 

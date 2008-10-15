@@ -39,7 +39,7 @@ public class Main
     new Main().run(args);
   }
 
-  public static void initializeContext() throws Exception
+  public static void initializeContext()
   {
     new Main().configureContext();
   }
@@ -63,7 +63,7 @@ public class Main
       Context.instance().studio.open(getStartupProduction());
   }
 
-  private void startJrubyRuntime() throws FileNotFoundException
+  private void startJrubyRuntime()
   {
     StringBuffer startupRuby = new StringBuffer();
     startupRuby.append("require '").append(FileUtil.pathTo(context.limelightHome, "lib", "init")).append("'").append("\n");

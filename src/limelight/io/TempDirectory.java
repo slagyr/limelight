@@ -7,7 +7,7 @@ import java.io.File;
 
 public class TempDirectory
 {
-  private File root;
+  private final File root;
 
   public TempDirectory()
   {

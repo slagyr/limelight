@@ -14,8 +14,8 @@ public class ScrollBarPanel extends BasePanel
 {
   public static final int VERTICAL = JScrollBar.VERTICAL;
   public static final int HORIZONTAL = JScrollBar.HORIZONTAL;
-  private JScrollBar scrollBar;
-  private int preferredGirth;
+  private final JScrollBar scrollBar;
+  private final int preferredGirth;
   private boolean configuring;
 
   public ScrollBarPanel(int orientation)

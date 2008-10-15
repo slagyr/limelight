@@ -12,7 +12,7 @@ import java.awt.event.*;
 
 public class MockProp implements Prop
 {
-  public ScreenableStyle style;
+  public final ScreenableStyle style;
   public Style hoverStyle;
   public String text;
   public String name;

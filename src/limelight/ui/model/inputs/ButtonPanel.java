@@ -42,7 +42,7 @@ public class ButtonPanel extends InputPanel
 
   private static class ButtonTextAccessor implements TextAccessor
   {
-    private Button button;
+    private final Button button;
 
     public ButtonTextAccessor(Button button)
     {

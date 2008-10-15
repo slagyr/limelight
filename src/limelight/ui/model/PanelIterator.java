@@ -10,7 +10,7 @@ import java.util.Stack;
 
 public class PanelIterator implements Iterator<Panel>
 {
-  private Stack<Iterator<Panel>> iterators = new Stack<Iterator<Panel>>();
+  private final Stack<Iterator<Panel>> iterators = new Stack<Iterator<Panel>>();
   private Panel next;
 
   public PanelIterator(Panel root)

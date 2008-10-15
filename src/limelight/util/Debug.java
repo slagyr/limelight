@@ -4,16 +4,16 @@ import java.text.DecimalFormat;
 
 public class Debug
 {
-  private static DecimalFormat secondsFormat = new DecimalFormat("0.0000");
+  private static final DecimalFormat secondsFormat = new DecimalFormat("0.0000");
 
   public static Debug debug1 = new Debug();
   public static Debug debug2 = new Debug();
-  public static Debug alloc = new Debug("alloc");
-  public static Debug paint = new Debug("paint");
-  public static Debug copy = new Debug("copy");
+  public static final Debug alloc = new Debug("alloc");
+  public static final Debug paint = new Debug("paint");
+  public static final Debug copy = new Debug("copy");
   public static Debug event = new Debug("event");
 
-  private NanoTimer interval;
+  private final NanoTimer interval;
   private long life = 0;
   private String name = "";
 

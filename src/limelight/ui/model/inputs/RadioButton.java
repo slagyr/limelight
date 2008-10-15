@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class RadioButton extends JRadioButton
 {
-  private RadioButtonPanel panel;
+  private final RadioButtonPanel panel;
 
   public RadioButton(RadioButtonPanel panel)
   {

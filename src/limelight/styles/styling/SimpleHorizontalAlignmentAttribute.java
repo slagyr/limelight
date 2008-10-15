@@ -6,7 +6,7 @@ import limelight.LimelightError;
 
 public class SimpleHorizontalAlignmentAttribute implements HorizontalAlignmentAttribute
 {
-  private Aligner.HorizontalAligner alignment;
+  private final Aligner.HorizontalAligner alignment;
 
   public SimpleHorizontalAlignmentAttribute(Aligner.HorizontalAligner alignment)
   {

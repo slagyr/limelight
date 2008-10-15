@@ -110,7 +110,7 @@ public class KeyboardFocusManagerTest extends TestCase
 
   private static class MockComponent extends Component
   {
-    public MockFocusListener mockFocusListener = new MockFocusListener();
+    public final MockFocusListener mockFocusListener = new MockFocusListener();
 
     public synchronized FocusListener[] getFocusListeners()
     {

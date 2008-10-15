@@ -30,9 +30,9 @@ class MockStyleObserver implements StyleObserver
 
   public boolean changed()
   {
-    for(int i = 0; i < changes.length; i++)
+    for(boolean change : changes)
     {
-      if(changes[i])
+      if(change)
         return true;
     }
     return false;
@@ -52,8 +52,8 @@ class MockStyleObserver implements StyleObserver
   public int getChangedCount()
   {
     int count = 0;
-    for (int i = 0; i < changes.length; i++)
-      if(changes[i])
+    for(boolean change : changes)
+      if(change)
         count++;
     return count;
   }

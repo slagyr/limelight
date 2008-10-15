@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class SimpleColorAttribute implements ColorAttribute
 {
-  private Color color;
+  private final Color color;
 
   public SimpleColorAttribute(Color color)
   {

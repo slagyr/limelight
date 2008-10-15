@@ -7,11 +7,11 @@ import java.io.*;
 
 public class StreamReader
 {
-	private InputStream input;
+	private final InputStream input;
 	private State state;
 
-	ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-	OutputStream output;
+	private final ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+	private OutputStream output;
 
 	private int readGoal;
 	private int readStatus;

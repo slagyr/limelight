@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class CheckBox extends JCheckBox
 {
-  private CheckBoxPanel panel;
+  private final CheckBoxPanel panel;
 
   public CheckBox(CheckBoxPanel panel)
   {

@@ -17,7 +17,7 @@ import java.awt.event.*;
 
 public abstract class InputPanel extends BasePanel
 {
-  private Component component;
+  private final Component component;
   private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
   private boolean inPaintOn;
 
@@ -200,7 +200,7 @@ public abstract class InputPanel extends BasePanel
 
   private static class InputPanelKeyListener implements KeyListener
   {
-    private InputPanel panel;
+    private final InputPanel panel;
 
     public InputPanelKeyListener(InputPanel inputPanel)
     {
@@ -225,7 +225,7 @@ public abstract class InputPanel extends BasePanel
 
   private static class ButtonActionListener implements ActionListener
   {
-    private InputPanel panel;
+    private final InputPanel panel;
 
     public ButtonActionListener(InputPanel inputPanel)
     {

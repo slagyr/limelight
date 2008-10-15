@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 public class RichStyle extends BaseStyle implements StyleObserver
 {
-  private StyleAttribute[] styles;
+  private final StyleAttribute[] styles;
   private LinkedList<RichStyle> extensions;
 
   public RichStyle()

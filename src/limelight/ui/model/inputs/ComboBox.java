@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class ComboBox extends JComboBox
 {
-  private ComboBoxPanel panel;
+  private final ComboBoxPanel panel;
   private boolean inPaintChildren;
 
   public ComboBox(ComboBoxPanel panel)

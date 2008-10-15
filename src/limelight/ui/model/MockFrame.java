@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class MockFrame extends Frame
 {
-  private Container contentPanel;
+  private final Container contentPanel;
   public boolean wasRefreshed;
 
   public MockFrame()

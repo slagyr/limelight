@@ -14,12 +14,12 @@ public class Colors
 {
   public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
-  private static Pattern fullHex = Pattern.compile("#?([0-9aAbBcCdDeEfF]{6})");
-  private static Pattern shortHex = Pattern.compile("#?([0-9aAbBcCdDeEfF]{3})");
-  private static Pattern fullHexWithAlpha = Pattern.compile("#?([0-9aAbBcCdDeEfF]{8})");
-  private static Pattern shortHexWithAlpha = Pattern.compile("#?([0-9aAbBcCdDeEfF]{4})");
-  private static Pattern validName = Pattern.compile("[a-z_]+");
-  private static HashMap<String, Color> namedColors = new HashMap<String, Color>();
+  private static final Pattern fullHex = Pattern.compile("#?([0-9aAbBcCdDeEfF]{6})");
+  private static final Pattern shortHex = Pattern.compile("#?([0-9aAbBcCdDeEfF]{3})");
+  private static final Pattern fullHexWithAlpha = Pattern.compile("#?([0-9aAbBcCdDeEfF]{8})");
+  private static final Pattern shortHexWithAlpha = Pattern.compile("#?([0-9aAbBcCdDeEfF]{4})");
+  private static final Pattern validName = Pattern.compile("[a-z_]+");
+  private static final HashMap<String, Color> namedColors = new HashMap<String, Color>();
 
   static
   {
@@ -205,7 +205,7 @@ public class Colors
     return null;
   }
 
-  public static Color convertFullHexWithoutAlphaColor(String value)
+  private static Color convertFullHexWithoutAlphaColor(String value)
   {
     Matcher matcher = fullHex.matcher(value);
     if(matcher.matches())
@@ -216,7 +216,7 @@ public class Colors
     return null;
   }
 
-  public static Color convertShortHexWithAlphaColor(String value)
+  private static Color convertShortHexWithAlphaColor(String value)
   {
     Matcher matcher = shortHexWithAlpha.matcher(value);
     if(matcher.matches())
@@ -231,7 +231,7 @@ public class Colors
     return null;
   }
 
-  public static Color convertShortHexWithoutAlphaColor(String value)
+  private static Color convertShortHexWithoutAlphaColor(String value)
   {
     Matcher matcher = shortHex.matcher(value);
     if(matcher.matches())
@@ -247,8 +247,8 @@ public class Colors
     return null;
   }
 
-  private static Pattern wordTransition = Pattern.compile("[a-z][A-Z]");
-  public static Color convertNamedColor(String name)
+  private static final Pattern wordTransition = Pattern.compile("[a-z][A-Z]");
+  private static Color convertNamedColor(String name)
   {
     if(!validName.matcher(name).matches())
       name = formatName(name);

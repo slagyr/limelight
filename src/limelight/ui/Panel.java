@@ -35,7 +35,7 @@ public interface Panel extends Iterable<Panel>
   RootPanel getRoot();
   boolean isAncestor(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
-  
+
   void add(Panel child);
   List<Panel> getChildren();
 

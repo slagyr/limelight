@@ -8,7 +8,7 @@ import limelight.styles.abstrstyling.StyleAttribute;
 
 public class FlatStyle extends BaseStyle
 {
-  private StyleAttribute[] styles;
+  private final StyleAttribute[] styles;
 
   public FlatStyle()
 	{

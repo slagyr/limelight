@@ -4,7 +4,7 @@ import limelight.styles.abstrstyling.IntegerAttribute;
 
 public class SimpleIntegerAttribute implements IntegerAttribute
 {
-  private int value;
+  private final int value;
 
   public SimpleIntegerAttribute(int value)
   {

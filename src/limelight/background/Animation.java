@@ -5,10 +5,10 @@ import limelight.Context;
 
 public abstract class Animation
 {
-  private static int MaxMakeups = 5;
+  private static final int MaxMakeups = 5;
   
   private long delayNanos;
-  private NanoTimer timer = new NanoTimer();
+  private final NanoTimer timer = new NanoTimer();
   private boolean running;
   private long tolerableDelay;
 

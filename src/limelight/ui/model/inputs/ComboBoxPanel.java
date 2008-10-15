@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 public class ComboBoxPanel extends InputPanel
 {
   private ComboBox comboBox;
-  private ContainerStub container;
 
   public ComboBox getComboBox()
   {
@@ -26,7 +25,7 @@ public class ComboBoxPanel extends InputPanel
   {
     comboBox = new ComboBox(this);
 
-    container = new ContainerStub(this);
+    ContainerStub container = new ContainerStub(this);
     container.add(comboBox);
 
     comboBox.addItemListener(new ComboBoxPanelItemListener(this));
@@ -47,7 +46,7 @@ public class ComboBoxPanel extends InputPanel
 
   private static class ComboBoxTextAccessor implements TextAccessor
   {
-    private ComboBox comboBox;
+    private final ComboBox comboBox;
 
     public ComboBoxTextAccessor(ComboBox comboBox)
     {
@@ -67,7 +66,7 @@ public class ComboBoxPanel extends InputPanel
 
   private class ComboBoxPanelItemListener implements ItemListener
   {
-    private ComboBoxPanel panel;
+    private final ComboBoxPanel panel;
 
     public ComboBoxPanelItemListener(ComboBoxPanel comboBoxPanel)
     {

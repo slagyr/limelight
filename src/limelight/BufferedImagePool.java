@@ -14,8 +14,8 @@ import java.util.Iterator;
 
 public class BufferedImagePool
 {
-  private double timeoutSeconds;
-  private LinkedList<TimedCacheEntry<BufferedImage>> entries;
+  private final double timeoutSeconds;
+  private final LinkedList<TimedCacheEntry<BufferedImage>> entries;
 
   public BufferedImagePool(double timeoutSeconds)
   {

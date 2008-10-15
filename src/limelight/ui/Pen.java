@@ -8,7 +8,7 @@ import java.awt.geom.Line2D;
 
 public class Pen
 {
-	private Graphics2D graphics;
+	private final Graphics2D graphics;
 
 	public Pen(Graphics graphics)
 	{

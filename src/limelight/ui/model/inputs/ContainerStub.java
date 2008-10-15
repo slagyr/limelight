@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class ContainerStub extends Container
 {
-  private Panel panel;
+  private final Panel panel;
 
   public ContainerStub(limelight.ui.Panel panel)
   {
@@ -19,8 +19,8 @@ public class ContainerStub extends Container
   public Container getParent()
   {
     Container parent = null;
-    if(panel != null & panel.getRoot() != null)
-      parent = ((RootPanel)panel.getRoot()).getFrame();
+    if(panel != null && panel.getRoot() != null)
+      parent = (panel.getRoot()).getFrame();
     return parent;
   }
 
@@ -38,8 +38,7 @@ public class ContainerStub extends Container
       return 0;
     else
     {
-      int y = panel.getAbsoluteLocation().y;
-      return y;
+      return panel.getAbsoluteLocation().y;
     }
   }
 

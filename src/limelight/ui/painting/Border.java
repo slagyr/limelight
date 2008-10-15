@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Border
 {
-  private Style style;
+  private final Style style;
   private int topWidth;
   private int rightWidth;
   private int bottomWidth;
@@ -228,7 +228,7 @@ public class Border
   private abstract static class Jig
   {
     protected int left, right, top, bottom;
-    protected Border border;
+    protected final Border border;
 
     public Jig(Border border)
     {
@@ -372,7 +372,7 @@ public class Border
 
   private class BorderShape implements Shape
   {
-    private Border border;
+    private final Border border;
 
     public BorderShape(Border border)
     {
@@ -530,7 +530,7 @@ public class Border
 
   private static class MovePathSegment extends PathSegment
   {
-    protected double d1, d2;
+    protected final double d1, d2;
 
     public MovePathSegment(double[] coords)
     {
@@ -581,7 +581,7 @@ public class Border
 
   private static class CubicPathSegment extends PathSegment
   {
-    private double d1, d2, d3, d4, d5, d6;
+    private final double d1, d2, d3, d4, d5, d6;
 
     public CubicPathSegment(double[] coords)
     {

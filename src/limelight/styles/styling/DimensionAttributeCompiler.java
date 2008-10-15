@@ -9,13 +9,13 @@ import java.util.regex.Matcher;
 
 public class DimensionAttributeCompiler extends StyleAttributeCompiler
 {
-  private static Pattern percentagePattern = Pattern.compile("(\\d+)%");
+  private static final Pattern percentagePattern = Pattern.compile("(\\d+)%");
 
   public StyleAttribute compile(String value)
   {
     try
     {
-      DimensionAttribute attribute = null;
+      DimensionAttribute attribute;
       attribute = attemptAutoAttribute(value);
       if(attribute == null)
         attribute = attemptPercentageAttribute(value);
@@ -35,7 +35,7 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
 
   private DimensionAttribute attemptStaticAttribute(String value)
   {
-    int intValue = -1;
+    int intValue;
     if(value.indexOf(".") != -1)
       intValue = (int)(Double.parseDouble(value) + 0.5);
     else

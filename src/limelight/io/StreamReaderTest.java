@@ -15,9 +15,8 @@ public class StreamReaderTest extends TestCase
 	private String readResult;
 	private byte[] byteResult;
 	private Thread thread;
-	private Exception exception;
 
-	public void setUp() throws Exception
+  public void setUp() throws Exception
 	{
 		output = new PipedOutputStream();
 		reader = new StreamReader(new PipedInputStream(output));
@@ -240,12 +239,12 @@ public class StreamReaderTest extends TestCase
 			}
 			catch(Exception e)
 			{
-				exception = e;
+        Exception exception = e;
 			}
 		}
 
 		public abstract void doRead() throws Exception;
-	};
+	}
 
 	class ReadLine extends ReadThread
 	{
@@ -257,7 +256,7 @@ public class StreamReaderTest extends TestCase
 
 	class ReadCount extends ReadThread
 	{
-		private int amount;
+		private final int amount;
 
 		public ReadCount(int amount)
 		{
@@ -272,7 +271,7 @@ public class StreamReaderTest extends TestCase
 
 	class ReadUpTo extends ReadThread
 	{
-		private String boundary;
+		private final String boundary;
 
 		public ReadUpTo(String b)
 		{
@@ -295,7 +294,7 @@ public class StreamReaderTest extends TestCase
 
 	class ReadCountBytes extends ReadThread
 	{
-		private int amount;
+		private final int amount;
 
 		public ReadCountBytes(int amount)
 		{
@@ -310,7 +309,7 @@ public class StreamReaderTest extends TestCase
 
 	class ReadUpToBytes extends ReadThread
 	{
-		private String boundary;
+		private final String boundary;
 
 		public ReadUpToBytes(String b)
 		{

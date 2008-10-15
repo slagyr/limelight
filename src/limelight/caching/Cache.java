@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public abstract class Cache<KEY, VALUE>
 {
-  private HashMap<KEY, CacheEntry<VALUE>> map;
+  private final HashMap<KEY, CacheEntry<VALUE>> map;
 
   public Cache()
   {

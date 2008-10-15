@@ -21,10 +21,10 @@ public abstract class BasePanel implements Panel
   private int y;
   private Panel parent;
   protected Point absoluteLocation;
-  protected Box absoluteBounds;
-  protected LinkedList<Panel> children;
+  private Box absoluteBounds;
+  protected final LinkedList<Panel> children;
   private boolean sterilized;
-  protected Box boundingBox;
+  private Box boundingBox;
   private List<Panel> readonlyChildren;
   private boolean needsLayout = true;
 
@@ -406,9 +406,7 @@ public abstract class BasePanel implements Panel
 
   protected void propogateSizeChange(Panel panel)
   {
-    if(panel == null || panel.needsLayout() || !(panel instanceof BasePanel))
-      return;
-    else
+    if(panel != null && !panel.needsLayout() && panel instanceof BasePanel)
     {
       Style style = panel.getStyle();
       if(style != null && style.hasAutoDimension())

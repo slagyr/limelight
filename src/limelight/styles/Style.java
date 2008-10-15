@@ -12,7 +12,7 @@ public abstract class Style
 {
   public static final LinkedList<StyleDescriptor> STYLE_LIST = new LinkedList<StyleDescriptor>();
 
-  public static StyleDescriptor descriptor(String name, String compilerType, String defaultValue)
+  private static StyleDescriptor descriptor(String name, String compilerType, String defaultValue)
   {
     StyleAttributeCompiler compiler = Context.instance().styleAttributeCompilerFactory.compiler(compilerType);
     compiler.setName(name);
@@ -80,7 +80,7 @@ public abstract class Style
 
   protected abstract StyleAttribute get(int key);
 
-  public abstract void put(StyleDescriptor descriptor, String value);
+  protected abstract void put(StyleDescriptor descriptor, String value);
 
   public abstract void setDefault(StyleDescriptor descriptor, String value);
 

@@ -46,7 +46,7 @@ public class TextBoxPanel extends InputPanel
 
   private static class TextBoxTextAccessor implements TextAccessor
   {
-    private TextBox textBox;
+    private final TextBox textBox;
 
     public TextBoxTextAccessor(TextBox textBox)
     {

@@ -22,12 +22,12 @@ import java.util.LinkedList;
 public class RootPanel implements Panel
 {
   private Panel panel;
-  private Container contentPane;
+  private final Container contentPane;
   private EventListener listener;
   private boolean alive;
-  private Frame frame;
-  private ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
-  private ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
+  private final Frame frame;
+  private final ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
+  private final ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
 
   public RootPanel(Frame frame)
@@ -330,10 +330,6 @@ public class RootPanel implements Panel
     return panels;
   }
 
-  public void replace(Panel child, Panel newChild)
-  {
-  }
-
   public boolean remove(Panel child)
   {
     return false;
@@ -383,11 +379,8 @@ public class RootPanel implements Panel
 
   public Panel getOwnerOfPoint(Point point)
   {
-//    System.err.println("RootPanel.getOwnerOfPoint()");
-//    throw new RuntimeException("RootPanel.getOwnerOfPoint()");
-    point = new Point(point.x - getX(), point.y - getY());
-    if(panel.containsRelativePoint(point))
-      return panel.getOwnerOfPoint(point);
+    System.err.println("RootPanel.getOwnerOfPoint()");
+    // never called
     return this;
   }
 

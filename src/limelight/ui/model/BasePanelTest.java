@@ -32,7 +32,7 @@ public class BasePanelTest extends TestCase
 
   class TestableBasePanel extends BasePanel
   {
-    public Style style = new FlatStyle();
+    public final Style style = new FlatStyle();
 
     public Box getChildConsumableArea()
     {

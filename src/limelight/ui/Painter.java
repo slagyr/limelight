@@ -11,12 +11,12 @@ public abstract class Painter
 {
   protected PaintablePanel panel;
 
-  public Painter(PaintablePanel panel)
+  protected Painter(PaintablePanel panel)
   {
     this.panel = panel;
   }
 
-  public Painter()
+  protected Painter()
   {
   }
 

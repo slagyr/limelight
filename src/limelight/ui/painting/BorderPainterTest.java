@@ -18,7 +18,6 @@ import java.awt.geom.Line2D;
 
 public class BorderPainterTest extends TestCase
 {
-  private MockProp prop;
   private MockPropablePanel panel;
   private Style style;
   private BorderPainter painter;
@@ -28,7 +27,7 @@ public class BorderPainterTest extends TestCase
   public void setUp() throws Exception
   {
     panel = new MockPropablePanel();
-    prop = (MockProp)panel.getProp();
+    MockProp prop = (MockProp) panel.getProp();
     style = prop.style;
     border = new Box(5, 5, 100, 100);
     panel.boxInsideMargins = border;

@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class TextBox extends JTextField
 {
-  private TextBoxPanel panel;
+  private final TextBoxPanel panel;
 
   public TextBox(TextBoxPanel panel)
   {

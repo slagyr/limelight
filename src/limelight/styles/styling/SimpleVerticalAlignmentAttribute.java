@@ -6,7 +6,7 @@ import limelight.util.Aligner;
 
 public class SimpleVerticalAlignmentAttribute implements VerticalAlignmentAttribute
 {
-  private Aligner.VerticalAligner alignment;
+  private final Aligner.VerticalAligner alignment;
 
   public SimpleVerticalAlignmentAttribute(Aligner.VerticalAligner alignment)
   {
