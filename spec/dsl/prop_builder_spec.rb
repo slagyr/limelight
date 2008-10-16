@@ -198,4 +198,48 @@ describe Limelight::DSL::PropBuilder do
     display.id.should == "display"
   end
 
+  it "should allow instance variables" do
+    root = Limelight::build_scene(@scene, :instance_variables => { :id1 => "abc", :id2 => "xyz" } ) do
+      __ :id => @id1
+      child :id => @id2
+    end
+    root.illuminate
+
+    root.id.should == "abc"
+    child = root.children[0]
+    child.id.should == "xyz"
+  end
+
+  it "should propogate instance variables to nested levels" do
+    root = Limelight::build_scene(@scene, :instance_variables => { :name => "blah" } ) do
+      child :id => "child", :name => @name do
+        grand_child :id => "grand_child", :name => @name do
+          great_grand_child :id => "great_grand_child", :name => @name do
+            baby :id => "baby", :name => @name
+          end
+        end
+      end
+    end
+    root.illuminate
+
+    root.find("child").name.should == "blah"
+    root.find("grand_child").name.should == "blah"
+    root.find("great_grand_child").name.should == "blah"
+    root.find("baby").name.should == "blah"
+  end
+
+  it "should allow instance_variable when installing an external props file" do
+    loader = make_mock("loader", :exists? => true)
+    loader.should_receive(:load).with("external.rb").and_return("child :id => @desired_id")
+
+    root = Limelight::build_scene(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
+      __install "external.rb", :desired_id => "123"
+    end
+    root.illuminate
+
+    child = root.children[0]
+    child.name.should == "child"
+    child.id.should == "123"
+  end
+
 end

@@ -14,8 +14,10 @@ module Limelight
   #
   def self.build_scene(root, options={}, &block)
     loader = options.delete(:build_loader)
+    instance_variables = options.delete(:instance_variables)
     root.add_options(options)
     builder = DSL::PropBuilder.new(root)
+    builder.__install_instance_variables(instance_variables)
     builder.__loader__ = loader
     builder.instance_eval(&block) if block
     return root
@@ -53,6 +55,10 @@ module Limelight
     # See Limelight::Prop
     #
     class PropBuilder
+
+      alias :__instance_variables :instance_variables
+      alias :__instance_variable_get :instance_variable_get
+      alias :__instance_variable_set :instance_variable_set
 
       Limelight::Util.lobotomize(self)
 
@@ -92,21 +98,53 @@ module Limelight
       # Installs props from another file using the prop DSL.  The path will be relative to the
       # root directory of the current production.
       #
-      def __install(file)
+      def __install(file, instance_variables = {})
         raise "Cannot install external props because no loader was provided" if @__loader__.nil?
         raise "External prop file: '#{file}' doesn't exist" if !@__loader__.exists?(file)
         content = @__loader__.load(file)
         begin
+          self.__install_instance_variables(instance_variables)
           self.instance_eval(content)
         rescue Exception => e
           raise BuildException.new(file, content, e)
         end
       end
 
+      # Installs instance variables, specified by the passed hash, into the PropBuilder instance.
+      # The following call...
+      #
+      #   __install_instance_variables :one => "1", "two" => "two", :three => 3
+      #
+      # ...will result in the following instance variables.
+      #
+      #   @one   = "1"
+      #   @two   = "2"
+      #   @three = 3
+      #
+      # Instance variables are propogated to nested builders so that they need only be defined
+      # on the top level builder and all children will have access to them.
+      #
+      def __install_instance_variables(instance_variables)
+        return if instance_variables.nil?
+        instance_variables.each_pair do |key, value|
+          name = "@#{key}"
+          __instance_variable_set(name, value)
+        end
+      end
+
+      def __install_instance_variables_from_builder(source) #:nodoc:
+        source.__instance_variables.each do |name|
+          if !__instance_variable_get(name)
+            value = source.__instance_variable_get(name)
+            __instance_variable_set(name, value)
+          end
+        end
+      end
 
       def method_missing(sym, options={}, &prop) # :nodoc:
         options[:name] ||= sym.to_s
         builder = PropBuilder.new(options)
+        builder.__install_instance_variables_from_builder(self)
         builder.__loader__ = @__loader__
         builder.instance_eval(&prop) if prop
         @__prop__.add(builder.__prop__)
