@@ -86,8 +86,7 @@ describe Limelight::Producer do
   end
   
   it "should load a stage when stages.rb exists" do
-    TestDir.create_file("test_prod/stages.rb", "")
-    @producer.should_receive(:load_stages).and_return([make_mock("stage", :default_scene => "abc", :name => "Default")])
+    TestDir.create_file("test_prod/stages.rb", "stage 'Default' do\n default_scene 'abc'\n end")
     @producer.should_receive(:open_scene).with("abc", anything)
     Limelight::Gems.should_receive(:install_gems_in_production)
     
@@ -151,7 +150,19 @@ describe Limelight::Producer do
     @producer.open
   end
 
+  it "should not load init.rb when told not to" do
+    TestDir.create_file("test_prod/init.rb", "$init_loaded = true")
+    Limelight::Gems.should_receive(:install_gems_in_production)
+
+    $init_loaded = false;
+    @producer.load(:ignore_init => true)
+    
+    $init_loaded.should == false;
+  end
+
   it "should give the same buildin_styles hash twice" do
+    @producer.builtin_styles.should_not be(@producer.builtin_styles)
+    # Try again
     @producer.builtin_styles.should_not be(@producer.builtin_styles)
   end
   

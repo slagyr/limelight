@@ -123,10 +123,16 @@ module Limelight
       frame.alert(message)
     end
 
+    protected #############################################
+
+    def new_frame
+      return UI::Model::Frame.new(self)
+    end
+
     private ###############################################
     
     def build_frame
-      @frame = UI::Model::Frame.new(self)
+      @frame = new_frame
       @frame.set_size(800, 800)
       @frame.set_location(200, 25)
       @frame.title = title
