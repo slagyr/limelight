@@ -19,6 +19,7 @@ public class ImagePanel extends BasePanel
   private double rotatedHeight;
   private double imageWidth;
   private double imageHeight;
+  private boolean scaled = true;
 
   public Box getChildConsumableArea()
   {
@@ -85,7 +86,8 @@ public class ImagePanel extends BasePanel
     if(image == null)
       return transform;
 
-    applyScaling();
+    if(scaled)
+      applyScaling();
     applyRotation();
 
     return transform;
@@ -157,5 +159,16 @@ public class ImagePanel extends BasePanel
   public String getImageFile()
   {
     return imageFile;
+  }
+
+  public boolean isScaled()
+  {
+    return scaled;
+  }
+
+  public void setScaled(boolean b)
+  {
+    scaled = b;
+    getParent().setNeedsLayout();
   }
 }

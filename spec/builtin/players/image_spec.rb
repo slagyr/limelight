@@ -28,4 +28,14 @@ describe Limelight::Builtin::Players::Image do
     @prop.image_panel.rotation.should == 180
   end
 
+  it "should have scaled" do
+    @prop.scaled?.should == true
+    @prop.image_panel.scaled.should == true
+
+    @prop.scaled = false;
+
+    @prop.scaled?.should == false
+    @prop.image_panel.scaled.should == false
+  end
+
 end
