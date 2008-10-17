@@ -76,8 +76,7 @@ module Limelight
         if theater[name]
           @__stage__ = theater[name]
         else
-          @__stage__ = Stage.new(theater, name)
-          theater.add_stage(@__stage__)
+          @__stage__ = theater.add_stage(name)
         end
       end
 

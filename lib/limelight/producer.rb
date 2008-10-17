@@ -51,15 +51,21 @@ module Limelight
       return @casting_director
     end
 
-    # Opens the Production specified during construction. If the file 'init.rb' exists in the root directory of the
-    # Production, it will be loaded before anything else.
+    # Loads the Production without opening it.  The Production will be created into memory with all it's stages
     #
-    def open()
+    def load(options = {})
       establish_production
       Gems.install_gems_in_production(@production)
-      Kernel.load(@production.init_file) if File.exists?(@production.init_file)
-      if File.exists?(@production.stages_file)
-        load_stages.each { |stage| open_scene(stage.default_scene, stage) }
+      Kernel.load(@production.init_file) if ( !options[:ignore_init] &&  File.exists?(@production.init_file) )
+      load_stages if File.exists?(@production.stages_file)
+    end
+
+    # Opens the Production.
+    #
+    def open()
+      load
+      if @theater.has_stages?
+        @theater.stages.each { |stage| open_scene(stage.default_scene, stage) }
       else
         open_scene(:root, @theater.default_stage)
       end
@@ -78,17 +84,19 @@ module Limelight
       scene.styles = styles
 
       stage.open(scene)
+      return scene
     end
 
     # Loads the 'stages.rb' file and configures all the Stages in the Production.
     #
     def load_stages
-      content = IO.read(@production.stages_file)
+      stages_file = @production.stages_file
+      content = IO.read(stages_file)
       stages = Limelight.build_stages(@theater) do
         begin
           eval content
         rescue Exception => e
-          raise BuildException.new(@production.stages_file, content, e)
+          raise DSL::BuildException.new(stages_file, content, e)
         end
       end
       return stages
@@ -140,7 +148,7 @@ module Limelight
           begin
             eval content
           rescue Exception => e
-            raise BuildException.new("production.rb", content, e)
+            raise DSL::BuildException.new("production.rb", content, e)
           end
         end
       end
@@ -163,7 +171,7 @@ module Limelight
     # Returns a hash of all the built-in Limglight Styles
     #
     def builtin_styles
-      return @builtin_styles if @builtin_styles
+      return @builtin_styles.dup if @builtin_styles
       builtin_styles_file = File.join($LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
       content = IO.read(builtin_styles_file)
       @builtin_styles = Limelight.build_styles do

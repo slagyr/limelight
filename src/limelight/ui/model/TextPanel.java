@@ -94,9 +94,16 @@ public class TextPanel extends BasePanel
   {
     if(!compiled || textChanged())
     {
-      buildLines();
-      calculateDimentions();
-      compiled = true;
+      try
+      {
+        buildLines();
+        calculateDimentions();
+        compiled = true;
+      }
+      catch(Exception e)
+      {
+        //okay
+      }
     }
     snapToSize();
     super.doLayout();
