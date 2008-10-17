@@ -23,7 +23,6 @@ public interface Panel extends Iterable<Panel>
   
   Point getAbsoluteLocation();
   Box getAbsoluteBounds();
-  Box getChildConsumableArea();
   Box getBoxInsidePadding();
   boolean containsAbsolutePoint(Point point);
   boolean containsRelativePoint(Point point);
@@ -35,6 +34,7 @@ public interface Panel extends Iterable<Panel>
   RootPanel getRoot();
   boolean isAncestor(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
+  Box getChildConsumableArea();
 
   void add(Panel child);
   List<Panel> getChildren();

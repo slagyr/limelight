@@ -87,15 +87,11 @@ public class PaintJob
         bufferedImagePool.recycle(panelBuffer);
         panelBuffer = buildBufferFor(panel);
       }
-Debug.copy.mark();
       graphics.drawImage(panelBuffer, 0, 0, null);
-Debug.copy.log("copied buffer for " + panel);      
     }
     else
     {
-Debug.paint.mark();      
       panel.paintOn(graphics);
-Debug.paint.log("painted " + panel);
     }
   }
 
@@ -172,9 +168,7 @@ Debug.paint.log("painted " + panel);
     Graphics2D graphics = buffer.createGraphics();
     graphics.setBackground(new Color(0, 0, 0, 0));
     graphics.clearRect(0, 0, panel.getWidth(), panel.getHeight());
-Debug.paint.mark();
     panel.paintOn(graphics);
-Debug.paint.log("painted " + panel);    
     graphics.dispose();  
     bufferCache.cache(panel, buffer);
     return buffer;
