@@ -55,9 +55,7 @@ public class BufferedImagePool
   {
     try
     {
-Debug.alloc.mark();
       BufferedImage image = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-Debug.alloc.log("created buffer of size " + dimension);
       return image;
     }
     catch(OutOfMemoryError e)

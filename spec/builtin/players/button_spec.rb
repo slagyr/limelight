@@ -9,7 +9,6 @@ require 'limelight/builtin/players/button'
 describe Limelight::Builtin::Players::Button do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:casting_director => make_mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new
     @prop.include_player(Limelight::Builtin::Players::Button)
   end

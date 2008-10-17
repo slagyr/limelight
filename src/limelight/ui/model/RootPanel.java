@@ -298,7 +298,7 @@ public class RootPanel implements Panel
   {
     if(imageCache == null)
     {
-      Prop prop = ((PropablePanel) getPanel()).getProp();     
+      Prop prop = ((PropablePanel) getPanel()).getProp();      
       ResourceLoader loader = prop.getLoader();
       imageCache = new ImageCache(loader);
     }

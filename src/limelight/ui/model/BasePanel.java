@@ -181,10 +181,6 @@ public abstract class BasePanel implements Panel
     return (Graphics2D) getRoot().getGraphics().create(bounds.x, bounds.y, bounds.width, bounds.height);
   }
 
-  public void paintOn(Graphics2D graphics)
-  {
-  }
-
   public void doLayout()
   {
     needsLayout = false;

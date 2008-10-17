@@ -44,6 +44,10 @@ public class BasePanelTest extends TestCase
       return null;
     }
 
+    public void paintOn(Graphics2D graphics)
+    {
+    }
+
     public Style getStyle()
     {
       return style;

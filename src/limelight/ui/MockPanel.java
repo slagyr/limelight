@@ -7,11 +7,17 @@ import limelight.ui.model.BasePanel;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.awt.*;
 
 public class MockPanel extends BasePanel
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   public final FlatStyle style;
   public static int paintCount;
   public int paintIndex;
@@ -44,7 +50,6 @@ public class MockPanel extends BasePanel
 
   public void paintOn(Graphics2D graphics)
   {
-    super.paintOn(graphics);
     wasPainted = true;
     paintIndex = paintCount++;
   }

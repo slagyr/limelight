@@ -8,10 +8,6 @@ public class Debug
 
   public static Debug debug1 = new Debug();
   public static Debug debug2 = new Debug();
-  public static final Debug alloc = new Debug("alloc");
-  public static final Debug paint = new Debug("paint");
-  public static final Debug copy = new Debug("copy");
-  public static Debug event = new Debug("event");
 
   private final NanoTimer interval;
   private long life = 0;
