@@ -32,6 +32,14 @@ module Limelight
           return image_panel.rotation
         end
 
+        def scaled=(value)
+          image_panel.scaled = value
+        end
+
+        def scaled?
+          return image_panel.scaled
+        end
+
       end
 
     end
