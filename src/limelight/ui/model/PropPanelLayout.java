@@ -107,7 +107,6 @@ public class PropPanelLayout
   {
     for(Panel child : panel.getChildren())
     {
-
       if(child.needsLayout())
       {
         child.doLayout();

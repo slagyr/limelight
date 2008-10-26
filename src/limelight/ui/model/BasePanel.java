@@ -72,7 +72,7 @@ public abstract class BasePanel implements Panel
     absoluteLocation = null;
     boundingBox = null;
     absoluteBounds = null;
-    for(Panel child : children)
+    for(Panel child : children) //TODO Need to lock the children list.  Here and where ever else used.
       child.clearCache();
   }
 

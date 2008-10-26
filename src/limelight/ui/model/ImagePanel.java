@@ -47,6 +47,8 @@ public class ImagePanel extends BasePanel
     Style style = getStyle();
     Box consumableArea = getParent().getChildConsumableArea();
     getImage();
+    if(image == null)
+      return;
 
     width = consumableArea.width;
     height = consumableArea.height;
@@ -67,10 +69,10 @@ public class ImagePanel extends BasePanel
       }
 
       if(style.getCompiledHeight().isAuto())
-        height = (int)rotatedHeight;
+        height = (int) rotatedHeight;
 
       if(style.getCompiledWidth().isAuto())
-        width = (int)rotatedWidth;
+        width = (int) rotatedWidth;
     }
   }
 
@@ -115,7 +117,7 @@ public class ImagePanel extends BasePanel
     if(differentWidth || differentHeight)
     {
       double dx = width / rotatedWidth;
-      double dy = height / rotatedHeight;    
+      double dy = height / rotatedHeight;
       transform.scale(dx, dy);
     }
   }
@@ -126,9 +128,13 @@ public class ImagePanel extends BasePanel
     {
       try
       {
-        image = getRoot().getImageCache().getImage(imageFile);
-        imageWidth = image.getWidth(null);
-        imageHeight = image.getHeight(null);
+        RootPanel rootPanel = getRoot();
+        if(rootPanel != null)
+        {
+          image = rootPanel.getImageCache().getImage(imageFile);
+          imageWidth = image.getWidth(null);
+          imageHeight = image.getHeight(null);
+        }
       }
       catch(IOException e)
       {

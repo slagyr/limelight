@@ -157,6 +157,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void doLayout()
   {
+    super.doLayout(); // First to avaoid race condition
     if(borderShaper != null && borderChanged)
     {
       borderShaper.updateDimentions();
@@ -169,8 +170,14 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(borderShaper != null)
       borderShaper.setBounds(getBoxInsideMargins());
 
-    super.doLayout();
-    getRoot().addDirtyRegion(getAbsoluteBounds());
+    markAsDirty();
+  }
+
+  private void markAsDirty()
+  {
+    RootPanel rootPanel = getRoot();
+    if(rootPanel != null)
+      rootPanel.addDirtyRegion(getAbsoluteBounds());
   }
 
   public void paintOn(Graphics2D graphics)
@@ -371,7 +378,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       else if(descriptor == Style.X || descriptor == Style.Y)
         getParent().setNeedsLayout();
       else
-        getRoot().addDirtyRegion(getAbsoluteBounds());
+        markAsDirty();
     }
 
   }

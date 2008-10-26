@@ -525,4 +525,25 @@ public class PropPanelTest extends TestCase
     panel.styleChanged(Style.TRANSPARENCY, new SimplePercentageAttribute(20));
     assertNotNull(cache.retrieve(panel));
   }
+
+  public void testRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
+  {
+    for(int i = 0; i < 100; i++)
+      panel.add(new PropPanel(new MockProp()));
+    panel.setNeedsLayout();
+    Thread thread = new Thread(new Runnable() {
+      public void run()
+      {
+        panel.doLayout();
+      }
+    });
+    thread.start();
+
+    while(panel.getChildren().get(0).needsLayout())
+      Thread.yield();
+    panel.setNeedsLayout();
+    thread.join();
+
+    assertEquals(true, panel.needsLayout());
+  }
 }

@@ -17,7 +17,7 @@ public class FrameManagerTest extends TestCase
 
   public void setUp() throws Exception
   {
-    manager = new FrameManager();
+    manager = new AlertFrameManager();
     Context.instance().frameManager = manager;
     MockStage stage = new MockStage();
     frame = new Frame(stage);

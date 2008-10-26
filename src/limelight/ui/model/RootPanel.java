@@ -189,7 +189,7 @@ public class RootPanel implements Panel
   }
 
   public void addPanelNeedingLayout(Panel child)
-  {
+  {   
     synchronized(panelsNeedingLayout)
     {
       boolean shouldAdd = true;
@@ -212,7 +212,9 @@ public class RootPanel implements Panel
         }
       }
       if(shouldAdd)
+      {
         panelsNeedingLayout.add(child);
+      }
     }
     Context.kickPainter();
   }
