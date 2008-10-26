@@ -26,7 +26,7 @@ public class FrameTest extends TestCase
 
   public void setUp() throws Exception
   {
-    frameManager = new FrameManager();
+    frameManager = new AlertFrameManager();
     Context.instance().frameManager = frameManager;
     Context.instance().keyboardFocusManager = new KeyboardFocusManager();
 

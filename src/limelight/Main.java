@@ -9,7 +9,8 @@ import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
-import limelight.ui.model.FrameManager;
+import limelight.ui.model.AlertFrameManager;
+import limelight.ui.model.InertFrameManager;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.background.AnimationLoop;
 import limelight.background.PanelPainterLoop;
@@ -40,6 +41,11 @@ public class Main
   }
 
   public static void initializeContext()
+  {
+    new Main().configureContext();
+  }
+
+  public static void initializeTestContext()
   {
     new Main().configureContext();
   }
@@ -116,7 +122,7 @@ public class Main
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     context.tempDirectory = new TempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
-    context.frameManager = new FrameManager();
+    context.frameManager = new AlertFrameManager();
     context.audioPlayer = new RealAudioPlayer();
 
     context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
@@ -125,6 +131,28 @@ public class Main
     context.panelPanter = new PanelPainterLoop().started();
     context.animationLoop = new AnimationLoop().started();
     context.cacheCleaner = new CacheCleanerLoop().started();
+
+    contextIsConfigured = true;
+  }
+
+  public void configureTestContext()
+  {
+    if(contextIsConfigured)
+      return;
+    Context context = Context.instance();
+
+    context.keyboardFocusManager = new KeyboardFocusManager().installed();
+    context.tempDirectory = new TempDirectory();
+    context.downloader = new Downloader(context.tempDirectory);
+    context.frameManager = new InertFrameManager();
+    context.audioPlayer = new RealAudioPlayer();
+
+    context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
+    context.bufferedImagePool = new BufferedImagePool(1);
+
+    context.panelPanter = new PanelPainterLoop();
+    context.animationLoop = new AnimationLoop();
+    context.cacheCleaner = new CacheCleanerLoop();
 
     contextIsConfigured = true;
   }
