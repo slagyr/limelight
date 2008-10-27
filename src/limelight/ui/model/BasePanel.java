@@ -72,7 +72,8 @@ public abstract class BasePanel implements Panel
     absoluteLocation = null;
     boundingBox = null;
     absoluteBounds = null;
-    for(Panel child : children) //TODO Need to lock the children list.  Here and where ever else used.
+
+    for(Panel child : getChildren())
       child.clearCache();
   }
 
@@ -375,7 +376,7 @@ public abstract class BasePanel implements Panel
   }
 
   public void setNeedsLayout()
-  {
+  {   
     if(!needsLayout && getRoot() != null)
       getRoot().addPanelNeedingLayout(this);
     needsLayout = true;
@@ -411,5 +412,12 @@ public abstract class BasePanel implements Panel
         panel.getParent().setNeedsLayout();
       }
     }
+  }
+
+  protected void markAsDirty()
+  {
+    RootPanel rootPanel = getRoot();
+    if(rootPanel != null)
+      rootPanel.addDirtyRegion(getAbsoluteBounds());
   }
 }

@@ -30,7 +30,7 @@ public class RootPanelTest extends TestCase
   {
     Frame frame = new MockFrame();
     root = new RootPanel(frame);
-    child = new MockPropablePanel();
+    child = new MockPropablePanel("child");
     contentPane = frame.getContentPane();
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
   }
@@ -144,6 +144,25 @@ public class RootPanelTest extends TestCase
     assertEquals(child, panels.get(0));
   }
 
+  public void testAddPanelNeedingLayoutWillAddWhenAncestorIsAlreadyInTheListButTheParentDoesntNeedLayout() throws Exception
+  {
+    MockPropablePanel grandChild = new MockPropablePanel("grandChild");
+    MockPropablePanel greatGrandChild = new MockPropablePanel("greatGrandChild");
+    child.add(grandChild);
+    grandChild.add(greatGrandChild);
+    child.doLayout();
+
+    root.addPanelNeedingLayout(child);
+    root.addPanelNeedingLayout(greatGrandChild);
+
+    ArrayList<Panel> panels = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(panels);
+
+    assertEquals(2, panels.size());
+    assertEquals(child, panels.get(0));
+    assertEquals(greatGrandChild, panels.get(1));
+  }
+
   public void testAddPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
   {
     MockPropablePanel grandChild = new MockPropablePanel();
@@ -157,6 +176,25 @@ public class RootPanelTest extends TestCase
 
     assertEquals(1, panels.size());
     assertEquals(child, panels.get(0));
+  }
+
+  public void testAddPanelNeedingLayoutWillNotRemoveChildWhenAncestorIsAddedYetChildsParentDoesntNeedLayout() throws Exception
+  {
+    MockPropablePanel grandChild = new MockPropablePanel();
+    MockPropablePanel greatGrandChild = new MockPropablePanel("greatGrandChild");
+    child.add(grandChild);
+    grandChild.add(greatGrandChild);
+    child.doLayout();
+
+    root.addPanelNeedingLayout(greatGrandChild);
+    root.addPanelNeedingLayout(child);
+
+    ArrayList<Panel> panels = new ArrayList<Panel>();
+    root.getAndClearPanelsNeedingLayout(panels);
+
+    assertEquals(2, panels.size());
+    assertEquals(greatGrandChild, panels.get(0)); 
+    assertEquals(child, panels.get(1));
   }
 
   public void testAddDirtyRegion() throws Exception
@@ -204,7 +242,7 @@ public class RootPanelTest extends TestCase
     assertEquals(big, regions.get(0));
   }
 
-  public void testRegionsWithNoORNegativeDimensionsAreNotAdded() throws Exception
+  public void testRegionsWithNoOrNegativeDimensionsAreNotAdded() throws Exception
   {
     root.addDirtyRegion(new Rectangle(0, 0, 0, 0));
     root.addDirtyRegion(new Rectangle(10, 10, 0, 0));

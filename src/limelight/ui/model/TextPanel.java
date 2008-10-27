@@ -59,7 +59,11 @@ public class TextPanel extends BasePanel
       textChanged = true;
     this.text = text;
     if(differentText)
+    {
       setNeedsLayout();
+      propogateSizeChange(getParent());
+      getParent().setNeedsLayout();
+    }
   }
 
   public Panel getPanel()
@@ -92,6 +96,7 @@ public class TextPanel extends BasePanel
 
   public void doLayout()
   {
+    super.doLayout();
     if(!compiled || textChanged())
     {
       try
@@ -106,7 +111,7 @@ public class TextPanel extends BasePanel
       }
     }
     snapToSize();
-    super.doLayout();
+    markAsDirty();
   }
 
   public void snapToSize()
