@@ -189,7 +189,7 @@ public class RootPanel implements Panel
   }
 
   public void addPanelNeedingLayout(Panel child)
-  {   
+  {
     synchronized(panelsNeedingLayout)
     {
       boolean shouldAdd = true;
@@ -201,12 +201,12 @@ public class RootPanel implements Panel
           shouldAdd = false;
           break;
         }
-        else if(child.isAncestor(panel))
+        else if(child.isAncestor(panel) && child.getParent().needsLayout())
         {
           shouldAdd = false;
           break;
         }
-        else if(panel.isAncestor(child))
+        else if(panel.isAncestor(child) && panel.getParent().needsLayout())
         {
           iterator.remove();
         }

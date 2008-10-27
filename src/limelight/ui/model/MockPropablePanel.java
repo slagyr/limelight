@@ -26,11 +26,18 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   public boolean wasRepainted;
   public Box boxInsideMargins = new Box(0, 0, 100, 100);
   public Box boxInsideBorders = new Box(0, 0, 100, 100);
+  private String name;
 
   public MockPropablePanel()
   {
     prop = new MockProp();
     style = prop.getStyle();
+  }
+
+  public MockPropablePanel(String name)
+  {
+    this();
+    this.name = name;
   }
 
   public Box getChildConsumableArea()
@@ -91,6 +98,7 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
 
   public void doLayout()
   {
+    super.doLayout();
     snapToSize();
     for(Panel child : children)
       child.doLayout();
@@ -101,5 +109,10 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   {
     prepForSnapWidth = width;
     prepForSnapHeight = height;
+  }
+
+  public String toString()
+  {
+    return super.toString() + ":" + name;
   }
 }

@@ -12,7 +12,9 @@ import javax.swing.*;
 import java.awt.font.TextLayout;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.*;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class TextPanelTest extends TestCase
@@ -21,6 +23,7 @@ public class TextPanelTest extends TestCase
   private Style style;
   private JFrame frame;
   private MockPropablePanel parent;
+  private RootPanel root;
 
   public void setUp() throws Exception
   {
@@ -30,6 +33,10 @@ public class TextPanelTest extends TestCase
     parent.setSize(100, 100);
     style = parent.getProp().getStyle();
     panel = new TextPanel(parent, "Some Text");
+    parent.add(panel);
+    root = new RootPanel(new MockFrame());
+    root.setPanel(parent);
+
     style.setTextColor("black");
     
     panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
@@ -182,7 +189,27 @@ public class TextPanelTest extends TestCase
     assertEquals("123\n456", matcher.group(2));
   }
 
+  public void testChangingTestRequiresUpdates() throws Exception
+  {
+    parent.doLayout();
+    assertFalse(panel.needsLayout());
+    assertFalse(parent.needsLayout());
 
+    panel.setText("New Text");
+
+    assertEquals(true, panel.needsLayout());
+    assertEquals(true, parent.needsLayout());        
+  }
+
+  public void testLayoutCausesDirtyRegion() throws Exception
+  {
+    panel.doLayout();
+
+    ArrayList<Rectangle> list = new ArrayList<Rectangle>();
+    root.getAndClearDirtyRegions(list);
+    assertEquals(1, list.size());
+    assertEquals(panel.getAbsoluteBounds(), list.get(0));
+  }
 }
 
 

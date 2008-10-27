@@ -173,13 +173,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     markAsDirty();
   }
 
-  private void markAsDirty()
-  {
-    RootPanel rootPanel = getRoot();
-    if(rootPanel != null)
-      rootPanel.addDirtyRegion(getAbsoluteBounds());
-  }
-
   public void paintOn(Graphics2D graphics)
   {
     for(Painter painter : painters)
