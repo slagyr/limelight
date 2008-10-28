@@ -29,6 +29,10 @@ module Limelight
         return @events
       end
 
+      def event2(event_symbol)
+        define_method("accepts_#{event_symbol}".to_sym) { return self.respond_to?(event_symbol) }
+      end
+
     end
 
     include UI::Api::Prop
@@ -79,6 +83,7 @@ module Limelight
     def build(&block)
       require 'limelight/dsl/prop_builder'
       builder = Limelight::DSL::PropBuilder.new(self)
+      builder.__loader__ = scene.loader
       builder.instance_eval(&block)
     end
 
@@ -239,11 +244,11 @@ module Limelight
 
     # GUI Events ##########################################
 
-    event :mouse_clicked
+    event2 :mouse_clicked
     event :mouse_entered
     event :mouse_exited
-    event :mouse_pressed
-    event :mouse_released
+    event2 :mouse_pressed
+    event2 :mouse_released
     event :mouse_dragged
     event :mouse_moved
     event :key_typed

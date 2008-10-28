@@ -3,15 +3,23 @@
 
 package limelight.ui.api;
 
-import limelight.styles.Style;
-import limelight.styles.ScreenableStyle;
-import limelight.ui.Panel;
 import limelight.ResourceLoader;
+import limelight.styles.ScreenableStyle;
+import limelight.styles.Style;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.ui.Panel;
 
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class MockProp implements Prop
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+
   public final ScreenableStyle style;
   public Style hoverStyle;
   public String text;
@@ -33,6 +41,9 @@ public class MockProp implements Prop
   public Object changedValue;
   public Scene scene;
   public ResourceLoader loader;
+  public boolean accept_mouse_clicked = true;
+  public boolean accept_mouse_pressed = true;
+  public boolean accept_mouse_released = true;
 
   public MockProp()
   {
@@ -78,6 +89,21 @@ public class MockProp implements Prop
   public ResourceLoader getLoader()
   {
     return loader;
+  }
+
+  public boolean accepts_mouse_clicked()
+  {
+    return accept_mouse_clicked;
+  }
+
+  public boolean accepts_mouse_pressed()
+  {
+    return accept_mouse_pressed;
+  }
+
+  public boolean accepts_mouse_released()
+  {
+    return accept_mouse_released;
   }
 
   public void setText(String value)

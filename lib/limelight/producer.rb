@@ -65,7 +65,7 @@ module Limelight
     def open()
       load
       if @theater.has_stages?
-        @theater.stages.each { |stage| open_scene(stage.default_scene, stage) }
+        @theater.stages.each { |stage| open_scene(stage.default_scene, stage) if stage.default_scene }
       else
         open_scene(:root, @theater.default_stage)
       end

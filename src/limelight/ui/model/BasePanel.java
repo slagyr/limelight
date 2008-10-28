@@ -6,6 +6,7 @@ package limelight.ui.model;
 import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.ui.Panel;
+import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -267,8 +268,8 @@ public abstract class BasePanel implements Panel
 
   public void add(int index, Panel child)
   {
-    if(sterilized)
-      throw new SterilePanelException("Propless Panel");
+    if(sterilized && !(child instanceof ScrollBarPanel))
+      throw new SterilePanelException("Unknown name");
 
     if(index == -1)
       children.add(child);

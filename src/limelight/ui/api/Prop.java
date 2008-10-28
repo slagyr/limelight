@@ -19,6 +19,10 @@ public interface Prop
   Scene getScene();
   ResourceLoader getLoader();
 
+  boolean accepts_mouse_clicked();
+  boolean accepts_mouse_pressed();
+  boolean accepts_mouse_released();
+
   void hover_on();
   void hover_off();
   void mouse_clicked(MouseEvent e);
