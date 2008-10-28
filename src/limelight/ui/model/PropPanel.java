@@ -198,17 +198,26 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void mousePressed(MouseEvent e)
   {
-    getProp().mouse_pressed(translatedEvent(e));
+    if(getProp().accepts_mouse_pressed())
+      getProp().mouse_pressed(translatedEvent(e));
+    else
+      super.mousePressed(e);
   }
 
   public void mouseReleased(MouseEvent e)
   {
-    getProp().mouse_released(translatedEvent(e));
+    if(getProp().accepts_mouse_released())
+      getProp().mouse_released(translatedEvent(e));
+    else
+      super.mouseReleased(e);
   }
 
   public void mouseClicked(MouseEvent e)
   {
-    getProp().mouse_clicked(translatedEvent(e));
+    if(getProp().accepts_mouse_clicked())
+      getProp().mouse_clicked(translatedEvent(e));
+    else
+      super.mouseClicked(e);
   }
 
   public void mouseDragged(MouseEvent e)

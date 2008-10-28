@@ -258,6 +258,7 @@ describe Limelight::Prop do
   end
 
   it "should build children" do
+    @prop.scene.production = Limelight::Production.new("some/path")
     @prop.build do
       one
       two do
@@ -281,15 +282,38 @@ describe Limelight::Prop do
     @prop.play_sound("some.au")
   end
 
-#  it "should remember when it has been illuminated" do
-#    @prop.illuminated?.should == false;
-#
-#    @prop.illuminate
-#
-#    @prop.illuminated?.should == false;
-#  end
+  it "should remember when it has been illuminated" do
+    prop = Limelight::Prop.new
+    prop.illuminated?.should == false
+
+    @scene << prop
+
+    prop.illuminated?.should == true;
+  end
 
   #TODO remove_all should not remove scrollbars
+
+  describe "events" do
+
+    it "should not accept mouse_clicked events to start with" do
+      @prop.accepts_mouse_clicked().should == false
+      @prop.instance_eval("def mouse_clicked(e); puts 'hi'; end;")
+      @prop.accepts_mouse_clicked().should == true
+    end
+
+    it "should not accept mouse_pressed events to start with" do
+      @prop.accepts_mouse_pressed().should == false
+      @prop.instance_eval("def mouse_pressed(e); puts 'hi'; end;")
+      @prop.accepts_mouse_pressed().should == true
+    end
+
+    it "should not accept mouse_released events to start with" do
+      @prop.accepts_mouse_released().should == false
+      @prop.instance_eval("def mouse_released(e); puts 'hi'; end;")
+      @prop.accepts_mouse_released().should == true
+    end  
+
+  end
 
   describe "id" do
 

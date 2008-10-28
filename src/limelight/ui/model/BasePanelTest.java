@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
@@ -21,6 +22,11 @@ import java.util.List;
 
 public class BasePanelTest extends TestCase
 {
+  static
+  {
+    RealStyleAttributeCompilerFactory.install();
+  }
+  
   private TestableBasePanel panel;
   private MockPanel parent;
   private MockPanel child;
@@ -327,7 +333,7 @@ public class BasePanelTest extends TestCase
     }
     catch(SterilePanelException e)
     {
-      assertEquals("The panel for prop named 'Propless Panel' has been sterilized. Child components may not be added.", e.getMessage());
+      assertEquals("The panel for prop named 'Unknown name' has been sterilized. Child components may not be added.", e.getMessage());
     }
 
     assertEquals(0, panel.getChildren().size());

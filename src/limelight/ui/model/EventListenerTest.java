@@ -23,11 +23,11 @@ public class EventListenerTest extends TestCase
   {
     jpanel = new JPanel();
 
-    rootProp = new MockProp();
+    rootProp = new MockProp("rootProp");
     root = new PropPanel(rootProp);
     listener = new EventListener(root);
 
-    childProp = new MockProp();
+    childProp = new MockProp("childProp");
     childPanel = new PropPanel(childProp);
 
     root.add(childPanel);
@@ -50,6 +50,16 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, childProp.pressedMouse, 250, 250);
   }
 
+  public void testMousePressedWhenChildDoesntAcceptIt() throws Exception
+  {
+    MouseEvent e2 = mouseEvent(500, 500);
+    childProp.accept_mouse_pressed = false;
+    listener.mousePressed(e2);
+    assertSame(childPanel, listener.pressedPanel);
+    assertEquals(null, childProp.pressedMouse);
+    checkEvent(e2, rootProp.pressedMouse, 500, 500);
+  }
+
   private void checkEvent(MouseEvent expectedEvent, Object actualEvent, int x, int y)
   {
     MouseEvent actual = (MouseEvent)actualEvent;
@@ -69,6 +79,15 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, childProp.releasedMouse, 250, 250);
   }
 
+  public void testMouseReleasedWhenChildDoesntAcceptIt() throws Exception
+  {
+    MouseEvent e2 = mouseEvent(500, 500);
+    childProp.accept_mouse_released = false;
+    listener.mouseReleased(e2);
+    assertEquals(null, childProp.releasedMouse);
+    checkEvent(e2, rootProp.releasedMouse, 500, 500);
+  }
+
   public void testMouseClick() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
@@ -80,6 +99,16 @@ public class EventListenerTest extends TestCase
     listener.mousePressed(e2);
     listener.mouseReleased(e2);
     checkEvent(e2, childProp.clickedMouse, 250, 250);
+  }
+
+  public void testMouseClickWhenChildDoesntAcceptIt() throws Exception
+  {
+    MouseEvent e2 = mouseEvent(500, 500);
+    childProp.accept_mouse_clicked = false;
+    listener.mousePressed(e2);
+    listener.mouseReleased(e2);
+    assertEquals(null, childProp.clickedMouse);
+    checkEvent(e2, rootProp.clickedMouse, 500, 500);
   }
 
   public void testMouseClickButPanelChanged() throws Exception
