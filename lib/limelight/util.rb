@@ -45,3 +45,20 @@ module Limelight
   end
 
 end
+
+class Module
+
+  def prop_reader(*symbols)
+    symbols.each do |sym|
+      define_method(sym) do
+        value = instance_variable_get("@#{sym}")
+        if value.nil?
+          value = scene.find(sym.to_s)
+          instance_variable_set("@#{sym}", value) unless value.nil?
+        end
+        return value
+      end
+    end
+  end
+
+end
