@@ -4,6 +4,8 @@
 package limelight.ui.painting;
 
 import limelight.ui.*;
+import limelight.ui.model.RootPanel;
+import limelight.ui.model.ImageCache;
 import limelight.ui.api.PropablePanel;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.StringAttribute;
@@ -53,7 +55,9 @@ public class BackgroundPainter extends Painter
       try
       {
         Box borderFrame = panel.getBoxInsideBorders();
-        Image image = ((PropablePanel)panel).getRoot().getImageCache().getImage(backgroundImageAttribute.getAttribute().getValue());
+        RootPanel rootPanel = ((PropablePanel) panel).getRoot();
+        ImageCache cache = rootPanel.getImageCache();
+        Image image = cache.getImage(backgroundImageAttribute.getAttribute().getValue());
 //        String imageFilename = panel.getProp().getScene().getLoader().pathTo(backgroundImageAttribute.getAttribute().getValue());
 //        BufferedImage image = ImageIO.read(new File(imageFilename));
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);

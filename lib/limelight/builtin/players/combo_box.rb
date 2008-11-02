@@ -33,6 +33,7 @@ module Limelight
         end
 
         attr_accessor :combo_box #:nodoc:
+        attr_reader :choices
 
         # Sets the choices listed in the combo_box.  The value parameter should an Array or a String that
         # can be evalulated into an Array.  All choices in a combo_box are strings.
@@ -43,7 +44,7 @@ module Limelight
         def choices=(value)
           value = eval(value) if value.is_a? String
           raise "Invalid choices type: #{value.class}.  Choices have to be an array." if !value.is_a?(Array)
-          @values = value
+          @choices = value
           combo_box.remove_all_items
           value.each { |choice| combo_box.add_item(choice) }
         end
@@ -69,7 +70,7 @@ module Limelight
           popup_style.y = panel.absolute_location.y.to_s
           popup_style.width = panel.width.to_s
 
-          @values.each do |value|
+          @choices.each do |value|
             popup_list.add(Limelight::Prop.new(:name => "limelight_builtin_players_combo_box_popup_list_item", :text => value, :players => "combo_box_popup_list_item", :combo_box => self))
           end
 
