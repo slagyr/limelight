@@ -29,11 +29,16 @@ module Limelight
             combo_box = Limelight::UI::Model::Inputs::ComboBoxPanel.new
             prop.panel.add(combo_box)
             prop.combo_box = combo_box.combo_box
+            prop.clear
           end
         end
 
         attr_accessor :combo_box #:nodoc:
         attr_reader :choices
+
+        def clear #:nodoc:
+          @choices = []
+        end
 
         # Sets the choices listed in the combo_box.  The value parameter should an Array or a String that
         # can be evalulated into an Array.  All choices in a combo_box are strings.

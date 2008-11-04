@@ -202,7 +202,7 @@ module Limelight
     #   box.width, box.height # represents the Prop's dimensions
     #
     def area
-      return panel.get_box.clone
+      return panel.get_bounding_box.clone
     end
 
     # Returns a Box representing the bounds inside the borders of the prop.  If the Prop's style has no margin or
