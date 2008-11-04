@@ -36,6 +36,10 @@ module Limelight
     # You may also provide an existing Production for which this Producer will interact.
     #
     def initialize(root_path, theater=nil, production=nil)
+      if (root_path[-4..-1] == ".lll")
+        url = IO.read(root_path).strip
+        root_path = Limelight::Context.instance.downloader.download(url).absolute_path
+      end
       if (root_path[-4..-1] == ".llp")
         root_path = unpack_production(root_path)
       end
