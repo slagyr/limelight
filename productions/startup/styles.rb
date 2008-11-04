@@ -30,7 +30,7 @@ intro {
   width "100%"
   text_color :white
   font_face "Arial Rounded MT Bold"
-  font_style "italics"
+  font_style "italic"
   font_size 25
 }
 
@@ -73,7 +73,7 @@ browse_button {
   width "100%"
   text_color :white
   font_face "Arial Rounded MT Bold"
-  font_style "italics"
+  font_style "italic"
   font_size 25
   hover {
     text_color "#67b313"
