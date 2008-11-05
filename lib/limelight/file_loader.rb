@@ -20,8 +20,7 @@ module Limelight
     end
 
     def path_to(path)
-      #TODO What about windoze?
-      if (path[0] == "/"[0])
+      if (path == File.expand_path(path))
         return path
       else
         return File.expand_path(File.join(@root, path))
