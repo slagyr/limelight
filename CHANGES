@@ -1,5 +1,37 @@
 = Limelight Changelog
 
+== Version 0.3.0
+
+Major New Release
+* Many new feature and much more stability
+* Default event implementation - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/52)
+* Image player - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/63)
+* Sending variables to partials - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/61)
+* CPU Hog -  (http://limelight.lighthouseapp.com/projects/12073/tickets/35)
+* Gems in productions - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/12)
+* Giving Floats to prop styles - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/17)
+* Scene's Default name - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/47)
+* Hand Cursor Stays - bug (http://limelight.lighthouseapp.com/projects/12073/tickets/36)
+* generate production templates - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/46)
+* Validate styles - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/53)
+* Auto resizing doesn't trigger update on parent. - bug (http://limelight.lighthouseapp.com/projects/12073/tickets/51)
+* Double click to open production - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/27)
+* Color as a hash - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/32)
+* Add more Known colors - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/54)
+* Need to relaunch when changing player. - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/50)
+* Shared Players - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/48)
+* Unique IDs - bug (http://limelight.lighthouseapp.com/projects/12073/tickets/49)
+* Building a Production - documentation (http://limelight.lighthouseapp.com/projects/12073/tickets/41)
+* Document Events - documentation (http://limelight.lighthouseapp.com/projects/12073/tickets/15)
+* Document Prop API - documentation (http://limelight.lighthouseapp.com/projects/12073/tickets/16)
+* Document Styles - documentation (http://limelight.lighthouseapp.com/projects/12073/tickets/14)
+* Variable size text areas - feature_request (http://limelight.lighthouseapp.com/projects/12073/tickets/37)
+* Editable TextArea size - bug (http://limelight.lighthouseapp.com/projects/12073/tickets/39)
+* Simple App screencast - documentation (http://limelight.lighthouseapp.com/projects/12073/tickets/42)
+* RDoc - documentation (http://limelight.lighthouseapp.com/projects/12073/tickets/40)
+* finish 0.2.0 release - release (http://limelight.lighthouseapp.com/projects/12073/tickets/43)
+* Reserved prop keywords - bug (http://limelight.lighthouseapp.com/projects/12073/tickets/45)
+
 == Version 0.2.1
 
 Minor Fixes
