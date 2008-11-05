@@ -4,24 +4,23 @@
 package limelight;
 
 import limelight.audio.RealAudioPlayer;
+import limelight.background.AnimationLoop;
+import limelight.background.CacheCleanerLoop;
+import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
 import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
-import limelight.background.AnimationLoop;
-import limelight.background.PanelPainterLoop;
-import limelight.background.CacheCleanerLoop;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
+
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-
+import java.io.*;
 
 public class Main
 {
@@ -34,6 +33,7 @@ public class Main
   private Ruby runtime;
   private boolean contextIsConfigured;
   private Context context;
+  public static boolean startupProvided;
 
   public static void main(String[] args) throws Exception
   {
@@ -52,21 +52,38 @@ public class Main
 
   public void run(String[] args) throws Exception
   {
-    context = Context.instance();
+    try
+    {
+      context = Context.instance();
+      boolean usingStartupNotifications = context.isOsx() && context.runningAsApp;
+      if(usingStartupNotifications)
+        StartupListener.register();
+      configureSystemProperties();
 
-    boolean usingStartupNotifications = context.isOsx() && context.runningAsApp;
-    if(usingStartupNotifications)
-      StartupListener.register();
+      processArgs(args);
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      runtime = Ruby.newInstance(config);
+      configureContext();
+      startJrubyRuntime();
 
-    configureSystemProperties();
-    processArgs(args);
-    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    runtime = Ruby.newInstance(config);
-    configureContext();
-    startJrubyRuntime();
+      if(!usingStartupNotifications)
+        Context.instance().studio.open(getStartupProduction());
+      else if(!startupProvided)
+        StartupListener.instance.startupPerformed(getStartupProduction());
+    }
+    catch(Throwable e)
+    {
+      handleError(e);
+    }
+  }
 
-    if(!usingStartupNotifications)
-      Context.instance().studio.open(getStartupProduction());
+  public static void handleError(Throwable e)
+  {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    PrintWriter writer = new PrintWriter(byteArrayOutputStream);
+    e.printStackTrace(writer);
+    writer.flush();
+    JOptionPane.showMessageDialog(new JFrame(), new String(byteArrayOutputStream.toByteArray()), "Limelight Error", JOptionPane.WARNING_MESSAGE);
   }
 
   private void startJrubyRuntime()
@@ -83,9 +100,14 @@ public class Main
   private String getStartupProduction()
   {
     String productionName = context.limelightHome + "/productions/startup";
-    if(config.getScriptFileName() != null)
+    if(productionProvided())
       productionName = config.getScriptFileName();
     return productionName;
+  }
+
+  private boolean productionProvided()
+  {
+    return config.getScriptFileName() != null;
   }
 
   private void processArgs(String[] args)
@@ -118,7 +140,7 @@ public class Main
     if(contextIsConfigured)
       return;
     Context context = Context.instance();
-    
+
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     context.tempDirectory = new TempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
