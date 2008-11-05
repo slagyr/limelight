@@ -2,23 +2,26 @@ package limelight;
 
 class StartupListener implements com.install4j.api.launcher.StartupNotification.Listener
 {
+  public static StartupListener instance;
+
   public static void register()
   {
-    StartupListener listener = new StartupListener();
-    com.install4j.api.launcher.StartupNotification.registerStartupListener(listener);
+    instance = new StartupListener();
+    com.install4j.api.launcher.StartupNotification.registerStartupListener(instance);
   }
 
   public void startupPerformed(String productionPath)
   {
+    Main.startupProvided = true;
     try
     {
       while(Context.instance().studio == null)
        Thread.sleep(100);
       Context.instance().studio.open(productionPath);
     }
-    catch(InterruptedException e)
+    catch(Throwable e)
     {
-      e.printStackTrace();
+      Main.handleError(e);
     }
   }
 }
