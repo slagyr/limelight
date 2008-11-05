@@ -57,7 +57,7 @@ module Limelight
 
     # Users typically need not create Production objects.
     #
-    def initialize(path)
+    def initialize(path)    
       @root = FileLoader.for_root(path)
       self.class.index(self)
     end

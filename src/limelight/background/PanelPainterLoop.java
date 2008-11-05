@@ -56,20 +56,13 @@ public class PanelPainterLoop extends IdleThreadLoop
 
   protected void execute()
   {
-//Debug.debug1.log("Paiting begun");
-//Debug.debug2.mark();
-//    timer.markTime();
     RootPanel root = getActiveRoot();
     if(root != null)
     {
-//Debug.debug2.log("  about to layout");
       doAllLayouts(root);
-//Debug.debug2.log("  laidout");
       paintDirtyRegions(root);
-//Debug.debug2.log("  painted dirty regions");
     }
     lastExecutionDuration = timer.getIdleNanos();
-//Debug.debug1.log("Paiting completed");
   }
 
   protected void delay()
@@ -94,14 +87,10 @@ public class PanelPainterLoop extends IdleThreadLoop
     {
       if(rectangle.width <= 0 || rectangle.height <= 0)
         continue;
-//NanoTimer timer = new NanoTimer();
       PaintJob job = new PaintJob(new Box(rectangle));
-//timer.log("paint job creates");
       job.paint(root.getPanel());
-//timer.log("root painted");
       Graphics2D rootGraphics = root.getGraphics();
       job.applyTo(rootGraphics);
-//timer.log("applied painting to graphics");
       job.dispose();
     }
   }
