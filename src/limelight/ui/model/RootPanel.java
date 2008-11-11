@@ -12,6 +12,7 @@ import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.ui.api.Scene;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -210,7 +211,7 @@ public class RootPanel implements Panel
         {
           iterator.remove();
         }
-      }
+      }      
       if(shouldAdd)
       {
         panelsNeedingLayout.add(child);
