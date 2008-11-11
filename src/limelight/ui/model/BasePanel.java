@@ -8,6 +8,7 @@ import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -377,10 +378,12 @@ public abstract class BasePanel implements Panel
   }
 
   public void setNeedsLayout()
-  {   
+  {
     if(!needsLayout && getRoot() != null)
+    {
+      needsLayout = true; // Set first... race conditions otherwise.
       getRoot().addPanelNeedingLayout(this);
-    needsLayout = true;
+    }
   }
 
   public boolean needsLayout()

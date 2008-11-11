@@ -1,5 +1,9 @@
 package limelight.util;
 
+import limelight.ui.Panel;
+import limelight.ui.api.Prop;
+import limelight.ui.model.PropPanel;
+
 import java.text.DecimalFormat;
 
 public class Debug
@@ -31,6 +35,17 @@ public class Debug
     if("event".equals(name))
       System.err.println(name + " " + secString(life) + " " + secString(idleNanos) + ": " + message);
     interval.markTime();
+  }
+
+  public void log(Panel panel, String message)
+  {
+    if(panel instanceof PropPanel)
+    {
+      PropPanel propPanel = (PropPanel) panel;
+      Prop prop = propPanel.getProp();
+      if(prop != null && "sandbox".equals(prop.getName()))    
+        System.err.println(message);
+    }
   }
 
   private String secString(long nanos)

@@ -8,6 +8,7 @@ module Limelight
       module Curtains #:nodoc:
 
         def open
+puts "Curtains.open"          
           scene.remove(self)
         end
 

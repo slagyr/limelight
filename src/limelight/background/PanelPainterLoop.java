@@ -100,7 +100,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);
     for(limelight.ui.Panel panel : panelBuffer)
-    {   
+    {     
       panel.doLayout();
     }
   }
