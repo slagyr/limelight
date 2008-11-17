@@ -6,7 +6,7 @@ import limelight.styles.abstrstyling.StringAttribute;
 
 public class StringAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object value)
   {
      return new StringAttribute(value);
   }

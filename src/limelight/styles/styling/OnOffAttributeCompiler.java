@@ -5,9 +5,9 @@ import limelight.styles.abstrstyling.StyleAttribute;
 
 public class OnOffAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object value)
   {
-    String lowerCaseValue = value.toLowerCase();
+    String lowerCaseValue = value.toString().toLowerCase();
     if("on".equals(lowerCaseValue))
       return new SimpleOnOffAttribute(true);
     else if("off".equals(lowerCaseValue))

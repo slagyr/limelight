@@ -6,9 +6,9 @@ public class StringAttribute implements StyleAttribute
 {
   private final String stringValue;
 
-  public StringAttribute(String value)
+  public StringAttribute(Object value)
   {
-    this.stringValue = value;
+    this.stringValue = value.toString();
   }
 
   public String toString()

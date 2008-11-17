@@ -27,7 +27,7 @@ public class StyleDescriptor
     return index + ": " + name;
   }
 
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object value)
   {
     return compiler.compile(value);
   }

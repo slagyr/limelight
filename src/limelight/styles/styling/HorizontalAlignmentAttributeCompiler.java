@@ -6,9 +6,9 @@ import limelight.util.Aligner;
 
 public class HorizontalAlignmentAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object value)
   {
-    String lowerCase = value.toLowerCase().trim();
+    String lowerCase = value.toString().toLowerCase().trim();
     if("left".equals(lowerCase))
       return new SimpleHorizontalAlignmentAttribute(Aligner.LEFT);
     else if("center".equals(lowerCase))

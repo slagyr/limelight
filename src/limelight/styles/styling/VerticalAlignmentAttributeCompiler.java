@@ -6,9 +6,9 @@ import limelight.util.Aligner;
 
 public class VerticalAlignmentAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object value)
   {
-    String lowerCase = value.toLowerCase().trim();
+    String lowerCase = value.toString().toLowerCase().trim();
     if("top".equals(lowerCase))
       return new SimpleVerticalAlignmentAttribute(Aligner.TOP);
     else if("center".equals(lowerCase))

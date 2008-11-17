@@ -30,13 +30,10 @@ public class RichStyle extends BaseStyle implements StyleObserver
     return null;
   }
 
-  public void put(StyleDescriptor descriptor, String value)
+  public void put(StyleDescriptor descriptor, Object value)
   {
     if(value == null)
       return;
-    value = value.trim();
-    if(value.length() == 0)
-      value = null;
 
     StyleAttribute originalValue = styles[descriptor.index];
     StyleAttribute compiledValue = descriptor.compile(value);

@@ -5,13 +5,14 @@ package limelight.ui.api;
 
 import limelight.ResourceLoader;
 import limelight.MockResourceLoader;
+import limelight.styles.Style;
 
 import java.util.Map;
 import java.util.HashMap;
 
 public class MockScene extends MockProp implements Scene
 {
-  public Map styles = new HashMap();
+  public Map<String, Style> styles = new HashMap<String, Style>();
   public ResourceLoader loader;
 
   public ResourceLoader getLoader()

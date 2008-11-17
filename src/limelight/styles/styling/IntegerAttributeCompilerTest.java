@@ -30,6 +30,14 @@ public class IntegerAttributeCompilerTest extends TestCase
     assertEquals(0, ((SimpleIntegerAttribute) compiler.compile("0.0")).getValue());
     assertEquals(1, ((SimpleIntegerAttribute) compiler.compile("0.5")).getValue());
   }
+  
+  public void testObjectValues() throws Exception
+  {
+    assertEquals(123, ((SimpleIntegerAttribute) compiler.compile(123)).getValue());
+    assertEquals(123, ((SimpleIntegerAttribute) compiler.compile(new Integer(123))).getValue());
+    assertEquals(123, ((SimpleIntegerAttribute) compiler.compile(new Float(123.0))).getValue());
+    assertEquals(123, ((SimpleIntegerAttribute) compiler.compile(new Double(123.0))).getValue());
+  }
 
   public void testInvalidValue() throws Exception
   {

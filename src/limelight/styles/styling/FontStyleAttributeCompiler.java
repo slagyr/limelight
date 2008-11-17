@@ -5,9 +5,9 @@ import limelight.styles.abstrstyling.StyleAttribute;
 
 public class FontStyleAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object value)
   {
-    String lowerCase = value.toLowerCase().trim();
+    String lowerCase = value.toString().toLowerCase().trim();
 
     if("plain".equals(lowerCase))
       return new SimpleFontStyleAttribute("plain");

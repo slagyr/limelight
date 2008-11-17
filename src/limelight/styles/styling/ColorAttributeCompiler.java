@@ -9,8 +9,9 @@ import java.awt.*;
 
 public class ColorAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object objValue)
   {
+    String value = objValue.toString();
     try
     {
       Color color = Colors.resolve(value);

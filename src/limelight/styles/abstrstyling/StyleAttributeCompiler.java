@@ -7,7 +7,7 @@ public abstract class StyleAttributeCompiler
 {
   private String name;
 
-  public abstract StyleAttribute compile(String value);
+  public abstract StyleAttribute compile(Object value);
 
   public String getName()
   {
@@ -20,7 +20,7 @@ public abstract class StyleAttributeCompiler
   }
 
 
-  public InvalidStyleAttributeError makeError(String invalidValue)
+  public InvalidStyleAttributeError makeError(Object invalidValue)
   {
     return new InvalidStyleAttributeError("Invalid value '" + invalidValue + "' for " + name + " style attribute.");
   }
