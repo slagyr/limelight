@@ -7,7 +7,7 @@ import limelight.styles.abstrstyling.NoneableAttribute;
 public class PercentageDimensionAttribute extends SimplePercentageAttribute implements DimensionAttribute
 {
 
-  public PercentageDimensionAttribute(int percentValue)
+  public PercentageDimensionAttribute(double percentValue)
   {
     super(percentValue);
   }

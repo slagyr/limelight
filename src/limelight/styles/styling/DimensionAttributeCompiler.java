@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 
 public class DimensionAttributeCompiler extends StyleAttributeCompiler
 {
-  private static final Pattern percentagePattern = Pattern.compile("(\\d+)%");
+  private static final Pattern percentagePattern = Pattern.compile("(\\d+(.\\d+)?)%");
 
   public StyleAttribute compile(Object objValue)
   {
@@ -62,7 +62,7 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
     if(matcher.matches())
     {
       String percentStringValue = matcher.group(1);
-      int percentValue = Integer.parseInt(percentStringValue);
+      double percentValue = Double.parseDouble(percentStringValue);
       if(percentValue >= 0 && percentValue <= 100)
         return new PercentageDimensionAttribute(percentValue);
     }

@@ -2,30 +2,36 @@ package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.PercentageAttribute;
 
+import java.text.DecimalFormat;
+
+
 public class SimplePercentageAttribute implements PercentageAttribute
 {
-  private final int percentage;
+  public static final DecimalFormat format = new DecimalFormat("0.##");
 
-  public SimplePercentageAttribute(int percentage)
+  private final double percentage;
+
+  public SimplePercentageAttribute(double percentage)
   {
     this.percentage = percentage;
   }
 
-  public int getPercentage()
+  public double getPercentage()
   {
     return percentage;
   }
 
   public String toString()
   {
-    return percentage + "%"; 
+    return format.format(percentage) + "%"; 
   }
 
   public boolean equals(Object obj)
   {
     if(obj instanceof SimplePercentageAttribute)
     {
-      return percentage == ((SimplePercentageAttribute)obj).percentage;
+      double otherPercentage = ((SimplePercentageAttribute) obj).percentage;
+      return Math.abs(percentage - otherPercentage) < 0.01;
     }
     return false;
   }
