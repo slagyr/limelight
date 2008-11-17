@@ -24,7 +24,7 @@ module Floater
   
   def new_x=(value)
     @x = value
-    style.x = (value.to_i - width/2).to_s
+    style.x = (value.to_i - width/2)
   end
 
   def y
@@ -34,7 +34,7 @@ module Floater
   
   def new_y=(value)
     @y = value
-    style.y = (value.to_i - width/2).to_s
+    style.y = (value.to_i - width/2)
   end
   
   def center

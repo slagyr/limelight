@@ -18,8 +18,9 @@ public class NoneableAttributeCompiler<A extends StyleAttribute> extends StyleAt
     target.setName(name);
   }
 
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object objValue)
   {
+    String value = objValue.toString();
     if("none".equals(value.toLowerCase()))
       return new NoneableAttribute<A>(null);
     else

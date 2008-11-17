@@ -80,9 +80,9 @@ public abstract class Style
 
   protected abstract StyleAttribute get(int key);
 
-  protected abstract void put(StyleDescriptor descriptor, String value);
+  protected abstract void put(StyleDescriptor descriptor, Object value);
 
-  public abstract void setDefault(StyleDescriptor descriptor, String value);
+  public abstract void setDefault(StyleDescriptor descriptor, Object value);
 
   protected abstract StyleAttribute getDefaultValue(StyleDescriptor descriptor);
 
@@ -116,7 +116,7 @@ public abstract class Style
     return getCompiledWidth().isPercentage() || getCompiledHeight().isPercentage();
   }
 
-  public void setWidth(String value)
+  public void setWidth(Object value)
   {
     put(WIDTH, value);
   }
@@ -131,7 +131,7 @@ public abstract class Style
     return (DimensionAttribute)getCompiled(WIDTH);
   }
 
-  public void setHeight(String value)
+  public void setHeight(Object value)
   {
     put(HEIGHT, value);
   }
@@ -146,7 +146,7 @@ public abstract class Style
     return (DimensionAttribute)getCompiled(HEIGHT);
   }
 
-  public void setMinWidth(String value)
+  public void setMinWidth(Object value)
   {
     put(MIN_WIDTH, value);
   }
@@ -161,7 +161,7 @@ public abstract class Style
     return (NoneableAttribute<IntegerAttribute>)getCompiled(MIN_WIDTH);
   }
 
-  public void setMinHeight(String value)
+  public void setMinHeight(Object value)
   {
     put(MIN_HEIGHT, value);
   }
@@ -176,7 +176,7 @@ public abstract class Style
     return (NoneableAttribute<IntegerAttribute>)getCompiled(MIN_HEIGHT);
   }
 
-  public void setMaxWidth(String value)
+  public void setMaxWidth(Object value)
   {
     put(MAX_WIDTH, value);
   }
@@ -191,7 +191,7 @@ public abstract class Style
     return (NoneableAttribute<IntegerAttribute>)getCompiled(MAX_WIDTH);
   }
 
-  public void setMaxHeight(String value)
+  public void setMaxHeight(Object value)
   {
     put(MAX_HEIGHT, value);
   }
@@ -206,7 +206,7 @@ public abstract class Style
     return (NoneableAttribute<IntegerAttribute>)getCompiled(MAX_HEIGHT);
   }
 
-  public void setTextColor(String value)
+  public void setTextColor(Object value)
   {
     put(TEXT_COLOR, value);
   }
@@ -221,7 +221,7 @@ public abstract class Style
     return (ColorAttribute)getCompiled(TEXT_COLOR);
   }
 
-  public void setBorderColor(String value)
+  public void setBorderColor(Object value)
   {
     put(TOP_BORDER_COLOR, value);
     put(TOP_RIGHT_BORDER_COLOR, value);
@@ -273,27 +273,27 @@ public abstract class Style
     return (ColorAttribute)getCompiled(LEFT_BORDER_COLOR);
   }
 
-  public void setTopBorderColor(String value)
+  public void setTopBorderColor(Object value)
   {
     put(TOP_BORDER_COLOR, value);
   }
 
-  public void setRightBorderColor(String value)
+  public void setRightBorderColor(Object value)
   {
     put(RIGHT_BORDER_COLOR, value);
   }
 
-  public void setBottomBorderColor(String value)
+  public void setBottomBorderColor(Object value)
   {
     put(BOTTOM_BORDER_COLOR, value);
   }
 
-  public void setLeftBorderColor(String value)
+  public void setLeftBorderColor(Object value)
   {
     put(LEFT_BORDER_COLOR, value);
   }
 
-  public void setBorderWidth(String pixels)
+  public void setBorderWidth(Object pixels)
   {
     put(TOP_BORDER_WIDTH, pixels);
     put(TOP_RIGHT_BORDER_WIDTH, pixels);
@@ -315,7 +315,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(TOP_BORDER_WIDTH);
   }
 
-  public void setTopBorderWidth(String topBorderWidth)
+  public void setTopBorderWidth(Object topBorderWidth)
   {
     put(TOP_BORDER_WIDTH, topBorderWidth);
   }
@@ -330,7 +330,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(RIGHT_BORDER_WIDTH);
   }
 
-  public void setRightBorderWidth(String rightBorderWidth)
+  public void setRightBorderWidth(Object rightBorderWidth)
   {
     put(RIGHT_BORDER_WIDTH, rightBorderWidth);
   }
@@ -345,7 +345,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(BOTTOM_BORDER_WIDTH);
   }
 
-  public void setBottomBorderWidth(String bottomBorderWidth)
+  public void setBottomBorderWidth(Object bottomBorderWidth)
   {
     put(BOTTOM_BORDER_WIDTH, bottomBorderWidth);
   }
@@ -360,12 +360,12 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(LEFT_BORDER_WIDTH);
   }
 
-  public void setLeftBorderWidth(String leftBorderWidth)
+  public void setLeftBorderWidth(Object leftBorderWidth)
   {
     put(LEFT_BORDER_WIDTH, leftBorderWidth);
   }
 
-  public void setMargin(String margin)
+  public void setMargin(Object margin)
   {
     put(TOP_MARGIN, margin);
     put(RIGHT_MARGIN, margin);
@@ -383,7 +383,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(TOP_MARGIN);
   }
 
-  public void setTopMargin(String topMargin)
+  public void setTopMargin(Object topMargin)
   {
     put(TOP_MARGIN, topMargin);
   }
@@ -398,7 +398,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(RIGHT_MARGIN);
   }
 
-  public void setRightMargin(String rightMargin)
+  public void setRightMargin(Object rightMargin)
   {
     put(RIGHT_MARGIN, rightMargin);
   }
@@ -413,7 +413,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(BOTTOM_MARGIN);
   }
 
-  public void setBottomMargin(String bottomMargin)
+  public void setBottomMargin(Object bottomMargin)
   {
     put(BOTTOM_MARGIN, bottomMargin);
   }
@@ -428,12 +428,12 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(LEFT_MARGIN);
   }
 
-  public void setLeftMargin(String leftMargin)
+  public void setLeftMargin(Object leftMargin)
   {
     put(LEFT_MARGIN, leftMargin);
   }
 
-  public void setPadding(String padding)
+  public void setPadding(Object padding)
   {
     put(TOP_PADDING, padding);
     put(RIGHT_PADDING, padding);
@@ -451,7 +451,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(TOP_PADDING);
   }
 
-  public void setTopPadding(String topPadding)
+  public void setTopPadding(Object topPadding)
   {
     put(TOP_PADDING, topPadding);
   }
@@ -466,7 +466,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(RIGHT_PADDING);
   }
 
-  public void setRightPadding(String rightPadding)
+  public void setRightPadding(Object rightPadding)
   {
     put(RIGHT_PADDING, rightPadding);
   }
@@ -481,7 +481,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(BOTTOM_PADDING);
   }
 
-  public void setBottomPadding(String bottomPadding)
+  public void setBottomPadding(Object bottomPadding)
   {
     put(BOTTOM_PADDING, bottomPadding);
   }
@@ -496,12 +496,12 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(LEFT_PADDING);
   }
 
-  public void setLeftPadding(String leftPadding)
+  public void setLeftPadding(Object leftPadding)
   {
     put(LEFT_PADDING, leftPadding);
   }
 
-  public void setBackgroundColor(String backgroundColor)
+  public void setBackgroundColor(Object backgroundColor)
   {
     put(BACKGROUND_COLOR, backgroundColor);
   }
@@ -516,7 +516,7 @@ public abstract class Style
     return (ColorAttribute)getCompiled(BACKGROUND_COLOR);
   }
 
-  public void setBackgroundImage(String backgroundImage)
+  public void setBackgroundImage(Object backgroundImage)
   {
     put(BACKGROUND_IMAGE, backgroundImage);
   }
@@ -541,12 +541,12 @@ public abstract class Style
     return (FillStrategyAttribute)getCompiled(BACKGROUND_IMAGE_FILL_STRATEGY);
   }
 
-  public void setBackgroundImageFillStrategy(String backgroundImageFillStrategy)
+  public void setBackgroundImageFillStrategy(Object backgroundImageFillStrategy)
   {
     put(BACKGROUND_IMAGE_FILL_STRATEGY, backgroundImageFillStrategy);
   }
 
-  public void setGradient(String color)
+  public void setGradient(Object color)
   {
     put(GRADIENT, color);
   }
@@ -561,7 +561,7 @@ public abstract class Style
     return (OnOffAttribute)getCompiled(GRADIENT);
   }
 
-  public void setSecondaryBackgroundColor(String color)
+  public void setSecondaryBackgroundColor(Object color)
   {
     put(SECONDARY_BACKGROUND_COLOR, color);
   }
@@ -576,7 +576,7 @@ public abstract class Style
     return (ColorAttribute)getCompiled(SECONDARY_BACKGROUND_COLOR);
   }
 
-  public void setGradientAngle(String value)
+  public void setGradientAngle(Object value)
   {
     put(GRADIENT_ANGLE, value);
   }
@@ -591,7 +591,7 @@ public abstract class Style
     return (DegreesAttribute)getCompiled(GRADIENT_ANGLE);
   }
 
-  public void setGradientPenetration(String value)
+  public void setGradientPenetration(Object value)
   {
     put(GRADIENT_PENETRATION, value);
   }
@@ -606,7 +606,7 @@ public abstract class Style
     return (PercentageAttribute)getCompiled(GRADIENT_PENETRATION);
   }
 
-  public void setCyclicGradient(String value)
+  public void setCyclicGradient(Object value)
   {
     put(CYCLIC_GRADIENT, value);
   }
@@ -621,7 +621,7 @@ public abstract class Style
     return (OnOffAttribute)getCompiled(CYCLIC_GRADIENT);
   }
 
-  public void setHorizontalAlignment(String alignment)
+  public void setHorizontalAlignment(Object alignment)
   {
     put(HORIZONTAL_ALIGNMENT, alignment);
   }
@@ -636,7 +636,7 @@ public abstract class Style
     return (HorizontalAlignmentAttribute)getCompiled(HORIZONTAL_ALIGNMENT);
   }
 
-  public void setVerticalAlignment(String alignment)
+  public void setVerticalAlignment(Object alignment)
   {
     put(VERTICAL_ALIGNMENT, alignment);
   }
@@ -661,7 +661,7 @@ public abstract class Style
     return (StringAttribute)getCompiled(FONT_FACE);
   }
 
-  public void setFontFace(String fontFace)
+  public void setFontFace(Object fontFace)
   {
     put(FONT_FACE, fontFace);
   }
@@ -676,7 +676,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(FONT_SIZE);
   }
 
-  public void setFontSize(String fontSize)
+  public void setFontSize(Object fontSize)
   {
     put(FONT_SIZE, fontSize);
   }
@@ -691,7 +691,7 @@ public abstract class Style
     return (FontStyleAttribute)getCompiled(FONT_STYLE);
   }
 
-  public void setFontStyle(String fontStyle)
+  public void setFontStyle(Object fontStyle)
   {
     put(FONT_STYLE, fontStyle);
   }
@@ -706,7 +706,7 @@ public abstract class Style
     return (PercentageAttribute)getCompiled(TRANSPARENCY);
   }
 
-  public void setTransparency(String transparency)
+  public void setTransparency(Object transparency)
   {
     put(TRANSPARENCY, transparency);
   }
@@ -721,7 +721,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(TOP_RIGHT_BORDER_WIDTH);
   }
 
-  public void setTopRightBorderWidth(String value)
+  public void setTopRightBorderWidth(Object value)
   {
     put(TOP_RIGHT_BORDER_WIDTH, value);
   }
@@ -736,7 +736,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(BOTTOM_RIGHT_BORDER_WIDTH);
   }
 
-  public void setBottomRightBorderWidth(String value)
+  public void setBottomRightBorderWidth(Object value)
   {
     put(BOTTOM_RIGHT_BORDER_WIDTH, value);
   }
@@ -751,7 +751,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(BOTTOM_LEFT_BORDER_WIDTH);
   }
 
-  public void setBottomLeftBorderWidth(String value)
+  public void setBottomLeftBorderWidth(Object value)
   {
     put(BOTTOM_LEFT_BORDER_WIDTH, value);
   }
@@ -766,7 +766,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(TOP_LEFT_BORDER_WIDTH);
   }
 
-  public void setTopLeftBorderWidth(String value)
+  public void setTopLeftBorderWidth(Object value)
   {
     put(TOP_LEFT_BORDER_WIDTH, value);
   }
@@ -781,7 +781,7 @@ public abstract class Style
     return (ColorAttribute)getCompiled(TOP_RIGHT_BORDER_COLOR);
   }
 
-  public void setTopRightBorderColor(String value)
+  public void setTopRightBorderColor(Object value)
   {
     put(TOP_RIGHT_BORDER_COLOR, value);
   }
@@ -796,7 +796,7 @@ public abstract class Style
     return (ColorAttribute)getCompiled(BOTTOM_RIGHT_BORDER_COLOR);
   }
 
-  public void setBottomRightBorderColor(String value)
+  public void setBottomRightBorderColor(Object value)
   {
     put(BOTTOM_RIGHT_BORDER_COLOR, value);
   }
@@ -811,7 +811,7 @@ public abstract class Style
     return (ColorAttribute)getCompiled(BOTTOM_LEFT_BORDER_COLOR);
   }
 
-  public void setBottomLeftBorderColor(String value)
+  public void setBottomLeftBorderColor(Object value)
   {
     put(BOTTOM_LEFT_BORDER_COLOR, value);
   }
@@ -826,12 +826,12 @@ public abstract class Style
     return (ColorAttribute)getCompiled(TOP_LEFT_BORDER_COLOR);
   }
 
-  public void setTopLeftBorderColor(String value)
+  public void setTopLeftBorderColor(Object value)
   {
     put(TOP_LEFT_BORDER_COLOR, value);
   }
 
-  public void setRoundedCornerRadius(String radius)
+  public void setRoundedCornerRadius(Object radius)
   {
     put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, radius);
     put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, radius);
@@ -839,7 +839,7 @@ public abstract class Style
     put(TOP_LEFT_ROUNDED_CORNER_RADIUS, radius);
   }
 
-  public void setTopRightRoundedCornerRadius(String value)
+  public void setTopRightRoundedCornerRadius(Object value)
   {
     put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, value);
   }
@@ -854,7 +854,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(TOP_RIGHT_ROUNDED_CORNER_RADIUS);
   }
 
-  public void setBottomRightRoundedCornerRadius(String value)
+  public void setBottomRightRoundedCornerRadius(Object value)
   {
     put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, value);
   }
@@ -869,7 +869,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
   }
 
-  public void setBottomLeftRoundedCornerRadius(String value)
+  public void setBottomLeftRoundedCornerRadius(Object value)
   {
     put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, value);
   }
@@ -884,7 +884,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
   }
 
-  public void setTopLeftRoundedCornerRadius(String value)
+  public void setTopLeftRoundedCornerRadius(Object value)
   {
     put(TOP_LEFT_ROUNDED_CORNER_RADIUS, value);
   }
@@ -899,25 +899,25 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(TOP_LEFT_ROUNDED_CORNER_RADIUS);
   }
 
-  public void setTopRoundedCornerRadius(String radius)
+  public void setTopRoundedCornerRadius(Object radius)
   {
     put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, radius);
     put(TOP_LEFT_ROUNDED_CORNER_RADIUS, radius);
   }
 
-  public void setRightRoundedCornerRadius(String radius)
+  public void setRightRoundedCornerRadius(Object radius)
   {
     put(TOP_RIGHT_ROUNDED_CORNER_RADIUS, radius);
     put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, radius);
   }
 
-  public void setBottomRoundedCornerRadius(String radius)
+  public void setBottomRoundedCornerRadius(Object radius)
   {
     put(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS, radius);
     put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, radius);
   }
 
-  public void setLeftRoundedCornerRadius(String radius)
+  public void setLeftRoundedCornerRadius(Object radius)
   {
     put(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS, radius);
     put(TOP_LEFT_ROUNDED_CORNER_RADIUS, radius);
@@ -933,7 +933,7 @@ public abstract class Style
     return (OnOffAttribute)getCompiled(FLOAT);
   }
 
-  public void setFloat(String value)
+  public void setFloat(Object value)
   {
     put(FLOAT, value);
   }
@@ -948,7 +948,7 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(X);
   }
 
-  public void setX(String value)
+  public void setX(Object value)
   {
     put(X, value);
   }
@@ -963,12 +963,12 @@ public abstract class Style
     return (IntegerAttribute)getCompiled(Y);
   }
 
-  public void setY(String value)
+  public void setY(Object value)
   {
     put(Y, value);
   }
 
-  public void setScrollbars(String value)
+  public void setScrollbars(Object value)
   {
     put(VERTICAL_SCROLLBAR, value);
     put(HORIZONTAL_SCROLLBAR, value);
@@ -994,12 +994,12 @@ public abstract class Style
     return (OnOffAttribute)getCompiled(HORIZONTAL_SCROLLBAR);
   }
 
-  public void setVerticalScrollbar(String value)
+  public void setVerticalScrollbar(Object value)
   {
     put(VERTICAL_SCROLLBAR, value);
   }
 
-  public void setHorizontalScrollbar(String value)
+  public void setHorizontalScrollbar(Object value)
   {
     put(HORIZONTAL_SCROLLBAR, value);
   }

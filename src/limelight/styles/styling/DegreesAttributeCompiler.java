@@ -5,8 +5,9 @@ import limelight.styles.abstrstyling.StyleAttributeCompiler;
 
 public class DegreesAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object objValue)
   {
+    String value = objValue.toString();
     try
     {
       int intValue = Integer.parseInt(value);

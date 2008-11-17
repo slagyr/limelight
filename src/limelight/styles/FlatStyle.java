@@ -21,13 +21,11 @@ public class FlatStyle extends BaseStyle
     return style == null ? null : style;
 	}
 
-	public void put(StyleDescriptor descriptor, String value)
+	public void put(StyleDescriptor descriptor, Object value)
 	{
     if(value == null)
       return;
-    value = value.trim();
-    if(value.length() == 0)
-      value = null;
+
     StyleAttribute compiledValue = descriptor.compile(value);
 
     StyleAttribute originalValue = styles[descriptor.index];

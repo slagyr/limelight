@@ -11,8 +11,9 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
 {
   private static final Pattern percentagePattern = Pattern.compile("(\\d+)%");
 
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object objValue)
   {
+    String value = objValue.toString();
     try
     {
       DimensionAttribute attribute;

@@ -10,7 +10,7 @@ public class StyleAttributeCompilerTest extends TestCase
 
   private static class TestableStyleAttributeCompilerTest extends StyleAttributeCompiler
   {
-    public StyleAttribute compile(String value)
+    public StyleAttribute compile(Object value)
     {
       return null;
     }

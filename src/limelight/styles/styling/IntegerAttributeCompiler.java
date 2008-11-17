@@ -5,15 +5,17 @@ import limelight.styles.abstrstyling.StyleAttribute;
 
 public class IntegerAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(String value)
+  public StyleAttribute compile(Object value)
   {
     try
     {
       int intValue;
-      if(value.indexOf(".") != -1)
-        intValue = (int)(Double.parseDouble(value) + 0.5);
+      if(value instanceof String)
+        intValue = (int)(Double.parseDouble(value.toString()) + 0.5);
+      else if(value instanceof Number)
+        intValue = ((Number)value).intValue();
       else
-        intValue = Integer.parseInt(value);
+        intValue = Integer.parseInt(value.toString());
       return new SimpleIntegerAttribute(intValue);
     }
     catch(NumberFormatException e)

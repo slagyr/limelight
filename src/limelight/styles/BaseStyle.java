@@ -9,7 +9,7 @@ public abstract class BaseStyle extends Style
   private LinkedList<StyleObserver> observers;
   private StyleAttribute[] defaults;
 
-  public void setDefault(StyleDescriptor descriptor, String value)
+  public void setDefault(StyleDescriptor descriptor, Object value)
   {
     if(defaults == null)
       defaults = new StyleAttribute[Style.STYLE_COUNT];

@@ -11,7 +11,7 @@ import limelight.ResourceLoader;
 import java.awt.event.*;
 
 public interface Prop
-{
+{ 
   Panel getPanel();
   ScreenableStyle getStyle();
   Style getHoverStyle();
