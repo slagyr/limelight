@@ -17,8 +17,8 @@ public class PercentageAttributeTest extends TestCase
   public void testCreation() throws Exception
   {
     assertEquals(true, (fiftyPercent instanceof StyleAttribute));
-    assertEquals(50, fiftyPercent.getPercentage());
-    assertEquals(100, hundredPercent.getPercentage());
+    assertEquals(50.0, fiftyPercent.getPercentage(), 0.01);
+    assertEquals(100.0, hundredPercent.getPercentage(), 0.01);
   }
 
   public void testToString() throws Exception
@@ -33,5 +33,13 @@ public class PercentageAttributeTest extends TestCase
     assertEquals(true, fiftyPercent.equals(new SimplePercentageAttribute(50)));
     assertEquals(false, fiftyPercent.equals(hundredPercent));
     assertEquals(false, fiftyPercent.equals(null));
+  }
+
+  public void testWithFloatValues() throws Exception
+  {
+    SimplePercentageAttribute floatPercent = new SimplePercentageAttribute(3.14);
+    assertEquals(3.14, floatPercent.getPercentage(), 0.01);
+    assertEquals("3.14%", floatPercent.toString());
+    assertEquals(true, floatPercent.equals(new SimplePercentageAttribute(3.14)));
   }
 }

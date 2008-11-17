@@ -8,17 +8,19 @@ import java.util.regex.Pattern;
 
 public class PercentageAttributeCompiler extends StyleAttributeCompiler
 {
-  private static final Pattern percentagePattern = Pattern.compile("(\\d+)%");
+  private static final Pattern percentagePattern = Pattern.compile("(\\d+(.\\d+)?)%");
 
-  public StyleAttribute compile(Object objValue)
+  public StyleAttribute compile(Object value)
   {
-    String value = objValue.toString();
     try
     {
-      if(value.indexOf(".") != -1)
-        return compileDecimalValue(value);
+      if(value instanceof Number)
+      {
+        double doubleValue = ((Number)value).doubleValue();
+        return new SimplePercentageAttribute(doubleValue);
+      }
       else
-        return compileIntValue(value);
+        return compileString(value.toString());
     }
     catch(Exception e)
     {
@@ -26,29 +28,19 @@ public class PercentageAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private StyleAttribute compileIntValue(String rawValue)
+  private SimplePercentageAttribute compileString(String rawValue)
   {
     String value = removePercentageSymbol(rawValue);
-    int intValue = Integer.parseInt(value);
-    if(isValidRange(intValue))
-      return new SimplePercentageAttribute(intValue);
-    else
-      throw makeError(rawValue);
-  }
-
-  private SimplePercentageAttribute compileDecimalValue(String value)
-  {
     double doubleValue = Double.parseDouble(value);
-    int intValue = (int) (doubleValue * 100);
-    if(isValidRange(intValue))
-      return new SimplePercentageAttribute(intValue);
+    if(isValidRange(doubleValue))
+      return new SimplePercentageAttribute(doubleValue);
     else
       throw makeError(value);
   }
 
-  private boolean isValidRange(int intValue)
+  private boolean isValidRange(double value)
   {
-    return intValue >= 0 && intValue <= 100;
+    return value >= 0 && value <= 100;
   }
 
   private String removePercentageSymbol(String value)
