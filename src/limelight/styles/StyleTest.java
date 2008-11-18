@@ -12,11 +12,6 @@ import java.awt.*;
 
 public class StyleTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   public void testSizeDefaults() throws Exception
   {
     assertEquals("auto", Style.WIDTH.defaultValue.toString());

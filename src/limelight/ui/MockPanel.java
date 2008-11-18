@@ -13,11 +13,6 @@ import java.awt.*;
 
 public class MockPanel extends BasePanel
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   public final FlatStyle style;
   public static int paintCount;
   public int paintIndex;

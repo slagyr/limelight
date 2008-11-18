@@ -16,12 +16,7 @@ import java.util.ArrayList;
 import java.awt.*;
 
 public class RootPanelTest extends TestCase
-{
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-  
+{ 
   private RootPanel root;
   private MockPropablePanel child;
   private Container contentPane;

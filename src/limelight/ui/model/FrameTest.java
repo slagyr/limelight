@@ -15,11 +15,6 @@ import java.awt.*;
 
 public class FrameTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private MockStage stage;
   private Frame frame;
   private FrameManager frameManager;

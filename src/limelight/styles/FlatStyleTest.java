@@ -8,11 +8,6 @@ import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 public class FlatStyleTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-  
   private FlatStyle style;
   private MockStyleObserver observer;
 

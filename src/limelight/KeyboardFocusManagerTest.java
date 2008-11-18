@@ -21,11 +21,6 @@ import java.awt.event.FocusEvent;
 
 public class KeyboardFocusManagerTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private KeyboardFocusManager manager;
   private MockComponent component;
   private MockInputPanel panel;

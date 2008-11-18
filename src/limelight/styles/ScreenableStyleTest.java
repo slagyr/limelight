@@ -8,11 +8,6 @@ import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 public class ScreenableStyleTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-  
   private ScreenableStyle style;
   private RichStyle style2;
   private RichStyle style3;

@@ -13,11 +13,6 @@ import java.awt.*;
 
 public class PropPanelLayoutTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private PropPanel parent;
   private PropPanelLayout layout;
   private int scrollGirth;

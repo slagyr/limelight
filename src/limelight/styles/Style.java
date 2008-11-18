@@ -5,6 +5,7 @@ package limelight.styles;
 
 import limelight.Context;
 import limelight.styles.abstrstyling.*;
+import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.util.LinkedList;
 
@@ -14,6 +15,8 @@ public abstract class Style
 
   private static StyleDescriptor descriptor(String name, String compilerType, String defaultValue)
   {
+    if(Context.instance().styleAttributeCompilerFactory == null)
+      RealStyleAttributeCompilerFactory.install(); //TODO DIP violation... but it's better then the alternative... static install calls all over the place.
     StyleAttributeCompiler compiler = Context.instance().styleAttributeCompilerFactory.compiler(compilerType);
     compiler.setName(name);
     StyleDescriptor descriptor = new StyleDescriptor(STYLE_LIST.size(), name, compiler, compiler.compile(defaultValue));

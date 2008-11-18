@@ -15,11 +15,6 @@ import java.awt.event.MouseEvent;
 
 public class MockProp implements Prop
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   public final ScreenableStyle style;
   public Style hoverStyle;
   public String text;

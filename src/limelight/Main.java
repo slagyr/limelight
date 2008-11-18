@@ -24,11 +24,6 @@ import java.io.*;
 
 public class Main
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private RubyInstanceConfig config;
   private Ruby runtime;
   private boolean contextIsConfigured;

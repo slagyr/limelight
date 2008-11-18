@@ -22,11 +22,6 @@ import java.util.List;
 
 public class BasePanelTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-  
   private TestableBasePanel panel;
   private MockPanel parent;
   private MockPanel child;

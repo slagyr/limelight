@@ -17,11 +17,6 @@ import java.awt.geom.PathIterator;
 
 public class BorderTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private Style style;
   private Border border;
   private Box insideMargin;
