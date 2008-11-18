@@ -19,11 +19,6 @@ import java.awt.image.BufferedImage;
 
 public class PaintJobTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-  
   private PaintJob job;
   private MockPropablePanel panel;
   private Style style;

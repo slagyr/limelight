@@ -8,11 +8,6 @@ import limelight.Context;
 
 public class AnimationTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private MockAnimation animation;
   private AnimationLoop loop;
 

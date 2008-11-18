@@ -24,4 +24,9 @@ public abstract class StyleAttributeCompiler
   {
     return new InvalidStyleAttributeError("Invalid value '" + invalidValue + "' for " + name + " style attribute.");
   }
+
+  public static void installDefault()
+  {
+
+  }
 }

@@ -37,11 +37,6 @@ import java.awt.event.*;
 
 public class PropPanelTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private MockProp prop;
   private PropPanel panel;
   private ScreenableStyle style;

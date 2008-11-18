@@ -12,11 +12,6 @@ import java.awt.*;
 
 public class PanelPainterLoopTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-  
   private PanelPainterLoop loop;
   private MockFrameManager frameManager;
   private MockFrame activeFrame;

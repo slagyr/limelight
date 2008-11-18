@@ -12,11 +12,6 @@ import limelight.background.IdleThreadLoop;
 
 public class AnimationLoopTest extends TestCase
 {
-  static
-  {
-    RealStyleAttributeCompilerFactory.install();
-  }
-
   private AnimationLoop loop;
   private MockAnimation animation20;
   private MockAnimation animation30;
