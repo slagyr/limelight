@@ -282,6 +282,21 @@ public class FlatStyleTest extends TestCase
     assertEquals(true, style.getCompiledTopLeftBorderWidth() instanceof PixelsAttribute);
   }
 
+  public void testAlignmentShortCuts() throws Exception
+  {
+    checkSetAlignment("center", "center", "center");
+    checkSetAlignment("center center", "center", "center");
+    checkSetAlignment("top right", "top", "right");
+    checkSetAlignment("bottom left", "bottom", "left");
+  }
+
+  private void checkSetAlignment(String value, String expectedVerticalAlignment, String expectedHorizontalAlignment)
+  {
+    style.setAlignment(value);
+    assertEquals(expectedVerticalAlignment, style.getVerticalAlignment());
+    assertEquals(expectedHorizontalAlignment, style.getHorizontalAlignment());
+  }
+
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds
 //  // Array based: 3800000 sets and 3500000 gets took = 1863.0 milliseconds
 //  public void testPerformance() throws Exception

@@ -11,7 +11,7 @@ public class VerticalAlignmentAttributeCompiler extends StyleAttributeCompiler
     String lowerCase = value.toString().toLowerCase().trim();
     if("top".equals(lowerCase))
       return new SimpleVerticalAlignmentAttribute(Aligner.TOP);
-    else if("center".equals(lowerCase))
+    else if("center".equals(lowerCase) || "middle".equals(lowerCase))
       return new SimpleVerticalAlignmentAttribute(Aligner.VERTICAL_CENTER);
     else if("bottom".equals(lowerCase))
       return new SimpleVerticalAlignmentAttribute(Aligner.BOTTOM);

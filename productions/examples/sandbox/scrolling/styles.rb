@@ -20,8 +20,7 @@ cell {
   width 50
   height 50
   text_color :black
-  vertical_alignment :center
-  horizontal_alignment :center
+  alignment :center
 }
 
 buttons_panel {

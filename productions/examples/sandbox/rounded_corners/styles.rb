@@ -13,6 +13,5 @@ box {
 row {
   width 500
   height 100
-  horizontal_alignment :center
-  vertical_alignment :center
+  alignment :center
 }

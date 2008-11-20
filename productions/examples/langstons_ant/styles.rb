@@ -18,8 +18,7 @@ title {
 	border_width 2
 	border_color "orange"
 	margin 10
-	vertical_alignment "center"
-	horizontal_alignment "center"
+	alignment "center"
 	text_color "orange"
 	font_size 30
 	font_face "Arial"
