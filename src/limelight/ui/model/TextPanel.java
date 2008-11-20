@@ -38,13 +38,14 @@ public class TextPanel extends BasePanel
   private boolean compiled;
   private FontRenderContext renderContext;
   public static FontRenderContext staticFontRenderingContext;
+  private Box consumableArea;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
   public TextPanel(PropablePanel panel, String text)
   {
     this.panel = panel;
     this.text = text;
-    setNeedsLayout();
+//    setNeedsLayout();
   }
 
   public String getText()
@@ -97,19 +98,33 @@ public class TextPanel extends BasePanel
   public void doLayout()
   {
     super.doLayout();
-    if(!compiled || textChanged())
+    try
     {
-      try
-      {
-        buildLines();
-        calculateDimentions();
-        compiled = true;
-      }
-      catch(Exception e)
-      {
-        //okay
-      }
+      compile();
     }
+    catch(Exception e)
+    {
+      //okay
+    }
+  }
+
+  public boolean needsLayout()
+  {
+    return !compiled || textChanged() || consumableAreaChanged();
+  }
+
+  private boolean consumableAreaChanged()
+  {
+    //TODO MDM Can optimize so that a TextPanel doesn't compile if it's not using the entire width of consumableArea. 
+    return consumableArea == null || !consumableArea.sameSize(panel.getChildConsumableArea());
+  }
+
+  private void compile()
+  {
+    buildLines();
+    calculateDimentions();
+    compiled = true;
+    flushChanges();
     snapToSize();
     markAsDirty();
   }
@@ -124,49 +139,47 @@ public class TextPanel extends BasePanel
     return new Aligner(new Box(0, 0, getWidth(), getHeight()), getStyle().getCompiledHorizontalAlignment().getAlignment(), getStyle().getCompiledVerticalAlignment().getAlignment());
   }
 
-  public void buildLines()
+  public synchronized void buildLines()
   {
-    synchronized(this)
+    consumableArea = panel.getChildConsumableArea();
+    lines = new LinkedList<TextLayout>();
+    if(text != null && text.length() > 0)
     {
-      lines = new LinkedList<TextLayout>();
-      if(text != null && text.length() > 0)
+      String[] paragraphs = text.split("\n");
+      Style style = getStyle();
+      Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
+      for(String paragraph : paragraphs)
       {
-        String[] paragraphs = text.split("\n");
-        Style style = getStyle();
-        Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
-        for(String paragraph : paragraphs)
+        Matcher matcher = TAG_REGEX.matcher(paragraph);
+        if(matcher.find())
         {
-          Matcher matcher = TAG_REGEX.matcher(paragraph);
-          if(matcher.find())
-          {
-            paragraph = matcher.group(2);
-            String tagName = matcher.group(1);
-            Prop prop = ((PropablePanel) getPanel()).getProp();
-            Scene scene = prop.getScene();
-            Map styles = scene.getStyles();
-            Style tagStyle = (Style) styles.get(tagName);
-            if(tagStyle != null)
-              font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
-            else
-              System.out.println("no style for tag: " + tagName);
-          }
-
-          if(paragraph.length() != 0)
-          {
-            AttributedString aText = new AttributedString(paragraph);
-            aText.addAttribute(TextAttribute.FONT, font);
-            LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getRenderContext());
-            while(lbm.getPosition() < paragraph.length())
-            {
-              float width1 = (float) panel.getChildConsumableArea().width;
-              TextLayout layout = lbm.nextLayout(width1);
-              lines.add(layout);
-            }
-          }
+          paragraph = matcher.group(2);
+          String tagName = matcher.group(1);
+          Prop prop = ((PropablePanel) getPanel()).getProp();
+          Scene scene = prop.getScene();
+          Map styles = scene.getStyles();
+          Style tagStyle = (Style) styles.get(tagName);
+          if(tagStyle != null)
+            font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
           else
+            System.out.println("no style for tag: " + tagName);
+        }
+
+        if(paragraph.length() != 0)
+        {
+          AttributedString aText = new AttributedString(paragraph);
+          aText.addAttribute(TextAttribute.FONT, font);
+          LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getRenderContext());
+          while(lbm.getPosition() < paragraph.length())
           {
-            lines.add(new TextLayout(" ", font, getRenderContext()));
+            float width1 = (float) consumableArea.width;
+            TextLayout layout = lbm.nextLayout(width1);
+            lines.add(layout);
           }
+        }
+        else
+        {
+          lines.add(new TextLayout(" ", font, getRenderContext()));
         }
       }
     }

@@ -6,6 +6,7 @@ package limelight.styles;
 import junit.framework.TestCase;
 import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.styles.styling.SimpleColorAttribute;
+import limelight.styles.styling.PixelsAttributeCompiler;
 import limelight.util.Colors;
 
 import java.awt.*;
@@ -115,5 +116,41 @@ public class StyleTest extends TestCase
     assertEquals("none", Style.MIN_HEIGHT.defaultValue.toString());
     assertEquals("none", Style.MAX_WIDTH.defaultValue.toString());
     assertEquals("none", Style.MAX_HEIGHT.defaultValue.toString());
+  }
+
+  public void testMarginsUsePixleCompilers() throws Exception
+  {
+    assertEquals(PixelsAttributeCompiler.class, Style.TOP_MARGIN.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.RIGHT_MARGIN.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_MARGIN.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.LEFT_MARGIN.compiler.getClass());
+  }
+
+  public void testPaddingsUsesPixleCompilers() throws Exception
+  {
+    assertEquals(PixelsAttributeCompiler.class, Style.TOP_PADDING.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.RIGHT_PADDING.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_PADDING.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.LEFT_PADDING.compiler.getClass());
+  }
+
+  public void testRoundedCornerRadiusUsesPixleCompilers() throws Exception
+  {
+    assertEquals(PixelsAttributeCompiler.class, Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.TOP_LEFT_ROUNDED_CORNER_RADIUS.compiler.getClass());
+  }
+
+  public void testBordersUsesPixleCompilers() throws Exception
+  {
+    assertEquals(PixelsAttributeCompiler.class, Style.TOP_BORDER_WIDTH.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.TOP_RIGHT_BORDER_WIDTH.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.RIGHT_BORDER_WIDTH.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_RIGHT_BORDER_WIDTH.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_BORDER_WIDTH.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_LEFT_BORDER_WIDTH.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.LEFT_BORDER_WIDTH.compiler.getClass());
+    assertEquals(PixelsAttributeCompiler.class, Style.TOP_LEFT_BORDER_WIDTH.compiler.getClass());
   }
 }

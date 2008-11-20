@@ -3,6 +3,8 @@
 
 package limelight.util;
 
+import java.awt.*;
+
 public class Box extends java.awt.Rectangle
 {
 	public Box(int x, int y, int width, int height)
@@ -53,4 +55,11 @@ public class Box extends java.awt.Rectangle
 	{
 		return "Rectangle: x: " + x + ",  y: " + y + ", width: " + width + ", height: " + height;
 	}
+
+  public boolean sameSize(Rectangle other)
+  {
+    if(other == null)
+      return false;
+    return width == other.width && height == other.height;
+  }
 }

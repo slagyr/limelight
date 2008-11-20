@@ -25,8 +25,19 @@ image_area {
   background_color :light_gray
 }
 
-logo {
-  border_width 1
+box {
+  background_color :tan
+  width :auto
+  height :auto
 }
 
-
+subject {
+  width "300"
+  height "300"
+  margin "10%"
+  border_width "10%"
+  padding "10%"
+  rounded_corner_radius "10%"
+  border_color :black
+  background_color :yellow
+}

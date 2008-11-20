@@ -4,7 +4,7 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.styles.abstrstyling.PixelsAttribute;
 
 public class FlatStyleTest extends TestCase
 {
@@ -240,6 +240,46 @@ public class FlatStyleTest extends TestCase
 
     assertEquals("100", style.getMinWidth());
     assertEquals("200", style.getMinHeight());
+  }
+  
+  public void testMarginsReturnPixlesAttribute() throws Exception
+  {
+    style.setMargin("10%");
+    assertEquals(true, style.getCompiledTopMargin() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledRightMargin() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledBottomMargin() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledLeftMargin() instanceof PixelsAttribute);
+  }
+  
+  public void testPaddingsReturnPixlesAttribute() throws Exception
+  {
+    style.setPadding("10%");
+    assertEquals(true, style.getCompiledTopPadding() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledRightPadding() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledBottomPadding() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledLeftPadding() instanceof PixelsAttribute);
+  }
+
+  public void testRoundedCornerRadiusReturnPixlesAttribute() throws Exception
+  {
+    style.setRightRoundedCornerRadius("10%");
+    assertEquals(true, style.getCompiledTopRightRoundedCornerRadius() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledBottomRightRoundedCornerRadius() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledBottomLeftRoundedCornerRadius() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledTopLeftRoundedCornerRadius() instanceof PixelsAttribute);
+  }
+
+  public void testBordersReturnPixlesAttribute() throws Exception
+  {
+    style.setBorderWidth("10%");
+    assertEquals(true, style.getCompiledTopBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledTopRightBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledRightBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledBottomRightBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledBottomBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledBottomLeftBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledLeftBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledTopLeftBorderWidth() instanceof PixelsAttribute);
   }
 
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds

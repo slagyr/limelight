@@ -37,7 +37,7 @@ public class PropPanelLayout
       panel.snapToSize();
 
     establishScrollBars();
-
+    
     if(!hasNonScrollBarChildren())
       collapseAutoDimensions();
     else

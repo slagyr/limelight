@@ -30,6 +30,11 @@ public class RealStyleAttributeCompilerFactoryTest extends TestCase
     assertEquals(IntegerAttributeCompiler.class, factory.compiler("integer").getClass());
   }
 
+  public void testPixels() throws Exception
+  {
+    assertEquals(PixelsAttributeCompiler.class, factory.compiler("pixels").getClass());
+  }
+
   public void testColor() throws Exception
   {
     assertEquals(ColorAttributeCompiler.class, factory.compiler("color").getClass());  

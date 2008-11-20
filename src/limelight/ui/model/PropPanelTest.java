@@ -14,14 +14,12 @@ import limelight.styles.FlatStyle;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
-import limelight.styles.abstrstyling.DimensionAttribute;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.styles.styling.StaticDimensionAttribute;
 import limelight.styles.styling.SimpleIntegerAttribute;
 import limelight.styles.styling.SimplePercentageAttribute;
+import limelight.styles.styling.StaticPixelsAttribute;
 import limelight.util.Box;
 import limelight.Context;
-import limelight.caching.Cache;
 import limelight.caching.SimpleCache;
 import limelight.audio.MockAudioPlayer;
 import junit.framework.TestCase;
@@ -29,7 +27,6 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
-import java.awt.Panel;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
@@ -500,6 +497,47 @@ public class PropPanelTest extends TestCase
     panel.doLayout();
     assertEquals(false, panel.borderChanged());
   }
+
+  public void testMarginStyleChanges() throws Exception
+  {
+    panel.doLayout();
+    assertEquals(false, panel.needsLayout());
+
+    checkLayoutOnStyle(Style.TOP_MARGIN);
+    checkLayoutOnStyle(Style.RIGHT_MARGIN);
+    checkLayoutOnStyle(Style.BOTTOM_MARGIN);
+    checkLayoutOnStyle(Style.LEFT_MARGIN);
+
+    checkLayoutOnStyle(Style.TOP_PADDING);
+    checkLayoutOnStyle(Style.RIGHT_PADDING);
+    checkLayoutOnStyle(Style.BOTTOM_PADDING);
+    checkLayoutOnStyle(Style.LEFT_PADDING);
+
+//    checkLayoutOnStyle(Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS);
+//    checkLayoutOnStyle(Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
+//    checkLayoutOnStyle(Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
+//    checkLayoutOnStyle(Style.TOP_LEFT_ROUNDED_CORNER_RADIUS);
+
+    checkLayoutOnStyle(Style.TOP_BORDER_WIDTH);
+    checkLayoutOnStyle(Style.TOP_RIGHT_BORDER_WIDTH);
+    checkLayoutOnStyle(Style.RIGHT_BORDER_WIDTH);
+    checkLayoutOnStyle(Style.BOTTOM_RIGHT_BORDER_WIDTH);
+    checkLayoutOnStyle(Style.BOTTOM_BORDER_WIDTH);
+    checkLayoutOnStyle(Style.BOTTOM_LEFT_BORDER_WIDTH);
+    checkLayoutOnStyle(Style.LEFT_BORDER_WIDTH);
+    checkLayoutOnStyle(Style.TOP_LEFT_BORDER_WIDTH);
+  }
+
+  private void checkLayoutOnStyle(StyleDescriptor styleDescriptor)
+  {
+    Box box = panel.getBoxInsidePadding();
+    panel.styleChanged(styleDescriptor, new StaticPixelsAttribute(20));
+    assertEquals(true, panel.needsLayout());
+    panel.doLayout();
+    assertNotSame(box, panel.getBoxInsidePadding());
+    assertEquals(false, panel.needsLayout());
+  }
+
 
   public void testShouldBuildBufferWhenStyleChanges() throws Exception
   {

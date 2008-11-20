@@ -21,6 +21,8 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
       return new StringAttributeCompiler();
     else if("integer".equals(name))
       return new IntegerAttributeCompiler();
+    else if("pixels".equals(name))
+      return new PixelsAttributeCompiler();
     else if("color".equals(name))
       return new ColorAttributeCompiler();
     else if("on/off".equals(name))

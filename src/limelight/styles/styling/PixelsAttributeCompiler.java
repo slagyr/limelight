@@ -2,19 +2,16 @@ package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
 import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.DimensionAttribute;
+import limelight.styles.abstrstyling.PixelsAttribute;
 
-public class DimensionAttributeCompiler extends StyleAttributeCompiler
+public class PixelsAttributeCompiler extends StyleAttributeCompiler
 {
   public StyleAttribute compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
-      DimensionAttribute attribute;
-      attribute = attemptAutoAttribute(value);
-      if(attribute == null)
-        attribute = attemptPercentageAttribute(value);
+      PixelsAttribute attribute = attemptPercentageAttribute(value);
       if(attribute == null)
         attribute = attemptStaticAttribute(value);
 
@@ -29,31 +26,23 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private DimensionAttribute attemptStaticAttribute(String value)
+  private PixelsAttribute attemptStaticAttribute(String value)
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
 
     if(intValue >= 0)
-      return new StaticDimensionAttribute(intValue);
+      return new StaticPixelsAttribute(intValue);
     else
       return null;
   }
 
-  private DimensionAttribute attemptAutoAttribute(String value)
-  {
-    if("auto".equals(value.toLowerCase()))
-      return new AutoDimensionAttribute();
-    else
-      return null;
-  }
-
-  private DimensionAttribute attemptPercentageAttribute(String value)
+  private PixelsAttribute attemptPercentageAttribute(String value)
   {
     if(value.indexOf('%') != -1)
     {
       double percentValue = PercentageAttributeCompiler.convertToDouble(value);
       if(percentValue >= 0)
-        return new PercentageDimensionAttribute(percentValue);
+        return new PercentagePixelsAttribute(percentValue);
     }
     return null;
   }

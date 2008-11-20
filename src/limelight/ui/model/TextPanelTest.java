@@ -113,6 +113,17 @@ public class TextPanelTest extends TestCase
     panel.flushChanges();
     assertFalse(panel.textChanged());
   }
+  
+  public void testLayoutFlushedChangedText() throws Exception
+  {
+    assertFalse(panel.textChanged());
+
+    panel.setText("Something");
+    assertTrue(panel.textChanged());
+
+    panel.doLayout();
+    assertFalse(panel.textChanged());
+  }
 
   public void testCanBeBuffered() throws Exception
   {
@@ -209,6 +220,22 @@ public class TextPanelTest extends TestCase
     root.getAndClearDirtyRegions(list);
     assertEquals(1, list.size());
     assertEquals(panel.getAbsoluteBounds(), list.get(0));
+  }
+  
+  public void testResizesTextWhenSizeChanges() throws Exception
+  {
+    panel.setText("Some really long text so that there are multiple lines requireing layout when the size changes.");
+    panel.doLayout();
+
+    int originalHeight = panel.getHeight();
+
+    parent.setSize(200, 200);
+    panel.doLayout();
+
+    int newHeight = panel.getHeight();
+
+    assertEquals(true, 200 - panel.getWidth() < 100 );
+    assertEquals(true, newHeight < originalHeight);
   }
 }
 

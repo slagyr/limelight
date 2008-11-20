@@ -2,13 +2,14 @@ package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.DimensionAttribute;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PercentageAttributeCompiler extends StyleAttributeCompiler
 {
-  private static final Pattern percentagePattern = Pattern.compile("(\\d+(.\\d+)?)%");
+  private static final Pattern percentagePattern = Pattern.compile("(\\d+(.\\d+)?)%?");
 
   public StyleAttribute compile(Object value)
   {
@@ -16,7 +17,7 @@ public class PercentageAttributeCompiler extends StyleAttributeCompiler
     {
       if(value instanceof Number)
       {
-        double doubleValue = ((Number)value).doubleValue();
+        double doubleValue = ((Number) value).doubleValue();
         return new SimplePercentageAttribute(doubleValue);
       }
       else
@@ -30,24 +31,23 @@ public class PercentageAttributeCompiler extends StyleAttributeCompiler
 
   private SimplePercentageAttribute compileString(String rawValue)
   {
-    String value = removePercentageSymbol(rawValue);
-    double doubleValue = Double.parseDouble(value);
-    if(isValidRange(doubleValue))
+    double doubleValue = convertToDouble(rawValue);
+    if(doubleValue >= 0)
       return new SimplePercentageAttribute(doubleValue);
     else
-      throw makeError(value);
+      throw makeError(rawValue);
   }
 
-  private boolean isValidRange(double value)
-  {
-    return value >= 0 && value <= 100;
-  }
-
-  private String removePercentageSymbol(String value)
+  public static double convertToDouble(String value)
   {
     Matcher matcher = percentagePattern.matcher(value);
     if(matcher.matches())
-      value = matcher.group(1);
-    return value;
+    {
+      String percentStringValue = matcher.group(1);
+      double percentValue = Double.parseDouble(percentStringValue);
+      if(percentValue >= 0 && percentValue <= 100)
+        return percentValue;
+    }
+    return -1.0;
   }
 }
