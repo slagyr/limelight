@@ -20,8 +20,7 @@ label {
 image_area {
   width "100%"
   height "90%"
-  horizontal_alignment :center
-  vertical_alignment :center
+  alignment :center
   background_color :light_gray
 }
 

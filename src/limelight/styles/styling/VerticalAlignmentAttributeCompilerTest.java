@@ -17,6 +17,9 @@ public class VerticalAlignmentAttributeCompilerTest extends TestCase
   public void testValidValue() throws Exception
   {
     assertEquals(Aligner.TOP, ((SimpleVerticalAlignmentAttribute) compiler.compile("top")).getAlignment());
+    assertEquals(Aligner.BOTTOM, ((SimpleVerticalAlignmentAttribute) compiler.compile("bottom")).getAlignment());
+    assertEquals(Aligner.VERTICAL_CENTER, ((SimpleVerticalAlignmentAttribute) compiler.compile("center")).getAlignment());
+    assertEquals(Aligner.VERTICAL_CENTER, ((SimpleVerticalAlignmentAttribute) compiler.compile("middle")).getAlignment());
   }
 
   public void testInvalidValue() throws Exception

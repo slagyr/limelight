@@ -10,8 +10,7 @@ sandbox {
 arena {
   width "100%"
 	height 800
-	horizontal_alignment :center
-	vertical_alignment :center
+	alignment :center
 }
 
 header {
@@ -27,8 +26,7 @@ example_link {
   width 100
   height 48
   font_size 12
-  horizontal_alignment :center
-  vertical_alignment :center
+  alignment :center
   text_color :blue
   hover {
     text_color :white

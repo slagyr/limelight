@@ -1006,4 +1006,29 @@ public abstract class Style
   {
     put(HORIZONTAL_SCROLLBAR, value);
   }
+
+  public void setAlignment(Object value)
+  {
+    try
+    {
+      String[] tokens = value.toString().split(" ");
+      if(tokens.length == 1)
+      {
+        put(VERTICAL_ALIGNMENT, tokens[0]);
+        put(HORIZONTAL_ALIGNMENT, tokens[0]);
+      }
+      else if(tokens.length == 2)
+      {
+        put(VERTICAL_ALIGNMENT, tokens[0]);
+        put(HORIZONTAL_ALIGNMENT, tokens[1]);
+      }
+      else
+        throw new Exception("To many arguments");
+    }
+    catch(Exception e)
+    {
+      throw new InvalidStyleAttributeError("Invalid value for alignment: " + value);
+    }
+
+  }
 }

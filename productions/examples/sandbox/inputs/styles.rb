@@ -11,8 +11,7 @@ table {
 cell {
 	width 250
 	height 100
-	vertical_alignment :center
-	horizontal_alignment :center
+	alignment :center
 	border_width 1
 	border_color :blue
 }

@@ -4,8 +4,7 @@
 beach {
 	width 640
 	height 480
-	horizontal_alignment :center
-	vertical_alignment :center
+	alignment :center
 	background_image "images/beach.jpg"
 }
 	

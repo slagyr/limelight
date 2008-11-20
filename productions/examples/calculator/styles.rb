@@ -4,8 +4,7 @@
 calculator {
 	width 1000
 	height 900
-	horizontal_alignment :center
-	vertical_alignment :top
+	alignment "top center"
 	background_color :blue
 }
 
@@ -31,8 +30,7 @@ button {
 	background_color :white
 	text_color :black
 	font_size 20
-	horizontal_alignment :center
-	vertical_alignment :center
+	alignment :center
 	border_width 10
 	border_color :black
 }

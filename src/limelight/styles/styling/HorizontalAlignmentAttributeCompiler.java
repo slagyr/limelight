@@ -11,7 +11,7 @@ public class HorizontalAlignmentAttributeCompiler extends StyleAttributeCompiler
     String lowerCase = value.toString().toLowerCase().trim();
     if("left".equals(lowerCase))
       return new SimpleHorizontalAlignmentAttribute(Aligner.LEFT);
-    else if("center".equals(lowerCase))
+    else if("center".equals(lowerCase) || "middle".equals(lowerCase))
       return new SimpleHorizontalAlignmentAttribute(Aligner.HORIZONTAL_CENTER);
     else if("right".equals(lowerCase))
       return new SimpleHorizontalAlignmentAttribute(Aligner.RIGHT);
