@@ -9,6 +9,7 @@ import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
 import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.PixelsAttribute;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
@@ -42,7 +43,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private ScrollBarPanel verticalScrollBar;
   private ScrollBarPanel horizontalScrollBar;
   private boolean sizeChanged = true;
-  private boolean borderChanged = true;
+  public boolean borderChanged = true;
 
   public PropPanel(Prop prop)
   {
@@ -110,35 +111,47 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return super.getOwnerOfPoint(point);
   }
 
-  public Box getBoxInsideMargins()
+  public synchronized Box getBoxInsideMargins()
   {
     if(boxInsideMargins == null)
     {
-      boxInsideMargins = (Box) getBoundingBox().clone();
+      Box bounds = getBoundingBox();
+      boxInsideMargins = (Box) bounds.clone();
       Style style = getStyle();
-      boxInsideMargins.shave(style.getCompiledTopMargin().getValue(), style.getCompiledRightMargin().getValue(), style.getCompiledBottomMargin().getValue(), style.getCompiledLeftMargin().getValue());
+      boxInsideMargins.shave(style.getCompiledTopMargin().pixelsFor(bounds.height),
+          style.getCompiledRightMargin().pixelsFor(bounds.width),
+          style.getCompiledBottomMargin().pixelsFor(bounds.height),
+          style.getCompiledLeftMargin().pixelsFor(bounds.width));
     }
     return boxInsideMargins;
   }
 
-  public Box getBoxInsideBorders()
+  public synchronized Box getBoxInsideBorders()
   {
     if(boxInsideBorders == null)
     {
-      boxInsideBorders = (Box) getBoxInsideMargins().clone();
+      Box bounds = getBoxInsideMargins();
+      boxInsideBorders = (Box) bounds.clone();
       Style style = getStyle();
-      boxInsideBorders.shave(style.getCompiledTopBorderWidth().getValue(), style.getCompiledRightBorderWidth().getValue(), style.getCompiledBottomBorderWidth().getValue(), style.getCompiledLeftBorderWidth().getValue());
+      boxInsideBorders.shave(style.getCompiledTopBorderWidth().pixelsFor(bounds.height),
+          style.getCompiledRightBorderWidth().pixelsFor(bounds.width),
+          style.getCompiledBottomBorderWidth().pixelsFor(bounds.height),
+          style.getCompiledLeftBorderWidth().pixelsFor(bounds.width));
     }
     return boxInsideBorders;
   }
 
-  public Box getBoxInsidePadding()
+  public synchronized Box getBoxInsidePadding()
   {
     if(boxInsidePadding == null)
     {
-      boxInsidePadding = (Box) getBoxInsideBorders().clone();
+      Box bounds = getBoxInsideBorders();
+      boxInsidePadding = (Box) bounds.clone();
       Style style = getStyle();
-      boxInsidePadding.shave(style.getCompiledTopPadding().getValue(), style.getCompiledRightPadding().getValue(), style.getCompiledBottomPadding().getValue(), style.getCompiledLeftPadding().getValue());
+      boxInsidePadding.shave(style.getCompiledTopPadding().pixelsFor(bounds.height),
+          style.getCompiledRightPadding().pixelsFor(bounds.width),
+          style.getCompiledBottomPadding().pixelsFor(bounds.height),
+          style.getCompiledLeftPadding().pixelsFor(bounds.width));
     }
     return boxInsidePadding;
   }
@@ -148,6 +161,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(childConsumableArea == null)
     {
       getBoxInsidePadding();
+      Box boxInsidePadding = getBoxInsidePadding();
       int width = verticalScrollBar == null ? boxInsidePadding.width : boxInsidePadding.width - verticalScrollBar.getWidth();
       int height = horizontalScrollBar == null ? boxInsidePadding.height : boxInsidePadding.height - horizontalScrollBar.getHeight();
       childConsumableArea = new Box(boxInsidePadding.x, boxInsidePadding.y, width, height);
@@ -158,17 +172,31 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void doLayout()
   {
     super.doLayout(); // First to avaoid race condition
-    if(borderShaper != null && borderChanged)
-    {
-      borderShaper.updateDimentions();
-      borderChanged = false;
-    }
+//if(toString().contains("chrom"))
+//  System.err.println("getBoxInsideMargins() before = " + getBoxInsideMargins());
+//    if(borderShaper != null && borderChanged)
+//    {
+//      borderShaper.setBounds(getBoxInsideMargins());
+//      borderShaper.updateDimentions();
+//      borderChanged = false;
+//    }
 
     layout.doLayout();
 
-    //TODO MDM added because it's needed... kinda fishy though.  There'a a better way.
     if(borderShaper != null)
+    {
       borderShaper.setBounds(getBoxInsideMargins());
+      if(borderChanged)
+      {
+        borderShaper.updateDimentions();
+        borderChanged = false;
+      }
+    }
+//    //TODO MDM added because it's needed... kinda fishy though.  There's gotta be a better way.
+//    if(borderShaper != null)
+//      borderShaper.setBounds(getBoxInsideMargins());
+//if(toString().contains("chrom"))
+//System.err.println("getBoxInsideMargins() after = " + getBoxInsideMargins());
 
     markAsDirty();
   }
@@ -346,7 +374,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
-  public void clearCache()
+  public synchronized void clearCache()
   {
     super.clearCache();
     boxInsideMargins = null;
@@ -372,33 +400,38 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
         getParent().setNeedsLayout();
         propogateSizeChange(getParent());
       }
-      else if(isBorderDescriptor(descriptor))
+      else if(isBorderDescriptor(descriptor) || isMarginPaddingOrBorder(value))
       {
         borderChanged = true;
         setNeedsLayout();
+        clearCache();
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
         getParent().setNeedsLayout();
       else
         markAsDirty();
     }
+  }
 
+  private boolean isMarginPaddingOrBorder(StyleAttribute attribute)
+  {
+    return attribute instanceof PixelsAttribute;
   }
 
   private boolean isBorderDescriptor(StyleDescriptor descriptor)
   {
     return descriptor == Style.TOP_BORDER_WIDTH ||
-           descriptor == Style.RIGHT_BORDER_WIDTH ||
-           descriptor == Style.BOTTOM_BORDER_WIDTH ||
-           descriptor == Style.LEFT_BORDER_WIDTH ||
-           descriptor == Style.TOP_RIGHT_BORDER_WIDTH ||
-           descriptor == Style.BOTTOM_RIGHT_BORDER_WIDTH ||
-           descriptor == Style.BOTTOM_LEFT_BORDER_WIDTH ||
-           descriptor == Style.TOP_LEFT_BORDER_WIDTH ||
-           descriptor == Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS ||
-           descriptor == Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS ||
-           descriptor == Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS ||
-           descriptor == Style.TOP_LEFT_ROUNDED_CORNER_RADIUS;
+        descriptor == Style.RIGHT_BORDER_WIDTH ||
+        descriptor == Style.BOTTOM_BORDER_WIDTH ||
+        descriptor == Style.LEFT_BORDER_WIDTH ||
+        descriptor == Style.TOP_RIGHT_BORDER_WIDTH ||
+        descriptor == Style.BOTTOM_RIGHT_BORDER_WIDTH ||
+        descriptor == Style.BOTTOM_LEFT_BORDER_WIDTH ||
+        descriptor == Style.TOP_LEFT_BORDER_WIDTH ||
+        descriptor == Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS ||
+        descriptor == Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS ||
+        descriptor == Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS ||
+        descriptor == Style.TOP_LEFT_ROUNDED_CORNER_RADIUS;
   }
 
   public ScrollBarPanel getVerticalScrollBar()

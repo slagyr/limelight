@@ -31,20 +31,8 @@ public class Border
   public Border(Style style, Box bounds) {
     this.style = style;
     this.bounds = bounds;
-    
-    topWidth = style.getCompiledTopBorderWidth().getValue();
-    rightWidth = style.getCompiledRightBorderWidth().getValue();
-    bottomWidth = style.getCompiledBottomBorderWidth().getValue();
-    leftWidth = style.getCompiledLeftBorderWidth().getValue();
 
-    topRightWidth = style.getCompiledTopRightBorderWidth().getValue();
-    topRightRadius = style.getCompiledTopRightRoundedCornerRadius().getValue();
-    bottomRightWidth = style.getCompiledBottomRightBorderWidth().getValue();
-    bottomRightRadius = style.getCompiledBottomRightRoundedCornerRadius().getValue();
-    bottomLeftWidth = style.getCompiledBottomLeftBorderWidth().getValue();
-    bottomLeftRadius = style.getCompiledBottomLeftRoundedCornerRadius().getValue();
-    topLeftWidth = style.getCompiledTopLeftBorderWidth().getValue();
-    topLeftRadius = style.getCompiledTopLeftRoundedCornerRadius().getValue();
+    updateDimentions();
 
     jig = new CenterJig(this);
   }
@@ -211,18 +199,18 @@ public class Border
 
   public void updateDimentions()
   {
-    topWidth = style.getCompiledTopBorderWidth().getValue();
-    rightWidth = style.getCompiledRightBorderWidth().getValue();
-    bottomWidth = style.getCompiledBottomBorderWidth().getValue();
-    leftWidth = style.getCompiledLeftBorderWidth().getValue();
-    topRightWidth = style.getCompiledTopRightBorderWidth().getValue();
-    bottomRightWidth = style.getCompiledBottomRightBorderWidth().getValue();
-    bottomLeftWidth = style.getCompiledBottomLeftBorderWidth().getValue();
-    topLeftWidth = style.getCompiledTopLeftBorderWidth().getValue();
-    topRightRadius = style.getCompiledTopRightRoundedCornerRadius().getValue();
-    bottomRightRadius = style.getCompiledBottomRightRoundedCornerRadius().getValue();
-    bottomLeftRadius = style.getCompiledBottomLeftRoundedCornerRadius().getValue();
-    topLeftRadius = style.getCompiledTopLeftRoundedCornerRadius().getValue();
+    topWidth = style.getCompiledTopBorderWidth().pixelsFor(bounds.height);
+    rightWidth = style.getCompiledRightBorderWidth().pixelsFor(bounds.width);
+    bottomWidth = style.getCompiledBottomBorderWidth().pixelsFor(bounds.height);
+    leftWidth = style.getCompiledLeftBorderWidth().pixelsFor(bounds.width);
+    topRightWidth = style.getCompiledTopRightBorderWidth().pixelsFor(bounds);
+    topRightRadius = style.getCompiledTopRightRoundedCornerRadius().pixelsFor(bounds);
+    bottomRightWidth = style.getCompiledBottomRightBorderWidth().pixelsFor(bounds);
+    bottomRightRadius = style.getCompiledBottomRightRoundedCornerRadius().pixelsFor(bounds);
+    bottomLeftWidth = style.getCompiledBottomLeftBorderWidth().pixelsFor(bounds);
+    bottomLeftRadius = style.getCompiledBottomLeftRoundedCornerRadius().pixelsFor(bounds);
+    topLeftWidth = style.getCompiledTopLeftBorderWidth().pixelsFor(bounds);
+    topLeftRadius = style.getCompiledTopLeftRoundedCornerRadius().pixelsFor(bounds);
   }
 
   private abstract static class Jig
@@ -274,6 +262,11 @@ public class Border
     public abstract Arc2D getBottomRightArc();
     public abstract Arc2D getBottomLeftArc();
     public abstract Arc2D getTopLeftArc();
+
+    protected int minZero(int value)
+    {
+      return value < 0 ? 0 : value;
+    }
   }
 
 
@@ -283,7 +276,6 @@ public class Border
   // and extent such that the arcs will not overlap.
   private static class CenterJig extends Jig
   {
-
     public CenterJig(Border border)
     {
       super(border);
@@ -295,7 +287,7 @@ public class Border
 
     public Arc2D getTopRightArc()
     {
-      int topRightArcWidth = border.topRightRadius * 2 - border.topRightWidth / 2;
+      int topRightArcWidth = minZero(border.topRightRadius * 2 - border.topRightWidth / 2);
       int x = border.bounds.right() - shave(border.topRightWidth) - topRightArcWidth;
       int y = border.bounds.top() + shave(border.topRightWidth);
       return new Arc2D.Double(x, y, topRightArcWidth, topRightArcWidth, 90, -90, Arc2D.OPEN);
@@ -303,7 +295,7 @@ public class Border
 
     public Arc2D getBottomRightArc()
     {
-      int bottomRightArcWidth = border.bottomRightRadius * 2 - border.bottomRightWidth / 2;
+      int bottomRightArcWidth = minZero(border.bottomRightRadius * 2 - border.bottomRightWidth / 2);
       int x = border.bounds.right() - shave(border.bottomRightWidth) - bottomRightArcWidth;
       int y = border.bounds.bottom() - shave(border.bottomRightWidth) - bottomRightArcWidth;
       return new Arc2D.Double(x, y, bottomRightArcWidth, bottomRightArcWidth, 0, -90, Arc2D.OPEN);
@@ -311,7 +303,7 @@ public class Border
 
     public Arc2D getBottomLeftArc()                                                                                
     {
-      int bottomLeftArcWidth = border.bottomLeftRadius * 2 - border.bottomLeftWidth / 2;
+      int bottomLeftArcWidth = minZero(border.bottomLeftRadius * 2 - border.bottomLeftWidth / 2);
       int x = border.bounds.left() + shave(border.bottomLeftWidth);
       int y = border.bounds.bottom() - shave(border.bottomLeftWidth) - bottomLeftArcWidth;
       return new Arc2D.Double(x, y, bottomLeftArcWidth, bottomLeftArcWidth, 270, -90, Arc2D.OPEN);
@@ -319,7 +311,7 @@ public class Border
 
     public Arc2D getTopLeftArc()
     {
-      int topLeftArcWidth = border.topLeftRadius * 2 - border.topLeftWidth / 2;
+      int topLeftArcWidth = minZero(border.topLeftRadius * 2 - border.topLeftWidth / 2);
       int x = border.bounds.left() + shave(border.topLeftWidth);
       int y = border.bounds.top() + shave(border.topLeftWidth);
       return new Arc2D.Double(x, y, topLeftArcWidth, topLeftArcWidth, 180, -90, Arc2D.OPEN);
@@ -339,7 +331,7 @@ public class Border
 
     public Arc2D getTopRightArc()
     {
-      int topRightArcWidth = border.topRightRadius * 2 - border.topRightWidth;
+      int topRightArcWidth = minZero(border.topRightRadius * 2 - border.topRightWidth);
       int x = border.bounds.right() - border.topRightWidth - topRightArcWidth + 1;
       int y = border.bounds.top() + border.topRightWidth;
       return new Arc2D.Double(x, y, topRightArcWidth, topRightArcWidth, 90, -90, Arc2D.OPEN);
@@ -347,7 +339,7 @@ public class Border
 
     public Arc2D getBottomRightArc()
     {
-      int bottomRightArcWidth = border.bottomRightRadius * 2 - border.bottomRightWidth;
+      int bottomRightArcWidth = minZero(border.bottomRightRadius * 2 - border.bottomRightWidth);
       double x = border.bounds.right() - border.bottomRightWidth - bottomRightArcWidth + 1;
       double y = border.bounds.bottom() - border.bottomRightWidth - bottomRightArcWidth + 1;
       return new Arc2D.Double(x, y, bottomRightArcWidth, bottomRightArcWidth, 0, -90, Arc2D.OPEN);
@@ -355,7 +347,7 @@ public class Border
 
     public Arc2D getBottomLeftArc()
     {
-      int bottomLeftArcWidth = border.bottomLeftRadius * 2 - border.bottomLeftWidth;
+      int bottomLeftArcWidth = minZero(border.bottomLeftRadius * 2 - border.bottomLeftWidth);
       int x = border.bounds.left() + border.bottomLeftWidth;
       int y = border.bounds.bottom() - border.bottomLeftWidth - bottomLeftArcWidth + 1;
       return new Arc2D.Double(x, y, bottomLeftArcWidth, bottomLeftArcWidth, 270, -90, Arc2D.OPEN);
@@ -363,7 +355,7 @@ public class Border
 
     public Arc2D getTopLeftArc()
     {
-      int topLeftArcWidth = border.topLeftRadius * 2 - border.topLeftWidth;
+      int topLeftArcWidth = minZero(border.topLeftRadius * 2 - border.topLeftWidth);
       int x = border.bounds.left() + border.topLeftWidth;
       int y = border.bounds.top() + border.topLeftWidth;
       return new Arc2D.Double(x, y, topLeftArcWidth, topLeftArcWidth, 180, -90, Arc2D.OPEN);
@@ -483,7 +475,7 @@ public class Border
     private void addArc(AffineTransform at, ArrayList<PathSegment> segments, double[] coords, Arc2D arc)
     {
       PathIterator iterator;
-      iterator = arc.getPathIterator(at);
+      iterator = arc.getPathIterator(at);     
       iterator.currentSegment(coords); 
       segments.add(new LinePathSegment(coords));
       iterator.next();
