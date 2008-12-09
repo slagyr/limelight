@@ -38,6 +38,7 @@ module Limelight #:nodoc:
        RadioButtonPanel = Java::limelight.ui.model.inputs.RadioButtonPanel
        TextAreaPanel = Java::limelight.ui.model.inputs.TextAreaPanel
        TextBoxPanel = Java::limelight.ui.model.inputs.TextBoxPanel
+       PasswordBoxPanel = Java::limelight.ui.model.inputs.PasswordBoxPanel
       end
     end
 

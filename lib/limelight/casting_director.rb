@@ -38,8 +38,9 @@ module Limelight
       end
     end
 
-    def cast_player(prop, player_name)
+    def cast_player(prop, player_name)      
       recruiter = Recruiter.new(prop, player_name, @loader)
+      puts "Player #{player_name} exists? = #{recruiter.player_exists?}"
       prop.include_player(recruiter.player) if recruiter.player_exists?
     end
   end
@@ -98,6 +99,7 @@ module Limelight
           return nil
         end
       end
+      
       return player_filename
     end
 
