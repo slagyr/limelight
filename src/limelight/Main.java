@@ -11,7 +11,6 @@ import limelight.caching.TimedCache;
 import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
@@ -173,5 +172,4 @@ public class Main
 
     contextIsConfigured = true;
   }
-
 }

@@ -74,35 +74,33 @@ module Limelight
   # See Limelight::Commands
   #
   class Main
+    
+    # Instantiates a new instance of Main to process the command
+    #
+    def self.run(args)
+      new().run(args)
+    end
 
-    class << self
-
-      # Executes behavior of limelight command.
-      #
-      def run(args)
-        command_name = args.shift
-        command = Commands[command_name]
-        if command
-          command.new.run(args)
-        else
-          usage
-        end
-      end
-
-      # Prints the usage of the limelight command.
-      #
-      def usage
-        puts ""
-        puts "Usage: limelight <command> [options] [params]"
-        puts "  commands:"
-        Commands::LISTING.keys.sort.each do |key|
-          command = Commands[key]
-          puts "\t#{key}\t\t#{command.description}"
-        end
-        exit -1
+    # Executes behavior of limelight command.
+    #
+    def run(args)
+      command_name = args.shift
+      command = Commands[command_name]
+      if command
+        command.new.run(args)
+      else
+        usage
       end
     end
 
+    # Prints the usage of the limelight command.
+    #
+    def usage
+      Commands["help"].new.run([])
+      exit -1
+    end
+
+    private ###############################################
 
   end
 
