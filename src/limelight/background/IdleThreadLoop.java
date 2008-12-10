@@ -40,7 +40,7 @@ public abstract class IdleThreadLoop
       {
         loop();
       }
-    });
+    }, getClass().getName());
     thread.start();
   }
 

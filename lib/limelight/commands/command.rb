@@ -7,18 +7,26 @@ module Limelight
 
     class << self
 
-      def [](name)
+      def [](name) #:nodoc:
         load_listing if !@listing_loaded
         return LISTING[name]
       end
 
-      def load_listing
+      def load_listing #:nodoc:
         Dir.entries(File.dirname(__FILE__)).each do |file|
           if file != "." && file != ".."
             require "limelight/commands/#{file.gsub('.rb', '')}"
           end
         end
         @listing_loaded = true
+      end
+
+      def output=(value) #:nodoc:
+        @output = value
+      end
+
+      def output  #:nodoc:
+        return @output || $stdout
       end
 
     end
@@ -89,6 +97,10 @@ module Limelight
       end
 
       protected ###########################################
+
+      def puts(*args) #:nodoc:
+        Commands.output.puts(*args)
+      end
 
       # Prints an exception that occurs while parsing the arguments.  The usages summary will follow.
       #
