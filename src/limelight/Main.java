@@ -136,7 +136,7 @@ public class Main
     Context context = Context.instance();
 
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
-    context.tempDirectory = new TempDirectory();
+    initializeTempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
     context.frameManager = new AlertFrameManager();
     context.audioPlayer = new RealAudioPlayer();
@@ -158,7 +158,7 @@ public class Main
     Context context = Context.instance();
 
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
-    context.tempDirectory = new TempDirectory();
+    initializeTempDirectory();
     context.downloader = new Downloader(context.tempDirectory);
     context.frameManager = new InertFrameManager();
     context.audioPlayer = new RealAudioPlayer();
@@ -171,5 +171,10 @@ public class Main
     context.cacheCleaner = new CacheCleanerLoop();
 
     contextIsConfigured = true;
+  }
+
+  public static void initializeTempDirectory()
+  {
+    Context.instance().tempDirectory = new TempDirectory();
   }
 }
