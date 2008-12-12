@@ -80,7 +80,7 @@ public class TextPanelTest extends TestCase
     assertEquals(138, panel.getHeight());
   }
 
-  public void testDimnsionsWhenLastLineIsLongest() throws Exception
+  public void testDimensionsWhenLastLineIsLongest() throws Exception
   {
     useFrame();
     panel.setText("1\n2\n3\nlongest");

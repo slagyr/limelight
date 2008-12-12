@@ -56,7 +56,7 @@ tag_line {
   right_margin 25
   left_margin 25
   horizontal_alignment :left
-  font_style "italics"
+  font_style "italic"
   text_color "white"
   font_size 18
   top_padding 10
