@@ -148,6 +148,7 @@ public class TextPanel extends BasePanel
       String[] paragraphs = text.split("\n");
       Style style = getStyle();
       Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
+      Font defaultFont = font;
       for(String paragraph : paragraphs)
       {
         Matcher matcher = TAG_REGEX.matcher(paragraph);
@@ -181,6 +182,7 @@ public class TextPanel extends BasePanel
         {
           lines.add(new TextLayout(" ", font, getRenderContext()));
         }
+        font = defaultFont;
       }
     }
   }
