@@ -1,54 +1,49 @@
+//- Copyright 2008 8th Light, Inc. All Rights Reserved.
+//- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 package limelight.ui.model;
 
-
-/**
- * Created by IntelliJ IDEA.
- * User: dennyabraham
- * Date: Dec 10, 2008
- * Time: 4:26:02 PM
- * To change this template use File | Settings | File Templates.
- */
+import limelight.util.Util;
 
 public class StyledText
 {
-    private String text;
-    private String style;
+  private String text;
+  private String style;
 
-    public Boolean equals(StyledText other)
+  public boolean equals(Object other)
+  {
+    if(other instanceof StyledText)
     {
-        return (this.text.equals(other.getText()) && this.style.equals(other.getStyle()));
+      StyledText otherText = (StyledText)other;
+      return Util.equal(text, otherText.getText()) && Util.equal(style, otherText.getStyle());
     }
+    return false;
+  }
 
-    public StyledText(String text)
-    {
-        setText(text);
-        setStyle("default");
-    }
+  public StyledText(String text, String style)
+  {
+    setText(text);
+    setStyle(style);
+  }
 
-    public StyledText(String text, String style)
-    {
-        setText(text);
-        setStyle(style);
-    }
+  public String getText()
+  {
+    return text;
+  }
 
-    public String getText()
-    {
-        return text;
-    }
+  public String getStyle()
+  {
+    return style;
+  }
 
-    public String getStyle()
-    {
-        return style;
-    }
+  public void setStyle(String style)
+  {
+    this.style = style;
+  }
 
-    public void setStyle(String style)
-    {
-        this.style = style;
-    }
-
-    public void setText(String text)
-    {
-        this.text = text.replaceAll("<(|/)\\w+>","");
-    }
+  public void setText(String text)
+  {
+    this.text = text;
+  }
 
 }
