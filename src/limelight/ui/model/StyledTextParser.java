@@ -41,8 +41,8 @@ public class StyledTextParser {
                 Integer last = innerMatches.size() - 1;
                 StyledText firstInnerMatch = innerMatches.get(0);
                 StyledText lastInnerMatch = innerMatches.get(last);
-                firstInnerMatch.setStyleName(styleName);
-                lastInnerMatch.setStyleName(styleName);
+                firstInnerMatch.setStyle(styleName);
+                lastInnerMatch.setStyle(styleName);
 
                 styledTextList.addAll(innerMatches);
                 index = matcher.end();

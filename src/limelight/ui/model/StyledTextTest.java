@@ -30,19 +30,19 @@ public class StyledTextTest extends TestCase
     public void testHasDefaultStyle() throws Exception
     {
         styledText = new StyledText("Hello there");
-        assertEquals(styledText.getStyleName(), "default");
+        assertEquals(styledText.getStyle(), "default");
     }
 
     public void testHasStyle() throws Exception
     {
         styledText = new StyledText("Some text", "Some_style");
-        assertEquals(styledText.getStyleName(), "Some_style");
+        assertEquals(styledText.getStyle(), "Some_style");
     }
 
     public void testHasOtherStyle() throws Exception
     {
         styledText = new StyledText("Some text", "Other_style");
-        assertEquals(styledText.getStyleName(), "Other_style");
+        assertEquals(styledText.getStyle(), "Other_style");
     }
 
     public void testHasUsefulEquals() throws Exception
@@ -99,9 +99,23 @@ public class StyledTextTest extends TestCase
     public void testChangeStyle() throws Exception
     {
         styledText = new StyledText("hi","a");
-        styledText.setStyleName("bye");
+        styledText.setStyle("bye");
 
-        assertEquals(styledText.getStyleName(), "bye");
+        assertEquals(styledText.getStyle(), "bye");
     }
 
+    public void testRemoveUnusedTags() throws Exception
+    {
+        styledText = new StyledText("a<b>bc","a");
+
+        assertTrue(styledText.equals(new StyledText("abc","a")));
+    }
+
+    public void testRemoveMultipleUnusedTags() throws Exception
+    {
+        styledText = new StyledText("<q>a</b>b</c>c<d>","default");
+
+        System.out.println("!!! " + styledText.getText());
+        assertTrue(styledText.equals(new StyledText("abc","default")));
+    }
 }

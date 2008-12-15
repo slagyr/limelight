@@ -12,23 +12,23 @@ package limelight.ui.model;
 public class StyledText
 {
     private String text;
-    private String styleName;
+    private String style;
 
     public Boolean equals(StyledText other)
     {
-        return (this.text.equals(other.getText()) && this.styleName.equals(other.getStyleName()));
+        return (this.text.equals(other.getText()) && this.style.equals(other.getStyle()));
     }
 
     public StyledText(String text)
     {
-        this.text = text;
-        this.styleName = "default";
+        setText(text);
+        setStyle("default");
     }
 
     public StyledText(String text, String style)
     {
-        this.text = text;
-        this.styleName = style;
+        setText(text);
+        setStyle(style);
     }
 
     public String getText()
@@ -36,19 +36,19 @@ public class StyledText
         return text;
     }
 
-    public String getStyleName()
+    public String getStyle()
     {
-        return styleName;
+        return style;
     }
 
-    public void setStyleName(String style)
+    public void setStyle(String style)
     {
-        this.styleName = style;
+        this.style = style;
     }
 
     public void setText(String text)
     {
-        this.text = text;
+        this.text = text.replaceAll("<(|/)\\w+>","");
     }
-    
+
 }
