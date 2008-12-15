@@ -5,7 +5,7 @@ module Limelight
 
       def puts(*args)
         args.each do |arg|
-          self << arg << "\n"
+          self << arg.to_s << "\n"
         end
       end
 
