@@ -139,7 +139,7 @@ public class StyledTextParserTest extends TestCase
 
     public void display(StyledText text)
     {
-        System.out.println("text: "+text.getText()+"; style: "+text.getStyleName());
+        System.out.println("text: "+text.getText()+"; style: "+text.getStyle());
 
     }
 
@@ -148,7 +148,6 @@ public class StyledTextParserTest extends TestCase
         parsedTextList = parser.parse("default<a>a<b>b</b>a</a>default<c>c<d>d</d>c</c>default");
 
         parsedText1 = parsedTextList.get(0);
-        display(parsedText1);
         parsedText2 = parsedTextList.get(1);
         parsedText3 = parsedTextList.get(2);
         parsedText4 = parsedTextList.get(3);
@@ -169,9 +168,26 @@ public class StyledTextParserTest extends TestCase
         assertTrue(parsedText9.equals(new StyledText("default", "default")));
     }
 
-    public void testMalformedTags() throws Exception
+    public void testUnclosedTags() throws Exception
     {
-        
+        parsedTextList = parser.parse("default<a>a</b>b</a>default");
+
+        parsedText1 = parsedTextList.get(0);
+        parsedText2 = parsedTextList.get(1);
+        parsedText3 = parsedTextList.get(2);
+
+        assertTrue(parsedText1.equals(new StyledText("default", "default")));
+        assertTrue(parsedText2.equals(new StyledText("ab", "a")));
+        assertTrue(parsedText3.equals(new StyledText("default", "default")));
+    }
+
+    public void testMisMatchedTags() throws Exception
+    {
+        parsedTextList = parser.parse("sky<a>wal</b>ker");
+
+        parsedText1 = parsedTextList.get(0);
+
+        assertTrue(parsedText1.equals(new StyledText("skywalker", "default")));
     }
     
 }
