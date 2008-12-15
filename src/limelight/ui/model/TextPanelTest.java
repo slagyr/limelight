@@ -172,6 +172,45 @@ public class TextPanelTest extends TestCase
     assertSubString("size=20", layout.toString());
   }
 
+  public void testMultipleStylesAppliedToLine() throws Exception
+  {
+    parent.prop.scene = new MockScene();
+    FlatStyle myStyle = new FlatStyle();
+    ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
+    myStyle.setFontFace("Helvetica");
+    myStyle.setFontStyle("bold");
+    myStyle.setFontSize("20");
+
+    FlatStyle myOtherStyle = new FlatStyle();
+    ((MockScene)parent.prop.scene).styles.put("my_other_style", myOtherStyle);
+    myOtherStyle.setFontFace("Cuneiform");
+    myOtherStyle.setFontStyle("italic");
+    myOtherStyle.setFontSize("19");
+
+    parent.setSize(200, 100);
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
+    panel.setText("<my_style>some </my_style><my_other_style>text</my_other_style>");
+    panel.buildLines();
+
+    List<TextLayout> lines = panel.getLines();
+
+    TextLayout layout = lines.get(0);
+    assertEquals(2, lines.size());
+    assertEquals(5, layout.getCharacterCount());
+    assertSubString("family=Helvetica", layout.toString());
+    assertSubString("name=Helvetica", layout.toString());
+    assertSubString("style=bold", layout.toString());
+    assertSubString("size=20", layout.toString());
+
+    TextLayout layout2 = lines.get(1);
+    assertEquals(5, layout.getCharacterCount());
+    System.out.println(layout.toString());
+    assertSubString("family=Dialog", layout2.toString());
+    assertSubString("name=Cuneiform", layout2.toString());
+    assertSubString("style=italic", layout2.toString());
+    assertSubString("size=19", layout2.toString());
+  }
+
   private void assertSubString(String subString, String fullString)
   {
     int i = fullString.indexOf(subString);
