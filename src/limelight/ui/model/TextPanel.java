@@ -151,39 +151,50 @@ public class TextPanel extends BasePanel
       Font defaultFont = font;
       for(String paragraph : paragraphs)
       {
-        Matcher matcher = TAG_REGEX.matcher(paragraph);
-        if(matcher.find())
+        StyledTextParser parser = new StyledTextParser();
+        LinkedList<StyledText> styledParagraph = parser.parse(paragraph);
+
+        for (StyledText styledLine : styledParagraph)
         {
-          paragraph = matcher.group(2);
-          String tagName = matcher.group(1);
-          Prop prop = ((PropablePanel) getPanel()).getProp();
-          Scene scene = prop.getScene();
-          Map styles = scene.getStyles();
-          Style tagStyle = (Style) styles.get(tagName);
-          if(tagStyle != null)
-            font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
-          else
-            System.out.println("no style for tag: " + tagName);
+          String line = styledLine.getText();
+          String tagName = styledLine.getStyle();
+
+          if(!Util.equal(tagName,"default"))
+          {
+            Prop prop = ((PropablePanel) getPanel()).getProp();
+            Scene scene = prop.getScene();
+            Map styles = scene.getStyles();
+            Style tagStyle = (Style) styles.get(tagName);
+            if(tagStyle != null)
+              font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
+            else
+              System.out.println("no style for tag: " + tagName);
+          }
+          addLine(font, line);
         }
 
-        if(paragraph.length() != 0)
-        {
-          AttributedString aText = new AttributedString(paragraph);
-          aText.addAttribute(TextAttribute.FONT, font);
-          LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getRenderContext());
-          while(lbm.getPosition() < paragraph.length())
-          {
-            float width1 = (float) consumableArea.width;
-            TextLayout layout = lbm.nextLayout(width1);
-            lines.add(layout);
-          }
-        }
-        else
-        {
-          lines.add(new TextLayout(" ", font, getRenderContext()));
-        }
         font = defaultFont;
       }
+    }
+  }
+
+  private void addLine(Font font, String line)
+  {
+    if(line.length() != 0)
+    {
+      AttributedString aText = new AttributedString(line);
+      aText.addAttribute(TextAttribute.FONT, font);
+      LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getRenderContext());
+      while(lbm.getPosition() < line.length())
+      {
+        float width1 = (float) consumableArea.width;
+        TextLayout layout = lbm.nextLayout(width1);
+        lines.add(layout);
+      }
+    }
+    else
+    {
+      lines.add(new TextLayout(" ", font, getRenderContext()));
     }
   }
 
