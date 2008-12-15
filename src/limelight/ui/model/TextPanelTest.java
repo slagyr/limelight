@@ -224,7 +224,7 @@ public class TextPanelTest extends TestCase
   
   public void testResizesTextWhenSizeChanges() throws Exception
   {
-    panel.setText("Some really long text so that there are multiple lines requireing layout when the size changes.");
+    panel.setText("Some really long text so that there are multiple lines requiring layout when the size changes.");
     panel.doLayout();
 
     int originalHeight = panel.getHeight();
