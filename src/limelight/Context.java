@@ -28,7 +28,7 @@ public class Context
   public TempDirectory tempDirectory;
   public Downloader downloader;
 
-  public IdleThreadLoop panelPanter;
+  public IdleThreadLoop panelPanter;                                                    
   public AnimationLoop animationLoop;
   public CacheCleanerLoop cacheCleaner;
 
