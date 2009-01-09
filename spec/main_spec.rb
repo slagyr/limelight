@@ -1,11 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/main'
-require 'limelight/util/string_io'
 
 describe Limelight::Main do
 
   before(:each) do
-    @mock_output = Limelight::Util::StringIO.new
+    @mock_output = StringIO.new
     Limelight::Commands.output = @mock_output
   end
 
@@ -23,7 +22,7 @@ describe Limelight::Main do
   it "should handle --version option" do
     Limelight::Main.run(["--version"])
 
-    @mock_output.should == "Limelight, version #{Limelight::VERSION::STRING}\n"
+    @mock_output.string.should == "Limelight, version #{Limelight::VERSION::STRING}\n"
   end
 
   it "should print usage" do
@@ -32,7 +31,7 @@ describe Limelight::Main do
     rescue SystemExit
     end
 
-    @mock_output.should include("Usage: limelight")
+    @mock_output.string.should include("Usage: limelight")
   end
 
 end

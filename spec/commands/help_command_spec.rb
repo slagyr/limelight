@@ -1,6 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 require 'limelight/commands/help_command'
-require 'limelight/util/string_io'
 
 describe Limelight::Commands::HelpCommand do
 
@@ -11,7 +10,7 @@ describe Limelight::Commands::HelpCommand do
   end
 
   before(:each) do
-    @mock_output = Limelight::Util::StringIO.new
+    @mock_output = StringIO.new
     Limelight::Commands.output = @mock_output
   end
 
@@ -24,9 +23,9 @@ describe Limelight::Commands::HelpCommand do
 
     Limelight::Commands::LISTING.keys.each do |key|
       if key[0...1] == "-"
-        @mock_output.should_not include("\t#{key}")
+        @mock_output.string.should_not include("\t#{key}")
       else
-        @mock_output.should include("\t#{key}")
+        @mock_output.string.should include("\t#{key}")
       end
     end
   end
@@ -34,7 +33,7 @@ describe Limelight::Commands::HelpCommand do
   it "should include options in the header" do
     @command.run([])
 
-    @mock_output.should include("[--version]")
+    @mock_output.string.should include("[--version]")
   end
 
 end
