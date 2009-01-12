@@ -27,7 +27,6 @@ describe Limelight::Commands::UnpackCommand do
     Limelight::Main.should_receive(:initialize_temp_directory)
 
     @command.run(["production_to_pack"])
-
   end
 
   it "should unpack a production" do
