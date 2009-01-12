@@ -33,7 +33,7 @@ class TestDir
 
     def path(path)
       return File.join(root, path)
-    end
+    end  
 
     def clean
       Dir.entries(root).each do |file|
@@ -45,6 +45,7 @@ class TestDir
       filename =  self.path(path)
       establish_dir(File.dirname(filename))
       File.open(filename, 'w') { |file| file.write content }
+      return filename
     end
 
     def establish_dir(path)

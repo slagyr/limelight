@@ -1,10 +1,7 @@
 PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
 TASK_DIR = File.expand_path(File.dirname(__FILE__) + "/etc/tasks")
 Gem.clear_paths
-ENV["GEM_HOME"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
 ENV["GEM_PATH"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
-puts "Using gem home: #{Gem.dir}"
-puts "Using gem path: #{Gem.path}"
 
 require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
 
@@ -27,7 +24,7 @@ task :init_jruby do
 
 end
 
-task :init => [:jar, :init_jruby, :gems] do
+task :init => [:jar, :init_jruby, :jruby_gems, :dev_gems] do
 end
 
 task :spec do
