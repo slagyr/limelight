@@ -5,10 +5,10 @@ module DownloadButton
 
   def mouse_clicked(e)
     url = scene.find("url_field").text
-    downloader = Limelight::Context.instance.downloader
     begin
-      file = downloader.download(url)
-      scene.open_production(file.absolute_path)
+      puts "url: #{url}"
+      file = Limelight::Util::Downloader.download(url.strip)
+      scene.open_production(file)
     rescue Exception => e
       scene.stage.alert(e.to_s)
     end

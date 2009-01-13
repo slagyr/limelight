@@ -4,7 +4,6 @@
 package limelight;
 
 import junit.framework.TestCase;
-import limelight.io.Downloader;
 import limelight.io.TempDirectory;
 
 public class ContextTest extends TestCase
