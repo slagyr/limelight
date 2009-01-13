@@ -23,6 +23,18 @@ describe Limelight::Util::Downloader do
     IO.read(path).should == "a test file"
   end
 
+  it "should be find unique filenames" do
+    test_file = TestDir.create_file("test_dir/test_file.txt", "a test file")
+
+    path1 = @downloader.download("file://#{test_file}")
+    path2 = @downloader.download("file://#{test_file}")
+    path3 = @downloader.download("file://#{test_file}")
+
+    File.basename(path1).should == "test_file.txt"
+    File.basename(path2).should == "test_file_2.txt"
+    File.basename(path3).should == "test_file_3.txt"
+  end
+
   it "should raise not found exception whe bad URLs" do
     test_file = TestDir.path("test_dir/test_file.txt")
 
@@ -38,28 +50,40 @@ describe Limelight::Util::Downloader do
 
   # The following tests should not run as part of the normal suite.  They are expensive and require the net.
 
-  it "should downaload via HTTP" do
-    path = @downloader.download("http://limelight.8thlight.com/images/logo.png")
-
-    File.basename(path).should == "logo.png"
-    File.dirname(path).should == Limelight::Data.downloads_dir
-    File.exists?(path).should == true
-  end
-
-  it "should handle 404s from HTTP" do
-    url = "http://limelight.8thlight.com/blah.blah"
-    lambda { @downloader.download(url) }.should raise_error(Limelight::LimelightException, "Download failed.  404: Not Found")
-
-    path = File.join(Limelight::Data.downloads_dir, "blah.blah")
-    File.exists?(path).should == false
-  end
-  
-  it "should downaload via HTTP" do
-    path = @downloader.download("https://www.8thlight.com/images/header.jpg")
-
-    File.basename(path).should == "header.jpg"
-    File.dirname(path).should == Limelight::Data.downloads_dir
-    File.exists?(path).should == true
-  end
+#  it "should downaload via HTTP" do
+#    path = @downloader.download("http://limelight.8thlight.com/images/logo.png")
+#
+#    File.basename(path).should == "logo.png"
+#    File.dirname(path).should == Limelight::Data.downloads_dir
+#    File.exists?(path).should == true
+#  end
+#
+#  it "should handle 404s from HTTP" do
+#    url = "http://limelight.8thlight.com/blah.blah"
+#    lambda { @downloader.download(url) }.should raise_error(Limelight::LimelightException, "Download failed.  404: Not Found")
+#
+#    path = File.join(Limelight::Data.downloads_dir, "blah.blah")
+#    File.exists?(path).should == false
+#  end
+#
+#  it "should downaload via HTTPS" do
+#    path = @downloader.download("https://www.8thlight.com/images/header.jpg")
+#
+#    File.basename(path).should == "header.jpg"
+#    File.dirname(path).should == Limelight::Data.downloads_dir
+#    File.exists?(path).should == true
+#  end
+#
+#  it "should know how to get the filename from Content-Disposition" do
+#    path = @downloader.download("http://localhost:3000/playbills/1.llp")
+#
+#    File.basename(path).should == "simon.llp"
+#  end
+#
+#  it "should handle HTTP redirects" do
+#    path = @downloader.download("http://rubyforge.org/frs/download.php/37521/limelight-0.0.1-java.gem")
+#
+#    File.basename(path).should == "limelight-0.0.1-java.gem"
+#  end
   
 end

@@ -30,7 +30,7 @@ module Limelight
       private #############################################
 
       def calculate_root
-        case Context.os
+        case Context.instance.os
         when "osx"
           return File.expand_path(File.join("~/Library/Application Support/Limelight"))
         when "windows"

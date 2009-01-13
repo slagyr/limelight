@@ -8,7 +8,6 @@ import limelight.background.AnimationLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
-import limelight.io.Downloader;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
@@ -137,7 +136,6 @@ public class Main
 
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     initializeTempDirectory();
-    context.downloader = new Downloader(context.tempDirectory);
     context.frameManager = new AlertFrameManager();
     context.audioPlayer = new RealAudioPlayer();
 
@@ -159,7 +157,6 @@ public class Main
 
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     initializeTempDirectory();
-    context.downloader = new Downloader(context.tempDirectory);
     context.frameManager = new InertFrameManager();
     context.audioPlayer = new RealAudioPlayer();
 

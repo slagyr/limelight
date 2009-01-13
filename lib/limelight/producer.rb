@@ -12,6 +12,7 @@ require 'limelight/dsl/build_exception'
 require 'limelight/theater'
 require 'limelight/production'
 require 'limelight/gems'
+require 'limelight/util/downloader'
 
 module Limelight
 
@@ -38,7 +39,7 @@ module Limelight
     def initialize(root_path, theater=nil, production=nil)
       if (root_path[-4..-1] == ".lll")
         url = IO.read(root_path).strip
-        root_path = Limelight::Context.instance.downloader.download(url).absolute_path
+        root_path = Util::Downloader.download(url)
       end
       if (root_path[-4..-1] == ".llp")
         root_path = unpack_production(root_path)
