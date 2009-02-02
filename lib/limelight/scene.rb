@@ -111,7 +111,14 @@ module Limelight
 
     # Removed the Prop from the index.
     #
-    def unindex_prop(prop)
+    def unindex_prop(prop)      
+      prop.children.each do |child|
+        if child.children.empty? 
+          @prop_index.delete(child.id)
+        else
+          unindex_prop(child)
+        end
+      end
       @prop_index.delete(prop.id) if prop.id
     end
 
