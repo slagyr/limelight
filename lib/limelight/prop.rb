@@ -80,9 +80,10 @@ module Limelight
     #      child2
     #    end
     #
-    def build(&block)
+    def build(options = {}, &block)
       require 'limelight/dsl/prop_builder'
       builder = Limelight::DSL::PropBuilder.new(self)
+      builder.__install_instance_variables(options)
       builder.__loader__ = scene.loader
       builder.instance_eval(&block)
     end

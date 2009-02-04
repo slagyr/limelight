@@ -273,6 +273,24 @@ describe Limelight::Prop do
     @prop.children[1].children[0].name.should == "three"
   end
 
+  it "should build children with options" do
+    @prop.scene.production = Limelight::Production.new("some/path")
+    @prop.build(:one_val => "hello") do
+      one :text => @one_val
+      two do
+        three
+      end
+      
+    end
+    
+    @prop.children.length.should == 2
+    @prop.children[0].name.should == "one"
+    @prop.children[0].text.should == "hello"
+    @prop.children[1].name.should == "two"
+    @prop.children[1].children.length.should == 1
+    @prop.children[1].children[0].name.should == "three"
+  end
+
   it "should play sound" do
     production = Limelight::Production.new("/blah")
     @scene.production = production
