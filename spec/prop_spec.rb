@@ -359,6 +359,18 @@ describe Limelight::Prop do
       @scene.find("child1").should == nil
       @scene.find("child2").should == nil
     end
+    
+    it "should unindex grandchildren on remove all" do
+      grandchild = Limelight::Prop.new(:id => "grandchild")
+      child = Limelight::Prop.new(:id => "child")
+      child << grandchild
+      @prop << child
+
+      @prop.remove_all
+
+      @scene.find("child").should == nil
+      @scene.find("grandchild").should == nil
+    end
 
   end
   
