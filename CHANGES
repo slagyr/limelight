@@ -1,5 +1,19 @@
 = Limelight Changelog
 
+== Version 0.3.1
+
+Some New Features and Bug Fixes
+* Unindexing prop - bug (http://limelight.lighthouseapp.com:80/projects/12073/tickets/94-unindexing-prop)
+* --version command	- feature request (http://limelight.lighthouseapp.com:80/projects/12073/tickets/80--version-command)
+* web page nits	- bug (http://limelight.lighthouseapp.com:80/projects/12073/tickets/83-web-page-nits)
+* Password Field - feature request (http://limelight.lighthouseapp.com:80/projects/12073/tickets/87-password-field)
+* Alignment short cut - feature request (http://limelight.lighthouseapp.com:80/projects/12073/tickets/60-alignment-short-cut)
+* Percentage values for Margin, Border, and Padding - feature request (http://limelight.lighthouseapp.com:80/projects/12073/tickets/58-percentage-values-for-margin-border-and-padding)
+* Percentages as floats - feature request (http://limelight.lighthouseapp.com:80/projects/12073/tickets/59-percentages-as-floats)
+* Styles take objects, not just strings. - feature request (http://limelight.lighthouseapp.com:80/projects/12073/tickets/78-styles-take-objects-not-just-strings)
+* Convenience getter methods for Player modules - feature request (http://limelight.lighthouseapp.com:80/projects/12073/tickets/64-convenience-getter-methods-for-player-modules)
+* Windoze, screen repaint wrong - bug (http://limelight.lighthouseapp.com:80/projects/12073/tickets/73-windoze-screen-repaint-wrong)
+
 == Version 0.3.0
 
 Major New Release
