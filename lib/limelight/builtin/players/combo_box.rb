@@ -80,9 +80,7 @@ module Limelight
           end
 
           curtains.add(popup_list)
-puts  "Adding popuplist to curtains"
-          scene.add(curtains)
-puts "curtains added to scene"          
+          scene.add(curtains)      
         end
 
       end

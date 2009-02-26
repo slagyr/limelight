@@ -206,7 +206,7 @@ describe Limelight::Prop do
     prop.hover_style.should == style2
     prop.hover_style.should have_extension(style4)
   end
-  
+    
   it "should be able to remove children" do
     child1 = Limelight::Prop.new()
     child2 = Limelight::Prop.new()
