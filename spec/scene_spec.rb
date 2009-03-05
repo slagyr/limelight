@@ -135,7 +135,7 @@ describe Limelight::Scene do
       
       @scene.find("grandchild_id").should == nil
     end
-    
+        
     it "should convert ids to string when finding" do
       prop = Limelight::Prop.new(:id => 123)
       @scene << prop

@@ -112,13 +112,7 @@ module Limelight
     # Removed the Prop from the index.
     #
     def unindex_prop(prop)      
-      prop.children.each do |child|
-        if child.children.empty? 
-          @prop_index.delete(child.id)
-        else
-          unindex_prop(child)
-        end
-      end
+      unindex_child_props(prop)
       @prop_index.delete(prop.id) if prop.id
     end
 
@@ -136,7 +130,17 @@ module Limelight
     end
 
     private ###############################################
-
+    
+    def unindex_child_props(prop)
+      prop.children.each do |child|
+        if child.children.empty? 
+          @prop_index.delete(child.id)
+        else
+          unindex_prop(child)
+        end
+      end
+    end
+    
     def reload
       load(File.basename(path))
     end
