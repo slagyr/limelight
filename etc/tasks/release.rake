@@ -1,4 +1,3 @@
-
 require 'rake/rdoctask'
 
 task :release => [:verify_committed, :verify_user, :verify_password, :publish_packages, :tag, :publish_news]

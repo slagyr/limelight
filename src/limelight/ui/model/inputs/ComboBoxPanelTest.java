@@ -27,7 +27,7 @@ public class ComboBoxPanelTest extends TestCase
   {
     assertEquals(false, panel.canBeBuffered());
   }
-  
+
   public void testSettingParentSetsTextAccessor() throws Exception
   {
     panel.getComboBox().addItem("foo");
@@ -49,5 +49,23 @@ public class ComboBoxPanelTest extends TestCase
 
     assertNotNull(prop.changedValue);
     assertEquals(panel.getComponent(), ((AWTEvent)prop.changedValue).getSource());
+  }
+
+  public void testMouseClickedWontFireOnSelect() throws Exception
+  {
+    MockProp prop = (MockProp)parent.getProp();
+    ItemEvent event = new ItemEvent(panel.getComboBox(), 1, "blah", 2);
+    panel.getComboBox().getItemListeners()[0].itemStateChanged(event);
+
+    assertNull(prop.changedValue);
+  }
+    
+  public void testMouseClickedWillFireOnDeselect() throws Exception
+  {
+    MockProp prop = (MockProp)parent.getProp();
+    ItemEvent event = new ItemEvent(panel.getComboBox(), 1, "blah", 1);
+    panel.getComboBox().getItemListeners()[0].itemStateChanged(event);
+
+    assertNotNull(prop.changedValue);
   }
 }

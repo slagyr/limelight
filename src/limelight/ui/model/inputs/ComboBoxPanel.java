@@ -75,7 +75,9 @@ public class ComboBoxPanel extends InputPanel
 
     public void itemStateChanged(ItemEvent e)
     {
-      panel.valueChanged(e);
+      int deselectValue = 2;
+      if(e.getStateChange() != deselectValue)
+        panel.valueChanged(e);
     }
   }
 
