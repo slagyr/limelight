@@ -20,17 +20,18 @@ module Limelight
     module PropExtensions
       #  Executes &block on prop with given id
       #
-      def with_prop(id, &block)
+      def with_prop(id, *args, &block)
         prop = find(id)
-        return block.call(prop) if prop
+        return block.call(prop, *args) if prop
       end
       
       {
         :text_for => lambda{|prop| prop.text},
-        :remove_children_of => lambda{|prop| prop.remove_all}
+        :remove_children_of => lambda{|prop| prop.remove_all},
+        :set_text_for => lambda{|prop,val| prop.text = val}
       }.each_pair do |name, action|
-          define_method name do |id|
-            with_prop(id, &action)
+          define_method name do |id, *args|
+            with_prop(id, *args, &action)
           end
       end
     end

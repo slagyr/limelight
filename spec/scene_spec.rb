@@ -144,42 +144,59 @@ describe Limelight::Scene do
     end
   end
   
-  context "#text_for_prop" do
-    before do
-      @scene.illuminate
-      prop = Limelight::Prop.new(:id => "prop",:text => "maproom")
-
-      @scene << prop
-    end
-    it "should find text for a prop" do
-      @scene.text_for("prop").should == "maproom"
-    end
-    
-    it "returns nil if prop not found" do
-      @scene.text_for("no_existy").should be_nil
-    end
-  end
+  context "Prop extensions" do
   
-  context "#remove_children_of" do
-    before do
-      @scene.illuminate
-    end
-    it "calls remove_all on the prop" do
-      prop = mock('prop')
-      @scene.stub!(:find).and_return(prop)
-      prop.should_receive(:remove_all)
-      @scene.remove_children_of('foo')
+    context "#text_for prop" do
+      before do
+        @scene.illuminate
+        prop = Limelight::Prop.new(:id => "prop",:text => "maproom")
+
+        @scene << prop
+      end
+    
+      it "returns text for a prop" do
+        @scene.text_for("prop").should == "maproom"
+      end
+    
+      it "returns nil if prop not found" do
+        @scene.text_for("no_existy").should be_nil
+      end
     end
     
-    it "does it on the appropriate prop" do
-      prop = mock('prop', :remove_all => nil)
-      @scene.should_receive(:find).with('prop_name').and_return(prop)
-      @scene.remove_children_of('prop_name')
+    context "#set_text_for" do
+       before do
+          @scene.illuminate
+          prop = Limelight::Prop.new(:id => "prop")
+
+          @scene << prop
+        end
+        
+        it "sets the text on a prop" do
+          @scene.set_text_for("prop", "new_text")
+          @scene.find("prop").text.should == "new_text"
+        end
     end
+  
+    context "#remove_children_of" do
+      before do
+        @scene.illuminate
+      end
+      it "calls remove_all on the prop" do
+        prop = mock('prop')
+        @scene.stub!(:find).and_return(prop)
+        prop.should_receive(:remove_all)
+        @scene.remove_children_of('foo')
+      end
     
-    it "does nothing if it can't find the prop" do
-      @scene.remove_children_of(nil)
+      it "does it on the appropriate prop" do
+        prop = mock('prop', :remove_all => nil)
+        @scene.should_receive(:find).with('prop_name').and_return(prop)
+        @scene.remove_children_of('prop_name')
+      end
+    
+      it "does nothing if it can't find the prop" do
+        @scene.remove_children_of(nil)
+      end
     end
   end
-
 end
