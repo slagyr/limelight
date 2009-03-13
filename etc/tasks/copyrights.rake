@@ -1,14 +1,20 @@
-require File.expand_path(File.dirname(__FILE__) + "/../copyrights/copyrights")
+def load_copyrights()
+  require 'mmcopyrights'
+  copyright_text = IO.read(File.join(PROJECT_ROOT, 'etc', 'copyright.txt'))
+  return copyright_text
+end
 
 task :copyrights_ruby do
-  Copyrights.add("Ruby", File.join(PROJECT_ROOT, 'lib'))
-  Copyrights.add("Ruby", File.join(PROJECT_ROOT, 'productions'))
-  Copyrights.add("Ruby", File.join(PROJECT_ROOT, 'etc', 'plugins'))
-  Copyrights.add("Ruby", File.join(PROJECT_ROOT, 'spec'))
+  copyright_text = load_copyrights()
+  MM::Copyrights.process(File.join(PROJECT_ROOT, 'lib'), "rb", "#-", copyright_text)
+  MM::Copyrights.process(File.join(PROJECT_ROOT, 'productions'), "rb", "#-", copyright_text)
+  MM::Copyrights.process(File.join(PROJECT_ROOT, 'etc', 'plugins'), "rb", "#-", copyright_text)
+  MM::Copyrights.process(File.join(PROJECT_ROOT, 'spec'), "rb", "#-", copyright_text)
 end
 
 task :copyrights_java do
-  Copyrights.add("Java", File.join(PROJECT_ROOT, 'src'))
+  copyright_text = load_copyrights()
+  MM::Copyrights.process(File.join(PROJECT_ROOT, 'src'), "java", "//-", copyright_text)
 end
 
 task :copyrights => [:copyrights_ruby, :copyrights_java] do
