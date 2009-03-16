@@ -1,3 +1,6 @@
+#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 hamlet = <<END
 To be, or not to be.  That is the question.  Whether tis nobler in the mind to suffer the slings and arrows of time,
 or to take arms against a sea of troubles and by opposing, end them.

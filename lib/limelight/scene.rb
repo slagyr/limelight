@@ -1,4 +1,4 @@
-#- Copyright 2008 8th Light, Inc. All Rights Reserved.
+#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/java_util'
@@ -7,13 +7,37 @@ require 'limelight/button_group_cache'
 require 'limelight/limelight_exception'
 require 'limelight/file_loader'
 
+
 module Limelight
 
   # A Scene is a root Prop.  Scenes may be loaded onto a Stage.  In addition to being a Prop object, Scenes have a
   # few extra attributes and behaviors.
   #
   class Scene < Prop
-
+    
+    #  Wraps methods on the prop for use through the scene, passing an id
+    #
+    module PropExtensions
+      #  Executes &block on prop with given id
+      #
+      def with_prop(id, *args, &block)
+        prop = find(id)
+        return block.call(prop, *args) if prop
+      end
+      
+      {
+        :text_for => lambda{|prop| prop.text},
+        :remove_children_of => lambda{|prop| prop.remove_all},
+        :set_text_for => lambda{|prop,val| prop.text = val}
+      }.each_pair do |name, action|
+          define_method name do |id, *args|
+            with_prop(id, *args, &action)
+          end
+      end
+    end
+    
+    include PropExtensions
+    
     include UI::Api::Scene
 
     attr_reader :button_groups, :casting_director, :cast
@@ -121,7 +145,7 @@ module Limelight
     def find(id)
       return @prop_index[id.to_s]
     end
-
+        
     def illuminate #:nodoc:
       @styles = @options.has_key?(:styles) ? @options.delete(:styles) : (@styles || {})
       @casting_director = @options.delete(:casting_director) if @options.has_key?(:casting_director)

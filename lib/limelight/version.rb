@@ -1,4 +1,4 @@
-#- Copyright 2008 8th Light, Inc. All Rights Reserved.
+#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 module Limelight
@@ -6,7 +6,7 @@ module Limelight
     unless defined? MAJOR
       MAJOR  = 0
       MINOR  = 3
-      TINY   = 1
+      TINY   = 2
 
       STRING = [MAJOR, MINOR, TINY].join('.')
       TAG    = "REL_" + [MAJOR, MINOR, TINY].join('_')
