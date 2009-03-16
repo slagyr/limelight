@@ -13,31 +13,7 @@ module Limelight
   # A Scene is a root Prop.  Scenes may be loaded onto a Stage.  In addition to being a Prop object, Scenes have a
   # few extra attributes and behaviors.
   #
-  class Scene < Prop
-    
-    #  Wraps methods on the prop for use through the scene, passing an id
-    #
-    module PropExtensions
-      #  Executes &block on prop with given id
-      #
-      def with_prop(id, *args, &block)
-        prop = find(id)
-        return block.call(prop, *args) if prop
-      end
-      
-      {
-        :text_for => lambda{|prop| prop.text},
-        :remove_children_of => lambda{|prop| prop.remove_all},
-        :set_text_for => lambda{|prop,val| prop.text = val}
-      }.each_pair do |name, action|
-          define_method name do |id, *args|
-            with_prop(id, *args, &action)
-          end
-      end
-    end
-    
-    include PropExtensions
-    
+  class Scene < Prop    
     include UI::Api::Scene
 
     attr_reader :button_groups, :casting_director, :cast
