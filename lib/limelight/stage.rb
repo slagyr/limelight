@@ -77,6 +77,7 @@ module Limelight
     # See load_scene
     #
     def open(scene)
+      scene.stage = self
       scene.illuminate
       load_scene(scene)
       @frame.open
@@ -96,7 +97,6 @@ module Limelight
     def load_scene(scene)
       @frame.setJMenuBar(scene.menu_bar)
       @frame.load(scene.panel)
-      scene.stage = self
 #      scene.panel.snap_to_size  # What's this for?
       if(has_static_size?(scene.style))
         @frame.set_size(scene.style.compiled_width.value + @frame.getHorizontalInsetWidth, scene.style.compiled_height.value + @frame.getVerticalInsetWidth)
