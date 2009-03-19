@@ -45,22 +45,30 @@ describe Limelight::Stage do
     lambda { @__stage__.name = "new name" }.should raise_error
   end
 
-  it "should call scene.scene_opened at the end of opening a scene" do
-    scene = make_mock("scene", :visible= => nil, :illuminate => nil)
-    scene.should_receive(:scene_opened)
+  describe "when opening a scene" do
+    before(:each) do
+      @scene = make_mock("scene", :visible= => nil, :illuminate => nil, :stage= => nil, :scene_opened => nil)
+      @__stage__.frame.stub!(:open)
+      @__stage__.stub!(:load_scene)
+    end
 
-    @__stage__.frame.stub!(:open)
-    @__stage__.stub!(:load_scene)
-    @__stage__.open(scene)
-  end
+    it "should call scene.scene_opened at the end of opening a scene" do
+      @scene.should_receive(:scene_opened)
 
-  it "should illuminate the scene when opening it" do
-    scene = make_mock("scene", :visible= => nil, :scene_opened => nil)
-    scene.should_receive(:illuminate)
+      @__stage__.open(@scene)
+    end
 
-    @__stage__.frame.stub!(:open)
-    @__stage__.stub!(:load_scene)
-    @__stage__.open(scene)
+    it "should illuminate the scene when opening it" do
+      @scene.should_receive(:illuminate)
+
+      @__stage__.open(@scene)
+    end
+  
+    it "should set the stage on the scene" do
+      @scene.should_receive(:stage=).with(@__stage__)
+
+      @__stage__.open(@scene)
+    end
   end
 
 end
