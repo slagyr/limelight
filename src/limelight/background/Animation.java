@@ -15,7 +15,7 @@ public abstract class Animation
   private boolean running;
   private long tolerableDelay;
 
-  public Animation(int updatesPerSecond)
+  public Animation(double updatesPerSecond)
   {
     setUpdatesPerSecond(updatesPerSecond);
     timer.setMark(delayNanos + 1);
@@ -23,9 +23,9 @@ public abstract class Animation
 
   protected abstract void doUpdate();
 
-  public void setUpdatesPerSecond(int updatesPerSecond)
+  public void setUpdatesPerSecond(double updatesPerSecond)
   {
-    delayNanos = 1000000000 / updatesPerSecond;
+    delayNanos = (long)(1000000000.0 / updatesPerSecond);
     tolerableDelay = (long)(delayNanos * 0.95);
   }
 

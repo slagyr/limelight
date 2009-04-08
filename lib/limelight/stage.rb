@@ -72,6 +72,14 @@ module Limelight
       @frame.set_location(values[0], values[1])
     end
 
+    def fullscreen=(on)
+      @frame.set_fullscreen(on)
+    end
+
+    def has_menu_bar=(value)
+      @frame.setHasMenuBar(value)
+    end
+
     # Opens the Stage and loads the provided Scene.
     #
     # See load_scene

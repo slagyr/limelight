@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.util.Colors;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
@@ -15,6 +16,8 @@ public class Frame extends JFrame
   private Stage stage;
   protected RootPanel root;
   private Insets insets;
+  private boolean fullscreen;
+  private boolean hasMenuBar;
 
   protected Frame()
   {
@@ -24,6 +27,7 @@ public class Frame extends JFrame
   {
     this.stage = stage;
     setContentPane(new LimelightContentPane(this));
+    setBackground(Colors.TRANSPARENT);
 
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
@@ -44,7 +48,11 @@ public class Frame extends JFrame
 
   public void open()
   {
+    if(!hasMenuBar)
+      setJMenuBar(null);
     setVisible(true);
+    if(fullscreen)
+      GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
     refresh();
   }
 
@@ -97,6 +105,17 @@ public class Frame extends JFrame
     if(insets == null)
       calculateInsets();
     return insets.left + insets.right;
+  }
+
+  public void setFullscreen(boolean on)
+  {
+    fullscreen = on;
+  }
+
+  public void setHasMenuBar(boolean value)
+  {
+    hasMenuBar = value;
+    setUndecorated(!hasMenuBar);
   }
 
   private void calculateInsets()
