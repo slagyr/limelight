@@ -14,7 +14,6 @@ module Limelight
     class Downloader
 
       def self.download(resource)
-puts "resource: #{resource}"        
         new.download(resource)
       end
 

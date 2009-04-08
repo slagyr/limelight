@@ -11,6 +11,7 @@ import limelight.ui.Panel;
 import limelight.ui.Painter;
 import limelight.util.Box;
 import limelight.util.Debug;
+import limelight.util.Colors;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -31,7 +32,7 @@ public class PaintJob
     this.clip = clip;
     buffer = bufferedImagePool.acquire(clip.getSize());
     rootGraphics = buffer.createGraphics();
-    rootGraphics.setBackground(Color.white);
+    rootGraphics.setBackground(Colors.TRANSPARENT);
     rootGraphics.clearRect(0, 0, clip.width, clip.height);
     composite = rootGraphics.getComposite();
   }
@@ -141,6 +142,7 @@ public class PaintJob
   {
     if(graphics != null)
     {
+      graphics.clearRect(clip.x, clip.y, buffer.getWidth(), buffer.getHeight());
       graphics.drawImage(buffer, clip.x, clip.y, null);
       Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
     }
