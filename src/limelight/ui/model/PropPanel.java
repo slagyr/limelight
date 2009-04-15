@@ -44,6 +44,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private ScrollBarPanel horizontalScrollBar;
   private boolean sizeChanged = true;
   public boolean borderChanged = true;
+  private boolean laidOut;
 
   public PropPanel(Prop prop)
   {
@@ -169,6 +170,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return childConsumableArea;
   }
 
+  public boolean isLaidOut(){
+    return laidOut;
+  }
+
   public void doLayout()
   {
     super.doLayout(); // First to avaoid race condition
@@ -199,10 +204,13 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 //System.err.println("getBoxInsideMargins() after = " + getBoxInsideMargins());
 
     markAsDirty();
+    laidOut = true;
   }
 
   public void paintOn(Graphics2D graphics)
   {
+    if(!laidOut)
+      return;
     for(Painter painter : painters)
       painter.paint(graphics);
 

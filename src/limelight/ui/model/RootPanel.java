@@ -5,14 +5,11 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.ResourceLoader;
-import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
-import limelight.ui.api.Scene;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -429,10 +426,11 @@ public class RootPanel implements Panel
 
   public void focusLost(FocusEvent e)
   {
-  }
+  }                                                               
 
   public void keyTyped(KeyEvent e)
   {
+    System.err.println("e");
   }
 
   public void keyPressed(KeyEvent e)

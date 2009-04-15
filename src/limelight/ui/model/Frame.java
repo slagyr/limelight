@@ -10,8 +10,11 @@ import limelight.ui.api.Stage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowListener;
 
-public class Frame extends JFrame
+public class Frame extends JFrame implements KeyListener
 {
   private Stage stage;
   protected RootPanel root;
@@ -32,6 +35,7 @@ public class Frame extends JFrame
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    addKeyListener(this);
   }
 
   public void doLayout()
@@ -43,7 +47,9 @@ public class Frame extends JFrame
   public void close()
   {
     setVisible(false);
-    dispose();
+    if(fullscreen)
+      GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
+//    dispose();
   }
 
   public void open()
@@ -128,6 +134,27 @@ public class Frame extends JFrame
     setSize(size);
     if(getJMenuBar() != null)
       insets.top += getJMenuBar().getHeight();
+  }
+
+  public void keyTyped(KeyEvent e)
+  {
+    Panel panel = root.getPanel();
+    if(panel != null)
+      panel.keyTyped(e);
+  }
+
+  public void keyPressed(KeyEvent e)
+  {
+    Panel panel = root.getPanel();
+    if(panel != null)
+      panel.keyPressed(e);
+  }
+
+  public void keyReleased(KeyEvent e)
+  {
+    Panel panel = root.getPanel();
+    if(panel != null)
+      panel.keyReleased(e);
   }
 
   private class LimelightContentPane extends JPanel

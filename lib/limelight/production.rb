@@ -105,6 +105,13 @@ module Limelight
       return @root.root if name == :root
       return @root.path_to(name)
     end
+
+    def close
+      Thread.new do
+        sleep(0.1)
+        Java::java.lang.System.exit(0)
+      end
+    end
     
   end
   

@@ -11,7 +11,7 @@ module Limelight
     
     include UI::Api::Theater
     
-    attr_reader :active_stage
+#    attr_reader :active_stage
     
     def initialize
       @stages = {}
@@ -55,6 +55,13 @@ module Limelight
     def default_stage
       add_stage("Limelight") if self["Limelight"].nil?
       return self["Limelight"]
+    end
+
+    def active_stage
+      active_frame = Context.instance.frameManager.getActiveFrame()
+      return nil if active_frame.nil?
+      stage = stages.find { |stage| stage.frame == active_frame }
+      return stage
     end
 
     protected #############################################
