@@ -4,14 +4,17 @@
 package limelight;
 
 import limelight.ui.model.inputs.InputPanel;
+import limelight.ui.model.*;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
 
 public class KeyboardFocusManager extends DefaultKeyboardFocusManager
 {
   private InputPanel focusedPanel;
+  public limelight.ui.model.Frame frame;
 
   public void install()
   {
@@ -28,33 +31,49 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     }
   }
 
+  //TODO Hacked in
+  public void focusFrame(limelight.ui.model.Frame frame)
+  {
+    this.frame = frame;
+    focusComponent(this.frame);
+//    focusedPanel = frame.getRoot();
+
+  }
+
   private void focusComponent(Component newlyFocused)
   {
-    if(newlyFocused != getGlobalFocusOwner())
+    try
     {
-      unfocusCurrentlyFocusedComponent();
-      FocusEvent gained = new FocusEvent(newlyFocused, FocusEvent.FOCUS_GAINED);
-      FocusListener[] listeners = newlyFocused.getFocusListeners();
-      for(FocusListener listener : listeners)
-        listener.focusGained(gained);
+      if(newlyFocused != getGlobalFocusOwner())
+      {
+        unfocusCurrentlyFocusedComponent();
+        FocusEvent gained = new FocusEvent(newlyFocused, FocusEvent.FOCUS_GAINED);
+        FocusListener[] listeners = newlyFocused.getFocusListeners();
+        for(FocusListener listener : listeners)
+          listener.focusGained(gained);
 
-      this.setGlobalFocusOwner(newlyFocused);
+        this.setGlobalFocusOwner(newlyFocused);
+      }
+    }
+    catch(SecurityException e)
+    {
+      // happens in tests
     }
   }
 
   public void unfocusCurrentlyFocusedComponent()
   {
-    Component focued = getGlobalFocusOwner();
-    if(focued != null)
+    Component focused = getGlobalFocusOwner();
+    if(focused != null)
     {
-      setGlobalFocusOwner(null);
+      setGlobalFocusOwner(frame);
       if(focusedPanel != null)
       {
         focusedPanel.focusLost(null);
         focusedPanel = null;
       }
-      FocusEvent gained = new FocusEvent(focued, FocusEvent.FOCUS_LOST);
-      FocusListener[] listeners = focued.getFocusListeners();
+      FocusEvent gained = new FocusEvent(focused, FocusEvent.FOCUS_LOST);
+      FocusListener[] listeners = focused.getFocusListeners();
       for(FocusListener listener : listeners)
         listener.focusLost(gained);
     }

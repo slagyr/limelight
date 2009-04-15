@@ -3,6 +3,8 @@
 
 package limelight.ui.model;
 
+import limelight.Context;
+
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
@@ -26,6 +28,8 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
     if(window instanceof Frame)
     {
       activeFrame = (Frame)window;
+
+      Context.instance().keyboardFocusManager.focusFrame((Frame)window);
 //      theater.stage_activated(frame.getStage());
     }
   }

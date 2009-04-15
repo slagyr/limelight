@@ -9,7 +9,6 @@ import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
-import limelight.ui.painting.PaintAction;
 import limelight.styles.FlatStyle;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
@@ -47,6 +46,28 @@ public class PropPanelTest extends TestCase
     style = prop.getStyle();
     panel = new PropPanel(prop);
     root.setPanel(panel);
+  }
+
+  public void testPanelKnownWhenItsLaidOut() throws Exception
+  {
+    assertEquals(false, panel.isLaidOut());
+
+    panel.doLayout();
+
+    assertEquals(true, panel.isLaidOut());
+  }
+
+  public void testOnlyPaintWhenLaidOut() throws Exception
+  {
+    MockAfterPaintAction paintAction = new MockAfterPaintAction();
+    panel.setAfterPaintAction(paintAction);
+
+    panel.paintOn(new MockGraphics());
+    assertEquals(false, paintAction.invoked);
+
+    panel.doLayout();
+    panel.paintOn(new MockGraphics());
+    assertEquals(true, paintAction.invoked);
   }
 
   public void testConstructor() throws Exception
@@ -107,7 +128,7 @@ public class PropPanelTest extends TestCase
     assertEquals(42, panel.getWidth());
     assertEquals(100, panel.getHeight());
   }
-  
+
   public void testSnapToSizeWithMaxSizeAgainstAutoSizing() throws Exception
   {
     root.setSize(100, 100);
@@ -190,27 +211,17 @@ public class PropPanelTest extends TestCase
     assertEquals(false, panel.isFloater());
   }
 
-  private boolean invoked;
-
   public void testAfterPaintAction() throws Exception
   {
-    invoked = false;
-    PaintAction action = new PaintAction()
-    {
-
-      public void invoke(Graphics2D graphics)
-      {
-        invoked = true;
-      }
-    };
-
+    MockAfterPaintAction action = new MockAfterPaintAction();
     panel.setAfterPaintAction(action);
     panel.setSize(100, 100);
     MockGraphics mockGraphics = new MockGraphics();
     mockGraphics.setClip(0, 0, 100, 100);
+    panel.doLayout();
     panel.paintOn(mockGraphics);
 
-    assertEquals(true, invoked);
+    assertEquals(true, action.invoked);
   }
 
   public void testHasChangesWhenaStyleIsChanged() throws Exception
@@ -309,7 +320,7 @@ public class PropPanelTest extends TestCase
     assertSame(child, panel.getOwnerOfPoint(new Point(0, 0)));
     assertSame(floater, panel.getOwnerOfPoint(new Point(50, 50)));
   }
-  
+
   public void testVerticalMouseWheelMovement() throws Exception
   {
     panel.addVerticalScrollBar();
@@ -389,7 +400,7 @@ public class PropPanelTest extends TestCase
 
     assertSame(event, prop.typedKey);
   }
-  
+
   public void testKeyReleasedEvent() throws Exception
   {
     KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
@@ -564,7 +575,8 @@ public class PropPanelTest extends TestCase
     for(int i = 0; i < 100; i++)
       panel.add(new PropPanel(new MockProp()));
     panel.setNeedsLayout();
-    Thread thread = new Thread(new Runnable() {
+    Thread thread = new Thread(new Runnable()
+    {
       public void run()
       {
         panel.doLayout();

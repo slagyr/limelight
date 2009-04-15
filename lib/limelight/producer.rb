@@ -60,7 +60,7 @@ module Limelight
     #
     def load(options = {})
       establish_production
-      Gems.install_gems_in_production(@production)  
+      Gems.install_gems_in_production(@production)
       Kernel.load(@production.init_file) if ( !options[:ignore_init] &&  File.exists?(@production.init_file) )
       load_stages if File.exists?(@production.stages_file)
     end

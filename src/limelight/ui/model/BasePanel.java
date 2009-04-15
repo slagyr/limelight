@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.LimelightError;
+import limelight.Context;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
@@ -357,6 +358,8 @@ public abstract class BasePanel implements Panel
       propogateSizeChange(this);
       setNeedsLayout();
     }
+    // HAckety Hack!
+    Context.instance().keyboardFocusManager.focusFrame(getRoot().getFrame());
   }
 
   public Box getBoundingBox()

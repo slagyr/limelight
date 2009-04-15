@@ -6,6 +6,7 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 
 import limelight.util.Box;
+import limelight.util.Colors;
 import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.styles.FlatStyle;
@@ -52,7 +53,7 @@ public class PaintJobTest extends TestCase
 
     Graphics2D graphics = job.getGraphics();
     assertNotNull(graphics);
-    assertEquals(Color.white, graphics.getBackground());
+    assertEquals(Colors.TRANSPARENT, graphics.getBackground());
   }
 
   public void testPaintRoot() throws Exception
