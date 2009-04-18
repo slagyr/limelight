@@ -24,12 +24,11 @@ public class Context
   public final String os;
   public final boolean runningAsApp;
 
+  public String environment = "production";
   public TempDirectory tempDirectory;
-
-  public IdleThreadLoop panelPanter;                                                    
+  public IdleThreadLoop panelPanter;
   public AnimationLoop animationLoop;
   public CacheCleanerLoop cacheCleaner;
-
   public Cache<Panel, BufferedImage> bufferedImageCache;
   public FrameManager frameManager;
   public AudioPlayer audioPlayer;
@@ -82,5 +81,15 @@ public class Context
   {
     if(instance().panelPanter != null)
       instance().panelPanter.go();
+  }
+
+  public void shutdown()
+  {
+    panelPanter.stop();
+    animationLoop.stop();
+    cacheCleaner.stop();
+    frameManager.closeAllFrames();
+    if(!"test".equals(environment))
+      System.exit(0);
   }
 }

@@ -7,8 +7,11 @@ import junit.framework.TestCase;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
 import limelight.ui.Panel;
+import limelight.ui.model.MockFrameManager;
 import limelight.audio.RealAudioPlayer;
-
+import limelight.background.PanelPainterLoop;
+import limelight.background.AnimationLoop;
+import limelight.background.CacheCleanerLoop;
 import java.awt.image.BufferedImage;
 
 public class MainTest extends TestCase
