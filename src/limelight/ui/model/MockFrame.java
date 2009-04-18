@@ -12,6 +12,7 @@ public class MockFrame extends Frame
 {
   private final Container contentPanel;
   public boolean wasRefreshed;
+  public boolean closed;
 
   public MockFrame()
   {
@@ -37,5 +38,10 @@ public class MockFrame extends Frame
   public void refresh()
   {
     wasRefreshed = true;
+  }
+
+  public void close()
+  {
+    closed = true;
   }
 }

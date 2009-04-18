@@ -30,7 +30,7 @@ public class Main
 
   public static void main(String[] args) throws Exception
   {
-    new Main().run(args);
+    new Main().start(args);
   }
 
   public static void initializeContext()
@@ -43,7 +43,7 @@ public class Main
     new Main().configureContext();
   }
 
-  public void run(String[] args) throws Exception
+  public void start(String[] args) throws Exception
   {
     try
     {

@@ -6,6 +6,7 @@ package limelight.ui.model;
 public class MockFrameManager implements FrameManager
 {
   public Frame activeFrame;
+  public boolean allFramesClosed;
 
   public void watch(Frame frame)
   {
@@ -24,5 +25,10 @@ public class MockFrameManager implements FrameManager
   public int getFrameCount()
   {
     return 0;
+  }
+
+  public void closeAllFrames()
+  {
+    allFramesClosed = true;
   }
 }

@@ -10,7 +10,6 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.*;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class AlertFrameManager implements WindowFocusListener, WindowListener, FrameManager
 {
@@ -60,11 +59,11 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
     Frame frame = (Frame)e.getWindow();
     frames.remove(frame);
-    if(frames.isEmpty() || allFrameHidden())
-      System.exit(0);
+    if(frames.isEmpty() || allFramesHidden())
+      Context.instance().shutdown();
   }
 
-  private boolean allFrameHidden()
+  private boolean allFramesHidden()
   {
     for(Frame frame : frames)
     {
@@ -109,5 +108,11 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   public int getFrameCount()
   {
     return frames.size();
+  }
+
+  public void closeAllFrames()
+  {
+    for(Frame frame : frames)
+      frame.close();
   }
 }

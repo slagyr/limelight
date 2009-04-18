@@ -9,4 +9,5 @@ public interface FrameManager
   Frame getActiveFrame();
   boolean isWatching(Frame frame);
   int getFrameCount();
+  void closeAllFrames();
 }

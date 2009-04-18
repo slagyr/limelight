@@ -27,4 +27,8 @@ public class InertFrameManager implements FrameManager
   {
     return 0;
   }
+
+  public void closeAllFrames()
+  {
+  }
 }

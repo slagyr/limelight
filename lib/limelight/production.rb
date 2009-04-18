@@ -12,24 +12,24 @@ module Limelight
   # Productions are configured, and attributes are added, by the ProductionBuilder.
   #
   class Production
-    
+
     class << self
-      
+
       def index(production) #:nodoc:
         @index = [] if @index.nil?
         if production.name.nil?
-          assign_name_to(production) 
+          assign_name_to(production)
         else
           error_if_duplicate_name(production.name)
         end
         @index << production
       end
-      
+
       def [](name) #:nodoc:
         return nil if @index.nil?
         return @index.find { |production| production.name == name }
       end
-      
+
       def assign_name_to(production) #:nodoc:
         count = @index.length + 1
         while name_taken?(count.to_s)
@@ -37,7 +37,7 @@ module Limelight
         end
         production.name = count.to_s
       end
-      
+
       def name_taken?(name) #:nodoc:
         return self[name] != nil
       end
@@ -45,19 +45,19 @@ module Limelight
       def clear_index #:nodoc:
         @index = []
       end
-      
+
       def error_if_duplicate_name(name) #:nodoc:
         raise Limelight::LimelightException.new("Production name '#{name}' is already taken") if name_taken?(name)
       end
-      
+
     end
-    
-    attr_reader :name, :root 
+
+    attr_reader :name, :root
     attr_accessor :producer, :theater
 
     # Users typically need not create Production objects.
     #
-    def initialize(path)    
+    def initialize(path)
       @root = FileLoader.for_root(path)
       self.class.index(self)
     end
@@ -106,13 +106,12 @@ module Limelight
       return @root.path_to(name)
     end
 
+    # Closes the production and shuts down the Limelight runtime.
+    #
     def close
-      Thread.new do
-        sleep(0.1)
-        Java::java.lang.System.exit(0)
-      end
+      Thread.new { Context.instance().shutdown }
     end
-    
+
   end
-  
+
 end
