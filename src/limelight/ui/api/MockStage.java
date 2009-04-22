@@ -3,8 +3,18 @@
 
 package limelight.ui.api;
 
-import limelight.ui.api.Stage;
 
 public class MockStage implements Stage
 {
+  public MockTheater theater;
+
+  public MockStage()
+  {
+    theater = new MockTheater();
+  }
+
+  public Theater theater()
+  {
+    return theater;
+  }
 }

@@ -5,4 +5,5 @@ package limelight.ui.api;
 
 public interface Stage
 {
+  Theater theater();
 }
