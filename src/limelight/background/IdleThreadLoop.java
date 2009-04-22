@@ -54,7 +54,8 @@ public abstract class IdleThreadLoop
     {
       if(isIdle())
         thread.interrupt();
-      thread.join();
+      if(thread != null)
+        thread.join();
     }
     catch(InterruptedException e)
     {

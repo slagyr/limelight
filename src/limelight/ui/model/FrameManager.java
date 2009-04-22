@@ -5,9 +5,9 @@ package limelight.ui.model;
 
 public interface FrameManager
 {
-  void watch(Frame frame);
-  Frame getActiveFrame();
-  boolean isWatching(Frame frame);
+  void watch(StageFrame frame);
+  StageFrame getActiveFrame();
+  boolean isWatching(StageFrame frame);
   int getFrameCount();
   void closeAllFrames();
 }

@@ -8,67 +8,103 @@ describe Limelight::Stage do
 
   before(:each) do
     @theater = make_mock("theater")
-    @__stage__ = Limelight::Stage.new(@theater, "George")
+    @stage = Limelight::Stage.new(@theater, "George")
   end
-  
+
   it "should have a name" do
     stage = Limelight::Stage.new(@theater, "Jose")
     stage.theater.should be(@theater)
     stage.name.should == "Jose"
   end
-  
+
   it "should have a title which default to it's name" do
-    @__stage__.title.should == "George"
-    
-    @__stage__.title = "Once Upon a Test"
-    
-    @__stage__.title.should == "Once Upon a Test"
+    @stage.title.should == "George"
+
+    @stage.title = "Once Upon a Test"
+
+    @stage.title.should == "Once Upon a Test"
   end
-  
+
   it "should have size" do
-    @__stage__.size.should == [800, 800]
-    
-    @__stage__.size = 123, 456
-    
-    @__stage__.size.should == [123, 456]
+    @stage.size.should == [800, 800]
+
+    @stage.size = 123, 456
+
+    @stage.size.should == [123, 456]
   end
-  
+
   it "should have location" do
-    @__stage__.location.should == [200, 25]
-    
-    @__stage__.location = 123, 456
-    
-    @__stage__.location.should == [123, 456]
+    @stage.location.should == [200, 25]
+
+    @stage.location = 123, 456
+
+    @stage.location.should == [123, 456]
   end
-  
+
   it "should not allow name changes" do
-    lambda { @__stage__.name = "new name" }.should raise_error
+    lambda { @stage.name = "new name" }.should raise_error
+  end
+
+  it "should set the background color" do
+    @stage.background_color = "red"
+
+    @stage.background_color.should == "#FF0000"
+  end
+
+  it "should be framed or not" do
+    @stage.framed = false
+    @stage.frame.should be_undecorated
+    @stage.should_not be_framed
+
+    @stage.framed = true
+    @stage.frame.should_not be_undecorated
+    @stage.should be_framed
+  end
+
+  it "should be always on top" do
+    @stage.always_on_top = true
+    @stage.should be_always_on_top
+    @stage.frame.should be_always_on_top
+
+    @stage.always_on_top = false
+    @stage.should_not be_always_on_top
+    @stage.frame.should_not be_always_on_top
   end
 
   describe "when opening a scene" do
     before(:each) do
       @scene = make_mock("scene", :visible= => nil, :illuminate => nil, :stage= => nil, :scene_opened => nil)
-      @__stage__.frame.stub!(:open)
-      @__stage__.stub!(:load_scene)
+      @stage.frame.stub!(:open)
+      @stage.stub!(:load_scene)
     end
 
     it "should call scene.scene_opened at the end of opening a scene" do
       @scene.should_receive(:scene_opened)
 
-      @__stage__.open(@scene)
+      @stage.open(@scene)
     end
 
     it "should illuminate the scene when opening it" do
       @scene.should_receive(:illuminate)
 
-      @__stage__.open(@scene)
+      @stage.open(@scene)
     end
-  
-    it "should set the stage on the scene" do
-      @scene.should_receive(:stage=).with(@__stage__)
 
-      @__stage__.open(@scene)
+    it "should set the stage on the scene" do
+      @scene.should_receive(:stage=).with(@stage)
+
+      @stage.open(@scene)
     end
+
+    it "should hide and show" do
+      @stage.open(@scene)
+      @stage.frame.should_receive(:visible=).with(false)
+      @stage.hide
+
+      @stage.frame.should_receive(:visible=).with(true)
+      @stage.show
+    end
+
   end
 
 end

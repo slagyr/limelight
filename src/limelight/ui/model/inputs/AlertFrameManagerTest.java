@@ -2,7 +2,7 @@ package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
 import limelight.ui.model.AlertFrameManager;
-import limelight.ui.model.MockFrame;
+import limelight.ui.model.MockStageFrame;
 
 public class AlertFrameManagerTest extends TestCase
 {
@@ -15,7 +15,7 @@ public class AlertFrameManagerTest extends TestCase
 
   public void testCloseAllFrames() throws Exception
   {
-    MockFrame frame = new MockFrame();
+    MockStageFrame frame = new MockStageFrame();
     manager.watch(frame);
 
     manager.closeAllFrames();

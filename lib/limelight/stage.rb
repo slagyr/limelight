@@ -45,7 +45,8 @@ module Limelight
     #   width, height = stage.size
     #
     def size
-      return @frame.width, @frame.height
+      dimensions = @frame.size
+      return dimensions.width, dimensions.height
     end
 
     # Sets the width and height of the Stage. The dimensions are passed in as an array.
@@ -72,12 +73,72 @@ module Limelight
       @frame.set_location(values[0], values[1])
     end
 
+    # Turns fullscreen mode on and off.  In fullscreen mode, the stage will fill the entire screen and appear on top
+    # of all other windows.
+    #
+    #   stage.fullscreen = true
+    #
     def fullscreen=(on)
-      @frame.set_fullscreen(on)
+      @frame.setFullScreen(on)
     end
 
     def has_menu_bar=(value)
       @frame.setHasMenuBar(value)
+    end
+
+    # Hides the stage so that it is not visible on the screen without destroying it.
+    #
+    def hide
+      @frame.visible = false
+    end
+
+    # Shows the stage after having hiding it.
+    #
+    def show
+      @frame.visible = true
+    end
+
+    # Returns true if the stage is visible on the screen.
+    #
+    def visible?
+      return @frame.visible
+    end
+
+    # Sets the background color of the stage
+    #
+    def background_color=(value)
+      @frame.background_color = value
+    end
+
+    # Returns the background color of the stage in the format #RRGGBB(AA)
+    #
+    def background_color
+      return @frame.background_color
+    end
+
+    # When true, the stage will be frame with the operating system's standard window frame including close, minimize,
+    # and maximize buttons
+    #
+    def framed=(value)
+      @frame.setUndecorated(!value)
+    end
+
+    # Return true if the stage is framed.
+    #
+    def framed?
+      return !@frame.isUndecorated()
+    end
+
+    # When true, the stage will remain on top of all other windows.
+    #
+    def always_on_top=(value)
+      @frame.always_on_top = value
+    end
+
+    # Return true if the stage has been set to always be on top.
+    #
+    def always_on_top?
+      return @frame.always_on_top
     end
 
     # Opens the Stage and loads the provided Scene.

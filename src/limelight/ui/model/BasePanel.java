@@ -9,7 +9,6 @@ import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -359,7 +358,7 @@ public abstract class BasePanel implements Panel
       setNeedsLayout();
     }
     // HAckety Hack!
-    Context.instance().keyboardFocusManager.focusFrame(getRoot().getFrame());
+    Context.instance().keyboardFocusManager.focusFrame(getRoot().getStageFrame());
   }
 
   public Box getBoundingBox()

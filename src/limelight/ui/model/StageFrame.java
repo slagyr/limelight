@@ -7,27 +7,27 @@ import limelight.Context;
 import limelight.util.Colors;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowListener;
 
-public class Frame extends JFrame implements KeyListener
+public class StageFrame extends JFrame implements KeyListener
 {
   private Stage stage;
   protected RootPanel root;
   private Insets insets;
   private boolean fullscreen;
   private boolean hasMenuBar;
+  private GraphicsDevice graphicsDevice;
 
-  protected Frame()
+  protected StageFrame()
   {
   }
 
-  public Frame(Stage stage)
+  public StageFrame(Stage stage)
   {
+    this();
     this.stage = stage;
     setContentPane(new LimelightContentPane(this));
     setBackground(Colors.TRANSPARENT);
@@ -48,8 +48,8 @@ public class Frame extends JFrame implements KeyListener
   {
     setVisible(false);
     if(fullscreen)
-      GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
-//    dispose();
+      getGraphicsDevice().setFullScreenWindow(null);
+    dispose();
   }
 
   public void open()
@@ -58,8 +58,22 @@ public class Frame extends JFrame implements KeyListener
       setJMenuBar(null);
     setVisible(true);
     if(fullscreen)
-      GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
+      getGraphicsDevice().setFullScreenWindow(this);
     refresh();
+  }
+
+  public void setVisible(boolean visible)
+  {
+    if(visible == isVisible())
+      return;
+    super.setVisible(visible);
+    if(fullscreen)
+    {
+      if(visible)
+        getGraphicsDevice().setFullScreenWindow(this);
+      else
+        getGraphicsDevice().setFullScreenWindow(null);
+    }
   }
 
   public void refresh()
@@ -113,15 +127,38 @@ public class Frame extends JFrame implements KeyListener
     return insets.left + insets.right;
   }
 
-  public void setFullscreen(boolean on)
+  public void setFullScreen(boolean setting)
   {
-    fullscreen = on;
+    if(fullscreen != setting)
+    {
+      fullscreen = setting;
+      if(fullscreen && isVisible())
+        getGraphicsDevice().setFullScreenWindow(this);
+      else if(this == getGraphicsDevice().getFullScreenWindow())
+        getGraphicsDevice().setFullScreenWindow(null);
+    }
+  }
+
+  public void setGraphicsDevice(GraphicsDevice device)
+  {
+    this.graphicsDevice = device;
+  }
+
+  public GraphicsDevice getGraphicsDevice()
+  {
+    if(graphicsDevice != null)
+      return graphicsDevice;
+    return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+  }
+
+  public boolean isFullScreen()
+  {
+    return fullscreen;
   }
 
   public void setHasMenuBar(boolean value)
   {
     hasMenuBar = value;
-    setUndecorated(!hasMenuBar);
   }
 
   private void calculateInsets()
@@ -157,11 +194,21 @@ public class Frame extends JFrame implements KeyListener
       panel.keyReleased(e);
   }
 
+  public void setBackgroundColor(String colorString)
+  {
+    setBackground(Colors.resolve(colorString));
+  }
+
+  public String getBackgroundColor()
+  {
+    return Colors.toString(getBackground());
+  }
+
   private class LimelightContentPane extends JPanel
   {
-    private final Frame frame;
+    private final StageFrame frame;
 
-    public LimelightContentPane(Frame frame)
+    public LimelightContentPane(StageFrame frame)
     {
       this.frame = frame;
     }

@@ -276,4 +276,22 @@ public class Colors
   {
     return Integer.parseInt(hex, 16);
   }
+
+  public static String toString(Color color)
+  {
+    StringBuffer buffer = new StringBuffer("#");
+    buffer.append(hexValue(color.getRed()));
+    buffer.append(hexValue(color.getGreen()));
+    buffer.append(hexValue(color.getBlue()));
+    if(color.getAlpha() < 255)
+      buffer.append(hexValue(color.getAlpha()));
+    return
+        buffer.toString();
+  }
+
+  private static String hexValue(int decimalValue)
+  {
+    String value = Integer.toString(decimalValue, 16).toUpperCase();
+    return value.length() == 1 ? "0" + value : value;
+  }
 }

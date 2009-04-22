@@ -3,22 +3,18 @@
 
 package limelight.ui.model;
 
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowEvent;
-
 public class InertFrameManager implements FrameManager
 {
-  public void watch(Frame frame)
+  public void watch(StageFrame stageFrame)
   {
   }
 
-  public Frame getActiveFrame()
+  public StageFrame getActiveFrame()
   {
     return null;
   }
 
-  public boolean isWatching(Frame frame)
+  public boolean isWatching(StageFrame frame)
   {
     return false;
   }

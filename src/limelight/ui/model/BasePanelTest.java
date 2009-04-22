@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
@@ -57,7 +56,7 @@ public class BasePanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockFrame());
+    root = new RootPanel(new MockStageFrame());
     panel = new TestableBasePanel();
     root.setPanel(panel);
   }
@@ -143,7 +142,7 @@ public class BasePanelTest extends TestCase
 
   private void createFamilyTree()
   {
-    root = new RootPanel(new MockFrame());
+    root = new RootPanel(new MockStageFrame());
     parent = new MockPanel();
     root.setPanel(parent);
     child = new MockPanel();

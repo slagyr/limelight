@@ -6,7 +6,7 @@ package limelight.ui.model.inputs;
 import junit.framework.TestCase;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.RootPanel;
-import limelight.ui.model.MockFrame;
+import limelight.ui.model.MockStageFrame;
 import limelight.ui.model.TextAccessor;
 import limelight.ui.api.MockProp;
 import limelight.ui.MockPanel;
@@ -124,7 +124,7 @@ public class InputPanelTest extends TestCase
 
   private void attatchRoot()
   {
-    RootPanel root = new RootPanel(new MockFrame());
+    RootPanel root = new RootPanel(new MockStageFrame());
     rootPanel = new MockPanel();
     root.setPanel(rootPanel);
     rootPanel.add(parent);

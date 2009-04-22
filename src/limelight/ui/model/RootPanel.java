@@ -23,12 +23,12 @@ public class RootPanel implements Panel
   private final Container contentPane;
   private EventListener listener;
   private boolean alive;
-  private final Frame frame;
+  private final StageFrame frame;
   private final ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
 
-  public RootPanel(Frame frame)
+  public RootPanel(StageFrame frame)
   {
     this.frame = frame;
     contentPane = frame.getContentPane();
@@ -462,7 +462,7 @@ public class RootPanel implements Panel
   {
   }
 
-  public Frame getFrame()
+  public StageFrame getStageFrame()
   {
     return frame;
   }

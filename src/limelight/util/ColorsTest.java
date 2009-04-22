@@ -90,4 +90,14 @@ public class ColorsTest extends TestCase
   {
     checkColor(Colors.resolve("transparent"), 0, 0, 0, 0);
   }
+
+  public void testToString() throws Exception
+  {
+    assertEquals("#FF0000", Colors.toString(Color.RED));
+    assertEquals("#00FF00", Colors.toString(Color.GREEN));
+    assertEquals("#0000FF", Colors.toString(Color.BLUE));
+    assertEquals("#ABCDEF", Colors.toString(Colors.resolve("#abcdef")));
+    assertEquals("#12345678", Colors.toString(Colors.resolve("#12345678"))); 
+    assertEquals("#00000000", Colors.toString(Colors.resolve("#0000")));
+  }
 }
