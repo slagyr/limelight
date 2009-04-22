@@ -30,7 +30,7 @@ public class StageFrame extends JFrame implements KeyListener
     this();
     this.stage = stage;
     setContentPane(new LimelightContentPane(this));
-    setBackground(Colors.TRANSPARENT);
+    setBackground(Color.WHITE);
 
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
