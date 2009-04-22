@@ -8,13 +8,13 @@ import limelight.ui.MockGraphics;
 
 import java.awt.*;
 
-public class MockFrame extends Frame
+public class MockStageFrame extends StageFrame
 {
   private final Container contentPanel;
   public boolean wasRefreshed;
   public boolean closed;
 
-  public MockFrame()
+  public MockStageFrame()
   {
     setStage(new MockStage());
     contentPanel = new Container(){

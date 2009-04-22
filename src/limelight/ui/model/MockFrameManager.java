@@ -5,19 +5,19 @@ package limelight.ui.model;
 
 public class MockFrameManager implements FrameManager
 {
-  public Frame activeFrame;
+  public StageFrame activeFrame;
   public boolean allFramesClosed;
 
-  public void watch(Frame frame)
+  public void watch(StageFrame frame)
   {
   }
 
-  public Frame getActiveFrame()
+  public StageFrame getActiveFrame()
   {
     return activeFrame;
   }
 
-  public boolean isWatching(Frame frame)
+  public boolean isWatching(StageFrame frame)
   {
     return false;
   }

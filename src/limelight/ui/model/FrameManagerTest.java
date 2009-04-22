@@ -13,14 +13,14 @@ import java.awt.event.WindowFocusListener;
 public class FrameManagerTest extends TestCase
 {
   private FrameManager manager;
-  private Frame frame;
+  private StageFrame frame;
 
   public void setUp() throws Exception
   {
     manager = new AlertFrameManager();
     Context.instance().frameManager = manager;
     MockStage stage = new MockStage();
-    frame = new Frame(stage);
+    frame = new StageFrame(stage);
   }
 
   public void testAddingFrames() throws Exception

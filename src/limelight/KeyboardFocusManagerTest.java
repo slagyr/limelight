@@ -9,11 +9,10 @@ import junit.framework.TestCase;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.InputPanel;
 import limelight.ui.model.RootPanel;
-import limelight.ui.model.MockFrame;
+import limelight.ui.model.MockStageFrame;
 import limelight.ui.model.TextAccessor;
 import limelight.ui.MockPanel;
 import limelight.styles.Style;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.awt.*;
 import java.awt.event.FocusListener;
@@ -73,7 +72,7 @@ public class KeyboardFocusManagerTest extends TestCase
 
   public void testFocusNextComponent() throws Exception
   {
-    RootPanel root = new RootPanel(new MockFrame());
+    RootPanel root = new RootPanel(new MockStageFrame());
     Panel panel = new MockPanel();
     root.setPanel(panel);
     MockInputPanel input1 = new MockInputPanel();
@@ -89,7 +88,7 @@ public class KeyboardFocusManagerTest extends TestCase
 
   public void testFocusPreviousComponent() throws Exception
   {
-    RootPanel root = new RootPanel(new MockFrame());
+    RootPanel root = new RootPanel(new MockStageFrame());
     Panel panel = new MockPanel();
     root.setPanel(panel);
     MockInputPanel input1 = new MockInputPanel();

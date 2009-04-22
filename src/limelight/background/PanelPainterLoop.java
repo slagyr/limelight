@@ -4,12 +4,11 @@
 package limelight.background;
 
 import limelight.ui.Panel;
-import limelight.ui.model.Frame;
+import limelight.ui.model.StageFrame;
 import limelight.ui.model.PaintJob;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
-import limelight.util.Debug;
 import limelight.Context;
 
 import java.awt.*;
@@ -75,7 +74,7 @@ public class PanelPainterLoop extends IdleThreadLoop
 
   public RootPanel getActiveRoot()
   {
-    Frame frame = Context.getActiveFrame();
+    StageFrame frame = Context.getActiveFrame();
     if(frame != null)
       return frame.getRoot();
     else

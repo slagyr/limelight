@@ -4,17 +4,15 @@
 package limelight;
 
 import limelight.ui.model.inputs.InputPanel;
-import limelight.ui.model.*;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyListener;
 
 public class KeyboardFocusManager extends DefaultKeyboardFocusManager
 {
   private InputPanel focusedPanel;
-  public limelight.ui.model.Frame frame;
+  public Frame frame;
 
   public void install()
   {
@@ -32,7 +30,7 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
   }
 
   //TODO Hacked in
-  public void focusFrame(limelight.ui.model.Frame frame)
+  public void focusFrame(Frame frame)
   {
     this.frame = frame;
     focusComponent(this.frame);

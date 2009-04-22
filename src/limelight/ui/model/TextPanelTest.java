@@ -34,7 +34,7 @@ public class TextPanelTest extends TestCase
     style = parent.getProp().getStyle();
     panel = new TextPanel(parent, "Some Text");
     parent.add(panel);
-    root = new RootPanel(new MockFrame());
+    root = new RootPanel(new MockStageFrame());
     root.setPanel(parent);
 
     style.setTextColor("black");

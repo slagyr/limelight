@@ -5,7 +5,7 @@ package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
 import limelight.ui.model.RootPanel;
-import limelight.ui.model.MockFrame;
+import limelight.ui.model.MockStageFrame;
 
 import java.awt.*;
 
@@ -17,7 +17,7 @@ public class ComboBoxTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockFrame());
+    root = new RootPanel(new MockStageFrame());
     panel = new ComboBoxPanel();
     comboBox = new ComboBox(panel);
     root.setPanel(panel);

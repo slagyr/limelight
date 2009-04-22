@@ -5,6 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../lib/init")
 
 require 'spec'
 
+Limelight::Main.new.configureTestContext
 context = Limelight::Context.instance
 context.frameManager = Java::limelight.ui.model.AlertFrameManager.new
 

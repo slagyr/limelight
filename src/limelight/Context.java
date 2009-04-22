@@ -7,7 +7,7 @@ import limelight.io.TempDirectory;
 import limelight.ui.Panel;
 import limelight.ui.api.Studio;
 import limelight.ui.model.FrameManager;
-import limelight.ui.model.Frame;
+import limelight.ui.model.StageFrame;
 import limelight.caching.Cache;
 import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
 import limelight.background.AnimationLoop;
@@ -59,7 +59,7 @@ public class Context
     instance = null;
   }
 
-  public static Frame getActiveFrame()
+  public static StageFrame getActiveFrame()
   {
     if(instance().frameManager != null)
       return instance().frameManager.getActiveFrame();

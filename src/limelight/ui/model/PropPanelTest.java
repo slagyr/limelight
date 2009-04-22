@@ -40,7 +40,7 @@ public class PropPanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockFrame());
+    root = new RootPanel(new MockStageFrame());
 
     prop = new MockProp();
     style = prop.getStyle();

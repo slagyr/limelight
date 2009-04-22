@@ -13,12 +13,12 @@ import java.util.HashSet;
 
 public class AlertFrameManager implements WindowFocusListener, WindowListener, FrameManager
 {
-  private Frame activeFrame;
-  private final HashSet<Frame> frames;
+  private StageFrame activeFrame;
+  private final HashSet<StageFrame> frames;
 
   public AlertFrameManager()
   {
-    frames = new HashSet<Frame>();
+    frames = new HashSet<StageFrame>();
   }
 
   public void windowGainedFocus(WindowEvent e)
@@ -26,7 +26,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
     Window window = e.getWindow();  
     if(window instanceof Frame)
     {
-      activeFrame = (Frame)window;
+      activeFrame = ((StageFrame)window);
 
       Context.instance().keyboardFocusManager.focusFrame((Frame)window);
 //      theater.stage_activated(frame.getStage());
@@ -37,7 +37,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
   }
 
-  public void watch(Frame frame)
+  public void watch(StageFrame frame)
   {
     if(!frames.contains(frame))
     {
@@ -57,7 +57,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public void windowClosed(WindowEvent e)
   {
-    Frame frame = (Frame)e.getWindow();
+    StageFrame frame = ((StageFrame)e.getWindow());
     frames.remove(frame);
     if(frames.isEmpty() || allFramesHidden())
       Context.instance().shutdown();
@@ -65,7 +65,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   private boolean allFramesHidden()
   {
-    for(Frame frame : frames)
+    for(StageFrame frame : frames)
     {
       if(frame.isVisible())
         return false;
@@ -89,12 +89,12 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
   }
 
-  public Frame getActiveFrame()
+  public StageFrame getActiveFrame()
   {
     return activeFrame;
   }
 
-  public boolean isWatching(Frame frame)
+  public boolean isWatching(StageFrame frame)
   {
     boolean found = false;
     for(WindowFocusListener listener : frame.getWindowFocusListeners())
@@ -112,7 +112,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public void closeAllFrames()
   {
-    for(Frame frame : frames)
+    for(StageFrame frame : frames)
       frame.close();
   }
 }

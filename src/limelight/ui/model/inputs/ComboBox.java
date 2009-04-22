@@ -36,7 +36,7 @@ public class ComboBox extends JComboBox
 
   public Point getLocationOnScreen()
   {
-    Point frameLocation = panel.getRoot().getFrame().getLocationOnScreen();
+    Point frameLocation = panel.getRoot().getStageFrame().getLocationOnScreen();
     Point panelLocation = panel.getAbsoluteLocation();
     return new Point(frameLocation.x + panelLocation.x, frameLocation.y + panelLocation.y + 44);
     //TODO This magic 44 is to get the popup displayed in the right location.  I doubt the constant works on all operating systems.

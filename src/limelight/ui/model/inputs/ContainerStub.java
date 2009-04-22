@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
-import limelight.ui.model.RootPanel;
+
 import java.awt.*;
 
 public class ContainerStub extends Container
@@ -20,7 +20,7 @@ public class ContainerStub extends Container
   {
     Container parent = null;
     if(panel != null && panel.getRoot() != null)
-      parent = (panel.getRoot()).getFrame();
+      parent = (panel.getRoot()).getStageFrame();
     return parent;
   }
 

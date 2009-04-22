@@ -9,7 +9,6 @@ import limelight.ui.Panel;
 import limelight.ui.api.MockScene;
 import limelight.Context;
 import limelight.MockResourceLoader;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -23,10 +22,10 @@ public class RootPanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    Frame frame = new MockFrame();
-    root = new RootPanel(frame);
+    StageFrame stageFrame = new MockStageFrame();
+    root = new RootPanel(stageFrame);
     child = new MockPropablePanel("child");
-    contentPane = frame.getContentPane();
+    contentPane = stageFrame.getContentPane();
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
   }
 
