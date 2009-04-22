@@ -1,7 +1,7 @@
 #- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/dsl/menu_bar'
+#require 'limelight/dsl/menu_bar'
 require 'limelight/file_chooser'
 require 'limelight/util'
 
@@ -82,10 +82,6 @@ module Limelight
       @frame.setFullScreen(on)
     end
 
-    def has_menu_bar=(value)
-      @frame.setHasMenuBar(value)
-    end
-
     # Hides the stage so that it is not visible on the screen without destroying it.
     #
     def hide
@@ -164,7 +160,7 @@ module Limelight
     # the new Scene will replace it.
     #
     def load_scene(scene)
-      @frame.setJMenuBar(scene.menu_bar)
+#      @frame.setJMenuBar(scene.menu_bar)
       @frame.load(scene.panel)
 #      scene.panel.snap_to_size  # What's this for?
       if(has_static_size?(scene.style))
@@ -190,7 +186,7 @@ module Limelight
     #
     def alert(message)
       frame.alert(message)
-    end
+    end 
 
     protected #############################################
 
