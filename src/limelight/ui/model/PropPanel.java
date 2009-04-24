@@ -501,7 +501,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(hoverStyle != null)
     {
       getProp().getStyle().removeScreen();
-      getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+      RootPanel root = getRoot();
+      if(root != null)
+        root.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
   }
 
