@@ -10,7 +10,7 @@ public class MockAnimation extends Animation
 {
   public int updates;
 
-  public MockAnimation(int updatesPerSecond, Panel panel)
+  public MockAnimation(double updatesPerSecond, Panel panel)
   {
     super(updatesPerSecond);
   }

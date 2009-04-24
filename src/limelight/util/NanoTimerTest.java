@@ -91,4 +91,14 @@ public class NanoTimerTest extends TestCase
     assertEquals("time of last activity: " + mark, true, mark < ONE_MILLION);
     assertEquals(0, timer.getSleepJiggle());
   }
+
+  public void testMoveMarkBack() throws Exception
+  {
+    timer.markTime();
+    long mark = timer.getTimeOfLastActivity();
+
+    timer.moveMarkBackInTime(12345);
+
+    assertEquals(12345, (mark - timer.getTimeOfLastActivity()));
+  }
 }

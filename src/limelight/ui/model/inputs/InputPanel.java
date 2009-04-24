@@ -18,7 +18,6 @@ import java.awt.event.*;
 public abstract class InputPanel extends BasePanel
 {
   private final Component component;
-  private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
   private boolean inPaintOn;
 
   protected InputPanel()
@@ -46,6 +45,8 @@ public abstract class InputPanel extends BasePanel
 
   public void setParent(limelight.ui.Panel panel)
   {
+    if(panel == null)
+      Context.instance().keyboardFocusManager.focusFrame(getRoot().getStageFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {

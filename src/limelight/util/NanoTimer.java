@@ -3,8 +3,6 @@
 
 package limelight.util;
 
-import java.text.DecimalFormat;
-
 public class NanoTimer
 {
   private long timeOfLastActivity;
@@ -76,5 +74,10 @@ public class NanoTimer
   public long getSleepJiggle()
   {
     return sleepJiggle;
+  }
+
+  public void moveMarkBackInTime(long nanos)
+  {
+    timeOfLastActivity -= nanos;
   }
 }

@@ -696,5 +696,15 @@ public class BasePanelTest extends TestCase
     assertEquals(true, child.needsLayout());
     assertEquals(true, parent.needsLayout());
   }
+  
+  public void testRemovingChildrenRemovesTheParent() throws Exception
+  {
+    createFamilyTree();
+    child.remove(grandChild);
+    assertEquals(null, grandChild.getParent());
+
+    parent.removeAll();
+    assertEquals(null, child.getParent());
+  }
 }
 
