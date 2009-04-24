@@ -170,14 +170,16 @@ public class BasePanelTest extends TestCase
   {
     createFamilyTree();
 
-    try
-    {
-      parent.getClosestCommonAncestor(new MockPanel());
-      fail("An exception is expected");
-    }
-    catch(LimelightError e)
-    {
-    }
+    assertEquals(null, parent.getClosestCommonAncestor(new MockPanel()));
+
+//    try
+//    {
+//      parent.getClosestCommonAncestor(new MockPanel());
+//      fail("An exception is expected");
+//    }
+//    catch(LimelightError e)
+//    {
+//    }
   }
 
   public void testGetAbsoluteLocation() throws Exception
