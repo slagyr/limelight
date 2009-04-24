@@ -66,6 +66,11 @@ public abstract class Animation
     timer.markTime();
   }
 
+  public NanoTimer getTimer()
+  {
+    return timer;
+  }
+
   public void start()
   {
     running = true;

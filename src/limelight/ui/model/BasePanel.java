@@ -339,6 +339,7 @@ public abstract class BasePanel implements Panel
   {
     if(children.remove(child))
     {
+      child.setParent(null);
       readonlyChildren = null;
       propogateSizeChange(this);
       setNeedsLayout();
@@ -351,14 +352,14 @@ public abstract class BasePanel implements Panel
   {
     if(children.size() > 0)
     {
+      for(Panel child : children)
+        child.setParent(null);
       children.clear();
       readonlyChildren = null;
       sterilized = false;
       propogateSizeChange(this);
       setNeedsLayout();
     }
-    // HAckety Hack!
-    Context.instance().keyboardFocusManager.focusFrame(getRoot().getStageFrame());
   }
 
   public Box getBoundingBox()

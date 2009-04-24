@@ -430,7 +430,6 @@ public class RootPanel implements Panel
 
   public void keyTyped(KeyEvent e)
   {
-    System.err.println("e");
   }
 
   public void keyPressed(KeyEvent e)

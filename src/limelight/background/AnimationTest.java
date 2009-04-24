@@ -11,6 +11,8 @@ import limelight.Context;
 
 public class AnimationTest extends TestCase
 {
+  public static final int oneSecond = 1000000000;
+
   private MockAnimation animation;
   private AnimationLoop loop;
 
@@ -23,7 +25,7 @@ public class AnimationTest extends TestCase
 
   public void testGetOptimalSleepNanos() throws Exception
   {
-    assertEquals(1000000000 / 100, animation.getDelayNanos());
+    assertEquals(oneSecond / 100, animation.getDelayNanos());
   }
 
   public void testIsReady() throws Exception
@@ -92,5 +94,17 @@ public class AnimationTest extends TestCase
     long delay = animation.getDelayNanos();
     long tolerableDelay = (long)( delay * 0.95);
     assertEquals(tolerableDelay, animation.getTolerableDelay());
+  }
+
+  public void testLessThanOneUpdatePerSecond() throws Exception
+  {
+    animation = new MockAnimation(0.5, new MockPanel());
+    animation.update();
+
+    assertEquals(false, animation.isReady());
+    animation.getTimer().moveMarkBackInTime(oneSecond);
+    assertEquals(false, animation.isReady());
+    animation.getTimer().moveMarkBackInTime(oneSecond);
+    assertEquals(true, animation.isReady());          
   }
 }

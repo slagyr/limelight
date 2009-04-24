@@ -4,11 +4,9 @@
 package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
-import limelight.ui.model.PropPanel;
-import limelight.ui.model.RootPanel;
-import limelight.ui.model.MockStageFrame;
-import limelight.ui.model.TextAccessor;
+import limelight.ui.model.*;
 import limelight.ui.api.MockProp;
+import limelight.ui.api.MockStage;
 import limelight.ui.MockPanel;
 import limelight.Context;
 import limelight.styles.Style;
@@ -238,6 +236,18 @@ public class InputPanelTest extends TestCase
 //  {
 //    assertEquals(0, input.getComponent().getBackground().getAlpha());
 //  }
+
+  public void testSettingParentToNullPutsKeyboardFocusOnTheStageFrame() throws Exception
+  {
+    Context.instance().frameManager = new MockFrameManager();
+    StageFrame frame = new StageFrame(new MockStage());
+    frame.load(parent);
+    input.mouseClicked(new MouseEvent(input.input, 1, 2, 3, 4, 5, 6, false));
+    assertEquals(input.input, Context.instance().keyboardFocusManager.getFocuedComponent());
+
+    input.setParent(null);
+    assertEquals(frame, Context.instance().keyboardFocusManager.getFocuedComponent());
+  }
 
   private void addMouseMotionListener()
   {
