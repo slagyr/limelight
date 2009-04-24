@@ -14,19 +14,20 @@ import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
 import org.jruby.Ruby;
-import org.jruby.RubyInstanceConfig;
+import org.jruby.javasupport.JavaEmbedUtils;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Main
 {
-  private RubyInstanceConfig config;
   private Ruby runtime;
   private boolean contextIsConfigured;
   private Context context;
   public static boolean startupProvided;
+  private String productionName;
 
   public static void main(String[] args) throws Exception
   {
@@ -53,11 +54,13 @@ public class Main
         StartupListener.register();
       configureSystemProperties();
 
-      processArgs(args);
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      runtime = Ruby.newInstance(config);
       configureContext();
-      startJrubyRuntime();
+
+      if(args.length > 0)
+        productionName = args[0];
+
+      startJruby();
 
       if(!usingStartupNotifications)
         Context.instance().studio.open(getStartupProduction());
@@ -70,6 +73,19 @@ public class Main
     }
   }
 
+  private void startJruby()
+  {
+    runtime = JavaEmbedUtils.initialize(new ArrayList());
+
+    StringBuffer startupRuby = new StringBuffer();
+    startupRuby.append("require '").append(FileUtil.pathTo(context.limelightHome, "lib", "init")).append("'").append("\n");
+    startupRuby.append("require 'limelight/studio'").append("\n");
+    startupRuby.append("Limelight::Studio.install").append("\n");
+    ByteArrayInputStream input = new ByteArrayInputStream(startupRuby.toString().getBytes());
+    
+    runtime.runFromMain(input, "limelight_pseudo_main");
+  }
+
   public static void handleError(Throwable e)
   {
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -79,41 +95,24 @@ public class Main
     JOptionPane.showMessageDialog(new JFrame(), new String(byteArrayOutputStream.toByteArray()), "Limelight Error", JOptionPane.WARNING_MESSAGE);
   }
 
-  private void startJrubyRuntime()
-  {
-    StringBuffer startupRuby = new StringBuffer();
-    startupRuby.append("require '").append(FileUtil.pathTo(context.limelightHome, "lib", "init")).append("'").append("\n");
-    startupRuby.append("require 'limelight/studio'").append("\n");
-    startupRuby.append("Limelight::Studio.install").append("\n");
-
-    ByteArrayInputStream input = new ByteArrayInputStream(startupRuby.toString().getBytes());
-    runtime.runFromMain(input, "limelight_pseudo_main");
-  }
-
   private String getStartupProduction()
   {
     String productionName = context.limelightHome + "/productions/startup";
     if(productionProvided())
-      productionName = config.getScriptFileName();
+      productionName = this.productionName;
     return productionName;
   }
 
   private boolean productionProvided()
   {
-    return config.getScriptFileName() != null;
-  }
-
-  private void processArgs(String[] args)
-  {
-    config = new RubyInstanceConfig();
-    config.processArguments(args);
+    return productionName != null;
   }
 
   private void configureSystemProperties()
   {
 //    System.setProperty("apple.laf.useScreenMenuBar", "true");
     System.setProperty("jruby.base", "");
-    System.setProperty("jruby.home", context.limelightHome + "/jruby");
+//    System.setProperty("jruby.home", context.limelightHome + "/jruby");
     System.setProperty("jruby.lib", context.limelightHome + "/jruby/lib");
     if(context.isWindows())
     {

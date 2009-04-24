@@ -13,7 +13,6 @@
       <include name="*.jar"/>
       <exclude name="limelight.jar"/>
     </fileset>
-    <fileset file="jruby/lib/jruby.jar"/>
   </path>
 
   <target name="build" depends="clean, compile" description="clean, then compile the source"/>
