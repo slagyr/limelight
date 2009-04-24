@@ -1,6 +1,7 @@
+package limelight;
+
 import junit.framework.TestCase;
 import limelight.io.TempDirectory;
-import limelight.Context;
 import limelight.background.PanelPainterLoop;
 import limelight.background.AnimationLoop;
 import limelight.background.CacheCleanerLoop;
