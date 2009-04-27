@@ -19,6 +19,8 @@ module Limelight
 
       DEFAULT_PRODUCTION = File.expand_path($LIMELIGHT_HOME + "/productions/startup")
 
+      attr_reader :drb_port
+
       def initialize
         self.print_backtrace = true
       end
@@ -38,12 +40,16 @@ module Limelight
         require 'limelight/producer'
       end
 
+      def build_options(spec) #:nodoc:
+        spec.on("-d <port>", "--drb_port=<port>", "Publish the opened production using DRb on the specified port.") { |value| @drb_port = value }
+      end
+
       def parse_remainder(args)
         @production_path = args.shift || DEFAULT_PRODUCTION
       end
 
       def process
-        Limelight::Producer.open(@production_path)
+        Limelight::Producer.open(@production_path, :drb_port => @drb_port )
       end
 
     end

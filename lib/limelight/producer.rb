@@ -25,9 +25,9 @@ module Limelight
 
     # Creates a new Producer and has it open a Production by specified name.
     #
-    def self.open(production_name)
+    def self.open(production_name, options={})
       producer = new(production_name)
-      producer.open
+      producer.open(options)
     end
 
     attr_reader :loader, :theater, :production
@@ -67,7 +67,7 @@ module Limelight
 
     # Opens the Production.
     #
-    def open()
+    def open(options = {})
       load
       if @theater.has_stages?
         @theater.stages.each { |stage| open_scene(stage.default_scene, stage) if stage.default_scene }
@@ -75,6 +75,8 @@ module Limelight
         open_scene(:root, @theater.default_stage)
       end
       @casting_director = nil
+
+      @production.publish_on_drb(options[:drb_port]) if options[:drb_port]
     end
 
     # Opens the specified Scene onto the Spcified Stage.

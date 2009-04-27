@@ -82,6 +82,12 @@ module Limelight
       @frame.setFullScreen(on)
     end
 
+    # Returns true if the stage is in fullscreen mode.
+    #
+    def fullscreen?
+      return @frame.isFullScreen()
+    end
+
     # Hides the stage so that it is not visible on the screen without destroying it.
     #
     def hide

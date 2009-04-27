@@ -13,9 +13,17 @@ module Spec
   module Example
     class ExampleGroup
 
-      def self.uses_scene(scene_name)
+      def self.uses_scene(scene_name, options = {})
         before(:each) do
-          @scene = producer.open_scene(scene_name.to_s, producer.theater["default"])
+
+          
+          if options[:stage]
+            stage = producer.theater[options[:stage]]
+            raise "No such stage: '#{options[:stage]}'" unless stage
+          else
+            stage = producer.theater.default_stage
+          end
+          @scene = producer.open_scene(scene_name.to_s, stage)
         end
 
         attr_reader :scene
@@ -32,10 +40,16 @@ module Spec
           else
             Limelight::Main.initializeTestContext
           end
+          raise "$PRODUCTION_PATH undefined.  Make sure you specify the location of the production in $PRODUCTION_PATH." unless defined?($PRODUCTION_PATH)
+          raise "Could not find production: '#{$PRODUCTION_PATH}'. Check $PRODUCTION_PATH." unless File.exists?($PRODUCTION_PATH)
           $producer = Limelight::Producer.new($PRODUCTION_PATH)
           $producer.load
         end
         return $producer
+      end
+
+      def production
+        return producer.production
       end
 
     end
