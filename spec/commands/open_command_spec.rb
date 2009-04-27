@@ -18,16 +18,27 @@ describe Limelight::Commands::OpenCommand do
 
   it "should open a production" do
     Limelight::Main.should_receive(:initialize_context)
-    Limelight::Producer.should_receive(:open).with("production_name")
+    Limelight::Producer.should_receive(:open).with("production_name", :drb_port => nil )
 
     @command.run(["production_name"])
   end
 
   it "should open the default production" do
     Limelight::Main.should_receive(:initialize_context)
-    Limelight::Producer.should_receive(:open).with(@command_class::DEFAULT_PRODUCTION)
+    Limelight::Producer.should_receive(:open).with(@command_class::DEFAULT_PRODUCTION, :drb_port => nil )
 
     @command.run([])
+  end
+
+  it "should parse drp_port option" do
+    @command.parse ["production_path"]
+    @command.drb_port.should == nil
+
+    @command.parse ["-d", "1234", "some_prod"]
+    @command.drb_port.should == "1234"
+
+    @command.parse ["--drb_port=4321", "some_prod"]
+    @command.drb_port.should == "4321"
   end
 
 end

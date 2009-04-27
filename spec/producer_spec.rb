@@ -68,7 +68,7 @@ describe Limelight::Producer do
     rescue Limelight::DSL::BuildException => e
       e.line_number.should == 3
       e.filename.should == TestDir.path("test_prod/props.rb")
-      e.message.should include("/props.rb:3: undefined method `+@' for ")
+      e.message.include?("/props.rb:3: undefined method `+@' for ").should == true
     end
   end
 
@@ -81,7 +81,7 @@ describe Limelight::Producer do
     rescue Limelight::DSL::BuildException => e
       e.line_number.should == 4
       e.filename.should == TestDir.path("test_prod/styles.rb")
-      e.message.should include("/styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x")
+      e.message.include?("/styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x").should == true
     end
   end
 
@@ -172,6 +172,13 @@ describe Limelight::Producer do
     @producer.builtin_styles.should_not be(@producer.builtin_styles)
     # Try again
     @producer.builtin_styles.should_not be(@producer.builtin_styles)
+  end
+
+  it "should publish a production" do
+    @producer.stub!(:open_scene)
+    @producer.production.should_receive(:publish_on_drb).with("1234")
+
+    @producer.open(:drb_port => "1234")
   end
 
 end
