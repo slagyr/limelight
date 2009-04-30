@@ -9,24 +9,41 @@ require 'limelight/producer'
 $producer = nil
 $with_ui = true
 
+module Limelight
+  module Specs
+    module SpecHelper
+
+      def open_scene
+        if @spec_helper_options[:stage]
+          stage = producer.theater[@spec_helper_options[:stage]]
+          raise "No such stage: '#{@spec_helper_options[:stage]}'" unless stage
+        else
+          stage = producer.theater.default_stage
+        end
+        @scene = producer.open_scene(@scene_name.to_s, stage)
+      end
+
+      def scene
+        open_scene unless @scene
+        return @scene
+      end
+
+    end
+  end
+end
+
 module Spec
   module Example
     class ExampleGroup
 
       def self.uses_scene(scene_name, options = {})
+        include Limelight::Specs::SpecHelper
+
         before(:each) do
-
-          
-          if options[:stage]
-            stage = producer.theater[options[:stage]]
-            raise "No such stage: '#{options[:stage]}'" unless stage
-          else
-            stage = producer.theater.default_stage
-          end
-          @scene = producer.open_scene(scene_name.to_s, stage)
+          @scene_name = scene_name
+          @spec_helper_options = options
+          @scene = nil
         end
-
-        attr_reader :scene
       end
 
       after(:suite) do
