@@ -1,0 +1,273 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A603B8C0B913C8D009D4747 /* LLNativeDarwinjnilib.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A603B8B0B913C8D009D4747 /* LLNativeDarwinjnilib.c */; };
+		C3A4F8690FB1EC0100282D3D /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4F8680FB1EC0100282D3D /* Carbon.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A603A8F0B8FCE76009D4747 /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
+		0A603B8B0B913C8D009D4747 /* LLNativeDarwinjnilib.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = LLNativeDarwinjnilib.c; path = src/LLNativeDarwinjnilib.c; sourceTree = "<group>"; };
+		0A603BA90B913D5E009D4747 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
+		0A603BB00B9158B9009D4747 /* jars */ = {isa = PBXFileReference; lastKnownFileType = folder; path = jars; sourceTree = "<group>"; };
+		0AB364E40B2F671600788B6C /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		0AB3653A0B2F688E00788B6C /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		0AB3653C0B2F68A200788B6C /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dist; sourceTree = "<group>"; };
+		C3A4F8680FB1EC0100282D3D /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		EB9FD8720AEECD83008E157E /* build.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = build.xml; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4CEBA78D08679EF10015D03E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3A4F8690FB1EC0100282D3D /* Carbon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00E6828FFEC88D1A11DB9C8B = {
+			isa = PBXGroup;
+			children = (
+				C3A4F8680FB1EC0100282D3D /* Carbon.framework */,
+				EB9FD8720AEECD83008E157E /* build.xml */,
+				0A603B8B0B913C8D009D4747 /* LLNativeDarwinjnilib.c */,
+				0AB364E40B2F671600788B6C /* src */,
+				0A603A8F0B8FCE76009D4747 /* resources */,
+				0AB3653A0B2F688E00788B6C /* lib */,
+				0A603BA90B913D5E009D4747 /* bin */,
+				0A603BB00B9158B9009D4747 /* jars */,
+				0AB3653C0B2F68A200788B6C /* dist */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4CEBA78B08679EF10015D03E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		EB9FD8610AEECCF5008E157E /* LLNativeDarwin */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-emacs $(ACTION)";
+			buildConfigurationList = EB9FD8690AEECD13008E157E /* Build configuration list for PBXLegacyTarget "LLNativeDarwin" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/ant;
+			dependencies = (
+			);
+			name = LLNativeDarwin;
+			passBuildSettingsInEnvironment = 1;
+			productName = AntJNIWrapper;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		4CEBA78E08679EF10015D03E /* JNILib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CEBA79108679F100015D03E /* Build configuration list for PBXNativeTarget "JNILib" */;
+			buildPhases = (
+				4CEBA78B08679EF10015D03E /* Headers */,
+				4CEBA78C08679EF10015D03E /* Sources */,
+				4CEBA78D08679EF10015D03E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JNILib;
+			productName = JNILibN;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		00E6828EFEC88D1A11DB9C8B /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 4CEBA75C08679E4D0015D03E /* Build configuration list for PBXProject "LLNativeDarwin" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 00E6828FFEC88D1A11DB9C8B;
+			productRefGroup = 00E6828FFEC88D1A11DB9C8B;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4CEBA78E08679EF10015D03E /* JNILib */,
+				EB9FD8610AEECCF5008E157E /* LLNativeDarwin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4CEBA78C08679EF10015D03E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A603B8C0B913C8D009D4747 /* LLNativeDarwinjnilib.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4CEBA75D08679E4D0015D03E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		4CEBA75E08679E4D0015D03E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		4CEBA79208679F100015D03E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = jnilib;
+				EXECUTABLE_PREFIX = lib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/System/Library/Frameworks/JavaVM.framework/Headers/**",
+					"${TARGET_BUILD_DIR}/Headers/**",
+				);
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"${OBJROOT}/Headers\"";
+				HEADER_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/JavaVM.framework/Headers\"";
+				HEADER_SEARCH_PATHS_QUOTED_3 = "\"$(CONFIGURATION_BUILD_DIR)/Headers\"";
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = antbasedjni;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		4CEBA79308679F100015D03E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = jnilib;
+				EXECUTABLE_PREFIX = lib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS_QUOTED_3)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_4)",
+				);
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"${OBJROOT}/Headers\"";
+				HEADER_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/JavaVM.framework/Headers\"";
+				HEADER_SEARCH_PATHS_QUOTED_3 = "\"/System/Library/Frameworks/JavaVM.framework/Headers\"/**";
+				HEADER_SEARCH_PATHS_QUOTED_4 = "\"${TARGET_BUILD_DIR}/Headers\"/**";
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = LLNativeDarwin;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		EB9FD86A0AEECD13008E157E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = AntJNIWrapper;
+			};
+			name = Debug;
+		};
+		EB9FD86B0AEECD13008E157E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = LLNativeDarwin;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4CEBA75C08679E4D0015D03E /* Build configuration list for PBXProject "LLNativeDarwin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CEBA75D08679E4D0015D03E /* Debug */,
+				4CEBA75E08679E4D0015D03E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4CEBA79108679F100015D03E /* Build configuration list for PBXNativeTarget "JNILib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CEBA79208679F100015D03E /* Debug */,
+				4CEBA79308679F100015D03E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB9FD8690AEECD13008E157E /* Build configuration list for PBXLegacyTarget "LLNativeDarwin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB9FD86A0AEECD13008E157E /* Debug */,
+				EB9FD86B0AEECD13008E157E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 00E6828EFEC88D1A11DB9C8B /* Project object */;
+}
