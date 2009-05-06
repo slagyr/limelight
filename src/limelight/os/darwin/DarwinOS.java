@@ -1,44 +1,24 @@
 package limelight.os.darwin;
 
-import limelight.os.NativeInterface;
+import limelight.os.OS;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.*;
+//import javax.swing.*;
+//import java.awt.event.ActionListener;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.WindowListener;
+//import java.awt.event.WindowEvent;
+//import java.awt.*;
 
-public class DarwinNativeInterface implements NativeInterface
+public class DarwinOS extends OS
 {
   static
   {
     System.loadLibrary("LLNativeDarwin");
   }
 
-  private boolean inKioskMode;
-
-  private native void turnOnKioskMode();
-  private native void turnOffKioskMode();
-
-  public void enterKioskMode()
-  {
-    turnOnKioskMode();
-    inKioskMode = true;
-  }
-
-  public void exitKioskMode()
-  {
-    inKioskMode = false;
-    turnOffKioskMode();
-  }
-
-  public boolean isInKioskMode()
-  {
-    return inKioskMode;
-  }
-
 //  public static void main(String[] args)
 //  {
-//    final DarwinNativeInterface os = new DarwinNativeInterface();
+//    final DarwinOS os = new DarwinOS();
 //    os.enterKioskMode();
 //
 //    JFrame frame = new JFrame();
@@ -62,6 +42,7 @@ public class DarwinNativeInterface implements NativeInterface
 //      }
 //    });
 //    frame.add(button);
+//
 //
 //    frame.setVisible(true);
 //    frame.setAlwaysOnTop(true);

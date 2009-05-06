@@ -2,60 +2,40 @@
 <project name="LLNativeDarwin" default="install" basedir=".">
 	<property name="src" location="src"/> <!-- java source folder -->
 	<property name="bin" location="bin"/> <!-- intermediate build products -->
-	<property name="jars" location="jars"/> <!-- jar files -->
-	<property name="lib" location="lib"/> <!-- local libraries linked against -->
-	<property name="dist" location="dist"/> <!-- build product location -->
-	<property name="resources" location="resources"/> <!-- location of general java resources -->
     <property name="compile.debug" value="true"/>
     <property name="native.target" value="JNILib"/>
     <property name="native.project" value="LLNativeDarwin.xcodeproj"/>
     <property name="native.library" value="libLLNativeDarwin.jnilib"/>
     <property name="env.CONFIGURATION" value="Release"/>
-    <property name="native.class" value="limelight.os.darwin.DarwinNativeInterface"/>
-    <property name="limelight.classes" value="../../lib/limelight.jar"/>
-
-    <fileset id="lib.jars" dir="${lib}">
-        <include name="**/*.jar"/>
-    </fileset>
-	
-    <path id="lib.path">
-        <fileset refid="lib.jars"/>
-    </path>
+    <property name="native.class" value="limelight.os.OS"/>
+    <property name="limelight.root" value="../../"/>
+    <property name="limelight.classes" value="${limelight.root}/lib/limelight.jar"/>
+    <property name="native.lib" value="${limelight.root}/lib/native/darwin"/>
 
     <target name="init" description="Initialize environment">
-		<!-- Get properties from environment -->
 		<property environment="env"/>	
 		<property name="curr_build_dir" location="build/${env.CONFIGURATION}"/>
 		<property name="curr_header_dir" location="build/${env.CONFIGURATION}/Headers"/>
-		
-		<!-- if you tweak these names, you'll have to change the JNILib target and the Xcode launcher arguments -->
-		<property name="jarfilename" value="LLNativeDarwin"/>
-		<property name="jarfile" location="${jars}/${jarfilename}.jar"/>
 
         <mkdir dir="${curr_build_dir}"/>
         <mkdir dir="${curr_header_dir}"/>
-        <mkdir dir="${lib}"/>
         <mkdir dir="${bin}"/>
-        <mkdir dir="${jars}"/>
-        <mkdir dir="${dist}"/>		
     </target>
 
     <target name="compile" depends="init" description="Compile JNI Wrapper code">
         <javac srcdir="${src}" destdir="${bin}"
                source="1.3" target="1.2"
                includeAntRuntime="no"
-               classpathref="lib.path" debug="${compile.debug}">
+               debug="${compile.debug}">
         </javac>			
     </target>
 
     <target name="javah" depends="init" description="Build jar">
-		<!-- generate the header files -->
 		<exec executable="/usr/bin/javah">
 			<arg line="-classpath '${limelight.classes}' -force -d '${curr_header_dir}' ${native.class}"/>
 		</exec>
     </target>
 
-	<!-- Note: this target requires that Xcode Tools be installed -->
 	<target name="nativelib" depends="javah">
 		<exec executable="/usr/bin/xcodebuild">
 			<arg line="-project ${native.project}"/>
@@ -63,26 +43,17 @@
 		</exec>		
         <copy file="${curr_build_dir}/${native.library}" toDir="${bin}" failonerror="true" verbose="true"/>
 	</target>
-	
-    <!-- install target. Copy the built objects to the 'dist' directory. -->
-    <target name="install" description="Install jar" depends="nativelib">
-        <copy toDir="${dist}" failonerror="true" verbose="true">
+
+    <target name="install" description="Install jni lib" depends="nativelib">
+        <copy toDir="${native.lib}" failonerror="true" verbose="true">
 			<fileset dir="${bin}">
 				<include name="**/*.jnilib"/>
 			</fileset>
 		</copy>
     </target>
-
-	<target name="run" depends="install">
-		<java classpath="${jarfile}" classname="${ant.project.name}" fork="true">
-			<sysproperty key="java.library.path" value="${dist}"/>
-		</java>
-	</target>
 	
-    <target name="clean" depends="init" description="Remove build and dist directories">
+    <target name="clean" depends="init" description="Remove build directories">
         <delete dir="${bin}"/>
-        <delete dir="${dist}"/>
-        <delete dir="${jars}"/>
 		<delete dir="${curr_build_dir}"/>
     </target>
 </project>
