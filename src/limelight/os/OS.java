@@ -4,8 +4,8 @@ public abstract class OS
 {
   private boolean inKioskMode;
 
-  protected native void turnOnKioskMode();
-  protected native void turnOffKioskMode();
+  protected abstract void turnOnKioskMode();
+  protected abstract void turnOffKioskMode();
 
   public void enterKioskMode()
   {
