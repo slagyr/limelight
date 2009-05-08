@@ -1,6 +1,7 @@
 package limelight.os.win32;
 
 import limelight.os.OS;
+import limelight.Context;
 
 public class Win32OS extends OS
 {
@@ -74,5 +75,11 @@ public class Win32OS extends OS
       int value = shouldEatKeys ? 1 : User32.INSTANCE.CallNextHookEx(new User32.HHOOK(), nCode, wParam, lParam.getPointer()).intValue();
       return new W32API.LRESULT(value);
     }
+  }
+
+  public void configureSystemProperties()
+  {
+    System.setProperty("jruby.shell", "cmd.exe");
+    System.setProperty("jruby.script", "jruby.bat org.jruby.Main");
   }
 }

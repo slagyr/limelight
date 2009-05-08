@@ -20,6 +20,7 @@ public class StageFrame extends JFrame implements KeyListener
   private boolean fullscreen;
   private boolean hasMenuBar;
   private GraphicsDevice graphicsDevice;
+  private boolean isKiosk;
 
   protected StageFrame()
   {
@@ -202,6 +203,16 @@ public class StageFrame extends JFrame implements KeyListener
   public String getBackgroundColor()
   {
     return Colors.toString(getBackground());
+  }
+
+  public void setKiosk(boolean value)
+  {
+    isKiosk = value;
+  }
+
+  public boolean isKiosk()
+  {
+    return isKiosk;
   }
 
   private class LimelightContentPane extends JPanel

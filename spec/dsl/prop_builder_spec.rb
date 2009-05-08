@@ -166,7 +166,7 @@ describe Limelight::DSL::PropBuilder do
         __install "external.rb"
       end
     rescue Limelight::DSL::BuildException => e
-      e.message.should include("external.rb:1: (eval):1: , unexpected end-of-file")
+      e.message.include?("external.rb:1: (eval):1: , unexpected end-of-file").should == true
     end
   end
 

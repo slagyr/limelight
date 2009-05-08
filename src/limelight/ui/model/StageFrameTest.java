@@ -8,6 +8,7 @@ import limelight.ui.api.MockStage;
 import limelight.ui.*;
 import limelight.Context;
 import limelight.KeyboardFocusManager;
+import limelight.os.darwin.DarwinOS;
 import limelight.util.Colors;
 
 import javax.swing.*;
@@ -114,6 +115,24 @@ public class StageFrameTest extends TestCase
     assertEquals(false, frame.isFullScreen());
     assertEquals(null, graphicsDevice.getFullScreenWindow());
   }
+
+  public void testSetKioskMode() throws Exception
+  {
+    frame.setKiosk(true);
+
+    assertEquals(true, frame.isKiosk());
+  }
+
+//  public void testKioskWillGoFullscreenAndFramelessWhenOpened() throws Exception
+//  {
+//    Context.instance().os = new DarwinOS();
+//
+//    frame.setKiosk(true);
+//    frame.open();
+//
+//    assertEquals(true, frame.isFullScreen());
+//    assertEquals(true, frame.isUndecorated());
+//  }
 
   public void testHideAndShow() throws Exception
   {

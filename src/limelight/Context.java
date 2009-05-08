@@ -13,6 +13,10 @@ import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
 import limelight.background.AnimationLoop;
 import limelight.background.IdleThreadLoop;
 import limelight.background.CacheCleanerLoop;
+import limelight.os.OS;
+import limelight.os.UnsupportedOS;
+import limelight.os.win32.Win32OS;
+import limelight.os.darwin.DarwinOS;
 
 import java.awt.image.BufferedImage;
 
@@ -21,7 +25,6 @@ public class Context
   private static Context instance;
 
   public final String limelightHome;
-  public final String os;
   public final boolean runningAsApp;
 
   public String environment = "production";
@@ -36,15 +39,18 @@ public class Context
   public BufferedImagePool bufferedImagePool;
   public Studio studio;
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
+  public OS os;
 
   private Context()
   {
     limelightHome = System.getProperty("limelight.home");
     runningAsApp = "true".equals(System.getProperty("limelight.as.app"));
-    if(System.getProperty("mrj.version") == null)
-      os = "windows";
+    if(System.getProperty("os.name").indexOf("Windows") != -1)
+      os = new Win32OS();
+    else if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
+      os = new DarwinOS();
     else
-      os = "osx";
+      os = new UnsupportedOS();
   }
 
   public static Context instance()
@@ -65,16 +71,6 @@ public class Context
       return instance().frameManager.getActiveFrame();
     else
       return null;
-  }
-
-  public boolean isWindows()
-  {
-    return "windows".equals(os);
-  }
-
-  public boolean isOsx()
-  {
-    return "osx".equals(os);
   }
 
   public static void kickPainter()

@@ -3,6 +3,7 @@
 
 package limelight.ui.api;
 
+//TODO Move me our of ui package, and the Mock.
 public interface Studio
 {
   void open(String production);

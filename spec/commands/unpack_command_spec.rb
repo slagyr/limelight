@@ -41,7 +41,7 @@ describe Limelight::Commands::UnpackCommand do
   it "print the unpacked location" do
     @command.run(["production_to_pack"])
 
-    @mock_output.string.should include("Production was unpacked to: unpacked location")
+    @mock_output.string.include?("Production was unpacked to: unpacked location").should == true
   end
 
 end

@@ -47,14 +47,14 @@ describe Limelight::Builtin::Players::RadioButton do
     prop3.group = "group 2"
     
     group1 = @scene.button_groups["group 1"]
-    group1.elements.should include(@prop.radio_button)
-    group1.elements.should include(prop2.radio_button)
-    group1.elements.should_not include(prop3.radio_button)
+    group1.elements.include?(@prop.radio_button).should == true
+    group1.elements.include?(prop2.radio_button).should == true
+    group1.elements.include?(prop3.radio_button).should == false
     
     group2 = @scene.button_groups["group 2"]
-    group2.elements.should_not include(@prop.radio_button)
-    group2.elements.should_not include(prop2.radio_button)
-    group2.elements.should include(prop3.radio_button)
+    group2.elements.include?(@prop.radio_button).should == false
+    group2.elements.include?(prop2.radio_button).should == false
+    group2.elements.include?(prop3.radio_button).should == true
     
     @prop.button_group.should == group1
     prop2.button_group.should == group1

@@ -14,8 +14,8 @@ end
 desc 'Generate RDoc'
 rd = Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'etc/rubyforge_site/rdoc'
-  rdoc.options << '--title' << 'Limelight' << '--line-numbers' << '--inline-source' << '--main' << 'README'
-  rdoc.rdoc_files.include('README', 'CHANGES', 'lib/**/*.rb')
+  rdoc.options << '--title' << 'Limelight' << '--line-numbers' << '--inline-source' << '--main' << 'README.rdoc'
+  rdoc.rdoc_files.include('README.rdoc', 'CHANGES', 'lib/**/*.rb')
 end
 task :rdoc
 

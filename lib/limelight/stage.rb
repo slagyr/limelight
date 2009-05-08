@@ -88,6 +88,26 @@ module Limelight
       return @frame.isFullScreen()
     end
 
+    # Turns kiosk mode for this stage on and off.  When on, the stage will:
+    #   * be fullscreen
+    #   * not be frames
+    #   * disable OS key commands
+    #     * OS X: Cmd-Tab, Cmd-Alt-Esc, etc...
+    #     * Windows: Alt-Tab, Ctrl-Esc, etc... (Ctrl-Alt-Del must be disabled through a registry entry)
+    #
+    #   stage.kiosk = true
+    #
+    def kiosk=(on)
+      @frame.setKiosk(on)
+    end
+
+    # Return true if the stage is in kiosk mode.
+    #
+    def kiosk?
+      return @frame.isKiosk()
+    end
+
+
     # Hides the stage so that it is not visible on the screen without destroying it.
     #
     def hide

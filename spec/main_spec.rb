@@ -34,7 +34,7 @@ describe Limelight::Main do
     rescue SystemExit
     end
 
-    @mock_output.string.should include("Usage: limelight")
+    @mock_output.string.include?("Usage: limelight").should == true
   end
 
 end

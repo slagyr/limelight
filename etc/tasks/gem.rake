@@ -5,7 +5,8 @@ PKG_VERSION   = Limelight::VERSION::STRING
 PKG_TAG = Limelight::VERSION::TAG
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 PKG_FILES = FileList[
-  'lib/**/*', 
+  'lib/init.rb',
+  'lib/limelight/**/*',
   'lib/limelight.jar',
   'spec/**/*.rb',
   'productions/**/*',

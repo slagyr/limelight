@@ -26,9 +26,9 @@ describe Limelight::Commands::HelpCommand do
 
     Limelight::Commands::LISTING.keys.each do |key|
       if key[0...1] == "-"
-        @mock_output.string.should_not include("\t#{key}")
+        @mock_output.string.include?("\t#{key}").should == false
       else
-        @mock_output.string.should include("\t#{key}")
+        @mock_output.string.include?("\t#{key}").should == true
       end
     end
   end
@@ -36,7 +36,7 @@ describe Limelight::Commands::HelpCommand do
   it "should include options in the header" do
     @command.run([])
 
-    @mock_output.string.should include("[--version]")
+    @mock_output.string.include?("[--version]").should == true
   end
 
 end

@@ -28,9 +28,9 @@ module Limelight
         return "Creates the directories and files for a production and/or scene."
       end
 
-      protected ###########################################
-
       attr_reader :template_type, :path, :default_scene_name  #:nodoc:
+
+      protected ###########################################
 
       def initialize #:nodoc:
         @default_scene_name = "default_scene"
