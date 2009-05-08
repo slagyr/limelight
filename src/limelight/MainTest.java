@@ -12,6 +12,8 @@ import limelight.audio.RealAudioPlayer;
 import limelight.background.PanelPainterLoop;
 import limelight.background.AnimationLoop;
 import limelight.background.CacheCleanerLoop;
+import limelight.os.MockOS;
+
 import java.awt.image.BufferedImage;
 
 public class MainTest extends TestCase
@@ -66,5 +68,19 @@ public class MainTest extends TestCase
     main.configureContext();
 
     assertNotNull(Context.instance().bufferedImagePool);
+  }
+
+  public void testSettingSystemCofiguration() throws Exception
+  {
+    System.setProperty("limelight.home", "/limelighthome");
+    Context.instance().os = new MockOS();
+    main.setContext(Context.instance());
+
+    main.configureSystemProperties();
+    
+    assertEquals("", System.getProperty("jruby.base"));
+    assertEquals("/limelighthome/jruby/lib", System.getProperty("jruby.lib"));
+    assertEquals("silly shell", System.getProperty("jruby.shell"));
+    assertEquals("sticky script", System.getProperty("jruby.script"));
   }
 }

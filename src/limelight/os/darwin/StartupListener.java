@@ -1,11 +1,15 @@
 //- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight;
+package limelight.os.darwin;
 
-class StartupListener implements com.install4j.api.launcher.StartupNotification.Listener
+import limelight.Main;
+import limelight.Context;
+
+public class StartupListener implements com.install4j.api.launcher.StartupNotification.Listener
 {
   public static StartupListener instance;
+  public static int startupsReceived;
 
   public static void register()
   {
@@ -15,7 +19,7 @@ class StartupListener implements com.install4j.api.launcher.StartupNotification.
 
   public void startupPerformed(String productionPath)
   {
-    Main.startupProvided = true;
+    startupsReceived++;
     try
     {
       while(Context.instance().studio == null)
@@ -26,5 +30,6 @@ class StartupListener implements com.install4j.api.launcher.StartupNotification.
     {
       Main.handleError(e);
     }
+    
   }
 }

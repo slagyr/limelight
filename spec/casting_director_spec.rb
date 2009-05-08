@@ -39,7 +39,7 @@ describe Limelight::CastingDirector do
 
     $casted_props.length.should == 1
     $casted_props[0].should == @root
-    $casted_players[0].name.should include("Root")
+    $casted_players[0].name.include?("Root").should == true
     @root.is_a?($casted_players[0]).should == true
   end
 
@@ -89,7 +89,7 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
 
     $casted_props[0].should == @root
-    $casted_players[0].name.should include("CustomPlayer");
+    $casted_players[0].name.include?("CustomPlayer").should == true
     @root.is_a?($casted_players[0]).should == true
   end       
 
@@ -102,10 +102,10 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
 
     $casted_props[0].should == @root
-    $casted_players[0].name.should include("Root");
+    $casted_players[0].name.include?("Root").should == true
     @root.is_a?($casted_players[0]).should == true
     @root.is_a?(Limelight::Builtin::Players::Button).should == true
-    $casted_players[1].name.should include("CustomPlayer");
+    $casted_players[1].name.include?("CustomPlayer").should == true
     @root.is_a?($casted_players[1]).should == true
   end
 
@@ -120,8 +120,8 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
 
     $casted_props[0].should == @root
-    $casted_players[0].name.should include("Root");
-    $casted_players[1].name.should include("SharedPlayer");
+    $casted_players[0].name.include?("Root").should == true
+    $casted_players[1].name.include?("SharedPlayer").should == true
     @root.is_a?($casted_players[0]).should == true
     @root.is_a?($casted_players[1]).should == true
   end

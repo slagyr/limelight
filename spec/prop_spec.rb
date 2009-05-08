@@ -216,9 +216,9 @@ describe Limelight::Prop do
     @prop.remove(child2)
     
     @prop.children.length.should == 2
-    @prop.children.should_not include(child2)
+    @prop.children.include?(child2).should == false
     @prop.panel.children.length.should == 2
-    @prop.panel.children.should_not include(child2.panel)
+    @prop.panel.children.include?(child2.panel).should == false
   end
   
   it "should make dimensions accessible" do

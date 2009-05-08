@@ -13,6 +13,8 @@ import limelight.io.TempDirectory;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
+import limelight.os.darwin.StartupListener;
+import limelight.os.darwin.DarwinOS;
 import org.jruby.Ruby;
 import org.jruby.javasupport.JavaEmbedUtils;
 
@@ -23,11 +25,12 @@ import java.util.ArrayList;
 
 public class Main
 {
+
   private Ruby runtime;
   private boolean contextIsConfigured;
   private Context context;
-  public static boolean startupProvided;
   private String productionName;
+  private boolean usingStartupNotifications;
 
   public static void main(String[] args) throws Exception
   {
@@ -49,9 +52,9 @@ public class Main
     try
     {
       context = Context.instance();
-      boolean usingStartupNotifications = context.isOsx() && context.runningAsApp;
-      if(usingStartupNotifications)
-        StartupListener.register();
+
+      Context.instance().os.appIsStarting();
+
       configureSystemProperties();
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -62,10 +65,7 @@ public class Main
 
       startJruby();
 
-      if(!usingStartupNotifications)
-        Context.instance().studio.open(getStartupProduction());
-      else if(!startupProvided)
-        StartupListener.instance.startupPerformed(getStartupProduction());
+      Context.instance().os.openProduction(getStartupProductionPath());
     }
     catch(Throwable e)
     {
@@ -95,7 +95,7 @@ public class Main
     JOptionPane.showMessageDialog(new JFrame(), new String(byteArrayOutputStream.toByteArray()), "Limelight Error", JOptionPane.WARNING_MESSAGE);
   }
 
-  private String getStartupProduction()
+  private String getStartupProductionPath()
   {
     String productionName = context.limelightHome + "/productions/startup";
     if(productionProvided())
@@ -108,22 +108,14 @@ public class Main
     return productionName != null;
   }
 
-  private void configureSystemProperties()
+  public void configureSystemProperties()
   {
 //    System.setProperty("apple.laf.useScreenMenuBar", "true");
-    System.setProperty("jruby.base", "");
 //    System.setProperty("jruby.home", context.limelightHome + "/jruby");
+    System.setProperty("jruby.base", "");
     System.setProperty("jruby.lib", context.limelightHome + "/jruby/lib");
-    if(context.isWindows())
-    {
-      System.setProperty("jruby.shell", "cmd.exe");
-      System.setProperty("jruby.script", "jruby.bat org.jruby.Main");
-    }
-    else
-    {
-      System.setProperty("jruby.shell", "/bin/sh");
-      System.setProperty("jruby.script", "jruby");
-    }
+
+    context.os.configureSystemProperties();
   }
 
   public void configureContext()
@@ -172,5 +164,10 @@ public class Main
   public static void initializeTempDirectory()
   {
     Context.instance().tempDirectory = new TempDirectory();
+  }
+
+  public void setContext(Context context)
+  {
+    this.context = context;
   }
 }

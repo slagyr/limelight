@@ -1,5 +1,7 @@
 package limelight.os;
 
+import limelight.Context;
+
 public abstract class OS
 {
   private boolean inKioskMode;
@@ -22,5 +24,16 @@ public abstract class OS
   public boolean isInKioskMode()
   {
     return inKioskMode;
+  }
+
+  public abstract void configureSystemProperties();
+
+  public void appIsStarting()
+  {
+  }
+
+  public void openProduction(String productionPath)
+  {
+    Context.instance().studio.open(productionPath);
   }
 }

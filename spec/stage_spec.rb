@@ -71,6 +71,15 @@ describe Limelight::Stage do
     @stage.frame.should_not be_always_on_top
   end
 
+  it "should set kiosk mode" do
+    @stage.kiosk?.should == false
+    @stage.frame.should_not be_kiosk
+
+    @stage.kiosk = true
+    @stage.kiosk?.should == true
+    @stage.frame.should be_kiosk
+  end 
+
   describe "when opening a scene" do
     before(:each) do
       @scene = make_mock("scene", :visible= => nil, :illuminate => nil, :stage= => nil, :scene_opened => nil)
