@@ -64,6 +64,6 @@ public class MockGraphicsConfiguration extends GraphicsConfiguration
 
   public Rectangle getBounds()
   {
-    return new Rectangle(100, 100);
+    return new Rectangle(1000, 1000);
   }
 }

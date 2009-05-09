@@ -14,9 +14,6 @@ import limelight.background.AnimationLoop;
 import limelight.background.IdleThreadLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.os.OS;
-import limelight.os.UnsupportedOS;
-import limelight.os.win32.Win32OS;
-import limelight.os.darwin.DarwinOS;
 
 import java.awt.image.BufferedImage;
 
@@ -25,7 +22,6 @@ public class Context
   private static Context instance;
 
   public final String limelightHome;
-  public final boolean runningAsApp;
 
   public String environment = "production";
   public TempDirectory tempDirectory;
@@ -44,13 +40,6 @@ public class Context
   private Context()
   {
     limelightHome = System.getProperty("limelight.home");
-    runningAsApp = "true".equals(System.getProperty("limelight.as.app"));
-    if(System.getProperty("os.name").indexOf("Windows") != -1)
-      os = new Win32OS();
-    else if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
-      os = new DarwinOS();
-    else
-      os = new UnsupportedOS();
   }
 
   public static Context instance()
