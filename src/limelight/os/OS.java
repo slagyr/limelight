@@ -11,6 +11,8 @@ public abstract class OS
 
   public void enterKioskMode()
   {
+    if(inKioskMode)
+      return;
     turnOnKioskMode();
     inKioskMode = true;
   }

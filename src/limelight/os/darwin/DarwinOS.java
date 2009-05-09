@@ -6,17 +6,23 @@ import com.sun.jna.ptr.IntByReference;
 
 public class DarwinOS extends OS
 {
-  public IntByReference originalMode = new IntByReference(-1);
-  public IntByReference originalOptions = new IntByReference(-1);
+  public int originalMode = 0;
+  public int originalOptions = 0;
+
   protected void turnOnKioskMode()
   {
-    Carbon.INSTANCE.GetSystemUIMode(originalMode, originalOptions);
+    IntByReference startMode = new IntByReference(-1);
+    IntByReference startOptions = new IntByReference(-1);
+    Carbon.INSTANCE.GetSystemUIMode(startMode, startOptions);
+    originalMode = startMode.getValue();
+    originalOptions = startOptions.getValue();
+
     Carbon.INSTANCE.SetSystemUIMode(Carbon.kUIModeContentHidden, Carbon.kUIOptionDisableAppleMenu | Carbon.kUIOptionDisableForceQuit);
   }
 
   protected void turnOffKioskMode()
   {
-    Carbon.INSTANCE.SetSystemUIMode(originalMode.getValue(), originalOptions.getValue());
+    Carbon.INSTANCE.SetSystemUIMode(originalMode, originalOptions);
   }
 
   public void configureSystemProperties()

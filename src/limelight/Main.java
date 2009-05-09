@@ -15,6 +15,9 @@ import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
 import limelight.os.darwin.StartupListener;
 import limelight.os.darwin.DarwinOS;
+import limelight.os.win32.Win32OS;
+import limelight.os.UnsupportedOS;
+import limelight.os.MockOS;
 import org.jruby.Ruby;
 import org.jruby.javasupport.JavaEmbedUtils;
 
@@ -51,14 +54,11 @@ public class Main
   {
     try
     {
-      context = Context.instance();
-
-      Context.instance().os.appIsStarting();
-
+      configureContext();
+      context.os.appIsStarting();
       configureSystemProperties();
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      configureContext();
 
       if(args.length > 0)
         productionName = args[0];
@@ -123,8 +123,9 @@ public class Main
 //VerboseRepaintManager.install();
     if(contextIsConfigured)
       return;
-    Context context = Context.instance();
+    context = Context.instance();
 
+    setOS(context);
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     initializeTempDirectory();
     context.frameManager = new AlertFrameManager();
@@ -144,8 +145,9 @@ public class Main
   {
     if(contextIsConfigured)
       return;
-    Context context = Context.instance();
+    context = Context.instance();
 
+    context.os = new MockOS();
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     initializeTempDirectory();
     context.frameManager = new InertFrameManager();
@@ -169,5 +171,15 @@ public class Main
   public void setContext(Context context)
   {
     this.context = context;
+  }
+
+  public void setOS(Context context)
+  {
+    if(System.getProperty("os.name").indexOf("Windows") != -1)
+      context.os = new Win32OS();
+    else if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
+      context.os = new DarwinOS();
+    else
+      context.os = new UnsupportedOS();
   }
 }
