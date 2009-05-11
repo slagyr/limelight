@@ -13,7 +13,6 @@ import limelight.io.TempDirectory;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
-import limelight.os.darwin.StartupListener;
 import limelight.os.darwin.DarwinOS;
 import limelight.os.win32.Win32OS;
 import limelight.os.UnsupportedOS;
@@ -33,7 +32,6 @@ public class Main
   private boolean contextIsConfigured;
   private Context context;
   private String productionName;
-  private boolean usingStartupNotifications;
 
   public static void main(String[] args) throws Exception
   {
@@ -82,7 +80,7 @@ public class Main
     startupRuby.append("require 'limelight/studio'").append("\n");
     startupRuby.append("Limelight::Studio.install").append("\n");
     ByteArrayInputStream input = new ByteArrayInputStream(startupRuby.toString().getBytes());
-    
+
     runtime.runFromMain(input, "limelight_pseudo_main");
   }
 
