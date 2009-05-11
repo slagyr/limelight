@@ -15,4 +15,12 @@ describe Limelight::Commands::Command do
     Limelight::Commands::LISTING["mine"].should == myclass
   end
 
+  it "should load the open command" do
+    Limelight::Commands["open"].name.should == "Limelight::Commands::OpenCommand"
+  end
+
+  it "shouldn't crash on unknown commands" do
+    lambda { Limelight::Commands["blah"] }.should_not raise_error  
+  end
+
 end

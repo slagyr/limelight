@@ -19,6 +19,8 @@ module Limelight
       protected ###########################################
 
       def process #:nodoc:
+        load_listing
+
         @options = []
         @commands = []
         sort_commands
@@ -38,6 +40,15 @@ module Limelight
             @options << "[#{key}]"
           else
             @commands << "\t#{key}\t\t#{command.description}"
+          end
+        end
+        @commands.sort!
+      end
+
+      def load_listing #:nodoc:
+        Dir.entries(File.dirname(__FILE__)).each do |file|
+          if file != "." && file != ".."
+            require "limelight/commands/#{file.gsub('.rb', '')}"
           end
         end
       end

@@ -11,17 +11,18 @@ module Limelight
     class << self
 
       def [](name) #:nodoc:
-        load_listing if !@listing_loaded
+        if LISTING[name].nil?
+          load_command(name)
+        end
+
         return LISTING[name]
       end
 
-      def load_listing #:nodoc:
-        Dir.entries(File.dirname(__FILE__)).each do |file|
-          if file != "." && file != ".."
-            require "limelight/commands/#{file.gsub('.rb', '')}"
-          end
+      def load_command(name)
+        begin
+          require "limelight/commands/#{name}_command"
+        rescue LoadError => e 
         end
-        @listing_loaded = true
       end
 
       def output=(value) #:nodoc:

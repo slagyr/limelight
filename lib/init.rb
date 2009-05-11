@@ -6,7 +6,10 @@ $: << $LIMELIGHT_LIB unless $:.include?($LIMELIGHT_LIB)
 $LIMELIGHT_HOME = File.expand_path(File.join($LIMELIGHT_LIB, ".."))
 
 require 'java'
-require File.expand_path(File.dirname(__FILE__) + "/limelight.jar")
+if File.exists?(File.dirname(__FILE__) + "/limelight.jar")
+  require File.expand_path(File.dirname(__FILE__) + "/limelight.jar")
+end
+
 
 # ENV["GEM_HOME"] = ENV["GEM_PATH"] = File.expand_path(File.dirname(__FILE__) + "/../../jruby/lib/ruby/gems/1.8")
 require 'rubygems'
