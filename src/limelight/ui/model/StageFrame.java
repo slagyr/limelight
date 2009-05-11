@@ -157,9 +157,9 @@ public class StageFrame extends JFrame implements KeyListener
     if(fullscreen != setting)
     {
       fullscreen = setting;
-      if(fullscreen && isVisible())
+      if(fullscreen && isVisible() && this != getGraphicsDevice().getFullScreenWindow())
         getGraphicsDevice().setFullScreenWindow(this);
-      else if(this == getGraphicsDevice().getFullScreenWindow())
+      else if(this == getGraphicsDevice().getFullScreenWindow() && !kiosk)
         turnFullscreenOff();
     }
   }

@@ -22,4 +22,10 @@ module DefaultScene
     end
   end
 
+  def hide_a_bit
+    stage.hide
+    sleep(3)
+    stage.show
+  end
+
 end

@@ -12,7 +12,7 @@ module Limelight
     class << self
 
       def install
-        Context.instance.studio = instance  
+        Context.instance.studio = instance
       end
 
       def instance
