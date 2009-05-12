@@ -1,11 +1,12 @@
 package limelight.os.win32;
 
 import limelight.os.OS;
-import limelight.Context;
 
 public class Win32OS extends OS
 {
   private int hookThreadId;
+  // Create this object here and keep it around so it doesn't get garbage collected.
+  private final KeyboardHandler keyboardHandler = new KeyboardHandler();
 
   protected void turnOnKioskMode()
   {
@@ -14,7 +15,7 @@ public class Win32OS extends OS
       public void run()
       {
         W32API.HINSTANCE appInstance = Kernel32.INSTANCE.GetModuleHandle(null);
-        final User32.HHOOK keystrokeHook = User32.INSTANCE.SetWindowsHookEx(User32.WH_KEYBOARD_LL, new KeyboardHandler(), appInstance, 0);
+        final User32.HHOOK keystrokeHook = User32.INSTANCE.SetWindowsHookEx(User32.WH_KEYBOARD_LL, keyboardHandler, appInstance, 0);
 
         hookThreadId = Kernel32.INSTANCE.GetCurrentThreadId();
         MsgLoop();
@@ -29,6 +30,7 @@ public class Win32OS extends OS
       return;
 
     User32.INSTANCE.PostThreadMessage(new W32API.DWORD(hookThreadId), User32.WM_QUIT, new W32API.WPARAM(0), new W32API.LPARAM(0));
+    hookThreadId = 0;
   }
 
   private void MsgLoop()
@@ -67,7 +69,7 @@ public class Win32OS extends OS
 
             shouldEatKeys = (alt && tab) || (alt && esc) || (alt && space) || (ctrl && esc) || windowsKey || (ctrl && alt && del);
 
-//            System.err.println("alt:" + alt + " ctrl:" + ctrl + " tab:" + tab + " del:" + del + " windowsKey:" + windowsKey);
+//System.err.println("alt:" + alt + " ctrl:" + ctrl + " space:" + space + " tab:" + tab + " del:" + del + " windowsKey:" + windowsKey);
 
             break;
         }

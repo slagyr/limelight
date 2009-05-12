@@ -74,6 +74,8 @@ public class Context
     animationLoop.stop();
     cacheCleaner.stop();
     frameManager.closeAllFrames();
+    if(os.isInKioskMode())
+      os.exitKioskMode();
     if(!"test".equals(environment))
       System.exit(0);
   }

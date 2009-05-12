@@ -4,7 +4,7 @@ import limelight.Context;
 
 public abstract class OS
 {
-  private boolean inKioskMode;
+  protected boolean inKioskMode;
 
   protected abstract void turnOnKioskMode();
   protected abstract void turnOffKioskMode();
