@@ -4,7 +4,9 @@
 package limelight.ui.api;
 
 //TODO Move me our of ui package, and the Mock.
+// Move the while api pacage our of the ui pacakge.
 public interface Studio
 {
   void open(String production);
+  boolean should_allow_shutdown();
 }
