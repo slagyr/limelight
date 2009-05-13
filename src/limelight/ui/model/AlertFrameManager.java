@@ -24,14 +24,14 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public void windowGainedFocus(WindowEvent e)
   {
-    Window window = e.getWindow();  
+    Window window = e.getWindow();
     if(window instanceof StageFrame)
     {
-      activeFrame = (StageFrame)window;
+      activeFrame = (StageFrame) window;
 
       if(Context.instance().keyboardFocusManager != null)
         Context.instance().keyboardFocusManager.focusFrame(activeFrame);
-      
+
       Stage stage = activeFrame.getStage();
       stage.theater().stage_activated(stage);
     }
@@ -57,17 +57,17 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public void windowClosing(WindowEvent e)
   {
-    StageFrame frame = (StageFrame)e.getWindow();
+    StageFrame frame = (StageFrame) e.getWindow();
     if(frame.shouldAllowClose())
       frame.close();
   }
 
   public void windowClosed(WindowEvent e)
   {
-    StageFrame frame = ((StageFrame)e.getWindow());
+    StageFrame frame = ((StageFrame) e.getWindow());
     frames.remove(frame);
     if(frames.isEmpty() || allFramesHidden())
-      Context.instance().shutdown();
+      Context.instance().attemptShutdown();
   }
 
   private boolean allFramesHidden()

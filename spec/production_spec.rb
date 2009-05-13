@@ -61,6 +61,18 @@ describe Limelight::Production, "Instance methods" do
     proxy.path.should == "/tmp"
   end
 
+  it "should allow close by default" do
+    @production.allow_close?.should == true
+  end
+
+  it "should tell studio it closed" do
+    studio = mock("studio")
+    @production.studio = studio
+    studio.should_receive(:production_closed).with(@production)
+
+    @production.close
+  end
+
 end
 
 describe Limelight::Production, "Class methods" do

@@ -224,7 +224,7 @@ module Limelight
       return @current_scene.allow_close?
     end
 
-    def stub_current_scene(scene) ##nodoc##
+    def stub_current_scene(scene) #:nodoc:
       @current_scene = scene  
     end
 

@@ -54,7 +54,7 @@ module Limelight
     end
 
     attr_reader :name, :root
-    attr_accessor :producer, :theater
+    attr_accessor :producer, :theater, :studio
 
     # Users typically need not create Production objects.
     #
@@ -106,11 +106,19 @@ module Limelight
       return @root.root if name == :root
       return @root.path_to(name)
     end
+    
+    # Returns true if the production allows itself to be closed.  The system will cal this methods when
+    # it wished to close the production, perhaps when the user quits the application.  By default the production
+    # will always return true.
+    #
+    def allow_close?
+      return true
+    end
 
-    # Closes the production and shuts down the Limelight runtime.
+    # Closes the production. If there are not more productions open, the Limelight runtime will shutdown.
     #
     def close
-      Thread.new { Context.instance().shutdown }
+      @studio.production_closed(self)
     end
 
     # Publish the production, using DRb, on the specified port.

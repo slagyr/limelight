@@ -36,6 +36,7 @@ public class Context
   public Studio studio;
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
   public OS os;
+  public boolean isShutdown;
 
   private Context()
   {
@@ -70,13 +71,30 @@ public class Context
 
   public void shutdown()
   {
-    frameManager.closeAllFrames();
-    panelPanter.stop();
-    animationLoop.stop();
-    cacheCleaner.stop();
-    if(os.isInKioskMode())
+    if(frameManager != null)
+      frameManager.closeAllFrames();
+
+    if(panelPanter != null)
+      panelPanter.stop();
+
+    if(animationLoop != null)
+      animationLoop.stop();
+
+    if(cacheCleaner != null)
+      cacheCleaner.stop();
+
+    if(os != null && os.isInKioskMode())
       os.exitKioskMode();
+
     if(!"test".equals(environment))
       System.exit(0);
+    
+    isShutdown = true;
+  }
+
+  public void attemptShutdown()
+  {
+    if(studio.should_allow_shutdown())
+      shutdown();
   }
 }
