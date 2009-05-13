@@ -20,8 +20,9 @@ module Limelight
 
       def load_command(name)
         begin
+          name = name.gsub('-', '')
           require "limelight/commands/#{name}_command"
-        rescue LoadError => e 
+        rescue LoadError => e
         end
       end
 

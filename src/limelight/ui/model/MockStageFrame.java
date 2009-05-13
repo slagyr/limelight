@@ -13,6 +13,7 @@ public class MockStageFrame extends StageFrame
   private final Container contentPanel;
   public boolean wasRefreshed;
   public boolean closed;
+  public boolean shouldAllowClose;
 
   public MockStageFrame()
   {
@@ -43,5 +44,10 @@ public class MockStageFrame extends StageFrame
   public void close()
   {
     closed = true;
+  }
+
+  public boolean shouldAllowClose()
+  {
+    return shouldAllowClose;
   }
 }

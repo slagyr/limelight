@@ -212,7 +212,21 @@ module Limelight
     #
     def alert(message)
       frame.alert(message)
-    end 
+    end
+
+    # Called when the user or system would like to close the stage.  The stage will return true, allowing it to be
+    # closed, unless the current_scene defines the allow_close? method in which case the decision it left up to the
+    # current_scene.  
+    #
+    def should_allow_close
+      return true if @current_scene.nil?
+      return true if !@current_scene.respond_to?(:allow_close?)
+      return @current_scene.allow_close?
+    end
+
+    def stub_current_scene(scene) ##nodoc##
+      @current_scene = scene  
+    end
 
     protected #############################################
 

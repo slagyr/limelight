@@ -70,10 +70,10 @@ public class Context
 
   public void shutdown()
   {
+    frameManager.closeAllFrames();
     panelPanter.stop();
     animationLoop.stop();
     cacheCleaner.stop();
-    frameManager.closeAllFrames();
     if(os.isInKioskMode())
       os.exitKioskMode();
     if(!"test".equals(environment))

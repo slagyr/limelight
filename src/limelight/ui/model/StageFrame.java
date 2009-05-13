@@ -38,7 +38,7 @@ public class StageFrame extends JFrame implements KeyListener
 
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
-    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     addKeyListener(this);
   }
 
@@ -279,6 +279,11 @@ public class StageFrame extends JFrame implements KeyListener
   public boolean isKiosk()
   {
     return kiosk;
+  }
+
+  public boolean shouldAllowClose()
+  {
+    return stage.should_allow_close();
   }
 
   private class LimelightContentPane extends JPanel
