@@ -37,6 +37,18 @@ public class StageFrameTest extends TestCase
     os = new MockOS();
     Context.instance().os = os;
   }
+  
+  public void tearDown() throws Exception
+  {
+    try
+    {
+      frame.close();
+    }
+    catch(Exception e)
+    {
+      //ok
+    }
+  }
 
   public void testIcon() throws Exception
   {
@@ -89,7 +101,7 @@ public class StageFrameTest extends TestCase
 
   public void testDefaultCloseOperations() throws Exception
   {
-    assertEquals(WindowConstants.DISPOSE_ON_CLOSE, frame.getDefaultCloseOperation());
+    assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame.getDefaultCloseOperation());
   }
 
   public void testSetFullScreenWhenNotVisible() throws Exception
@@ -262,5 +274,14 @@ public class StageFrameTest extends TestCase
 
     assertEquals(new Dimension(128, 456), frame.getSize());
     assertEquals(new Point(12, 34), frame.getLocation());
+  }
+  
+  public void testShouldAllowClose() throws Exception
+  {
+    stage.shouldAllowClose = false;
+    assertEquals(false, frame.shouldAllowClose());
+
+    stage.shouldAllowClose = true;
+    assertEquals(true, frame.shouldAllowClose());
   }
 }

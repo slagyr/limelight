@@ -28,4 +28,9 @@ module DefaultScene
     stage.show
   end
 
+#  def allow_close?
+#    puts "allow_close? called"
+#    return false
+#  end
+
 end

@@ -25,7 +25,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   public void windowGainedFocus(WindowEvent e)
   {
     Window window = e.getWindow();  
-    if(window instanceof Frame)
+    if(window instanceof StageFrame)
     {
       activeFrame = (StageFrame)window;
 
@@ -57,6 +57,9 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public void windowClosing(WindowEvent e)
   {
+    StageFrame frame = (StageFrame)e.getWindow();
+    if(frame.shouldAllowClose())
+      frame.close();
   }
 
   public void windowClosed(WindowEvent e)

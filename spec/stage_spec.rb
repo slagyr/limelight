@@ -78,7 +78,21 @@ describe Limelight::Stage do
     @stage.kiosk = true
     @stage.kiosk?.should == true
     @stage.frame.should be_kiosk
-  end 
+  end
+
+  it "should ask the scene if close is allowed" do
+    @stage.should_allow_close.should == true
+
+    scene = mock("scene")
+    @stage.stub_current_scene scene
+    @stage.should_allow_close.should == true
+
+    scene.stub!(:allow_close?).and_return false
+    @stage.should_allow_close.should == false
+
+    scene.stub!(:allow_close?).and_return true
+    @stage.should_allow_close.should == true
+  end
 
   describe "when opening a scene" do
     before(:each) do

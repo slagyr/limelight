@@ -7,6 +7,7 @@ package limelight.ui.api;
 public class MockStage implements Stage
 {
   public MockTheater theater;
+  public boolean shouldAllowClose;
 
   public MockStage()
   {
@@ -16,5 +17,10 @@ public class MockStage implements Stage
   public Theater theater()
   {
     return theater;
+  }
+
+  public boolean should_allow_close()
+  {
+    return shouldAllowClose;
   }
 }
