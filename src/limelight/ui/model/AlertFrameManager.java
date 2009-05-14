@@ -41,7 +41,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
   }
 
-  public void watch(StageFrame frame)
+  public synchronized void watch(StageFrame frame)
   {
     if(!frames.contains(frame))
     {
@@ -62,7 +62,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
       frame.close();
   }
 
-  public void windowClosed(WindowEvent e)
+  public synchronized void windowClosed(WindowEvent e)
   {
     StageFrame frame = ((StageFrame) e.getWindow());
     frames.remove(frame);
@@ -70,7 +70,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
       Context.instance().attemptShutdown();
   }
 
-  private boolean allFramesHidden()
+  private synchronized boolean allFramesHidden()
   {
     for(StageFrame frame : frames)
     {
@@ -112,12 +112,12 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
     return found;
   }
 
-  public int getFrameCount()
+  public synchronized int getFrameCount()
   {
     return frames.size();
   }
 
-  public void closeAllFrames()
+  public synchronized void closeAllFrames()
   {
     for(StageFrame frame : frames)
       frame.close();

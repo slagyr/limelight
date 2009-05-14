@@ -30,7 +30,7 @@ module Limelight
       producer.open(options)
     end
 
-    attr_reader :loader, :theater, :production
+    attr_reader :theater, :production
     attr_writer :builtin_styles
 
     # A Production name, or root directory, must be provided. If not Theater is provided, one will be created.
@@ -45,21 +45,20 @@ module Limelight
         root_path = unpack_production(root_path)
       end
       @production = production || Production.new(root_path)
-      @loader = @production.root
       @theater = theater.nil? ? Theater.new : theater
+      establish_production
     end
 
     # Returns the CastingDirector for this Production.
     #
     def casting_director
-      @casting_director = CastingDirector.new(loader) if not @casting_director
+      @casting_director = CastingDirector.new(@production.root) if not @casting_director
       return @casting_director
     end
 
     # Loads the Production without opening it.  The Production will be created into memory with all it's stages
     #
     def load(options = {})
-      establish_production
       Gems.install_gems_in_production(@production)
       Kernel.load(@production.init_file) if ( !options[:ignore_init] &&  File.exists?(@production.init_file) )
       load_stages if File.exists?(@production.stages_file)
@@ -149,17 +148,15 @@ module Limelight
       @production.producer = self
       @production.theater = @theater
 
-      if @production.root.exists?("production.rb")
-        content = @production.root.load("production.rb")
-        @production = Limelight.build_production(@production) do
-          begin
-            eval content
-          rescue Exception => e
-            raise DSL::BuildException.new("production.rb", content, e)
-          end
-        end
+      production_file = @production.production_file
+      if File.exists?(production_file)
+        tmp_module = Module.new
+        content = IO.read(production_file)
+        tmp_module.module_eval(content, production_file)
+        production_module = tmp_module.const_get("Production")
+        raise "production.rb should define a module named 'Production'" if production_module.nil?
+        @production.extend(production_module)        
       end
-
     end
 
     # A production with multiple Scenes may have a 'styles.rb' file in the root directory.  This is called the

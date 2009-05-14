@@ -8,7 +8,7 @@ describe Limelight::Producer do
 
   before(:each) do
     TestDir.clean
-    Limelight::Production.clear_index
+    Limelight::Studio.clear_index
     @root_dir = TestDir.path("test_prod")
     @producer = Limelight::Producer.new(@root_dir)
   end
@@ -137,18 +137,17 @@ describe Limelight::Producer do
     @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod"))).should == {}
   end
 
-  it "should use the ProductionBuilder if production.rb is present" do
-    TestDir.create_file("test_prod/production.rb", "name 'Fido'")
+  it "should extend the production if production.rb is present" do
+    TestDir.create_file("test_prod/production.rb", "module Production; def name; return 'Fido'; end; def foo; end; end;")
     @producer.stub!(:open_scene)
-    Limelight::Gems.should_receive(:install_gems_in_production)
 
-    @producer.open
+    @producer.establish_production
 
     @producer.production.name.should == "Fido"
+    @producer.production.respond_to?(:foo).should == true
   end
 
   it "should load init.rb if it exists" do
-    TestDir.create_file("test_prod/production.rb", "name 'Fido'")
     TestDir.create_file("test_prod/init.rb", "")
 
     @producer.stub!(:open_scene)

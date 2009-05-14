@@ -3,6 +3,7 @@
 
 require 'limelight/limelight_exception'
 require 'limelight/file_loader'
+require 'limelight/studio'
 require 'drb'
 
 module Limelight
@@ -16,57 +17,25 @@ module Limelight
 
     class << self
 
-      def index(production) #:nodoc:
-        @index = [] if @index.nil?
-        if production.name.nil?
-          assign_name_to(production)
-        else
-          error_if_duplicate_name(production.name)
-        end
-        @index << production
-      end
-
       def [](name) #:nodoc:
-        return nil if @index.nil?
-        return @index.find { |production| production.name == name }
-      end
-
-      def assign_name_to(production) #:nodoc:
-        count = @index.length + 1
-        while name_taken?(count.to_s)
-          count += 1
-        end
-        production.name = count.to_s
-      end
-
-      def name_taken?(name) #:nodoc:
-        return self[name] != nil
-      end
-
-      def clear_index #:nodoc:
-        @index = []
-      end
-
-      def error_if_duplicate_name(name) #:nodoc:
-        raise Limelight::LimelightException.new("Production name '#{name}' is already taken") if name_taken?(name)
+        return Studio[name]
       end
 
     end
 
     attr_reader :name, :root
-    attr_accessor :producer, :theater, :studio
+    attr_accessor :producer, :theater
 
     # Users typically need not create Production objects.
     #
     def initialize(path)
       @root = FileLoader.for_root(path)
-      self.class.index(self)
     end
 
     # Sets the name of the Production.  The name must be unique amongst all Productions in memory.
     #
     def name=(value)
-      self.class.error_if_duplicate_name(value)
+      Studio.error_if_duplicate_name(value)
       @name = value
     end
 
@@ -80,6 +49,12 @@ module Limelight
     #
     def init_file
       return @root.path_to("init.rb")
+    end
+
+    # Returns the path to the production's production.rb file
+    #
+    def production_file
+      return @root.path_to("production.rb")
     end
 
     # Returns the path to the production's stages file
@@ -118,7 +93,7 @@ module Limelight
     # Closes the production. If there are not more productions open, the Limelight runtime will shutdown.
     #
     def close
-      @studio.production_closed(self)
+      Studio.production_closed(self)
     end
 
     # Publish the production, using DRb, on the specified port.
