@@ -21,13 +21,16 @@ describe Limelight::Production, "Instance methods" do
   end
   
   it "should be indexed" do
-    Limelight::Production[@production.name].should == @production
+    Limelight::Studio.index(@production)
+    Limelight::Studio[@production.name].should == @production
   end
   
   it "should raise an error when setting the name to a duplicate name" do
     @production.name = "Bill"
+    Limelight::Studio.index(@production)
     
     production = Limelight::Production.new("/tmp")
+    Limelight::Studio.index(production)
     lambda { production.name = "Bill" }.should raise_error(Limelight::LimelightException, "Production name 'Bill' is already taken")
   end
 
@@ -66,55 +69,11 @@ describe Limelight::Production, "Instance methods" do
   end
 
   it "should tell studio it closed" do
-    studio = mock("studio")
-    @production.studio = studio
-    studio.should_receive(:production_closed).with(@production)
+    Limelight::Studio.should_receive(:production_closed).with(@production)
 
     @production.close
   end
 
 end
 
-describe Limelight::Production, "Class methods" do
-  
-  class TestProduction
-    attr_accessor :name
-  end
-  
-  before(:each) do
-    Limelight::Production.clear_index
-    @production = TestProduction.new
-  end
-  
-  it "should add productions to the index" do
-    @production.name = "Bob"
-    
-    Limelight::Production.index(@production)
-    
-    Limelight::Production["Bob"].should == @production
-  end
-  
-  it "should give a production a name if it doesn't have one" do
-    Limelight::Production.index(@production)
-    
-    @production.name.should == "1"
-    Limelight::Production["1"].should == @production
-    
-    production2 = TestProduction.new
-    Limelight::Production.index(production2)
-    
-    production2.name.should == "2"
-    Limelight::Production["2"].should == production2
-  end
-  
-  it "should raise an error if adding a duplicate name" do
-    production2 = TestProduction.new
-    
-    @production.name = "Bob"
-    production2.name = "Bob"
-    
-    Limelight::Production.index(@production)
-    lambda { Limelight::Production.index(production2) }.should raise_error(Limelight::LimelightException, "Production name 'Bob' is already taken")
-  end
-  
-end
+
