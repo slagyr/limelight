@@ -37,7 +37,6 @@ describe Limelight::Templates::ProductionTemplater do
     templater = Limelight::Templates::ProductionTemplater.new("some_production", "default_scene")
 
     templater.should_receive(:file).with("some_production/production.rb", "production/production.rb.template", templater.tokens)
-    templater.should_receive(:file).with("some_production/init.rb", "production/init.rb.template", templater.tokens)
     templater.should_receive(:file).with("some_production/stages.rb", "production/stages.rb.template", templater.tokens)
     templater.should_receive(:file).with("some_production/styles.rb", "production/styles.rb.template", templater.tokens)
 

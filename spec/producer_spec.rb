@@ -8,7 +8,7 @@ describe Limelight::Producer do
 
   before(:each) do
     TestDir.clean
-    Limelight::Studio.clear_index
+    Limelight::Studio.reset
     @root_dir = TestDir.path("test_prod")
     @producer = Limelight::Producer.new(@root_dir)
   end
@@ -165,6 +165,17 @@ describe Limelight::Producer do
     @producer.load(:ignore_init => true)
 
     $init_loaded.should == false;
+  end
+
+  it "should call production_opening, production_loaded, production_opened when opening a production" do
+    @producer.stub!(:open_scene)
+    Limelight::Gems.should_receive(:install_gems_in_production)
+    production = @producer.production
+    production.should_receive(:production_opening)
+    production.should_receive(:production_loaded)
+    production.should_receive(:production_opened)
+
+    @producer.open
   end
 
   it "should give the same buildin_styles hash twice" do

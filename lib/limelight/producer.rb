@@ -67,7 +67,9 @@ module Limelight
     # Opens the Production.
     #
     def open(options = {})
+      @production.production_opening
       load
+      @production.production_loaded
       if @theater.has_stages?
         @theater.stages.each { |stage| open_scene(stage.default_scene, stage) if stage.default_scene }
       else
@@ -76,6 +78,7 @@ module Limelight
       @casting_director = nil
 
       @production.publish_on_drb(options[:drb_port]) if options[:drb_port]
+      @production.production_opened
     end
 
     # Opens the specified Scene onto the Spcified Stage.

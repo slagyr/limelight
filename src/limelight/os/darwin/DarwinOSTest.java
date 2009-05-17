@@ -3,6 +3,7 @@ package limelight.os.darwin;
 import junit.framework.TestCase;
 import limelight.Context;
 import limelight.ui.api.MockStudio;
+import com.apple.eawt.Application;
 
 public class DarwinOSTest extends TestCase
 {
@@ -65,6 +66,12 @@ public class DarwinOSTest extends TestCase
 
     assertEquals("blah", studio.openedProduction);
     assertEquals(1, StartupListener.startupsReceived);
+  }
+
+  public void testRegistersApplicationAdapter() throws Exception
+  {
+    assertNotNull(os.getApplicationAdapter());
+    assertEquals(true, os.getApplicationAdapter().isRegistered());
   }
 
 }

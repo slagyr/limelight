@@ -3,12 +3,16 @@ package limelight.os.darwin;
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
 import com.apple.eawt.Application;
+import limelight.Context;
 
 public class LimelightApplicationAdapter extends ApplicationAdapter
 {
+  private boolean registered;
+
   public void register()
   {
     Application.getApplication().addApplicationListener(this);
+    registered = true;
   }
 
   public void handleAbout(ApplicationEvent applicationEvent)
@@ -38,11 +42,16 @@ public class LimelightApplicationAdapter extends ApplicationAdapter
 
   public void handleQuit(ApplicationEvent applicationEvent)
   {
-    super.handleQuit(applicationEvent);
+    Context.instance().attemptShutdown();
   }
 
   public void handleReOpenApplication(ApplicationEvent applicationEvent)
   {
     super.handleReOpenApplication(applicationEvent);
+  }
+
+  public boolean isRegistered()
+  {
+    return registered;
   }
 }

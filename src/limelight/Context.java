@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 
 public class Context
 {
-  private static Context instance;
+  protected static Context instance;
 
   public final String limelightHome;
 
@@ -37,8 +37,10 @@ public class Context
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
   public OS os;
   public boolean isShutdown;
+  private boolean isShuttingDown;
+  
 
-  private Context()
+  protected Context()
   {
     limelightHome = System.getProperty("limelight.home");
   }
@@ -71,6 +73,13 @@ public class Context
 
   public void shutdown()
   {
+    if(isShutdown || isShuttingDown)
+      return;
+
+    isShuttingDown = true;
+    if(studio != null)
+      studio.shutdown();
+
     if(frameManager != null)
       frameManager.closeAllFrames();
 
@@ -88,7 +97,8 @@ public class Context
 
     if(!"test".equals(environment))
       System.exit(0);
-    
+
+    isShuttingDown = false;
     isShutdown = true;
   }
 

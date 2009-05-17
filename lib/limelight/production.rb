@@ -82,18 +82,50 @@ module Limelight
       return @root.path_to(name)
     end
     
-    # Returns true if the production allows itself to be closed.  The system will cal this methods when
-    # it wished to close the production, perhaps when the user quits the application.  By default the production
+    # Returns true if the production allows itself to be closed.  The system will call this methods when
+    # it wishes to close the production, perhaps when the user quits the application.  By default the production
     # will always return true.
     #
     def allow_close?
       return true
     end
 
-    # Closes the production. If there are not more productions open, the Limelight runtime will shutdown.
+    # Called when the production is about to be opened.  The default implementation does nothing but you may re-implement
+    # it in the production.rb file.
+    #
+    def production_opening
+    end
+
+    # Called when the production has been loaded.  That is, when all the gems have been loaded stages have been
+    # instantiated.
+    #
+    def production_loaded
+    end
+
+    # Called when the production is fully opened.  The default implementation does nothing but you may re-implement
+    # it in the production.rb file.
+    #
+    def production_opened
+    end
+
+    # Called when the production is about to be closed.  The default implementation does nothing but you may re-implement
+    # it in the production.rb file.
+    #
+    def production_closing
+    end
+
+    # Called when the production is fully closed.  The default implementation does nothing but you may re-implement
+    # it in the production.rb file.
+    #
+    def production_closed
+    end
+
+    # Closes the production. If there are no more productions open, the Limelight runtime will shutdown.
     #
     def close
+      self.production_closing
       Studio.production_closed(self)
+      self.production_closed
     end
 
     # Publish the production, using DRb, on the specified port.

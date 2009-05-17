@@ -9,4 +9,5 @@ public interface Studio
 {
   void open(String production);
   boolean should_allow_shutdown();
+  void shutdown();
 }

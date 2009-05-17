@@ -8,6 +8,7 @@ import limelight.ui.api.MockStage;
 import limelight.ui.api.MockTheater;
 import limelight.ui.api.MockStudio;
 import limelight.Context;
+import limelight.MockContext;
 
 import java.awt.event.WindowEvent;
 
@@ -60,14 +61,10 @@ public class AlertFrameManagerTest extends TestCase
 
   public void testCheckingWithStudioBeforeShuttingDown() throws Exception
   {
+    MockContext context = MockContext.stub();
     studio.allowShutdown = false;
     manager.watch(frame);
     manager.windowClosed(new WindowEvent(frame, 1));
-    assertEquals(false, Context.instance().isShutdown);
-
-    studio.allowShutdown = true;
-    manager.watch(frame);
-    manager.windowClosed(new WindowEvent(frame, 1));
-    assertEquals(true, Context.instance().isShutdown);
+    assertEquals(true, context.shutdownAttempted);
   }
 }

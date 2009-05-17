@@ -12,7 +12,6 @@ module Limelight
     #
     #    creating directory:  ./love_story
     #    creating file:       ./love_story/production.rb
-    #    creating file:       ./love_story/init.rb
     #    creating file:       ./love_story/stages.rb
     #    creating file:       ./love_story/styles.rb
     #
@@ -34,7 +33,6 @@ module Limelight
       #
       def generate
         file(File.join(@production_path, "production.rb"), "production/production.rb.template", @tokens)
-        file(File.join(@production_path, "init.rb"), "production/init.rb.template", @tokens)
         file(File.join(@production_path, "stages.rb"), "production/stages.rb.template", @tokens)
         file(File.join(@production_path, "styles.rb"), "production/styles.rb.template", @tokens)
       end
