@@ -68,8 +68,10 @@ describe Limelight::Production, "Instance methods" do
     @production.allow_close?.should == true
   end
 
-  it "should tell studio it closed" do
+  it "should tell studio it closed and triger it's closing events" do
+    @production.should_receive(:production_closing)
     Limelight::Studio.should_receive(:production_closed).with(@production)
+    @production.should_receive(:production_closed)
 
     @production.close
   end

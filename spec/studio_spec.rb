@@ -13,7 +13,7 @@ describe Limelight::Studio do
   end
 
   before do
-    Studio.clear_index
+    Studio.reset
     @production = TestProduction.new 
   end
 
@@ -112,6 +112,16 @@ describe Limelight::Studio do
     prod1.name.should == "Fido"
     prod2.name.should == "Fido_2"
     prod3.name.should == "Fido_3"
+  end
+
+  it "should shutdown" do
+    Studio.index(@production)
+    @production.should_receive(:allow_close?).and_return(true)
+    @production.should_receive(:close).and_return(true)
+    Limelight::Context.instance().should_receive(:shutdown)
+
+    Studio.shutdown
+    Thread.sleep(0.1)
   end
 
 end

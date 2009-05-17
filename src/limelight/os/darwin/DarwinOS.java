@@ -6,8 +6,19 @@ import com.sun.jna.ptr.IntByReference;
 
 public class DarwinOS extends OS
 {
+  private static LimelightApplicationAdapter applicationAdapter;
+
   public int originalMode = 0;
   public int originalOptions = 0;
+
+  public DarwinOS()
+  {
+    if(applicationAdapter == null)
+    {
+      applicationAdapter = new LimelightApplicationAdapter();
+      applicationAdapter.register();
+    }
+  }
 
   protected void turnOnKioskMode()
   {
@@ -48,6 +59,11 @@ public class DarwinOS extends OS
   public boolean isRunningAsApp()
   {
     return "true".equals(System.getProperty("limelight.as.app"));
+  }
+
+  public LimelightApplicationAdapter getApplicationAdapter()
+  {
+    return applicationAdapter;
   }
 }
 

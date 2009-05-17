@@ -72,7 +72,7 @@ module Limelight
         establish_directory(full_path)
       end
 
-      # Creates the specified file from the specified file template.  The file will be created withint the target_root.
+      # Creates the specified file from the specified file template.  The file will be created within the target_root.
       # All parent diretories will be created if needed.  The source paramter should be a path pointing to a
       # file template in the source_root directory.
       #

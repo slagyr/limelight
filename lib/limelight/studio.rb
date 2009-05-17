@@ -46,8 +46,10 @@ module Limelight
         return self[name] != nil
       end
 
-      def clear_index #:nodoc:
+      def reset #:nodoc:
         @index = []
+        @is_shutdown = false
+        @studio = nil
       end
 
       def error_if_duplicate_name(name) #:nodoc:
@@ -70,14 +72,21 @@ module Limelight
         return @index.all? { |production| production.allow_close? }
       end
 
+      # If allowed (should_allow_shutdown), this will close all open productions and shutdown the limelight runtime.
+      #
+      def shutdown
+        return if @is_shutdown
+        return unless should_allow_shutdown
+        @index.each { |production| production.close }
+        @is_shutdown = true
+        Thread.new { Context.instance().shutdown }
+      end
+
       # Called when a production is closed to notify the studio of the event.
       #
       def production_closed(production)
         @index.delete(production)
-
-        if (@index.empty?)
-          Thread.new { Context.instance().shutdown }
-        end
+        shutdown if(@index.empty?)
       end
 
       # Returns an array of all the productions
@@ -118,6 +127,12 @@ module Limelight
     #
     def should_allow_shutdown
       return self.class.should_allow_shutdown
+    end
+
+    # Same as the class level method.
+    #
+    def shutdown(production_path)
+      self.class.shutdown()
     end
   end
 
