@@ -77,7 +77,6 @@ module Limelight
       end
       @casting_director = nil
 
-      @production.publish_on_drb(options[:drb_port]) if options[:drb_port]
       @production.production_opened
     end
 

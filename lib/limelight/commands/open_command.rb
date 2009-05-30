@@ -49,7 +49,8 @@ module Limelight
       end
 
       def process
-        Limelight::Producer.open(@production_path, :drb_port => @drb_port )
+        Studio.publish_on_drb(@drb_port.to_i) if @drb_port
+        Studio.open(@production_path)
       end
 
     end
