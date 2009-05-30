@@ -184,11 +184,4 @@ describe Limelight::Producer do
     @producer.builtin_styles.should_not be(@producer.builtin_styles)
   end
 
-  it "should publish a production" do
-    @producer.stub!(:open_scene)
-    @producer.production.should_receive(:publish_on_drb).with("1234")
-
-    @producer.open(:drb_port => "1234")
-  end
-
 end

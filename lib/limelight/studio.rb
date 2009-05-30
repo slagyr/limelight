@@ -95,6 +95,12 @@ module Limelight
         return @index.nil? ? [] : @index.dup
       end
 
+      # Publish the Studio, using DRb, on the specified port.
+      #
+      def publish_on_drb(port)
+        @drb_server = DRb.start_service("druby://0.0.0.0:#{port}", self)
+      end
+
       private #############################################
 
       def assign_unique_name(production) #:nodoc:
@@ -103,7 +109,7 @@ module Limelight
         while name_taken?(name)
           name = "#{production.name}_#{count}"
           count += 1
-        end  
+        end
         production.name = name
       end
 

@@ -14,7 +14,7 @@ describe Limelight::Studio do
 
   before do
     Studio.reset
-    @production = TestProduction.new 
+    @production = TestProduction.new
   end
 
   it "should install itsself" do
@@ -72,7 +72,7 @@ describe Limelight::Studio do
 
     Studio.production_closed(@production)
 
-    Thread.pass
+    sleep(0.1)
   end
 
   it "should add productions to the index" do
@@ -121,7 +121,15 @@ describe Limelight::Studio do
     Limelight::Context.instance().should_receive(:shutdown)
 
     Studio.shutdown
-    Thread.sleep(0.1)
+    sleep(0.1)
+  end
+
+  it "should publish on drb" do
+    Studio.publish_on_drb("9876")
+
+    DRb.start_service
+    proxy = DRbObject.new(nil, "druby://127.0.0.1:9876")
+    proxy.instance.should_not == nil
   end
 
 end

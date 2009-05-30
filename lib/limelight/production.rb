@@ -128,12 +128,6 @@ module Limelight
       self.production_closed
     end
 
-    # Publish the production, using DRb, on the specified port.
-    #
-    def publish_on_drb(port)
-      @drb_server = DRb.start_service("druby://0.0.0.0:#{port}", self)      
-    end
-
   end
 
 end

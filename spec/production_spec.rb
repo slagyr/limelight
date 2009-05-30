@@ -56,14 +56,6 @@ describe Limelight::Production, "Instance methods" do
     @production.scene_directory(:root).should == "/tmp"
   end
 
-  it "should publish on drb" do
-    @production.publish_on_drb("9876")
-
-    DRb.start_service
-    proxy = DRbObject.new(nil, "druby://127.0.0.1:9876")
-    proxy.path.should == "/tmp"
-  end
-
   it "should allow close by default" do
     @production.allow_close?.should == true
   end
