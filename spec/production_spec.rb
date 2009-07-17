@@ -34,6 +34,12 @@ describe Limelight::Production, "Instance methods" do
     lambda { production.name = "Bill" }.should raise_error(Limelight::LimelightException, "Production name 'Bill' is already taken")
   end
 
+  it "should get it's name from the file" do
+    Limelight::Production.new("/tmp").name.should == "tmp"
+    Limelight::Production.new("/Somewhere/over/the/rainbow").name.should == "rainbow"
+    Limelight::Production.new("my_name/is/kid").name.should == "kid"   
+  end
+
   it "should know it's init file" do
     @production.init_file.should == "/tmp/init.rb"
   end

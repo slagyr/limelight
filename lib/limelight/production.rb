@@ -30,6 +30,7 @@ module Limelight
     #
     def initialize(path)
       @root = FileLoader.for_root(path)
+      @name = File.basename(path)
     end
 
     # Sets the name of the Production.  The name must be unique amongst all Productions in memory.

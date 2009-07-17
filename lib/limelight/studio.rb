@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ? 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/producer'
@@ -137,7 +137,7 @@ module Limelight
 
     # Same as the class level method.
     #
-    def shutdown(production_path)
+    def shutdown
       self.class.shutdown()
     end
   end
