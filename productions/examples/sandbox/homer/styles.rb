@@ -12,5 +12,5 @@ homer {
 	width 320
 	height 452
 	background_image "images/homer.jpg"
-	transparency 100
+	transparency "100%"
 }

@@ -16,7 +16,8 @@ public class FileUtil
 
   public static String buildPath(String... parts)
 	{
-		return StringUtil.join(parts, seperator());
+    String path = StringUtil.join(parts, seperator());
+    return path.replace(seperator() + seperator(), seperator());
 	}
 
   public static String pathTo(String... parts)
