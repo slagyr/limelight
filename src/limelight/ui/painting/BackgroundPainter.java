@@ -6,6 +6,7 @@ package limelight.ui.painting;
 import limelight.ui.*;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.ImageCache;
+import limelight.ui.model.PaintJob;
 import limelight.ui.api.PropablePanel;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.StringAttribute;
@@ -13,6 +14,7 @@ import limelight.styles.abstrstyling.NoneableAttribute;
 import limelight.util.Colors;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
+import limelight.util.Debug;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

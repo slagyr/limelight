@@ -8,10 +8,9 @@ import limelight.BufferedImagePool;
 import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.ui.Painter;
 import limelight.util.Box;
-import limelight.util.Debug;
 import limelight.util.Colors;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -103,6 +102,7 @@ public class PaintJob
     if(alphaPercentage > 0)
     {
       float alpha = (float)(1.0f - (alphaPercentage / 100.0f));
+
       Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
       graphics.setComposite(alphaComposite);
     }
@@ -157,7 +157,7 @@ public class PaintJob
   {
     if(buffer == null)
       return true;
-    if(panel.getWidth() != buffer.getWidth() || panel.getHeight() != buffer.getHeight())
+    else if(panel.getWidth() != buffer.getWidth() || panel.getHeight() != buffer.getHeight())
       return true;
     else
       return false;
@@ -168,7 +168,7 @@ public class PaintJob
     Dimension dimension = new Dimension(panel.getWidth(), panel.getHeight());
     BufferedImage buffer = bufferedImagePool.acquire(dimension);
     Graphics2D graphics = buffer.createGraphics();
-    graphics.setBackground(new Color(0, 0, 0, 0));
+    graphics.setBackground(Colors.TRANSPARENT);
     graphics.clearRect(0, 0, panel.getWidth(), panel.getHeight());
     panel.paintOn(graphics);
     graphics.dispose();  

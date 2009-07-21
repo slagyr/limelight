@@ -34,10 +34,19 @@ public class ImageCache extends SimpleCache<String, Image>
   private BufferedImage loadImage(String imagePath) throws IOException
   {
     String imageFilename = loader.pathTo(imagePath);
-//Debug debug = new Debug();
     BufferedImage image = ImageIO.read(new File(imageFilename));
-//debug.log("loaded image " + imageFilename);
+
+    if(!image.getColorModel().hasAlpha())
+      image = imageWithAlpha(image);
+
     cache(imagePath, image);
     return image;
+  }
+
+  private BufferedImage imageWithAlpha(BufferedImage image)
+  {
+    BufferedImage alphaImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    alphaImage.getGraphics().drawImage(image, 0, 0, null);
+    return alphaImage;
   }
 }

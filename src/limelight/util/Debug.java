@@ -7,7 +7,11 @@ import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.model.PropPanel;
 
+import javax.imageio.ImageIO;
 import java.text.DecimalFormat;
+import java.io.File;
+import java.io.IOException;
+import java.awt.image.RenderedImage;
 
 public class Debug
 {
@@ -46,7 +50,7 @@ public class Debug
     {
       PropPanel propPanel = (PropPanel) panel;
       Prop prop = propPanel.getProp();
-      if(prop != null && "sandbox".equals(prop.getName()))    
+      if(prop != null && "sandbox".equals(prop.getName()))
         System.err.println(message);
     }
   }
@@ -59,5 +63,21 @@ public class Debug
   public void mark()
   {
     interval.markTime();
+  }
+
+  public static void saveImage(RenderedImage image, String prefix)
+  {
+    if(image == null)
+      return;
+    
+    File file = new File("/tmp/" + prefix + System.nanoTime() + ".png");
+    try
+    {
+      ImageIO.write(image, "PNG", file);
+    }
+    catch(IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 }
