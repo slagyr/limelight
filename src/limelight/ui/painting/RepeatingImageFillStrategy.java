@@ -4,6 +4,8 @@
 package limelight.ui.painting;
 
 import limelight.util.Box;
+import limelight.util.Debug;
+import limelight.ui.model.PaintJob;
 
 import java.awt.*;
 
@@ -18,8 +20,8 @@ public class RepeatingImageFillStrategy implements ImageFillStrategy
 		for(int y = 0; y < area.height; y += imageHeight)
 		{
 			for(int x = 0; x < area.width; x += imageWidth)
-			{
-				graphics.drawImage(image, x, y, null);				
+			{ 
+				graphics.drawImage(image, x, y, null);
 			}
 		}
 	}
