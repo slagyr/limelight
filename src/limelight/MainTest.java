@@ -74,19 +74,19 @@ public class MainTest extends TestCase
     assertNotNull(Context.instance().bufferedImagePool);
   }
 
-  public void testSettingSystemCofiguration() throws Exception
-  {
-    System.setProperty("limelight.home", "/limelighthome");
-    Context.instance().os = new MockOS();
-    main.setContext(Context.instance());
-
-    main.configureSystemProperties();
-    
-    assertEquals("", System.getProperty("jruby.base"));
-    assertEquals("/limelighthome/jruby/lib", System.getProperty("jruby.lib"));
-    assertEquals("silly shell", System.getProperty("jruby.shell"));
-    assertEquals("sticky script", System.getProperty("jruby.script"));
-  }
+//  public void testSettingSystemCofiguration() throws Exception
+//  {
+//    System.setProperty("limelight.home", "/limelighthome");
+//    Context.instance().os = new MockOS();
+//    main.setContext(Context.instance());
+//
+//    main.configureSystemProperties();
+//
+//    assertEquals("", System.getProperty("jruby.base"));
+//    assertEquals("/limelighthome/jruby/lib", System.getProperty("jruby.lib"));
+//    assertEquals("silly shell", System.getProperty("jruby.shell"));
+//    assertEquals("sticky script", System.getProperty("jruby.script"));
+//  }
 
   public void testDarwinOS() throws Exception
   {

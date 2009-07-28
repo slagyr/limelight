@@ -422,7 +422,7 @@ public abstract class BasePanel implements Panel
   }
 
   protected void markAsDirty()
-  {
+  {  
     RootPanel rootPanel = getRoot();
     if(rootPanel != null)
       rootPanel.addDirtyRegion(getAbsoluteBounds());

@@ -9,9 +9,11 @@ import limelight.ui.model.PropPanel;
 
 import javax.imageio.ImageIO;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.RenderedImage;
+import java.util.Date;
 
 public class Debug
 {
@@ -19,6 +21,8 @@ public class Debug
 
   public static Debug debug1 = new Debug();
   public static Debug debug2 = new Debug();
+  private static SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss:SSS");
+  private static long startTime = System.currentTimeMillis();
 
   private final NanoTimer interval;
   private long life = 0;
@@ -35,7 +39,7 @@ public class Debug
     interval = new NanoTimer();
   }
 
-  public void log(String message)
+  public void log2(String message)
   {
     long idleNanos = interval.getIdleNanos();
     life += idleNanos;
@@ -53,6 +57,24 @@ public class Debug
       if(prop != null && "sandbox".equals(prop.getName()))
         System.err.println(message);
     }
+  }
+
+  public static void log(String message)
+  {
+    System.err.println(runtime() + ": " + message);
+  }
+
+  private static String runtime()
+  {
+    long diff = System.currentTimeMillis() - startTime;
+    long secs = diff / 1000;
+    long millis = diff % 1000;
+    return "" + secs + ":" + millis;
+  }
+
+  private static String timestamp()
+  {
+    return timeFormat.format(new Date());
   }
 
   private String secString(long nanos)

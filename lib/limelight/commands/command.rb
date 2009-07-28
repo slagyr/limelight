@@ -11,6 +11,7 @@ module Limelight
     class << self
 
       def [](name) #:nodoc:
+        name = "help" if name.to_s.empty?
         if LISTING[name].nil?
           load_command(name)
         end

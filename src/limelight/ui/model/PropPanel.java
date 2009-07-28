@@ -22,6 +22,7 @@ import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.util.Util;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -175,16 +176,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void doLayout()
-  {
+  {    
     super.doLayout(); // First to avaoid race condition
-//if(toString().contains("chrom"))
-//  System.err.println("getBoxInsideMargins() before = " + getBoxInsideMargins());
-//    if(borderShaper != null && borderChanged)
-//    {
-//      borderShaper.setBounds(getBoxInsideMargins());
-//      borderShaper.updateDimentions();
-//      borderChanged = false;
-//    }
 
     layout.doLayout();
 
@@ -198,10 +191,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       }
     }
 //    //TODO MDM added because it's needed... kinda fishy though.  There's gotta be a better way.
+//    // July 26, 09.  Can't see why this is needed any longer.  delete.
 //    if(borderShaper != null)
 //      borderShaper.setBounds(getBoxInsideMargins());
-//if(toString().contains("chrom"))
-//System.err.println("getBoxInsideMargins() after = " + getBoxInsideMargins());
 
     markAsDirty();
     laidOut = true;

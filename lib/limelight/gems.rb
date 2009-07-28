@@ -20,6 +20,7 @@ module Limelight
         end
       end
 
+      #TODO - MDM - This doesn't work when loading gems like: gem 'gem_name'.  Need make use of Gem::SourceIndex. See SourceIndex.load_gems_in
       def install_gems_in_production(production)
         self.current_production = production
 
