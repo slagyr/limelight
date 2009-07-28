@@ -5,13 +5,13 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.util.Colors;
+import limelight.util.Debug;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class StageFrame extends JFrame implements KeyListener
 {
@@ -123,11 +123,6 @@ public class StageFrame extends JFrame implements KeyListener
     return stage;
   }
 
-  protected void setStage(Stage stage)
-  {
-    this.stage = stage;
-  }
-
   public void alert(String message)
   {
     JOptionPane.showMessageDialog(this, message, "Limelight Alert", JOptionPane.WARNING_MESSAGE);
@@ -164,15 +159,6 @@ public class StageFrame extends JFrame implements KeyListener
     }
   }
 
-  private void turnFullscreenOff()
-  {
-    getGraphicsDevice().setFullScreenWindow(null);
-    if(size != null)
-      super.setSize(size);
-    if(location != null)
-      super.setLocation(location);
-  }
-
   public void setGraphicsDevice(GraphicsDevice device)
   {
     this.graphicsDevice = device;
@@ -193,18 +179,6 @@ public class StageFrame extends JFrame implements KeyListener
   public void setHasMenuBar(boolean value)
   {
     hasMenuBar = value;
-  }
-
-  private void calculateInsets()
-  {
-    Dimension size = getSize();
-    setSize(0, 0);
-    setVisible(true);
-    insets = getInsets();
-    setVisible(false);
-    setSize(size);
-    if(getJMenuBar() != null)
-      insets.top += getJMenuBar().getHeight();
   }
 
   public void keyTyped(KeyEvent e)
@@ -260,12 +234,43 @@ public class StageFrame extends JFrame implements KeyListener
     }
   }
 
+  public boolean isKiosk()
+  {
+    return kiosk;
+  }
+
+  public boolean shouldAllowClose()
+  {
+    return stage.should_allow_close();
+  }
+
+  // Protected ////////////////////////////////////////////
+
+  protected void setStage(Stage stage)
+  {
+    this.stage = stage;
+  }
+
+  // Private //////////////////////////////////////////////
+
   private void enterKioskOrFullscreenIfNeeded()
   {
     if(fullscreen || kiosk)
       getGraphicsDevice().setFullScreenWindow(this);
     if(kiosk)
       Context.instance().os.enterKioskMode();
+  }
+
+  private void calculateInsets()
+  {
+    Dimension size = getSize();
+    setSize(0, 0);
+    setVisible(true);
+    insets = getInsets();
+    setVisible(false);
+    setSize(size);
+    if(getJMenuBar() != null)
+      insets.top += getJMenuBar().getHeight();
   }
 
   private void exitKioskOrFullscreenIfNeeded()
@@ -276,14 +281,13 @@ public class StageFrame extends JFrame implements KeyListener
       Context.instance().os.exitKioskMode();
   }
 
-  public boolean isKiosk()
+  private void turnFullscreenOff()
   {
-    return kiosk;
-  }
-
-  public boolean shouldAllowClose()
-  {
-    return stage.should_allow_close();
+    getGraphicsDevice().setFullScreenWindow(null);
+    if(size != null)
+      super.setSize(size);
+    if(location != null)
+      super.setLocation(location);
   }
 
   private class LimelightContentPane extends JPanel
@@ -304,3 +308,4 @@ public class StageFrame extends JFrame implements KeyListener
     }
   }
 }
+

@@ -35,17 +35,21 @@ module Limelight
 
       def build_error_message
         lines = @file_contents.split("\n")
-        start_line = @line_number - 4 < 0 ? 0 : @line_number - 4
-        end_line = @line_number + 2 >= lines.size ? lines.size - 1: @line_number + 2
-        message = "#{@filename}:#{@line_number}: #{@original_exception.message}"
-        message << "\n\t----- #{@filename} lines #{start_line + 1} - #{end_line + 1} -----"
-        (start_line..end_line).each do |i|
-          message << "\n\t#{i == @line_number - 1 ? "*": " "} #{i+1}: #{lines[i]}"
+        if @line_number
+          start_line = @line_number - 4 < 0 ? 0 : @line_number - 4
+          end_line = @line_number + 2 >= lines.size ? lines.size - 1: @line_number + 2
+          message = "#{@filename}:#{@line_number}: #{@original_exception.message}"
+          message << "\n\t----- #{@filename} lines #{start_line + 1} - #{end_line + 1} -----"
+          (start_line..end_line).each do |i|
+            message << "\n\t#{i == @line_number - 1 ? "*": " "} #{i+1}: #{lines[i]}"
+          end
+        else
+          message = "#{@filename}:? : #{@original_exception.message}"
         end
         message << "\n"
         return message
       end
     end
-    
+
   end
 end

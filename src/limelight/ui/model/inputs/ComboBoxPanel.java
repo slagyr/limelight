@@ -60,7 +60,11 @@ public class ComboBoxPanel extends InputPanel
 
     public String getText()
     {
-      return comboBox.getSelectedItem().toString();
+      Object selectedItem = comboBox.getSelectedItem();
+      if(selectedItem != null)
+        return selectedItem.toString();
+      else
+        return "";
     }
   }
 

@@ -110,8 +110,8 @@ public class Main
   {
 //    System.setProperty("apple.laf.useScreenMenuBar", "true");
 //    System.setProperty("jruby.home", context.limelightHome + "/jruby");
-    System.setProperty("jruby.base", "");
-    System.setProperty("jruby.lib", context.limelightHome + "/jruby/lib");
+//    System.setProperty("jruby.base", "");
+//    System.setProperty("jruby.lib", context.limelightHome + "/jruby/lib");
 
     context.os.configureSystemProperties();
   }

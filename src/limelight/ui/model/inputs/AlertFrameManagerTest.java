@@ -67,4 +67,13 @@ public class AlertFrameManagerTest extends TestCase
     manager.windowClosed(new WindowEvent(frame, 1));
     assertEquals(true, context.shutdownAttempted);
   }
+
+  public void testGetActiveFrameWhenNoneHasGainedFocus() throws Exception
+  {
+    manager.watch(frame);
+    assertEquals(null, manager.getActiveFrame());
+    
+    frame.visible = true;
+    assertEquals(frame, manager.getActiveFrame());
+  }
 }

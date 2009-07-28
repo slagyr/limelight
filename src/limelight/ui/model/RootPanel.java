@@ -10,6 +10,7 @@ import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -50,7 +51,7 @@ public class RootPanel implements Panel
   }
 
   public void doLayout()
-  {
+  {    
     panel.doLayout();
   }
 
@@ -307,6 +308,7 @@ public class RootPanel implements Panel
 
   /////////////////////////////////////////////
   /// NOT NEEDED
+  /// TODO - Need to remove this from the Panel hierarchy somehow to delete these methods
   /////////////////////////////////////////////
 
   public void paintOn(Graphics2D graphics)

@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.util.Debug;
 import limelight.ui.api.Stage;
 
 import java.awt.event.WindowFocusListener;
@@ -16,6 +17,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 {
   private StageFrame activeFrame;
   private final HashSet<StageFrame> frames;
+  private StageFrame lastFrameAdded;
 
   public AlertFrameManager()
   {
@@ -27,13 +29,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
     Window window = e.getWindow();
     if(window instanceof StageFrame)
     {
-      activeFrame = (StageFrame) window;
-
-      if(Context.instance().keyboardFocusManager != null)
-        Context.instance().keyboardFocusManager.focusFrame(activeFrame);
-
-      Stage stage = activeFrame.getStage();
-      stage.theater().stage_activated(stage);
+      activateFrame(window);
     }
   }
 
@@ -48,6 +44,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
       frame.addWindowFocusListener(this);
       frame.addWindowListener(this);
       frames.add(frame);
+      lastFrameAdded = frame;
     }
   }
 
@@ -98,6 +95,8 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public StageFrame getActiveFrame()
   {
+    if(activeFrame == null && lastFrameAdded != null && lastFrameAdded.isVisible())
+      activateFrame(lastFrameAdded);
     return activeFrame;
   }
 
@@ -121,5 +120,18 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
     for(StageFrame frame : frames)
       frame.close();
+  }
+
+  // private //////////////////////////////////////////////
+
+  private void activateFrame(Window window)
+  {
+    activeFrame = (StageFrame) window;
+
+    if(Context.instance().keyboardFocusManager != null)
+      Context.instance().keyboardFocusManager.focusFrame(activeFrame);
+
+    Stage stage = activeFrame.getStage();
+    stage.theater().stage_activated(stage);
   }
 }
