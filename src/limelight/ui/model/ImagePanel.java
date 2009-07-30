@@ -150,9 +150,9 @@ public class ImagePanel extends BasePanel
   public void setRotation(double angle)
   {
     rotation = angle;
-    getParent().setNeedsLayout();   //TODO Neede to propogate size change here.
+    getParent().markAsNeedingLayout();   //TODO Neede to propogate size change here.
     if(getParent().getParent() != null)
-      getParent().getParent().setNeedsLayout();
+      getParent().getParent().markAsNeedingLayout();
   }
 
   public double getRotation()
@@ -178,6 +178,6 @@ public class ImagePanel extends BasePanel
   public void setScaled(boolean b)
   {
     scaled = b;
-    getParent().setNeedsLayout();
+    getParent().markAsNeedingLayout();
   }
 }

@@ -22,7 +22,6 @@ import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.util.Util;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -31,7 +30,6 @@ import java.util.LinkedList;
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
 {
   private final Prop prop;
-  private final PropPanelLayout layout;
   private LinkedList<Painter> painters;
   private Border borderShaper;
   private TextAccessor textAccessor;
@@ -51,7 +49,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     this.prop = prop;
     buildPainters();
-    layout = new PropPanelLayout(this);
     textAccessor = new TextPaneTextAccessor(this);
     getStyle().addObserver(this);
   }
@@ -72,7 +69,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     if(!Util.equal(text, getText()))
     {
-      setNeedsLayout(); // This is questionable...  The text panel would know if layout is needed.
+      markAsNeedingLayout(); // This is questionable...  The text panel would know if layout is needed.
     }
     textAccessor.setText(text);
   }
@@ -171,16 +168,24 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return childConsumableArea;
   }
 
-  public boolean isLaidOut(){
+  // Only used for testing.
+  public boolean isLaidOut()
+  {
     return laidOut;
   }
 
+  public void wasLaidOut()
+  {
+    laidOut = true;
+  }
+
   public void doLayout()
-  {    
-    super.doLayout(); // First to avaoid race condition
+  {
+    PropPanelLayout.instance.doLayout(this);
+  }
 
-    layout.doLayout();
-
+  public void updateBorder()
+  {
     if(borderShaper != null)
     {
       borderShaper.setBounds(getBoxInsideMargins());
@@ -190,13 +195,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
         borderChanged = false;
       }
     }
-//    //TODO MDM added because it's needed... kinda fishy though.  There's gotta be a better way.
-//    // July 26, 09.  Can't see why this is needed any longer.  delete.
-//    if(borderShaper != null)
-//      borderShaper.setBounds(getBoxInsideMargins());
-
-    markAsDirty();
-    laidOut = true;
   }
 
   public void paintOn(Graphics2D graphics)
@@ -358,11 +356,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return afterPaintAction;
   }
 
-  public PropPanelLayout getLayout()
-  {
-    return layout;
-  }
-
   public LinkedList<Painter> getPainters()
   {
     return painters;
@@ -371,6 +364,20 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public boolean isFloater()
   {
     return getStyle().getCompiledFloat().isOn();
+  }
+
+  //TODO Floater need to change position when scrolled too.
+  public void doFloatLayout()
+  {
+    if(isFloater())
+    {
+      Box area = getParent().getChildConsumableArea();
+      int newX = style.getCompiledX().getValue() + area.x;
+      int newY = style.getCompiledY().getValue() + area.y;
+      markAsDirty();
+      setLocation(newX, newY);
+      markAsDirty();
+    }
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
@@ -396,18 +403,20 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       if(descriptor == Style.WIDTH || descriptor == Style.HEIGHT)
       {
         sizeChanged = true;
-        setNeedsLayout();
-        getParent().setNeedsLayout();
+        markAsNeedingLayout();
+        getParent().markAsNeedingLayout();
         propogateSizeChange(getParent());
       }
       else if(isBorderDescriptor(descriptor) || isMarginPaddingOrBorder(value))
       {
         borderChanged = true;
-        setNeedsLayout();
+        markAsNeedingLayout();
         clearCache();
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
-        getParent().setNeedsLayout();
+      {
+        doFloatLayout();   // TODO MDM - Need to queue this up (ie. special case of markAsNeedingLayout()).  Redundant calls otherwise
+      }
       else
         markAsDirty();
     }
@@ -508,5 +517,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     return borderChanged;
   }
+
 }
 

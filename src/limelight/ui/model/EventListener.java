@@ -70,9 +70,9 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
       panel.mouseEntered(e);
       enter(panel, panel, e);
     }
-    else if(hooveredPanel.isAncestor(panel))
+    else if(hooveredPanel.isDescendantOf(panel))
       exit(hooveredPanel, panel, e);
-    else if(panel.isAncestor(hooveredPanel))
+    else if(panel.isDescendantOf(hooveredPanel))
       enter(panel, hooveredPanel, e);
     else
     {

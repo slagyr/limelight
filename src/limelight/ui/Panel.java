@@ -32,7 +32,7 @@ public interface Panel extends Iterable<Panel>
   Panel getParent();
   void setParent(Panel panel);
   RootPanel getRoot();
-  boolean isAncestor(Panel ancestor);
+  boolean isDescendantOf(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
   Box getChildConsumableArea();
 
@@ -55,9 +55,10 @@ public interface Panel extends Iterable<Panel>
   Style getStyle();
   
   boolean isFloater();
+  void doFloatLayout();
 
   boolean needsLayout();
-  void setNeedsLayout();
+  void markAsNeedingLayout();
   
   void mousePressed(MouseEvent e);
   void mouseReleased(MouseEvent e);

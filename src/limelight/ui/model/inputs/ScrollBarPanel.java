@@ -27,7 +27,7 @@ public class ScrollBarPanel extends BasePanel
       {
         if(!configuring)
         {
-          getParent().setNeedsLayout();
+          getParent().markAsNeedingLayout();
         }
       }
     });

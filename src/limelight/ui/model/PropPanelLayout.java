@@ -11,47 +11,43 @@ import limelight.util.Box;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.awt.*;
 
 public class PropPanelLayout
 {
-  private final LinkedList<Row> rows;
-  private Row currentRow;
-  private final PropPanel panel;
-  private int consumedHeight;
-  private int consumedWidth;
-  private LinkedList<Panel> floaters;
+  public static PropPanelLayout instance = new PropPanelLayout();
 
-  public PropPanelLayout(PropPanel panel)
+  // TODO MDM This gets called ALOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
+  public void doLayout(PropPanel panel)
   {
-    this.panel = panel;
-    rows = new LinkedList<Row>();
-  }
-
-  synchronized public void doLayout()
-  {
-    resetConsumedDimensions();
-
+    panel.layoutStarted();
+    panel.doFloatLayout();
     Style style = panel.getStyle();
 
     if(panel.sizeChanged() || style.hasPercentageDimension() || style.hasAutoDimension())
       panel.snapToSize();
 
-    establishScrollBars();
-    
-    if(!hasNonScrollBarChildren())
-      collapseAutoDimensions();
+    establishScrollBars(panel);
+
+    Dimension consumedDimensions = new Dimension();
+    if(!hasNonScrollBarChildren(panel))
+      collapseAutoDimensions(panel, consumedDimensions);
     else
     {
-      doLayoutOnChildren();
-      buildRows();
-      collapseAutoDimensions();
-      layoutRows();
-      layoutFloaters();
+      doLayoutOnChildren(panel);
+      LinkedList<Row> rows = buildRows(panel);
+      calculateConsumedDimentions(rows, consumedDimensions);
+      collapseAutoDimensions(panel, consumedDimensions);
+      layoutRows(panel, consumedDimensions, rows);
     }
-    layoutScrollBars();
+    layoutScrollBars(panel, consumedDimensions);
+
+    panel.updateBorder();
+    panel.markAsDirty();
+    panel.wasLaidOut();
   }
 
-  private boolean hasNonScrollBarChildren()
+  private boolean hasNonScrollBarChildren(PropPanel panel)
   {
     List<Panel> children = panel.getChildren();
     if(children.size() == 0)
@@ -64,7 +60,7 @@ public class PropPanelLayout
       return true;
   }
 
-  private void layoutScrollBars()
+  private void layoutScrollBars(PropPanel panel, Dimension consumedDimensions)
   {
     ScrollBarPanel vertical = panel.getVerticalScrollBar();
     ScrollBarPanel horizontal = panel.getHorizontalScrollBar();
@@ -73,37 +69,37 @@ public class PropPanelLayout
     {
       vertical.setHeight(area.height);
       vertical.setLocation(area.right() + 1, area.y);
-      vertical.configure(area.height, consumedHeight);
+      vertical.configure(area.height, consumedDimensions.height);
     }
     if(horizontal != null)
     {
       horizontal.setWidth(area.width);
       horizontal.setLocation(area.x, area.bottom() + 1);
-      horizontal.configure(area.width, consumedWidth);
+      horizontal.configure(area.width, consumedDimensions.width);
     }
   }
 
-  private void collapseAutoDimensions()
+  private void collapseAutoDimensions(PropPanel panel, Dimension consumedDimensions)
   {
     Style style = panel.getStyle();
 
-    int width = style.getCompiledWidth().collapseExcess(panel.getWidth(), consumedWidth + horizontalInsets(), style.getCompiledMinWidth(), style.getCompiledMaxWidth());
-    int height = style.getCompiledHeight().collapseExcess(panel.getHeight(), consumedHeight + verticalInsets(), style.getCompiledMinHeight(), style.getCompiledMaxHeight());
+    int width = style.getCompiledWidth().collapseExcess(panel.getWidth(), consumedDimensions.width + horizontalInsets(panel), style.getCompiledMinWidth(), style.getCompiledMaxWidth());
+    int height = style.getCompiledHeight().collapseExcess(panel.getHeight(), consumedDimensions.height + verticalInsets(panel), style.getCompiledMinHeight(), style.getCompiledMaxHeight());
 
     panel.setSize(width, height);
   }
 
-  public int horizontalInsets()
+  public int horizontalInsets(PropPanel panel)
   {
     return panel.getBoundingBox().width - panel.getBoxInsidePadding().width;
   }
 
-  public int verticalInsets()
+  public int verticalInsets(PropPanel panel)
   {
     return panel.getBoundingBox().height - panel.getBoxInsidePadding().height;
   }
 
-  protected void doLayoutOnChildren()
+  protected void doLayoutOnChildren(PropPanel panel)
   {
     for(Panel child : panel.getChildren())
     {
@@ -114,10 +110,10 @@ public class PropPanelLayout
     }
   }
 
-  public void layoutRows()
+  public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows)
   {
-    Aligner aligner = buildAligner(panel.getChildConsumableArea());
-    aligner.addConsumedHeight(consumedHeight);
+    Aligner aligner = buildAligner(panel);
+    aligner.addConsumedHeight(consumeDimension.height);
     int y = aligner.startingY();
     if(panel.getVerticalScrollBar() != null)
       y -= panel.getVerticalScrollBar().getValue();
@@ -131,101 +127,56 @@ public class PropPanelLayout
     }
   }
 
-  private void layoutFloaters()
+  protected LinkedList<Row> buildRows(PropPanel panel)
   {
-    if(floaters == null)
-      return;
-    for(Panel floater : floaters)
-      layoutFloater(floater);
-  }
+    LinkedList<Row> rows = new LinkedList<Row>();
+    Row currentRow = newRow(panel, rows);
 
-  //TODO Floater need to change position when scrolled too.
-  private void layoutFloater(Panel floater)
-  {
-    Style style = floater.getStyle();
-    int x = style.getCompiledX().getValue();
-    int y = style.getCompiledY().getValue();
-    Box area = panel.getChildConsumableArea();
-    floater.setLocation(area.x + x, area.y + y);
-  }
-
-  private void addFloater(Panel panel)
-  {
-    if(floaters == null)
-      floaters = new LinkedList<Panel>();
-    floaters.add(panel);
-  }
-
-  protected void buildRows()
-  {
-    resetRows();
     for(Panel child : panel.getChildren())
     {
       if(child instanceof ScrollBarPanel)
         ;//ignore
-      else if(child.isFloater())
-        addFloater(child);
-      else
-        addToRow(child);
+      else if(!child.isFloater())
+      {
+        if(!currentRow.isEmpty() && !currentRow.fits(child))
+          currentRow = newRow(panel, rows);
+        currentRow.add(child);
+      }
     }
-    calculateConsumedDimentions();
+    return rows;
   }
 
-  private void addToRow(Panel child)
-  {
-    if(!currentRow.isEmpty() && !currentRow.fits(child))
-      newRow();
-    currentRow.add(child);
-  }
-
-  protected Aligner buildAligner(Box rectangle)
+  protected Aligner buildAligner(PropPanel panel)
   {
     Style style = panel.getProp().getStyle();
-    return new Aligner(rectangle, style.getCompiledHorizontalAlignment().getAlignment(), style.getCompiledVerticalAlignment().getAlignment());
+    return new Aligner(panel.getChildConsumableArea(), style.getCompiledHorizontalAlignment().getAlignment(), style.getCompiledVerticalAlignment().getAlignment());
   }
 
-  protected void resetRows()
+  private Row newRow(PropPanel panel, LinkedList<Row> rows)
   {
-    rows.clear();
-    newRow();
-  }
-
-  private void newRow()
-  {
-    currentRow = new Row(panel.getChildConsumableArea().width);
+    Row currentRow = new Row(panel.getChildConsumableArea().width);
     rows.add(currentRow);
+    return currentRow;
   }
 
-  private void calculateConsumedDimentions()
+  private void calculateConsumedDimentions(LinkedList<Row> rows, Dimension consumedDimensions)
   {
-    resetConsumedDimensions();
     for(Row row : rows)
     {
-      consumedHeight += row.height;
-      if(row.width > consumedWidth)
-        consumedWidth = row.width;
+      consumedDimensions.height += row.height;
+      if(row.width > consumedDimensions.width)
+        consumedDimensions.width = row.width;
     }
   }
 
-  private void resetConsumedDimensions()
-  {
-    consumedWidth = 0;
-    consumedHeight = 0;
-  }
-
-  public PropPanel getPanel()
-  {
-    return panel;
-  }
-
-  public void establishScrollBars()
+  public void establishScrollBars(PropPanel panel)
   {
     Style style = panel.getStyle();
     if(panel.getVerticalScrollBar() == null && style.getCompiledVerticalScrollbar().isOn())
       panel.addVerticalScrollBar();
-    else if(panel.getVerticalScrollBar() != null &&  style.getCompiledVerticalScrollbar().isOff())
+    else if(panel.getVerticalScrollBar() != null && style.getCompiledVerticalScrollbar().isOff())
       panel.removeVerticalScrollBar();
-    if(panel.getHorizontalScrollBar() == null &&  style.getCompiledHorizontalScrollbar().isOn())
+    if(panel.getHorizontalScrollBar() == null && style.getCompiledHorizontalScrollbar().isOn())
       panel.addHorizontalScrollBar();
     else if(panel.getHorizontalScrollBar() != null && style.getCompiledHorizontalScrollbar().isOff())
       panel.removeHorizontalScrollBar();

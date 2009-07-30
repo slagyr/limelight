@@ -24,6 +24,7 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   private int prepForSnapHeight;
   public boolean wasLaidOut;
   public boolean wasRepainted;
+  public boolean wasFloatLaidOut;
   public Box boxInsideMargins = new Box(0, 0, 100, 100);
   public Box boxInsideBorders = new Box(0, 0, 100, 100);
   private String name;
@@ -103,6 +104,12 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
     for(Panel child : children)
       child.doLayout();
     wasLaidOut = true;
+  }
+
+  public void doFloatLayout()
+  {
+    super.doFloatLayout();
+    wasFloatLaidOut = true;
   }
 
   public void prepForSnap(int width, int height)

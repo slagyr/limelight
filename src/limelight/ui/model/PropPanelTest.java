@@ -8,7 +8,6 @@ import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
-import limelight.ui.painting.Border;
 import limelight.styles.FlatStyle;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
@@ -25,6 +24,7 @@ import junit.framework.TestCase;
 
 import javax.swing.*;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
@@ -48,15 +48,6 @@ public class PropPanelTest extends TestCase
     root.setPanel(panel);
   }
 
-  public void testPanelKnownWhenItsLaidOut() throws Exception
-  {
-    assertEquals(false, panel.isLaidOut());
-
-    panel.doLayout();
-
-    assertEquals(true, panel.isLaidOut());
-  }
-
   public void testOnlyPaintWhenLaidOut() throws Exception
   {
     MockAfterPaintAction paintAction = new MockAfterPaintAction();
@@ -74,7 +65,6 @@ public class PropPanelTest extends TestCase
   {
     assertSame(prop, panel.getProp());
     assertEquals(TextPaneTextAccessor.class, panel.getTextAccessor().getClass());
-    assertNotNull(panel.getLayout());
   }
 
   public void testPainters() throws Exception
@@ -191,17 +181,6 @@ public class PropPanelTest extends TestCase
     assertNotSame(insidePadding, panel.getBoxInsidePadding());
   }
 
-  public void testBorderGetUpdatedOnLayout() throws Exception
-  {
-    root.setSize(100, 100);
-    Border border = panel.getBorderShaper();
-
-    style.setBorderWidth("21");
-    panel.doLayout();
-
-    assertEquals(21, border.getTopWidth());
-  }
-
   public void testIsFloater() throws Exception
   {
     assertEquals(false, panel.isFloater());
@@ -209,6 +188,36 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.isFloater());
     panel.getStyle().setFloat("off");
     assertEquals(false, panel.isFloater());
+  }
+
+  public void testDoFloatLayoutNonFloater() throws Exception
+  {
+    panel.getStyle().setX(100);
+    panel.getStyle().setY(200);
+    panel.getStyle().setFloat(false);
+    root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
+
+    panel.doFloatLayout();
+
+    assertEquals(0, panel.getX());
+    assertEquals(0, panel.getY());
+    assertEquals(false, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
+  }
+
+  public void testDoFloatLayoutAsFloater() throws Exception
+  {
+    panel.getStyle().setX(100);
+    panel.getStyle().setY(200);
+    panel.getStyle().setFloat(true);
+    root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
+    Rectangle before = panel.getBoundingBox();
+
+    panel.doFloatLayout();
+
+    assertEquals(100, panel.getX());
+    assertEquals(200, panel.getY());
+    assertEquals(true, root.dirtyRegionsContains(before));
+    assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
   }
 
   public void testAfterPaintAction() throws Exception
@@ -574,7 +583,7 @@ public class PropPanelTest extends TestCase
   {
     for(int i = 0; i < 100; i++)
       panel.add(new PropPanel(new MockProp()));
-    panel.setNeedsLayout();
+    panel.markAsNeedingLayout();
     Thread thread = new Thread(new Runnable()
     {
       public void run()
@@ -586,7 +595,7 @@ public class PropPanelTest extends TestCase
 
     while(panel.getChildren().get(0).needsLayout())
       Thread.yield();
-    panel.setNeedsLayout();
+    panel.markAsNeedingLayout();
     thread.join();
 
     assertEquals(true, panel.needsLayout());

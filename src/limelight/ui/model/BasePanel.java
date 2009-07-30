@@ -3,8 +3,6 @@
 
 package limelight.ui.model;
 
-import limelight.LimelightError;
-import limelight.Context;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
@@ -156,20 +154,20 @@ public abstract class BasePanel implements Panel
     return parent.getRoot();
   }
 
-  public boolean isAncestor(Panel panel)
+  public boolean isDescendantOf(Panel panel)
   {
     if(parent == null)
       return false;
     else if(parent == panel)
       return true;
     else
-      return parent.isAncestor(panel);
+      return parent.isDescendantOf(panel);
   }
 
   public Panel getClosestCommonAncestor(Panel panel)
   {
     Panel ancestor = getParent();
-    while(ancestor != null && !panel.isAncestor(ancestor))
+    while(ancestor != null && !panel.isDescendantOf(ancestor))
       ancestor = ancestor.getParent();
 
 //    if(ancestor == null)
@@ -185,6 +183,11 @@ public abstract class BasePanel implements Panel
   }
 
   public void doLayout()
+  {
+    needsLayout = false;
+  }
+
+  public void layoutStarted()
   {
     needsLayout = false;
   }
@@ -280,7 +283,7 @@ public abstract class BasePanel implements Panel
 
     child.setParent(this);
     propogateSizeChange(this);
-    setNeedsLayout();
+    markAsNeedingLayout();
   }
 
   public boolean hasChildren()
@@ -342,7 +345,7 @@ public abstract class BasePanel implements Panel
       child.setParent(null);
       readonlyChildren = null;
       propogateSizeChange(this);
-      setNeedsLayout();
+      markAsNeedingLayout();
       return true;
     }
     return false;
@@ -358,7 +361,7 @@ public abstract class BasePanel implements Panel
       readonlyChildren = null;
       sterilized = false;
       propogateSizeChange(this);
-      setNeedsLayout();
+      markAsNeedingLayout();
     }
   }
 
@@ -374,13 +377,18 @@ public abstract class BasePanel implements Panel
     return false;
   }
 
+  public void doFloatLayout()
+  {
+    // Panels are not floaters by default.
+  }
+
   public boolean canBeBuffered()
   {
 //    return true;
     return false;  // Seems to be twice as fast without buffering.
   }
 
-  public void setNeedsLayout()
+  public void markAsNeedingLayout()
   {
     if(!needsLayout && getRoot() != null)
     {
@@ -394,7 +402,7 @@ public abstract class BasePanel implements Panel
     return needsLayout;
   }
 
-  //TODO This is little inefficient.  Reconsider what get's passed to props.
+  //TODO This is a little inefficient.  Reconsider what get's passed to props.
   protected MouseEvent translatedEvent(MouseEvent e)
   {
     e = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getClickCount(), false);
@@ -416,12 +424,12 @@ public abstract class BasePanel implements Panel
       if(style != null && style.hasAutoDimension())
       {
         propogateSizeChange(panel.getParent());
-        panel.getParent().setNeedsLayout();
+        panel.getParent().markAsNeedingLayout();
       }
     }
   }
 
-  protected void markAsDirty()
+  public void markAsDirty()
   {  
     RootPanel rootPanel = getRoot();
     if(rootPanel != null)

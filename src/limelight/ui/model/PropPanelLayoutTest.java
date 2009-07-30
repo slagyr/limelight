@@ -6,20 +6,22 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.ScrollBarPanel;
+import limelight.ui.painting.Border;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class PropPanelLayoutTest extends TestCase
 {
   private PropPanel parent;
   private PropPanelLayout layout;
   private int scrollGirth;
-
+  private RootPanel root;
 
   public void setUp() throws Exception
   {
-    RootPanel root = new RootPanel(new MockStageFrame());
+    root = new RootPanel(new MockStageFrame());
 
     parent = new PropPanel(new MockProp());
     root.setPanel(parent);
@@ -27,7 +29,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setHeight("100");
 
 
-    layout = new PropPanelLayout(parent);
+    layout = new PropPanelLayout();
     scrollGirth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
   }
 
@@ -35,7 +37,7 @@ public class PropPanelLayoutTest extends TestCase
   {
     MockPropablePanel child = createAndAddChildWithSize(100, 100);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertTrue(child.wasLaidOut);
     assertEquals(new Point(0, 0), child.getLocation());
@@ -46,7 +48,7 @@ public class PropPanelLayoutTest extends TestCase
     MockPropablePanel child1 = createAndAddChildWithSize(50, 50);
     MockPropablePanel child2 = createAndAddChildWithSize(50, 50);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertTrue(child1.wasLaidOut);
     assertTrue(child2.wasLaidOut);
@@ -60,7 +62,7 @@ public class PropPanelLayoutTest extends TestCase
     MockPropablePanel child2 = createAndAddChildWithSize(50, 50);
     MockPropablePanel child3 = createAndAddChildWithSize(50, 50);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(new Point(0, 0), child1.getLocation());
     assertEquals(new Point(50, 0), child2.getLocation());
@@ -73,7 +75,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getProp().getStyle().setHorizontalAlignment("right");
     MockPropablePanel child = createAndAddChildWithSize(50, 50);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertTrue(child.wasLaidOut);
     assertEquals(new Point(50, 50), child.getLocation());
@@ -86,7 +88,7 @@ public class PropPanelLayoutTest extends TestCase
     MockPropablePanel child1 = createAndAddChildWithSize(25, 50);
     MockPropablePanel child2 = createAndAddChildWithSize(25, 50);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(new Point(25, 25), child1.getLocation());
     assertEquals(new Point(50, 25), child2.getLocation());
@@ -110,7 +112,7 @@ public class PropPanelLayoutTest extends TestCase
     child.prepForSnap(50, 50);
     panel.add(child);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(50, panel.getWidth());
     assertEquals(50, panel.getHeight());
@@ -126,7 +128,7 @@ public class PropPanelLayoutTest extends TestCase
     child.prepForSnap(50, 50);
     panel.add(child);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(50, panel.getWidth());
     assertEquals(100, panel.getHeight());
@@ -142,7 +144,7 @@ public class PropPanelLayoutTest extends TestCase
     child.prepForSnap(50, 50);
     panel.add(child);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(70, panel.getWidth());
     assertEquals(50, panel.getHeight());
@@ -170,7 +172,7 @@ public class PropPanelLayoutTest extends TestCase
     child.prepForSnap(50, 50);
     panel.add(child);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(98, panel.getWidth());
     assertEquals(80, panel.getHeight());
@@ -189,7 +191,7 @@ public class PropPanelLayoutTest extends TestCase
     child.prepForSnap(50, 50);
     panel.add(child);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(10, child.getX());
     assertEquals(10, child.getY());
@@ -204,7 +206,7 @@ public class PropPanelLayoutTest extends TestCase
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(0, panel.getWidth());
     assertEquals(0, panel.getHeight());
@@ -222,7 +224,7 @@ public class PropPanelLayoutTest extends TestCase
     child.prepForSnap(5, 5);
     panel.add(child);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(20, panel.getWidth());
     assertEquals(15, panel.getHeight());
@@ -240,7 +242,7 @@ public class PropPanelLayoutTest extends TestCase
     child.prepForSnap(90, 90);
     panel.add(child);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(75, panel.getWidth());
     assertEquals(86, panel.getHeight());
@@ -256,7 +258,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.add(child);
     parent.add(floater);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(2, parent.getChildren().size());
     assertSame(child, parent.getChildren().get(0));
@@ -277,7 +279,7 @@ public class PropPanelLayoutTest extends TestCase
     floater.prepForSnap(500, 500);
     panel.add(floater);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(50, panel.getWidth());
     assertEquals(50, panel.getHeight());
@@ -287,15 +289,12 @@ public class PropPanelLayoutTest extends TestCase
   {
     MockPropablePanel floater = createAndAddChildWithSize(50, 50);
     floater.floater = true;
-    floater.getStyle().setX("2");
-    floater.getStyle().setY("3");
     MockPropablePanel child = createAndAddChildWithSize(50, 50);
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
-    assertTrue(floater.wasLaidOut);
-    assertTrue(child.wasLaidOut);
-    assertEquals(new Point(2, 3), floater.getLocation());
+    assertEquals(true, floater.wasLaidOut);
+    assertEquals(true, child.wasLaidOut);
     assertEquals(new Point(0, 0), child.getLocation());
   }
 
@@ -306,7 +305,7 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(null, parent.getHorizontalScrollBar());
     parent.getStyle().setScrollbars("on");
 
-    layout.establishScrollBars();
+    layout.establishScrollBars(parent);
 
     assertEquals(2, parent.getChildren().size());
     assertNotNull(parent.getVerticalScrollBar());
@@ -316,13 +315,13 @@ public class PropPanelLayoutTest extends TestCase
   public void testRemovingScrollBars() throws Exception
   {
     parent.getStyle().setScrollbars("on");
-    layout.establishScrollBars();
+    layout.establishScrollBars(parent);
     assertEquals(2, parent.getChildren().size());
     assertNotNull(parent.getVerticalScrollBar());
     assertNotNull(parent.getHorizontalScrollBar());
 
     parent.getStyle().setScrollbars("off");
-    layout.establishScrollBars();
+    layout.establishScrollBars(parent);
     assertEquals(0, parent.getChildren().size());
     assertNull(parent.getVerticalScrollBar());
     assertNull(parent.getHorizontalScrollBar());
@@ -332,7 +331,7 @@ public class PropPanelLayoutTest extends TestCase
   {
     parent.getStyle().setScrollbars("on");
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     ScrollBarPanel verticalScrollBar = parent.getVerticalScrollBar();
     assertEquals(100 - scrollGirth, verticalScrollBar.getX());
@@ -351,7 +350,7 @@ public class PropPanelLayoutTest extends TestCase
     panel.getStyle().setHeight("auto");
     panel.getStyle().setScrollbars("on");
 
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(0, panel.getWidth());
     assertEquals(0, panel.getHeight());
@@ -360,13 +359,13 @@ public class PropPanelLayoutTest extends TestCase
   public void testScrollBarsDontGetLayoutLikeOtherProps() throws Exception
   {
     parent.getStyle().setScrollbars("on");
-    layout.doLayout();
+    layout.doLayout(parent);
 
     PropPanel panel = new PropPanel(new MockProp());
     panel.getStyle().setWidth("100%");
     panel.getStyle().setHeight("100%");
     parent.add(panel);
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(0, panel.getX());
     assertEquals(0, panel.getY());
@@ -375,13 +374,13 @@ public class PropPanelLayoutTest extends TestCase
   public void testScrollAdjusting() throws Exception
   {
     parent.getStyle().setScrollbars("on");
-    layout.doLayout();
+    layout.doLayout(parent);
 
     PropPanel panel = new PropPanel(new MockProp());
     panel.getStyle().setWidth("200");
     panel.getStyle().setHeight("300");
     parent.add(panel);
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(200, parent.getHorizontalScrollBar().getMaximumValue());
     assertEquals(100 - scrollGirth, parent.getHorizontalScrollBar().getVisibleAmount());
@@ -394,13 +393,51 @@ public class PropPanelLayoutTest extends TestCase
     panel.getStyle().setWidth("200");
     panel.getStyle().setHeight("300");
     parent.add(panel);
-    layout.doLayout();
+    layout.doLayout(parent);
 
     parent.getVerticalScrollBar().setValue(100);
     parent.getHorizontalScrollBar().setValue(50);
-    layout.doLayout();
+    layout.doLayout(parent);
 
     assertEquals(-50, panel.getX());
     assertEquals(-100, panel.getY());
+  }
+
+  public void testBorderGetUpdatedOnLayout() throws Exception
+  {
+    parent.setSize(100, 100);
+    Border border = parent.getBorderShaper();
+
+    parent.getStyle().setBorderWidth("21");
+    layout.doLayout(parent);
+
+    assertEquals(21, border.getTopWidth());
+  }
+
+  public void testPanelKnownWhenItsLaidOut() throws Exception
+  {
+    assertEquals(false, parent.isLaidOut());
+
+    layout.doLayout(parent);
+
+    assertEquals(true, parent.isLaidOut());
+  }
+  
+  public void testPanelMarkedAsDirty() throws Exception
+  {
+    root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
+
+    layout.doLayout(parent);
+
+    assertEquals(true, root.dirtyRegionsContains(parent.getAbsoluteBounds()));
+  }
+
+  public void testPanelNoLongerNeedsLayout() throws Exception
+  {
+    assertEquals(true, parent.needsLayout());
+
+    layout.doLayout(parent);
+
+    assertEquals(false, parent.needsLayout());
   }
 }

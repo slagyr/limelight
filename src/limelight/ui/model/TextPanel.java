@@ -19,7 +19,6 @@ import java.text.AttributedString;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextPanel extends BasePanel
@@ -61,9 +60,9 @@ public class TextPanel extends BasePanel
     this.text = text;
     if(differentText)
     {
-      setNeedsLayout();
+      markAsNeedingLayout();
       propogateSizeChange(getParent());
-      getParent().setNeedsLayout();
+      getParent().markAsNeedingLayout();
     }
   }
 
