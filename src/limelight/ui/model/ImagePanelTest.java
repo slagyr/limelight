@@ -99,8 +99,8 @@ public class ImagePanelTest extends TestCase
     AffineTransform tranform = panel.getTransform();
 
     // No good way to test rotation....
-    assertEquals(141.0, tranform.getTranslateX(), 0.001);
-    assertEquals(0.0, tranform.getTranslateY(), 0.001);
+    assertEquals(141.0, tranform.getTranslateX(), 0.5);
+    assertEquals(0.0, tranform.getTranslateY(), 0.5);
   }
 
   public void testScaled() throws Exception

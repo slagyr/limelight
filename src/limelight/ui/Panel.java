@@ -6,6 +6,7 @@ package limelight.ui;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.ui.model.RootPanel;
+import limelight.ui.model.Layout;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -51,6 +52,7 @@ public interface Panel extends Iterable<Panel>
   boolean canBeBuffered();
 
   void doLayout();
+  Layout getDefaultLayout();
 
   Style getStyle();
   

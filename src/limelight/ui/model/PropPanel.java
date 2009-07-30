@@ -43,7 +43,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private ScrollBarPanel horizontalScrollBar;
   private boolean sizeChanged = true;
   public boolean borderChanged = true;
-  private boolean laidOut;
 
   public PropPanel(Prop prop)
   {
@@ -168,20 +167,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return childConsumableArea;
   }
 
-  // Only used for testing.
-  public boolean isLaidOut()
+  public Layout getDefaultLayout()
   {
-    return laidOut;
-  }
-
-  public void wasLaidOut()
-  {
-    laidOut = true;
-  }
-
-  public void doLayout()
-  {
-    PropPanelLayout.instance.doLayout(this);
+    return PropPanelLayout.instance;
   }
 
   public void updateBorder()
@@ -366,18 +354,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return getStyle().getCompiledFloat().isOn();
   }
 
-  //TODO Floater need to change position when scrolled too.
   public void doFloatLayout()
   {
-    if(isFloater())
-    {
-      Box area = getParent().getChildConsumableArea();
-      int newX = style.getCompiledX().getValue() + area.x;
-      int newY = style.getCompiledY().getValue() + area.y;
-      markAsDirty();
-      setLocation(newX, newY);
-      markAsDirty();
-    }
+   FloaterLayout.instance.doLayout(this);
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
@@ -415,7 +394,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
       {
-        doFloatLayout();   // TODO MDM - Need to queue this up (ie. special case of markAsNeedingLayout()).  Redundant calls otherwise
+//System.err.println("requesting floater layout");
+        markAsNeedingLayout(FloaterLayout.instance);
       }
       else
         markAsDirty();

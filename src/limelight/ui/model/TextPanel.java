@@ -96,15 +96,12 @@ public class TextPanel extends BasePanel
 
   public void doLayout()
   {
-    super.doLayout();
-    try
-    {
-      compile();
-    }
-    catch(Exception e)
-    {
-      //okay
-    }
+    TextPanelLayout.instance.doLayout(this);
+  }
+
+  public Layout getDefaultLayout()
+  {
+    return TextPanelLayout.instance;
   }
 
   public boolean needsLayout()
@@ -118,7 +115,7 @@ public class TextPanel extends BasePanel
     return consumableArea == null || !consumableArea.sameSize(panel.getChildConsumableArea());
   }
 
-  private void compile()
+  public void compile()
   {
     buildLines();
     calculateDimentions();

@@ -24,6 +24,8 @@ module Floater
   
   def new_x=(value)
     @x = value
+    @x = @min_x if @x < @min_x  
+    @x = @max_x if @x > @max_x
     style.x = (value.to_i - width/2)
   end
 
@@ -34,6 +36,8 @@ module Floater
   
   def new_y=(value)
     @y = value
+    @y = @min_y if @y < @min_y
+    @y = @max_y if @y > @max_y
     style.y = (value.to_i - width/2)
   end
   
@@ -48,7 +52,7 @@ module Floater
     calculate_vector(source_x, source_y)
 
     @sliding = true
-    @animation = animate(:updates_per_second => 30) do
+    @animation = animate(:updates_per_second => 60) do
       begin
         slide
       rescue Exception => e
@@ -71,8 +75,8 @@ module Floater
 
   def slide
     if @velocity > 1
-      @x_coefficient *= -1 if(x < @min_x || x > @max_x)
-      @y_coefficient *= -1 if(y < @min_y || y > @max_y)
+      @x_coefficient *= -1 if(x <= @min_x || x >= @max_x)
+      @y_coefficient *= -1 if(y <= @min_y || y >= @max_y)
       x2 = x + (@x_coefficient * @velocity)
       y2 = y + (@y_coefficient * @velocity)
       self.new_x = x2

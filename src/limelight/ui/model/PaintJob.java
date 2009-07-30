@@ -10,9 +10,6 @@ import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.util.Box;
 import limelight.util.Colors;
-import limelight.util.Debug;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -75,7 +72,7 @@ public class PaintJob
   public boolean panelIsInClip(Panel panel)
   {
     Box panelClip = panel.getAbsoluteBounds();
-    return clip.intersects(panelClip);
+    return panelClip != null && clip.intersects(panelClip);
   }
 
   public void paintClipFor(Panel panel, Graphics2D graphics)
@@ -156,12 +153,7 @@ public class PaintJob
 
   public boolean shouldBuildBufferFor(Panel panel, BufferedImage buffer)
   {
-    if(buffer == null)
-      return true;
-    else if(panel.getWidth() != buffer.getWidth() || panel.getHeight() != buffer.getHeight())
-      return true;
-    else
-      return false;
+    return buffer == null || panel.getWidth() != buffer.getWidth() || panel.getHeight() != buffer.getHeight();
   }
 
   public BufferedImage buildBufferFor(Panel panel)
