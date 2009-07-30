@@ -13,15 +13,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.awt.*;
 
-public class PropPanelLayout
+public class PropPanelLayout implements Layout
 {
   public static PropPanelLayout instance = new PropPanelLayout();
+  public Panel lastPanelProcessed;
 
   // TODO MDM This gets called ALOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
-  public void doLayout(PropPanel panel)
+  public void doLayout(Panel thePanel)
   {
-    panel.layoutStarted();
-    panel.doFloatLayout();
+    PropPanel panel = (PropPanel)thePanel;
+    panel.resetLayout();
+    FloaterLayout.instance.doLayout(panel);
     Style style = panel.getStyle();
 
     if(panel.sizeChanged() || style.hasPercentageDimension() || style.hasAutoDimension())
@@ -45,6 +47,12 @@ public class PropPanelLayout
     panel.updateBorder();
     panel.markAsDirty();
     panel.wasLaidOut();
+    lastPanelProcessed = panel;
+  }
+
+  public boolean overides(Layout other)
+  {
+    return true;
   }
 
   private boolean hasNonScrollBarChildren(PropPanel panel)
@@ -105,7 +113,7 @@ public class PropPanelLayout
     {
       if(child.needsLayout())
       {
-        child.doLayout();
+        child.getDefaultLayout().doLayout(child);
       }
     }
   }
@@ -134,9 +142,7 @@ public class PropPanelLayout
 
     for(Panel child : panel.getChildren())
     {
-      if(child instanceof ScrollBarPanel)
-        ;//ignore
-      else if(!child.isFloater())
+      if(!(child instanceof ScrollBarPanel) && !child.isFloater())
       {
         if(!currentRow.isEmpty() && !currentRow.fits(child))
           currentRow = newRow(panel, rows);
@@ -180,7 +186,6 @@ public class PropPanelLayout
       panel.addHorizontalScrollBar();
     else if(panel.getHorizontalScrollBar() != null && style.getCompiledHorizontalScrollbar().isOff())
       panel.removeHorizontalScrollBar();
-
   }
 
   private class Row

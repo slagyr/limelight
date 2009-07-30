@@ -49,11 +49,6 @@ public class RootPanel implements Panel
     return getChildConsumableArea();
   }
 
-  public void doLayout()
-  {    
-    panel.doLayout();
-  }
-
   public int getWidth()
   {
     return contentPane.getWidth();
@@ -208,7 +203,7 @@ public class RootPanel implements Panel
         {
           iterator.remove();
         }
-      }      
+      }
       if(shouldAdd)
       {
         panelsNeedingLayout.add(child);
@@ -293,12 +288,12 @@ public class RootPanel implements Panel
       return dirtyRegions.contains(region);
     }
   }
-  
+
   public ImageCache getImageCache()
   {
     if(imageCache == null)
     {
-      Prop prop = ((PropablePanel) getPanel()).getProp();      
+      Prop prop = ((PropablePanel) getPanel()).getProp();
       ResourceLoader loader = prop.getLoader();
       imageCache = new ImageCache(loader);
     }
@@ -306,9 +301,23 @@ public class RootPanel implements Panel
   }
 
   /////////////////////////////////////////////
+
   /// NOT NEEDED
+
   /// TODO - Need to remove this from the Panel hierarchy somehow to delete these methods
+
   /////////////////////////////////////////////
+
+  public void doLayout()
+  {
+System.err.println("RootPanel.doLayout called.  This was not expeted");    
+    panel.doLayout();
+  }
+
+  public Layout getDefaultLayout()
+  {
+    throw new RuntimeException("getDefaultLayout() called on RootPanel");
+  }
 
   public void paintOn(Graphics2D graphics)
   {

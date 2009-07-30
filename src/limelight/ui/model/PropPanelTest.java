@@ -24,7 +24,6 @@ import junit.framework.TestCase;
 
 import javax.swing.*;
 import java.util.LinkedList;
-import java.util.ArrayList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
@@ -188,36 +187,6 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.isFloater());
     panel.getStyle().setFloat("off");
     assertEquals(false, panel.isFloater());
-  }
-
-  public void testDoFloatLayoutNonFloater() throws Exception
-  {
-    panel.getStyle().setX(100);
-    panel.getStyle().setY(200);
-    panel.getStyle().setFloat(false);
-    root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
-
-    panel.doFloatLayout();
-
-    assertEquals(0, panel.getX());
-    assertEquals(0, panel.getY());
-    assertEquals(false, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
-  }
-
-  public void testDoFloatLayoutAsFloater() throws Exception
-  {
-    panel.getStyle().setX(100);
-    panel.getStyle().setY(200);
-    panel.getStyle().setFloat(true);
-    root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
-    Rectangle before = panel.getBoundingBox();
-
-    panel.doFloatLayout();
-
-    assertEquals(100, panel.getX());
-    assertEquals(200, panel.getY());
-    assertEquals(true, root.dirtyRegionsContains(before));
-    assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
   }
 
   public void testAfterPaintAction() throws Exception

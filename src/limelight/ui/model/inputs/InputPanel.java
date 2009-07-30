@@ -7,6 +7,8 @@ import limelight.ui.Panel;
 import limelight.ui.model.BasePanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.TextAccessor;
+import limelight.ui.model.Layout;
+import limelight.ui.model.inputs.InputPanelLayout;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.Context;
@@ -59,10 +61,12 @@ public abstract class InputPanel extends BasePanel
 
   public void doLayout()
   {
-    Box bounds = getParent().getBoxInsidePadding();
-    setLocation(bounds.x, bounds.y);
-    setSize(bounds.width, bounds.height);
-    super.doLayout();
+    InputPanelLayout.instance.doLayout(this);
+  }
+
+  public Layout getDefaultLayout()
+  {
+    return InputPanelLayout.instance;
   }
 
   public void setSize(int w, int h)

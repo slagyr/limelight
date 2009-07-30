@@ -9,7 +9,6 @@ import limelight.ui.model.PaintJob;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
-import limelight.util.Debug;
 import limelight.Context;
 
 import java.awt.*;

@@ -45,38 +45,44 @@ public class ImagePanel extends BasePanel
     panel.sterilize();
   }
 
+  public double getImageHeight()
+  {
+    return imageHeight;
+  }
+
+  public double getImageWidth()
+  {
+    return imageWidth;
+  }
+
+  public double getRotatedHeight()
+  {
+    return rotatedHeight;
+  }
+
+  public double getRotatedWidth()
+  {
+    return rotatedWidth;
+  }
+
+  public void setRotatedHeight(double height)
+  {
+    rotatedHeight = height;
+  }
+
+  public void setRotatedWidth(double width)
+  {
+    rotatedWidth = width;
+  }
+
   public void doLayout()
   {
-    Style style = getStyle();
-    Box consumableArea = getParent().getChildConsumableArea();
-    getImage();
-    if(image == null)
-      return;
+    ImagePanelLayout.instance.doLayout(this);
+  }
 
-    width = consumableArea.width;
-    height = consumableArea.height;
-
-    if(image != null)
-    {
-      if(rotation != 0.0)
-      {
-        double cos = Math.abs(Math.cos(Math.toRadians(rotation)));
-        double sin = Math.abs(Math.sin(Math.toRadians(rotation)));
-        rotatedWidth = imageWidth * cos + imageHeight * sin;
-        rotatedHeight = imageWidth * sin + imageHeight * cos;
-      }
-      else
-      {
-        rotatedWidth = imageWidth;
-        rotatedHeight = imageHeight;
-      }
-
-      if(style.getCompiledHeight().isAuto())
-        height = (int) rotatedHeight;
-
-      if(style.getCompiledWidth().isAuto())
-        width = (int) rotatedWidth;
-    }
+  public Layout getDefaultLayout()
+  {
+    return ImagePanelLayout.instance;
   }
 
   public void paintOn(Graphics2D graphics)

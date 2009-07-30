@@ -26,7 +26,8 @@ public abstract class BasePanel implements Panel
   private boolean sterilized;
   private Box boundingBox;
   private List<Panel> readonlyChildren;
-  private boolean needsLayout = true;
+  private Layout neededLayout = getDefaultLayout();
+  protected boolean laidOut;
 
   protected BasePanel()
   {
@@ -184,12 +185,20 @@ public abstract class BasePanel implements Panel
 
   public void doLayout()
   {
-    needsLayout = false;
+    if(neededLayout != null)
+      neededLayout.doLayout(this);
+    else
+      getDefaultLayout().doLayout(this);
   }
 
-  public void layoutStarted()
+  public synchronized void resetLayout()
   {
-    needsLayout = false;
+    neededLayout = null;
+  }
+
+  public Layout getDefaultLayout()
+  {
+    return BasePanelLayout.instance;
   }
 
   public void mousePressed(MouseEvent e)
@@ -388,18 +397,28 @@ public abstract class BasePanel implements Panel
     return false;  // Seems to be twice as fast without buffering.
   }
 
+  public synchronized void markAsNeedingLayout(Layout layout)
+  {
+    if(getRoot() != null)
+    {
+      if(neededLayout == null)
+      {
+        neededLayout = layout; // Set first... race conditions otherwise.
+        getRoot().addPanelNeedingLayout(this);
+      }
+      else if(layout.overides(neededLayout))
+          neededLayout = layout;
+    }
+  }
+
   public void markAsNeedingLayout()
   {
-    if(!needsLayout && getRoot() != null)
-    {
-      needsLayout = true; // Set first... race conditions otherwise.
-      getRoot().addPanelNeedingLayout(this);
-    }
+    markAsNeedingLayout(getDefaultLayout());
   }
 
   public boolean needsLayout()
   {
-    return needsLayout;
+    return neededLayout != null;
   }
 
   //TODO This is a little inefficient.  Reconsider what get's passed to props.
@@ -430,9 +449,19 @@ public abstract class BasePanel implements Panel
   }
 
   public void markAsDirty()
-  {  
+  {
     RootPanel rootPanel = getRoot();
     if(rootPanel != null)
       rootPanel.addDirtyRegion(getAbsoluteBounds());
+  }
+
+  public boolean isLaidOut()
+  {
+    return laidOut;
+  }
+
+  public void wasLaidOut()
+  {
+    laidOut = true;
   }
 }

@@ -1,0 +1,30 @@
+package limelight.ui.model;
+
+import limelight.ui.Panel;
+import limelight.util.Box;
+
+public class FloaterLayout implements Layout
+{
+  public static FloaterLayout instance = new FloaterLayout();
+
+  //TODO Floater need to change position when scrolled too.
+  public void doLayout(Panel thePanel)
+  {
+    BasePanel panel = (BasePanel)thePanel;
+    if(panel.isFloater())
+    {
+      panel.resetLayout();
+      Box area = panel.getParent().getChildConsumableArea();
+      int newX = panel.getStyle().getCompiledX().getValue() + area.x;
+      int newY = panel.getStyle().getCompiledY().getValue() + area.y;
+      panel.markAsDirty();
+      panel.setLocation(newX, newY);
+      panel.markAsDirty();
+    }
+  }
+
+  public boolean overides(Layout other)
+  {
+    return other != PropPanelLayout.instance;
+  }
+}
