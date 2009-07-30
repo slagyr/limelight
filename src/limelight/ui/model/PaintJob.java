@@ -12,6 +12,7 @@ import limelight.util.Box;
 import limelight.util.Colors;
 import limelight.util.Debug;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

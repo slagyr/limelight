@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.LimelightError;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
 import limelight.ui.MockPanel;
@@ -131,13 +130,13 @@ public class BasePanelTest extends TestCase
   {
     createFamilyTree();
 
-    assertTrue(child.isAncestor(parent));
-    assertTrue(sibling.isAncestor(parent));
-    assertTrue(grandChild.isAncestor(parent));
-    assertTrue(grandChild.isAncestor(child));
+    assertTrue(child.isDescendantOf(parent));
+    assertTrue(sibling.isDescendantOf(parent));
+    assertTrue(grandChild.isDescendantOf(parent));
+    assertTrue(grandChild.isDescendantOf(child));
 
-    assertFalse(child.isAncestor(sibling));
-    assertFalse(child.isAncestor(grandChild));
+    assertFalse(child.isDescendantOf(sibling));
+    assertFalse(child.isDescendantOf(grandChild));
   }
 
   private void createFamilyTree()
@@ -617,7 +616,7 @@ public class BasePanelTest extends TestCase
   public void testNeedsLayout() throws Exception
   {
     panel.doLayout();
-    panel.setNeedsLayout();
+    panel.markAsNeedingLayout();
 
     assertEquals(true, panel.needsLayout());
     ArrayList<Panel> buffer = new ArrayList<Panel>();
@@ -632,13 +631,13 @@ public class BasePanelTest extends TestCase
   
   public void testNeedsLayoutIgnoredOnSubsequentCalls() throws Exception
   {
-    panel.setNeedsLayout();
+    panel.markAsNeedingLayout();
 
     assertEquals(true, panel.needsLayout());
     ArrayList<Panel> buffer = new ArrayList<Panel>();
     root.getAndClearPanelsNeedingLayout(buffer);
 
-    panel.setNeedsLayout();
+    panel.markAsNeedingLayout();
     buffer.clear();
     root.getAndClearPanelsNeedingLayout(buffer);
 

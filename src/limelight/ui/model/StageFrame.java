@@ -5,7 +5,6 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.util.Colors;
-import limelight.util.Debug;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
@@ -81,7 +80,7 @@ public class StageFrame extends JFrame implements KeyListener
   {
     if(root != null)
     {
-      root.getPanel().setNeedsLayout();
+      root.getPanel().markAsNeedingLayout();
     }
   }
 

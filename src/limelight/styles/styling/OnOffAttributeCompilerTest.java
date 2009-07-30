@@ -27,6 +27,16 @@ public class OnOffAttributeCompilerTest extends TestCase
     assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("Off")).isOn());
   }
 
+  public void testBooleanValue() throws Exception
+  {
+    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile(true)).isOn());
+    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("true")).isOn());
+    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("TRUE")).isOn());
+    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile(false)).isOn());
+    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("false")).isOn());
+    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("FALSE")).isOn());
+  }
+
   public void testInvalidValue() throws Exception
   {
     try

@@ -10,7 +10,6 @@ import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -144,7 +143,7 @@ public class RootPanel implements Panel
     return (Graphics2D) contentPane.getGraphics();
   }
 
-  public boolean isAncestor(Panel panel)
+  public boolean isDescendantOf(Panel panel)
   {
     return panel == this;
   }
@@ -200,12 +199,12 @@ public class RootPanel implements Panel
           shouldAdd = false;
           break;
         }
-        else if(child.isAncestor(panel) && child.getParent().needsLayout())
+        else if(child.isDescendantOf(panel) && child.getParent().needsLayout())
         {
           shouldAdd = false;
           break;
         }
-        else if(panel.isAncestor(child) && panel.getParent().needsLayout())
+        else if(panel.isDescendantOf(child) && panel.getParent().needsLayout())
         {
           iterator.remove();
         }
@@ -374,6 +373,10 @@ public class RootPanel implements Panel
     return false;
   }
 
+  public void doFloatLayout()
+  {
+  }
+
   public boolean containsRelativePoint(Point point)
   {
     return true;
@@ -455,7 +458,7 @@ public class RootPanel implements Panel
     return false;
   }
 
-  public void setNeedsLayout()
+  public void markAsNeedingLayout()
   {
   }
 
