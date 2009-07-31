@@ -10,6 +10,7 @@ import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.util.Box;
 import limelight.util.Colors;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -22,14 +23,14 @@ public class PaintJob
   private final Cache<Panel, BufferedImage> bufferCache;
   private final BufferedImagePool bufferedImagePool;
 
-  public PaintJob(Box clip)
+  public PaintJob(Box clip, Color background)
   {
     bufferCache = Context.instance().bufferedImageCache;
     bufferedImagePool = Context.instance().bufferedImagePool;
     this.clip = clip;
     buffer = bufferedImagePool.acquire(clip.getSize());
     rootGraphics = buffer.createGraphics();
-    rootGraphics.setBackground(Colors.TRANSPARENT);
+    rootGraphics.setBackground(background);
     rootGraphics.clearRect(0, 0, clip.width, clip.height);
     composite = rootGraphics.getComposite();
   }
@@ -99,7 +100,7 @@ public class PaintJob
     double alphaPercentage = style.getCompiledTransparency().getPercentage();
     if(alphaPercentage > 0)
     {
-      float alpha = (float)(1.0f - (alphaPercentage / 100.0f));
+      float alpha = (float) (1.0f - (alphaPercentage / 100.0f));
 
       Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
       graphics.setComposite(alphaComposite);
@@ -140,8 +141,9 @@ public class PaintJob
   {
     if(graphics != null)
     {
-      graphics.clearRect(clip.x, clip.y, buffer.getWidth(), buffer.getHeight());
-      graphics.drawImage(buffer, clip.x, clip.y, null);
+      Graphics2D graphics2d = (Graphics2D) graphics;
+      graphics2d.setComposite(AlphaComposite.Src); // Removes the need to do graphics.clearRect(...).  
+      graphics2d.drawImage(buffer, clip.x, clip.y, null);
       Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
     }
   }
@@ -164,7 +166,7 @@ public class PaintJob
     graphics.setBackground(Colors.TRANSPARENT);
     graphics.clearRect(0, 0, panel.getWidth(), panel.getHeight());
     panel.paintOn(graphics);
-    graphics.dispose();  
+    graphics.dispose();
     bufferCache.cache(panel, buffer);
     return buffer;
   }
