@@ -30,6 +30,7 @@ public class MockGraphics extends java.awt.Graphics2D
   public Rectangle drawnImageDestination;
   public Rectangle drawnImageSource;
   public Box clippedRectangle;
+  private Composite composite;
 
   public class DrawnShape
 	{
@@ -162,6 +163,7 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public void setComposite(Composite composite)
 	{
+    this.composite = composite;
 	}
 
 	public void setPaint(Paint paint)
@@ -241,7 +243,7 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public Composite getComposite()
 	{
-		return null;
+		return composite;
 	}
 
 	public void setBackground(Color color)

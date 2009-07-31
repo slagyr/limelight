@@ -89,9 +89,9 @@ public class PanelPainterLoop extends IdleThreadLoop
     {
       if(rectangle.width <= 0 || rectangle.height <= 0)
         continue;
-      PaintJob job = new PaintJob(new Box(rectangle));
-      job.paint(root.getPanel());
       Graphics2D rootGraphics = root.getGraphics();
+      PaintJob job = new PaintJob(new Box(rectangle), rootGraphics.getBackground());
+      job.paint(root.getPanel());
       job.applyTo(rootGraphics);
       job.dispose();
     }

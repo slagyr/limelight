@@ -148,14 +148,6 @@ public class RootPanel implements Panel
     return this;
   }
 
-  public void repaint()
-  {
-    doLayout();
-    PaintJob job = new PaintJob(getAbsoluteBounds());
-    job.paint(panel);
-    job.applyTo(getGraphics());
-  }
-
   public void setCursor(Cursor cursor)
   {
     contentPane.setCursor(cursor);
@@ -301,16 +293,22 @@ public class RootPanel implements Panel
   }
 
   /////////////////////////////////////////////
-
   /// NOT NEEDED
-
   /// TODO - Need to remove this from the Panel hierarchy somehow to delete these methods
-
   /////////////////////////////////////////////
+
+  public void repaint()
+  {
+    System.err.println("rooPanel.repaint!!! Not expected!");
+    doLayout();
+    PaintJob job = new PaintJob(getAbsoluteBounds(), getGraphics().getBackground());
+    job.paint(panel);
+    job.applyTo(getGraphics());
+  }
 
   public void doLayout()
   {
-System.err.println("RootPanel.doLayout called.  This was not expeted");    
+System.err.println("RootPanel.doLayout called.  This was not expeted");
     panel.doLayout();
   }
 

@@ -34,7 +34,7 @@ public class PaintJobTest extends TestCase
     Context.instance().bufferedImageCache = bufferedImageCache;
     Context.instance().bufferedImagePool = pool;
 
-    job = new PaintJob(new Box(100, 200, 300, 400));
+    job = new PaintJob(new Box(100, 200, 300, 400), Colors.TRANSPARENT);
     panel = new MockPropablePanel();
     style = panel.style;
     graphics = new MockGraphics();
@@ -43,7 +43,7 @@ public class PaintJobTest extends TestCase
   public void testCreation() throws Exception
   {
     Box clip = new Box(1, 2, 3, 4);
-    PaintJob job = new PaintJob(clip);
+    PaintJob job = new PaintJob(clip, Colors.TRANSPARENT);
 
     assertSame(clip, job.getClip());
 
@@ -148,6 +148,7 @@ public class PaintJobTest extends TestCase
   {
     job.applyTo(graphics);
 
+    assertEquals(AlphaComposite.Src, graphics.getComposite());
     assertSame(job.getBuffer(), graphics.drawnImage);
     assertEquals(100, graphics.drawnImageX);
     assertEquals(200, graphics.drawnImageY);
@@ -187,7 +188,7 @@ public class PaintJobTest extends TestCase
 
     MockPanel.paintCount = 0;
     panel.setSize(100, 100);
-    job = new PaintJob(new Box(0, 0, 100, 100));
+    job = new PaintJob(new Box(0, 0, 100, 100), Colors.TRANSPARENT);
     job.paintChildren(panel, graphics);
 
     assertEquals(0, child2.paintIndex);

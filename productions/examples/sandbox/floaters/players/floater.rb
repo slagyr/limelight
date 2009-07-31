@@ -52,7 +52,7 @@ module Floater
     calculate_vector(source_x, source_y)
 
     @sliding = true
-    @animation = animate(:updates_per_second => 60) do
+    @animation = animate(:updates_per_second => 30) do
       begin
         slide
       rescue Exception => e
