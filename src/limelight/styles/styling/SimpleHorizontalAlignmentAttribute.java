@@ -4,30 +4,31 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.HorizontalAlignmentAttribute;
-import limelight.util.Aligner;
+import limelight.styles.HorizontalAlignment;
+import limelight.util.Box;
 import limelight.LimelightError;
 
 public class SimpleHorizontalAlignmentAttribute implements HorizontalAlignmentAttribute
 {
-  private final Aligner.HorizontalAligner alignment;
+  private final HorizontalAlignment alignment;
 
-  public SimpleHorizontalAlignmentAttribute(Aligner.HorizontalAligner alignment)
+  public SimpleHorizontalAlignmentAttribute(HorizontalAlignment alignment)
   {
     this.alignment = alignment;
   }
 
-  public Aligner.HorizontalAligner getAlignment()
+  public HorizontalAlignment getAlignment()
   {
     return alignment;
   }
 
   public String toString()
   {
-    if(alignment == Aligner.LEFT)
+    if(alignment == HorizontalAlignment.LEFT)
       return "left";
-    else if(alignment == Aligner.HORIZONTAL_CENTER)
+    else if(alignment == HorizontalAlignment.CENTER)
       return "center";
-    else if(alignment == Aligner.RIGHT)
+    else if(alignment == HorizontalAlignment.RIGHT)
       return "right";
     else
       throw new LimelightError("Unknown Horizontal Alignment: " + alignment);
@@ -40,5 +41,16 @@ public class SimpleHorizontalAlignmentAttribute implements HorizontalAlignmentAt
       return alignment.equals(((SimpleHorizontalAlignmentAttribute)obj).alignment);
     }
     return false;
+  }
+
+  public int getX(int consumed, Box area)
+  {
+    if(alignment == HorizontalAlignment.LEFT)
+      return area.x;
+    else if(alignment == HorizontalAlignment.CENTER)
+      return area.x + (area.width - (int) (consumed + 0.5)) / 2;
+    else
+      return area.x + (area.width - (int) (consumed + 0.5));
+
   }
 }

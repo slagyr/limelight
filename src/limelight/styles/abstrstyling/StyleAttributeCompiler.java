@@ -22,7 +22,6 @@ public abstract class StyleAttributeCompiler
     this.name = name;
   }
 
-
   public InvalidStyleAttributeError makeError(Object invalidValue)
   {
     return new InvalidStyleAttributeError("Invalid value '" + invalidValue + "' for " + name + " style attribute.");

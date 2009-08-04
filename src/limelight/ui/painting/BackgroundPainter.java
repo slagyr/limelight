@@ -44,7 +44,6 @@ public class BackgroundPainter extends Painter
       if(backgroundColor.getAlpha() > 0)
       {
         graphics.setColor(backgroundColor);
-
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.fill(insideBorder);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -60,8 +59,6 @@ public class BackgroundPainter extends Painter
         RootPanel rootPanel = ((PropablePanel) panel).getRoot();
         ImageCache cache = rootPanel.getImageCache();
         Image image = cache.getImage(backgroundImageAttribute.getAttribute().getValue());
-//        String imageFilename = panel.getProp().getScene().getLoader().pathTo(backgroundImageAttribute.getAttribute().getValue());
-//        BufferedImage image = ImageIO.read(new File(imageFilename));
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);
         style.getCompiledBackgroundImageFillStrategy().getStrategy().fill(borderedGraphics, image);
       }

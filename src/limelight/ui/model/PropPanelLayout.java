@@ -6,7 +6,6 @@ package limelight.ui.model;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.util.Aligner;
 import limelight.util.Box;
 
 import java.util.LinkedList;
@@ -120,14 +119,13 @@ public class PropPanelLayout implements Layout
 
   public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows)
   {
-    Aligner aligner = buildAligner(panel);
-    aligner.addConsumedHeight(consumeDimension.height);
-    int y = aligner.startingY();
+    Style style = panel.getProp().getStyle();
+    int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableArea());
     if(panel.getVerticalScrollBar() != null)
       y -= panel.getVerticalScrollBar().getValue();
     for(Row row : rows)
     {
-      int x = aligner.startingX(row.width);
+      int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableArea());
       if(panel.getHorizontalScrollBar() != null)
         x -= panel.getHorizontalScrollBar().getValue();
       row.layoutComponents(x, y);
@@ -150,12 +148,6 @@ public class PropPanelLayout implements Layout
       }
     }
     return rows;
-  }
-
-  protected Aligner buildAligner(PropPanel panel)
-  {
-    Style style = panel.getProp().getStyle();
-    return new Aligner(panel.getChildConsumableArea(), style.getCompiledHorizontalAlignment().getAlignment(), style.getCompiledVerticalAlignment().getAlignment());
   }
 
   private Row newRow(PropPanel panel, LinkedList<Row> rows)

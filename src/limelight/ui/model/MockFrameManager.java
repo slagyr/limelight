@@ -3,6 +3,8 @@
 
 package limelight.ui.model;
 
+import java.util.ArrayList;
+
 public class MockFrameManager implements FrameManager
 {
   public StageFrame activeFrame;
@@ -15,6 +17,12 @@ public class MockFrameManager implements FrameManager
   public StageFrame getActiveFrame()
   {
     return activeFrame;
+  }
+
+  public void getVisibleFrames(ArrayList<StageFrame> result)
+  {
+    if(activeFrame != null)
+      result.add(activeFrame);
   }
 
   public boolean isWatching(StageFrame frame)

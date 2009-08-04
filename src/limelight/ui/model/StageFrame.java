@@ -109,7 +109,7 @@ public class StageFrame extends JFrame implements KeyListener
   }
 
   public void load(Panel child)
-  {
+  {   
     if(root != null)
       root.destroy();
     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

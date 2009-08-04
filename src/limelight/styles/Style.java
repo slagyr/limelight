@@ -76,8 +76,10 @@ public abstract class Style
   public static final StyleDescriptor BOTTOM_LEFT_BORDER_COLOR = descriptor("Bottom Left Border Color", "color", "black");
   public static final StyleDescriptor TOP_LEFT_BORDER_COLOR = descriptor("Top Left Border Color", "color", "black");
   public static final StyleDescriptor FLOAT = descriptor("Float", "on/off", "off");
-  public static final StyleDescriptor X = descriptor("X", "integer", "0");
-  public static final StyleDescriptor Y = descriptor("Y", "integer", "0");
+  public static final StyleDescriptor X = descriptor("X", "x-coordinate", "0");
+  public static final StyleDescriptor Y = descriptor("Y", "y-coordinate", "0");
+  public static final StyleDescriptor BACKGROUND_IMAGE_X = descriptor("Background Image X", "x-coordinate", "0");
+  public static final StyleDescriptor BACKGROUND_IMAGE_Y = descriptor("Background Image Y", "y-coordinate", "0");
 
   protected static final int STYLE_COUNT = STYLE_LIST.size();
 
@@ -946,9 +948,9 @@ public abstract class Style
     return get(X);
   }
 
-  public IntegerAttribute getCompiledX()
+  public XCoordinateAttribute getCompiledX()
   {
-    return (IntegerAttribute)getCompiled(X);
+    return (XCoordinateAttribute)getCompiled(X);
   }
 
   public void setX(Object value)
@@ -961,14 +963,44 @@ public abstract class Style
     return get(Y);
   }
 
-  public IntegerAttribute getCompiledY()
+  public YCoordinateAttribute getCompiledY()
   {
-    return (IntegerAttribute)getCompiled(Y);
+    return (YCoordinateAttribute)getCompiled(Y);
   }
 
   public void setY(Object value)
   {
     put(Y, value);
+  }
+
+  public String getBackgroundImageX()
+  {
+    return get(BACKGROUND_IMAGE_X);
+  }
+
+  public XCoordinateAttribute getCompiledBackgroundImageX()
+  {
+    return (XCoordinateAttribute)getCompiled(BACKGROUND_IMAGE_X);
+  }
+
+  public void setBackgroundImageX(Object value)
+  {
+    put(BACKGROUND_IMAGE_X, value);
+  }
+
+  public String getBackgroundImageY()
+  {
+    return get(BACKGROUND_IMAGE_Y);
+  }
+
+  public YCoordinateAttribute getCompiledBackgroundImageY()
+  {
+    return (YCoordinateAttribute)getCompiled(BACKGROUND_IMAGE_Y);
+  }
+
+  public void setBackgroundImageY(Object value)
+  {
+    put(BACKGROUND_IMAGE_Y, value);
   }
 
   public void setScrollbars(Object value)

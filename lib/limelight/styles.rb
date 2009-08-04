@@ -329,6 +329,19 @@ module Limelight
     #   style.y = <value>
     #
     Y  = Limelight::Styles::Style::STYLE_LIST.get(53)
+
+    # Specifies the starting X coordinate of background images.
+    #
+    #   style.background_image_x = <value>
+    #
+    BackgroundImageX  = Limelight::Styles::Style::STYLE_LIST.get(54)
+
+    # Specifies the Y of a prop.
+    #
+    #   style.background_images_y = <value>
+    #
+    BackgroundImageY  = Limelight::Styles::Style::STYLE_LIST.get(55)
+    
   end
 
 end

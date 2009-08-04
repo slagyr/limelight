@@ -15,8 +15,8 @@ public class FloaterLayout implements Layout
     {
       panel.resetLayout();
       Box area = panel.getParent().getChildConsumableArea();
-      int newX = panel.getStyle().getCompiledX().getValue() + area.x;
-      int newY = panel.getStyle().getCompiledY().getValue() + area.y;
+      int newX = panel.getStyle().getCompiledX().getX(0, area);
+      int newY = panel.getStyle().getCompiledY().getY(0, area);
       panel.markAsDirty();
       panel.setLocation(newX, newY);
       panel.markAsDirty();

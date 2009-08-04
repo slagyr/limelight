@@ -96,4 +96,14 @@ public class RealStyleAttributeCompilerFactoryTest extends TestCase
     assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
     assertEquals(StringAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
   }
+
+  public void testXCoordinate() throws Exception
+  {
+    assertEquals(XCoordinateAttributeCompiler.class, factory.compiler("x-coordinate").getClass());
+  }
+  
+  public void testYCoordinate() throws Exception
+  {
+    assertEquals(YCoordinateAttributeCompiler.class, factory.compiler("y-coordinate").getClass());
+  }
 }
