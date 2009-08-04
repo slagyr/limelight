@@ -3,7 +3,7 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
 
 public interface StyleAttributeCompilerFactory

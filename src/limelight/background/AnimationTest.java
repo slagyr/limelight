@@ -4,7 +4,6 @@
 package limelight.background;
 
 import junit.framework.TestCase;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.ui.MockPanel;
 import limelight.background.MockAnimation;
 import limelight.Context;

@@ -5,9 +5,9 @@ package limelight.styles;
 
 import junit.framework.TestCase;
 import limelight.styles.styling.SimpleColorAttribute;
-import limelight.styles.styling.PixelsAttributeCompiler;
-import limelight.styles.styling.XCoordinateAttributeCompiler;
-import limelight.styles.styling.YCoordinateAttributeCompiler;
+import limelight.styles.compiling.PixelsAttributeCompiler;
+import limelight.styles.compiling.XCoordinateAttributeCompiler;
+import limelight.styles.compiling.YCoordinateAttributeCompiler;
 import limelight.util.Colors;
 
 import java.awt.*;

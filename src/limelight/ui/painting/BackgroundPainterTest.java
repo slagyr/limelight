@@ -6,10 +6,9 @@ package limelight.ui.painting;
 import junit.framework.TestCase;
 import limelight.util.Colors;
 import limelight.ui.MockGraphics;
-import limelight.ui.MockPanel;
 import limelight.ui.model.MockPropablePanel;
 import limelight.styles.Style;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 
 import java.awt.*;
 

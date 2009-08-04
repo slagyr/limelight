@@ -6,7 +6,7 @@ package limelight.styles.abstrstyling;
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.styling.SimpleIntegerAttribute;
-import limelight.styles.styling.IntegerAttributeCompiler;
+import limelight.styles.compiling.IntegerAttributeCompiler;
 
 public class NoneableAttributeCompilerTest extends TestCase
 {

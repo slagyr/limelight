@@ -6,7 +6,6 @@ package limelight.ui.api;
 import limelight.ResourceLoader;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.ui.Panel;
 
 import java.awt.event.FocusEvent;

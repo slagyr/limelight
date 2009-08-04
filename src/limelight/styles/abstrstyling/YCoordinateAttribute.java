@@ -1,8 +1,8 @@
 package limelight.styles.abstrstyling;
 
-import limelight.util.Box;
+import java.awt.*;
 
 public interface YCoordinateAttribute extends StyleAttribute
 {
-  int getY(int consumed, Box area);
+  int getY(int consumed, Rectangle area);
 }

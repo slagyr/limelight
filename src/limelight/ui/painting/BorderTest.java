@@ -6,7 +6,6 @@ package limelight.ui.painting;
 import junit.framework.TestCase;
 import limelight.styles.FlatStyle;
 import limelight.styles.Style;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.util.Box;
 
 import java.awt.*;

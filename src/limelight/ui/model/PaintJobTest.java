@@ -9,9 +9,7 @@ import limelight.util.Box;
 import limelight.util.Colors;
 import limelight.ui.*;
 import limelight.ui.Panel;
-import limelight.styles.FlatStyle;
 import limelight.styles.Style;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.Context;
 import limelight.BufferedImagePool;
 import limelight.caching.SimpleCache;
@@ -149,9 +147,10 @@ public class PaintJobTest extends TestCase
     job.applyTo(graphics);
 
     assertEquals(AlphaComposite.Src, graphics.getComposite());
-    assertSame(job.getBuffer(), graphics.drawnImage);
-    assertEquals(100, graphics.drawnImageX);
-    assertEquals(200, graphics.drawnImageY);
+    MockGraphics.DrawnImage drawnImage = graphics.drawnImages.get(0);
+    assertSame(job.getBuffer(), drawnImage.image);
+    assertEquals(100, drawnImage.x);
+    assertEquals(200, drawnImage.y);
   }
 
   public void testPaintingChildren() throws Exception

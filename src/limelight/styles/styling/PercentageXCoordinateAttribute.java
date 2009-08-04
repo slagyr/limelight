@@ -1,7 +1,8 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.XCoordinateAttribute;
-import limelight.util.Box;
+
+import java.awt.*;
 
 public class PercentageXCoordinateAttribute extends SimplePercentageAttribute implements XCoordinateAttribute
 {
@@ -10,7 +11,7 @@ public class PercentageXCoordinateAttribute extends SimplePercentageAttribute im
     super(percentage);
   }
 
-  public int getX(int consumed, Box area)
+  public int getX(int consumed, Rectangle area)
   {
 
     return (int) ((getPercentage() * 0.01) * (double) area.width) + area.x;

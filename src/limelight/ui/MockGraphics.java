@@ -18,17 +18,13 @@ public class MockGraphics extends java.awt.Graphics2D
 	public Color color;
 	public final LinkedList<DrawnShape> drawnShapes;
 	public final LinkedList<DrawnShape> filledShapes;
+  public ArrayList<DrawnImage> drawnImages = new ArrayList<DrawnImage>();
   public BasicStroke stroke;
   public final Hashtable<Object, Object> hints;
   public Box clip;
   public Paint paint;
   public Box createdGraphicsBox;
   public MockGraphics createdGraphics;
-  public Image drawnImage;
-  public int drawnImageX;
-  public int drawnImageY;
-  public Rectangle drawnImageDestination;
-  public Rectangle drawnImageSource;
   public Box clippedRectangle;
   private Composite composite;
 
@@ -48,6 +44,29 @@ public class MockGraphics extends java.awt.Graphics2D
       this.antialiasing = antialiasing;
     }
 	}
+
+  public class DrawnImage
+  {
+    public final Image image;
+    public int x;
+    public int y;
+    public Rectangle destination;
+    public Rectangle source;
+
+    public DrawnImage(Image image, int x, int y)
+    {
+      this.image = image;
+      this.x = x;
+      this.y = y;
+    }
+
+    public DrawnImage(Image image, Rectangle destination, Rectangle source)
+    {
+      this.image = image;
+      this.destination = destination;
+      this.source = source;
+    }
+  }
 
 	public MockGraphics()
 	{
@@ -82,9 +101,7 @@ public class MockGraphics extends java.awt.Graphics2D
 
   public boolean drawImage(Image image, int x, int y, ImageObserver imageObserver)
 	{
-    drawnImage = image;
-    drawnImageX = x;
-    drawnImageY = y;
+    drawnImages.add(new DrawnImage(image, x, y));
     return true;
 	}
 
@@ -105,9 +122,7 @@ public class MockGraphics extends java.awt.Graphics2D
 
 	public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver imageObserver)
 	{
-    drawnImage = image;
-    drawnImageDestination = new Rectangle(dx1, dy1, dx2 - dx1, dy2 - dy1);
-    drawnImageSource = new Rectangle(sx1, sy1, sx2 - sx1, sy2 - sy1);
+    drawnImages.add(new DrawnImage(image, new Rectangle(dx1, dy1, dx2 - dx1, dy2 - dy1), new Rectangle(sx1, sy1, sx2 - sx1, sy2 - sy1)));
     return true;
 	}
 

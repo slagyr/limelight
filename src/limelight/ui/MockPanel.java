@@ -7,7 +7,6 @@ import limelight.ui.model.BasePanel;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 import java.awt.*;
 
