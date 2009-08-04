@@ -4,9 +4,10 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 import limelight.styles.styling.SimpleColorAttribute;
 import limelight.styles.styling.PixelsAttributeCompiler;
+import limelight.styles.styling.XCoordinateAttributeCompiler;
+import limelight.styles.styling.YCoordinateAttributeCompiler;
 import limelight.util.Colors;
 
 import java.awt.*;
@@ -152,5 +153,17 @@ public class StyleTest extends TestCase
     assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_LEFT_BORDER_WIDTH.compiler.getClass());
     assertEquals(PixelsAttributeCompiler.class, Style.LEFT_BORDER_WIDTH.compiler.getClass());
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_LEFT_BORDER_WIDTH.compiler.getClass());
+  }
+  
+  public void testXandY() throws Exception
+  {
+    assertEquals(XCoordinateAttributeCompiler.class, Style.X.compiler.getClass());
+    assertEquals(YCoordinateAttributeCompiler.class, Style.Y.compiler.getClass());
+  }
+
+  public void testBackgroundImageXandY() throws Exception
+  {
+    assertEquals(XCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_X.compiler.getClass());
+    assertEquals(YCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_Y.compiler.getClass());
   }
 }

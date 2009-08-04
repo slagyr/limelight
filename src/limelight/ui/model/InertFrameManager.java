@@ -20,6 +20,10 @@ public class InertFrameManager implements FrameManager
     return null;
   }
 
+  public void getVisibleFrames(ArrayList<StageFrame> result)
+  {
+  }
+
   public boolean isWatching(StageFrame frame)
   {
     return frames.contains(frame);

@@ -53,4 +53,9 @@ public class PercentageAttributeCompiler extends StyleAttributeCompiler
     }
     return -1.0;
   }
+
+  public static boolean isPercentage(String value)
+  {
+    return value.indexOf('%') != -1;
+  }
 }

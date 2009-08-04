@@ -48,6 +48,10 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
       return new NoneableAttributeCompiler<SimpleIntegerAttribute>(new IntegerAttributeCompiler());
     else if("noneable string".equals(name))
       return new NoneableAttributeCompiler<StringAttribute>(new StringAttributeCompiler());
+    else if("x-coordinate".equals(name))
+      return new XCoordinateAttributeCompiler();
+    else if("y-coordinate".equals(name))
+      return new YCoordinateAttributeCompiler();
     else
       throw new LimelightError("Unknown StyleAttributeCompiler named " + name);
   }

@@ -73,7 +73,6 @@ public class TextPanel extends BasePanel
 
   public void paintOn(Graphics2D graphics)
   {
-    Aligner aligner = createAligner();
     graphics.setColor(getStyle().getCompiledTextColor().getColor());
     float y = 0;
     if(lines == null)
@@ -83,7 +82,8 @@ public class TextPanel extends BasePanel
       for(TextLayout textLayout : lines)
       {
         y += textLayout.getAscent();
-        textLayout.draw(graphics, aligner.startingX(widthOf(textLayout)), y);
+        int x = getStyle().getCompiledHorizontalAlignment().getX((int)widthOf(textLayout), new Box(0, 0, getWidth(), getHeight()));
+        textLayout.draw(graphics, x, y);
         y += textLayout.getDescent() + textLayout.getLeading();
       }
     }
@@ -128,11 +128,6 @@ public class TextPanel extends BasePanel
   public void snapToSize()
   {
     setSize((int) (consumedWidth + 0.5), (int) (consumedHeight + 0.5));
-  }
-
-  private Aligner createAligner()
-  {
-    return new Aligner(new Box(0, 0, getWidth(), getHeight()), getStyle().getCompiledHorizontalAlignment().getAlignment(), getStyle().getCompiledVerticalAlignment().getAlignment());
   }
 
   public synchronized void buildLines()

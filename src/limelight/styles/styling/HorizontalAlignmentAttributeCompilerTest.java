@@ -5,7 +5,7 @@ package limelight.styles.styling;
 
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-import limelight.util.Aligner;
+import limelight.styles.HorizontalAlignment;
 
 public class HorizontalAlignmentAttributeCompilerTest extends TestCase
 {
@@ -19,10 +19,10 @@ public class HorizontalAlignmentAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(Aligner.LEFT, ((SimpleHorizontalAlignmentAttribute) compiler.compile("left")).getAlignment());
-    assertEquals(Aligner.RIGHT, ((SimpleHorizontalAlignmentAttribute) compiler.compile("right")).getAlignment());
-    assertEquals(Aligner.HORIZONTAL_CENTER, ((SimpleHorizontalAlignmentAttribute) compiler.compile("center")).getAlignment());
-    assertEquals(Aligner.HORIZONTAL_CENTER, ((SimpleHorizontalAlignmentAttribute) compiler.compile("middle")).getAlignment());
+    assertEquals(HorizontalAlignment.LEFT, ((SimpleHorizontalAlignmentAttribute) compiler.compile("left")).getAlignment());
+    assertEquals(HorizontalAlignment.RIGHT, ((SimpleHorizontalAlignmentAttribute) compiler.compile("right")).getAlignment());
+    assertEquals(HorizontalAlignment.CENTER, ((SimpleHorizontalAlignmentAttribute) compiler.compile("center")).getAlignment());
+    assertEquals(HorizontalAlignment.CENTER, ((SimpleHorizontalAlignmentAttribute) compiler.compile("middle")).getAlignment());
   }
 
   public void testInvalidValue() throws Exception

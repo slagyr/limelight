@@ -4,14 +4,13 @@
 package limelight.ui.model;
 
 import limelight.Context;
-import limelight.util.Debug;
 import limelight.ui.api.Stage;
-
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.*;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 public class AlertFrameManager implements WindowFocusListener, WindowListener, FrameManager
 {
@@ -133,5 +132,14 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
     Stage stage = activeFrame.getStage();
     stage.theater().stage_activated(stage);
+  }
+
+  public void getVisibleFrames(ArrayList<StageFrame> result)
+  {
+    for(StageFrame frame : frames)
+    {
+      if(frame.isVisible())
+        result.add(frame);
+    }
   }
 }

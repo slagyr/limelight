@@ -5,21 +5,29 @@ package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
 import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.util.Aligner;
+import limelight.styles.VerticalAlignment;
 
 public class VerticalAlignmentAttributeCompiler extends StyleAttributeCompiler
 {
   public StyleAttribute compile(Object value)
   {
-    String lowerCase = value.toString().toLowerCase().trim();
-    if("top".equals(lowerCase))
-      return new SimpleVerticalAlignmentAttribute(Aligner.TOP);
-    else if("center".equals(lowerCase) || "middle".equals(lowerCase))
-      return new SimpleVerticalAlignmentAttribute(Aligner.VERTICAL_CENTER);
-    else if("bottom".equals(lowerCase))
-      return new SimpleVerticalAlignmentAttribute(Aligner.BOTTOM);
+    VerticalAlignment alignment = parse(value);
+    if(alignment != null)
+      return new SimpleVerticalAlignmentAttribute(alignment);
     else
       throw makeError(value);
+  }
 
+  public static VerticalAlignment parse(Object value)
+  {
+    String lowerCase = value.toString().toLowerCase().trim();
+    if("top".equals(lowerCase))
+      return VerticalAlignment.TOP;
+    else if("center".equals(lowerCase) || "middle".equals(lowerCase))
+      return VerticalAlignment.CENTER;
+    else if("bottom".equals(lowerCase))
+      return VerticalAlignment.BOTTOM;
+    else
+      return null;
   }
 }

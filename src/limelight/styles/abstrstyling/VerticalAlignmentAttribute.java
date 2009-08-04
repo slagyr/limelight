@@ -3,9 +3,11 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.util.Aligner;
+import limelight.util.Box;
+import limelight.styles.VerticalAlignment;
 
 public interface VerticalAlignmentAttribute extends StyleAttribute
 {
-  Aligner.VerticalAligner getAlignment();
+  VerticalAlignment getAlignment();
+  int getY(int consumed, Box area);
 }

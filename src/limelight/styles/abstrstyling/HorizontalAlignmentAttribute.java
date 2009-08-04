@@ -3,9 +3,11 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.util.Aligner;
+import limelight.util.Box;
+import limelight.styles.HorizontalAlignment;
 
 public interface HorizontalAlignmentAttribute extends StyleAttribute
 {
-  Aligner.HorizontalAligner getAlignment();
+  HorizontalAlignment getAlignment();
+  int getX(int consumed, Box area);
 }

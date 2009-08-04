@@ -111,7 +111,7 @@ public class RootPanel implements Panel
 
   public void destroy()
   {
-    removeKeyboardFocus();
+    removeKeyboardFocus();                                                                                                     
     contentPane.removeMouseListener(listener);
     contentPane.removeMouseMotionListener(listener);
     contentPane.removeMouseWheelListener(listener);
@@ -292,6 +292,11 @@ public class RootPanel implements Panel
     return imageCache;
   }
 
+  public String toString()
+  {
+    return "RootPanel: " + panel.toString();
+  }
+
   /////////////////////////////////////////////
   /// NOT NEEDED
   /// TODO - Need to remove this from the Panel hierarchy somehow to delete these methods
@@ -308,7 +313,6 @@ public class RootPanel implements Panel
 
   public void doLayout()
   {
-System.err.println("RootPanel.doLayout called.  This was not expeted");
     panel.doLayout();
   }
 

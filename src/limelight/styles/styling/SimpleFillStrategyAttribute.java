@@ -21,7 +21,6 @@ public class SimpleFillStrategyAttribute implements FillStrategyAttribute
       strategy = new StaticImageFillStrategy();
     else if("repeat".equals(name))
       strategy = new RepeatingImageFillStrategy();
-
   }
 
   public ImageFillStrategy getStrategy()

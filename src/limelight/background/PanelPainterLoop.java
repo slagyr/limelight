@@ -18,6 +18,7 @@ public class PanelPainterLoop extends IdleThreadLoop
 {
   private final ArrayList<Panel> panelBuffer = new ArrayList<Panel>(50);
   private final ArrayList<Rectangle> regionBuffer = new ArrayList<Rectangle>(50);
+  private final ArrayList<StageFrame> frameBuffer = new ArrayList<StageFrame>(5);
   private int updatesPerSecond;
   private int optimalDelayTimeNanos;
   private final NanoTimer timer;
@@ -47,22 +48,42 @@ public class PanelPainterLoop extends IdleThreadLoop
 
   public boolean shouldBeIdle()
   {
-    RootPanel root = getActiveRoot();
-    return root == null || nothingToDo(root);
+    // load the frame buffer once... is valid for next execute invocation.
+    frameBuffer.clear();
+    if(Context.instance().frameManager == null)
+      return true;
+    else
+    {
+      Context.instance().frameManager.getVisibleFrames(frameBuffer);
+      return frameBuffer.isEmpty() || nothingToDo();
+    }
   }
 
-  private boolean nothingToDo(RootPanel root)
+  private boolean nothingToDo()
   {
-    return !root.hasPanelsNeedingLayout() && !root.hasDirtyRegions();
+    boolean somethingToDo = false;
+    for(StageFrame stageFrame : frameBuffer)
+    {
+      RootPanel root = stageFrame.getRoot();
+      if(root != null && (root.hasPanelsNeedingLayout() || root.hasDirtyRegions()))
+      {
+        somethingToDo = true;
+        break;
+      }
+    }
+    return !somethingToDo;
   }
-
+  
   protected void execute()
   {
-    RootPanel root = getActiveRoot();
-    if(root != null)
+    for(StageFrame stageFrame : frameBuffer)
     {
-      doAllLayouts(root);
-      paintDirtyRegions(root);
+      RootPanel root = stageFrame.getRoot();
+      if(root != null)
+      {
+        doAllLayouts(root);
+        paintDirtyRegions(root);
+      }
     }
     lastExecutionDuration = timer.getIdleNanos();
   }
@@ -106,7 +127,7 @@ public class PanelPainterLoop extends IdleThreadLoop
       panel.doLayout();
     }
   }
-  
+
   public PanelPainterLoop started()
   {
     start();

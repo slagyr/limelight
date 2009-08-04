@@ -1,21 +1,19 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
 import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.DimensionAttribute;
+import limelight.styles.abstrstyling.XCoordinateAttribute;
+import limelight.styles.HorizontalAlignment;
 
-public class DimensionAttributeCompiler extends StyleAttributeCompiler
+public class XCoordinateAttributeCompiler extends StyleAttributeCompiler
 {
   public StyleAttribute compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
-      DimensionAttribute attribute;
-      attribute = attemptAutoAttribute(value);
+      XCoordinateAttribute attribute;
+      attribute = attemptAlignedAttribute(value);
       if(attribute == null)
         attribute = attemptPercentageAttribute(value);
       if(attribute == null)
@@ -32,31 +30,32 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private DimensionAttribute attemptStaticAttribute(String value)
+  private XCoordinateAttribute attemptStaticAttribute(String value)
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
 
     if(intValue >= 0)
-      return new StaticDimensionAttribute(intValue);
+      return new StaticXCoordinateAttribute(intValue);
     else
       return null;
   }
 
-  private DimensionAttribute attemptAutoAttribute(String value)
+  private XCoordinateAttribute attemptAlignedAttribute(String value)
   {
-    if("auto".equals(value.toLowerCase()))
-      return new AutoDimensionAttribute();
+    HorizontalAlignment alignment = HorizontalAlignmentAttributeCompiler.parse(value);
+    if(alignment != null)
+      return new AlignedXCoordinateAttribute(alignment);
     else
       return null;
   }
 
-  private DimensionAttribute attemptPercentageAttribute(String value)
+  private XCoordinateAttribute attemptPercentageAttribute(String value)
   {
     if(PercentageAttributeCompiler.isPercentage(value))
     {
       double percentValue = PercentageAttributeCompiler.convertToDouble(value);
       if(percentValue >= 0)
-        return new PercentageDimensionAttribute(percentValue);
+        return new PercentageXCoordinateAttribute(percentValue);
     }
     return null;
   }

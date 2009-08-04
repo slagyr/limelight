@@ -1,21 +1,19 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
 import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.DimensionAttribute;
+import limelight.styles.abstrstyling.YCoordinateAttribute;
+import limelight.styles.VerticalAlignment;
 
-public class DimensionAttributeCompiler extends StyleAttributeCompiler
+public class YCoordinateAttributeCompiler extends StyleAttributeCompiler
 {
   public StyleAttribute compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
-      DimensionAttribute attribute;
-      attribute = attemptAutoAttribute(value);
+      YCoordinateAttribute attribute;
+      attribute = attemptAlignedAttribute(value);
       if(attribute == null)
         attribute = attemptPercentageAttribute(value);
       if(attribute == null)
@@ -32,31 +30,32 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private DimensionAttribute attemptStaticAttribute(String value)
+  private YCoordinateAttribute attemptStaticAttribute(String value)
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
 
     if(intValue >= 0)
-      return new StaticDimensionAttribute(intValue);
+      return new StaticYCoordinateAttribute(intValue);
     else
       return null;
   }
 
-  private DimensionAttribute attemptAutoAttribute(String value)
+  private YCoordinateAttribute attemptAlignedAttribute(String value)
   {
-    if("auto".equals(value.toLowerCase()))
-      return new AutoDimensionAttribute();
+    VerticalAlignment alignment = VerticalAlignmentAttributeCompiler.parse(value);
+    if(alignment != null)
+      return new AlignedYCoordinateAttribute(alignment);
     else
       return null;
   }
 
-  private DimensionAttribute attemptPercentageAttribute(String value)
+  private YCoordinateAttribute attemptPercentageAttribute(String value)
   {
     if(PercentageAttributeCompiler.isPercentage(value))
     {
       double percentValue = PercentageAttributeCompiler.convertToDouble(value);
       if(percentValue >= 0)
-        return new PercentageDimensionAttribute(percentValue);
+        return new PercentageYCoordinateAttribute(percentValue);
     }
     return null;
   }

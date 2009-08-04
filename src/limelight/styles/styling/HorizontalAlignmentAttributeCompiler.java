@@ -5,21 +5,29 @@ package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
 import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.util.Aligner;
+import limelight.styles.HorizontalAlignment;
 
 public class HorizontalAlignmentAttributeCompiler extends StyleAttributeCompiler
 {
   public StyleAttribute compile(Object value)
   {
-    String lowerCase = value.toString().toLowerCase().trim();
-    if("left".equals(lowerCase))
-      return new SimpleHorizontalAlignmentAttribute(Aligner.LEFT);
-    else if("center".equals(lowerCase) || "middle".equals(lowerCase))
-      return new SimpleHorizontalAlignmentAttribute(Aligner.HORIZONTAL_CENTER);
-    else if("right".equals(lowerCase))
-      return new SimpleHorizontalAlignmentAttribute(Aligner.RIGHT);
+    HorizontalAlignment alignment = parse(value);
+    if(alignment != null)
+      return new SimpleHorizontalAlignmentAttribute(alignment);
     else
       throw makeError(value);
+  }
 
+  public static HorizontalAlignment parse(Object value)
+  {
+    String lowerCase = value.toString().toLowerCase().trim();
+    if("left".equals(lowerCase))
+      return HorizontalAlignment.LEFT;
+    else if("center".equals(lowerCase) || "middle".equals(lowerCase))
+      return HorizontalAlignment.CENTER;
+    else if("right".equals(lowerCase))
+      return HorizontalAlignment.RIGHT;
+    else
+      return null;
   }
 }

@@ -3,10 +3,13 @@
 
 package limelight.ui.model;
 
+import java.util.ArrayList;
+
 public interface FrameManager
 {
   void watch(StageFrame frame);
   StageFrame getActiveFrame();
+  void getVisibleFrames(ArrayList<StageFrame> result);
   boolean isWatching(StageFrame frame);
   int getFrameCount();
   void closeAllFrames();

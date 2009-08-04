@@ -11,6 +11,7 @@ import limelight.Context;
 import limelight.MockContext;
 
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class AlertFrameManagerTest extends TestCase
 {
@@ -75,5 +76,32 @@ public class AlertFrameManagerTest extends TestCase
     
     frame.visible = true;
     assertEquals(frame, manager.getActiveFrame());
+  }
+
+  public void testGetVisibleFrames() throws Exception
+  {
+    ArrayList<StageFrame> result = new ArrayList<StageFrame>();
+    frame.visible = true;
+    MockStageFrame frame2 = new MockStageFrame();
+
+    manager.getVisibleFrames(result);
+    assertEquals(0, result.size());
+    result.clear();
+
+    manager.watch(frame);
+    manager.getVisibleFrames(result);
+    assertEquals(1, result.size());
+    result.clear();
+
+    frame2.visible = false;
+    manager.watch(frame2);
+    manager.getVisibleFrames(result);
+    assertEquals(1, result.size());
+    result.clear();
+
+    frame2.visible = true;
+    manager.getVisibleFrames(result);
+    assertEquals(2, result.size());
+    result.clear();
   }
 }
