@@ -6,8 +6,10 @@ package limelight.styles.abstrstyling;
 import limelight.util.Box;
 import limelight.styles.VerticalAlignment;
 
+import java.awt.*;
+
 public interface VerticalAlignmentAttribute extends StyleAttribute
 {
   VerticalAlignment getAlignment();
-  int getY(int consumed, Box area);
+  int getY(int consumed, Rectangle area);
 }

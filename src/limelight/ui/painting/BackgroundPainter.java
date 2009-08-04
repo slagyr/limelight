@@ -60,7 +60,7 @@ public class BackgroundPainter extends Painter
         ImageCache cache = rootPanel.getImageCache();
         Image image = cache.getImage(backgroundImageAttribute.getAttribute().getValue());
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);
-        style.getCompiledBackgroundImageFillStrategy().getStrategy().fill(borderedGraphics, image);
+        style.getCompiledBackgroundImageFillStrategy().fill(borderedGraphics, image, style.getCompiledBackgroundImageX(), style.getCompiledBackgroundImageY());
       }
       catch (IOException e)
       {

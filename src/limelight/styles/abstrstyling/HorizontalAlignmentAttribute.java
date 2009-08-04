@@ -3,11 +3,12 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.util.Box;
 import limelight.styles.HorizontalAlignment;
+
+import java.awt.*;
 
 public interface HorizontalAlignmentAttribute extends StyleAttribute
 {
   HorizontalAlignment getAlignment();
-  int getX(int consumed, Box area);
+  int getX(int consumed, Rectangle area);
 }

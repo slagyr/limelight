@@ -4,7 +4,6 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
 
 public class RichStyleTest extends TestCase
 {

@@ -5,7 +5,7 @@ package limelight.styles;
 
 import limelight.Context;
 import limelight.styles.abstrstyling.*;
-import limelight.styles.styling.RealStyleAttributeCompilerFactory;
+import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 
 import java.util.LinkedList;
 

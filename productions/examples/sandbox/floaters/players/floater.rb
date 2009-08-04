@@ -26,7 +26,7 @@ module Floater
     @x = value
     @x = @min_x if @x < @min_x  
     @x = @max_x if @x > @max_x
-    style.x = (value.to_i - width/2)
+    style.x = (@x.to_i - width/2)
   end
 
   def y
@@ -38,7 +38,7 @@ module Floater
     @y = value
     @y = @min_y if @y < @min_y
     @y = @max_y if @y > @max_y
-    style.y = (value.to_i - width/2)
+    style.y = (@y.to_i - width/2)
   end
   
   def center

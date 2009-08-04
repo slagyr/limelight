@@ -1,7 +1,8 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.YCoordinateAttribute;
-import limelight.util.Box;
+
+import java.awt.*;
 
 public class StaticYCoordinateAttribute extends SimpleIntegerAttribute implements YCoordinateAttribute
 {
@@ -10,7 +11,7 @@ public class StaticYCoordinateAttribute extends SimpleIntegerAttribute implement
     super(value);
   }
 
-  public int getY(int consumed, Box area)
+  public int getY(int consumed, Rectangle area)
   {
     return getValue() + area.y;
   }

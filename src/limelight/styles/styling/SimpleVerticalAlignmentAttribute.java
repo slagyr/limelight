@@ -6,7 +6,8 @@ package limelight.styles.styling;
 import limelight.LimelightError;
 import limelight.styles.abstrstyling.VerticalAlignmentAttribute;
 import limelight.styles.VerticalAlignment;
-import limelight.util.Box;
+
+import java.awt.*;
 
 public class SimpleVerticalAlignmentAttribute implements VerticalAlignmentAttribute
 {
@@ -43,7 +44,7 @@ public class SimpleVerticalAlignmentAttribute implements VerticalAlignmentAttrib
     return false;
   }
 
-  public int getY(int consumed, Box area)
+  public int getY(int consumed, Rectangle area)
   {
     if(alignment == VerticalAlignment.TOP)
       return area.y;

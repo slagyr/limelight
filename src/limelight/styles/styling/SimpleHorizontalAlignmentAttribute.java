@@ -5,8 +5,9 @@ package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.HorizontalAlignmentAttribute;
 import limelight.styles.HorizontalAlignment;
-import limelight.util.Box;
 import limelight.LimelightError;
+
+import java.awt.*;
 
 public class SimpleHorizontalAlignmentAttribute implements HorizontalAlignmentAttribute
 {
@@ -43,7 +44,7 @@ public class SimpleHorizontalAlignmentAttribute implements HorizontalAlignmentAt
     return false;
   }
 
-  public int getX(int consumed, Box area)
+  public int getX(int consumed, Rectangle area)
   {
     if(alignment == HorizontalAlignment.LEFT)
       return area.x;

@@ -4,7 +4,7 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
-import limelight.styles.styling.IntegerAttributeCompiler;
+import limelight.styles.compiling.IntegerAttributeCompiler;
 import limelight.styles.styling.SimpleIntegerAttribute;
 
 public class StyleDescriptorTest extends TestCase
