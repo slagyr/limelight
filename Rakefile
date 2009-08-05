@@ -29,3 +29,5 @@ task :junit do
 end
 
 task :tests => [:junit, :spec]
+
+task :default => :tests
