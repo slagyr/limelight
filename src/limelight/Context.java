@@ -104,7 +104,7 @@ public class Context
 
   public void attemptShutdown()
   {
-    if(studio.should_allow_shutdown())
+    if(studio == null || studio.should_allow_shutdown())
       shutdown();
   }
 }

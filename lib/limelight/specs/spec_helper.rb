@@ -6,20 +6,25 @@ require File.expand_path(File.dirname(__FILE__) + "/../../init")
 require 'limelight/scene'
 require 'limelight/producer'
 
-$producer = nil
-$with_ui = true
-
 module Limelight
   module Specs
+
+    class << self
+      attr_accessor :producer
+    end
+
     module SpecHelper
 
       def open_scene
-        if @spec_helper_options[:stage]
-          stage = producer.theater[@spec_helper_options[:stage]]
-          raise "No such stage: '#{@spec_helper_options[:stage]}'" unless stage
+        if @ll_spec_options[:stage]
+          stage = producer.theater[@ll_spec_options[:stage]]
+          raise "No such stage: '#{@ll_spec_options[:stage]}'" unless stage
         else
           stage = producer.theater.default_stage
         end
+
+        stage.should_remain_hidden = @ll_spec_options[:hidden]
+
         @scene = producer.open_scene(@scene_name.to_s, stage)
       end
 
@@ -41,17 +46,23 @@ module Spec
 
         before(:each) do
           @scene_name = scene_name
-          @spec_helper_options = options
+          @ll_spec_options = options
           @scene = nil
         end
       end
 
       after(:suite) do
-        $producer.theater.stages.each { |stage| stage.close } unless $producer.nil?
+        unless Limelight::Specs.producer.nil?
+          Limelight::Specs.producer.theater.stages.each do |stage|
+            # MDM - We do this in a round-about way to reduce the chance of using stubbed or mocked methods.
+            frame = stage.instance_variable_get("@frame")
+            frame.close if frame
+          end
+        end
       end
 
       def producer
-        if $producer.nil?
+        if Limelight::Specs.producer.nil?
           if $with_ui
             Limelight::Main.initializeContext
           else
@@ -59,34 +70,16 @@ module Spec
           end
           raise "$PRODUCTION_PATH undefined.  Make sure you specify the location of the production in $PRODUCTION_PATH." unless defined?($PRODUCTION_PATH)
           raise "Could not find production: '#{$PRODUCTION_PATH}'. Check $PRODUCTION_PATH." unless File.exists?($PRODUCTION_PATH)
-          $producer = Limelight::Producer.new($PRODUCTION_PATH)
-          $producer.load
+          Limelight::Specs.producer = Limelight::Producer.new($PRODUCTION_PATH)
+          Limelight::Specs.producer.load
         end
-        return $producer
+        return Limelight::Specs.producer
       end
 
       def production
         return producer.production
       end
 
-    end
-  end
-end
-
-if !$with_ui
-  module Limelight
-    module UI
-      module Model
-
-        class Frame
-
-          def open
-
-          end
-
-        end
-
-      end
     end
   end
 end

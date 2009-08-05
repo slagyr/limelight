@@ -128,6 +128,19 @@ describe Limelight::Stage do
       @stage.show
     end
 
+    it "should open the frame when opening" do
+      @stage.frame.should_receive(:open)
+
+      @stage.open(@scene)
+    end
+
+    it "should not open the frame when opening and in hidden mode" do
+      @stage.should_remain_hidden = true
+      @stage.frame.should_not_receive(:open)
+
+      @stage.open(@scene)
+    end
+
   end
 
 end

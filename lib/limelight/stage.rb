@@ -15,6 +15,8 @@ module Limelight
   class Stage
     attr_accessor :default_scene
     attr_reader :frame, :current_scene, :name, :theater
+
+    attr_accessor :should_remain_hidden #:nodoc:
     
     include UI::Api::Stage
 
@@ -117,7 +119,7 @@ module Limelight
     # Shows the stage after having hiding it.
     #
     def show
-      @frame.visible = true
+      @frame.visible = true unless @should_remain_hidden
     end
 
     # Returns true if the stage is visible on the screen.
@@ -171,7 +173,7 @@ module Limelight
       scene.stage = self
       scene.illuminate
       load_scene(scene)
-      @frame.open
+      @frame.open unless @should_remain_hidden
       scene.visible = true
       scene.scene_opened(self)
     end
