@@ -30,4 +30,10 @@ end
 
 task :tests => [:junit, :spec]
 
-task :default => :tests
+task :continuous do
+  require 'fileutils'
+  FileUtils.rm_rf "src/limelight/os/darwin"
+  Rake::Task[:tests].invoke
+end
+
+task :default => :continuous
