@@ -37,8 +37,9 @@ module Limelight
 
     include UI::Api::Prop
 
+    attr_accessor :style, :hover_style
     attr_reader :panel #:nodoc:
-    attr_reader :style, :hover_style, :children, :parent, :name, :id, :players
+    attr_reader :children, :parent, :name, :id, :players
     getters :panel, :style, :hover_style, :name, :scene, :loader #:nodoc:
 
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.
@@ -108,7 +109,10 @@ module Limelight
     # Injects the behavior of the specified Player into the Prop.  The Player must be a Module.
     #
     def include_player(player_module)
-      extend player_module unless self.is_a?(player_module)
+      unless self.is_a?(player_module)
+        extend player_module
+        self.casted if player_module.instance_methods.include?("casted")
+      end 
     end
 
     def update #:nodoc:
