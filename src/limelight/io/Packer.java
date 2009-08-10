@@ -20,6 +20,14 @@ public class Packer
     return zipper.getDirectoryPath();
   }
 
+  public String unpack(String packagePath, String destination) throws Exception
+  {
+    FileInputStream input = new FileInputStream(packagePath);
+    DirectoryZipper zipper = DirectoryZipper.fromZip(input);
+    zipper.unzip(destination);
+    return zipper.getDirectoryPath();
+  }
+
   public void pack(String productionPath) throws Exception
   {
     DirectoryZipper zipper = DirectoryZipper.fromDir(productionPath);

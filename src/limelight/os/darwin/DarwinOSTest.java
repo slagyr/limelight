@@ -5,6 +5,8 @@ import limelight.Context;
 import limelight.ui.api.MockStudio;
 import com.apple.eawt.Application;
 
+import java.io.File;
+
 public class DarwinOSTest extends TestCase
 {
   private DarwinOS os;
@@ -12,6 +14,11 @@ public class DarwinOSTest extends TestCase
   public void setUp() throws Exception
   {
     os = new DarwinOS();
+  }
+
+  public void testDataRootDir() throws Exception
+  {
+    assertEquals(System.getProperty("user.home") + "/Library/Application Support/Limelight", os.dataRoot());
   }
 
   public void testConfigureSystemProperties() throws Exception

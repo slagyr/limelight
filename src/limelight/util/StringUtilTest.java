@@ -10,13 +10,15 @@ public class StringUtilTest extends TestCase
 
   public void testJoin() throws Exception
   {
-    String result = StringUtil.join(new String[]{"one", "two", "three"}, ",");
+    String result = StringUtil.join(",", new String[]{"one", "two", "three"});
+    assertEquals("one,two,three", result);
+    result = StringUtil.join(",", "one", "two", "three");
     assertEquals("one,two,three", result);
 
-    result = StringUtil.join(new String[]{}, ",");
+    result = StringUtil.join(",");
     assertEquals("", result);
 
-    result = StringUtil.join(new String[]{"one"}, ",");
+    result = StringUtil.join(",", "one");
     assertEquals("one", result);
   }
   

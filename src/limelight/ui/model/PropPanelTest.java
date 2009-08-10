@@ -449,6 +449,19 @@ public class PropPanelTest extends TestCase
     assertEquals(null, style.getScreen());
   }
 
+  public void testHoverOffWhenHoverStyledWasRemovedFromProp() throws Exception
+  {
+    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
+    prop.hoverStyle = new FlatStyle();
+
+    panel.mouseEntered(event);
+    prop.hoverStyle = null;
+    panel.mouseExited(event);
+
+    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(null, style.getScreen());
+  }
+
   public void testWidthOrHeightChanges() throws Exception
   {
     panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
