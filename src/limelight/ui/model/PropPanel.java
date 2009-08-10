@@ -478,8 +478,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   private void hoverOff()
   {
-    Style hoverStyle = getProp().getHoverStyle();
-    if(hoverStyle != null)
+    if(getProp().getStyle().hasScreen())
     {
       getProp().getStyle().removeScreen();
       RootPanel root = getRoot();

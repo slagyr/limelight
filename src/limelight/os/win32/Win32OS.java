@@ -8,6 +8,11 @@ public class Win32OS extends OS
   // Create this object here and keep it around so it doesn't get garbage collected.
   private final KeyboardHandler keyboardHandler = new KeyboardHandler();
 
+  public String dataRoot()
+  {
+    return System.getProperty("user.home") + "/Application Data/Limelight";
+  }
+
   protected void turnOnKioskMode()
   {
     new Thread()

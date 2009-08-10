@@ -58,4 +58,9 @@ public class ScreenableStyle extends RichStyle
     this.screen = null;
     applyChangesFromScreen(screen, false);
   }
+
+  public boolean hasScreen()
+  {
+    return screen != null;
+  }
 }

@@ -1,6 +1,7 @@
 package limelight.os;
 
 import limelight.Context;
+import limelight.io.TempDirectory;
 
 public abstract class OS
 {
@@ -8,6 +9,12 @@ public abstract class OS
 
   protected abstract void turnOnKioskMode();
   protected abstract void turnOffKioskMode();
+  public abstract void configureSystemProperties();
+
+  public String dataRoot()
+  {
+    return new TempDirectory().getRoot().getAbsolutePath();
+  }
 
   public void enterKioskMode()
   {
@@ -27,8 +34,6 @@ public abstract class OS
   {
     return inKioskMode;
   }
-
-  public abstract void configureSystemProperties();
 
   public void appIsStarting()
   {

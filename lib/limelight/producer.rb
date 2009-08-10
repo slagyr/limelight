@@ -200,7 +200,9 @@ module Limelight
 
     def unpack_production(production_name)
       packer = Limelight::Util::Packer.new()
-      return packer.unpack(production_name)
+      dest_dir = File.join(Data.productions_dir, rand.to_s.sub("0.", ""))
+      Dir.mkdir(dest_dir)
+      return packer.unpack(production_name, dest_dir)
     end
 
   end

@@ -5,7 +5,7 @@ package limelight.util;
 
 public class StringUtil
 {
-  public static String join(String[] tokens, String delimiter)
+  public static String join(String delimiter, String... tokens)
   {
     if (tokens.length == 0)
       return "";

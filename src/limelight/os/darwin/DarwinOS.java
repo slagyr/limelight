@@ -2,7 +2,10 @@ package limelight.os.darwin;
 
 import limelight.os.OS;
 import limelight.Context;
+import limelight.util.StringUtil;
 import com.sun.jna.ptr.IntByReference;
+
+import java.io.File;
 
 public class DarwinOS extends OS
 {
@@ -18,6 +21,11 @@ public class DarwinOS extends OS
       applicationAdapter = new LimelightApplicationAdapter();
       applicationAdapter.register();
     }
+  }
+
+  public String dataRoot()
+  {
+    return System.getProperty("user.home") + "/Library/Application Support/Limelight";
   }
 
   protected void turnOnKioskMode()

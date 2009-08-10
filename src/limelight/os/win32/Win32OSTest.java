@@ -13,6 +13,11 @@ public class Win32OSTest extends TestCase
   {
     os = new Win32OS();
   }
+  
+  public void testDataRootDir() throws Exception
+  {
+    assertEquals(System.getProperty("user.home") + "/Application Data/Limelight", os.dataRoot());
+  }
 
   public void testConfigureSystemProperties() throws Exception
   {

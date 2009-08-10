@@ -12,7 +12,7 @@ module Limelight
       end
 
       def root
-        @root = calculate_root if @root == nil
+        @root = Context.instance.os.dataRoot if @root == nil
         return @root
       end
 
@@ -28,19 +28,6 @@ module Limelight
         Dir.mkdir(root) if !File.exists?(root)
         Dir.mkdir(downloads_dir) if !File.exists?(downloads_dir)
         Dir.mkdir(productions_dir) if !File.exists?(productions_dir)
-      end
-
-      private #############################################
-
-      def calculate_root
-        case Context.instance.os
-        when "osx"
-          return File.expand_path(File.join("~/Library/Application Support/Limelight"))
-        when "windows"
-          return File.expand_path(File.join("~/Application Data/Limelight"))
-        else
-          raise "Unknown operating system: #{Context.os}"
-        end
       end
 
     end
