@@ -8,21 +8,7 @@ describe Limelight::Data do
 
   before(:each) do
     Limelight::Data.reset
-    Limelight::Context.instance.stub!(:os).and_return("osx")
-  end
-
-  it "should have a root on osx" do
-    Limelight::Context.instance.stub!(:os).and_return("osx")
-    expected = File.expand_path(File.join("~/Library/Application Support/Limelight"))
-
-    Limelight::Data.root.should == expected
-  end
-
-  it "should have a root on windows" do
-    Limelight::Context.instance.stub!(:os).and_return("windows")
-    expected = File.expand_path(File.join("~/Application Data/Limelight"))
-
-    Limelight::Data.root.should == expected
+    Limelight::Context.instance.os.stub!(:dataRoot).and_return("~/")
   end
 
   it "should have a Downloads dir" do

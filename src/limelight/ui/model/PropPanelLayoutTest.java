@@ -365,10 +365,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setScrollbars("on");
     layout.doLayout(parent);
 
-    PropPanel panel = new PropPanel(new MockProp());
-    panel.getStyle().setWidth("100%");
-    panel.getStyle().setHeight("100%");
-    parent.add(panel);
+    PropPanel panel = addChildWithSize(parent, "100%", "100%");
     layout.doLayout(parent);
 
     assertEquals(0, panel.getX());
@@ -380,10 +377,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setScrollbars("on");
     layout.doLayout(parent);
 
-    PropPanel panel = new PropPanel(new MockProp());
-    panel.getStyle().setWidth("200");
-    panel.getStyle().setHeight("300");
-    parent.add(panel);
+    PropPanel panel = addChildWithSize(parent, "200", "300");
     layout.doLayout(parent);
 
     assertEquals(200, parent.getHorizontalScrollBar().getMaximumValue());
@@ -393,10 +387,7 @@ public class PropPanelLayoutTest extends TestCase
   public void testLayoutRowsWithScrollOffsets() throws Exception
   {
     parent.getStyle().setScrollbars("on");
-    PropPanel panel = new PropPanel(new MockProp());
-    panel.getStyle().setWidth("200");
-    panel.getStyle().setHeight("300");
-    parent.add(panel);
+    PropPanel panel = addChildWithSize(parent, "200", "300");
     layout.doLayout(parent);
 
     parent.getVerticalScrollBar().setValue(100);
@@ -426,7 +417,7 @@ public class PropPanelLayoutTest extends TestCase
 
     assertEquals(true, parent.isLaidOut());
   }
-  
+
   public void testPanelMarkedAsDirty() throws Exception
   {
     root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
@@ -448,5 +439,45 @@ public class PropPanelLayoutTest extends TestCase
   public void testShouldOverideEverything() throws Exception
   {
     assertEquals(true, layout.overides(null));
+  }
+
+  public void testShouldLayoutChildrenWithPercentageDimensionsWhenSizeChanges() throws Exception
+  {
+    parent.setSize(100, 100);
+    PropPanel panel = addChildWithSize(parent, "100%", "100%");
+    layout.doLayout(parent);
+
+    parent.getStyle().setWidth(200);
+    parent.getStyle().setHeight(300);
+    layout.doLayout(parent);
+
+    assertEquals(200, panel.getWidth());
+    assertEquals(300, panel.getHeight());
+  }
+
+  public void testShouldLayoutChildrenWithAutoDimensionsWhenSizeChanges() throws Exception
+  {
+    parent.setSize(100, 100);
+    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    PropPanel child = addChildWithSize(panel, "100%", "100%");
+    layout.doLayout(parent);
+
+    parent.getStyle().setWidth(200);
+    parent.getStyle().setHeight(300);
+    layout.doLayout(parent);
+
+    assertEquals(200, panel.getWidth());
+    assertEquals(300, panel.getHeight());
+    assertEquals(200, child.getWidth());
+    assertEquals(300, child.getHeight());
+  }
+
+  private PropPanel addChildWithSize(BasePanel parent, String width, String height)
+  {
+    PropPanel panel = new PropPanel(new MockProp());
+    panel.getStyle().setWidth(width);
+    panel.getStyle().setHeight(height);
+    parent.add(panel);
+    return panel;
   }
 }

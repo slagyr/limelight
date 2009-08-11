@@ -384,7 +384,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
         sizeChanged = true;
         markAsNeedingLayout();
         getParent().markAsNeedingLayout();
-        propogateSizeChange(getParent());
+        propogateSizeChangeUp(getParent());
       }
       else if(isBorderDescriptor(descriptor) || isMarginPaddingOrBorder(value))
       {
@@ -394,7 +394,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
       {
-//System.err.println("requesting floater layout");
         markAsNeedingLayout(FloaterLayout.instance);
       }
       else

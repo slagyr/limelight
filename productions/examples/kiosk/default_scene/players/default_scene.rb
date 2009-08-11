@@ -4,20 +4,20 @@ module DefaultScene
 
   def toggle_kiosk_mode
     if stage.kiosk?
-      kiosk_button.text = "Switch Kiosk Mode: OFF"
+      kiosk_button.text = "Toggle Kiosk Mode: OFF"
       stage.kiosk = false
     else
-      kiosk_button.text = "Switch Kiosk Mode: ON"
+      kiosk_button.text = "Toggle Kiosk Mode: ON"
       stage.kiosk = true
     end
   end
 
   def toggle_fullscreen_mode
     if stage.fullscreen?
-      fullscreen_button.text = "Switch Fullscreen Mode: OFF"
+      fullscreen_button.text = "Toggle Fullscreen Mode: OFF"
       stage.fullscreen = false
     else
-      fullscreen_button.text = "Switch Fullscreen Mode: ON"
+      fullscreen_button.text = "Toggle Fullscreen Mode: ON"
       stage.fullscreen = true
     end
   end

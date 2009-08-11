@@ -42,37 +42,39 @@ module Limelight
       @frame.title = value
     end
 
-    # Returns the width and height of the Stage.
+    # Returns the width and height styles of the Stage.
     #
     #   width, height = stage.size
     #
     def size
-      dimensions = @frame.size
-      return dimensions.width, dimensions.height
+      return @frame.width_style.to_s, @frame.height_style.to_s
     end
 
-    # Sets the width and height of the Stage. The dimensions are passed in as an array.
+    # Sets the width and height styles of the Stage.
     #
     #   state.size = [100, 200]
+    #   state.size = ["50%", "100%"] # consuming 50% of the width and 100% of the height of the screen
     #
-    def size=(values)
-      @frame.set_size(values[0], values[1])
+    def size=(*values)
+      values = values[0] if values.size == 1 && values[0].is_a?(Array)
+      @frame.set_size_styles(values[0], values[1])
     end
 
-    # The location of the Stage on the screen.
+    # The location styles of the Stage.
     #
     #   x, y = stage.location
     #
     def location
-      return @frame.location.x, @frame.location.y
+      return @frame.getXLocationStyle.to_s, @frame.getYLocationStyle.to_s
     end
 
-    # Sets the location of the Stage on the screen.
+    # Sets the location styles of the Stage.
     #
     #   stage.location = [500, 200]
     #
-    def location= values
-      @frame.set_location(values[0], values[1])
+    def location=(*values)
+      values = values[0] if values.size == 1 && values[0].is_a?(Array)
+      @frame.set_location_styles(values[0], values[1])
     end
 
     # Turns fullscreen mode on and off.  In fullscreen mode, the stage will fill the entire screen and appear on top

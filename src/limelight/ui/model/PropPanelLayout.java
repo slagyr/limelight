@@ -7,6 +7,7 @@ import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.util.LinkedList;
 import java.util.List;

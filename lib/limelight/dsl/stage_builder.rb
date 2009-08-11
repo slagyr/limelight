@@ -86,10 +86,10 @@ module Limelight
         @__stage__.default_scene = scene_name
       end
 
-      def method_missing(sym, value)  #:nodoc:
+      def method_missing(sym, *values)  #:nodoc:     
         setter_sym = "#{sym}=".to_s
         raise StageBuilderException.new(sym) if !@__stage__.respond_to?(setter_sym)
-        @__stage__.send(setter_sym, value)
+        @__stage__.send(setter_sym, *values)
       end
     end
 

@@ -11,7 +11,7 @@ import limelight.styles.styling.AutoDimensionAttribute;
 import limelight.styles.styling.PercentageDimensionAttribute;
 
 public class DimensionAttributeCompiler extends StyleAttributeCompiler
-{
+{ 
   public StyleAttribute compile(Object objValue)
   {
     String value = objValue.toString();
