@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
@@ -14,15 +15,26 @@ import java.awt.event.*;
 
 public class StageFrame extends JFrame implements KeyListener
 {
+  private static final StyleAttributeCompiler widthCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage width");
+  private static final StyleAttributeCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
+  private static final StyleAttributeCompiler xCompiler = Context.instance().styleAttributeCompilerFactory.compiler("x-coordinate", "stage x-coordinate");
+  private static final StyleAttributeCompiler yCompiler = Context.instance().styleAttributeCompilerFactory.compiler("y-coordinate", "stage y-coordinate");
+  private static final NoneableAttribute<IntegerAttribute> NONE = new NoneableAttribute<IntegerAttribute>(null);
+
   private Stage stage;
   protected RootPanel root;
   private Insets insets;
   private boolean fullscreen;
   private boolean hasMenuBar;
-  private GraphicsDevice graphicsDevice;
+  private GraphicsDevice graphicsDevice; //used for testing
+  private Insets screenInsets; //used for testing
   private boolean kiosk;
-  private Dimension size;
-  private Point location;
+  private Dimension sizeBeforeFullScreen;
+  private Point locationBeforeFullScreen;
+  private DimensionAttribute widthStyle = (DimensionAttribute)widthCompiler.compile(500);
+  private DimensionAttribute heightStyle = (DimensionAttribute)heightCompiler.compile(500);
+  private XCoordinateAttribute xLocationStyle = (XCoordinateAttribute)xCompiler.compile("center");
+  private YCoordinateAttribute yLocationStyle = (YCoordinateAttribute)yCompiler.compile("center");
 
   protected StageFrame()
   {
@@ -59,8 +71,10 @@ public class StageFrame extends JFrame implements KeyListener
     if(!hasMenuBar)
       setJMenuBar(null);
 
+    applySizeStyles();
+    applyLocationStyles();
+    
     setVisible(true);
-//    enterKioskOrFullscreenIfNeeded();
     refresh();
   }
 
@@ -71,7 +85,9 @@ public class StageFrame extends JFrame implements KeyListener
     super.setVisible(visible);
 
     if(visible)
+    {
       enterKioskOrFullscreenIfNeeded();
+    }
     else
       exitKioskOrFullscreenIfNeeded();
   }
@@ -84,32 +100,44 @@ public class StageFrame extends JFrame implements KeyListener
     }
   }
 
-  public void setSize(int width, int height)
+  public void setSizeStyles(Object widthValue, Object heightValue)
   {
-    size = new Dimension(width, height);
-    super.setSize(width, height);
+    widthStyle = (DimensionAttribute) widthCompiler.compile(widthValue);
+    heightStyle = (DimensionAttribute) heightCompiler.compile(heightValue);
+
+    applySizeStyles();
+  }
+  
+  public DimensionAttribute getWidthStyle()
+  {
+    return widthStyle;
   }
 
-  public void setSize(Dimension d)
+  public DimensionAttribute getHeightStyle()
   {
-    size = new Dimension(d.width, d.height);
-    super.setSize(d);
+    return heightStyle;
   }
 
-  public void setLocation(int x, int y)
+  public void setLocationStyles(Object xValue, Object yValue)
   {
-    location = new Point(x, y);
-    super.setLocation(x, y);
+    xLocationStyle = (XCoordinateAttribute) xCompiler.compile(xValue);
+    yLocationStyle = (YCoordinateAttribute) yCompiler.compile(yValue);
+
+    applyLocationStyles();
   }
 
-  public void setLocation(Point p)
+  public XCoordinateAttribute getXLocationStyle()
   {
-    location = new Point(p.x, p.y);
-    super.setLocation(p);
+    return xLocationStyle;
+  }
+
+  public YCoordinateAttribute getYLocationStyle()
+  {
+    return yLocationStyle;
   }
 
   public void load(Panel child)
-  {   
+  {
     if(root != null)
       root.destroy();
     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -152,13 +180,18 @@ public class StageFrame extends JFrame implements KeyListener
     {
       fullscreen = setting;
       if(fullscreen && isVisible() && this != getGraphicsDevice().getFullScreenWindow())
-        getGraphicsDevice().setFullScreenWindow(this);
+        turnFullScreenOn();
       else if(this == getGraphicsDevice().getFullScreenWindow() && !kiosk)
         turnFullscreenOff();
     }
   }
 
-  public void setGraphicsDevice(GraphicsDevice device)
+  public void setScreenInsets(Insets insets)  // Used for testing
+  {
+    screenInsets = insets;
+  }
+
+  public void setGraphicsDevice(GraphicsDevice device)  // Used for testing
   {
     this.graphicsDevice = device;
   }
@@ -167,7 +200,7 @@ public class StageFrame extends JFrame implements KeyListener
   {
     if(graphicsDevice != null)
       return graphicsDevice;
-    return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    return getGraphicsConfiguration().getDevice();
   }
 
   public boolean isFullScreen()
@@ -221,7 +254,7 @@ public class StageFrame extends JFrame implements KeyListener
       if(kiosk)
       {
         if(getGraphicsDevice().getFullScreenWindow() != this)
-          getGraphicsDevice().setFullScreenWindow(this);
+          turnFullScreenOn();
         Context.instance().os.enterKioskMode();
       }
       else
@@ -255,7 +288,7 @@ public class StageFrame extends JFrame implements KeyListener
   private void enterKioskOrFullscreenIfNeeded()
   {
     if(fullscreen || kiosk)
-      getGraphicsDevice().setFullScreenWindow(this);
+      turnFullScreenOn();
     if(kiosk)
       Context.instance().os.enterKioskMode();
   }
@@ -280,31 +313,52 @@ public class StageFrame extends JFrame implements KeyListener
       Context.instance().os.exitKioskMode();
   }
 
+  private void turnFullScreenOn()
+  {
+    sizeBeforeFullScreen = getSize();
+    locationBeforeFullScreen = getLocation();
+    getGraphicsDevice().setFullScreenWindow(this);
+  }
+
   private void turnFullscreenOff()
   {
     getGraphicsDevice().setFullScreenWindow(null);
-    if(size != null)
-      super.setSize(size);
-    if(location != null)
-      super.setLocation(location);
+    if(sizeBeforeFullScreen != null)
+      super.setSize(sizeBeforeFullScreen);
+    if(locationBeforeFullScreen != null)
+      super.setLocation(locationBeforeFullScreen);
   }
 
-  private class LimelightContentPane extends JPanel
+  private limelight.util.Box getUsableScreenBounds()
   {
-    private final StageFrame frame;
+    GraphicsConfiguration config = getGraphicsDevice().getDefaultConfiguration();
+    limelight.util.Box bounds = new limelight.util.Box(config.getBounds());
 
-    public LimelightContentPane(StageFrame frame)
-    {
-      this.frame = frame;
-    }
+    Insets insets = screenInsets == null ? Toolkit.getDefaultToolkit().getScreenInsets(config) : screenInsets;
 
-    public void paint(Graphics g)
-    {
-      if(frame.getRoot() != null)
-      {
-        frame.getRoot().addDirtyRegion(frame.getRoot().getPanel().getAbsoluteBounds());
-      }
-    }
+    bounds.shave(insets.top, insets.right, insets.bottom, insets.left);
+
+    return bounds;
+  }
+
+  private void applySizeStyles()
+  {
+    Rectangle usableBounds = getUsableScreenBounds();
+
+    int width = widthStyle.calculateDimension(usableBounds.width, NONE, NONE);
+    int height = heightStyle.calculateDimension(usableBounds.height, NONE, NONE);
+
+    setSize(width, height);
+  }
+
+  private void applyLocationStyles()
+  {
+    Rectangle usableBounds = getUsableScreenBounds();
+
+    int x = xLocationStyle.getX(getWidth(), usableBounds);
+    int y = yLocationStyle.getY(getHeight(), usableBounds);
+
+    setLocation(x, y);
   }
 }
 

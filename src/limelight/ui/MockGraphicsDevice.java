@@ -1,13 +1,17 @@
 package limelight.ui;
 
+import apple.awt.CGraphicsDevice;
+
 import java.awt.*;
 
-public class MockGraphicsDevice extends GraphicsDevice
+public class MockGraphicsDevice extends CGraphicsDevice
 {
-  private MockGraphicsConfiguration defaultConfiguration;
+  public MockGraphicsConfiguration defaultConfiguration;
+  public Window internalFullScreenWindow;
 
   public MockGraphicsDevice()
   {
+    super(0);
     defaultConfiguration = new MockGraphicsConfiguration(this); 
   }
 
@@ -29,5 +33,15 @@ public class MockGraphicsDevice extends GraphicsDevice
   public GraphicsConfiguration getDefaultConfiguration()
   {
     return defaultConfiguration;
+  }
+
+  public void setFullScreenWindow(Window window)
+  {
+    internalFullScreenWindow = window;
+  }
+
+  public Window getFullScreenWindow()
+  {
+    return internalFullScreenWindow;
   }
 }

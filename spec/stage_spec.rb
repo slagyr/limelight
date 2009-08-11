@@ -26,19 +26,32 @@ describe Limelight::Stage do
   end
 
   it "should have size" do
-    @stage.size.should == [800, 800]
+    @stage.size.should == ["500", "500"]
 
     @stage.size = 123, 456
+    @stage.size.should == ["123", "456"]
 
-    @stage.size.should == [123, 456]
+    @stage.size = [123, 456]
+    @stage.size.should == ["123", "456"]
+
+    @stage.size = "50%", "100%"
+    @stage.size.should == ["50%","100%"]
   end
 
   it "should have location" do
-    @stage.location.should == [200, 25]
+    @stage.location.should == ["center", "center"]
 
     @stage.location = 123, 456
+    @stage.location.should == ["123", "456"]
 
-    @stage.location.should == [123, 456]
+    @stage.location = [123, 456]
+    @stage.location.should == ["123", "456"]
+
+    @stage.location = "left", "top"
+    @stage.location.should == ["left", "top"]
+
+    @stage.location = "20%", "40%"
+    @stage.location.should == ["20%", "40%"]
   end
 
   it "should not allow name changes" do

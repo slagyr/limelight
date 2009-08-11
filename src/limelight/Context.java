@@ -16,6 +16,7 @@ import limelight.background.CacheCleanerLoop;
 import limelight.os.OS;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Constructor;
 
 public class Context
 {
@@ -43,6 +44,7 @@ public class Context
   protected Context()
   {
     limelightHome = System.getProperty("limelight.home");
+    installStyleAttributeCompilerFactory();
   }
 
   public static Context instance()
@@ -106,5 +108,20 @@ public class Context
   {
     if(studio == null || studio.should_allow_shutdown())
       shutdown();
+  }
+
+  // MDM - This is a hoaky hack to avoid a DIP violation.
+  private void installStyleAttributeCompilerFactory()
+  {
+    try
+    {
+      Class klass = Class.forName("limelight.styles.compiling.RealStyleAttributeCompilerFactory");
+      Constructor constructor = klass.getConstructor();
+      styleAttributeCompilerFactory = (StyleAttributeCompilerFactory)constructor.newInstance();
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+    }
   }
 }

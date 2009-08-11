@@ -4,4 +4,5 @@
 stage "Limelight Sandbox" do
   default_scene "click_me"
   size [900, 900]
+  location :center, :center
 end

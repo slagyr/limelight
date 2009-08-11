@@ -19,41 +19,46 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
       Context.instance().styleAttributeCompilerFactory = new RealStyleAttributeCompilerFactory();
   }
 
-  public StyleAttributeCompiler compiler(String name)
+  public StyleAttributeCompiler compiler(String type, String name)
   {
-    if("string".equals(name))
-      return new StringAttributeCompiler();
-    else if("integer".equals(name))
-      return new IntegerAttributeCompiler();
-    else if("pixels".equals(name))
-      return new PixelsAttributeCompiler();
-    else if("color".equals(name))
-      return new ColorAttributeCompiler();
-    else if("on/off".equals(name))
-      return new OnOffAttributeCompiler();
-    else if("percentage".equals(name))
-      return new PercentageAttributeCompiler();
-    else if("dimension".equals(name))
-      return new DimensionAttributeCompiler();
-    else if("degrees".equals(name))
-      return new DegreesAttributeCompiler();
-    else if("fill strategy".equals(name))
-      return new FillStrategyAttributeCompiler();
-    else if("font style".equals(name))
-      return new FontStyleAttributeCompiler();
-    else if("horizontal alignment".equals(name))
-      return new HorizontalAlignmentAttributeCompiler();
-    else if("vertical alignment".equals(name))
-      return new VerticalAlignmentAttributeCompiler();
-    else if("noneable integer".equals(name))
-      return new NoneableAttributeCompiler<SimpleIntegerAttribute>(new IntegerAttributeCompiler());
-    else if("noneable string".equals(name))
-      return new NoneableAttributeCompiler<StringAttribute>(new StringAttributeCompiler());
-    else if("x-coordinate".equals(name))
-      return new XCoordinateAttributeCompiler();
-    else if("y-coordinate".equals(name))
-      return new YCoordinateAttributeCompiler();
+    StyleAttributeCompiler result = null;
+
+    if("string".equals(type))
+      result = new StringAttributeCompiler();
+    else if("integer".equals(type))
+      result = new IntegerAttributeCompiler();
+    else if("pixels".equals(type))
+      result = new PixelsAttributeCompiler();
+    else if("color".equals(type))
+      result = new ColorAttributeCompiler();
+    else if("on/off".equals(type))
+      result = new OnOffAttributeCompiler();
+    else if("percentage".equals(type))
+      result = new PercentageAttributeCompiler();
+    else if("dimension".equals(type))
+      result = new DimensionAttributeCompiler();
+    else if("degrees".equals(type))
+      result = new DegreesAttributeCompiler();
+    else if("fill strategy".equals(type))
+      result = new FillStrategyAttributeCompiler();
+    else if("font style".equals(type))
+      result = new FontStyleAttributeCompiler();
+    else if("horizontal alignment".equals(type))
+      result = new HorizontalAlignmentAttributeCompiler();
+    else if("vertical alignment".equals(type))
+      result = new VerticalAlignmentAttributeCompiler();
+    else if("noneable integer".equals(type))
+      result = new NoneableAttributeCompiler<SimpleIntegerAttribute>(new IntegerAttributeCompiler());
+    else if("noneable string".equals(type))
+      result = new NoneableAttributeCompiler<StringAttribute>(new StringAttributeCompiler());
+    else if("x-coordinate".equals(type))
+      result = new XCoordinateAttributeCompiler();
+    else if("y-coordinate".equals(type))
+      result = new YCoordinateAttributeCompiler();
     else
-      throw new LimelightError("Unknown StyleAttributeCompiler named " + name);
+      throw new LimelightError("Unknown StyleAttributeCompiler named " + type);
+
+    result.setName(name);
+    return result;
   }
 }

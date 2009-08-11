@@ -8,6 +8,8 @@ import limelight.ui.api.MockStage;
 import limelight.ui.*;
 import limelight.Context;
 import limelight.KeyboardFocusManager;
+import limelight.styles.styling.*;
+import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.os.MockOS;
 import limelight.util.Colors;
 
@@ -19,11 +21,13 @@ public class StageFrameTest extends TestCase
   private MockStage stage;
   private StageFrame frame;
   private FrameManager frameManager;
-  public GraphicsDevice graphicsDevice;
+  public MockGraphicsDevice graphicsDevice;
   private MockOS os;
+  private Insets insets;
 
   public void setUp() throws Exception
   {
+    RealStyleAttributeCompilerFactory.install();
     frameManager = new InertFrameManager();
     Context.instance().frameManager = frameManager;
     Context.instance().keyboardFocusManager = new KeyboardFocusManager();
@@ -33,11 +37,13 @@ public class StageFrameTest extends TestCase
 
     graphicsDevice = new MockGraphicsDevice();
     frame.setGraphicsDevice(graphicsDevice);
+    insets = new Insets(0, 0, 0, 0);
+    frame.setScreenInsets(insets);
 
     os = new MockOS();
     Context.instance().os = os;
   }
-  
+
   public void tearDown() throws Exception
   {
     try
@@ -262,11 +268,11 @@ public class StageFrameTest extends TestCase
     assertEquals(Colors.resolve("#abc"), frame.getBackground());
     assertEquals("#AABBCC", frame.getBackgroundColor());
   }
-  
+
   public void testShouldRetainSizeAndLocationWhenComingOutOfFullscreen() throws Exception
   {
-    frame.setSize(128, 456);
-    frame.setLocation(12, 34);
+    frame.setSizeStyles(128, 456);
+    frame.setLocationStyles(12, 34);
     frame.open();
 
     frame.setFullScreen(true);
@@ -275,7 +281,7 @@ public class StageFrameTest extends TestCase
     assertEquals(new Dimension(128, 456), frame.getSize());
     assertEquals(new Point(12, 34), frame.getLocation());
   }
-  
+
   public void testShouldAllowClose() throws Exception
   {
     stage.shouldAllowClose = false;
@@ -283,5 +289,51 @@ public class StageFrameTest extends TestCase
 
     stage.shouldAllowClose = true;
     assertEquals(true, frame.shouldAllowClose());
+  }
+
+  public void testSettingDimensionStyles() throws Exception
+  {
+    graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
+    insets.set(10, 20, 30, 40);
+
+    frame.setSizeStyles(50, 100);
+    assertEquals(new StaticPixelsAttribute(50), frame.getWidthStyle());
+    assertEquals(new StaticPixelsAttribute(100), frame.getHeightStyle());
+    assertEquals(new Dimension(50, 100), frame.getSize());
+
+    frame.setSizeStyles("50%", "100%");
+    assertEquals(new PercentagePixelsAttribute(50.0), frame.getWidthStyle());
+    assertEquals(new PercentagePixelsAttribute(100.0), frame.getHeightStyle());
+    assertEquals(new Dimension(470, 960), frame.getSize());
+  }
+
+  public void testSettingLocationStyles() throws Exception
+  {
+    graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
+    insets.set(10, 20, 30, 40);
+
+    frame.setSize(100, 100);
+
+    frame.setLocationStyles(50, 100);
+    assertEquals(new StaticXCoordinateAttribute(50), frame.getXLocationStyle());
+    assertEquals(new StaticYCoordinateAttribute(100), frame.getYLocationStyle());
+    assertEquals(new Point(insets.left + 50, insets.top + 100), frame.getLocation());
+
+    frame.setLocationStyles("50%", "75%");
+    assertEquals(new PercentageXCoordinateAttribute(50.0), frame.getXLocationStyle());
+    assertEquals(new PercentageYCoordinateAttribute(75.0), frame.getYLocationStyle());
+    assertEquals(new Point(490, 730), frame.getLocation());
+  }
+
+  public void testApplyingLocationBeforeSizeWillAdjustBeforeOpening() throws Exception
+  {
+    graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
+    insets.set(10, 20, 30, 40);
+    
+    frame.setLocationStyles("center", "center");
+    frame.setSizeStyles(100, 100);
+    frame.open();
+
+    assertEquals(new Point(440, 440), frame.getLocation());
   }
 }

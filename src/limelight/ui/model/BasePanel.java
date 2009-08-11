@@ -65,6 +65,8 @@ public abstract class BasePanel implements Panel
       clearCache();
       width = w;
       height = h;
+
+      propgateSizeChangeDown();
     }
   }
 
@@ -291,7 +293,7 @@ public abstract class BasePanel implements Panel
     readonlyChildren = null;
 
     child.setParent(this);
-    propogateSizeChange(this);
+    propogateSizeChangeUp(this);
     markAsNeedingLayout();
   }
 
@@ -353,7 +355,7 @@ public abstract class BasePanel implements Panel
     {
       child.setParent(null);
       readonlyChildren = null;
-      propogateSizeChange(this);
+      propogateSizeChangeUp(this);
       markAsNeedingLayout();
       return true;
     }
@@ -369,7 +371,7 @@ public abstract class BasePanel implements Panel
       children.clear();
       readonlyChildren = null;
       sterilized = false;
-      propogateSizeChange(this);
+      propogateSizeChangeUp(this);
       markAsNeedingLayout();
     }
   }
@@ -407,7 +409,7 @@ public abstract class BasePanel implements Panel
         getRoot().addPanelNeedingLayout(this);
       }
       else if(layout.overides(neededLayout))
-          neededLayout = layout;
+        neededLayout = layout;
     }
   }
 
@@ -435,14 +437,14 @@ public abstract class BasePanel implements Panel
     return new PanelIterator(this);
   }
 
-  protected void propogateSizeChange(Panel panel)
+  protected void propogateSizeChangeUp(Panel panel)
   {
     if(panel != null && !panel.needsLayout() && panel instanceof BasePanel)
     {
       Style style = panel.getStyle();
       if(style != null && style.hasAutoDimension())
       {
-        propogateSizeChange(panel.getParent());
+        propogateSizeChangeUp(panel.getParent());
         panel.getParent().markAsNeedingLayout();
       }
     }
@@ -463,5 +465,18 @@ public abstract class BasePanel implements Panel
   public void wasLaidOut()
   {
     laidOut = true;
+  }
+
+  private void propgateSizeChangeDown()
+  {
+    for(Panel child : children)
+    {
+      if(!child.needsLayout() && child instanceof BasePanel)
+      {
+        Style style = child.getStyle();
+        if(style != null && (style.hasAutoDimension() || style.hasPercentageDimension()))
+          child.markAsNeedingLayout();
+      }
+    }
   }
 }

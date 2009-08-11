@@ -10,6 +10,6 @@ public interface StyleAttributeCompilerFactory
 {
   RealStyleAttributeCompilerFactory compilerFactory = null;
 
-  StyleAttributeCompiler compiler(String name);
+  StyleAttributeCompiler compiler(String type, String name);
 
 }

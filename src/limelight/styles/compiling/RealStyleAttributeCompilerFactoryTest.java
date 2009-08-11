@@ -6,10 +6,6 @@ package limelight.styles.compiling;
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
 import limelight.styles.abstrstyling.NoneableAttributeCompiler;
-import limelight.styles.compiling.StringAttributeCompiler;
-import limelight.styles.compiling.VerticalAlignmentAttributeCompiler;
-import limelight.styles.compiling.XCoordinateAttributeCompiler;
-import limelight.styles.compiling.YCoordinateAttributeCompiler;
 import limelight.Context;
 
 public class RealStyleAttributeCompilerFactoryTest extends TestCase
@@ -29,85 +25,85 @@ public class RealStyleAttributeCompilerFactoryTest extends TestCase
   
   public void testString() throws Exception
   {
-    assertEquals(StringAttributeCompiler.class, factory.compiler("string").getClass());
+    assertEquals(StringAttributeCompiler.class, factory.compiler("string", "blah").getClass());
   }
 
   public void testInteger() throws Exception
   {
-    assertEquals(IntegerAttributeCompiler.class, factory.compiler("integer").getClass());
+    assertEquals(IntegerAttributeCompiler.class, factory.compiler("integer", "blah").getClass());
   }
 
   public void testPixels() throws Exception
   {
-    assertEquals(PixelsAttributeCompiler.class, factory.compiler("pixels").getClass());
+    assertEquals(PixelsAttributeCompiler.class, factory.compiler("pixels", "blah").getClass());
   }
 
   public void testColor() throws Exception
   {
-    assertEquals(ColorAttributeCompiler.class, factory.compiler("color").getClass());
+    assertEquals(ColorAttributeCompiler.class, factory.compiler("color", "blah").getClass());
   }
 
   public void testOnOff() throws Exception
   {
-    assertEquals(OnOffAttributeCompiler.class, factory.compiler("on/off").getClass());  
+    assertEquals(OnOffAttributeCompiler.class, factory.compiler("on/off", "blah").getClass());
   }
 
   public void testPercentage() throws Exception
   {
-    assertEquals(PercentageAttributeCompiler.class, factory.compiler("percentage").getClass());  
+    assertEquals(PercentageAttributeCompiler.class, factory.compiler("percentage", "blah").getClass());
   }
 
   public void testDimension() throws Exception
   {
-    assertEquals(DimensionAttributeCompiler.class, factory.compiler("dimension").getClass());
+    assertEquals(DimensionAttributeCompiler.class, factory.compiler("dimension", "blah").getClass());
   }
 
   public void testDegrees() throws Exception
   {
-    assertEquals(DegreesAttributeCompiler.class, factory.compiler("degrees").getClass());
+    assertEquals(DegreesAttributeCompiler.class, factory.compiler("degrees", "blah").getClass());
   }
 
   public void testFillStrategy() throws Exception
   {
-    assertEquals(FillStrategyAttributeCompiler.class, factory.compiler("fill strategy").getClass());
+    assertEquals(FillStrategyAttributeCompiler.class, factory.compiler("fill strategy", "blah").getClass());
   }
 
   public void testFontStyle() throws Exception
   {
-    assertEquals(FontStyleAttributeCompiler.class, factory.compiler("font style").getClass());
+    assertEquals(FontStyleAttributeCompiler.class, factory.compiler("font style", "blah").getClass());
   }
 
   public void testHorizontalAlignment() throws Exception
   {
-    assertEquals(HorizontalAlignmentAttributeCompiler.class, factory.compiler("horizontal alignment").getClass());
+    assertEquals(HorizontalAlignmentAttributeCompiler.class, factory.compiler("horizontal alignment", "blah").getClass());
   }
 
   public void testVerticalAlignment() throws Exception
   {
-    assertEquals(VerticalAlignmentAttributeCompiler.class, factory.compiler("vertical alignment").getClass());
+    assertEquals(VerticalAlignmentAttributeCompiler.class, factory.compiler("vertical alignment", "blah").getClass());
   }
 
   public void testNoneableInteger() throws Exception
   {
-    StyleAttributeCompiler compiler = factory.compiler("noneable integer");
+    StyleAttributeCompiler compiler = factory.compiler("noneable integer", "blah");
     assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
     assertEquals(IntegerAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
   }
   
   public void testNoneableString() throws Exception
   {
-    StyleAttributeCompiler compiler = factory.compiler("noneable string");
+    StyleAttributeCompiler compiler = factory.compiler("noneable string", "blah");
     assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
     assertEquals(StringAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
   }
 
   public void testXCoordinate() throws Exception
   {
-    assertEquals(XCoordinateAttributeCompiler.class, factory.compiler("x-coordinate").getClass());
+    assertEquals(XCoordinateAttributeCompiler.class, factory.compiler("x-coordinate", "blah").getClass());
   }
   
   public void testYCoordinate() throws Exception
   {
-    assertEquals(YCoordinateAttributeCompiler.class, factory.compiler("y-coordinate").getClass());
+    assertEquals(YCoordinateAttributeCompiler.class, factory.compiler("y-coordinate", "blah").getClass());
   }
 }

@@ -16,6 +16,7 @@ public class TextPanelLayout implements Layout
     }
     catch(Exception e)
     {
+      e.printStackTrace();
       //okay
     }
   }

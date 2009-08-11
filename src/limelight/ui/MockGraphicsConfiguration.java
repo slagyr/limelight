@@ -8,8 +8,9 @@ import java.awt.image.ColorModel;
 
 public class MockGraphicsConfiguration extends GraphicsConfiguration
 {
-  private MockGraphicsDevice graphicsDevice;
-  private MockVolatileImage volatileImage;
+  public MockGraphicsDevice graphicsDevice;
+  public MockVolatileImage volatileImage;
+  public Rectangle bounds = new Rectangle(1000, 1000);
 
   public MockGraphicsConfiguration(MockGraphicsDevice graphicsDevice)
   {
@@ -64,6 +65,6 @@ public class MockGraphicsConfiguration extends GraphicsConfiguration
 
   public Rectangle getBounds()
   {
-    return new Rectangle(1000, 1000);
+    return bounds;
   }
 }
