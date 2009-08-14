@@ -10,6 +10,10 @@ public class UnsupportedOS extends OS
   {
   }
 
+  protected void startBrowserAt(String URL)
+  {
+  }
+
   public void configureSystemProperties()
   {
   }
