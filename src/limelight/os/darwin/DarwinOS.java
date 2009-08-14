@@ -45,9 +45,9 @@ public class DarwinOS extends OS
     Carbon.INSTANCE.SetSystemUIMode(originalMode, originalOptions);
   }
 
-  protected void startBrowserAt(String URL) throws IOException
+  protected void launch(String URL) throws IOException
   {
-    runtime.exec("open " + URL);
+    runtime.exec("open", URL);
   }
 
   public void configureSystemProperties()

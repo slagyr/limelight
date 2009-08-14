@@ -10,7 +10,7 @@ public class MockOS extends OS
   {
   }
 
-  protected void startBrowserAt(String URL)
+  protected void launch(String URL)
   {
   }
 

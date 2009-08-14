@@ -2,6 +2,8 @@ package limelight.os.darwin;
 
 import junit.framework.TestCase;
 import limelight.Context;
+import limelight.util.StringUtil;
+import limelight.os.MockRuntimeExecution;
 import limelight.ui.api.MockStudio;
 
 public class DarwinOSTest extends TestCase
@@ -80,12 +82,12 @@ public class DarwinOSTest extends TestCase
 
   public void testOpenURL() throws Exception
   {
-    MockSystemExecution mockSystemExecution = new MockSystemExecution();
+    MockRuntimeExecution mockSystemExecution = new MockRuntimeExecution();
     os.setRuntime(mockSystemExecution);
 
-    os.openURL("http://www.google.com");
+    os.launch("http://www.google.com");
 
-    assertTrue(mockSystemExecution.receivedExecWith("open http://www.google.com"));
+    assertEquals("open http://www.google.com", StringUtil.join(" ", mockSystemExecution.command));
   }
 
 }

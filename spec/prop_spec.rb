@@ -386,16 +386,16 @@ describe Limelight::Prop do
 
   end
 
-  describe "open URL" do
+  describe "launch" do
 
-    it "should open a url" do
+    it "should launch a url" do
       os = mock("Limelight OS")
       instance = mock("Limelight OS instance", :os => os)
       Java::limelight.Context.stub!(:instance).and_return(instance)
 
-      os.should_receive(:openURL).with("http://www.google.com")
+      os.should_receive(:launch).with("http://www.google.com")
 
-      @prop.open_url("http://www.google.com")
+      @prop.launch("http://www.google.com")
     end
 
   end

@@ -249,15 +249,16 @@ module Limelight
       return animation
     end
 
-    # Open a URL.  This will do its best to open the browser on both Windows and Mac.  Example:
+    # Luanches the spcified URL using the OS's default handlers. For example, opening a URL in a browser:
     #
-    # open_url('http://www.google.com')
+    #   launch('http://www.google.com')
     #
     # To create a link prop add an accessor on the player (say url) and use that in the prop definition
     # Ex:
-    #   link :text => "I am a link", :url => "www.8thlight.com"
-    def open_url(url)
-      Context.instance.os.openURL(url)
+    #
+    #   link :text => "I am a link", :url => "http://www.8thlight.com"
+    def launch(url)
+      Context.instance.os.launch(url)
     end
 
     # GUI Events ##########################################

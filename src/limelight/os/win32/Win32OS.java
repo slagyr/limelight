@@ -37,14 +37,9 @@ public class Win32OS extends OS
     hookThreadId = 0;
   }
 
-  protected void startBrowserAt(String URL) throws java.io.IOException
+  protected void launch(String URL) throws java.io.IOException
   {
-    String[] cmd = new String[4];
-	  cmd[0] = "cmd.exe";
-	  cmd[1] = "/C";
-	  cmd[2] = "start";
-	  cmd[3] = URL;
-    runtime.exec(cmd);
+    runtime.exec("cmd.exe", "/C", "start", URL);
   }
 
   private void MsgLoop()
