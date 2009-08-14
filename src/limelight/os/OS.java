@@ -3,12 +3,15 @@ package limelight.os;
 import limelight.Context;
 import limelight.io.TempDirectory;
 
+import java.io.IOException;
+
 public abstract class OS
 {
   protected boolean inKioskMode;
 
   protected abstract void turnOnKioskMode();
   protected abstract void turnOffKioskMode();
+  protected abstract void startBrowserAt(String URL) throws IOException;
   public abstract void configureSystemProperties();
 
   public String dataRoot()
@@ -42,5 +45,10 @@ public abstract class OS
   public void openProduction(String productionPath)
   {
     Context.instance().studio.open(productionPath);
+  }
+
+  public void openURL(String URL) throws IOException
+  {
+    startBrowserAt(URL);
   }
 }

@@ -10,6 +10,10 @@ public class MockOS extends OS
   {
   }
 
+  protected void startBrowserAt(String URL)
+  {
+  }
+
   public void configureSystemProperties()
   {
     System.setProperty("jruby.shell", "silly shell");

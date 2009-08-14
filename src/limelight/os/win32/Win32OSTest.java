@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import limelight.ui.api.MockStudio;
 import limelight.Context;
 import limelight.os.darwin.StartupListener;
+import limelight.os.IRuntime;
 
 public class Win32OSTest extends TestCase
 {
@@ -38,5 +39,21 @@ public class Win32OSTest extends TestCase
     os.openProduction("blah");
 
     assertEquals("blah", studio.openedProduction);
+  }
+
+  public void testOpenURL() throws Exception
+  {
+    MockRuntime mockRuntime = new MockRuntime();
+    os.setRuntime(mockRuntime);
+
+    os.openURL("http://www.google.com");
+
+    String[] cmd = new String[4];
+	  cmd[0] = "cmd.exe";
+	  cmd[1] = "/C";
+	  cmd[2] = "start";
+	  cmd[3] = "http://www.google.com";
+
+    assertTrue(mockRuntime.receivedExecWith(cmd));
   }
 }
