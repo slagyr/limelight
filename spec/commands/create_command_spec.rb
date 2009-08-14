@@ -26,7 +26,7 @@ describe Limelight::Commands::CreateCommand do
     production_templater = make_mock("production_templater")
     Limelight::Templates::ProductionTemplater.should_receive(:new).with("blah", "default_scene").and_return(production_templater)
     scene_templater = make_mock("scene_templater")
-    Limelight::Templates::SceneTemplater.should_receive(:new).with("blah/default_scene").and_return(scene_templater)
+    Limelight::Templates::SceneTemplater.should_receive(:new).with("blah", "default_scene").and_return(scene_templater)
     production_templater.should_receive(:generate)
     scene_templater.should_receive(:generate)
 
@@ -36,10 +36,19 @@ describe Limelight::Commands::CreateCommand do
   it "should create a scene" do
     Limelight::Templates::ProductionTemplater.should_not_receive(:new)
     scene_templater = make_mock("scene_templater")
-    Limelight::Templates::SceneTemplater.should_receive(:new).with("prod/some_scene").and_return(scene_templater)
+    Limelight::Templates::SceneTemplater.should_receive(:new).with(".", "prod/some_scene").and_return(scene_templater)
     scene_templater.should_receive(:generate)
 
     @command.run(["scene", "prod/some_scene"])
+  end
+
+  it "should create a scene with specified production_path" do
+    Limelight::Templates::ProductionTemplater.should_not_receive(:new)
+    scene_templater = make_mock("scene_templater")
+    Limelight::Templates::SceneTemplater.should_receive(:new).with("prod", "some_scene").and_return(scene_templater)
+    scene_templater.should_receive(:generate)
+
+    @command.run(["-p", "prod", "scene", "some_scene"])
   end
 
   it "should print useage on invalid template type" do
@@ -57,20 +66,38 @@ describe Limelight::Commands::CreateCommand do
   it "should have a default scene name" do
     @command.parse ["production", "blah"]
 
-    @command.default_scene_name.should == "default_scene"
+    @command.scene_name.should == "default_scene"
     @command.template_type.should == "production"
     @command.path.should == "blah"
   end
 
+  it "should have a default production path" do
+    @command.parse ["scene", "blah"]
+
+    @command.production_path.should == "."
+  end
+
   it "should parse a scene option" do
     @command.parse ["-s", "scene_name", "production", "blah"]
-    @command.default_scene_name.should == "scene_name"
+    @command.scene_name.should == "scene_name"
     @command.template_type.should == "production"
     @command.path.should == "blah"
 
     @command.parse ["--scene=another_scene", "production", "blah"]
-    @command.default_scene_name.should == "another_scene"
+    @command.scene_name.should == "another_scene"
     @command.template_type.should == "production"
+    @command.path.should == "blah"
+  end
+
+  it "should parse a production path option" do
+    @command.parse ["-p", "prod_path", "scene", "blah"]
+    @command.production_path.should == "prod_path"
+    @command.template_type.should == "scene"
+    @command.path.should == "blah"
+
+    @command.parse ["--production_path=prody_path", "scene", "blah"]
+    @command.production_path.should == "prody_path"
+    @command.template_type.should == "scene"
     @command.path.should == "blah"
   end
 

@@ -7,7 +7,7 @@ require 'limelight/templates/scene_templater'
 describe Limelight::Templates::SceneTemplater do
 
   it "should initialize" do
-    templater = Limelight::Templates::SceneTemplater.new("prod/some_scene")
+    templater = Limelight::Templates::SceneTemplater.new("prod", "some_scene")
 
     templater.target_root.should == "./prod"
     templater.source_root.should == Limelight::Templates::Templater.source_dir
@@ -16,11 +16,23 @@ describe Limelight::Templates::SceneTemplater do
   end
 
   it "should generate files" do
-    templater = Limelight::Templates::SceneTemplater.new("prod/some_scene")
+    templater = Limelight::Templates::SceneTemplater.new("prod", "some_scene")
 
     templater.should_receive(:file).with("some_scene/props.rb", "scene/props.rb.template", templater.tokens)
     templater.should_receive(:file).with("some_scene/styles.rb", "scene/styles.rb.template", templater.tokens)
     templater.should_receive(:directory).with("some_scene/players")
+    templater.should_receive(:file).with("spec/some_scene/some_scene_spec.rb", "scene_spec/scene_spec.rb.template", templater.tokens)
+
+    templater.generate
+  end
+
+  it "should generate files for a nested scene" do
+    templater = Limelight::Templates::SceneTemplater.new("prod", "nested/some_scene")
+
+    templater.should_receive(:file).with("nested/some_scene/props.rb", "scene/props.rb.template", templater.tokens)
+    templater.should_receive(:file).with("nested/some_scene/styles.rb", "scene/styles.rb.template", templater.tokens)
+    templater.should_receive(:directory).with("nested/some_scene/players")
+    templater.should_receive(:file).with("spec/nested/some_scene/some_scene_spec.rb", "scene_spec/scene_spec.rb.template", templater.tokens)
 
     templater.generate
   end
