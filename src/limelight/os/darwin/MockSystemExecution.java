@@ -1,10 +1,10 @@
 package limelight.os.darwin;
 
-import limelight.os.IRuntime;
+import limelight.os.SystemExecution;
 
 import java.io.IOException;
 
-public class MockRuntime implements IRuntime
+public class MockSystemExecution implements SystemExecution
 {
   String command;
   public Process exec(String[] strings) throws IOException
@@ -23,5 +23,3 @@ public class MockRuntime implements IRuntime
     return (this.command.compareTo(cmd) == 0);
   }
 }
-
-
