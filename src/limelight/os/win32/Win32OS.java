@@ -1,6 +1,5 @@
 package limelight.os.win32;
 import limelight.os.OS;
-import limelight.os.IRuntime;
 
 public class Win32OS extends OS
 {

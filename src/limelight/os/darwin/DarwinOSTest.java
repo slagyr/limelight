@@ -80,12 +80,12 @@ public class DarwinOSTest extends TestCase
 
   public void testOpenURL() throws Exception
   {
-    MockRuntime mockRuntime = new MockRuntime();
-    os.setRuntime(mockRuntime);
+    MockSystemExecution mockSystemExecution = new MockSystemExecution();
+    os.setRuntime(mockSystemExecution);
 
     os.openURL("http://www.google.com");
 
-    assertTrue(mockRuntime.receivedExecWith("open http://www.google.com"));
+    assertTrue(mockSystemExecution.receivedExecWith("open http://www.google.com"));
   }
 
 }

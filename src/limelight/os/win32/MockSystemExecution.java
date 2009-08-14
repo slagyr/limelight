@@ -1,9 +1,9 @@
 package limelight.os.win32;
-import limelight.os.IRuntime;
+import limelight.os.SystemExecution;
 
 import java.io.IOException;
 
-public class MockRuntime implements IRuntime
+public class MockSystemExecution implements SystemExecution
 {
   String[] params;
   

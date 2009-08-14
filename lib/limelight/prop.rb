@@ -249,6 +249,17 @@ module Limelight
       return animation
     end
 
+    # Open a URL.  This will do its best to open the browser on both Windows and Mac.  Example:
+    #
+    # open_url('http://www.google.com')
+    #
+    # To create a link prop add an accessor on the player (say url) and use that in the prop definition
+    # Ex:
+    #   link :text => "I am a link", :url => "www.8thlight.com"
+    def open_url(url)
+      Context.instance.os.openURL(url)
+    end
+
     # GUI Events ##########################################
 
     # TODO MDM - This may be very inefficient.  If seems like these methods are generated for each instance of prop.
@@ -292,7 +303,7 @@ module Limelight
 
     def illuminated? #:nodoc:
       return @illuminated
-    end
+    end  
 
     private ###############################################
 
