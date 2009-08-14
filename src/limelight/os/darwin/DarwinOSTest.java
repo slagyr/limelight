@@ -3,9 +3,6 @@ package limelight.os.darwin;
 import junit.framework.TestCase;
 import limelight.Context;
 import limelight.ui.api.MockStudio;
-import com.apple.eawt.Application;
-
-import java.io.File;
 
 public class DarwinOSTest extends TestCase
 {
@@ -79,6 +76,16 @@ public class DarwinOSTest extends TestCase
   {
     assertNotNull(os.getApplicationAdapter());
     assertEquals(true, os.getApplicationAdapter().isRegistered());
+  }
+
+  public void testOpenURL() throws Exception
+  {
+    MockRuntime mockRuntime = new MockRuntime();
+    os.setRuntime(mockRuntime);
+
+    os.openURL("http://www.google.com");
+
+    assertTrue(mockRuntime.receivedExecWith("open http://www.google.com"));
   }
 
 }

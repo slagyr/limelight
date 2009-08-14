@@ -8,6 +8,7 @@ import java.io.IOException;
 public abstract class OS
 {
   protected boolean inKioskMode;
+  protected IRuntime runtime;
 
   protected abstract void turnOnKioskMode();
   protected abstract void turnOffKioskMode();
@@ -50,5 +51,10 @@ public abstract class OS
   public void openURL(String URL) throws IOException
   {
     startBrowserAt(URL);
+  }
+
+  public void setRuntime(IRuntime runtime)
+  {
+    this.runtime = runtime;
   }
 }
