@@ -6,6 +6,7 @@ import limelight.util.StringUtil;
 import com.sun.jna.ptr.IntByReference;
 
 import java.io.File;
+import java.io.IOException;
 
 public class DarwinOS extends OS
 {
@@ -42,6 +43,11 @@ public class DarwinOS extends OS
   protected void turnOffKioskMode()
   {
     Carbon.INSTANCE.SetSystemUIMode(originalMode, originalOptions);
+  }
+
+  protected void startBrowserAt(String URL) throws IOException
+  {
+    runtime.exec("open " + URL);
   }
 
   public void configureSystemProperties()

@@ -13,7 +13,7 @@ task :jar do
   system "ant jar"
 end
 
-task :init => [:jar, :init_jruby, :jruby_gems, :dev_gems] do
+task :init => [:jar, :jruby_gems, :dev_gems] do
 end
 
 task :spec do
