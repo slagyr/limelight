@@ -132,4 +132,11 @@ describe Limelight::Studio do
     proxy.instance.should_not == nil
   end
 
+  it "should provide the utilities production" do
+    Studio.utilities_production.should_not == nil
+    Studio.utilities_production.name.should == "utilities_production"
+    Studio.utilities_production.should be(Studio.utilities_production)
+#    Studio.utilities_production.close
+  end
+
 end

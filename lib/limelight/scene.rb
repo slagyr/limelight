@@ -22,6 +22,8 @@ module Limelight
     setters :stage
     event :scene_opened
 
+    alias :visible? :visible
+
     def initialize(options={})
       path = options.delete(:path) || ""
       @root = FileLoader.for_root(path)

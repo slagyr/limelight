@@ -8,17 +8,9 @@ public class TextPanelLayout implements Layout
 
   public void doLayout(Panel thePanel)
   {
-    TextPanel panel = (TextPanel)thePanel;
+    TextPanel panel = (TextPanel) thePanel;
     panel.resetLayout();
-    try
-    {
-      panel.compile();
-    }
-    catch(Exception e)
-    {
-      e.printStackTrace();
-      //okay
-    }
+    panel.compile();
   }
 
   public boolean overides(Layout other)

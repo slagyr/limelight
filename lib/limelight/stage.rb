@@ -17,17 +17,18 @@ module Limelight
     attr_reader :frame, :current_scene, :name, :theater
 
     attr_accessor :should_remain_hidden #:nodoc:
-    
+
     include UI::Api::Stage
 
     # To create a new Stage, it be given a Theater to which it belongs, and the name is optional.  If no name is provided
     # it will default to 'default'.  A stage name must be unique, so it is recommended you provide a name.
     #
-    def initialize(theater, name="default")
+    def initialize(theater, name, options = {})
       @theater = theater
       @name = name
       build_frame
       self.title = @name
+      apply_options(options)
     end
 
     # Returns the title that is displayed at the top of the window that this stage represents.
@@ -82,6 +83,7 @@ module Limelight
     #
     #   stage.fullscreen = true
     #
+
     def fullscreen=(on)
       @frame.setFullScreen(on)
     end
@@ -133,7 +135,7 @@ module Limelight
     # Sets the background color of the stage
     #
     def background_color=(value)
-      @frame.background_color = value
+      @frame.background_color = value.to_s
     end
 
     # Returns the background color of the stage in the format #RRGGBB(AA)
@@ -167,6 +169,18 @@ module Limelight
       return @frame.always_on_top
     end
 
+    # Sets the vitality of the stage.  Limelight will not exit while vital frames remain visible.
+    #
+    def vital=(value)
+      @frame.vital = value
+    end
+
+    # Returns true if this is a vital stage.  Limelight will not exit while vital frames remain visible.
+    #
+    def vital?
+      return @frame.vital?
+    end
+
     # Opens the Stage and loads the provided Scene.
     #
     # See load_scene
@@ -183,17 +197,19 @@ module Limelight
     # Closes the Stage. It's window will no longer be displayed on the screen.
     #
     def close
+      @theater.stage_closed(self)
       @frame.close
+      @current_scene.visible = false if @current_scene
+      @current_scene = nil
     end
 
     # Loads a scene on the Stage.  If the Stage is currently hosting a Scene, the original Scene will be removed and
     # the new Scene will replace it.
     #
     def load_scene(scene)
-#      @frame.setJMenuBar(scene.menu_bar)
+      #      @frame.setJMenuBar(scene.menu_bar)
       @frame.load(scene.panel)
-#      scene.panel.snap_to_size  # What's this for?
-      if(has_static_size?(scene.style))
+      if (has_static_size?(scene.style))
         @frame.set_size(scene.style.compiled_width.value + @frame.getHorizontalInsetWidth, scene.style.compiled_height.value + @frame.getVerticalInsetWidth)
       end
       @current_scene = scene
@@ -229,7 +245,7 @@ module Limelight
     end
 
     def stub_current_scene(scene) #:nodoc:
-      @current_scene = scene  
+      @current_scene = scene
     end
 
     protected #############################################
@@ -239,7 +255,7 @@ module Limelight
     end
 
     private ###############################################
-    
+
     def build_frame
       @frame = new_frame
       @frame.set_size(800, 800)
@@ -254,8 +270,17 @@ module Limelight
     def is_static?(value)
       return !(value.to_s.include?("%")) && !(value.to_s == "auto")
     end
-    
+
+    def apply_options(options)
+      options.each_pair do |key, value|
+        setter_sym = "#{key.to_s}=".to_sym
+        if self.respond_to?(setter_sym)
+          self.send(setter_sym, value)    
+        end
+      end
+    end
+
   end
-    
+
 end
 

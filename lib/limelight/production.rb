@@ -80,9 +80,17 @@ module Limelight
     #
     def scene_directory(name)
       return @root.root if name == :root
-      return @root.path_to(name)
+        return @root.path_to(name)
     end
-    
+
+    # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"
+    # If the version of limelight used to open this production is less than the minimum,
+    # an error will be displayed (starting with version 0.4.0).
+    #
+    def minimum_limelight_version
+      return "0.0.0"
+    end
+
     # Returns true if the production allows itself to be closed.  The system will call this methods when
     # it wishes to close the production, perhaps when the user quits the application.  By default the production
     # will always return true.
@@ -127,6 +135,13 @@ module Limelight
       self.production_closing
       Studio.production_closed(self)
       self.production_closed
+    end
+
+    # Returned the name of the default scene.  This is only used when there are not stages defined in the production.
+    # Defaults to :root, the production's root directory is the default scene.  Return nil if there are not defaults.
+    #
+    def default_scene
+      return :root
     end
 
   end

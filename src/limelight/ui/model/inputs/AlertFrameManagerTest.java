@@ -43,7 +43,7 @@ public class AlertFrameManagerTest extends TestCase
     MockStage stage = new MockStage();
     MockTheater theater = stage.theater;
     StageFrame frame = new StageFrame(stage);
-    
+
     manager.windowGainedFocus(new WindowEvent(frame, 1));
 
     assertEquals(stage, theater.activatedStage);
@@ -63,9 +63,29 @@ public class AlertFrameManagerTest extends TestCase
   public void testCheckingWithStudioBeforeShuttingDown() throws Exception
   {
     MockContext context = MockContext.stub();
-    studio.allowShutdown = false;
     manager.watch(frame);
     manager.windowClosed(new WindowEvent(frame, 1));
+    assertEquals(true, context.shutdownAttempted);
+  }
+
+  public void testShouldNotInvokeShutdownForNonVitalFrames() throws Exception
+  {
+    MockContext context = MockContext.stub();
+    frame.setVital(false);
+    manager.watch(frame);
+    manager.windowClosed(new WindowEvent(frame, 1));
+    assertEquals(false, context.shutdownAttempted);
+  }
+  
+  public void testShouldInvokeShutdownWhenOnlyNonVitalFramesRemain() throws Exception
+  {
+    MockContext context = MockContext.stub();
+    frame.setVital(false);
+    MockStageFrame frame2 = new MockStageFrame();
+    manager.watch(frame);
+    manager.watch(frame2);
+
+    manager.windowClosed(new WindowEvent(frame2, 1));
     assertEquals(true, context.shutdownAttempted);
   }
 
@@ -73,7 +93,7 @@ public class AlertFrameManagerTest extends TestCase
   {
     manager.watch(frame);
     assertEquals(null, manager.getActiveFrame());
-    
+
     frame.visible = true;
     assertEquals(frame, manager.getActiveFrame());
   }

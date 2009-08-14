@@ -35,6 +35,7 @@ public class StageFrame extends JFrame implements KeyListener
   private DimensionAttribute heightStyle = (DimensionAttribute)heightCompiler.compile(500);
   private XCoordinateAttribute xLocationStyle = (XCoordinateAttribute)xCompiler.compile("center");
   private YCoordinateAttribute yLocationStyle = (YCoordinateAttribute)yCompiler.compile("center");
+  private boolean vital = true;
 
   protected StageFrame()
   {
@@ -100,6 +101,7 @@ public class StageFrame extends JFrame implements KeyListener
     }
   }
 
+  //TODO - MDM - auto dimensions are currently not supported.  This needs to be addressed. 
   public void setSizeStyles(Object widthValue, Object heightValue)
   {
     widthStyle = (DimensionAttribute) widthCompiler.compile(widthValue);
@@ -234,9 +236,9 @@ public class StageFrame extends JFrame implements KeyListener
       panel.keyReleased(e);
   }
 
-  public void setBackgroundColor(String colorString)
+  public void setBackgroundColor(Object colorString)
   {
-    setBackground(Colors.resolve(colorString));
+    setBackground(Colors.resolve(colorString.toString()));
   }
 
   public String getBackgroundColor()
@@ -274,6 +276,16 @@ public class StageFrame extends JFrame implements KeyListener
   public boolean shouldAllowClose()
   {
     return stage.should_allow_close();
+  }
+
+  public boolean isVital()
+  {
+    return vital;
+  }
+
+  public void setVital(boolean value)
+  {
+    vital = value;
   }
 
   // Protected ////////////////////////////////////////////

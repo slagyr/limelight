@@ -3,12 +3,16 @@
 
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/stage'
+require 'limelight/scene'
+require 'limelight/theater'
 
 describe Limelight::Stage do
 
   before(:each) do
-    @theater = make_mock("theater")
-    @stage = Limelight::Stage.new(@theater, "George")
+    @theater = Limelight::Theater.new
+    @stage = @theater.add_stage("George")
+    @stage.should_remain_hidden = true
+    Limelight::Context.instance.frameManager = Java::limelight.ui.model.InertFrameManager.new
   end
 
   it "should have a name" do
@@ -35,7 +39,7 @@ describe Limelight::Stage do
     @stage.size.should == ["123", "456"]
 
     @stage.size = "50%", "100%"
-    @stage.size.should == ["50%","100%"]
+    @stage.size.should == ["50%", "100%"]
   end
 
   it "should have location" do
@@ -107,11 +111,23 @@ describe Limelight::Stage do
     @stage.should_allow_close.should == true
   end
 
+  it "should allow contructor options" do
+    stage = Limelight::Stage.new(@theater, "Ringo", :framed => false, :background_color => "blue")
+    stage.framed?.should == false
+    stage.background_color.should == "#0000FF"
+  end
+
+  it "should handle vitality" do
+    @stage.vital?.should == true
+    @stage.vital = false
+    @stage.vital?.should == false
+    @stage.frame.isVital.should == false
+  end
+
   describe "when opening a scene" do
     before(:each) do
-      @scene = make_mock("scene", :visible= => nil, :illuminate => nil, :stage= => nil, :scene_opened => nil)
-      @stage.frame.stub!(:open)
-      @stage.stub!(:load_scene)
+      @scene = Limelight::Scene.new
+      @scene.stub!(:illuminate)
     end
 
     it "should call scene.scene_opened at the end of opening a scene" do
@@ -134,6 +150,7 @@ describe Limelight::Stage do
 
     it "should hide and show" do
       @stage.open(@scene)
+      @stage.should_remain_hidden = false
       @stage.frame.should_receive(:visible=).with(false)
       @stage.hide
 
@@ -142,6 +159,7 @@ describe Limelight::Stage do
     end
 
     it "should open the frame when opening" do
+      @stage.should_remain_hidden = false
       @stage.frame.should_receive(:open)
 
       @stage.open(@scene)
@@ -152,6 +170,23 @@ describe Limelight::Stage do
       @stage.frame.should_not_receive(:open)
 
       @stage.open(@scene)
+    end
+
+    it "should clean up on close" do
+      @stage.open(@scene)
+
+      @stage.close
+
+      @scene.visible?.should == false
+      @stage.current_scene.should == nil
+    end
+
+    it "should be removed from the theater when closed" do
+      @stage.open(@scene)
+      @theater["George"].should be(@stage)
+
+      @stage.close      
+      @theater["George"].should == nil
     end
 
   end

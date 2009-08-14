@@ -39,9 +39,9 @@ module Limelight
 
     # Adds a Stage to the Theater.  Raises an exception is the name of the Stage is duplicated.
     #
-    def add_stage(name)
+    def add_stage(name, options = {})
       raise LimelightException.new("Duplicate stage name: '#{name}'") if @stages[name]
-      stage = build_stage(name)
+      stage = build_stage(name, options)
       @stages[name] = stage
       return stage
     end
@@ -50,6 +50,13 @@ module Limelight
     #
     def stage_activated(stage)
       @active_stage = stage
+    end
+
+    # Removes the stage from this theater.
+    #
+    def stage_closed(stage)
+      @stages.delete(stage.name)
+      @active_stage = nil if @active_stage == stage
     end
 
     # If no Stages are added, the Theater will provide a default Stage named "Limelight".
@@ -61,8 +68,8 @@ module Limelight
 
     protected #############################################
 
-    def build_stage(name)
-      return Limelight::Stage.new(self, name)
+    def build_stage(name, options)
+      return Limelight::Stage.new(self, name, options)
     end
     
   end

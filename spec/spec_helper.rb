@@ -7,7 +7,7 @@ require 'spec'
 
 Limelight::Main.new.configureTestContext
 context = Limelight::Context.instance
-context.frameManager = Java::limelight.ui.model.AlertFrameManager.new
+context.frameManager = Java::limelight.ui.model.InertFrameManager.new
 
 def make_mock(name, stubs = {})
   the_mock = mock(name)

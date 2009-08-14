@@ -12,7 +12,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should build root" do
-    root = Limelight.build_scene(@scene)
+    root = Limelight.build_props(@scene)
     root.illuminate
 
     root.class.should == Limelight::Scene
@@ -22,7 +22,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should build one child prop" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       child
     end
     root.illuminate
@@ -36,7 +36,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow multiple children" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       child1
       child2
     end
@@ -48,7 +48,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow nested children" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       child do
         grandchild
       end
@@ -62,7 +62,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should be able to set the id" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       child :id => "child_1", :players => "x, y, z"
     end
     root.illuminate
@@ -73,7 +73,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow setting styles" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       child :width => "100", :font_size => "10", :top_border_color => "blue"
     end
     root.illuminate
@@ -85,7 +85,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow defining events through constructor" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       child :on_mouse_entered => "return [self, event]"
     end
     root.illuminate
@@ -95,7 +95,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow scene configuration" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       __ :name => "root", :id => "123"
     end
     root.illuminate
@@ -106,7 +106,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should give every prop their scene" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       child do
         grandchild
       end
@@ -121,7 +121,7 @@ describe Limelight::DSL::PropBuilder do
     loader = make_mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("child :id => 123")
 
-    root = Limelight::build_scene(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
+    root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
       __install "external.rb"
     end
     root.illuminate
@@ -135,7 +135,7 @@ describe Limelight::DSL::PropBuilder do
 
   it "should fail if no loader is provided" do
     begin
-      root = Limelight::build_scene(@scene, :id => 321, :build_loader => nil) do
+      root = Limelight::build_props(@scene, :id => 321, :build_loader => nil) do
         __install "external.rb"
       end
       root.should == nil # should never get here
@@ -149,7 +149,7 @@ describe Limelight::DSL::PropBuilder do
     loader.should_receive(:exists?).with("external.rb").and_return(false)
 
     begin
-      root = Limelight::build_scene(@scene, :id => 321, :build_loader => loader) do
+      root = Limelight::build_props(@scene, :id => 321, :build_loader => loader) do
         __install "external.rb"
       end
     rescue Exception => e
@@ -162,7 +162,7 @@ describe Limelight::DSL::PropBuilder do
     loader.should_receive(:load).with("external.rb").and_return("+")
 
     begin
-      root = Limelight::build_scene(@scene, :id => 321, :build_loader => loader) do
+      root = Limelight::build_props(@scene, :id => 321, :build_loader => loader) do
         __install "external.rb"
       end
     rescue Limelight::DSL::BuildException => e
@@ -187,7 +187,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should not crash with prop named display" do
-    root = Limelight::build_scene(@scene) do
+    root = Limelight::build_props(@scene) do
       display :id => "display"
     end
     root.illuminate
@@ -199,7 +199,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow instance variables" do
-    root = Limelight::build_scene(@scene, :instance_variables => { :id1 => "abc", :id2 => "xyz" } ) do
+    root = Limelight::build_props(@scene, :instance_variables => { :id1 => "abc", :id2 => "xyz" } ) do
       __ :id => @id1
       child :id => @id2
     end
@@ -211,7 +211,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should propogate instance variables to nested levels" do
-    root = Limelight::build_scene(@scene, :instance_variables => { :name => "blah" } ) do
+    root = Limelight::build_props(@scene, :instance_variables => { :name => "blah" } ) do
       child :id => "child", :name => @name do
         grand_child :id => "grand_child", :name => @name do
           great_grand_child :id => "great_grand_child", :name => @name do
@@ -232,7 +232,7 @@ describe Limelight::DSL::PropBuilder do
     loader = make_mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("child :id => @desired_id")
 
-    root = Limelight::build_scene(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
+    root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
       __install "external.rb", :desired_id => "123"
     end
     root.illuminate
