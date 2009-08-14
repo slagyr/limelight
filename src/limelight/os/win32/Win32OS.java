@@ -1,16 +1,22 @@
 package limelight.os.win32;
-
 import limelight.os.OS;
+import limelight.os.IRuntime;
 
 public class Win32OS extends OS
 {
   private int hookThreadId;
   // Create this object here and keep it around so it doesn't get garbage collected.
   private final KeyboardHandler keyboardHandler = new KeyboardHandler();
+  private IRuntime runtime;
 
   public String dataRoot()
   {
     return System.getProperty("user.home") + "/Application Data/Limelight";
+  }
+
+  public void setRuntime(IRuntime runtime)
+  {
+    this.runtime = runtime;
   }
 
   protected void turnOnKioskMode()
@@ -36,6 +42,16 @@ public class Win32OS extends OS
 
     User32.INSTANCE.PostThreadMessage(new W32API.DWORD(hookThreadId), User32.WM_QUIT, new W32API.WPARAM(0), new W32API.LPARAM(0));
     hookThreadId = 0;
+  }
+
+  protected void startBrowserAt(String URL) throws java.io.IOException
+  {
+    String[] cmd = new String[4];
+	  cmd[0] = "cmd.exe";
+	  cmd[1] = "/C";
+	  cmd[2] = "start";
+	  cmd[3] = URL;
+    runtime.exec(cmd);
   }
 
   private void MsgLoop()

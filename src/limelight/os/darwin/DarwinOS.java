@@ -44,6 +44,10 @@ public class DarwinOS extends OS
     Carbon.INSTANCE.SetSystemUIMode(originalMode, originalOptions);
   }
 
+  protected void startBrowserAt(String URL)
+  {
+  }
+
   public void configureSystemProperties()
   {
     System.setProperty("jruby.shell", "/bin/sh");
