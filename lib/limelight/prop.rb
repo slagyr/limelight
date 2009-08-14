@@ -30,6 +30,8 @@ module Limelight
       end
 
       def event2(event_symbol)
+        @events ||= []
+        @events << event_symbol unless @events.include?(event_symbol)
         define_method("accepts_#{event_symbol}".to_sym) { return self.respond_to?(event_symbol) }
       end
 
