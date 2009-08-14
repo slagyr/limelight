@@ -20,6 +20,7 @@ module Limelight #:nodoc:
 
   module Util #:nodoc:
     Colors = Java::limelight.util.Colors
+    Version = Java::limelight.util.Version
   end
 
   module UI #:nodoc:

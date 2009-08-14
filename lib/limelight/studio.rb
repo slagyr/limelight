@@ -49,6 +49,7 @@ module Limelight
       def reset #:nodoc:
         @index = []
         @is_shutdown = false
+        @is_shutting_down = false
         @studio = nil
       end
 
@@ -59,10 +60,17 @@ module Limelight
       # Opens the production at the specified path.
       #
       def open(production_path)
-        producer = Producer.new(production_path)
-        production = producer.production
-        index(production)
-        producer.open
+        begin
+          producer = Producer.new(production_path)
+          production = producer.production
+          index(production)
+          producer.open
+          return production
+        rescue Exception => e
+          # TODO MDM - open the error in a window  
+          puts e
+          puts e.backtrace
+        end
       end
 
       # Returns true if all of the open productions allow closing.
@@ -75,9 +83,11 @@ module Limelight
       # If allowed (should_allow_shutdown), this will close all open productions and shutdown the limelight runtime.
       #
       def shutdown
-        return if @is_shutdown
+        return if @is_shutdown || @is_shutting_down
         return unless should_allow_shutdown
+        @is_shutting_down = true
         @index.each { |production| production.close }
+        @utilities_production.close if @utilities_production
         @is_shutdown = true
         Thread.new { Context.instance().shutdown }
       end
@@ -99,6 +109,17 @@ module Limelight
       #
       def publish_on_drb(port)
         @drb_server = DRb.start_service("druby://0.0.0.0:#{port}", self)
+      end
+
+      # Returns the utilities production; a production used by limelight.
+      #
+      def utilities_production
+        if @utilities_production == nil
+          producer = Producer.new(File.join($LIMELIGHT_LIB, "limelight", "builtin", "utilities_production"))
+          @utilities_production = producer.production
+          producer.open
+        end
+        return @utilities_production
       end
 
       private #############################################

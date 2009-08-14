@@ -336,4 +336,13 @@ public class StageFrameTest extends TestCase
 
     assertEquals(new Point(440, 440), frame.getLocation());
   }
+
+  public void testVitality() throws Exception
+  {
+    assertEquals(true, frame.isVital());
+
+    frame.setVital(false);
+
+    assertEquals(false, frame.isVital());
+  }
 }

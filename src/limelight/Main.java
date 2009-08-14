@@ -121,6 +121,8 @@ public class Main
 //VerboseRepaintManager.install();
     if(contextIsConfigured)
       return;
+    contextIsConfigured = true;
+
     context = Context.instance();
 
     setOS(context);
@@ -136,13 +138,14 @@ public class Main
     context.animationLoop = new AnimationLoop().started();
     context.cacheCleaner = new CacheCleanerLoop().started();
 
-    contextIsConfigured = true;
   }
 
   public void configureTestContext()
   {
     if(contextIsConfigured)
       return;
+    contextIsConfigured = true;
+    
     context = Context.instance();
 
     context.os = new MockOS();
@@ -157,8 +160,6 @@ public class Main
     context.panelPanter = new PanelPainterLoop();
     context.animationLoop = new AnimationLoop();
     context.cacheCleaner = new CacheCleanerLoop();
-
-    contextIsConfigured = true;
   }
 
   public static void initializeTempDirectory()

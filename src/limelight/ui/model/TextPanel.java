@@ -117,6 +117,8 @@ public class TextPanel extends BasePanel
 
   public void compile()
   {
+    if(getRoot() == null || getRoot().getGraphics() == null)
+      return;
     buildLines();
     calculateDimentions();
     compiled = true;

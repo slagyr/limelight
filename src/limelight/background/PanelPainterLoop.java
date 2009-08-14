@@ -73,7 +73,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     }
     return !somethingToDo;
   }
-  
+
   protected void execute()
   {
     for(StageFrame stageFrame : frameBuffer)
@@ -111,10 +111,13 @@ public class PanelPainterLoop extends IdleThreadLoop
       if(rectangle.width <= 0 || rectangle.height <= 0)
         continue;
       Graphics2D rootGraphics = root.getGraphics();
-      PaintJob job = new PaintJob(new Box(rectangle), rootGraphics.getBackground());
-      job.paint(root.getPanel());
-      job.applyTo(rootGraphics);
-      job.dispose();
+      if(rootGraphics != null)
+      {
+        PaintJob job = new PaintJob(new Box(rectangle), rootGraphics.getBackground());
+        job.paint(root.getPanel());
+        job.applyTo(rootGraphics);
+        job.dispose();
+      }
     }
   }
 

@@ -54,4 +54,19 @@ describe Limelight::Theater do
     @theater.default_stage.should be(@theater.default_stage)
   end
 
+  it "should construct stages with options" do
+    @theater.add_stage("Joe", :title => "Blowey")
+
+    @theater["Joe"].title.should == "Blowey"
+  end
+
+  it "should remove closed stages" do
+    @theater.stage_activated(@stage)
+
+    @theater.stage_closed(@stage)
+
+    @theater["default"].should == nil
+    @theater.active_stage.should == nil
+  end
+
 end

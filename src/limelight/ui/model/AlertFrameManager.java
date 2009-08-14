@@ -62,18 +62,18 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
     StageFrame frame = ((StageFrame) e.getWindow());
     frames.remove(frame);
-    if(frames.isEmpty() || allFramesHidden())
+    if(frame.isVital() && !hasVisibleVitalFrame())
       Context.instance().attemptShutdown();
   }
 
-  private synchronized boolean allFramesHidden()
+  private synchronized boolean hasVisibleVitalFrame()
   {
     for(StageFrame frame : frames)
     {
-      if(frame.isVisible())
-        return false;
+      if(frame.isVital() && frame.isVisible())
+        return true;
     }
-    return true;
+    return false;
   }
 
   public void windowIconified(WindowEvent e)

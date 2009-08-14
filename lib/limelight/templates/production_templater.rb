@@ -3,6 +3,7 @@
 
 require 'limelight/templates/templater'
 require 'limelight/string'
+require 'limelight/version'
 
 module Limelight
   module Templates
@@ -27,6 +28,7 @@ module Limelight
         @tokens = {}
         @tokens[:DEFAULT_SCENE_NAME] = default_scene_name
         @tokens[:PRODUCTION_NAME] = File.basename(production_path).titleized
+        @tokens[:CURRENT_VERSION] = Limelight::VERSION::STRING
       end
 
       # Generates the files

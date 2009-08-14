@@ -13,6 +13,7 @@ require 'limelight/theater'
 require 'limelight/production'
 require 'limelight/gems'
 require 'limelight/util/downloader'
+require 'limelight/version'
 
 module Limelight
 
@@ -27,7 +28,12 @@ module Limelight
     #
     def self.open(production_name, options={})
       producer = new(production_name)
-      producer.open(options)
+      begin
+        producer.open(options)
+      rescue Exception => e
+        puts e
+        puts e.backtrace
+      end
     end
 
     attr_reader :theater, :production
@@ -49,6 +55,14 @@ module Limelight
       establish_production
     end
 
+    # Returns true if the production's minimum_limelight_version is compatible with the current version.
+    #
+    def version_compatible?
+      current_version = Limelight::Util::Version.new(Limelight::VERSION::STRING)
+      required_version = Limelight::Util::Version.new(@production.minimum_limelight_version)
+      return required_version.is_less_than_or_equal(current_version)
+    end
+
     # Returns the CastingDirector for this Production.
     #
     def casting_director
@@ -67,30 +81,30 @@ module Limelight
     # Opens the Production.
     #
     def open(options = {})
+      return unless version_compatible? || Studio.utilities_production.proceed_with_incompatible_version?(@production.name, @production.minimum_limelight_version)
       @production.production_opening
       load
       @production.production_loaded
       if @theater.has_stages?
-        @theater.stages.each { |stage| open_scene(stage.default_scene, stage) if stage.default_scene }
-      else
-        open_scene(:root, @theater.default_stage)
+        @theater.stages.each do |stage|          
+          open_scene(stage.default_scene.to_s, stage) if stage.default_scene
+        end
+      elsif @production.default_scene
+        open_scene(@production.default_scene, @theater.default_stage)
       end
       @casting_director = nil
-
       @production.production_opened
     end
 
     # Opens the specified Scene onto the Spcified Stage.
     #
-    def open_scene(name, stage)
+    def open_scene(name, stage, options={})
       path = @production.scene_directory(name)
       scene_name = File.basename(path)
-      scene = load_props(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name)
-
+      scene = load_props(options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name))
       styles = load_styles(scene)
       merge_with_root_styles(styles)
       scene.styles = styles
-
       stage.open(scene)
       return scene
     end
@@ -117,7 +131,7 @@ module Limelight
       if File.exists?(scene.props_file)
         content = IO.read(scene.props_file)
         options[:build_loader] = @production.root
-        return Limelight.build_scene(scene, options) do
+        return Limelight.build_props(scene, options) do
           begin
             eval content
           rescue Exception => e
@@ -141,23 +155,6 @@ module Limelight
         rescue Exception => e
           raise DSL::BuildException.new(context.styles_file, content, e)
         end
-      end
-    end
-
-    # Loads the 'production.rb' file if it exists and configures the Production.
-    #
-    def establish_production
-      @production.producer = self
-      @production.theater = @theater
-
-      production_file = @production.production_file
-      if File.exists?(production_file)
-        tmp_module = Module.new
-        content = IO.read(production_file)
-        tmp_module.module_eval(content, production_file)
-        production_module = tmp_module.const_get("Production")
-        raise "production.rb should define a module named 'Production'" if production_module.nil?
-        @production.extend(production_module)        
       end
     end
 
@@ -188,6 +185,21 @@ module Limelight
         end
       end
       return @builtin_styles.dup
+    end
+
+    def establish_production #:nodoc:
+      @production.producer = self
+      @production.theater = @theater
+
+      production_file = @production.production_file
+      if File.exists?(production_file)
+        tmp_module = Module.new
+        content = IO.read(production_file)
+        tmp_module.module_eval(content, production_file)
+        production_module = tmp_module.const_get("Production")
+        raise "production.rb should define a module named 'Production'" if production_module.nil?
+        @production.extend(production_module)
+      end
     end
 
     private ###############################################

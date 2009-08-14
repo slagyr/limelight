@@ -12,7 +12,7 @@ module Limelight
   #
   # See Limelight::PropBuilder
   #
-  def self.build_scene(root, options={}, &block)
+  def self.build_props(root, options={}, &block)
     loader = options.delete(:build_loader)
     instance_variables = options.delete(:instance_variables)
     root.add_options(options)

@@ -59,33 +59,33 @@ describe Limelight::Producer do
     styles["alpha"].width.should == "100"
   end
 
-# Broken in JRuby 1.3
-#
-#  it "should format prop errors well" do
-#    TestDir.create_file("test_prod/props.rb", "one\n+\nthree")
-#
-#    begin
-#      result = @producer.load_props(:path => TestDir.path("test_prod"), :casting_director => make_mock("casting_director", :fill_cast => nil))
-#      result.should == nil # should never perform
-#    rescue Limelight::DSL::BuildException => e
-#      e.line_number.should == 3
-#      e.filename.should == TestDir.path("test_prod/props.rb")
-#      e.message.include?("/props.rb:3: undefined method `+@' for ").should == true
-#    end
-#  end
-#
-#  it "should format styles errors well" do
-#    TestDir.create_file("test_prod/styles.rb", "one {}\ntwo {}\n-\nthree {}")
-#
-#    begin
-#      result = @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod")))
-#      result.should == nil # should never perform
-#    rescue Limelight::DSL::BuildException => e
-#      e.line_number.should == 4
-#      e.filename.should == TestDir.path("test_prod/styles.rb")
-#      e.message.include?("/styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x").should == true
-#    end
-#  end
+  # Broken in JRuby 1.3
+  #
+  #  it "should format prop errors well" do
+  #    TestDir.create_file("test_prod/props.rb", "one\n+\nthree")
+  #
+  #    begin
+  #      result = @producer.load_props(:path => TestDir.path("test_prod"), :casting_director => make_mock("casting_director", :fill_cast => nil))
+  #      result.should == nil # should never perform
+  #    rescue Limelight::DSL::BuildException => e
+  #      e.line_number.should == 3
+  #      e.filename.should == TestDir.path("test_prod/props.rb")
+  #      e.message.include?("/props.rb:3: undefined method `+@' for ").should == true
+  #    end
+  #  end
+  #
+  #  it "should format styles errors well" do
+  #    TestDir.create_file("test_prod/styles.rb", "one {}\ntwo {}\n-\nthree {}")
+  #
+  #    begin
+  #      result = @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod")))
+  #      result.should == nil # should never perform
+  #    rescue Limelight::DSL::BuildException => e
+  #      e.line_number.should == 4
+  #      e.filename.should == TestDir.path("test_prod/styles.rb")
+  #      e.message.include?("/styles.rb:4: undefined method `-@' for #<Java::LimelightStyles::RichStyle:0x").should == true
+  #    end
+  #  end
 
   it "should load a stage when stages.rb exists" do
     TestDir.create_file("test_prod/stages.rb", "stage 'Default' do\n default_scene 'abc'\n end")
@@ -111,6 +111,15 @@ describe Limelight::Producer do
 
     @producer.theater.stages.size.should == 1
     @producer.theater["Limelight"].should_not == nil
+  end
+
+  it "should not load a scene when stages.rb doesn't exists and production indicates no default_scene" do
+    @producer.should_not_receive(:open_stages)
+    @producer.should_not_receive(:open_scene)
+    @producer.production.should_receive(:default_scene).and_return(nil)
+    Limelight::Gems.should_receive(:install_gems_in_production)
+
+    @producer.open
   end
 
   it "should load a stage but not open it if it has no default scene" do
@@ -184,6 +193,26 @@ describe Limelight::Producer do
     @producer.builtin_styles.should_not be(@producer.builtin_styles)
     # Try again
     @producer.builtin_styles.should_not be(@producer.builtin_styles)
+  end
+
+  it "should check limelight version" do
+    @producer.production.should_receive(:minimum_limelight_version).and_return("0.0.0")
+    @producer.version_compatible?.should == true
+
+    @producer.production.should_receive(:minimum_limelight_version).and_return("999.0.0")
+    @producer.version_compatible?.should == false
+  end
+
+  it "should allow options such as instance variables to be passed to open_scene" do
+    stage = make_mock("stage")
+    scene = make_mock("scene")
+    @producer.should_receive(:load_props).with(:instance_variables => { :foo => "bar" }, :production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
+    @producer.should_receive(:load_styles).and_return("styles")
+    @producer.should_receive(:merge_with_root_styles).with("styles")
+    scene.should_receive(:styles=)
+    stage.should_receive(:open).with(scene)
+
+    @producer.open_scene("name", stage, :instance_variables => { :foo => "bar" })
   end
 
 end

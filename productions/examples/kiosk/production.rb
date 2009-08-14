@@ -5,4 +5,8 @@ module Production
 #    return false
 #  end
 
+  def minimum_limelight_version
+    return "999.9.9"
+  end
+
 end

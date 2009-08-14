@@ -43,4 +43,12 @@ describe Limelight::Templates::ProductionTemplater do
     templater.generate
   end
 
+  it "should have tokens" do
+    templater = Limelight::Templates::ProductionTemplater.new("some_production", "default_scene")
+
+    templater.tokens[:PRODUCTION_NAME].should == "Some Production"
+    templater.tokens[:DEFAULT_SCENE_NAME].should == "default_scene"
+    templater.tokens[:CURRENT_VERSION].should == Limelight::VERSION::STRING
+  end
+
 end

@@ -149,7 +149,7 @@ module Limelight
     # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
     # Some Players such as text_box, will cause the text to appear in the text_box.
     #
-    def text=(value)
+    def text=(value)    
       @panel.text = value.to_s
     end
 
@@ -249,6 +249,7 @@ module Limelight
 
     # GUI Events ##########################################
 
+    # TODO MDM - This may be very inefficient.  If seems like these methods are generated for each instance of prop.
     event2 :mouse_clicked
     event :mouse_entered
     event :mouse_exited
@@ -314,7 +315,7 @@ module Limelight
 
     def is_event_setter(symbol)
       string_value = symbol.to_s
-      return string_value[0..2] == "on_" and self.events.include?(string_value[3..-1].to_sym)
+      return string_value[0..2] == "on_" && self.class.events.include?(string_value[3..-1].to_sym)
     end
 
     def define_event(symbol, value)
