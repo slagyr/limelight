@@ -20,6 +20,7 @@ public class MockPanel extends BasePanel
   public boolean changeMarkerWasReset;
   public boolean wasLaidOut;
   public boolean floater;
+  public boolean consumableAreaChangedCalled;
 
   public MockPanel()
   {
@@ -67,5 +68,11 @@ public class MockPanel extends BasePanel
   public boolean isFloater()
   {
     return floater;
+  }
+
+  @Override
+  public void consumableAreaChanged()
+  {
+    consumableAreaChangedCalled = true;
   }
 }

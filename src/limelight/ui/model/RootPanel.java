@@ -388,6 +388,10 @@ public class RootPanel implements Panel
   {
   }
 
+  public void consumableAreaChanged()
+  {
+  }
+
   public boolean containsRelativePoint(Point point)
   {
     return true;

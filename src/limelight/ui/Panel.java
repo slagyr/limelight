@@ -59,6 +59,7 @@ public interface Panel extends Iterable<Panel>
   boolean isFloater();
   void doFloatLayout();
 
+  void consumableAreaChanged();
   boolean needsLayout();
   void markAsNeedingLayout();
   

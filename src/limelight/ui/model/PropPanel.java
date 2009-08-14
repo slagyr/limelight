@@ -384,13 +384,15 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
         sizeChanged = true;
         markAsNeedingLayout();
         getParent().markAsNeedingLayout();
-        propogateSizeChangeUp(getParent());
+        propagateSizeChangeUp(getParent());
+        propagateSizeChangeDown();
       }
       else if(isBorderDescriptor(descriptor) || isMarginPaddingOrBorder(value))
       {
         borderChanged = true;
         markAsNeedingLayout();
         clearCache();
+        propagateSizeChangeDown();
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
       {

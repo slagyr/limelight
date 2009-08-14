@@ -125,4 +125,14 @@ public class ImagePanelTest extends TestCase
     assertEquals(1.0, tranform.getScaleX(), 0.001);
     assertEquals(1.0, tranform.getScaleY(), 0.001);
   }
+  
+  public void testParentSizeChangesAlwaysRequiresLayout() throws Exception
+  {
+    panel.resetLayout();
+    assertEquals(false, panel.needsLayout());
+
+    panel.consumableAreaChanged();
+
+    assertEquals(true, panel.needsLayout());
+  }
 }

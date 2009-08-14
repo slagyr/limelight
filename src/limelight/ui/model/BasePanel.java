@@ -65,8 +65,6 @@ public abstract class BasePanel implements Panel
       clearCache();
       width = w;
       height = h;
-
-      propgateSizeChangeDown();
     }
   }
 
@@ -293,7 +291,7 @@ public abstract class BasePanel implements Panel
     readonlyChildren = null;
 
     child.setParent(this);
-    propogateSizeChangeUp(this);
+    propagateSizeChangeUp(this);
     markAsNeedingLayout();
   }
 
@@ -355,7 +353,7 @@ public abstract class BasePanel implements Panel
     {
       child.setParent(null);
       readonlyChildren = null;
-      propogateSizeChangeUp(this);
+      propagateSizeChangeUp(this);
       markAsNeedingLayout();
       return true;
     }
@@ -371,7 +369,7 @@ public abstract class BasePanel implements Panel
       children.clear();
       readonlyChildren = null;
       sterilized = false;
-      propogateSizeChangeUp(this);
+      propagateSizeChangeUp(this);
       markAsNeedingLayout();
     }
   }
@@ -391,6 +389,17 @@ public abstract class BasePanel implements Panel
   public void doFloatLayout()
   {
     // Panels are not floaters by default.
+  }
+
+  public void consumableAreaChanged()
+  {
+    Style style = getStyle();
+    if(!needsLayout() && style != null && (style.hasAutoDimension() || style.hasPercentageDimension()))
+    {
+      markAsNeedingLayout();
+      for(Panel child : children)
+        child.consumableAreaChanged();
+    }
   }
 
   public boolean canBeBuffered()
@@ -437,14 +446,14 @@ public abstract class BasePanel implements Panel
     return new PanelIterator(this);
   }
 
-  protected void propogateSizeChangeUp(Panel panel)
+  protected void propagateSizeChangeUp(Panel panel)
   {
     if(panel != null && !panel.needsLayout() && panel instanceof BasePanel)
     {
       Style style = panel.getStyle();
       if(style != null && style.hasAutoDimension())
       {
-        propogateSizeChangeUp(panel.getParent());
+        propagateSizeChangeUp(panel.getParent());
         panel.getParent().markAsNeedingLayout();
       }
     }
@@ -467,16 +476,9 @@ public abstract class BasePanel implements Panel
     laidOut = true;
   }
 
-  private void propgateSizeChangeDown()
+  protected void propagateSizeChangeDown()
   {
     for(Panel child : children)
-    {
-      if(!child.needsLayout() && child instanceof BasePanel)
-      {
-        Style style = child.getStyle();
-        if(style != null && (style.hasAutoDimension() || style.hasPercentageDimension()))
-          child.markAsNeedingLayout();
-      }
-    }
+      child.consumableAreaChanged();
   }
 }

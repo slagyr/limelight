@@ -44,7 +44,7 @@ public class TextPanel extends BasePanel
   {
     this.panel = panel;
     this.text = text;
-//    setNeedsLayout();
+    markAsNeedingLayout();
   }
 
   public String getText()
@@ -55,13 +55,13 @@ public class TextPanel extends BasePanel
   public void setText(String text)
   {
     boolean differentText = !Util.equal(text, this.text);
-    if(!textChanged && differentText)
-      textChanged = true;
+    if(!needsLayout() && differentText)
+      markAsNeedingLayout();
     this.text = text;
     if(differentText)
     {
       markAsNeedingLayout();
-      propogateSizeChangeUp(getParent());
+      propagateSizeChangeUp(getParent());
       getParent().markAsNeedingLayout();
     }
   }
@@ -104,15 +104,9 @@ public class TextPanel extends BasePanel
     return TextPanelLayout.instance;
   }
 
-  public boolean needsLayout()
+  public void consumableAreaChanged()
   {
-    return !compiled || textChanged() || consumableAreaChanged();
-  }
-
-  private boolean consumableAreaChanged()
-  {
-    //TODO MDM Can optimize so that a TextPanel doesn't compile if it's not using the entire width of consumableArea. 
-    return consumableArea == null || !consumableArea.sameSize(panel.getChildConsumableArea());
+    markAsNeedingLayout();
   }
 
   public void compile()
