@@ -21,21 +21,23 @@ module Limelight
 
       # The scene_path should be path to a desired scene inside a production directory.
       #
-      def initialize(scene_path)
-        super(File.dirname(scene_path), Templater.source_dir)
-        @scene_path = File.basename(scene_path)
-        scene_name = File.basename(scene_path)
+      def initialize(production_path, scene_path)
+        super(production_path, Templater.source_dir)
+        @production_path = production_path
+        @scene_path = scene_path
+        @scene_name = File.basename(scene_path)
         @tokens = {}
-        @tokens[:SCENE_NAME] = scene_name
-        @tokens[:SCENE_TITLE] = scene_name.titleized
+        @tokens[:SCENE_NAME] = @scene_name
+        @tokens[:SCENE_TITLE] = @scene_name.titleized
       end
 
-      # Generated the files
+      # Generates the files
       #
       def generate
         file(File.join(@scene_path, "props.rb"), "scene/props.rb.template", @tokens)
         file(File.join(@scene_path, "styles.rb"), "scene/styles.rb.template", @tokens)
         directory(File.join(@scene_path, "players"))
+        file(File.join("spec", @scene_path, "#{@scene_name}_spec.rb"), "scene_spec/scene_spec.rb.template", @tokens)
       end
 
     end

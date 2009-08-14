@@ -28,12 +28,13 @@ module Limelight
         return "Creates the directories and files for a production and/or scene."
       end
 
-      attr_reader :template_type, :path, :default_scene_name  #:nodoc:
+      attr_reader :template_type, :path, :scene_name, :production_path  #:nodoc:
 
       protected ###########################################
 
       def initialize #:nodoc:
-        @default_scene_name = "default_scene"
+        @scene_name = "default_scene"
+        @production_path = "."
         @actions = {}
         @actions["production"] = :create_production
         @actions["scene"] = :create_scene
@@ -45,7 +46,7 @@ module Limelight
       end
 
       def parameter_description #:nodoc:
-        return "[options] <production|scene> <path>"
+        return "[options] <production|scene> <name>"
       end
 
       def parse_remainder(args) #:nodoc:
@@ -62,18 +63,19 @@ module Limelight
       end
 
       def build_options(spec) #:nodoc:
-        spec.on("-s <name>", "--scene=<name>", "Name of scene when creating a production.  Defaults to 'default_scene'.") { |value| @default_scene_name = value}
+        spec.on("-s <name>", "--scene=<name>", "Name of scene when creating a production.  Defaults to 'default_scene'.") { |value| @scene_name = value}
+        spec.on("-p <path>", "--production_path=<path>", "Path of production to contain scene.  Defaults to '.'.") { |value| @production_path = value}
       end
 
       private #############################################
 
       def create_production
-        Templates::ProductionTemplater.new(@path, @default_scene_name).generate
-        Templates::SceneTemplater.new("#{@path}/#{@default_scene_name}").generate
+        Templates::ProductionTemplater.new(@path, @scene_name).generate
+        Templates::SceneTemplater.new(@path, @scene_name).generate
       end
 
       def create_scene
-        Templates::SceneTemplater.new(@path).generate
+        Templates::SceneTemplater.new(@production_path, @path).generate
       end
 
     end

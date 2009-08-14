@@ -39,6 +39,7 @@ describe Limelight::Templates::ProductionTemplater do
     templater.should_receive(:file).with("some_production/production.rb", "production/production.rb.template", templater.tokens)
     templater.should_receive(:file).with("some_production/stages.rb", "production/stages.rb.template", templater.tokens)
     templater.should_receive(:file).with("some_production/styles.rb", "production/styles.rb.template", templater.tokens)
+    templater.should_receive(:file).with("some_production/spec/spec_helper.rb", "production/spec/spec_helper.rb.template", templater.tokens)
 
     templater.generate
   end

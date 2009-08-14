@@ -37,6 +37,7 @@ module Limelight
         file(File.join(@production_path, "production.rb"), "production/production.rb.template", @tokens)
         file(File.join(@production_path, "stages.rb"), "production/stages.rb.template", @tokens)
         file(File.join(@production_path, "styles.rb"), "production/styles.rb.template", @tokens)
+        file(File.join(@production_path, "spec", "spec_helper.rb"), "production/spec/spec_helper.rb.template", @tokens)
       end
 
     end
