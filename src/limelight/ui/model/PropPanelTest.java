@@ -475,6 +475,26 @@ public class PropPanelTest extends TestCase
     assertEquals(false, panel.sizeChanged());
   }
 
+  public void testShouldPropagateConsumableAreaChangeForWidthChange() throws Exception
+  {
+    MockPanel child = new MockPanel();
+    panel.add(child);
+
+    panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
+
+    assertEquals(true, child.consumableAreaChangedCalled);
+  }
+
+  public void testShouldPropagateConsumableAreaChangeForBorderChange() throws Exception
+  {
+    MockPanel child = new MockPanel();
+    panel.add(child);
+
+    panel.styleChanged(Style.TOP_BORDER_WIDTH, new SimpleIntegerAttribute(5));
+
+    assertEquals(true, child.consumableAreaChangedCalled);
+  }
+
   public void testBorderStyleChanges() throws Exception
   {
     panel.getBorderShaper();
@@ -582,4 +602,6 @@ public class PropPanelTest extends TestCase
 
     assertEquals(true, panel.needsLayout());
   }
+
+
 }

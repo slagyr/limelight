@@ -101,28 +101,29 @@ public class TextPanelTest extends TestCase
     assertFalse(panel.textChanged());
 
     panel.setText("Something");
-    assertTrue(panel.textChanged());
+    assertTrue(panel.needsLayout());
 
-    panel.flushChanges();
+    panel.resetLayout();
     panel.setText("Something");
-    assertFalse(panel.textChanged());
+    assertFalse(panel.needsLayout());
 
     panel.setText("Something Else");
-    assertTrue(panel.textChanged());
+    assertTrue(panel.needsLayout());
 
-    panel.flushChanges();
-    assertFalse(panel.textChanged());
+    panel.resetLayout();
+    assertFalse(panel.needsLayout());
   }
   
   public void testLayoutFlushedChangedText() throws Exception
   {
-    assertFalse(panel.textChanged());
+    panel.resetLayout();
+    assertEquals(false, panel.needsLayout());
 
     panel.setText("Something");
-    assertTrue(panel.textChanged());
+    assertEquals(true, panel.needsLayout());
 
     panel.doLayout();
-    assertFalse(panel.textChanged());
+    assertEquals(false, panel.needsLayout());
   }
 
   public void testCanBeBuffered() throws Exception
@@ -275,6 +276,16 @@ public class TextPanelTest extends TestCase
 
     assertEquals(true, 200 - panel.getWidth() < 100 );
     assertEquals(true, newHeight < originalHeight);
+  }
+  
+  public void testParentSizeChangesAlwaysRequiresLayout() throws Exception
+  {
+    panel.resetLayout();
+    assertEquals(false, panel.needsLayout());
+
+    panel.consumableAreaChanged();
+
+    assertEquals(true, panel.needsLayout());
   }
 }
 

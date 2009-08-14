@@ -85,6 +85,11 @@ public class ImagePanel extends BasePanel
     return ImagePanelLayout.instance;
   }
 
+  public void consumableAreaChanged()
+  {
+    markAsNeedingLayout();
+  }
+
   public void paintOn(Graphics2D graphics)
   {
     graphics.drawImage(getImage(), getTransform(), null);
