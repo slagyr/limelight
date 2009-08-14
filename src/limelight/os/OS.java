@@ -8,11 +8,11 @@ import java.io.IOException;
 public abstract class OS
 {
   protected boolean inKioskMode;
-  protected SystemExecution runtime = new RuntimeExecution();
+  protected RuntimeExecution runtime = new RuntimeExecution();
 
   protected abstract void turnOnKioskMode();
   protected abstract void turnOffKioskMode();
-  protected abstract void startBrowserAt(String URL) throws IOException;
+  protected abstract void launch(String URL) throws IOException;
   public abstract void configureSystemProperties();
 
   public String dataRoot()
@@ -48,12 +48,7 @@ public abstract class OS
     Context.instance().studio.open(productionPath);
   }
 
-  public void openURL(String URL) throws IOException
-  {
-    startBrowserAt(URL);
-  }
-
-  public void setRuntime(SystemExecution runtime)
+  public void setRuntime(RuntimeExecution runtime)
   {
     this.runtime = runtime;
   }
