@@ -7,16 +7,10 @@ public class Win32OS extends OS
   private int hookThreadId;
   // Create this object here and keep it around so it doesn't get garbage collected.
   private final KeyboardHandler keyboardHandler = new KeyboardHandler();
-  private IRuntime runtime;
 
   public String dataRoot()
   {
     return System.getProperty("user.home") + "/Application Data/Limelight";
-  }
-
-  public void setRuntime(IRuntime runtime)
-  {
-    this.runtime = runtime;
   }
 
   protected void turnOnKioskMode()
