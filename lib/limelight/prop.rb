@@ -225,13 +225,6 @@ module Limelight
       return Pen.new(panel.getGraphics)
     end
 
-    # Plays a sound on the computers audio output.  The parameter is the filename of a .au sound file.
-    # This filename should relative to the root directory of the current Production, or an absolute path.
-    #
-    def play_sound(filename)
-      @panel.play_sound(scene.loader.path_to(filename))
-    end
-
     # Initiate an animation loop.  Options may include :name (string), :updates_per_second (int: defaults to 60)
     # An Animation object is returned.
     # The provided block will be invoked :updates_per_second times per second until the Animation is stopped.
@@ -247,6 +240,13 @@ module Limelight
       animation = Animation.new(self, block, options)
       animation.start
       return animation
+    end
+
+    # Plays a sound on the computers audio output.  The parameter is the filename of a .au sound file.
+    # This filename should relative to the root directory of the current Production, or an absolute path.
+    #
+    def play_sound(filename)
+      @panel.play_sound(scene.loader.path_to(filename))
     end
 
     # Luanches the spcified URL using the OS's default handlers. For example, opening a URL in a browser:

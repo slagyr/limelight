@@ -88,8 +88,7 @@ module Limelight
     # Creates a new Producer to open the specified Production.
     #
     def open_production(production_path)
-      producer = Producer.new(production_path, @production.theater)
-      producer.open
+      Thread.new { Studio.open(production_path) }
     end
 
     # Opens the specified Scene on the Stage currently occupied by this Scene.
