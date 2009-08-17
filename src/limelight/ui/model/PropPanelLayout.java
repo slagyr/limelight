@@ -217,7 +217,7 @@ public class PropPanelLayout implements Layout
     public void layoutComponents(int x, int y)
     {
       for(Panel panel : items)
-      {
+      {        
         panel.setLocation(x, y);
         x += panel.getWidth();
       }

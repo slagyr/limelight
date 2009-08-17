@@ -22,8 +22,8 @@ module Production
 
   def load_incompatible_version_scene(production_name, required_version)
     if !theater["Incompatible Version"]
-      @incompatible_version_stage = theater.add_stage("Incompatible Version", :location => [:center, :center], :size => [400, 300],
-            :background_color => :transparent, :framed => false, :always_on_top => true, :vital => false)
+      @incompatible_version_stage = theater.add_stage("Incompatible Version", :location => [:center, :center], :size => [400, :auto],
+            :background_color => :white, :framed => false, :always_on_top => true, :vital => false)
     end
     producer.open_scene("incompatible_version", @incompatible_version_stage, :instance_variables => { :production_name => production_name, :required_version => required_version })
   end

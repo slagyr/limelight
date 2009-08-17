@@ -6,6 +6,7 @@ package limelight.ui.model;
 import limelight.Context;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
+import limelight.util.Debug;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
@@ -31,14 +32,15 @@ public class StageFrame extends JFrame implements KeyListener
   private boolean kiosk;
   private Dimension sizeBeforeFullScreen;
   private Point locationBeforeFullScreen;
-  private DimensionAttribute widthStyle = (DimensionAttribute)widthCompiler.compile(500);
-  private DimensionAttribute heightStyle = (DimensionAttribute)heightCompiler.compile(500);
-  private XCoordinateAttribute xLocationStyle = (XCoordinateAttribute)xCompiler.compile("center");
-  private YCoordinateAttribute yLocationStyle = (YCoordinateAttribute)yCompiler.compile("center");
+  private DimensionAttribute widthStyle = (DimensionAttribute) widthCompiler.compile(500);
+  private DimensionAttribute heightStyle = (DimensionAttribute) heightCompiler.compile(500);
+  private XCoordinateAttribute xLocationStyle = (XCoordinateAttribute) xCompiler.compile("center");
+  private YCoordinateAttribute yLocationStyle = (YCoordinateAttribute) yCompiler.compile("center");
   private boolean vital = true;
 
   protected StageFrame()
   {
+    super();
   }
 
   public StageFrame(Stage stage)
@@ -73,10 +75,10 @@ public class StageFrame extends JFrame implements KeyListener
       setJMenuBar(null);
 
     applySizeStyles();
+    collapseAutoDimensions();
     applyLocationStyles();
-    
+
     setVisible(true);
-    refresh();
   }
 
   public void setVisible(boolean visible)
@@ -109,7 +111,7 @@ public class StageFrame extends JFrame implements KeyListener
 
     applySizeStyles();
   }
-  
+
   public DimensionAttribute getWidthStyle()
   {
     return widthStyle;
@@ -371,6 +373,25 @@ public class StageFrame extends JFrame implements KeyListener
     int y = yLocationStyle.getY(getHeight(), usableBounds);
 
     setLocation(x, y);
+  }
+
+  private void collapseAutoDimensions()
+  {
+    if(root == null)
+      return;
+    if(!widthStyle.isAuto() && !heightStyle.isAuto())
+      return;
+
+    super.doLayout();
+    getRootPane().doLayout();
+    root.doLayout();
+
+    Dimension size = getSize();
+    if(widthStyle.isAuto() && root.getPanel().getWidth() < size.width)
+      size.width = root.getPanel().getWidth();
+    if(heightStyle.isAuto() && root.getPanel().getHeight() < size.height)
+      size.height = root.getPanel().getHeight();
+    setSize(size);
   }
 }
 

@@ -1,5 +1,7 @@
 package limelight.ui.model;
 
+import limelight.util.Debug;
+
 import javax.swing.*;
 import java.awt.*;
 
