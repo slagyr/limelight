@@ -10,7 +10,16 @@ public class TextPanelLayout implements Layout
   {
     TextPanel panel = (TextPanel) thePanel;
     panel.resetLayout();
-    panel.compile();
+    try
+    {
+      panel.compile();
+    }
+    catch(Exception e)
+    {
+      // Can fail if the graphics are not ready.
+      panel.markAsNeedingLayout();
+      panel.getParent().markAsNeedingLayout();
+    }
   }
 
   public boolean overides(Layout other)

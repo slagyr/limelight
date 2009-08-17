@@ -19,8 +19,8 @@ describe "Utilitites Production" do
     stage = production.theater["Incompatible Version"]
     stage.should_not == nil
     stage.location.should == ["center", "center"]
-    stage.size.should == ["400", "300"]
-    stage.background_color.should == "#00000000"
+    stage.size.should == ["400", "auto"]
+    stage.background_color.should == "#FFFFFF"
     stage.framed?.should == false
     stage.always_on_top?.should == true
     stage.vital?.should == false

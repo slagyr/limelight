@@ -1,13 +1,19 @@
 incompatible_version {
-  background_color :gray
+  background_color "#b2db5b"
+  secondary_background_color "#8fc927"
+  gradient :on
+  gradient_angle 270
+#  rounded_corner_radius 15
+  padding 20
 }
 
 title {
   width "100%"
-  font_size 20
-  font_face :arial
-  font_style :bold
-  text_color :blue
+  font_size 30
+  font_face "Arial Rounded MT Bold"
+  text_color :white
+  horizontal_alignment :center
+  bottom_padding 10
 }
 
 label {
@@ -15,17 +21,20 @@ label {
   font_size 12
   font_face :arial
   font_style :plain
-  text_color :black
+  text_color "#363636"
   horizontal_alignment :right
+  right_padding 5
 }
 
 bold_label {
   width "50%"
+  min_height 1
   font_size 12
   font_face :arial
   font_style :bold
-  text_color :black
+  text_color "#363636"
   horizontal_alignment :left
+  left_padding 5
 }
 
 advise {
@@ -33,16 +42,18 @@ advise {
   font_size 12
   font_face :arial
   font_style :plain
-  text_color :black
+  text_color "#363636"
   horizontal_alignment :left
+  top_padding 10
 }
 
 buttons {
   width "100%"
   padding 5
   horizontal_alignment :center
+  top_padding 10
 }
 
 button {
-  
+#  background_color "#bad452"
 }

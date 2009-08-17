@@ -11,6 +11,7 @@ import limelight.ui.api.Scene;
 import limelight.util.*;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -111,8 +112,6 @@ public class TextPanel extends BasePanel
 
   public void compile()
   {
-    if(getRoot() == null || getRoot().getGraphics() == null)
-      return;
     buildLines();
     calculateDimentions();
     compiled = true;
@@ -185,16 +184,30 @@ public class TextPanel extends BasePanel
     }
   }
 
-  private FontRenderContext getRenderContext()
+//  private FontRenderContext getRenderContext()
+//  {
+//    if(renderContext == null)
+//    {
+//      if(staticFontRenderingContext != null)
+//        renderContext = staticFontRenderingContext;
+//      else
+//      {
+//        Graphics2D graphics = getRoot().getGraphics();
+//        renderContext = graphics.getFontRenderContext();
+//      }
+//    }
+//    return renderContext;
+//  }
+
+
+  public FontRenderContext getRenderContext()
   {
-    if(renderContext == null)
+    if(staticFontRenderingContext == null)
     {
-      if(staticFontRenderingContext != null)
-        renderContext = staticFontRenderingContext;
-      else
-        renderContext = getRoot().getGraphics().getFontRenderContext();
+      AffineTransform affineTransform = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getDefaultTransform();
+      staticFontRenderingContext = new FontRenderContext(affineTransform, true, false);  
     }
-    return renderContext;
+    return staticFontRenderingContext;
   }
 
   private void calculateDimentions()

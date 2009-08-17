@@ -85,10 +85,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void snapToSize()
   {
-    Box r = getParent().getChildConsumableArea();
+    Box maxArea = getParent().getChildConsumableArea();
     Style style = getProp().getStyle();
-    int newWidth = style.getCompiledWidth().calculateDimension(r.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
-    int newHeight = style.getCompiledHeight().calculateDimension(r.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
+    int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
+    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
     setSize(newWidth, newHeight);
     sizeChanged = false;
   }
