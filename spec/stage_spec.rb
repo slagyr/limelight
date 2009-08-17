@@ -5,6 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/stage'
 require 'limelight/scene'
 require 'limelight/theater'
+require 'limelight/studio'
 
 describe Limelight::Stage do
 
@@ -187,6 +188,13 @@ describe Limelight::Stage do
 
       @stage.close      
       @theater["George"].should == nil
+    end
+
+    it "should open an alert" do
+      Limelight::Studio.utilities_production.should_receive(:alert).with("Some Message")
+
+      @stage.alert("Some Message")
+      sleep(0.01)
     end
 
   end

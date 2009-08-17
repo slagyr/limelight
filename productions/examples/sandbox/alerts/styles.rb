@@ -4,18 +4,18 @@
 # For more information see: http://limelightwiki.8thlight.com/index.php/A_Cook%27s_Tour_of_Limelight#Styling_with_styles.rb
 # For a complete listing of style attributes see: http://limelightwiki.8thlight.com/index.php/Style_Attributes
 
-default_scene {
+alerts {
   background_color :black
   horizontal_alignment :center
-  vertical_alignment :center
+  vertical_alignment :top
   width "100%"
   height "100%"
 }
 
 action {
   width "100%"
-  height 200
-  margin 50
+  height 100
+  margin 25
   left_margin "30%"
   right_margin "30%"
   background_color :white
@@ -31,4 +31,13 @@ action {
     gradient :on
   }
 
+}
+
+label {
+  text_color :white
+  right_padding 10  
+}
+
+message_input {
+  width 300
 }

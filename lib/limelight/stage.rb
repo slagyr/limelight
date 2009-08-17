@@ -231,7 +231,13 @@ module Limelight
     # Pops up a simple modal dialog with the provided message.
     #
     def alert(message)
-      frame.alert(message)
+      Thread.new do
+        begin
+          Studio.utilities_production.alert(message)
+        rescue StandardError => e
+          puts "Error on alert: #{e}"
+        end
+      end
     end
 
     # Called when the user or system would like to close the stage.  The stage will return true, allowing it to be

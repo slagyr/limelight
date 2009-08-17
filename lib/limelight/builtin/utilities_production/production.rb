@@ -1,4 +1,11 @@
+require 'monitor'
+
 module Production
+
+  def production_opening
+    @monitor = Monitor.new
+    @alert_monitor = @monitor.new_cond
+  end
 
   def default_scene
     nil
@@ -26,6 +33,27 @@ module Production
             :background_color => :white, :framed => false, :always_on_top => true, :vital => false)
     end
     producer.open_scene("incompatible_version", @incompatible_version_stage, :instance_variables => { :production_name => production_name, :required_version => required_version })
+  end
+
+  def alert(message)
+    @alert_monitor = @monitor.new_cond
+    load_alert_scene(message)
+    @monitor.synchronize{ @alert_monitor.wait }
+    @alert_stage.close
+    return @alert_response
+  end
+
+  def process_alert_response(response)
+    @alert_response = response
+    @monitor.synchronize{ @alert_monitor.signal } if @alert_monitor
+  end
+
+  def load_alert_scene(message)
+    if !theater["Alert"]
+      @alert_stage = theater.add_stage("Alert", :location => [:center, :center], :size => [400, :auto],
+            :background_color => :white, :framed => false, :always_on_top => true, :vital => false)
+    end
+    producer.open_scene("alert", @alert_stage, :instance_variables => { :message => message })
   end
 
 end
