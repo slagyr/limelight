@@ -1,5 +1,35 @@
 = Limelight Changelog
 
+== Version 0.4.0
+
+Solved issues, improved usability.
+* Required Limelight Version - http://limelight.lighthouseapp.com/projects/12073/tickets/137
+* Allow opening of URLs in browser - http://limelight.lighthouseapp.com/projects/12073/tickets/139
+* Add specs to generators - http://limelight.lighthouseapp.com/projects/12073/tickets/138
+* Resize Window doesn't trigger layout - http://limelight.lighthouseapp.com/projects/12073/tickets/55
+* Stage placement helpers - http://limelight.lighthouseapp.com/projects/12073/tickets/135
+* Hook to let players know when they are casted - http://limelight.lighthouseapp.com/projects/12073/tickets/132
+* scale_to_fit background_image_fill_strategy - http://limelight.lighthouseapp.com/projects/12073/tickets/62
+* Background image fill strategy: positioning and single dimension repeats - http://limelight.lighthouseapp.com/projects/12073/tickets/131
+* Allow updates to occur in multiple stages at the same time. - http://limelight.lighthouseapp.com/projects/12073/tickets/130
+* Flashing animation - http://limelight.lighthouseapp.com/projects/12073/tickets/129
+* Scene not displayed when frame not opened with focus - http://limelight.lighthouseapp.com/projects/12073/tickets/128
+* Capture OS X Quit event - http://limelight.lighthouseapp.com/projects/12073/tickets/124
+* Production events - http://limelight.lighthouseapp.com/projects/12073/tickets/123
+* Ask scene if it can close - http://limelight.lighthouseapp.com/projects/12073/tickets/122
+* Kiosk Mode - http://limelight.lighthouseapp.com/projects/12073/tickets/121
+* DRb Production - http://limelight.lighthouseapp.com/projects/12073/tickets/117
+* Use jruby-complete jar - http://limelight.lighthouseapp.com/projects/12073/tickets/116
+* very slow animation - http://limelight.lighthouseapp.com/projects/12073/tickets/113
+* Optional Menubar - http://limelight.lighthouseapp.com/projects/12073/tickets/111
+* Remove use of full Frame. - http://limelight.lighthouseapp.com/projects/12073/tickets/76
+* hide and show for stages - http://limelight.lighthouseapp.com/projects/12073/tickets/104
+* Stage Background Color - http://limelight.lighthouseapp.com/projects/12073/tickets/109
+* Fullscreen - http://limelight.lighthouseapp.com/projects/12073/tickets/107
+* Always On Top - http://limelight.lighthouseapp.com/projects/12073/tickets/108
+* JRuby 1.1.5 - http://limelight.lighthouseapp.com/projects/12073/tickets/77
+* Move init.rb inside the Limelight module - http://limelight.lighthouseapp.com/projects/12073/tickets/56
+
 == Version 0.3.1
 
 Some New Features and Bug Fixes
