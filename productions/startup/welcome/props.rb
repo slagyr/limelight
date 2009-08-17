@@ -20,4 +20,4 @@ section do
   sandbox_button :text => "Open the Sandbox"
 end
 spacer :width => "100", :height => "110"
-copyright :text => "Copyright 2008 8th Light, Inc."
+copyright :text => "Copyright 2008-2009 8th Light, Inc."
