@@ -1,5 +1,8 @@
 require 'rake/rdoctask'
 
+
+WEB_ROOT = File.expand_path('~/Projects/slagyr.github.com/limelight/')
+
 task :release => [:verify_committed, :verify_user, :verify_password, :publish_packages, :tag, :publish_news]
 
 desc "Verifies that there is no uncommitted code"
@@ -13,7 +16,7 @@ end
 
 desc 'Generate RDoc'
 rd = Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'etc/rubyforge_site/rdoc'
+  rdoc.rdoc_dir = "#{WEB_ROOT}/rdoc"
   rdoc.options << '--title' << 'Limelight' << '--line-numbers' << '--inline-source' << '--main' << 'README.rdoc'
   rdoc.rdoc_files.include('README.rdoc', 'CHANGES', 'lib/**/*.rb')
 end
@@ -51,9 +54,7 @@ task :publish_packages => [:verify_user, :verify_password, :package] do
   require 'meta_project'
   require 'rake/contrib/xforge'
   release_files = FileList[
-    "pkg/#{PKG_FILE_NAME}-java.gem",
-    "etc/installers/Limelight_windows#{PKG_TAG.gsub('REL', '')}.exe",
-    "etc/installers/Limelight_macos#{PKG_TAG.gsub('REL', '')}.dmg"
+    "pkg/#{PKG_FILE_NAME}-java.gem"
   ]
 
   Rake::XForge::Release.new(MetaProject::Project::XForge::RubyForge.new(PKG_NAME)) do |xf|
