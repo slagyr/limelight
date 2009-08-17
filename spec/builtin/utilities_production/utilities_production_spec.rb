@@ -4,14 +4,18 @@ describe "Utilitites Production" do
 
   uses_scene "none"
 
+  before(:each) do
+    production.production_opening
+  end
+
   after(:each) do
     @thread.kill if @thread
     production.theater.stages.each { |stage| stage.close }
   end
 
   after(:all) do
-#    Java::java.awt.Frame.getFrames.each { |frame| frame.close; frame.dispose; puts frame }
-#    Java::limelight.util.Threads.showAll
+    #    Java::java.awt.Frame.getFrames.each { |frame| frame.close; frame.dispose; puts frame }
+    #    Java::limelight.util.Threads.showAll
   end
 
   it "should construct stage on load_with_incomptible_version_scene" do
@@ -92,5 +96,48 @@ describe "Utilitites Production" do
     @result.should == false
   end
 
+  def start_alert()
+    @thread = Thread.new do
+      begin
+        @result = production.alert("Some Message")
+      rescue Exception => e
+        puts e
+        puts e.backtrace
+      end
+    end
+  end
+
+  it "should construct alert stage" do
+    production.load_alert_scene("Some Message")
+    stage = production.theater["Alert"]
+    stage.should_not == nil
+    stage.location.should == ["center", "center"]
+    stage.size.should == ["400", "auto"]
+    stage.background_color.should == "#FFFFFF"
+    stage.framed?.should == false
+    stage.always_on_top?.should == true
+    stage.vital?.should == false
+  end
+
+  it "should load the incomptible_version scene" do
+    production.load_alert_scene("Some Message")
+    stage = production.theater["Alert"]
+
+    stage.current_scene.should_not == nil
+    scene = stage.current_scene
+    scene.find("title").text.should == "Limelight Alert"
+    scene.find("message").text.should == "Some Message"
+  end
+
+  it "should close the alert when clicking OK" do
+    start_alert
+    wait_for { scene_open?("Alert") }
+
+    scene = production.theater["Alert"].current_scene
+    scene.find("ok_button").button_pressed(nil)
+
+    wait_for { !@thread.alive? }
+    @result.should == true
+  end
 
 end

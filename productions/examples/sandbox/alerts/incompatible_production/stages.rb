@@ -14,6 +14,4 @@ stage "default" do
   title "Limelight"
   location [200, 25]
   size [800, 800]
-  kiosk true
-#  framed false
 end

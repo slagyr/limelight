@@ -67,7 +67,7 @@ module Limelight
           producer.open
           return production
         rescue Exception => e
-          # TODO MDM - open the error in a window  
+          # TODO MDM - open the error in a window
           puts e
           puts e.backtrace
         end

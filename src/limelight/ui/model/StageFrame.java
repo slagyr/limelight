@@ -154,11 +154,6 @@ public class StageFrame extends JFrame implements KeyListener
     return stage;
   }
 
-  public void alert(String message)
-  {
-    JOptionPane.showMessageDialog(this, message, "Limelight Alert", JOptionPane.WARNING_MESSAGE);
-  }
-
   public RootPanel getRoot()
   {
     return root;

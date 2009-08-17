@@ -1,4 +1,4 @@
-module DefaultScene
+module Kiosk
 
   prop_reader :kiosk_button, :fullscreen_button
 
