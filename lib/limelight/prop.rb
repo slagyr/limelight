@@ -279,7 +279,7 @@ module Limelight
     event :button_pressed
     event :value_changed
 
-    # TODO Try to get me our of public scope
+    # TODO Try to get me out of public scope
     #
     def illuminate #:nodoc:     
       return if @options.nil?
@@ -340,7 +340,7 @@ module Limelight
     def inherit_styles
       style_names = []
       style_names << @name unless @name.nil?
-      style_names += @additional_styles.gsub(',', ' ').split(' ') unless @additional_styles.nil?
+      style_names += @additional_styles.gsub(',', ' ').split(' ') unless @additional_styles.nil?   
       style_names.each do |style_name|    
         new_style = scene.styles[style_name]
         @style.add_extension(new_style) if new_style
@@ -354,14 +354,6 @@ module Limelight
         end
       end
     end
-
-    # Why is this method here?  No one appears to use it.
-    #    def disinherit_styles
-    #      return if @name.nil?
-    #      old_style = scene.styles[@name]
-    #      @style.remove_extension(old_style) if old_style
-    #      @hover_style = nil
-    #    end
 
   end
 end

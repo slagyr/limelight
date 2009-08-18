@@ -398,6 +398,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       {
         markAsNeedingLayout(FloaterLayout.instance);
       }
+      else if(descriptor == Style.HORIZONTAL_ALIGNMENT || descriptor == Style.VERTICAL_ALIGNMENT)
+        markAsNeedingLayout();
       else
         markAsDirty();
     }

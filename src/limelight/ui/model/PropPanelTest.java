@@ -603,5 +603,18 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
+  public void testAlignmentChangeShouldInvokeLayout() throws Exception
+  {
+    panel.resetLayout();
+
+    panel.styleChanged(Style.HORIZONTAL_ALIGNMENT, null);
+    assertEquals(true, panel.needsLayout());
+
+    panel.resetLayout();
+    panel.styleChanged(Style.VERTICAL_ALIGNMENT, null);
+
+    assertEquals(true, panel.needsLayout());
+  }
+
 
 }

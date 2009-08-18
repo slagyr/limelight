@@ -103,7 +103,6 @@ module Limelight
       scene_name = File.basename(path)
       scene = load_props(options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name))
       styles = load_styles(scene)
-      merge_with_root_styles(styles)
       scene.styles = styles
       stage.open(scene)
       return scene
@@ -146,45 +145,10 @@ module Limelight
     # Loads the specified 'styles.rb' file and created a Hash of Styles.
     #
     def load_styles(context)
-      styles = builtin_styles
-      return styles if not File.exists?(context.styles_file)
-      content = IO.read(context.styles_file)
-      return Limelight.build_styles(styles) do
-        begin
-          eval content
-        rescue Exception => e
-          raise DSL::BuildException.new(context.styles_file, content, e)
-        end
-      end
-    end
-
-    # A production with multiple Scenes may have a 'styles.rb' file in the root directory.  This is called the
-    # root_style.  This method loads the root_styles, if they haven't already been loaded, and returns them.
-    #
-    def root_styles
-      return @root_syles if @root_syles   
-      if File.exists?(@production.styles_file)
-        @root_styles = load_styles(@production)
-      else
-        @root_styles = {}
-      end
-      return @root_styles
-    end
-
-    # Returns a hash of all the built-in Limglight Styles
-    #
-    def builtin_styles
-      return @builtin_styles.dup if @builtin_styles
-      builtin_styles_file = File.join($LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
-      content = IO.read(builtin_styles_file)
-      @builtin_styles = Limelight.build_styles do
-        begin
-          eval content
-        rescue Exception => e
-          raise BuildException.new(filename, content, e)
-        end
-      end
-      return @builtin_styles.dup
+      extendable_styles = Studio.builtin_styles.merge(@production.root_styles)
+      return extendable_styles.dup if not File.exists?(context.styles_file)
+      new_styles = Limelight.build_styles_from_file(context.styles_file, extendable_styles)
+      return extendable_styles.merge(new_styles)
     end
 
     def establish_production #:nodoc:
@@ -203,12 +167,6 @@ module Limelight
     end
 
     private ###############################################
-
-    def merge_with_root_styles(styles)
-      root_styles.each_pair do |key, value|
-        styles[key] = value if !styles.has_key?(key)
-      end
-    end
 
     def unpack_production(production_name)
       packer = Limelight::Util::Packer.new()

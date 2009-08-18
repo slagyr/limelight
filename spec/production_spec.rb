@@ -13,22 +13,22 @@ describe Limelight::Production, "Instance methods" do
     @production.producer = @producer
     @production.theater = @theater
   end
-  
+
   it "should know it path, producer, and theater" do
     @production.producer.should == @producer
     @production.theater.should == @theater
     @production.path.should == "/tmp"
   end
-  
+
   it "should be indexed" do
     Limelight::Studio.index(@production)
     Limelight::Studio[@production.name].should == @production
   end
-  
+
   it "should raise an error when setting the name to a duplicate name" do
     @production.name = "Bill"
     Limelight::Studio.index(@production)
-    
+
     production = Limelight::Production.new("/tmp")
     Limelight::Studio.index(production)
     lambda { production.name = "Bill" }.should raise_error(Limelight::LimelightException, "Production name 'Bill' is already taken")
@@ -37,7 +37,7 @@ describe Limelight::Production, "Instance methods" do
   it "should get it's name from the file" do
     Limelight::Production.new("/tmp").name.should == "tmp"
     Limelight::Production.new("/Somewhere/over/the/rainbow").name.should == "rainbow"
-    Limelight::Production.new("my_name/is/kid").name.should == "kid"   
+    Limelight::Production.new("my_name/is/kid").name.should == "kid"
   end
 
   it "should know it's init file" do
@@ -72,6 +72,23 @@ describe Limelight::Production, "Instance methods" do
     @production.should_receive(:production_closed)
 
     @production.close
+  end
+
+  describe "with files" do
+
+    after(:each) do
+      TestDir.clean
+    end
+    
+    it "should load it's root styles" do
+      TestDir.create_file("test_prod/styles.rb", "a_style { width 100; height 200 }")
+      @production = Limelight::Production.new( TestDir.path("test_prod"))
+
+      styles = @production.root_styles
+      styles["a_style"].width.should == "100"
+      styles["a_style"].height.should == "200"
+      @production.root_styles.should be(styles)
+    end
   end
 
 end

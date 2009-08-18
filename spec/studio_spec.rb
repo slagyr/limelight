@@ -139,4 +139,9 @@ describe Limelight::Studio do
 #    Studio.utilities_production.close
   end
 
+  it "should give the same buildin_styles hash twice" do
+    Studio.builtin_styles.should be(Studio.builtin_styles)
+    Studio.builtin_styles["limelight_builtin_players_curtains"].should_not == nil
+  end
+
 end
