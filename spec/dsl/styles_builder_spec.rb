@@ -8,23 +8,23 @@ describe Limelight::DSL::StylesBuilder do
 
   before(:each) do
   end
-  
+
   it "should build a hash" do
     result = Limelight.build_styles
-    
+
     result.class.should == Hash
     result.size.should == 0
   end
-  
+
   it "should build one style" do
     result = Limelight.build_styles do
       root
     end
-    
+
     result.size.should == 1
     result["root"].class.should == Limelight::Styles::RichStyle
   end
-  
+
   it "should build one style with styling" do
     result = Limelight.build_styles do
       root do
@@ -33,14 +33,14 @@ describe Limelight::DSL::StylesBuilder do
         transparency "50%"
       end
     end
-    
+
     result.size.should == 1
     style = result["root"]
     style.width.should == "100"
     style.top_border_color.should == "#0000ffff"
     style.transparency.should == "50%"
   end
-  
+
   it "should raise an error on invalid styles" do
     lambda do
       Limelight.build_styles do
@@ -50,18 +50,18 @@ describe Limelight::DSL::StylesBuilder do
       end
     end.should raise_error(Limelight::DSL::StyleBuilderException)
   end
-  
+
   it "should build multiple styles" do
     result = Limelight.build_styles do
       one { width 100 }
       two { width 50 }
     end
-    
+
     result.size.should == 2
     result["one"].width.should == "100"
     result["two"].width.should == "50"
   end
-  
+
   it "should allow hover styles" do
     styles = Limelight.build_styles do
       root do
@@ -71,7 +71,7 @@ describe Limelight::DSL::StylesBuilder do
         end
       end
     end
-    
+
     styles.size.should == 2
     styles["root"].width.should == "100"
     styles["root.hover"].width.should == "50"
@@ -142,13 +142,52 @@ describe Limelight::DSL::StylesBuilder do
       two { width 123 }
     end
 
-    styles1.should == styles2
     styles2.size.should == 2
     one = styles2["one"]
     two = styles2["two"]
     one.width.should == "100"
     one.height.should == "200"
     two.width.should == "123"
+  end
+
+  it "should be able to modify style within same build" do
+    styles = Limelight.build_styles do
+      one { width 100 }
+      one { height 200 }
+    end
+
+    styles["one"].width.should == "100"
+    styles["one"].height.should == "200"
+  end
+
+  it "should beable to extend existing styles but not modify them" do
+    styles1 = Limelight.build_styles do
+      one { width 100; height 200 }
+    end
+    styles2 = Limelight.build_styles(styles1) do
+      one { width 300 }
+    end
+
+    styles1["one"].width.should == "100"
+    styles1["one"].height.should == "200"
+    styles2["one"].width.should == "300"
+    styles2["one"].height.should == "200"
+
+    styles1["one"].height = "400"
+    styles2["one"].height.should == "400"
+  end
+
+  it "should be able to explicitely extend extendable_styles" do
+    styles1 = Limelight.build_styles do
+      one { width 100; height 200 }
+    end
+    styles2 = Limelight.build_styles(styles1) do
+      two { extends "one"; x 25 }
+    end
+
+    styles2["two"].width.should == "100"
+    styles2["two"].height.should == "200"
+    styles2["two"].x.should == "25"
   end
 
 end

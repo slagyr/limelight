@@ -52,7 +52,7 @@ describe Limelight::Producer do
 
   it "should load styles" do
     TestDir.create_file("test_prod/styles.rb", "alpha { width 100 }")
-    @producer.builtin_styles = {}
+    Limelight::Studio.stub!(:builtin_styles).and_return({})
 
     styles = @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod")))
     styles.size.should == 1
@@ -135,7 +135,6 @@ describe Limelight::Producer do
     scene = make_mock("scene")
     @producer.should_receive(:load_props).with(:production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
     @producer.should_receive(:load_styles).and_return("styles")
-    @producer.should_receive(:merge_with_root_styles).with("styles")
     scene.should_receive(:styles=)
     stage.should_receive(:open).with(scene)
 
@@ -143,7 +142,7 @@ describe Limelight::Producer do
   end
 
   it "should load empty styles if styles.rb doesn't exist" do
-    @producer.builtin_styles = {}
+    Limelight::Studio.stub!(:builtin_styles).and_return({})
 
     @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod"))).should == {}
   end
@@ -189,12 +188,6 @@ describe Limelight::Producer do
     @producer.open
   end
 
-  it "should give the same buildin_styles hash twice" do
-    @producer.builtin_styles.should_not be(@producer.builtin_styles)
-    # Try again
-    @producer.builtin_styles.should_not be(@producer.builtin_styles)
-  end
-
   it "should check limelight version" do
     @producer.production.should_receive(:minimum_limelight_version).and_return("0.0.0")
     @producer.version_compatible?.should == true
@@ -208,11 +201,10 @@ describe Limelight::Producer do
     scene = make_mock("scene")
     @producer.should_receive(:load_props).with(:instance_variables => { :foo => "bar" }, :production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
     @producer.should_receive(:load_styles).and_return("styles")
-    @producer.should_receive(:merge_with_root_styles).with("styles")
     scene.should_receive(:styles=)
     stage.should_receive(:open).with(scene)
 
     @producer.open_scene("name", stage, :instance_variables => { :foo => "bar" })
   end
-
+  
 end

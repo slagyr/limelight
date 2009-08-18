@@ -8,7 +8,6 @@ require 'limelight/prop'
 describe Limelight::Builtin::Players::Image do
 
   before(:each) do
-#    @scene = Limelight::Scene.new(:casting_director => make_mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new
     @prop.include_player(Limelight::Builtin::Players::Image)
   end

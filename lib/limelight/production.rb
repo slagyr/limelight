@@ -144,6 +144,20 @@ module Limelight
       return :root
     end
 
+    # A production with multiple Scenes may have a 'styles.rb' file in the root directory.  This is called the
+    # root_styles.  This method loads the root_styles, if they haven't already been loaded, and returns them.
+    #
+    def root_styles
+      unless @root_styles
+        if File.exists?(styles_file)
+          @root_styles = Limelight.build_styles_from_file(styles_file)
+        else
+          @root_styles = {}
+        end
+      end
+      return @root_styles
+    end
+
   end
 
 end

@@ -151,7 +151,7 @@ describe Limelight::Prop do
 
   it "should set styles upon adding to parent" do
     styles = Limelight::build_styles { child { width 123 } }
-    scene = Limelight::Scene.new(:casting_director => @casting_director, :styles => styles)
+    scene = Limelight::Scene.new(:casting_director => @casting_director, :styles_hash => styles)
     prop = Limelight::Prop.new(:name => "child")
     scene.illuminate
 

@@ -3,6 +3,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'limelight/scene'
+require 'limelight/dsl/styles_builder'
 
 describe Limelight::Scene do
 
@@ -23,7 +24,7 @@ describe Limelight::Scene do
   end
 
   it "should pullout sytles and casting_director from options" do
-    scene = Limelight::Scene.new(:styles => "styles", :casting_director => @casting_director)
+    scene = Limelight::Scene.new(:styles_hash => "styles", :casting_director => @casting_director)
     scene.illuminate
 
     scene.styles.should == "styles"
@@ -46,6 +47,21 @@ describe Limelight::Scene do
 
   it "should have an acceptible path when none is provided" do
     Limelight::Scene.new().path.should == File.expand_path("")
+  end
+
+  it "should inherit styles in options" do
+    @scene.styles = Limelight.build_styles do
+      foo { width 100; height 200 }
+      bar { x 11; y 22 }
+    end
+    @scene.add_options :styles => "foo", :name => "bar"
+
+    @scene.illuminate
+
+    @scene.style.width.should == "100"
+    @scene.style.height.should == "200"
+    @scene.style.x.should == "11"
+    @scene.style.y.should == "22"
   end
 
   describe Limelight::Scene, "paths" do

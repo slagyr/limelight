@@ -418,8 +418,6 @@
       <variables />
     </macos>
   </mediaSets>
-  <buildIds buildAll="false">
-    <mediaSet refId="132" />
-  </buildIds>
+  <buildIds buildAll="true" />
 </install4j>
 
