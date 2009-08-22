@@ -219,6 +219,13 @@ module Limelight
       return panel.get_box_inside_borders.clone
     end
 
+    # Returns a Box representing the bounds inside the padding of the prop.  This is the area where child props may
+    # be located
+    #
+    def child_area
+      return panel.getChildConsumableArea().clone
+    end
+
     # Returns a Pen object. Pen objects allow to you to draw directly on the screen, withing to bounds of this Prop.
     #
     def pen

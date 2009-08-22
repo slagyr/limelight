@@ -37,6 +37,8 @@ public class StageFrame extends JFrame implements KeyListener
   private XCoordinateAttribute xLocationStyle = (XCoordinateAttribute) xCompiler.compile("center");
   private YCoordinateAttribute yLocationStyle = (YCoordinateAttribute) yCompiler.compile("center");
   private boolean vital = true;
+  private Dimension previousSize;
+  private boolean opened;
 
   protected StageFrame()
   {
@@ -71,6 +73,8 @@ public class StageFrame extends JFrame implements KeyListener
 
   public void open()
   {
+    if(opened)
+      return;
     if(!hasMenuBar)
       setJMenuBar(null);
 
@@ -79,6 +83,7 @@ public class StageFrame extends JFrame implements KeyListener
     applyLocationStyles();
 
     setVisible(true);
+    opened = true;
   }
 
   public void setVisible(boolean visible)
@@ -99,11 +104,14 @@ public class StageFrame extends JFrame implements KeyListener
   {
     if(root != null)
     {
-      root.getPanel().markAsNeedingLayout();
+      if(previousSize == null || !previousSize.equals(getSize()))
+        root.getPanel().consumableAreaChanged();
+      else
+        root.getPanel().markAsNeedingLayout();
     }
+    previousSize = getSize();
   }
 
-  //TODO - MDM - auto dimensions are currently not supported.  This needs to be addressed. 
   public void setSizeStyles(Object widthValue, Object heightValue)
   {
     widthStyle = (DimensionAttribute) widthCompiler.compile(widthValue);

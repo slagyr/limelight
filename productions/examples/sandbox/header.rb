@@ -17,5 +17,6 @@ header do
   example_link :text => "Background Image", :on_mouse_clicked => "scene.load('background_images')"
   example_link :text => "Kiosk", :on_mouse_clicked => "scene.load('kiosk')"
   example_link :text => "Alerts", :on_mouse_clicked => "scene.load('alerts')"
+  example_link :text => "Stage Handles", :on_mouse_clicked => "scene.load('stage_handles')"
 end
 

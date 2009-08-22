@@ -71,7 +71,7 @@ public class RootPanel implements Panel
 
   public void setSize(int width, int height)
   {
-    contentPane.setSize(width, height);
+    contentPane.setSize(width, height);  
   }
 
   public Box getAbsoluteBounds()
