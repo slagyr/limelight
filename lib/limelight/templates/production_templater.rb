@@ -22,9 +22,12 @@ module Limelight
 
       # To create a ProductionTemplater, provide a production_path and the name of the default scene.
       #
-      def initialize(production_path, default_scene_name)
+      def initialize(options)
+        production_path = options[:production_path]
+        default_scene_name = options[:scene_path]
         super(File.dirname(production_path), Templater.source_dir)
         @production_path = File.basename(production_path)
+        @spec_path = File.join(@production_path, options[:spec_path])
         @tokens = {}
         @tokens[:DEFAULT_SCENE_NAME] = default_scene_name
         @tokens[:PRODUCTION_NAME] = File.basename(production_path).titleized
@@ -37,7 +40,7 @@ module Limelight
         file(File.join(@production_path, "production.rb"), "production/production.rb.template", @tokens)
         file(File.join(@production_path, "stages.rb"), "production/stages.rb.template", @tokens)
         file(File.join(@production_path, "styles.rb"), "production/styles.rb.template", @tokens)
-        file(File.join(@production_path, "spec", "spec_helper.rb"), "production/spec/spec_helper.rb.template", @tokens)
+        file(File.join(@spec_path, "spec_helper.rb"), "production/spec/spec_helper.rb.template", @tokens)
       end
 
     end

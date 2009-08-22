@@ -8,17 +8,19 @@ module Limelight
 
     # See the following usages summary
     #
-    #     Usage: limelight create [options] <production|scene> <path>
-    #        Creates the directories and files for a production and/or scene.
-    #        options:
-    #        -h, --help                       Prints this usage summary.
-    #        -s, --scene=<name>               Name of scene when creating a production.  Defaults to 'default_scene'.
+    #  Usage: limelight create [options] <production|scene> <path>
+    #      Creates the directories and files for a production and/or scene.
+    #      options:
+    #      -h, --help                       Prints this usage summary.
+    #      -s, --scene=<name>               Name of scene when creating a production.  Defaults to 'default_scene'.
+    #      -p, --production_path=<path>     Path of production to contain scene.  Defaults to '.'.
+    #      -S, --spec_path=<path>           Path to spec directory, relative to <production_path>.  Defaults to 'spec'.
     #
     # Assume you wanted to create a new production named "love_story" containing two scenes, "midnight_romance" and
     # "happily_ever_after".  The following commands would created all the needed files.
     #
     #   $ jruby -S limelight create -s midnight_romance production love_story
-    #   $ jruby -S limelight create scene love_story/happily_ever_after
+    #   $ jruby -S limelight create -p love_story scene happily_ever_after
     #
     class CreateCommand < Command
 
@@ -28,33 +30,30 @@ module Limelight
         return "Creates the directories and files for a production and/or scene."
       end
 
-      attr_reader :template_type, :path, :scene_name, :production_path  #:nodoc:
+      attr_reader :template_type, :scene_name, :production_path, :spec_path  #:nodoc:
 
       protected ###########################################
 
       def initialize #:nodoc:
         @scene_name = "default_scene"
         @production_path = "."
-        @actions = {}
-        @actions["production"] = :create_production
-        @actions["scene"] = :create_scene
       end
 
       def process #:nodoc:
-        action = @actions[@template_type]
-        self.send action
+        create_method = "create_#{@template_type}".to_s
+        self.send create_method
       end
 
       def parameter_description #:nodoc:
-        return "[options] <production|scene> <name>"
+        return "[options] <production|scene> <path>"
       end
 
       def parse_remainder(args) #:nodoc:
         @template_type = args.shift
         raise "Missing template type" if @template_type.nil?
-        raise "Unknown template type: #{@template_type}" if @actions[@template_type].nil?
-        @path = args.shift
-        raise "Missing path parameter" if @path.nil?
+        raise "Unknown template type: #{@template_type}" if !["production", "scene"].include?(@template_type)
+        self.send "parse_#{@template_type}".to_sym, args
+        @spec_path = File.join(@production_path, "spec") unless @spec_path
       end
 
       def do_requires #:nodoc:
@@ -65,17 +64,32 @@ module Limelight
       def build_options(spec) #:nodoc:
         spec.on("-s <name>", "--scene=<name>", "Name of scene when creating a production.  Defaults to 'default_scene'.") { |value| @scene_name = value}
         spec.on("-p <path>", "--production_path=<path>", "Path of production to contain scene.  Defaults to '.'.") { |value| @production_path = value}
+        spec.on("-S <path>", "--spec_path=<path>", "Path to spec directory, relative to <production_path>.  Defaults to 'spec'.") { |value| @spec_path = value}
       end
 
       private #############################################
 
+      def parse_production(args)
+        @production_path = args.shift
+        raise "Missing production path parameter" if @production_path.nil?
+      end
+
+      def parse_scene(args)
+        @scene_name = args.shift
+        raise "Missing scene name/path parameter" if @scene_name.nil?
+      end
+
       def create_production
-        Templates::ProductionTemplater.new(@path, @scene_name).generate
-        Templates::SceneTemplater.new(@path, @scene_name).generate
+        Templates::ProductionTemplater.new(options_hash).generate
+        Templates::SceneTemplater.new(options_hash).generate
       end
 
       def create_scene
-        Templates::SceneTemplater.new(@production_path, @path).generate
+        Templates::SceneTemplater.new(options_hash).generate
+      end
+
+      def options_hash
+        return {:production_path => @production_path, :scene_path => @scene_name, :spec_path => @spec_path}
       end
 
     end
