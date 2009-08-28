@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="4.2.3" transformSequenceNumber="2">
+<install4j version="4.2.2" transformSequenceNumber="2">
   <directoryPresets config="./images" />
   <application name="Limelight" distributionSourceDir="" applicationId="7235-6226-7889-3305" mediaDir="." mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="true" excludeSignedFromPacking="true" keepModificationTimes="true" missingFilesStrategy="warn" shortName="Limelight" publisher="8th Light, Inc." publisherWeb="http://limelight.8thlight.com" version="0.4.0" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.5" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
@@ -51,7 +51,7 @@
           <versionLine x="20" y="40" text="version ${compiler:sys.version}" font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
         </text>
       </splashScreen>
-      <java mainClass="limelight.Main" vmParameters="&quot;-Dlimelight.home=${launcher:sys.launcherDirectory}&quot; -Dlimelight.as.app=true" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
+      <java mainClass="limelight.Main" vmParameters="&quot;-Dlimelight.home=${launcher:sys.launcherDirectory}&quot; -Dlimelight.as.app=true" arguments="" allowVMPassthroughParameters="true" preferredVM="">
         <classPath>
           <archive location="lib/limelight.jar" failOnError="false" />
           <archive location="lib/jruby-complete-1.3.0.jar" failOnError="false" />
@@ -418,8 +418,6 @@
       <variables />
     </macos>
   </mediaSets>
-  <buildIds buildAll="true">
-    <mediaSet refId="24" />
-  </buildIds>
+  <buildIds buildAll="true" />
 </install4j>
 

@@ -9,10 +9,22 @@ module Limelight
   #
   # See Limelight::Stylesbuilder, Limelight::Stylebuilder
   #
-  def self.build_styles(style_hash = nil, &block)
-    builder = DSL::StylesBuilder.new(style_hash)
+  def self.build_styles(extendable_styles = nil, &block)
+    builder = DSL::StylesBuilder.new(extendable_styles)
     builder.instance_eval(&block) if block
-    return builder.__styles__
+    return builder.__styles
+  end
+
+  def self.build_styles_from_file(filename, extendable_styles = nil)
+    content = IO.read(filename)
+    styles = Limelight.build_styles(extendable_styles) do
+      begin
+        eval content
+      rescue Exception => e
+        raise Limelight::DSL::BuildException.new(filename, content, e)
+      end
+    end
+    return styles
   end
 
   module DSL
@@ -50,20 +62,27 @@ module Limelight
 
       Limelight::Util.lobotomize(self)
 
-      attr_reader :__styles__
+      attr_reader :__styles, :__extendable_styles
 
-      def initialize(style_hash = nil)
-        @__styles__ = style_hash || {}
+      def initialize(extendable_styles = nil)
+        @__extendable_styles = extendable_styles || {}
+        @__styles = {}
       end
 
       def method_missing(sym, &block) #:nodoc:
-        __add_style__(sym.to_s, &block)
+        __add_style(sym.to_s, &block)
       end
 
-      def __add_style__(name, &block) #:nodoc:
-        builder = StyleBuilder.new(name, self)
+      def __add_style(name, &block) #:nodoc:
+        style = @__styles[name]
+        if style == nil
+          style = Styles::RichStyle.new
+          extension = @__extendable_styles[name]
+          style.add_extension(extension) if extension
+        end
+        builder = StyleBuilder.new(name, style, self)
         builder.instance_eval(&block) if block
-        @__styles__[name] = builder.__style__
+        @__styles[name] = style
       end
     end
 
@@ -73,12 +92,12 @@ module Limelight
 
       Limelight::Util.lobotomize(self)
 
-      attr_reader :__style__  #:nodoc:
+      attr_reader :__style  #:nodoc:
 
-      def initialize(name, styles_builder, options = {})  #:nodoc:
+      def initialize(name, style, styles_builder, options = {})  #:nodoc:
         @__name = name
+        @__style = style
         @__styles_builder = styles_builder
-        @__style__ = @__styles_builder.__styles__[name] || Styles::RichStyle.new
       end
 
       # Used to define a hover style.  Hover styles are appiled when the mouse passed over a prop using the specified style.
@@ -94,7 +113,7 @@ module Limelight
       # The text color of props using the 'spinner' style will become white when the mouse hovers over them.
       #
       def hover(&block)
-        @__styles_builder.__add_style__("#{@__name}.hover", &block)
+        @__styles_builder.__add_style("#{@__name}.hover", &block)
       end
 
       # Styles may extend other styles.
@@ -113,22 +132,25 @@ module Limelight
       #
       def extends(*style_names)
         style_names.each do |style_name|
-          extension = @__styles_builder.__styles__[style_name.to_s]
+          extension = @__styles_builder.__styles[style_name.to_s] || @__styles_builder.__extendable_styles[style_name.to_s]
           raise StyleBuilderException.new("Can't extend missing style: '#{style_name}'") if extension.nil?
-          @__style__.add_extension(extension)
+          @__style.add_extension(extension)
         end
       end
 
       def method_missing(sym, value) #:nodoc:
         setter_sym = "#{sym}=".to_s
-        raise StyleBuilderException.new("'#{sym}' is not a valid style") if !@__style__.respond_to?(setter_sym)
-        @__style__.send(setter_sym, value.to_s)
+        raise StyleBuilderException.new("'#{sym}' is not a valid style") if !@__style.respond_to?(setter_sym)
+        @__style.send(setter_sym, value.to_s)
       end
     end
 
     # Exception thrown by StyleBuilder when an error is encountered.
     #
     class StyleBuilderException < Exception
+      def initialize(message)
+        super(message)
+      end
     end
 
   end

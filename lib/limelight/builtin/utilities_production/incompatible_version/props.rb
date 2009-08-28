@@ -1,3 +1,6 @@
+#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 title :text => "Incompatible Version"
 label :text => "Production:"
 bold_label :id => "production_name_label", :text => @production_name

@@ -345,4 +345,18 @@ public class StageFrameTest extends TestCase
 
     assertEquals(false, frame.isVital());
   }
+
+  public void testSizeChangesPropogateDown() throws Exception
+  {
+    MockPanel panel = new MockPanel();
+    frame.load(panel);
+
+    frame.doLayout(); // Called when he stage is resized
+    assertEquals(true, panel.consumableAreaChangedCalled);
+
+    panel.consumableAreaChangedCalled = false;
+    frame.setSize(123, 456);
+    frame.doLayout();
+    assertEquals(true, panel.consumableAreaChangedCalled);
+  }
 }
