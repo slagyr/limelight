@@ -10,8 +10,7 @@ import limelight.ui.model.PropPanel;
 import javax.imageio.ImageIO;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.awt.image.RenderedImage;
 import java.util.Date;
 
@@ -62,6 +61,17 @@ public class Debug
   public static void log(String message)
   {
     System.err.println(runtime() + ": " + message);
+//    try
+//    {
+//      OutputStream output = new FileOutputStream("/tmp/limelight.log", true);
+//      String entry = runtime() + ": " + message + "\n";
+//      output.write(entry.getBytes());
+//      output.close();
+//    }
+//    catch(Exception e)
+//    {
+//      e.printStackTrace();
+//    }
   }
 
   private static String runtime()

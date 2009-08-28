@@ -58,14 +58,15 @@ public class DarwinOS extends OS
 
   public void appIsStarting()
   {
-    if(isRunningAsApp())
-        StartupListener.register();
+//    if(isRunningAsApp())
+//        StartupListener.register();
   }
 
   public void openProduction(String productionPath)
   {
     if(isRunningAsApp())
-      StartupListener.instance.startupPerformed(productionPath);
+//      StartupListener.instance.startupPerformed(productionPath);
+      applicationAdapter.openProduction(productionPath);
     else
       Context.instance().studio.open(productionPath);
   }
