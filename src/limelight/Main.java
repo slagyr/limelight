@@ -14,9 +14,11 @@ import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
 import limelight.os.darwin.DarwinOS;
+import limelight.os.darwin.LimelightApplicationAdapter;
 import limelight.os.win32.Win32OS;
 import limelight.os.UnsupportedOS;
 import limelight.os.MockOS;
+import limelight.util.Debug;
 import org.jruby.Ruby;
 import org.jruby.javasupport.JavaEmbedUtils;
 
@@ -31,7 +33,7 @@ public class Main
   private Ruby runtime;
   private boolean contextIsConfigured;
   private Context context;
-  private String productionName;
+  private static String startupProductionPath;
 
   public static void main(String[] args) throws Exception
   {
@@ -52,14 +54,15 @@ public class Main
   {
     try
     {
+      configureOS();      
+
       configureContext();
-      context.os.appIsStarting();
       configureSystemProperties();
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-      if(args.length > 0)
-        productionName = args[0];
+      if(args.length > 0 && startupProductionPath == null)
+        startupProductionPath = args[0];
 
       startJruby();
 
@@ -97,13 +100,13 @@ public class Main
   {
     String productionName = context.limelightHome + "/productions/startup";
     if(productionProvided())
-      productionName = this.productionName;
+      productionName = this.startupProductionPath;
     return productionName;
   }
 
   private boolean productionProvided()
   {
-    return productionName != null;
+    return startupProductionPath != null;
   }
 
   public void configureSystemProperties()
@@ -116,6 +119,19 @@ public class Main
     context.os.configureSystemProperties();
   }
 
+  static void configureOS()
+  {
+    Context context = Context.instance();
+    if(System.getProperty("os.name").indexOf("Windows") != -1)
+      context.os = new Win32OS();
+    else if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
+      context.os = new DarwinOS();
+    else
+      context.os = new UnsupportedOS();
+    
+    context.os.appIsStarting();
+  }
+
   public void configureContext()
   {
 //VerboseRepaintManager.install();
@@ -125,7 +141,6 @@ public class Main
 
     context = Context.instance();
 
-    setOS(context);
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     initializeTempDirectory();
     context.frameManager = new AlertFrameManager();
@@ -145,7 +160,7 @@ public class Main
     if(contextIsConfigured)
       return;
     contextIsConfigured = true;
-    
+
     context = Context.instance();
 
     context.os = new MockOS();
@@ -172,13 +187,8 @@ public class Main
     this.context = context;
   }
 
-  public void setOS(Context context)
+  public static void setStartupPath(String productionPath)
   {
-    if(System.getProperty("os.name").indexOf("Windows") != -1)
-      context.os = new Win32OS();
-    else if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
-      context.os = new DarwinOS();
-    else
-      context.os = new UnsupportedOS();
+    startupProductionPath = productionPath;
   }
 }

@@ -91,7 +91,7 @@ public class MainTest extends TestCase
   public void testDarwinOS() throws Exception
   {
     System.setProperty("os.name", "Mac OS X");
-    main.setOS(Context.instance());
+    main.configureOS();
 
     OS os = Context.instance().os;
     assertEquals(DarwinOS.class, os.getClass());
@@ -100,7 +100,7 @@ public class MainTest extends TestCase
   public void testWindowsXPOS() throws Exception
   {
     System.setProperty("os.name", "Windows XP");
-    main.setOS(Context.instance());
+    main.configureOS();
     OS os = Context.instance().os;
     assertEquals(Win32OS.class, os.getClass());
   }
@@ -108,7 +108,7 @@ public class MainTest extends TestCase
   public void testWindowsVistaOS() throws Exception
   {
     System.setProperty("os.name", "Windows Vista");
-    main.setOS(Context.instance());
+    main.configureOS();
     OS os = Context.instance().os;
     assertEquals(Win32OS.class, os.getClass());
   }
@@ -116,7 +116,7 @@ public class MainTest extends TestCase
   public void testUnsupportedOS() throws Exception
   {
     System.setProperty("os.name", "Something Unsupported");
-    main.setOS(Context.instance());
+    main.configureOS();
 
     OS os = Context.instance().os;
     assertEquals(UnsupportedOS.class, os.getClass());

@@ -51,6 +51,7 @@ public class DarwinOSTest extends TestCase
 
   public void testOpenProductionWhenNotRunningAsApp() throws Exception
   {
+    LimelightApplicationAdapter.startupsReceived = 0;
     System.setProperty("limelight.as.app", "false");
     MockStudio studio = new MockStudio();
     Context.instance().studio = studio;
@@ -58,12 +59,12 @@ public class DarwinOSTest extends TestCase
     os.openProduction("blah");
 
     assertEquals("blah", studio.openedProduction);
-    assertEquals(0, StartupListener.startupsReceived);
+    assertEquals(0, LimelightApplicationAdapter.startupsReceived);
   }
 
   public void testOpenProductionWhenRunningAsApp() throws Exception
   {
-    StartupListener.register();
+    LimelightApplicationAdapter.startupsReceived = 0;
     System.setProperty("limelight.as.app", "true");
     MockStudio studio = new MockStudio();
     Context.instance().studio = studio;
@@ -71,7 +72,7 @@ public class DarwinOSTest extends TestCase
     os.openProduction("blah");
 
     assertEquals("blah", studio.openedProduction);
-    assertEquals(1, StartupListener.startupsReceived);
+    assertEquals(1, LimelightApplicationAdapter.startupsReceived);
   }
 
   public void testRegistersApplicationAdapter() throws Exception
