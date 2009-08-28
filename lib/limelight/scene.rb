@@ -124,7 +124,7 @@ module Limelight
     end
         
     def illuminate #:nodoc:
-      @styles = @options.has_key?(:styles) ? @options.delete(:styles) : (@styles || {})
+      @styles = @options.delete(:styles_hash) || @styles || {}
       @casting_director = @options.delete(:casting_director) if @options.has_key?(:casting_director)
       @path = @options.delete(:path) if @options.has_key?(:path)
       super

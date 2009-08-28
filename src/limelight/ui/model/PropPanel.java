@@ -88,7 +88,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     Box maxArea = getParent().getChildConsumableArea();
     Style style = getProp().getStyle();
     int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
-    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
+    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());           
     setSize(newWidth, newHeight);
     sizeChanged = false;
   }
@@ -398,6 +398,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       {
         markAsNeedingLayout(FloaterLayout.instance);
       }
+      else if(descriptor == Style.HORIZONTAL_ALIGNMENT || descriptor == Style.VERTICAL_ALIGNMENT)
+        markAsNeedingLayout();
       else
         markAsDirty();
     }
@@ -405,6 +407,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   private boolean isMarginPaddingOrBorder(StyleAttribute attribute)
   {
+
+    //TODO Huh?  This doesn't make sense.
     return attribute instanceof PixelsAttribute;
   }
 

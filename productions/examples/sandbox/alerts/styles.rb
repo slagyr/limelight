@@ -1,3 +1,6 @@
+#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 # This file, (styles.rb) inside a scene, should define any styles specific to the containing scene.
 # It makes use of the StyleBuilder DSL.
 #

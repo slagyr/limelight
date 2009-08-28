@@ -1,3 +1,6 @@
+#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 # This file (production.rb) is the first file loaded opening a production.  It must define a module named 'Production'.
 # The containing production will acquire all the behavior defined in this module.
 # You may define serveral hooks and initialization steps here.

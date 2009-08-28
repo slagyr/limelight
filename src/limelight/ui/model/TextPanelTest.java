@@ -67,7 +67,7 @@ public class TextPanelTest extends TestCase
     useFrame();
     panel.setText("Once upon a time, there was a developer working on a tool called Limelight.");
     panel.doLayout();
-    assertEquals(99, panel.getWidth());
+    assertEquals(true, panel.getWidth() >= 98 && panel.getWidth() <= 99);
     assertEquals(69, panel.getHeight());
   }
 
@@ -85,7 +85,7 @@ public class TextPanelTest extends TestCase
     useFrame();
     panel.setText("1\n2\n3\nlongest");
     panel.doLayout();
-    assertEquals(41, panel.getWidth());
+    assertEquals(true, panel.getWidth() >= 39 && panel.getWidth() <= 41);
     assertEquals(55, panel.getHeight());
   }
 

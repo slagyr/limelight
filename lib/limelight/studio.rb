@@ -1,7 +1,7 @@
-#- Copyright ? 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/producer'
+require 'limelight/producer'   
 
 module Limelight
 
@@ -120,6 +120,16 @@ module Limelight
           producer.open
         end
         return @utilities_production
+      end
+
+      # Returns a hash of all the built-in Limglight Styles
+      #
+      def builtin_styles
+        unless @builtin_styles
+          builtin_styles_file = File.join($LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
+          @builtin_styles = Limelight.build_styles_from_file(builtin_styles_file)
+        end
+        return @builtin_styles
       end
 
       private #############################################

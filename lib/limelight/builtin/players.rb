@@ -12,3 +12,5 @@ require 'limelight/builtin/players/combo_box_popup_list'
 require 'limelight/builtin/players/curtains'
 require 'limelight/builtin/players/image'
 require "limelight/builtin/players/password_box"
+require "limelight/builtin/players/stage_mover"
+require "limelight/builtin/players/stage_sizer"
