@@ -63,6 +63,26 @@ public class RichStyleTest extends TestCase
     assertEquals(false, style.hasExtension(style2));
   }
 
+  public void testClearExtensions() throws Exception
+  {
+	  style.addExtension(style2);
+	  style.addExtension(style3);
+	
+	  style.clearExtensions();
+	
+	  assertFalse(style.hasExtension(style2));
+	  assertFalse(style.hasExtension(style3));
+  }
+
+  public void testClearExtensionsRemovesObserver() throws Exception
+  {
+    style.addExtension(style2);
+
+    style.clearExtensions();
+
+    assertFalse(style2.hasObserver(style));    
+  }
+
   public void testWithNothingStacked() throws Exception
   {
     style.setWidth("100");
