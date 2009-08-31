@@ -64,6 +64,13 @@ describe Limelight::Prop do
     @prop.illuminate
     @prop.id.should == "root"
   end
+  
+  it "not start out being illuminated" do
+    prop = Limelight::Prop.new(nil)
+    
+    prop.should_not be_illuminated
+  end
+  
 
   def build_prop_tree
     @child1 = Limelight::Prop.new(:id => "child1", :name => "child_class")
@@ -383,6 +390,27 @@ describe Limelight::Prop do
       @scene.find("child").should == nil
       @scene.find("grandchild").should == nil
     end
+    
+    it "should index it's id when being re-added to the prop tree" do
+      child = Limelight::Prop.new(:id => "child")
+      @prop << child
+      @prop.remove(child)
+      @prop << child
+
+      @scene.find("child").should == child
+    end
+    
+    it "should traverse and index children when being re-added to the prop tree" do
+      grandchild = Limelight::Prop.new(:id => "grandchild")
+      child = Limelight::Prop.new(:id => "child")
+      child << grandchild
+      @prop << child
+      @prop.remove(child)
+      @prop << child
+      
+      @scene.find("grandchild").should == grandchild
+    end
+    
 
   end
 
