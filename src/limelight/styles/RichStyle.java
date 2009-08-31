@@ -71,7 +71,7 @@ public class RichStyle extends BaseStyle implements StyleObserver
 
   public void clearExtensions()
   {
-    while(!extensions.isEmpty())
+    while(extensions != null && !extensions.isEmpty())
     {
       RichStyle extension = extensions.getFirst();
       removeExtension(extension);

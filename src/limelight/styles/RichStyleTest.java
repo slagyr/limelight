@@ -83,6 +83,19 @@ public class RichStyleTest extends TestCase
     assertFalse(style2.hasObserver(style));    
   }
 
+  public void testClearExtensionsWithNoExtensions() throws Exception
+  {
+    try
+    {
+      style.clearExtensions();
+    }
+    catch(Exception e)
+    {
+      fail("clearExtensions() should not throw an exception - but does");
+    }
+
+  }
+
   public void testWithNothingStacked() throws Exception
   {
     style.setWidth("100");
