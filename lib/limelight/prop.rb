@@ -50,11 +50,10 @@ module Limelight
     # until the prop is added to a Prop tree with a Scene.
     #
     def initialize(hash = {})
-      @options = hash
+      @options = hash || {}
       @children = []
       @style = Styles::ScreenableStyle.new
       @panel = UI::Model::Panel.new(self)
-      @illuminated = false
     end
 
     # Add a Prop as a child of this Prop.
@@ -191,14 +190,16 @@ module Limelight
     # unusual name because it's not part of public api
     def set_parent(parent) #:nodoc:
       @parent = parent
-      illuminate if @parent.illuminated?
+      if @parent.illuminated?
+        illuminate
+      end
     end
 
     # Allows the addition of extra initialization options.  Will raise an exception if the Prop has already been
     # illuminated (added to a scene).
     #
     def add_options(more_options)
-      raise "Too late to add options" if @options.nil?
+      raise "Too late to add options" if illuminated?
       @options.merge!(more_options)
     end
 
@@ -288,29 +289,30 @@ module Limelight
 
     # TODO Try to get me out of public scope
     #
-    def illuminate #:nodoc:     
-      return if @options.nil?
+    def illuminate #:nodoc:
+      
+      if illuminated?
+        scene.index_prop(self) if @id
+      else
+        set_id(@options.delete(:id))
+        @name = @options.delete(:name)
+        @players = @options.delete(:players)
+        @additional_styles = @options.delete(:styles)
 
-      set_id(@options.delete(:id))
-      @name = @options.delete(:name)
-      @players = @options.delete(:players)
-      @additional_styles = @options.delete(:styles)
+        inherit_styles
+        scene.casting_director.fill_cast(self)
+        apply_options
 
-      inherit_styles
-      scene.casting_director.fill_cast(self)
-      apply_options
-
-      @options = nil
-
-      @illuminated = true
-
+        @options = nil
+      end
+      
       children.each do |child|
-        child.illuminate unless child.illuminated?
+        child.illuminate
       end
     end
 
     def illuminated? #:nodoc:
-      return @illuminated
+      return @options.nil?
     end  
 
     private ###############################################
