@@ -9,4 +9,6 @@ public interface Layout
 {
   void doLayout(Panel panel);
   boolean overides(Layout other);
+
+  void doLayout(Panel panel, boolean topLevel);
 }

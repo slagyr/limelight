@@ -359,4 +359,19 @@ public class StageFrameTest extends TestCase
     frame.doLayout();
     assertEquals(true, panel.consumableAreaChangedCalled);
   }
+
+  public void testShouldCollapseAutoDimensions() throws Exception
+  {
+    frame.setSizeStyles("auto", "auto");
+    MockPropablePanel child = new MockPropablePanel();
+    child.prepForSnap(300, 200);
+    frame.load(child);
+
+    Insets insets = frame.getInsets();
+    frame.open();
+
+    int width = 300 + insets.left + insets.right;
+    int height = 200 + insets.top + insets.bottom;
+    assertEquals(new Dimension(width, height), frame.getSize());
+  }
 }

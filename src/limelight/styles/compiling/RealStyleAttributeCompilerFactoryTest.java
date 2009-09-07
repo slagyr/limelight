@@ -106,4 +106,11 @@ public class RealStyleAttributeCompilerFactoryTest extends TestCase
   {
     assertEquals(YCoordinateAttributeCompiler.class, factory.compiler("y-coordinate", "blah").getClass());
   }
+  
+  public void testSimpleDimensions() throws Exception
+  {
+    StyleAttributeCompiler compiler = factory.compiler("noneable simple dimension", "blah");
+    assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
+    assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
+  }
 }

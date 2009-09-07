@@ -58,14 +58,13 @@ public abstract class BasePanel implements Panel
 
   public void setSize(int w, int h)
   {
-    w = h == 0 ? 0 : w;
-    h = w == 0 ? 0 : h;
-    if(w != getWidth() || h != getHeight())
+    if(w != width || h != height)
     {
       clearCache();
       width = w;
       height = h;
     }
+System.err.println("setsize(" + width + ", " + height + ") " + this);    
   }
 
   public void clearCache()
@@ -84,6 +83,7 @@ public abstract class BasePanel implements Panel
       clearCache();
     this.x = x;
     this.y = y;
+System.err.println("setLocation(" + x + ", " + y + ") " + this);  
   }
 
   public Point getLocation()
@@ -394,7 +394,7 @@ public abstract class BasePanel implements Panel
   public void consumableAreaChanged()
   {
     Style style = getStyle();
-    if(!needsLayout() && style != null && (style.hasAutoDimension() || style.hasPercentageDimension()))
+    if(!needsLayout() && style != null && style.hasDynamicDimension())
     {
       markAsNeedingLayout();
       for(Panel child : children)

@@ -85,21 +85,6 @@ public class BasePanelTest extends TestCase
     assertEquals(400, panel.getHeight());
   }
 
-  public void testBothDimensionsAreZeroWhenOneIsZero() throws Exception
-  {
-    panel.setSize(100, 100);
-    assertEquals(100, panel.getWidth());
-    assertEquals(100, panel.getHeight());
-
-    panel.setSize(0, 100);
-    assertEquals(0, panel.getWidth());
-    assertEquals(0, panel.getHeight());
-
-    panel.setSize(100, 0);
-    assertEquals(0, panel.getWidth());
-    assertEquals(0, panel.getHeight());
-  }
-
   public void testCanSetLocation() throws Exception
   {
     panel.setLocation(123, 456);

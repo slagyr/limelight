@@ -139,8 +139,8 @@ module Limelight
       end
     end
 
-    # Searches all children for Props with the specified name.  Returns an Array of matching Props. Returns an
-    # empty Array is none are found.
+    # Searches all descendant of the Prop (including itself) for Props with the specified name.
+    # Returns an Array of matching Props. Returns an empty Array if none are found.
     #
     def find_by_name(name, results = [])
       results << self if @name == name

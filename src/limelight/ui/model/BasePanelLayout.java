@@ -22,4 +22,10 @@ public class BasePanelLayout implements Layout
   {
     return false;
   }
+
+  public void doLayout(Panel panel, boolean topLevel)
+  {
+    doLayout(panel);
+  }
+
 }

@@ -29,4 +29,9 @@ public class TextPanelLayout implements Layout
   {
     return true;
   }
+
+  public void doLayout(Panel panel, boolean topLevel)
+  {
+    doLayout(panel);
+  }
 }

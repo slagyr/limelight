@@ -27,26 +27,26 @@ public class AutoDimensionAttribute implements DimensionAttribute
     return true;
   }
 
-  public boolean isPercentage()
+  public boolean isDynamic()
   {
-    return false;
+    return true;
   }
 
-  public int calculateDimension(int consumableSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max)
+  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
   {
     if(max.isNone())
       return consumableSize;
     else
-      return Math.min(consumableSize, max.getAttribute().getValue());
+      return Math.min(consumableSize, max.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE));
   }
 
-  public int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max)
+  public int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
   {
     int size = consumedSize;
     if(!min.isNone())
-      size = Math.max(size, min.getAttribute().getValue());
+      size = Math.max(size, min.getAttribute().calculateDimension(consumedSize, DIMENSION_NONE, DIMENSION_NONE));
     if(!max.isNone())
-      size = Math.min(size, max.getAttribute().getValue());
+      size = Math.min(size, max.getAttribute().calculateDimension(consumedSize, DIMENSION_NONE, DIMENSION_NONE));
 
     return size;
   }
