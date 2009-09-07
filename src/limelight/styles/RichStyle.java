@@ -69,6 +69,15 @@ public class RichStyle extends BaseStyle implements StyleObserver
     }
   }
 
+  public void clearExtensions()
+  {
+    while(extensions != null && !extensions.isEmpty())
+    {
+      RichStyle extension = extensions.getFirst();
+      removeExtension(extension);
+    }
+  }
+
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
     if(styles[descriptor.index] == null)
