@@ -78,4 +78,5 @@ public interface Panel extends Iterable<Panel>
   void keyReleased(KeyEvent e);
   void buttonPressed(ActionEvent e);
   void valueChanged(Object e);
+
 }

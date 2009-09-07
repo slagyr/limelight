@@ -3,10 +3,13 @@
 
 package limelight.styles.abstrstyling;
 
+
 public interface DimensionAttribute extends StyleAttribute
 {
+  NoneableAttribute<DimensionAttribute> DIMENSION_NONE = new NoneableAttribute<DimensionAttribute>(null);
+
   boolean isAuto();
-  boolean isPercentage();
-  int calculateDimension(int consumableSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max);
-  int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max);
+  boolean isDynamic();
+  int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max);
+  int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max);
 }

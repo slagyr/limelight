@@ -9,7 +9,6 @@ import limelight.styles.abstrstyling.NoneableAttribute;
 
 public class PercentageDimensionAttribute extends SimplePercentageAttribute implements DimensionAttribute
 {
-
   public PercentageDimensionAttribute(double percentValue)
   {
     super(percentValue);
@@ -20,24 +19,24 @@ public class PercentageDimensionAttribute extends SimplePercentageAttribute impl
     return false;
   }
 
-  public boolean isPercentage()
+  public boolean isDynamic()
   {
     return true;
   }
 
-  public int calculateDimension(int consumableSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max)
+  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
   {
     int calculatedSize = (int) ((getPercentage() * 0.01) * (double) consumableSize);
 
     if(!max.isNone())
-      calculatedSize = Math.min(calculatedSize, max.getAttribute().getValue());
+      calculatedSize = Math.min(calculatedSize, max.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE));
     if(!min.isNone())
-      calculatedSize = Math.max(calculatedSize, min.getAttribute().getValue());
+      calculatedSize = Math.max(calculatedSize, min.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE));
 
     return calculatedSize;
   }
 
-  public int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<IntegerAttribute> min, NoneableAttribute<IntegerAttribute> max)
+  public int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
   {
     return currentSize;
   }

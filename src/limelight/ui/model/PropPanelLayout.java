@@ -4,10 +4,11 @@
 package limelight.ui.model;
 
 import limelight.styles.Style;
+import limelight.styles.styling.GreedyDimensionAttribute;
+import limelight.styles.abstrstyling.VerticalAlignmentAttribute;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,14 +20,14 @@ public class PropPanelLayout implements Layout
   public Panel lastPanelProcessed;
 
   // TODO MDM This gets called ALOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
-  public void doLayout(Panel thePanel)
+  public void doLayout(Panel thePanel, boolean topLevel)
   {
-    PropPanel panel = (PropPanel)thePanel;
+    PropPanel panel = (PropPanel) thePanel;
     panel.resetLayout();
     FloaterLayout.instance.doLayout(panel);
     Style style = panel.getStyle();
 
-    if(panel.sizeChanged() || style.hasPercentageDimension() || style.hasAutoDimension())
+    if(topLevel && (panel.sizeChanged() || style.hasDynamicDimension()))
       panel.snapToSize();
 
     establishScrollBars(panel);
@@ -36,10 +37,18 @@ public class PropPanelLayout implements Layout
       collapseAutoDimensions(panel, consumedDimensions);
     else
     {
-      doLayoutOnChildren(panel);
+      doPreliminaryLayoutOnChildren(panel);
       LinkedList<Row> rows = buildRows(panel);
+      for(Row row : rows)
+      {
+        row.distributeGreeyWidth();
+      }
+      distributeGreedyHeight(panel, rows);
+
       calculateConsumedDimentions(rows, consumedDimensions);
       collapseAutoDimensions(panel, consumedDimensions);
+System.err.println("consumedDimensions = " + consumedDimensions + " " + panel);
+      doPostLayoutOnChildren(panel);
       layoutRows(panel, consumedDimensions, rows);
     }
     layoutScrollBars(panel, consumedDimensions);
@@ -50,9 +59,47 @@ public class PropPanelLayout implements Layout
     lastPanelProcessed = panel;
   }
 
+  private void distributeGreedyHeight(PropPanel panel, LinkedList<Row> rows)
+  {
+    int consumedHeight = 0;
+    int greedyRows = 0;
+    for(Row row : rows)
+    {
+      consumedHeight += row.height;
+      if(row.isGreedy())
+        greedyRows++;
+    }
+
+    int leftOver = panel.getChildConsumableArea().height - consumedHeight;
+    if(leftOver > 0 && greedyRows > 0)
+    {
+      int split = leftOver / greedyRows;
+      int remainder = leftOver % greedyRows;
+      for(Row row : rows)
+      {
+        if(row.isGreedy())
+        {
+          int extraHeight = split;
+          if(remainder > 0)
+          {
+            extraHeight += 1;
+            remainder--;
+          }
+          row.addGreedyHeight(extraHeight);
+        }
+      }
+    }
+
+  }
+
   public boolean overides(Layout other)
   {
     return true;
+  }
+
+  public void doLayout(Panel child)
+  {
+    doLayout(child, true);
   }
 
   private boolean hasNonScrollBarChildren(PropPanel panel)
@@ -107,13 +154,32 @@ public class PropPanelLayout implements Layout
     return panel.getBoundingBox().height - panel.getBoxInsidePadding().height;
   }
 
-  protected void doLayoutOnChildren(PropPanel panel)
+  protected void doPreliminaryLayoutOnChildren(PropPanel panel)
   {
     for(Panel child : panel.getChildren())
     {
       if(child.needsLayout())
       {
-        child.getDefaultLayout().doLayout(child);
+        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth().isAuto())
+        {
+          child.getDefaultLayout().doLayout(child, true);
+        }
+        else
+        {
+          ((PropPanel) child).snapToSize();
+        }
+
+      }
+    }
+  }
+
+  protected void doPostLayoutOnChildren(PropPanel panel)
+  {
+    for(Panel child : panel.getChildren())
+    {
+      if(child.needsLayout())
+      {
+        child.getDefaultLayout().doLayout(child, false);
       }
     }
   }
@@ -129,8 +195,8 @@ public class PropPanelLayout implements Layout
       int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableArea());
       if(panel.getHorizontalScrollBar() != null)
         x -= panel.getHorizontalScrollBar().getValue();
-      row.layoutComponents(x, y);
-      y += row.height;
+      row.layoutComponents(x, y, style.getCompiledVerticalAlignment());
+      y += row.calculatedHeight();
     }
   }
 
@@ -144,7 +210,9 @@ public class PropPanelLayout implements Layout
       if(!(child instanceof ScrollBarPanel) && !child.isFloater())
       {
         if(!currentRow.isEmpty() && !currentRow.fits(child))
+        {
           currentRow = newRow(panel, rows);
+        }
         currentRow.add(child);
       }
     }
@@ -186,7 +254,9 @@ public class PropPanelLayout implements Layout
     private final LinkedList<Panel> items;
     private final int maxWidth;
     public int width;
-    public int height;
+    private int height;
+    private int greedyWidths;
+    private int greedyHeights;
 
     public Row(int maxWidth)
     {
@@ -202,6 +272,14 @@ public class PropPanelLayout implements Layout
       width += panel.getWidth();
       if(panel.getHeight() > height)
         height = panel.getHeight();
+
+      if(panel instanceof PropPanel)
+      {
+        if(panel.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
+          greedyWidths += 1;
+        if(panel.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
+          greedyHeights += 1;
+      }
     }
 
     public boolean isEmpty()
@@ -214,16 +292,181 @@ public class PropPanelLayout implements Layout
       return (width + panel.getWidth()) <= maxWidth;
     }
 
-    public void layoutComponents(int x, int y)
+    public void layoutComponents(int x, int y, VerticalAlignmentAttribute verticalAlignment)
     {
+      Box area = new Box(x, y, width, height);
       for(Panel panel : items)
       {
-if(panel instanceof ImagePanel)
-  System.err.println("setting location on image  = " + x + ", " + y);
-        panel.setLocation(x, y);
+        int alignedY = verticalAlignment.getY(panel.getHeight(), area);
+        panel.setLocation(x, alignedY);
         x += panel.getWidth();
       }
     }
+
+    public void distributeGreeyWidth()
+    {
+      int leftOver = maxWidth - width;
+      if(leftOver > 0 && greedyWidths > 0)
+      {
+        width = maxWidth;
+        int split = leftOver / greedyWidths;
+        int remainder = leftOver % greedyWidths;
+        for(Panel item : items)
+        {
+          if(item instanceof PropPanel && item.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
+          {
+            int extraWidth = split;
+            if(remainder > 0)
+            {
+              extraWidth += 1;
+              remainder--;
+            }
+            item.setSize(item.getWidth() + extraWidth, item.getHeight());
+          }
+        }
+      }
+    }
+
+    public boolean isGreedy()
+    {
+      return greedyHeights > 0;
+    }
+
+    public void addGreedyHeight(int extraHeight)
+    {
+      height += extraHeight;
+      for(Panel item : items)
+      {
+        if(item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
+          item.setSize(item.getWidth(), height);
+      }
+    }
+
+    public int calculatedHeight()
+    {
+      int height = 0;
+      for(Panel item : items)
+      {
+        if(item.getHeight() > height)
+          height = item.getHeight();
+      }
+      return height;
+    }
   }
+//
+//   private class LayoutRow
+//  {
+//    private final ArrayList<LayoutNode> nodes;
+//    private final int maxWidth;
+//    public int width;
+//    public int height;
+//    public int greedyWidths;
+//    public int greedyHeights;
+//
+//    public LayoutRow(int maxWidth)
+//    {
+//      this.maxWidth = maxWidth;
+//      width = 0;
+//      height = 0;
+//      nodes = new ArrayList<LayoutNode>();
+//    }
+//
+//    public void add(LayoutNode node)
+//    {
+//      nodes.add(node);
+//      width += node.width;
+//
+//      if(node.panel instanceof PropPanel)
+//      {
+//        if(node.panel.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
+//          greedyWidths += 1;
+//        if(node.panel.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
+//          greedyHeights += 1;
+//      }
+//    }
+//
+//    public boolean isEmpty()
+//    {
+//      return nodes.size() == 0;
+//    }
+//
+//    public boolean fits(LayoutNode node)
+//    {
+//      return (width + node.width) <= maxWidth;
+//    }
+//
+//    public void distributeGreeyWidth()
+//    {
+//      int leftOver = maxWidth - width;
+//      if(leftOver > 0 && greedyWidths > 0)
+//      {
+//        int split = leftOver / greedyWidths;
+//        int remainder = leftOver % greedyWidths;
+//        for(LayoutNode node : nodes)
+//        {
+//          if(node.panel instanceof PropPanel && node.panel.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
+//          {
+//            int extraWidth = split;
+//            if(remainder > 0)
+//            {
+//              extraWidth += 1;
+//              remainder--;
+//            }
+//            node.width += extraWidth;
+//          }
+//        }
+//      }
+//    }
+//  }
+//
+//  private class LayoutNode
+//  {
+//    public ArrayList<LayoutRow> rows;
+//    private LayoutRow currentRow;
+//    public Panel panel;
+//    private int consumableWidth;
+//
+//    public LayoutNode(Panel panel, int consumableWidth)
+//    {
+//      this.panel = panel;
+//      this.consumableWidth = consumableWidth;
+//      if(panel instanceof PropPanel && panel.getStyle().getCompiledWidth().isAuto())
+//        buildChildren();
+//    }
+//
+//    public void buildChildren()
+//    {
+//      if(rows != null)
+//        return;
+//
+//      for(Panel child : panel.getChildren())
+//      {
+//        if(!(child instanceof ScrollBarPanel) && !child.isFloater())
+//        {
+//          LayoutNode childNode = new LayoutNode(child);
+//          if(currentRow == null || (!currentRow.isEmpty() && !currentRow.fits(childNode)))
+//          {
+//            newRow();
+//          }
+//          currentRow.add(childNode);
+//        }
+//      }
+//    }
+//
+//    private void newRow()
+//    {
+//      if(rows == null)
+//        rows = new ArrayList<LayoutRow>();
+//
+//      currentRow = new LayoutRow(panel.getChildConsumableArea().width);
+//      rows.add(currentRow);
+//    }
+//
+//    public int calculateWidth()
+//    {
+//      panel.snapWidth(consumableWidth);
+//    }
+//  }
+
 }
 

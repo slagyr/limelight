@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.styles.abstrstyling.IntegerAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
+import limelight.styles.abstrstyling.DimensionAttribute;
 
 public class PercentageDimensionAttributeTest extends TestCase
 {
@@ -39,21 +40,21 @@ public class PercentageDimensionAttributeTest extends TestCase
     assertEquals(false, fiftyPercent.equals(hundredPercent));
     assertEquals(false, fiftyPercent.equals(null));
   }
+  
+  public void testIsDynamic() throws Exception
+  {
+    assertEquals(true, fiftyPercent.isDynamic());
+  }
 
   public void testIsAuto() throws Exception
   {
     assertEquals(false, fiftyPercent.isAuto());    
   }
 
-  public void testIsPercentage() throws Exception
-  {
-    assertEquals(true, fiftyPercent.isPercentage());
-  }
-
   public void testCalculateDimensionWithNoMinOrMax() throws Exception
   {
-    NoneableAttribute<IntegerAttribute> min = new NoneableAttribute<IntegerAttribute>(null);
-    NoneableAttribute<IntegerAttribute> max = new NoneableAttribute<IntegerAttribute>(null);
+    NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(null);
+    NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(null);
 
     assertEquals(50, fiftyPercent.calculateDimension(100, min, max));
     assertEquals(100, hundredPercent.calculateDimension(100, min, max));
@@ -61,8 +62,8 @@ public class PercentageDimensionAttributeTest extends TestCase
 
   public void testCalculateDimensionWithMin() throws Exception
   {
-    NoneableAttribute<IntegerAttribute> min = new NoneableAttribute<IntegerAttribute>(new SimpleIntegerAttribute(75));
-    NoneableAttribute<IntegerAttribute> max = new NoneableAttribute<IntegerAttribute>(null);
+    NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(new StaticDimensionAttribute(75));
+    NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(null);
 
     assertEquals(75, fiftyPercent.calculateDimension(100, min, max));
     assertEquals(100, hundredPercent.calculateDimension(100, min, max));
@@ -70,8 +71,8 @@ public class PercentageDimensionAttributeTest extends TestCase
 
   public void testCalculateDimensionWithMax() throws Exception
   {
-    NoneableAttribute<IntegerAttribute> min = new NoneableAttribute<IntegerAttribute>(null);
-    NoneableAttribute<IntegerAttribute> max = new NoneableAttribute<IntegerAttribute>(new SimpleIntegerAttribute(75));
+    NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(null);
+    NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(new StaticDimensionAttribute(75));
 
     assertEquals(50, fiftyPercent.calculateDimension(100, min, max));
     assertEquals(75, hundredPercent.calculateDimension(100, min, max));
@@ -79,8 +80,8 @@ public class PercentageDimensionAttributeTest extends TestCase
 
   public void testCalculateDimensionWithMinAndMax() throws Exception
   {
-    NoneableAttribute<IntegerAttribute> min = new NoneableAttribute<IntegerAttribute>(new SimpleIntegerAttribute(60));
-    NoneableAttribute<IntegerAttribute> max = new NoneableAttribute<IntegerAttribute>(new SimpleIntegerAttribute(80));
+    NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(new StaticDimensionAttribute(60));
+    NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(new StaticDimensionAttribute(80));
 
     assertEquals(60, fiftyPercent.calculateDimension(100, min, max));
     assertEquals(80, hundredPercent.calculateDimension(100, min, max));

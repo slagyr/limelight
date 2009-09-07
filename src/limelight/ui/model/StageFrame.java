@@ -20,7 +20,7 @@ public class StageFrame extends JFrame implements KeyListener
   private static final StyleAttributeCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
   private static final StyleAttributeCompiler xCompiler = Context.instance().styleAttributeCompilerFactory.compiler("x-coordinate", "stage x-coordinate");
   private static final StyleAttributeCompiler yCompiler = Context.instance().styleAttributeCompilerFactory.compiler("y-coordinate", "stage y-coordinate");
-  private static final NoneableAttribute<IntegerAttribute> NONE = new NoneableAttribute<IntegerAttribute>(null);
+  private static final NoneableAttribute<DimensionAttribute> NONE = new NoneableAttribute<DimensionAttribute>(null);
 
   private Stage stage;
   protected RootPanel root;
@@ -382,18 +382,19 @@ public class StageFrame extends JFrame implements KeyListener
   {
     if(root == null)
       return;
-    if(!widthStyle.isAuto() && !heightStyle.isAuto())
-      return;
 
     super.doLayout();
     getRootPane().doLayout();
     root.doLayout();
 
+    Insets insets = getInsets();
+    int widthInsets = insets.left + insets.right;
+    int heightInsets = insets.top + insets.bottom;
+
     Dimension size = getSize();
-    if(widthStyle.isAuto() && root.getPanel().getWidth() < size.width)
-      size.width = root.getPanel().getWidth();
-    if(heightStyle.isAuto() && root.getPanel().getHeight() < size.height)
-      size.height = root.getPanel().getHeight();
+    size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getPanel().getWidth() + widthInsets, NONE, NONE);
+    size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets,  NONE, NONE);
+
     setSize(size);
   }
 }

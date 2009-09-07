@@ -25,4 +25,9 @@ public class InputPanelLayout implements Layout
   {
     return true;
   }
+
+  public void doLayout(Panel panel, boolean topLevel)
+  {
+    doLayout(panel);
+  }
 }

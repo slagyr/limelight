@@ -30,4 +30,9 @@ public class FloaterLayout implements Layout
   {
     return other != PropPanelLayout.instance;
   }
+
+  public void doLayout(Panel panel, boolean topLevel)
+  {
+    doLayout(panel);
+  }
 }

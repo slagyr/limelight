@@ -33,8 +33,7 @@ class ImagePanelLayout implements Layout
       handleRotation(panel);
       handleAutoDimensions(panel, size);
     }
-
-System.err.println("ImagePanel laidout = " + size);    
+  
     panel.setSize(size.width, size.height);
   }
 
@@ -79,5 +78,10 @@ System.err.println("ImagePanel laidout = " + size);
   public boolean overides(Layout other)
   {
     return true;
+  }
+
+  public void doLayout(Panel panel, boolean topLevel)
+  {
+    doLayout(panel);
   }
 }

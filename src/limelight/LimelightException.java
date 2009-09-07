@@ -3,7 +3,7 @@
 
 package limelight;
 
-public class LimelightException extends Exception
+public class LimelightException extends RuntimeException
 {
   public LimelightException(String s)
   {

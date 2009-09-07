@@ -3,10 +3,7 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
-import limelight.styles.abstrstyling.NoneableAttributeCompiler;
-import limelight.styles.abstrstyling.StringAttribute;
+import limelight.styles.abstrstyling.*;
 import limelight.styles.styling.*;
 import limelight.LimelightError;
 import limelight.Context;
@@ -37,6 +34,8 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
       result = new PercentageAttributeCompiler();
     else if("dimension".equals(type))
       result = new DimensionAttributeCompiler();
+    else if("noneable simple dimension".equals(type))
+      result = new NoneableAttributeCompiler<DimensionAttribute>(new SimpleDimensionAttributeCompiler());
     else if("degrees".equals(type))
       result = new DegreesAttributeCompiler();
     else if("fill strategy".equals(type))

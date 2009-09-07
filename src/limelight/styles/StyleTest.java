@@ -8,6 +8,8 @@ import limelight.styles.styling.SimpleColorAttribute;
 import limelight.styles.compiling.PixelsAttributeCompiler;
 import limelight.styles.compiling.XCoordinateAttributeCompiler;
 import limelight.styles.compiling.YCoordinateAttributeCompiler;
+import limelight.styles.compiling.SimpleDimensionAttributeCompiler;
+import limelight.styles.abstrstyling.NoneableAttributeCompiler;
 import limelight.util.Colors;
 
 import java.awt.*;
@@ -165,5 +167,17 @@ public class StyleTest extends TestCase
   {
     assertEquals(XCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_X.compiler.getClass());
     assertEquals(YCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_Y.compiler.getClass());
+  }
+  
+  public void testMinMaxWidthAndMinHeightCompilers() throws Exception
+  {
+    assertEquals(NoneableAttributeCompiler.class, Style.MIN_WIDTH.compiler.getClass());
+    assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)Style.MIN_WIDTH.compiler).getTarget().getClass());
+    assertEquals(NoneableAttributeCompiler.class, Style.MIN_HEIGHT.compiler.getClass());
+    assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)Style.MIN_HEIGHT.compiler).getTarget().getClass());
+    assertEquals(NoneableAttributeCompiler.class, Style.MAX_WIDTH.compiler.getClass());
+    assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)Style.MIN_WIDTH.compiler).getTarget().getClass());
+    assertEquals(NoneableAttributeCompiler.class, Style.MAX_HEIGHT.compiler.getClass());
+    assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)Style.MIN_HEIGHT.compiler).getTarget().getClass());
   }
 }

@@ -27,4 +27,9 @@ public class MockLayout implements Layout
   {
     return overide;
   }
+
+  public void doLayout(Panel panel, boolean topLevel)
+  {
+    doLayout(panel);
+  }
 }

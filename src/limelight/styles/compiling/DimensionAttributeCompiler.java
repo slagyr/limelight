@@ -9,6 +9,7 @@ import limelight.styles.abstrstyling.DimensionAttribute;
 import limelight.styles.styling.StaticDimensionAttribute;
 import limelight.styles.styling.AutoDimensionAttribute;
 import limelight.styles.styling.PercentageDimensionAttribute;
+import limelight.styles.styling.GreedyDimensionAttribute;
 
 public class DimensionAttributeCompiler extends StyleAttributeCompiler
 { 
@@ -19,6 +20,8 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
     {
       DimensionAttribute attribute;
       attribute = attemptAutoAttribute(value);
+      if(attribute == null)
+        attribute = attemptGreedyAttribute(value);
       if(attribute == null)
         attribute = attemptPercentageAttribute(value);
       if(attribute == null)
@@ -35,7 +38,15 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private DimensionAttribute attemptStaticAttribute(String value)
+  private DimensionAttribute attemptGreedyAttribute(String value)
+  {
+    if("greedy".equals(value.toLowerCase()))
+      return new GreedyDimensionAttribute();
+    else
+      return null;
+  }
+
+  protected DimensionAttribute attemptStaticAttribute(String value)
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
 
@@ -53,7 +64,7 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
       return null;
   }
 
-  private DimensionAttribute attemptPercentageAttribute(String value)
+  protected DimensionAttribute attemptPercentageAttribute(String value)
   {
     if(PercentageAttributeCompiler.isPercentage(value))
     {

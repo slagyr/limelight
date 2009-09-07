@@ -23,10 +23,10 @@ public abstract class Style
 
   public static final StyleDescriptor WIDTH = descriptor("Width", "dimension", "auto");
   public static final StyleDescriptor HEIGHT = descriptor("Height", "dimension", "auto");
-  public static final StyleDescriptor MIN_WIDTH = descriptor("Min Width", "noneable integer", "none");
-  public static final StyleDescriptor MIN_HEIGHT = descriptor("Min Height", "noneable integer", "none");
-  public static final StyleDescriptor MAX_WIDTH = descriptor("Max Width", "noneable integer", "none");
-  public static final StyleDescriptor MAX_HEIGHT = descriptor("Max Height", "noneable integer", "none");
+  public static final StyleDescriptor MIN_WIDTH = descriptor("Min Width", "noneable simple dimension", "none");
+  public static final StyleDescriptor MIN_HEIGHT = descriptor("Min Height", "noneable simple dimension", "none");
+  public static final StyleDescriptor MAX_WIDTH = descriptor("Max Width", "noneable simple dimension", "none");
+  public static final StyleDescriptor MAX_HEIGHT = descriptor("Max Height", "noneable simple dimension", "none");
   public static final StyleDescriptor VERTICAL_SCROLLBAR = descriptor("Vertical Scrollbar", "on/off", "off");
   public static final StyleDescriptor HORIZONTAL_SCROLLBAR = descriptor("Horizontal Scrollbar", "on/off", "off");
   public static final StyleDescriptor TOP_BORDER_COLOR = descriptor("Top Border Color", "color", "black");
@@ -113,9 +113,9 @@ public abstract class Style
     return getCompiledWidth().isAuto() || getCompiledHeight().isAuto();
   }
 
-  public boolean hasPercentageDimension()
+  public boolean hasDynamicDimension()
   {
-    return getCompiledWidth().isPercentage() || getCompiledHeight().isPercentage();
+    return getCompiledWidth().isDynamic() || getCompiledHeight().isDynamic();
   }
 
   public void setWidth(Object value)
@@ -158,9 +158,9 @@ public abstract class Style
     return get(MIN_WIDTH);
   }
 
-  public NoneableAttribute<IntegerAttribute> getCompiledMinWidth()
+  public NoneableAttribute<DimensionAttribute> getCompiledMinWidth()
   {
-    return (NoneableAttribute<IntegerAttribute>)getCompiled(MIN_WIDTH);
+    return (NoneableAttribute<DimensionAttribute>)getCompiled(MIN_WIDTH);
   }
 
   public void setMinHeight(Object value)
@@ -173,9 +173,9 @@ public abstract class Style
     return get(MIN_HEIGHT);
   }
 
-  public NoneableAttribute<IntegerAttribute> getCompiledMinHeight()
+  public NoneableAttribute<DimensionAttribute> getCompiledMinHeight()
   {
-    return (NoneableAttribute<IntegerAttribute>)getCompiled(MIN_HEIGHT);
+    return (NoneableAttribute<DimensionAttribute>)getCompiled(MIN_HEIGHT);
   }
 
   public void setMaxWidth(Object value)
@@ -188,9 +188,9 @@ public abstract class Style
     return get(MAX_WIDTH);
   }
 
-  public NoneableAttribute<IntegerAttribute> getCompiledMaxWidth()
+  public NoneableAttribute<DimensionAttribute> getCompiledMaxWidth()
   {
-    return (NoneableAttribute<IntegerAttribute>)getCompiled(MAX_WIDTH);
+    return (NoneableAttribute<DimensionAttribute>)getCompiled(MAX_WIDTH);
   }
 
   public void setMaxHeight(Object value)
@@ -203,9 +203,9 @@ public abstract class Style
     return get(MAX_HEIGHT);
   }
 
-  public NoneableAttribute<IntegerAttribute> getCompiledMaxHeight()
+  public NoneableAttribute<DimensionAttribute> getCompiledMaxHeight()
   {
-    return (NoneableAttribute<IntegerAttribute>)getCompiled(MAX_HEIGHT);
+    return (NoneableAttribute<DimensionAttribute>)getCompiled(MAX_HEIGHT);
   }
 
   public void setTextColor(Object value)

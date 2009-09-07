@@ -5,11 +5,15 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.LimelightError;
+import limelight.LimelightException;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
+import limelight.styles.styling.AutoDimensionAttribute;
+import limelight.styles.styling.GreedyDimensionAttribute;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.styles.abstrstyling.PixelsAttribute;
+import limelight.styles.abstrstyling.DimensionAttribute;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
@@ -22,6 +26,7 @@ import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.util.Util;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -82,13 +87,15 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     this.textAccessor = textAccessor;
   }
-
+  
   public void snapToSize()
   {
     Box maxArea = getParent().getChildConsumableArea();
     Style style = getProp().getStyle();
+    if(style.getCompiledWidth() instanceof AutoDimensionAttribute && style.getCompiledHeight() instanceof GreedyDimensionAttribute)
+      throw new LimelightException("A greedy height is not allowed with auto width.");
     int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
-    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());           
+    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
     setSize(newWidth, newHeight);
     sizeChanged = false;
   }
