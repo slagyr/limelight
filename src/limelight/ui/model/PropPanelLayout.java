@@ -39,15 +39,9 @@ public class PropPanelLayout implements Layout
     {
       doPreliminaryLayoutOnChildren(panel);
       LinkedList<Row> rows = buildRows(panel);
-      for(Row row : rows)
-      {
-        row.distributeGreeyWidth();
-      }
-      distributeGreedyHeight(panel, rows);
-
+      distributeGreediness(panel, rows);
       calculateConsumedDimentions(rows, consumedDimensions);
       collapseAutoDimensions(panel, consumedDimensions);
-System.err.println("consumedDimensions = " + consumedDimensions + " " + panel);
       doPostLayoutOnChildren(panel);
       layoutRows(panel, consumedDimensions, rows);
     }
@@ -57,6 +51,13 @@ System.err.println("consumedDimensions = " + consumedDimensions + " " + panel);
     panel.markAsDirty();
     panel.wasLaidOut();
     lastPanelProcessed = panel;
+  }
+
+  private void distributeGreediness(PropPanel panel, LinkedList<Row> rows)
+  {
+    for(Row row : rows)
+      row.distributeGreeyWidth();
+    distributeGreedyHeight(panel, rows);
   }
 
   private void distributeGreedyHeight(PropPanel panel, LinkedList<Row> rows)
@@ -73,23 +74,31 @@ System.err.println("consumedDimensions = " + consumedDimensions + " " + panel);
     int leftOver = panel.getChildConsumableArea().height - consumedHeight;
     if(leftOver > 0 && greedyRows > 0)
     {
-      int split = leftOver / greedyRows;
-      int remainder = leftOver % greedyRows;
+      int[] split = splitEvenly(leftOver, greedyRows);
+      int splitIndex = 0;
       for(Row row : rows)
       {
         if(row.isGreedy())
-        {
-          int extraHeight = split;
-          if(remainder > 0)
-          {
-            extraHeight += 1;
-            remainder--;
-          }
-          row.addGreedyHeight(extraHeight);
-        }
+          row.addGreedyHeight(split[splitIndex++]);
       }
     }
+  }
 
+  private int[] splitEvenly(int amount, int parts)
+  {
+    int[] split = new int[parts];
+    int part = amount / parts;
+    int remainder = amount % parts;
+    for(int i = 0; i < split.length; i++)
+    {
+      split[i] = part;
+      if(remainder > 0)
+      {
+        split[i] += 1;
+        remainder--;
+      }
+    }
+    return split;
   }
 
   public boolean overides(Layout other)
@@ -273,13 +282,10 @@ System.err.println("consumedDimensions = " + consumedDimensions + " " + panel);
       if(panel.getHeight() > height)
         height = panel.getHeight();
 
-      if(panel instanceof PropPanel)
-      {
-        if(panel.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
-          greedyWidths += 1;
-        if(panel.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
-          greedyHeights += 1;
-      }
+      if(hasGreedyWidth(panel))
+        greedyWidths += 1;
+      if(hasGreedyHeight(panel))
+        greedyHeights += 1;
     }
 
     public boolean isEmpty()
@@ -309,22 +315,24 @@ System.err.println("consumedDimensions = " + consumedDimensions + " " + panel);
       if(leftOver > 0 && greedyWidths > 0)
       {
         width = maxWidth;
-        int split = leftOver / greedyWidths;
-        int remainder = leftOver % greedyWidths;
+        int[] splits = splitEvenly(leftOver, greedyWidths);
+        int splitIndex = 0;
         for(Panel item : items)
         {
-          if(item instanceof PropPanel && item.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
-          {
-            int extraWidth = split;
-            if(remainder > 0)
-            {
-              extraWidth += 1;
-              remainder--;
-            }
-            item.setSize(item.getWidth() + extraWidth, item.getHeight());
-          }
+          if(hasGreedyWidth(item))
+            item.setSize(item.getWidth() + splits[splitIndex++], item.getHeight());
         }
       }
+    }
+
+    private boolean hasGreedyWidth(Panel item)
+    {
+      return item instanceof PropPanel && item.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute;
+    }
+
+    private boolean hasGreedyHeight(Panel item)
+    {
+      return item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute;
     }
 
     public boolean isGreedy()
@@ -353,120 +361,6 @@ System.err.println("consumedDimensions = " + consumedDimensions + " " + panel);
       return height;
     }
   }
-//
-//   private class LayoutRow
-//  {
-//    private final ArrayList<LayoutNode> nodes;
-//    private final int maxWidth;
-//    public int width;
-//    public int height;
-//    public int greedyWidths;
-//    public int greedyHeights;
-//
-//    public LayoutRow(int maxWidth)
-//    {
-//      this.maxWidth = maxWidth;
-//      width = 0;
-//      height = 0;
-//      nodes = new ArrayList<LayoutNode>();
-//    }
-//
-//    public void add(LayoutNode node)
-//    {
-//      nodes.add(node);
-//      width += node.width;
-//
-//      if(node.panel instanceof PropPanel)
-//      {
-//        if(node.panel.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
-//          greedyWidths += 1;
-//        if(node.panel.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
-//          greedyHeights += 1;
-//      }
-//    }
-//
-//    public boolean isEmpty()
-//    {
-//      return nodes.size() == 0;
-//    }
-//
-//    public boolean fits(LayoutNode node)
-//    {
-//      return (width + node.width) <= maxWidth;
-//    }
-//
-//    public void distributeGreeyWidth()
-//    {
-//      int leftOver = maxWidth - width;
-//      if(leftOver > 0 && greedyWidths > 0)
-//      {
-//        int split = leftOver / greedyWidths;
-//        int remainder = leftOver % greedyWidths;
-//        for(LayoutNode node : nodes)
-//        {
-//          if(node.panel instanceof PropPanel && node.panel.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute)
-//          {
-//            int extraWidth = split;
-//            if(remainder > 0)
-//            {
-//              extraWidth += 1;
-//              remainder--;
-//            }
-//            node.width += extraWidth;
-//          }
-//        }
-//      }
-//    }
-//  }
-//
-//  private class LayoutNode
-//  {
-//    public ArrayList<LayoutRow> rows;
-//    private LayoutRow currentRow;
-//    public Panel panel;
-//    private int consumableWidth;
-//
-//    public LayoutNode(Panel panel, int consumableWidth)
-//    {
-//      this.panel = panel;
-//      this.consumableWidth = consumableWidth;
-//      if(panel instanceof PropPanel && panel.getStyle().getCompiledWidth().isAuto())
-//        buildChildren();
-//    }
-//
-//    public void buildChildren()
-//    {
-//      if(rows != null)
-//        return;
-//
-//      for(Panel child : panel.getChildren())
-//      {
-//        if(!(child instanceof ScrollBarPanel) && !child.isFloater())
-//        {
-//          LayoutNode childNode = new LayoutNode(child);
-//          if(currentRow == null || (!currentRow.isEmpty() && !currentRow.fits(childNode)))
-//          {
-//            newRow();
-//          }
-//          currentRow.add(childNode);
-//        }
-//      }
-//    }
-//
-//    private void newRow()
-//    {
-//      if(rows == null)
-//        rows = new ArrayList<LayoutRow>();
-//
-//      currentRow = new LayoutRow(panel.getChildConsumableArea().width);
-//      rows.add(currentRow);
-//    }
-//
-//    public int calculateWidth()
-//    {
-//      panel.snapWidth(consumableWidth);
-//    }
-//  }
 
 }
 

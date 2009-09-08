@@ -64,7 +64,6 @@ public abstract class BasePanel implements Panel
       width = w;
       height = h;
     }
-System.err.println("setsize(" + width + ", " + height + ") " + this);    
   }
 
   public void clearCache()
@@ -83,7 +82,6 @@ System.err.println("setsize(" + width + ", " + height + ") " + this);
       clearCache();
     this.x = x;
     this.y = y;
-System.err.println("setLocation(" + x + ", " + y + ") " + this);  
   }
 
   public Point getLocation()
