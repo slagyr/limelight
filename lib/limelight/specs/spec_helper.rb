@@ -23,7 +23,7 @@ module Limelight
           stage = producer.theater.default_stage
         end
 
-        stage.should_remain_hidden = @ll_spec_options[:hidden]
+        stage.should_remain_hidden = @ll_spec_options[:hidden] || true
 
         @scene = producer.open_scene(@scene_name.to_s, stage)
       end
