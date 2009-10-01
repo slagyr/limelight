@@ -40,11 +40,16 @@ public class PropPanelLayout implements Layout
       doPreliminaryLayoutOnChildren(panel);
       LinkedList<Row> rows = buildRows(panel);
       distributeGreediness(panel, rows);
+      doPostLayoutOnChildren(panel);
       calculateConsumedDimentions(rows, consumedDimensions);
       collapseAutoDimensions(panel, consumedDimensions);
-      doPostLayoutOnChildren(panel);
       layoutRows(panel, consumedDimensions, rows);
     }
+if(panel.toString().contains("section_body"))
+{
+  System.err.println("panel.getAbsoluteBounds() = " + panel.getAbsoluteBounds());
+  new Exception().printStackTrace();
+}
     layoutScrollBars(panel, consumedDimensions);
 
     panel.updateBorder();
@@ -177,7 +182,6 @@ public class PropPanelLayout implements Layout
         {
           ((PropPanel) child).snapToSize();
         }
-
       }
     }
   }
@@ -205,7 +209,7 @@ public class PropPanelLayout implements Layout
       if(panel.getHorizontalScrollBar() != null)
         x -= panel.getHorizontalScrollBar().getValue();
       row.layoutComponents(x, y, style.getCompiledVerticalAlignment());
-      y += row.calculatedHeight();
+      y += row.height;
     }
   }
 
@@ -239,6 +243,7 @@ public class PropPanelLayout implements Layout
   {
     for(Row row : rows)
     {
+      row.reCalculatedHeight();
       consumedDimensions.height += row.height;
       if(row.width > consumedDimensions.width)
         consumedDimensions.width = row.width;
@@ -252,6 +257,7 @@ public class PropPanelLayout implements Layout
       panel.addVerticalScrollBar();
     else if(panel.getVerticalScrollBar() != null && style.getCompiledVerticalScrollbar().isOff())
       panel.removeVerticalScrollBar();
+
     if(panel.getHorizontalScrollBar() == null && style.getCompiledHorizontalScrollbar().isOn())
       panel.addHorizontalScrollBar();
     else if(panel.getHorizontalScrollBar() != null && style.getCompiledHorizontalScrollbar().isOff())
@@ -350,15 +356,14 @@ public class PropPanelLayout implements Layout
       }
     }
 
-    public int calculatedHeight()
+    public void reCalculatedHeight()
     {
-      int height = 0;
+      height = 0;
       for(Panel item : items)
       {
         if(item.getHeight() > height)
           height = item.getHeight();
       }
-      return height;
     }
   }
 

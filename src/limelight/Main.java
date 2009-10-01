@@ -14,11 +14,9 @@ import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
 import limelight.os.darwin.DarwinOS;
-import limelight.os.darwin.LimelightApplicationAdapter;
 import limelight.os.win32.Win32OS;
 import limelight.os.UnsupportedOS;
 import limelight.os.MockOS;
-import limelight.util.Debug;
 import org.jruby.Ruby;
 import org.jruby.javasupport.JavaEmbedUtils;
 
@@ -129,7 +127,7 @@ public class Main
     else
       context.os = new UnsupportedOS();
     
-    context.os.appIsStarting();
+    context.os.appIsStarting();   
   }
 
   public void configureContext()
@@ -140,6 +138,8 @@ public class Main
     contextIsConfigured = true;
 
     context = Context.instance();
+    if(context.os == null)
+      configureOS();
 
     context.keyboardFocusManager = new KeyboardFocusManager().installed();
     initializeTempDirectory();
