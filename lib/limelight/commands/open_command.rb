@@ -12,6 +12,7 @@ module Limelight
     #        Open a limelight production.
     #        options:
     #        -h, --help                       Prints this usage summary.
+    #        -d, --drb_port=<port>            Publish the Studio using DRb on the specified port.
     #
     class OpenCommand < Command
 
@@ -41,7 +42,7 @@ module Limelight
       end
 
       def build_options(spec) #:nodoc:
-        spec.on("-d <port>", "--drb_port=<port>", "Publish the opened production using DRb on the specified port.") { |value| @drb_port = value }
+        spec.on("-d <port>", "--drb_port=<port>", "Publish the Studio using DRb on the specified port.") { |value| @drb_port = value }
       end
 
       def parse_remainder(args)

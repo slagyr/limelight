@@ -5,10 +5,11 @@ package limelight.ui.model;
 
 import junit.framework.TestCase;
 import limelight.MockResourceLoader;
-import limelight.util.Box;
+import limelight.io.StreamReader;
 import limelight.util.TestUtil;
 
-import java.awt.geom.AffineTransform;
+import java.io.FileReader;
+import java.io.FileInputStream;
 
 public class ImagePanelTest extends TestCase
 {
@@ -63,5 +64,45 @@ public class ImagePanelTest extends TestCase
     panel.consumableAreaChanged();
 
     assertEquals(true, panel.needsLayout());
+  }
+
+  public void testSettingImageData() throws Exception
+  {
+    checkSettingImageDataWith("star.gif", "gif");
+    checkSettingImageDataWith("star.jpg", "jpg");
+    checkSettingImageDataWith("star.jpg", "jpeg");
+    checkSettingImageDataWith("star.tif", "tif");
+    checkSettingImageDataWith("star.tif", "tiff");
+    checkSettingImageDataWith("star.png", "png");
+    checkSettingImageDataWith("star.bmp", "bmp");
+    checkSettingImageDataWith("star.wbm", "wbmp");
+    checkSettingImageDataWith("star.wbm", "wbm");
+  }
+
+  private void checkSettingImageDataWith(String imageFile, String imageType) throws Exception
+  {
+    StreamReader reader = new StreamReader(new FileInputStream(TestUtil.dataDirPath(imageFile)));
+    byte[] bytes = reader.readBytes(100000);
+
+    panel.setImageData(imageType, bytes);
+
+    assertEquals(200, panel.getImage().getHeight(null));
+    assertEquals(200, panel.getImage().getWidth(null));
+  }
+
+  public void testSettingImageDataUpdatesInfo() throws Exception
+  {
+    panel.setImageFile(TestUtil.dataDirPath("small_star.gif"));
+    panel.getImage();
+    panel.resetLayout();
+    parent.resetLayout();
+
+    checkSettingImageDataWith("star.gif", "gif");
+
+    assertEquals(200, panel.getImageWidth(), 0.1);
+    assertEquals(200, panel.getImageHeight(), 0.1);
+    assertEquals("<gif data>", panel.getImageFile());
+    assertEquals(true, panel.needsLayout());
+    assertEquals(true, parent.needsLayout());
   }
 }
