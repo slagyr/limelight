@@ -40,7 +40,7 @@ module Limelight
       def process  #:nodoc:
         check_production_path
         gem_path = is_gem_file?(@gem_name) ? @gem_name : find_system_gem
-        raise "Gem file does not exist: #{gem_path}" if !File.exists?(gem_path)
+        raise "Gem file does not exist: #{gem_path}" unless File.exists?(gem_path)
         freeze_gem(gem_path)
       end
 
@@ -94,15 +94,19 @@ module Limelight
         gem_installer = Gem::Installer.new(gem_path)
         @templater.logger.log("unpacking gem", @gem_dir_path)
         gem_installer.unpack(@gem_dir_path)
+        
+        @templater.directory(File.join("__resources", "gems", "specifications"))
+        FileUtils.copy(File.join(Gem.dir, "MicahGem-1.0.gemspec"),
+                       File.join("prod/path", "__resources", "gems", "specifications"))
 
         install_limelight_hook
       end
 
       def establish_gem_dir
         @templater = Templates::Templater.new(@production_path)
-        @gem_dir_path = File.join(@production_path, "__resources", "gems", @gem_dir_name)
+        @gem_dir_path = File.join(@production_path, "__resources", "gems", "gems", @gem_dir_name)
         raise "The gem (#{@gem_dir_name}) is already frozen." if File.exists?(@gem_dir_path)
-        @templater.directory(File.join("__resources", "gems", @gem_dir_name))
+        @templater.directory(File.join("__resources", "gems", "gems", @gem_dir_name))
       end
 
       def install_limelight_hook
