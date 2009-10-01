@@ -5,6 +5,7 @@ require 'spec'
 require File.expand_path(File.dirname(__FILE__) + "/../../init")
 require 'limelight/scene'
 require 'limelight/producer'
+require 'limelight/string'
 
 module Limelight
   module Specs
@@ -28,6 +29,18 @@ module Limelight
         @scene = producer.open_scene(@scene_name.to_s, stage)
       end
 
+      def load_player
+        @scene = Limelight::Scene.new
+        @player = Limelight::Prop.new
+        @scene << @player
+        @player.extend(eval(@player_name.to_s.camalized))
+      end
+
+      def player
+        load_player unless @player
+        return @player
+      end
+
       def scene
         open_scene unless @scene
         return @scene
@@ -41,13 +54,22 @@ module Spec
   module Example
     class ExampleGroup
 
-      def self.uses_scene(scene_name, options = {})
+      def self.uses_scene(scene_name, optixons = {})
         include Limelight::Specs::SpecHelper
 
         before(:each) do
           @scene_name = scene_name
           @ll_spec_options = options
           @scene = nil
+        end
+      end
+
+      def self.uses_player(player_name)
+        include Limelight::Specs::SpecHelper
+
+        before(:each) do
+          @player_name = player_name
+          load_player
         end
       end
 
