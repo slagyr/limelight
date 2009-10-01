@@ -496,8 +496,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoWidthWithGreedyHeight() throws Exception
   {
-    PropPanel greedy1 = addChildWithSize(parent, "auto", "greedy");
-    PropPanel child = addChildWithSize(greedy1, "100%", "100%");
+    addChildWithSize(parent, "auto", "greedy");
 
     try
     {
@@ -508,5 +507,17 @@ public class PropPanelLayoutTest extends TestCase
     {
       assertEquals("A greedy height is not allowed with auto width.", e.getMessage());      
     }
+  }
+
+  public void testAutoHeightIsCollapsedWhenContainingChildren() throws Exception
+  {
+    PropPanel panel = addChildWithSize(parent, "100%", "auto");
+    PropPanel child = addChildWithSize(panel, "100%", "auto");
+    addChildWithSize(child, "100%", "14");
+
+    layout.doLayout(parent);
+
+    assertEquals(100, panel.getWidth());
+    assertEquals(14, panel.getHeight());
   }
 }
