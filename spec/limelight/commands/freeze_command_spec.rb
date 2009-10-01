@@ -62,29 +62,46 @@ describe Limelight::Commands::FreezeCommand do
   describe "Actual Freezing" do
     
     before(:each) do
+      @gem_name = 'MicahGem'
+      @gem_name_and_version = "#{@gem_name}-1.0" 
+      @project_dir = 'prod/path'
       stub_limelight_production    
       stub_gem_cache
       stub_unpacking_gem
-      stub_establishing_gem_dir_in('prod/path', 'MicahGem-1.0')
+      stub_establishing_gem_dir
       stub_templater
       stub_gem_installer
       FileUtils.stub!(:copy)
+      Gem.stub!(:dir).and_return("PATH")
     end
     
     it "should create the specifications directory" do
+      File.stub!(:exists?).with(path_to_gemspec).and_return(false)
+      
       @templater.should_receive(:directory).with(File.join("__resources", "gems", "specifications"))
 
-      @command.run ["-p", "prod/path", "some_gem"]
+      @command.run ["-p", @project_dir, @gem_name]
     end
     
     it "should copy the spec file from the Gem path" do
-      path_to_specifications = "PATH"
-      Gem.stub!(:dir).and_return(path_to_specifications)
-      FileUtils.should_receive(:copy).with(File.join(path_to_specifications, "MicahGem-1.0.gemspec"),
-                                           File.join("prod/path", "__resources", "gems", "specifications"))
+      File.stub!(:exists?).with(path_to_gemspec).and_return(true)
+      
+      FileUtils.should_receive(:copy).with(path_to_gemspec,
+                                           File.join(@project_dir, "__resources", "gems", "specifications"))
                                           
-                                          
-      @command.run ["-p", "prod/path", "some_gem"]
+      @command.run ["-p", @project_dir, @gem_name]
+    end
+    
+    it "should not copy the spec file if there isn't one" do
+      File.stub!(:exists?).with(path_to_gemspec).and_return(false)
+      
+      FileUtils.should_not_receive(:copy)
+      
+      @command.run ["-p", @project_dir, @gem_name]
+    end
+    
+    def path_to_gemspec
+      return File.join(Gem.dir, "specifications", "#{@gem_name_and_version}.gemspec")
     end
     
     def stub_limelight_production
@@ -97,18 +114,18 @@ describe Limelight::Commands::FreezeCommand do
     def stub_unpacking_gem
       require 'rubygems/commands/unpack_command'
 
-      unpack_command = mock(Gem::Commands::UnpackCommand, :get_path => "MicahGem-1.0.gem")
+      unpack_command = mock(Gem::Commands::UnpackCommand, :get_path => "#{@gem_name_and_version}.gem")
       Gem::Commands::UnpackCommand.stub!(:new).and_return(unpack_command)
-      File.stub!(:exists?).with("MicahGem-1.0.gem").and_return(true)
+      File.stub!(:exists?).with("#{@gem_name_and_version}.gem").and_return(true)
     end
 
     def stub_gem_cache
-      mock_gem = mock(Gem, :version => mock("Version", :version => "1.0", :to_s => "1.0"), :name => "MicahGem", :require_paths => nil)
+      mock_gem = mock(Gem, :version => mock("Version", :version => "1.0", :to_s => "1.0"), :name => @gem_name, :require_paths => nil)
       Gem.stub!(:cache).and_return(mock("Cache", :find_name => [mock_gem]))
     end
 
-    def stub_establishing_gem_dir_in(project_dir, gem_dir)
-      File.stub!(:exists?).with(File.join(project_dir, "__resources", "gems", "gems", gem_dir)).and_return(false)
+    def stub_establishing_gem_dir
+      File.stub!(:exists?).with(File.join(@project_dir, "__resources", "gems", "gems", @gem_name_and_version)).and_return(false)
     end
 
     def stub_templater
