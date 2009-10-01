@@ -95,13 +95,24 @@ module Limelight
         @templater.logger.log("unpacking gem", @gem_dir_path)
         gem_installer.unpack(@gem_dir_path)
         
+        copy_gem_spec
+      end
+      
+      def copy_gem_spec
         @templater.directory(File.join("__resources", "gems", "specifications"))
-        FileUtils.copy(File.join(Gem.dir, "MicahGem-1.0.gemspec"),
-                       File.join("prod/path", "__resources", "gems", "specifications"))
+        FileUtils.copy(gemspec_path, local_gemspec_path) if File.exists?(gemspec_path)
 
         install_limelight_hook
       end
-
+      
+      def gemspec_path
+        return File.join(Gem.dir, "specifications", "#{@gem_dir_name}.gemspec")
+      end
+      
+      def local_gemspec_path
+        return File.join(@production_path, "__resources", "gems", "specifications")
+      end
+      
       def establish_gem_dir
         @templater = Templates::Templater.new(@production_path)
         @gem_dir_path = File.join(@production_path, "__resources", "gems", "gems", @gem_dir_name)
@@ -111,7 +122,7 @@ module Limelight
 
       def install_limelight_hook
         tokens = { :GEM_NAME => @gem_dir_name, :PATHS => @gem_spec.require_paths.inspect }
-        @templater.file(File.join("__resources", "gems", @gem_dir_name, "limelight_init.rb"), "freezing/limelight_init.rb.template", tokens)
+        @templater.file(File.join("__resources", "gems", "gems", @gem_dir_name, "limelight_init.rb"), "freezing/limelight_init.rb.template", tokens)
       end
 
     end
