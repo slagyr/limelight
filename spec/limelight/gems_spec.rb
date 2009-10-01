@@ -57,9 +57,9 @@ describe Limelight::Gems do
     end
 
     it "should load all the gems in a production" do
-      TestDir.create_file("prod/__resources/gems/gem1/limelight_init.rb", "Limelight::Gems.install('gem1', ['fee'])")
-      TestDir.create_file("prod/__resources/gems/gem2/limelight_init.rb", "Limelight::Gems.install('gem2', ['fie'])")
-      TestDir.create_file("prod/__resources/gems/gem3/limelight_init.rb", "Limelight::Gems.install('gem3', ['foe', 'fum'])")
+      TestDir.create_file("prod/__resources/gems/gems/gem1/limelight_init.rb", "Limelight::Gems.install('gem1', ['fee'])")
+      TestDir.create_file("prod/__resources/gems/gems/gem2/limelight_init.rb", "Limelight::Gems.install('gem2', ['fie'])")
+      TestDir.create_file("prod/__resources/gems/gems/gem3/limelight_init.rb", "Limelight::Gems.install('gem3', ['foe', 'fum'])")
       path = []
       Limelight::Gems.stub!(:load_path).and_return(path)
 
@@ -80,6 +80,12 @@ describe Limelight::Gems do
       Limelight::Gems.install_gems_in_production(@production)
 
       path.length.should == 0
+    end
+    
+    it "should set the gem home and gem path to the __resources/gems so that using the gem command within frozen gems will work" do
+      Gem.should_receive(:use_paths).with(@production.gems_root, Gem.default_path)
+      
+      Limelight::Gems.install_gems_in_production(@production)
     end
   end
 

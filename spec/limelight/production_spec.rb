@@ -40,20 +40,24 @@ describe Limelight::Production, "Instance methods" do
     Limelight::Production.new("my_name/is/kid").name.should == "kid"
   end
 
-  it "should know it's init file" do
+  it "should know its init file" do
     @production.init_file.should == "/tmp/init.rb"
   end
 
-  it "should know it's stages file" do
+  it "should know its stages file" do
     @production.stages_file.should == "/tmp/stages.rb"
   end
 
-  it "should know it's styles file" do
+  it "should know its styles file" do
     @production.styles_file.should == "/tmp/styles.rb"
   end
 
-  it "should know it's gems directory" do
-    @production.gems_directory.should == "/tmp/__resources/gems"
+  it "should know its gems directory" do
+    @production.gems_directory.should == "/tmp/__resources/gems/gems"
+  end
+  
+  it "should know its gems root" do
+    @production.gems_root.should == "/tmp/__resources/gems"
   end
 
   it "should provide paths to it's scenes" do
