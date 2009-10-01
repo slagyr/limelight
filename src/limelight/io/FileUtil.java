@@ -16,9 +16,18 @@ public class FileUtil
 
   public static String buildPath(String... parts)
 	{
-    String path = StringUtil.join(seperator(), parts);
-    return path.replace(seperator() + seperator(), seperator());
+    return removeDuplicateSeprators(StringUtil.join(seperator(), parts));
 	}
+
+  private static String removeDuplicateSeprators(String path)
+  {
+    return path.replace(seperator() + seperator(), seperator());
+  }
+
+  public static String buildOnPath(String base, String... parts)
+  {
+    return removeDuplicateSeprators(base + seperator() + buildPath(parts));
+  }
 
   public static String pathTo(String... parts)
   {

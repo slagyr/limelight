@@ -4,13 +4,31 @@
 package limelight.ui.model;
 
 import limelight.LimelightError;
+import limelight.LimelightException;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.util.Box;
 
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.MemoryCacheImageInputStream;
+import javax.imageio.ImageReader;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+
+import com.sun.imageio.plugins.gif.GIFImageReader;
+import com.sun.imageio.plugins.gif.GIFImageReaderSpi;
+import com.sun.imageio.plugins.jpeg.JPEGImageReader;
+import com.sun.imageio.plugins.jpeg.JPEGImageReaderSpi;
+import com.sun.imageio.plugins.png.PNGImageReader;
+import com.sun.imageio.plugins.png.PNGImageReaderSpi;
+import com.sun.imageio.plugins.tiff.TIFFImageReader;
+import com.sun.imageio.plugins.tiff.TIFFImageReaderSpi;
+import com.sun.imageio.plugins.bmp.BMPImageReader;
+import com.sun.imageio.plugins.bmp.BMPImageReaderSpi;
+import com.sun.imageio.plugins.wbmp.WBMPImageReader;
+import com.sun.imageio.plugins.wbmp.WBMPImageReaderSpi;
 
 public class ImagePanel extends BasePanel
 {
@@ -144,11 +162,7 @@ public class ImagePanel extends BasePanel
       {
         RootPanel rootPanel = getRoot();
         if(rootPanel != null)
-        {
-          image = rootPanel.getImageCache().getImage(imageFile);
-          imageWidth = image.getWidth(null);
-          imageHeight = image.getHeight(null);
-        }
+          setImage(rootPanel.getImageCache().getImage(imageFile));
       }
       catch(IOException e)
       {
@@ -158,11 +172,18 @@ public class ImagePanel extends BasePanel
     return image;
   }
 
+  private void setImage(Image theImage)
+  {
+    image = theImage;
+    imageWidth = image.getWidth(null);
+    imageHeight = image.getHeight(null);
+  }
+
   public void setRotation(double angle)
   {
     rotation = angle;
     markAsDirty();
-    ((BasePanel)getParent()).markAsDirty();
+    ((BasePanel) getParent()).markAsDirty();
     markAsNeedingLayout();
     propagateSizeChangeUp(getParent());
   }
@@ -192,5 +213,37 @@ public class ImagePanel extends BasePanel
     scaled = b;
     markAsNeedingLayout();
     getParent().markAsNeedingLayout();
+  }
+
+  public void setImageData(String type, byte[] bytes) throws Exception
+  {
+    ImageInputStream imageInput = new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
+    ImageReader reader = getImageReader(type);
+    reader.setInput(imageInput);
+
+    setImage(reader.read(0));
+    imageFile = "<" + type + " data>";
+    
+    markAsNeedingLayout();
+    getParent().markAsNeedingLayout();
+  }
+
+  private ImageReader getImageReader(String imageType)
+  {
+    String type = imageType.toLowerCase();
+    if("gif".equals(type))
+      return new GIFImageReader(new GIFImageReaderSpi());
+    else if("jpg".equals(type) || "jpeg".equals(type))
+      return new JPEGImageReader(new JPEGImageReaderSpi());
+    else if("png".equals(type))
+      return new PNGImageReader(new PNGImageReaderSpi());
+    else if("tiff".equals(type) || "tif".equals(type))
+      return new TIFFImageReader(new TIFFImageReaderSpi());
+    else if("bmp".equals(type))
+      return new BMPImageReader(new BMPImageReaderSpi());
+    else if("wbmp".equals(type) || "wbm".equals(type))
+      return new WBMPImageReader(new WBMPImageReaderSpi());
+    else
+      throw new LimelightException("Unsupported image type: " + imageType);
   }
 }
