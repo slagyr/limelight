@@ -40,4 +40,12 @@ describe "The Uses Player Directive" do
   it "should not add accessor for non-accessor methods" do
     lambda{scene.method_should_not_be_created}.should raise_error(NoMethodError)
   end
+  
+  it "should illuminate the scene" do
+    scene.should be_illuminated
+  end
+  
+  it "should illuminate the player" do
+    player.should be_illuminated
+  end
 end

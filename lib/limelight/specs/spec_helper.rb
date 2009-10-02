@@ -30,7 +30,8 @@ module Limelight
       end
 
       def load_player
-        @scene = MockScene.new
+        @scene = MockScene.new(:casting_director => Limelight::CastingDirector.new(Limelight::FileLoader.new))
+        @scene.illuminate
         @player = Limelight::Prop.new
         @scene << @player
         @player.extend(eval(@player_name.to_s.camalized))
