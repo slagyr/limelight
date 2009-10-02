@@ -30,5 +30,14 @@ describe "The Uses Player Directive" do
   it "should extend the prop by the player" do
     player.my_extended_method.should be_true 
   end
-
+  
+  it "should allow setting on the scene variables that don't otherwise exist" do
+    scene.rdoc = {"this" => "is why I need this feature"}
+    
+    scene.rdoc.should == {"this" => "is why I need this feature"}
+  end
+  
+  it "should not add accessor for non-accessor methods" do
+    lambda{scene.method_should_not_be_created}.should raise_error(NoMethodError)
+  end
 end
