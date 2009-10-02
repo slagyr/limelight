@@ -30,7 +30,7 @@ module Limelight
       end
 
       def load_player
-        @scene = Limelight::Scene.new
+        @scene = MockScene.new
         @player = Limelight::Prop.new
         @scene << @player
         @player.extend(eval(@player_name.to_s.camalized))
@@ -46,6 +46,20 @@ module Limelight
         return @scene
       end
 
+    end
+    
+    class MockScene < Limelight::Scene
+      def method_missing(meth, *args, &blk)
+        method_string = meth.to_s
+        if method_string =~ /=$/
+          MockScene.class_eval <<-EOF
+            attr_accessor method_string[0..-2]
+EOF
+          send(meth, *args, &blk)
+        else
+          super(meth, args, &blk)
+        end
+      end
     end
   end
 end
