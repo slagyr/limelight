@@ -23,7 +23,7 @@ describe "The Uses Player Directive" do
     player.object_id.should == player.object_id
   end
 
-  it "should return a scene with that player" do  
+  it "should return a scene with that player" do
     scene.children.should == [player]
   end
 
@@ -43,6 +43,10 @@ describe "The Uses Player Directive" do
   
   it "should illuminate the scene" do
     scene.should be_illuminated
+  end
+  
+  it "should have a production" do
+    scene.production.should_not be_nil
   end
   
   it "should illuminate the player" do

@@ -30,7 +30,9 @@ module Limelight
       end
 
       def load_player
-        @scene = MockScene.new(:casting_director => Limelight::CastingDirector.new(Limelight::FileLoader.new))
+        stage = producer.theater.default_stage
+        stage.should_remain_hidden = true
+        @scene = MockScene.new(:casting_director => Limelight::CastingDirector.new(Limelight::FileLoader.new), :production => producer.production)
         @scene.illuminate
         @player = Limelight::Prop.new
         @scene << @player
