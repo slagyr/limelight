@@ -5,10 +5,13 @@ package limelight.ui.model;
 
 import limelight.styles.Style;
 import limelight.styles.styling.GreedyDimensionAttribute;
+import limelight.styles.styling.AutoDimensionAttribute;
 import limelight.styles.abstrstyling.VerticalAlignmentAttribute;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
+import limelight.util.Debug;
+import limelight.LimelightException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,8 +30,8 @@ public class PropPanelLayout implements Layout
     FloaterLayout.instance.doLayout(panel);
     Style style = panel.getStyle();
 
-    if(topLevel && (panel.sizeChanged() || style.hasDynamicDimension()))
-      panel.snapToSize();
+    if(topLevel && (panel.sizeChangePending() || style.hasDynamicDimension()))
+      snapToSize(panel);
 
     establishScrollBars(panel);
 
@@ -45,11 +48,6 @@ public class PropPanelLayout implements Layout
       collapseAutoDimensions(panel, consumedDimensions);
       layoutRows(panel, consumedDimensions, rows);
     }
-if(panel.toString().contains("section_body"))
-{
-  System.err.println("panel.getAbsoluteBounds() = " + panel.getAbsoluteBounds());
-  new Exception().printStackTrace();
-}
     layoutScrollBars(panel, consumedDimensions);
 
     panel.updateBorder();
@@ -180,7 +178,7 @@ if(panel.toString().contains("section_body"))
         }
         else
         {
-          ((PropPanel) child).snapToSize();
+          snapToSize((PropPanel) child);
         }
       }
     }
@@ -197,10 +195,10 @@ if(panel.toString().contains("section_body"))
     }
   }
 
-  public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows)
+  public void layoutRows(PropPanel panel, Dimension consumedDimension, LinkedList<Row> rows)
   {
     Style style = panel.getProp().getStyle();
-    int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableArea());
+    int y = style.getCompiledVerticalAlignment().getY(consumedDimension.height, panel.getChildConsumableArea());
     if(panel.getVerticalScrollBar() != null)
       y -= panel.getVerticalScrollBar().getValue();
     for(Row row : rows)
@@ -239,7 +237,7 @@ if(panel.toString().contains("section_body"))
     return currentRow;
   }
 
-  private void calculateConsumedDimentions(LinkedList<Row> rows, Dimension consumedDimensions)
+  protected void calculateConsumedDimentions(LinkedList<Row> rows, Dimension consumedDimensions)
   {
     for(Row row : rows)
     {
@@ -264,12 +262,24 @@ if(panel.toString().contains("section_body"))
       panel.removeHorizontalScrollBar();
   }
 
-  private class Row
+  public void snapToSize(PropPanel panel)
+  {
+    Box maxArea = panel.getParent().getChildConsumableArea();
+    Style style = panel.getStyle();
+    if(style.getCompiledWidth() instanceof AutoDimensionAttribute && style.getCompiledHeight() instanceof GreedyDimensionAttribute)
+      throw new LimelightException("A greedy height is not allowed with auto width.");
+    int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
+    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
+    panel.setSize(newWidth, newHeight);
+    panel.resetPendingSizeChange();
+  }
+
+  protected class Row
   {
     private final LinkedList<Panel> items;
     private final int maxWidth;
     public int width;
-    private int height;
+    public int height;
     private int greedyWidths;
     private int greedyHeights;
 

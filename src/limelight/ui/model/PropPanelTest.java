@@ -85,81 +85,6 @@ public class PropPanelTest extends TestCase
     assertEquals("foo", panel.getText());
   }
 
-  public void testPreferredSize() throws Exception
-  {
-    style.setWidth("100");
-    style.setHeight("200");
-
-    panel.snapToSize();
-
-    assertEquals(100, panel.getWidth());
-    assertEquals(200, panel.getHeight());
-  }
-
-  public void testSizeUsingAutoWidthAndHeight() throws Exception
-  {
-    root.setSize(100, 100);
-    style.setWidth("auto");
-    style.setHeight("auto");
-    panel.snapToSize();
-    assertEquals(100, panel.getWidth());
-    assertEquals(100, panel.getHeight());
-
-    style.setWidth("auto");
-    style.setHeight("50");
-    panel.snapToSize();
-    assertEquals(100, panel.getWidth());
-    assertEquals(50, panel.getHeight());
-
-    style.setWidth("42%");
-    style.setHeight("auto");
-    panel.snapToSize();
-    assertEquals(42, panel.getWidth());
-    assertEquals(100, panel.getHeight());
-  }
-
-  public void testSnapToSizeWithMaxSizeAgainstAutoSizing() throws Exception
-  {
-    root.setSize(100, 100);
-    style.setWidth("auto");
-    style.setHeight("auto");
-    style.setMaxWidth("75");
-    style.setMaxHeight("82");
-
-    panel.snapToSize();
-
-    assertEquals(75, panel.getWidth());
-    assertEquals(82, panel.getHeight());
-  }
-
-  public void testSnapToSizeWithMaxSizeAgainstPercentageSizing() throws Exception
-  {
-    root.setSize(100, 100);
-    style.setWidth("90%");
-    style.setHeight("90%");
-    style.setMaxWidth("75");
-    style.setMaxHeight("82");
-
-    panel.snapToSize();
-
-    assertEquals(75, panel.getWidth());
-    assertEquals(82, panel.getHeight());
-  }
-
-  public void testSnapToSizeWithMinSizeAgainstPercentageSizing() throws Exception
-  {
-    root.setSize(100, 100);
-    style.setWidth("20%");
-    style.setHeight("20%");
-    style.setMinWidth("42");
-    style.setMinHeight("51");
-
-    panel.snapToSize();
-
-    assertEquals(42, panel.getWidth());
-    assertEquals(51, panel.getHeight());
-  }
-
   public void testRactanglesAreCached() throws Exception
   {
     Box rectangle = panel.getBoundingBox();
@@ -228,12 +153,10 @@ public class PropPanelTest extends TestCase
   public void testAddingScrollBarChangesChildConsumableArea() throws Exception
   {
     int scrollWidth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
-    style.setWidth("100");
-    style.setHeight("100");
     style.setMargin("0");
     style.setPadding("0");
     style.setBorderWidth("0");
-    panel.snapToSize();
+    panel.setSize(100, 100);
 
     panel.addVerticalScrollBar();
     assertEquals(100 - scrollWidth, panel.getChildConsumableArea().width);
@@ -254,9 +177,7 @@ public class PropPanelTest extends TestCase
 
   public void testGetOwnerOfPointGivesPriorityToScrollBars() throws Exception
   {
-    style.setWidth("100");
-    style.setHeight("100");
-    panel.snapToSize();
+    panel.setSize(100, 100);
 
     MockPanel child = new MockPanel();
     child.setSize(100, 100);
@@ -280,9 +201,7 @@ public class PropPanelTest extends TestCase
 
   public void testGetOwnerOfPointGivesPriorityToFloaters() throws Exception
   {
-    style.setWidth("100");
-    style.setHeight("100");
-    panel.snapToSize();
+    panel.setSize(100, 100);
 
     MockPanel child = new MockPanel();
     child.setSize(100, 100);
@@ -465,14 +384,14 @@ public class PropPanelTest extends TestCase
   public void testWidthOrHeightChanges() throws Exception
   {
     panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
-    assertEquals(true, panel.sizeChanged());
-    panel.snapToSize();
-    assertEquals(false, panel.sizeChanged());
+    assertEquals(true, panel.sizeChangePending());
+    panel.resetPendingSizeChange();
+    assertEquals(false, panel.sizeChangePending());
 
     panel.styleChanged(Style.HEIGHT, new StaticDimensionAttribute(20));
-    assertEquals(true, panel.sizeChanged());
-    panel.snapToSize();
-    assertEquals(false, panel.sizeChanged());
+    assertEquals(true, panel.sizeChangePending());
+    panel.resetPendingSizeChange();
+    assertEquals(false, panel.sizeChangePending());
   }
 
   public void testShouldPropagateConsumableAreaChangeForWidthChange() throws Exception

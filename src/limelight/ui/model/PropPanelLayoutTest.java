@@ -445,7 +445,7 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(20, panel1.getWidth());
     assertEquals(80, panel2.getWidth());
   }
-  
+
   public void testRowWithTwoGreedyProp() throws Exception
   {
     PropPanel inert = addChildWithSize(parent, "20", "100");
@@ -482,7 +482,7 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(40, greedy1.getHeight());
     assertEquals(40, greedy2.getHeight());
   }
-  
+
   public void testGreedyWidthWithAutoHeight() throws Exception
   {
     PropPanel greedy1 = addChildWithSize(parent, "greedy", "auto");
@@ -505,7 +505,7 @@ public class PropPanelLayoutTest extends TestCase
     }
     catch(Exception e)
     {
-      assertEquals("A greedy height is not allowed with auto width.", e.getMessage());      
+      assertEquals("A greedy height is not allowed with auto width.", e.getMessage());
     }
   }
 
@@ -519,5 +519,80 @@ public class PropPanelLayoutTest extends TestCase
 
     assertEquals(100, panel.getWidth());
     assertEquals(14, panel.getHeight());
+  }
+
+  public void testPreferredSize() throws Exception
+  {
+    parent.getStyle().setWidth("100");
+    parent.getStyle().setHeight("200");
+
+    layout.snapToSize(parent);
+
+    assertEquals(100, parent.getWidth());
+    assertEquals(200, parent.getHeight());
+  }
+
+  public void testSizeUsingAutoWidthAndHeight() throws Exception
+  {
+    root.setSize(100, 100);
+    parent.getStyle().setWidth("auto");
+    parent.getStyle().setHeight("auto");
+    layout.snapToSize(parent);
+    assertEquals(100, parent.getWidth());
+    assertEquals(100, parent.getHeight());
+
+    parent.getStyle().setWidth("auto");
+    parent.getStyle().setHeight("50");
+    layout.snapToSize(parent);
+    assertEquals(100, parent.getWidth());
+    assertEquals(50, parent.getHeight());
+
+    parent.getStyle().setWidth("42%");
+    parent.getStyle().setHeight("auto");
+    layout.snapToSize(parent);
+    assertEquals(42, parent.getWidth());
+    assertEquals(100, parent.getHeight());
+  }
+
+  public void testSnapToSizeWithMaxSizeAgainstAutoSizing() throws Exception
+  {
+    root.setSize(100, 100);
+    parent.getStyle().setWidth("auto");
+    parent.getStyle().setHeight("auto");
+    parent.getStyle().setMaxWidth("75");
+    parent.getStyle().setMaxHeight("82");
+
+    layout.snapToSize(parent);
+
+    assertEquals(75, parent.getWidth());
+    assertEquals(82, parent.getHeight());
+  }
+
+  public void testSnapToSizeWithMaxSizeAgainstPercentageSizing() throws Exception
+  {
+    root.setSize(100, 100);
+    parent.getStyle().setWidth("90%");
+    parent.getStyle().setHeight("90%");
+    parent.getStyle().setMaxWidth("75");
+    parent.getStyle().setMaxHeight("82");
+
+    layout.snapToSize(parent);
+
+    assertEquals(75, parent.getWidth());
+    assertEquals(82, parent.getHeight());
+  }
+
+  public void testSnapToSizeWithMinSizeAgainstPercentageSizing() throws Exception
+  {
+    root.setSize(100, 100);
+    parent.getStyle().setWidth("20%");
+    parent.getStyle().setHeight("20%");
+    parent.getStyle().setMinWidth("42");
+    parent.getStyle().setMinHeight("51");
+
+    layout.snapToSize(parent);
+
+    assertEquals(42, parent.getWidth());
+    assertEquals(51, parent.getHeight());
   }
 }

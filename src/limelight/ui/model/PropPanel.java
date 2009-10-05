@@ -13,7 +13,6 @@ import limelight.styles.styling.AutoDimensionAttribute;
 import limelight.styles.styling.GreedyDimensionAttribute;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.styles.abstrstyling.PixelsAttribute;
-import limelight.styles.abstrstyling.DimensionAttribute;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
@@ -46,7 +45,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private PaintAction afterPaintAction;
   private ScrollBarPanel verticalScrollBar;
   private ScrollBarPanel horizontalScrollBar;
-  private boolean sizeChanged = true;
+  private boolean sizeChangePending = true;
   public boolean borderChanged = true;
 
   public PropPanel(Prop prop)
@@ -86,18 +85,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void setTextAccessor(TextAccessor textAccessor)
   {
     this.textAccessor = textAccessor;
-  }
-  
-  public void snapToSize()
-  {
-    Box maxArea = getParent().getChildConsumableArea();
-    Style style = getProp().getStyle();
-    if(style.getCompiledWidth() instanceof AutoDimensionAttribute && style.getCompiledHeight() instanceof GreedyDimensionAttribute)
-      throw new LimelightException("A greedy height is not allowed with auto width.");
-    int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
-    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
-    setSize(newWidth, newHeight);
-    sizeChanged = false;
   }
 
   public Prop getProp()
@@ -388,7 +375,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     {
       if(descriptor == Style.WIDTH || descriptor == Style.HEIGHT)
       {
-        sizeChanged = true;
+        sizeChangePending = true;
         markAsNeedingLayout();
         propagateSizeChangeUp(getParent());
         propagateSizeChangeDown();
@@ -498,9 +485,14 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     }
   }
 
-  public boolean sizeChanged()
+  public boolean sizeChangePending()
   {
-    return sizeChanged;
+    return sizeChangePending;
+  }
+
+  public void resetPendingSizeChange()
+  {
+    sizeChangePending = false;                                                      
   }
 
   public boolean borderChanged()

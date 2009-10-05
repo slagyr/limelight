@@ -5,6 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
 import limelight.ui.model.BasePanel;
+import limelight.util.Debug;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,7 @@ public class ScrollBarPanel extends BasePanel
       {
         if(!configuring)
         {
-          getParent().markAsNeedingLayout();
+          ((BasePanel)getParent()).markAsNeedingLayout(new ScrollLayout(scrollBar.getOrientation(), scrollBar));
         }
       }
     });

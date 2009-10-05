@@ -193,6 +193,7 @@ public abstract class BasePanel implements Panel
       getDefaultLayout().doLayout(this);
   }
 
+  // TODO MDM Calling this from the layout is error prone.  A Layout might forget to call.  Can easily solve by resetting when ever the panel is laid out (prior to layout)
   public synchronized void resetLayout()
   {
     neededLayout = null;
@@ -286,10 +287,13 @@ public abstract class BasePanel implements Panel
     if(sterilized && !(child instanceof ScrollBarPanel))
       throw new SterilePanelException("Unknown name");
 
-    if(index == -1)
-      children.add(child);
-    else
-      children.add(index, child);
+    synchronized(children)
+    {
+      if(index == -1)
+        children.add(child);
+      else
+        children.add(index, child);
+    }
     readonlyChildren = null;
 
     child.setParent(this);
@@ -305,7 +309,12 @@ public abstract class BasePanel implements Panel
   public List<Panel> getChildren()
   {
     if(readonlyChildren == null)
-      readonlyChildren = Collections.unmodifiableList(new ArrayList<Panel>(children));
+    {
+      synchronized(children)
+      {
+        readonlyChildren = Collections.unmodifiableList(new ArrayList<Panel>(children));
+      }
+    }
     return readonlyChildren;
   }
 
@@ -329,16 +338,19 @@ public abstract class BasePanel implements Panel
     point = new Point(point.x - getX(), point.y - getY());
     if(children.size() > 0)
     {
-      for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
+      synchronized(children)
       {
-        Panel panel = iterator.previous();
-        if(panel.isFloater() && panel.containsRelativePoint(point))
-          return panel.getOwnerOfPoint(point);
-      }
-      for(Panel panel : children)
-      {
-        if(!panel.isFloater() && panel.containsRelativePoint(point))
-          return panel.getOwnerOfPoint(point);
+        for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
+        {
+          Panel panel = iterator.previous();
+          if(panel.isFloater() && panel.containsRelativePoint(point))
+            return panel.getOwnerOfPoint(point);
+        }
+        for(Panel panel : children)
+        {
+          if(!panel.isFloater() && panel.containsRelativePoint(point))
+            return panel.getOwnerOfPoint(point);
+        }
       }
     }
     return this;
@@ -351,7 +363,12 @@ public abstract class BasePanel implements Panel
 
   public boolean remove(Panel child)
   {
-    if(children.remove(child))
+    boolean removed = false;
+    synchronized(children)
+    {
+      removed = children.remove(child);
+    }
+    if(removed)
     {
       child.setParent(null);
       readonlyChildren = null;
@@ -366,9 +383,12 @@ public abstract class BasePanel implements Panel
   {
     if(children.size() > 0)
     {
-      for(Panel child : children)
-        child.setParent(null);
-      children.clear();
+      synchronized(children)
+      {
+        for(Panel child : children)
+          child.setParent(null);
+        children.clear();
+      }
       readonlyChildren = null;
       sterilized = false;
       propagateSizeChangeUp(this);
@@ -399,8 +419,11 @@ public abstract class BasePanel implements Panel
     if(!needsLayout() && style != null && style.hasDynamicDimension())
     {
       markAsNeedingLayout();
-      for(Panel child : children)
-        child.consumableAreaChanged();
+      synchronized(children)
+      {
+        for(Panel child : children)
+          child.consumableAreaChanged();
+      }
     }
   }
 
@@ -452,12 +475,12 @@ public abstract class BasePanel implements Panel
   {
     if(panel != null && !panel.needsLayout() && panel instanceof BasePanel)
     {
-      Style style = panel.getStyle();
-      if(style != null && style.hasAutoDimension())
-      {
+//      Style style = panel.getStyle();
+//      if(style != null && style.hasAutoDimension())
+//      {
         panel.markAsNeedingLayout();
         propagateSizeChangeUp(panel.getParent());
-      }
+//      }
     }
   }
 
@@ -480,7 +503,10 @@ public abstract class BasePanel implements Panel
 
   protected void propagateSizeChangeDown()
   {
-    for(Panel child : children)
-      child.consumableAreaChanged();
+    synchronized(children)
+    {
+      for(Panel child : children)
+        child.consumableAreaChanged();
+    }
   }
 }
