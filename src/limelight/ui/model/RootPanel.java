@@ -198,7 +198,7 @@ public class RootPanel implements Panel
         }
       }
       if(shouldAdd)
-      {    
+      {
         panelsNeedingLayout.add(child);
       }
     }
@@ -254,7 +254,6 @@ public class RootPanel implements Panel
       if(shouldAdd)
       {
         dirtyRegions.add(region);
-//Debug.log("adding dirty region = " + region);
       }
     }
     Context.kickPainter();

@@ -26,7 +26,4 @@ public interface PropablePanel extends limelight.ui.Panel
   Graphics2D getGraphics();
   Style getStyle();
   Prop getProp();
-
-  //Used by layout
-  void snapToSize();
 }

@@ -91,16 +91,10 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
     return prop;
   }
 
-  //Used by layout
-  public void snapToSize()
-  {
-    setSize(prepForSnapWidth, prepForSnapHeight);
-  }
-
   public void doLayout()
   {
     super.doLayout();
-    snapToSize();
+    setSize(prepForSnapWidth, prepForSnapHeight);
     for(Panel child : children)
       child.doLayout();
     wasLaidOut = true;
