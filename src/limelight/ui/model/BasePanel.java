@@ -7,6 +7,7 @@ import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -60,6 +61,9 @@ public abstract class BasePanel implements Panel
   {
     if(w != width || h != height)
     {
+//      //TODO Test Me!
+//      markAsDirty();
+
       clearCache();
       width = w;
       height = h;

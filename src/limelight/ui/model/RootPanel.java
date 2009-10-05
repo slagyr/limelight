@@ -10,6 +10,7 @@ import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -197,7 +198,7 @@ public class RootPanel implements Panel
         }
       }
       if(shouldAdd)
-      {
+      {    
         panelsNeedingLayout.add(child);
       }
     }
@@ -251,7 +252,10 @@ public class RootPanel implements Panel
         }
       }
       if(shouldAdd)
+      {
         dirtyRegions.add(region);
+//Debug.log("adding dirty region = " + region);
+      }
     }
     Context.kickPainter();
   }

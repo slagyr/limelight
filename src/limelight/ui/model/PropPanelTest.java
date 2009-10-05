@@ -617,4 +617,20 @@ public class PropPanelTest extends TestCase
   }
 
 
+
+  public void testChangingSizeToZeroWillReLayoutGrandDaddy() throws Exception
+  {
+    PropPanel child = new PropPanel(new MockProp());
+    PropPanel grandChild = new PropPanel(new MockProp());
+    panel.add(child);
+    child.add(grandChild);
+    child.resetLayout();
+    panel.resetLayout();
+
+    grandChild.styleChanged(Style.HEIGHT, new StaticDimensionAttribute(0));
+
+    assertEquals(true, panel.needsLayout());
+  }
+
+
 }
