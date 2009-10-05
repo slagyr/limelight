@@ -5,6 +5,7 @@ require 'spec'
 require File.expand_path(File.dirname(__FILE__) + "/../../init")
 require 'limelight/scene'
 require 'limelight/producer'
+require 'limelight/string'
 
 module Limelight
   module Specs
@@ -23,9 +24,24 @@ module Limelight
           stage = producer.theater.default_stage
         end
 
-        stage.should_remain_hidden = @ll_spec_options[:hidden]
+        stage.should_remain_hidden = @ll_spec_options[:hidden] || true
 
         @scene = producer.open_scene(@scene_name.to_s, stage)
+      end
+
+      def load_player
+        stage = producer.theater.default_stage
+        stage.should_remain_hidden = true
+        @scene = MockScene.new(:casting_director => Limelight::CastingDirector.new(Limelight::FileLoader.new), :production => producer.production)
+        @scene.illuminate
+        @player = Limelight::Prop.new
+        @scene << @player
+        @player.extend(eval(@player_name.to_s.camalized))
+      end
+
+      def player
+        load_player unless @player
+        return @player
       end
 
       def scene
@@ -34,6 +50,20 @@ module Limelight
       end
 
     end
+    
+    class MockScene < Limelight::Scene
+      def method_missing(meth, *args, &blk)
+        method_string = meth.to_s
+        if method_string =~ /=$/
+          MockScene.class_eval <<-EOF
+            attr_accessor method_string[0..-2]
+EOF
+          send(meth, *args, &blk)
+        else
+          super(meth, args, &blk)
+        end
+      end
+    end
   end
 end
 
@@ -41,13 +71,22 @@ module Spec
   module Example
     class ExampleGroup
 
-      def self.uses_scene(scene_name, options = {})
+      def self.uses_scene(scene_name, optixons = {})
         include Limelight::Specs::SpecHelper
 
         before(:each) do
           @scene_name = scene_name
           @ll_spec_options = options
           @scene = nil
+        end
+      end
+
+      def self.uses_player(player_name)
+        include Limelight::Specs::SpecHelper
+
+        before(:each) do
+          @player_name = player_name
+          load_player
         end
       end
 

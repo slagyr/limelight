@@ -73,6 +73,12 @@ module Limelight
     # Returns the path to the production's gems directory
     #
     def gems_directory
+      return @root.path_to("__resources/gems/gems")
+    end
+    
+    # Returns the path to the productions gems root
+    #
+    def gems_root
       return @root.path_to("__resources/gems")
     end
 

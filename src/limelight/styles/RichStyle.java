@@ -35,7 +35,7 @@ public class RichStyle extends BaseStyle implements StyleObserver
     if(value == null)
       return;
 
-    StyleAttribute originalValue = styles[descriptor.index];
+    StyleAttribute originalValue  = styles[descriptor.index];
     StyleAttribute compiledValue = descriptor.compile(value);
     styles[descriptor.index] = compiledValue;
     if(!Util.equal(originalValue, compiledValue))

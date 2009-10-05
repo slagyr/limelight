@@ -39,7 +39,9 @@ module Limelight
           end
         end
 
-        self.current_production = nil
+        Gem.use_paths(self.current_production.gems_root, Gem.default_path)
+
+        self.current_production = nil        
       end
 
     end
