@@ -9,6 +9,7 @@ import limelight.ui.model.PaintJob;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
+import limelight.util.Debug;
 import limelight.Context;
 
 import java.awt.*;
@@ -126,7 +127,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);
     for(limelight.ui.Panel panel : panelBuffer)
-    {
+    {     
       panel.doLayout();
     }
   }

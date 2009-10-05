@@ -390,7 +390,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       {
         sizeChanged = true;
         markAsNeedingLayout();
-        getParent().markAsNeedingLayout();
         propagateSizeChangeUp(getParent());
         propagateSizeChangeDown();
       }
