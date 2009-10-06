@@ -290,7 +290,6 @@ module Limelight
     # TODO Try to get me out of public scope
     #
     def illuminate #:nodoc:
-      
       if illuminated?
         scene.index_prop(self) if @id
       else

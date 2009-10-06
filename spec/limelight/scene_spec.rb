@@ -64,6 +64,16 @@ describe Limelight::Scene do
     @scene.style.y.should == "22"
   end
 
+#  it "should set the production during illumination before casting" do
+#    production = mock("production")
+#    scene = Limelight::Scene.new(:styles_hash => "styles", :casting_director => @casting_director, :production => production)
+#    @casting_director.should_receive(:fill_cast).with(scene) do |scene|
+#      scene.production.should_not == nil
+#    end
+#
+#    scene.illuminate
+#  end
+
   describe Limelight::Scene, "paths" do
 
     before(:each) do
