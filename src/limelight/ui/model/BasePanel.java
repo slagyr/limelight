@@ -173,9 +173,6 @@ public abstract class BasePanel implements Panel
     while(ancestor != null && !panel.isDescendantOf(ancestor))
       ancestor = ancestor.getParent();
 
-//    if(ancestor == null)
-//      throw new LimelightError("No common ancestor found! Do the panels belong to the same tree?");
-
     return ancestor;
   }
 
@@ -187,8 +184,12 @@ public abstract class BasePanel implements Panel
 
   public void doLayout()
   {
-    if(neededLayout != null)
-      neededLayout.doLayout(this);
+    Layout layout = neededLayout;
+    if(layout != null)
+    {
+      resetLayout();
+      layout.doLayout(this);
+    }
     else
       getDefaultLayout().doLayout(this);
   }
