@@ -247,8 +247,11 @@ public class RootPanel implements Panel
             shouldAdd = false;
             break;
           }
-          else if(region.contains(dirtyRegion))
+          else if(region.intersects(dirtyRegion))
+          {
             iterator.remove();
+            region = region.union(dirtyRegion);
+          }
         }
       }
       if(shouldAdd)

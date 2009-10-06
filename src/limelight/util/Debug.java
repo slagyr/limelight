@@ -21,6 +21,7 @@ public class Debug
   public static Debug debug1 = new Debug();
   public static Debug debug2 = new Debug();
   private static SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss:SSS");
+  private static DecimalFormat numberFormat = new DecimalFormat("#,##0.000"); 
   private static long startTime = System.currentTimeMillis();
 
   private final NanoTimer interval;
@@ -77,9 +78,7 @@ public class Debug
   private static String runtime()
   {
     long diff = System.currentTimeMillis() - startTime;
-    long secs = diff / 1000;
-    long millis = diff % 1000;
-    return "" + secs + ":" + millis;
+    return numberFormat.format(diff / 1000.0);
   }
 
   private static String timestamp()
