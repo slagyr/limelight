@@ -535,8 +535,6 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
-
-
   public void testChangingSizeToZeroWillReLayoutGrandDaddy() throws Exception
   {
     PropPanel child = new PropPanel(new MockProp());
@@ -549,6 +547,19 @@ public class PropPanelTest extends TestCase
     grandChild.styleChanged(Style.HEIGHT, new StaticDimensionAttribute(0));
 
     assertEquals(true, panel.needsLayout());
+  }
+
+  public void testScrollbarsDontGetRemovedOnRemoveAll() throws Exception
+  {
+    panel.addVerticalScrollBar();
+    panel.addHorizontalScrollBar();
+    panel.add(new PropPanel(new MockProp()));
+
+    panel.removeAll();
+    
+    assertEquals(2, panel.children.size());
+    assertEquals(panel.getVerticalScrollBar(), panel.children.get(0));
+    assertEquals(panel.getHorizontalScrollBar(), panel.children.get(1));
   }
 
 
