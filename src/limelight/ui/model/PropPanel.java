@@ -364,7 +364,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
-  {
+  {    
     if(Context.instance().bufferedImageCache != null &&
         descriptor != Style.TRANSPARENCY &&
         descriptor != Style.X &&
@@ -500,5 +500,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return borderChanged;
   }
 
+  protected boolean canRemove(Panel child)
+  {
+    return child != verticalScrollBar && child != horizontalScrollBar;
+  }
 }
 

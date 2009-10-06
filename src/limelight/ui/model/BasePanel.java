@@ -386,15 +386,26 @@ public abstract class BasePanel implements Panel
     {
       synchronized(children)
       {
-        for(Panel child : children)
-          child.setParent(null);
-        children.clear();
+        for(Iterator<Panel> iterator = children.iterator(); iterator.hasNext();)
+        {
+          Panel child = iterator.next();
+          if(canRemove(child))
+          {
+            child.setParent(null);
+            iterator.remove();
+          }
+        }
       }
       readonlyChildren = null;
       sterilized = false;
       propagateSizeChangeUp(this);
       markAsNeedingLayout();
     }
+  }
+
+  protected boolean canRemove(Panel child)
+  {
+    return true;
   }
 
   public Box getBoundingBox()
@@ -479,8 +490,8 @@ public abstract class BasePanel implements Panel
 //      Style style = panel.getStyle();
 //      if(style != null && style.hasAutoDimension())
 //      {
-        panel.markAsNeedingLayout();
-        propagateSizeChangeUp(panel.getParent());
+      panel.markAsNeedingLayout();
+      propagateSizeChangeUp(panel.getParent());
 //      }
     }
   }
