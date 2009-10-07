@@ -117,7 +117,7 @@ public class PanelPainterLoop extends IdleThreadLoop
         PaintJob job = new PaintJob(new Box(rectangle), rootGraphics.getBackground());
         job.paint(root.getPanel());
         job.applyTo(rootGraphics);
-        job.dispose();
+        job.dispose();     
       }
     }
   }

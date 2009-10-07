@@ -128,7 +128,7 @@ public class PaintJob
   }
 
   private void paintChild(Graphics2D graphics, Panel child)
-  {
+  {  
     if(panelIsInClip(child))
     {
       Graphics2D childGraphics = (Graphics2D) graphics.create(child.getX(), child.getY(), child.getWidth(), child.getHeight());
