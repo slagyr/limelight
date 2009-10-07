@@ -526,7 +526,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("200");
 
-    layout.snapToSize(parent);
+    layout.snapToSize(parent, false);
 
     assertEquals(100, parent.getWidth());
     assertEquals(200, parent.getHeight());
@@ -537,19 +537,19 @@ public class PropPanelLayoutTest extends TestCase
     root.setSize(100, 100);
     parent.getStyle().setWidth("auto");
     parent.getStyle().setHeight("auto");
-    layout.snapToSize(parent);
+    layout.snapToSize(parent, false);
     assertEquals(100, parent.getWidth());
     assertEquals(100, parent.getHeight());
 
     parent.getStyle().setWidth("auto");
     parent.getStyle().setHeight("50");
-    layout.snapToSize(parent);
+    layout.snapToSize(parent, false);
     assertEquals(100, parent.getWidth());
     assertEquals(50, parent.getHeight());
 
     parent.getStyle().setWidth("42%");
     parent.getStyle().setHeight("auto");
-    layout.snapToSize(parent);
+    layout.snapToSize(parent, false);
     assertEquals(42, parent.getWidth());
     assertEquals(100, parent.getHeight());
   }
@@ -562,7 +562,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setMaxWidth("75");
     parent.getStyle().setMaxHeight("82");
 
-    layout.snapToSize(parent);
+    layout.snapToSize(parent, false);
 
     assertEquals(75, parent.getWidth());
     assertEquals(82, parent.getHeight());
@@ -576,7 +576,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setMaxWidth("75");
     parent.getStyle().setMaxHeight("82");
 
-    layout.snapToSize(parent);
+    layout.snapToSize(parent, false);
 
     assertEquals(75, parent.getWidth());
     assertEquals(82, parent.getHeight());
@@ -590,7 +590,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setMinWidth("42");
     parent.getStyle().setMinHeight("51");
 
-    layout.snapToSize(parent);
+    layout.snapToSize(parent, false);
 
     assertEquals(42, parent.getWidth());
     assertEquals(51, parent.getHeight());

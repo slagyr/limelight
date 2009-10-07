@@ -31,7 +31,7 @@ public class PropPanelLayout implements Layout
     Style style = panel.getStyle();
 
     if(topLevel && (panel.sizeChangePending() || style.hasDynamicDimension()))
-      snapToSize(panel);
+      snapToSize(panel, topLevel);
 
     establishScrollBars(panel);
 
@@ -178,7 +178,7 @@ public class PropPanelLayout implements Layout
         }
         else
         {
-          snapToSize((PropPanel) child);
+          snapToSize((PropPanel) child, false);
         }
       }
     }
@@ -189,7 +189,7 @@ public class PropPanelLayout implements Layout
     for(Panel child : panel.getChildren())
     {
       if(child.needsLayout())
-      {
+      {       
         child.getDefaultLayout().doLayout(child, false);
       }
     }
@@ -262,14 +262,22 @@ public class PropPanelLayout implements Layout
       panel.removeHorizontalScrollBar();
   }
 
-  public void snapToSize(PropPanel panel)
+  public void snapToSize(PropPanel panel, boolean topLevel)
   {
     Box maxArea = panel.getParent().getChildConsumableArea();
     Style style = panel.getStyle();
     if(style.getCompiledWidth() instanceof AutoDimensionAttribute && style.getCompiledHeight() instanceof GreedyDimensionAttribute)
       throw new LimelightException("A greedy height is not allowed with auto width.");
+
     int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
     int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
+
+    // TODO MDM - Hacky Hack!!!!  More thought needs to go into the way layouts are down and how greedy fits into it all
+    if(topLevel && style.getCompiledWidth() instanceof GreedyDimensionAttribute && panel.getWidth() > newWidth)
+      newWidth = panel.getWidth(); 
+    if(topLevel && style.getCompiledHeight() instanceof GreedyDimensionAttribute && panel.getHeight() > newHeight)
+      newHeight = panel.getHeight();
+
     panel.setSize(newWidth, newHeight);
     panel.resetPendingSizeChange();
   }
@@ -301,7 +309,9 @@ public class PropPanelLayout implements Layout
       if(hasGreedyWidth(panel))
         greedyWidths += 1;
       if(hasGreedyHeight(panel))
+      {
         greedyHeights += 1;
+      }
     }
 
     public boolean isEmpty()
@@ -362,7 +372,9 @@ public class PropPanelLayout implements Layout
       for(Panel item : items)
       {
         if(item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
+        {
           item.setSize(item.getWidth(), height);
+        }
       }
     }
 

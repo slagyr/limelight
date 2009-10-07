@@ -187,7 +187,7 @@ public abstract class BasePanel implements Panel
     Layout layout = neededLayout;
     if(layout != null)
     {
-      resetLayout();
+//      resetLayout();
       layout.doLayout(this);
     }
     else
