@@ -89,7 +89,7 @@ module Limelight
     private ###############################################
 
     def locate_player
-      player_filename = File.join(@prop.scene.path.to_s, "players", "#{@player_name}.rb")  
+      player_filename = File.join(@prop.scene.path.to_s, "players", "#{@player_name}.rb")
       if !@loader.exists?(player_filename)
         if @prop.scene.production && @prop.scene.path != @prop.scene.production.path
           player_filename = File.join(@prop.scene.production.path.to_s, "players", "#{@player_name}.rb")
