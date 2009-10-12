@@ -105,4 +105,13 @@ public class ImagePanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
     assertEquals(true, parent.needsLayout());
   }
+
+  public void testDoesntCrashWhenNoImageFileProvided() throws Exception
+  {
+    panel.setImageFile(null);
+    assertEquals(null, panel.getImage());
+
+    panel.setImageFile("");
+    assertEquals(null, panel.getImage());
+  }
 }

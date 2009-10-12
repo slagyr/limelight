@@ -40,12 +40,7 @@ public class YCoordinateAttributeCompiler extends StyleAttributeCompiler
 
   private YCoordinateAttribute attemptStaticAttribute(String value)
   {
-    int intValue = IntegerAttributeCompiler.convertToInt(value);
-
-    if(intValue >= 0)
-      return new StaticYCoordinateAttribute(intValue);
-    else
-      return null;
+    return new StaticYCoordinateAttribute(IntegerAttributeCompiler.convertToInt(value));
   }
 
   private YCoordinateAttribute attemptAlignedAttribute(String value)

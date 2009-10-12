@@ -4,7 +4,6 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.DimensionAttribute;
-import limelight.styles.abstrstyling.IntegerAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
 
 public class AutoDimensionAttribute implements DimensionAttribute
@@ -32,21 +31,21 @@ public class AutoDimensionAttribute implements DimensionAttribute
     return true;
   }
 
-  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
+  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max, int greediness)
   {
     if(max.isNone())
       return consumableSize;
     else
-      return Math.min(consumableSize, max.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE));
+      return Math.min(consumableSize, max.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE, 0));
   }
 
   public int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
   {
     int size = consumedSize;
     if(!min.isNone())
-      size = Math.max(size, min.getAttribute().calculateDimension(consumedSize, DIMENSION_NONE, DIMENSION_NONE));
+      size = Math.max(size, min.getAttribute().calculateDimension(consumedSize, DIMENSION_NONE, DIMENSION_NONE, 0));
     if(!max.isNone())
-      size = Math.min(size, max.getAttribute().calculateDimension(consumedSize, DIMENSION_NONE, DIMENSION_NONE));
+      size = Math.min(size, max.getAttribute().calculateDimension(consumedSize, DIMENSION_NONE, DIMENSION_NONE, 0));
 
     return size;
   }

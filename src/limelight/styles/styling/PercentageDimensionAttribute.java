@@ -4,7 +4,6 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.DimensionAttribute;
-import limelight.styles.abstrstyling.IntegerAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
 
 public class PercentageDimensionAttribute extends SimplePercentageAttribute implements DimensionAttribute
@@ -24,14 +23,14 @@ public class PercentageDimensionAttribute extends SimplePercentageAttribute impl
     return true;
   }
 
-  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
+  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max, int greediness)
   {
     int calculatedSize = (int) ((getPercentage() * 0.01) * (double) consumableSize);
 
     if(!max.isNone())
-      calculatedSize = Math.min(calculatedSize, max.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE));
+      calculatedSize = Math.min(calculatedSize, max.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE, 0));
     if(!min.isNone())
-      calculatedSize = Math.max(calculatedSize, min.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE));
+      calculatedSize = Math.max(calculatedSize, min.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE, 0));
 
     return calculatedSize;
   }

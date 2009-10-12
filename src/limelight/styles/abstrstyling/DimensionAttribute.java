@@ -10,6 +10,6 @@ public interface DimensionAttribute extends StyleAttribute
 
   boolean isAuto();
   boolean isDynamic();
-  int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max);
+  int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max, int greediness);
   int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max);
 }

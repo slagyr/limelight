@@ -47,6 +47,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private ScrollBarPanel horizontalScrollBar;
   private boolean sizeChangePending = true;
   public boolean borderChanged = true;
+  public Dimension greediness = new Dimension(0, 0);
 
   public PropPanel(Prop prop)
   {
@@ -187,7 +188,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       painter.paint(graphics);
 
     if(afterPaintAction != null)
-      afterPaintAction.invoke(graphics);
+    {
+      afterPaintAction.invoke(graphics);      
+    }
   }
 
   public Style getStyle()

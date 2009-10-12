@@ -4,7 +4,6 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.IntegerAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
 import limelight.styles.abstrstyling.DimensionAttribute;
 import junit.framework.TestCase;
@@ -58,8 +57,8 @@ public class StaticDimensionAttributeTest extends TestCase
     NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(null);
     NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(null);
 
-    assertEquals(50, fifty.calculateDimension(100, min, max));
-    assertEquals(100, hundred.calculateDimension(100, min, max));
+    assertEquals(50, fifty.calculateDimension(100, min, max, 0));
+    assertEquals(100, hundred.calculateDimension(100, min, max, 0));
   }
 
   public void testCalculateDimensionWithMinAndMax() throws Exception
@@ -67,8 +66,8 @@ public class StaticDimensionAttributeTest extends TestCase
     NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(new StaticDimensionAttribute(60));
     NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(new StaticDimensionAttribute(80));
 
-    assertEquals(50, fifty.calculateDimension(100, min, max));
-    assertEquals(100, hundred.calculateDimension(100, min, max));
+    assertEquals(50, fifty.calculateDimension(100, min, max, 0));
+    assertEquals(100, hundred.calculateDimension(100, min, max, 0));
   }
 
   public void testCollapseExcessDoesNothing() throws Exception
