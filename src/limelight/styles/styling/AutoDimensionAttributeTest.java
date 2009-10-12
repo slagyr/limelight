@@ -4,7 +4,6 @@
 package limelight.styles.styling;
 
 import junit.framework.TestCase;
-import limelight.styles.abstrstyling.IntegerAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
 import limelight.styles.abstrstyling.DimensionAttribute;
 
@@ -44,7 +43,7 @@ public class AutoDimensionAttributeTest extends TestCase
     NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(null);
     NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(null);
 
-    assertEquals(100, auto.calculateDimension(100, min, max));
+    assertEquals(100, auto.calculateDimension(100, min, max, 0));
   }
   
   public void testCalculateDimensionWithMax() throws Exception
@@ -52,7 +51,7 @@ public class AutoDimensionAttributeTest extends TestCase
     NoneableAttribute<DimensionAttribute> min = new NoneableAttribute<DimensionAttribute>(null);
     NoneableAttribute<DimensionAttribute> max = new NoneableAttribute<DimensionAttribute>(new StaticDimensionAttribute(50));
 
-    assertEquals(50, auto.calculateDimension(100, min, max));
+    assertEquals(50, auto.calculateDimension(100, min, max, 0));
   }
 
   public void testCollapseExcessWithNoMinOrMax() throws Exception

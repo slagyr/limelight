@@ -4,7 +4,6 @@
 package limelight.styles.styling;
 
 import limelight.styles.abstrstyling.DimensionAttribute;
-import limelight.styles.abstrstyling.IntegerAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
 
 public class StaticDimensionAttribute extends SimpleIntegerAttribute implements DimensionAttribute
@@ -29,7 +28,7 @@ public class StaticDimensionAttribute extends SimpleIntegerAttribute implements 
     return false;
   }
 
-  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
+  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max, int greediness)
   {
     return getPixels();
   }

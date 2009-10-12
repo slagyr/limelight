@@ -43,10 +43,10 @@ public class XCoordinateAttributeCompiler extends StyleAttributeCompiler
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
 
-    if(intValue >= 0)
+//    if(intValue >= 0)
       return new StaticXCoordinateAttribute(intValue);
-    else
-      return null;
+//    else
+//      return null;
   }
 
   private XCoordinateAttribute attemptAlignedAttribute(String value)

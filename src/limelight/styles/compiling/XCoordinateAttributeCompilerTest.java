@@ -23,6 +23,7 @@ public class XCoordinateAttributeCompilerTest extends TestCase
   public void testValidValue() throws Exception
   {
     assertEquals(StaticXCoordinateAttribute.class, compiler.compile("123").getClass());
+    assertEquals(StaticXCoordinateAttribute.class, compiler.compile("-123").getClass());
     assertEquals(StaticXCoordinateAttribute.class, compiler.compile("123.567").getClass());
     assertEquals(PercentageXCoordinateAttribute.class, compiler.compile("50%").getClass());
     assertEquals(PercentageXCoordinateAttribute.class, compiler.compile("3.14%").getClass());
@@ -31,6 +32,7 @@ public class XCoordinateAttributeCompilerTest extends TestCase
     assertEquals(AlignedXCoordinateAttribute.class, compiler.compile("right").getClass());
 
     assertEquals(123, ((StaticXCoordinateAttribute) compiler.compile("123")).getValue());
+    assertEquals(-123, ((StaticXCoordinateAttribute) compiler.compile("-123")).getValue());
     assertEquals(0, ((StaticXCoordinateAttribute) compiler.compile("0")).getValue());
     assertEquals(50.0, ((PercentageXCoordinateAttribute) compiler.compile("50%")).getPercentage(), 0.01);
     assertEquals(3.14, ((PercentageXCoordinateAttribute) compiler.compile("3.14%")).getPercentage(), 0.01);
@@ -41,7 +43,6 @@ public class XCoordinateAttributeCompilerTest extends TestCase
 
   public void testInvalidValues() throws Exception
   {
-    checkForError("-1");
     checkForError("200%");
     checkForError("blah");
     checkForError("top");

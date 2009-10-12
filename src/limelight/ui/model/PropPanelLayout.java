@@ -22,6 +22,7 @@ public class PropPanelLayout implements Layout
   public static PropPanelLayout instance = new PropPanelLayout();
   public Panel lastPanelProcessed;
 
+
   // TODO MDM This gets called ALOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
   public void doLayout(Panel thePanel, boolean topLevel)
   {
@@ -29,8 +30,7 @@ public class PropPanelLayout implements Layout
     panel.resetLayout();
     FloaterLayout.instance.doLayout(panel);
     Style style = panel.getStyle();
-
-    if(topLevel && (panel.sizeChangePending() || style.hasDynamicDimension()))
+    if(panel.sizeChangePending() || style.hasDynamicDimension())
       snapToSize(panel, topLevel);
 
     establishScrollBars(panel);
@@ -178,6 +178,7 @@ public class PropPanelLayout implements Layout
         }
         else
         {
+          ((PropPanel)child).greediness.setSize(0, 0);
           snapToSize((PropPanel) child, false);
         }
       }
@@ -264,19 +265,22 @@ public class PropPanelLayout implements Layout
 
   public void snapToSize(PropPanel panel, boolean topLevel)
   {
+    if(panel.getParent() == null) // can happen if removed from tree
+      return;
     Box maxArea = panel.getParent().getChildConsumableArea();
+
     Style style = panel.getStyle();
     if(style.getCompiledWidth() instanceof AutoDimensionAttribute && style.getCompiledHeight() instanceof GreedyDimensionAttribute)
       throw new LimelightException("A greedy height is not allowed with auto width.");
 
-    int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth());
-    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight());
+    int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth(), panel.greediness.width);
+    int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight(), panel.greediness.height);
 
     // TODO MDM - Hacky Hack!!!!  More thought needs to go into the way layouts are down and how greedy fits into it all
-    if(topLevel && style.getCompiledWidth() instanceof GreedyDimensionAttribute && panel.getWidth() > newWidth)
-      newWidth = panel.getWidth(); 
-    if(topLevel && style.getCompiledHeight() instanceof GreedyDimensionAttribute && panel.getHeight() > newHeight)
-      newHeight = panel.getHeight();
+//    if(topLevel && style.getCompiledWidth() instanceof GreedyDimensionAttribute && panel.getWidth() > newWidth)
+//      newWidth = panel.getWidth();
+//    if(topLevel && style.getCompiledHeight() instanceof GreedyDimensionAttribute && panel.getHeight() > newHeight)
+//      newHeight = panel.getHeight();
 
     panel.setSize(newWidth, newHeight);
     panel.resetPendingSizeChange();
@@ -346,7 +350,12 @@ public class PropPanelLayout implements Layout
         for(Panel item : items)
         {
           if(hasGreedyWidth(item))
-            item.setSize(item.getWidth() + splits[splitIndex++], item.getHeight());
+          {
+            PropPanel panel = (PropPanel) item;
+            int greedyWidth = splits[splitIndex++];
+            panel.greediness.width = greedyWidth;
+            item.setSize(item.getWidth() + greedyWidth, item.getHeight());
+          }
         }
       }
     }
@@ -373,6 +382,8 @@ public class PropPanelLayout implements Layout
       {
         if(item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
         {
+          PropPanel panel = (PropPanel)item;
+          panel.greediness.height = extraHeight;
           item.setSize(item.getWidth(), height);
         }
       }

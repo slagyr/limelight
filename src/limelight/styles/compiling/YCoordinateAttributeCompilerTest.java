@@ -23,6 +23,7 @@ public class YCoordinateAttributeCompilerTest extends TestCase
   public void testValidValue() throws Exception
   {
     assertEquals(StaticYCoordinateAttribute.class, compiler.compile("123").getClass());
+    assertEquals(StaticYCoordinateAttribute.class, compiler.compile("-123").getClass());
     assertEquals(StaticYCoordinateAttribute.class, compiler.compile("123.567").getClass());
     assertEquals(PercentageYCoordinateAttribute.class, compiler.compile("50%").getClass());
     assertEquals(PercentageYCoordinateAttribute.class, compiler.compile("3.14%").getClass());
@@ -31,6 +32,7 @@ public class YCoordinateAttributeCompilerTest extends TestCase
     assertEquals(AlignedYCoordinateAttribute.class, compiler.compile("bottom").getClass());
 
     assertEquals(123, ((StaticYCoordinateAttribute) compiler.compile("123")).getValue());
+    assertEquals(-123, ((StaticYCoordinateAttribute) compiler.compile("-123")).getValue());
     assertEquals(0, ((StaticYCoordinateAttribute) compiler.compile("0")).getValue());
     assertEquals(50.0, ((PercentageYCoordinateAttribute) compiler.compile("50%")).getPercentage(), 0.01);
     assertEquals(3.14, ((PercentageYCoordinateAttribute) compiler.compile("3.14%")).getPercentage(), 0.01);
@@ -41,7 +43,6 @@ public class YCoordinateAttributeCompilerTest extends TestCase
 
   public void testInvalidValues() throws Exception
   {
-    checkForError("-1");
     checkForError("200%");
     checkForError("blah");
     checkForError("left");

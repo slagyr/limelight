@@ -19,7 +19,7 @@ module Limelight
       @root = File.expand_path(root)
     end
 
-    def path_to(path)
+    def path_to(path)     
       if (path == File.expand_path(path))
         return path
       else

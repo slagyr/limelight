@@ -6,7 +6,6 @@ package limelight.ui.model;
 import limelight.Context;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
-import limelight.util.Debug;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
@@ -362,8 +361,8 @@ public class StageFrame extends JFrame implements KeyListener
   {
     Rectangle usableBounds = getUsableScreenBounds();
 
-    int width = widthStyle.calculateDimension(usableBounds.width, NONE, NONE);
-    int height = heightStyle.calculateDimension(usableBounds.height, NONE, NONE);
+    int width = widthStyle.calculateDimension(usableBounds.width, NONE, NONE, 0);
+    int height = heightStyle.calculateDimension(usableBounds.height, NONE, NONE, 0);
 
     setSize(width, height);
   }

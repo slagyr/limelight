@@ -16,12 +16,12 @@ public class GreedyDimensionAttribute implements DimensionAttribute
     return true;
   }
 
-  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)
+  public int calculateDimension(int consumableSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max, int greediness)
   {
     if(min.isNone())
-      return 0;
+      return greediness;
     else
-      return min.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE);
+      return min.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE, 0) + greediness;
   }
 
   public int collapseExcess(int currentSize, int consumedSize, NoneableAttribute<DimensionAttribute> min, NoneableAttribute<DimensionAttribute> max)

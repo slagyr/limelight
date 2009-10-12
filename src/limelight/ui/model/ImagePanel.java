@@ -8,6 +8,7 @@ import limelight.LimelightException;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
@@ -155,16 +156,18 @@ public class ImagePanel extends BasePanel
   }
 
   public Image getImage()
-  {
-    if(image == null)
+  {    
+    if(image == null && imageFile != null && imageFile.trim().length() > 0)
     {
       try
       {
         RootPanel rootPanel = getRoot();
-        if(rootPanel != null)
+        if(rootPanel != null && imageFile != null)
+        {
           setImage(rootPanel.getImageCache().getImage(imageFile));
+        }
       }
-      catch(IOException e)
+      catch(Exception e)
       {
         throw new LimelightError("Could not load image: " + imageFile);
       }
