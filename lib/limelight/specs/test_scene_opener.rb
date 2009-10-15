@@ -35,7 +35,7 @@ module Limelight
         def setup_stage
           if @ll_spec_options[:stage]
             @stage = @producer.theater[@ll_spec_options[:stage]]
-            raise "No such stage: '#{@ll_spec_options[:stage]}'" unless stage
+            raise "No such stage: '#{@ll_spec_options[:stage]}'" unless @stage
           else
             @stage = @producer.theater.default_stage
           end
