@@ -24,7 +24,7 @@ module Limelight
         end
 
         def image_data=(data_hash)
-          image_panel.setImageData(data_hash[:format], data_hash[:data])
+          image_panel.setImageData(data_hash[:data])
         end
 
         def image

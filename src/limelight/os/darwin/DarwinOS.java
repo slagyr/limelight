@@ -58,7 +58,7 @@ public class DarwinOS extends OS
     System.setProperty("jruby.shell", "/bin/sh");
     System.setProperty("jruby.script", "jruby");
   }
-
+  
   public void appIsStarting()
   {
 //    if(isRunningAsApp())

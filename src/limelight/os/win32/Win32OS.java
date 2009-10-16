@@ -96,4 +96,9 @@ public class Win32OS extends OS
     System.setProperty("jruby.shell", "cmd.exe");
     System.setProperty("jruby.script", "jruby.bat org.jruby.Main");
   }
+
+  public boolean needsToOpenFrameToDetectInsets()
+  {
+    return true;
+  }
 }

@@ -42,7 +42,8 @@ public class RootPanel implements Panel
 
   public Box getChildConsumableArea()
   {
-    return new Box(getX(), getY(), contentPane.getWidth(), contentPane.getHeight());
+    Box box = new Box(getX(), getY(), contentPane.getWidth(), contentPane.getHeight());    
+    return box;
   }
 
   public Box getBoxInsidePadding()
