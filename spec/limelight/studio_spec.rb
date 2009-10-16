@@ -144,4 +144,14 @@ describe Limelight::Studio do
     Studio.builtin_styles["limelight_builtin_players_curtains"].should_not == nil
   end
 
+  it "should show alert and shutdown if first production fails to open" do
+    utilities = mock("utilities")
+    utilities.should_receive(:alert)
+    Studio.should_receive(:utilities_production).and_return(utilities)
+    Limelight::Context.instance().should_receive(:shutdown)
+
+    Studio.open("http://blah.blah:1234/blah.llp") # will fail
+    sleep(0.1)
+  end
+
 end

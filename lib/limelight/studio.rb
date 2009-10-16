@@ -1,7 +1,7 @@
 #- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/producer'   
+require 'limelight/producer'
 
 module Limelight
 
@@ -59,17 +59,15 @@ module Limelight
 
       # Opens the production at the specified path.
       #
-      def open(production_path)
+      def open(production_path)        
         begin
           producer = Producer.new(production_path)
           production = producer.production
           index(production)
           producer.open
           return production
-        rescue Exception => e
-          # TODO MDM - open the error in a window
-          puts e
-          puts e.backtrace
+        rescue StandardError => e
+          alert_and_shutdown(e)
         end
       end
 
@@ -86,7 +84,7 @@ module Limelight
         return if @is_shutdown || @is_shutting_down
         return unless should_allow_shutdown
         @is_shutting_down = true
-        @index.each { |production| production.close }
+        @index.each { |production| production.close } if @index
         @utilities_production.close if @utilities_production
         @is_shutdown = true
         Thread.new { Context.instance().shutdown }
@@ -95,8 +93,8 @@ module Limelight
       # Called when a production is closed to notify the studio of the event.
       #
       def production_closed(production)
-        @index.delete(production)
-        shutdown if(@index.empty?)
+        @index.delete(production) if @index
+        shutdown if @index && @index.empty?
       end
 
       # Returns an array of all the productions
@@ -150,6 +148,17 @@ module Limelight
           count += 1
         end
         production.name = count.to_s
+      end
+
+      def alert_and_shutdown(e)
+        begin
+          message = "#{e}\n#{e.backtrace.join("\n")}"
+          utilities_production.alert(message)
+          shutdown if @index.nil? || @index.empty?
+        rescue Exception => e
+          puts e
+          puts e.backtrace
+        end
       end
 
     end

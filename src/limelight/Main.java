@@ -96,7 +96,7 @@ public class Main
 
   private String getStartupProductionPath()
   {
-    String productionName = context.limelightHome + "/productions/startup";
+    String productionName = context.limelightHome + "/productions/playbills.lll";
     if(productionProvided())
       productionName = this.startupProductionPath;
     return productionName;
