@@ -8,3 +8,7 @@ alert {
   gradient_angle 270
   padding 20
 }
+
+advise {
+  max_height 500
+}
