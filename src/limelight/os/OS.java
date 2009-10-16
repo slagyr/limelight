@@ -55,4 +55,9 @@ public abstract class OS
   {
     this.runtime = runtime;
   }
+
+  public boolean needsToOpenFrameToDetectInsets()
+  {
+    return false;
+  }
 }

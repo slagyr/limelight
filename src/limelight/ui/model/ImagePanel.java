@@ -13,10 +13,16 @@ import limelight.util.Debug;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.imageio.ImageReader;
+import javax.imageio.ImageIO;
+import javax.imageio.spi.IIORegistry;
+import javax.imageio.spi.ImageInputStreamSpi;
+import javax.imageio.spi.ImageReaderSpi;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
+import java.util.Iterator;
 
 import com.sun.imageio.plugins.gif.GIFImageReader;
 import com.sun.imageio.plugins.gif.GIFImageReaderSpi;
@@ -218,35 +224,13 @@ public class ImagePanel extends BasePanel
     getParent().markAsNeedingLayout();
   }
 
-  public void setImageData(String type, byte[] bytes) throws Exception
+  public void setImageData(byte[] bytes) throws Exception
   {
     ImageInputStream imageInput = new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
-    ImageReader reader = getImageReader(type);
-    reader.setInput(imageInput);
-
-    setImage(reader.read(0));
-    imageFile = "<" + type + " data>";
+    setImage(ImageIO.read(imageInput));
+    imageFile = "<data>";
     
     markAsNeedingLayout();
     getParent().markAsNeedingLayout();
-  }
-
-  private ImageReader getImageReader(String imageType)
-  {
-    String type = imageType.toLowerCase();
-    if("gif".equals(type))
-      return new GIFImageReader(new GIFImageReaderSpi());
-    else if("jpg".equals(type) || "jpeg".equals(type))
-      return new JPEGImageReader(new JPEGImageReaderSpi());
-    else if("png".equals(type))
-      return new PNGImageReader(new PNGImageReaderSpi());
-    else if("tiff".equals(type) || "tif".equals(type))
-      return new TIFFImageReader(new TIFFImageReaderSpi());
-    else if("bmp".equals(type))
-      return new BMPImageReader(new BMPImageReaderSpi());
-    else if("wbmp".equals(type) || "wbm".equals(type))
-      return new WBMPImageReader(new WBMPImageReaderSpi());
-    else
-      throw new LimelightException("Unsupported image type: " + imageType);
   }
 }

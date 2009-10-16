@@ -4,8 +4,10 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.os.OS;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
+import limelight.util.Debug;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
@@ -77,11 +79,18 @@ public class StageFrame extends JFrame implements KeyListener
     if(!hasMenuBar)
       setJMenuBar(null);
 
+    if(Context.instance().os.needsToOpenFrameToDetectInsets())
+    {
+      setVisible(true);
+      setVisible(false);
+    }
+
     applySizeStyles();
     collapseAutoDimensions();
     applyLocationStyles();
 
     setVisible(true);
+ 
     opened = true;
   }
 
@@ -391,8 +400,10 @@ public class StageFrame extends JFrame implements KeyListener
     int heightInsets = insets.top + insets.bottom;
 
     Dimension size = getSize();
-    size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getPanel().getWidth() + widthInsets, NONE, NONE);
-    size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets,  NONE, NONE);
+    if(widthStyle.isAuto())
+      size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getPanel().getWidth() + widthInsets, NONE, NONE);
+    if(heightStyle.isAuto())
+      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets,  NONE, NONE);
 
     setSize(size);
   }

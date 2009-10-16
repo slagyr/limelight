@@ -427,7 +427,7 @@ public abstract class BasePanel implements Panel
 
   public void consumableAreaChanged()
   {
-    Style style = getStyle();
+    Style style = getStyle();    
     if(!needsLayout() && style != null && style.hasDynamicDimension())
     {
       markAsNeedingLayout();

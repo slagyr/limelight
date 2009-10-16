@@ -8,7 +8,6 @@ import limelight.MockResourceLoader;
 import limelight.io.StreamReader;
 import limelight.util.TestUtil;
 
-import java.io.FileReader;
 import java.io.FileInputStream;
 
 public class ImagePanelTest extends TestCase
@@ -84,7 +83,7 @@ public class ImagePanelTest extends TestCase
     StreamReader reader = new StreamReader(new FileInputStream(TestUtil.dataDirPath(imageFile)));
     byte[] bytes = reader.readBytes(100000);
 
-    panel.setImageData(imageType, bytes);
+    panel.setImageData(bytes);
 
     assertEquals(200, panel.getImage().getHeight(null));
     assertEquals(200, panel.getImage().getWidth(null));
@@ -101,7 +100,7 @@ public class ImagePanelTest extends TestCase
 
     assertEquals(200, panel.getImageWidth(), 0.1);
     assertEquals(200, panel.getImageHeight(), 0.1);
-    assertEquals("<gif data>", panel.getImageFile());
+    assertEquals("<data>", panel.getImageFile());
     assertEquals(true, panel.needsLayout());
     assertEquals(true, parent.needsLayout());
   }
