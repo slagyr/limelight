@@ -6,6 +6,7 @@
     <property name="src" location="src"/>
     <property name="classes" location="classes"/>
     <property name="lib" location="lib"/>
+    <property name="ant.build.javac.target" value="1.5"/>
 
     <path id="classpath">
         <pathelement path="${classes}"/>
@@ -31,7 +32,7 @@
             </manifest>
         </jar>
     </target>
-
+<!---->
     <target name="compile" depends="init" description="compile the source (make)">
         <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="true"/>
     </target>
