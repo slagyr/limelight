@@ -5,4 +5,8 @@ $LIMELIGHT_LIB = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 $: << $LIMELIGHT_LIB unless $:.include?($LIMELIGHT_LIB)
 $LIMELIGHT_HOME = File.expand_path(File.join($LIMELIGHT_LIB, ".."))
 
+if Java::java.lang.System.getProperty("limelight.home").nil?
+  Java::java.lang.System.setProperty("limelight.home", $LIMELIGHT_HOME)
+end
+
 require 'limelight/java_couplings'
