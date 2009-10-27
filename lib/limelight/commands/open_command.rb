@@ -36,7 +36,7 @@ module Limelight
         return "<production_path>"
       end
 
-      def do_requires
+      def do_requires       
         Main.initialize_context
         require 'limelight/producer'
       end

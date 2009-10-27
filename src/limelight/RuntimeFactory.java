@@ -211,7 +211,6 @@ public class RuntimeFactory
   }
 
   public static String openProductionSrcTemplate = "" +
-      "begin\n" +
       "require 'limelight/limelight_init'\n" +
       "require 'limelight/producer'\n" +
       "producer = Limelight::Producer.new(\"PRODUCTION_PATH\")\n" +
