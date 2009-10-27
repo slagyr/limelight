@@ -60,7 +60,7 @@ describe Limelight::Commands::CreateCommand do
     @command.scene_name.should == "default_scene"
     @command.template_type.should == "production"
     @command.production_path.should == "blah"
-    @command.spec_path.should == "blah/spec"
+    @command.spec_path.should == "spec"
   end
 
   it "should have a default production path" do
