@@ -7,4 +7,5 @@ public interface Stage
 {
   Theater theater();
   boolean should_allow_close();
+  void closed();
 }

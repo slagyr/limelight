@@ -186,6 +186,7 @@ module Limelight
     # See load_scene
     #
     def open(scene)
+      @current_scene.visible = false if @current_scene
       scene.stage = self
       scene.illuminate
       load_scene(scene)
@@ -197,16 +198,22 @@ module Limelight
     # Closes the Stage. It's window will no longer be displayed on the screen.
     #
     def close
-      @theater.stage_closed(self)
       @frame.close
+      closed
+    end
+
+    # Invoked when the stage has been closed.  Users need not call it. 
+    #
+    def closed
       @current_scene.visible = false if @current_scene
       @current_scene = nil
+      @theater.stage_closed(self)
     end
 
     # Loads a scene on the Stage.  If the Stage is currently hosting a Scene, the original Scene will be removed and
     # the new Scene will replace it.
     #
-    def load_scene(scene)
+    def load_scene(scene)      
       #      @frame.setJMenuBar(scene.menu_bar)
       @frame.load(scene.panel)
       if (has_static_size?(scene.style))
@@ -233,7 +240,7 @@ module Limelight
     def alert(message)
       Thread.new do
         begin
-          Studio.utilities_production.alert(message)
+          Context.instance.studio.utilities_production.alert(message)
         rescue StandardError => e
           puts "Error on alert: #{e}"
         end

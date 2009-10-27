@@ -23,15 +23,27 @@ module Limelight
   #
   class Producer
 
-    # Creates a new Producer and has it open a Production by specified name.
-    #
-    def self.open(production_name, options={})
-      producer = new(production_name)
-      begin
-        producer.open(options)
-      rescue Exception => e
-        puts e
-        puts e.backtrace
+    class << self
+      # Creates a new Producer and has it open a Production by specified name.
+      #
+      def open(production_name, options={})
+        producer = new(production_name)
+        begin
+          producer.open(options)
+        rescue Exception => e
+          puts e
+          puts e.backtrace
+        end
+      end
+
+      # Returns a hash of all the built-in Limglight Styles
+      #
+      def builtin_styles
+        unless @builtin_styles
+          builtin_styles_file = File.join($LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
+          @builtin_styles = Limelight.build_styles_from_file(builtin_styles_file)
+        end
+        return @builtin_styles
       end
     end
 
@@ -50,7 +62,7 @@ module Limelight
         root_path = unpack_production(root_path)
       end
       @production = production || Production.new(root_path)
-      @theater = theater.nil? ? Theater.new : theater
+      @theater = theater.nil? ? Theater.new(@production) : theater
       establish_production
     end
 
@@ -77,15 +89,23 @@ module Limelight
       load_stages if File.exists?(@production.stages_file)
     end
 
+    # Returns true if the production is compatible with the current version of Limelight or if the user proceeds
+    # despite the incompatible warning.
+    #
+    def can_proceed_with_compatibility?
+      return true if version_compatible?
+      return true if Context.instance.studio.utilities_production.should_proceed_with_incompatible_version(@production.name, @production.minimum_limelight_version)
+      return false
+    end
+
     # Opens the Production.
     #
     def open(options = {})
-      return unless version_compatible? || Studio.utilities_production.proceed_with_incompatible_version?(@production.name, @production.minimum_limelight_version)
       @production.production_opening
       load
       @production.production_loaded
       if @theater.has_stages?
-        @theater.stages.each do |stage|          
+        @theater.stages.each do |stage|
           open_scene(stage.default_scene.to_s, stage) if stage.default_scene
         end
       elsif @production.default_scene
@@ -144,7 +164,7 @@ module Limelight
     # Loads the specified 'styles.rb' file and created a Hash of Styles.
     #
     def load_styles(context)
-      extendable_styles = Studio.builtin_styles.merge(@production.root_styles)
+      extendable_styles = Producer.builtin_styles.merge(@production.root_styles)
       return extendable_styles.dup if not File.exists?(context.styles_file)
       new_styles = Limelight.build_styles_from_file(context.styles_file, extendable_styles)
       return extendable_styles.merge(new_styles)

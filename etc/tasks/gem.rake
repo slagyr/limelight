@@ -35,3 +35,8 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_zip = false
   pkg.need_tar = false
 end
+
+desc "Push the gem to server"
+task :gem_deploy => [:gem] do
+  system "gem push pkg/#{PKG_FILE_NAME}-java.gem"
+end

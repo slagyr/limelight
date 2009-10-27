@@ -8,9 +8,10 @@ describe Limelight::Producer do
 
   before(:each) do
     TestDir.clean
-    Limelight::Studio.reset
+    Limelight::Studio.uninstall
     @root_dir = TestDir.path("test_prod")
     @producer = Limelight::Producer.new(@root_dir)
+    Limelight::Studio.install
   end
 
   it "should have loader on creation" do
@@ -52,7 +53,7 @@ describe Limelight::Producer do
 
   it "should load styles" do
     TestDir.create_file("test_prod/styles.rb", "alpha { width 100 }")
-    Limelight::Studio.stub!(:builtin_styles).and_return({})
+    Limelight::Producer.stub!(:builtin_styles).and_return({})
 
     styles = @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod")))
     styles.size.should == 1
@@ -142,7 +143,7 @@ describe Limelight::Producer do
   end
 
   it "should load empty styles if styles.rb doesn't exist" do
-    Limelight::Studio.stub!(:builtin_styles).and_return({})
+    Limelight::Producer.stub!(:builtin_styles).and_return({})
 
     @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod"))).should == {}
   end
@@ -205,6 +206,11 @@ describe Limelight::Producer do
     stage.should_receive(:open).with(scene)
 
     @producer.open_scene("name", stage, :instance_variables => { :foo => "bar" })
+  end
+  
+  it "should give the same buildin_styles hash twice" do
+    Limelight::Producer.builtin_styles.should be(Limelight::Producer.builtin_styles)
+    Limelight::Producer.builtin_styles["limelight_builtin_players_curtains"].should_not == nil
   end
   
 end

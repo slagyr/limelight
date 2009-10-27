@@ -489,7 +489,7 @@ public abstract class BasePanel implements Panel
     {
 //      Style style = panel.getStyle();
 //      if(style != null && style.hasAutoDimension())
-//      {
+//      {     
       panel.markAsNeedingLayout();
       propagateSizeChangeUp(panel.getParent());
 //      }

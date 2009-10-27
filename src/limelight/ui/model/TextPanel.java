@@ -60,7 +60,7 @@ public class TextPanel extends BasePanel
       markAsNeedingLayout();
     this.text = text;
     if(differentText)
-    {
+    {      
       markAsNeedingLayout();
       propagateSizeChangeUp(getParent());
       getParent().markAsNeedingLayout();

@@ -8,7 +8,8 @@ require 'limelight/stage'
 describe Limelight::Theater do
 
   before(:each) do
-    @theater = Limelight::Theater.new
+    @production = mock("production", :theater_empty! => nil)
+    @theater = Limelight::Theater.new(@production)
     @stage = @theater.add_stage("default")
   end
   
@@ -67,6 +68,26 @@ describe Limelight::Theater do
 
     @theater["default"].should == nil
     @theater.active_stage.should == nil
+  end
+
+  it "should notify the production when all the stages are closed" do
+    @production.should_receive(:theater_empty!)
+    
+    @theater.stage_closed(@stage)
+  end
+
+  it "should close" do
+    stage2 = @theater.add_stage("two")
+    stage3 = @theater.add_stage("three")
+    @theater.stage_activated(stage3)
+    stage2.should_receive(:close)
+    stage3.should_receive(:close)
+
+    @theater.close
+
+    @theater.stages.length.should == 0
+    @theater.active_stage.should == nil
+
   end
 
 end

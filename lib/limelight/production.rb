@@ -3,7 +3,6 @@
 
 require 'limelight/limelight_exception'
 require 'limelight/file_loader'
-require 'limelight/studio'
 require 'drb'
 
 module Limelight
@@ -14,6 +13,8 @@ module Limelight
   # Productions are configured, and attributes are added, by the ProductionBuilder.
   #
   class Production
+
+    include UI::Api::Production
 
     class << self
 
@@ -26,6 +27,7 @@ module Limelight
     attr_reader :name, :root
     attr_accessor :producer, :theater
 
+
     # Users typically need not create Production objects.
     #
     def initialize(path)
@@ -36,7 +38,7 @@ module Limelight
     # Sets the name of the Production.  The name must be unique amongst all Productions in memory.
     #
     def name=(value)
-      Studio.error_if_duplicate_name(value)
+      Context.instance.studio.error_if_duplicate_name(value)
       @name = value
     end
 
@@ -138,9 +140,19 @@ module Limelight
     # Closes the production. If there are no more productions open, the Limelight runtime will shutdown.
     #
     def close
+      return if @closed
       self.production_closing
-      Studio.production_closed(self)
+      @theater.close
+      @closed = true
       self.production_closed
+      Context.instance.studio.production_closed(self)
+    end
+
+    # Called when the last stage in this production's theater is closed.  If the allow_close? returns true
+    # this production will be closed.
+    #
+    def theater_empty!    
+      close if allow_close?
     end
 
     # Returned the name of the default scene.  This is only used when there are not stages defined in the production.
@@ -162,6 +174,14 @@ module Limelight
         end
       end
       return @root_styles
+    end
+
+    alias :getName :name #:nodoc:
+    alias :setName :name= #:nodoc:
+    alias :allowClose :allow_close? #:nodoc: 
+
+    def callMethod(name, args) #:nodoc:   
+      send(name.to_sym, *args)
     end
 
   end

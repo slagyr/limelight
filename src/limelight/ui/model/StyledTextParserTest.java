@@ -134,7 +134,6 @@ public class StyledTextParserTest extends TestCase
   public void display(StyledText text)
   {
     System.out.println("text: " + text.getText() + "; style: " + text.getStyle());
-
   }
 
   public void testMultipleNestedAndAlternatingTags() throws Exception

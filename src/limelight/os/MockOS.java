@@ -5,6 +5,8 @@ package limelight.os;
 
 public class MockOS extends OS
 {
+  public boolean systemPropertiesConfigured;
+
   protected void turnOnKioskMode()
   {
   }
@@ -19,7 +21,6 @@ public class MockOS extends OS
 
   public void configureSystemProperties()
   {
-    System.setProperty("jruby.shell", "silly shell");
-    System.setProperty("jruby.script", "sticky script");
+    systemPropertiesConfigured = true;
   }
 }

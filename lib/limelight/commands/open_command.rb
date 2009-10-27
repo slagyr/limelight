@@ -18,7 +18,7 @@ module Limelight
 
       install_as "open"
 
-      DEFAULT_PRODUCTION = File.expand_path($LIMELIGHT_HOME + "/productions/startup")
+      DEFAULT_PRODUCTION = File.expand_path($LIMELIGHT_HOME + "/productions/playbills.lll")
 
       attr_reader :drb_port
 
@@ -50,8 +50,8 @@ module Limelight
       end
 
       def process
-        Studio.publish_on_drb(@drb_port.to_i) if @drb_port
-        Studio.open(@production_path)
+        Context.instance.studio.publish_on_drb(@drb_port.to_i) if @drb_port
+        Context.instance.studio.open(@production_path)
       end
 
     end

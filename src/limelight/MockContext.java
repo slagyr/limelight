@@ -6,6 +6,7 @@ package limelight;
 public class MockContext extends Context
 {
   public boolean shutdownAttempted;
+  public boolean wasShutdown;
 
   private MockContext()
   {
@@ -22,5 +23,10 @@ public class MockContext extends Context
   public void attemptShutdown()
   {
     shutdownAttempted = true;
+  }
+
+  public void shutdown()
+  {
+    wasShutdown = true;
   }
 }

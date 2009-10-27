@@ -8,27 +8,21 @@ import limelight.background.AnimationLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
-import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
+import limelight.ui.api.Studio;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
 import limelight.os.darwin.DarwinOS;
 import limelight.os.win32.Win32OS;
 import limelight.os.UnsupportedOS;
 import limelight.os.MockOS;
-import org.jruby.Ruby;
-import org.jruby.javasupport.JavaEmbedUtils;
-
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
 
 public class Main
 {
-
-  private Ruby runtime;
   private boolean contextIsConfigured;
   private Context context;
   private static String startupProductionPath;
@@ -52,37 +46,21 @@ public class Main
   {
     try
     {
-      configureOS();      
-
-      configureContext();
+      configureOS();
       configureSystemProperties();
+      configureContext();
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
       if(args.length > 0 && startupProductionPath == null)
         startupProductionPath = args[0];
-
-      startJruby();
-
+      
       Context.instance().os.openProduction(getStartupProductionPath());
     }
     catch(Throwable e)
     {
       handleError(e);
     }
-  }
-
-  private void startJruby()
-  {
-    runtime = JavaEmbedUtils.initialize(new ArrayList());
-
-    StringBuffer startupRuby = new StringBuffer();
-    startupRuby.append("require '").append(FileUtil.pathTo(context.limelightHome, "lib", "init")).append("'").append("\n");
-    startupRuby.append("require 'limelight/studio'").append("\n");
-    startupRuby.append("Limelight::Studio.install").append("\n");
-    ByteArrayInputStream input = new ByteArrayInputStream(startupRuby.toString().getBytes());
-
-    runtime.runFromMain(input, "limelight_pseudo_main");
   }
 
   public static void handleError(Throwable e)
@@ -98,7 +76,7 @@ public class Main
   {
     String productionName = context.limelightHome + "/productions/playbills.lll";
     if(productionProvided())
-      productionName = this.startupProductionPath;
+      productionName = startupProductionPath;
     return productionName;
   }
 
@@ -109,11 +87,7 @@ public class Main
 
   public void configureSystemProperties()
   {
-//    System.setProperty("apple.laf.useScreenMenuBar", "true");
-//    System.setProperty("jruby.home", context.limelightHome + "/jruby");
-//    System.setProperty("jruby.base", "");
-//    System.setProperty("jruby.lib", context.limelightHome + "/jruby/lib");
-
+    System.setProperty("jruby.interfaces.useProxy", "true");
     context.os.configureSystemProperties();
   }
 
@@ -141,13 +115,9 @@ public class Main
     if(context.os == null)
       configureOS();
 
-    context.keyboardFocusManager = new KeyboardFocusManager().installed();
-    initializeTempDirectory();
     context.frameManager = new AlertFrameManager();
-    context.audioPlayer = new RealAudioPlayer();
 
-    context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
-    context.bufferedImagePool = new BufferedImagePool(1);
+    installCommonConfigComponents();
 
     context.panelPanter = new PanelPainterLoop().started();
     context.animationLoop = new AnimationLoop().started();
@@ -162,19 +132,25 @@ public class Main
     contextIsConfigured = true;
 
     context = Context.instance();
-
-    context.os = new MockOS();
-    context.keyboardFocusManager = new KeyboardFocusManager().installed();
-    initializeTempDirectory();
     context.frameManager = new InertFrameManager();
-    context.audioPlayer = new RealAudioPlayer();
+    context.os = new MockOS();
 
-    context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
-    context.bufferedImagePool = new BufferedImagePool(1);
+    installCommonConfigComponents();
 
     context.panelPanter = new PanelPainterLoop();
     context.animationLoop = new AnimationLoop();
     context.cacheCleaner = new CacheCleanerLoop();
+  }
+
+  private void installCommonConfigComponents()
+  {
+    context.keyboardFocusManager = new KeyboardFocusManager().installed();
+    initializeTempDirectory();
+    context.audioPlayer = new RealAudioPlayer();
+    context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
+    context.bufferedImagePool = new BufferedImagePool(1);
+    context.runtimeFactory = new RuntimeFactory();
+    context.studio = new Studio();
   }
 
   public static void initializeTempDirectory()

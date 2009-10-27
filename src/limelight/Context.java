@@ -37,6 +37,7 @@ public class Context
   public Studio studio;
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
   public OS os;
+  public RuntimeFactory runtimeFactory;
   public boolean isShutdown;
   private boolean isShuttingDown;
   
@@ -106,7 +107,7 @@ public class Context
 
   public void attemptShutdown()
   {
-    if(studio == null || studio.should_allow_shutdown())
+    if(studio == null || studio.shouldAllowShutdown())
       shutdown();
   }
 

@@ -9,6 +9,7 @@ describe Limelight::Production, "Instance methods" do
   before(:each) do
     @producer = make_mock("producer")
     @theater = make_mock("theater")
+    @studio = Limelight::Studio.install
     @production = Limelight::Production.new("/tmp")
     @production.producer = @producer
     @production.theater = @theater
@@ -18,20 +19,6 @@ describe Limelight::Production, "Instance methods" do
     @production.producer.should == @producer
     @production.theater.should == @theater
     @production.path.should == "/tmp"
-  end
-
-  it "should be indexed" do
-    Limelight::Studio.index(@production)
-    Limelight::Studio[@production.name].should == @production
-  end
-
-  it "should raise an error when setting the name to a duplicate name" do
-    @production.name = "Bill"
-    Limelight::Studio.index(@production)
-
-    production = Limelight::Production.new("/tmp")
-    Limelight::Studio.index(production)
-    lambda { production.name = "Bill" }.should raise_error(Limelight::LimelightException, "Production name 'Bill' is already taken")
   end
 
   it "should get it's name from the file" do
@@ -72,10 +59,18 @@ describe Limelight::Production, "Instance methods" do
 
   it "should tell studio it closed and triger it's closing events" do
     @production.should_receive(:production_closing)
-    Limelight::Studio.should_receive(:production_closed).with(@production)
+    @studio.should_receive(:production_closed).with(@production)
     @production.should_receive(:production_closed)
+    @theater.should_receive(:close)
 
     @production.close
+  end
+
+  it "should handle empty theater" do
+    @production.should_receive(:allow_close?).at_least(1).and_return(true)
+    @production.should_receive(:close)
+
+    @production.theater_empty!
   end
 
   describe "with files" do

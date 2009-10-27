@@ -32,7 +32,7 @@
             </manifest>
         </jar>
     </target>
-<!---->
+    
     <target name="compile" depends="init" description="compile the source (make)">
         <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="true"/>
     </target>
