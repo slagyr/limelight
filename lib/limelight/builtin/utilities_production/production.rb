@@ -10,6 +10,10 @@ module Production
     @alert_monitor = @monitor.new_cond
   end
 
+  def allow_close?
+    return false
+  end
+
   def default_scene
     nil
   end

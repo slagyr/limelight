@@ -61,7 +61,12 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   public synchronized void windowClosed(WindowEvent e)
   {
     StageFrame frame = ((StageFrame) e.getWindow());
+    if(lastFrameAdded == frame)
+      lastFrameAdded = null;
+    if(activeFrame == frame)
+      activeFrame = null;
     frames.remove(frame);
+    frame.closed();
     if(frame.isVital() && !hasVisibleVitalFrame())
       Context.instance().attemptShutdown();
   }

@@ -15,7 +15,8 @@ module Limelight
     #
     attr_reader :active_stage
     
-    def initialize
+    def initialize(production)
+      @production = production
       @stages = {}
     end
 
@@ -57,6 +58,7 @@ module Limelight
     def stage_closed(stage)
       @stages.delete(stage.name)
       @active_stage = nil if @active_stage == stage
+      @production.theater_empty! if @stages.empty?
     end
 
     # If no Stages are added, the Theater will provide a default Stage named "Limelight".
@@ -64,6 +66,14 @@ module Limelight
     def default_stage
       add_stage("Limelight") if self["Limelight"].nil?
       return self["Limelight"]
+    end
+
+    # Close this theater.  All stages in this theater will be closed and the active_stage will be nil'ed.
+    #
+    def close
+      @stages.values.each { |stage| stage.close }
+      @stages.clear
+      @active_stage = nil
     end
 
     protected #############################################

@@ -15,6 +15,7 @@ public class MockStageFrame extends StageFrame
   public boolean closed;
   public boolean shouldAllowClose;
   public boolean visible;
+  public boolean wasClosed;
 
   public MockStageFrame()
   {
@@ -55,5 +56,10 @@ public class MockStageFrame extends StageFrame
   public boolean isVisible()
   {
     return visible;
+  }
+
+  public void closed()
+  {
+    wasClosed = true;
   }
 }

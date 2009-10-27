@@ -205,7 +205,6 @@ public class TextPanelTest extends TestCase
 
     TextLayout layout2 = lines.get(1);
     assertEquals(5, layout.getCharacterCount());
-    System.out.println(layout.toString());
     assertSubString("family=Dialog", layout2.toString());
     assertSubString("name=Cuneiform", layout2.toString());
     assertSubString("style=italic", layout2.toString());

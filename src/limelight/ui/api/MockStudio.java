@@ -3,18 +3,19 @@
 
 package limelight.ui.api;
 
-public class MockStudio implements Studio
+public class MockStudio extends Studio
 {
   public String openedProduction;
   public boolean allowShutdown;
   public boolean isShutdown;
 
-  public void open(String production)
+  public Production open(String production)
   {
     openedProduction = production;
+    return null;
   }
 
-  public boolean should_allow_shutdown()
+  public boolean shouldAllowShutdown()
   {
     return allowShutdown;
   }
@@ -22,5 +23,14 @@ public class MockStudio implements Studio
   public void shutdown()
   {
     isShutdown = true;
+  }
+
+  public Object utilities_production()
+  {
+    return null;
+  }
+
+  public void production_closed(Object production)
+  {
   }
 }

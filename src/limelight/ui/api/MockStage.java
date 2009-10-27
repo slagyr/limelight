@@ -8,6 +8,7 @@ public class MockStage implements Stage
 {
   public MockTheater theater;
   public boolean shouldAllowClose;
+  public boolean wasClosed;
 
   public MockStage()
   {
@@ -22,5 +23,10 @@ public class MockStage implements Stage
   public boolean should_allow_close()
   {
     return shouldAllowClose;
+  }
+
+  public void closed()
+  {
+    wasClosed = true;
   }
 }

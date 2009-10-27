@@ -8,6 +8,7 @@ require 'limelight/producer'
 describe Limelight::Commands::OpenCommand do
 
   before(:all) do
+    @studio = Limelight::Studio.install
     @command_class = Limelight::Commands::OpenCommand
     @command = @command_class.new
   end
@@ -18,14 +19,14 @@ describe Limelight::Commands::OpenCommand do
 
   it "should open a production" do
     Limelight::Main.should_receive(:initialize_context)
-    Limelight::Studio.should_receive(:open).with("production_name")
+    @studio.should_receive(:open).with("production_name")
 
     @command.run(["production_name"])
   end
 
   it "should open the default production" do
     Limelight::Main.should_receive(:initialize_context)
-    Limelight::Studio.should_receive(:open).with(@command_class::DEFAULT_PRODUCTION)
+    @studio.should_receive(:open).with(@command_class::DEFAULT_PRODUCTION)
 
     @command.run([])
   end
@@ -43,8 +44,8 @@ describe Limelight::Commands::OpenCommand do
 
   it "should start the studio on drb" do
     Limelight::Main.should_receive(:initialize_context)
-    Limelight::Studio.should_receive(:publish_on_drb).with(1234)
-    Limelight::Studio.should_receive(:open).with("some_prod")
+    @studio.should_receive(:publish_on_drb).with(1234)
+    @studio.should_receive(:open).with("some_prod")
 
     @command.run ["-d", "1234", "some_prod"]
   end

@@ -8,7 +8,7 @@ require 'limelight/theater'
 describe Limelight::DSL::StageBuilder do
   
   before(:each) do
-    @theater = Limelight::Theater.new
+    @theater = Limelight::Theater.new(nil)
   end
 
   it "should give no stages if empty" do

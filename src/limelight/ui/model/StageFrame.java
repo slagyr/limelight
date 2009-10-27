@@ -72,6 +72,11 @@ public class StageFrame extends JFrame implements KeyListener
     dispose();
   }
 
+  public void closed()
+  {
+    stage.closed(); 
+  }
+
   public void open()
   {
     if(opened)

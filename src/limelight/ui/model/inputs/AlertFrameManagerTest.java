@@ -127,4 +127,14 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(2, result.size());
     result.clear();
   }
+
+  public void testFrameIsNotifiedOfClose() throws Exception
+  {
+    MockContext.stub();
+    frame.setVital(false);
+    manager.watch(frame);
+    manager.windowClosed(new WindowEvent(frame, 1));
+
+    assertEquals(true, frame.wasClosed);
+  }  
 }

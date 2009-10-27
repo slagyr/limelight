@@ -11,7 +11,7 @@ module Alerts
 
   def open_incompatible_production
     production_path = File.join(path, "incompatible_production")
-    Thread.new { Limelight::Studio.open(production_path) }
+    Thread.new { Limelight::Context.instance.studio.open(production_path) }
   end
 
 end

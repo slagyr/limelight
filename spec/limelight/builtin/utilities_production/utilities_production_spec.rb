@@ -5,9 +5,10 @@ require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
 describe "Utilitites Production" do
 
-  uses_scene "none"
+  uses_limelight
 
   before(:each) do
+    @result = nil
     production.production_opening
   end
 
@@ -17,8 +18,43 @@ describe "Utilitites Production" do
   end
 
   after(:all) do
-    #    Java::java.awt.Frame.getFrames.each { |frame| frame.close; frame.dispose; puts frame }
-    #    Java::limelight.util.Threads.showAll
+#    Java::java.awt.Frame.getFrames.each { |frame| frame.close; frame.dispose; puts frame }
+#    Java::limelight.util.Threads.showAll
+  end
+
+  def start_alert()
+    @thread = Thread.new do
+      begin
+        @result = production.alert("Some Message")
+      rescue Exception => e
+        puts e
+        puts e.backtrace
+      end
+    end
+  end
+
+  def start_proceed_with_incompatible_version()
+    @thread = Thread.new do
+      begin
+        @result = production.proceed_with_incompatible_version?("Some Production", "1.2.3")
+      rescue Exception => e
+        puts e
+        puts e.backtrace
+      end
+    end
+  end
+
+  def wait_for
+    10.times do
+      return if yield
+      sleep(0.1)                                                                  
+    end
+    raise "the desired condition was not met on time"
+  end
+
+  def scene_open?(stage_name)
+    stage = production.theater[stage_name]
+    return stage != nil && stage.current_scene != nil
   end
 
   it "should construct stage on load_with_incomptible_version_scene" do
@@ -51,30 +87,6 @@ describe "Utilitites Production" do
     scene.find("current_version_label").text.should == Limelight::VERSION::STRING
   end
 
-  def start_proceed_with_incompatible_version()
-    @thread = Thread.new do
-      begin
-        @result = production.proceed_with_incompatible_version?("Some Production", "1.2.3")
-      rescue Exception => e
-        puts e
-        puts e.backtrace
-      end
-    end
-  end
-
-  def wait_for
-    10.times do
-      return if yield
-      sleep(0.1)
-    end
-    raise "the desired condition was not met on time"
-  end
-
-  def scene_open?(stage_name)
-    stage = production.theater[stage_name]
-    return stage != nil && stage.current_scene != nil
-  end
-
   it "should return true when clicking proceed" do
     @result = nil
     start_proceed_with_incompatible_version()
@@ -97,17 +109,6 @@ describe "Utilitites Production" do
     wait_for { !@thread.alive? }
 
     @result.should == false
-  end
-
-  def start_alert()
-    @thread = Thread.new do
-      begin
-        @result = production.alert("Some Message")
-      rescue Exception => e
-        puts e
-        puts e.backtrace
-      end
-    end
   end
 
   it "should construct alert stage" do

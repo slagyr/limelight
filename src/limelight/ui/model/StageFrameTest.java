@@ -8,6 +8,7 @@ import limelight.ui.api.MockStage;
 import limelight.ui.*;
 import limelight.Context;
 import limelight.KeyboardFocusManager;
+import limelight.MockContext;
 import limelight.styles.styling.*;
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.os.MockOS;
@@ -373,5 +374,16 @@ public class StageFrameTest extends TestCase
     int width = 300 + insets.left + insets.right;
     int height = 200 + insets.top + insets.bottom;
     assertEquals(new Dimension(width, height), frame.getSize());
+  }
+
+  public void testClosedIsCalledwhenClosed() throws Exception
+  {
+    MockContext.stub();
+    AlertFrameManager manager = new AlertFrameManager();
+    manager.watch(frame);
+    frame.close();
+    Thread.sleep(10);
+
+    assertEquals(true, stage.wasClosed);
   }
 }

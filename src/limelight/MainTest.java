@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
 import limelight.ui.Panel;
+import limelight.ui.api.Studio;
 import limelight.ui.model.MockFrameManager;
 import limelight.audio.RealAudioPlayer;
 import limelight.background.PanelPainterLoop;
@@ -74,19 +75,32 @@ public class MainTest extends TestCase
     assertNotNull(Context.instance().bufferedImagePool);
   }
 
-//  public void testSettingSystemCofiguration() throws Exception
-//  {
-//    System.setProperty("limelight.home", "/limelighthome");
-//    Context.instance().os = new MockOS();
-//    main.setContext(Context.instance());
-//
-//    main.configureSystemProperties();
-//
-//    assertEquals("", System.getProperty("jruby.base"));
-//    assertEquals("/limelighthome/jruby/lib", System.getProperty("jruby.lib"));
-//    assertEquals("silly shell", System.getProperty("jruby.shell"));
-//    assertEquals("sticky script", System.getProperty("jruby.script"));
-//  }
+  public void testRuntimeFactoryIsInstalled() throws Exception
+  {
+    main.configureContext();
+
+    assertNotNull(Context.instance().runtimeFactory);
+  }
+  
+  public void testStudioIsInstalled() throws Exception
+  {
+    main.configureContext();
+
+    assertEquals(Studio.class, Context.instance().studio.getClass());
+  }
+
+  public void testSettingSystemCofiguration() throws Exception
+  {
+    System.setProperty("limelight.home", "/limelighthome");
+    MockOS os = new MockOS();
+    Context.instance().os = os;
+    main.setContext(Context.instance());
+
+    main.configureSystemProperties();
+
+    assertEquals(true, os.systemPropertiesConfigured);
+    assertEquals("true", System.getProperty("jruby.interfaces.useProxy"));
+  }
 
   public void testDarwinOS() throws Exception
   {

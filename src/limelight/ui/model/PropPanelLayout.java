@@ -20,7 +20,6 @@ import java.awt.*;
 public class PropPanelLayout implements Layout
 {
   public static PropPanelLayout instance = new PropPanelLayout();
-  public Panel lastPanelProcessed;
 
 
   // TODO MDM This gets called ALOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
@@ -53,7 +52,6 @@ public class PropPanelLayout implements Layout
     panel.updateBorder();
     panel.markAsDirty();
     panel.wasLaidOut();
-    lastPanelProcessed = panel;
   }
 
   private void distributeGreediness(PropPanel panel, LinkedList<Row> rows)

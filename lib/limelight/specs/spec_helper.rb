@@ -34,7 +34,7 @@ module Spec
         uses_limelight({:scene => scene_name}.merge(options))
       end
       
-      def self.uses_limelight(options, &prop_block)
+      def self.uses_limelight(options = {}, &prop_block)
         include Limelight::Specs::SpecHelper
         
         before(:each) do
