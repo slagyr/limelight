@@ -53,7 +53,7 @@ module Limelight
         raise "Missing template type" if @template_type.nil?
         raise "Unknown template type: #{@template_type}" if !["production", "scene"].include?(@template_type)
         self.send "parse_#{@template_type}".to_sym, args
-        @spec_path = File.join(@production_path, "spec") unless @spec_path
+        @spec_path = "spec" unless @spec_path
       end
 
       def do_requires #:nodoc:
