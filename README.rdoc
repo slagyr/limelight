@@ -1,8 +1,29 @@
 = Limelight
 
-simple, dynamic, user interfaces.
+Simple UI Framework for Ruby
 
-== Preparing Development Environment
+== API
+
+Where to start:
+
+* Limelight::Main
+
+== More Documentation
+
+If you're not using it already, be sure to check out the Limelight Docs production.  It's full of tutorials and examples
+that'll teach you everything you need to know to build your own Limelight productions.
+
+Just install Limelight and let'er rip.
+
+== Developing with Limelight
+  jruby -S gem install gemcutter
+  jruby -S gem tumble
+  jruby -S gem install limelight
+
+  jruby -S limelight create production my_first_production
+  jruby -S limelight open my_first_production
+
+== Development on Limelight
   git clone git://github.com/slagyr/limelight.git
   cd limelight
   ant
@@ -12,23 +33,9 @@ simple, dynamic, user interfaces.
 Try it out:
    bin/limelight open productions/examples/sandbox
 
-== API
-
-Where to start:
-
-* Limelight::Main
-* Limelight::Producer
-* Limelight::Prop
-* Limelight::Scene
-
-== More Documentation
-
-This RDoc for Limelight is for reference only.  More complete documentation can be found
-on the official Limelight website: http://limelight.8thlight.com
-
 == License
 
-Copyright 2008 8th Light, Inc. All Rights Reserved.
+Copyright 2008-2009 8th Light, Inc. All Rights Reserved.
 Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 See license.txt
