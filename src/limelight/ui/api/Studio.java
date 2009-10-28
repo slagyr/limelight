@@ -76,8 +76,11 @@ public class Studio
       return;
 
     isShuttingDown = true;
-    for(RuntimeFactory.BirthCertificate certificate : index)
+
+    List<RuntimeFactory.BirthCertificate> certificates = new ArrayList<RuntimeFactory.BirthCertificate>(index);
+    for(RuntimeFactory.BirthCertificate certificate : certificates)
       certificate.production.close();
+
     if(utilitiesCertificate != null)
     {
       utilitiesCertificate.production.close();

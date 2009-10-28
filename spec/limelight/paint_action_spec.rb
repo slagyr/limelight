@@ -20,7 +20,7 @@ describe Limelight::PaintAction do
     local_pen = nil
     action = Limelight::PaintAction.new { |pen| local_pen = pen }
     
-    graphics = make_mock("graphics", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
+    graphics = mock("graphics", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
     action.invoke(graphics)
     
     local_pen.class.should == Limelight::Pen

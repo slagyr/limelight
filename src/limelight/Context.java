@@ -63,7 +63,7 @@ public class Context
   public static StageFrame getActiveFrame()
   {
     if(instance().frameManager != null)
-      return instance().frameManager.getActiveFrame();
+      return instance().frameManager.getFocusedFrame();
     else
       return null;
   }

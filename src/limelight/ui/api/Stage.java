@@ -3,9 +3,23 @@
 
 package limelight.ui.api;
 
+import java.awt.event.WindowEvent;
+
 public interface Stage
 {
   Theater theater();
+  
   boolean should_allow_close();
-  void closed();
+
+  void closing(WindowEvent e);
+
+  void closed(WindowEvent e);
+
+  void iconified(WindowEvent e);
+
+  void deiconified(WindowEvent e);
+
+  void activated(WindowEvent e);
+
+  void deactivated(WindowEvent e);
 }

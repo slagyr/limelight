@@ -44,7 +44,7 @@ describe Limelight::FileChooser do
   it "should return the absolute path if a file was selected" do    
     chooser = Limelight::FileChooser.new(:parent => "parent")
     chooser.chooser.should_receive(:showOpenDialog).with("parent").and_return(javax.swing.JFileChooser::APPROVE_OPTION)
-    selected_file = make_mock("selected file", :absolute_path => "selected file's absolute path")
+    selected_file = mock("selected file", :absolute_path => "selected file's absolute path")
     chooser.chooser.should_receive(:getSelectedFile).and_return(selected_file)
 
     chooser.choose_file.should == "selected file's absolute path"

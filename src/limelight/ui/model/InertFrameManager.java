@@ -15,7 +15,7 @@ public class InertFrameManager implements FrameManager
     frames.add(stageFrame);
   }
 
-  public StageFrame getActiveFrame()
+  public StageFrame getFocusedFrame()
   {
     return null;
   }

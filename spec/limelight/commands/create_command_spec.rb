@@ -23,9 +23,9 @@ describe Limelight::Commands::CreateCommand do
   end
 
   it "should create a production" do
-    production_templater = make_mock("production_templater")
+    production_templater = mock("production_templater")
     Limelight::Templates::ProductionTemplater.should_receive(:new).and_return(production_templater)
-    scene_templater = make_mock("scene_templater")
+    scene_templater = mock("scene_templater")
     Limelight::Templates::SceneTemplater.should_receive(:new).and_return(scene_templater)
     production_templater.should_receive(:generate)
     scene_templater.should_receive(:generate)
@@ -35,7 +35,7 @@ describe Limelight::Commands::CreateCommand do
 
   it "should create a scene" do
     Limelight::Templates::ProductionTemplater.should_not_receive(:new)
-    scene_templater = make_mock("scene_templater")
+    scene_templater = mock("scene_templater")
     Limelight::Templates::SceneTemplater.should_receive(:new).and_return(scene_templater)
     scene_templater.should_receive(:generate)
 

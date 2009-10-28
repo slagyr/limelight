@@ -10,7 +10,7 @@ require 'limelight/production'
 describe Limelight::Prop do
 
   before(:each) do
-    @casting_director = make_mock("casting_director", :fill_cast => nil)
+    @casting_director = mock("casting_director", :fill_cast => nil)
     @scene = Limelight::Scene.new(:casting_director => @casting_director)
     @prop = Limelight::Prop.new(:id => "root", :name => "root_class")
     @scene.illuminate
@@ -249,7 +249,7 @@ describe Limelight::Prop do
   end
 
   it "should give you a pen" do
-    graphics = make_mock("graphics", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
+    graphics = mock("graphics", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
     @prop.panel.should_receive(:getGraphics).and_return(graphics)
 
     pen = @prop.pen

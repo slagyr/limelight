@@ -47,10 +47,19 @@ module Limelight
       return stage
     end
 
-    # Lets the Theater know which stage has the limelight (currently active).
+    # Invoked when a stage, blonging to this theater becomes active.  Lets the Theater know which stage
+    # has the limelight (currently active).  Only 1 stage may be active at a time.
     #
     def stage_activated(stage)
       @active_stage = stage
+    end
+
+    # Invoked when a stage, belonging to this theater, loose it's status as the active stage. The active_stage is
+    # cleared.  Only 1 stage may be active at a time.
+    #
+    def stage_deactivated(stage)
+      @active_stage = nil
+      @production.theater_empty! if !any_visible_stages?
     end
 
     # Removes the stage from this theater.
@@ -58,7 +67,7 @@ module Limelight
     def stage_closed(stage)
       @stages.delete(stage.name)
       @active_stage = nil if @active_stage == stage
-      @production.theater_empty! if @stages.empty?
+      @production.theater_empty! if @stages.empty? || !any_visible_stages?
     end
 
     # If no Stages are added, the Theater will provide a default Stage named "Limelight".
@@ -80,6 +89,12 @@ module Limelight
 
     def build_stage(name, options)
       return Limelight::Stage.new(self, name, options)
+    end
+
+    private ###############################################
+
+    def any_visible_stages?
+     return @stages.values.any? { |s| s.visible? }  
     end
     
   end

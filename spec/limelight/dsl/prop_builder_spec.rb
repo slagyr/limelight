@@ -7,7 +7,7 @@ require 'limelight/dsl/prop_builder'
 describe Limelight::DSL::PropBuilder do
 
   before(:each) do
-    @caster = make_mock("caster", :fill_cast => nil)
+    @caster = mock("caster", :fill_cast => nil)
     @scene = Limelight::Scene.new(:name => "root", :casting_director => @caster)
   end
 
@@ -118,7 +118,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should install external props" do
-    loader = make_mock("loader", :exists? => true)
+    loader = mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("child :id => 123")
 
     root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
@@ -145,7 +145,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should fail when the external file doesn't exist" do
-    loader = make_mock("loader")
+    loader = mock("loader")
     loader.should_receive(:exists?).with("external.rb").and_return(false)
 
     begin
@@ -158,7 +158,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should fail with PropException when there's problem in the external file" do
-    loader = make_mock("loader", :exists? => true)
+    loader = mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("+")
 
     begin
@@ -172,7 +172,7 @@ describe Limelight::DSL::PropBuilder do
 
   it "should build onto an existing block" do
     prop = Limelight::Prop.new
-    scene = Limelight::Scene.new(:casting_director => make_mock(:casting_director, :fill_cast => nil))
+    scene = Limelight::Scene.new(:casting_director => mock(:casting_director, :fill_cast => nil))
     scene << prop
     builder = Limelight::DSL::PropBuilder.new(prop)
     block = Proc.new { one; two { three } }
@@ -229,7 +229,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow instance_variable when installing an external props file" do
-    loader = make_mock("loader", :exists? => true)
+    loader = mock("loader", :exists? => true)
     loader.should_receive(:load).with("external.rb").and_return("child :id => @desired_id")
 
     root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do

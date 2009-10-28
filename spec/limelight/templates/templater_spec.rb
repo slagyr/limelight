@@ -9,7 +9,7 @@ describe Limelight::Templates::Templater do
   before(:each) do
     TestDir.clean
     @src_dir = File.join(TestDir.root, "src")
-    @logger = make_mock("logger")
+    @logger = mock("logger")
     @templater = Limelight::Templates::Templater.new(TestDir.root, @src_dir)
     @templater.logger = @logger
   end

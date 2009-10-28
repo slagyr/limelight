@@ -15,7 +15,7 @@ describe Limelight::Commands::UnpackCommand do
     @mock_output = StringIO.new
     Limelight::Commands.output = @mock_output
 
-    @mock_unpacker = make_mock("unpacker")
+    @mock_unpacker = mock("unpacker")
     Limelight::Util::Packer.stub!(:new).and_return(@mock_unpacker)
     @mock_unpacker.stub!(:unpack).and_return "unpacked location"
 

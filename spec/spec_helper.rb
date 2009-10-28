@@ -9,12 +9,6 @@ Limelight::Main.new.configureTestContext
 context = Limelight::Context.instance
 context.frameManager = Java::limelight.ui.model.InertFrameManager.new
 
-def make_mock(name, stubs = {})
-  the_mock = mock(name)
-  the_mock.stubs!(stubs)
-  return the_mock
-end
-
 class Object
   def stubs!(stubs = {})
     stubs.each_pair { |key, value| self.stub!(key).and_return(value) }

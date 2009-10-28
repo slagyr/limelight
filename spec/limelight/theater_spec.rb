@@ -87,7 +87,34 @@ describe Limelight::Theater do
 
     @theater.stages.length.should == 0
     @theater.active_stage.should == nil
+  end
 
+  it "should deactivate stages" do
+    stage2 = @theater.add_stage("two")
+    @theater.stage_activated(@stage)
+    @theater.stage_deactivated(@stage)
+    @theater.active_stage.should == nil
+
+    @theater.stage_activated(stage2)
+    @theater.stage_deactivated(@stage) # this is not the active stage
+    @theater.active_stage.should == nil  # clear active stage since this implies that stage2 was not really active.   
+  end
+
+  it "should notify the production that all the stages are hidden when a stage is closed" do    
+    stage2 = @theater.add_stage("two")
+    stage2.hide
+
+    @production.should_receive(:theater_empty!)
+    @theater.stage_closed(@stage)
+  end
+  
+  it "should notify the production that all the stages are hidden when a stage is deactivated" do
+    stage2 = @theater.add_stage("two")
+    stage2.hide
+    @stage.hide
+
+    @production.should_receive(:theater_empty!)
+    @theater.stage_deactivated(@stage)
   end
 
 end

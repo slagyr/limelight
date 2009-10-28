@@ -7,7 +7,7 @@ require 'limelight/pen'
 describe Limelight::Pen do
 
   before(:each) do
-    @context = make_mock("context", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
+    @context = mock("context", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
     @pen = Limelight::Pen.new(@context)
   end
   

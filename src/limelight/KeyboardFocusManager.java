@@ -35,7 +35,11 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     this.frame = frame;
     focusComponent(this.frame);
 //    focusedPanel = frame.getRoot();
+  }
 
+  public Frame getFocusedFrame()
+  {
+    return frame;
   }
 
   private void focusComponent(Component newlyFocused)
@@ -103,5 +107,16 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
   public Component getFocuedComponent()
   {
     return getGlobalFocusOwner();
+  }
+
+  public void releaseFrame(Frame frame)
+  {
+    if(this.frame == frame)
+    {
+      this.frame = null;
+      focusedPanel = null;
+      setGlobalFocusedWindow(null);
+      setGlobalFocusOwner(null);
+    }
   }
 }

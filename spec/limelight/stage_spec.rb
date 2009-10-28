@@ -125,6 +125,29 @@ describe Limelight::Stage do
     @stage.frame.isVital.should == false
   end
 
+  it "should notify theater when activated" do
+    @theater.should_receive(:stage_activated).with(@stage)
+    @stage.activated(nil)
+  end
+
+  it "should respond to stage events" do
+    e = mock("window event")
+    @theater.stub!(:stage_deactivated)
+    @theater.stub!(:stage_closed)
+    
+    @stage.activated(e)
+    @stage.deactivated(e)
+    @stage.iconified(e)
+    @stage.deiconified(e)
+    @stage.closing(e)
+    @stage.closed(e)
+  end
+
+  it "should notify theater upon deactivation" do
+    @theater.should_receive(:stage_deactivated).with(@stage)
+    @stage.deactivated(nil)
+  end
+
   describe "when opening a scene" do
 
     before(:each) do
@@ -176,10 +199,16 @@ describe Limelight::Stage do
       @stage.open(@scene)
     end
 
-    it "should clean up on close" do
-      @stage.open(@scene)
+    it "should close by closing the frame" do
+      @stage.frame.should_receive(:close)
 
       @stage.close
+    end
+
+    it "should clean when closed" do
+      @stage.open(@scene)
+
+      @stage.closed(nil)
 
       @scene.visible?.should == false
       @stage.current_scene.should == nil
@@ -200,7 +229,7 @@ describe Limelight::Stage do
       @stage.open(@scene)
       @theater["George"].should be(@stage)
 
-      @stage.close      
+      @stage.closed(nil)
       @theater["George"].should == nil
     end
 
