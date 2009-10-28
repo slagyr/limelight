@@ -5,31 +5,59 @@ require 'limelight/commands/command'
 
 module Limelight
 
-  # Used to open and manage Limelight Productions.
+  # Limelight::Main is used, when installed as a gem, to work with Limelight production.  It provides
+  # a handful of utilities to create, bundle, and develop with Limelight.
   #
-  # Productions may have a single scene or multiple scenes.
+  # For example, running the following command will generate a new Limelight production for you.
   #
-  # Single-Scene Production Directory Structure:
+  #   jruby -S limelight create production <production name>
   #
-  #   - calculator
-  #   | - props.rb
-  #   | - styles.rb
-  #   | - players
-  #     | - <player_name>.rb
-  #     | - *
+  # Assuming you used "sandbox" as the name or your production, you'd end up with the following directory structure
+  # generated for you.
+  #
+  #   - sandbox
   #   | - stages.rb
+  #   | - styles.rb
   #   | - production.rb
+  #   | - default_scene
+  #     | - props.rb
+  #     | - styles.rb
+  #     | - players
+  #       | - <player_name>.rb
+  #   | - spec
+  #     | - spec_helper.rb
+  #     | - default_scene
+  #       | - default_scene_spec.rb
   #
-  # In a Single-Scene production, the scene name and production name are the same.  As seen above, both names are 'calculator'.
-  # Inside the scene there are three files and one directory, all of which are options.
+  # In this case, you've just created a production called "Sandbox".  By convention, the name of the production matches the name of the root directory.
+  # Notice that there are 3 files and 2 directories.  Let's start by talking about the files.
   #
-  # == props.rb
-  # This file defines the props contained in the scene
-  # See Limelight::PropBuilder
+  # == stages.rb
+  # This file uses a DSL to configure the stages that will be used in the production.
+  # See Limelight::StagesBuilder
   #
   # == styles.rb
-  # This file defines the styles used in the scene
+  # This file defines production level styles. Each scene may have their own styles but styles defined here will be avaiable to all scenes.
   # See Limelight::StylesBuilder
+  #
+  # == production.rb
+  # This file defines a module names Production where you can defined hooks and behavior for your production.
+  # See Limelight::Production
+  #
+  # For the most part, each directory inside the root directory is a scene.  This production has one scene named "default_scene" (this is the default name).
+  # Each scene starts out containing 2 file and a directory.  Let's look at those..
+  #
+  # == props.rb
+  # This file defines the structure of your scene.  Scenes are composed of Props.  In this file you use the Prop DSL to
+  # specify all the components of your scene.
+  # See Limelight::PropBuilder
+  # See Limelight::Prop
+  #
+  # == styles.rb
+  # Similar to the styles.rb file located in the root directory, this file contains definitions of styles.  However,
+  # all styles defined here are only available to the containgin scene.  Styles define the look and feel of your scenes.
+  # See Limelight::StylesBuilder
+  # See Limelight::Style
   #
   # == players
   # A directory containing all the players used in the scene.  Players are modules that are included by Prop objects.
@@ -37,40 +65,9 @@ module Limelight
   # Inside 'wall.rb' you would define a module named 'Wall'.  All behavior defined in the Wall modules will automatically be included
   # in every prop named 'wall'.
   #
-  # == stages.rb
-  # This file uses a DSL to configure the stages that will be used in the production.
-  # See Limelight::StagesBuilder
+  # So there's a brief overview for you.  Besure to check out the Limelight Docs production.  You can find it by installing Limelight and starting it up.
   #
-  # == production.rb
-  # This file uses a DSL to configure the current Production.
-  # See Limelight::ProductionBuilder
-  #
-  # Multiple-Scene Production Directory Structure:
-  #
-  #   - sandbox
-  #   | - stages.rb
-  #   | - production.rb
-  #   | - styles.rb
-  #   | - players
-  #     | - <player_name>.rb
-  #   | - fader
-  #     | - props.rb
-  #     | - styles.rb
-  #     | - players
-  #       | - <player_name>.rb
-  #   | - floater
-  #     | - props.rb
-  #     | - styles.rb
-  #     | - players
-  #       | - <player_name>.rb
-  #
-  # In a Multiple-Scene production, the production acquires that name of the root directory.  In this case the production is named 'sandbox'.
-  # Each directory inside the root directory is a scene.  This production has two scenes named 'fader' and 'floater'.  Each scene is structured
-  # the same as in a Single-Scene production with the exception of the 'stages.rb' file.  This file is specific to the production.  The production
-  # may contain a 'styles.rb' which contains styles used by multiple scenes.  If some players are used in multiple Scenes, then it is useful to
-  # to create a players directory in the Production root to hold the common players. Other files may exist in the directory structure and they will not
-  # conflict with Limelight.
-  #
+  # For more info on available commands: 
   # See Limelight::Commands
   #
   class Main
