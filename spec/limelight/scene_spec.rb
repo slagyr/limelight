@@ -8,7 +8,7 @@ require 'limelight/dsl/styles_builder'
 describe Limelight::Scene do
 
   before(:each) do
-    @casting_director = make_mock("casting_director", :fill_cast => nil)
+    @casting_director = mock("casting_director", :fill_cast => nil)
     @scene = Limelight::Scene.new(:casting_director => @casting_director)
   end
 

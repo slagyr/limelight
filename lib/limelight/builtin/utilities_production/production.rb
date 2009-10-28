@@ -44,7 +44,7 @@ module Production
 
   def alert(message)
     @alert_monitor = @monitor.new_cond
-    load_alert_scene(message)
+    load_alert_scene(message.to_s)
     @monitor.synchronize{ @alert_monitor.wait }
     @alert_stage.close
     return @alert_response

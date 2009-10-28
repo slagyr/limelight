@@ -47,8 +47,8 @@ public class Main
     try
     {
       configureOS();
-      configureSystemProperties();
       configureContext();
+      configureSystemProperties();
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
@@ -88,7 +88,7 @@ public class Main
   public void configureSystemProperties()
   {
     System.setProperty("jruby.interfaces.useProxy", "true");
-    context.os.configureSystemProperties();
+    Context.instance().os.configureSystemProperties();
   }
 
   static void configureOS()

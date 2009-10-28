@@ -170,6 +170,27 @@ module Limelight
       return extendable_styles.merge(new_styles)
     end
 
+    # Closes the specified production.  The producer will trigger the hook, production_closing and production_closed,
+    # to keep the production aware of it's status.  The Studio will also be informed of the closure.  If no
+    # production remain opened, then the Limelight runtine will exit.
+    #
+    def close(production)
+      return if production.closed?
+      production.closed = true
+      return Thread.new do
+        begin
+          Thread.pass
+          production.production_closing
+          production.theater.close
+          production.production_closed
+          Context.instance.studio.production_closed(production)
+        rescue StandardError => e
+          puts e
+          puts e.backtrace
+        end
+      end
+    end
+
     def establish_production #:nodoc:
       @production.producer = self
       @production.theater = @theater

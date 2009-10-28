@@ -7,11 +7,10 @@ import junit.framework.TestCase;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.MockStageFrame;
 import limelight.ui.model.StageFrame;
-import limelight.ui.api.MockStage;
-import limelight.ui.api.MockTheater;
 import limelight.ui.api.MockStudio;
 import limelight.Context;
 import limelight.MockContext;
+import limelight.KeyboardFocusManager;
 
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -43,13 +42,9 @@ public class AlertFrameManagerTest extends TestCase
 
   public void testTheaterIsNotifiedOfActivatedStage() throws Exception
   {
-    MockStage stage = new MockStage();
-    MockTheater theater = stage.theater;
-    StageFrame frame = new StageFrame(stage);
+    manager.windowActivated(new WindowEvent(frame, 1));
 
-    manager.windowGainedFocus(new WindowEvent(frame, 1));
-
-    assertEquals(stage, theater.activatedStage);
+    assertEquals(true, frame.activated);
   }
 
   public void testShouldAskStageFrameIfItCanClose() throws Exception
@@ -95,10 +90,10 @@ public class AlertFrameManagerTest extends TestCase
   public void testGetActiveFrameWhenNoneHasGainedFocus() throws Exception
   {
     manager.watch(frame);
-    assertEquals(null, manager.getActiveFrame());
+    assertEquals(null, manager.getFocusedFrame());
 
     frame.visible = true;
-    assertEquals(frame, manager.getActiveFrame());
+    assertEquals(frame, manager.getFocusedFrame());
   }
 
   public void testGetVisibleFrames() throws Exception
@@ -136,5 +131,40 @@ public class AlertFrameManagerTest extends TestCase
     manager.windowClosed(new WindowEvent(frame, 1));
 
     assertEquals(true, frame.wasClosed);
-  }  
+  }
+
+  public void testTellsKeyboradFocusManagerToReleaseStageUponClosing() throws Exception
+  {
+    KeyboardFocusManager keyboard = new KeyboardFocusManager();
+    Context.instance().keyboardFocusManager = keyboard;
+    keyboard.focusFrame(frame);
+
+    manager.windowClosed(new WindowEvent(frame, 1));
+
+    assertEquals(null, keyboard.getFocusedWindow());
+    assertEquals(null, keyboard.getFocusedFrame());
+  }
+
+  public void testStageNotifiedWhenActivationLost() throws Exception
+  {
+    frame.activated = true;
+    manager.windowDeactivated(new WindowEvent(frame, 1));
+    assertEquals(false, frame.activated);
+  }
+
+  public void testFrameNotifiedWhenIconifiedAndDeiconified() throws Exception
+  {
+    manager.windowIconified(new WindowEvent(frame, 1));
+    assertEquals(true, frame.iconified);                
+    manager.windowDeiconified(new WindowEvent(frame, 1));
+    assertEquals(false, frame.iconified);
+  }
+
+  public void testFrameNotifiedWhenActivatedAndDeactivated() throws Exception
+  {
+    manager.windowActivated(new WindowEvent(frame, 1));
+    assertEquals(true, frame.activated);                
+    manager.windowDeactivated(new WindowEvent(frame, 1));
+    assertEquals(false, frame.activated);
+  }
 }

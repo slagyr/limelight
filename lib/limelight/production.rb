@@ -3,7 +3,9 @@
 
 require 'limelight/limelight_exception'
 require 'limelight/file_loader'
+require 'limelight/dsl/styles_builder'
 require 'drb'
+
 
 module Limelight
 
@@ -26,6 +28,7 @@ module Limelight
 
     attr_reader :name, :root
     attr_accessor :producer, :theater
+    attr_accessor :closed #:nodoc:
 
 
     # Users typically need not create Production objects.
@@ -77,7 +80,7 @@ module Limelight
     def gems_directory
       return @root.path_to("__resources/gems/gems")
     end
-    
+
     # Returns the path to the productions gems root
     #
     def gems_root
@@ -88,7 +91,7 @@ module Limelight
     #
     def scene_directory(name)
       return @root.root if name == :root
-        return @root.path_to(name)
+      return @root.path_to(name)
     end
 
     # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"
@@ -137,22 +140,24 @@ module Limelight
     def production_closed
     end
 
+    # returns true if the production has been closed.
+    #
+    def closed?
+      return @closed
+    end
+
     # Closes the production. If there are no more productions open, the Limelight runtime will shutdown.
+    # The production will actually delegate to it's producer and the producer will close the production down.
     #
     def close
-      return if @closed
-      self.production_closing
-      @theater.close
-      @closed = true
-      self.production_closed
-      Context.instance.studio.production_closed(self)
+      @producer.close(self)
     end
 
     # Called when the last stage in this production's theater is closed.  If the allow_close? returns true
     # this production will be closed.
     #
-    def theater_empty!    
-      close if allow_close?
+    def theater_empty!
+      close if allow_close? && !closed?
     end
 
     # Returned the name of the default scene.  This is only used when there are not stages defined in the production.
@@ -180,7 +185,9 @@ module Limelight
     alias :setName :name= #:nodoc:
     alias :allowClose :allow_close? #:nodoc: 
 
-    def callMethod(name, args) #:nodoc:   
+    def callMethod(name, java_obj_array) #:nodoc:
+      args = []
+      java_obj_array.length.times { |i| args << java_obj_array[i] }
       send(name.to_sym, *args)
     end
 

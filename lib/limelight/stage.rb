@@ -199,15 +199,6 @@ module Limelight
     #
     def close
       @frame.close
-      closed
-    end
-
-    # Invoked when the stage has been closed.  Users need not call it. 
-    #
-    def closed
-      @current_scene.visible = false if @current_scene
-      @current_scene = nil
-      @theater.stage_closed(self)
     end
 
     # Loads a scene on the Stage.  If the Stage is currently hosting a Scene, the original Scene will be removed and
@@ -259,6 +250,68 @@ module Limelight
 
     def stub_current_scene(scene) #:nodoc:
       @current_scene = scene
+    end
+
+    # returns true if the stage has been closed.  Closed stages may not be reopened.
+    #
+    def closed?
+      return @frame.closed?
+    end
+
+    # Invoked when the stage is being closed.
+    # System hook that should NOT be called by you.
+    #
+    def closing(e)
+    end
+
+    # Invoked when the stage has been closed.
+    # System hook that should NOT be called by you.
+    #
+    def closed(e)
+      @current_scene.visible = false if @current_scene
+      @current_scene = nil
+      @theater.stage_closed(self)
+    end
+
+    # Invoked when the stage has gained focus on the desktop.  Only 1 stage my have focus at a time.
+    # System hook that should NOT be called by you.
+    #
+    def focus_gained(e)
+      @theater.stage_activated(self)
+    end
+
+    # Invoked when the stage has lost focus on the desktop.  Only 1 stage my have focus at a time.
+    # System hook that should NOT be called by you.
+    #
+    def focus_lost(e)
+    end
+
+    # Invoked when the stage has been iconified.  This occurs when the stage is no longer visible on the desktop
+    # and an icon for the stage has been added to the OS's taskbar or dock.
+    # System hook that should NOT be called by you.
+    #
+    def iconified(e)
+    end
+
+    # Invoked when the stage has been deiconified.  This occurs when the icon for the stage has been removed from the
+    # taskbar or dock, and the stage is again visible on the desktop.  
+    # System hook that should NOT be called by you.
+    #
+    def deiconified(e)
+    end
+
+    # Invoked when the stage has become the active stage on the desktop.  Only 1 stage my be active at a time.
+    # System hook that should NOT be called by you.
+    #
+    def activated(e)
+      @theater.stage_activated(self)
+    end
+
+    # Invoked when the stage has lost status as the active stage.  Only 1 stage my have focus at a time.
+    # System hook that should NOT be called by you.
+    #
+    def deactivated(e)
+      @theater.stage_deactivated(self)  
     end
 
     protected #############################################

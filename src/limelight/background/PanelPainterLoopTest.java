@@ -41,7 +41,7 @@ public class PanelPainterLoopTest extends TestCase
   
   public void testGetRootWithActiveFrame() throws Exception
   {
-    frameManager.activeFrame = activeFrame;
+    frameManager.focusedFrame = activeFrame;
 
     assertEquals(activeFrame.getRoot(), loop.getActiveRoot());
   }
@@ -53,7 +53,7 @@ public class PanelPainterLoopTest extends TestCase
   
   public void testShouldBeIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
   {
-    frameManager.activeFrame = activeFrame;
+    frameManager.focusedFrame = activeFrame;
     assertEquals(false, activeFrame.getRoot().hasPanelsNeedingLayout());
     assertEquals(false, activeFrame.getRoot().hasDirtyRegions());
     assertEquals(true, loop.shouldBeIdle());
@@ -61,7 +61,7 @@ public class PanelPainterLoopTest extends TestCase
 
   public void testShouldNotBeIdleWhenPanelsNeedLayout() throws Exception
   {
-    frameManager.activeFrame = activeFrame;
+    frameManager.focusedFrame = activeFrame;
     activeRoot.addPanelNeedingLayout(new MockPanel());
 
     assertEquals(false, loop.shouldBeIdle());
@@ -69,7 +69,7 @@ public class PanelPainterLoopTest extends TestCase
 
   public void testShouldNotBeIdleWhenThereAreDirtyRegions() throws Exception
   {
-    frameManager.activeFrame = activeFrame;
+    frameManager.focusedFrame = activeFrame;
     activeRoot.addDirtyRegion(new Rectangle(0, 0, 1, 1));
 
     assertEquals(false, loop.shouldBeIdle());

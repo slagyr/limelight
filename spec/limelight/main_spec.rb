@@ -12,8 +12,8 @@ describe Limelight::Main do
   end
 
   it "should run the specified command" do
-    command_class = make_mock("command_class")
-    command = make_mock("command")
+    command_class = mock("command_class")
+    command = mock("command")
 
     Limelight::Commands.should_receive(:[]).with("mock").and_return(command_class)
     command_class.should_receive(:new).and_return(command)

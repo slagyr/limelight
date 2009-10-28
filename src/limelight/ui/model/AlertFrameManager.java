@@ -4,17 +4,18 @@
 package limelight.ui.model;
 
 import limelight.Context;
-import limelight.ui.api.Stage;
+
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.ArrayList;
 
-public class AlertFrameManager implements WindowFocusListener, WindowListener, FrameManager
+public class AlertFrameManager implements WindowFocusListener, WindowListener, WindowStateListener, FrameManager
 {
-  private StageFrame activeFrame;
+  private StageFrame focusedFrame;
   private final HashSet<StageFrame> frames;
   private StageFrame lastFrameAdded;
 
@@ -25,11 +26,6 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public void windowGainedFocus(WindowEvent e)
   {
-    Window window = e.getWindow();
-    if(window instanceof StageFrame)
-    {
-      activateFrame(window);
-    }
   }
 
   public void windowLostFocus(WindowEvent e)
@@ -40,6 +36,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
     if(!frames.contains(frame))
     {
+      frame.addWindowStateListener(this);
       frame.addWindowFocusListener(this);
       frame.addWindowListener(this);
       frames.add(frame);
@@ -55,7 +52,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   {
     StageFrame frame = (StageFrame) e.getWindow();
     if(frame.shouldAllowClose())
-      frame.close();
+      frame.close(e);
   }
 
   public synchronized void windowClosed(WindowEvent e)
@@ -63,10 +60,12 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
     StageFrame frame = ((StageFrame) e.getWindow());
     if(lastFrameAdded == frame)
       lastFrameAdded = null;
-    if(activeFrame == frame)
-      activeFrame = null;
+    if(focusedFrame == frame)
+      focusedFrame = null;
+    if(Context.instance().keyboardFocusManager != null)
+      Context.instance().keyboardFocusManager.releaseFrame(frame);
     frames.remove(frame);
-    frame.closed();
+    frame.closed(e);
     if(frame.isVital() && !hasVisibleVitalFrame())
       Context.instance().attemptShutdown();
   }
@@ -83,25 +82,37 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
 
   public void windowIconified(WindowEvent e)
   {
+    ((StageFrame)e.getWindow()).iconified(e);
   }
 
   public void windowDeiconified(WindowEvent e)
   {
+    ((StageFrame)e.getWindow()).deiconified(e);
   }
 
   public void windowActivated(WindowEvent e)
   {
+    Window window = e.getWindow();
+    if(window instanceof StageFrame)
+    {
+      activateFrame(e);
+    }
   }
 
   public void windowDeactivated(WindowEvent e)
   {
+    ((StageFrame)e.getWindow()).deactivated(e);
   }
 
-  public StageFrame getActiveFrame()
+  public void windowStateChanged(WindowEvent e)
   {
-    if(activeFrame == null && lastFrameAdded != null && lastFrameAdded.isVisible())
-      activateFrame(lastFrameAdded);
-    return activeFrame;
+  }
+
+  public StageFrame getFocusedFrame()
+  {
+    if(focusedFrame == null && lastFrameAdded != null && lastFrameAdded.isVisible())
+      activateFrame(new WindowEvent(lastFrameAdded, WindowEvent.WINDOW_ACTIVATED));
+    return focusedFrame;
   }
 
   public boolean isWatching(StageFrame frame)
@@ -123,20 +134,19 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, F
   public synchronized void closeAllFrames()
   {
     for(StageFrame frame : frames)
-      frame.close();
+      frame.close(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
   }
 
   // private //////////////////////////////////////////////
 
-  private void activateFrame(Window window)
+  private void activateFrame(WindowEvent e)
   {
-    activeFrame = (StageFrame) window;
+    focusedFrame = (StageFrame) e.getWindow();
 
     if(Context.instance().keyboardFocusManager != null)
-      Context.instance().keyboardFocusManager.focusFrame(activeFrame);
+      Context.instance().keyboardFocusManager.focusFrame(focusedFrame);
 
-    Stage stage = activeFrame.getStage();
-    stage.theater().stage_activated(stage);
+    focusedFrame.activated(e);
   }
 
   public void getVisibleFrames(ArrayList<StageFrame> result)

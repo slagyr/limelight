@@ -34,8 +34,8 @@ public class UtilitiesProduction implements Production
     return production.callMethod(name, args);
   }
 
-  public Object alert(String message)
-  {
+  public Object alert(Object message)
+  {   
     return production.callMethod("alert", message);
   }
 

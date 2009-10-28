@@ -7,8 +7,8 @@ require 'limelight/production'
 describe Limelight::Production, "Instance methods" do
 
   before(:each) do
-    @producer = make_mock("producer")
-    @theater = make_mock("theater")
+    @producer = mock("producer")
+    @theater = mock("theater")
     @studio = Limelight::Studio.install
     @production = Limelight::Production.new("/tmp")
     @production.producer = @producer
@@ -57,11 +57,8 @@ describe Limelight::Production, "Instance methods" do
     @production.allow_close?.should == true
   end
 
-  it "should tell studio it closed and triger it's closing events" do
-    @production.should_receive(:production_closing)
-    @studio.should_receive(:production_closed).with(@production)
-    @production.should_receive(:production_closed)
-    @theater.should_receive(:close)
+  it "should tell producer to do the closing" do
+    @producer.should_receive(:close).with(@production)
 
     @production.close
   end

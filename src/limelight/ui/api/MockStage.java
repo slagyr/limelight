@@ -3,12 +3,17 @@
 
 package limelight.ui.api;
 
+import java.awt.event.WindowEvent;
+
 
 public class MockStage implements Stage
 {
   public MockTheater theater;
   public boolean shouldAllowClose;
   public boolean wasClosed;
+  public boolean iconified;
+  public boolean activated;
+  public boolean notifiedOfClosing;
 
   public MockStage()
   {
@@ -25,8 +30,33 @@ public class MockStage implements Stage
     return shouldAllowClose;
   }
 
-  public void closed()
+  public void closing(WindowEvent e)
+  {
+    notifiedOfClosing = true;
+  }
+
+  public void closed(WindowEvent e)
   {
     wasClosed = true;
+  }
+
+  public void iconified(WindowEvent e)
+  {
+    iconified = true;
+  }
+
+  public void deiconified(WindowEvent e)
+  {
+    iconified = false;
+  }
+
+  public void activated(WindowEvent e)
+  {
+    activated = true;
+  }
+
+  public void deactivated(WindowEvent e)
+  {
+    activated = false;
   }
 }

@@ -20,8 +20,8 @@ describe Limelight::FileFilter do
     filter = Limelight::FileFilter.new("Some Description") { |file| file.name == "good" }
     
     filter.getDescription().should == "Some Description"
-    bad_file = make_mock("file", :name => "bad")
-    good_file = make_mock("file", :name => "good")
+    bad_file = mock("file", :name => "bad")
+    good_file = mock("file", :name => "good")
     filter.accept(bad_file).should == false
     filter.accept(good_file).should == true
   end

@@ -16,7 +16,7 @@ describe Limelight::Commands::PackCommand do
   end
 
   it "should pack a production" do
-    mock_packer = make_mock("packer")
+    mock_packer = mock("packer")
     Limelight::Util::Packer.should_receive(:new).and_return(mock_packer)
     mock_packer.should_receive(:pack).with("production_to_pack")
 

@@ -4,10 +4,8 @@
 package limelight.ui.model;
 
 import limelight.Context;
-import limelight.os.OS;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
-import limelight.util.Debug;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
@@ -40,6 +38,8 @@ public class StageFrame extends JFrame implements KeyListener
   private boolean vital = true;
   private Dimension previousSize;
   private boolean opened;
+  private boolean closing;
+  private boolean closed;
 
   protected StageFrame()
   {
@@ -67,14 +67,31 @@ public class StageFrame extends JFrame implements KeyListener
 
   public void close()
   {
+    close(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+  }
+
+  public void close(WindowEvent e)
+  {
+    if(closing)
+      return;
+    closing = true;
+    stage.closing(e);
     setVisible(false);
     exitKioskOrFullscreenIfNeeded();
     dispose();
   }
 
-  public void closed()
+  public void closed(WindowEvent e)
   {
-    stage.closed(); 
+    if(closed)
+      return;
+    closed = true;
+    stage.closed(e); 
+  }
+
+  public boolean isClosed()
+  {
+    return closed;
   }
 
   public void open()
@@ -304,6 +321,26 @@ public class StageFrame extends JFrame implements KeyListener
   public void setVital(boolean value)
   {
     vital = value;
+  }
+
+  public void iconified(WindowEvent e)
+  {
+    stage.iconified(e);
+  }
+
+  public void deiconified(WindowEvent e)
+  {
+    stage.deiconified(e);
+  }
+
+  public void activated(WindowEvent e)
+  {
+    stage.activated(e);
+  }
+
+  public void deactivated(WindowEvent e)
+  {
+    stage.deactivated(e);
   }
 
   // Protected ////////////////////////////////////////////
