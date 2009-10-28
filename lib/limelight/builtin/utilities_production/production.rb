@@ -3,7 +3,7 @@
 
 require 'monitor'
 
-module Production
+module Production #:nodoc:
 
   def production_opening
     @monitor = Monitor.new
