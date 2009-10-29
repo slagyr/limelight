@@ -58,9 +58,14 @@ describe Limelight::Production, "Instance methods" do
   end
 
   it "should tell producer to do the closing" do
-    @producer.should_receive(:close).with(@production)
+    @producer.should_receive(:close)
 
     @production.close
+  end
+
+  it "should publish on drb" do
+    @producer.should_receive(:publish_production_on_drb).with(9000)
+    @production.publish_on_drb(9000)
   end
 
   it "should handle empty theater" do

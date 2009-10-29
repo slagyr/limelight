@@ -10,4 +10,5 @@ public interface Production
   boolean allowClose();
   void close();
   Object callMethod(String name, Object... args);
+  void publish_on_drb(int port);
 }

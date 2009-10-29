@@ -150,7 +150,14 @@ module Limelight
     # The production will actually delegate to it's producer and the producer will close the production down.
     #
     def close
-      @producer.close(self)
+      @producer.close
+    end
+
+    # Publish this production using DRb on the specified port.  The production will delegate to its producer to
+    # actually do the publishing.
+    #
+    def publish_on_drb(port)
+      @producer.publish_production_on_drb(port)
     end
 
     # Called when the last stage in this production's theater is closed.  If the allow_close? returns true

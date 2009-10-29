@@ -13,11 +13,13 @@ require 'limelight/production'
 require 'limelight/gems'
 require 'limelight/util/downloader'
 require 'limelight/version'
+require 'drb'
 
 module Limelight
 
   # A Producer has the hefty responsibility of producing Productions.  Given a directory, it will load the neccessary
-  # files and create all the neccessary objects to bring a Production to life.
+  # files and create all the neccessary objects to bring a Production to life.    A producer will produce only
+  # one production.
   #
   # For directory structures, see Limelight::Main
   #
@@ -47,7 +49,7 @@ module Limelight
       end
     end
 
-    attr_reader :theater, :production
+    attr_reader :theater, :production, :drb_service
     attr_writer :builtin_styles
 
     # A Production name, or root directory, must be provided. If not Theater is provided, one will be created.
@@ -174,21 +176,32 @@ module Limelight
     # to keep the production aware of it's status.  The Studio will also be informed of the closure.  If no
     # production remain opened, then the Limelight runtine will exit.
     #
-    def close(production)
-      return if production.closed?
-      production.closed = true
+    def close
+      return if @production.closed?
+      @production.closed = true
       return Thread.new do
         begin
           Thread.pass
-          production.production_closing
-          production.theater.close
-          production.production_closed
-          Context.instance.studio.production_closed(production)
+          @production.production_closing
+          @production.theater.close
+          @production.production_closed
+          @drb_service.stop_service if @drb_service
+          Context.instance.studio.production_closed(@production)
         rescue StandardError => e
           puts e
           puts e.backtrace
         end
       end
+    end
+
+    # Publish the production, using DRb, on the specified port.  This is useful for testing or remotely controling
+    # your production.  Publilshing productions on DRb is typically accomplished by using the --drb_port option
+    # of the open command. eg.
+    #
+    #   jruby -S limelight open --drb_port=9000 my_production
+    #
+    def publish_production_on_drb(port)
+      @drb_service = DRb.start_service("druby://localhost:#{port}", @production)
     end
 
     def establish_production #:nodoc:

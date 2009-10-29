@@ -2,6 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/limelight_exception'
+require 'thread'
 
 module Limelight
 
@@ -18,12 +19,13 @@ module Limelight
     def initialize(production)
       @production = production
       @stages = {}
+      @mutex = Mutex.new
     end
 
     # Returns an Array of Stages that belong to this Theater.
     #
     def stages
-      return @stages.values
+      return @mutex.synchronize { @stages.values }
     end
 
     # Returns true if the theater has at least one stage
@@ -35,7 +37,7 @@ module Limelight
     # Returns the Stage with the spcified name, nil if none exist with the specified name.
     #
     def [](stage_name)
-      return @stages[stage_name]
+      return @mutex.synchronize { @stages[stage_name] }
     end
 
     # Adds a Stage to the Theater.  Raises an exception is the name of the Stage is duplicated.
@@ -43,7 +45,7 @@ module Limelight
     def add_stage(name, options = {})
       raise LimelightException.new("Duplicate stage name: '#{name}'") if @stages[name]
       stage = build_stage(name, options)
-      @stages[name] = stage
+      @mutex.synchronize { @stages[name] = stage }
       return stage
     end
 
@@ -65,9 +67,9 @@ module Limelight
     # Removes the stage from this theater.
     #
     def stage_closed(stage)
-      @stages.delete(stage.name)
+      @mutex.synchronize { @stages.delete(stage.name) }
       @active_stage = nil if @active_stage == stage
-      @production.theater_empty! if @stages.empty? || !any_visible_stages?
+      @production.theater_empty! if !any_stages? || !any_visible_stages?
     end
 
     # If no Stages are added, the Theater will provide a default Stage named "Limelight".
@@ -80,8 +82,9 @@ module Limelight
     # Close this theater.  All stages in this theater will be closed and the active_stage will be nil'ed.
     #
     def close
-      @stages.values.each { |stage| stage.close }
-      @stages.clear
+      stages_to_close = @mutex.synchronize { @stages.values.dup }
+      stages_to_close.each { |stage| stage.close }
+      @mutex.synchronize { @stages.clear }
       @active_stage = nil
     end
 
@@ -93,8 +96,12 @@ module Limelight
 
     private ###############################################
 
+    def any_stages?
+      return @mutex.synchronize { @stages.empty? }
+    end
+
     def any_visible_stages?
-     return @stages.values.any? { |s| s.visible? }  
+     return @mutex.synchronize { @stages.values.any? { |s| s.visible? } }  
     end
     
   end

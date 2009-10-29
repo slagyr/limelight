@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 $LIMELIGHT_LIB = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-$: << $LIMELIGHT_LIB unless $:.include?($LIMELIGHT_LIB)
+$:.unshift $LIMELIGHT_LIB unless $:.include?($LIMELIGHT_LIB)
 $LIMELIGHT_HOME = File.expand_path(File.join($LIMELIGHT_LIB, ".."))
 
 if Java::java.lang.System.getProperty("limelight.home").nil?

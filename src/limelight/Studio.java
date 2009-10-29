@@ -20,11 +20,13 @@ import java.io.ByteArrayOutputStream;
 public class Studio
 {
   private static Studio instance;
-  private List<RuntimeFactory.BirthCertificate> index;
+  private List<ProductionWrapper> index;
   public Thread shutdownThread;
   private boolean isShutdown;
   private boolean isShuttingDown;
   private RuntimeFactory.BirthCertificate utilitiesCertificate;
+  private boolean publishingOnDRb;
+  private int nextDRbPort;
 
   public static Studio install()
   {
@@ -46,7 +48,7 @@ public class Studio
 
   public Studio()
   {
-    index = new LinkedList<RuntimeFactory.BirthCertificate>();
+    index = new LinkedList<ProductionWrapper>();
   }
 
   public Production open(String productionPath)
@@ -57,7 +59,8 @@ public class Studio
       RuntimeFactory.BirthCertificate certificate = Context.instance().runtimeFactory.spawn(src);
       if(certificate != null)
       {
-        add(certificate);
+        ProductionWrapper wrapper = wrapIt(certificate);
+        add(wrapper);
         return certificate.production;
       }
       else
@@ -79,8 +82,8 @@ public class Studio
 
     isShuttingDown = true;
 
-    for(RuntimeFactory.BirthCertificate certificate : certificates())
-      certificate.production.close();
+    for(ProductionWrapper wrappers : wrappers())
+      wrappers.production.close();
 
     if(utilitiesCertificate != null)
     {
@@ -100,57 +103,48 @@ public class Studio
     shutdownThread.start();
   }
 
-  public void add(RuntimeFactory.BirthCertificate certificate)
+  public void add(ProductionWrapper wrapper)
   {
-    adjustNameIfNeeded(certificate.production);
+    adjustNameIfNeeded(wrapper.production);
     synchronized(index)
     {
-      index.add(certificate);
+      index.add(wrapper);
     }
   }
 
   public Production get(String name)
   {
-    for(RuntimeFactory.BirthCertificate certificate : certificates())
+    for(ProductionWrapper wrapper : wrappers())
     {
-      if(name.equals(certificate.production.getName()))
-        return certificate.production;
+      if(name.equals(wrapper.production.getName()))
+        return wrapper.production;
     }
     return null;
   }
 
   public boolean shouldAllowShutdown()
   {
-    for(RuntimeFactory.BirthCertificate certificate : certificates())
+    for(ProductionWrapper wrapper : wrappers())
     {
-      if(!certificate.production.allowClose())
+      if(!wrapper.production.allowClose())
         return false;
     }
     return true;
   }
 
-  private ArrayList<RuntimeFactory.BirthCertificate> certificates()
-  {
-    ArrayList<RuntimeFactory.BirthCertificate> certificates = new ArrayList<RuntimeFactory.BirthCertificate>();
-    synchronized(index)
-    {
-      certificates.addAll(index);
-    }
-    return certificates;
-  }
-
   public void productionClosed(Production production)
   {
-    RuntimeFactory.BirthCertificate certificate = certificateFor(production);
-    if(certificate == null)
+    ProductionWrapper wrapper = wrapperFor(production);
+    if(wrapper == null)
       return;
 
     synchronized(index)
     {
-      index.remove(certificate);
+      index.remove(wrapper);
     }
 
-    Context.instance().runtimeFactory.terminate(certificate);
+    wrapper.production = null;
+    Context.instance().runtimeFactory.terminate(wrapper.certificate);
     if(index.isEmpty())
       Context.instance().shutdown();
   }
@@ -158,7 +152,7 @@ public class Studio
   public List<Production> getProductions()
   {
     ArrayList<Production> result = new ArrayList<Production>();
-    for(RuntimeFactory.BirthCertificate certificate : index)
+    for(ProductionWrapper certificate : index)
       result.add(certificate.production);
     return result;
   }
@@ -227,13 +221,50 @@ public class Studio
     }
   }
 
-  private RuntimeFactory.BirthCertificate certificateFor(Production production)
+  private ArrayList<ProductionWrapper> wrappers()
   {
-    for(RuntimeFactory.BirthCertificate certificate : certificates())
+    ArrayList<ProductionWrapper> wrappers = new ArrayList<ProductionWrapper>();
+    synchronized(index)
     {
-      if(production == certificate.production)
-        return certificate;
+      wrappers.addAll(index);
+    }
+    return wrappers;
+  }
+
+  private ProductionWrapper wrapperFor(Production production)
+  {
+    for(ProductionWrapper wrapper : wrappers())
+    {
+      if(production == wrapper.production)
+        return wrapper;
     }
     return null;
+  }
+
+  private ProductionWrapper wrapIt(RuntimeFactory.BirthCertificate certificate)
+  {
+    ProductionWrapper wrapper = new ProductionWrapper(certificate);
+    if(publishingOnDRb)
+      wrapper.production.publish_on_drb(nextDRbPort++);
+    return wrapper;
+  }
+
+  public void publishProductionsOnDRb(int drbPort)
+  {
+    publishingOnDRb = true;
+    nextDRbPort = drbPort;
+  }
+
+  public static class ProductionWrapper
+  {
+    public Production production;
+    public RuntimeFactory.BirthCertificate certificate;
+    public int drbPort;
+
+    public ProductionWrapper(RuntimeFactory.BirthCertificate certificate)
+    {
+      this.certificate = certificate;
+      production = certificate.production;
+    }
   }
 }
