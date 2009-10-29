@@ -44,7 +44,7 @@ describe Limelight::Commands::OpenCommand do
 
   it "should start the studio on drb" do
     Limelight::Main.should_receive(:initialize_context)
-    @studio.should_receive(:publish_on_drb).with(1234)
+    @studio.should_receive(:publish_productions_on_drb).with(1234)
     @studio.should_receive(:open).with("some_prod")
 
     @command.run ["-d", "1234", "some_prod"]

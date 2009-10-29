@@ -215,15 +215,32 @@ describe Limelight::Producer do
 
   it "should close a production" do
     theater = mock("theater")
-    production = mock("production", :theater => theater, :closed? => false)
+    production = @producer.production
+    production.theater = theater
     production.should_receive(:closed=).with(true)
     production.should_receive(:production_closing)
     theater.should_receive(:close)
     production.should_receive(:production_closed)
     Limelight::Context.instance.studio.should_receive(:production_closed).with(production)
 
-    close_thread = @producer.close(production)
+    close_thread = @producer.close
     close_thread.join()
+  end
+
+  it "should publish a production on drb" do
+    service = mock("service")
+    DRb.should_receive(:start_service).with("druby://localhost:9000", @producer.production).and_return(service)
+
+    @producer.publish_production_on_drb(9000)
+  end
+
+  it "should stop the drb service when closing the production" do
+    service = mock("service")
+    DRb.stub!(:start_service).with("druby://localhost:9000", @producer.production).and_return(service)
+    @producer.publish_production_on_drb(9000)
+
+    service.should_receive(:stop_service)
+    @producer.close.join
   end
   
 end

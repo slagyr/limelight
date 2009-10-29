@@ -11,6 +11,7 @@ public class MockProduction implements Production
   public boolean wasClosed;
   public String lastMethodCalled;
   public Object[] lastMethodCallArgs;
+  public int drbPort;
 
   public MockProduction(String name)
   {
@@ -43,5 +44,10 @@ public class MockProduction implements Production
     lastMethodCalled = name;
     lastMethodCallArgs = args;
     return null;
+  }
+
+  public void publish_on_drb(int port)
+  {
+    drbPort = port;
   }
 }

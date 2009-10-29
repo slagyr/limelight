@@ -37,6 +37,11 @@ public class UtilitiesProduction implements Production
     return production.callMethod(name, args);
   }
 
+  public void publish_on_drb(int port)
+  {
+    production.publish_on_drb(port);
+  }
+
   public Object alert(Object message)
   {   
     return production.callMethod("alert", message);
