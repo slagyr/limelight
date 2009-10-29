@@ -143,6 +143,11 @@ module Limelight
         raise StyleBuilderException.new("'#{sym}' is not a valid style") if !@__style.respond_to?(setter_sym)
         @__style.send(setter_sym, value.to_s)
       end
+
+      # Kernel.y was added by the yaml library in JRuby 1.4.  Not sure what to do about this type of problem.
+      def y(*args) #:nodoc:
+        method_missing(:y, *args)
+      end
     end
 
     # Exception thrown by StyleBuilder when an error is encountered.

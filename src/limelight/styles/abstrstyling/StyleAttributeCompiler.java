@@ -8,7 +8,8 @@ import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public abstract class StyleAttributeCompiler
 {
-  private String name;
+  public String name;
+  public String type;
 
   public abstract StyleAttribute compile(Object value);
 

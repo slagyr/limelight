@@ -3,6 +3,8 @@
 
 package limelight.ui.api;
 
+import limelight.Studio;
+
 public class MockStudio extends Studio
 {
   public String openedProduction;

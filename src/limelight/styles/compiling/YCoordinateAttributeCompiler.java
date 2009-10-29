@@ -10,8 +10,8 @@ import limelight.styles.VerticalAlignment;
 import limelight.styles.styling.StaticYCoordinateAttribute;
 import limelight.styles.styling.AlignedYCoordinateAttribute;
 import limelight.styles.styling.PercentageYCoordinateAttribute;
-import limelight.styles.compiling.IntegerAttributeCompiler;
-import limelight.styles.compiling.PercentageAttributeCompiler;
+
+import java.awt.*;
 
 public class YCoordinateAttributeCompiler extends StyleAttributeCompiler
 {
@@ -26,7 +26,6 @@ public class YCoordinateAttributeCompiler extends StyleAttributeCompiler
         attribute = attemptPercentageAttribute(value);
       if(attribute == null)
         attribute = attemptStaticAttribute(value);
-
       if(attribute != null)
         return attribute;
       else

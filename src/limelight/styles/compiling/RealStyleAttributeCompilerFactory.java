@@ -58,6 +58,7 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
       throw new LimelightError("Unknown StyleAttributeCompiler named " + type);
 
     result.setName(name);
+    result.type = type;
     return result;
   }
 }

@@ -1,7 +1,3 @@
-require 'rake/rdoctask'
-
-
-WEB_ROOT = File.expand_path('~/Projects/slagyr.github.com/limelight/')
 
 task :release => [:verify_committed, :verify_user, :verify_password, :publish_packages, :tag, :publish_news]
 
@@ -12,15 +8,7 @@ task :verify_committed do
       raise "\n!!! Do a svn commit first !!!\n\n" if line =~ /^\s*M\s*/
     end
   end
-end
-
-desc 'Generate RDoc'
-rd = Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = "#{WEB_ROOT}/rdoc"
-  rdoc.options << '--title' << 'Limelight' << '--line-numbers' << '--inline-source' << '--main' << 'README.rdoc'
-  rdoc.rdoc_files.include('README.rdoc', 'CHANGES', 'lib/**/*.rb')
-end
-task :rdoc
+end 
 
 desc "Upload Website to RubyForge"
 task :publish_rubyforge_site => [:verify_user, :verify_password] do

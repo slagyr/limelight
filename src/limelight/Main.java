@@ -10,7 +10,7 @@ import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
-import limelight.ui.api.Studio;
+import limelight.Studio;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
 import limelight.os.darwin.DarwinOS;
