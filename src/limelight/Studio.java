@@ -1,11 +1,13 @@
 //- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.api;
+package limelight;
 
 import limelight.Context;
 import limelight.RuntimeFactory;
 import limelight.LimelightException;
+import limelight.ui.api.Production;
+import limelight.ui.api.UtilitiesProduction;
 import limelight.io.FileUtil;
 
 import java.util.List;

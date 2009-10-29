@@ -4,10 +4,7 @@
 package limelight.ui.api;
 
 import junit.framework.TestCase;
-import limelight.Context;
-import limelight.MockContext;
-import limelight.RuntimeFactory;
-import limelight.MockRuntimeFactory;
+import limelight.*;
 
 public class StudioTest extends TestCase
 {

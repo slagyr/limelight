@@ -6,7 +6,7 @@ module Limelight
   Main = Java::limelight.Main
   ResourceLoader = Java::limelight.ResourceLoader
   Context = Java::limelight.Context
-  Studio = Java::limelight.ui.api.Studio
+  Studio = Java::limelight.Studio
 
   module Background
     Animation = Java::limelight.background.Animation

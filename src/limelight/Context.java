@@ -5,7 +5,7 @@ package limelight;
 
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
-import limelight.ui.api.Studio;
+import limelight.Studio;
 import limelight.ui.model.FrameManager;
 import limelight.ui.model.StageFrame;
 import limelight.caching.Cache;
