@@ -79,8 +79,7 @@ public class Studio
 
     isShuttingDown = true;
 
-    List<RuntimeFactory.BirthCertificate> certificates = new ArrayList<RuntimeFactory.BirthCertificate>(index);
-    for(RuntimeFactory.BirthCertificate certificate : certificates)
+    for(RuntimeFactory.BirthCertificate certificate : certificates())
       certificate.production.close();
 
     if(utilitiesCertificate != null)
@@ -104,12 +103,15 @@ public class Studio
   public void add(RuntimeFactory.BirthCertificate certificate)
   {
     adjustNameIfNeeded(certificate.production);
-    index.add(certificate);
+    synchronized(index)
+    {
+      index.add(certificate);
+    }
   }
 
   public Production get(String name)
   {
-    for(RuntimeFactory.BirthCertificate certificate : index)
+    for(RuntimeFactory.BirthCertificate certificate : certificates())
     {
       if(name.equals(certificate.production.getName()))
         return certificate.production;
@@ -119,12 +121,22 @@ public class Studio
 
   public boolean shouldAllowShutdown()
   {
-    for(RuntimeFactory.BirthCertificate certificate : index)
+    for(RuntimeFactory.BirthCertificate certificate : certificates())
     {
       if(!certificate.production.allowClose())
         return false;
     }
     return true;
+  }
+
+  private ArrayList<RuntimeFactory.BirthCertificate> certificates()
+  {
+    ArrayList<RuntimeFactory.BirthCertificate> certificates = new ArrayList<RuntimeFactory.BirthCertificate>();
+    synchronized(index)
+    {
+      certificates.addAll(index);
+    }
+    return certificates;
   }
 
   public void productionClosed(Production production)
@@ -133,7 +145,10 @@ public class Studio
     if(certificate == null)
       return;
 
-    index.remove(certificate);
+    synchronized(index)
+    {
+      index.remove(certificate);
+    }
 
     Context.instance().runtimeFactory.terminate(certificate);
     if(index.isEmpty())
@@ -162,7 +177,7 @@ public class Studio
       utilitiesCertificate = Context.instance().runtimeFactory.spawn(src);
       utilitiesCertificate.production = new UtilitiesProduction(utilitiesCertificate.production);
     }
-    return (UtilitiesProduction)utilitiesCertificate.production;
+    return (UtilitiesProduction) utilitiesCertificate.production;
   }
 
   public void stubUtilitiesProduction(Production stub)
@@ -214,7 +229,7 @@ public class Studio
 
   private RuntimeFactory.BirthCertificate certificateFor(Production production)
   {
-    for(RuntimeFactory.BirthCertificate certificate : index)
+    for(RuntimeFactory.BirthCertificate certificate : certificates())
     {
       if(production == certificate.production)
         return certificate;
