@@ -9,12 +9,59 @@ require 'limelight/string'
 require 'limelight/specs/test_scene_opener'
 
 module Limelight
+
+  # Limelight comes with builtin assistance for testing your productions with rspec.
+  # See Limelight::Specs::SpecHelper
+  #
   module Specs
 
     class << self
       attr_accessor :producer
     end
-    
+
+    # Limelight comes with builtin assistance for testing your productions with rspec. To get started, add the following
+    # to your describe block...
+    #
+    #   uses_limelight :scene => "my_scene"
+    #
+    # This will add before(:each) blocks that will setup your production and load your scene before each test.
+    # It also provides some accessors to common objects like the scene and production.  Afterwards, you can
+    # write tests that look like this.
+    #
+    #   it "should do something with the scene" do
+    #     scene.name.should == "my_scene"
+    #     scene.find("title").text.should == "This is the Title"
+    #     production.theater["default_stage"].current_scene.should be(scene)
+    #   end
+    #
+    # There are several other options you can supply with 'uses_limelight':
+    #
+    # :hidden - (true or false) Defaults to true, but if you turn it off, the scene will pop open on your screen. This
+    # can be really nifty at times and really annoying at other time.
+    #
+    # :stage - The name of the stage you want the scene to be loaded on. The theater's default stage will be used by
+    # default.
+    #
+    # :scene_name - To be used instead of the :scene option.  This will create an empty scene in your production with
+    # the specified name.
+    #
+    # :scene_path - To be used in conjunction with :scene_name.  This will cause the empty scene to be loaded with
+    # the specified path.  Styles and Players associated with the path will be applied to the created scene.
+    #
+    # The 'uses_limelight' methods also accepts block using the Limelight::DSL::PropBuilder DSL.  This is convenient for building a
+    # simple prop structure sufficient to test the desired behavior.  Here's an example:
+    #
+    #   describe "my scene" do
+    #     uses_limelight :scene_name => "some_name", :scene_path => "my_scene_path" do
+    #       clicky :id => "clicky", :text => "click me", :on_mouse_clicked => "self.text = 'Hey! You clicked me!'"
+    #     end
+    #
+    #     it "should change text on clicky when clicked" do
+    #       scene.find("clicky").mouse_clicked(nil)
+    #       clicky.text.should == "Hey!  You clicked me!"
+    #     end
+    #   end
+    #
     module SpecHelper
       def scene
         if !@scene
@@ -26,10 +73,12 @@ module Limelight
   end
 end
 
-module Spec
+module Spec #:nodoc:
   module Example
     class ExampleGroup
 
+      # Deprecated
+      #
       def self.uses_scene(scene_name, options = {})
         uses_limelight({:scene => scene_name}.merge(options))
       end

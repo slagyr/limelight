@@ -5,7 +5,7 @@ module Limelight
   module Specs
     module SpecHelper
 
-      class TestSceneOpener
+      class TestSceneOpener #:nodoc:
         def initialize(producer, ll_spec_options, prop_block)
           @producer = producer
           @prop_block = prop_block
