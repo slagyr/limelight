@@ -32,12 +32,13 @@ task :tests => [:junit, :spec]
 
 task :continuous do
   require 'tmpdir'
-  tmpdir = Dir.tmpdir
-  system "mv src/limelight/os/darwin #{tmpdir}"
+  tmpdir = File.join(Dir.tmpdir, "limelight_darwin_#{rand}")
+  system "mkdir #{tmpdir}"
+  system "mv src/limelight/os/darwin/* #{tmpdir}"
   begin
     Rake::Task[:tests].invoke
   ensure
-    system "mv #{tmpdir}/darwin src/limelight/os/"
+    system "mv #{tmpdir}/* src/limelight/os/darwin"
   end 
 end
 
