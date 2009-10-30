@@ -34,8 +34,11 @@ task :continuous do
   require 'tmpdir'
   tmpdir = Dir.tmpdir
   system "mv src/limelight/os/darwin #{tmpdir}"
-  Rake::Task[:tests].invoke
-  system "mv #{tmpdir}/darwin src/limelight/os/"
+  begin
+    Rake::Task[:tests].invoke
+  ensure
+    system "mv #{tmpdir}/darwin src/limelight/os/"
+  end 
 end
 
 task :default => :continuous
