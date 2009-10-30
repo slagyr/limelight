@@ -1,5 +1,23 @@
 = Limelight Changelog
 
+== Version 0.5.3
+
+Some bug fixes, new features, and Playbills!
+ * Image Player tweaks - feature_request - http://limelight.lighthouseapp.com/projects/12073/tickets/141
+ * Load each production in a separate Ruby instance - feature_request - http://limelight.lighthouseapp.com/projects/12073/tickets/160
+ * 0.5.0 Limelight application fails to load due to classfile version - bug - http://limelight.lighthouseapp.com/projects/12073/tickets/158
+ * Y coordinate on floats not working on Windows - bug - http://limelight.lighthouseapp.com/projects/12073/tickets/156
+ * Open each production in a separate Ruby instance - feature_request - http://limelight.lighthouseapp.com/projects/12073/tickets/157
+ * spec directory option for generations - feature_request - http://limelight.lighthouseapp.com/projects/12073/tickets/146
+ * Percentages for minimum width/height - feature_request - http://limelight.lighthouseapp.com/projects/12073/tickets/147
+ * greedy dimension - feature_request - http://limelight.lighthouseapp.com/projects/12073/tickets/145
+ * production is not available in the casted method for the root scene - bug - http://limelight.lighthouseapp.com/projects/12073/tickets/152
+ * Scrollbars get deleted on remove_all - bug - http://limelight.lighthouseapp.com/projects/12073/tickets/151
+ * add_extension - remove_extension isn't adding all styles - bug - http://limelight.lighthouseapp.com/projects/12073/tickets/150
+ * Animation is slow within a slideshow - bug - http://limelight.lighthouseapp.com/projects/12073/tickets/149
+ * Root level styles can not be references - bug - http://limelight.lighthouseapp.com/projects/12073/tickets/140
+
+
 == Version 0.4.0
 
 Solved issues, improved usability.
