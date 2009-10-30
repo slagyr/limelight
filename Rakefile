@@ -31,9 +31,11 @@ end
 task :tests => [:junit, :spec]
 
 task :continuous do
-  require 'fileutils'
-  FileUtils.rm_rf "src/limelight/os/darwin"
+  require 'tmpdir'
+  tmpdir = Dir.tmpdir
+  system "mv src/limelight/os/darwin #{tmpdir}"
   Rake::Task[:tests].invoke
+  system "mv #{tmpdir}/darwin src/limelight/os/"
 end
 
 task :default => :continuous

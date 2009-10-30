@@ -10,16 +10,16 @@ import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
 import limelight.io.TempDirectory;
 import limelight.ui.Panel;
-import limelight.Studio;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;
-import limelight.os.darwin.DarwinOS;
-import limelight.os.win32.Win32OS;
 import limelight.os.UnsupportedOS;
 import limelight.os.MockOS;
+import limelight.os.OS;
+
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.reflect.Constructor;
 
 public class Main
 {
@@ -32,12 +32,12 @@ public class Main
     new Main().start(args);
   }
 
-  public static void initializeContext()
+  public static void initializeContext() throws Exception
   {
     new Main().configureContext();
   }
 
-  public static void initializeTestContext()
+  public static void initializeTestContext() throws Exception
   {
     new Main().configureContext();
   }
@@ -91,20 +91,23 @@ public class Main
     Context.instance().os.configureSystemProperties();
   }
 
-  static void configureOS()
+  static void configureOS() throws Exception
   {
     Context context = Context.instance();
+    String className = "limelight.os.UnsupportedOS";
     if(System.getProperty("os.name").indexOf("Windows") != -1)
-      context.os = new Win32OS();
+      className = "limelight.os.win32.Win32OS";
     else if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
-      context.os = new DarwinOS();
-    else
-      context.os = new UnsupportedOS();
-    
+      className = "limelight.os.darwin.DarwinOS";
+
+    Class klass = Thread.currentThread().getContextClassLoader().loadClass(className);
+    Constructor constructor = klass.getConstructor();
+    context.os = (OS)constructor.newInstance();
+
     context.os.appIsStarting();   
   }
 
-  public void configureContext()
+  public void configureContext() throws Exception
   {
 //VerboseRepaintManager.install();
     if(contextIsConfigured)
