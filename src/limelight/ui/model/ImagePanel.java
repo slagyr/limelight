@@ -4,38 +4,16 @@
 package limelight.ui.model;
 
 import limelight.LimelightError;
-import limelight.LimelightException;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
-import javax.imageio.ImageReader;
 import javax.imageio.ImageIO;
-import javax.imageio.spi.IIORegistry;
-import javax.imageio.spi.ImageInputStreamSpi;
-import javax.imageio.spi.ImageReaderSpi;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.io.ByteArrayInputStream;
-import java.util.Iterator;
-
-import com.sun.imageio.plugins.gif.GIFImageReader;
-import com.sun.imageio.plugins.gif.GIFImageReaderSpi;
-import com.sun.imageio.plugins.jpeg.JPEGImageReader;
-import com.sun.imageio.plugins.jpeg.JPEGImageReaderSpi;
-import com.sun.imageio.plugins.png.PNGImageReader;
-import com.sun.imageio.plugins.png.PNGImageReaderSpi;
-import com.sun.imageio.plugins.tiff.TIFFImageReader;
-import com.sun.imageio.plugins.tiff.TIFFImageReaderSpi;
-import com.sun.imageio.plugins.bmp.BMPImageReader;
-import com.sun.imageio.plugins.bmp.BMPImageReaderSpi;
-import com.sun.imageio.plugins.wbmp.WBMPImageReader;
-import com.sun.imageio.plugins.wbmp.WBMPImageReaderSpi;
 
 public class ImagePanel extends BasePanel
 {
