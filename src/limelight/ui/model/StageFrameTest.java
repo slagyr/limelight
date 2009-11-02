@@ -398,6 +398,7 @@ public class StageFrameTest extends TestCase
 
   public void testActivationDelegatedToStage() throws Exception
   {
+    frame.setVisible(true);
     frame.activated(new WindowEvent(frame, 1));
     assertEquals(true, stage.activated);
     frame.deactivated(new WindowEvent(frame, 1));
@@ -432,5 +433,17 @@ public class StageFrameTest extends TestCase
     frame.closed(null);
 
     assertEquals(true, frame.isClosed());
+  }
+
+  public void testDeactivatedWhenNotPreviouslyActivatedDoesNotPropogate() throws Exception
+  {
+    stage.activated = true;
+    frame.deactivated(null);
+    assertEquals(true, stage.activated);
+
+    frame.setVisible(true);
+    frame.activated(null);
+    frame.deactivated(null);
+    assertEquals(false, stage.activated);
   }
 }

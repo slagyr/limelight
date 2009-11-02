@@ -310,7 +310,7 @@ module Limelight
     # Invoked when the stage has lost status as the active stage.  Only 1 stage my have focus at a time.
     # System hook that should NOT be called by you.
     #
-    def deactivated(e)
+    def deactivated(e)    
       @theater.stage_deactivated(self)  
     end
 
