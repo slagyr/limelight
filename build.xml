@@ -34,7 +34,7 @@
     </target>
     
     <target name="compile" depends="init" description="compile the source (make)">
-        <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off"/>
+        <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off" nowarn="true"/>
     </target>
 
     <target name="clean" description="delete everything in the classes directory">
