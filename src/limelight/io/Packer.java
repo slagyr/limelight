@@ -35,4 +35,11 @@ public class Packer
     FileOutputStream output = new FileOutputStream(productionName + ".llp");
     zipper.zipTo(output);
   }
+
+  public void pack(String productionPath, String llpName) throws Exception
+  {
+    DirectoryZipper zipper = DirectoryZipper.fromDir(productionPath);
+    FileOutputStream output = new FileOutputStream(llpName + ".llp");
+    zipper.zipTo(output);
+  }
 }
