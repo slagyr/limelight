@@ -12,6 +12,7 @@ module Limelight
     #      Pack a limelight production into a .llp file.
     #      options:
     #      -h, --help                       Prints this usage summary.
+    #      -n, --name                       Name of the generated llp file.  Defaults to the production folder name.
     #
     class PackCommand < Command
 
@@ -34,9 +35,16 @@ module Limelight
 
       def process #:nodoc:
         packer = Limelight::Util::Packer.new
-        packer.pack(@production_path)
+        if @llp_name
+          packer.pack(@production_path, @llp_name)
+        else
+          packer.pack(@production_path)
+        end
       end
 
+      def build_options(spec) #:nodoc:
+        spec.on("-n <llp_name>", "--name=<llp_name>", "Name of the generated llp file.  Defaults to the production folder name.") { |value| @llp_name = value}
+      end
     end
 
   end
