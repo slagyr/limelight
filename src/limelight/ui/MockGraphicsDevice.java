@@ -3,18 +3,15 @@
 
 package limelight.ui;
 
-import apple.awt.CGraphicsDevice;
-
 import java.awt.*;
 
-public class MockGraphicsDevice extends CGraphicsDevice
+public class MockGraphicsDevice extends GraphicsDevice
 {
   public MockGraphicsConfiguration defaultConfiguration;
   public Window internalFullScreenWindow;
 
   public MockGraphicsDevice()
   {
-    super(0);
     defaultConfiguration = new MockGraphicsConfiguration(this); 
   }
 

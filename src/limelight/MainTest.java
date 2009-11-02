@@ -7,13 +7,10 @@ import junit.framework.TestCase;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
 import limelight.ui.Panel;
-import limelight.Studio;
 import limelight.audio.RealAudioPlayer;
 import limelight.os.MockOS;
 import limelight.os.OS;
 import limelight.os.UnsupportedOS;
-import limelight.os.win32.Win32OS;
-import limelight.os.darwin.DarwinOS;
 
 import java.awt.image.BufferedImage;
 
@@ -104,7 +101,7 @@ public class MainTest extends TestCase
     main.configureOS();
 
     OS os = Context.instance().os;
-    assertEquals(DarwinOS.class, os.getClass());
+    assertEquals("limelight.os.darwin.DarwinOS", os.getClass().getName());
   }
 
   public void testWindowsXPOS() throws Exception
@@ -112,7 +109,7 @@ public class MainTest extends TestCase
     System.setProperty("os.name", "Windows XP");
     main.configureOS();
     OS os = Context.instance().os;
-    assertEquals(Win32OS.class, os.getClass());
+    assertEquals("limelight.os.win32.Win32OS", os.getClass().getName());
   }
 
   public void testWindowsVistaOS() throws Exception
@@ -120,7 +117,7 @@ public class MainTest extends TestCase
     System.setProperty("os.name", "Windows Vista");
     main.configureOS();
     OS os = Context.instance().os;
-    assertEquals(Win32OS.class, os.getClass());
+    assertEquals("limelight.os.win32.Win32OS", os.getClass().getName());
   }
 
   public void testUnsupportedOS() throws Exception
