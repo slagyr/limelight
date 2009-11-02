@@ -23,4 +23,21 @@ describe Limelight::Commands::PackCommand do
     @command.run(["production_to_pack"])
   end
 
+  describe "specifying the name" do
+    it "should use -n for the name of the llp file" do
+      mock_packer = mock("packer")
+      Limelight::Util::Packer.should_receive(:new).and_return(mock_packer)
+      mock_packer.should_receive(:pack).with("production_to_pack", "llp_name")
+
+      @command.run(["production_to_pack", "-n", "llp_name"])
+    end
+    
+    it "should use --name for the name of the llp file" do
+      mock_packer = mock("packer")
+      Limelight::Util::Packer.should_receive(:new).and_return(mock_packer)
+      mock_packer.should_receive(:pack).with("production_to_pack", "llp_name")
+
+      @command.run(["production_to_pack", "--name=llp_name"])
+    end
+  end
 end
