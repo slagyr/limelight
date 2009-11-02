@@ -35,6 +35,9 @@ task :continuous do
   tmpdir = File.join(Dir.tmpdir, "limelight_darwin_#{rand}")
   system "mkdir #{tmpdir}"
   system "mv src/limelight/os/darwin/* #{tmpdir}"
+  puts "removed contents of darwin dir..."
+  system "ls -la src/limelight/os/darwin/*"
+  system "pwd"
   begin
     Rake::Task[:tests].invoke
   ensure
