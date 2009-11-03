@@ -42,7 +42,7 @@ public class NanoTimerTest extends TestCase
     long sleepDuration = after - before;
 
     assertEquals("actual sleep duration: " + sleepDuration, true, (sleepDuration > NINE_MILLION && sleepDuration < TWENTY_MILLION));
-    assertEquals(true, timer.getActualSleepDuration() > NINE_MILLION && timer.getActualSleepDuration() < ELEVEN_MILLION);
+    assertEquals(true, timer.getActualSleepDuration() > NINE_MILLION && timer.getActualSleepDuration() < TWENTY_MILLION);
     assertEquals(true, timer.getIdleNanos() < ONE_MILLION);
     assertEquals(true, timer.getSleepJiggle() < ONE_MILLION);
   }
