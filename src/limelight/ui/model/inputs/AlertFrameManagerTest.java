@@ -4,9 +4,7 @@
 package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
-import limelight.ui.model.AlertFrameManager;
-import limelight.ui.model.MockStageFrame;
-import limelight.ui.model.StageFrame;
+import limelight.ui.model.*;
 import limelight.ui.api.MockStudio;
 import limelight.Context;
 import limelight.MockContext;
@@ -98,9 +96,9 @@ public class AlertFrameManagerTest extends TestCase
 
   public void testGetVisibleFrames() throws Exception
   {
-    ArrayList<StageFrame> result = new ArrayList<StageFrame>();
+    ArrayList<PropFrame> result = new ArrayList<PropFrame>();
     frame.visible = true;
-    MockStageFrame frame2 = new MockStageFrame();
+    MockPropFrame frame2 = new MockPropFrame();
 
     manager.getVisibleFrames(result);
     assertEquals(0, result.size());

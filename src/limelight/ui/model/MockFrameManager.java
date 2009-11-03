@@ -7,25 +7,25 @@ import java.util.ArrayList;
 
 public class MockFrameManager implements FrameManager
 {
-  public StageFrame focusedFrame;
+  public PropFrame focusedFrame;
   public boolean allFramesClosed;
 
-  public void watch(StageFrame frame)
+  public void watch(PropFrame frame)
   {
   }
 
-  public StageFrame getFocusedFrame()
+  public PropFrame getFocusedFrame()
   {
     return focusedFrame;
   }
 
-  public void getVisibleFrames(ArrayList<StageFrame> result)
+  public void getVisibleFrames(ArrayList<PropFrame> result)
   {
     if(focusedFrame != null)
       result.add(focusedFrame);
   }
 
-  public boolean isWatching(StageFrame frame)
+  public boolean isWatching(PropFrame frame)
   {
     return false;
   }

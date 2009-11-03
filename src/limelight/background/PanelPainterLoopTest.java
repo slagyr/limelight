@@ -4,9 +4,7 @@
 package limelight.background;
 
 import junit.framework.TestCase;
-import limelight.ui.model.MockFrameManager;
-import limelight.ui.model.MockStageFrame;
-import limelight.ui.model.RootPanel;
+import limelight.ui.model.*;
 import limelight.ui.MockPanel;
 import limelight.Context;
 
@@ -16,7 +14,7 @@ public class PanelPainterLoopTest extends TestCase
 {
   private PanelPainterLoop loop;
   private MockFrameManager frameManager;
-  private MockStageFrame activeFrame;
+  private MockPropFrame activeFrame;
   private RootPanel activeRoot;
 
   public void setUp() throws Exception
@@ -24,7 +22,7 @@ public class PanelPainterLoopTest extends TestCase
     loop = new PanelPainterLoop();
     frameManager = new MockFrameManager();
     Context.instance().frameManager = frameManager;
-    activeFrame = new MockStageFrame();
+    activeFrame = new MockPropFrame();
     activeRoot = new RootPanel(activeFrame);
     activeFrame.setRoot(activeRoot);
   }
