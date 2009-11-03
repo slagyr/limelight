@@ -75,7 +75,7 @@
             <batchtest fork="no" todir="etc/test_reports">
                 <fileset dir="${src}">
                     <include name="**/*Test.java"/>
-                    <exclude name="**/darwin/**/*.java"/>
+                    <exclude name="**/darwin/**/*.*"/>
                     <exclude name="**/KeyboardFocusManagerTest.java"/>
                     <exclude name="**/StageFrameTest.java"/>
                 </fileset>
