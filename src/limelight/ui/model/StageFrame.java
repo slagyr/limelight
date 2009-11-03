@@ -82,6 +82,11 @@ public class StageFrame extends JFrame implements PropFrame, KeyListener
     dispose();
   }
 
+  public Frame getWindow()
+  {
+    return this;
+  }
+
   public void closed(WindowEvent e)
   {
     if(closed)
