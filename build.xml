@@ -79,6 +79,7 @@
                     <exclude name="**/KeyboardFocusManagerTest.java"/>
                     <exclude name="**/StageFrameTest.java"/>
                     <exclude name="**/FrameManagerTest.java"/>
+                    <exclude name="**/TextPanelTest.java"/>
                 </fileset>
             </batchtest>
         </junit>
