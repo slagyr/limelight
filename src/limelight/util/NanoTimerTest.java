@@ -11,6 +11,7 @@ public class NanoTimerTest extends TestCase
   private final int TEN_MILLION = 10 * ONE_MILLION;
   private final int NINE_MILLION = 9 * ONE_MILLION;
   private final int ELEVEN_MILLION = 11 * ONE_MILLION;
+  private final int TWENTY_MILLION = 20 * ONE_MILLION;
 
   private NanoTimer timer;
 
@@ -40,7 +41,7 @@ public class NanoTimerTest extends TestCase
     long after = System.nanoTime();
     long sleepDuration = after - before;
 
-    assertEquals("actual sleep duration: " + sleepDuration, true, (sleepDuration > NINE_MILLION && sleepDuration < ELEVEN_MILLION));
+    assertEquals("actual sleep duration: " + sleepDuration, true, (sleepDuration > NINE_MILLION && sleepDuration < TWENTY_MILLION));
     assertEquals(true, timer.getActualSleepDuration() > NINE_MILLION && timer.getActualSleepDuration() < ELEVEN_MILLION);
     assertEquals(true, timer.getIdleNanos() < ONE_MILLION);
     assertEquals(true, timer.getSleepJiggle() < ONE_MILLION);
