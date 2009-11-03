@@ -61,9 +61,9 @@
         </junit>
     </target>
 
-    <target name="compile.cont" depends="init" description="compile the source (make)">
+    <target name="compile.cont" depends="clean, init" description="compile the source (make)">
         <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off" nowarn="true">
-            <exclude name="**/Darwin/**/*"/>
+            <exclude name="**/darwin/**/*.java"/>
         </javac>
     </target>
 
