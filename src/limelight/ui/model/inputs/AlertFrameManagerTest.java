@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class AlertFrameManagerTest extends TestCase
 {
   private AlertFrameManager manager;
-  private MockStageFrame frame;
+  private MockPropFrame frame;
   private MockStudio studio;
 
   public void setUp() throws Exception
@@ -26,7 +26,7 @@ public class AlertFrameManagerTest extends TestCase
     Context.instance().frameManager = manager;
     Context.instance().studio = studio;
     Context.instance().environment = "test";
-    frame = new MockStageFrame();
+    frame = new MockPropFrame();
   }
 
   public void testCloseAllFrames() throws Exception
@@ -40,7 +40,7 @@ public class AlertFrameManagerTest extends TestCase
 
   public void testTheaterIsNotifiedOfActivatedStage() throws Exception
   {
-    manager.windowActivated(new WindowEvent(frame, 1));
+    manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
 
     assertEquals(true, frame.activated);
   }
@@ -48,11 +48,11 @@ public class AlertFrameManagerTest extends TestCase
   public void testShouldAskStageFrameIfItCanClose() throws Exception
   {
     frame.shouldAllowClose = false;
-    manager.windowClosing(new WindowEvent(frame, 1));
+    manager.windowClosing(new WindowEvent(frame.getWindow(), 1));
     assertEquals(false, frame.closed);
 
     frame.shouldAllowClose = true;
-    manager.windowClosing(new WindowEvent(frame, 1));
+    manager.windowClosing(new WindowEvent(frame.getWindow(), 1));
     assertEquals(true, frame.closed);
   }
 
@@ -60,7 +60,7 @@ public class AlertFrameManagerTest extends TestCase
   {
     MockContext context = MockContext.stub();
     manager.watch(frame);
-    manager.windowClosed(new WindowEvent(frame, 1));
+    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
     assertEquals(true, context.shutdownAttempted);
   }
 
@@ -69,7 +69,7 @@ public class AlertFrameManagerTest extends TestCase
     MockContext context = MockContext.stub();
     frame.setVital(false);
     manager.watch(frame);
-    manager.windowClosed(new WindowEvent(frame, 1));
+    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
     assertEquals(false, context.shutdownAttempted);
   }
   
@@ -77,11 +77,11 @@ public class AlertFrameManagerTest extends TestCase
   {
     MockContext context = MockContext.stub();
     frame.setVital(false);
-    MockStageFrame frame2 = new MockStageFrame();
+    MockPropFrame frame2 = new MockPropFrame();
     manager.watch(frame);
     manager.watch(frame2);
 
-    manager.windowClosed(new WindowEvent(frame2, 1));
+    manager.windowClosed(new WindowEvent(frame2.getWindow(), 1));
     assertEquals(true, context.shutdownAttempted);
   }
 
@@ -126,7 +126,7 @@ public class AlertFrameManagerTest extends TestCase
     MockContext.stub();
     frame.setVital(false);
     manager.watch(frame);
-    manager.windowClosed(new WindowEvent(frame, 1));
+    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
 
     assertEquals(true, frame.wasClosed);
   }
@@ -135,9 +135,9 @@ public class AlertFrameManagerTest extends TestCase
   {
     KeyboardFocusManager keyboard = new KeyboardFocusManager();
     Context.instance().keyboardFocusManager = keyboard;
-    keyboard.focusFrame(frame);
+    keyboard.focusFrame(frame.getWindow());
 
-    manager.windowClosed(new WindowEvent(frame, 1));
+    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
 
     assertEquals(null, keyboard.getFocusedWindow());
     assertEquals(null, keyboard.getFocusedFrame());
@@ -146,23 +146,23 @@ public class AlertFrameManagerTest extends TestCase
   public void testStageNotifiedWhenActivationLost() throws Exception
   {
     frame.activated = true;
-    manager.windowDeactivated(new WindowEvent(frame, 1));
+    manager.windowDeactivated(new WindowEvent(frame.getWindow(), 1));
     assertEquals(false, frame.activated);
   }
 
   public void testFrameNotifiedWhenIconifiedAndDeiconified() throws Exception
   {
-    manager.windowIconified(new WindowEvent(frame, 1));
+    manager.windowIconified(new WindowEvent(frame.getWindow(), 1));
     assertEquals(true, frame.iconified);                
-    manager.windowDeiconified(new WindowEvent(frame, 1));
+    manager.windowDeiconified(new WindowEvent(frame.getWindow(), 1));
     assertEquals(false, frame.iconified);
   }
 
   public void testFrameNotifiedWhenActivatedAndDeactivated() throws Exception
   {
-    manager.windowActivated(new WindowEvent(frame, 1));
+    manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
     assertEquals(true, frame.activated);                
-    manager.windowDeactivated(new WindowEvent(frame, 1));
+    manager.windowDeactivated(new WindowEvent(frame.getWindow(), 1));
     assertEquals(false, frame.activated);
   }
 }

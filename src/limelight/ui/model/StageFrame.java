@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class StageFrame extends JFrame implements PropFrame, KeyListener
+public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, KeyListener
 {
   private static final StyleAttributeCompiler widthCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage width");
   private static final StyleAttributeCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
@@ -83,6 +83,12 @@ public class StageFrame extends JFrame implements PropFrame, KeyListener
   }
 
   public Frame getWindow()
+  {
+    return this;
+  }
+
+
+  public PropFrame getPropFrame()
   {
     return this;
   }

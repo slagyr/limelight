@@ -19,7 +19,7 @@ public class ImagePanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockStageFrame());
+    root = new RootPanel(new MockPropFrame());
     parent = new MockPropablePanel();
     loader = new MockResourceLoader();
     parent.prop.loader = loader;
@@ -67,18 +67,18 @@ public class ImagePanelTest extends TestCase
 
   public void testSettingImageData() throws Exception
   {
-    checkSettingImageDataWith("star.gif", "gif");
-    checkSettingImageDataWith("star.jpg", "jpg");
-    checkSettingImageDataWith("star.jpg", "jpeg");
-    checkSettingImageDataWith("star.tif", "tif");
-    checkSettingImageDataWith("star.tif", "tiff");
-    checkSettingImageDataWith("star.png", "png");
-    checkSettingImageDataWith("star.bmp", "bmp");
-    checkSettingImageDataWith("star.wbm", "wbmp");
-    checkSettingImageDataWith("star.wbm", "wbm");
+    checkSettingImageDataWith("star.gif");
+    checkSettingImageDataWith("star.jpg");
+    checkSettingImageDataWith("star.jpg");
+//    checkSettingImageDataWith("star.tif", "tif");
+//    checkSettingImageDataWith("star.tif", "tiff");
+    checkSettingImageDataWith("star.png");
+    checkSettingImageDataWith("star.bmp");
+    checkSettingImageDataWith("star.wbm");
+    checkSettingImageDataWith("star.wbm");
   }
 
-  private void checkSettingImageDataWith(String imageFile, String imageType) throws Exception
+  private void checkSettingImageDataWith(String imageFile) throws Exception
   {
     StreamReader reader = new StreamReader(new FileInputStream(TestUtil.dataDirPath(imageFile)));
     byte[] bytes = reader.readBytes(100000);
@@ -96,7 +96,7 @@ public class ImagePanelTest extends TestCase
     panel.resetLayout();
     parent.resetLayout();
 
-    checkSettingImageDataWith("star.gif", "gif");
+    checkSettingImageDataWith("star.gif");
 
     assertEquals(200, panel.getImageWidth(), 0.1);
     assertEquals(200, panel.getImageHeight(), 0.1);

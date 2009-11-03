@@ -20,4 +20,14 @@ public interface PropFrame
   boolean isVital();
 
   void activated(WindowEvent e);
+
+  boolean shouldAllowClose();
+
+  void closed(WindowEvent e);
+
+  void iconified(WindowEvent e);
+
+  void deiconified(WindowEvent e);
+
+  void deactivated(WindowEvent e);
 }
