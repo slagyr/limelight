@@ -80,6 +80,7 @@
                     <exclude name="**/StageFrameTest.java"/>
                     <exclude name="**/FrameManagerTest.java"/>
                     <exclude name="**/TextPanelTest.java"/>
+                    <exclude name="**/AlertFrameManagerTest.java"/>
                 </fileset>
             </batchtest>
         </junit>
