@@ -78,6 +78,7 @@
                     <exclude name="**/darwin/**/*.*"/>
                     <exclude name="**/KeyboardFocusManagerTest.java"/>
                     <exclude name="**/StageFrameTest.java"/>
+                    <exclude name="**/PanelPainterLoopTest.java"/>
                 </fileset>
             </batchtest>
         </junit>
