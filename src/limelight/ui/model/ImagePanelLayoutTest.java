@@ -19,7 +19,7 @@ public class ImagePanelLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockStageFrame());
+    root = new RootPanel(new MockPropFrame());
     parent = new MockPropablePanel();
     loader = new MockResourceLoader();
     parent.prop.loader = loader;

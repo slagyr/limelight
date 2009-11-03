@@ -122,7 +122,7 @@ public class InputPanelTest extends TestCase
 
   private void attatchRoot()
   {
-    RootPanel root = new RootPanel(new MockStageFrame());
+    RootPanel root = new RootPanel(new MockPropFrame());
     rootPanel = new MockPanel();
     root.setPanel(rootPanel);
     rootPanel.add(parent);

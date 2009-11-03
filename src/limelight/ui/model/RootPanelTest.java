@@ -22,7 +22,7 @@ public class RootPanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    StageFrame stageFrame = new MockStageFrame();
+    PropFrame stageFrame = new MockPropFrame();
     root = new RootPanel(stageFrame);
     child = new MockPropablePanel("child");
     contentPane = stageFrame.getContentPane();

@@ -11,8 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import limelight.ui.model.RootPanel;
-import limelight.ui.model.MockStageFrame;
 import limelight.ui.model.PropPanel;
+import limelight.ui.model.MockPropFrame;
 import limelight.ui.api.MockProp;
 
 public class ScrollBarPanelTest extends TestCase
@@ -94,7 +94,7 @@ public class ScrollBarPanelTest extends TestCase
   
   public void testChanges() throws Exception
   {
-    RootPanel root = new RootPanel(new MockStageFrame());
+    RootPanel root = new RootPanel(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
     root.setPanel(parent);
     parent.add(panel);
@@ -106,7 +106,7 @@ public class ScrollBarPanelTest extends TestCase
 
   public void testParentIsMarkedAsChanged() throws Exception
   {
-    RootPanel root = new RootPanel(new MockStageFrame());
+    RootPanel root = new RootPanel(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
     root.setPanel(parent);
     parent.add(panel);

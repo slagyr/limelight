@@ -16,7 +16,7 @@ public class FloaterLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockStageFrame());
+    root = new RootPanel(new MockPropFrame());
     panel = new PropPanel(new MockProp());
     root.setPanel(panel);
   }

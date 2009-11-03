@@ -5,7 +5,7 @@ package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
 import limelight.ui.model.RootPanel;
-import limelight.ui.model.MockStageFrame;
+import limelight.ui.model.MockPropFrame;
 
 import java.awt.*;
 
@@ -17,7 +17,7 @@ public class ButtonTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockStageFrame());
+    root = new RootPanel(new MockPropFrame());
     panel = new ButtonPanel();
     button = new Button(panel);
     root.setPanel(panel);

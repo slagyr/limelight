@@ -21,7 +21,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockStageFrame());
+    root = new RootPanel(new MockPropFrame());
 
     parent = new PropPanel(new MockProp());
     root.setPanel(parent);
