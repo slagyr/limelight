@@ -62,6 +62,7 @@ public class AnimationTest extends TestCase
     Thread.sleep(25);
     animation.update();
 
+System.err.println("animation.updates = " + animation.updates);    
     assertEquals(3, animation.updates);
   }
 
