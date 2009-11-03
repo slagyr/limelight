@@ -10,7 +10,6 @@ import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -24,12 +23,12 @@ public class RootPanel implements Panel
   private final Container contentPane;
   private EventListener listener;
   private boolean alive;
-  private final StageFrame frame;
+  private final PropFrame frame;
   private final ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
 
-  public RootPanel(StageFrame frame)
+  public RootPanel(PropFrame frame)
   {
     this.frame = frame;
     contentPane = frame.getContentPane();
@@ -488,7 +487,7 @@ public class RootPanel implements Panel
   {
   }
 
-  public StageFrame getStageFrame()
+  public PropFrame getStageFrame()
   {
     return frame;
   }

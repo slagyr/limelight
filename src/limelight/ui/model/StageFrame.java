@@ -10,15 +10,10 @@ import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
 import javax.swing.*;
-import javax.accessibility.AccessibleContext;
-import javax.accessibility.AccessibleRole;
-import javax.accessibility.AccessibleStateSet;
-import javax.accessibility.Accessible;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Locale;
 
-public class StageFrame extends JFrame implements KeyListener
+public class StageFrame extends JFrame implements PropFrame, KeyListener
 {
   private static final StyleAttributeCompiler widthCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage width");
   private static final StyleAttributeCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
