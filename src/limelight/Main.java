@@ -20,6 +20,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class Main
 {
@@ -100,9 +101,17 @@ public class Main
     else if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
       className = "limelight.os.darwin.DarwinOS";
 
-    Class klass = Thread.currentThread().getContextClassLoader().loadClass(className);
-    Constructor constructor = klass.getConstructor();
-    context.os = (OS)constructor.newInstance();
+    try
+    {
+      Class klass = Thread.currentThread().getContextClassLoader().loadClass(className);
+      Constructor constructor = klass.getConstructor();
+      context.os = (OS)constructor.newInstance();
+    }
+    catch(Exception e)
+    {
+      System.err.println("OS class could not be loaded:" + e);
+      context.os = new UnsupportedOS();
+    }
 
     context.os.appIsStarting();   
   }

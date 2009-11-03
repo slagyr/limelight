@@ -23,6 +23,11 @@ public class MainTest extends TestCase
     main = new Main();
     Context.removeInstance();
   }
+
+  public void tearDown() throws Exception
+  {
+    System.setProperty("os.name", "blah"); 
+  }
   
   public void testTempFileIsAddedToContext() throws Exception
   {
@@ -97,6 +102,14 @@ public class MainTest extends TestCase
 
   public void testDarwinOS() throws Exception
   {
+    try
+    {
+      Thread.currentThread().getContextClassLoader().loadClass("limelight.os.darwin.DarwinOS");
+    }
+    catch(ClassNotFoundException e)
+    {
+      return;
+    }
     System.setProperty("os.name", "Mac OS X");
     main.configureOS();
 
