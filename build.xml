@@ -81,6 +81,7 @@
                     <exclude name="**/FrameManagerTest.java"/>
                     <exclude name="**/TextPanelTest.java"/>
                     <exclude name="**/AlertFrameManagerTest.java"/>
+                    <exclude name="**/InputPanelTest.java"/>
                 </fileset>
             </batchtest>
         </junit>
