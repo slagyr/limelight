@@ -54,7 +54,7 @@
       <java mainClass="limelight.Main" vmParameters="&quot;-Dlimelight.home=${launcher:sys.launcherDirectory}&quot; -Dlimelight.as.app=true" arguments="" allowVMPassthroughParameters="true" preferredVM="">
         <classPath>
           <archive location="lib/limelight.jar" failOnError="false" />
-          <archive location="lib/jruby-complete-1.4.0RC3.jar" failOnError="false" />
+          <archive location="lib/jruby-complete-1.4.0.jar" failOnError="false" />
         </classPath>
         <nativeLibraryDirectories />
       </java>
