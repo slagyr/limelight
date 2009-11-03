@@ -4,11 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
-import limelight.ui.model.BasePanel;
-import limelight.ui.model.PropPanel;
-import limelight.ui.model.TextAccessor;
-import limelight.ui.model.Layout;
-import limelight.ui.model.inputs.InputPanelLayout;
+import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.Context;
@@ -48,7 +44,7 @@ public abstract class InputPanel extends BasePanel
   public void setParent(limelight.ui.Panel panel)
   {
     if(panel == null)
-      Context.instance().keyboardFocusManager.focusFrame(getRoot().getStageFrame());
+      Context.instance().keyboardFocusManager.focusFrame((StageFrame)getRoot().getStageFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {

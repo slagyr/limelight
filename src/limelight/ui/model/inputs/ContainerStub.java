@@ -20,7 +20,7 @@ public class ContainerStub extends Container
   {
     Container parent = null;
     if(panel != null && panel.getRoot() != null)
-      parent = (panel.getRoot()).getStageFrame();
+      parent = (Container)(panel.getRoot()).getStageFrame();
     return parent;
   }
 

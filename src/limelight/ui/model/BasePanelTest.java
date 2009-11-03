@@ -55,7 +55,7 @@ public class BasePanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockStageFrame());
+    root = new RootPanel(new MockPropFrame());
     panel = new TestableBasePanel();
     root.setPanel(panel);
   }
