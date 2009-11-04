@@ -42,6 +42,20 @@ describe Limelight::Commands::CreateCommand do
     @command.run(["scene", "prod/some_scene"])
   end
 
+  it "should create a project" do
+    project_templater = mock('project_templater')
+    Limelight::Templates::ProjectTemplater.should_receive(:new).and_return(project_templater)
+    project_templater.should_receive(:generate)
+    
+    @command.run(["project", "foo"])
+  end
+  
+  it "should raise an exception if not project path is given" do
+    Limelight::Templates::ProjectTemplater.should_not_receive(:new)
+    
+    lambda{@command.run(["project", nil])}.should raise_error
+  end
+  
   it "should print useage on invalid template type" do
     @command.should_receive(:parse_error).at_least(:once)
 

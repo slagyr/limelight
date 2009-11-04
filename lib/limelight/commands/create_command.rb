@@ -45,13 +45,13 @@ module Limelight
       end
 
       def parameter_description #:nodoc:
-        return "[options] <production|scene> <path>"
+        return "[options] <production|scene|project> <path>"
       end
 
       def parse_remainder(args) #:nodoc:
         @template_type = args.shift
         raise "Missing template type" if @template_type.nil?
-        raise "Unknown template type: #{@template_type}" if !["production", "scene"].include?(@template_type)
+        raise "Unknown template type: #{@template_type}" if !["production", "scene", "project"].include?(@template_type)
         self.send "parse_#{@template_type}".to_sym, args
         @spec_path = "spec" unless @spec_path
       end
@@ -59,6 +59,7 @@ module Limelight
       def do_requires #:nodoc:
         require 'limelight/templates/production_templater'
         require 'limelight/templates/scene_templater'
+        require 'limelight/templates/project_templater'
       end
 
       def build_options(spec) #:nodoc:
@@ -69,6 +70,11 @@ module Limelight
 
       private #############################################
 
+      def parse_project(args)
+        @production_path = args.shift
+        raise "Missing project path parameter" if @production_path.nil?
+      end
+      
       def parse_production(args)
         @production_path = args.shift
         raise "Missing production path parameter" if @production_path.nil?
@@ -77,6 +83,10 @@ module Limelight
       def parse_scene(args)
         @scene_name = args.shift
         raise "Missing scene name/path parameter" if @scene_name.nil?
+      end
+
+      def create_project
+        Templates::ProjectTemplater.new(options_hash).generate
       end
 
       def create_production

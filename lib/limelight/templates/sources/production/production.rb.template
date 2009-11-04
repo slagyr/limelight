@@ -6,7 +6,7 @@ module Production
 
 #  # Define this method if you want the production name to be different from the default, directory name.
 #  def name
-#    return !-PRODUCTION_NAME-!
+#    return "!-PRODUCTION_NAME-!"
 #  end
 #
 #  # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"
