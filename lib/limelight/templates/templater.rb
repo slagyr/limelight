@@ -24,7 +24,7 @@ module Limelight
         return File.join(File.dirname(__FILE__), "sources")
       end
 
-      # Carifies a path as relative or absolute.  Essentially if makes sure a path begins with a . if it's not
+      # Clarifies a path as relative or absolute.  Essentially, it makes sure a path begins with a . if it's not
       # an absolute path.
       #
       #   Templater.clarity('some/path') -> './some/path'
