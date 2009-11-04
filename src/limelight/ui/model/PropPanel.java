@@ -5,12 +5,9 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.LimelightError;
-import limelight.LimelightException;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
-import limelight.styles.styling.AutoDimensionAttribute;
-import limelight.styles.styling.GreedyDimensionAttribute;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.styles.abstrstyling.PixelsAttribute;
 import limelight.ui.PaintablePanel;
@@ -25,7 +22,6 @@ import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 import limelight.util.Util;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -43,8 +39,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private Box childConsumableArea;
   private Style style;
   private PaintAction afterPaintAction;
-  private ScrollBarPanel verticalScrollBar;
-  private ScrollBarPanel horizontalScrollBar;
+  private ScrollBarPanel verticalScrollbar;
+  private ScrollBarPanel horizontalScrollbar;
   private boolean sizeChangePending = true;
   public boolean borderChanged = true;
   public Dimension greediness = new Dimension(0, 0);
@@ -96,10 +92,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public Panel getOwnerOfPoint(Point point)
   {
     Point relativePoint = new Point(point.x - getX(), point.y - getY());
-    if(verticalScrollBar != null && verticalScrollBar.containsRelativePoint(relativePoint))
-      return verticalScrollBar;
-    else if(horizontalScrollBar != null && horizontalScrollBar.containsRelativePoint(relativePoint))
-      return horizontalScrollBar;
+    if(verticalScrollbar != null && verticalScrollbar.containsRelativePoint(relativePoint))
+      return verticalScrollbar;
+    else if(horizontalScrollbar != null && horizontalScrollbar.containsRelativePoint(relativePoint))
+      return horizontalScrollbar;
 
     return super.getOwnerOfPoint(point);
   }
@@ -155,8 +151,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     {
       getBoxInsidePadding();
       Box boxInsidePadding = getBoxInsidePadding();
-      int width = verticalScrollBar == null ? boxInsidePadding.width : boxInsidePadding.width - verticalScrollBar.getWidth();
-      int height = horizontalScrollBar == null ? boxInsidePadding.height : boxInsidePadding.height - horizontalScrollBar.getHeight();
+      int width = verticalScrollbar == null ? boxInsidePadding.width : boxInsidePadding.width - verticalScrollbar.getWidth();
+      int height = horizontalScrollbar == null ? boxInsidePadding.height : boxInsidePadding.height - horizontalScrollbar.getHeight();
       childConsumableArea = new Box(boxInsidePadding.x, boxInsidePadding.y, width, height);
     }
     return childConsumableArea;
@@ -256,7 +252,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     boolean isVertical = e.getModifiers() % 2 == 0;
-    ScrollBarPanel scrollBar = isVertical ? verticalScrollBar : horizontalScrollBar;
+    ScrollBarPanel scrollBar = isVertical ? verticalScrollbar : horizontalScrollbar;
     if(scrollBar != null)
       scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
     else
@@ -424,41 +420,41 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
         descriptor == Style.TOP_LEFT_ROUNDED_CORNER_RADIUS;
   }
 
-  public ScrollBarPanel getVerticalScrollBar()
+  public ScrollBarPanel getVerticalScrollbar()
   {
-    return verticalScrollBar;
+    return verticalScrollbar;
   }
 
-  public ScrollBarPanel getHorizontalScrollBar()
+  public ScrollBarPanel getHorizontalScrollbar()
   {
-    return horizontalScrollBar;
+    return horizontalScrollbar;
   }
 
   public void addVerticalScrollBar()
   {
-    verticalScrollBar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
-    add(verticalScrollBar);
+    verticalScrollbar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
+    add(verticalScrollbar);
     childConsumableArea = null;
   }
 
   public void addHorizontalScrollBar()
   {
-    horizontalScrollBar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
-    add(horizontalScrollBar);
+    horizontalScrollbar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
+    add(horizontalScrollbar);
     childConsumableArea = null;
   }
 
   public void removeVerticalScrollBar()
   {
-    remove(verticalScrollBar);
-    verticalScrollBar = null;
+    remove(verticalScrollbar);
+    verticalScrollbar = null;
     childConsumableArea = null;
   }
 
   public void removeHorizontalScrollBar()
   {
-    remove(horizontalScrollBar);
-    horizontalScrollBar = null;
+    remove(horizontalScrollbar);
+    horizontalScrollbar = null;
     childConsumableArea = null;
   }
 
@@ -505,7 +501,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   protected boolean canRemove(Panel child)
   {
-    return child != verticalScrollBar && child != horizontalScrollBar;
+    return child != verticalScrollbar && child != horizontalScrollbar;
   }
 }
 
