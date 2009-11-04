@@ -249,15 +249,15 @@ public class PropPanelLayoutTest extends TestCase
   public void testAddingScrollBars() throws Exception
   {
     assertEquals(0, parent.getChildren().size());
-    assertEquals(null, parent.getVerticalScrollBar());
-    assertEquals(null, parent.getHorizontalScrollBar());
+    assertEquals(null, parent.getVerticalScrollbar());
+    assertEquals(null, parent.getHorizontalScrollbar());
     parent.getStyle().setScrollbars("on");
 
     layout.establishScrollBars(parent);
 
     assertEquals(2, parent.getChildren().size());
-    assertNotNull(parent.getVerticalScrollBar());
-    assertNotNull(parent.getHorizontalScrollBar());
+    assertNotNull(parent.getVerticalScrollbar());
+    assertNotNull(parent.getHorizontalScrollbar());
   }
 
   public void testRemovingScrollBars() throws Exception
@@ -265,14 +265,14 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setScrollbars("on");
     layout.establishScrollBars(parent);
     assertEquals(2, parent.getChildren().size());
-    assertNotNull(parent.getVerticalScrollBar());
-    assertNotNull(parent.getHorizontalScrollBar());
+    assertNotNull(parent.getVerticalScrollbar());
+    assertNotNull(parent.getHorizontalScrollbar());
 
     parent.getStyle().setScrollbars("off");
     layout.establishScrollBars(parent);
     assertEquals(0, parent.getChildren().size());
-    assertNull(parent.getVerticalScrollBar());
-    assertNull(parent.getHorizontalScrollBar());
+    assertNull(parent.getVerticalScrollbar());
+    assertNull(parent.getHorizontalScrollbar());
   }
 
   public void testScrollBarLayout() throws Exception
@@ -281,11 +281,11 @@ public class PropPanelLayoutTest extends TestCase
 
     layout.doLayout(parent);
 
-    ScrollBarPanel verticalScrollBar = parent.getVerticalScrollBar();
+    ScrollBarPanel verticalScrollBar = parent.getVerticalScrollbar();
     assertEquals(100 - scrollGirth, verticalScrollBar.getX());
     assertEquals(0, verticalScrollBar.getY());
 
-    ScrollBarPanel horizontalScrollBar = parent.getHorizontalScrollBar();
+    ScrollBarPanel horizontalScrollBar = parent.getHorizontalScrollbar();
     assertEquals(0, horizontalScrollBar.getX());
     assertEquals(100 - scrollGirth, horizontalScrollBar.getY());
   }
@@ -324,8 +324,8 @@ public class PropPanelLayoutTest extends TestCase
     PropPanel panel = addChildWithSize(parent, "200", "300");
     layout.doLayout(parent);
 
-    assertEquals(200, parent.getHorizontalScrollBar().getMaximumValue());
-    assertEquals(100 - scrollGirth, parent.getHorizontalScrollBar().getVisibleAmount());
+    assertEquals(200, parent.getHorizontalScrollbar().getMaximumValue());
+    assertEquals(100 - scrollGirth, parent.getHorizontalScrollbar().getVisibleAmount());
   }
 
   public void testLayoutRowsWithScrollOffsets() throws Exception
@@ -334,8 +334,8 @@ public class PropPanelLayoutTest extends TestCase
     PropPanel panel = addChildWithSize(parent, "200", "300");
     layout.doLayout(parent);
 
-    parent.getVerticalScrollBar().setValue(100);
-    parent.getHorizontalScrollBar().setValue(50);
+    parent.getVerticalScrollbar().setValue(100);
+    parent.getHorizontalScrollbar().setValue(50);
     layout.doLayout(parent);
 
     assertEquals(-50, panel.getX());

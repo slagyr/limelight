@@ -113,11 +113,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if(!hasMenuBar)
       setJMenuBar(null);
 
-    if(Context.instance().os.needsToOpenFrameToDetectInsets())
-    {
-      setVisible(true);
-      setVisible(false);
-    }
+    addNotify(); // MDM - Force the loading of the native peer to calculate insets.
 
     applySizeStyles();
     collapseAutoDimensions();
@@ -449,7 +445,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
     setLocation(x, y);
   }
-
+                                                                                
   private void collapseAutoDimensions()
   {
     if(root == null)

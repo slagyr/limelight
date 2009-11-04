@@ -159,7 +159,7 @@ module Limelight
 
     # When true, the stage will remain on top of all other windows.
     #
-    def always_on_top=(value)
+    def always_on_top=(value)                                                                              
       @frame.always_on_top = value
     end
 
@@ -266,6 +266,7 @@ module Limelight
 
     # Invoked when the stage has been closed.
     # System hook that should NOT be called by you.
+    # It's not garunteed that this hook will be called when Limelight is shutting down.  
     #
     def closed(e)
       @current_scene.visible = false if @current_scene

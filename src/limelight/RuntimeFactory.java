@@ -225,7 +225,7 @@ public class RuntimeFactory
 
   public static String openProductionSrc(String productionPath)
   {
-    return openProductionSrcTemplate.replace("PRODUCTION_PATH", productionPath);
+    return openProductionSrcTemplate.replace("PRODUCTION_PATH", productionPath.replace("\\", "\\\\"));
 //    return withErrorsCaught(openProductionSrcTemplate.replace("PRODUCTION_PATH", productionPath));
   }
 

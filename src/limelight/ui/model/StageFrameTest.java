@@ -333,10 +333,11 @@ public class StageFrameTest extends TestCase
     insets.set(10, 20, 30, 40);
     
     frame.setLocationStyles("center", "center");
-    frame.setSizeStyles(100, 100);
+    frame.setSizeStyles(200, 100);
     frame.open();
 
-    assertEquals(new Point(440, 440), frame.getLocation());
+    assertEquals(new Dimension(200, 100), frame.getSize());
+    assertEquals(new Point(390, 440), frame.getLocation());
   }
 
   public void testVitality() throws Exception
@@ -369,8 +370,8 @@ public class StageFrameTest extends TestCase
     child.prepForSnap(300, 200);
     frame.load(child);
 
-    Insets insets = frame.getInsets();
     frame.open();
+    Insets insets = frame.getInsets();
 
     int width = 300 + insets.left + insets.right;
     int height = 200 + insets.top + insets.bottom;

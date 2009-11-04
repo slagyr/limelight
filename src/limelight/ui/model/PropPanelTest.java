@@ -185,11 +185,11 @@ public class PropPanelTest extends TestCase
     panel.add(child);
 
     panel.addVerticalScrollBar();
-    ScrollBarPanel vertical = panel.getVerticalScrollBar();
+    ScrollBarPanel vertical = panel.getVerticalScrollbar();
     vertical.setSize(15, 100);
     vertical.setLocation(85, 0);
     panel.addHorizontalScrollBar();
-    ScrollBarPanel horizontal = panel.getHorizontalScrollBar();
+    ScrollBarPanel horizontal = panel.getHorizontalScrollbar();
     horizontal.setSize(100, 15);
     horizontal.setLocation(0, 85);
 
@@ -221,9 +221,9 @@ public class PropPanelTest extends TestCase
   public void testVerticalMouseWheelMovement() throws Exception
   {
     panel.addVerticalScrollBar();
-    panel.getVerticalScrollBar().configure(100, 200);
+    panel.getVerticalScrollbar().configure(100, 200);
     panel.addHorizontalScrollBar();
-    panel.getHorizontalScrollBar().configure(100, 200);
+    panel.getHorizontalScrollbar().configure(100, 200);
 
     int modifer = 0;
     int scrollAmount = 8;
@@ -232,16 +232,16 @@ public class PropPanelTest extends TestCase
 
     panel.mouseWheelMoved(e);
 
-    assertEquals(16, panel.getVerticalScrollBar().getScrollBar().getValue());
-    assertEquals(0, panel.getHorizontalScrollBar().getScrollBar().getValue());
+    assertEquals(16, panel.getVerticalScrollbar().getScrollBar().getValue());
+    assertEquals(0, panel.getHorizontalScrollbar().getScrollBar().getValue());
   }
 
   public void testHorizontalMouseWheelMovement() throws Exception
   {
     panel.addVerticalScrollBar();
-    panel.getVerticalScrollBar().configure(100, 200);
+    panel.getVerticalScrollbar().configure(100, 200);
     panel.addHorizontalScrollBar();
-    panel.getHorizontalScrollBar().configure(100, 200);
+    panel.getHorizontalScrollbar().configure(100, 200);
 
     int modifer = 1;
     int scrollAmount = 8;
@@ -250,8 +250,8 @@ public class PropPanelTest extends TestCase
 
     panel.mouseWheelMoved(e);
 
-    assertEquals(0, panel.getVerticalScrollBar().getScrollBar().getValue());
-    assertEquals(16, panel.getHorizontalScrollBar().getScrollBar().getValue());
+    assertEquals(0, panel.getVerticalScrollbar().getScrollBar().getValue());
+    assertEquals(16, panel.getHorizontalScrollbar().getScrollBar().getValue());
   }
 
   public void testPlayAudioFile() throws Exception
@@ -558,8 +558,8 @@ public class PropPanelTest extends TestCase
     panel.removeAll();
     
     assertEquals(2, panel.children.size());
-    assertEquals(panel.getVerticalScrollBar(), panel.children.get(0));
-    assertEquals(panel.getHorizontalScrollBar(), panel.children.get(1));
+    assertEquals(panel.getVerticalScrollbar(), panel.children.get(0));
+    assertEquals(panel.getHorizontalScrollbar(), panel.children.get(1));
   }
 
 

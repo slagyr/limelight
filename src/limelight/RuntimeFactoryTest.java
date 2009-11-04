@@ -42,6 +42,12 @@ public class RuntimeFactoryTest extends TestCase
     assertEquals(null, runtimes.get(handle));
   }
 
+  public void testShouldEscapeBackslashesInSrc() throws Exception
+  {
+    String src = RuntimeFactory.openProductionSrc("C:\\Program Files\\Limelight\\blah");
+    assertEquals(src, true, src.contains("C:\\\\Program Files\\\\Limelight\\\\blah"));
+  }
+
   public void testShouldRaiseRubyErrors() throws Exception
   {
     try
