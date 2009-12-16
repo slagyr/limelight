@@ -149,12 +149,7 @@ public class TextPanelTest extends TestCase
 
   public void testStylingAppliedToLine() throws Exception
   {
-    parent.prop.scene = new MockScene();
-    FlatStyle myStyle = new FlatStyle();
-    ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
-    myStyle.setFontFace("Helvetica");
-    myStyle.setFontStyle("bold");
-    myStyle.setFontSize("20");
+    createStyles();
 
     parent.setSize(200, 100);
     panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
@@ -175,18 +170,7 @@ public class TextPanelTest extends TestCase
 
   public void testMultipleStylesAppliedToLine() throws Exception
   {
-    parent.prop.scene = new MockScene();
-    FlatStyle myStyle = new FlatStyle();
-    ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
-    myStyle.setFontFace("Helvetica");
-    myStyle.setFontStyle("bold");
-    myStyle.setFontSize("20");
-
-    FlatStyle myOtherStyle = new FlatStyle();
-    ((MockScene)parent.prop.scene).styles.put("my_other_style", myOtherStyle);
-    myOtherStyle.setFontFace("Cuneiform");
-    myOtherStyle.setFontStyle("italic");
-    myOtherStyle.setFontSize("19");
+    createStyles();
 
     parent.setSize(200, 100);
     panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
@@ -211,10 +195,62 @@ public class TextPanelTest extends TestCase
     assertSubString("size=19", layout2.toString());
   }
 
+  private void createStyles()
+  {
+    parent.prop.scene = new MockScene();
+    FlatStyle myStyle = new FlatStyle();
+    ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
+    myStyle.setFontFace("Helvetica");
+    myStyle.setFontStyle("bold");
+    myStyle.setFontSize("20");
+
+    FlatStyle myOtherStyle = new FlatStyle();
+    ((MockScene)parent.prop.scene).styles.put("my_other_style", myOtherStyle);
+    myOtherStyle.setFontFace("Cuneiform");
+    myOtherStyle.setFontStyle("italic");
+    myOtherStyle.setFontSize("19");
+  }
+
+  public void testInterlacedTextAndStyledText()
+  {
+    createStyles();
+    parent.setSize(200, 100);
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
+    panel.setText("This is <my_other_style>some </my_other_style> fantastic <my_style>text</my_style>");
+    panel.buildLines();
+
+    List<TextLayout> lines = panel.getLines();
+    assertEquals(4, lines.size());
+
+    TextLayout interlacedLayout = lines.get(2);
+    assertNoSubString("Cuneiform", interlacedLayout.toString());
+  }
+
+  public void testUnrecognizedInterlacedStyle()
+  {
+    createStyles();
+    parent.setSize(200, 100);
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
+    panel.setText("This is <my_other_style>some </my_other_style><bogus_style>fantastic</bogus_style><my_style>text</my_style>");
+    panel.buildLines();
+
+    List<TextLayout> lines = panel.getLines();
+    assertEquals(4, lines.size());
+
+    TextLayout interlacedLayout = lines.get(2);
+    assertNoSubString("Cuneiform", interlacedLayout.toString());
+  }
+
   private void assertSubString(String subString, String fullString)
   {
     int i = fullString.indexOf(subString);
     assertTrue(subString + " not found in " + fullString, i > -1);
+  }
+
+  private void assertNoSubString(String subString, String fullString)
+  {
+    int i = fullString.indexOf(subString);
+    assertFalse(subString + " found in " + fullString, i > -1);
   }
 
   public void testTagRegex() throws Exception

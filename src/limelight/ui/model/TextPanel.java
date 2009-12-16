@@ -135,6 +135,8 @@ public class TextPanel extends BasePanel
       Style style = getStyle();
       Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
       Font defaultFont = font;
+      boolean lastUsedCustomFont = false;
+      
       for(String paragraph : paragraphs)
       {
         StyledTextParser parser = new StyledTextParser();
@@ -152,9 +154,20 @@ public class TextPanel extends BasePanel
             Map styles = scene.getStyles();
             Style tagStyle = (Style) styles.get(tagName);
             if(tagStyle != null)
+            {
               font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
+              lastUsedCustomFont = true;
+            }
             else
+            {
               System.out.println("no style for tag: " + tagName);
+              font = defaultFont;
+            }
+          }
+          else if (lastUsedCustomFont)
+          {
+            font = defaultFont;
+            lastUsedCustomFont = false;
           }
           addLine(font, line);
         }
