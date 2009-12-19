@@ -4,5 +4,5 @@
 __ :name => "sandbox"
 __install "header.rb"
 arena do
-  chromaton
+  chromaton :id => "chromaton"
 end
