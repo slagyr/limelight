@@ -109,7 +109,6 @@ public class TextPanel extends BasePanel
   {
     buildLines();
     calculateDimensions();
-//    compiled = true;
     flushChanges();
     snapToSize();
     markAsDirty();
@@ -134,40 +133,50 @@ public class TextPanel extends BasePanel
       Color color = getTextColorFromStyle(getStyle());
       Color defaultColor = color;
 
-      boolean lastUsedCustomFont = false;
       for (StyledText styledLine : styledParagraph)
       {
-        String line = styledLine.getText();
-        String tagName = styledLine.getStyle();
-
-        if(!Util.equal(tagName,"default"))
-        {
-          Style tagStyle = getStyleFromTag(tagName);
-
-          if(tagStyle != null)
-          {
-            font = getFontFromStyle(tagStyle);
-            color = getTextColorFromStyle(tagStyle);
-            lastUsedCustomFont = true;
-          }
-          else
-          {
-            // unrecognized style tag
-            font = defaultFont;
-            color = defaultColor;
-          }
-        }
-        else if (lastUsedCustomFont)
-        {
-          font = defaultFont;
-          color = defaultColor;
-          lastUsedCustomFont = false;
-        }
-        addTextChunk(font, line, color);
+        addTextChunk(defaultFont, defaultColor, styledLine);
       }
       closeParagraph();
       addLines();
     }
+  }
+
+  private void addTextChunk(Font defaultFont, Color defaultColor, StyledText styledLine)
+  {
+    Font font;
+    Color color;
+    String line = styledLine.getText();
+    String tagName = styledLine.getStyle();
+
+    if(!Util.equal(tagName,"default"))
+    {
+      Style tagStyle = getStyleFromTag(tagName);
+
+      if(tagStyle != null)
+      {
+        font = getFontFromStyle(tagStyle);
+        color = getTextColorFromStyle(tagStyle);
+      }
+      else
+      {
+        // unrecognized style tag
+        font = defaultFont;
+        color = defaultColor;
+      }
+    }
+    else
+    {
+      font = defaultFont;
+      color = defaultColor;
+    }
+
+    if(line.length() == 0)
+    {
+      line = " ";
+    }
+
+    textChunks.add(new StyledString(font, line, color));
   }
 
   private Color getTextColorFromStyle(Style tagStyle)
@@ -185,23 +194,13 @@ public class TextPanel extends BasePanel
     Prop prop = ((PropablePanel) getPanel()).getProp();
     Scene scene = prop.getScene();
     Map styles = scene.getStyles();
-    Style tagStyle = (Style) styles.get(tagName);
-    return tagStyle;
+    return (Style) styles.get(tagName);
   }
 
   private void closeParagraph()
   {
     Font font = getFontFromStyle(getStyle());
     textChunks.add(new StyledString(font, "\n", new Color(0, 0, 0, 0)));
-  }
-
-  private void addTextChunk(Font font, String chunk, Color color)
-  {
-    if(chunk.length() == 0)
-    {
-      chunk = " ";
-    }
-    textChunks.add(new StyledString(font, chunk, color));
   }
 
   private synchronized void addLines()
@@ -212,10 +211,9 @@ public class TextPanel extends BasePanel
     List<Integer> newlineLocations = getNewlineLocations(styledTextIterator);
 
     LineBreakMeasurer lbm = new LineBreakMeasurer(styledTextIterator, getRenderContext());
-    boolean moreCharactersExist = true;
     int currentNewline = 0;
     int end = styledTextIterator.getEndIndex();
-    while (lbm.getPosition() < end && moreCharactersExist)
+    while (lbm.getPosition() < end)
     {
       boolean shouldEndLine = false;
 
@@ -225,25 +223,15 @@ public class TextPanel extends BasePanel
         TextLayout layout = lbm.nextLayout(width1, newlineLocations.get(currentNewline) + 1, false);
 
         if (layout != null)
-        {
           lines.add(layout);
-        }
         else
-        {
           shouldEndLine = true;
-        }
 
         if (lbm.getPosition() == newlineLocations.get(currentNewline) + 1)
-        {
           currentNewline += 1;
-          shouldEndLine = true;
-        }
-        
+
         if (lbm.getPosition() == styledTextIterator.getEndIndex())
-        {
           shouldEndLine = true;
-          moreCharactersExist = false;
-        }
       }
     }
   }
@@ -254,9 +242,7 @@ public class TextPanel extends BasePanel
     for (char c = styledTextIterator.first(); c != AttributedCharacterIterator.DONE; c = styledTextIterator.next())
     {
       if (c == '\n')
-      {
         newlineLocations.add(styledTextIterator.getIndex());
-      }
     }
     return newlineLocations;
   }
