@@ -6,6 +6,7 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
+import limelight.styles.abstrstyling.ColorAttribute;
 import limelight.ui.api.MockScene;
 
 import javax.swing.*;
@@ -28,6 +29,7 @@ public class TextPanelTest extends TestCase
   private String defaultFontFace;
   private String defaultFontSize;
   private String defaultFontStyle;
+  private Color defaultTextColor;
 
   public void setUp() throws Exception
   {
@@ -44,6 +46,7 @@ public class TextPanelTest extends TestCase
     defaultFontFace = style.getFontFace();
     defaultFontSize = style.getFontSize();
     defaultFontStyle = style.getFontStyle();
+    defaultTextColor = style.getCompiledTextColor().getColor();
 
     style.setTextColor("black");
     
@@ -210,12 +213,14 @@ public class TextPanelTest extends TestCase
     myStyle.setFontFace("Helvetica");
     myStyle.setFontStyle("bold");
     myStyle.setFontSize("20");
+    myStyle.setTextColor("red");
 
     FlatStyle myOtherStyle = new FlatStyle();
     ((MockScene)parent.prop.scene).styles.put("my_other_style", myOtherStyle);
     myOtherStyle.setFontFace("Cuneiform");
     myOtherStyle.setFontStyle("italic");
     myOtherStyle.setFontSize("19");
+    myOtherStyle.setTextColor("blue");
   }
 
   public void testInterlacedTextAndStyledText()
@@ -288,6 +293,22 @@ public class TextPanelTest extends TestCase
     assertSubString("name=" + defaultFontFace, first.toString());
     assertSubString("name=Cuneiform", second.toString());
     assertSubString("name=" + defaultFontFace, second.toString());
+  }
+
+  public void testTextColor() throws Exception
+  {
+    createStyles();
+    panel.setText("text <my_other_style>here</my_other_style> man");
+    panel.buildLines();
+
+    TextPanel.StyledString first = panel.getTextChunks().get(0);
+    assertEquals(new Color(0x000000), first.color);
+
+    TextPanel.StyledString second = panel.getTextChunks().get(1);
+    assertEquals(new Color(0x0000FF), second.color);
+
+    TextPanel.StyledString third = panel.getTextChunks().get(2);
+    assertEquals(new Color(0x000000), third.color);
   }
 
   private void assertSubString(String subString, String fullString)
