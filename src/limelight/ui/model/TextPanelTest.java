@@ -13,6 +13,7 @@ import java.awt.font.TextLayout;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.*;
+import java.text.AttributedCharacterIterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -24,6 +25,9 @@ public class TextPanelTest extends TestCase
   private JFrame frame;
   private MockPropablePanel parent;
   private RootPanel root;
+  private String defaultFontFace;
+  private String defaultFontSize;
+  private String defaultFontStyle;
 
   public void setUp() throws Exception
   {
@@ -36,6 +40,10 @@ public class TextPanelTest extends TestCase
     parent.add(panel);
     root = new RootPanel(new MockPropFrame());
     root.setPanel(parent);
+
+    defaultFontFace = style.getFontFace();
+    defaultFontSize = style.getFontSize();
+    defaultFontStyle = style.getFontStyle();
 
     style.setTextColor("black");
     
@@ -141,10 +149,10 @@ public class TextPanelTest extends TestCase
 
     assertEquals(1, lines.size());
     TextLayout layout = lines.get(0);
-    assertEquals(9, layout.getCharacterCount());
-    assertSubString("family=Arial", layout.toString());
-    assertSubString("name=Arial", layout.toString());
-    assertSubString("size=12", layout.toString());
+    assertEquals(10, layout.getCharacterCount());
+    assertSubString("family=" + defaultFontFace, layout.toString());
+    assertSubString("name=" + defaultFontFace, layout.toString());
+    assertSubString("size=" + defaultFontSize, layout.toString());
   }
 
   public void testStylingAppliedToLine() throws Exception
@@ -161,7 +169,7 @@ public class TextPanelTest extends TestCase
 
     TextLayout layout = lines.get(0);
     assertEquals(1, lines.size());
-    assertEquals(9, layout.getCharacterCount());
+    assertEquals(10, layout.getCharacterCount());
     assertSubString("family=Helvetica", layout.toString());
     assertSubString("name=Helvetica", layout.toString());
     assertSubString("style=bold", layout.toString());
@@ -177,17 +185,16 @@ public class TextPanelTest extends TestCase
     panel.setText("<my_style>some </my_style><my_other_style>text</my_other_style>");
     panel.buildLines();
 
-    List<TextLayout> lines = panel.getLines();
+    List<TextPanel.StyledString> chunks = panel.getTextChunks();
 
-    TextLayout layout = lines.get(0);
-    assertEquals(2, lines.size());
+    TextPanel.StyledString layout = chunks.get(0);
     assertEquals(5, layout.getCharacterCount());
     assertSubString("family=Helvetica", layout.toString());
     assertSubString("name=Helvetica", layout.toString());
     assertSubString("style=bold", layout.toString());
     assertSubString("size=20", layout.toString());
 
-    TextLayout layout2 = lines.get(1);
+    TextPanel.StyledString layout2 = chunks.get(1);
     assertEquals(5, layout.getCharacterCount());
     assertSubString("family=Dialog", layout2.toString());
     assertSubString("name=Cuneiform", layout2.toString());
@@ -219,11 +226,12 @@ public class TextPanelTest extends TestCase
     panel.setText("This is <my_other_style>some </my_other_style> fantastic <my_style>text</my_style>");
     panel.buildLines();
 
-    List<TextLayout> lines = panel.getLines();
-    assertEquals(4, lines.size());
+    List<TextPanel.StyledString> chunks = panel.getTextChunks();
+    assertEquals(5, chunks.size());
 
-    TextLayout interlacedLayout = lines.get(2);
-    assertNoSubString("Cuneiform", interlacedLayout.toString());
+    TextPanel.StyledString interlacedLayout = chunks.get(2);
+    assertNoSubString("name=Cuneiform", interlacedLayout.toString());
+    assertNoSubString("size=19", interlacedLayout.toString());
   }
 
   public void testUnrecognizedInterlacedStyle()
@@ -234,11 +242,52 @@ public class TextPanelTest extends TestCase
     panel.setText("This is <my_other_style>some </my_other_style><bogus_style>fantastic</bogus_style><my_style>text</my_style>");
     panel.buildLines();
 
-    List<TextLayout> lines = panel.getLines();
-    assertEquals(4, lines.size());
+    List<TextPanel.StyledString> chunks = panel.getTextChunks();
+    assertEquals(5, chunks.size());
 
-    TextLayout interlacedLayout = lines.get(2);
-    assertNoSubString("Cuneiform", interlacedLayout.toString());
+    TextPanel.StyledString interlacedLayout = chunks.get(2);
+    assertNoSubString("name=Cuneiform", interlacedLayout.toString());
+    assertNoSubString("size=19", interlacedLayout.toString());
+  }
+
+  public void testStyledTextOnSameLine()
+  {
+    createStyles();
+    parent.setSize(200, 100);
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
+    panel.setText("This <my_other_style>some </my_other_style> text");
+    panel.buildLines();
+
+    List<TextLayout> lines = panel.getLines();
+    assertEquals(1, lines.size());
+
+    String onlyLine = lines.get(0).toString();
+    assertSubString("name=Cuneiform", onlyLine);
+    assertSubString("size=19", onlyLine);
+    assertSubString("style=italic", onlyLine);
+    assertSubString("name=" + defaultFontFace, onlyLine);
+    assertSubString("size=" + defaultFontSize, onlyLine);
+    assertSubString("style=" + defaultFontStyle, onlyLine);
+  }
+
+  public void testStyledAcrossLineBreak()
+  {
+    createStyles();
+    parent.setSize(200, 100);
+    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
+    panel.setText("This <my_other_style>some\n more</my_other_style> text");
+
+    panel.buildLines();
+
+    List<TextLayout> lines = panel.getLines();
+    assertEquals(2, lines.size());
+
+    TextLayout first = lines.get(0);
+    TextLayout second = lines.get(1);
+    assertSubString("name=Cuneiform", first.toString());
+    assertSubString("name=" + defaultFontFace, first.toString());
+    assertSubString("name=Cuneiform", second.toString());
+    assertSubString("name=" + defaultFontFace, second.toString());
   }
 
   private void assertSubString(String subString, String fullString)
@@ -251,28 +300,6 @@ public class TextPanelTest extends TestCase
   {
     int i = fullString.indexOf(subString);
     assertFalse(subString + " found in " + fullString, i > -1);
-  }
-
-  public void testTagRegex() throws Exception
-  {
-    Matcher matcher = TextPanel.TAG_REGEX.matcher("<abc>123</abc>");
-    assertEquals(true, matcher.find());
-    assertEquals("<abc>123</abc>", matcher.group(0));
-    assertEquals("abc", matcher.group(1));
-    assertEquals("123", matcher.group(2));
-  }
-
-  public void testUnmatchedTagRegex() throws Exception
-  {
-    Matcher matcher = TextPanel.TAG_REGEX.matcher("<abc>123</def>");
-    assertEquals(false, matcher.find());
-  }
-
-  public void testMultilineContentCapture() throws Exception
-  {
-    Matcher matcher = TextPanel.TAG_REGEX.matcher("<abc>123\n456</abc>");
-    assertEquals(true, matcher.find());
-    assertEquals("123\n456", matcher.group(2));
   }
 
   public void testChangingTestRequiresUpdates() throws Exception
@@ -303,8 +330,7 @@ public class TextPanelTest extends TestCase
     panel.doLayout();
 
     int originalHeight = panel.getHeight();
-
-    parent.setSize(200, 200);
+    parent.setSize(400, 200);
     panel.doLayout();
 
     int newHeight = panel.getHeight();
