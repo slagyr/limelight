@@ -17,10 +17,20 @@ task :init => [:jar, :jruby_gems, :dev_gems] do
 end
 
 task :spec do
-  gem 'rspec'
-  require 'spec/rake/spectask'
-  Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
-  Rake::Task[:lib_specs].invoke
+  begin
+    require 'java'
+    gem 'rspec'
+    require 'spec/rake/spectask'
+    Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
+    Rake::Task[:lib_specs].invoke
+  rescue LoadError
+    output = `java -jar lib/jruby-complete-1.4.0.jar -S spec spec`
+    if $?.exitstatus != 0
+      raise output
+    else
+      puts output
+    end 
+  end
 end
 
 task :junit do

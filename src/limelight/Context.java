@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight;
@@ -85,14 +85,7 @@ public class Context
     if(frameManager != null)
       frameManager.closeAllFrames();
 
-    if(panelPanter != null)
-      panelPanter.stop();
-
-    if(animationLoop != null)
-      animationLoop.stop();
-
-    if(cacheCleaner != null)
-      cacheCleaner.stop();
+    killThreads();
 
     if(os != null && os.isInKioskMode())
       os.exitKioskMode();
@@ -102,6 +95,18 @@ public class Context
 
     isShuttingDown = false;
     isShutdown = true;
+  }
+
+  public void killThreads()
+  {
+    if(panelPanter != null)
+      panelPanter.stop();
+
+    if(animationLoop != null)
+      animationLoop.stop();
+
+    if(cacheCleaner != null)
+      cacheCleaner.stop();
   }
 
   public void attemptShutdown()
