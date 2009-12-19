@@ -5,6 +5,11 @@ ENV["GEM_PATH"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
 
 require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
 
+def run_command(command)
+  output = `#{command}`
+  raise output if $?.exitstatus != 0
+end
+
 Dir.glob(File.join(TASK_DIR, "*.rake")).each do |rakefile|
   load rakefile
 end
@@ -24,21 +29,19 @@ task :spec do
     Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
     Rake::Task[:lib_specs].invoke
   rescue LoadError
-    output = `java -jar lib/jruby-complete-1.4.0.jar -S spec spec`
-    if $?.exitstatus != 0
-      raise output
-    else
-      puts output
-    end 
+    run_command "java -jar lib/jruby-complete-1.4.0.jar -S spec spec"
   end
 end
 
 task :junit do
-  output = `ant unit_test`
-  raise output if $?.exitstatus != 0
+  run_command "ant unit_test"
 end
 
-task :tests => [:junit, :spec]
+task :ant do
+  run_command "ant jar"
+end
+
+task :tests => [:junit, :ant, :spec]
 
 task :continuous => [:tests_cont]
 
