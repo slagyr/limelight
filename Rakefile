@@ -40,30 +40,13 @@ end
 
 task :tests => [:junit, :spec]
 
-task :continuous => [:tests_cont]#do
-#  require 'tmpdir'
-#  tmpdir = File.join(Dir.tmpdir, "limelight_darwin_#{rand}")
-#  system "mkdir #{tmpdir}"
-#  system "mv src/limelight/os/darwin/* #{tmpdir}"
-#  begin
-#    Rake::Task[:tests].invoke
-#  ensure
-#    system "mv #{tmpdir}/* src/limelight/os/darwin"
-#  end
-#end
+task :continuous => [:tests_cont]
 
 task :junit_cont do
   output = `ant unit_test.cont`
   raise output if $?.exitstatus != 0
 end
 
-task :spec_cont do
-  gem 'rspec'
-  require 'spec/rake/spectask'
-  Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
-  Rake::Task[:lib_specs].invoke
-end
-
-task :tests_cont => [:junit_cont, :spec_cont]
+task :tests_cont => [:junit_cont, :spec]
 
 task :default => :continuous
