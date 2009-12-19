@@ -136,6 +136,8 @@ public class TextPanel extends BasePanel
       Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
       Font defaultFont = font;
       boolean lastUsedCustomFont = false;
+      Color color = style.getCompiledTextColor().getColor();
+      Color defaultColor = color;
 
       StyledTextParser parser = new StyledTextParser();
       LinkedList<StyledText> styledParagraph = parser.parse(text);
@@ -154,19 +156,22 @@ public class TextPanel extends BasePanel
           if(tagStyle != null)
           {
             font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
+            color = tagStyle.getCompiledTextColor().getColor();
             lastUsedCustomFont = true;
           }
           else
           {
             font = defaultFont;
+            color = defaultColor;
           }
         }
         else if (lastUsedCustomFont)
         {
           font = defaultFont;
+          color = defaultColor;
           lastUsedCustomFont = false;
         }
-        addTextChunk(font, line);
+        addTextChunk(font, line, color);
       }
 
       closeParagraph(font);
@@ -177,16 +182,16 @@ public class TextPanel extends BasePanel
 
   private void closeParagraph(Font font)
   {
-    textChunks.add(new StyledString(font, "\n"));
+    textChunks.add(new StyledString(font, "\n", new Color(0, 0, 0, 0)));
   }
 
-  private void addTextChunk(Font font, String chunk)
+  private void addTextChunk(Font font, String chunk, Color color)
   {
     if(chunk.length() == 0)
     {
       chunk = " ";
     }
-    textChunks.add(new StyledString(font, chunk));
+    textChunks.add(new StyledString(font, chunk, color));
   }
 
   public List<StyledString> getTextChunks()
@@ -250,6 +255,7 @@ public class TextPanel extends BasePanel
     StringBuffer buf = new StringBuffer();
     List<Integer> fontIndexes = new ArrayList<Integer>();
     List<Font> fonts = new ArrayList<Font>();
+    List<Color> colors = new ArrayList<Color>();
 
     int i = 0;
     for (StyledString textChunk : textChunks)
@@ -257,6 +263,7 @@ public class TextPanel extends BasePanel
       buf.append(textChunk.text);
       fontIndexes.add(i);
       fonts.add(textChunk.font);
+      colors.add(textChunk.color);
       i = i + textChunk.text.length();
     }
 
@@ -270,6 +277,7 @@ public class TextPanel extends BasePanel
       else
         endIndex = fontIndexes.get(j + 1);
       aText.addAttribute(TextAttribute.FONT, fonts.get(j), startIndex, endIndex);
+      aText.addAttribute(TextAttribute.FOREGROUND, colors.get(j), startIndex, endIndex);
     }
     return aText;
   }
@@ -362,11 +370,13 @@ public class TextPanel extends BasePanel
   {
     protected String text;
     protected Font font;
+    protected Color color;
 
-    private StyledString(Font font, String text)
+    private StyledString(Font font, String text, Color color)
     {
       this.font = font;
       this.text = text;
+      this.color = color;
     }
 
     public int getCharacterCount()
@@ -376,7 +386,7 @@ public class TextPanel extends BasePanel
 
     public String toString()
     {
-      return text + "(font: " + font + ")";
+      return text + "(font: " + font + ", color: " + color + ")";
     }
   }
 }
