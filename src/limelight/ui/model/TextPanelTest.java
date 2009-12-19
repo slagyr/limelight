@@ -33,7 +33,6 @@ public class TextPanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    TextPanel.widthPadding = 0;
     parent = new MockPropablePanel();
     parent.setLocation(0, 0);
     parent.setSize(100, 100);
@@ -42,15 +41,12 @@ public class TextPanelTest extends TestCase
     parent.add(panel);
     root = new RootPanel(new MockPropFrame());
     root.setPanel(parent);
+    style.setTextColor("black");
 
     defaultFontFace = style.getFontFace();
     defaultFontSize = style.getFontSize();
     defaultFontStyle = style.getFontStyle();
     defaultTextColor = style.getCompiledTextColor().getColor();
-
-    style.setTextColor("black");
-    
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
   }
 
   public void tearDown()
@@ -144,7 +140,6 @@ public class TextPanelTest extends TestCase
 
   public void testBuildingLines() throws Exception
   {
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
     panel.setText("some text");
     panel.buildLines();
 
@@ -163,7 +158,6 @@ public class TextPanelTest extends TestCase
     createStyles();
 
     parent.setSize(200, 100);
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
     panel.setText("<my_style>some text</my_style>");
     panel.buildLines();
 
@@ -184,7 +178,6 @@ public class TextPanelTest extends TestCase
     createStyles();
 
     parent.setSize(200, 100);
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
     panel.setText("<my_style>some </my_style><my_other_style>text</my_other_style>");
     panel.buildLines();
 
@@ -227,7 +220,6 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
     panel.setText("This is <my_other_style>some </my_other_style> fantastic <my_style>text</my_style>");
     panel.buildLines();
 
@@ -243,7 +235,6 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
     panel.setText("This is <my_other_style>some </my_other_style><bogus_style>fantastic</bogus_style><my_style>text</my_style>");
     panel.buildLines();
 
@@ -259,7 +250,6 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
     panel.setText("This <my_other_style>some </my_other_style> text");
     panel.buildLines();
 
@@ -279,7 +269,6 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setRenderContext(new FontRenderContext(new AffineTransform(), true, true));
     panel.setText("This <my_other_style>some\n more</my_other_style> text");
 
     panel.buildLines();
@@ -302,13 +291,13 @@ public class TextPanelTest extends TestCase
     panel.buildLines();
 
     TextPanel.StyledString first = panel.getTextChunks().get(0);
-    assertEquals(new Color(0x000000), first.color);
+    assertEquals(defaultTextColor, first.color);
 
     TextPanel.StyledString second = panel.getTextChunks().get(1);
     assertEquals(new Color(0x0000FF), second.color);
 
     TextPanel.StyledString third = panel.getTextChunks().get(2);
-    assertEquals(new Color(0x000000), third.color);
+    assertEquals(defaultTextColor, third.color);
   }
 
   private void assertSubString(String subString, String fullString)

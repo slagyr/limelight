@@ -18,27 +18,21 @@ import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.text.BreakIterator;
 import java.util.*;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class TextPanel extends BasePanel
 {
-  public static double widthPadding = 0; // The text measuerments aren't always quite right.  This helps.
-  //TODO widthPadding might not be needed any more... Was not calculating width the same way in two places.
-
   private String text;
   private PropablePanel panel;
   private double consumedHeight;
   private double consumedWidth;
-  private LinkedList<TextLayout> lines;
   private Graphics2D graphics;
   private boolean textChanged;
-  private boolean compiled;
-  private FontRenderContext renderContext;
   public static FontRenderContext staticFontRenderingContext;
   private Box consumableArea;
+
+  private LinkedList<TextLayout> lines;
   private List<StyledString> textChunks = new LinkedList<StyledString>();
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
@@ -75,7 +69,7 @@ public class TextPanel extends BasePanel
 
   public void paintOn(Graphics2D graphics)
   {
-    graphics.setColor(getStyle().getCompiledTextColor().getColor());
+    graphics.setColor(getTextColorFromStyle(getStyle()));
     float y = 0;
     if(lines == null)
       return;
@@ -115,7 +109,7 @@ public class TextPanel extends BasePanel
   {
     buildLines();
     calculateDimensions();
-    compiled = true;
+//    compiled = true;
     flushChanges();
     snapToSize();
     markAsDirty();
@@ -132,16 +126,15 @@ public class TextPanel extends BasePanel
     lines = new LinkedList<TextLayout>();
     if(text != null && text.length() > 0)
     {
-      Style style = getStyle();
-      Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
-      Font defaultFont = font;
-      boolean lastUsedCustomFont = false;
-      Color color = style.getCompiledTextColor().getColor();
-      Color defaultColor = color;
-
       StyledTextParser parser = new StyledTextParser();
       LinkedList<StyledText> styledParagraph = parser.parse(text);
 
+      Font font = getFontFromStyle(getStyle());
+      Font defaultFont = font;
+      Color color = getTextColorFromStyle(getStyle());
+      Color defaultColor = color;
+
+      boolean lastUsedCustomFont = false;
       for (StyledText styledLine : styledParagraph)
       {
         String line = styledLine.getText();
@@ -149,18 +142,17 @@ public class TextPanel extends BasePanel
 
         if(!Util.equal(tagName,"default"))
         {
-          Prop prop = ((PropablePanel) getPanel()).getProp();
-          Scene scene = prop.getScene();
-          Map styles = scene.getStyles();
-          Style tagStyle = (Style) styles.get(tagName);
+          Style tagStyle = getStyleFromTag(tagName);
+
           if(tagStyle != null)
           {
-            font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
-            color = tagStyle.getCompiledTextColor().getColor();
+            font = getFontFromStyle(tagStyle);
+            color = getTextColorFromStyle(tagStyle);
             lastUsedCustomFont = true;
           }
           else
           {
+            // unrecognized style tag
             font = defaultFont;
             color = defaultColor;
           }
@@ -173,15 +165,33 @@ public class TextPanel extends BasePanel
         }
         addTextChunk(font, line, color);
       }
-
-      closeParagraph(font);
-      font = defaultFont;
+      closeParagraph();
       addLines();
     }
   }
 
-  private void closeParagraph(Font font)
+  private Color getTextColorFromStyle(Style tagStyle)
   {
+    return tagStyle.getCompiledTextColor().getColor();
+  }
+
+  private Font getFontFromStyle(Style style)
+  {
+    return new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
+  }
+
+  private Style getStyleFromTag(String tagName)
+  {
+    Prop prop = ((PropablePanel) getPanel()).getProp();
+    Scene scene = prop.getScene();
+    Map styles = scene.getStyles();
+    Style tagStyle = (Style) styles.get(tagName);
+    return tagStyle;
+  }
+
+  private void closeParagraph()
+  {
+    Font font = getFontFromStyle(getStyle());
     textChunks.add(new StyledString(font, "\n", new Color(0, 0, 0, 0)));
   }
 
@@ -194,29 +204,17 @@ public class TextPanel extends BasePanel
     textChunks.add(new StyledString(font, chunk, color));
   }
 
-  public List<StyledString> getTextChunks()
-  {
-    return textChunks;
-  }
-
   private synchronized void addLines()
   {
     AttributedString aText = prepareAttributedString();
-    List<Integer> newlineLocations = new ArrayList<Integer>();
-
     AttributedCharacterIterator styledTextIterator = aText.getIterator();
-    for (char c = styledTextIterator.first(); c != AttributedCharacterIterator.DONE; c = styledTextIterator.next())
-    {
-      if (c == '\n')
-      {
-        newlineLocations.add(styledTextIterator.getIndex());
-      }
-    }
+
+    List<Integer> newlineLocations = getNewlineLocations(styledTextIterator);
 
     LineBreakMeasurer lbm = new LineBreakMeasurer(styledTextIterator, getRenderContext());
-    int end = styledTextIterator.getEndIndex();
-    int currentNewline = 0;
     boolean moreCharactersExist = true;
+    int currentNewline = 0;
+    int end = styledTextIterator.getEndIndex();
     while (lbm.getPosition() < end && moreCharactersExist)
     {
       boolean shouldEndLine = false;
@@ -250,6 +248,19 @@ public class TextPanel extends BasePanel
     }
   }
 
+  private List<Integer> getNewlineLocations(AttributedCharacterIterator styledTextIterator)
+  {
+    List<Integer> newlineLocations = new ArrayList<Integer>();
+    for (char c = styledTextIterator.first(); c != AttributedCharacterIterator.DONE; c = styledTextIterator.next())
+    {
+      if (c == '\n')
+      {
+        newlineLocations.add(styledTextIterator.getIndex());
+      }
+    }
+    return newlineLocations;
+  }
+
   private AttributedString prepareAttributedString()
   {
     StringBuffer buf = new StringBuffer();
@@ -268,18 +279,23 @@ public class TextPanel extends BasePanel
     }
 
     AttributedString aText = new AttributedString(buf.toString());
-    for (int j = 0; j < fonts.size(); j++)
+    for (int fontIndex = 0; fontIndex < fonts.size(); fontIndex++)
     {
-      int startIndex = fontIndexes.get(j);
+      int startIndex = fontIndexes.get(fontIndex);
       int endIndex;
-      if(j + 1 == fonts.size())
+      if(fontIndex + 1 == fonts.size())
         endIndex = buf.length();
       else
-        endIndex = fontIndexes.get(j + 1);
-      aText.addAttribute(TextAttribute.FONT, fonts.get(j), startIndex, endIndex);
-      aText.addAttribute(TextAttribute.FOREGROUND, colors.get(j), startIndex, endIndex);
+        endIndex = fontIndexes.get(fontIndex + 1);
+      aText.addAttribute(TextAttribute.FONT, fonts.get(fontIndex), startIndex, endIndex);
+      aText.addAttribute(TextAttribute.FOREGROUND, colors.get(fontIndex), startIndex, endIndex);
     }
     return aText;
+  }
+
+  public List<StyledString> getTextChunks()
+  {
+    return textChunks;
   }
 
   public FontRenderContext getRenderContext()
@@ -310,7 +326,7 @@ public class TextPanel extends BasePanel
 
   private double widthOf(TextLayout layout)
   {
-    return layout.getBounds().getWidth() + layout.getBounds().getX() + widthPadding;
+    return layout.getBounds().getWidth() + layout.getBounds().getX();
   }
 
   public void setGraphics(Graphics graphics)
@@ -359,11 +375,6 @@ public class TextPanel extends BasePanel
   public List<TextLayout> getLines()
   {
     return lines;
-  }
-
-  public void setRenderContext(FontRenderContext renderContext)
-  {
-    this.renderContext = renderContext;
   }
 
   protected class StyledString
