@@ -6,6 +6,7 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 
 import java.util.List;
+import java.util.regex.Matcher;
 
 public class StyledTextParserTest extends TestCase
 {
@@ -209,6 +210,35 @@ public class StyledTextParserTest extends TestCase
 
     assertEquals(1, parsedTextList.size());
     checkStyledText(parsedTextList.get(0), "<a>&intentional</a>", "default");
+  }
+
+  public void testTagRegex() throws Exception
+  {
+    Matcher matcher = StyledTextParser.TAG_REGEX.matcher("<abc>123</abc>");
+    assertEquals(true, matcher.find());
+    assertEquals("<abc>123</abc>", matcher.group(0));
+    assertEquals("abc", matcher.group(1));
+    assertEquals("123", matcher.group(2));
+  }
+
+  public void testUnmatchedTagRegex() throws Exception
+  {
+    Matcher matcher = StyledTextParser.TAG_REGEX.matcher("<abc>123</def>");
+    assertEquals(false, matcher.find());
+  }
+
+  public void testMultilineContentCapture() throws Exception
+  {
+    Matcher matcher = StyledTextParser.TAG_REGEX.matcher("<abc>123\n456</abc>");
+    assertEquals(true, matcher.find());
+    assertEquals("123\n456", matcher.group(2));
+  }
+
+  public void testReluctantCapturing() throws Exception
+  {
+    Matcher matcher = StyledTextParser.TAG_REGEX.matcher("<abc>123</abc><abc>456</abc>");
+    assertEquals(true, matcher.find());
+    assertEquals("123", matcher.group(2));
   }
 
 }

@@ -16,15 +16,15 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
+import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.LinkedList;
+import java.text.BreakIterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class TextPanel extends BasePanel
 {
-  public static final Pattern TAG_REGEX = Pattern.compile("<(\\w+)>(.*)</(\\1)>", Pattern.MULTILINE | Pattern.DOTALL);
   public static double widthPadding = 0; // The text measuerments aren't always quite right.  This helps.
   //TODO widthPadding might not be needed any more... Was not calculating width the same way in two places.
 
@@ -39,6 +39,7 @@ public class TextPanel extends BasePanel
   private FontRenderContext renderContext;
   public static FontRenderContext staticFontRenderingContext;
   private Box consumableArea;
+  private List<StyledString> textChunks = new LinkedList<StyledString>();
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
   public TextPanel(PropablePanel panel, String text)
@@ -113,7 +114,7 @@ public class TextPanel extends BasePanel
   public void compile()
   {
     buildLines();
-    calculateDimentions();
+    calculateDimensions();
     compiled = true;
     flushChanges();
     snapToSize();
@@ -131,87 +132,147 @@ public class TextPanel extends BasePanel
     lines = new LinkedList<TextLayout>();
     if(text != null && text.length() > 0)
     {
-      String[] paragraphs = text.split("\n");
       Style style = getStyle();
       Font font = new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
       Font defaultFont = font;
       boolean lastUsedCustomFont = false;
-      
-      for(String paragraph : paragraphs)
+
+      StyledTextParser parser = new StyledTextParser();
+      LinkedList<StyledText> styledParagraph = parser.parse(text);
+
+      for (StyledText styledLine : styledParagraph)
       {
-        StyledTextParser parser = new StyledTextParser();
-        LinkedList<StyledText> styledParagraph = parser.parse(paragraph);
+        String line = styledLine.getText();
+        String tagName = styledLine.getStyle();
 
-        for (StyledText styledLine : styledParagraph)
+        if(!Util.equal(tagName,"default"))
         {
-          String line = styledLine.getText();
-          String tagName = styledLine.getStyle();
-
-          if(!Util.equal(tagName,"default"))
+          Prop prop = ((PropablePanel) getPanel()).getProp();
+          Scene scene = prop.getScene();
+          Map styles = scene.getStyles();
+          Style tagStyle = (Style) styles.get(tagName);
+          if(tagStyle != null)
           {
-            Prop prop = ((PropablePanel) getPanel()).getProp();
-            Scene scene = prop.getScene();
-            Map styles = scene.getStyles();
-            Style tagStyle = (Style) styles.get(tagName);
-            if(tagStyle != null)
-            {
-              font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
-              lastUsedCustomFont = true;
-            }
-            else
-            {
-              System.out.println("no style for tag: " + tagName);
-              font = defaultFont;
-            }
+            font = new Font(tagStyle.getCompiledFontFace().getValue(), tagStyle.getCompiledFontStyle().toInt(), tagStyle.getCompiledFontSize().getValue());
+            lastUsedCustomFont = true;
           }
-          else if (lastUsedCustomFont)
+          else
           {
             font = defaultFont;
-            lastUsedCustomFont = false;
           }
-          addLine(font, line);
         }
-
-        font = defaultFont;
+        else if (lastUsedCustomFont)
+        {
+          font = defaultFont;
+          lastUsedCustomFont = false;
+        }
+        addTextChunk(font, line);
       }
+
+      closeParagraph(font);
+      font = defaultFont;
+      addLines();
     }
   }
 
-  private void addLine(Font font, String line)
+  private void closeParagraph(Font font)
   {
-    if(line.length() != 0)
+    textChunks.add(new StyledString(font, "\n"));
+  }
+
+  private void addTextChunk(Font font, String chunk)
+  {
+    if(chunk.length() == 0)
     {
-      AttributedString aText = new AttributedString(line);
-      aText.addAttribute(TextAttribute.FONT, font);
-      LineBreakMeasurer lbm = new LineBreakMeasurer(aText.getIterator(), getRenderContext());
-      while(lbm.getPosition() < line.length())
+      chunk = " ";
+    }
+    textChunks.add(new StyledString(font, chunk));
+  }
+
+  public List<StyledString> getTextChunks()
+  {
+    return textChunks;
+  }
+
+  private synchronized void addLines()
+  {
+    AttributedString aText = prepareAttributedString();
+    List<Integer> newlineLocations = new ArrayList<Integer>();
+
+    AttributedCharacterIterator styledTextIterator = aText.getIterator();
+    for (char c = styledTextIterator.first(); c != AttributedCharacterIterator.DONE; c = styledTextIterator.next())
+    {
+      if (c == '\n')
+      {
+        newlineLocations.add(styledTextIterator.getIndex());
+      }
+    }
+
+    LineBreakMeasurer lbm = new LineBreakMeasurer(styledTextIterator, getRenderContext());
+    int end = styledTextIterator.getEndIndex();
+    int currentNewline = 0;
+    boolean moreCharactersExist = true;
+    while (lbm.getPosition() < end && moreCharactersExist)
+    {
+      boolean shouldEndLine = false;
+
+      while(!shouldEndLine)
       {
         float width1 = (float) consumableArea.width;
-        TextLayout layout = lbm.nextLayout(width1);
-        lines.add(layout);
+        TextLayout layout = lbm.nextLayout(width1, newlineLocations.get(currentNewline) + 1, false);
+
+        if (layout != null)
+        {
+          lines.add(layout);
+        }
+        else
+        {
+          shouldEndLine = true;
+        }
+
+        if (lbm.getPosition() == newlineLocations.get(currentNewline) + 1)
+        {
+          currentNewline += 1;
+          shouldEndLine = true;
+        }
+        
+        if (lbm.getPosition() == styledTextIterator.getEndIndex())
+        {
+          shouldEndLine = true;
+          moreCharactersExist = false;
+        }
       }
-    }
-    else
-    {
-      lines.add(new TextLayout(" ", font, getRenderContext()));
     }
   }
 
-//  private FontRenderContext getRenderContext()
-//  {
-//    if(renderContext == null)
-//    {
-//      if(staticFontRenderingContext != null)
-//        renderContext = staticFontRenderingContext;
-//      else
-//      {
-//        Graphics2D graphics = getRoot().getGraphics();
-//        renderContext = graphics.getFontRenderContext();
-//      }
-//    }
-//    return renderContext;
-//  }
+  private AttributedString prepareAttributedString()
+  {
+    StringBuffer buf = new StringBuffer();
+    List<Integer> fontIndexes = new ArrayList<Integer>();
+    List<Font> fonts = new ArrayList<Font>();
 
+    int i = 0;
+    for (StyledString textChunk : textChunks)
+    {
+      buf.append(textChunk.text);
+      fontIndexes.add(i);
+      fonts.add(textChunk.font);
+      i = i + textChunk.text.length();
+    }
+
+    AttributedString aText = new AttributedString(buf.toString());
+    for (int j = 0; j < fonts.size(); j++)
+    {
+      int startIndex = fontIndexes.get(j);
+      int endIndex;
+      if(j + 1 == fonts.size())
+        endIndex = buf.length();
+      else
+        endIndex = fontIndexes.get(j + 1);
+      aText.addAttribute(TextAttribute.FONT, fonts.get(j), startIndex, endIndex);
+    }
+    return aText;
+  }
 
   public FontRenderContext getRenderContext()
   {
@@ -223,7 +284,7 @@ public class TextPanel extends BasePanel
     return staticFontRenderingContext;
   }
 
-  private void calculateDimentions()
+  private void calculateDimensions()
   {
     consumedHeight = 0;
     consumedWidth = 0;
@@ -295,5 +356,27 @@ public class TextPanel extends BasePanel
   public void setRenderContext(FontRenderContext renderContext)
   {
     this.renderContext = renderContext;
+  }
+
+  protected class StyledString
+  {
+    protected String text;
+    protected Font font;
+
+    private StyledString(Font font, String text)
+    {
+      this.font = font;
+      this.text = text;
+    }
+
+    public int getCharacterCount()
+    {
+      return text.length();
+    }
+
+    public String toString()
+    {
+      return text + "(font: " + font + ")";
+    }
   }
 }

@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 public class StyledTextParser
 {
 
-  private static final Pattern TAG_REGEX = Pattern.compile("<(\\w+)>(.*)</(\\1)>");
+  public static final Pattern TAG_REGEX = Pattern.compile("<(\\w+)>(.*?)</(\\1)>", Pattern.DOTALL);
 
   public LinkedList<StyledText> parse(String text)
   {
