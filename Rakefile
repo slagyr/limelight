@@ -37,13 +37,13 @@ task :junit do
   run_command "ant unit_test"
 end
 
-task :ant do
+task :jar do
   run_command "ant jar"
 end
 
-task :tests => [:junit, :ant, :spec]
+task :tests => [:junit, :spec]
 
-task :continuous => [:tests_cont]
+task :continuous => [:jar, :tests_cont]
 
 task :junit_cont do
   output = `ant unit_test.cont`
