@@ -4,10 +4,10 @@
 __ :name => "sandbox"
 __install "header.rb"
 arena do
-  spinner
-  wave
-  waves
+  spinner :id => "gradient1"
+  wave :id => "gradient2"
+  waves :id => "gradient3"
   teaser_back do
-    teaser
+    teaser :id => "gradient4"
   end
 end
