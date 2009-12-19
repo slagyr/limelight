@@ -7,7 +7,13 @@ require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
 
 def run_command(command)
   output = `#{command}`
-  raise output if $?.exitstatus != 0
+  exit_code = $?.exitstatus
+  if exit_code != 0
+    puts "Command failed with code #{exit_code}: #{command}"
+    raise output
+  else
+    puts "Command executed successfully: #{command}"
+  end
 end
 
 Dir.glob(File.join(TASK_DIR, "*.rake")).each do |rakefile|
@@ -43,7 +49,7 @@ end
 
 task :tests => [:junit, :spec]
 
-task :continuous => [:jar, :tests_cont]
+task :continuous => [:tests_cont]
 
 task :junit_cont do
   output = `ant unit_test.cont`
