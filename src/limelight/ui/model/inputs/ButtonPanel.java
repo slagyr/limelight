@@ -1,18 +1,15 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.*;
-import limelight.ui.Panel;
-import limelight.ui.model.PropPanel;
 import limelight.ui.model.TextAccessor;
 import limelight.styles.Style;
 
 import java.awt.*;
 
 
-public class ButtonPanel extends InputPanel
+public class ButtonPanel extends AwtInputPanel
 {
   private Button button;
 
