@@ -3,6 +3,9 @@
 
 package limelight.ui.model;
 
+import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.compiling.ColorAttributeCompiler;
+import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
@@ -549,6 +552,52 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
+  public void testChangingTextColor() throws Exception
+  {
+    panel.setText("foo");
+    panel.resetLayout();
+
+    panel.styleChanged(Style.TEXT_COLOR, Style.TEXT_COLOR.compile("red"));
+
+    assertEquals(true, panel.needsLayout());
+  }
+
+  public void testChangingFontFace() throws Exception
+  {
+    panel.setText("foo");
+    panel.resetLayout();
+    panel.resetPendingSizeChange();
+
+    panel.styleChanged(Style.FONT_FACE, Style.FONT_FACE.compile("Verdana"));
+
+    assertEquals(true, panel.needsLayout());
+    assertEquals(true, panel.sizeChangePending());
+  }
+
+  public void testChangingFontSize() throws Exception
+  {
+    panel.setText("foo");
+    panel.resetLayout();
+    panel.resetPendingSizeChange();
+
+    panel.styleChanged(Style.FONT_SIZE, Style.FONT_SIZE.compile("50"));
+
+    assertEquals(true, panel.needsLayout());
+    assertEquals(true, panel.sizeChangePending());
+  }
+
+  public void testChangingFontStyle() throws Exception
+  {
+    panel.setText("foo");
+    panel.resetLayout();
+    panel.resetPendingSizeChange();
+
+    panel.styleChanged(Style.FONT_STYLE, Style.FONT_STYLE.compile("italic"));
+
+    assertEquals(true, panel.needsLayout());
+    assertEquals(true, panel.sizeChangePending());
+  }
+
   public void testScrollbarsDontGetRemovedOnRemoveAll() throws Exception
   {
     panel.addVerticalScrollBar();
@@ -561,6 +610,5 @@ public class PropPanelTest extends TestCase
     assertEquals(panel.getVerticalScrollbar(), panel.children.get(0));
     assertEquals(panel.getHorizontalScrollbar(), panel.children.get(1));
   }
-
 
 }

@@ -173,6 +173,17 @@ public class TextPanelTest extends TestCase
     assertSubString("size=20", layout.toString());
   }
 
+  public void testObserverAddedForLineStyling() throws Exception
+  {
+    createStyles();
+
+    panel.setText("<my_style>some text</my_style>");
+    panel.buildLines();
+
+    Style myStyle = panel.getStyleFromTag("my_style");
+    assertEquals(true, myStyle.hasObserver(panel));
+  }
+
   public void testMultipleStylesAppliedToLine() throws Exception
   {
     createStyles();
@@ -298,6 +309,18 @@ public class TextPanelTest extends TestCase
 
     TextPanel.StyledString third = panel.getTextChunks().get(2);
     assertEquals(defaultTextColor, third.color);
+  }
+
+  public void testTextChunksOverwrittenOnCompile() throws Exception
+  {
+    panel.setText("Here is some original text.");
+    panel.buildLines();
+
+    int originalChunks = panel.getTextChunks().size();
+
+    panel.buildLines();
+
+    assertEquals(originalChunks, panel.getTextChunks().size());
   }
 
   private void assertSubString(String subString, String fullString)
