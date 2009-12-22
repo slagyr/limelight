@@ -1,6 +1,6 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
-    
+
 module Limelight
 
   Main = Java::limelight.Main
@@ -35,13 +35,17 @@ module Limelight
       ImagePanel = Java::limelight.ui.model.ImagePanel
 
       module Inputs #:nodoc:
-       ButtonPanel = Java::limelight.ui.model.inputs.ButtonPanel
-       CheckBoxPanel = Java::limelight.ui.model.inputs.CheckBoxPanel
-       ComboBoxPanel = Java::limelight.ui.model.inputs.ComboBoxPanel
-       RadioButtonPanel = Java::limelight.ui.model.inputs.RadioButtonPanel
-       TextAreaPanel = Java::limelight.ui.model.inputs.TextAreaPanel
-       TextBoxPanel = Java::limelight.ui.model.inputs.TextBoxPanel
-       PasswordBoxPanel = Java::limelight.ui.model.inputs.PasswordBoxPanel
+        Button2Panel = Java::limelight.ui.model.inputs.Button2Panel
+        ComboBox2Panel = Java::limelight.ui.model.inputs.ComboBox2Panel
+        RadioButton2Panel = Java::limelight.ui.model.inputs.RadioButton2Panel
+
+        ButtonPanel = Java::limelight.ui.model.inputs.ButtonPanel
+        CheckBoxPanel = Java::limelight.ui.model.inputs.CheckBoxPanel
+        ComboBoxPanel = Java::limelight.ui.model.inputs.ComboBoxPanel
+        RadioButtonPanel = Java::limelight.ui.model.inputs.RadioButtonPanel
+        TextAreaPanel = Java::limelight.ui.model.inputs.TextAreaPanel
+        TextBoxPanel = Java::limelight.ui.model.inputs.TextBoxPanel
+        PasswordBoxPanel = Java::limelight.ui.model.inputs.PasswordBoxPanel
       end
     end
 

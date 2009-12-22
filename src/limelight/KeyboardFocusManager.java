@@ -1,9 +1,11 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight;
 
+import limelight.ui.model.inputs.AwtInputPanel;
 import limelight.ui.model.inputs.InputPanel;
+import limelight.ui.model.inputs.InputPanelUtil;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -23,7 +25,8 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
   {
     if(focusedPanel != inputPanel && inputPanel != null)
     {
-      focusComponent(inputPanel.getComponent());
+      if(inputPanel instanceof AwtInputPanel)
+        focusComponent(((AwtInputPanel)inputPanel).getComponent());
       focusedPanel = inputPanel;
       focusedPanel.focusGained(null);
     }
@@ -84,13 +87,13 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
   public void focusNextComponent(Component aComponent)
   {
     if(focusedPanel != null)
-      focusPanel(focusedPanel.nextInputPanel());
+      focusPanel(InputPanelUtil.nextInputPanel(focusedPanel));
   }
 
   public void focusPreviousComponent(Component aComponent)
   {
     if(focusedPanel != null)
-      focusPanel(focusedPanel.previousInputPanel());
+      focusPanel(InputPanelUtil.previousInputPanel(focusedPanel));
   }
 
   public KeyboardFocusManager installed()

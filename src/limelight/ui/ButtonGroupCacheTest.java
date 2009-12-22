@@ -1,13 +1,9 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui;
 
 import junit.framework.TestCase;
-
-import javax.swing.*;
-
-import limelight.ui.ButtonGroupCache;
 
 public class ButtonGroupCacheTest extends TestCase
 {
@@ -20,10 +16,10 @@ public class ButtonGroupCacheTest extends TestCase
 
   public void testCreatingNewGroups() throws Exception
   {
-    ButtonGroup group1 = cache.get("group1");
+    RadioButtonGroup group1 = cache.get("group1");
     assertNotNull(group1);
 
-    ButtonGroup group2 = cache.get("group2");
+    RadioButtonGroup group2 = cache.get("group2");
     assertNotNull(group2);
 
     assertTrue(group1 != group2);
@@ -31,10 +27,10 @@ public class ButtonGroupCacheTest extends TestCase
   
   public void testGroupsAreUniqueByName() throws Exception
   {
-    ButtonGroup group1 = cache.get("group1");
+    RadioButtonGroup group1 = cache.get("group1");
     assertSame(group1, cache.get("group1"));
 
-    ButtonGroup group2 = cache.get("group2");
+    RadioButtonGroup group2 = cache.get("group2");
     assertSame(group2, cache.get("group2"));
   }
 }

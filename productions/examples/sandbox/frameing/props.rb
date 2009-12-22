@@ -12,19 +12,19 @@ arena :vertical_alignment => :center do
   control_panel do
     setting do
       label :text => "Margin:"
-      input :players => "text_box", :text => "10%", :on_focus_lost => "scene.apply(:margin, text)"
+      input :players => "text_box", :id => "margin_input", :text => "10%", :on_focus_lost => "scene.apply(:margin, text)"
     end
     setting do
       label :text => "Border Width:"
-      input :players => "text_box", :text => "10%", :on_focus_lost => "scene.apply(:border_width, text)"
+      input :players => "text_box", :id => "border_input", :text => "10%", :on_focus_lost => "scene.apply(:border_width, text)"
     end
     setting do
       label :text => "Padding:"
-      input :players => "text_box", :text => "10%", :on_focus_lost => "scene.apply(:padding, text)"
+      input :players => "text_box", :id => "padding_input", :text => "10%", :on_focus_lost => "scene.apply(:padding, text)"
     end
     setting do
       label :text => "Rounded Corner Radius:"
-      input :players => "text_box", :text => "10%", :on_focus_lost => "scene.apply(:rounded_corner_radius, text)"
+      input :players => "text_box", :id => "corner_input", :text => "10%", :on_focus_lost => "scene.apply(:rounded_corner_radius, text)"
     end
   end
   image_area do

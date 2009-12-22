@@ -1,18 +1,25 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.RadioButtonGroup;
+import limelight.ui.RadioButtonGroupMember;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class RadioButton extends JRadioButton
+public class RadioButton extends JRadioButton implements RadioButtonGroupMember, ActionListener
 {
   private final RadioButtonPanel panel;
+  private RadioButtonGroup radioButtonGroup;
 
   public RadioButton(RadioButtonPanel panel)
   {
     this.panel = panel;
+    this.addActionListener(this);
   }
 
   public void repaint()
@@ -39,5 +46,16 @@ public class RadioButton extends JRadioButton
   public boolean isShowing()
   {
     return true;
+  }
+
+  public void setGroup(RadioButtonGroup radioButtonGroup)
+  {
+    this.radioButtonGroup = radioButtonGroup;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    if(radioButtonGroup != null && isSelected())
+      radioButtonGroup.buttonSelected(this);
   }
 }
