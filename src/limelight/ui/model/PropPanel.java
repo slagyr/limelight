@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -50,7 +50,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     this.prop = prop;
     buildPainters();
     textAccessor = new TextPaneTextAccessor(this);
-    getStyle().addObserver(this);
+    getStyle().addObserver(this); // TODO MDM - Is this a memory leak?  When a prop is deleted, we'll have to delete that reference.  
   }
 
   private void buildPainters()

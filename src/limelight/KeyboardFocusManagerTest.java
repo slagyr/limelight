@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight;
@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.InputPanel;
+import limelight.ui.model.inputs.AwtInputPanel;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.MockStageFrame;
 import limelight.ui.model.TextAccessor;
@@ -128,7 +128,7 @@ public class KeyboardFocusManagerTest extends TestCase
     }
   }
 
-  private class MockInputPanel extends InputPanel
+  private class MockInputPanel extends AwtInputPanel
   {
     public MockComponent mockComponent;
     public boolean hasFocus;

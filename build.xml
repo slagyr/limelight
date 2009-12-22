@@ -65,6 +65,13 @@
         <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off" nowarn="true">
             <exclude name="**/darwin/**/*.java"/>
         </javac>
+        <jar jarfile="${lib}/limelight.jar" basedir="classes">
+            <include name="**/*"/>
+            <exclude name="**/*Test.class"/>
+            <manifest>
+                <attribute name="Built-By" value="Micah Martin"/>
+            </manifest>
+        </jar>
     </target>
 
     <target name="unit_test.cont" depends="compile.cont" description="run the unit tests">

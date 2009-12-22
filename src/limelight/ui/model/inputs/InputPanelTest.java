@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
@@ -26,11 +26,8 @@ public class InputPanelTest extends TestCase
   private boolean pressed;
   private boolean released;
   private boolean clicked;
-  private MockPanel rootPanel;
-  private TestableInputPanel input2;
-  private TestableInputPanel input3;
 
-  private static class TestableInputPanel extends InputPanel
+  private static class TestableInputPanel extends AwtInputPanel
   {
     public Component input;
 
@@ -111,37 +108,12 @@ public class InputPanelTest extends TestCase
     assertEquals(true, dragged);
   }
 
-  private void buildInputTree()
-  {
-    attatchRoot();
-    input2 = new TestableInputPanel();
-    input3 = new TestableInputPanel();
-    rootPanel.add(input2);
-    rootPanel.add(input3);
-  }
-
   private void attatchRoot()
   {
     RootPanel root = new RootPanel(new MockPropFrame());
-    rootPanel = new MockPanel();
+    MockPanel rootPanel = new MockPanel();
     root.setPanel(rootPanel);
     rootPanel.add(parent);
-  }
-
-  public void testFindNextInput() throws Exception
-  {
-    buildInputTree();
-    assertSame(input2, input.nextInputPanel());
-    assertSame(input3, input2.nextInputPanel());
-    assertSame(input, input3.nextInputPanel());
-  }
-
-  public void testFindPreviousInput() throws Exception
-  {
-    buildInputTree();
-    assertSame(input, input2.previousInputPanel());
-    assertSame(input2, input3.previousInputPanel());
-    assertSame(input3, input.previousInputPanel());
   }
 
   public void testSetSize() throws Exception
