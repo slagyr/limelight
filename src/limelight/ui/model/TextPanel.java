@@ -4,6 +4,9 @@
 package limelight.ui.model;
 
 import limelight.styles.Style;
+import limelight.styles.StyleDescriptor;
+import limelight.styles.StyleObserver;
+import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.api.PropablePanel;
@@ -11,17 +14,17 @@ import limelight.ui.api.Scene;
 import limelight.util.*;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.*;
 import java.util.List;
 
-public class TextPanel extends BasePanel
+public class TextPanel extends BasePanel implements StyleObserver
 {
   private String text;
   private PropablePanel panel;
@@ -33,7 +36,7 @@ public class TextPanel extends BasePanel
   private Box consumableArea;
 
   private LinkedList<TextLayout> lines;
-  private List<StyledString> textChunks = new LinkedList<StyledString>();
+  private List<StyledString> textChunks;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
   public TextPanel(PropablePanel panel, String text)
@@ -122,7 +125,9 @@ public class TextPanel extends BasePanel
   public synchronized void buildLines()
   {
     consumableArea = panel.getChildConsumableArea();
+    textChunks = new LinkedList<StyledString>();
     lines = new LinkedList<TextLayout>();
+
     if(text != null && text.length() > 0)
     {
       StyledTextParser parser = new StyledTextParser();
@@ -133,6 +138,7 @@ public class TextPanel extends BasePanel
       Color color = getTextColorFromStyle(getStyle());
       Color defaultColor = color;
 
+      textChunks = new LinkedList<StyledString>();
       for (StyledText styledLine : styledParagraph)
       {
         addTextChunk(defaultFont, defaultColor, styledLine);
@@ -142,7 +148,7 @@ public class TextPanel extends BasePanel
     }
   }
 
-  private void addTextChunk(Font defaultFont, Color defaultColor, StyledText styledLine)
+  private synchronized void addTextChunk(Font defaultFont, Color defaultColor, StyledText styledLine)
   {
     Font font;
     Color color;
@@ -155,6 +161,10 @@ public class TextPanel extends BasePanel
 
       if(tagStyle != null)
       {
+        if(!tagStyle.hasObserver(this))
+        {
+          tagStyle.addObserver(this);
+        }
         font = getFontFromStyle(tagStyle);
         color = getTextColorFromStyle(tagStyle);
       }
@@ -189,7 +199,7 @@ public class TextPanel extends BasePanel
     return new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
   }
 
-  private Style getStyleFromTag(String tagName)
+  protected Style getStyleFromTag(String tagName)
   {
     Prop prop = ((PropablePanel) getPanel()).getProp();
     Scene scene = prop.getScene();
@@ -255,7 +265,7 @@ public class TextPanel extends BasePanel
     List<Color> colors = new ArrayList<Color>();
 
     int i = 0;
-    for (StyledString textChunk : textChunks)
+    for (StyledString textChunk : getTextChunks())
     {
       buf.append(textChunk.text);
       fontIndexes.add(i);
@@ -269,7 +279,7 @@ public class TextPanel extends BasePanel
     {
       int startIndex = fontIndexes.get(fontIndex);
       int endIndex;
-      if(fontIndex + 1 == fonts.size())
+      if(fontIndex == fonts.size() - 1)
         endIndex = buf.length();
       else
         endIndex = fontIndexes.get(fontIndex + 1);
@@ -385,5 +395,13 @@ public class TextPanel extends BasePanel
     {
       return text + "(font: " + font + ", color: " + color + ")";
     }
+  }
+
+  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
+  {
+    markAsNeedingLayout();
+    getParent().markAsNeedingLayout();
+    propagateSizeChangeDown();
+    propagateSizeChangeUp(getParent().getParent());
   }
 }

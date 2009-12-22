@@ -391,10 +391,31 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
         markAsNeedingLayout(FloaterLayout.instance);
       }
       else if(descriptor == Style.HORIZONTAL_ALIGNMENT || descriptor == Style.VERTICAL_ALIGNMENT)
+      {
         markAsNeedingLayout();
+      }
+      else if (isTextDescriptor(descriptor))
+      {
+        for (Panel child : getChildren())
+        {
+          if (child instanceof TextPanel)
+          {
+            sizeChangePending = true;
+            ((TextPanel) child).styleChanged(descriptor, value);
+          }
+        }
+      }
       else
         markAsDirty();
     }
+  }
+
+  private boolean isTextDescriptor(StyleDescriptor descriptor)
+  {
+    return descriptor == Style.TEXT_COLOR ||
+            descriptor == Style.FONT_FACE ||
+            descriptor == Style.FONT_SIZE ||
+            descriptor == Style.FONT_STYLE;
   }
 
   private boolean isMarginPaddingOrBorder(StyleAttribute attribute)
