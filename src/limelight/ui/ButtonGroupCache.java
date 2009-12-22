@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui;
@@ -8,21 +8,21 @@ import java.util.Hashtable;
 
 public class ButtonGroupCache
 {
-  private final Hashtable<String, ButtonGroup> cache;
+  private final Hashtable<String, RadioButtonGroup> cache;
 
   public ButtonGroupCache()
   {
-    cache = new Hashtable<String, ButtonGroup>();
+    cache = new Hashtable<String, RadioButtonGroup>();
   }
 
-  public ButtonGroup get(String groupName)
+  public RadioButtonGroup get(String groupName)
   {
     if(!cache.containsKey(groupName))
-      cache.put(groupName, new ButtonGroup());
+      cache.put(groupName, new RadioButtonGroup());
     return cache.get(groupName);
   }
 
-  public Hashtable<String, ButtonGroup> getCache()
+  public Hashtable<String, RadioButtonGroup> getCache()
   {
     return cache;
   }

@@ -1,5 +1,9 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
+require 'limelight/builtin/players/button2'
+require 'limelight/builtin/players/combo_box2'
+require 'limelight/builtin/players/radio_button2'
 
 require 'limelight/builtin/players/button'
 require 'limelight/builtin/players/check_box'
