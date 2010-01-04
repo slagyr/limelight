@@ -38,6 +38,8 @@ module Limelight
         Button2Panel = Java::limelight.ui.model.inputs.Button2Panel
         ComboBox2Panel = Java::limelight.ui.model.inputs.ComboBox2Panel
         RadioButton2Panel = Java::limelight.ui.model.inputs.RadioButton2Panel
+        CheckBox2Panel = Java::limelight.ui.model.inputs.CheckBox2Panel
+        TextBox2Panel = Java::limelight.ui.model.inputs.TextBox2Panel
 
         ButtonPanel = Java::limelight.ui.model.inputs.ButtonPanel
         CheckBoxPanel = Java::limelight.ui.model.inputs.CheckBoxPanel

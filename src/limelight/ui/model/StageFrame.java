@@ -7,6 +7,7 @@ import limelight.Context;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
 import limelight.ui.Panel;
+import limelight.ui.model.inputs.InputPanel;
 import limelight.ui.api.Stage;
 
 import javax.swing.*;
@@ -98,7 +99,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if(closed)
       return;
     closed = true;
-    stage.closed(e); 
+    stage.closed(e);
   }
 
   public boolean isClosed()
@@ -120,7 +121,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     applyLocationStyles();
 
     setVisible(true);
- 
+
     opened = true;
   }
 
@@ -267,9 +268,15 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void keyPressed(KeyEvent e)
   {
-    Panel panel = root.getPanel();
-    if(panel != null)
-      panel.keyPressed(e);
+    InputPanel input = Context.instance().keyboardFocusManager.getFocusedPanel();
+    if(input != null)
+      input.keyPressed(e);
+    else
+    {
+      Panel panel = root.getPanel();
+      if(panel != null)
+        panel.keyPressed(e);
+    }
   }
 
   public void keyReleased(KeyEvent e)
@@ -445,7 +452,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
     setLocation(x, y);
   }
-                                                                                
+
   private void collapseAutoDimensions()
   {
     if(root == null)
@@ -463,7 +470,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if(widthStyle.isAuto())
       size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getPanel().getWidth() + widthInsets, NONE, NONE);
     if(heightStyle.isAuto())
-      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets,  NONE, NONE);
+      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets, NONE, NONE);
 
     setSize(size);
   }
