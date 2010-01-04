@@ -1,7 +1,6 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.model.*;
-import limelight.ui.Panel;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.styles.HorizontalAlignment;
@@ -9,34 +8,26 @@ import limelight.styles.VerticalAlignment;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.Context;
-
-import javax.imageio.ImageIO;
 import java.awt.event.MouseEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
-import java.awt.font.TextLayout;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
 import java.awt.*;
-import java.io.IOException;
+import java.awt.font.TextLayout;
 
-public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPanel
+public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
 {
-  private static Font font = new Font("Arial", Font.BOLD, 12);
-  private static ComboBoxStyle normal = new ComboBoxStyle("combo_box");
-  private static ComboBoxStyle focusedStyle = new ComboBoxStyle("combo_box_focus");
-
+  private boolean focused;
+  private String text;
   private static SimpleHorizontalAlignmentAttribute horizontalTextAlignment = new SimpleHorizontalAlignmentAttribute(HorizontalAlignment.LEFT);
   private static SimpleVerticalAlignmentAttribute verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
-  private String text;
-  private ComboBoxStyle style;
   private Dimension textDimensions;
   private TextLayout textLayout;
-  private boolean focused;
+  private static Font font = new Font("Arial", Font.PLAIN, 12);
 
-  public ComboBox2Panel()
+  public TextBox2Panel()
   {
-    style = normal;
-    setSize(128, 29);
+    setSize(150, 25);
   }
 
   public void setParent(limelight.ui.Panel panel)
@@ -65,14 +56,17 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
   public void paintOn(Graphics2D graphics)
   {
     if(focused)
-      focusedStyle.paintOn(graphics, this);
-    style.paintOn(graphics, this);
+      graphics.setColor(Color.green);
+    else
+      graphics.setColor(Color.gray);
+
+    graphics.drawRect(0, 0, width - 1, height - 1);
 
     if(text != null)
     {
       graphics.setColor(Color.BLACK);
       calculateTextDimentions();
-      int textX = horizontalTextAlignment.getX(textDimensions.width, getBoundingBox()) + style.innerLeftX;
+      int textX = horizontalTextAlignment.getX(textDimensions.width, getBoundingBox()) + 2;
       float textY = verticalTextAlignment.getY(textDimensions.height, getBoundingBox()) + textLayout.getAscent();
       textLayout.draw(graphics, textX, textY + 1);
     }
@@ -112,6 +106,8 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
   public void mouseReleased(MouseEvent e)
   {
     super.mouseReleased(e);
+    Context.instance().keyboardFocusManager.focusPanel(this);
+//    focusGained(new FocusEvent(getRoot().getStageFrame().getWindow(), 0));
     super.buttonPressed(new ActionEvent(this, 0, "blah"));
   }
 
@@ -119,58 +115,31 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
   {
     focused = true;
     repaint();
+    startCursor();
     super.focusGained(e);
   }
 
   public void focusLost(FocusEvent e)
   {
     focused = false;
+    stopCursor();
     repaint();
     super.focusLost(e);
+
   }
 
-  private static class ComboBoxStyle
+  public void keyPressed(KeyEvent e)
   {
-    private String prefix;
-    private boolean loaded;
-    public int innerLeftX;
-    public BufferedImage leftImage;
-    public BufferedImage middleImage;
-    public BufferedImage rightImage;
 
-    private ComboBoxStyle(String prefix)
-    {
-      this.prefix = prefix;
-    }
+  }
 
+  private void startCursor()
+  {
+    ;      
+  }
 
-    public void load()
-    {
-      if(loaded)
-        return;
-      try
-      {
-        leftImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_l.png"));
-        middleImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_m.png"));
-        rightImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_r.png"));
-        innerLeftX = leftImage.getWidth();
-        loaded = true;
-      }
-      catch(IOException e)
-      {
-        throw new RuntimeException(e);
-      }
-    }
+  private void stopCursor()
+  {
 
-    public void paintOn(Graphics2D graphics, Panel button)
-    {
-      load();
-      int innerRightX = button.getWidth() - rightImage.getWidth();
-
-      graphics.drawImage(leftImage, 0, 0, null);
-      graphics.drawImage(rightImage, innerRightX, 0, null);
-      for(int x = innerLeftX; x < innerRightX; x++)
-        graphics.drawImage(middleImage, x, 0, null);
-    }
   }
 }
