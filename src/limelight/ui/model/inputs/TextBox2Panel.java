@@ -9,14 +9,17 @@ import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.Context;
 
+import java.awt.datatransfer.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.*;
+import java.awt.font.TextHitInfo;
 import java.awt.font.TextLayout;
+import java.io.IOException;
 
-public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
+public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
 {
   private boolean focused;
   private StringBuffer text;
@@ -33,6 +36,11 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
   private int selectStartX;
   private int textX = 3;
   private int xOffset;
+  private int selectStartIndex;
+  private int mouseClickIndex;
+  private int mouseReleaseIndex;
+  private boolean mouseSelectingTextOn;
+  private boolean clickWasInBox;
 
   public TextBox2Panel()
   {
@@ -91,11 +99,9 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
         xOffset = 0;
 
       textX = horizontalTextAlignment.getX(textDimensions.width, getBoundingBox()) + 3 - xOffset;
-      System.out.println(" textX = " + textX + " xOffset = " + xOffset + " width = " + textDimensions.width + " cursor= " + cursorX);
-      System.out.println();
 
       float textY = verticalTextAlignment.getY(textDimensions.height, getBoundingBox()) + textLayout.getAscent();
-      setCursorPosition();
+      setCursorAndStartSelectPosition();
       if (selectingTextOn)
       {
         graphics.setColor(Color.cyan);
@@ -143,16 +149,20 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
     }
   }
 
-  private void setCursorPosition()
+  private void setCursorAndStartSelectPosition()
   {
-    String toCursorString = text.substring(0, cursorIndex);
-    if (toCursorString.length() == 0)
-      cursorX = 2;
+    cursorX = getXPositionFromIndex(cursorIndex);
+    selectStartX = getXPositionFromIndex(selectStartIndex);
+  }
+
+  private int getXPositionFromIndex(int index)
+  {
+    String toIndexString = text.substring(0, index);
+    if (toIndexString.length() == 0)
+      return 2;
     else
-    {
-      cursorX = getCursorXFromTextLayout(toCursorString) + 3 - xOffset;
-      addTerminatingSpaceWidth(toCursorString);
-    }
+      return getCursorXFromTextLayout(toIndexString) + getTerminatingSpaceWidth(toIndexString);
+
   }
 
   private int getCursorXFromTextLayout(String toCursorString)
@@ -161,20 +171,23 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
     this.textLayout = new TextLayout(toCursorString, font, TextPanel.staticFontRenderingContext);
     int x = getWidthDimension();
     this.textLayout = textLayout;
-    return x;
+    return x + 3 - xOffset;
   }
 
-  private void addTerminatingSpaceWidth(String toCursorString)
+  private int getTerminatingSpaceWidth(String toCursorString)
   {
+    int spaceWidth = 0;
     if (toCursorString.charAt(toCursorString.length() - 1) == ' ')
     {
       int i = toCursorString.length() - 1;
+
       while (toCursorString.charAt(i) == ' ' && i > 0)
       {
-        cursorX += 3;
+        spaceWidth += 3;
         i--;
       }
     }
+    return spaceWidth;
   }
 
   private void calculateTextDimensions()
@@ -216,14 +229,80 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
     return text.toString();
   }
 
+  public void mouseDragged(MouseEvent e)
+  {
+    int myX = e.getX() - this.absoluteLocation.x;
+    int myY = e.getY() - this.absoluteLocation.y;
+    if (clickWasInBox)
+    {
+      cursorIndex = calculateMouseClickIndex(myX, myY);
+      markAsDirty();
+    }
+  }
+
   public void mousePressed(MouseEvent e)
   {
     super.mousePressed(e);
+    int myX = e.getX() - this.absoluteLocation.x;
+    int myY = e.getY() - this.absoluteLocation.y;
+    clickWasInBox = false;
+    if (clickIsWithinBox(e, myX, myY))
+    {
+      clickWasInBox = true;
+      selectingTextOn = true;
+      selectStartIndex = calculateMouseClickIndex(myX, myY);
+      if (selectStartIndex > 0)
+        selectStartX = getCursorXFromTextLayout(text.substring(0, selectStartIndex));
+      else
+        selectStartX = 0;
+      cursorIndex = selectStartIndex;
+    }
+    else
+    {
+      clickWasInBox = false;
+    }
+    markAsDirty();
+
+  }
+
+  private int calculateMouseClickIndex(int myX, int myY)
+  {
+    TextHitInfo hitInfo = textLayout.hitTestChar(myX, myY);
+    int index = hitInfo.getCharIndex();
+    if (index < hitInfo.getInsertionIndex() && index == text.length() - 1)
+      index += 1;
+    System.out.println("hitInfo.getInsertionIndex() = " + hitInfo.getInsertionIndex());
+    System.out.println("hitInfo.isLeadingEdge = " + hitInfo.isLeadingEdge());
+    System.out.println("index = " + index);
+    return index;
+  }
+
+
+  private boolean clickIsWithinBox(MouseEvent e, int myX, int myY)
+  {
+    return isWithinMyXRange(e, myX) && isWithinMyYRange(e, myY);
+  }
+
+  private boolean isWithinMyYRange(MouseEvent e, int myY)
+  {
+    return myY > 0 && myY < height;
+  }
+
+  private boolean isWithinMyXRange(MouseEvent e, int myX)
+  {
+    return myX > 0 && myX < width;
   }
 
   public void mouseReleased(MouseEvent e)
   {
     super.mouseReleased(e);
+    int myX = e.getX() - this.absoluteLocation.x;
+    int myY = e.getY() - this.absoluteLocation.y;
+    cursorIndex = calculateMouseClickIndex(myX, myY);
+    if (cursorIndex == selectStartIndex)
+      selectingTextOn = false;
+    System.out.println("cursorIndex = " + cursorIndex);
+    markAsDirty();
     Context.instance().keyboardFocusManager.focusPanel(this);
     focusGained(new FocusEvent(getRoot().getStageFrame().getWindow(), 0));
     super.buttonPressed(new ActionEvent(this, 0, "blah"));
@@ -249,40 +328,166 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
   public void keyPressed(KeyEvent e)
   {
     int key = e.getKeyCode();
-    if (e.getModifiers() != 1)
-      selectingTextOn = false;
+
     if (key == KeyEvent.VK_BACK_SPACE)
     {
-      if (cursorIndex > 0)
+
+      if (!deletedTextInSelection())
       {
-        text.deleteCharAt(cursorIndex - 1);
-        cursorIndex--;
+        if (cursorIndex >= 0)
+        {
+          text.deleteCharAt(cursorIndex - 1);
+          cursorIndex--;
+        }
       }
+      selectStartIndex = 0;
     }
-    else if (key > 40 && key < 100 || key == 222 || key == 32)
+    else if (e.getModifiers() == 4)
     {
+      if (key == KeyEvent.VK_C && selectingTextOn)
+      {
+        copySelectedText();
+      }
+      else if (key == KeyEvent.VK_V)
+      {
+        if (deletedTextInSelection())
+          selectingTextOn = false;
+        String clipboard = getClipboardContents();
+        if (clipboard != null && clipboard.length() > 0)
+        {
+          text.insert(cursorIndex, clipboard);
+          cursorIndex += clipboard.length();
+        }
+      }
+      else if (key == KeyEvent.VK_X && selectingTextOn)
+      {
+        copySelectedText();
+        if (deletedTextInSelection())
+          selectingTextOn = false;
+      }
+      else if (key == KeyEvent.VK_A)
+      {
+        selectingTextOn = true;
+        cursorIndex = 0;
+        selectStartIndex = text.length();
+      }
+      else if (key == KeyEvent.VK_RIGHT)
+        cursorIndex = text.length();
+      else if (key == KeyEvent.VK_LEFT)
+        cursorIndex = 0;
+    }
+    else if (e.getModifiers() == 5)
+    {
+      if (key == KeyEvent.VK_RIGHT)
+      {
+        if (!selectingTextOn)
+          selectStartIndex = cursorIndex;
+        System.out.println("selectStartIndex = " + selectStartIndex);
+        selectingTextOn = true;
+        cursorIndex = text.length();
+      }
+      else if (key == KeyEvent.VK_LEFT)
+      {
+        if (!selectingTextOn)
+          selectStartIndex = cursorIndex;
+        System.out.println("selectStartIndex = " + selectStartIndex);
+        selectingTextOn = true;
+        cursorIndex = 0;
+      }
+      System.out.println("cursorIndex + selectingTextOn = " + cursorIndex + selectingTextOn);
+    }
+    else if ((key > 40 && key < 100 || key == 222 || key == 32) && e.getModifiers() != 2)
+    {
+      if (deletedTextInSelection())
+        selectingTextOn = false;
       text.insert(cursorIndex, e.getKeyChar());
       cursorIndex++;
+
     }
-    else if (key == 37 && cursorIndex > 0)
+    else if (key == KeyEvent.VK_LEFT && cursorIndex > 0)
     {
+      if (e.getModifiers() == 1 && !selectingTextOn)
+      {
+        initializeSelection();
+      }
       cursorIndex--;
-      if (e.getModifiers() == 1 && !selectingTextOn)
-      {
-        selectingTextOn = true;
-        selectStartX = cursorX;
-      }
     }
-    else if (key == 39 && cursorIndex < text.length())
+    else if (key == KeyEvent.VK_RIGHT && cursorIndex < text.length())
     {
-      cursorIndex++;
       if (e.getModifiers() == 1 && !selectingTextOn)
       {
-        selectingTextOn = true;
-        selectStartX = cursorX;
+        initializeSelection();
+      }
+      cursorIndex++;
+    }
+
+    if (e.getModifiers() % 2 != 1 && (key != KeyEvent.VK_META && key != KeyEvent.VK_ALT && key != KeyEvent.VK_CONTROL))
+      selectingTextOn = false;
+    System.out.println("key = " + key + " modifiers= " + e.getModifiers() + " selecting? = " + selectingTextOn);
+    markAsDirty();
+  }
+
+  private String getClipboardContents()
+  {
+    String clipboardString = "";
+    Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    Transferable contents = systemClipboard.getContents(null);
+    boolean hasText = (contents != null) && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
+    if (hasText)
+    {
+      try
+      {
+        clipboardString = (String) contents.getTransferData(DataFlavor.stringFlavor);
+      }
+      catch (UnsupportedFlavorException e)
+      {
+        e.printStackTrace();
+      }
+      catch (IOException e)
+      {
+        e.printStackTrace();
       }
     }
-    markAsDirty();
+    return clipboardString;
+  }
+
+  private void copySelectedText()
+  {
+    String clipboard;
+    if (selectStartIndex < cursorIndex)
+      clipboard = text.substring(selectStartIndex, cursorIndex);
+    else
+      clipboard = text.substring(cursorIndex, selectStartIndex);
+    StringSelection stringSelection = new StringSelection(clipboard);
+    Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    systemClipboard.setContents(stringSelection, this);
+  }
+
+  private boolean deletedTextInSelection()
+  {
+    if (selectingTextOn)
+    {
+      if (selectStartIndex < cursorIndex)
+        deleteSelectedText(selectStartIndex, cursorIndex);
+      else
+        deleteSelectedText(cursorIndex, selectStartIndex);
+      return true;
+    }
+    return false;
+  }
+
+  private void deleteSelectedText(int first, int second)
+  {
+    text.delete(first, second);
+    System.out.println("first = " + first + " second = " + second);
+    cursorIndex = first;
+  }
+
+  private void initializeSelection()
+  {
+    selectingTextOn = true;
+    selectStartX = cursorX;
+    selectStartIndex = cursorIndex;
   }
 
   public void keyReleased(KeyEvent e)
@@ -324,5 +529,10 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
     cursorThread.interrupt();
     cursorOn = false;
     markAsDirty();
+  }
+
+  public void lostOwnership(Clipboard clipboard, Transferable contents)
+  {
+    //This doesn't have to do anything... how unsettling.
   }
 }
