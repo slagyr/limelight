@@ -4,3 +4,4 @@ classes
 *.iws
 pkg
 out
+*.DS_Store
