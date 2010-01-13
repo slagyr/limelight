@@ -16,53 +16,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.*;
 import java.awt.font.TextHitInfo;
-import java.awt.font.TextLayout;
 import java.io.IOException;
 
-public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
+public class TextBox2Panel extends TextInputPanel
 {
-  private boolean focused;
+
   private static SimpleHorizontalAlignmentAttribute horizontalTextAlignment = new SimpleHorizontalAlignmentAttribute(HorizontalAlignment.LEFT);
   private static SimpleVerticalAlignmentAttribute verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
-  private Dimension textDimensions;
-  public static Font font = new Font("Arial", Font.PLAIN, 12);
-  private boolean cursorOn;
-  private Thread cursorThread;
-  private TextBoxState boxState = new TextBoxState(this);
-  private boolean clickWasInBox;
+
 
   public TextBox2Panel()
   {
     setSize(150, 25);
   }
 
-  public void setParent(limelight.ui.Panel panel)
-  {
-    if (panel == null)
-      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getStageFrame());
-    super.setParent(panel);
-    if (panel instanceof PropPanel)
-    {
-      PropPanel propPanel = (PropPanel) panel;
-      propPanel.sterilize();
-      propPanel.setTextAccessor(this);
-    }
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return getBoundingBox();
-  }
-
-  public Box getChildConsumableArea()
-  {
-    return getBoundingBox();
-  }
 
   public void paintOn(Graphics2D graphics)
   {
     graphics.setColor(Color.lightGray);
     graphics.fillRect(0, 0, width, height);
+    Dimension textDimensions;
 
     if (focused)
       graphics.setColor(Color.green);
@@ -76,18 +49,9 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
       graphics.setColor(Color.BLACK);
       textDimensions = boxState.calculateTextDimensions();
 
-      if (textDimensions.width >= width)
-      {
-        int newXOffset = textDimensions.width - width + 7;
-        if (!(boxState.cursorX < width - 4 && newXOffset > boxState.xOffset))
-          boxState.xOffset = newXOffset;
-        if (boxState.cursorX < 4)
-          boxState.shiftCursorAndTextRight();
-      }
-      else
-        boxState.xOffset = 0;
+      boxState.calculateTextXOffset(width, textDimensions.width);
 
-      boxState.textX = horizontalTextAlignment.getX(textDimensions.width, getBoundingBox()) + 3 - boxState.xOffset;
+      int textX = horizontalTextAlignment.getX(textDimensions.width, getBoundingBox()) + TextModel.LEFT_TEXT_MARGIN - boxState.xOffset;
 
       float textY = verticalTextAlignment.getY(textDimensions.height, getBoundingBox()) + boxState.textLayout.getAscent();
       boxState.setCursorAndSelectionStartX();
@@ -101,7 +65,7 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
 
       }
       graphics.setColor(Color.black);
-      boxState.textLayout.draw(graphics, boxState.textX, textY + 1);
+      boxState.textLayout.draw(graphics, textX, textY + 1);
     }
 
     else
@@ -116,24 +80,6 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
 
   }
 
-
-  public Style getStyle()
-  {
-    return getParent().getStyle();
-  }
-
-  public void setText(String text)
-  {
-    this.boxState.text = new StringBuffer(text);
-    boxState.cursorIndex = text.length();
-  }
-
-  public String getText()
-  {
-    if (boxState.text == null)
-      return null;
-    return boxState.text.toString();
-  }
 
   public void mouseDragged(MouseEvent e)
   {
@@ -214,22 +160,7 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
     super.buttonPressed(new ActionEvent(this, 0, "blah"));
   }
 
-  public void focusGained(FocusEvent e)
-  {
-    focused = true;
-    markAsDirty();
-    startCursor();
-    super.focusGained(e);
-  }
 
-  public void focusLost(FocusEvent e)
-  {
-    focused = false;
-    stopCursor();
-    markAsDirty();
-    super.focusLost(e);
-
-  }
 
   public void keyPressed(KeyEvent e)
   {
@@ -400,40 +331,7 @@ public class TextBox2Panel extends BasePanel implements TextAccessor, InputPanel
   }
 
 
-  private void startCursor()
-  {
-    if (cursorThread == null || !cursorThread.isAlive())
-    {
-      cursorThread = new Thread(new Runnable()
-      {
-        public void run()
-        {
-          while (true)
-          {
-            cursorOn = !cursorOn;
-            markAsDirty();
 
-            try
-            {
-              Thread.sleep(500);
-            }
-            catch (InterruptedException e)
-            {
-              e.printStackTrace();
-            }
-          }
-        }
-      });
-      cursorThread.start();
-    }
-  }
-
-  private void stopCursor()
-  {
-    cursorThread.interrupt();
-    cursorOn = false;
-    markAsDirty();
-  }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)
   {
