@@ -17,10 +17,30 @@ public abstract class KeyProcessor
     return (keyCode > 40 && keyCode < 100 || keyCode == 222 || keyCode == 32);
   }
 
-  protected void insertCharIntoTextBox(char c)
+  private void insertCharIntoTextBox(char c)
   {
     boxInfo.text.insert(boxInfo.cursorIndex, c);
     boxInfo.cursorIndex ++;
+  }
+
+
+  protected void insertLowercaseCharIntoTextBox(int keyCode)
+  {
+    char c;
+    if(keyCode == KeyEvent.VK_SPACE)
+       c = ' ';
+    else
+      c = Character.toLowerCase(KeyEvent.getKeyText(keyCode).charAt(0));
+    insertCharIntoTextBox(c);
+  }
+  protected void insertUppercaseCharIntoTextBox(int keyCode)
+  {
+    char c;
+    if(keyCode == KeyEvent.VK_SPACE)
+       c = ' ';
+    else
+      c = KeyEvent.getKeyText(keyCode).charAt(0);
+    insertCharIntoTextBox(c);
   }
 
   protected boolean isMoveRightEvent(int keyCode)
@@ -42,7 +62,7 @@ public abstract class KeyProcessor
   protected int findNearestWordToTheLeft()
   {
     for(int i = boxInfo.cursorIndex -1; i > 1; i-- ){
-      if(boxInfo.text.charAt(i - 1) == ' ')
+      if(boxInfo.text.charAt(i - 1) == ' ' && boxInfo.text.charAt(i) != ' ')
         return i;
     }
     return 0;
@@ -50,11 +70,18 @@ public abstract class KeyProcessor
 
   protected int findNearestWordToTheRight()
   {
-    for(int i = boxInfo.cursorIndex; i < boxInfo.text.length() -1; i++ ){
-      if(boxInfo.text.charAt(i) == ' ')
-        return i + 1;
+    for(int i = boxInfo.cursorIndex + 1; i <= boxInfo.text.length() -1; i++ ){
+      if(boxInfo.text.charAt(i -1) == ' ' && boxInfo.text.charAt(i) != ' ')
+        return i;
     }
     return boxInfo.text.length();
+  }
+
+  protected void selectAll()
+  {
+    boxInfo.selectionOn = true;
+    boxInfo.cursorIndex = boxInfo.text.length();
+    boxInfo.selectionIndex = 0;
   }
 }
 

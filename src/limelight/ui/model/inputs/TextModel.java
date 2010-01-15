@@ -134,6 +134,19 @@ public abstract class TextModel implements ClipboardOwner
 
   }
 
+  public int getXOffset(){
+    return xOffset;
+  }
+
+  public TextLayout getTextLayout()
+  {
+    if (text.length() == 0)
+      return null;
+    else
+      textLayout = new TextLayout(text.toString(), font, TextPanel.getRenderContext());
+    return textLayout;
+  }
+
   public void setText(String text)
   {
     this.text = new StringBuffer(text);
@@ -147,14 +160,24 @@ public abstract class TextModel implements ClipboardOwner
     return text.toString();
   }
 
+  public Point getPanelAbsoluteLocation()
+  {
+    return myBox.getAbsoluteLocation();
+  }
+
+  public int getPanelWidth()
+  {
+    return myBox.getWidth();
+  }
+
+  public int getPanelHeight()
+  {
+    return myBox.getHeight();
+  }
+
   public void markAsDirty()
   {
     myBox.markAsDirty();
-  }
-
-  public boolean isSelectionOn()
-  {
-    return selectionOn;
   }
 
   public void copyText(String clipboard)
@@ -217,15 +240,16 @@ public abstract class TextModel implements ClipboardOwner
   public void deleteSelection()
   {
     if (selectionIndex < cursorIndex)
-        deleteEnclosedText(selectionIndex, cursorIndex);
-      else
-        deleteEnclosedText(cursorIndex, selectionIndex);
+      deleteEnclosedText(selectionIndex, cursorIndex);
+    else
+      deleteEnclosedText(cursorIndex, selectionIndex);
   }
 
   public void deleteEnclosedText(int first, int second)
   {
     text.delete(first, second);
     cursorIndex = first;
+    selectionIndex = 0;
   }
 
 }

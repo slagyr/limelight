@@ -17,8 +17,7 @@ public class KPKey extends KeyProcessor
   {
     if (isACharacter(keyCode))
     {
-      char lowercaseChar = Character.toLowerCase(KeyEvent.getKeyText(keyCode).charAt(0));
-      insertCharIntoTextBox(lowercaseChar);
+      insertLowercaseCharIntoTextBox(keyCode);
     }
     else if (isMoveRightEvent(keyCode))
       boxInfo.cursorIndex++;
