@@ -5,9 +5,9 @@ import limelight.ui.model.inputs.TextModel;
 
 import java.awt.event.KeyEvent;
 
-public class KPCMD extends KeyProcessor
+public class KPSelCMD extends KeyProcessor
 {
-  public KPCMD(TextModel boxInfo)
+  public KPSelCMD(TextModel boxInfo)
   {
     super(boxInfo);
   }
@@ -19,18 +19,28 @@ public class KPCMD extends KeyProcessor
       case KeyEvent.VK_A:
         selectAll();
         break;
-
       case KeyEvent.VK_V:
+        boxInfo.deleteSelection();
         boxInfo.pasteClipboard();
+        boxInfo.selectionOn = false;
+        break;
+      case KeyEvent.VK_C:
+        boxInfo.copySelection();
+        break;
+      case KeyEvent.VK_X:
+        boxInfo.copySelection();
+        boxInfo.deleteSelection();
+        boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_RIGHT:
         boxInfo.cursorIndex = boxInfo.text.length();
+        boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_LEFT:
         boxInfo.cursorIndex = 0;
+        boxInfo.selectionOn = false;
         break;
-
-
     }
   }
+
 }
