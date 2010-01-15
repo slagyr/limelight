@@ -8,18 +8,23 @@ import limelight.ui.model.StageFrame;
 import limelight.ui.model.TextAccessor;
 import limelight.util.Box;
 
+import java.awt.*;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
 
 {
-  protected TextModel boxState = new PlainTextModel(this);
+  protected TextModel boxInfo = new PlainTextModel(this);
   protected boolean focused;
   protected boolean cursorOn;
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
   protected boolean clickWasInBox;
+  protected ArrayList<KeyProcessor> keyProcessors;
+  protected MouseProcessor mouseProcessor;
 
   public void setParent(limelight.ui.Panel panel)
   {
@@ -51,15 +56,19 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void setText(String text)
   {
-    this.boxState.text = new StringBuffer(text);
-    boxState.cursorIndex = text.length();
+    this.boxInfo.text = new StringBuffer(text);
+    boxInfo.cursorIndex = text.length();
   }
 
   public String getText()
   {
-    if (boxState.text == null)
+    if (boxInfo.text == null)
       return null;
-    return boxState.text.toString();
+    return boxInfo.text.toString();
+  }
+
+  public Point getAbsoluteLocation(){
+    return super.getAbsoluteLocation();
   }
 
     public void focusGained(FocusEvent e)
@@ -112,4 +121,42 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     cursorOn = false;
   }
 
+  public void keyPressed(KeyEvent e)
+  {
+    int key = e.getKeyCode();
+    int processorIndex = calculateProcessorIndex(e);
+    keyProcessors.get(processorIndex).processKey(key);
+    markAsDirty();
+
+  }
+
+  private int calculateProcessorIndex(KeyEvent e)
+  {
+    int index = 0;
+    int modifiers = e.getModifiers();
+    if (boxInfo.selectionOn)
+      index += 8;
+    if (isAltPressed(modifiers))
+      index += 4;
+    if(isShiftPressed(modifiers))
+      index += 2;
+    if(isCmdOrCtrlPressed(modifiers))
+      index += 1;
+    return index;
+  }
+
+  private boolean isCmdOrCtrlPressed(int modifiers)
+  {
+    return (modifiers > 1 && modifiers <7) || (modifiers > 10);
+  }
+
+  private boolean isShiftPressed(int modifiers)
+  {
+    return modifiers %2 == 1;
+  }
+
+  private boolean isAltPressed(int modifiers)
+  {
+    return modifiers >= 8;
+  }
 }
