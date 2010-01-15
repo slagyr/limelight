@@ -5,24 +5,24 @@ import limelight.ui.model.inputs.TextModel;
 
 import java.awt.event.KeyEvent;
 
-public class KPShift extends KeyProcessor
+public class KPSelShift extends KeyProcessor
 {
-  public KPShift(TextModel boxInfo)
+  public KPSelShift(TextModel boxInfo)
   {
     super(boxInfo);
   }
 
   public void processKey(int keyCode)
   {
-    if (isACharacter(keyCode))
-      insertUppercaseCharIntoTextBox(keyCode);
-    else if(isMoveRightEvent(keyCode)){
-      initSelection();
-      boxInfo.cursorIndex++;
+    if(isMoveRightEvent(keyCode)){
+      boxInfo.cursorIndex ++;
     }
     else if(isMoveLeftEvent(keyCode)){
-      initSelection();
-      boxInfo.cursorIndex--;
+      boxInfo.cursorIndex --;
+    }
+    else if(isACharacter(keyCode)){
+      boxInfo.deleteSelection();
+      insertUppercaseCharIntoTextBox(keyCode);
     }
   }
 }
