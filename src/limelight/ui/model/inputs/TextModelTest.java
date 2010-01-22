@@ -140,5 +140,19 @@ public class TextModelTest
     assertEquals(" Text", boxModel.getText());
 
   }
+  
+  @Test
+  public void canGetTheSelectedRegion()
+  {
+    boxModel.selectionIndex = 0;
+    boxModel.selectionOn = true;
+    
+    Rectangle region = boxModel.getSelectedRegion();
+
+    assertEquals(TextModel.LEFT_TEXT_MARGIN,region.x );
+    assertEquals(TextModel.TOP_MARGIN, region.y);
+    assertEquals(boxModel.getXPosFromIndex(boxModel.cursorIndex) - TextModel.LEFT_TEXT_MARGIN, region.width);
+    assertEquals(boxModel.getPanelHeight() - TextModel.TOP_MARGIN * 2, region.height);
+  }
 
 }
