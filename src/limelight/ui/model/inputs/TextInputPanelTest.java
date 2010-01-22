@@ -1,6 +1,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
+import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.PropPanel;
@@ -19,6 +20,8 @@ public class TextInputPanelTest
 {
   TextInputPanel panel;
   PropPanel parent;
+  MockGraphics graphics;
+  TextModel boxInfo;
 
   public class MockFocusEvent extends FocusEvent
   {
@@ -34,6 +37,10 @@ public class TextInputPanelTest
     panel = new TextBox2Panel();
     parent = new PropPanel(new MockProp());
     parent.add(panel);
+    graphics = new MockGraphics();
+    boxInfo = new PlainTextModel(panel);
+    panel.boxInfo = boxInfo;
+    boxInfo.setText("Some Text");
   }
 
   @Test
@@ -54,5 +61,6 @@ public class TextInputPanelTest
     assertFalse(panel.focused);
     assertTrue(panel.cursorThread.isAlive());
   }
+
 
 }
