@@ -1,5 +1,9 @@
 package limelight.ui.model.inputs;
 
+import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
+import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.ui.TextLayoutImpl;
+import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
 
 import java.awt.*;
@@ -14,7 +18,7 @@ public abstract class TextModel implements ClipboardOwner
   public static final int SIDE_DETECTION_MARGIN = 4;
 
   public StringBuffer text = new StringBuffer();
-  TextLayout textLayout;
+  TypedLayout textLayout;
   int cursorX;
   public boolean selectionOn;
   int selectionStartX;
@@ -33,6 +37,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     if (textWidth >= panelWidth)
     {
+      cursorX = getXPosFromIndex(cursorIndex);
       int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + LEFT_TEXT_MARGIN;
       if (!typingInCenterOfBox(panelWidth, newXOffset))
         xOffset = newXOffset;
@@ -64,7 +69,7 @@ public abstract class TextModel implements ClipboardOwner
     }
     else
     {
-      TextLayout layout = new TextLayout(rightShiftingText, font, TextPanel.getRenderContext());
+      TypedLayout layout = new TextLayoutImpl(rightShiftingText, font, TextPanel.getRenderContext());
       xOffset -= getWidthDimension(layout);
       if (xOffset < 0)
         xOffset = 0;
@@ -86,11 +91,10 @@ public abstract class TextModel implements ClipboardOwner
       return getXPosFromTextLayout(toIndexString) + getTerminatingSpaceWidth(toIndexString);
   }
 
-  ;
 
   public int getXPosFromTextLayout(String toIndexString)
   {
-    TextLayout layout = new TextLayout(toIndexString, font, TextPanel.getRenderContext());
+    TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
     return getWidthDimension(layout) + LEFT_TEXT_MARGIN - xOffset;
   }
 
@@ -114,7 +118,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     if (text != null && text.length() > 0)
     {
-      textLayout = new TextLayout(text.toString(), font, TextPanel.getRenderContext());
+      TypedLayout textLayout = getTextLayout();
       int height = getHeightDimension(textLayout);
       int width = getWidthDimension(textLayout);
       return new Dimension(width, height);
@@ -122,28 +126,31 @@ public abstract class TextModel implements ClipboardOwner
     return null;
   }
 
-  public int getHeightDimension(TextLayout layout)
+  public int getHeightDimension(TypedLayout layout)
   {
     return (int) ((layout.getAscent() + layout.getDescent() + layout.getLeading()) + 0.5);
 
   }
 
-  public int getWidthDimension(TextLayout layout)
+  public int getWidthDimension(TypedLayout layout)
   {
     return (int) (layout.getBounds().getWidth() + layout.getBounds().getX() + 0.5);
 
   }
 
-  public int getXOffset(){
+  public int getXOffset()
+  {
     return xOffset;
   }
 
-  public TextLayout getTextLayout()
+  public TypedLayout getTextLayout()
   {
     if (text.length() == 0)
       return null;
-    else
-      textLayout = new TextLayout(text.toString(), font, TextPanel.getRenderContext());
+    else{
+      if (textLayout == null || !textLayout.toString().equals(text.toString()))
+        textLayout = new TextLayoutImpl(text.toString(), font, TextPanel.getRenderContext());
+    }
     return textLayout;
   }
 
@@ -173,6 +180,26 @@ public abstract class TextModel implements ClipboardOwner
   public int getPanelHeight()
   {
     return myBox.getHeight();
+  }
+
+  public SimpleHorizontalAlignmentAttribute getHorizontalAlignment()
+  {
+    return myBox.horizontalTextAlignment;
+  }
+
+  public SimpleVerticalAlignmentAttribute getVerticalAlignment()
+  {
+    return myBox.verticalTextAlignment;
+  }
+
+  public boolean isCursorOn()
+  {
+    return myBox.isCursorOn();
+  }
+
+  public boolean isFocused()
+  {
+    return myBox.isFocused();
   }
 
   public void markAsDirty()
