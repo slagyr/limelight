@@ -19,6 +19,6 @@ public class TextPanelCursorPainter extends TextPanelPainter
     int x = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
     graphics.setColor(Color.black);    
     if(boxInfo.isCursorOn())
-      graphics.drawLine(x, HEIGHT_MARGIN, x, boxInfo.getPanelHeight() - HEIGHT_MARGIN);
+      graphics.drawLine(x, HEIGHT_MARGIN, x, boxInfo.getPanelHeight() - HEIGHT_MARGIN -1);
   }
 }

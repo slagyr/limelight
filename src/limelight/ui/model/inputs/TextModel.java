@@ -5,6 +5,7 @@ import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.ui.TextLayoutImpl;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -16,6 +17,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public static final int LEFT_TEXT_MARGIN = 3;
   public static final int SIDE_DETECTION_MARGIN = 4;
+  public static final int TOP_MARGIN = 4;
 
   public StringBuffer text = new StringBuffer();
   TypedLayout textLayout;
@@ -202,11 +204,6 @@ public abstract class TextModel implements ClipboardOwner
     return myBox.isFocused();
   }
 
-  public void markAsDirty()
-  {
-    myBox.markAsDirty();
-  }
-
   public void copyText(String clipboard)
   {
     StringSelection stringSelection = new StringSelection(clipboard);
@@ -278,5 +275,18 @@ public abstract class TextModel implements ClipboardOwner
     cursorIndex = first;
     selectionIndex = 0;
   }
-
+  
+public Rectangle getSelectedRegion()
+  {
+    int x1 = getXPosFromIndex(cursorIndex);
+    int x2 = getXPosFromIndex(selectionIndex);
+    if (selectionOn)
+    {
+      if (x1 > x2)
+        return new Box(x2, TOP_MARGIN, x1 - x2, getPanelHeight() - TOP_MARGIN * 2);
+      else
+        return new Box(x1, TOP_MARGIN, x2 - x1, getPanelHeight() - TOP_MARGIN * 2);
+    }
+    return null;
+  }
 }
