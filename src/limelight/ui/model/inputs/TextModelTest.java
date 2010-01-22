@@ -1,5 +1,6 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.TextLayoutImpl;
 import limelight.ui.model.TextPanel;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class TextModelTest
   public void canCalculateTheXPositionForTheCursorFromAString()
   {
     int x = boxModel.getXPosFromTextLayout("ABC");
-    int width = boxModel.getWidthDimension(new TextLayout("ABC", boxModel.font, TextPanel.getRenderContext()));
+    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
     int expectedX = width + boxModel.LEFT_TEXT_MARGIN;
     assertEquals(expectedX, x);
 
@@ -53,11 +54,11 @@ public class TextModelTest
     assertEquals(boxModel.LEFT_TEXT_MARGIN, x);
 
     x = boxModel.getXPosFromIndex(3);
-    int width = boxModel.getWidthDimension(new TextLayout("Bob", boxModel.font, TextPanel.getRenderContext()));
+    int width = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
     assertEquals(width + boxModel.LEFT_TEXT_MARGIN, x);
 
     x = boxModel.getXPosFromIndex(4);
-    width = boxModel.getWidthDimension(new TextLayout("Bob", boxModel.font, TextPanel.getRenderContext()));
+    width = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
     assertEquals(width + boxModel.LEFT_TEXT_MARGIN + 3, x);
   }
 
@@ -79,22 +80,30 @@ public class TextModelTest
   {
     boxModel.xOffset = boxModel.calculateTextDimensions().width - boxPanel.getWidth();
     int offset = boxModel.xOffset;
-    boxModel.cursorX = TextModel.SIDE_DETECTION_MARGIN - 1;
+    boxModel.cursorIndex = boxModel.getText().indexOf("ar");
+
     boxModel.shiftTextRight();
-    assertTrue(boxModel.xOffset <= offset/ 2 + 5);
+    assertTrue(boxModel.xOffset <= offset/ 2 + 5 && boxModel.xOffset != 0);
   }
 
   @Test
-  public void canCalculateTheXOffset()
+  public void canCalculateTheXOffsetIfTheCursorIsAtTheRightEdge()
   {
-    boxModel.cursorX = boxPanel.getWidth() - 1;
+    boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
+
+    assertTrue(boxModel.xOffset > 0);
+  }
+
+  @Test
+  public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
+  {
     boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
     int offset = boxModel.xOffset;
-    assertTrue(boxModel.xOffset > 0);
+    boxModel.cursorIndex= 0;
 
-    boxModel.cursorX = TextModel.SIDE_DETECTION_MARGIN - 1;
     boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
-    assertTrue(boxModel.xOffset <= (offset / 2 + 2));
+
+    assertTrue(boxModel.xOffset <= offset / 2 + 2);
 
     boxModel.text = new StringBuffer("hi");
     boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
