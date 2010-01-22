@@ -232,6 +232,7 @@ public class RootPanel implements Panel
 
   public void addDirtyRegion(Rectangle region)
   {
+System.out.println("adding dirty region = " + region);
     synchronized(dirtyRegions)
     {
       boolean shouldAdd = true;
@@ -256,6 +257,7 @@ public class RootPanel implements Panel
       }
       if(shouldAdd)
       {
+System.out.println("should add region = " + region);        
         dirtyRegions.add(region);
       }
     }

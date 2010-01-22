@@ -1,17 +1,20 @@
 package limelight.ui.model.inputs;
 
 import limelight.Context;
+import limelight.styles.HorizontalAlignment;
 import limelight.styles.Style;
-import limelight.ui.model.BasePanel;
-import limelight.ui.model.PropPanel;
-import limelight.ui.model.StageFrame;
-import limelight.ui.model.TextAccessor;
+import limelight.styles.VerticalAlignment;
+import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
+import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.ui.model.*;
 import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.datatransfer.ClipboardOwner;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
@@ -22,9 +25,12 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected boolean cursorOn;
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
-  protected boolean clickWasInBox;
   protected ArrayList<KeyProcessor> keyProcessors;
   protected MouseProcessor mouseProcessor;
+  protected TextPanelPainter painter;
+  protected TextPanelPainterStore paintStore;
+  protected SimpleHorizontalAlignmentAttribute horizontalTextAlignment;
+  protected SimpleVerticalAlignmentAttribute verticalTextAlignment;
 
   public void setParent(limelight.ui.Panel panel)
   {
@@ -67,11 +73,12 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     return boxInfo.text.toString();
   }
 
-  public Point getAbsoluteLocation(){
+  public Point getAbsoluteLocation()
+  {
     return super.getAbsoluteLocation();
   }
 
-    public void focusGained(FocusEvent e)
+  public void focusGained(FocusEvent e)
   {
     focused = true;
     markAsDirty();
@@ -88,7 +95,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   }
 
-    private void startCursor()
+  private void startCursor()
   {
     if (cursorThread == null || !cursorThread.isAlive())
     {
@@ -99,8 +106,8 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
           while (focused)
           {
             cursorOn = !cursorOn;
-            markAsDirty();
-
+            //markCursorRegionAsDirty();
+            painter = paintStore.getCursorPainter();
             try
             {
               Thread.sleep(cursorCycleTime);
@@ -114,6 +121,14 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       });
       cursorThread.start();
     }
+  }
+
+  public void markCursorRegionAsDirty()
+  {
+    RootPanel rootPanel = getRoot();
+    int cursorX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
+    if (rootPanel != null)
+      rootPanel.addDirtyRegion(new Box(0, 4, 150, boxInfo.getPanelHeight() - 8));
   }
 
   private void stopCursor()
@@ -138,25 +153,63 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       index += 8;
     if (isAltPressed(modifiers))
       index += 4;
-    if(isShiftPressed(modifiers))
+    if (isShiftPressed(modifiers))
       index += 2;
-    if(isCmdOrCtrlPressed(modifiers))
+    if (isCmdOrCtrlPressed(modifiers))
       index += 1;
     return index;
   }
 
   private boolean isCmdOrCtrlPressed(int modifiers)
   {
-    return (modifiers > 1 && modifiers <7) || (modifiers > 10);
+    return (modifiers > 1 && modifiers < 7) || (modifiers > 10);
   }
 
   private boolean isShiftPressed(int modifiers)
   {
-    return modifiers %2 == 1;
+    return modifiers % 2 == 1;
   }
 
   private boolean isAltPressed(int modifiers)
   {
     return modifiers >= 8;
   }
+
+  public boolean isCursorOn()
+  {
+    return cursorOn;
+  }
+
+  public boolean isFocused()
+  {
+    return focused;
+  }
+
+  public void mouseDragged(MouseEvent e)
+  {
+    mouseProcessor.processMouseDragged(e);
+    markAsDirty();
+  }
+
+  public void mousePressed(MouseEvent e)
+  {
+    super.mousePressed(e);
+    mouseProcessor.processMousePressed(e);
+    markAsDirty();
+
+  }
+
+  public void mouseReleased(MouseEvent e)
+  {
+    super.mouseReleased(e);
+    mouseProcessor.processMouseReleased(e);
+    markAsDirty();
+    Context.instance().keyboardFocusManager.focusPanel(this);
+    focusGained(new FocusEvent(getRoot().getStageFrame().getWindow(), 0));
+    buttonPressed(new ActionEvent(this, 0, "blah"));
+  }
+
+  public abstract void initKeyProcessors();
+
+  public abstract void paintOn(Graphics2D graphics);
 }
