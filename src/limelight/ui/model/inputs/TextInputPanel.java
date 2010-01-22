@@ -106,8 +106,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
           while (focused)
           {
             cursorOn = !cursorOn;
-            //markCursorRegionAsDirty();
-            painter = paintStore.getCursorPainter();
+            markCursorRegionAsDirty();
             try
             {
               Thread.sleep(cursorCycleTime);
@@ -123,12 +122,27 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     }
   }
 
-  public void markCursorRegionAsDirty()
+  private void markCursorRegionAsDirty()
   {
     RootPanel rootPanel = getRoot();
-    int cursorX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
     if (rootPanel != null)
-      rootPanel.addDirtyRegion(new Box(0, 4, 150, boxInfo.getPanelHeight() - 8));
+      rootPanel.addDirtyRegion(new Box(getAbsoluteCursorX(), TextModel.TOP_MARGIN + getAbsoluteLocation().y, 1, boxInfo.getPanelHeight() - TextModel.TOP_MARGIN * 2));
+  }
+
+
+  private void markSelectionAsDirty()
+  {
+    RootPanel rootPanel = getRoot();
+    Rectangle region = boxInfo.getSelectedRegion();
+    if (rootPanel != null && region != null)
+      rootPanel.addDirtyRegion(new Box(region.x + getAbsoluteLocation().x - 5, region.y + getAbsoluteLocation().y, region.width + 5, region.height));
+  }
+
+  private int getAbsoluteCursorX()
+  {
+    int cursorX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
+    cursorX += getAbsoluteLocation().x;
+    return cursorX;
   }
 
   private void stopCursor()
@@ -188,14 +202,14 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void mouseDragged(MouseEvent e)
   {
     mouseProcessor.processMouseDragged(e);
-    markAsDirty();
+    markAsDirty();    
   }
 
   public void mousePressed(MouseEvent e)
   {
     super.mousePressed(e);
+    markSelectionAsDirty();
     mouseProcessor.processMousePressed(e);
-    markAsDirty();
 
   }
 
@@ -203,9 +217,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     super.mouseReleased(e);
     mouseProcessor.processMouseReleased(e);
-    markAsDirty();
     Context.instance().keyboardFocusManager.focusPanel(this);
-    focusGained(new FocusEvent(getRoot().getStageFrame().getWindow(), 0));
+    if(!focused)
+      focusGained(new FocusEvent(getRoot().getStageFrame().getWindow(), 0));
     buttonPressed(new ActionEvent(this, 0, "blah"));
   }
 
