@@ -33,11 +33,11 @@ public class KPSelCMD extends KeyProcessor
         boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_RIGHT:
-        boxInfo.cursorIndex = boxInfo.text.length();
+        boxInfo.setCursorIndex(boxInfo.text.length());
         boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_LEFT:
-        boxInfo.cursorIndex = 0;
+        boxInfo.setCursorIndex(0);
         boxInfo.selectionOn = false;
         break;
     }

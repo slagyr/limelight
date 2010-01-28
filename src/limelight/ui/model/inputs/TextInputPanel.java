@@ -1,9 +1,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.Context;
-import limelight.styles.HorizontalAlignment;
 import limelight.styles.Style;
-import limelight.styles.VerticalAlignment;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.ui.model.*;
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
 
 {
-  protected TextModel boxInfo = new PlainTextModel(this);
+  protected TextModel boxInfo;
   protected boolean focused;
   protected boolean cursorOn;
   protected Thread cursorThread;
@@ -29,6 +27,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected MouseProcessor mouseProcessor;
   protected TextPanelPainter painter;
   protected TextPanelPainterStore paintStore;
+  protected Box paintableRegion;
   protected SimpleHorizontalAlignmentAttribute horizontalTextAlignment;
   protected SimpleVerticalAlignmentAttribute verticalTextAlignment;
 
@@ -63,7 +62,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void setText(String text)
   {
     this.boxInfo.text = new StringBuffer(text);
-    boxInfo.cursorIndex = text.length();
+    boxInfo.setCursorIndex(text.length());
   }
 
   public String getText()
@@ -129,18 +128,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       rootPanel.addDirtyRegion(new Box(getAbsoluteCursorX(), TextModel.TOP_MARGIN + getAbsoluteLocation().y, 1, boxInfo.getPanelHeight() - TextModel.TOP_MARGIN * 2));
   }
 
-
-  private void markSelectionAsDirty()
-  {
-    RootPanel rootPanel = getRoot();
-    Rectangle region = boxInfo.getSelectedRegion();
-    if (rootPanel != null && region != null)
-      rootPanel.addDirtyRegion(new Box(region.x + getAbsoluteLocation().x - 3, region.y + getAbsoluteLocation().y, region.width + 6, region.height));
-  }
-
   private int getAbsoluteCursorX()
   {
-    int cursorX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
+    int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex());
     cursorX += getAbsoluteLocation().x;
     return cursorX;
   }
@@ -209,8 +199,18 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     super.mousePressed(e);
     mouseProcessor.processMousePressed(e);
-    markAsDirty();     
+    markPaintableRegionAsDirty();
   }
+
+  private void markPaintableRegionAsDirty()
+  {
+    RootPanel rootPanel = getRoot();
+    if (rootPanel != null && paintableRegion != null){
+      rootPanel.addDirtyRegion(new Box(paintableRegion.x + getAbsoluteLocation().x - 3,
+          paintableRegion.y + getAbsoluteLocation().y, paintableRegion.width + 6, paintableRegion.height));
+    }
+  }
+
 
   public void mouseReleased(MouseEvent e)
   {
@@ -225,4 +225,8 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public abstract void initKeyProcessors();
 
   public abstract void paintOn(Graphics2D graphics);
+
+  public abstract void setPaintableRegion(int index);
+
+  public abstract void resetPaintableRegion();
 }

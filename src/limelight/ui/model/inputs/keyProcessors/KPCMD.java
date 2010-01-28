@@ -24,10 +24,10 @@ public class KPCMD extends KeyProcessor
         boxInfo.pasteClipboard();
         break;
       case KeyEvent.VK_RIGHT:
-        boxInfo.cursorIndex = boxInfo.text.length();
+        boxInfo.setCursorIndex(boxInfo.text.length());
         break;
       case KeyEvent.VK_LEFT:
-        boxInfo.cursorIndex = 0;
+        boxInfo.setCursorIndex(0);
         break;
 
 

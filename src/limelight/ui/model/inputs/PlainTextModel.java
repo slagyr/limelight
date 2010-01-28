@@ -1,11 +1,10 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.TextPanel;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
-import java.awt.font.TextLayout;
 
 
 public class PlainTextModel extends TextModel
@@ -27,4 +26,5 @@ public class PlainTextModel extends TextModel
   {
     //this doesn't have to do anything...
   }
+
 }

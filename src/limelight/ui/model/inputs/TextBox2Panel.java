@@ -25,6 +25,8 @@ public class TextBox2Panel extends TextInputPanel
   public TextBox2Panel()
   {
     setSize(150, 25);
+    resetPaintableRegion();
+    boxInfo = new PlainTextModel(this);
     keyProcessors = new ArrayList<KeyProcessor>(16);
     initKeyProcessors();
     mouseProcessor = new MouseProcessor(boxInfo);
@@ -69,6 +71,24 @@ public class TextBox2Panel extends TextInputPanel
 
     painter = paintStore.getCursorPainter();
     painter.paint(graphics);
+  }
+
+   public void setPaintableRegion(int index)
+  {
+    int x = boxInfo.getXPosFromIndex(index);
+    System.out.println("inside setPRegion");
+    if(paintableRegion.x == 0 && paintableRegion.width == 0)
+      paintableRegion.x = x;
+    else if (x > paintableRegion.x && (x - paintableRegion.x) > paintableRegion.width)
+      paintableRegion.width = x - paintableRegion.x;
+    else if (x < paintableRegion.x){
+      paintableRegion.width += paintableRegion.x - x;
+      paintableRegion.x = x;
+    }
+  }
+
+  public void resetPaintableRegion(){
+    paintableRegion = new Box(0,TextModel.TOP_MARGIN, 0, height - 2* TextModel.TOP_MARGIN);
   }
 
 

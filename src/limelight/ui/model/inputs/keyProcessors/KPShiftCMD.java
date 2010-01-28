@@ -14,11 +14,11 @@ public class KPShiftCMD extends KeyProcessor
   {
     if(isMoveRightEvent(keyCode)){
       initSelection();
-      boxInfo.cursorIndex = boxInfo.text.length();
+      boxInfo.setCursorIndex(boxInfo.text.length());
     }
     else if(isMoveLeftEvent(keyCode)){
       initSelection();
-      boxInfo.cursorIndex = 0;
+      boxInfo.setCursorIndex(0);
     }
   }
 
