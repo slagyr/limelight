@@ -149,7 +149,8 @@ public abstract class TextModel implements ClipboardOwner
   {
     if (text.length() == 0)
       return null;
-    else{
+    else
+    {
       if (textLayout == null || !textLayout.toString().equals(text.toString()))
         textLayout = new TextLayoutImpl(text.toString(), font, TextPanel.getRenderContext());
     }
@@ -275,8 +276,8 @@ public abstract class TextModel implements ClipboardOwner
     cursorIndex = first;
     selectionIndex = 0;
   }
-  
-public Rectangle getSelectedRegion()
+
+  public Rectangle getSelectedRegion()
   {
     int x1 = getXPosFromIndex(cursorIndex);
     int x2 = getXPosFromIndex(selectionIndex);
@@ -288,5 +289,27 @@ public Rectangle getSelectedRegion()
         return new Box(x1, TOP_MARGIN, x2 - x1, getPanelHeight() - TOP_MARGIN * 2);
     }
     return null;
+  }
+
+  public int findWordsRightEdge(int index)
+  {
+    for (int i = index; i <= text.length() - 1; i++)
+    {
+      if (i == 0)
+        i = 1;
+      if (text.charAt(i - 1) != ' ' && text.charAt(i) == ' ')
+        return i;
+    }
+    return text.length();
+  }
+
+  public int findWordsLeftEdge(int index)
+  {
+    for (int i = index - 1; i > 1; i--)
+    {
+      if (text.charAt(i - 1) == ' ' && text.charAt(i) != ' ')
+        return i;
+    }
+    return 0;
   }
 }

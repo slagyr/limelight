@@ -135,7 +135,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     RootPanel rootPanel = getRoot();
     Rectangle region = boxInfo.getSelectedRegion();
     if (rootPanel != null && region != null)
-      rootPanel.addDirtyRegion(new Box(region.x + getAbsoluteLocation().x - 5, region.y + getAbsoluteLocation().y, region.width + 5, region.height));
+      rootPanel.addDirtyRegion(new Box(region.x + getAbsoluteLocation().x - 3, region.y + getAbsoluteLocation().y, region.width + 6, region.height));
   }
 
   private int getAbsoluteCursorX()
@@ -208,9 +208,8 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void mousePressed(MouseEvent e)
   {
     super.mousePressed(e);
-    markSelectionAsDirty();
     mouseProcessor.processMousePressed(e);
-
+    markAsDirty();     
   }
 
   public void mouseReleased(MouseEvent e)

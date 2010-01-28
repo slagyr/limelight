@@ -2,11 +2,14 @@ package limelight.ui.model.inputs;
 
 import java.awt.event.MouseEvent;
 import java.awt.font.TextHitInfo;
+import java.util.Date;
 
 public class MouseProcessor
 {
 
   TextModel boxInfo;
+  public long lastClickTime;
+  public boolean doubleClickOn;
 
   public MouseProcessor(TextModel boxInfo)
   {
@@ -53,22 +56,56 @@ public class MouseProcessor
       boxInfo.selectionOn = true;
       boxInfo.selectionIndex = calculateMouseClickIndex(myX, myY);
       boxInfo.cursorIndex = boxInfo.selectionIndex;
+      selectWordOnDoubleClick();
+      lastClickTime = (new Date()).getTime();
     }
+  }
+
+  public void selectWordOnDoubleClick()
+  {
+    if (lastClickTime >= (new Date()).getTime() - 300)
+    {
+      boxInfo.selectionIndex = boxInfo.findWordsLeftEdge(boxInfo.cursorIndex);
+      boxInfo.cursorIndex = boxInfo.findWordsRightEdge(boxInfo.cursorIndex);
+      doubleClickOn = true;
+    }
+    else
+      doubleClickOn = false;
   }
 
   public void processMouseDragged(MouseEvent e)
   {
     int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
     int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
-    boxInfo.cursorIndex = calculateMouseClickIndex(myX, myY);
+    int tempIndex = calculateMouseClickIndex(myX, myY);
+    if (doubleClickOn)
+      selectWord(tempIndex);
+    else
+      boxInfo.cursorIndex = tempIndex;
+  }
+
+  private void selectWord(int tempIndex)
+  {
+    if (tempIndex > boxInfo.findWordsRightEdge(boxInfo.cursorIndex))
+    {
+      boxInfo.cursorIndex = boxInfo.findWordsRightEdge(tempIndex);
+    }
+    else if(tempIndex < boxInfo.findWordsLeftEdge(boxInfo.cursorIndex))
+    {
+      if ( tempIndex < boxInfo.selectionIndex)
+      boxInfo.cursorIndex = boxInfo.findWordsLeftEdge(tempIndex);
+    }
   }
 
   public void processMouseReleased(MouseEvent e)
   {
     int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
     int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
-    boxInfo.cursorIndex = calculateMouseClickIndex(myX, myY);
-    if (boxInfo.cursorIndex == boxInfo.selectionIndex)
-      boxInfo.selectionOn = false;
+    if (!doubleClickOn)
+    {
+      boxInfo.cursorIndex = calculateMouseClickIndex(myX, myY);
+      if (boxInfo.cursorIndex == boxInfo.selectionIndex)
+        boxInfo.selectionOn = false;
+    }
   }
 }
