@@ -76,7 +76,6 @@ public class MouseProcessor
 
   private void selectAllOnTripleClick()
   {
-    doubleClickOn = false;
     boxInfo.setSelectionIndex(0);
     boxInfo.setCursorIndex(boxInfo.text.length());
   }
