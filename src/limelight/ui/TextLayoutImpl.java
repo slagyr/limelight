@@ -2,28 +2,25 @@ package limelight.ui;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
+import java.awt.font.TextHitInfo;
 import java.awt.font.TextLayout;
+import java.awt.geom.Rectangle2D;
 
 public class TextLayoutImpl implements TypedLayout
 {
   TextLayout layout;
-  public int x;
-  public int y;
-  public String text;
   public boolean hasDrawn;
 
   public TextLayoutImpl(String string, Font font, FontRenderContext frc)
   {
     layout = new TextLayout(string, font, frc);
-    text = string;
     hasDrawn = false;
   }
 
-  public void draw(Graphics2D graphics, int x, int y)
+  public void draw(Graphics2D graphics, float x, float y)
   {
-    this.x = x;
-    this.y = y;
     hasDrawn = true;
+    layout.draw(graphics, x, y);
   }
 
   public boolean hasDrawn()
@@ -31,18 +28,33 @@ public class TextLayoutImpl implements TypedLayout
     return hasDrawn;
   }
 
-  public String getText()
+  public float getAscent()
   {
-    return text;
+    return layout.getAscent();
   }
 
-  public int getX()
+  public float getDescent()
   {
-    return x;
+    return layout.getDescent();
   }
 
-  public int getY()
+  public float getLeading()
   {
-    return y;
+    return layout.getLeading();
+  }
+
+  public Rectangle2D getBounds()
+  {
+    return layout.getBounds();
+  }
+
+  public TextHitInfo hitTestChar(float x, float y)
+  {
+    return layout.hitTestChar(x,y);
+  }
+
+  public String toString()
+  {
+    return layout.toString();
   }
 }
