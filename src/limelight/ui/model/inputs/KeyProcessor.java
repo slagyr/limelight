@@ -61,17 +61,19 @@ public abstract class KeyProcessor
 
   protected int findNearestWordToTheLeft()
   {
-    for(int i = boxInfo.cursorIndex -1; i > 1; i-- ){
-      if(boxInfo.text.charAt(i - 1) == ' ' && boxInfo.text.charAt(i) != ' ')
-        return i;
-    }
-    return 0;
+    return boxInfo.findWordsLeftEdge(boxInfo.cursorIndex);
   }
 
   protected int findNearestWordToTheRight()
   {
-    for(int i = boxInfo.cursorIndex + 1; i <= boxInfo.text.length() -1; i++ ){
-      if(boxInfo.text.charAt(i -1) == ' ' && boxInfo.text.charAt(i) != ' ')
+    return findNextWordSkippingSpaces(boxInfo.findWordsRightEdge(boxInfo.cursorIndex));
+  }
+
+  private int findNextWordSkippingSpaces(int startIndex)
+  {
+    for (int i = startIndex;i <= boxInfo.text.length() -1;i++)
+    {
+      if(boxInfo.text.charAt(i-1) == ' ' && boxInfo.text.charAt(i) != ' ')
         return i;
     }
     return boxInfo.text.length();

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -93,7 +94,7 @@ public class MouseProcessorTest
   @Test
   public void willNotSetCursorAndSelectionIndexOnMouseClickOutSideTheBox()
   {
-    mockMouseEvent = new MockMouseEvent(42,42);
+    mockMouseEvent = new MockMouseEvent(42, 42);
 
     processor.processMousePressed(mockMouseEvent);
 
@@ -118,7 +119,8 @@ public class MouseProcessorTest
   }
 
   @Test
-  public void willSetSelectionOnToFalseIfMouseReleaseIsAtSameIndexAsTheClick(){
+  public void willSetSelectionOnToFalseIfMouseReleaseIsAtSameIndexAsTheClick()
+  {
     boxInfo.selectionIndex = 1;
     boxInfo.selectionOn = true;
 
@@ -127,4 +129,52 @@ public class MouseProcessorTest
 
     assertFalse(boxInfo.selectionOn);
   }
+
+  @Test
+  public void willSelectWordForDoubleClick()
+  {
+    processor.lastClickTime = (new Date()).getTime();
+
+    processor.processMousePressed(mockMouseEvent);
+
+    assertEquals(4,boxInfo.cursorIndex);
+    assertEquals(0,boxInfo.selectionIndex);
+    assertTrue(boxInfo.selectionOn);
+  }
+
+  @Test
+  public void willSetStateForDoubleClickSelection()
+  {
+    processor.lastClickTime = (new Date()).getTime();
+
+    processor.selectWordOnDoubleClick();
+
+    assertTrue(processor.doubleClickOn);
+  }
+
+  @Test
+  public void willNotChangeTheCursorPositionOnMouseReleaseIfDoubleClickIsOn()
+  {
+    processor.doubleClickOn = true;
+    boxInfo.cursorIndex = 5;
+
+    processor.processMouseReleased(mockMouseEvent);
+
+    assertEquals(5, boxInfo.cursorIndex);
+  }
+
+  @Test
+  public void willBeginWordSelectionIfDoubleClickIsOn()
+  {
+    processor.doubleClickOn = true;
+    boxInfo.selectionIndex = 0;
+    boxInfo.cursorIndex = 4;
+    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(8) + boxInfo.getPanelAbsoluteLocation().x,115);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertEquals(boxInfo.text.length(), boxInfo.cursorIndex);
+  }
 }
+
+
