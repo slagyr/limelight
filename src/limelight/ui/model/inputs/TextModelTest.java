@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.awt.font.TextLayout;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -80,7 +79,7 @@ public class TextModelTest
   {
     boxModel.xOffset = boxModel.calculateTextDimensions().width - boxPanel.getWidth();
     int offset = boxModel.xOffset;
-    boxModel.cursorIndex = boxModel.getText().indexOf("ar");
+    boxModel.setCursorIndex(boxModel.getText().indexOf("ar"));
 
     boxModel.shiftTextRight();
     assertTrue(boxModel.xOffset <= offset/ 2 + 5 && boxModel.xOffset != 0);
@@ -99,7 +98,7 @@ public class TextModelTest
   {
     boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
     int offset = boxModel.xOffset;
-    boxModel.cursorIndex= 0;
+    boxModel.setCursorIndex(0);
 
     boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
 
@@ -123,8 +122,8 @@ public class TextModelTest
   public void canCopyPasteAndCut()
   {
     boxModel.setText("Some Text");
-    boxModel.cursorIndex = 0;
-    boxModel.selectionIndex = 4;
+    boxModel.setCursorIndex(0);
+    boxModel.setSelectionIndex(4);
     boxModel.selectionOn = true;
     boxModel.copySelection();
     String clipboard = boxModel.getClipboardContents();
@@ -133,8 +132,8 @@ public class TextModelTest
     boxModel.pasteClipboard();
     assertEquals("SomeSome Text", boxModel.getText());
 
-    boxModel.cursorIndex = 0;
-    boxModel.selectionIndex = 8;
+    boxModel.setCursorIndex(0);
+    boxModel.setSelectionIndex(8);
     boxModel.cutSelection();
     assertEquals("SomeSome", boxModel.getClipboardContents());
     assertEquals(" Text", boxModel.getText());
@@ -144,14 +143,14 @@ public class TextModelTest
   @Test
   public void canGetTheSelectedRegion()
   {
-    boxModel.selectionIndex = 0;
+    boxModel.setSelectionIndex(0);
     boxModel.selectionOn = true;
     
-    Rectangle region = boxModel.getSelectedRegion();
+    Rectangle region = boxModel.getSelectionRegion();
 
     assertEquals(TextModel.LEFT_TEXT_MARGIN,region.x );
     assertEquals(TextModel.TOP_MARGIN, region.y);
-    assertEquals(boxModel.getXPosFromIndex(boxModel.cursorIndex) - TextModel.LEFT_TEXT_MARGIN, region.width);
+    assertEquals(boxModel.getXPosFromIndex(boxModel.getCursorIndex()) - TextModel.LEFT_TEXT_MARGIN, region.width);
     assertEquals(boxModel.getPanelHeight() - TextModel.TOP_MARGIN * 2, region.height);
   }
 

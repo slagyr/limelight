@@ -20,11 +20,11 @@ public class KPKey extends KeyProcessor
       insertLowercaseCharIntoTextBox(keyCode);
     }
     else if (isMoveRightEvent(keyCode))
-      boxInfo.cursorIndex++;
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
     else if (isMoveLeftEvent(keyCode))
-      boxInfo.cursorIndex--;
-    else if (keyCode == KeyEvent.VK_BACK_SPACE && boxInfo.cursorIndex > 0)
-      boxInfo.deleteEnclosedText(boxInfo.cursorIndex -1, boxInfo.cursorIndex);
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
+    else if (keyCode == KeyEvent.VK_BACK_SPACE && boxInfo.getCursorIndex() > 0)
+      boxInfo.deleteEnclosedText(boxInfo.getCursorIndex() -1, boxInfo.getCursorIndex());
   }
 
 }

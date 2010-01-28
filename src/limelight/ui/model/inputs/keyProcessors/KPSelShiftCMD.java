@@ -13,10 +13,10 @@ public class KPSelShiftCMD extends KeyProcessor
   public void processKey(int keyCode)
   {
     if(isMoveRightEvent(keyCode)) {
-      boxInfo.cursorIndex = boxInfo.getText().length();
+      boxInfo.setCursorIndex(boxInfo.getText().length());
     }
     else if(isMoveLeftEvent(keyCode)) {
-      boxInfo.cursorIndex = 0;
+      boxInfo.setCursorIndex(0);
     }
   }
 }

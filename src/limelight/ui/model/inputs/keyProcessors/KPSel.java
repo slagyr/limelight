@@ -17,9 +17,9 @@ public class KPSel extends KeyProcessor
     boxInfo.selectionOn = false;
 
     if (isMoveRightEvent(keyCode))
-      boxInfo.cursorIndex++;
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
     else if (isMoveLeftEvent(keyCode))
-      boxInfo.cursorIndex--;
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
     else if (isACharacter(keyCode))
     {
       boxInfo.deleteSelection();
