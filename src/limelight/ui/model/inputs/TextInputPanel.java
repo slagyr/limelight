@@ -44,6 +44,11 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     }
   }
 
+  public TextModel getBoxInfo()
+  {
+    return boxInfo;
+  }
+
   public Box getBoxInsidePadding()
   {
     return getBoundingBox();
@@ -145,7 +150,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     int key = e.getKeyCode();
     int processorIndex = calculateProcessorIndex(e);
     keyProcessors.get(processorIndex).processKey(key);
-    markAsDirty();
+    markPaintableRegionAsDirty();
 
   }
 
@@ -192,7 +197,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void mouseDragged(MouseEvent e)
   {
     mouseProcessor.processMouseDragged(e);
-    markAsDirty();    
+    markPaintableRegionAsDirty();    
   }
 
   public void mousePressed(MouseEvent e)
@@ -200,6 +205,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     super.mousePressed(e);
     mouseProcessor.processMousePressed(e);
     markPaintableRegionAsDirty();
+    resetPaintableRegion();
   }
 
   private void markPaintableRegionAsDirty()
@@ -229,4 +235,5 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public abstract void setPaintableRegion(int index);
 
   public abstract void resetPaintableRegion();
+
 }

@@ -37,7 +37,7 @@ public class KeyProcessorSuite
   private static void setUp()
   {
     boxPanel = new TextBox2Panel();
-    boxInfo = new PlainTextModel(boxPanel);
+    boxInfo = boxPanel.getBoxInfo();
     asserter = new TextModelAsserter(boxInfo);
 
     boxInfo.setText("Here are four words");
