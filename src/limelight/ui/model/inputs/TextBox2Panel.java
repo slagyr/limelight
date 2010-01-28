@@ -25,7 +25,7 @@ public class TextBox2Panel extends TextInputPanel
   public TextBox2Panel()
   {
     setSize(150, 25);
-    resetPaintableRegion();
+    paintableRegion = new Box(0,TextModel.TOP_MARGIN,0, height - 2* TextModel.TOP_MARGIN);
     boxInfo = new PlainTextModel(this);
     keyProcessors = new ArrayList<KeyProcessor>(16);
     initKeyProcessors();
@@ -76,7 +76,6 @@ public class TextBox2Panel extends TextInputPanel
    public void setPaintableRegion(int index)
   {
     int x = boxInfo.getXPosFromIndex(index);
-    System.out.println("inside setPRegion");
     if(paintableRegion.x == 0 && paintableRegion.width == 0)
       paintableRegion.x = x;
     else if (x > paintableRegion.x && (x - paintableRegion.x) > paintableRegion.width)
@@ -88,7 +87,12 @@ public class TextBox2Panel extends TextInputPanel
   }
 
   public void resetPaintableRegion(){
-    paintableRegion = new Box(0,TextModel.TOP_MARGIN, 0, height - 2* TextModel.TOP_MARGIN);
+    if(boxInfo.selectionOn){
+    paintableRegion = new Box(boxInfo.getSelectionRegion().x,TextModel.TOP_MARGIN,
+        boxInfo.getSelectionRegion().width, height - 2* TextModel.TOP_MARGIN);
+    }
+    else
+      paintableRegion = new Box(0,TextModel.TOP_MARGIN,0, height - 2* TextModel.TOP_MARGIN);
   }
 
 

@@ -20,7 +20,7 @@ public class TextModelTest
   public void setUp()
   {
     boxPanel = new TextBox2Panel();
-    boxModel = new PlainTextModel(boxPanel);
+    boxModel = boxPanel.getBoxInfo();
     boxModel.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
   }
 
