@@ -34,7 +34,7 @@ public class MouseProcessorTest
   public void setUp()
   {
     boxPanel = new TextBox2Panel();
-    boxInfo = new PlainTextModel(boxPanel);
+    boxInfo = boxPanel.getBoxInfo();
     boxInfo.setText("Some Text");
     boxInfo.setCursorIndex(0);
     processor = new MouseProcessor(boxInfo);
@@ -256,7 +256,6 @@ public class MouseProcessorTest
 
     processor.makeExtraSelectionOnMultiClick();
 
-    assertFalse(processor.doubleClickOn);
     assertEquals(0, boxInfo.getSelectionIndex());
     assertEquals(9, boxInfo.getCursorIndex());
   }
