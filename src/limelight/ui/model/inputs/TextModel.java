@@ -24,8 +24,8 @@ public abstract class TextModel implements ClipboardOwner
   int cursorX;
   public boolean selectionOn;
   int selectionStartX;
-  public int cursorIndex;
-  public int selectionIndex;
+  protected int cursorIndex;
+  protected int selectionIndex;
   public Font font;
   int xOffset;
   TextInputPanel myBox;
@@ -107,7 +107,7 @@ public abstract class TextModel implements ClipboardOwner
     {
       int i = string.length() - 1;
 
-      while (string.charAt(i) == ' ' && i > 0)
+      while (i > 0 && string.charAt(i) == ' ')
       {
         totalSpaceWidth += 3;
         i--;
@@ -160,7 +160,7 @@ public abstract class TextModel implements ClipboardOwner
   public void setText(String text)
   {
     this.text = new StringBuffer(text);
-    cursorIndex = text.length();
+    setCursorIndex(text.length());
   }
 
   public String getText()
@@ -252,7 +252,7 @@ public abstract class TextModel implements ClipboardOwner
     if (clipboard != null && clipboard.length() > 0)
     {
       text.insert(cursorIndex, clipboard);
-      cursorIndex += clipboard.length();
+      setCursorIndex(cursorIndex + clipboard.length());
     }
   }
 
@@ -273,22 +273,20 @@ public abstract class TextModel implements ClipboardOwner
   public void deleteEnclosedText(int first, int second)
   {
     text.delete(first, second);
-    cursorIndex = first;
-    selectionIndex = 0;
+    setCursorIndex(first);
+    setSelectionIndex(0);
   }
 
-  public Rectangle getSelectedRegion()
+  public Rectangle getSelectionRegion()
   {
     int x1 = getXPosFromIndex(cursorIndex);
     int x2 = getXPosFromIndex(selectionIndex);
-    if (selectionOn)
-    {
-      if (x1 > x2)
-        return new Box(x2, TOP_MARGIN, x1 - x2, getPanelHeight() - TOP_MARGIN * 2);
-      else
-        return new Box(x1, TOP_MARGIN, x2 - x1, getPanelHeight() - TOP_MARGIN * 2);
-    }
-    return null;
+
+    if (x1 > x2)
+      return new Box(x2, TOP_MARGIN, x1 - x2, getPanelHeight() - TOP_MARGIN * 2);
+    else
+      return new Box(x1, TOP_MARGIN, x2 - x1, getPanelHeight() - TOP_MARGIN * 2);
+
   }
 
   public int findWordsRightEdge(int index)
@@ -305,11 +303,33 @@ public abstract class TextModel implements ClipboardOwner
 
   public int findWordsLeftEdge(int index)
   {
-    for (int i = index - 1; i > 1; i--)
+    for (int i = index; i > 1; i--)
     {
       if (text.charAt(i - 1) == ' ' && text.charAt(i) != ' ')
         return i;
     }
     return 0;
+  }
+
+  public int getCursorIndex()
+  {
+    return cursorIndex;
+  }
+
+  public void setCursorIndex(int cursorIndex)
+  {
+    this.cursorIndex = cursorIndex;
+    myBox.setPaintableRegion(cursorIndex);
+  }
+
+  public int getSelectionIndex()
+  {
+    return selectionIndex;
+  }
+
+  public void setSelectionIndex(int selectionIndex)
+  {
+    this.selectionIndex = selectionIndex;
+    myBox.setPaintableRegion(selectionIndex);
   }
 }

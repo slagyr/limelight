@@ -14,11 +14,11 @@ public class KPAltShift extends KeyProcessor
   {
     if(isMoveRightEvent(keyCode)){
       initSelection();
-      boxInfo.cursorIndex = findNearestWordToTheRight();
+      boxInfo.setCursorIndex(findNearestWordToTheRight());
     }
     else if(isMoveLeftEvent(keyCode)){
       initSelection();
-      boxInfo.cursorIndex = findNearestWordToTheLeft();
+      boxInfo.setCursorIndex(findNearestWordToTheLeft());
     }
   }
 }

@@ -54,23 +54,38 @@ public class MouseProcessor
       int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
       int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
       boxInfo.selectionOn = true;
-      boxInfo.selectionIndex = calculateMouseClickIndex(myX, myY);
-      boxInfo.cursorIndex = boxInfo.selectionIndex;
-      selectWordOnDoubleClick();
+      boxInfo.setSelectionIndex(calculateMouseClickIndex(myX, myY));
+      boxInfo.setCursorIndex(boxInfo.getSelectionIndex());
+      makeExtraSelectionOnMultiClick();
       lastClickTime = (new Date()).getTime();
     }
   }
 
-  public void selectWordOnDoubleClick()
+  public void makeExtraSelectionOnMultiClick()
   {
     if (lastClickTime >= (new Date()).getTime() - 300)
     {
-      boxInfo.selectionIndex = boxInfo.findWordsLeftEdge(boxInfo.cursorIndex);
-      boxInfo.cursorIndex = boxInfo.findWordsRightEdge(boxInfo.cursorIndex);
-      doubleClickOn = true;
+      if (doubleClickOn)
+        selectAllOnTripleClick();
+      else
+        selectWordOnDoubleClick();
     }
     else
       doubleClickOn = false;
+  }
+
+  private void selectAllOnTripleClick()
+  {
+    doubleClickOn = false;
+    boxInfo.setSelectionIndex(0);
+    boxInfo.setCursorIndex(boxInfo.text.length());
+  }
+
+  private void selectWordOnDoubleClick()
+  {
+    boxInfo.setSelectionIndex(boxInfo.findWordsLeftEdge(boxInfo.getCursorIndex()));
+    boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(boxInfo.getCursorIndex()));
+    doubleClickOn = true;
   }
 
   public void processMouseDragged(MouseEvent e)
@@ -81,20 +96,12 @@ public class MouseProcessor
     if (doubleClickOn)
       selectWord(tempIndex);
     else
-      boxInfo.cursorIndex = tempIndex;
+      boxInfo.setCursorIndex(tempIndex);
   }
 
   private void selectWord(int tempIndex)
   {
-    if (tempIndex > boxInfo.findWordsRightEdge(boxInfo.cursorIndex))
-    {
-      boxInfo.cursorIndex = boxInfo.findWordsRightEdge(tempIndex);
-    }
-    else if(tempIndex < boxInfo.findWordsLeftEdge(boxInfo.cursorIndex))
-    {
-      if ( tempIndex < boxInfo.selectionIndex)
-      boxInfo.cursorIndex = boxInfo.findWordsLeftEdge(tempIndex);
-    }
+    new WordSelector(tempIndex).makeProperWordSelection();
   }
 
   public void processMouseReleased(MouseEvent e)
@@ -103,9 +110,119 @@ public class MouseProcessor
     int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
     if (!doubleClickOn)
     {
-      boxInfo.cursorIndex = calculateMouseClickIndex(myX, myY);
-      if (boxInfo.cursorIndex == boxInfo.selectionIndex)
+      boxInfo.setCursorIndex(calculateMouseClickIndex(myX, myY));
+      if (boxInfo.getCursorIndex() == boxInfo.getSelectionIndex())
         boxInfo.selectionOn = false;
     }
+  }
+
+  private class WordSelector
+  {
+    private int mouseIndex;
+
+    public WordSelector(int mouseIndex)
+    {
+      this.mouseIndex = mouseIndex;
+    }
+
+    public void makeProperWordSelection()
+    {
+
+      switch (calculateSelectionDispatchIndex())
+      {
+        case 0:
+          extendSelectionToRight();
+          break;
+        case 1:
+          extendSelectionToRight();
+          break;
+        case 2:
+          reduceSelectionFromTheLeft();
+          break;
+        case 3:
+          swapSelectionDirectionAndExtendToRight();
+          break;
+        case 4:
+          swapSelectionDirectionAndExtendToLeft();
+          break;
+        case 5:
+          reduceSelectionFromTheRight();
+          break;
+        case 6:
+          extendSelectionToLeft();
+          break;
+      }
+    }
+
+    private int calculateSelectionDispatchIndex()
+    {
+      int dispatchIndex = 0;
+      if (mouseIndex > boxInfo.getSelectionIndex())
+        dispatchIndex += 1;
+      if (boxInfo.getCursorIndex() < boxInfo.getSelectionIndex())
+        dispatchIndex += 2;
+      if (mouseIndex < boxInfo.findWordsLeftEdge(boxInfo.getCursorIndex()))
+        dispatchIndex += 4;
+      return dispatchIndex;
+    }
+
+    private void swapSelectionDirectionAndExtendToLeft()
+    {
+      boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
+      boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
+    }
+
+    private void reduceSelectionFromTheRight()
+    {
+      boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
+    }
+
+    private void extendSelectionToLeft()
+    {
+      boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
+    }
+
+    private void reduceSelectionFromTheLeft()
+    {
+      boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
+    }
+
+    private void swapSelectionDirectionAndExtendToRight()
+    {
+      boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
+      boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
+    }
+
+    private void extendSelectionToRight()
+    {
+      boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
+    }
+
+
+//    public void invoke()
+//    {
+//      if (mouseIndex > boxInfo.findWordsRightEdge(boxInfo.cursorIndex))
+//      {
+//        if (mouseIndex > boxInfo.selectionIndex)
+//        {
+//          boxInfo.selectionIndex = boxInfo.cursorIndex;
+//          boxInfo.cursorIndex = boxInfo.findWordsRightEdge(mouseIndex);
+//        }
+//        else if (boxInfo.cursorIndex < boxInfo.selectionIndex)
+//          boxInfo.cursorIndex = boxInfo.findWordsLeftEdge(mouseIndex);
+//        else
+//          boxInfo.cursorIndex = boxInfo.findWordsRightEdge(mouseIndex);
+//      }
+//      else if (mouseIndex < boxInfo.findWordsLeftEdge(boxInfo.cursorIndex) && mouseIndex > boxInfo.selectionIndex)
+//      {
+//        boxInfo.cursorIndex = boxInfo.findWordsRightEdge(mouseIndex);
+//      }
+//      else if (mouseIndex < boxInfo.selectionIndex && mouseIndex < boxInfo.findWordsLeftEdge(boxInfo.cursorIndex))
+//      {
+//        if (boxInfo.cursorIndex > boxInfo.selectionIndex)
+//          boxInfo.selectionIndex = boxInfo.cursorIndex;
+//        boxInfo.cursorIndex = boxInfo.findWordsLeftEdge(mouseIndex);
+//      }
+//    }
   }
 }

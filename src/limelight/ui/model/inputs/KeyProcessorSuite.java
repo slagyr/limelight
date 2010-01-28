@@ -30,7 +30,7 @@ public class KeyProcessorSuite
   public static void standardSetUp()
   {
     setUp();
-    boxInfo.selectionIndex = 0;
+    boxInfo.setSelectionIndex(0);
     boxInfo.selectionOn = false;
   }
 
@@ -41,13 +41,13 @@ public class KeyProcessorSuite
     asserter = new TextModelAsserter(boxInfo);
 
     boxInfo.setText("Here are four words");
-    boxInfo.cursorIndex = 1;
+    boxInfo.setCursorIndex(1);
   }
 
   private static void selectionSetUp()
   {
     setUp();
-    boxInfo.selectionIndex = SELECTION_START_INDEX;
+    boxInfo.setSelectionIndex(SELECTION_START_INDEX);
     boxInfo.selectionOn = true;
   }
 
@@ -63,17 +63,17 @@ public class KeyProcessorSuite
 
     public void assertSelection(int cursorIndex, int selectionIndex, boolean selectionOn)
     {
-      assertEquals(cursorIndex, boxInfo.cursorIndex);
-      assertEquals(selectionIndex, boxInfo.selectionIndex);
+      assertEquals(cursorIndex, boxInfo.getCursorIndex());
+      assertEquals(selectionIndex, boxInfo.getSelectionIndex());
       assertEquals(selectionOn, boxInfo.selectionOn);
     }
 
     public void assertTextState(int cursorIndex, String text)
     {
-      assertEquals(cursorIndex, boxInfo.cursorIndex);
+      assertEquals(cursorIndex, boxInfo.getCursorIndex());
       assertEquals(text, boxInfo.text.toString());
       if (!boxInfo.selectionOn)
-        assertEquals(0, boxInfo.selectionIndex);
+        assertEquals(0, boxInfo.getSelectionIndex());
     }
   }
 
@@ -240,50 +240,50 @@ public class KeyProcessorSuite
     {
       processor.processKey(KeyEvent.VK_RIGHT);
 
-      assertEquals(5, boxInfo.cursorIndex);
+      assertEquals(5, boxInfo.getCursorIndex());
     }
 
     @Test
     public void canProcessRightArrowAndSkipOverExtraSpacesToNextWord()
     {
       boxInfo.setText("Here are    many  spaces");
-      boxInfo.cursorIndex = 5;
+      boxInfo.setCursorIndex(5);
 
       processor.processKey(KeyEvent.VK_RIGHT);
 
-      assertEquals(12, boxInfo.cursorIndex);
+      assertEquals(12, boxInfo.getCursorIndex());
     }
 
     @Test
     public void  canProcessRightArrowAndJumpToTheNextWordInATinyString()
     {
       boxInfo.setText("H s");
-      boxInfo.cursorIndex = 0;
+      boxInfo.setCursorIndex(0);
 
       processor.processKey(KeyEvent.VK_RIGHT);
 
-      assertEquals(2, boxInfo.cursorIndex);
+      assertEquals(2, boxInfo.getCursorIndex());
     }
 
     @Test
     public void canProcessLeftArrowAndJumpToThePreviousWord()
     {
-      boxInfo.cursorIndex = 9;
+      boxInfo.setCursorIndex(9);
 
       processor.processKey(KeyEvent.VK_LEFT);
 
-      assertEquals(5, boxInfo.cursorIndex);
+      assertEquals(5, boxInfo.getCursorIndex());
     }
 
     @Test
     public void canProcessLeftArrowAndSkipOverExtraSpacesToPreviousWord()
     {
       boxInfo.setText("Here are    many  spaces");
-      boxInfo.cursorIndex = 12;
+      boxInfo.setCursorIndex(12);
 
       processor.processKey(KeyEvent.VK_LEFT);
 
-      assertEquals(5, boxInfo.cursorIndex);
+      assertEquals(5, boxInfo.getCursorIndex());
     }
   }
 
@@ -333,7 +333,7 @@ public class KeyProcessorSuite
     @Test
     public void canProcessLeftArrowAndSelectToThePreviousWord()
     {
-      boxInfo.cursorIndex = 9;
+      boxInfo.setCursorIndex(9);
 
       processor.processKey(KeyEvent.VK_LEFT);
 
@@ -531,7 +531,7 @@ public class KeyProcessorSuite
     @Test
     public void canProcessLeftArrowAndContinueSelectionToTheLeftEdge()
     {
-      boxInfo.cursorIndex = 2;
+      boxInfo.setCursorIndex(2);
 
       processor.processKey(KeyEvent.VK_LEFT);
 
@@ -559,7 +559,7 @@ public class KeyProcessorSuite
     @Test
     public void canProcessLeftArrowAndMoveToEndOfPreviousWord()
     {
-      boxInfo.cursorIndex = 9;
+      boxInfo.setCursorIndex(9);
 
       processor.processKey(KeyEvent.VK_LEFT);
 
@@ -606,7 +606,7 @@ public class KeyProcessorSuite
     @Test
     public void canProcessLeftArrowAndSelectToEndOfPreviousWord()
     {
-      boxInfo.cursorIndex = 9;
+      boxInfo.setCursorIndex(9);
 
       processor.processKey(KeyEvent.VK_LEFT);
 

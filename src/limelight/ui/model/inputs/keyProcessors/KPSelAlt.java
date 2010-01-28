@@ -15,13 +15,13 @@ public class KPSelAlt extends KeyProcessor
 
     if (isMoveRightEvent(keyCode))
     {
-      boxInfo.cursorIndex = findNearestWordToTheRight();
+      boxInfo.setCursorIndex(findNearestWordToTheRight());
       boxInfo.selectionOn = false;
     }
 
     else if (isMoveLeftEvent(keyCode))
     {
-      boxInfo.cursorIndex = findNearestWordToTheLeft();
+      boxInfo.setCursorIndex(findNearestWordToTheLeft());
       boxInfo.selectionOn = false;
     }
 
