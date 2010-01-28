@@ -2,7 +2,6 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.MockTextLayout;
-import limelight.ui.TextLayoutImpl;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
 import limelight.ui.model.inputs.painters.TextPanelBoxPainter;
@@ -37,7 +36,7 @@ public class TextPanelPainterSuite
     boxInfo = new PlainTextModel(panel);
     panel.boxInfo = boxInfo;
     boxInfo.setText("Some Text");
-    boxInfo.cursorIndex = 4;
+    boxInfo.setCursorIndex(4);
     graphics = new MockGraphics();
     panel.cursorOn = true;
   }
@@ -83,7 +82,7 @@ public class TextPanelPainterSuite
     {
       painter.paint(graphics);
 
-      int expectedX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
+      int expectedX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex());
       assertEquals(expectedX, graphics.drawnLines.get(0).x1);
       assertEquals(expectedX, graphics.drawnLines.get(0).x2);
     }
@@ -163,7 +162,7 @@ public class TextPanelPainterSuite
       testClassInit();
       painter = new TextPanelSelectionPainter(boxInfo);
       boxInfo.selectionOn = true;
-      boxInfo.selectionIndex = 6;
+      boxInfo.setSelectionIndex(6);
     }
 
     @Test

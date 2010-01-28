@@ -3,8 +3,6 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
 
-import java.awt.event.KeyEvent;
-
 public class KPSelShift extends KeyProcessor
 {
   public KPSelShift(TextModel boxInfo)
@@ -15,10 +13,10 @@ public class KPSelShift extends KeyProcessor
   public void processKey(int keyCode)
   {
     if(isMoveRightEvent(keyCode)){
-      boxInfo.cursorIndex ++;
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
     }
     else if(isMoveLeftEvent(keyCode)){
-      boxInfo.cursorIndex --;
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
     }
     else if(isACharacter(keyCode)){
       boxInfo.deleteSelection();

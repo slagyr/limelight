@@ -36,7 +36,7 @@ public class MouseProcessorTest
     boxPanel = new TextBox2Panel();
     boxInfo = new PlainTextModel(boxPanel);
     boxInfo.setText("Some Text");
-    boxInfo.cursorIndex = 0;
+    boxInfo.setCursorIndex(0);
     processor = new MouseProcessor(boxInfo);
     parent = new PropPanel(new MockProp());
     parent.add(boxPanel);
@@ -87,8 +87,8 @@ public class MouseProcessorTest
   {
     processor.processMousePressed(mockMouseEvent);
 
-    assertEquals(1, boxInfo.cursorIndex);
-    assertEquals(1, boxInfo.selectionIndex);
+    assertEquals(1, boxInfo.getCursorIndex());
+    assertEquals(1, boxInfo.getSelectionIndex());
   }
 
   @Test
@@ -98,8 +98,8 @@ public class MouseProcessorTest
 
     processor.processMousePressed(mockMouseEvent);
 
-    assertEquals(0, boxInfo.cursorIndex);
-    assertEquals(0, boxInfo.selectionIndex);
+    assertEquals(0, boxInfo.getCursorIndex());
+    assertEquals(0, boxInfo.getSelectionIndex());
   }
 
   @Test
@@ -115,13 +115,13 @@ public class MouseProcessorTest
   {
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(1, boxInfo.cursorIndex);
+    assertEquals(1, boxInfo.getCursorIndex());
   }
 
   @Test
   public void willSetSelectionOnToFalseIfMouseReleaseIsAtSameIndexAsTheClick()
   {
-    boxInfo.selectionIndex = 1;
+    boxInfo.setSelectionIndex(1);
     boxInfo.selectionOn = true;
 
     processor.processMouseReleased(mockMouseEvent);
@@ -137,8 +137,8 @@ public class MouseProcessorTest
 
     processor.processMousePressed(mockMouseEvent);
 
-    assertEquals(4,boxInfo.cursorIndex);
-    assertEquals(0,boxInfo.selectionIndex);
+    assertEquals(4, boxInfo.getCursorIndex());
+    assertEquals(0, boxInfo.getSelectionIndex());
     assertTrue(boxInfo.selectionOn);
   }
 
@@ -147,7 +147,7 @@ public class MouseProcessorTest
   {
     processor.lastClickTime = (new Date()).getTime();
 
-    processor.selectWordOnDoubleClick();
+    processor.makeExtraSelectionOnMultiClick();
 
     assertTrue(processor.doubleClickOn);
   }
@@ -156,24 +156,109 @@ public class MouseProcessorTest
   public void willNotChangeTheCursorPositionOnMouseReleaseIfDoubleClickIsOn()
   {
     processor.doubleClickOn = true;
-    boxInfo.cursorIndex = 5;
+    boxInfo.setCursorIndex(5);
 
     processor.processMouseReleased(mockMouseEvent);
 
-    assertEquals(5, boxInfo.cursorIndex);
+    assertEquals(5, boxInfo.getCursorIndex());
   }
 
   @Test
   public void willBeginWordSelectionIfDoubleClickIsOn()
   {
     processor.doubleClickOn = true;
-    boxInfo.selectionIndex = 0;
-    boxInfo.cursorIndex = 4;
-    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(8) + boxInfo.getPanelAbsoluteLocation().x,115);
+    boxInfo.setSelectionIndex(0);
+    boxInfo.setCursorIndex(4);
+    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(8) + boxInfo.getPanelAbsoluteLocation().x, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(boxInfo.text.length(), boxInfo.cursorIndex);
+    assertEquals(boxInfo.text.length(), boxInfo.getCursorIndex());
+  }
+
+  @Test
+  public void canWordSelectGoingToTheLeft()
+  {
+    processor.doubleClickOn = true;
+    boxInfo.setSelectionIndex(5);
+    boxInfo.setCursorIndex(9);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertEquals(9, boxInfo.getSelectionIndex());
+    assertEquals(0, boxInfo.getCursorIndex());
+  }
+
+  @Test
+  public void canWordSelectManyWordsToTheLeft()
+  {
+    boxInfo.setText("Some Text Here");
+    processor.doubleClickOn = true;
+    boxInfo.setSelectionIndex(14);
+    boxInfo.setCursorIndex(5);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertEquals(14, boxInfo.getSelectionIndex());
+    assertEquals(0, boxInfo.getCursorIndex());
+  }
+
+  @Test
+  public void willDeselectOneWordAtATimeWhenDraggingRightOverSelection()
+  {
+    boxInfo.setText("Some Text Here");
+    processor.doubleClickOn = true;
+    boxInfo.setSelectionIndex(14);
+    boxInfo.setCursorIndex(5);
+    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(10) + boxInfo.getPanelAbsoluteLocation().x, 115);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertEquals(14, boxInfo.getSelectionIndex());
+    assertEquals(10, boxInfo.getCursorIndex());
+  }
+
+  @Test
+  public void willDeselectOneWordAtATimeWhenDraggingLeftOverSelection()
+  {
+    boxInfo.setText("Some Text Here");
+    processor.doubleClickOn = true;
+    boxInfo.setSelectionIndex(5);
+    boxInfo.setCursorIndex(14);
+    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(7) + boxInfo.getPanelAbsoluteLocation().x, 115);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertEquals(5, boxInfo.getSelectionIndex());
+    assertEquals(9, boxInfo.getCursorIndex());
+  }
+
+  @Test
+  public void willKeepTheOriginalWordSelectedIfDraggedPastRightEdgeOfWordAfterSelectingToTheLeft()
+  {
+    boxInfo.setText("Some Text Here");
+    processor.doubleClickOn = true;
+    boxInfo.setSelectionIndex(9);
+    boxInfo.setCursorIndex(5);
+    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(10) + boxInfo.getPanelAbsoluteLocation().x, 115);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertEquals(5, boxInfo.getSelectionIndex());
+    assertEquals(14, boxInfo.getCursorIndex());
+  }
+
+  @Test
+  public void willSelectAllForTripleClick()
+  {
+    processor.doubleClickOn = true;
+    processor.lastClickTime = (new Date()).getTime();
+
+    processor.makeExtraSelectionOnMultiClick();
+
+    assertFalse(processor.doubleClickOn);
+    assertEquals(0, boxInfo.getSelectionIndex());
+    assertEquals(9, boxInfo.getCursorIndex());
   }
 }
 

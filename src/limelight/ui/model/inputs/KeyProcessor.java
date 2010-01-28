@@ -19,8 +19,8 @@ public abstract class KeyProcessor
 
   private void insertCharIntoTextBox(char c)
   {
-    boxInfo.text.insert(boxInfo.cursorIndex, c);
-    boxInfo.cursorIndex ++;
+    boxInfo.text.insert(boxInfo.getCursorIndex(), c);
+    boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
   }
 
 
@@ -45,28 +45,28 @@ public abstract class KeyProcessor
 
   protected boolean isMoveRightEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_RIGHT && boxInfo.cursorIndex < boxInfo.text.length();
+    return keyCode == KeyEvent.VK_RIGHT && boxInfo.getCursorIndex() < boxInfo.text.length();
   }
 
   protected boolean isMoveLeftEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_LEFT && boxInfo.cursorIndex > 0;
+    return keyCode == KeyEvent.VK_LEFT && boxInfo.getCursorIndex() > 0;
   }
 
   protected void initSelection()
   {
     boxInfo.selectionOn = true;
-    boxInfo.selectionIndex = boxInfo.cursorIndex;
+    boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
   }
 
   protected int findNearestWordToTheLeft()
   {
-    return boxInfo.findWordsLeftEdge(boxInfo.cursorIndex);
+    return boxInfo.findWordsLeftEdge(boxInfo.getCursorIndex() - 1);
   }
 
   protected int findNearestWordToTheRight()
   {
-    return findNextWordSkippingSpaces(boxInfo.findWordsRightEdge(boxInfo.cursorIndex));
+    return findNextWordSkippingSpaces(boxInfo.findWordsRightEdge(boxInfo.getCursorIndex()));
   }
 
   private int findNextWordSkippingSpaces(int startIndex)
@@ -82,8 +82,8 @@ public abstract class KeyProcessor
   protected void selectAll()
   {
     boxInfo.selectionOn = true;
-    boxInfo.cursorIndex = boxInfo.text.length();
-    boxInfo.selectionIndex = 0;
+    boxInfo.setCursorIndex(boxInfo.text.length());
+    boxInfo.setSelectionIndex(0);
   }
 }
 

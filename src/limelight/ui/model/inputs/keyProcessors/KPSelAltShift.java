@@ -13,10 +13,10 @@ public class KPSelAltShift extends KeyProcessor
   public void processKey(int keyCode)
   {
     if (isMoveRightEvent(keyCode))
-      boxInfo.cursorIndex = findNearestWordToTheRight();
+      boxInfo.setCursorIndex(findNearestWordToTheRight());
 
     else if (isMoveLeftEvent(keyCode))
-      boxInfo.cursorIndex = findNearestWordToTheLeft();
+      boxInfo.setCursorIndex(findNearestWordToTheLeft());
 
   }
 }
