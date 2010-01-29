@@ -100,7 +100,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPKey(boxInfo);
+      processor = new NormalKeyProcessor(boxInfo);
       modifier = 0;
     }
 
@@ -151,7 +151,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPCMD(boxInfo);
+      processor = new CmdKeyProcessor(boxInfo);
       modifier = 4;
     }
 
@@ -206,7 +206,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPShift(boxInfo);
+      processor = new ShiftKeyProcessor(boxInfo);
       modifier = 1;
     }
 
@@ -247,7 +247,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPShiftCMD(boxInfo);
+      processor = new ShiftCmdKeyProcessor(boxInfo);
       modifier = 5;
     }
 
@@ -278,7 +278,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPAlt(boxInfo);
+      processor = new AltKeyProcessor(boxInfo);
       modifier = 8;
     }
 
@@ -356,7 +356,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPAltCMD(boxInfo);
+      processor = new AltCmdKeyProcessor(boxInfo);
       modifier = 12;
     }
 
@@ -387,7 +387,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPAltShift(boxInfo);
+      processor = new AltShiftKeyProcessor(boxInfo);
       modifier = 9;
     }
 
@@ -429,7 +429,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       standardSetUp();
-      processor = new KPAltShiftCMD(boxInfo);
+      processor = new AltShiftCmdKeyProcessor(boxInfo);
       modifier = 13;
     }
 
@@ -461,7 +461,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSel(boxInfo);
+      processor = new SelectionOnKeyProcessor(boxInfo);
       modifier =0;
     }
 
@@ -513,7 +513,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSelCMD(boxInfo);
+      processor = new SelectionOnCmdKeyProcessor(boxInfo);
       modifier = 4;
     }
 
@@ -591,7 +591,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSelShift(boxInfo);
+      processor = new SelectionOnShiftKeyProcessor(boxInfo);
       modifier = 1;
     }
 
@@ -632,7 +632,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSelShiftCMD(boxInfo);
+      processor = new SelectionOnShiftCmdKeyProcessor(boxInfo);
       modifier = 5;
     }
 
@@ -664,7 +664,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSelAlt(boxInfo);
+      processor = new SelectionOnAltKeyProcessor(boxInfo);
       modifier = 8;
     }
 
@@ -706,7 +706,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSelAltCMD(boxInfo);
+      processor = new SelectionOnAltCmdKeyProcessor(boxInfo);
       modifier = 12;
     }
 
@@ -728,7 +728,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSelAltShift(boxInfo);
+      processor = new SelectionOnAltShiftKeyProcessor(boxInfo);
       modifier = 9;
     }
 
@@ -770,7 +770,7 @@ public class KeyProcessorSuite
     public void setUp()
     {
       selectionSetUp();
-      processor = new KPSelAltShiftCMD(boxInfo);
+      processor = new SelectionOnAltShiftCmdKeyProcessor(boxInfo);
       modifier = 13;
     }
 

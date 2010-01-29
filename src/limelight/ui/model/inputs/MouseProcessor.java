@@ -100,7 +100,7 @@ public class MouseProcessor
 
   private void selectWord(int tempIndex)
   {
-    new WordSelector(tempIndex).makeProperWordSelection();
+    new WordSelector(tempIndex).invoke();
   }
 
   public void processMouseReleased(MouseEvent e)
@@ -124,7 +124,7 @@ public class MouseProcessor
       this.mouseIndex = mouseIndex;
     }
 
-    public void makeProperWordSelection()
+    public void makeWordSelection()
     {
 
       switch (calculateSelectionDispatchIndex())
@@ -136,7 +136,7 @@ public class MouseProcessor
           extendSelectionToRight();
           break;
         case 2:
-          reduceSelectionFromTheLeft();
+          moveLeftFacingHead();
           break;
         case 3:
           swapSelectionDirectionAndExtendToRight();
@@ -145,7 +145,7 @@ public class MouseProcessor
           swapSelectionDirectionAndExtendToLeft();
           break;
         case 5:
-          reduceSelectionFromTheRight();
+          moveRightFacingHead();
           break;
         case 6:
           extendSelectionToLeft();
@@ -167,13 +167,29 @@ public class MouseProcessor
 
     private void swapSelectionDirectionAndExtendToLeft()
     {
-      boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
+      turnAround();
       boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
     }
 
-    private void reduceSelectionFromTheRight()
+    private void turnAround()
+    {
+      boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
+    }
+
+    private void moveRightFacingHead()
     {
       boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
+    }
+
+    private void extendSelectionToRight()
+    {
+      int newHead = boxInfo.findWordsRightEdge(mouseIndex);
+      repositionHead(newHead);
+    }
+
+    private void repositionHead(int newHead)
+    {
+      boxInfo.setCursorIndex(newHead);
     }
 
     private void extendSelectionToLeft()
@@ -181,47 +197,100 @@ public class MouseProcessor
       boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
     }
 
-    private void reduceSelectionFromTheLeft()
+    private void moveLeftFacingHead()
     {
       boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
     }
 
     private void swapSelectionDirectionAndExtendToRight()
     {
-      boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
+      turnAround();
       boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
     }
 
-    private void extendSelectionToRight()
+
+    public void invoke()
     {
-      boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
+      boolean rightOfTail = isRightOfTail();
+
+      boolean selectionFacingRight = isSelectionFacingRight();
+      boolean turningAround = false;
+
+      boolean isMouseTrailingTheTail = selectionFacingRight && !rightOfTail || !selectionFacingRight && rightOfTail;
+      if(isMouseTrailingTheTail)
+      {
+        turnAround();
+        turningAround = true;
+      }
+
+      boolean isHeadingToTheRight = selectionFacingRight && !turningAround || !selectionFacingRight && turningAround;
+      if(isHeadingToTheRight)
+        repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
+      else
+        repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
+
+//      if(selectionFacingRight && !turningAround)
+//          newHead = boxInfo.findWordsRightEdge(mouseIndex);
+//
+//      if (isSelectionFacingRight())
+//      {
+//        if (!rightOfTail)
+//        {
+//          turnAround();
+//          newHead = boxInfo.findWordsLeftEdge(mouseIndex);
+//        }
+//        else
+//          newHead = boxInfo.findWordsRightEdge(mouseIndex);
+//      }
+//      else
+//      {
+//        if (rightOfTail)
+//        {
+//          turnAround();
+//          newHead = boxInfo.findWordsRightEdge(mouseIndex);
+//        }
+//        else
+//          newHead = boxInfo.findWordsLeftEdge(mouseIndex);
+//      }
+//      repositionHead(newHead);
+
+//      if (rightOfHead)
+//      {
+//        if (!rightOfTail)
+//          repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
+//        else
+//        {
+//          if (!selectionFacingRight)
+//            turnAround();
+//          repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
+//        }
+//      }
+//      else
+//      {
+//        if (rightOfTail)
+//          repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
+//        else
+//        {
+//          if (selectionFacingRight)
+//            turnAround();
+//          repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
+//        }
+//      }
     }
 
+    private boolean isRightOfHead()
+    {
+      return mouseIndex > boxInfo.findWordsRightEdge(boxInfo.cursorIndex);
+    }
 
-//    public void invoke()
-//    {
-//      if (mouseIndex > boxInfo.findWordsRightEdge(boxInfo.cursorIndex))
-//      {
-//        if (mouseIndex > boxInfo.selectionIndex)
-//        {
-//          boxInfo.selectionIndex = boxInfo.cursorIndex;
-//          boxInfo.cursorIndex = boxInfo.findWordsRightEdge(mouseIndex);
-//        }
-//        else if (boxInfo.cursorIndex < boxInfo.selectionIndex)
-//          boxInfo.cursorIndex = boxInfo.findWordsLeftEdge(mouseIndex);
-//        else
-//          boxInfo.cursorIndex = boxInfo.findWordsRightEdge(mouseIndex);
-//      }
-//      else if (mouseIndex < boxInfo.findWordsLeftEdge(boxInfo.cursorIndex) && mouseIndex > boxInfo.selectionIndex)
-//      {
-//        boxInfo.cursorIndex = boxInfo.findWordsRightEdge(mouseIndex);
-//      }
-//      else if (mouseIndex < boxInfo.selectionIndex && mouseIndex < boxInfo.findWordsLeftEdge(boxInfo.cursorIndex))
-//      {
-//        if (boxInfo.cursorIndex > boxInfo.selectionIndex)
-//          boxInfo.selectionIndex = boxInfo.cursorIndex;
-//        boxInfo.cursorIndex = boxInfo.findWordsLeftEdge(mouseIndex);
-//      }
-//    }
+    private boolean isSelectionFacingRight()
+    {
+      return boxInfo.cursorIndex > boxInfo.selectionIndex;
+    }
+
+    private boolean isRightOfTail()
+    {
+      return mouseIndex > boxInfo.selectionIndex;
+    }
   }
 }
