@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.background;
@@ -113,12 +113,17 @@ public class PanelPainterLoop extends IdleThreadLoop
       Graphics2D rootGraphics = root.getGraphics();
       if(rootGraphics != null)
       {
-        PaintJob job = new PaintJob(new Box(rectangle), rootGraphics.getBackground());
-        job.paint(root.getPanel());
-        job.applyTo(rootGraphics);
-        job.dispose();     
+        doPaintJob(root.getPanel(), new Box(rectangle), rootGraphics);
       }
     }
+  }
+
+  public static void doPaintJob(Panel panel, Box area, Graphics2D graphics2D)
+  {
+    PaintJob job = new PaintJob(area, graphics2D.getBackground());
+    job.paint(panel);
+    job.applyTo(graphics2D);
+    job.dispose();
   }
 
   public void doAllLayouts(RootPanel root)
