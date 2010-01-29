@@ -35,7 +35,9 @@ class LimelightContentPane extends JPanel
 
   // MDM - When the window is resizing, the layout and painting have to take place
   // immediately.  Otherwise, the window flashes and flickers annoyingly.
-  //
+  // The best way to tell if the window is being resized (as far as I can tell), is to
+  // check the currentEvent in the EventQueue. I didn't see anything in particular about
+  // the event that tells us what's happening.
   private boolean isWindowResizing()
   {
     return EventQueue.getCurrentEvent() != null;
