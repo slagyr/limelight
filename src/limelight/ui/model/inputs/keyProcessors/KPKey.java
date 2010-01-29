@@ -13,11 +13,12 @@ public class KPKey extends KeyProcessor
     super(boxInfo);
   }
 
-  public void processKey(int keyCode)
+  public void processKey(KeyEvent event)
   {
+    int keyCode = event.getKeyCode();
     if (isACharacter(keyCode))
     {
-      insertLowercaseCharIntoTextBox(keyCode);
+      insertCharIntoTextBox(event.getKeyChar());
     }
     else if (isMoveRightEvent(keyCode))
       boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);

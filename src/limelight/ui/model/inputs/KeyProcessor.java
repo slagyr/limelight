@@ -10,38 +10,19 @@ public abstract class KeyProcessor
     this.boxInfo = boxInfo;
   }
 
-  public abstract void processKey(int keyCode);
+  public abstract void processKey(KeyEvent event);
 
   protected boolean isACharacter(int keyCode)
   {
     return (keyCode > 40 && keyCode < 100 || keyCode == 222 || keyCode == 32);
   }
 
-  private void insertCharIntoTextBox(char c)
+  protected void insertCharIntoTextBox(char c)
   {
     boxInfo.text.insert(boxInfo.getCursorIndex(), c);
     boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
   }
 
-
-  protected void insertLowercaseCharIntoTextBox(int keyCode)
-  {
-    char c;
-    if(keyCode == KeyEvent.VK_SPACE)
-       c = ' ';
-    else
-      c = Character.toLowerCase(KeyEvent.getKeyText(keyCode).charAt(0));
-    insertCharIntoTextBox(c);
-  }
-  protected void insertUppercaseCharIntoTextBox(int keyCode)
-  {
-    char c;
-    if(keyCode == KeyEvent.VK_SPACE)
-       c = ' ';
-    else
-      c = KeyEvent.getKeyText(keyCode).charAt(0);
-    insertCharIntoTextBox(c);
-  }
 
   protected boolean isMoveRightEvent(int keyCode)
   {
