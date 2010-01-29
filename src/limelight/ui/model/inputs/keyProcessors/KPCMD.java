@@ -12,9 +12,9 @@ public class KPCMD extends KeyProcessor
     super(boxInfo);
   }
 
-  public void processKey(int keyCode)
+  public void processKey(KeyEvent event)
   {
-    switch (keyCode)
+    switch (event.getKeyCode())
     {
       case KeyEvent.VK_A:
         selectAll();
