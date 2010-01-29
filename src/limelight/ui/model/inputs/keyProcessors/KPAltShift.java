@@ -3,6 +3,8 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
 
+import java.awt.event.KeyEvent;
+
 public class KPAltShift extends KeyProcessor
 {
   public KPAltShift(TextModel boxInfo)
@@ -10,9 +12,15 @@ public class KPAltShift extends KeyProcessor
     super(boxInfo);
   }
 
-  public void processKey(int keyCode)
+  public void processKey(KeyEvent event)
   {
-    if(isMoveRightEvent(keyCode)){
+    int keyCode = event.getKeyCode();
+
+    if (isACharacter(keyCode))
+    {
+      insertCharIntoTextBox(event.getKeyChar());
+    }
+    else if(isMoveRightEvent(keyCode)){
       initSelection();
       boxInfo.setCursorIndex(findNearestWordToTheRight());
     }
