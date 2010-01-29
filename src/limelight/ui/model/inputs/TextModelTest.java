@@ -28,37 +28,48 @@ public class TextModelTest
   public void canCalculateTheTerminatingSpaceWidth()
   {
     int width = boxModel.getTerminatingSpaceWidth(boxModel.getText());
+    int width2 = boxModel.getTerminatingSpaceWidth("No Terminating Space");
+
     assertEquals(6, width);
-    width = boxModel.getTerminatingSpaceWidth("No Terminating Space");
-    assertEquals(0, width);
+    assertEquals(0, width2);
   }
 
   @Test
   public void canCalculateTheXPositionForTheCursorFromAString()
   {
-    int x = boxModel.getXPosFromTextLayout("ABC");
     int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
     int expectedX = width + boxModel.LEFT_TEXT_MARGIN;
-    assertEquals(expectedX, x);
 
+    int x = boxModel.getXPosFromTextLayout("ABC");
+
+    assertEquals(expectedX, x);
+  }
+
+  @Test
+  public void canCalcTheXPosForCursorFromStringWithOffset()
+  {
+    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
+    int expectedX = width + boxModel.LEFT_TEXT_MARGIN;
     boxModel.xOffset = 10;
-    x = boxModel.getXPosFromTextLayout("ABC");
+
+    int x = boxModel.getXPosFromTextLayout("ABC");
+
     assertEquals(expectedX - 10, x);
   }
 
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    int x = boxModel.getXPosFromIndex(0);
-    assertEquals(boxModel.LEFT_TEXT_MARGIN, x);
-
-    x = boxModel.getXPosFromIndex(3);
     int width = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
-    assertEquals(width + boxModel.LEFT_TEXT_MARGIN, x);
+    int width2 = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
 
-    x = boxModel.getXPosFromIndex(4);
-    width = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
-    assertEquals(width + boxModel.LEFT_TEXT_MARGIN + 3, x);
+    int x = boxModel.getXPosFromIndex(0);
+    int x2 = boxModel.getXPosFromIndex(3);
+    int x3 = boxModel.getXPosFromIndex(4);
+
+    assertEquals(boxModel.LEFT_TEXT_MARGIN, x);
+    assertEquals(width + boxModel.LEFT_TEXT_MARGIN, x2);
+    assertEquals(width2 + boxModel.LEFT_TEXT_MARGIN + 3, x3);
   }
 
   @Test
@@ -83,7 +94,7 @@ public class TextModelTest
 
     boxModel.shiftTextRight();
     assertTrue(boxModel.xOffset <= offset/ 2 + 5 && boxModel.xOffset != 0);
-  }
+  }                                    
 
   @Test
   public void canCalculateTheXOffsetIfTheCursorIsAtTheRightEdge()

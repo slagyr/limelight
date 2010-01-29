@@ -12,10 +12,10 @@ public class KPSel extends KeyProcessor
     super(boxInfo);
   }
 
-  public void processKey(int keyCode)
+  public void processKey(KeyEvent event)
   {
     boxInfo.selectionOn = false;
-
+    int keyCode = event.getKeyCode();
     if (isMoveRightEvent(keyCode))
       boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
     else if (isMoveLeftEvent(keyCode))
@@ -23,7 +23,7 @@ public class KPSel extends KeyProcessor
     else if (isACharacter(keyCode))
     {
       boxInfo.deleteSelection();
-      insertLowercaseCharIntoTextBox(keyCode);
+      insertCharIntoTextBox(event.getKeyChar());
     }
     else if (keyCode == KeyEvent.VK_BACK_SPACE)
       boxInfo.deleteSelection();
