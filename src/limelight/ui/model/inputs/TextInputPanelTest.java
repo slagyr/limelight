@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -38,8 +39,7 @@ public class TextInputPanelTest
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     graphics = new MockGraphics();
-    boxInfo = new PlainTextModel(panel);
-    panel.boxInfo = boxInfo;
+    boxInfo = panel.getBoxInfo();
     boxInfo.setText("Some Text");
   }
 
@@ -60,6 +60,22 @@ public class TextInputPanelTest
     panel.focusLost(new MockFocusEvent());
     assertFalse(panel.focused);
     assertTrue(panel.cursorThread.isAlive());
+  }
+
+  @Test
+  public void canTellIfTextMaxesOutTextArea()
+  {
+    boxInfo.setText("This Text is tooooo much text to fit inside the normal textbox");
+
+    assertTrue(panel.isTextMaxed());
+  }
+
+  @Test
+  public void canMaxOutPaintableRegionToEncapsulateTextIfPanelFull(){
+    panel.maxOutPaintableRegion();
+
+    assertEquals(panel.getWidth(),panel.paintableRegion.width );
+    assertEquals(0,panel.paintableRegion.x );
   }
 
 

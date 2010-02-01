@@ -63,7 +63,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public void shiftTextRight()
   {
-    String rightShiftingText = text.substring(cursorIndex / 2, cursorIndex);
+    String rightShiftingText = text.substring(0, cursorIndex);
     if (rightShiftingText.length() == 0 || xOffset == 0)
     {
       cursorX = LEFT_TEXT_MARGIN;
@@ -72,7 +72,11 @@ public abstract class TextModel implements ClipboardOwner
     else
     {
       TypedLayout layout = new TextLayoutImpl(rightShiftingText, font, TextPanel.getRenderContext());
-      xOffset -= getWidthDimension(layout);
+      int textWidth = getWidthDimension(layout);
+      if (textWidth > getPanelWidth() /2)
+        xOffset -= getPanelWidth() /2;
+      else
+        xOffset -= textWidth;
       if (xOffset < 0)
         xOffset = 0;
     }
@@ -284,6 +288,8 @@ public abstract class TextModel implements ClipboardOwner
 
   public Rectangle getSelectionRegion()
   {
+    if(text.length() > 0)
+      calculateTextXOffset(myBox.getWidth(), getWidthDimension(getTextLayout()));
     int x1 = getXPosFromIndex(cursorIndex);
     int x2 = getXPosFromIndex(selectionIndex);
 
@@ -336,5 +342,12 @@ public abstract class TextModel implements ClipboardOwner
   {
     this.selectionIndex = selectionIndex;
     myBox.setPaintableRegion(selectionIndex);
+  }
+
+  public boolean isBoxFull()
+  {
+    if(text.length() >0)
+      return(myBox.getWidth() - TextModel.SIDE_DETECTION_MARGIN *2 <= getWidthDimension(getTextLayout()));
+    return false;
   }
 }

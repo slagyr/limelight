@@ -86,11 +86,16 @@ public class TextModelTest
   }
 
   @Test
-  public void canShiftTheCursorAndTextRight()
+  public void canTellIfTheTextPanelIsFull()
+  {
+    assertTrue(boxModel.isBoxFull());
+  }
+
+  @Test
+  public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidth()
   {
     boxModel.xOffset = boxModel.calculateTextDimensions().width - boxPanel.getWidth();
     int offset = boxModel.xOffset;
-    boxModel.setCursorIndex(boxModel.getText().indexOf("ar"));
 
     boxModel.shiftTextRight();
     assertTrue(boxModel.xOffset <= offset/ 2 + 5 && boxModel.xOffset != 0);
@@ -163,6 +168,19 @@ public class TextModelTest
     assertEquals(TextModel.TOP_MARGIN, region.y);
     assertEquals(boxModel.getXPosFromIndex(boxModel.getCursorIndex()) - TextModel.LEFT_TEXT_MARGIN, region.width);
     assertEquals(boxModel.getPanelHeight() - TextModel.TOP_MARGIN * 2, region.height);
+  }
+
+  @Test
+  public void willRecalculateXOffsetIfTextIsFullWhenGettingSelection()
+  {
+    boxModel.setSelectionIndex(boxModel.text.length());
+    boxModel.setCursorIndex(10);
+    boxModel.selectionOn = true;
+    boxModel.xOffset = 100;
+
+    boxModel.getSelectionRegion();
+
+    assertTrue(boxModel.xOffset > 0 && boxModel.xOffset < 100);
   }
 
 }

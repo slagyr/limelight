@@ -153,6 +153,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     keyProcessors.get(processorIndex).processKey(e);
     cursorOn = true;
     markPaintableRegionAsDirty();
+    System.out.println("paintableRegion = " + paintableRegion);
   }
 
   private int calculateProcessorIndex(KeyEvent e)
@@ -213,6 +214,8 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   private void markPaintableRegionAsDirty()
   {
+    if(isTextMaxed())
+      maxOutPaintableRegion();
     RootPanel rootPanel = getRoot();
     if (rootPanel != null && paintableRegion != null){
       rootPanel.addDirtyRegion(new Box(paintableRegion.x + getAbsoluteLocation().x - 3,
@@ -243,4 +246,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public abstract void resetPaintableRegion();
 
+  public abstract void maxOutPaintableRegion();
+
+  public abstract boolean isTextMaxed();
 }
