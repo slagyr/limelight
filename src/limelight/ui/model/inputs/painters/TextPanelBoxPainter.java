@@ -15,8 +15,9 @@ public class TextPanelBoxPainter extends TextPanelPainter
   @Override
   public void paint(Graphics2D graphics)
   {
-    graphics.setColor(Color.lightGray);
-    graphics.fillRect(0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
+    graphics.setColor(Color.white);
+    Rectangle box = boxInfo.getPaintableRegion().getBounds();
+    graphics.fillRect(box.x, box.y,box.width , box.height);
 
     if(boxInfo.isFocused())
       graphics.setColor(Color.green);

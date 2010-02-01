@@ -237,6 +237,10 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public abstract void setPaintableRegion(int index);
 
+  public Shape getPaintableRegion(){
+    return paintableRegion;
+  }
+
   public abstract void resetPaintableRegion();
 
 }
