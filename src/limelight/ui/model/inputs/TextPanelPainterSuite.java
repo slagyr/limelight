@@ -124,7 +124,7 @@ public class TextPanelPainterSuite
     {
       painter.paint(graphics);
 
-      assertEquals(Color.lightGray, graphics.filledShapes.get(0).color);
+      assertEquals(Color.white, graphics.filledShapes.get(0).color);
     }
 
     @Test
