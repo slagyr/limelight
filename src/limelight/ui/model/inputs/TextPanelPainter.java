@@ -8,6 +8,7 @@ public abstract class TextPanelPainter
 {
   public static final int HEIGHT_MARGIN = 4;
   protected TextModel boxInfo;
+  public boolean hasPainted;
   public TextPanelPainter(TextModel boxInfo)
   {
     this.boxInfo = boxInfo;
