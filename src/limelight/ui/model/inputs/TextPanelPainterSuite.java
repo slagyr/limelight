@@ -33,7 +33,7 @@ public class TextPanelPainterSuite
   protected static void testClassInit()
   {
     panel = new TextBox2Panel();
-    boxInfo = new PlainTextModel(panel);
+    boxInfo = panel.getBoxInfo();
     panel.boxInfo = boxInfo;
     boxInfo.setText("Some Text");
     boxInfo.setCursorIndex(4);
@@ -107,12 +107,16 @@ public class TextPanelPainterSuite
     }
 
     @Test
-    public void willFillACorrectlySizedRectangle()
+    public void willFillARectangleAccordingToThePaintableRegionBounds()
     {
+      panel.resetPaintableRegion();
+      panel.setPaintableRegion(4);
+      panel.setPaintableRegion(0);
+
       painter.paint(graphics);
 
       testBox = graphics.filledShapes.get(0).shape.getBounds();
-      assertTestBoxSize(0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
+      assertTestBoxSize(3, TextModel.TOP_MARGIN, boxInfo.getXPosFromIndex(4) - TextModel.LEFT_TEXT_MARGIN, boxInfo.getPanelHeight() - TextModel.TOP_MARGIN *2);
     }
 
     @Test

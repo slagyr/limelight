@@ -185,6 +185,11 @@ public abstract class TextModel implements ClipboardOwner
     return myBox.getHeight();
   }
 
+  public Shape getPaintableRegion()
+  {
+    return myBox.getPaintableRegion();
+  }
+
   public SimpleHorizontalAlignmentAttribute getHorizontalAlignment()
   {
     return myBox.horizontalTextAlignment;
