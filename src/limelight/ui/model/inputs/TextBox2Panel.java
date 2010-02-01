@@ -18,7 +18,7 @@ public class TextBox2Panel extends TextInputPanel
   public TextBox2Panel()
   {
     setSize(150, 25);
-    paintableRegion = new Box(0, TextModel.TOP_MARGIN, 0, height - 2 * TextModel.TOP_MARGIN);
+    paintableRegion = new Box(0, TextModel.TOP_MARGIN, width, height - 2 * TextModel.TOP_MARGIN);
     boxInfo = new PlainTextModel(this);
     keyProcessors = new ArrayList<KeyProcessor>(16);
     initKeyProcessors();
@@ -93,6 +93,19 @@ public class TextBox2Panel extends TextInputPanel
     }
     else
       paintableRegion = new Box(0, TextModel.TOP_MARGIN, 0, regionHeight);
+  }
+
+  @Override
+  public void maxOutPaintableRegion()
+  {
+    int regionHeight = height - 2 * TextModel.TOP_MARGIN;
+    paintableRegion = new Box(0, TextModel.TOP_MARGIN, width,regionHeight);
+  }
+
+  @Override
+  public boolean isTextMaxed()
+  {
+    return boxInfo.isBoxFull();
   }
 
 
