@@ -25,8 +25,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected int cursorCycleTime = 500;
   protected ArrayList<KeyProcessor> keyProcessors;
   protected MouseProcessor mouseProcessor;
-  protected TextPanelPainter painter;
-  protected TextPanelPainterStore paintStore;
+  protected TextPanelPainterComposite painterComposite;
   protected Box paintableRegion;
   protected SimpleHorizontalAlignmentAttribute horizontalTextAlignment;
   protected SimpleVerticalAlignmentAttribute verticalTextAlignment;
