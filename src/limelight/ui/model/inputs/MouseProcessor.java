@@ -100,7 +100,7 @@ public class MouseProcessor
 
   private void selectWord(int tempIndex)
   {
-    new WordSelector(tempIndex).invoke();
+    new WordSelector(tempIndex).processWordSelection();
   }
 
   public void processMouseReleased(MouseEvent e)
@@ -209,7 +209,7 @@ public class MouseProcessor
     }
 
 
-    public void invoke()
+    public void processWordSelection()
     {
       boolean rightOfTail = isRightOfTail();
 

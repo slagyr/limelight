@@ -23,8 +23,7 @@ public class TextBox2Panel extends TextInputPanel
     keyProcessors = new ArrayList<KeyProcessor>(16);
     initKeyProcessors();
     mouseProcessor = new MouseProcessor(boxInfo);
-    paintStore = new TextPanelPainterStore(boxInfo);
-    painter = paintStore.getBoxPainter();
+    painterComposite = new TextPanelPainterComposite(boxInfo);
     horizontalTextAlignment = new SimpleHorizontalAlignmentAttribute(HorizontalAlignment.LEFT);
     verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
   }
@@ -53,17 +52,7 @@ public class TextBox2Panel extends TextInputPanel
   @Override
   public void paintOn(Graphics2D graphics)
   {
-    painter = paintStore.getBoxPainter();
-    painter.paint(graphics);
-
-    painter = paintStore.getSelectionPainter();
-    painter.paint(graphics);
-
-    painter = paintStore.getTextPainter();
-    painter.paint(graphics);
-
-    painter = paintStore.getCursorPainter();
-    painter.paint(graphics);
+    painterComposite.paint(graphics);
   }
 
   public void setPaintableRegion(int index)
