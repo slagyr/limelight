@@ -24,10 +24,10 @@ public class TextPanelPainterComposite
 
   public void paint(Graphics2D graphics)
   {
-    cursorPainter.paint(graphics);
     boxPainter.paint(graphics);
     selectionPainter.paint(graphics);
     textPainter.paint(graphics);
+    cursorPainter.paint(graphics);
   }
 
   public TextPanelPainter getCursorPainter()
