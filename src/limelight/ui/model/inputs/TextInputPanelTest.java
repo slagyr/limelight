@@ -74,8 +74,8 @@ public class TextInputPanelTest
   public void canMaxOutPaintableRegionToEncapsulateTextIfPanelFull(){
     panel.maxOutPaintableRegion();
 
-    assertEquals(panel.getWidth(),panel.paintableRegion.width );
-    assertEquals(0,panel.paintableRegion.x );
+    assertEquals(panel.getWidth() - 2 * TextModel.LEFT_TEXT_MARGIN,panel.paintableRegion.width );
+    assertEquals(TextModel.LEFT_TEXT_MARGIN,panel.paintableRegion.x );
   }
 
 

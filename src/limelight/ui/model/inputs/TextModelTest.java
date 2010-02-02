@@ -164,9 +164,9 @@ public class TextModelTest
     
     Rectangle region = boxModel.getSelectionRegion();
 
-    assertEquals(TextModel.LEFT_TEXT_MARGIN,region.x );
+    assertEquals(0,region.x );
     assertEquals(TextModel.TOP_MARGIN, region.y);
-    assertEquals(boxModel.getXPosFromIndex(boxModel.getCursorIndex()) - TextModel.LEFT_TEXT_MARGIN, region.width);
+    assertEquals(boxModel.getXPosFromIndex(boxModel.getCursorIndex()), region.width);
     assertEquals(boxModel.getPanelHeight() - TextModel.TOP_MARGIN * 2, region.height);
   }
 
