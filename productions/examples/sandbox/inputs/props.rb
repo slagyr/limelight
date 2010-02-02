@@ -5,7 +5,10 @@ __ :name => "sandbox"
 __install "header.rb"
 arena do
   table do
-    cell { text_box_input :players => "text_box", :id => "text_box_input" }
+    cell do
+      text_box_input :players => "text_box", :id => "text_box_input"
+      text_box_input :players => "text_box2", :id => "text_box2_input", :text => "blah"
+    end
   	cell(:border_width => "1") { input_log :id => "text_box_log" }
   	cell(:border_width => "1") { input_results :id => "text_box_results" }
     # end row
@@ -13,7 +16,10 @@ arena do
   	cell { input_log :id => "text_area_log" }
   	cell(:border_width => "1") { input_results :id => "text_area_results" }
     # end row
-    cell { check_box_input :players => "check_box", :id => "check_box_input" }
+    cell do
+      check_box_input :players => "check_box", :id => "check_box_input"
+      check_box_input :players => "check_box2", :id => "check_box2_input"
+    end
   	cell { input_log :id => "check_box_log" }
   	cell(:border_width => "1") { input_results :id => "check_box_results" }
 #    # end row

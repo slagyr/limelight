@@ -29,7 +29,6 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
   private static SimpleVerticalAlignmentAttribute verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
   private String text;
   private ComboBoxStyle style;
-  private Rectangle textBounds;
   private Dimension textDimensions;
   private TextLayout textLayout;
   private boolean focused;
@@ -81,7 +80,7 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
 
   private void calculateTextDimentions()
   {
-    if(textBounds == null && text != null)
+    if(text != null)
     {
       textLayout = new TextLayout(text, font, TextPanel.staticFontRenderingContext);
       int height = (int) ((textLayout.getAscent() + textLayout.getDescent() + textLayout.getLeading()) + 0.5);
@@ -98,7 +97,6 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
   public void setText(String text)
   {
     this.text = text;
-    textBounds = null;
   }
 
   public String getText()

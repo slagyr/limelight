@@ -7,6 +7,7 @@ import limelight.Context;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
 import limelight.ui.Panel;
+import limelight.ui.model.inputs.InputPanel;
 import limelight.ui.api.Stage;
 
 import javax.swing.*;
@@ -73,7 +74,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void close(WindowEvent e)
   {
-    if(closing)
+    if (closing)
       return;
     closing = true;
     stage.closing(e);
@@ -95,10 +96,10 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void closed(WindowEvent e)
   {
-    if(closed)
+    if (closed)
       return;
     closed = true;
-    stage.closed(e); 
+    stage.closed(e);
   }
 
   public boolean isClosed()
@@ -108,9 +109,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void open()
   {
-    if(opened)
+    if (opened)
       return;
-    if(!hasMenuBar)
+    if (!hasMenuBar)
       setJMenuBar(null);
 
     addNotify(); // MDM - Force the loading of the native peer to calculate insets.
@@ -120,17 +121,17 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     applyLocationStyles();
 
     setVisible(true);
- 
+
     opened = true;
   }
 
   public void setVisible(boolean visible)
   {
-    if(visible == isVisible())
+    if (visible == isVisible())
       return;
     super.setVisible(visible);
 
-    if(visible)
+    if (visible)
     {
       enterKioskOrFullscreenIfNeeded();
     }
@@ -140,9 +141,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void refresh()
   {
-    if(root != null)
+    if (root != null)
     {
-      if(previousSize == null || !previousSize.equals(getSize()))
+      if (previousSize == null || !previousSize.equals(getSize()))
         root.getPanel().consumableAreaChanged();
       else
         root.getPanel().markAsNeedingLayout();
@@ -188,7 +189,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void load(Panel child)
   {
-    if(root != null)
+    if (root != null)
       root.destroy();
     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     root = new RootPanel(this);
@@ -207,26 +208,26 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public int getVerticalInsetWidth()
   {
-    if(insets == null)
+    if (insets == null)
       calculateInsets();
     return insets.top + insets.bottom;
   }
 
   public int getHorizontalInsetWidth()
   {
-    if(insets == null)
+    if (insets == null)
       calculateInsets();
     return insets.left + insets.right;
   }
 
   public void setFullScreen(boolean setting)
   {
-    if(fullscreen != setting)
+    if (fullscreen != setting)
     {
       fullscreen = setting;
-      if(fullscreen && isVisible() && this != getGraphicsDevice().getFullScreenWindow())
+      if (fullscreen && isVisible() && this != getGraphicsDevice().getFullScreenWindow())
         turnFullScreenOn();
-      else if(this == getGraphicsDevice().getFullScreenWindow() && !kiosk)
+      else if (this == getGraphicsDevice().getFullScreenWindow() && !kiosk)
         turnFullscreenOff();
     }
   }
@@ -243,7 +244,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public GraphicsDevice getGraphicsDevice()
   {
-    if(graphicsDevice != null)
+    if (graphicsDevice != null)
       return graphicsDevice;
     return getGraphicsConfiguration().getDevice();
   }
@@ -261,22 +262,34 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
   public void keyTyped(KeyEvent e)
   {
     Panel panel = root.getPanel();
-    if(panel != null)
+    if (panel != null)
       panel.keyTyped(e);
   }
 
   public void keyPressed(KeyEvent e)
   {
-    Panel panel = root.getPanel();
-    if(panel != null)
-      panel.keyPressed(e);
+    InputPanel input = Context.instance().keyboardFocusManager.getFocusedPanel();
+    if (input != null)
+      input.keyPressed(e);
+    else
+    {
+      Panel panel = root.getPanel();
+      if (panel != null)
+        panel.keyPressed(e);
+    }
   }
 
   public void keyReleased(KeyEvent e)
   {
-    Panel panel = root.getPanel();
-    if(panel != null)
-      panel.keyReleased(e);
+    InputPanel input = Context.instance().keyboardFocusManager.getFocusedPanel();
+    if (input != null)
+      input.keyReleased(e);
+    else
+    {
+      Panel panel = root.getPanel();
+      if (panel != null)
+        panel.keyReleased(e);
+    }
   }
 
   public void setBackgroundColor(Object colorString)
@@ -291,20 +304,20 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void setKiosk(boolean value)
   {
-    if(kiosk == value)
+    if (kiosk == value)
       return;
     kiosk = value;
-    if(isVisible())
+    if (isVisible())
     {
-      if(kiosk)
+      if (kiosk)
       {
-        if(getGraphicsDevice().getFullScreenWindow() != this)
+        if (getGraphicsDevice().getFullScreenWindow() != this)
           turnFullScreenOn();
         Context.instance().os.enterKioskMode();
       }
       else
       {
-        if(!fullscreen && getGraphicsDevice().getFullScreenWindow() == this)
+        if (!fullscreen && getGraphicsDevice().getFullScreenWindow() == this)
           turnFullscreenOff();
         Context.instance().os.exitKioskMode();
       }
@@ -343,7 +356,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void activated(WindowEvent e)
   {
-    if(isVisible())
+    if (isVisible())
     {
       // MDM - It happens that the frame is activated and deactivated before it's ever visible.  This causes problems.
       // Only propogate the event is the frame is visible
@@ -354,7 +367,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void deactivated(WindowEvent e)
   {
-    if(previouslyActivated)
+    if (previouslyActivated)
     {
       previouslyActivated = false;
       stage.deactivated(e);
@@ -372,9 +385,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   private void enterKioskOrFullscreenIfNeeded()
   {
-    if(fullscreen || kiosk)
+    if (fullscreen || kiosk)
       turnFullScreenOn();
-    if(kiosk)
+    if (kiosk)
       Context.instance().os.enterKioskMode();
   }
 
@@ -386,15 +399,15 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     insets = getInsets();
     setVisible(false);
     setSize(size);
-    if(getJMenuBar() != null)
+    if (getJMenuBar() != null)
       insets.top += getJMenuBar().getHeight();
   }
 
   private void exitKioskOrFullscreenIfNeeded()
   {
-    if(fullscreen || kiosk)
+    if (fullscreen || kiosk)
       turnFullscreenOff();
-    if(kiosk)
+    if (kiosk)
       Context.instance().os.exitKioskMode();
   }
 
@@ -408,9 +421,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
   private void turnFullscreenOff()
   {
     getGraphicsDevice().setFullScreenWindow(null);
-    if(sizeBeforeFullScreen != null)
+    if (sizeBeforeFullScreen != null)
       super.setSize(sizeBeforeFullScreen);
-    if(locationBeforeFullScreen != null)
+    if (locationBeforeFullScreen != null)
       super.setLocation(locationBeforeFullScreen);
   }
 
@@ -445,10 +458,10 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
     setLocation(x, y);
   }
-                                                                                
+
   private void collapseAutoDimensions()
   {
-    if(root == null)
+    if (root == null)
       return;
 
     super.doLayout();
@@ -460,10 +473,10 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     int heightInsets = insets.top + insets.bottom;
 
     Dimension size = getSize();
-    if(widthStyle.isAuto())
+    if (widthStyle.isAuto())
       size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getPanel().getWidth() + widthInsets, NONE, NONE);
-    if(heightStyle.isAuto())
-      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets,  NONE, NONE);
+    if (heightStyle.isAuto())
+      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets, NONE, NONE);
 
     setSize(size);
   }

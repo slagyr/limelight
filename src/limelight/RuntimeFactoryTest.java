@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight;
@@ -11,7 +11,7 @@ public class RuntimeFactoryTest extends TestCase
   private RuntimeFactory runtimes;
   private String rubysrc = "" +
       "begin\n" +
-      " class Production; def name; return 'blah'; end; end;" +
+      " class Production; def getName; return 'blah'; end; end;" +
       " Java::java.lang.Thread.currentThread.handle = Production.new\n" +
 //      " sleep(5)\n" +
       "rescue Exception => e\n" +
