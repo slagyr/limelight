@@ -253,7 +253,7 @@ public class MouseProcessor
 //          newHead = boxInfo.findWordsLeftEdge(mouseIndex);
 //      }
 //      repositionHead(newHead);
-
+//
 //      if (rightOfHead)
 //      {
 //        if (!rightOfTail)
