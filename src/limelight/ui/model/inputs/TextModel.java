@@ -15,8 +15,8 @@ import java.io.IOException;
 public abstract class TextModel implements ClipboardOwner
 {
 
-  public static final int LEFT_TEXT_MARGIN = 5;
-  public static final int SIDE_DETECTION_MARGIN = 6;
+  public static final int LEFT_TEXT_MARGIN = 3;
+  public static final int SIDE_DETECTION_MARGIN = 4;
   public static final int TOP_MARGIN = 4;
 
   public StringBuffer text = new StringBuffer();
@@ -296,11 +296,14 @@ public abstract class TextModel implements ClipboardOwner
       calculateTextXOffset(myBox.getWidth(), getWidthDimension(getTextLayout()));
     int x1 = getXPosFromIndex(cursorIndex);
     int x2 = getXPosFromIndex(selectionIndex);
+    int edgeSelectionExtension = 0;
 
+    if( x1 <= LEFT_TEXT_MARGIN || x2 <= LEFT_TEXT_MARGIN)
+    edgeSelectionExtension = LEFT_TEXT_MARGIN;
     if (x1 > x2)
-      return new Box(x2, TOP_MARGIN, x1 - x2, getPanelHeight() - TOP_MARGIN * 2);
+      return new Box(x2 - edgeSelectionExtension, TOP_MARGIN, x1 - x2 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2);
     else
-      return new Box(x1, TOP_MARGIN, x2 - x1, getPanelHeight() - TOP_MARGIN * 2);
+      return new Box(x1 - edgeSelectionExtension, TOP_MARGIN, x2 - x1 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2);
 
   }
 
