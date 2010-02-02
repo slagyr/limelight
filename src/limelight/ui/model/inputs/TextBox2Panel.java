@@ -105,6 +105,12 @@ public class TextBox2Panel extends TextInputPanel
     paintableRegion = new Box(TextModel.LEFT_TEXT_MARGIN, TextModel.TOP_MARGIN, regionWidth,regionHeight);
   }
 
+    @Override
+  public void expandPaintableRegionToRightBound()
+  {
+    setPaintableRegion(boxInfo.text.length());
+  }
+
   @Override
   public boolean isTextMaxed()
   {
