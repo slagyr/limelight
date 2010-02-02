@@ -213,6 +213,8 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   private void markPaintableRegionAsDirty()
   {
+    if(boxInfo.getCursorIndex() < boxInfo.text.length())
+      expandPaintableRegionToRightBound();
     if(isTextMaxed())
       maxOutPaintableRegion();
     RootPanel rootPanel = getRoot();
@@ -221,6 +223,8 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
           paintableRegion.y + getAbsoluteLocation().y, paintableRegion.width + 6, paintableRegion.height));
     }
   }
+
+  protected abstract void expandPaintableRegionToRightBound();
 
 
   public void mouseReleased(MouseEvent e)

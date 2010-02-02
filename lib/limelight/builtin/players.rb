@@ -6,6 +6,7 @@ require 'limelight/builtin/players/combo_box2'
 require 'limelight/builtin/players/radio_button2'
 require 'limelight/builtin/players/check_box2'
 require 'limelight/builtin/players/text_box2'
+require 'limelight/builtin/players/text_area2'
 
 require 'limelight/builtin/players/button'
 require 'limelight/builtin/players/check_box'

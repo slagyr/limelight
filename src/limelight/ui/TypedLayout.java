@@ -10,6 +10,7 @@ public interface TypedLayout
   public abstract void draw(Graphics2D graphics, float x, float y);
   public abstract boolean hasDrawn();
   public abstract String toString();
+  public abstract String getText();
   public abstract float getAscent();
   public abstract float getDescent();
   public abstract float getLeading();

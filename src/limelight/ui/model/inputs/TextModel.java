@@ -9,8 +9,8 @@ import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.font.TextLayout;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
 {
@@ -20,7 +20,7 @@ public abstract class TextModel implements ClipboardOwner
   public static final int TOP_MARGIN = 4;
 
   public StringBuffer text = new StringBuffer();
-  TypedLayout textLayout;
+  ArrayList<TypedLayout> textLayouts;
   int cursorX;
   public boolean selectionOn;
   int selectionStartX;
@@ -43,7 +43,7 @@ public abstract class TextModel implements ClipboardOwner
       int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + LEFT_TEXT_MARGIN;
       if (!typingInCenterOfBox(panelWidth, newXOffset))
         xOffset = newXOffset;
-     while(cursorX < SIDE_DETECTION_MARGIN)
+      while (cursorX < SIDE_DETECTION_MARGIN)
         shiftTextRight();
     }
     else
@@ -73,13 +73,13 @@ public abstract class TextModel implements ClipboardOwner
     {
       TypedLayout layout = new TextLayoutImpl(rightShiftingText, font, TextPanel.getRenderContext());
       int textWidth = getWidthDimension(layout);
-      if (textWidth > getPanelWidth() /2)
-        xOffset -= getPanelWidth() /2;
+      if (textWidth > getPanelWidth() / 2)
+        xOffset -= getPanelWidth() / 2;
       else
         xOffset -= textWidth;
       if (xOffset < 0)
         xOffset = 0;
-      cursorX = getXPosFromIndex(cursorIndex);      
+      cursorX = getXPosFromIndex(cursorIndex);
     }
   }
 
@@ -103,7 +103,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
     int x = getWidthDimension(layout) + LEFT_TEXT_MARGIN - xOffset;
-    if(x < LEFT_TEXT_MARGIN)
+    if (x < LEFT_TEXT_MARGIN)
       x = LEFT_TEXT_MARGIN;
     return x;
   }
@@ -128,9 +128,16 @@ public abstract class TextModel implements ClipboardOwner
   {
     if (text != null && text.length() > 0)
     {
-      TypedLayout textLayout = getTextLayout();
-      int height = getHeightDimension(textLayout);
-      int width = getWidthDimension(textLayout);
+      int height = 0;
+      int width = 0;
+      ArrayList<TypedLayout> textLayouts = getTextLayouts();
+      for (int i = 0; i < textLayouts.size(); i++)
+      {
+        height += getHeightDimension(textLayouts.get(i));
+        int dimWidth = getWidthDimension(textLayouts.get(i));
+        if (width < dimWidth)
+          width = dimWidth;
+      }
       return new Dimension(width, height);
     }
     return null;
@@ -153,16 +160,30 @@ public abstract class TextModel implements ClipboardOwner
     return xOffset;
   }
 
-  public TypedLayout getTextLayout()
+  public ArrayList<TypedLayout> getTextLayouts()
   {
     if (text.length() == 0)
       return null;
     else
     {
-      if (textLayout == null || !textLayout.toString().equals(text.toString()))
-        textLayout = new TextLayoutImpl(text.toString(), font, TextPanel.getRenderContext());
+      if (textLayouts == null || !text.toString().equals(concatenateAllLayoutText()))
+      {
+        textLayouts = new ArrayList<TypedLayout>();
+        textLayouts.add(new TextLayoutImpl(text.toString(), font, TextPanel.getRenderContext()));
+      }
+      return textLayouts;
     }
-    return textLayout;
+  }
+
+  public String concatenateAllLayoutText()
+  {
+   StringBuffer string = new StringBuffer();
+
+    for(int i = 0; i < textLayouts.size(); i++)
+    {
+      string.append(textLayouts.get(i).getText());
+    }
+    return string.toString();
   }
 
   public void setText(String text)
@@ -292,14 +313,14 @@ public abstract class TextModel implements ClipboardOwner
 
   public Rectangle getSelectionRegion()
   {
-    if(text.length() > 0)
-      calculateTextXOffset(myBox.getWidth(), getWidthDimension(getTextLayout()));
+    if (text.length() > 0)
+      calculateTextXOffset(myBox.getWidth(), calculateTextDimensions().width);
     int x1 = getXPosFromIndex(cursorIndex);
     int x2 = getXPosFromIndex(selectionIndex);
     int edgeSelectionExtension = 0;
 
-    if( x1 <= LEFT_TEXT_MARGIN || x2 <= LEFT_TEXT_MARGIN)
-    edgeSelectionExtension = LEFT_TEXT_MARGIN;
+    if (x1 <= LEFT_TEXT_MARGIN || x2 <= LEFT_TEXT_MARGIN)
+      edgeSelectionExtension = LEFT_TEXT_MARGIN;
     if (x1 > x2)
       return new Box(x2 - edgeSelectionExtension, TOP_MARGIN, x1 - x2 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2);
     else
@@ -353,8 +374,8 @@ public abstract class TextModel implements ClipboardOwner
 
   public boolean isBoxFull()
   {
-    if(text.length() >0)
-      return(myBox.getWidth() - TextModel.SIDE_DETECTION_MARGIN *2 <= getWidthDimension(getTextLayout()));
+    if (text.length() > 0)
+      return (myBox.getWidth() - TextModel.SIDE_DETECTION_MARGIN * 2 <= calculateTextDimensions().width);
     return false;
   }
 }
