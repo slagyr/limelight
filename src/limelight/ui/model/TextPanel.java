@@ -294,7 +294,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     return textChunks;
   }
 
-  public FontRenderContext getRenderContext()
+  public static FontRenderContext getRenderContext()
   {
     if(staticFontRenderingContext == null)
     {
