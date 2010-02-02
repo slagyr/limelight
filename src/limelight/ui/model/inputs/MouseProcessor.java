@@ -1,7 +1,10 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.TypedLayout;
+
 import java.awt.event.MouseEvent;
 import java.awt.font.TextHitInfo;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MouseProcessor
@@ -35,7 +38,16 @@ public class MouseProcessor
 
   public int calculateMouseClickIndex(int x, int y)
   {
-    TextHitInfo hitInfo = boxInfo.getTextLayout().hitTestChar(x + boxInfo.getXOffset(), y);
+    TextHitInfo hitInfo;
+    ArrayList<TypedLayout> layouts = boxInfo.getTextLayouts();
+    if(layouts == null)
+      return -1;
+    int i =0;
+    hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
+    while(hitInfo == null)
+    {
+      hitInfo = layouts.get(i++).hitTestChar(x + boxInfo.getXOffset(), y);
+    }
     int index = hitInfo.getCharIndex();
     if (isHitOnTheRightEdge(hitInfo, index))
       index += 1;

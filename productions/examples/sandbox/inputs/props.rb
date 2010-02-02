@@ -7,13 +7,16 @@ arena do
   table do
     cell do
       text_box_input :players => "text_box", :id => "text_box_input"
-      text_box_input :players => "text_box2", :id => "text_box2_input", :text => "blah"
+      text_box_input :players => "text_box2", :id => "text_box2_input", :text => "bob dobbs"
     end
   	cell(:border_width => "1") { input_log :id => "text_box_log" }
   	cell(:border_width => "1") { input_results :id => "text_box_results" }
     # end row
-    cell { text_area_input :players => "text_area", :id => "text_area_input" }
-  	cell { input_log :id => "text_area_log" }
+    cell do
+      #text_area_input :players => "text_area", :id => "text_area_input", :text => "none"
+      text_area_input :players => "text_area2", :id => "text_area2_input", :text => "Some more text"
+     end
+  	cell(:border_width => "1") { input_log :id => "text_area_log" }
   	cell(:border_width => "1") { input_results :id => "text_area_results" }
     # end row
     cell do

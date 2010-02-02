@@ -9,11 +9,13 @@ import java.awt.geom.Rectangle2D;
 public class TextLayoutImpl implements TypedLayout
 {
   TextLayout layout;
+  String text;
   public boolean hasDrawn;
 
   public TextLayoutImpl(String string, Font font, FontRenderContext frc)
   {
     layout = new TextLayout(string, font, frc);
+    text = string;
     hasDrawn = false;
   }
 
@@ -56,5 +58,10 @@ public class TextLayoutImpl implements TypedLayout
   public String toString()
   {
     return layout.toString();
+  }
+
+  public String getText()
+  {
+    return text;
   }
 }

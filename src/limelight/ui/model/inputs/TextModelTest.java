@@ -1,11 +1,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.TextLayoutImpl;
+import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,13 +16,13 @@ import static org.junit.Assert.assertTrue;
 public class TextModelTest
 {
   TextModel boxModel;
-  TextBox2Panel boxPanel;
+  TextInputPanel panel;
 
   @Before
   public void setUp()
   {
-    boxPanel = new TextBox2Panel();
-    boxModel = boxPanel.getBoxInfo();
+    panel = new TextBox2Panel();
+    boxModel = panel.getBoxInfo();
     boxModel.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
   }
 
@@ -43,6 +45,18 @@ public class TextModelTest
     int x = boxModel.getXPosFromTextLayout("ABC");
 
     assertEquals(expectedX, x);
+  }
+
+  @Test
+  public void canConcatTheLayoutsToGetTheTotalText()
+  {
+    boxModel.textLayouts = new ArrayList<TypedLayout>();
+    boxModel.textLayouts.add(new TextLayoutImpl("This is the first line ", boxModel.font, TextPanel.getRenderContext()));
+    boxModel.textLayouts.add(new TextLayoutImpl("This is the second line", boxModel.font, TextPanel.getRenderContext()));
+
+    String concatenatedText = boxModel.concatenateAllLayoutText();
+
+    assertEquals("This is the first line This is the second line",concatenatedText);
   }
 
   @Test
@@ -94,7 +108,7 @@ public class TextModelTest
   @Test
   public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidth()
   {
-    boxModel.xOffset = boxModel.calculateTextDimensions().width - boxPanel.getWidth();
+    boxModel.xOffset = boxModel.calculateTextDimensions().width - panel.getWidth();
     int offset = boxModel.xOffset;
 
     boxModel.shiftTextRight();
@@ -104,7 +118,7 @@ public class TextModelTest
   @Test
   public void canCalculateTheXOffsetIfTheCursorIsAtTheRightEdge()
   {
-    boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
 
     assertTrue(boxModel.xOffset > 0);
   }
@@ -112,16 +126,16 @@ public class TextModelTest
   @Test
   public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
   {
-    boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
     int offset = boxModel.xOffset;
     boxModel.setCursorIndex(0);
 
-    boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
 
     assertTrue(boxModel.xOffset <= offset / 2 + 2);
 
     boxModel.text = new StringBuffer("hi");
-    boxModel.calculateTextXOffset(boxPanel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
     assertTrue(boxModel.xOffset == 0);
 
   }
@@ -181,6 +195,17 @@ public class TextModelTest
     boxModel.getSelectionRegion();
 
     assertTrue(boxModel.xOffset > 0 && boxModel.xOffset < 100);
+  }
+
+  @Test
+  public void willStoreATextLayoutForEachLine()
+  {
+    panel = new TextArea2Panel();
+    boxModel = panel.getBoxInfo();
+    boxModel.setText("This string of text is longer than a single line, and should be 2 lines");
+
+    ArrayList<TypedLayout> textLayouts = boxModel.getTextLayouts();
+
   }
 
 }

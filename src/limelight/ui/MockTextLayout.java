@@ -60,4 +60,9 @@ public class MockTextLayout implements TypedLayout
   {
     return text;
   }
+
+  public String getText()
+  {
+    return text;
+  }
 }
