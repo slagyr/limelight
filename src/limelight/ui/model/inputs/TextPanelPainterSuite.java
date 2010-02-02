@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -221,7 +222,8 @@ public class TextPanelPainterSuite
       testClassInit();
       painter = new TextPanelTextPainter(boxInfo);
       layout = new MockTextLayout(boxInfo.getText(), boxInfo.font, TextPanel.getRenderContext());
-      boxInfo.textLayout = layout;
+      boxInfo.textLayouts = new ArrayList<TypedLayout>();
+      boxInfo.textLayouts.add(layout);
     }
 
     @Test
