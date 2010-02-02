@@ -20,11 +20,11 @@ public class TextPanelTextPainter extends TextPanelPainter
     if (boxInfo.text != null && boxInfo.text.length() > 0)
     {
       textDimensions = boxInfo.calculateTextDimensions();
-      Box box = new Box(0,0,boxInfo.getPanelWidth(),boxInfo.getPanelHeight());
+      Box box = new Box(TextModel.LEFT_TEXT_MARGIN,0,boxInfo.getPanelWidth() - TextModel.LEFT_TEXT_MARGIN,boxInfo.getPanelHeight());
 
       boxInfo.calculateTextXOffset(boxInfo.getPanelWidth(), textDimensions.width);
 
-      int textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width,box ) + TextModel.LEFT_TEXT_MARGIN - boxInfo.getXOffset();
+      int textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width,box ) - boxInfo.getXOffset();
 
       float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box) + boxInfo.getTextLayout().getAscent();
 

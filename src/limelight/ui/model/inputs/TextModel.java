@@ -15,8 +15,8 @@ import java.io.IOException;
 public abstract class TextModel implements ClipboardOwner
 {
 
-  public static final int LEFT_TEXT_MARGIN = 3;
-  public static final int SIDE_DETECTION_MARGIN = 4;
+  public static final int LEFT_TEXT_MARGIN = 5;
+  public static final int SIDE_DETECTION_MARGIN = 6;
   public static final int TOP_MARGIN = 4;
 
   public StringBuffer text = new StringBuffer();
@@ -43,7 +43,7 @@ public abstract class TextModel implements ClipboardOwner
       int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + LEFT_TEXT_MARGIN;
       if (!typingInCenterOfBox(panelWidth, newXOffset))
         xOffset = newXOffset;
-      if (cursorX < SIDE_DETECTION_MARGIN)
+     while(cursorX < SIDE_DETECTION_MARGIN)
         shiftTextRight();
     }
     else
@@ -66,7 +66,7 @@ public abstract class TextModel implements ClipboardOwner
     String rightShiftingText = text.substring(0, cursorIndex);
     if (rightShiftingText.length() == 0 || xOffset == 0)
     {
-      cursorX = LEFT_TEXT_MARGIN;
+      cursorX = SIDE_DETECTION_MARGIN;
       xOffset = 0;
     }
     else
@@ -79,6 +79,7 @@ public abstract class TextModel implements ClipboardOwner
         xOffset -= textWidth;
       if (xOffset < 0)
         xOffset = 0;
+      cursorX = getXPosFromIndex(cursorIndex);      
     }
   }
 
@@ -101,7 +102,10 @@ public abstract class TextModel implements ClipboardOwner
   public int getXPosFromTextLayout(String toIndexString)
   {
     TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
-    return getWidthDimension(layout) + LEFT_TEXT_MARGIN - xOffset;
+    int x = getWidthDimension(layout) + LEFT_TEXT_MARGIN - xOffset;
+    if(x < LEFT_TEXT_MARGIN)
+      x = LEFT_TEXT_MARGIN;
+    return x;
   }
 
   public int getTerminatingSpaceWidth(String string)

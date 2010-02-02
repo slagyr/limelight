@@ -67,6 +67,8 @@ public class TextBox2Panel extends TextInputPanel
       paintableRegion.width += paintableRegion.x - x;
       paintableRegion.x = x;
     }
+    if(paintableRegion.x < TextModel.LEFT_TEXT_MARGIN)
+      paintableRegion.x = TextModel.LEFT_TEXT_MARGIN;
   }
 
   private boolean isNewPaintableRegion()
@@ -99,7 +101,8 @@ public class TextBox2Panel extends TextInputPanel
   public void maxOutPaintableRegion()
   {
     int regionHeight = height - 2 * TextModel.TOP_MARGIN;
-    paintableRegion = new Box(0, TextModel.TOP_MARGIN, width,regionHeight);
+    int regionWidth = width - 2 * TextModel.LEFT_TEXT_MARGIN;
+    paintableRegion = new Box(TextModel.LEFT_TEXT_MARGIN, TextModel.TOP_MARGIN, regionWidth,regionHeight);
   }
 
   @Override
