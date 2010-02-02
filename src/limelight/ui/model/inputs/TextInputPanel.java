@@ -153,7 +153,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     keyProcessors.get(processorIndex).processKey(e);
     cursorOn = true;
     markPaintableRegionAsDirty();
-    System.out.println("paintableRegion = " + paintableRegion);
   }
 
   private int calculateProcessorIndex(KeyEvent e)
