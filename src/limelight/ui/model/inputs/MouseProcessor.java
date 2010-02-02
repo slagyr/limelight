@@ -124,51 +124,20 @@ public class MouseProcessor
       this.mouseIndex = mouseIndex;
     }
 
-    public void makeWordSelection()
+    public void processWordSelection()
     {
+      boolean rightOfTail = isRightOfTail();
 
-      switch (calculateSelectionDispatchIndex())
-      {
-        case 0:
-          extendSelectionToRight();
-          break;
-        case 1:
-          extendSelectionToRight();
-          break;
-        case 2:
-          moveLeftFacingHead();
-          break;
-        case 3:
-          swapSelectionDirectionAndExtendToRight();
-          break;
-        case 4:
-          swapSelectionDirectionAndExtendToLeft();
-          break;
-        case 5:
-          moveRightFacingHead();
-          break;
-        case 6:
-          extendSelectionToLeft();
-          break;
-      }
-    }
+      boolean selectionFacingRight = isSelectionFacingRight();
 
-    private int calculateSelectionDispatchIndex()
-    {
-      int dispatchIndex = 0;
-      if (mouseIndex > boxInfo.getSelectionIndex())
-        dispatchIndex += 1;
-      if (boxInfo.getCursorIndex() < boxInfo.getSelectionIndex())
-        dispatchIndex += 2;
-      if (mouseIndex < boxInfo.findWordsLeftEdge(boxInfo.getCursorIndex()))
-        dispatchIndex += 4;
-      return dispatchIndex;
-    }
+      boolean isMouseTrailingTheTail = selectionFacingRight && !rightOfTail || !selectionFacingRight && rightOfTail;
+      if(isMouseTrailingTheTail)
+        turnAround();
 
-    private void swapSelectionDirectionAndExtendToLeft()
-    {
-      turnAround();
-      boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
+      if(rightOfTail)
+        repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
+      else
+        repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
     }
 
     private void turnAround()
@@ -176,111 +145,9 @@ public class MouseProcessor
       boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
     }
 
-    private void moveRightFacingHead()
-    {
-      boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
-    }
-
-    private void extendSelectionToRight()
-    {
-      int newHead = boxInfo.findWordsRightEdge(mouseIndex);
-      repositionHead(newHead);
-    }
-
     private void repositionHead(int newHead)
     {
       boxInfo.setCursorIndex(newHead);
-    }
-
-    private void extendSelectionToLeft()
-    {
-      boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
-    }
-
-    private void moveLeftFacingHead()
-    {
-      boxInfo.setCursorIndex(boxInfo.findWordsLeftEdge(mouseIndex));
-    }
-
-    private void swapSelectionDirectionAndExtendToRight()
-    {
-      turnAround();
-      boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(mouseIndex));
-    }
-
-
-    public void processWordSelection()
-    {
-      boolean rightOfTail = isRightOfTail();
-
-      boolean selectionFacingRight = isSelectionFacingRight();
-      boolean turningAround = false;
-
-      boolean isMouseTrailingTheTail = selectionFacingRight && !rightOfTail || !selectionFacingRight && rightOfTail;
-      if(isMouseTrailingTheTail)
-      {
-        turnAround();
-        turningAround = true;
-      }
-
-      boolean isHeadingToTheRight = selectionFacingRight && !turningAround || !selectionFacingRight && turningAround;
-      if(isHeadingToTheRight)
-        repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
-      else
-        repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
-
-//      if(selectionFacingRight && !turningAround)
-//          newHead = boxInfo.findWordsRightEdge(mouseIndex);
-//
-//      if (isSelectionFacingRight())
-//      {
-//        if (!rightOfTail)
-//        {
-//          turnAround();
-//          newHead = boxInfo.findWordsLeftEdge(mouseIndex);
-//        }
-//        else
-//          newHead = boxInfo.findWordsRightEdge(mouseIndex);
-//      }
-//      else
-//      {
-//        if (rightOfTail)
-//        {
-//          turnAround();
-//          newHead = boxInfo.findWordsRightEdge(mouseIndex);
-//        }
-//        else
-//          newHead = boxInfo.findWordsLeftEdge(mouseIndex);
-//      }
-//      repositionHead(newHead);
-//
-//      if (rightOfHead)
-//      {
-//        if (!rightOfTail)
-//          repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
-//        else
-//        {
-//          if (!selectionFacingRight)
-//            turnAround();
-//          repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
-//        }
-//      }
-//      else
-//      {
-//        if (rightOfTail)
-//          repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
-//        else
-//        {
-//          if (selectionFacingRight)
-//            turnAround();
-//          repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
-//        }
-//      }
-    }
-
-    private boolean isRightOfHead()
-    {
-      return mouseIndex > boxInfo.findWordsRightEdge(boxInfo.cursorIndex);
     }
 
     private boolean isSelectionFacingRight()
