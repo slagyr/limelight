@@ -36,16 +36,6 @@ public class TextModelTest
     assertEquals(0, width2);
   }
 
-  @Test
-  public void canCalculateTheXPositionForTheCursorFromAString()
-  {
-    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.LEFT_TEXT_MARGIN;
-
-    int x = boxModel.getXPosFromTextLayout("ABC");
-
-    assertEquals(expectedX, x);
-  }
 
   @Test
   public void canConcatTheLayoutsToGetTheTotalText()
@@ -59,17 +49,6 @@ public class TextModelTest
     assertEquals("This is the first line This is the second line",concatenatedText);
   }
 
-  @Test
-  public void canCalcTheXPosForCursorFromStringWithOffset()
-  {
-    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.LEFT_TEXT_MARGIN;
-    boxModel.xOffset = 10;
-
-    int x = boxModel.getXPosFromTextLayout("ABC");
-
-    assertEquals(expectedX - 10, x);
-  }
 
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
@@ -84,60 +63,6 @@ public class TextModelTest
     assertEquals(boxModel.LEFT_TEXT_MARGIN, x);
     assertEquals(width + boxModel.LEFT_TEXT_MARGIN, x2);
     assertEquals(width2 + boxModel.LEFT_TEXT_MARGIN + 3, x3);
-  }
-
-  @Test
-  public void canCalculateTheTextModelsDimensions()
-  {
-    boxModel.text = new StringBuffer("");
-    Dimension dim = boxModel.calculateTextDimensions();
-    assertEquals(null, dim);
-
-    boxModel.text = new StringBuffer("X");
-    dim = boxModel.calculateTextDimensions();
-    assertEquals(8, dim.width);
-    assertEquals(14, dim.height);
-  }
-
-  @Test
-  public void canTellIfTheTextPanelIsFull()
-  {
-    assertTrue(boxModel.isBoxFull());
-  }
-
-  @Test
-  public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidth()
-  {
-    boxModel.xOffset = boxModel.calculateTextDimensions().width - panel.getWidth();
-    int offset = boxModel.xOffset;
-
-    boxModel.shiftTextRight();
-    assertTrue(boxModel.xOffset <= offset/ 2 + 5 && boxModel.xOffset != 0);
-  }                                    
-
-  @Test
-  public void canCalculateTheXOffsetIfTheCursorIsAtTheRightEdge()
-  {
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
-
-    assertTrue(boxModel.xOffset > 0);
-  }
-
-  @Test
-  public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
-  {
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
-    int offset = boxModel.xOffset;
-    boxModel.setCursorIndex(0);
-
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
-
-    assertTrue(boxModel.xOffset <= offset / 2 + 2);
-
-    boxModel.text = new StringBuffer("hi");
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
-    assertTrue(boxModel.xOffset == 0);
-
   }
 
   @Test
@@ -169,43 +94,47 @@ public class TextModelTest
     assertEquals(" Text", boxModel.getText());
 
   }
-  
-  @Test
-  public void canGetTheSelectedRegion()
-  {
-    boxModel.setSelectionIndex(0);
-    boxModel.selectionOn = true;
-    
-    Rectangle region = boxModel.getSelectionRegion();
 
-    assertEquals(0,region.x );
-    assertEquals(TextModel.TOP_MARGIN, region.y);
-    assertEquals(boxModel.getXPosFromIndex(boxModel.getCursorIndex()), region.width);
-    assertEquals(boxModel.getPanelHeight() - TextModel.TOP_MARGIN * 2, region.height);
+  @Test
+  public void shouldBeAbleToFindNewLineIndices()
+  {
+    ArrayList<Integer> indices = boxModel.findNewLineIndices("this\nIs\nA new \rline");
+
+    assertEquals(3, indices.size());
+    assertEquals(4, (int)indices.get(0));
+    assertEquals(7, (int)indices.get(1));
+    assertEquals(14, (int)indices.get(2));
   }
 
   @Test
-  public void willRecalculateXOffsetIfTextIsFullWhenGettingSelection()
+  public void canSpiltTextIntoMultipleLinesBasedOffReturnKeys()
   {
-    boxModel.setSelectionIndex(boxModel.text.length());
-    boxModel.setCursorIndex(10);
-    boxModel.selectionOn = true;
-    boxModel.xOffset = 100;
+    ArrayList<TypedLayout> textLayouts = boxModel.parseTextForMultipleLayouts("this is the first line\nthis is the second line");
 
-    boxModel.getSelectionRegion();
+    assertEquals(2, textLayouts.size());
+    assertEquals("this is the first line\n", textLayouts.get(0).getText());
+    assertEquals("this is the second line", textLayouts.get(1).getText());
+  }
 
-    assertTrue(boxModel.xOffset > 0 && boxModel.xOffset < 100);
+  @Test
+  public void canSplitTextIntoMultipleLinesFromThePanelWidth()
+  {
+   ArrayList<TypedLayout> textLayouts = boxModel.parseTextForMultipleLayouts("This here is the first full line. This is the second line");
+
+    assertEquals(2, textLayouts.size());
+    assertEquals("This here is the first full line. ", textLayouts.get(0).getText());
+    assertEquals("This is the second line", textLayouts.get(1).getText());
   }
 
   @Test
   public void willStoreATextLayoutForEachLine()
   {
-    panel = new TextArea2Panel();
-    boxModel = panel.getBoxInfo();
-    boxModel.setText("This string of text is longer than a single line, and should be 2 lines");
+    boxModel.setText("This text is more than 1 line\rand should be 2 lines");
 
     ArrayList<TypedLayout> textLayouts = boxModel.getTextLayouts();
-
+    assertEquals(2, textLayouts.size());
+    assertEquals("This text is more than 1 line\r", textLayouts.get(0).getText());
+    assertEquals("and should be 2 lines", textLayouts.get(1).getText());
   }
 
 }

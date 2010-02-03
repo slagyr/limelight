@@ -4,6 +4,7 @@ import limelight.Context;
 import limelight.styles.Style;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.ui.TypedLayout;
 import limelight.ui.model.*;
 import limelight.util.Box;
 
@@ -152,6 +153,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     int processorIndex = calculateProcessorIndex(e);
     keyProcessors.get(processorIndex).processKey(e);
     cursorOn = true;
+    System.out.println("e.getKeyCode() = " + e.getKeyCode());
+    System.out.println("e.getKeyChar() = " + e.getKeyChar());
+    System.out.println(".......................\r");
     markPaintableRegionAsDirty();
   }
 
