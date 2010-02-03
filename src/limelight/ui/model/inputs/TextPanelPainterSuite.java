@@ -140,7 +140,7 @@ public class TextPanelPainterSuite
     @Test
     public void willOutLineGreenIfFocused()
     {
-      boxInfo.myBox.focused = true;
+      boxInfo.myPanel.focused = true;
 
       painter.paint(graphics);
 
@@ -150,7 +150,7 @@ public class TextPanelPainterSuite
     @Test
     public void willOutLineGrayIfNotFocused()
     {
-      boxInfo.myBox.focused = false;
+      boxInfo.myPanel.focused = false;
 
       painter.paint(graphics);
 
