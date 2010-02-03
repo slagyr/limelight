@@ -19,7 +19,7 @@ public class TextArea2Panel   extends TextInputPanel
   {
     setSize(150, 100);
     paintableRegion = new Box(0, TextModel.TOP_MARGIN, width, height - 2 * TextModel.TOP_MARGIN);
-    boxInfo = new PlainTextModel(this);
+    boxInfo = new TextBoxModel(this);
     keyProcessors = new ArrayList<KeyProcessor>(16);
     initKeyProcessors();
     mouseProcessor = new MouseProcessor(boxInfo);
