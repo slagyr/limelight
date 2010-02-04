@@ -33,10 +33,13 @@ public class TextAreaModel extends TextModel
   {
   }
 
-  @Override
-  public int getXPosFromText(String toIndexString)
+  protected int getXPosFromText(String toIndexString)
   {
-    return 0;
+    TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
+    int x = getWidthDimension(layout) + SIDE_TEXT_MARGIN;
+    if (x < SIDE_TEXT_MARGIN)
+      x = SIDE_TEXT_MARGIN;
+    return x;
   }
 
   @Override
@@ -48,7 +51,7 @@ public class TextAreaModel extends TextModel
       int width = 0;
       for (TypedLayout layout : getTextLayouts())
       {
-        height += getHeightDimension(layout);
+        height += (int)(getHeightDimension(layout) + layout.getLeading() +.5);
         int dimWidth = getWidthDimension(layout);
         if (dimWidth > width)
           width = dimWidth;
@@ -88,6 +91,18 @@ public class TextAreaModel extends TextModel
     return false;
   }
 
+  @Override
+  public int getTopOfStartPositionForCursor()
+  {
+    return getYPosFromIndex(cursorIndex);
+  }
+
+  @Override
+  public int getBottomPositionForCursor()
+  {
+    return getTopOfStartPositionForCursor() + getHeightOfCurrentLine() - TOP_MARGIN - 1;
+  }
+
   public ArrayList<TypedLayout> parseTextForMultipleLayouts(String text)
   {
     AttributedString attrString = new AttributedString(text);
@@ -105,14 +120,13 @@ public class TextAreaModel extends TextModel
       TextLayout layout;
       if (newLineIndices != null && newLineIndex < newLineIndices.size())
       {
-        layout = breaker.nextLayout(myPanel.getWidth(), newLineIndices.get(newLineIndex) + 1, false);
+        layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN, newLineIndices.get(newLineIndex) + 1, false);
         newLineIndex++;
       }
       else
-        layout = breaker.nextLayout(myPanel.getWidth());
+        layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN);
       lastCharIndex = firstCharIndex + layout.getCharacterCount();
       layoutText = text.substring(firstCharIndex, lastCharIndex);
-      System.out.println("layoutText = " + layoutText);
       textLayouts.add(new TextLayoutImpl(layoutText, font, TextPanel.getRenderContext()));
       firstCharIndex = lastCharIndex;
 
