@@ -34,7 +34,7 @@ public class TextPanelPainterSuite
   protected static void testClassInit()
   {
     panel = new TextBox2Panel();
-    boxInfo = panel.getBoxInfo();
+    boxInfo = panel.getModelInfo();
     panel.boxInfo = boxInfo;
     boxInfo.setText("Some Text");
     boxInfo.setCursorIndex(4);
@@ -117,7 +117,7 @@ public class TextPanelPainterSuite
       painter.paint(graphics);
 
       testBox = graphics.filledShapes.get(0).shape.getBounds();
-      assertTestBoxSize(3, TextModel.TOP_MARGIN, boxInfo.getXPosFromIndex(4) - TextModel.LEFT_TEXT_MARGIN, boxInfo.getPanelHeight() - TextModel.TOP_MARGIN *2);
+      assertTestBoxSize(3, TextModel.TOP_MARGIN, boxInfo.getXPosFromIndex(4) - TextModel.SIDE_TEXT_MARGIN, boxInfo.getPanelHeight() - TextModel.TOP_MARGIN *2);
     }
 
     @Test
@@ -183,7 +183,7 @@ public class TextPanelPainterSuite
     @Test
     public void willNotPaintIfThereIsNoText()
     {
-      boxInfo.text = null;
+      boxInfo.setText(null);
 
       painter.paint(graphics);
 
@@ -229,7 +229,7 @@ public class TextPanelPainterSuite
     @Test
     public void willNotPaintTextIfTextIsNull()
     {
-      boxInfo.text = null;
+      boxInfo.setText(null);
 
       painter.paint(graphics);
 

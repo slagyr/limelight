@@ -6,7 +6,6 @@ import limelight.ui.model.TextPanel;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
@@ -22,8 +21,40 @@ public class TextModelTest
   public void setUp()
   {
     panel = new TextBox2Panel();
-    boxModel = panel.getBoxInfo();
+    boxModel = panel.getModelInfo();
     boxModel.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
+  }
+
+  @Test
+  public void canSetACopyOfTheLastLayedoutText()
+  {
+    boxModel.setLastLayedOutText("text");
+
+    assertEquals("text", boxModel.getLastLayedOutText());
+  }
+
+  @Test
+  public void canCompareCurrentTextToLastLayedOutText()
+  {
+    boxModel.setText("some text");
+    boxModel.setLastLayedOutText("some other text");
+
+    assertTrue(boxModel.isThereSomeDifferentText());
+
+    boxModel.setLastLayedOutText("some text");
+
+    assertFalse(boxModel.isThereSomeDifferentText());
+  }
+
+  @Test
+  public void willSetLastLayedOutTextWhenGettingLayout()
+  {
+    boxModel.setLastLayedOutText("nothing");
+    boxModel.setText("something");
+
+    boxModel.getTextLayouts();
+
+    assertEquals("something", boxModel.getLastLayedOutText());
   }
 
   @Test
@@ -38,19 +69,6 @@ public class TextModelTest
 
 
   @Test
-  public void canConcatTheLayoutsToGetTheTotalText()
-  {
-    boxModel.textLayouts = new ArrayList<TypedLayout>();
-    boxModel.textLayouts.add(new TextLayoutImpl("This is the first line ", boxModel.font, TextPanel.getRenderContext()));
-    boxModel.textLayouts.add(new TextLayoutImpl("This is the second line", boxModel.font, TextPanel.getRenderContext()));
-
-    String concatenatedText = boxModel.concatenateAllLayoutText();
-
-    assertEquals("This is the first line This is the second line",concatenatedText);
-  }
-
-
-  @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
     int width = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
@@ -60,9 +78,9 @@ public class TextModelTest
     int x2 = boxModel.getXPosFromIndex(3);
     int x3 = boxModel.getXPosFromIndex(4);
 
-    assertEquals(boxModel.LEFT_TEXT_MARGIN, x);
-    assertEquals(width + boxModel.LEFT_TEXT_MARGIN, x2);
-    assertEquals(width2 + boxModel.LEFT_TEXT_MARGIN + 3, x3);
+    assertEquals(boxModel.SIDE_TEXT_MARGIN, x);
+    assertEquals(width + boxModel.SIDE_TEXT_MARGIN, x2);
+    assertEquals(width2 + boxModel.SIDE_TEXT_MARGIN + 3, x3);
   }
 
   @Test
@@ -92,49 +110,6 @@ public class TextModelTest
     boxModel.cutSelection();
     assertEquals("SomeSome", boxModel.getClipboardContents());
     assertEquals(" Text", boxModel.getText());
-
-  }
-
-  @Test
-  public void shouldBeAbleToFindNewLineIndices()
-  {
-    ArrayList<Integer> indices = boxModel.findNewLineIndices("this\nIs\nA new \rline");
-
-    assertEquals(3, indices.size());
-    assertEquals(4, (int)indices.get(0));
-    assertEquals(7, (int)indices.get(1));
-    assertEquals(14, (int)indices.get(2));
-  }
-
-  @Test
-  public void canSpiltTextIntoMultipleLinesBasedOffReturnKeys()
-  {
-    ArrayList<TypedLayout> textLayouts = boxModel.parseTextForMultipleLayouts("this is the first line\nthis is the second line");
-
-    assertEquals(2, textLayouts.size());
-    assertEquals("this is the first line\n", textLayouts.get(0).getText());
-    assertEquals("this is the second line", textLayouts.get(1).getText());
-  }
-
-  @Test
-  public void canSplitTextIntoMultipleLinesFromThePanelWidth()
-  {
-   ArrayList<TypedLayout> textLayouts = boxModel.parseTextForMultipleLayouts("This here is the first full line. This is the second line");
-
-    assertEquals(2, textLayouts.size());
-    assertEquals("This here is the first full line. ", textLayouts.get(0).getText());
-    assertEquals("This is the second line", textLayouts.get(1).getText());
-  }
-
-  @Test
-  public void willStoreATextLayoutForEachLine()
-  {
-    boxModel.setText("This text is more than 1 line\rand should be 2 lines");
-
-    ArrayList<TypedLayout> textLayouts = boxModel.getTextLayouts();
-    assertEquals(2, textLayouts.size());
-    assertEquals("This text is more than 1 line\r", textLayouts.get(0).getText());
-    assertEquals("and should be 2 lines", textLayouts.get(1).getText());
   }
 
 }
