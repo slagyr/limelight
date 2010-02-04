@@ -84,6 +84,35 @@ public class TextModelTest
   }
 
   @Test
+  public void canCalculateTheYPositionFromAnIndex()
+  {
+    int expectedY = TextModel.TOP_MARGIN;
+
+    assertEquals(expectedY, boxModel.getYPosFromIndex(0));
+  }
+
+  @Test
+  public void canGetTheCurrentLine()
+  {
+    boxModel.setCursorIndex(0);
+    int expectedLine = 0;
+
+    int line = boxModel.getCurrentLineNumber();
+
+    assertEquals(expectedLine, line);
+  }
+
+  @Test
+  public void canGetTheHeightForTheCurrentLine()
+  {
+    int expectedHeight = (int) (boxModel.getHeightDimension(boxModel.getTextLayouts().get(0)) + .5);
+
+    int currentLineHeight = boxModel.getHeightOfCurrentLine();
+
+    assertEquals(expectedHeight, currentLineHeight);
+  }
+
+  @Test
   public void canMakeUseOfTheClipboard()
   {
     boxModel.copyText("This Text");
