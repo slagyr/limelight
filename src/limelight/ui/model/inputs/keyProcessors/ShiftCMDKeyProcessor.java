@@ -18,7 +18,7 @@ public class ShiftCmdKeyProcessor extends KeyProcessor
     
     if(isMoveRightEvent(keyCode)){
       initSelection();
-      boxInfo.setCursorIndex(boxInfo.text.length());
+      boxInfo.setCursorIndex(boxInfo.getText().length());
     }
     else if(isMoveLeftEvent(keyCode)){
       initSelection();

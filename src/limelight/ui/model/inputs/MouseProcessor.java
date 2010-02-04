@@ -56,7 +56,7 @@ public class MouseProcessor
 
   private boolean isHitOnTheRightEdge(TextHitInfo hitInfo, int index)
   {
-    return index < hitInfo.getInsertionIndex() && index == boxInfo.text.length() - 1;
+    return index < hitInfo.getInsertionIndex() && index == boxInfo.getText().length() - 1;
   }
 
   public void processMousePressed(MouseEvent e)
@@ -89,7 +89,7 @@ public class MouseProcessor
   private void selectAllOnTripleClick()
   {
     boxInfo.setSelectionIndex(0);
-    boxInfo.setCursorIndex(boxInfo.text.length());
+    boxInfo.setCursorIndex(boxInfo.getText().length());
   }
 
   private void selectWordOnDoubleClick()
