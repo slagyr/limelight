@@ -1,12 +1,8 @@
 package limelight.ui.model.inputs;
 
-import limelight.styles.Style;
 import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
-import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.RootPanel;
-import limelight.ui.model.TextAccessor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,7 +35,7 @@ public class TextInputPanelTest
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     graphics = new MockGraphics();
-    boxInfo = panel.getBoxInfo();
+    boxInfo = panel.getModelInfo();
     boxInfo.setText("Some Text");
   }
 
@@ -74,8 +70,8 @@ public class TextInputPanelTest
   public void canMaxOutPaintableRegionToEncapsulateTextIfPanelFull(){
     panel.maxOutPaintableRegion();
 
-    assertEquals(panel.getWidth() - 2 * TextModel.LEFT_TEXT_MARGIN,panel.paintableRegion.width );
-    assertEquals(TextModel.LEFT_TEXT_MARGIN,panel.paintableRegion.x );
+    assertEquals(panel.getWidth() - 2 * TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.width );
+    assertEquals(TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.x );
   }
 
 

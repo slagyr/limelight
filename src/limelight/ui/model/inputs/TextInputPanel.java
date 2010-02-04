@@ -4,7 +4,6 @@ import limelight.Context;
 import limelight.styles.Style;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
-import limelight.ui.TypedLayout;
 import limelight.ui.model.*;
 import limelight.util.Box;
 
@@ -44,7 +43,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     }
   }
 
-  public TextModel getBoxInfo()
+  public TextModel getModelInfo()
   {
     return boxInfo;
   }
@@ -66,15 +65,15 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void setText(String text)
   {
-    this.boxInfo.text = new StringBuffer(text);
+    this.boxInfo.setText(text);
     boxInfo.setCursorIndex(text.length());
   }
 
   public String getText()
   {
-    if (boxInfo.text == null)
+    if (boxInfo.getText() == null)
       return null;
-    return boxInfo.text.toString();
+    return boxInfo.getText().toString();
   }
 
   public Point getAbsoluteLocation()
@@ -217,7 +216,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   private void markPaintableRegionAsDirty()
   {
-    if(boxInfo.getCursorIndex() < boxInfo.text.length())
+    if(boxInfo.getCursorIndex() < boxInfo.getText().length())
       expandPaintableRegionToRightBound();
     if(isTextMaxed())
       maxOutPaintableRegion();

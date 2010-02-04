@@ -16,7 +16,7 @@ public class TextPanelSelectionPainter extends TextPanelPainter
   {
     if (!boxInfo.selectionOn)
       return;
-    if (boxInfo.text != null && boxInfo.text.length() > 0)
+    if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
     {
       graphics.setColor(Color.cyan);
       Rectangle rect = boxInfo.getSelectionRegion();

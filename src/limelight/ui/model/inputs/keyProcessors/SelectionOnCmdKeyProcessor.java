@@ -33,7 +33,7 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
         boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_RIGHT:
-        boxInfo.setCursorIndex(boxInfo.text.length());
+        boxInfo.setCursorIndex(boxInfo.getText().length());
         boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_LEFT:
