@@ -26,7 +26,7 @@ public abstract class KeyProcessor
 
   protected boolean isMoveRightEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_RIGHT && boxInfo.getCursorIndex() < boxInfo.text.length();
+    return keyCode == KeyEvent.VK_RIGHT && boxInfo.getCursorIndex() < boxInfo.getText().length();
   }
 
   protected boolean isMoveLeftEvent(int keyCode)
@@ -52,18 +52,18 @@ public abstract class KeyProcessor
 
   private int findNextWordSkippingSpaces(int startIndex)
   {
-    for (int i = startIndex;i <= boxInfo.text.length() -1;i++)
+    for (int i = startIndex;i <= boxInfo.getText().length() -1;i++)
     {
-      if(boxInfo.text.charAt(i-1) == ' ' && boxInfo.text.charAt(i) != ' ')
+      if(boxInfo.getText().charAt(i-1) == ' ' && boxInfo.getText().charAt(i) != ' ')
         return i;
     }
-    return boxInfo.text.length();
+    return boxInfo.getText().length();
   }
 
   protected void selectAll()
   {
     boxInfo.selectionOn = true;
-    boxInfo.setCursorIndex(boxInfo.text.length());
+    boxInfo.setCursorIndex(boxInfo.getText().length());
     boxInfo.setSelectionIndex(0);
   }
 }

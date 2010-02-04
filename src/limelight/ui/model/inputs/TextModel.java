@@ -2,24 +2,17 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
-import limelight.ui.TextLayoutImpl;
 import limelight.ui.TypedLayout;
-import limelight.ui.model.TextPanel;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.font.LineBreakMeasurer;
-import java.awt.font.TextAttribute;
-import java.awt.font.TextLayout;
 import java.io.IOException;
-import java.text.AttributedCharacterIterator;
-import java.text.AttributedString;
 import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
 {
 
-  public static final int LEFT_TEXT_MARGIN = 3;
+  public static final int SIDE_TEXT_MARGIN = 3;
   public static final int SIDE_DETECTION_MARGIN = 4;
   public static final int TOP_MARGIN = 4;
 
@@ -33,6 +26,7 @@ public abstract class TextModel implements ClipboardOwner
   public Font font;
   int xOffset;
   TextInputPanel myPanel;
+  private String lastLayedOutText;
 
   public TextModel()
   {
@@ -44,7 +38,7 @@ public abstract class TextModel implements ClipboardOwner
     if (textWidth >= panelWidth)
     {
       cursorX = getXPosFromIndex(cursorIndex);
-      int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + LEFT_TEXT_MARGIN;
+      int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + SIDE_TEXT_MARGIN;
       if (!typingInCenterOfBox(panelWidth, newXOffset))
         xOffset = newXOffset;
       while (cursorX < SIDE_DETECTION_MARGIN)
@@ -77,7 +71,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     String toIndexString = text.substring(0, index);
     if (index <= 0)
-      return LEFT_TEXT_MARGIN;
+      return SIDE_TEXT_MARGIN;
     else
       return getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
   }
@@ -122,29 +116,6 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract ArrayList<TypedLayout> getTextLayouts();
 
-  public String concatenateAllLayoutText()
-  {
-    StringBuffer string = new StringBuffer();
-
-    for (int i = 0; i < textLayouts.size(); i++)
-    {
-      string.append(textLayouts.get(i).getText());
-    }
-    return string.toString();
-  }
-
-  public void setText(String text)
-  {
-    this.text = new StringBuffer(text);
-    setCursorIndex(text.length());
-  }
-
-  public String getText()
-  {
-    if (text == null)
-      return null;
-    return text.toString();
-  }
 
   public Point getPanelAbsoluteLocation()
   {
@@ -306,45 +277,36 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract boolean isBoxFull();
 
-  public ArrayList<TypedLayout> parseTextForMultipleLayouts(String text)
+  public void setText(String text)
   {
-    AttributedString attrString = new AttributedString(text);
-    attrString.addAttribute(TextAttribute.FONT, font);
-    AttributedCharacterIterator iterator = attrString.getIterator();
-    ArrayList<Integer> newLineIndices = findNewLineIndices(text);
-    LineBreakMeasurer breaker = new LineBreakMeasurer(iterator, TextPanel.getRenderContext());
-    ArrayList<TypedLayout> textLayouts = new ArrayList<TypedLayout>();
-    int firstCharIndex = 0;
-    int lastCharIndex = 0;
-    int newLineIndex = 0;
-    String layoutText = "";
-    while (breaker.getPosition() < iterator.getEndIndex())
+    if (text == null)
+      this.text = null;
+    else
     {
-      TextLayout layout;
-      if (newLineIndices != null && newLineIndex < newLineIndices.size()){
-        layout = breaker.nextLayout(myPanel.getWidth(), newLineIndices.get(newLineIndex)+1, false);
-        newLineIndex++;
-      }
-      else
-        layout = breaker.nextLayout(myPanel.getWidth());
-      lastCharIndex = firstCharIndex + layout.getCharacterCount();
-      layoutText = text.substring(firstCharIndex, lastCharIndex);
-      textLayouts.add(new TextLayoutImpl(layoutText, font, TextPanel.getRenderContext()));
-      firstCharIndex = lastCharIndex;
-
+      this.text = new StringBuffer(text);
+      setCursorIndex(text.length());
     }
-
-    return textLayouts;
   }
 
-  public ArrayList<Integer> findNewLineIndices(String text)
+  public String getText()
   {
-    ArrayList<Integer> indices = new ArrayList<Integer>();
-    for (int i = 0; i < text.length(); i++)
-    {
-      if (text.charAt(i) == '\n' || text.charAt(i) == '\r')
-        indices.add(i);
-    }
-    return indices;
+    if (text == null)
+      return null;
+    return text.toString();
+  }
+
+  public void setLastLayedOutText(String lastLayedOutText)
+  {
+    this.lastLayedOutText = lastLayedOutText;
+  }
+
+  public String getLastLayedOutText()
+  {
+    return lastLayedOutText;
+  }
+
+  public boolean isThereSomeDifferentText()
+  {
+    return !text.toString().equals(lastLayedOutText);
   }
 }

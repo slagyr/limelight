@@ -34,7 +34,7 @@ public class MouseProcessorTest
   public void setUp()
   {
     boxPanel = new TextBox2Panel();
-    boxInfo = boxPanel.getBoxInfo();
+    boxInfo = boxPanel.getModelInfo();
     boxInfo.setText("Some Text");
     boxInfo.setCursorIndex(0);
     processor = new MouseProcessor(boxInfo);
@@ -173,7 +173,7 @@ public class MouseProcessorTest
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(boxInfo.text.length(), boxInfo.getCursorIndex());
+    assertEquals(boxInfo.getText().length(), boxInfo.getCursorIndex());
   }
 
   @Test

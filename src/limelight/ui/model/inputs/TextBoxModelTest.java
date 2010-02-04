@@ -19,7 +19,7 @@ public class TextBoxModelTest
   public void setUp()
   {
     panel = new TextBox2Panel();
-    boxModel = panel.getBoxInfo();
+    boxModel = panel.getModelInfo();
     boxModel.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
   }
 
@@ -27,7 +27,7 @@ public class TextBoxModelTest
   public void canCalcTheXPosForCursorFromStringWithOffset()
   {
     int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.LEFT_TEXT_MARGIN;
+    int expectedX = width + boxModel.SIDE_TEXT_MARGIN;
     boxModel.xOffset = 10;
 
     int x = boxModel.getXPosFromText("ABC");
@@ -35,18 +35,18 @@ public class TextBoxModelTest
     assertEquals(expectedX - 10, x);
   }
 
-   @Test
+  @Test
   public void canCalculateTheXPositionForTheCursorFromAString()
   {
     int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.LEFT_TEXT_MARGIN;
+    int expectedX = width + boxModel.SIDE_TEXT_MARGIN;
 
     int x = boxModel.getXPosFromText("ABC");
 
     assertEquals(expectedX, x);
   }
 
-    @Test
+  @Test
   public void canTellIfTheTextPanelIsFull()
   {
     assertTrue(boxModel.isBoxFull());
@@ -59,7 +59,7 @@ public class TextBoxModelTest
     int offset = boxModel.xOffset;
 
     boxModel.shiftOffset();
-    assertTrue(boxModel.xOffset <= offset/ 2 + 5 && boxModel.xOffset != 0);
+    assertTrue(boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
   }
 
   @Test
@@ -81,7 +81,7 @@ public class TextBoxModelTest
 
     assertTrue(boxModel.xOffset <= offset / 2 + 2);
 
-    boxModel.text = new StringBuffer("hi");
+    boxModel.setText("hi");
     boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
     assertTrue(boxModel.xOffset == 0);
 
@@ -90,11 +90,11 @@ public class TextBoxModelTest
   @Test
   public void canCalculateTheTextModelsDimensions()
   {
-    boxModel.text = new StringBuffer("");
+    boxModel.setText("");
     Dimension dim = boxModel.calculateTextDimensions();
     assertEquals(null, dim);
 
-    boxModel.text = new StringBuffer("X");
+    boxModel.setText("X");
     dim = boxModel.calculateTextDimensions();
     assertEquals(8, dim.width);
     assertEquals(14, dim.height);
@@ -109,7 +109,7 @@ public class TextBoxModelTest
 
     Rectangle region = boxModel.getSelectionRegion();
 
-    assertEquals(0,region.x );
+    assertEquals(0, region.x);
     assertEquals(TextModel.TOP_MARGIN, region.y);
     assertEquals(boxModel.getXPosFromIndex(boxModel.getCursorIndex()), region.width);
     assertEquals(boxModel.getPanelHeight() - TextModel.TOP_MARGIN * 2, region.height);
@@ -119,7 +119,7 @@ public class TextBoxModelTest
   @Test
   public void willRecalculateXOffsetIfTextIsFullWhenGettingSelection()
   {
-    boxModel.setSelectionIndex(boxModel.text.length());
+    boxModel.setSelectionIndex(boxModel.getText().length());
     boxModel.setCursorIndex(10);
     boxModel.selectionOn = true;
     boxModel.xOffset = 100;

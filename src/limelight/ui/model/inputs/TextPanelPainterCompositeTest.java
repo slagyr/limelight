@@ -5,7 +5,6 @@ import limelight.ui.model.inputs.painters.TextPanelBoxPainter;
 import limelight.ui.model.inputs.painters.TextPanelCursorPainter;
 import limelight.ui.model.inputs.painters.TextPanelSelectionPainter;
 import limelight.ui.model.inputs.painters.TextPanelTextPainter;
-import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class TextPanelPainterCompositeTest
   public void setUp()
   {
     panel = new TextBox2Panel();
-    boxInfo = panel.getBoxInfo();
+    boxInfo = panel.getModelInfo();
     painterComposite = new TextPanelPainterComposite(boxInfo);
   }
 

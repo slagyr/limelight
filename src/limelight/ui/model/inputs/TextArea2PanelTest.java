@@ -22,14 +22,14 @@ public class TextArea2PanelTest
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     graphics = new MockGraphics();
-    boxInfo = panel.getBoxInfo();
+    boxInfo = panel.getModelInfo();
     boxInfo.setText("Some Text");
   }
 
   @Test
   public void canResetPaintableRegion()
   {
-    assertEquals(TextModel.LEFT_TEXT_MARGIN, panel.paintableRegion.x);
+    assertEquals(TextModel.SIDE_TEXT_MARGIN, panel.paintableRegion.x);
     assertEquals(panel.getWidth(),panel.paintableRegion.width);
 
     panel.resetPaintableRegion();
@@ -45,7 +45,7 @@ public class TextArea2PanelTest
     panel.setPaintableRegion(0);
     panel.setPaintableRegion(4);
 
-    assertEquals(TextModel.LEFT_TEXT_MARGIN,panel.paintableRegion.x );
-    assertEquals(boxInfo.getXPosFromIndex(4) - TextModel.LEFT_TEXT_MARGIN, panel.paintableRegion.width);
+    assertEquals(TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.x );
+    assertEquals(boxInfo.getXPosFromIndex(4) - TextModel.SIDE_TEXT_MARGIN, panel.paintableRegion.width);
   }
 }

@@ -40,7 +40,7 @@ public class KeyProcessorSuite
   private static void setUp()
   {
     boxPanel = new TextBox2Panel();
-    boxInfo = boxPanel.getBoxInfo();
+    boxInfo = boxPanel.getModelInfo();
     asserter = new TextModelAsserter(boxInfo);
 
     boxInfo.setText("Here are four words");
@@ -88,7 +88,7 @@ public class KeyProcessorSuite
     public void assertTextState(int cursorIndex, String text)
     {
       assertEquals(cursorIndex, boxInfo.getCursorIndex());
-      assertEquals(text, boxInfo.text.toString());
+      assertEquals(text, boxInfo.getText().toString());
       if (!boxInfo.selectionOn)
         assertEquals(0, boxInfo.getSelectionIndex());
     }
@@ -175,7 +175,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(boxInfo.text.length(), "Bob Dole");
+      asserter.assertTextState(boxInfo.getText().length(), "Bob Dole");
     }
 
     @Test
@@ -185,7 +185,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.text.length(), 0, false);
+      asserter.assertSelection(boxInfo.getText().length(), 0, false);
     }
 
     @Test
@@ -258,7 +258,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.text.length(), 1, true);
+      asserter.assertSelection(boxInfo.getText().length(), 1, true);
     }
 
     @Test
@@ -524,7 +524,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.text.length(), 0, true);
+      asserter.assertSelection(boxInfo.getText().length(), 0, true);
     }
 
     @Test
@@ -570,7 +570,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.text.length(), SELECTION_START_INDEX, false);
+      asserter.assertSelection(boxInfo.getText().length(), SELECTION_START_INDEX, false);
     }
 
     @Test
