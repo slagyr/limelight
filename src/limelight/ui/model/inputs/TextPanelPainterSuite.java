@@ -224,6 +224,7 @@ public class TextPanelPainterSuite
       layout = new MockTextLayout(boxInfo.getText(), boxInfo.font, TextPanel.getRenderContext());
       boxInfo.textLayouts = new ArrayList<TypedLayout>();
       boxInfo.textLayouts.add(layout);
+      boxInfo.setLastLayedOutText("Some Text");      
     }
 
     @Test

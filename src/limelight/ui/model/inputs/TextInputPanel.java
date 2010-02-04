@@ -125,22 +125,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     }
   }
 
-  private void markCursorRegionAsDirty()
-  {
-    RootPanel rootPanel = getRoot();
-    if (rootPanel != null)
-    {
-      int regionHeight = boxInfo.getPanelHeight() - TextModel.TOP_MARGIN * 2;
-      rootPanel.addDirtyRegion(new Box(getAbsoluteCursorX(), TextModel.TOP_MARGIN + getAbsoluteLocation().y, 1, regionHeight));
-    }
-  }
-
-  private int getAbsoluteCursorX()
-  {
-    int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex());
-    cursorX += getAbsoluteLocation().x;
-    return cursorX;
-  }
+  protected abstract void markCursorRegionAsDirty();
 
   private void stopCursor()
   {
@@ -152,9 +137,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     int processorIndex = calculateProcessorIndex(e);
     keyProcessors.get(processorIndex).processKey(e);
     cursorOn = true;
-    System.out.println("e.getKeyCode() = " + e.getKeyCode());
-    System.out.println("e.getKeyChar() = " + e.getKeyChar());
-    System.out.println(".......................\r");
     markPaintableRegionAsDirty();
   }
 

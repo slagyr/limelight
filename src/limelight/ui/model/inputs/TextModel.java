@@ -69,7 +69,16 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getXPosFromIndex(int index)
   {
-    String toIndexString = text.substring(0, index);
+    getTextLayouts();
+    int startIndex = 0;
+    int layoutIndex = 0;
+    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
+    while (index > startIndex + lineCharCount)
+    {
+      startIndex += lineCharCount;
+      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
+    }
+    String toIndexString = text.substring(startIndex, index);
     if (index <= 0)
       return SIDE_TEXT_MARGIN;
     else
@@ -77,7 +86,23 @@ public abstract class TextModel implements ClipboardOwner
   }
 
 
-  public abstract int getXPosFromText(String toIndexString);
+  protected abstract int getXPosFromText(String toIndexString);
+
+  public int getYPosFromIndex(int index)
+  {
+    getTextLayouts();
+    int startIndex = 0;
+    int layoutIndex = 0;
+    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
+    int yPos = TOP_MARGIN;
+    while (index > startIndex + lineCharCount)
+    {
+      startIndex += lineCharCount;
+      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
+      yPos += (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
+    }
+      return yPos; 
+  }
 
   public int getTerminatingSpaceWidth(String string)
   {
@@ -97,9 +122,9 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract Dimension calculateTextDimensions();
 
-  public int getHeightDimension(TypedLayout layout)
+  public float getHeightDimension(TypedLayout layout)
   {
-    return (int) ((layout.getAscent() + layout.getDescent() + layout.getLeading()) + 0.5);
+    return (layout.getAscent() + layout.getDescent());
 
   }
 
@@ -309,4 +334,28 @@ public abstract class TextModel implements ClipboardOwner
   {
     return !text.toString().equals(lastLayedOutText);
   }
+
+  public int getHeightOfCurrentLine()
+  {
+    int lineNumber = getCurrentLineNumber();
+    return (int) getHeightDimension(textLayouts.get(lineNumber));
+  }
+
+  public int getCurrentLineNumber()
+  {
+    getTextLayouts();
+    int startIndex = 0;
+    int layoutIndex = 0;
+    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
+    while (cursorIndex > startIndex + lineCharCount)
+    {
+      startIndex += lineCharCount;
+      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
+    }
+    return layoutIndex;
+  }
+
+  public abstract int getTopOfStartPositionForCursor();
+
+  public abstract int getBottomPositionForCursor();
 }

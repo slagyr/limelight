@@ -1,5 +1,6 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
@@ -126,5 +127,17 @@ public class TextBox2Panel extends TextInputPanel
   public void lostOwnership(Clipboard clipboard, Transferable contents)
   {
     //This doesn't have to do anything... how unsettling.
+  }
+
+  protected void markCursorRegionAsDirty()
+  {
+    RootPanel rootPanel = getRoot();
+    if (rootPanel != null)
+    {
+      int regionHeight = boxInfo.getHeightOfCurrentLine() + TextModel.TOP_MARGIN;
+      int cursorY =  getAbsoluteLocation().y + TextModel.TOP_MARGIN;
+      int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
+      rootPanel.addDirtyRegion(new Box(cursorX, cursorY, 1, regionHeight));
+    }
   }
 }

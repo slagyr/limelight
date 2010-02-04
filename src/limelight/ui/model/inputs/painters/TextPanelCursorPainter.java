@@ -17,8 +17,12 @@ public class TextPanelCursorPainter extends TextPanelPainter
   public void paint(Graphics2D graphics)
   {
     int x = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex());
+    int y = boxInfo.getTopOfStartPositionForCursor();
     graphics.setColor(Color.black);    
     if(boxInfo.isCursorOn())
-      graphics.drawLine(x, HEIGHT_MARGIN, x, boxInfo.getPanelHeight() - HEIGHT_MARGIN -1);
+    {
+      int cursorBottom = boxInfo.getBottomPositionForCursor();
+      graphics.drawLine(x, y - HEIGHT_MARGIN, x, cursorBottom);
+    }
   }
 }

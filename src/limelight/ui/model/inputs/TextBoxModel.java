@@ -26,7 +26,7 @@ public class TextBoxModel extends TextModel
     xOffset = 0;
   }
 
-  public int getXPosFromText(String toIndexString)
+  protected int getXPosFromText(String toIndexString)
   {
     TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
     int x = getWidthDimension(layout) + SIDE_TEXT_MARGIN - xOffset;
@@ -34,7 +34,7 @@ public class TextBoxModel extends TextModel
       x = SIDE_TEXT_MARGIN;
     return x;
   }
-
+  
   public void shiftOffset()
   {
     String rightShiftingText = getText().substring(0, cursorIndex);
@@ -65,7 +65,7 @@ public class TextBoxModel extends TextModel
       int width = 0;
       for (TypedLayout layout : getTextLayouts())
       {
-        height += getHeightDimension(layout);
+        height += (int) (getHeightDimension(layout) + layout.getLeading() + .5);
         width += getWidthDimension(layout);
       }
       return new Dimension(width, height);
@@ -112,6 +112,18 @@ public class TextBoxModel extends TextModel
     if (getText().length() > 0)
       return (myPanel.getWidth() - TextModel.SIDE_DETECTION_MARGIN * 2 <= calculateTextDimensions().width);
     return false;
+  }
+
+  @Override
+  public int getTopOfStartPositionForCursor()
+  {
+    return TOP_MARGIN;
+  }
+
+  @Override
+  public int getBottomPositionForCursor()
+  {
+    return myPanel.getHeight() - TOP_MARGIN * 2;
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)
