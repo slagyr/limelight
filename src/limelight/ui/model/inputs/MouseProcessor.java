@@ -40,15 +40,20 @@ public class MouseProcessor
   {
     TextHitInfo hitInfo;
     ArrayList<TypedLayout> layouts = boxInfo.getTextLayouts();
-    if(layouts == null)
+    if (layouts == null)
       return -1;
-    int i =0;
+    int i = 0;
+    int charCount = 0;
+    int layoutPosition = (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
     hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
-    while(hitInfo == null)
+    while (i < layouts.size() -1 && y > layoutPosition)
     {
-      hitInfo = layouts.get(i++).hitTestChar(x + boxInfo.getXOffset(), y);
+      charCount += layouts.get(i).getText().length();
+      i++;
+      hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
+      layoutPosition += (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
     }
-    int index = hitInfo.getCharIndex();
+    int index = hitInfo.getCharIndex() + charCount;
     if (isHitOnTheRightEdge(hitInfo, index))
       index += 1;
     return index;
@@ -143,10 +148,10 @@ public class MouseProcessor
       boolean selectionFacingRight = isSelectionFacingRight();
 
       boolean isMouseTrailingTheTail = selectionFacingRight && !rightOfTail || !selectionFacingRight && rightOfTail;
-      if(isMouseTrailingTheTail)
+      if (isMouseTrailingTheTail)
         turnAround();
 
-      if(rightOfTail)
+      if (rightOfTail)
         repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
       else
         repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
