@@ -29,6 +29,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected Box paintableRegion;
   protected SimpleHorizontalAlignmentAttribute horizontalTextAlignment;
   protected SimpleVerticalAlignmentAttribute verticalTextAlignment;
+  private int lastKeyPressed;
 
   public void setParent(limelight.ui.Panel panel)
   {
@@ -134,13 +135,14 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void keyPressed(KeyEvent e)
   {
-    int processorIndex = calculateProcessorIndex(e);
+    int processorIndex = calculateKeyProcessorIndex(e);
     keyProcessors.get(processorIndex).processKey(e);
+    lastKeyPressed = e.getKeyCode();
     cursorOn = true;
     markPaintableRegionAsDirty();
   }
 
-  private int calculateProcessorIndex(KeyEvent e)
+  private int calculateKeyProcessorIndex(KeyEvent e)
   {
     int index = 0;
     int modifiers = e.getModifiers();
@@ -237,4 +239,14 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public abstract void maxOutPaintableRegion();
 
   public abstract boolean isTextMaxed();
+
+  public int getLastKeyPressed()
+  {
+    return lastKeyPressed;
+  }
+
+  public void setLastKeyPressed(int keyCode)
+  {
+    lastKeyPressed = keyCode;
+  }
 }
