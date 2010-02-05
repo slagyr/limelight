@@ -69,17 +69,14 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getXPosFromIndex(int index)
   {
-    getTextLayouts();
+    if (text == null || text.length() == 0)
+      return SIDE_TEXT_MARGIN;
+    int lineNumber = getLineNumberOfIndex(index);
     int startIndex = 0;
-    int layoutIndex = 0;
-    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
-    while (index > startIndex + lineCharCount)
-    {
-      startIndex += lineCharCount;
-      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
-    }
+    for (int i = 0; i < lineNumber; i++)
+      startIndex += textLayouts.get(i).getText().length();
     String toIndexString = text.substring(startIndex, index);
-    if (index <= 0)
+    if (index <= 0 || isLastCharacterAReturn())
       return SIDE_TEXT_MARGIN;
     else
       return getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
@@ -90,20 +87,23 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getYPosFromIndex(int index)
   {
-    getTextLayouts();
-    int startIndex = 0;
-    int layoutIndex = 0;
-    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
     int yPos = TOP_MARGIN;
-    while (index > startIndex + lineCharCount)
-    {
-      startIndex += lineCharCount;
-      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
+    if (text == null || text.length() == 0)
+      return yPos;
+    int lineNumber = getLineNumberOfIndex(index);
+    int layoutIndex;
+    for (layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
       yPos += (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
-    }
-    if (text.charAt(text.length() - 1) == '\r')
+    if (isLastCharacterAReturn())
       yPos += (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
     return yPos;
+  }
+
+  private boolean isLastCharacterAReturn()
+  {
+    if (cursorIndex == 0)
+      return false;
+    return text.charAt(cursorIndex - 1) == '\r' || text.charAt(cursorIndex - 1) == '\n';
   }
 
   public int getTerminatingSpaceWidth(String string)
@@ -339,17 +339,17 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getHeightOfCurrentLine()
   {
-    int lineNumber = getCurrentLineNumber();
+    int lineNumber = getLineNumberOfIndex(cursorIndex);
     return (int) getHeightDimension(textLayouts.get(lineNumber));
   }
 
-  public int getCurrentLineNumber()
+  public int getLineNumberOfIndex(int index)
   {
     getTextLayouts();
     int startIndex = 0;
     int layoutIndex = 0;
     int lineCharCount = textLayouts.get(layoutIndex).getText().length();
-    while (cursorIndex > startIndex + lineCharCount)
+    while (index > startIndex + lineCharCount)
     {
       startIndex += lineCharCount;
       lineCharCount = textLayouts.get(++layoutIndex).getText().length();

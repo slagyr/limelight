@@ -1,12 +1,9 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.TextLayoutImpl;
-import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -97,7 +94,7 @@ public class TextModelTest
     boxModel.setCursorIndex(0);
     int expectedLine = 0;
 
-    int line = boxModel.getCurrentLineNumber();
+    int line = boxModel.getLineNumberOfIndex(boxModel.cursorIndex);
 
     assertEquals(expectedLine, line);
   }
