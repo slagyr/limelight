@@ -16,8 +16,8 @@ import static org.junit.Assert.assertTrue;
 public class MouseProcessorTest
 {
   MouseProcessor processor;
-  TextInputPanel boxPanel;
-  TextModel boxInfo;
+  TextInputPanel panel;
+  TextModel modelInfo;
   PropPanel parent;
   MouseEvent mockMouseEvent;
 
@@ -33,18 +33,18 @@ public class MouseProcessorTest
   @Before
   public void setUp()
   {
-    boxPanel = new TextBox2Panel();
-    boxInfo = boxPanel.getModelInfo();
-    boxInfo.setText("Some Text");
-    boxInfo.setCursorIndex(0);
-    processor = new MouseProcessor(boxInfo);
+    panel = new TextArea2Panel();
+    modelInfo = panel.getModelInfo();
+    modelInfo.setText("Some Text");
+    modelInfo.setCursorIndex(0);
+    processor = new MouseProcessor(modelInfo);
     parent = new PropPanel(new MockProp());
-    parent.add(boxPanel);
+    parent.add(panel);
     parent.setParent(null);
     parent.setLocation(0, 0);
-    boxPanel.setParent(parent);
-    boxPanel.setLocation(100, 100);
-    boxPanel.setSize(150, 25);
+    panel.setParent(parent);
+    panel.setLocation(100, 100);
+    panel.setSize(150, 25);
     mockMouseEvent = new MockMouseEvent(110, 115);
   }
 
@@ -87,8 +87,8 @@ public class MouseProcessorTest
   {
     processor.processMousePressed(mockMouseEvent);
 
-    assertEquals(1, boxInfo.getCursorIndex());
-    assertEquals(1, boxInfo.getSelectionIndex());
+    assertEquals(1, modelInfo.getCursorIndex());
+    assertEquals(1, modelInfo.getSelectionIndex());
   }
 
   @Test
@@ -98,8 +98,19 @@ public class MouseProcessorTest
 
     processor.processMousePressed(mockMouseEvent);
 
-    assertEquals(0, boxInfo.getCursorIndex());
-    assertEquals(0, boxInfo.getSelectionIndex());
+    assertEquals(0, modelInfo.getCursorIndex());
+    assertEquals(0, modelInfo.getSelectionIndex());
+  }
+
+  @Test
+  public void willMarkCursorProperlyWithAMultiLineText()
+  {
+    modelInfo.setText("This is\nMulti lined.");
+    mockMouseEvent = new MockMouseEvent(110,120);
+
+    processor.processMousePressed(mockMouseEvent);
+
+    assertEquals(9, modelInfo.cursorIndex);
   }
 
   @Test
@@ -107,7 +118,7 @@ public class MouseProcessorTest
   {
     processor.processMousePressed(mockMouseEvent);
 
-    assertTrue(boxInfo.selectionOn);
+    assertTrue(modelInfo.selectionOn);
   }
 
   @Test
@@ -115,19 +126,19 @@ public class MouseProcessorTest
   {
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(1, boxInfo.getCursorIndex());
+    assertEquals(1, modelInfo.getCursorIndex());
   }
 
   @Test
   public void willSetSelectionOnToFalseIfMouseReleaseIsAtSameIndexAsTheClick()
   {
-    boxInfo.setSelectionIndex(1);
-    boxInfo.selectionOn = true;
+    modelInfo.setSelectionIndex(1);
+    modelInfo.selectionOn = true;
 
     processor.processMouseReleased(mockMouseEvent);
 
 
-    assertFalse(boxInfo.selectionOn);
+    assertFalse(modelInfo.selectionOn);
   }
 
   @Test
@@ -137,9 +148,9 @@ public class MouseProcessorTest
 
     processor.processMousePressed(mockMouseEvent);
 
-    assertEquals(4, boxInfo.getCursorIndex());
-    assertEquals(0, boxInfo.getSelectionIndex());
-    assertTrue(boxInfo.selectionOn);
+    assertEquals(4, modelInfo.getCursorIndex());
+    assertEquals(0, modelInfo.getSelectionIndex());
+    assertTrue(modelInfo.selectionOn);
   }
 
   @Test
@@ -156,96 +167,96 @@ public class MouseProcessorTest
   public void willNotChangeTheCursorPositionOnMouseReleaseIfDoubleClickIsOn()
   {
     processor.doubleClickOn = true;
-    boxInfo.setCursorIndex(5);
+    modelInfo.setCursorIndex(5);
 
     processor.processMouseReleased(mockMouseEvent);
 
-    assertEquals(5, boxInfo.getCursorIndex());
+    assertEquals(5, modelInfo.getCursorIndex());
   }
 
   @Test
   public void willBeginWordSelectionIfDoubleClickIsOn()
   {
     processor.doubleClickOn = true;
-    boxInfo.setSelectionIndex(0);
-    boxInfo.setCursorIndex(4);
-    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(8) + boxInfo.getPanelAbsoluteLocation().x, 115);
+    modelInfo.setSelectionIndex(0);
+    modelInfo.setCursorIndex(4);
+    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(8) + modelInfo.getPanelAbsoluteLocation().x, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(boxInfo.getText().length(), boxInfo.getCursorIndex());
+    assertEquals(modelInfo.getText().length(), modelInfo.getCursorIndex());
   }
 
   @Test
   public void canWordSelectGoingToTheLeft()
   {
     processor.doubleClickOn = true;
-    boxInfo.setSelectionIndex(5);
-    boxInfo.setCursorIndex(9);
+    modelInfo.setSelectionIndex(5);
+    modelInfo.setCursorIndex(9);
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(9, boxInfo.getSelectionIndex());
-    assertEquals(0, boxInfo.getCursorIndex());
+    assertEquals(9, modelInfo.getSelectionIndex());
+    assertEquals(0, modelInfo.getCursorIndex());
   }
 
   @Test
   public void canWordSelectManyWordsToTheLeft()
   {
-    boxInfo.setText("Some Text Here");
+    modelInfo.setText("Some Text Here");
     processor.doubleClickOn = true;
-    boxInfo.setSelectionIndex(14);
-    boxInfo.setCursorIndex(5);
+    modelInfo.setSelectionIndex(14);
+    modelInfo.setCursorIndex(5);
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(14, boxInfo.getSelectionIndex());
-    assertEquals(0, boxInfo.getCursorIndex());
+    assertEquals(14, modelInfo.getSelectionIndex());
+    assertEquals(0, modelInfo.getCursorIndex());
   }
 
   @Test
   public void willDeselectOneWordAtATimeWhenDraggingRightOverSelection()
   {
-    boxInfo.setText("Some Text Here");
+    modelInfo.setText("Some Text Here");
     processor.doubleClickOn = true;
-    boxInfo.setSelectionIndex(14);
-    boxInfo.setCursorIndex(5);
-    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(10) + boxInfo.getPanelAbsoluteLocation().x, 115);
+    modelInfo.setSelectionIndex(14);
+    modelInfo.setCursorIndex(5);
+    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(10) + modelInfo.getPanelAbsoluteLocation().x, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(14, boxInfo.getSelectionIndex());
-    assertEquals(10, boxInfo.getCursorIndex());
+    assertEquals(14, modelInfo.getSelectionIndex());
+    assertEquals(10, modelInfo.getCursorIndex());
   }
 
   @Test
   public void willDeselectOneWordAtATimeWhenDraggingLeftOverSelection()
   {
-    boxInfo.setText("Some Text Here");
+    modelInfo.setText("Some Text Here");
     processor.doubleClickOn = true;
-    boxInfo.setSelectionIndex(5);
-    boxInfo.setCursorIndex(14);
-    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(7) + boxInfo.getPanelAbsoluteLocation().x, 115);
+    modelInfo.setSelectionIndex(5);
+    modelInfo.setCursorIndex(14);
+    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(7) + modelInfo.getPanelAbsoluteLocation().x, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(5, boxInfo.getSelectionIndex());
-    assertEquals(9, boxInfo.getCursorIndex());
+    assertEquals(5, modelInfo.getSelectionIndex());
+    assertEquals(9, modelInfo.getCursorIndex());
   }
 
   @Test
   public void willKeepTheOriginalWordSelectedIfDraggedPastRightEdgeOfWordAfterSelectingToTheLeft()
   {
-    boxInfo.setText("Some Text Here");
+    modelInfo.setText("Some Text Here");
     processor.doubleClickOn = true;
-    boxInfo.setSelectionIndex(9);
-    boxInfo.setCursorIndex(5);
-    mockMouseEvent = new MockMouseEvent(boxInfo.getXPosFromIndex(10) + boxInfo.getPanelAbsoluteLocation().x, 115);
+    modelInfo.setSelectionIndex(9);
+    modelInfo.setCursorIndex(5);
+    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(10) + modelInfo.getPanelAbsoluteLocation().x, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertEquals(5, boxInfo.getSelectionIndex());
-    assertEquals(14, boxInfo.getCursorIndex());
+    assertEquals(5, modelInfo.getSelectionIndex());
+    assertEquals(14, modelInfo.getCursorIndex());
   }
 
   @Test
@@ -256,8 +267,8 @@ public class MouseProcessorTest
 
     processor.makeExtraSelectionOnMultiClick();
 
-    assertEquals(0, boxInfo.getSelectionIndex());
-    assertEquals(9, boxInfo.getCursorIndex());
+    assertEquals(0, modelInfo.getSelectionIndex());
+    assertEquals(9, modelInfo.getCursorIndex());
   }
 }
 

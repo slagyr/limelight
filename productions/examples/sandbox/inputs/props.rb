@@ -13,8 +13,8 @@ arena do
   	cell(:border_width => "1") { input_results :id => "text_box_results" }
     # end row
     cell do
-      #text_area_input :players => "text_area", :id => "text_area_input", :text => "none"
-      text_area_input :players => "text_area2", :id => "text_area2_input", :text => "Some more text"
+      text_area_input :players => "text_area", :id => "text_area_input", :text => "none"
+      #text_area_input :players => "text_area2", :id => "text_area2_input", :text => "Some more text"
      end
   	cell(:border_width => "1") { input_log :id => "text_area_log" }
   	cell(:border_width => "1") { input_results :id => "text_area_results" }

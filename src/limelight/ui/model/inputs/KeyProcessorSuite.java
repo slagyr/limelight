@@ -22,36 +22,45 @@ public class KeyProcessorSuite
 {
   public static final int SELECTION_START_INDEX = 4;
 
-  public static TextModel boxInfo;
-  public static TextInputPanel boxPanel;
+  public static TextModel modelInfo;
+  public static TextInputPanel panel;
   public static KeyProcessor processor;
   public static TextModelAsserter asserter;
   public static MockKeyEvent mockEvent;
   public static int modifier;
 
 
-  public static void standardSetUp()
+  public static void textBoxSetUp()
   {
+    panel = new TextBox2Panel();
     setUp();
-    boxInfo.setSelectionIndex(0);
-    boxInfo.selectionOn = false;
+    modelInfo.setSelectionIndex(0);
+    modelInfo.selectionOn = false;
+  }
+
+  public static void textAreaSetUp()
+  {
+    panel = new TextArea2Panel();
+    setUp();
+    modelInfo.setSelectionIndex(0);
+    modelInfo.selectionOn = false;
   }
 
   private static void setUp()
   {
-    boxPanel = new TextBox2Panel();
-    boxInfo = boxPanel.getModelInfo();
-    asserter = new TextModelAsserter(boxInfo);
+    modelInfo = panel.getModelInfo();
+    asserter = new TextModelAsserter(modelInfo);
 
-    boxInfo.setText("Here are four words");
-    boxInfo.setCursorIndex(1);
+    modelInfo.setText("Here are four words");
+    modelInfo.setCursorIndex(1);
   }
 
-  private static void selectionSetUp()
+  private static void selectionBoxSetUp()
   {
+    panel = new TextBox2Panel();
     setUp();
-    boxInfo.setSelectionIndex(SELECTION_START_INDEX);
-    boxInfo.selectionOn = true;
+    modelInfo.setSelectionIndex(SELECTION_START_INDEX);
+    modelInfo.selectionOn = true;
   }
 
   public static class MockKeyEvent extends KeyEvent
@@ -100,8 +109,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new NormalKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new NormalKeyProcessor(modelInfo);
       modifier = 0;
     }
 
@@ -152,8 +161,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new ExpandedNormalKeyProcessor(boxInfo);
+      textAreaSetUp();
+      processor = new ExpandedNormalKeyProcessor(modelInfo);
       modifier = 0;
     }
 
@@ -167,7 +176,7 @@ public class KeyProcessorSuite
       asserter.assertTextState(2, "H\rere are four words");
     }
 
-     @Test
+    @Test
     public void canProcessTheTabKey()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_TAB, '\t');
@@ -217,6 +226,72 @@ public class KeyProcessorSuite
       asserter.assertSelection(0, 0, false);
     }
 
+    @Test
+    public void canProcessUpArrowAndDoNothingWhenAllTheWayUp()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 3;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(3, 0, false);
+    }
+
+    @Test
+    public void canProcessUpArrowAndMoveUpALine()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 11;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(3, 0, false);
+    }
+
+    @Test
+    public void canProcessDownArrowAndDoNothingWhenAtBottom()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 11;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(11, 0, false);
+    }
+
+    @Test
+    public void canProcessDownArrowAndMoveDownALine()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 3;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(10, 0, false);
+    }
+
+    @Test
+    public void willRecallTheLastCursorPlaceToJumpBackTo()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 11;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(3, 0, false);
+
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(11,0,false);
+    }
+
 
   }
 
@@ -226,15 +301,15 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new CmdKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new CmdKeyProcessor(modelInfo);
       modifier = 4;
     }
 
     @Test
     public void canSelectAll()
     {
-      boxInfo.setText("Bob");
+      modelInfo.setText("Bob");
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A);
 
       processor.processKey(mockEvent);
@@ -245,13 +320,13 @@ public class KeyProcessorSuite
     @Test
     public void canPasteAtCursor()
     {
-      boxInfo.setText("Bob");
-      boxInfo.copyText(" Dole");
+      modelInfo.setText("Bob");
+      modelInfo.copyText(" Dole");
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_V);
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(boxInfo.getText().length(), "Bob Dole");
+      asserter.assertTextState(modelInfo.getText().length(), "Bob Dole");
     }
 
     @Test
@@ -261,7 +336,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.getText().length(), 0, false);
+      asserter.assertSelection(modelInfo.getText().length(), 0, false);
     }
 
     @Test
@@ -282,8 +357,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new ShiftKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new ShiftKeyProcessor(modelInfo);
       modifier = 1;
     }
 
@@ -325,8 +400,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new ShiftCmdKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new ShiftCmdKeyProcessor(modelInfo);
       modifier = 5;
     }
 
@@ -337,7 +412,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.getText().length(), 1, true);
+      asserter.assertSelection(modelInfo.getText().length(), 1, true);
     }
 
     @Test
@@ -358,8 +433,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new AltKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new AltKeyProcessor(modelInfo);
       modifier = 8;
     }
 
@@ -380,54 +455,54 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      assertEquals(5, boxInfo.getCursorIndex());
+      assertEquals(5, modelInfo.getCursorIndex());
     }
 
     @Test
     public void canProcessRightArrowAndSkipOverExtraSpacesToNextWord()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-      boxInfo.setText("Here are    many  spaces");
-      boxInfo.setCursorIndex(5);
+      modelInfo.setText("Here are    many  spaces");
+      modelInfo.setCursorIndex(5);
 
       processor.processKey(mockEvent);
 
-      assertEquals(12, boxInfo.getCursorIndex());
+      assertEquals(12, modelInfo.getCursorIndex());
     }
 
     @Test
     public void canProcessRightArrowAndJumpToTheNextWordInATinyString()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-      boxInfo.setText("H s");
-      boxInfo.setCursorIndex(0);
+      modelInfo.setText("H s");
+      modelInfo.setCursorIndex(0);
 
       processor.processKey(mockEvent);
 
-      assertEquals(2, boxInfo.getCursorIndex());
+      assertEquals(2, modelInfo.getCursorIndex());
     }
 
     @Test
     public void canProcessLeftArrowAndJumpToThePreviousWord()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-      boxInfo.setCursorIndex(9);
+      modelInfo.setCursorIndex(9);
 
       processor.processKey(mockEvent);
 
-      assertEquals(5, boxInfo.getCursorIndex());
+      assertEquals(5, modelInfo.getCursorIndex());
     }
 
     @Test
     public void canProcessLeftArrowAndSkipOverExtraSpacesToPreviousWord()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-      boxInfo.setText("Here are    many  spaces");
-      boxInfo.setCursorIndex(12);
+      modelInfo.setText("Here are    many  spaces");
+      modelInfo.setCursorIndex(12);
 
       processor.processKey(mockEvent);
 
-      assertEquals(5, boxInfo.getCursorIndex());
+      assertEquals(5, modelInfo.getCursorIndex());
     }
 
   }
@@ -438,8 +513,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new AltCmdKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new AltCmdKeyProcessor(modelInfo);
       modifier = 12;
     }
 
@@ -471,8 +546,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new AltShiftKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new AltShiftKeyProcessor(modelInfo);
       modifier = 9;
     }
 
@@ -500,7 +575,7 @@ public class KeyProcessorSuite
     public void canProcessLeftArrowAndSelectToThePreviousWord()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-      boxInfo.setCursorIndex(9);
+      modelInfo.setCursorIndex(9);
 
       processor.processKey(mockEvent);
 
@@ -515,8 +590,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      standardSetUp();
-      processor = new AltShiftCmdKeyProcessor(boxInfo);
+      textBoxSetUp();
+      processor = new AltShiftCmdKeyProcessor(modelInfo);
       modifier = 13;
     }
 
@@ -549,8 +624,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnKeyProcessor(modelInfo);
       modifier = 0;
     }
 
@@ -602,8 +677,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnCmdKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnCmdKeyProcessor(modelInfo);
       modifier = 4;
     }
 
@@ -614,14 +689,14 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.getText().length(), 0, true);
+      asserter.assertSelection(modelInfo.getText().length(), 0, true);
     }
 
     @Test
     public void canPasteAtCursor()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_V);
-      boxInfo.copyText("oot");
+      modelInfo.copyText("oot");
 
       processor.processKey(mockEvent);
 
@@ -638,7 +713,7 @@ public class KeyProcessorSuite
 
       asserter.assertTextState(1, "Here are four words");
       asserter.assertSelection(1, SELECTION_START_INDEX, true);
-      assertEquals("ere", boxInfo.getClipboardContents());
+      assertEquals("ere", modelInfo.getClipboardContents());
     }
 
     @Test
@@ -650,7 +725,7 @@ public class KeyProcessorSuite
 
       asserter.assertTextState(1, "H are four words");
       asserter.assertSelection(1, 0, false);
-      assertEquals("ere", boxInfo.getClipboardContents());
+      assertEquals("ere", modelInfo.getClipboardContents());
     }
 
     @Test
@@ -660,7 +735,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.getText().length(), SELECTION_START_INDEX, false);
+      asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, false);
     }
 
     @Test
@@ -681,8 +756,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnShiftKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnShiftKeyProcessor(modelInfo);
       modifier = 1;
     }
 
@@ -724,8 +799,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnShiftCmdKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnShiftCmdKeyProcessor(modelInfo);
       modifier = 5;
     }
 
@@ -736,14 +811,14 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(boxInfo.getText().length(), SELECTION_START_INDEX, true);
+      asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, true);
     }
 
     @Test
     public void canProcessLeftArrowAndContinueSelectionToTheLeftEdge()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-      boxInfo.setCursorIndex(2);
+      modelInfo.setCursorIndex(2);
 
       processor.processKey(mockEvent);
 
@@ -758,8 +833,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnAltKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnAltKeyProcessor(modelInfo);
       modifier = 8;
     }
 
@@ -787,7 +862,7 @@ public class KeyProcessorSuite
     public void canProcessLeftArrowAndMoveToEndOfPreviousWord()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-      boxInfo.setCursorIndex(9);
+      modelInfo.setCursorIndex(9);
 
       processor.processKey(mockEvent);
 
@@ -803,8 +878,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnAltCmdKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnAltCmdKeyProcessor(modelInfo);
       modifier = 12;
     }
 
@@ -826,8 +901,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnAltShiftKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnAltShiftKeyProcessor(modelInfo);
       modifier = 9;
     }
 
@@ -855,7 +930,7 @@ public class KeyProcessorSuite
     public void canProcessLeftArrowAndSelectToEndOfPreviousWord()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-      boxInfo.setCursorIndex(9);
+      modelInfo.setCursorIndex(9);
 
       processor.processKey(mockEvent);
 
@@ -871,8 +946,8 @@ public class KeyProcessorSuite
     @Before
     public void setUp()
     {
-      selectionSetUp();
-      processor = new SelectionOnAltShiftCmdKeyProcessor(boxInfo);
+      selectionBoxSetUp();
+      processor = new SelectionOnAltShiftCmdKeyProcessor(modelInfo);
       modifier = 13;
     }
 

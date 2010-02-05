@@ -70,14 +70,25 @@ public class TextAreaModelTest
   }
 
   @Test
-  public void willAddAnotherLineToTheYPositionIfTheLastCharacterIsAReturn()
+  public void willAddAnotherLineToTheYPositionIfTheLastCharacterBeforeCursorIsAReturn()
   {
     int expectedYForTwoLines = 18;
-    modelInfo.setText("some text\r");
+    modelInfo.setText("some text\n");
 
     int y = modelInfo.getYPosFromIndex(modelInfo.cursorIndex);
 
     assertEquals(expectedYForTwoLines, y);
+  }
+
+  @Test
+  public void willPutTheCursorOnTheLeftIfTheLastCharacterBeforeCursorIsAReturn()
+  {
+    int expectedX = TextModel.SIDE_TEXT_MARGIN;
+    modelInfo.setText("some text\n");
+
+    int x = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
+
+    assertEquals(expectedX, x);
   }
 
   @Test
@@ -94,7 +105,7 @@ public class TextAreaModelTest
   @Test
   public void shouldBeAbleToFindNewLineIndices()
   {
-    ArrayList<Integer> indices = areaInfo.findNewLineIndices("this\nIs\nA new \rline");
+    ArrayList<Integer> indices = areaInfo.findReturnCharIndices("this\nIs\nA new \rline");
 
     assertEquals(3, indices.size());
     assertEquals(4, (int)indices.get(0));
@@ -131,6 +142,16 @@ public class TextAreaModelTest
     assertEquals(2, textLayouts.size());
     assertEquals("This is more than 1 line\r", textLayouts.get(0).getText());
     assertEquals("and should be 2 lines", textLayouts.get(1).getText());
+  }
+
+  @Test
+  public void willMakeANewLineForEveryReturnCharacterRegardlessOfTheLineItIsCurrentlyOn()
+  {
+    areaInfo.setText("This is going to be a very large amount of text. It seems to be the only way to make sure this works. Here\nis\n\nsome new lines");
+
+    areaInfo.getTextLayouts();
+
+    assertEquals(8, areaInfo.textLayouts.size());
   }
 
   @Test
