@@ -4,7 +4,7 @@ import limelight.ui.MockGraphics;
 import limelight.ui.MockTextLayout;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
-import limelight.ui.model.inputs.painters.TextPanelBoxPainter;
+import limelight.ui.model.inputs.painters.TextPanelBackgroundPainter;
 import limelight.ui.model.inputs.painters.TextPanelCursorPainter;
 import limelight.ui.model.inputs.painters.TextPanelSelectionPainter;
 import limelight.ui.model.inputs.painters.TextPanelTextPainter;
@@ -104,7 +104,7 @@ public class TextPanelPainterSuite
     public void setUp()
     {
       testClassInit();
-      painter = new TextPanelBoxPainter(boxInfo);
+      painter = new TextPanelBackgroundPainter(boxInfo);
     }
 
     @Test

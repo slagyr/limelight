@@ -70,6 +70,17 @@ public class TextAreaModelTest
   }
 
   @Test
+  public void willAddAnotherLineToTheYPositionIfTheLastCharacterIsAReturn()
+  {
+    int expectedYForTwoLines = 18;
+    modelInfo.setText("some text\r");
+
+    int y = modelInfo.getYPosFromIndex(modelInfo.cursorIndex);
+
+    assertEquals(expectedYForTwoLines, y);
+  }
+
+  @Test
   public void canGetTheHeightOfTheCurrentLine()
   {
     int expectedHeight = (int) (modelInfo.getHeightDimension(new TextLayoutImpl("A", modelInfo.font, TextPanel.getRenderContext())) + .5);

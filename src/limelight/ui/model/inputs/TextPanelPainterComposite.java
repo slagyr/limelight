@@ -1,30 +1,27 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.MockGraphics;
 import limelight.ui.model.inputs.painters.*;
-import limelight.util.Box;
-import sun.text.Normalizer;
 
 import java.awt.*;
 
 public class TextPanelPainterComposite
 {
   private TextPanelPainter cursorPainter;
-  private TextPanelPainter boxPainter;
+  private TextPanelPainter panelBackgroundPainter;
   private TextPanelPainter selectionPainter;
   private TextPanelPainter textPainter;
 
   public TextPanelPainterComposite(TextModel boxInfo)
   {
     cursorPainter = new TextPanelCursorPainter(boxInfo);
-    boxPainter = new TextPanelBoxPainter(boxInfo);
+    panelBackgroundPainter = new TextPanelBackgroundPainter(boxInfo);
     selectionPainter = new TextPanelSelectionPainter(boxInfo);
     textPainter = new TextPanelTextPainter(boxInfo);
   }
 
   public void paint(Graphics2D graphics)
   {
-    boxPainter.paint(graphics);
+    panelBackgroundPainter.paint(graphics);
     selectionPainter.paint(graphics);
     textPainter.paint(graphics);
     cursorPainter.paint(graphics);
@@ -35,9 +32,9 @@ public class TextPanelPainterComposite
     return cursorPainter;
   }
 
-  public TextPanelPainter getBoxPainter()
+  public TextPanelPainter getPanelBackgroundPainter()
   {
-    return boxPainter;
+    return panelBackgroundPainter;
   }
 
   public TextPanelPainter getSelectionPainter()
@@ -55,9 +52,9 @@ public class TextPanelPainterComposite
     this.cursorPainter = cursorPainter;
   }
 
-  public void setBoxPainter(TextPanelPainter boxPainter)
+  public void setPanelBackgroundPainter(TextPanelPainter panelBackgroundPainter)
   {
-    this.boxPainter = boxPainter;
+    this.panelBackgroundPainter = panelBackgroundPainter;
   }
 
   public void setSelectionPainter(TextPanelPainter selectionPainter)
