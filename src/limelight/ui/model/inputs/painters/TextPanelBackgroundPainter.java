@@ -5,9 +5,9 @@ import limelight.ui.model.inputs.TextPanelPainter;
 
 import java.awt.*;
 
-public class TextPanelBoxPainter extends TextPanelPainter
+public class TextPanelBackgroundPainter extends TextPanelPainter
 {
-  public TextPanelBoxPainter(TextModel boxInfo)
+  public TextPanelBackgroundPainter(TextModel boxInfo)
   {
     super(boxInfo);
   }

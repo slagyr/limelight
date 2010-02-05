@@ -38,7 +38,7 @@ public class TextArea2Panel   extends TextInputPanel
   @Override
   public void initKeyProcessors()
   {
-    keyProcessors.add(0, new NormalKeyProcessor(boxInfo));
+    keyProcessors.add(0, new ExpandedNormalKeyProcessor(boxInfo));
     keyProcessors.add(1, new CmdKeyProcessor(boxInfo));
     keyProcessors.add(2, new ShiftKeyProcessor(boxInfo));
     keyProcessors.add(3, new ShiftCmdKeyProcessor(boxInfo));

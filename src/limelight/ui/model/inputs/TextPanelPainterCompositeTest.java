@@ -1,7 +1,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
-import limelight.ui.model.inputs.painters.TextPanelBoxPainter;
+import limelight.ui.model.inputs.painters.TextPanelBackgroundPainter;
 import limelight.ui.model.inputs.painters.TextPanelCursorPainter;
 import limelight.ui.model.inputs.painters.TextPanelSelectionPainter;
 import limelight.ui.model.inputs.painters.TextPanelTextPainter;
@@ -54,7 +54,7 @@ public class TextPanelPainterCompositeTest
 
   private void assertAllPaintersHavePainted()
   {
-    assertTrue(painterComposite.getBoxPainter().hasPainted);
+    assertTrue(painterComposite.getPanelBackgroundPainter().hasPainted);
     assertTrue(painterComposite.getTextPainter().hasPainted);
     assertTrue(painterComposite.getSelectionPainter().hasPainted);
     assertTrue(painterComposite.getCursorPainter().hasPainted);
@@ -62,7 +62,7 @@ public class TextPanelPainterCompositeTest
 
   private void setMockPainters()
   {
-    painterComposite.setBoxPainter(new MockPainter(boxInfo));
+    painterComposite.setPanelBackgroundPainter(new MockPainter(boxInfo));
     painterComposite.setTextPainter(new MockPainter(boxInfo));
     painterComposite.setCursorPainter(new MockPainter(boxInfo));
     painterComposite.setSelectionPainter(new MockPainter(boxInfo));
@@ -77,7 +77,7 @@ public class TextPanelPainterCompositeTest
   @Test
   public void itShouldHaveABoxPainter()
   {
-    assertEquals(TextPanelBoxPainter.class, painterComposite.getBoxPainter().getClass());
+    assertEquals(TextPanelBackgroundPainter.class, painterComposite.getPanelBackgroundPainter().getClass());
   }
 
   @Test
