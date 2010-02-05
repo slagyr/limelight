@@ -170,5 +170,19 @@ public class TextAreaModelTest
     assertTrue(modelInfo.isBoxFull());
   }
 
+  @Test
+  public void canGetTheSelectedRegion()
+  {
+    modelInfo.setSelectionIndex(0);
+    modelInfo.selectionOn = true;
+
+    Rectangle region = modelInfo.getSelectionRegion();
+
+    assertEquals(0, region.x);
+    assertEquals(1, region.y);
+    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()), region.width);
+    assertEquals(modelInfo.getPanelHeight(), region.height);
+  }
+
 
 }
