@@ -138,4 +138,13 @@ public class TextModelTest
     assertEquals(" Text", boxModel.getText());
   }
 
+  @Test
+  public void willRememberTheLastCursorIndex()
+  {
+    boxModel.setCursorIndex(3);
+    boxModel.setCursorIndex(5);
+
+    assertEquals(3, boxModel.getLastCursorIndex());
+  }
+
 }

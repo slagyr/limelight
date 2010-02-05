@@ -82,6 +82,10 @@ public abstract class KeyProcessor
 
   protected void moveCursorUpALine()
   {
+    if(boxInfo.getLastKeyPressed() == KeyEvent.VK_DOWN) {
+      boxInfo.setCursorIndex(boxInfo.getLastCursorIndex());
+      return;
+    }
     int currentLine = boxInfo.getLineNumberOfIndex(boxInfo.cursorIndex);
     int charCount = 0;
     for(int i = 0; i < currentLine -1;i++)
@@ -93,6 +97,10 @@ public abstract class KeyProcessor
 
   protected void moveCursorDownALine()
   {
+    if(boxInfo.getLastKeyPressed() == KeyEvent.VK_UP) {
+      boxInfo.setCursorIndex(boxInfo.getLastCursorIndex());
+      return;
+    }
     int currentLine = boxInfo.getLineNumberOfIndex(boxInfo.cursorIndex);
     int charCount = 0;
     for(int i = 0; i <= currentLine;i++)

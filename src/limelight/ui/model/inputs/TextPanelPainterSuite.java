@@ -35,7 +35,6 @@ public class TextPanelPainterSuite
   {
     panel = new TextBox2Panel();
     boxInfo = panel.getModelInfo();
-    panel.boxInfo = boxInfo;
     boxInfo.setText("Some Text");
     boxInfo.setCursorIndex(4);
     graphics = new MockGraphics();
@@ -209,6 +208,23 @@ public class TextPanelPainterSuite
       painter.paint(graphics);
 
       assertEquals(Color.cyan, graphics.filledShapes.getLast().color);
+    }
+
+    @Test
+    public void willFillMultipleBoxesForMultiLinedSelectedText()
+    {
+      panel = new TextArea2Panel();
+      boxInfo = panel.getModelInfo();
+      boxInfo.setText("This is some\nMulti lined text");
+      boxInfo.selectionOn = true;
+      boxInfo.setSelectionIndex(2);
+      boxInfo.setCursorIndex(18);
+
+      painter.paint(graphics);
+
+      testBox = graphics.filledShapes.get(0).shape.getBounds();
+      int startX = boxInfo.getXPosFromIndex(boxInfo.selectionIndex);
+      assertTestBoxSize(startX,1,panel.getWidth() - startX - TextModel.SIDE_TEXT_MARGIN, boxInfo.getHeightOfCurrentLine());
     }
   }
 

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -72,6 +73,24 @@ public class TextInputPanelTest
 
     assertEquals(panel.getWidth() - 2 * TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.width );
     assertEquals(TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.x );
+  }
+
+  public static class MockKeyEvent extends KeyEvent
+  {
+
+    public MockKeyEvent(int modifiers, int keyCode)
+    {
+      super(new Panel(), 1, 123456789l, modifiers, keyCode, ' ');
+    }
+  }
+
+  @Test
+  public void willRememberTheLastKeyPressed()
+  {
+    MockKeyEvent event = new MockKeyEvent(0,10);
+    panel.keyPressed(event);
+
+    assertEquals(10, panel.getLastKeyPressed());
   }
 
 

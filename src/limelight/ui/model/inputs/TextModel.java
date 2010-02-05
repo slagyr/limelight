@@ -26,7 +26,8 @@ public abstract class TextModel implements ClipboardOwner
   public Font font;
   int xOffset;
   TextInputPanel myPanel;
-  private String lastLayedOutText;
+  private String lastLayedOutText;  
+  private int lastCursorIndex;
 
   public TextModel()
   {
@@ -93,9 +94,9 @@ public abstract class TextModel implements ClipboardOwner
     int lineNumber = getLineNumberOfIndex(index);
     int layoutIndex;
     for (layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
-      yPos += (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
+      yPos += getTotalHeightOfLineWithLeading(layoutIndex);
     if (isLastCharacterAReturn())
-      yPos += (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
+      yPos += getTotalHeightOfLineWithLeading(layoutIndex);
     return yPos;
   }
 
@@ -130,6 +131,17 @@ public abstract class TextModel implements ClipboardOwner
 
   }
 
+  private int getTotalHeightOfLineWithLeading(int layoutIndex)
+  {
+    return (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
+  }
+
+  public int getHeightOfCurrentLine()
+  {
+    int lineNumber = getLineNumberOfIndex(cursorIndex);
+    return (int) getHeightDimension(textLayouts.get(lineNumber));
+  }
+
   public int getWidthDimension(TypedLayout layout)
   {
     return (int) (layout.getBounds().getWidth() + layout.getBounds().getX() + 0.5);
@@ -141,8 +153,8 @@ public abstract class TextModel implements ClipboardOwner
     return xOffset;
   }
 
-  public abstract ArrayList<TypedLayout> getTextLayouts();
 
+  public abstract ArrayList<TypedLayout> getTextLayouts();
 
   public Point getPanelAbsoluteLocation()
   {
@@ -287,6 +299,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public void setCursorIndex(int cursorIndex)
   {
+    lastCursorIndex = this.cursorIndex;
     this.cursorIndex = cursorIndex;
     myPanel.setPaintableRegion(cursorIndex);
   }
@@ -332,15 +345,29 @@ public abstract class TextModel implements ClipboardOwner
     return lastLayedOutText;
   }
 
+  public int getLastKeyPressed()
+  {
+    return myPanel.getLastKeyPressed();
+  }
+
+  public void setLastKeyPressed(int keyCode)
+  {
+    myPanel.setLastKeyPressed(keyCode);
+  }
+
+  public int getLastCursorIndex()
+  {
+    return lastCursorIndex;
+  }
+
+  public void setLastCursorIndex(int index)
+  {
+    lastCursorIndex = index;
+  }
+
   public boolean isThereSomeDifferentText()
   {
     return !text.toString().equals(lastLayedOutText);
-  }
-
-  public int getHeightOfCurrentLine()
-  {
-    int lineNumber = getLineNumberOfIndex(cursorIndex);
-    return (int) getHeightDimension(textLayouts.get(lineNumber));
   }
 
   public int getLineNumberOfIndex(int index)
