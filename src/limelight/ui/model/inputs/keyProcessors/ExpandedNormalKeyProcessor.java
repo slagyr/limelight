@@ -24,10 +24,10 @@ public class ExpandedNormalKeyProcessor extends KeyProcessor
       boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
     else if (keyCode == KeyEvent.VK_BACK_SPACE && boxInfo.getCursorIndex() > 0)
       boxInfo.deleteEnclosedText(boxInfo.getCursorIndex() -1, boxInfo.getCursorIndex());
+    else if (isMoveUpEvent(keyCode))
+      moveCursorUpALine();
+    else if (isMoveDownEvent(keyCode))
+      moveCursorDownALine();
   }
 
-  private boolean isAnExtraKey(int keyCode)
-  {
-    return keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB;
-  }
 }

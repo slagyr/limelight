@@ -109,23 +109,22 @@ public class TextAreaModel extends TextModel
     attrString.addAttribute(TextAttribute.FONT, font);
     AttributedCharacterIterator iterator = attrString.getIterator();
 
-    ArrayList<Integer> newLineIndices = findNewLineIndices(text);
+    ArrayList<Integer> returnCharIndices = findReturnCharIndices(text);
     ArrayList<TypedLayout> textLayouts = new ArrayList<TypedLayout>();
 
     LineBreakMeasurer breaker = new LineBreakMeasurer(iterator, TextPanel.getRenderContext());
-    int firstCharIndex = 0,lastCharIndex,newLineIndex = 0;
+    int firstCharIndex = 0,lastCharIndex,returnCharIndex = 0;
     String layoutText = "";
     while (breaker.getPosition() < iterator.getEndIndex())
     {
       TextLayout layout;
-      if (newLineIndices != null && newLineIndex < newLineIndices.size())
-      {
-        layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN, newLineIndices.get(newLineIndex) + 1, false);
-        newLineIndex++;
-      }
+      if (isThereMoreReturnCharacters(returnCharIndices, returnCharIndex))
+        layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN, returnCharIndices.get(returnCharIndex) + 1, false);
       else
         layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN);
       lastCharIndex = firstCharIndex + layout.getCharacterCount();
+      if(isThereMoreReturnCharacters(returnCharIndices, returnCharIndex) && lastCharIndex == returnCharIndices.get(returnCharIndex) + 1)
+          returnCharIndex++;
       layoutText = text.substring(firstCharIndex, lastCharIndex);
       textLayouts.add(new TextLayoutImpl(layoutText, font, TextPanel.getRenderContext()));
       firstCharIndex = lastCharIndex;
@@ -135,7 +134,12 @@ public class TextAreaModel extends TextModel
     return textLayouts;
   }
 
-  public ArrayList<Integer> findNewLineIndices(String text)
+  private boolean isThereMoreReturnCharacters(ArrayList<Integer> returnCharIndices, int returnCharIndex)
+  {
+    return returnCharIndices != null && returnCharIndex < returnCharIndices.size();
+  }
+
+  public ArrayList<Integer> findReturnCharIndices(String text)
   {
     ArrayList<Integer> indices = new ArrayList<Integer>();
     for (int i = 0; i < text.length(); i++)
