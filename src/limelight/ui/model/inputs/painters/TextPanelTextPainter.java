@@ -27,7 +27,7 @@ public class TextPanelTextPainter extends TextPanelPainter
 
       int textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width,box ) - boxInfo.getXOffset();
 
-      float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box); //Todo JMM get max ascent
+      float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box);
 
 
       graphics.setColor(Color.black);

@@ -277,15 +277,11 @@ public class KeyProcessorSuite
     @Test
     public void willRecallTheLastCursorPlaceToJumpBackTo()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
-      modelInfo.setText("This is\nMulti lined.");
-      modelInfo.cursorIndex = 11;
-
-      processor.processKey(mockEvent);
-
-      asserter.assertSelection(3, 0, false);
-
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.setLastKeyPressed(KeyEvent.VK_UP);
+      modelInfo.setCursorIndex(3);
+      modelInfo.setLastCursorIndex(11);
 
       processor.processKey(mockEvent);
 
