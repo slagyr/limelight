@@ -101,7 +101,9 @@ public abstract class TextModel implements ClipboardOwner
       lineCharCount = textLayouts.get(++layoutIndex).getText().length();
       yPos += (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
     }
-      return yPos; 
+    if (text.charAt(text.length() - 1) == '\r')
+      yPos += (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
+    return yPos;
   }
 
   public int getTerminatingSpaceWidth(String string)
