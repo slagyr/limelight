@@ -107,7 +107,7 @@ public class TextBoxModelTest
     boxModel.setSelectionIndex(0);
     boxModel.selectionOn = true;
 
-    Rectangle region = boxModel.getSelectionRegion();
+    Rectangle region = boxModel.getSelectionRegions().get(0);
 
     assertEquals(0, region.x);
     assertEquals(TextModel.TOP_MARGIN, region.y);
@@ -124,7 +124,7 @@ public class TextBoxModelTest
     boxModel.selectionOn = true;
     boxModel.xOffset = 100;
 
-    boxModel.getSelectionRegion();
+    boxModel.getSelectionRegions();
 
     assertTrue(boxModel.xOffset > 0 && boxModel.xOffset < 100);
   }

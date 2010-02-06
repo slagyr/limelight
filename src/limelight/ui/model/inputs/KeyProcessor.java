@@ -5,11 +5,11 @@ import java.awt.font.TextHitInfo;
 
 public abstract class KeyProcessor
 {
-  protected TextModel boxInfo;
+  protected TextModel modelInfo;
 
-  public KeyProcessor(TextModel boxInfo)
+  public KeyProcessor(TextModel modelInfo)
   {
-    this.boxInfo = boxInfo;
+    this.modelInfo = modelInfo;
   }
 
   public abstract void processKey(KeyEvent event);
@@ -21,94 +21,115 @@ public abstract class KeyProcessor
 
   protected void insertCharIntoTextBox(char c)
   {
-    boxInfo.text.insert(boxInfo.getCursorIndex(), c);
-    boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
+    modelInfo.text.insert(modelInfo.getCursorIndex(), c);
+    modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
   }
 
 
   protected boolean isMoveRightEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_RIGHT && boxInfo.getCursorIndex() < boxInfo.getText().length();
+    return keyCode == KeyEvent.VK_RIGHT && modelInfo.getCursorIndex() < modelInfo.getText().length();
   }
 
   protected boolean isMoveLeftEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_LEFT && boxInfo.getCursorIndex() > 0;
+    return keyCode == KeyEvent.VK_LEFT && modelInfo.getCursorIndex() > 0;
   }
 
   protected boolean isMoveUpEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_UP && boxInfo.getLineNumberOfIndex(boxInfo.cursorIndex) > 0;
+    return keyCode == KeyEvent.VK_UP && modelInfo.getLineNumberOfIndex(modelInfo.cursorIndex) > 0;
   }
 
   protected boolean isMoveDownEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_DOWN && boxInfo.getLineNumberOfIndex(boxInfo.cursorIndex) < boxInfo.textLayouts.size() - 1;
+    return keyCode == KeyEvent.VK_DOWN && modelInfo.getLineNumberOfIndex(modelInfo.cursorIndex) < modelInfo.textLayouts.size() - 1;
   }
 
   protected void initSelection()
   {
-    boxInfo.selectionOn = true;
-    boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
+    modelInfo.selectionOn = true;
+    modelInfo.setSelectionIndex(modelInfo.getCursorIndex());
   }
 
   protected int findNearestWordToTheLeft()
   {
-    return boxInfo.findWordsLeftEdge(boxInfo.getCursorIndex() - 1);
+    return modelInfo.findWordsLeftEdge(modelInfo.getCursorIndex() - 1);
   }
 
   protected int findNearestWordToTheRight()
   {
-    return findNextWordSkippingSpaces(boxInfo.findWordsRightEdge(boxInfo.getCursorIndex()));
+    return findNextWordSkippingSpaces(modelInfo.findWordsRightEdge(modelInfo.getCursorIndex()));
   }
 
   private int findNextWordSkippingSpaces(int startIndex)
   {
-    for (int i = startIndex; i <= boxInfo.getText().length() - 1; i++)
+    for (int i = startIndex; i <= modelInfo.getText().length() - 1; i++)
     {
-      if (boxInfo.getText().charAt(i - 1) == ' ' && boxInfo.getText().charAt(i) != ' ')
+      if (modelInfo.getText().charAt(i - 1) == ' ' && modelInfo.getText().charAt(i) != ' ')
         return i;
     }
-    return boxInfo.getText().length();
+    return modelInfo.getText().length();
   }
 
   protected void selectAll()
   {
-    boxInfo.selectionOn = true;
-    boxInfo.setCursorIndex(boxInfo.getText().length());
-    boxInfo.setSelectionIndex(0);
+    modelInfo.selectionOn = true;
+    modelInfo.setCursorIndex(modelInfo.getText().length());
+    modelInfo.setSelectionIndex(0);
   }
 
 
   protected void moveCursorUpALine()
   {
-    if(boxInfo.getLastKeyPressed() == KeyEvent.VK_DOWN) {
-      boxInfo.setCursorIndex(boxInfo.getLastCursorIndex());
+    if (modelInfo.getLastKeyPressed() == KeyEvent.VK_DOWN)
+    {
+      modelInfo.setCursorIndex(modelInfo.getLastCursorIndex());
       return;
     }
-    int currentLine = boxInfo.getLineNumberOfIndex(boxInfo.cursorIndex);
+    int currentLine = modelInfo.getLineNumberOfIndex(modelInfo.cursorIndex);
     int charCount = 0;
-    for(int i = 0; i < currentLine -1;i++)
-      charCount += boxInfo.textLayouts.get(i).getText().length();
-    int xPos = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
-    TextHitInfo hitInfo = boxInfo.textLayouts.get(currentLine - 1).hitTestChar(xPos, 5);
-    boxInfo.setCursorIndex(hitInfo.getCharIndex() + charCount);
+    for (int i = 0; i < currentLine - 1; i++)
+      charCount += modelInfo.textLayouts.get(i).getText().length();
+    int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
+    int previousLineLength = modelInfo.textLayouts.get(currentLine - 1).getText().length();
+    if (modelInfo.getXPosFromIndex(charCount + previousLineLength) < xPos)
+    {
+      modelInfo.setCursorIndex(charCount + previousLineLength -1);
+    }
+    else
+    {
+      TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine - 1).hitTestChar(xPos, 5);
+      int index = hitInfo.getCharIndex() + charCount;
+      modelInfo.setCursorIndex(index);
+    }
   }
 
   protected void moveCursorDownALine()
   {
-    if(boxInfo.getLastKeyPressed() == KeyEvent.VK_UP) {
-      boxInfo.setCursorIndex(boxInfo.getLastCursorIndex());
+    if (modelInfo.getLastKeyPressed() == KeyEvent.VK_UP)
+    {
+      modelInfo.setCursorIndex(modelInfo.getLastCursorIndex());
       return;
     }
-    int currentLine = boxInfo.getLineNumberOfIndex(boxInfo.cursorIndex);
+    int currentLine = modelInfo.getLineNumberOfIndex(modelInfo.cursorIndex);
     int charCount = 0;
-    for(int i = 0; i <= currentLine;i++)
-      charCount += boxInfo.textLayouts.get(i).getText().length();
-    int xPos = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
-    TextHitInfo hitInfo = boxInfo.textLayouts.get(currentLine + 1).hitTestChar(xPos, 5);
-    boxInfo.setCursorIndex(hitInfo.getCharIndex() + charCount);
+    for (int i = 0; i <= currentLine; i++)
+      charCount += modelInfo.textLayouts.get(i).getText().length();
+    int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
+    int nextLineLength = modelInfo.textLayouts.get(currentLine + 1).getText().length();
+    if (modelInfo.getXPosFromIndex(charCount + nextLineLength) < xPos)
+    {
+      modelInfo.setCursorIndex(charCount + nextLineLength -1);
+    }
+    else
+    {
+      TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine + 1).hitTestChar(xPos, 5);
+      int index = hitInfo.getCharIndex() + charCount;
+      modelInfo.setCursorIndex(index);
+    }
   }
+
 
   protected boolean isAnExtraKey(int keyCode)
   {

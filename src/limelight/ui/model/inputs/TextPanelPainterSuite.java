@@ -219,12 +219,16 @@ public class TextPanelPainterSuite
       boxInfo.selectionOn = true;
       boxInfo.setSelectionIndex(2);
       boxInfo.setCursorIndex(18);
-
+      boxInfo.getTextLayouts();
+      painter.boxInfo = boxInfo;
       painter.paint(graphics);
 
       testBox = graphics.filledShapes.get(0).shape.getBounds();
       int startX = boxInfo.getXPosFromIndex(boxInfo.selectionIndex);
-      assertTestBoxSize(startX,1,panel.getWidth() - startX - TextModel.SIDE_TEXT_MARGIN, boxInfo.getHeightOfCurrentLine());
+      assertTestBoxSize(startX,0,panel.getWidth() - startX, boxInfo.getTotalHeightOfLineWithLeadingMargin(0));
+      int endX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
+      testBox = graphics.filledShapes.get(1).shape.getBounds();
+      assertTestBoxSize(0,boxInfo.getTotalHeightOfLineWithLeadingMargin(0),endX,boxInfo.getTotalHeightOfLineWithLeadingMargin(1));
     }
   }
 

@@ -17,13 +17,13 @@ public class SelectionOnShiftKeyProcessor extends KeyProcessor
     int keyCode = event.getKeyCode();
     
     if(isMoveRightEvent(keyCode)){
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
+      modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
     }
     else if(isMoveLeftEvent(keyCode)){
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
+      modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
     }
     else if(isACharacter(keyCode)){
-      boxInfo.deleteSelection();
+      modelInfo.deleteSelection();
       insertCharIntoTextBox(event.getKeyChar());
     }
   }

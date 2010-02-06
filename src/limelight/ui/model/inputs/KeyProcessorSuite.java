@@ -12,10 +12,13 @@ import java.awt.event.KeyEvent;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({KeyProcessorSuite.NormalKeyProcessorTest.class, KeyProcessorSuite.ExpandedNormalKeyProcessorTest.class, KeyProcessorSuite.CmdKeyProcessorTest.class, KeyProcessorSuite.ShiftKeyProcessorTest.class,
+@Suite.SuiteClasses({KeyProcessorSuite.NormalKeyProcessorTest.class, KeyProcessorSuite.ExpandedNormalKeyProcessorTest.class, KeyProcessorSuite.CmdKeyProcessorTest.class,
+    KeyProcessorSuite.ShiftKeyProcessorTest.class, KeyProcessorSuite.ExpandedShiftKeyProcessorTest.class,
     KeyProcessorSuite.ShiftCmdKeyProcessorTest.class, KeyProcessorSuite.AltKeyProcessorTest.class, KeyProcessorSuite.AltCmdKeyProcessorTest.class,
     KeyProcessorSuite.AltShiftKeyProcessorTest.class, KeyProcessorSuite.AltShiftCmdKeyProcessorTest.class, KeyProcessorSuite.SelectionKeyProcessorTest.class,
-    KeyProcessorSuite.SelectionCmdKeyProcessorTest.class, KeyProcessorSuite.SelectionShiftKeyProcessorTest.class, KeyProcessorSuite.SelectionShiftCmdKeyProcessorTest.class,
+    KeyProcessorSuite.ExpandedSelectionKeyProcessorTest.class,
+    KeyProcessorSuite.SelectionCmdKeyProcessorTest.class, KeyProcessorSuite.SelectionShiftKeyProcessorTest.class,
+    KeyProcessorSuite.ExpandedSelectionShiftKeyProcessorTest.class,KeyProcessorSuite.SelectionShiftCmdKeyProcessorTest.class,
     KeyProcessorSuite.SelectionAltKeyProcessorTest.class, KeyProcessorSuite.SelectionAltCmdKeyProcessorTest.class, KeyProcessorSuite.SelectionAltShiftKeyProcessorTest.class,
     KeyProcessorSuite.SelectionAltShiftCmdKeyProcessorTest.class})
 public class KeyProcessorSuite
@@ -58,6 +61,14 @@ public class KeyProcessorSuite
   private static void selectionBoxSetUp()
   {
     panel = new TextBox2Panel();
+    setUp();
+    modelInfo.setSelectionIndex(SELECTION_START_INDEX);
+    modelInfo.selectionOn = true;
+  }
+
+   private static void selectionAreaSetUp()
+  {
+    panel = new TextArea2Panel();
     setUp();
     modelInfo.setSelectionIndex(SELECTION_START_INDEX);
     modelInfo.selectionOn = true;
@@ -285,7 +296,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(11,0,false);
+      asserter.assertSelection(11, 0, false);
     }
 
 
@@ -388,6 +399,72 @@ public class KeyProcessorSuite
       asserter.assertSelection(0, 1, true);
     }
 
+  }
+
+  public static class ExpandedShiftKeyProcessorTest
+  {
+    @Before
+    public void setUp()
+    {
+      textAreaSetUp();
+      processor = new ExpandedShiftKeyProcessor(modelInfo);
+      modifier = 1;
+    }
+
+    @Test
+    public void canProcessCharacters()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
+
+      processor.processKey(mockEvent);
+
+      asserter.assertTextState(2, "HAere are four words");
+    }
+
+    @Test
+    public void canProcessRightArrowAndBeingSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(2, 1, true);
+    }
+
+    @Test
+    public void canProcessLeftArrowAndBeginSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(0, 1, true);
+    }
+
+    @Test
+    public void canProcessUpArrowAndMoveUpALineWithSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 11;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(3, 11, true);
+    }
+
+
+    @Test
+    public void canProcessDownArrowAndMoveDownALineWithSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 3;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(10, 3, true);
+    }
   }
 
   public static class ShiftCmdKeyProcessorTest
@@ -616,7 +693,6 @@ public class KeyProcessorSuite
   public static class SelectionKeyProcessorTest
   {
 
-
     @Before
     public void setUp()
     {
@@ -665,6 +741,91 @@ public class KeyProcessorSuite
       asserter.assertSelection(0, SELECTION_START_INDEX, false);
     }
 
+  }
+
+  public static class ExpandedSelectionKeyProcessorTest
+  {
+    @Before
+    public void setUp()
+    {
+      selectionAreaSetUp();
+      processor = new ExpandedSelectionOnKeyProcessor(modelInfo);
+      modifier = 0;
+    }
+
+    @Test
+    public void canProcessCharactersAndReplaceSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
+
+      processor.processKey(mockEvent);
+
+      asserter.assertTextState(2, "Ha are four words");
+    }
+
+    @Test
+    public void canProcessBackSpaceAndDeleteSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_BACK_SPACE);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertTextState(1, "H are four words");
+    }
+
+    @Test
+    public void canProcessRightArrowAndEndSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(2, SELECTION_START_INDEX, false);
+    }
+
+    @Test
+    public void canProcessLeftArrowAndEndSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(0, SELECTION_START_INDEX, false);
+    }
+
+    @Test
+    public void canProcessUpArrowAndEndSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 11;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(3, SELECTION_START_INDEX, false);
+    }
+
+    @Test
+    public void canProcessDownArrowAndEndSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 3;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(10, SELECTION_START_INDEX, false);
+    }
+
+    @Test
+    public void canProcessTheReturnKeyAndRemoveAllSelectedTextWhenStartingNewLine()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_ENTER, '\r');
+
+      processor.processKey(mockEvent);
+
+      asserter.assertTextState(2, "H\r are four words");
+    }
   }
 
   public static class SelectionCmdKeyProcessorTest
@@ -789,6 +950,73 @@ public class KeyProcessorSuite
 
   }
 
+
+  public static class ExpandedSelectionShiftKeyProcessorTest
+  {
+    @Before
+    public void setUp()
+    {
+      selectionAreaSetUp();
+      processor = new ExpandedSelectionOnShiftKeyProcessor(modelInfo);
+      modifier = 1;
+    }
+
+    @Test
+    public void canProcessRightArrowAndContinueSelectionToTheRight()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(2, SELECTION_START_INDEX, true);
+    }
+
+    @Test
+    public void canProcessLeftArrowAndContinueSelectionToTheLeft()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(0, SELECTION_START_INDEX, true);
+    }
+
+    @Test
+    public void canProcessCharacterAndPlaceUppercaseCharAtCursorIndex()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
+
+      processor.processKey(mockEvent);
+
+      asserter.assertTextState(2, "HA are four words");
+    }
+
+    @Test
+    public void canProcessUpArrowAndMoveUpALineWithSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 11;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(3, SELECTION_START_INDEX, true);
+    }
+
+
+    @Test
+    public void canProcessDownArrowAndMoveDownALineWithSelection()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("This is\nMulti lined.");
+      modelInfo.cursorIndex = 3;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(10, SELECTION_START_INDEX, true);
+    }
+  }
+
   public static class SelectionShiftCmdKeyProcessorTest
   {
 
@@ -867,9 +1095,9 @@ public class KeyProcessorSuite
 
   }
 
+
   public static class SelectionAltCmdKeyProcessorTest
   {
-
 
     @Before
     public void setUp()
@@ -935,9 +1163,9 @@ public class KeyProcessorSuite
 
   }
 
+
   public static class SelectionAltShiftCmdKeyProcessorTest
   {
-
 
     @Before
     public void setUp()
@@ -958,4 +1186,5 @@ public class KeyProcessorSuite
     }
 
   }
+
 }
