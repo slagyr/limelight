@@ -14,19 +14,19 @@ public class SelectionOnKeyProcessor extends KeyProcessor
 
   public void processKey(KeyEvent event)
   {
-    boxInfo.selectionOn = false;
+    modelInfo.selectionOn = false;
     int keyCode = event.getKeyCode();
-    if (isMoveRightEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
-    else if (isMoveLeftEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
+    if (modelInfo.isMoveRightEvent(keyCode))
+      modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
+    else if (modelInfo.isMoveLeftEvent(keyCode))
+      modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
     else if (isACharacter(keyCode))
     {
-      boxInfo.deleteSelection();
-      insertCharIntoTextBox(event.getKeyChar());
+      modelInfo.deleteSelection();
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
     }
     else if (keyCode == KeyEvent.VK_BACK_SPACE)
-      boxInfo.deleteSelection();
+      modelInfo.deleteSelection();
 
   }
 }

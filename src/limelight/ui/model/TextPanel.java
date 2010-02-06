@@ -54,11 +54,11 @@ public class TextPanel extends BasePanel implements StyleObserver
   public void setText(String text)
   {
     boolean differentText = !Util.equal(text, this.text);
-    if(!needsLayout() && differentText)
+    if (!needsLayout() && differentText)
       markAsNeedingLayout();
     this.text = text;
-    if(differentText)
-    {      
+    if (differentText)
+    {
       markAsNeedingLayout();
       propagateSizeChangeUp(getParent());
       getParent().markAsNeedingLayout();
@@ -74,14 +74,14 @@ public class TextPanel extends BasePanel implements StyleObserver
   {
     graphics.setColor(getTextColorFromStyle(getStyle()));
     float y = 0;
-    if(lines == null)
+    if (lines == null)
       return;
-    synchronized(this)
+    synchronized (this)
     {
-      for(TextLayout textLayout : lines)
+      for (TextLayout textLayout : lines)
       {
         y += textLayout.getAscent();
-        int x = getStyle().getCompiledHorizontalAlignment().getX((int)widthOf(textLayout), new Box(0, 0, getWidth(), getHeight()));
+        int x = getStyle().getCompiledHorizontalAlignment().getX((int) widthOf(textLayout), new Box(0, 0, getWidth(), getHeight()));
         textLayout.draw(graphics, x, y);
         y += textLayout.getDescent() + textLayout.getLeading();
       }
@@ -128,7 +128,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     textChunks = new LinkedList<StyledString>();
     lines = new LinkedList<TextLayout>();
 
-    if(text != null && text.length() > 0)
+    if (text != null && text.length() > 0)
     {
       StyledTextParser parser = new StyledTextParser();
       LinkedList<StyledText> styledParagraph = parser.parse(text);
@@ -155,13 +155,13 @@ public class TextPanel extends BasePanel implements StyleObserver
     String line = styledLine.getText();
     String tagName = styledLine.getStyle();
 
-    if(!Util.equal(tagName,"default"))
+    if (!Util.equal(tagName, "default"))
     {
       Style tagStyle = getStyleFromTag(tagName);
 
-      if(tagStyle != null)
+      if (tagStyle != null)
       {
-        if(!tagStyle.hasObserver(this))
+        if (!tagStyle.hasObserver(this))
         {
           tagStyle.addObserver(this);
         }
@@ -181,7 +181,7 @@ public class TextPanel extends BasePanel implements StyleObserver
       color = defaultColor;
     }
 
-    if(line.length() == 0)
+    if (line.length() == 0)
     {
       line = " ";
     }
@@ -227,7 +227,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     {
       boolean shouldEndLine = false;
 
-      while(!shouldEndLine)
+      while (!shouldEndLine)
       {
         float width1 = (float) consumableArea.width;
         TextLayout layout = lbm.nextLayout(width1, newlineLocations.get(currentNewline) + 1, false);
@@ -279,7 +279,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     {
       int startIndex = fontIndexes.get(fontIndex);
       int endIndex;
-      if(fontIndex == fonts.size() - 1)
+      if (fontIndex == fonts.size() - 1)
         endIndex = buf.length();
       else
         endIndex = fontIndexes.get(fontIndex + 1);
@@ -296,10 +296,10 @@ public class TextPanel extends BasePanel implements StyleObserver
 
   public static FontRenderContext getRenderContext()
   {
-    if(staticFontRenderingContext == null)
+    if (staticFontRenderingContext == null)
     {
       AffineTransform affineTransform = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getDefaultTransform();
-      staticFontRenderingContext = new FontRenderContext(affineTransform, true, false);  
+      staticFontRenderingContext = new FontRenderContext(affineTransform, true, false);
     }
     return staticFontRenderingContext;
   }
@@ -308,13 +308,13 @@ public class TextPanel extends BasePanel implements StyleObserver
   {
     consumedHeight = 0;
     consumedWidth = 0;
-    synchronized(this)
+    synchronized (this)
     {
-      for(TextLayout layout : lines)
+      for (TextLayout layout : lines)
       {
         consumedHeight += (layout.getAscent() + layout.getDescent() + layout.getLeading());
         double lineWidth = widthOf(layout);
-        if(lineWidth > consumedWidth)
+        if (lineWidth > consumedWidth)
           consumedWidth = lineWidth;
       }
     }
@@ -352,7 +352,7 @@ public class TextPanel extends BasePanel implements StyleObserver
 
   public Graphics2D getGraphics()
   {
-    if(graphics != null)
+    if (graphics != null)
       return graphics;
     else
       return panel.getGraphics();

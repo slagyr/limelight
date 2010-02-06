@@ -17,20 +17,27 @@ public class CmdKeyProcessor extends KeyProcessor
     switch (event.getKeyCode())
     {
       case KeyEvent.VK_A:
-        selectAll();
+        modelInfo.selectAll();
         break;
 
       case KeyEvent.VK_V:
-        boxInfo.pasteClipboard();
+        modelInfo.pasteClipboard();
         break;
       case KeyEvent.VK_RIGHT:
-        boxInfo.setCursorIndex(boxInfo.getText().length());
+        modelInfo.sendCursorToEndOfLine();
         break;
       case KeyEvent.VK_LEFT:
-        boxInfo.setCursorIndex(0);
+        modelInfo.sendCursorToStartOfLine();
+        break;
+      case KeyEvent.VK_UP:
+        modelInfo.setCursorIndex(0);
+        break;
+      case KeyEvent.VK_DOWN:
+        modelInfo.setCursorIndex(modelInfo.getText().length());
         break;
 
 
     }
   }
+
 }

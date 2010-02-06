@@ -84,7 +84,7 @@ public class TextBox2Panel extends TextInputPanel
 
   private boolean isExpandingRegionToRight(int x)
   {
-    return x > paintableRegion.x && (x - paintableRegion.x) > paintableRegion.width;
+    return x > paintableRegion.x + paintableRegion.width;
   }
 
   public void resetPaintableRegion()
@@ -92,7 +92,8 @@ public class TextBox2Panel extends TextInputPanel
     int regionHeight = height - 2 * TextModel.TOP_MARGIN;
     if (boxInfo.selectionOn)
     {
-      paintableRegion = new Box(boxInfo.getSelectionRegion().x, TextModel.TOP_MARGIN, boxInfo.getSelectionRegion().width, regionHeight);
+      Rectangle selectionRegion = boxInfo.getSelectionRegions().get(0);
+      paintableRegion = new Box(selectionRegion.x, TextModel.TOP_MARGIN, selectionRegion.width, regionHeight);
     }
     else
       paintableRegion = new Box(0, TextModel.TOP_MARGIN, 0, regionHeight);
@@ -134,8 +135,8 @@ public class TextBox2Panel extends TextInputPanel
     RootPanel rootPanel = getRoot();
     if (rootPanel != null)
     {
-      int regionHeight = boxInfo.getHeightOfCurrentLine() + TextModel.TOP_MARGIN;
-      int cursorY =  getAbsoluteLocation().y + TextModel.TOP_MARGIN;
+      int cursorY =  getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();
+      int regionHeight = boxInfo.getBottomPositionForCursor()- boxInfo.getTopOfStartPositionForCursor() + 1;
       int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
       rootPanel.addDirtyRegion(new Box(cursorX, cursorY, 1, regionHeight));
     }
