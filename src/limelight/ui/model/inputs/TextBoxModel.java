@@ -90,7 +90,7 @@ public class TextBoxModel extends TextModel
     }
   }
 
-  public Rectangle getSelectionRegion()
+  public ArrayList<Rectangle> getSelectionRegions()
   {
     if (getText().length() > 0)
       calculateTextXOffset(myPanel.getWidth(), calculateTextDimensions().width);
@@ -100,11 +100,12 @@ public class TextBoxModel extends TextModel
 
     if (x1 <= SIDE_TEXT_MARGIN || x2 <= SIDE_TEXT_MARGIN)
       edgeSelectionExtension = SIDE_TEXT_MARGIN;
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     if (x1 > x2)
-      return new Box(x2 - edgeSelectionExtension, TOP_MARGIN, x1 - x2 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2);
+      regions.add(new Box(x2 - edgeSelectionExtension, TOP_MARGIN, x1 - x2 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2));
     else
-      return new Box(x1 - edgeSelectionExtension, TOP_MARGIN, x2 - x1 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2);
-
+      regions.add(new Box(x1 - edgeSelectionExtension, TOP_MARGIN, x2 - x1 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2));
+    return regions;
   }
 
   public boolean isBoxFull()

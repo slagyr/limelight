@@ -171,18 +171,40 @@ public class TextAreaModelTest
   }
 
   @Test
-  public void canGetTheSelectedRegion()
+  public void canGetASelectedRegion()
   {
     modelInfo.setSelectionIndex(0);
     modelInfo.selectionOn = true;
+    modelInfo.setCursorIndex(5);
 
-    Rectangle region = modelInfo.getSelectionRegion();
+    ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
 
-    assertEquals(0, region.x);
-    assertEquals(1, region.y);
-    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()), region.width);
-    assertEquals(modelInfo.getPanelHeight(), region.height);
+    assertEquals(0, regions.get(0).x);
+    assertEquals(0, regions.get(0).y);
+    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()), regions.get(0).width);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(5)), regions.get(0).height);
   }
 
+  @Test
+  public void canGetAMultiLinedSelectedRegion()
+  {
+    modelInfo.setSelectionIndex(2);
+    modelInfo.selectionOn = true;
+    modelInfo.setText("This is\nMulti Lined.");
+    modelInfo.setCursorIndex(10);
+
+    ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
+
+    assertEquals(2, regions.size());
+    assertEquals(modelInfo.getXPosFromIndex(2), regions.get(0).x);
+    assertEquals(0, regions.get(0).y);
+    assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2),regions.get(0).width);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(0).height);
+
+    assertEquals(0, regions.get(1).x);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(1).y);
+    assertEquals(modelInfo.getXPosFromIndex(10), regions.get(1).width);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(10)), regions.get(1).height);
+  }
 
 }

@@ -20,11 +20,11 @@ public class ShiftKeyProcessor extends KeyProcessor
       insertCharIntoTextBox(event.getKeyChar());
     else if(isMoveRightEvent(keyCode)){
       initSelection();
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
+      modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
     }
     else if(isMoveLeftEvent(keyCode)){
       initSelection();
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
+      modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
     }
   }
 }

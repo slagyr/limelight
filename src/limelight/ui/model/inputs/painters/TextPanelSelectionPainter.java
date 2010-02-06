@@ -4,6 +4,7 @@ import limelight.ui.model.inputs.TextModel;
 import limelight.ui.model.inputs.TextPanelPainter;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TextPanelSelectionPainter extends TextPanelPainter
 {
@@ -19,9 +20,12 @@ public class TextPanelSelectionPainter extends TextPanelPainter
     if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
     {
       graphics.setColor(Color.cyan);
-      Rectangle rect = boxInfo.getSelectionRegion();
-      if (rect != null)
-        graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+      ArrayList<Rectangle> regions = boxInfo.getSelectionRegions();
+      if (regions != null)
+      {
+        for (Rectangle rect : regions)
+          graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+      }
     }
   }
 }

@@ -92,7 +92,8 @@ public class TextBox2Panel extends TextInputPanel
     int regionHeight = height - 2 * TextModel.TOP_MARGIN;
     if (boxInfo.selectionOn)
     {
-      paintableRegion = new Box(boxInfo.getSelectionRegion().x, TextModel.TOP_MARGIN, boxInfo.getSelectionRegion().width, regionHeight);
+      Rectangle selectionRegion = boxInfo.getSelectionRegions().get(0);
+      paintableRegion = new Box(selectionRegion.x, TextModel.TOP_MARGIN, selectionRegion.width, regionHeight);
     }
     else
       paintableRegion = new Box(0, TextModel.TOP_MARGIN, 0, regionHeight);

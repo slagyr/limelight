@@ -5,9 +5,9 @@ import limelight.ui.model.inputs.TextModel;
 
 import java.awt.event.KeyEvent;
 
-public class ExpandedNormalKeyProcessor extends KeyProcessor
+public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
 {
-  public ExpandedNormalKeyProcessor(TextModel modelInfo)
+  public ExpandedSelectionOnKeyProcessor(TextModel modelInfo)
   {
     super(modelInfo);
   }
@@ -15,16 +15,18 @@ public class ExpandedNormalKeyProcessor extends KeyProcessor
   @Override
   public void processKey(KeyEvent event)
   {
-    KeyProcessor basicKeyProcessor = new NormalKeyProcessor(modelInfo);
+    KeyProcessor basicSelectionProcessor = new SelectionOnKeyProcessor(modelInfo);
+    modelInfo.selectionOn = false;
     int keyCode = event.getKeyCode();
-    if (isAnExtraKey(keyCode))
+    if (isAnExtraKey(keyCode)){
+      modelInfo.deleteSelection();
       insertCharIntoTextBox(event.getKeyChar());
+    }
     else if (isMoveUpEvent(keyCode))
       moveCursorUpALine();
     else if (isMoveDownEvent(keyCode))
       moveCursorDownALine();
     else
-      basicKeyProcessor.processKey(event);
+      basicSelectionProcessor.processKey(event);
   }
-
 }

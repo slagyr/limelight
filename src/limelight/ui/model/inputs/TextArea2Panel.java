@@ -40,15 +40,15 @@ public class TextArea2Panel   extends TextInputPanel
   {
     keyProcessors.add(0, new ExpandedNormalKeyProcessor(boxInfo));
     keyProcessors.add(1, new CmdKeyProcessor(boxInfo));
-    keyProcessors.add(2, new ShiftKeyProcessor(boxInfo));
+    keyProcessors.add(2, new ExpandedShiftKeyProcessor(boxInfo));
     keyProcessors.add(3, new ShiftCmdKeyProcessor(boxInfo));
     keyProcessors.add(4, new AltKeyProcessor(boxInfo));
     keyProcessors.add(5, new AltCmdKeyProcessor(boxInfo));
     keyProcessors.add(6, new AltShiftKeyProcessor(boxInfo));
     keyProcessors.add(7, new AltShiftCmdKeyProcessor(boxInfo));
-    keyProcessors.add(8, new SelectionOnKeyProcessor(boxInfo));
+    keyProcessors.add(8, new ExpandedSelectionOnKeyProcessor(boxInfo));
     keyProcessors.add(9, new SelectionOnCmdKeyProcessor(boxInfo));
-    keyProcessors.add(10, new SelectionOnShiftKeyProcessor(boxInfo));
+    keyProcessors.add(10, new ExpandedSelectionOnShiftKeyProcessor(boxInfo));
     keyProcessors.add(11, new SelectionOnShiftCmdKeyProcessor(boxInfo));
     keyProcessors.add(12, new SelectionOnAltKeyProcessor(boxInfo));
     keyProcessors.add(13, new SelectionOnAltCmdKeyProcessor(boxInfo));

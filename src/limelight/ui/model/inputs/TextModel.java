@@ -94,9 +94,9 @@ public abstract class TextModel implements ClipboardOwner
     int lineNumber = getLineNumberOfIndex(index);
     int layoutIndex;
     for (layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
-      yPos += getTotalHeightOfLineWithLeading(layoutIndex);
+      yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     if (isLastCharacterAReturn())
-      yPos += getTotalHeightOfLineWithLeading(layoutIndex);
+      yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     return yPos;
   }
 
@@ -131,7 +131,7 @@ public abstract class TextModel implements ClipboardOwner
 
   }
 
-  private int getTotalHeightOfLineWithLeading(int layoutIndex)
+  public int getTotalHeightOfLineWithLeadingMargin(int layoutIndex)
   {
     return (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
   }
@@ -268,7 +268,7 @@ public abstract class TextModel implements ClipboardOwner
     setSelectionIndex(0);
   }
 
-  public abstract Rectangle getSelectionRegion();
+  public abstract ArrayList<Rectangle> getSelectionRegions();
 
   public int findWordsRightEdge(int index)
   {

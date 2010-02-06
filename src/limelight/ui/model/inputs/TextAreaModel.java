@@ -3,6 +3,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.TextLayoutImpl;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -51,7 +52,7 @@ public class TextAreaModel extends TextModel
       int width = 0;
       for (TypedLayout layout : getTextLayouts())
       {
-        height += (int)(getHeightDimension(layout) + layout.getLeading() +.5);
+        height += (int) (getHeightDimension(layout) + layout.getLeading() + .5);
         int dimWidth = getWidthDimension(layout);
         if (dimWidth > width)
           width = dimWidth;
@@ -78,15 +79,60 @@ public class TextAreaModel extends TextModel
   }
 
   @Override
-  public Rectangle getSelectionRegion()
+  public ArrayList<Rectangle> getSelectionRegions()
   {
-    return null;
+    int cursorX = getXPosFromIndex(cursorIndex);
+    int selectionX = getXPosFromIndex(selectionIndex);
+    int edgeSelectionExtension = 0;
+    int yPos = 0;
+
+    if (cursorX <= SIDE_TEXT_MARGIN || selectionX <= SIDE_TEXT_MARGIN)
+      edgeSelectionExtension = SIDE_TEXT_MARGIN;
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    int cursorLine = getLineNumberOfIndex(cursorIndex);
+    int selectionLine = getLineNumberOfIndex(selectionIndex);
+    int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
+    if (cursorLine == selectionLine)
+    {
+      yPos += lineHeight * cursorLine;
+      if (cursorIndex > selectionIndex)
+        regions.add(new Box(selectionX - edgeSelectionExtension, yPos, cursorX - selectionX + edgeSelectionExtension, lineHeight));
+      else
+        regions.add(new Box(cursorX - edgeSelectionExtension, yPos, selectionX - cursorX + edgeSelectionExtension, lineHeight));
+      return regions;
+    }
+    else if (selectionLine > cursorLine)
+    {
+      yPos += lineHeight * cursorLine;
+      regions.add(new Box(cursorX - edgeSelectionExtension, yPos, myPanel.getWidth() - cursorX, lineHeight));
+      yPos += lineHeight;
+      for (int i = cursorLine + 1; i < selectionLine; i++)
+      {
+        regions.add(new Box(0, yPos, myPanel.getWidth(), lineHeight));
+        yPos += lineHeight;
+      }
+      regions.add(new Box(0, yPos, selectionX, lineHeight));
+    }
+    else
+    {
+      yPos += lineHeight * selectionLine;
+      regions.add(new Box(selectionX - edgeSelectionExtension, yPos, myPanel.getWidth() - selectionX, lineHeight));
+      yPos += lineHeight;
+      for (int i = selectionLine + 1; i < cursorLine; i++)
+      {
+        regions.add(new Box(0, yPos, myPanel.getWidth(), lineHeight));
+        yPos += lineHeight;
+      }
+      regions.add(new Box(0, yPos, cursorX, lineHeight));
+    }
+
+    return regions;
   }
 
   @Override
   public boolean isBoxFull()
   {
-   if (getText().length() > 0)
+    if (getText().length() > 0)
       return (myPanel.getHeight() - TextModel.TOP_MARGIN * 2 <= calculateTextDimensions().height);
     return false;
   }
@@ -113,7 +159,7 @@ public class TextAreaModel extends TextModel
     ArrayList<TypedLayout> textLayouts = new ArrayList<TypedLayout>();
 
     LineBreakMeasurer breaker = new LineBreakMeasurer(iterator, TextPanel.getRenderContext());
-    int firstCharIndex = 0,lastCharIndex,returnCharIndex = 0;
+    int firstCharIndex = 0, lastCharIndex, returnCharIndex = 0;
     String layoutText = "";
     while (breaker.getPosition() < iterator.getEndIndex())
     {
@@ -123,8 +169,8 @@ public class TextAreaModel extends TextModel
       else
         layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN);
       lastCharIndex = firstCharIndex + layout.getCharacterCount();
-      if(isThereMoreReturnCharacters(returnCharIndices, returnCharIndex) && lastCharIndex == returnCharIndices.get(returnCharIndex) + 1)
-          returnCharIndex++;
+      if (isThereMoreReturnCharacters(returnCharIndices, returnCharIndex) && lastCharIndex == returnCharIndices.get(returnCharIndex) + 1)
+        returnCharIndex++;
       layoutText = text.substring(firstCharIndex, lastCharIndex);
       textLayouts.add(new TextLayoutImpl(layoutText, font, TextPanel.getRenderContext()));
       firstCharIndex = lastCharIndex;
