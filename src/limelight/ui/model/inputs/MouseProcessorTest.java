@@ -44,8 +44,24 @@ public class MouseProcessorTest
     parent.setLocation(0, 0);
     panel.setParent(parent);
     panel.setLocation(100, 100);
-    panel.setSize(150, 25);
+    panel.setSize(150, 75);
     mockMouseEvent = new MockMouseEvent(110, 115);
+  }
+
+  public void setUpTextBox()
+  {
+    panel = new TextBox2Panel();
+    modelInfo = panel.getModelInfo();
+    modelInfo.setText("Some Text that will prove. to be longer than can fit in this box");
+    processor = new MouseProcessor(modelInfo);
+    parent = new PropPanel(new MockProp());
+    parent.add(panel);
+    parent.setParent(null);
+    parent.setLocation(0, 0);
+    panel.setParent(parent);
+    panel.setLocation(100, 100);
+    panel.setSize(150, 25);
+    mockMouseEvent = new MockMouseEvent(101, 115);
   }
 
   @Test
@@ -114,6 +130,29 @@ public class MouseProcessorTest
   }
 
   @Test
+  public void willMarkCursorProperlyWithAMultiLineTextAndAYOffset()
+  {
+    modelInfo.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max");
+    modelInfo.calculateYOffset();
+    mockMouseEvent = new MockMouseEvent(105,165);
+
+    processor.processMousePressed(mockMouseEvent);
+
+    assertEquals(42, modelInfo.cursorIndex);
+  }
+
+  @Test
+  public void willMarkCursorProperlyWithAMultiLineTextAndClickIsFarRightOfText()
+  {
+    modelInfo.setText("This is\nMulti lined.");
+    mockMouseEvent = new MockMouseEvent(190,120);
+
+    processor.processMousePressed(mockMouseEvent);
+
+    assertEquals(20, modelInfo.cursorIndex);
+  }
+
+  @Test
   public void willSetSelectionOnToTrueIfMouseClickInTheBox()
   {
     processor.processMousePressed(mockMouseEvent);
@@ -127,6 +166,45 @@ public class MouseProcessorTest
     processor.processMouseDragged(mockMouseEvent);
 
     assertEquals(1, modelInfo.getCursorIndex());
+  }
+
+  @Test
+  public void willChangeTheYOffsetWhileDraggingPastCriticalEdge()
+  {
+    modelInfo.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max\nAndMore?");
+    int oldYOffset = modelInfo.calculateYOffset();
+    assertTrue(oldYOffset > 0);
+    mockMouseEvent = new MockMouseEvent(110,100);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    modelInfo.calculateYOffset();
+    assertTrue(oldYOffset > modelInfo.yOffset);
+  }
+
+  @Test
+  public void willChangeTheXOffestWhileDraggingIfPastCriticalEdge()
+  {
+    setUpTextBox();
+    modelInfo.calculateLeftShiftingOffset();
+    modelInfo.selectionOn = true;
+    modelInfo.selectionIndex = modelInfo.cursorIndex;
+    int oldXOffset = modelInfo.xOffset;
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertTrue(oldXOffset > modelInfo.xOffset);
+  }
+
+  @Test
+  public void wontGetCaughtOnAnEdgeUnableToFurtherDrag()
+  {
+    setUpTextBox();
+    mockMouseEvent = new MockMouseEvent(246,115);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertTrue(modelInfo.xOffset > 0);
   }
 
   @Test

@@ -16,12 +16,12 @@ public class AltKeyProcessor extends KeyProcessor
   {
     int keyCode = event.getKeyCode();
     if (isACharacter(keyCode))
-      insertCharIntoTextBox(event.getKeyChar());
-    else if(isMoveRightEvent(keyCode)){
-      boxInfo.setCursorIndex(findNearestWordToTheRight());
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+    else if(modelInfo.isMoveRightEvent(keyCode)){
+      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheRight());
     }
-    else if(isMoveLeftEvent(keyCode)){
-      boxInfo.setCursorIndex(findNearestWordToTheLeft());
+    else if(modelInfo.isMoveLeftEvent(keyCode)){
+      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheLeft());
     }
   }
 

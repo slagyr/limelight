@@ -41,19 +41,18 @@ public class TextAreaModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    int width = modelInfo.getWidthDimension(new TextLayoutImpl("I took the one less", modelInfo.font, TextPanel.getRenderContext()));
     int width2 = modelInfo.getWidthDimension(new TextLayoutImpl("by. And that has made", modelInfo.font, TextPanel.getRenderContext()));
 
-    int x = modelInfo.getXPosFromIndex(0);
-    int x2 = modelInfo.getXPosFromIndex(19);
-    int x3 = modelInfo.getXPosFromIndex(50);
+    int firstIndex = modelInfo.getXPosFromIndex(0);
+    int newLinePosition = modelInfo.getXPosFromIndex(29);
+    int secondLineStringPosition = modelInfo.getXPosFromIndex(50);
 
-    assertEquals(modelInfo.SIDE_TEXT_MARGIN, x);
-    assertEquals(width + modelInfo.SIDE_TEXT_MARGIN, x2);
-    assertEquals(width2 + modelInfo.SIDE_TEXT_MARGIN, x3);
+    assertEquals(modelInfo.SIDE_TEXT_MARGIN, firstIndex);
+    assertEquals(modelInfo.SIDE_TEXT_MARGIN, newLinePosition);
+    assertEquals(width2 + modelInfo.SIDE_TEXT_MARGIN, secondLineStringPosition);
   }
 
-    @Test
+  @Test
   public void canCalculateTheYPositionForTheCursorViaAnIndex()
   {
     int expectedYForOneLine = TextModel.TOP_MARGIN;
@@ -70,14 +69,56 @@ public class TextAreaModelTest
   }
 
   @Test
+  public void canCalculateAYOffsetIfTheTextIsTooBigForTheTextAreaAndTheCursorIsInAHiddenLine()
+  {
+    modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
+
+    modelInfo.calculateYOffset();
+
+    assertTrue(modelInfo.yOffset > 0);
+
+    modelInfo.setCursorIndex(2);
+
+    modelInfo.calculateYOffset();
+
+    assertEquals(0, modelInfo.yOffset);
+  }
+
+  @Test
+  public void willOnlyShiftYOffsetIfCursorIsAtTheTopOrBottomEdge()
+  {
+    modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
+    modelInfo.setCursorIndex(10);
+
+    assertEquals(0, modelInfo.calculateYOffset());
+
+    modelInfo.setCursorIndex(20);
+
+    int staticYOffset = modelInfo.calculateYOffset();
+    assertTrue(staticYOffset > 0);
+
+    modelInfo.setCursorIndex(10);
+
+    assertEquals(staticYOffset, modelInfo.calculateYOffset());
+
+    modelInfo.setCursorIndex(0);
+
+    assertEquals(0, modelInfo.calculateYOffset());
+
+  }
+
+  @Test
   public void willAddAnotherLineToTheYPositionIfTheLastCharacterBeforeCursorIsAReturn()
   {
     int expectedYForTwoLines = 18;
-    modelInfo.setText("some text\n");
+    int expectedYForThreeLines = 32;
+    modelInfo.setText("some text\nmore text\n");
 
-    int y = modelInfo.getYPosFromIndex(modelInfo.cursorIndex);
+    int y = modelInfo.getYPosFromIndex(10);
+    int y2 = modelInfo.getYPosFromIndex(20);
 
     assertEquals(expectedYForTwoLines, y);
+    assertEquals(expectedYForThreeLines, y2);
   }
 
   @Test
@@ -108,9 +149,9 @@ public class TextAreaModelTest
     ArrayList<Integer> indices = areaInfo.findReturnCharIndices("this\nIs\nA new \rline");
 
     assertEquals(3, indices.size());
-    assertEquals(4, (int)indices.get(0));
-    assertEquals(7, (int)indices.get(1));
-    assertEquals(14, (int)indices.get(2));
+    assertEquals(4, (int) indices.get(0));
+    assertEquals(7, (int) indices.get(1));
+    assertEquals(14, (int) indices.get(2));
   }
 
   @Test
@@ -126,7 +167,7 @@ public class TextAreaModelTest
   @Test
   public void canSplitTextIntoMultipleLinesFromThePanelWidth()
   {
-   ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts("This here is the first full line. This is the second line");
+    ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts("This here is the first full line. This is the second line");
 
     assertEquals(3, textLayouts.size());
     assertEquals("This here is the first full ", textLayouts.get(0).getText());
@@ -147,11 +188,11 @@ public class TextAreaModelTest
   @Test
   public void willMakeANewLineForEveryReturnCharacterRegardlessOfTheLineItIsCurrentlyOn()
   {
-    areaInfo.setText("This is going to be a very large amount of text. It seems to be the only way to make sure this works. Here\nis\n\nsome new lines");
+    modelInfo.setText("This is going to be a very large amount of text. It seems to be the only way to make sure this works. Here\nis\n\nsome new lines");
 
-    areaInfo.getTextLayouts();
+    modelInfo.getTextLayouts();
 
-    assertEquals(8, areaInfo.textLayouts.size());
+    assertEquals(8, modelInfo.textLayouts.size());
   }
 
   @Test
@@ -171,18 +212,70 @@ public class TextAreaModelTest
   }
 
   @Test
-  public void canGetTheSelectedRegion()
+  public void canGetASelectedRegion()
   {
     modelInfo.setSelectionIndex(0);
     modelInfo.selectionOn = true;
+    modelInfo.setCursorIndex(5);
 
-    Rectangle region = modelInfo.getSelectionRegion();
+    ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
 
-    assertEquals(0, region.x);
-    assertEquals(1, region.y);
-    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()), region.width);
-    assertEquals(modelInfo.getPanelHeight(), region.height);
+    assertEquals(3, regions.get(0).x);
+    assertEquals(0, regions.get(0).y);
+    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()) - 3, regions.get(0).width);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(5)), regions.get(0).height);
   }
 
+  @Test
+  public void canGetAMultiLinedSelectedRegion()
+  {
+    modelInfo.setSelectionIndex(2);
+    modelInfo.selectionOn = true;
+    modelInfo.setText("This is\nMulti Lined.");
+    modelInfo.setCursorIndex(10);
+
+    ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
+
+    assertEquals(2, regions.size());
+    assertEquals(modelInfo.getXPosFromIndex(2), regions.get(0).x);
+    assertEquals(0, regions.get(0).y);
+    assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2), regions.get(0).width);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(0).height);
+
+    assertEquals(3, regions.get(1).x);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(1).y);
+    assertEquals(modelInfo.getXPosFromIndex(10) - 3, regions.get(1).width);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(10)), regions.get(1).height);
+  }
+
+  @Test
+  public void canGetAMultiLinedSelectedRegionWithAYOffset()
+  {
+    modelInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\nline");
+    modelInfo.selectionOn = true;
+    modelInfo.setCursorIndex(modelInfo.text.length() - 3);
+    modelInfo.setSelectionIndex(modelInfo.cursorIndex - 15);
+
+    ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
+    assertTrue(modelInfo.getYPosFromIndex(modelInfo.cursorIndex) > panel.getHeight());
+    assertTrue(regions.get(regions.size() -1).y < panel.getHeight());
+
+  }
+
+  @Test
+  public void canGetTheLastCharacterInALine()
+  {
+    modelInfo.setText("This is\nMulti Lined.\nWith Many Lines");
+
+    assertEquals(20, modelInfo.getIndexOfLastCharInLine(1));
+  }
+
+  @Test
+  public void canGetTheLastCharacterOfTheText()
+  {
+    modelInfo.setText("This is\nMulti Lined.\nWith Many Lines");
+
+    assertEquals(36, modelInfo.getIndexOfLastCharInLine(2));
+  }
 
 }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TextBoxModelTest
@@ -27,7 +28,7 @@ public class TextBoxModelTest
   public void canCalcTheXPosForCursorFromStringWithOffset()
   {
     int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.SIDE_TEXT_MARGIN;
+    int expectedX = width + TextModel.SIDE_TEXT_MARGIN;
     boxModel.xOffset = 10;
 
     int x = boxModel.getXPosFromText("ABC");
@@ -39,7 +40,7 @@ public class TextBoxModelTest
   public void canCalculateTheXPositionForTheCursorFromAString()
   {
     int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.SIDE_TEXT_MARGIN;
+    int expectedX = width + TextModel.SIDE_TEXT_MARGIN;
 
     int x = boxModel.getXPosFromText("ABC");
 
@@ -53,36 +54,64 @@ public class TextBoxModelTest
   }
 
   @Test
-  public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidth()
+  public void canTellIfTheCursorIsAtACriticalEdge()
   {
-    boxModel.xOffset = boxModel.calculateTextDimensions().width - panel.getWidth();
-    int offset = boxModel.xOffset;
+    boxModel.calculateLeftShiftingOffset();   
 
-    boxModel.shiftOffset();
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+
+    boxModel.setCursorIndex(0);
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+
+    boxModel.xOffset = 0;
+    boxModel.setCursorIndex(boxModel.text.length() -5);
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+  }
+
+  @Test
+  public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidthIfCriticallyLeft()
+  {
+    boxModel.setCursorIndex(10);
+    int offset = boxModel.calculateTextDimensions().width - panel.getWidth();
+    boxModel.xOffset = offset;
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+
+    boxModel.shiftOffset(boxModel.cursorIndex);
     assertTrue(boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
   }
 
   @Test
-  public void canCalculateTheXOffsetIfTheCursorIsAtTheRightEdge()
+  public void canShiftTheCursorAndTextLeftIfCriticallyRight()
   {
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.setCursorIndex(0);
+    boxModel.xOffset = 0;
+
+    boxModel.setCursorIndex(30);
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+
+    boxModel.shiftOffset(boxModel.cursorIndex);
 
     assertTrue(boxModel.xOffset > 0);
+
   }
 
   @Test
   public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
   {
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.shiftOffset(boxModel.cursorIndex);
     int offset = boxModel.xOffset;
     boxModel.setCursorIndex(0);
 
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.shiftOffset(boxModel.cursorIndex);
 
     assertTrue(boxModel.xOffset <= offset / 2 + 2);
 
     boxModel.setText("hi");
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.shiftOffset(boxModel.cursorIndex);
     assertTrue(boxModel.xOffset == 0);
 
   }
@@ -107,7 +136,7 @@ public class TextBoxModelTest
     boxModel.setSelectionIndex(0);
     boxModel.selectionOn = true;
 
-    Rectangle region = boxModel.getSelectionRegion();
+    Rectangle region = boxModel.getSelectionRegions().get(0);
 
     assertEquals(0, region.x);
     assertEquals(TextModel.TOP_MARGIN, region.y);
@@ -124,9 +153,15 @@ public class TextBoxModelTest
     boxModel.selectionOn = true;
     boxModel.xOffset = 100;
 
-    boxModel.getSelectionRegion();
+    boxModel.getSelectionRegions();
 
     assertTrue(boxModel.xOffset > 0 && boxModel.xOffset < 100);
+  }
+
+  @Test
+  public void willAlwaysReturnZeroForTheLineNumber()
+  {
+    assertEquals(0, boxModel.getLineNumberOfIndex(boxModel.cursorIndex));
   }
 
 }

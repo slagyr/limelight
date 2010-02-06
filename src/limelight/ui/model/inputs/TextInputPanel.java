@@ -74,7 +74,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     if (boxInfo.getText() == null)
       return null;
-    return boxInfo.getText().toString();
+    return boxInfo.getText();
   }
 
   public Point getAbsoluteLocation()

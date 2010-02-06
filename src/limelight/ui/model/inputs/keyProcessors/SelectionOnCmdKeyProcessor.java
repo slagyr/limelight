@@ -17,28 +17,36 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
     switch (event.getKeyCode())
     {
       case KeyEvent.VK_A:
-        selectAll();
+        modelInfo.selectAll();
         break;
       case KeyEvent.VK_V:
-        boxInfo.deleteSelection();
-        boxInfo.pasteClipboard();
-        boxInfo.selectionOn = false;
+        modelInfo.deleteSelection();
+        modelInfo.pasteClipboard();
+        modelInfo.selectionOn = false;
         break;
       case KeyEvent.VK_C:
-        boxInfo.copySelection();
+        modelInfo.copySelection();
         break;
       case KeyEvent.VK_X:
-        boxInfo.copySelection();
-        boxInfo.deleteSelection();
-        boxInfo.selectionOn = false;
+        modelInfo.copySelection();
+        modelInfo.deleteSelection();
+        modelInfo.selectionOn = false;
         break;
       case KeyEvent.VK_RIGHT:
-        boxInfo.setCursorIndex(boxInfo.getText().length());
-        boxInfo.selectionOn = false;
+        modelInfo.sendCursorToEndOfLine();
+        modelInfo.selectionOn = false;
         break;
       case KeyEvent.VK_LEFT:
-        boxInfo.setCursorIndex(0);
-        boxInfo.selectionOn = false;
+        modelInfo.sendCursorToStartOfLine();
+        modelInfo.selectionOn = false;
+        break;
+      case KeyEvent.VK_UP:
+        modelInfo.setCursorIndex(0);
+        modelInfo.selectionOn = false;
+        break;
+      case KeyEvent.VK_DOWN:
+        modelInfo.setCursorIndex(modelInfo.getText().length());
+        modelInfo.selectionOn = false;
         break;
     }
   }

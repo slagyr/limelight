@@ -29,23 +29,10 @@ public class TextArea2PanelTest
   @Test
   public void canResetPaintableRegion()
   {
-    assertEquals(TextModel.SIDE_TEXT_MARGIN, panel.paintableRegion.x);
-    assertEquals(panel.getWidth(),panel.paintableRegion.width);
-
     panel.resetPaintableRegion();
 
     assertEquals(0, panel.paintableRegion.x);
-    assertEquals(0, panel.paintableRegion.width);
+    assertEquals(panel.getWidth(),panel.paintableRegion.width);
   }
 
-  @Test
-  public void canCalculatePaintableRegionFromIndex()
-  {
-    panel.resetPaintableRegion();
-    panel.setPaintableRegion(0);
-    panel.setPaintableRegion(4);
-
-    assertEquals(TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.x );
-    assertEquals(boxInfo.getXPosFromIndex(4) - TextModel.SIDE_TEXT_MARGIN, panel.paintableRegion.width);
-  }
 }
