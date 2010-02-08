@@ -88,20 +88,30 @@ public abstract class KeyProcessor
       return;
     }
     int currentLine = modelInfo.getLineNumberOfIndex(modelInfo.cursorIndex);
+    if (modelInfo.isLastCharacterAReturn(modelInfo.cursorIndex))
+        currentLine++;
+    System.out.println("currentLine = " + currentLine);
     int charCount = 0;
     for (int i = 0; i < currentLine - 1; i++)
       charCount += modelInfo.textLayouts.get(i).getText().length();
     int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
     int previousLineLength = modelInfo.textLayouts.get(currentLine - 1).getText().length();
-    if (modelInfo.getXPosFromIndex(charCount + previousLineLength) < xPos)
+    int newCursorIndex = charCount + previousLineLength;
+    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+        newCursorIndex--;
+    if (modelInfo.getXPosFromIndex(newCursorIndex) < xPos)
     {
-      modelInfo.setCursorIndex(charCount + previousLineLength -1);
+      modelInfo.setCursorIndex(newCursorIndex);
     }
     else
     {
       TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine - 1).hitTestChar(xPos, 5);
-      int index = hitInfo.getCharIndex() + charCount;
-      modelInfo.setCursorIndex(index);
+      newCursorIndex = hitInfo.getCharIndex() + charCount;
+      System.out.println("newCursorIndex = " + newCursorIndex);
+      System.out.println("charCount = " + charCount);
+      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+        newCursorIndex--;
+      modelInfo.setCursorIndex(newCursorIndex);
     }
   }
 
@@ -118,22 +128,48 @@ public abstract class KeyProcessor
       charCount += modelInfo.textLayouts.get(i).getText().length();
     int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
     int nextLineLength = modelInfo.textLayouts.get(currentLine + 1).getText().length();
-    if (modelInfo.getXPosFromIndex(charCount + nextLineLength) < xPos)
+    int newCursorIndex = charCount + nextLineLength;
+    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+      newCursorIndex--;
+    if (modelInfo.getXPosFromIndex(newCursorIndex) < xPos)
     {
-      modelInfo.setCursorIndex(charCount + nextLineLength -1);
+      modelInfo.setCursorIndex(newCursorIndex);
     }
     else
     {
       TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine + 1).hitTestChar(xPos, 5);
-      int index = hitInfo.getCharIndex() + charCount;
-      modelInfo.setCursorIndex(index);
+      newCursorIndex = hitInfo.getCharIndex() + charCount;
+      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+        newCursorIndex--;
+      modelInfo.setCursorIndex(newCursorIndex);
     }
+
   }
 
 
   protected boolean isAnExtraKey(int keyCode)
   {
     return keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB;
+  }
+
+  protected void sendCursorToStartOfLine()
+  {
+    int currentLine = modelInfo.getLineNumberOfIndex(modelInfo.getCursorIndex());
+
+    if (currentLine == 0)
+    {
+      modelInfo.setCursorIndex(0);
+    }
+    else
+    {
+      modelInfo.setCursorIndex(modelInfo.getIndexOfLastCharInLine(currentLine - 1));
+    }
+  }
+
+  protected void sendCursorToEndOfLine()
+  {
+    int currentLine = modelInfo.getLineNumberOfIndex(modelInfo.getCursorIndex());
+    modelInfo.setCursorIndex(modelInfo.getIndexOfLastCharInLine(currentLine));
   }
 }
 
