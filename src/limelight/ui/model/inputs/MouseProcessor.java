@@ -54,15 +54,11 @@ public class MouseProcessor
       layoutPosition += (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
     }
     int index = hitInfo.getCharIndex() + charCount;
-    if (isHitOnTheRightEdge(hitInfo, index))
+    if(x > boxInfo.getXPosFromIndex(index))
       index += 1;
     return index;
   }
 
-  private boolean isHitOnTheRightEdge(TextHitInfo hitInfo, int index)
-  {
-    return index < hitInfo.getInsertionIndex() && index == boxInfo.getText().length() - 1;
-  }
 
   public void processMousePressed(MouseEvent e)
   {
