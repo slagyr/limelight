@@ -24,13 +24,14 @@ public class CmdKeyProcessor extends KeyProcessor
         modelInfo.pasteClipboard();
         break;
       case KeyEvent.VK_RIGHT:
-        modelInfo.setCursorIndex(modelInfo.getText().length());
+        sendCursorToEndOfLine();
         break;
       case KeyEvent.VK_LEFT:
-        modelInfo.setCursorIndex(0);
+        sendCursorToStartOfLine();
         break;
 
 
     }
   }
+
 }
