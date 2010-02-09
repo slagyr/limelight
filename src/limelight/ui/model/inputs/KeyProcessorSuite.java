@@ -343,7 +343,7 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(modelInfo.getText().length(), 0, false);
+      asserter.assertSelection(modelInfo.getText().length()-1, 0, false);
     }
 
     @Test

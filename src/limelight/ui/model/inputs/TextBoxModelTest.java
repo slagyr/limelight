@@ -129,4 +129,10 @@ public class TextBoxModelTest
     assertTrue(boxModel.xOffset > 0 && boxModel.xOffset < 100);
   }
 
+  @Test
+  public void willAlwaysReturnZeroForTheLineNumber()
+  {
+    assertEquals(0, boxModel.getLineNumberOfIndex(boxModel.cursorIndex));
+  }
+
 }

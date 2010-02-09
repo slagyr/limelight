@@ -2,10 +2,14 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.ui.TextLayoutImpl;
 import limelight.ui.TypedLayout;
+import limelight.ui.model.TextPanel;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
+import java.awt.font.LineMetrics;
+import java.awt.font.TextLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,8 +30,9 @@ public abstract class TextModel implements ClipboardOwner
   public Font font;
   int xOffset;
   TextInputPanel myPanel;
-  private String lastLayedOutText;  
+  private String lastLayedOutText;
   private int lastCursorIndex;
+  private int spaceWidth;
 
   public TextModel()
   {
@@ -73,14 +78,13 @@ public abstract class TextModel implements ClipboardOwner
     if (text == null || text.length() == 0)
       return SIDE_TEXT_MARGIN;
     int lineNumber = getLineNumberOfIndex(index);
-    int startIndex = 0;
+    int startOfLineIndex = 0;
     for (int i = 0; i < lineNumber; i++)
-      startIndex += textLayouts.get(i).getText().length();
-    String toIndexString = text.substring(startIndex, index);
-    if (index <= 0 || isLastCharacterAReturn())
+      startOfLineIndex += textLayouts.get(i).getText().length();
+    if (index <= 0 || isLastCharacterAReturn() || startOfLineIndex == index)
       return SIDE_TEXT_MARGIN;
-    else
-      return getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
+    String toIndexString = text.substring(startOfLineIndex, index);
+    return getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
   }
 
 
@@ -95,8 +99,6 @@ public abstract class TextModel implements ClipboardOwner
     int layoutIndex;
     for (layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
       yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
-    if (isLastCharacterAReturn())
-      yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     return yPos;
   }
 
@@ -109,18 +111,22 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getTerminatingSpaceWidth(String string)
   {
-    int totalSpaceWidth = 0;
-    if (string.charAt(string.length() - 1) == ' ')
-    {
-      int i = string.length() - 1;
+    int trailingSpaces = 0;
+    for (int i = string.length() - 1; i > 0 && string.charAt(i) == ' '; i--)
+      trailingSpaces++;
 
-      while (i > 0 && string.charAt(i) == ' ')
-      {
-        totalSpaceWidth += 3;
-        i--;
-      }
+    return trailingSpaces * spaceWidth();
+  }
+
+  public int spaceWidth()
+  {
+    if (spaceWidth == 0)
+    {
+      TypedLayout layout1 = new TextLayoutImpl("a a", font, TextPanel.getRenderContext());
+      TypedLayout layout2 = new TextLayoutImpl("aa", font, TextPanel.getRenderContext());
+      spaceWidth = getWidthDimension(layout1) - getWidthDimension(layout2);
     }
-    return totalSpaceWidth;
+    return spaceWidth;
   }
 
   public abstract Dimension calculateTextDimensions();
@@ -145,7 +151,6 @@ public abstract class TextModel implements ClipboardOwner
   public int getWidthDimension(TypedLayout layout)
   {
     return (int) (layout.getBounds().getWidth() + layout.getBounds().getX() + 0.5);
-
   }
 
   public int getXOffset()
@@ -373,18 +378,29 @@ public abstract class TextModel implements ClipboardOwner
   public int getLineNumberOfIndex(int index)
   {
     getTextLayouts();
-    int startIndex = 0;
-    int layoutIndex = 0;
-    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
-    while (index > startIndex + lineCharCount)
+    int lineNumber = 0;
+    for (; lineNumber < textLayouts.size()-1; lineNumber++)
     {
-      startIndex += lineCharCount;
-      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
+      index -= textLayouts.get(lineNumber).getText().length();
+      if (index < 0)
+        break;
     }
-    return layoutIndex;
+    return lineNumber;
+
+//    int startIndex = 0;
+//    int layoutIndex = 0;
+//    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
+//    while (index >= startIndex + lineCharCount && layoutIndex < textLayouts.size())
+//    {
+//      startIndex += lineCharCount;
+//      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
+//    }
+//    return layoutIndex;
   }
 
   public abstract int getTopOfStartPositionForCursor();
 
   public abstract int getBottomPositionForCursor();
+
+  public abstract int getIndexOfLastCharInLine(int line);
 }

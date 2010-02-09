@@ -127,6 +127,12 @@ public class TextBoxModel extends TextModel
     return myPanel.getHeight() - TOP_MARGIN * 2;
   }
 
+  @Override
+  public int getIndexOfLastCharInLine(int line)
+  {
+    return text.length()-1;
+  }
+
   public void lostOwnership(Clipboard clipboard, Transferable contents)
   {
     //this doesn't have to do anything...

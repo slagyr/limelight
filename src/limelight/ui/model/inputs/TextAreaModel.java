@@ -149,6 +149,17 @@ public class TextAreaModel extends TextModel
     return getTopOfStartPositionForCursor() + getHeightOfCurrentLine() - TOP_MARGIN - 1;
   }
 
+  @Override
+  public int getIndexOfLastCharInLine(int line)
+  {
+    getTextLayouts();
+    int numberOfCharacters = 0;
+    for(int i = 0;i<=line;i++)
+       numberOfCharacters += textLayouts.get(i).getText().length();
+    numberOfCharacters--;
+    return numberOfCharacters;
+  }
+
   public ArrayList<TypedLayout> parseTextForMultipleLayouts(String text)
   {
     AttributedString attrString = new AttributedString(text);
