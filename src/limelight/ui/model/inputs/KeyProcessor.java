@@ -88,17 +88,16 @@ public abstract class KeyProcessor
       return;
     }
     int currentLine = modelInfo.getLineNumberOfIndex(modelInfo.cursorIndex);
-    if (modelInfo.isLastCharacterAReturn(modelInfo.cursorIndex))
-        currentLine++;
-    System.out.println("currentLine = " + currentLine);
+//    if (modelInfo.isLastCharacterAReturn(modelInfo.cursorIndex))
+//        currentLine++;
     int charCount = 0;
     for (int i = 0; i < currentLine - 1; i++)
       charCount += modelInfo.textLayouts.get(i).getText().length();
     int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
     int previousLineLength = modelInfo.textLayouts.get(currentLine - 1).getText().length();
-    int newCursorIndex = charCount + previousLineLength;
-    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-        newCursorIndex--;
+    int newCursorIndex = charCount + previousLineLength -1;
+//    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+//        newCursorIndex--;
     if (modelInfo.getXPosFromIndex(newCursorIndex) < xPos)
     {
       modelInfo.setCursorIndex(newCursorIndex);
@@ -107,10 +106,8 @@ public abstract class KeyProcessor
     {
       TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine - 1).hitTestChar(xPos, 5);
       newCursorIndex = hitInfo.getCharIndex() + charCount;
-      System.out.println("newCursorIndex = " + newCursorIndex);
-      System.out.println("charCount = " + charCount);
-      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-        newCursorIndex--;
+//      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+//        newCursorIndex--;
       modelInfo.setCursorIndex(newCursorIndex);
     }
   }
@@ -128,9 +125,9 @@ public abstract class KeyProcessor
       charCount += modelInfo.textLayouts.get(i).getText().length();
     int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
     int nextLineLength = modelInfo.textLayouts.get(currentLine + 1).getText().length();
-    int newCursorIndex = charCount + nextLineLength;
-    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-      newCursorIndex--;
+    int newCursorIndex = charCount + nextLineLength -1;
+//    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+//      newCursorIndex--;
     if (modelInfo.getXPosFromIndex(newCursorIndex) < xPos)
     {
       modelInfo.setCursorIndex(newCursorIndex);
@@ -139,8 +136,8 @@ public abstract class KeyProcessor
     {
       TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine + 1).hitTestChar(xPos, 5);
       newCursorIndex = hitInfo.getCharIndex() + charCount;
-      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-        newCursorIndex--;
+//      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
+//        newCursorIndex--;
       modelInfo.setCursorIndex(newCursorIndex);
     }
 

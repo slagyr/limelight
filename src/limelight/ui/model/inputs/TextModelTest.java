@@ -64,20 +64,19 @@ public class TextModelTest
     assertEquals(0, width2);
   }
 
-
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    int width = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
-    int width2 = boxModel.getWidthDimension(new TextLayoutImpl("Bob", boxModel.font, TextPanel.getRenderContext()));
+    assertEquals(boxModel.SIDE_TEXT_MARGIN, boxModel.getXPosFromIndex(0));                
+    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("B"), boxModel.getXPosFromIndex(1));
+    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("Bo"), boxModel.getXPosFromIndex(2));
+    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("Bob"), boxModel.getXPosFromIndex(3));
+    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("Bob") + boxModel.spaceWidth(), boxModel.getXPosFromIndex(4));
+  }
 
-    int x = boxModel.getXPosFromIndex(0);
-    int x2 = boxModel.getXPosFromIndex(3);
-    int x3 = boxModel.getXPosFromIndex(4);
-
-    assertEquals(boxModel.SIDE_TEXT_MARGIN, x);
-    assertEquals(width + boxModel.SIDE_TEXT_MARGIN, x2);
-    assertEquals(width2 + boxModel.SIDE_TEXT_MARGIN + 3, x3);
+  private int widthOf(String text)
+  {
+    return boxModel.getWidthDimension(new TextLayoutImpl(text, boxModel.font, TextPanel.getRenderContext()));
   }
 
   @Test
@@ -145,6 +144,12 @@ public class TextModelTest
     boxModel.setCursorIndex(5);
 
     assertEquals(3, boxModel.getLastCursorIndex());
+  }
+
+  @Test
+  public void canGetTheLastCharacterInALine()
+  {
+    assertEquals(boxModel.text.length() -1,boxModel.getIndexOfLastCharInLine(0));
   }
 
 }

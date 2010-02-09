@@ -41,19 +41,18 @@ public class TextAreaModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    int width = modelInfo.getWidthDimension(new TextLayoutImpl("I took the one less", modelInfo.font, TextPanel.getRenderContext()));
     int width2 = modelInfo.getWidthDimension(new TextLayoutImpl("by. And that has made", modelInfo.font, TextPanel.getRenderContext()));
 
-    int x = modelInfo.getXPosFromIndex(0);
-    int x2 = modelInfo.getXPosFromIndex(19);
-    int x3 = modelInfo.getXPosFromIndex(50);
+    int firstIndex = modelInfo.getXPosFromIndex(0);
+    int newLinePosition = modelInfo.getXPosFromIndex(29);
+    int secondLineStringPosition = modelInfo.getXPosFromIndex(50);
 
-    assertEquals(modelInfo.SIDE_TEXT_MARGIN, x);
-    assertEquals(width + modelInfo.SIDE_TEXT_MARGIN, x2);
-    assertEquals(width2 + modelInfo.SIDE_TEXT_MARGIN, x3);
+    assertEquals(modelInfo.SIDE_TEXT_MARGIN, firstIndex);
+    assertEquals(modelInfo.SIDE_TEXT_MARGIN, newLinePosition);
+    assertEquals(width2 + modelInfo.SIDE_TEXT_MARGIN, secondLineStringPosition);
   }
 
-    @Test
+  @Test
   public void canCalculateTheYPositionForTheCursorViaAnIndex()
   {
     int expectedYForOneLine = TextModel.TOP_MARGIN;
@@ -73,9 +72,9 @@ public class TextAreaModelTest
   public void willAddAnotherLineToTheYPositionIfTheLastCharacterBeforeCursorIsAReturn()
   {
     int expectedYForTwoLines = 18;
-    modelInfo.setText("some text\n");
+    modelInfo.setText("some text\nmore text");
 
-    int y = modelInfo.getYPosFromIndex(modelInfo.cursorIndex);
+    int y = modelInfo.getYPosFromIndex(10);
 
     assertEquals(expectedYForTwoLines, y);
   }
@@ -108,9 +107,9 @@ public class TextAreaModelTest
     ArrayList<Integer> indices = areaInfo.findReturnCharIndices("this\nIs\nA new \rline");
 
     assertEquals(3, indices.size());
-    assertEquals(4, (int)indices.get(0));
-    assertEquals(7, (int)indices.get(1));
-    assertEquals(14, (int)indices.get(2));
+    assertEquals(4, (int) indices.get(0));
+    assertEquals(7, (int) indices.get(1));
+    assertEquals(14, (int) indices.get(2));
   }
 
   @Test
@@ -126,7 +125,7 @@ public class TextAreaModelTest
   @Test
   public void canSplitTextIntoMultipleLinesFromThePanelWidth()
   {
-   ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts("This here is the first full line. This is the second line");
+    ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts("This here is the first full line. This is the second line");
 
     assertEquals(3, textLayouts.size());
     assertEquals("This here is the first full ", textLayouts.get(0).getText());
@@ -198,13 +197,21 @@ public class TextAreaModelTest
     assertEquals(2, regions.size());
     assertEquals(modelInfo.getXPosFromIndex(2), regions.get(0).x);
     assertEquals(0, regions.get(0).y);
-    assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2),regions.get(0).width);
+    assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2), regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(0).height);
 
     assertEquals(0, regions.get(1).x);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(1).y);
     assertEquals(modelInfo.getXPosFromIndex(10), regions.get(1).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(10)), regions.get(1).height);
+  }
+
+  @Test
+  public void canGetTheLastCharacterInALine()
+  {
+    modelInfo.setText("This is\nMulti Lined.\nWith Many Lines");
+
+    assertEquals(20, modelInfo.getIndexOfLastCharInLine(1));
   }
 
 }
