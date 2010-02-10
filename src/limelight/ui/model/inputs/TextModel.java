@@ -8,8 +8,6 @@ import limelight.ui.model.TextPanel;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.font.LineMetrics;
-import java.awt.font.TextLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -81,7 +79,7 @@ public abstract class TextModel implements ClipboardOwner
     int startOfLineIndex = 0;
     for (int i = 0; i < lineNumber; i++)
       startOfLineIndex += textLayouts.get(i).getText().length();
-    if (index <= 0 || isLastCharacterAReturn() || startOfLineIndex == index)
+    if (index <= 0 || isLastCharacterAReturn(index) || startOfLineIndex == index)
       return SIDE_TEXT_MARGIN;
     String toIndexString = text.substring(startOfLineIndex, index);
     return getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
@@ -99,14 +97,18 @@ public abstract class TextModel implements ClipboardOwner
     int layoutIndex;
     for (layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
       yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
+    if (isLastCharacterAReturn(index) && index == text.length())
+    {
+      yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
+    }
     return yPos;
   }
 
-  private boolean isLastCharacterAReturn()
+  private boolean isLastCharacterAReturn(int index)
   {
     if (cursorIndex == 0)
       return false;
-    return text.charAt(cursorIndex - 1) == '\r' || text.charAt(cursorIndex - 1) == '\n';
+    return text.charAt(index - 1) == '\r' || text.charAt(index - 1) == '\n';
   }
 
   public int getTerminatingSpaceWidth(String string)
@@ -281,20 +283,30 @@ public abstract class TextModel implements ClipboardOwner
     {
       if (i == 0)
         i = 1;
-      if (text.charAt(i - 1) != ' ' && text.charAt(i) == ' ')
+      if (isAtEndOfWord(i))
         return i;
     }
     return text.length();
+  }
+
+  public boolean isAtEndOfWord(int i)
+  {
+    return text.charAt(i - 1) != ' ' && text.charAt(i - 1) != '\n' && (text.charAt(i) == ' ' || text.charAt(i) == '\n');
   }
 
   public int findWordsLeftEdge(int index)
   {
     for (int i = index; i > 1; i--)
     {
-      if (text.charAt(i - 1) == ' ' && text.charAt(i) != ' ')
+      if (isAtStartOfWord(i))
         return i;
     }
     return 0;
+  }
+
+  public boolean isAtStartOfWord(int i)
+  {
+    return (text.charAt(i - 1) == ' ' || text.charAt(i - 1) == '\n') && (text.charAt(i) != ' ' && text.charAt(i) != '\n');
   }
 
   public int getCursorIndex()
@@ -352,7 +364,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getLastKeyPressed()
   {
-    return myPanel.getLastKeyPressed();
+    return myPanel.getLastKeyPressed();          
   }
 
   public void setLastKeyPressed(int keyCode)
@@ -386,16 +398,6 @@ public abstract class TextModel implements ClipboardOwner
         break;
     }
     return lineNumber;
-
-//    int startIndex = 0;
-//    int layoutIndex = 0;
-//    int lineCharCount = textLayouts.get(layoutIndex).getText().length();
-//    while (index >= startIndex + lineCharCount && layoutIndex < textLayouts.size())
-//    {
-//      startIndex += lineCharCount;
-//      lineCharCount = textLayouts.get(++layoutIndex).getText().length();
-//    }
-//    return layoutIndex;
   }
 
   public abstract int getTopOfStartPositionForCursor();

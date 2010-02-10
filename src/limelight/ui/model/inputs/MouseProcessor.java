@@ -54,7 +54,7 @@ public class MouseProcessor
       layoutPosition += (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
     }
     int index = hitInfo.getCharIndex() + charCount;
-    if(x > boxInfo.getXPosFromIndex(index))
+    if(x > boxInfo.getXPosFromIndex(index) && index == boxInfo.text.length() -1)
       index += 1;
     return index;
   }

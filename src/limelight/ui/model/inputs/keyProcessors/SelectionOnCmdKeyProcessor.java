@@ -33,11 +33,11 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
         modelInfo.selectionOn = false;
         break;
       case KeyEvent.VK_RIGHT:
-        modelInfo.setCursorIndex(modelInfo.getText().length());
+        sendCursorToEndOfLine();
         modelInfo.selectionOn = false;
         break;
       case KeyEvent.VK_LEFT:
-        modelInfo.setCursorIndex(0);
+        sendCursorToStartOfLine();
         modelInfo.selectionOn = false;
         break;
     }

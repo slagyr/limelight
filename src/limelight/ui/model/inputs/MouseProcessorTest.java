@@ -114,6 +114,17 @@ public class MouseProcessorTest
   }
 
   @Test
+  public void willMarkCursorProperlyWithAMultiLineTextAndClickIsFarRightOfText()
+  {
+    modelInfo.setText("This is\nMulti lined.");
+    mockMouseEvent = new MockMouseEvent(190,120);
+
+    processor.processMousePressed(mockMouseEvent);
+
+    assertEquals(20, modelInfo.cursorIndex);
+  }
+
+  @Test
   public void willSetSelectionOnToTrueIfMouseClickInTheBox()
   {
     processor.processMousePressed(mockMouseEvent);

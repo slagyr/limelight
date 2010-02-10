@@ -72,11 +72,14 @@ public class TextAreaModelTest
   public void willAddAnotherLineToTheYPositionIfTheLastCharacterBeforeCursorIsAReturn()
   {
     int expectedYForTwoLines = 18;
-    modelInfo.setText("some text\nmore text");
+    int expectedYForThreeLines = 32;
+    modelInfo.setText("some text\nmore text\n");
 
     int y = modelInfo.getYPosFromIndex(10);
+    int y2 = modelInfo.getYPosFromIndex(20);
 
     assertEquals(expectedYForTwoLines, y);
+    assertEquals(expectedYForThreeLines,y2 );
   }
 
   @Test
@@ -212,6 +215,14 @@ public class TextAreaModelTest
     modelInfo.setText("This is\nMulti Lined.\nWith Many Lines");
 
     assertEquals(20, modelInfo.getIndexOfLastCharInLine(1));
+  }
+
+  @Test
+  public void canGetTheLastCharacterOfTheText()
+  {
+    modelInfo.setText("This is\nMulti Lined.\nWith Many Lines");
+
+    assertEquals(36, modelInfo.getIndexOfLastCharInLine(2));
   }
 
 }
