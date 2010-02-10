@@ -19,17 +19,17 @@ public class SelectionOnAltKeyProcessor extends KeyProcessor
     if (isACharacter(keyCode))
     {
       modelInfo.deleteSelection();
-      insertCharIntoTextBox(event.getKeyChar());
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
     }
-    else if (isMoveRightEvent(keyCode))
+    else if (modelInfo.isMoveRightEvent(keyCode))
     {
-      modelInfo.setCursorIndex(findNearestWordToTheRight());
+      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheRight());
       modelInfo.selectionOn = false;
     }
 
-    else if (isMoveLeftEvent(keyCode))
+    else if (modelInfo.isMoveLeftEvent(keyCode))
     {
-      modelInfo.setCursorIndex(findNearestWordToTheLeft());
+      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheLeft());
       modelInfo.selectionOn = false;
     }
 

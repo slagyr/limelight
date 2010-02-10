@@ -17,13 +17,13 @@ public class ShiftKeyProcessor extends KeyProcessor
     int keyCode = event.getKeyCode();
     
     if (isACharacter(keyCode))
-      insertCharIntoTextBox(event.getKeyChar());
-    else if(isMoveRightEvent(keyCode)){
-      initSelection();
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+    else if(modelInfo.isMoveRightEvent(keyCode)){
+      modelInfo.initSelection();
       modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
     }
-    else if(isMoveLeftEvent(keyCode)){
-      initSelection();
+    else if(modelInfo.isMoveLeftEvent(keyCode)){
+      modelInfo.initSelection();
       modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
     }
   }

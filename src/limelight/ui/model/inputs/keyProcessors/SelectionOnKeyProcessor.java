@@ -16,14 +16,14 @@ public class SelectionOnKeyProcessor extends KeyProcessor
   {
     modelInfo.selectionOn = false;
     int keyCode = event.getKeyCode();
-    if (isMoveRightEvent(keyCode))
+    if (modelInfo.isMoveRightEvent(keyCode))
       modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
-    else if (isMoveLeftEvent(keyCode))
+    else if (modelInfo.isMoveLeftEvent(keyCode))
       modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
     else if (isACharacter(keyCode))
     {
       modelInfo.deleteSelection();
-      insertCharIntoTextBox(event.getKeyChar());
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
     }
     else if (keyCode == KeyEvent.VK_BACK_SPACE)
       modelInfo.deleteSelection();

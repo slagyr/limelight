@@ -18,10 +18,10 @@ public class ExpandedSelectionOnShiftKeyProcessor extends KeyProcessor
     KeyProcessor basicSelectionShiftProcessor = new SelectionOnShiftKeyProcessor(modelInfo);
     int keyCode = event.getKeyCode();
 
-    if(isMoveUpEvent(keyCode))
-      moveCursorUpALine();
-    else if(isMoveDownEvent(keyCode))
-      moveCursorDownALine();
+    if(modelInfo.isMoveUpEvent(keyCode))
+      modelInfo.moveCursorUpALine();
+    else if(modelInfo.isMoveDownEvent(keyCode))
+      modelInfo.moveCursorDownALine();
     else
       basicSelectionShiftProcessor.processKey(event);
   }

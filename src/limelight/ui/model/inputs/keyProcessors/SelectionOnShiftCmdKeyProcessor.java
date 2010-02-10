@@ -16,13 +16,21 @@ public class SelectionOnShiftCmdKeyProcessor extends KeyProcessor
   {
     int keyCode = event.getKeyCode();
 
-    if (isMoveRightEvent(keyCode))
+    if (modelInfo.isMoveRightEvent(keyCode))
     {
-      sendCursorToEndOfLine();
+      modelInfo.sendCursorToEndOfLine();
     }
-    else if (isMoveLeftEvent(keyCode))
+    else if (modelInfo.isMoveLeftEvent(keyCode))
     {
-      sendCursorToStartOfLine();
+      modelInfo.sendCursorToStartOfLine();
+    }
+    else if (keyCode == KeyEvent.VK_UP)
+    {
+      modelInfo.setCursorIndex(0);
+    }
+    else if (keyCode == KeyEvent.VK_DOWN)
+    {
+      modelInfo.setCursorIndex(modelInfo.getText().length());
     }
   }
 }

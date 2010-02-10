@@ -17,12 +17,12 @@ public class ExpandedNormalKeyProcessor extends KeyProcessor
   {
     KeyProcessor basicKeyProcessor = new NormalKeyProcessor(modelInfo);
     int keyCode = event.getKeyCode();
-    if (isAnExtraKey(keyCode))
-      insertCharIntoTextBox(event.getKeyChar());
-    else if (isMoveUpEvent(keyCode))
-      moveCursorUpALine();
-    else if (isMoveDownEvent(keyCode))
-      moveCursorDownALine();
+    if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB)
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+    else if (modelInfo.isMoveUpEvent(keyCode))
+      modelInfo.moveCursorUpALine();
+    else if (modelInfo.isMoveDownEvent(keyCode))
+      modelInfo.moveCursorDownALine();
     else
       basicKeyProcessor.processKey(event);
   }

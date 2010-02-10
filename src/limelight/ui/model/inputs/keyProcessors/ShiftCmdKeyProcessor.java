@@ -15,14 +15,24 @@ public class ShiftCmdKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event)
   {
     int keyCode = event.getKeyCode();
-    
-    if(isMoveRightEvent(keyCode)){
-      initSelection();
-      sendCursorToEndOfLine();
+
+    if(modelInfo.isMoveRightEvent(keyCode)){
+      modelInfo.initSelection();
+      modelInfo.sendCursorToEndOfLine();
     }
-    else if(isMoveLeftEvent(keyCode)){
-      initSelection();
-      sendCursorToStartOfLine();
+    else if(modelInfo.isMoveLeftEvent(keyCode)){
+      modelInfo.initSelection();
+      modelInfo.sendCursorToStartOfLine();
+    }
+    else if(keyCode == KeyEvent.VK_UP)
+    {
+      modelInfo.initSelection();
+      modelInfo.setCursorIndex(0);
+    }
+    else if(keyCode == KeyEvent.VK_DOWN)
+    {
+      modelInfo.initSelection();
+      modelInfo.setCursorIndex(modelInfo.getText().length());
     }
   }
 

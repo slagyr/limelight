@@ -116,6 +116,18 @@ public class TextBoxModel extends TextModel
   }
 
   @Override
+  public boolean isMoveUpEvent(int keyCode)
+  {
+    return false;
+  }
+
+  @Override
+  public boolean isMoveDownEvent(int keyCode)
+  {
+    return false;
+  }
+
+  @Override
   public int getTopOfStartPositionForCursor()
   {
     return TOP_MARGIN;
