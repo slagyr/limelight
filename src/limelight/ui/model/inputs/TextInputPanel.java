@@ -138,8 +138,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     int processorIndex = calculateKeyProcessorIndex(e);
     keyProcessors.get(processorIndex).processKey(e);
     lastKeyPressed = e.getKeyCode();
-    System.out.println("e.getKeyCode() = " + e.getKeyCode());
-    System.out.println("e.getKeyChar() = " + e.getKeyChar());
     cursorOn = true;
     markPaintableRegionAsDirty();
   }
