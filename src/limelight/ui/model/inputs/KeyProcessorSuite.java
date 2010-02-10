@@ -379,6 +379,25 @@ public class KeyProcessorSuite
       asserter.assertSelection(0, 0, false);
     }
 
+    @Test
+    public void canProcessUpArrow()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(0, 0, false);
+    }
+
+    @Test
+    public void canProcessDownArrow()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(modelInfo.getText().length(), 0, false);
+    }
   }
 
   public static class ShiftKeyProcessorTest
@@ -519,6 +538,26 @@ public class KeyProcessorSuite
       processor.processKey(mockEvent);
 
       asserter.assertSelection(0, 1, true);
+    }
+
+    @Test
+    public void canProcessUpArrow()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(0, 1, true);
+    }
+
+    @Test
+    public void canProcessDownArrow()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(modelInfo.getText().length(), 1, true);
     }
 
   }
@@ -964,6 +1003,26 @@ public class KeyProcessorSuite
       asserter.assertSelection(0, SELECTION_START_INDEX, false);
     }
 
+     @Test
+    public void canProcessUpArrowAndJumpToTheStart()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(0, SELECTION_START_INDEX, false);
+    }
+
+    @Test
+    public void canProcessDownArrowAndJumpToTheEnd()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, false);
+    }
+
   }
 
   public static class SelectionShiftKeyProcessorTest
@@ -1106,6 +1165,26 @@ public class KeyProcessorSuite
       processor.processKey(mockEvent);
 
       asserter.assertSelection(0, SELECTION_START_INDEX, true);
+    }
+
+    @Test
+    public void canProcessUpArrowAndJumpToTheStart()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(0, SELECTION_START_INDEX, true);
+    }
+
+    @Test
+    public void canProcessDownArrowAndJumpToTheEnd()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, true);
     }
 
   }

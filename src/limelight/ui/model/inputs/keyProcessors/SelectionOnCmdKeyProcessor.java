@@ -17,7 +17,7 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
     switch (event.getKeyCode())
     {
       case KeyEvent.VK_A:
-        selectAll();
+        modelInfo.selectAll();
         break;
       case KeyEvent.VK_V:
         modelInfo.deleteSelection();
@@ -33,11 +33,19 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
         modelInfo.selectionOn = false;
         break;
       case KeyEvent.VK_RIGHT:
-        sendCursorToEndOfLine();
+        modelInfo.sendCursorToEndOfLine();
         modelInfo.selectionOn = false;
         break;
       case KeyEvent.VK_LEFT:
-        sendCursorToStartOfLine();
+        modelInfo.sendCursorToStartOfLine();
+        modelInfo.selectionOn = false;
+        break;
+      case KeyEvent.VK_UP:
+        modelInfo.setCursorIndex(0);
+        modelInfo.selectionOn = false;
+        break;
+      case KeyEvent.VK_DOWN:
+        modelInfo.setCursorIndex(modelInfo.getText().length());
         modelInfo.selectionOn = false;
         break;
     }

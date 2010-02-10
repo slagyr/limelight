@@ -18,13 +18,13 @@ public class SelectionOnAltShiftKeyProcessor extends KeyProcessor
     if (isACharacter(keyCode))
     {
       modelInfo.deleteSelection();
-      insertCharIntoTextBox(event.getKeyChar());
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
     }
-    else if (isMoveRightEvent(keyCode))
-      modelInfo.setCursorIndex(findNearestWordToTheRight());
+    else if (modelInfo.isMoveRightEvent(keyCode))
+      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheRight());
 
-    else if (isMoveLeftEvent(keyCode))
-      modelInfo.setCursorIndex(findNearestWordToTheLeft());
+    else if (modelInfo.isMoveLeftEvent(keyCode))
+      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheLeft());
 
   }
 }

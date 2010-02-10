@@ -17,10 +17,10 @@ public class NormalKeyProcessor extends KeyProcessor
   {
     int keyCode = event.getKeyCode();
     if (isACharacter(keyCode))
-      insertCharIntoTextBox(event.getKeyChar());
-    else if (isMoveRightEvent(keyCode))
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+    else if (modelInfo.isMoveRightEvent(keyCode))
       modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
-    else if (isMoveLeftEvent(keyCode))
+    else if (modelInfo.isMoveLeftEvent(keyCode))
       modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
     else if (keyCode == KeyEvent.VK_BACK_SPACE && modelInfo.getCursorIndex() > 0)
       modelInfo.deleteEnclosedText(modelInfo.getCursorIndex() -1, modelInfo.getCursorIndex());

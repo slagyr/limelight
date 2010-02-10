@@ -18,14 +18,14 @@ public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
     KeyProcessor basicSelectionProcessor = new SelectionOnKeyProcessor(modelInfo);
     modelInfo.selectionOn = false;
     int keyCode = event.getKeyCode();
-    if (isAnExtraKey(keyCode)){
+    if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB){
       modelInfo.deleteSelection();
-      insertCharIntoTextBox(event.getKeyChar());
+      modelInfo.insertCharIntoTextBox(event.getKeyChar());
     }
-    else if (isMoveUpEvent(keyCode))
-      moveCursorUpALine();
-    else if (isMoveDownEvent(keyCode))
-      moveCursorDownALine();
+    else if (modelInfo.isMoveUpEvent(keyCode))
+      modelInfo.moveCursorUpALine();
+    else if (modelInfo.isMoveDownEvent(keyCode))
+      modelInfo.moveCursorDownALine();
     else
       basicSelectionProcessor.processKey(event);
   }

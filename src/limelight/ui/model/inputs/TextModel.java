@@ -8,6 +8,8 @@ import limelight.ui.model.TextPanel;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
+import java.awt.event.KeyEvent;
+import java.awt.font.TextHitInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -106,7 +108,7 @@ public abstract class TextModel implements ClipboardOwner
 
   private boolean isLastCharacterAReturn(int index)
   {
-    if (cursorIndex == 0)
+    if (index == 0)
       return false;
     return text.charAt(index - 1) == '\r' || text.charAt(index - 1) == '\n';
   }
@@ -398,6 +400,129 @@ public abstract class TextModel implements ClipboardOwner
         break;
     }
     return lineNumber;
+  }
+  
+  
+  public void insertCharIntoTextBox(char c)
+  {
+    if(c == KeyEvent.CHAR_UNDEFINED)
+      return;
+    text.insert(getCursorIndex(), c);
+    setCursorIndex(getCursorIndex() + 1);
+  }
+
+
+  public boolean isMoveRightEvent(int keyCode)
+  {
+    return keyCode == KeyEvent.VK_RIGHT && getCursorIndex() < getText().length();
+  }
+
+  public boolean isMoveLeftEvent(int keyCode)
+  {
+    return keyCode == KeyEvent.VK_LEFT && getCursorIndex() > 0;
+  }
+
+  public abstract boolean isMoveUpEvent(int keyCode);
+
+  public abstract boolean isMoveDownEvent(int keyCode);
+
+  public void initSelection()
+  {
+    selectionOn = true;
+    setSelectionIndex(getCursorIndex());
+  }
+
+  public int findNearestWordToTheLeft()
+  {
+    return findWordsLeftEdge(getCursorIndex() - 1);
+  }
+
+  public int findNearestWordToTheRight()
+  {
+    return findNextWordSkippingSpacesOrNewLines(findWordsRightEdge(cursorIndex));
+  }
+
+  protected int findNextWordSkippingSpacesOrNewLines(int startIndex)
+  {
+    for (int i = startIndex; i <= getText().length() - 1; i++)
+    {
+      if (isAtStartOfWord(i))
+        return i;
+    }
+    return getText().length();
+  }
+
+  public void selectAll()
+  {
+    selectionOn = true;
+    setCursorIndex(getText().length());
+    setSelectionIndex(0);
+  }
+
+
+  public void moveCursorUpALine()
+  {
+    if (getLastKeyPressed() == KeyEvent.VK_DOWN)
+    {
+      setCursorIndex(getLastCursorIndex());
+      return;
+    }
+    int previousLine = getLineNumberOfIndex(cursorIndex) -1;
+    setCursorIndex(getNewCursorPositionAfterMovingByALine(previousLine));
+  }
+
+  public void moveCursorDownALine()
+  {
+    if (getLastKeyPressed() == KeyEvent.VK_UP)
+    {
+      setCursorIndex(getLastCursorIndex());
+      return;
+    }
+    int nextLine = getLineNumberOfIndex(cursorIndex) + 1;
+    int newCursorIndex = getNewCursorPositionAfterMovingByALine(nextLine);
+    setCursorIndex(newCursorIndex);
+  }
+
+  private int getNewCursorPositionAfterMovingByALine(int nextLine)
+  {
+    int charCount = 0;
+    for (int i = 0; i < nextLine; i++)
+      charCount += textLayouts.get(i).getText().length();
+    int xPos = getXPosFromIndex(cursorIndex);
+    int lineLength = textLayouts.get(nextLine).getText().length();
+    int newCursorIndex = charCount + lineLength -1;
+    if(nextLine == textLayouts.size() -1)
+      newCursorIndex ++;
+    if (getXPosFromIndex(newCursorIndex) < xPos)
+    {
+      return newCursorIndex;
+    }
+    else
+    {
+      TextHitInfo hitInfo = textLayouts.get(nextLine).hitTestChar(xPos, 5);
+      newCursorIndex = hitInfo.getCharIndex() + charCount;
+      return newCursorIndex;
+    }
+  }
+
+  public void sendCursorToStartOfLine()
+  {
+    int currentLine = getLineNumberOfIndex(cursorIndex);
+
+    if (currentLine == 0)
+    {
+      setCursorIndex(0);
+    }
+    else
+    {
+      setCursorIndex(getIndexOfLastCharInLine(currentLine - 1) + 1);
+    }
+  }
+
+  public void sendCursorToEndOfLine()
+  {
+    int currentLine = getLineNumberOfIndex(cursorIndex);
+    setCursorIndex(getIndexOfLastCharInLine(currentLine));
   }
 
   public abstract int getTopOfStartPositionForCursor();

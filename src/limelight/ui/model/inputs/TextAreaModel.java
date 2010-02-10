@@ -8,6 +8,7 @@ import limelight.util.Box;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.KeyEvent;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
@@ -83,22 +84,11 @@ public class TextAreaModel extends TextModel
   {
     int cursorX = getXPosFromIndex(cursorIndex);
     int selectionX = getXPosFromIndex(selectionIndex);
-    int edgeSelectionExtension = 0;
     int yPos = 0;
-
-    if (cursorX <= SIDE_TEXT_MARGIN || selectionX <= SIDE_TEXT_MARGIN)
-      edgeSelectionExtension = SIDE_TEXT_MARGIN;
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     int cursorLine = getLineNumberOfIndex(cursorIndex);
     int selectionLine = getLineNumberOfIndex(selectionIndex);
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
-    System.out.println("cursorX = " + cursorX);
-    System.out.println("selectionX = " + selectionX);
-    System.out.println("cursorIndex = " + cursorIndex);
-    System.out.println("selectionIndex = " + selectionIndex);
-    System.out.println("edgeSelectionExtension = " + edgeSelectionExtension);
-    System.out.println("lineHeight = " + lineHeight);
-    System.out.println("................................");
     if (cursorLine == selectionLine)
     {
       yPos += lineHeight * cursorLine;
@@ -129,8 +119,8 @@ public class TextAreaModel extends TextModel
       {
         regions.add(new Box(3, yPos, myPanel.getWidth()-3, lineHeight));
         yPos += lineHeight;
-        regions.add(new Box(3, yPos, cursorX -3, lineHeight));
       }
+      regions.add(new Box(3, yPos, cursorX -3, lineHeight));
     }
 
     return regions;
@@ -142,6 +132,18 @@ public class TextAreaModel extends TextModel
     if (getText().length() > 0)
       return (myPanel.getHeight() - TextModel.TOP_MARGIN * 2 <= calculateTextDimensions().height);
     return false;
+  }
+
+  @Override
+  public boolean isMoveUpEvent(int keyCode)
+  {
+    return keyCode == KeyEvent.VK_UP && getLineNumberOfIndex(cursorIndex) > 0;
+  }
+
+  @Override
+  public boolean isMoveDownEvent(int keyCode)
+  {
+    return keyCode == KeyEvent.VK_DOWN && getLineNumberOfIndex(cursorIndex) < textLayouts.size() - 1;
   }
 
   @Override

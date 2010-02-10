@@ -181,9 +181,9 @@ public class TextAreaModelTest
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
 
-    assertEquals(0, regions.get(0).x);
+    assertEquals(3, regions.get(0).x);
     assertEquals(0, regions.get(0).y);
-    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()), regions.get(0).width);
+    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()) -3, regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(5)), regions.get(0).height);
   }
 
@@ -203,9 +203,9 @@ public class TextAreaModelTest
     assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2), regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(0).height);
 
-    assertEquals(0, regions.get(1).x);
+    assertEquals(3, regions.get(1).x);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(1).y);
-    assertEquals(modelInfo.getXPosFromIndex(10), regions.get(1).width);
+    assertEquals(modelInfo.getXPosFromIndex(10) -3, regions.get(1).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(10)), regions.get(1).height);
   }
 

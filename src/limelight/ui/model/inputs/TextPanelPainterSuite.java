@@ -226,9 +226,10 @@ public class TextPanelPainterSuite
       testBox = graphics.filledShapes.get(0).shape.getBounds();
       int startX = boxInfo.getXPosFromIndex(boxInfo.selectionIndex);
       assertTestBoxSize(startX,0,panel.getWidth() - startX, boxInfo.getTotalHeightOfLineWithLeadingMargin(0));
-      int endX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex);
+      
+      int endX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex) -3;
       testBox = graphics.filledShapes.get(1).shape.getBounds();
-      assertTestBoxSize(0,boxInfo.getTotalHeightOfLineWithLeadingMargin(0),endX,boxInfo.getTotalHeightOfLineWithLeadingMargin(1));
+      assertTestBoxSize(3,boxInfo.getTotalHeightOfLineWithLeadingMargin(0),endX,boxInfo.getTotalHeightOfLineWithLeadingMargin(1));
     }
   }
 
