@@ -59,14 +59,14 @@ public abstract class KeyProcessor
 
   protected int findNearestWordToTheRight()
   {
-    return findNextWordSkippingSpaces(modelInfo.findWordsRightEdge(modelInfo.getCursorIndex()));
+    return findNextWordSkippingSpacesOrNewLines(modelInfo.findWordsRightEdge(modelInfo.getCursorIndex()));
   }
 
-  private int findNextWordSkippingSpaces(int startIndex)
+  private int findNextWordSkippingSpacesOrNewLines(int startIndex)
   {
     for (int i = startIndex; i <= modelInfo.getText().length() - 1; i++)
     {
-      if (modelInfo.getText().charAt(i - 1) == ' ' && modelInfo.getText().charAt(i) != ' ')
+      if (modelInfo.isAtStartOfWord(i))
         return i;
     }
     return modelInfo.getText().length();
@@ -126,6 +126,8 @@ public abstract class KeyProcessor
     int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
     int nextLineLength = modelInfo.textLayouts.get(currentLine + 1).getText().length();
     int newCursorIndex = charCount + nextLineLength -1;
+    if(currentLine+1 == modelInfo.textLayouts.size() -1)
+        newCursorIndex ++;
 //    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
 //      newCursorIndex--;
     if (modelInfo.getXPosFromIndex(newCursorIndex) < xPos)
@@ -159,7 +161,7 @@ public abstract class KeyProcessor
     }
     else
     {
-      modelInfo.setCursorIndex(modelInfo.getIndexOfLastCharInLine(currentLine - 1));
+      modelInfo.setCursorIndex(modelInfo.getIndexOfLastCharInLine(currentLine - 1) + 1);
     }
   }
 

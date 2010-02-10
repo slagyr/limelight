@@ -130,7 +130,7 @@ public class TextBoxModel extends TextModel
   @Override
   public int getIndexOfLastCharInLine(int line)
   {
-    return text.length()-1;
+    return text.length();
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)

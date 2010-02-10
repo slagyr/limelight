@@ -149,7 +149,7 @@ public class TextModelTest
   @Test
   public void canGetTheLastCharacterInALine()
   {
-    assertEquals(boxModel.text.length() -1,boxModel.getIndexOfLastCharInLine(0));
+    assertEquals(boxModel.text.length(),boxModel.getIndexOfLastCharInLine(0));
   }
 
 }

@@ -286,6 +286,18 @@ public class KeyProcessorSuite
     }
 
     @Test
+    public void canProcessDownArrowAndMoveDownALineToTheLastCharacterIfTheFirstLineRunsPastTheSecond()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("This is a longer\nMulti lined.");
+      modelInfo.cursorIndex = 15;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(29, 0, false);
+    }
+
+    @Test
     public void willRecallTheLastCursorPlaceToJumpBackTo()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
@@ -343,8 +355,9 @@ public class KeyProcessorSuite
 
       processor.processKey(mockEvent);
 
-      asserter.assertSelection(modelInfo.getText().length()-1, 0, false);
+      asserter.assertSelection(modelInfo.getText().length(), 0, false);
     }
+
 
     @Test
     public void canProcessLeftArrow()
@@ -553,6 +566,42 @@ public class KeyProcessorSuite
       processor.processKey(mockEvent);
 
       assertEquals(2, modelInfo.getCursorIndex());
+    }
+
+    @Test
+    public void canProcessRightArrowAndStopAtReturnCharacters()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
+      modelInfo.setText("Here is some\ntext");
+      modelInfo.setCursorIndex(9);
+
+      processor.processKey(mockEvent);
+
+      assertEquals(13, modelInfo.getCursorIndex());
+    }
+
+     @Test
+    public void canProcessRightArrowAndStopAtReturnCharactersUnlessItIsAChainOfReturnChars()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
+      modelInfo.setText("Here is some\n\n\ntext");
+      modelInfo.setCursorIndex(9);
+
+      processor.processKey(mockEvent);
+
+      assertEquals(15, modelInfo.getCursorIndex());
+    }
+
+     @Test
+    public void canProcessRightArrowAndWontStopAtReturnCharactersIfPreceededByASpace()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
+      modelInfo.setText("Here is some \ntext");
+      modelInfo.setCursorIndex(9);
+
+      processor.processKey(mockEvent);
+
+      assertEquals(14, modelInfo.getCursorIndex());
     }
 
     @Test

@@ -92,38 +92,45 @@ public class TextAreaModel extends TextModel
     int cursorLine = getLineNumberOfIndex(cursorIndex);
     int selectionLine = getLineNumberOfIndex(selectionIndex);
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
+    System.out.println("cursorX = " + cursorX);
+    System.out.println("selectionX = " + selectionX);
+    System.out.println("cursorIndex = " + cursorIndex);
+    System.out.println("selectionIndex = " + selectionIndex);
+    System.out.println("edgeSelectionExtension = " + edgeSelectionExtension);
+    System.out.println("lineHeight = " + lineHeight);
+    System.out.println("................................");
     if (cursorLine == selectionLine)
     {
       yPos += lineHeight * cursorLine;
       if (cursorIndex > selectionIndex)
-        regions.add(new Box(selectionX - edgeSelectionExtension, yPos, cursorX - selectionX + edgeSelectionExtension, lineHeight));
+        regions.add(new Box(selectionX , yPos, cursorX - selectionX, lineHeight));
       else
-        regions.add(new Box(cursorX - edgeSelectionExtension, yPos, selectionX - cursorX + edgeSelectionExtension, lineHeight));
+        regions.add(new Box(cursorX , yPos, selectionX - cursorX, lineHeight));
       return regions;
     }
     else if (selectionLine > cursorLine)
     {
       yPos += lineHeight * cursorLine;
-      regions.add(new Box(cursorX - edgeSelectionExtension, yPos, myPanel.getWidth() - cursorX, lineHeight));
+      regions.add(new Box(cursorX , yPos, myPanel.getWidth() - cursorX, lineHeight));
       yPos += lineHeight;
       for (int i = cursorLine + 1; i < selectionLine; i++)
       {
-        regions.add(new Box(0, yPos, myPanel.getWidth(), lineHeight));
+        regions.add(new Box(3, yPos, myPanel.getWidth()-3, lineHeight));
         yPos += lineHeight;
       }
-      regions.add(new Box(0, yPos, selectionX, lineHeight));
+      regions.add(new Box(3, yPos, selectionX -3, lineHeight));
     }
     else
     {
       yPos += lineHeight * selectionLine;
-      regions.add(new Box(selectionX - edgeSelectionExtension, yPos, myPanel.getWidth() - selectionX, lineHeight));
+      regions.add(new Box(selectionX , yPos, myPanel.getWidth() - selectionX, lineHeight));
       yPos += lineHeight;
       for (int i = selectionLine + 1; i < cursorLine; i++)
       {
-        regions.add(new Box(0, yPos, myPanel.getWidth(), lineHeight));
+        regions.add(new Box(3, yPos, myPanel.getWidth()-3, lineHeight));
         yPos += lineHeight;
+        regions.add(new Box(3, yPos, cursorX -3, lineHeight));
       }
-      regions.add(new Box(0, yPos, cursorX, lineHeight));
     }
 
     return regions;
@@ -154,9 +161,10 @@ public class TextAreaModel extends TextModel
   {
     getTextLayouts();
     int numberOfCharacters = 0;
-    for(int i = 0;i<=line;i++)
-       numberOfCharacters += textLayouts.get(i).getText().length();
-    numberOfCharacters--;
+    for (int i = 0; i <= line; i++)
+      numberOfCharacters += textLayouts.get(i).getText().length();
+    if (line != textLayouts.size() - 1)
+      numberOfCharacters--;
     return numberOfCharacters;
   }
 
