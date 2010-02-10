@@ -21,6 +21,8 @@ public abstract class KeyProcessor
 
   protected void insertCharIntoTextBox(char c)
   {
+    if(c == KeyEvent.CHAR_UNDEFINED)
+      return;
     modelInfo.text.insert(modelInfo.getCursorIndex(), c);
     modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
   }
@@ -88,16 +90,12 @@ public abstract class KeyProcessor
       return;
     }
     int currentLine = modelInfo.getLineNumberOfIndex(modelInfo.cursorIndex);
-//    if (modelInfo.isLastCharacterAReturn(modelInfo.cursorIndex))
-//        currentLine++;
     int charCount = 0;
     for (int i = 0; i < currentLine - 1; i++)
       charCount += modelInfo.textLayouts.get(i).getText().length();
     int xPos = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
     int previousLineLength = modelInfo.textLayouts.get(currentLine - 1).getText().length();
     int newCursorIndex = charCount + previousLineLength -1;
-//    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-//        newCursorIndex--;
     if (modelInfo.getXPosFromIndex(newCursorIndex) < xPos)
     {
       modelInfo.setCursorIndex(newCursorIndex);
@@ -106,8 +104,6 @@ public abstract class KeyProcessor
     {
       TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine - 1).hitTestChar(xPos, 5);
       newCursorIndex = hitInfo.getCharIndex() + charCount;
-//      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-//        newCursorIndex--;
       modelInfo.setCursorIndex(newCursorIndex);
     }
   }
@@ -128,8 +124,6 @@ public abstract class KeyProcessor
     int newCursorIndex = charCount + nextLineLength -1;
     if(currentLine+1 == modelInfo.textLayouts.size() -1)
         newCursorIndex ++;
-//    if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-//      newCursorIndex--;
     if (modelInfo.getXPosFromIndex(newCursorIndex) < xPos)
     {
       modelInfo.setCursorIndex(newCursorIndex);
@@ -138,8 +132,6 @@ public abstract class KeyProcessor
     {
       TextHitInfo hitInfo = modelInfo.textLayouts.get(currentLine + 1).hitTestChar(xPos, 5);
       newCursorIndex = hitInfo.getCharIndex() + charCount;
-//      if (modelInfo.isLastCharacterAReturn(newCursorIndex))
-//        newCursorIndex--;
       modelInfo.setCursorIndex(newCursorIndex);
     }
 

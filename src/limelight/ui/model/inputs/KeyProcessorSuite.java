@@ -136,6 +136,16 @@ public class KeyProcessorSuite
     }
 
     @Test
+    public void willNotInsertAnUndefinedCharacter()
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, KeyEvent.CHAR_UNDEFINED);
+
+      processor.processKey(mockEvent);
+
+      asserter.assertTextState(1, "Here are four words");
+    }
+
+    @Test
     public void canProcessBackSpace()
     {
       mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_BACK_SPACE);
