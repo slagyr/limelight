@@ -33,37 +33,12 @@ public abstract class TextModel implements ClipboardOwner
   private String lastLayedOutText;
   private int lastCursorIndex;
   private int spaceWidth;
+  public int yOffset;
 
   public TextModel()
   {
 
   }
-
-  public void calculateTextXOffset(int panelWidth, int textWidth)
-  {
-    if (textWidth >= panelWidth)
-    {
-      cursorX = getXPosFromIndex(cursorIndex);
-      int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + SIDE_TEXT_MARGIN;
-      if (!typingInCenterOfBox(panelWidth, newXOffset))
-        xOffset = newXOffset;
-      while (cursorX < SIDE_DETECTION_MARGIN)
-        shiftOffset();
-    }
-    else
-      xOffset = 0;
-  }
-
-  private boolean typingInCenterOfBox(int panelWidth, int newXOffset)
-  {
-    return (isLeftOfTheRightMargin(panelWidth) && newXOffset > xOffset);
-  }
-
-  private boolean isLeftOfTheRightMargin(int panelWidth)
-  {
-    return cursorX < panelWidth - SIDE_DETECTION_MARGIN;
-  }
-
 
   public abstract void shiftOffset();
 
@@ -97,12 +72,17 @@ public abstract class TextModel implements ClipboardOwner
       return yPos;
     int lineNumber = getLineNumberOfIndex(index);
     int layoutIndex;
+    int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     for (layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
-      yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
+      yPos += lineHeight;
     if (isLastCharacterAReturn(index) && index == text.length())
     {
       yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     }
+
+    yOffset = yPos - myPanel.getHeight() + lineHeight;
+    if(yOffset < 0)
+      yOffset = 0;
     return yPos;
   }
 
@@ -530,4 +510,6 @@ public abstract class TextModel implements ClipboardOwner
   public abstract int getBottomPositionForCursor();
 
   public abstract int getIndexOfLastCharInLine(int line);
+
+  public abstract void calculateTextXOffset(int panelWidth, int width);
 }
