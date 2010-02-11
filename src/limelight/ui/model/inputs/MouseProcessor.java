@@ -45,12 +45,12 @@ public class MouseProcessor
     int i = 0;
     int charCount = 0;
     int layoutPosition = (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
-    hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
+    hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y + boxInfo.yOffset);
     while (i < layouts.size() -1 && y > layoutPosition)
     {
       charCount += layouts.get(i).getText().length();
       i++;
-      hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
+      hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y + boxInfo.yOffset);
       layoutPosition += (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
     }
     int index = hitInfo.getCharIndex() + charCount;

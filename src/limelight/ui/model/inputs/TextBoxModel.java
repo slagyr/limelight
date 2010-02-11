@@ -108,6 +108,30 @@ public class TextBoxModel extends TextModel
     return regions;
   }
 
+   public void calculateTextXOffset(int panelWidth, int textWidth)
+  {
+    if (textWidth >= panelWidth)
+    {
+      cursorX = getXPosFromIndex(cursorIndex);
+      int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + SIDE_TEXT_MARGIN;
+      if (!typingInCenterOfBox(panelWidth, newXOffset))
+        xOffset = newXOffset;
+      while (cursorX < SIDE_DETECTION_MARGIN)
+        shiftOffset();
+    }
+    else
+      xOffset = 0;
+  }
+   private boolean typingInCenterOfBox(int panelWidth, int newXOffset)
+  {
+    return (isLeftOfTheRightMargin(panelWidth) && newXOffset > xOffset);
+  }
+
+  private boolean isLeftOfTheRightMargin(int panelWidth)
+  {
+    return cursorX < panelWidth - SIDE_DETECTION_MARGIN;
+  }
+
   public boolean isBoxFull()
   {
     if (getText().length() > 0)

@@ -28,6 +28,7 @@ public class TextAreaModel extends TextModel
     cursorIndex = 0;
     selectionIndex = 0;
     xOffset = 0;
+    yOffset = 0;
   }
 
   @Override
@@ -149,7 +150,7 @@ public class TextAreaModel extends TextModel
   @Override
   public int getTopOfStartPositionForCursor()
   {
-    return getYPosFromIndex(cursorIndex);
+    return getYPosFromIndex(cursorIndex) - yOffset;
   }
 
   @Override
@@ -168,6 +169,11 @@ public class TextAreaModel extends TextModel
     if (line != textLayouts.size() - 1)
       numberOfCharacters--;
     return numberOfCharacters;
+  }
+
+  @Override
+  public void calculateTextXOffset(int panelWidth, int width)
+  {
   }
 
   public ArrayList<TypedLayout> parseTextForMultipleLayouts(String text)

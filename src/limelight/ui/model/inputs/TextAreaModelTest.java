@@ -69,6 +69,14 @@ public class TextAreaModelTest
   }
 
   @Test
+  public void canCalculateAYOffsetIfTheTextIsTooBigForTheTextArea()
+  {
+    modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
+    System.out.println("modelInfo.getYPosFromIndex(42) = " + modelInfo.getYPosFromIndex(42));
+    assertTrue(modelInfo.yOffset != 0);
+  }
+
+  @Test
   public void willAddAnotherLineToTheYPositionIfTheLastCharacterBeforeCursorIsAReturn()
   {
     int expectedYForTwoLines = 18;

@@ -27,7 +27,7 @@ public class TextBoxModelTest
   public void canCalcTheXPosForCursorFromStringWithOffset()
   {
     int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.SIDE_TEXT_MARGIN;
+    int expectedX = width + TextModel.SIDE_TEXT_MARGIN;
     boxModel.xOffset = 10;
 
     int x = boxModel.getXPosFromText("ABC");
@@ -39,7 +39,7 @@ public class TextBoxModelTest
   public void canCalculateTheXPositionForTheCursorFromAString()
   {
     int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
-    int expectedX = width + boxModel.SIDE_TEXT_MARGIN;
+    int expectedX = width + TextModel.SIDE_TEXT_MARGIN;
 
     int x = boxModel.getXPosFromText("ABC");
 
