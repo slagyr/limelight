@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TextBoxModelTest
@@ -53,21 +54,49 @@ public class TextBoxModelTest
   }
 
   @Test
-  public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidth()
+  public void canTellIfTheCursorIsAtACriticalEdge()
   {
-    boxModel.xOffset = boxModel.calculateTextDimensions().width - panel.getWidth();
-    int offset = boxModel.xOffset;
+    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+
+    assertFalse(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+
+    boxModel.setCursorIndex(0);
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+
+    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.setCursorIndex(boxModel.text.length() -5);
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+  }
+
+  @Test
+  public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidthIfCriticallyLeft()
+  {
+    boxModel.setCursorIndex(10);
+    int offset = boxModel.calculateTextDimensions().width - panel.getWidth();
+    boxModel.xOffset = offset;
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
 
     boxModel.shiftOffset();
     assertTrue(boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
   }
 
   @Test
-  public void canCalculateTheXOffsetIfTheCursorIsAtTheRightEdge()
+  public void canShiftTheCursorAndTextLeftIfCriticallyRight()
   {
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.setCursorIndex(0);
+    boxModel.xOffset = 0;
+
+    boxModel.setCursorIndex(30);
+
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+
+    boxModel.shiftOffset();
 
     assertTrue(boxModel.xOffset > 0);
+
   }
 
   @Test

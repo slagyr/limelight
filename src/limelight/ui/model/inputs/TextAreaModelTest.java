@@ -69,11 +69,42 @@ public class TextAreaModelTest
   }
 
   @Test
-  public void canCalculateAYOffsetIfTheTextIsTooBigForTheTextArea()
+  public void canCalculateAYOffsetIfTheTextIsTooBigForTheTextAreaAndTheCursorIsInAHiddenLine()
   {
     modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
-    System.out.println("modelInfo.getYPosFromIndex(42) = " + modelInfo.getYPosFromIndex(42));
-    assertTrue(modelInfo.yOffset != 0);
+
+    modelInfo.calculateYOffset();
+
+    assertTrue(modelInfo.yOffset > 0);
+
+    modelInfo.setCursorIndex(2);
+
+    modelInfo.calculateYOffset();
+
+    assertEquals(0, modelInfo.yOffset);
+  }
+
+  @Test
+  public void willOnlyShiftYOffsetIfCursorIsAtTheTopOrBottomEdge()
+  {
+    modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
+    modelInfo.setCursorIndex(10);
+
+    assertEquals(0, modelInfo.calculateYOffset());
+
+    modelInfo.setCursorIndex(20);
+
+    int staticYOffset = modelInfo.calculateYOffset();
+    assertTrue(staticYOffset > 0);
+
+    modelInfo.setCursorIndex(10);
+
+    assertEquals(staticYOffset, modelInfo.calculateYOffset());
+
+    modelInfo.setCursorIndex(0);
+
+    assertEquals(0, modelInfo.calculateYOffset());
+
   }
 
   @Test
@@ -87,7 +118,7 @@ public class TextAreaModelTest
     int y2 = modelInfo.getYPosFromIndex(20);
 
     assertEquals(expectedYForTwoLines, y);
-    assertEquals(expectedYForThreeLines,y2 );
+    assertEquals(expectedYForThreeLines, y2);
   }
 
   @Test
@@ -191,7 +222,7 @@ public class TextAreaModelTest
 
     assertEquals(3, regions.get(0).x);
     assertEquals(0, regions.get(0).y);
-    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()) -3, regions.get(0).width);
+    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()) - 3, regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(5)), regions.get(0).height);
   }
 
@@ -213,8 +244,22 @@ public class TextAreaModelTest
 
     assertEquals(3, regions.get(1).x);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(1).y);
-    assertEquals(modelInfo.getXPosFromIndex(10) -3, regions.get(1).width);
+    assertEquals(modelInfo.getXPosFromIndex(10) - 3, regions.get(1).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(10)), regions.get(1).height);
+  }
+
+  @Test
+  public void canGetAMultiLinedSelectedRegionWithAYOffset()
+  {
+    modelInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\nline");
+    modelInfo.selectionOn = true;
+    modelInfo.setCursorIndex(modelInfo.text.length() - 3);
+    modelInfo.setSelectionIndex(modelInfo.cursorIndex - 15);
+
+    ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
+    assertTrue(modelInfo.getYPosFromIndex(modelInfo.cursorIndex) > panel.getHeight());
+    assertTrue(regions.get(regions.size() -1).y < panel.getHeight());
+
   }
 
   @Test

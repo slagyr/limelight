@@ -45,16 +45,16 @@ public class MouseProcessor
     int i = 0;
     int charCount = 0;
     int layoutPosition = (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
-    hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y + boxInfo.yOffset);
-    while (i < layouts.size() -1 && y > layoutPosition)
+    hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
+    while (i < layouts.size() - 1 && y + boxInfo.yOffset > layoutPosition)
     {
       charCount += layouts.get(i).getText().length();
       i++;
-      hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y + boxInfo.yOffset);
+      hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
       layoutPosition += (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
     }
     int index = hitInfo.getCharIndex() + charCount;
-    if(x > boxInfo.getXPosFromIndex(index) && index == boxInfo.text.length() -1)
+    if (x > boxInfo.getXPosFromIndex(index) && index == boxInfo.text.length() - 1)
       index += 1;
     return index;
   }
@@ -104,11 +104,25 @@ public class MouseProcessor
   {
     int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
     int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
+
     int tempIndex = calculateMouseClickIndex(myX, myY);
+    System.out.println("tempIndex = " + tempIndex);
+    System.out.println("boxInfo.isCursorAtCriticalEdge(tempIndex) = " + boxInfo.isCursorAtCriticalEdge(tempIndex));
+    if (boxInfo.isCursorAtCriticalEdge(tempIndex))
+    {
+      boxInfo.shiftOffset();
+    }
     if (doubleClickOn)
+
+    {
       selectWord(tempIndex);
+    }
+
     else
+    {
       boxInfo.setCursorIndex(tempIndex);
+    }
+
   }
 
   private void selectWord(int tempIndex)

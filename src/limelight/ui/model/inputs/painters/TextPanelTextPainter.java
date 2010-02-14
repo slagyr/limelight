@@ -28,7 +28,7 @@ public class TextPanelTextPainter extends TextPanelPainter
 
       int textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width,box ) - boxInfo.getXOffset();
 
-      float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box) - boxInfo.yOffset;
+      float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box) - boxInfo.calculateYOffset();
 
 
       graphics.setColor(Color.black);

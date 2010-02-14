@@ -79,10 +79,6 @@ public abstract class TextModel implements ClipboardOwner
     {
       yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     }
-
-    yOffset = yPos - myPanel.getHeight() + lineHeight;
-    if(yOffset < 0)
-      yOffset = 0;
     return yPos;
   }
 
@@ -512,4 +508,8 @@ public abstract class TextModel implements ClipboardOwner
   public abstract int getIndexOfLastCharInLine(int line);
 
   public abstract void calculateTextXOffset(int panelWidth, int width);
+
+  public abstract int calculateYOffset();
+
+  public abstract boolean isCursorAtCriticalEdge(int index);
 }
