@@ -85,7 +85,7 @@ public class TextAreaModel extends TextModel
   {
     int cursorX = getXPosFromIndex(cursorIndex);
     int selectionX = getXPosFromIndex(selectionIndex);
-    int yPos = 0;
+    int yPos = - calculateYOffset();
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     int cursorLine = getLineNumberOfIndex(cursorIndex);
     int selectionLine = getLineNumberOfIndex(selectionIndex);
@@ -150,7 +150,7 @@ public class TextAreaModel extends TextModel
   @Override
   public int getTopOfStartPositionForCursor()
   {
-    return getYPosFromIndex(cursorIndex) - yOffset;
+    return getYPosFromIndex(cursorIndex) - calculateYOffset();
   }
 
   @Override
@@ -174,6 +174,32 @@ public class TextAreaModel extends TextModel
   @Override
   public void calculateTextXOffset(int panelWidth, int width)
   {
+  }
+
+  @Override
+  public int calculateYOffset()
+  {
+    int yPos = getYPosFromIndex(cursorIndex);
+    int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
+    int panelHeight = myPanel.getHeight();
+    while(yPos <= yOffset)
+    {
+      yOffset -= lineHeight;
+    if(yOffset < 0)
+       yOffset = 0;
+    }
+
+    while((yPos + lineHeight) > yOffset + panelHeight)
+    {
+      yOffset += lineHeight;
+    }
+    return yOffset;
+  }
+
+  @Override
+  public boolean isCursorAtCriticalEdge(int index)
+  {
+    return false;
   }
 
   public ArrayList<TypedLayout> parseTextForMultipleLayouts(String text)

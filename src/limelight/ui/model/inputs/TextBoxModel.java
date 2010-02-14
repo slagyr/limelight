@@ -37,24 +37,32 @@ public class TextBoxModel extends TextModel
   
   public void shiftOffset()
   {
-    String rightShiftingText = getText().substring(0, cursorIndex);
-    if (rightShiftingText.length() == 0 || xOffset == 0)
+    if (cursorIndex == 0)
     {
       cursorX = SIDE_DETECTION_MARGIN;
       xOffset = 0;
     }
-    else
+    else if(isCriticallyLeft())
     {
-      TypedLayout layout = new TextLayoutImpl(rightShiftingText, font, TextPanel.getRenderContext());
-      int textWidth = getWidthDimension(layout);
-      if (textWidth > getPanelWidth() / 2)
-        xOffset -= getPanelWidth() / 2;
-      else
-        xOffset -= textWidth;
-      if (xOffset < 0)
-        xOffset = 0;
-      cursorX = getXPosFromIndex(cursorIndex);
+      calculateRightShiftedOffset();
     }
+    else if(isCriticallyRight()){
+      calculateTextXOffset(myPanel.getWidth(),calculateTextDimensions().width);
+    }
+  }
+
+  private void calculateRightShiftedOffset()
+  {
+    String rightShiftingText = getText().substring(0, cursorIndex);
+    TypedLayout layout = new TextLayoutImpl(rightShiftingText, font, TextPanel.getRenderContext());
+    int textWidth = getWidthDimension(layout);
+    if (textWidth > getPanelWidth() / 2)
+      xOffset -= getPanelWidth() / 2;
+    else
+      xOffset -= textWidth;
+    if (xOffset < 0)
+      xOffset = 0;
+    cursorX = getXPosFromIndex(cursorIndex);
   }
 
   public Dimension calculateTextDimensions()
@@ -122,7 +130,35 @@ public class TextBoxModel extends TextModel
     else
       xOffset = 0;
   }
-   private boolean typingInCenterOfBox(int panelWidth, int newXOffset)
+
+  @Override
+  public int calculateYOffset()
+  {
+    return 0;
+  }
+
+  @Override
+  public boolean isCursorAtCriticalEdge(int index)
+  {
+    cursorX = getXPosFromIndex(cursorIndex);
+    if(myPanel.getWidth() > calculateTextDimensions().width)
+      return false;
+    if(!isCriticallyRight() && !isCriticallyLeft())
+      return false;
+    return true;
+  }
+
+  private boolean isCriticallyLeft()
+  {
+    return (cursorX <= SIDE_DETECTION_MARGIN && xOffset != 0);
+  }
+
+  private boolean isCriticallyRight()
+  {
+    return (!isLeftOfTheRightMargin(myPanel.getWidth()) && (xOffset + cursorX <= calculateTextDimensions().width));
+  }
+
+  private boolean typingInCenterOfBox(int panelWidth, int newXOffset)
   {
     return (isLeftOfTheRightMargin(panelWidth) && newXOffset > xOffset);
   }
