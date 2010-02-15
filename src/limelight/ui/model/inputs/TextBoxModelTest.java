@@ -56,18 +56,18 @@ public class TextBoxModelTest
   @Test
   public void canTellIfTheCursorIsAtACriticalEdge()
   {
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.calculateLeftShiftingOffset();   
 
-    assertFalse(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
     boxModel.setCursorIndex(0);
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.xOffset = 0;
     boxModel.setCursorIndex(boxModel.text.length() -5);
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
   }
 
   @Test
@@ -77,9 +77,9 @@ public class TextBoxModelTest
     int offset = boxModel.calculateTextDimensions().width - panel.getWidth();
     boxModel.xOffset = offset;
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
-    boxModel.shiftOffset();
+    boxModel.shiftOffset(boxModel.cursorIndex);
     assertTrue(boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
   }
 
@@ -91,9 +91,9 @@ public class TextBoxModelTest
 
     boxModel.setCursorIndex(30);
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.cursorIndex));
+    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
-    boxModel.shiftOffset();
+    boxModel.shiftOffset(boxModel.cursorIndex);
 
     assertTrue(boxModel.xOffset > 0);
 
@@ -102,16 +102,16 @@ public class TextBoxModelTest
   @Test
   public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
   {
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.shiftOffset(boxModel.cursorIndex);
     int offset = boxModel.xOffset;
     boxModel.setCursorIndex(0);
 
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.shiftOffset(boxModel.cursorIndex);
 
     assertTrue(boxModel.xOffset <= offset / 2 + 2);
 
     boxModel.setText("hi");
-    boxModel.calculateTextXOffset(panel.getWidth(), boxModel.calculateTextDimensions().width);
+    boxModel.shiftOffset(boxModel.cursorIndex);
     assertTrue(boxModel.xOffset == 0);
 
   }

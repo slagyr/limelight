@@ -52,7 +52,7 @@ public class MouseProcessorTest
   {
     panel = new TextBox2Panel();
     modelInfo = panel.getModelInfo();
-    modelInfo.setText("Some Text that will prove to be longer than can fit in this box");
+    modelInfo.setText("Some Text that will prove. to be longer than can fit in this box");
     processor = new MouseProcessor(modelInfo);
     parent = new PropPanel(new MockProp());
     parent.add(panel);
@@ -184,16 +184,25 @@ public class MouseProcessorTest
   public void willChangeTheXOffestWhileDraggingIfPastCriticalEdge()
   {
     setUpTextBox();
-    modelInfo.calculateTextXOffset(panel.getWidth(), modelInfo.calculateTextDimensions().width);
+    modelInfo.calculateLeftShiftingOffset();
     modelInfo.selectionOn = true;
     modelInfo.selectionIndex = modelInfo.cursorIndex;
     int oldXOffset = modelInfo.xOffset;
-    System.out.println("oldOffset = " + oldXOffset);
-    System.out.println("modelInfo.cursorIndex = " + modelInfo.cursorIndex);
 
     processor.processMouseDragged(mockMouseEvent);
 
     assertTrue(oldXOffset > modelInfo.xOffset);
+  }
+
+  @Test
+  public void wontGetCaughtOnAnEdgeUnableToFurtherDrag()
+  {
+    setUpTextBox();
+    mockMouseEvent = new MockMouseEvent(246,115);
+
+    processor.processMouseDragged(mockMouseEvent);
+
+    assertTrue(modelInfo.xOffset > 0);
   }
 
   @Test

@@ -29,40 +29,93 @@ public class TextBoxModel extends TextModel
   protected int getXPosFromText(String toIndexString)
   {
     TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
-    int x = getWidthDimension(layout) + SIDE_TEXT_MARGIN - xOffset;
-    if (x < SIDE_TEXT_MARGIN)
-      x = SIDE_TEXT_MARGIN;
-    return x;
-  }
-  
-  public void shiftOffset()
-  {
-    if (cursorIndex == 0)
-    {
-      cursorX = SIDE_DETECTION_MARGIN;
-      xOffset = 0;
-    }
-    else if(isCriticallyLeft())
-    {
-      calculateRightShiftedOffset();
-    }
-    else if(isCriticallyRight()){
-      calculateTextXOffset(myPanel.getWidth(),calculateTextDimensions().width);
-    }
+    return getWidthDimension(layout) + SIDE_TEXT_MARGIN - xOffset;
+
   }
 
-  private void calculateRightShiftedOffset()
+  public void shiftOffset(int index)
+  {
+    int xPos = getXPosFromIndex(index);
+    System.out.println("cursorX = " + xPos);
+    System.out.println("cursorIndex = " + index);
+    System.out.println("xOffset = " + xOffset);
+    System.out.println("isCriticallyLeft() = " + isCriticallyLeft(xPos));
+    System.out.println("isCriticallyRight() = " + isCriticallyRight(xPos));
+    if (index == 0)
+    {
+      this.cursorX = SIDE_DETECTION_MARGIN;
+      xOffset = 0;
+    }
+    else if (isCriticallyLeft(xPos))
+    {
+      calculateRightShiftingOffset();
+    }
+    else if (isCriticallyRight(xPos))
+    {
+      calculateLeftShiftingOffset();
+    }
+    this.cursorX = getXPosFromIndex(index);
+  }
+
+  @Override
+  public boolean isCursorAtCriticalEdge(int xPos)
+  {
+    if (myPanel.getWidth() > calculateTextDimensions().width)
+      return false;
+    if (!isCriticallyRight(xPos) && !isCriticallyLeft(xPos))
+      return false;
+    return true;
+  }
+
+  private boolean isCriticallyLeft(int xPos)
+  {
+    return (xPos <= SIDE_DETECTION_MARGIN && xOffset != 0);
+  }
+
+  private boolean isCriticallyRight(int xPos)
+  {
+    return (xPos >= myPanel.getWidth() - SIDE_DETECTION_MARGIN);// && (xOffset + cursorX <= calculateTextDimensions().width));
+  }
+
+  private void calculateRightShiftingOffset()
   {
     String rightShiftingText = getText().substring(0, cursorIndex);
     TypedLayout layout = new TextLayoutImpl(rightShiftingText, font, TextPanel.getRenderContext());
-    int textWidth = getWidthDimension(layout);
+    int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(rightShiftingText);
     if (textWidth > getPanelWidth() / 2)
       xOffset -= getPanelWidth() / 2;
     else
       xOffset -= textWidth;
     if (xOffset < 0)
       xOffset = 0;
-    cursorX = getXPosFromIndex(cursorIndex);
+  }
+
+  public void calculateLeftShiftingOffset()
+  {
+    int defaultOffset = SIDE_TEXT_MARGIN + SIDE_DETECTION_MARGIN;
+    if (cursorIndex == text.length())
+    {
+      int textWidth = calculateTextDimensions().width;
+      if (textWidth > getPanelWidth())
+      {
+        xOffset = textWidth - getPanelWidth() + defaultOffset;
+      }
+    }
+    else
+    {
+      String leftShiftingText;
+      if (cursorIndex == text.length() - 1)
+        leftShiftingText = Character.toString(text.charAt(cursorIndex));
+      else
+        leftShiftingText = getText().substring(cursorIndex, text.length() - 1);
+      TypedLayout layout = new TextLayoutImpl(leftShiftingText, font, TextPanel.getRenderContext());
+      int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(leftShiftingText);
+      if (textWidth > getPanelWidth() / 2)
+        xOffset += getPanelWidth() / 2;
+      else
+        xOffset += textWidth;
+      System.out.println("textWidth = " + textWidth);
+    }
   }
 
   public Dimension calculateTextDimensions()
@@ -101,7 +154,7 @@ public class TextBoxModel extends TextModel
   public ArrayList<Rectangle> getSelectionRegions()
   {
     if (getText().length() > 0)
-      calculateTextXOffset(myPanel.getWidth(), calculateTextDimensions().width);
+      shiftOffset(cursorIndex);
     int x1 = getXPosFromIndex(cursorIndex);
     int x2 = getXPosFromIndex(selectionIndex);
     int edgeSelectionExtension = 0;
@@ -116,56 +169,10 @@ public class TextBoxModel extends TextModel
     return regions;
   }
 
-   public void calculateTextXOffset(int panelWidth, int textWidth)
-  {
-    if (textWidth >= panelWidth)
-    {
-      cursorX = getXPosFromIndex(cursorIndex);
-      int newXOffset = textWidth - panelWidth + SIDE_DETECTION_MARGIN + SIDE_TEXT_MARGIN;
-      if (!typingInCenterOfBox(panelWidth, newXOffset))
-        xOffset = newXOffset;
-      while (cursorX < SIDE_DETECTION_MARGIN)
-        shiftOffset();
-    }
-    else
-      xOffset = 0;
-  }
-
   @Override
   public int calculateYOffset()
   {
     return 0;
-  }
-
-  @Override
-  public boolean isCursorAtCriticalEdge(int index)
-  {
-    cursorX = getXPosFromIndex(cursorIndex);
-    if(myPanel.getWidth() > calculateTextDimensions().width)
-      return false;
-    if(!isCriticallyRight() && !isCriticallyLeft())
-      return false;
-    return true;
-  }
-
-  private boolean isCriticallyLeft()
-  {
-    return (cursorX <= SIDE_DETECTION_MARGIN && xOffset != 0);
-  }
-
-  private boolean isCriticallyRight()
-  {
-    return (!isLeftOfTheRightMargin(myPanel.getWidth()) && (xOffset + cursorX <= calculateTextDimensions().width));
-  }
-
-  private boolean typingInCenterOfBox(int panelWidth, int newXOffset)
-  {
-    return (isLeftOfTheRightMargin(panelWidth) && newXOffset > xOffset);
-  }
-
-  private boolean isLeftOfTheRightMargin(int panelWidth)
-  {
-    return cursorX < panelWidth - SIDE_DETECTION_MARGIN;
   }
 
   public boolean isBoxFull()

@@ -135,8 +135,8 @@ public class TextBox2Panel extends TextInputPanel
     RootPanel rootPanel = getRoot();
     if (rootPanel != null)
     {
-      int regionHeight = boxInfo.getHeightOfCurrentLine() + TextModel.TOP_MARGIN;
-      int cursorY =  getAbsoluteLocation().y + TextModel.TOP_MARGIN;
+      int cursorY =  getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();
+      int regionHeight = boxInfo.getBottomPositionForCursor()- boxInfo.getTopOfStartPositionForCursor() + 1;
       int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
       rootPanel.addDirtyRegion(new Box(cursorX, cursorY, 1, regionHeight));
     }

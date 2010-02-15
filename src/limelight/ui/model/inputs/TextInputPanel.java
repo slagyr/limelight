@@ -184,6 +184,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void mouseDragged(MouseEvent e)
   {
+    System.out.println(" from input panel e.getX() = " + e.getX());
     mouseProcessor.processMouseDragged(e);
     cursorOn = true;
     markPaintableRegionAsDirty();    
