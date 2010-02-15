@@ -40,7 +40,7 @@ public abstract class TextModel implements ClipboardOwner
 
   }
 
-  public abstract void shiftOffset();
+  public abstract void shiftOffset(int index);
 
   public void setCursorAndSelectionStartX()
   {
@@ -59,7 +59,10 @@ public abstract class TextModel implements ClipboardOwner
     if (index <= 0 || isLastCharacterAReturn(index) || startOfLineIndex == index)
       return SIDE_TEXT_MARGIN;
     String toIndexString = text.substring(startOfLineIndex, index);
-    return getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
+    int xPos = getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
+    if (xPos < SIDE_TEXT_MARGIN)
+      return SIDE_TEXT_MARGIN;
+    return xPos;
   }
 
 
@@ -507,9 +510,9 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract int getIndexOfLastCharInLine(int line);
 
-  public abstract void calculateTextXOffset(int panelWidth, int width);
+  public abstract void calculateLeftShiftingOffset();
 
   public abstract int calculateYOffset();
 
-  public abstract boolean isCursorAtCriticalEdge(int index);
+  public abstract boolean isCursorAtCriticalEdge(int cursorX);
 }

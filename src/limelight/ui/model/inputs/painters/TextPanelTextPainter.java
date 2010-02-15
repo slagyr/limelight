@@ -23,7 +23,7 @@ public class TextPanelTextPainter extends TextPanelPainter
       textDimensions = boxInfo.calculateTextDimensions();
       Box box = new Box(TextModel.SIDE_TEXT_MARGIN,0,boxInfo.getPanelWidth() - TextModel.SIDE_TEXT_MARGIN,boxInfo.getPanelHeight());
 
-      boxInfo.calculateTextXOffset(boxInfo.getPanelWidth(), textDimensions.width);
+      boxInfo.shiftOffset(boxInfo.getCursorIndex());
       boxInfo.getYPosFromIndex(boxInfo.getCursorIndex());
 
       int textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width,box ) - boxInfo.getXOffset();

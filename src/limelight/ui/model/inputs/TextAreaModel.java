@@ -32,7 +32,7 @@ public class TextAreaModel extends TextModel
   }
 
   @Override
-  public void shiftOffset()
+  public void shiftOffset(int index)
   {
   }
 
@@ -172,7 +172,7 @@ public class TextAreaModel extends TextModel
   }
 
   @Override
-  public void calculateTextXOffset(int panelWidth, int width)
+  public void calculateLeftShiftingOffset()
   {
   }
 
@@ -197,7 +197,7 @@ public class TextAreaModel extends TextModel
   }
 
   @Override
-  public boolean isCursorAtCriticalEdge(int index)
+  public boolean isCursorAtCriticalEdge(int cursorX)
   {
     return false;
   }
