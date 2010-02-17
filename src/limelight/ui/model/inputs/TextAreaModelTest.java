@@ -188,11 +188,11 @@ public class TextAreaModelTest
   @Test
   public void willMakeANewLineForEveryReturnCharacterRegardlessOfTheLineItIsCurrentlyOn()
   {
-    areaInfo.setText("This is going to be a very large amount of text. It seems to be the only way to make sure this works. Here\nis\n\nsome new lines");
+    modelInfo.setText("This is going to be a very large amount of text. It seems to be the only way to make sure this works. Here\nis\n\nsome new lines");
 
-    areaInfo.getTextLayouts();
+    modelInfo.getTextLayouts();
 
-    assertEquals(8, areaInfo.textLayouts.size());
+    assertEquals(8, modelInfo.textLayouts.size());
   }
 
   @Test

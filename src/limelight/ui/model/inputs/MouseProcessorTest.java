@@ -171,12 +171,14 @@ public class MouseProcessorTest
   @Test
   public void willChangeTheYOffsetWhileDraggingPastCriticalEdge()
   {
-    modelInfo.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max");
+    modelInfo.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max\nAndMore?");
     int oldYOffset = modelInfo.calculateYOffset();
-    mockMouseEvent = new MockMouseEvent(105,101);
+    assertTrue(oldYOffset > 0);
+    mockMouseEvent = new MockMouseEvent(110,100);
 
     processor.processMouseDragged(mockMouseEvent);
 
+    modelInfo.calculateYOffset();
     assertTrue(oldYOffset > modelInfo.yOffset);
   }
 
