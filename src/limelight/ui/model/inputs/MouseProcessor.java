@@ -106,10 +106,9 @@ public class MouseProcessor
     int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
 
     int tempIndex = calculateMouseClickIndex(myX, myY);
-
     if (boxInfo.isCursorAtCriticalEdge(myX))
     {
-      if (boxInfo.getXPosFromIndex(tempIndex) < myX && boxInfo.cursorIndex < boxInfo.getText().length())
+      if (boxInfo.getXPosFromIndex(tempIndex) < myX && tempIndex < boxInfo.getText().length())
         tempIndex++;
       boxInfo.shiftOffset(tempIndex);
       tempIndex--;
