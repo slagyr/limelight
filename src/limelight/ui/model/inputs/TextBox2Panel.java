@@ -84,7 +84,7 @@ public class TextBox2Panel extends TextInputPanel
 
   private boolean isExpandingRegionToRight(int x)
   {
-    return x > paintableRegion.x && (x - paintableRegion.x) > paintableRegion.width;
+    return x > paintableRegion.x + paintableRegion.width;
   }
 
   public void resetPaintableRegion()
