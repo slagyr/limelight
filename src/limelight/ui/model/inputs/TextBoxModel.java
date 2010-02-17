@@ -36,11 +36,6 @@ public class TextBoxModel extends TextModel
   public void shiftOffset(int index)
   {
     int xPos = getXPosFromIndex(index);
-    System.out.println("cursorX = " + xPos);
-    System.out.println("cursorIndex = " + index);
-    System.out.println("xOffset = " + xOffset);
-    System.out.println("isCriticallyLeft() = " + isCriticallyLeft(xPos));
-    System.out.println("isCriticallyRight() = " + isCriticallyRight(xPos));
     if (index == 0)
     {
       this.cursorX = SIDE_DETECTION_MARGIN;
@@ -114,7 +109,6 @@ public class TextBoxModel extends TextModel
         xOffset += getPanelWidth() / 2;
       else
         xOffset += textWidth;
-      System.out.println("textWidth = " + textWidth);
     }
   }
 

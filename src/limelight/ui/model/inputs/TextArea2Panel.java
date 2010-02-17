@@ -13,7 +13,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 
-public class TextArea2Panel   extends TextInputPanel
+public class TextArea2Panel extends TextInputPanel
 {
 
   public TextArea2Panel()
@@ -59,16 +59,43 @@ public class TextArea2Panel   extends TextInputPanel
   @Override
   public void paintOn(Graphics2D graphics)
   {
-    painterComposite.paint(graphics);    
+    painterComposite.paint(graphics);
   }
 
   @Override
   public void setPaintableRegion(int index)
   {
-    paintableRegion.x = 0;
-    paintableRegion.y = 0;
-    paintableRegion.width = width;
-    paintableRegion.height = height;
+    int y = boxInfo.getYPosFromIndex(index);
+    if (isNewPaintableRegion())
+      paintableRegion.y = y - TextModel.TOP_MARGIN;
+    else if (isExpandingRegionUpward(y))
+    {
+      paintableRegion.height += paintableRegion.y - y;
+      paintableRegion.y = y;
+    }
+    else if (isExpandingRegionDownward(y))
+    {
+      paintableRegion.height += boxInfo.getTotalHeightOfLineWithLeadingMargin(boxInfo.getLineNumberOfIndex(index));
+    }
+    if (paintableRegion.height > height)
+    {
+      paintableRegion.height = height;
+    }
+  }
+
+  private boolean isNewPaintableRegion()
+  {
+    return paintableRegion.y == 0 && paintableRegion.height == 0;
+  }
+
+  private boolean isExpandingRegionDownward(int y)
+  {
+    return y > paintableRegion.y + paintableRegion.height;
+  }
+
+  private boolean isExpandingRegionUpward(int y)
+  {
+    return y < paintableRegion.y;
   }
 
   @Override
@@ -77,7 +104,7 @@ public class TextArea2Panel   extends TextInputPanel
     paintableRegion.x = 0;
     paintableRegion.y = 0;
     paintableRegion.width = width;
-    paintableRegion.height = height;
+    paintableRegion.height = boxInfo.getHeightOfCurrentLine() + TextModel.TOP_MARGIN;
   }
 
   @Override
