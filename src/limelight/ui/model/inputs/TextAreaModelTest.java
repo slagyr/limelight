@@ -146,7 +146,7 @@ public class TextAreaModelTest
   @Test
   public void shouldBeAbleToFindNewLineIndices()
   {
-    ArrayList<Integer> indices = areaInfo.findReturnCharIndices("this\nIs\nA new \rline");
+    ArrayList<Integer> indices = areaInfo.findNewLineCharIndices("this\nIs\nA new \rline");
 
     assertEquals(3, indices.size());
     assertEquals(4, (int) indices.get(0));
@@ -157,7 +157,8 @@ public class TextAreaModelTest
   @Test
   public void canSpiltTextIntoMultipleLinesBasedOffReturnKeys()
   {
-    ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts("this is the first line\nthis is the second line");
+    areaInfo.setText("this is the first line\nthis is the second line");
+    ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts();
 
     assertEquals(2, textLayouts.size());
     assertEquals("this is the first line\n", textLayouts.get(0).getText());
@@ -167,7 +168,8 @@ public class TextAreaModelTest
   @Test
   public void canSplitTextIntoMultipleLinesFromThePanelWidth()
   {
-    ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts("This here is the first full line. This is the second line");
+    areaInfo.setText("This here is the first full line. This is the second line");
+    ArrayList<TypedLayout> textLayouts = areaInfo.parseTextForMultipleLayouts();
 
     assertEquals(3, textLayouts.size());
     assertEquals("This here is the first full ", textLayouts.get(0).getText());
@@ -183,6 +185,15 @@ public class TextAreaModelTest
     assertEquals(2, textLayouts.size());
     assertEquals("This is more than 1 line\r", textLayouts.get(0).getText());
     assertEquals("and should be 2 lines", textLayouts.get(1).getText());
+  }
+
+  @Test
+  public void willStoreATextLayoutForAnEmptyLine()
+  {
+    areaInfo.setText("This has an empty line\n");
+    ArrayList<TypedLayout> textLayouts = areaInfo.getTextLayouts();
+    assertEquals(2, textLayouts.size());
+    assertEquals("", textLayouts.get(1).getText());
   }
 
   @Test
@@ -260,6 +271,20 @@ public class TextAreaModelTest
     assertTrue(modelInfo.getYPosFromIndex(modelInfo.cursorIndex) > panel.getHeight());
     assertTrue(regions.get(regions.size() -1).y < panel.getHeight());
 
+  }
+
+  @Test
+  public void willReturnProperSelectedRegionsWhenThereIAYOffest()
+  {
+    areaInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\n");
+    areaInfo.cursorIndex --;
+    areaInfo.selectionIndex = areaInfo.cursorIndex -2;
+
+    ArrayList<Rectangle> regions = areaInfo.getSelectionRegions();
+    
+    assertTrue(areaInfo.getYPosFromIndex(areaInfo.cursorIndex) > panel.getHeight());
+    assertTrue(regions.get(regions.size() -1).y < panel.getHeight());
+    assertEquals(areaInfo.getYPosFromIndex(areaInfo.cursorIndex) - areaInfo.calculateYOffset() - TextModel.TOP_MARGIN, regions.get(regions.size() - 1).y);
   }
 
   @Test

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 public class TextAreaModel extends TextModel
 {
+  private ArrayList<Integer> newLineCharIndices;
+
   public TextAreaModel(TextInputPanel myAreaPanel)
   {
     this.myPanel = myAreaPanel;
@@ -74,7 +76,7 @@ public class TextAreaModel extends TextModel
       if (textLayouts == null || isThereSomeDifferentText())
       {
         setLastLayedOutText(getText());
-        textLayouts = parseTextForMultipleLayouts(getText());
+        parseTextForMultipleLayouts();
       }
       return textLayouts;
     }
@@ -83,47 +85,43 @@ public class TextAreaModel extends TextModel
   @Override
   public ArrayList<Rectangle> getSelectionRegions()
   {
-    int cursorX = getXPosFromIndex(cursorIndex);
-    int selectionX = getXPosFromIndex(selectionIndex);
-    int yPos = - calculateYOffset();
-    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     int cursorLine = getLineNumberOfIndex(cursorIndex);
     int selectionLine = getLineNumberOfIndex(selectionIndex);
-    int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     if (cursorLine == selectionLine)
-    {
-      yPos += lineHeight * cursorLine;
-      if (cursorIndex > selectionIndex)
-        regions.add(new Box(selectionX , yPos, cursorX - selectionX, lineHeight));
-      else
-        regions.add(new Box(cursorX , yPos, selectionX - cursorX, lineHeight));
-      return regions;
-    }
+      return selectionRegionsForSingleLine();
     else if (selectionLine > cursorLine)
-    {
-      yPos += lineHeight * cursorLine;
-      regions.add(new Box(cursorX , yPos, myPanel.getWidth() - cursorX, lineHeight));
-      yPos += lineHeight;
-      for (int i = cursorLine + 1; i < selectionLine; i++)
-      {
-        regions.add(new Box(3, yPos, myPanel.getWidth()-3, lineHeight));
-        yPos += lineHeight;
-      }
-      regions.add(new Box(3, yPos, selectionX -3, lineHeight));
-    }
+      return selectionRegionsForMultipleLines(cursorLine, getXPosFromIndex(cursorIndex), selectionLine, getXPosFromIndex(selectionIndex));
     else
-    {
-      yPos += lineHeight * selectionLine;
-      regions.add(new Box(selectionX , yPos, myPanel.getWidth() - selectionX, lineHeight));
-      yPos += lineHeight;
-      for (int i = selectionLine + 1; i < cursorLine; i++)
-      {
-        regions.add(new Box(3, yPos, myPanel.getWidth()-3, lineHeight));
-        yPos += lineHeight;
-      }
-      regions.add(new Box(3, yPos, cursorX -3, lineHeight));
-    }
+      return selectionRegionsForMultipleLines(selectionLine, getXPosFromIndex(selectionIndex), cursorLine, getXPosFromIndex(cursorIndex));
+  }
 
+  private ArrayList<Rectangle> selectionRegionsForSingleLine()
+  {
+    int cursorX = getXPosFromIndex(cursorIndex);
+    int selectionX = getXPosFromIndex(selectionIndex);
+    int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);    
+    int yPos = getYPosFromIndex(cursorIndex) - TOP_MARGIN - calculateYOffset();
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>() ;
+    if (cursorIndex > selectionIndex)
+      regions.add(new Box(selectionX , yPos, cursorX - selectionX, lineHeight));
+    else
+      regions.add(new Box(cursorX , yPos, selectionX - cursorX, lineHeight));
+    return regions;
+  }
+
+  private ArrayList<Rectangle> selectionRegionsForMultipleLines(int startingLine, int startingX, int endingLine, int endingX)
+  {
+    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
+    int yPos = lineHeight * startingLine - calculateYOffset();
+    regions.add(new Box(startingX, yPos, myPanel.getWidth() - startingX, lineHeight));
+    yPos += lineHeight;
+    for (int i = startingLine + 1; i < endingLine; i++)
+    {
+      regions.add(new Box(SIDE_TEXT_MARGIN, yPos, myPanel.getWidth()-SIDE_TEXT_MARGIN, lineHeight));
+      yPos += lineHeight;
+    }
+    regions.add(new Box(SIDE_TEXT_MARGIN, yPos, endingX -SIDE_TEXT_MARGIN, lineHeight));
     return regions;
   }
 
@@ -150,13 +148,13 @@ public class TextAreaModel extends TextModel
   @Override
   public int getTopOfStartPositionForCursor()
   {
-    return getYPosFromIndex(cursorIndex) - calculateYOffset();
+    return getYPosFromIndex(cursorIndex) - calculateYOffset() - TOP_MARGIN;
   }
 
   @Override
   public int getBottomPositionForCursor()
   {
-    return getTopOfStartPositionForCursor() + getHeightOfCurrentLine() - TOP_MARGIN - 1;
+    return getTopOfStartPositionForCursor() + getHeightOfCurrentLine() - 1;
   }
 
   @Override
@@ -202,43 +200,74 @@ public class TextAreaModel extends TextModel
     return false;
   }
 
-  public ArrayList<TypedLayout> parseTextForMultipleLayouts(String text)
+  public ArrayList<TypedLayout> parseTextForMultipleLayouts()
   {
-    AttributedString attrString = new AttributedString(text);
-    attrString.addAttribute(TextAttribute.FONT, font);
-    AttributedCharacterIterator iterator = attrString.getIterator();
+    AttributedCharacterIterator iterator = getIterator();
 
-    ArrayList<Integer> returnCharIndices = findReturnCharIndices(text);
-    ArrayList<TypedLayout> textLayouts = new ArrayList<TypedLayout>();
+    newLineCharIndices = findNewLineCharIndices(getText());
+    textLayouts = new ArrayList<TypedLayout>();
 
     LineBreakMeasurer breaker = new LineBreakMeasurer(iterator, TextPanel.getRenderContext());
-    int firstCharIndex = 0, lastCharIndex, returnCharIndex = 0;
-    String layoutText = "";
+    int lastCharIndex =0, newLineCharIndex = 0;
     while (breaker.getPosition() < iterator.getEndIndex())
     {
-      TextLayout layout;
-      if (isThereMoreReturnCharacters(returnCharIndices, returnCharIndex))
-        layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN, returnCharIndices.get(returnCharIndex) + 1, false);
-      else
-        layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN);
-      lastCharIndex = firstCharIndex + layout.getCharacterCount();
-      if (isThereMoreReturnCharacters(returnCharIndices, returnCharIndex) && lastCharIndex == returnCharIndices.get(returnCharIndex) + 1)
-        returnCharIndex++;
-      layoutText = text.substring(firstCharIndex, lastCharIndex);
-      textLayouts.add(new TextLayoutImpl(layoutText, font, TextPanel.getRenderContext()));
-      firstCharIndex = lastCharIndex;
-
+      lastCharIndex = addANewLayoutForTheNextLine(breaker, lastCharIndex, newLineCharIndex);
+      if (layoutEndedOnNewLineChar(lastCharIndex, newLineCharIndex))
+        newLineCharIndex++;
     }
+    addBlankLayoutIfLastLineIsEmpty();
 
     return textLayouts;
   }
 
-  private boolean isThereMoreReturnCharacters(ArrayList<Integer> returnCharIndices, int returnCharIndex)
+  private void addBlankLayoutIfLastLineIsEmpty()
   {
-    return returnCharIndices != null && returnCharIndex < returnCharIndices.size();
+    if(getText().length() > 0 && isTheVeryLastCharANewLineChar())
+      textLayouts.add(new TextLayoutImpl("", font, TextPanel.getRenderContext()));
   }
 
-  public ArrayList<Integer> findReturnCharIndices(String text)
+  private int addANewLayoutForTheNextLine(LineBreakMeasurer breaker, int lastCharIndex, int newLineCharIndex)
+  {
+    int firstCharIndex = lastCharIndex;
+    lastCharIndex = firstCharIndex + getNextLayout(breaker, newLineCharIndex).getCharacterCount();
+    String layoutText = getText().substring(firstCharIndex, lastCharIndex);
+    textLayouts.add(new TextLayoutImpl(layoutText, font, TextPanel.getRenderContext()));
+    return lastCharIndex;
+  }
+
+  private boolean layoutEndedOnNewLineChar(int lastCharIndex, int returnCharIndex)
+  {
+    return thereAreMoreReturnCharacters(returnCharIndex) && lastCharIndex == newLineCharIndices.get(returnCharIndex) + 1;
+  }
+
+  private TextLayout getNextLayout(LineBreakMeasurer breaker, int returnCharIndex)
+  {
+    TextLayout layout;
+    if (thereAreMoreReturnCharacters(returnCharIndex))
+      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN, newLineCharIndices.get(returnCharIndex) + 1, false);
+    else
+      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN);
+    return layout;
+  }
+
+  private AttributedCharacterIterator getIterator()
+  {
+    AttributedString attrString = new AttributedString(getText());
+    attrString.addAttribute(TextAttribute.FONT, font);
+    return attrString.getIterator();
+  }
+
+  private boolean isTheVeryLastCharANewLineChar()
+  {
+    return getText().charAt(getText().length()-1) == '\n';
+  }
+
+  private boolean thereAreMoreReturnCharacters(int returnCharIndex)
+  {
+    return newLineCharIndices != null && returnCharIndex < newLineCharIndices.size();
+  }
+
+  public ArrayList<Integer> findNewLineCharIndices(String text)
   {
     ArrayList<Integer> indices = new ArrayList<Integer>();
     for (int i = 0; i < text.length(); i++)

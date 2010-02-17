@@ -22,7 +22,7 @@ public class TextPanelCursorPainter extends TextPanelPainter
     if(boxInfo.isCursorOn())
     {
       int cursorBottom = boxInfo.getBottomPositionForCursor();
-      graphics.drawLine(x, y - HEIGHT_MARGIN, x, cursorBottom);
+      graphics.drawLine(x, y, x, cursorBottom);
     }
   }
 }
