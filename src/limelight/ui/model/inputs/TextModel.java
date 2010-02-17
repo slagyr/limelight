@@ -56,7 +56,7 @@ public abstract class TextModel implements ClipboardOwner
     int startOfLineIndex = 0;
     for (int i = 0; i < lineNumber; i++)
       startOfLineIndex += textLayouts.get(i).getText().length();
-    if (index <= 0 || isLastCharacterAReturn(index) || startOfLineIndex == index)
+    if (index <= 0 || startOfLineIndex == index)
       return SIDE_TEXT_MARGIN;
     String toIndexString = text.substring(startOfLineIndex, index);
     int xPos = getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
@@ -74,22 +74,10 @@ public abstract class TextModel implements ClipboardOwner
     if (text == null || text.length() == 0)
       return yPos;
     int lineNumber = getLineNumberOfIndex(index);
-    int layoutIndex;
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
-    for (layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
+    for (int layoutIndex = 0; layoutIndex < lineNumber; layoutIndex++)
       yPos += lineHeight;
-    if (isLastCharacterAReturn(index) && index == text.length())
-    {
-      yPos += getTotalHeightOfLineWithLeadingMargin(layoutIndex);
-    }
     return yPos;
-  }
-
-  private boolean isLastCharacterAReturn(int index)
-  {
-    if (index == 0)
-      return false;
-    return text.charAt(index - 1) == '\r' || text.charAt(index - 1) == '\n';
   }
 
   public int getTerminatingSpaceWidth(String string)
