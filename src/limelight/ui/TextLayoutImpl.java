@@ -1,6 +1,7 @@
 package limelight.ui;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextHitInfo;
 import java.awt.font.TextLayout;
@@ -14,6 +15,11 @@ public class TextLayoutImpl implements TypedLayout
 
   public TextLayoutImpl(String string, Font font, FontRenderContext frc)
   {
+    if(string.length() == 0)
+    {
+      Character nonChar = KeyEvent.CHAR_UNDEFINED;
+      string = nonChar.toString();
+    }
     layout = new TextLayout(string, font, frc);
     text = string;
     hasDrawn = false;
@@ -62,6 +68,8 @@ public class TextLayoutImpl implements TypedLayout
 
   public String getText()
   {
+    if (text.length() == 1 && text.charAt(0) == KeyEvent.CHAR_UNDEFINED)
+      return "";
     return text;
   }
 }

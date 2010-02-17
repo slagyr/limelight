@@ -23,8 +23,9 @@ public class TextPanelSelectionPainter extends TextPanelPainter
       ArrayList<Rectangle> regions = boxInfo.getSelectionRegions();
       if (regions != null)
       {
-        for (Rectangle rect : regions)
+        for (Rectangle rect : regions) {
           graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+        }
       }
     }
   }
