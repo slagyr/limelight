@@ -38,25 +38,38 @@ public class MouseProcessor
 
   public int calculateMouseClickIndex(int x, int y)
   {
-    TextHitInfo hitInfo;
+    int index = getIndexByLoopingThroughLayouts(x, y);
+    if (isMouseXPastLastCharacterAndNotOnNewLine(x, index))
+      index += 1;
+    return index;
+  }
+
+  private int getIndexByLoopingThroughLayouts(int x, int y)
+  {
     ArrayList<TypedLayout> layouts = boxInfo.getTextLayouts();
     if (layouts == null)
       return -1;
-    int i = 0;
+    int layoutIndex = 0;
     int charCount = 0;
-    int layoutPosition = (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
-    hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
-    while (i < layouts.size() - 1 && y + boxInfo.yOffset > layoutPosition)
+    int layoutYPosition = boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex);
+    while (notPastTheLastLayout(y,layoutIndex, layoutYPosition))
     {
-      charCount += layouts.get(i).getText().length();
-      i++;
-      hitInfo = layouts.get(i).hitTestChar(x + boxInfo.getXOffset(), y);
-      layoutPosition += (int) (boxInfo.getHeightDimension(layouts.get(i)) + layouts.get(i).getLeading() + .5);
+      charCount += layouts.get(layoutIndex).getText().length();
+      layoutIndex++;
+      layoutYPosition += boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     }
-    int index = hitInfo.getCharIndex() + charCount;
-    if (x > boxInfo.getXPosFromIndex(index) && index == boxInfo.text.length() - 1)
-      index += 1;
-    return index;
+    TextHitInfo hitInfo = layouts.get(layoutIndex).hitTestChar(x + boxInfo.getXOffset(), y);
+    return hitInfo.getCharIndex() + charCount;
+  }
+
+  private boolean notPastTheLastLayout(int y, int i, int layoutPosition)
+  {
+    return i < boxInfo.getTextLayouts().size() - 1 && y + boxInfo.yOffset > layoutPosition;
+  }
+
+  private boolean isMouseXPastLastCharacterAndNotOnNewLine(int x, int index)
+  {
+    return x > boxInfo.getXPosFromIndex(index) && index == boxInfo.text.length() - 1 && boxInfo.text.charAt(index) != '\n';
   }
 
 
@@ -114,16 +127,10 @@ public class MouseProcessor
       tempIndex--;
     }
     if (doubleClickOn)
-
-    {
       selectWord(tempIndex);
-    }
 
     else
-    {
       boxInfo.setCursorIndex(tempIndex);
-    }
-
   }
 
   private void selectWord(int tempIndex)
