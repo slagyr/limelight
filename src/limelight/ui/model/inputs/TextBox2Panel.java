@@ -7,10 +7,14 @@ import limelight.styles.VerticalAlignment;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.util.Box;
+import limelight.util.Colors;
 
+import javax.imageio.ImageIO;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TextBox2Panel extends TextInputPanel
@@ -141,4 +145,6 @@ public class TextBox2Panel extends TextInputPanel
       rootPanel.addDirtyRegion(new Box(cursorX, cursorY, 1, regionHeight));
     }
   }
+
+  
 }
