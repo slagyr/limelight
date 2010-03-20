@@ -321,7 +321,17 @@ public class KeyProcessorSuite
       asserter.assertSelection(11, 0, false);
     }
 
+    @Test
+    public void shouldGoToTheEndOfPreviousLineEvenIfItEndsWithNewline() throws Exception
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
+      modelInfo.setText("Some more text\nand some more");
+      modelInfo.cursorIndex = 28;
 
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(14, 0, false);
+    }
   }
 
   public static class CmdKeyProcessorTest
@@ -576,11 +586,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'ÔøΩ');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "Håere are four words");
+      asserter.assertTextState(2, "HÔøΩere are four words");
     }
 
     @Test
@@ -725,11 +735,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'Å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'ÔøΩ');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "HÅere are four words");
+      asserter.assertTextState(2, "HÔøΩere are four words");
     }
 
     @Test
@@ -1203,11 +1213,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'ÔøΩ');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "Hå are four words");
+      asserter.assertTextState(2, "HÔøΩ are four words");
     }
 
     @Test
@@ -1271,11 +1281,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'Å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'ÔøΩ');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "HÅ are four words");
+      asserter.assertTextState(2, "HÔøΩ are four words");
     }
 
     @Test

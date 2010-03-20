@@ -22,7 +22,7 @@ public class TextBox2Panel extends TextInputPanel
 
   public TextBox2Panel()
   {
-    setSize(150, 25);
+    setSize(150, 28);
     paintableRegion = new Box(0, TextModel.TOP_MARGIN, width, height - 2 * TextModel.TOP_MARGIN);
     boxInfo = new TextBoxModel(this);
     keyProcessors = new ArrayList<KeyProcessor>(16);
@@ -33,7 +33,6 @@ public class TextBox2Panel extends TextInputPanel
     verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
   }
 
-  @Override
   public void initKeyProcessors()
   {
     keyProcessors.add(0, new NormalKeyProcessor(boxInfo));
@@ -54,7 +53,6 @@ public class TextBox2Panel extends TextInputPanel
     keyProcessors.add(15, new SelectionOnAltShiftCmdKeyProcessor(boxInfo));
   }
 
-  @Override
   public void paintOn(Graphics2D graphics)
   {
     painterComposite.paint(graphics);
@@ -103,7 +101,6 @@ public class TextBox2Panel extends TextInputPanel
       paintableRegion = new Box(0, TextModel.TOP_MARGIN, 0, regionHeight);
   }
 
-  @Override
   public void maxOutPaintableRegion()
   {
     int regionHeight = height - 2 * TextModel.TOP_MARGIN;
@@ -111,13 +108,11 @@ public class TextBox2Panel extends TextInputPanel
     paintableRegion = new Box(TextModel.SIDE_TEXT_MARGIN, TextModel.TOP_MARGIN, regionWidth,regionHeight);
   }
 
-    @Override
   public void expandPaintableRegionToRightBound()
   {
     setPaintableRegion(boxInfo.getText().length());
   }
 
-  @Override
   public boolean isTextMaxed()
   {
     return boxInfo.isBoxFull();
@@ -140,7 +135,7 @@ public class TextBox2Panel extends TextInputPanel
     if (rootPanel != null)
     {
       int cursorY =  getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();
-      int regionHeight = boxInfo.getBottomPositionForCursor()- boxInfo.getTopOfStartPositionForCursor() + 1;
+      int regionHeight = boxInfo.getBottomPositionForCursor() - boxInfo.getTopOfStartPositionForCursor() + 1;
       int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
       rootPanel.addDirtyRegion(new Box(cursorX, cursorY, 1, regionHeight));
     }

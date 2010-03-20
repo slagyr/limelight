@@ -69,7 +69,7 @@ public class TextAreaModel extends TextModel
   @Override
   public ArrayList<TypedLayout> getTextLayouts()
   {
-    if (getText().length() == 0)
+    if (getText() == null || getText().length() == 0)
       return null;
     else
     {
