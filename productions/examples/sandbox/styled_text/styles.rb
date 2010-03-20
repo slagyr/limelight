@@ -84,7 +84,7 @@ bolded {
 }
 
 green {
-  text_color "green"
+  text_color "dark green"
 }
 
 big_n_blue {
@@ -92,4 +92,26 @@ big_n_blue {
   font_style "bold"
   font_face "Arial Black"
   text_color :blue
+}
+
+background_color {
+  text_color :orange
+  background_color :blue
+}
+
+bordered {
+  border_color :grey
+  border_width 1
+  rounded_corner_radius 4
+}
+
+padded {
+  padding 15
+}
+
+background_image {
+  background_image "images/logo.png"
+  text_color :red
+  font_size 30
+  background_image_fill_strategy :scale
 }
