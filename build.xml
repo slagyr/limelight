@@ -46,6 +46,7 @@
     
     <target name="compile" depends="init" description="compile the source (make)">
         <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off"/>
+        <copydir src="${src}/limelight/ui/images" dest="${classes}/limelight/ui/images" />
     </target>
 
     <target name="unit_test" depends="compile" description="run the unit tests">
