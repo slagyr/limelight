@@ -4,20 +4,15 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
+import limelight.styles.RichStyle;
 import limelight.styles.Style;
-import limelight.styles.FlatStyle;
-import limelight.styles.abstrstyling.ColorAttribute;
 import limelight.ui.api.MockScene;
 
 import javax.swing.*;
-import java.awt.font.TextLayout;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
 import java.awt.*;
-import java.text.AttributedCharacterIterator;
-import java.util.List;
+import java.awt.font.TextLayout;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
+import java.util.List;
 
 public class TextPanelTest extends TestCase
 {
@@ -41,7 +36,7 @@ public class TextPanelTest extends TestCase
     parent.add(panel);
     root = new RootPanel(new MockPropFrame());
     root.setPanel(parent);
-    style.setTextColor("black");
+    style.setTextColor("green");
 
     defaultFontFace = style.getFontFace();
     defaultFontSize = style.getFontSize();
@@ -212,19 +207,23 @@ public class TextPanelTest extends TestCase
   private void createStyles()
   {
     parent.prop.scene = new MockScene();
-    FlatStyle myStyle = new FlatStyle();
+    RichStyle myStyle = new RichStyle();
     ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
     myStyle.setFontFace("Helvetica");
     myStyle.setFontStyle("bold");
     myStyle.setFontSize("20");
     myStyle.setTextColor("red");
 
-    FlatStyle myOtherStyle = new FlatStyle();
+    RichStyle myOtherStyle = new RichStyle();
     ((MockScene)parent.prop.scene).styles.put("my_other_style", myOtherStyle);
     myOtherStyle.setFontFace("Cuneiform");
     myOtherStyle.setFontStyle("italic");
     myOtherStyle.setFontSize("19");
     myOtherStyle.setTextColor("blue");
+
+    RichStyle sizeOnlyStyle = new RichStyle();
+    ((MockScene)parent.prop.scene).styles.put("size_only_style", sizeOnlyStyle);
+    sizeOnlyStyle.setFontSize("25");
   }
 
   public void testInterlacedTextAndStyledText()
@@ -274,6 +273,25 @@ public class TextPanelTest extends TestCase
     assertSubString("name=" + defaultFontFace, onlyLine);
     assertSubString("size=" + defaultFontSize, onlyLine);
     assertSubString("style=" + defaultFontStyle, onlyLine);
+  }
+
+  public void testStyledInheritsFromDefault()
+  {
+    createStyles();
+    parent.setSize(200, 100);
+    panel.setText("<size_only_style>This some text</size_only_style>");
+    panel.buildLines();
+
+    List<TextLayout> lines = panel.getLines();
+    assertEquals(1, lines.size());
+
+    String onlyLine = lines.get(0).toString();
+    assertSubString("name=" + defaultFontFace, onlyLine);
+    assertSubString("size=" + "25", onlyLine);
+    assertSubString("style=" + defaultFontStyle, onlyLine);
+
+    TextPanel.StyledString first = panel.getTextChunks().get(0);
+    assertEquals(defaultTextColor, first.color);
   }
 
   public void testStyledAcrossLineBreak()

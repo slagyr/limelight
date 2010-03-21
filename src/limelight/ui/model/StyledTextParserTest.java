@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import junit.framework.TestCase;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -24,9 +25,13 @@ public class StyledTextParserTest extends TestCase
   private StyledText parsedText8;
   private StyledText parsedText9;
 
+  private List<String> styles;
+
   public void setUp()
   {
     parser = new StyledTextParser();
+    styles = new LinkedList<String>();
+    styles.add("default");
   }
 
   public void testUnstyledText() throws Exception
@@ -51,7 +56,7 @@ public class StyledTextParserTest extends TestCase
     parsedTextList = parser.parse("<b>I am serious</b>");
     parsedText = parsedTextList.get(0);
 
-    assertTrue(parsedText.equals(new StyledText("I am serious", "b")));
+    assertTrue(parsedText.equals(new StyledText("I am serious", "b", styles)));
   }
 
   public void testMultipleStyledText() throws Exception
@@ -60,8 +65,8 @@ public class StyledTextParserTest extends TestCase
     parsedText1 = parsedTextList.get(0);
     parsedText2 = parsedTextList.get(1);
 
-    assertTrue(parsedText1.equals(new StyledText("I am", "b")));
-    assertTrue(parsedText2.equals(new StyledText(" serious", "c")));
+    assertTrue(parsedText1.equals(new StyledText("I am", "b", styles)));
+    assertTrue(parsedText2.equals(new StyledText(" serious", "c", styles)));
   }
 
   public void testUnstyledTextBetweenStyledText() throws Exception
@@ -72,23 +77,21 @@ public class StyledTextParserTest extends TestCase
     parsedText2 = parsedTextList.get(1);
     parsedText3 = parsedTextList.get(2);
 
-    assertTrue(parsedText1.equals(new StyledText("I am", "b")));
+    assertTrue(parsedText1.equals(new StyledText("I am", "b", styles)));
     assertTrue(parsedText2.equals(new StyledText(" not really", "default")));
-    assertTrue(parsedText3.equals(new StyledText(" serious", "c")));
+    assertTrue(parsedText3.equals(new StyledText(" serious", "c", styles)));
   }
 
   public void testTrailingUnstyledText() throws Exception
   {
-
     parsedTextList = parser.parse("<b>styled</b> unstyled");
 
     parsedText1 = parsedTextList.get(0);
     parsedText2 = parsedTextList.get(1);
 
-    assertTrue(parsedText1.equals(new StyledText("styled", "b")));
+    assertTrue(parsedText1.equals(new StyledText("styled", "b", styles)));
     assertTrue(parsedText2.equals(new StyledText(" unstyled", "default")));
   }
-
 
   public void testAlternatingStylingAndUnstyling() throws Exception
   {
@@ -101,9 +104,9 @@ public class StyledTextParserTest extends TestCase
     parsedText5 = parsedTextList.get(4);
 
     assertTrue(parsedText1.equals(new StyledText("unstyled1", "default")));
-    assertTrue(parsedText2.equals(new StyledText("styled1", "b")));
+    assertTrue(parsedText2.equals(new StyledText("styled1", "b", styles)));
     assertTrue(parsedText3.equals(new StyledText("unstyled2", "default")));
-    assertTrue(parsedText4.equals(new StyledText("styled2", "c")));
+    assertTrue(parsedText4.equals(new StyledText("styled2", "c", styles)));
     assertTrue(parsedText5.equals(new StyledText("unstyled3", "default")));
   }
 
@@ -121,20 +124,29 @@ public class StyledTextParserTest extends TestCase
     parsedText8 = parsedTextList.get(7);
     parsedText9 = parsedTextList.get(8);
 
+    List<String> cParentStyles = new LinkedList<String>(styles);
+    cParentStyles.add("b");
+
+    List<String> dParentStyles = new LinkedList<String>(cParentStyles);
+    dParentStyles.add("c");
+
+    List<String> eParentStyles = new LinkedList<String>(dParentStyles);
+    eParentStyles.add("d");
+
     assertTrue(parsedText1.equals(new StyledText("default", "default")));
-    assertTrue(parsedText2.equals(new StyledText("b", "b")));
-    assertTrue(parsedText3.equals(new StyledText("c", "c")));
-    assertTrue(parsedText4.equals(new StyledText("d", "d")));
-    assertTrue(parsedText5.equals(new StyledText("e", "e")));
-    assertTrue(parsedText6.equals(new StyledText("d", "d")));
-    assertTrue(parsedText7.equals(new StyledText("c", "c")));
-    assertTrue(parsedText8.equals(new StyledText("b", "b")));
+    assertTrue(parsedText2.equals(new StyledText("b", "b", styles)));
+    assertTrue(parsedText3.equals(new StyledText("c", "c", cParentStyles)));
+    assertTrue(parsedText4.equals(new StyledText("d", "d", dParentStyles)));
+    assertTrue(parsedText5.equals(new StyledText("e", "e", eParentStyles)));
+    assertTrue(parsedText6.equals(new StyledText("d", "d", dParentStyles)));
+    assertTrue(parsedText7.equals(new StyledText("c", "c", cParentStyles)));
+    assertTrue(parsedText8.equals(new StyledText("b", "b", styles)));
     assertTrue(parsedText9.equals(new StyledText("default", "default")));
   }
 
   public void display(StyledText text)
   {
-    System.out.println("text: " + text.getText() + "; style: " + text.getStyle());
+    System.out.println("text: " + text.getText() + "; style: " + text.getStyleName() + "; parentStyles: " + text.getParentStyles());
   }
 
   public void testMultipleNestedAndAlternatingTags() throws Exception
@@ -151,14 +163,20 @@ public class StyledTextParserTest extends TestCase
     parsedText8 = parsedTextList.get(7);
     parsedText9 = parsedTextList.get(8);
 
+    List<String> bParentStyles = new LinkedList<String>(styles);
+    bParentStyles.add("a");
+
+    List<String> dParentStyles = new LinkedList<String>(styles);
+    dParentStyles.add("c");
+
     assertTrue(parsedText1.equals(new StyledText("default", "default")));
-    assertTrue(parsedText2.equals(new StyledText("a", "a")));
-    assertTrue(parsedText3.equals(new StyledText("b", "b")));
-    assertTrue(parsedText4.equals(new StyledText("a", "a")));
+    assertTrue(parsedText2.equals(new StyledText("a", "a", styles)));
+    assertTrue(parsedText3.equals(new StyledText("b", "b", bParentStyles)));
+    assertTrue(parsedText4.equals(new StyledText("a", "a", styles)));
     assertTrue(parsedText5.equals(new StyledText("default", "default")));
-    assertTrue(parsedText6.equals(new StyledText("c", "c")));
-    assertTrue(parsedText7.equals(new StyledText("d", "d")));
-    assertTrue(parsedText8.equals(new StyledText("c", "c")));
+    assertTrue(parsedText6.equals(new StyledText("c", "c", styles)));
+    assertTrue(parsedText7.equals(new StyledText("d", "d", dParentStyles)));
+    assertTrue(parsedText8.equals(new StyledText("c", "c", styles)));
     assertTrue(parsedText9.equals(new StyledText("default", "default")));
   }
 
@@ -171,7 +189,7 @@ public class StyledTextParserTest extends TestCase
     parsedText3 = parsedTextList.get(2);
 
     assertTrue(parsedText1.equals(new StyledText("default", "default")));
-    assertTrue(parsedText2.equals(new StyledText("a</b>b", "a")));
+    assertTrue(parsedText2.equals(new StyledText("a</b>b", "a", styles)));
     assertTrue(parsedText3.equals(new StyledText("default", "default")));
   }
 
@@ -201,7 +219,7 @@ public class StyledTextParserTest extends TestCase
   private void checkStyledText(StyledText styledText, String text, String style)
   {
     assertEquals(text, styledText.getText());
-    assertEquals(style, styledText.getStyle());
+    assertEquals(style, styledText.getStyleName());
   }
 
   public void testEscapedTag() throws Exception

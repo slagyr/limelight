@@ -3,15 +3,14 @@
 
 package limelight.ui.model;
 
-import limelight.styles.Style;
-import limelight.styles.StyleDescriptor;
-import limelight.styles.StyleObserver;
+import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Scene;
-import limelight.util.*;
+import limelight.util.Box;
+import limelight.util.Util;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -21,8 +20,10 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class TextPanel extends BasePanel implements StyleObserver
 {
@@ -133,60 +134,68 @@ public class TextPanel extends BasePanel implements StyleObserver
       StyledTextParser parser = new StyledTextParser();
       LinkedList<StyledText> styledParagraph = parser.parse(text);
 
-      Font font = getFontFromStyle(getStyle());
-      Font defaultFont = font;
-      Color color = getTextColorFromStyle(getStyle());
-      Color defaultColor = color;
-
       textChunks = new LinkedList<StyledString>();
       for (StyledText styledLine : styledParagraph)
       {
-        addTextChunk(defaultFont, defaultColor, styledLine);
+        addTextChunk(styledLine);
       }
       closeParagraph();
       addLines();
     }
   }
 
-  private synchronized void addTextChunk(Font defaultFont, Color defaultColor, StyledText styledLine)
+  private synchronized void addTextChunk(StyledText styledLine)
   {
-    Font font;
-    Color color;
-    String line = styledLine.getText();
-    String tagName = styledLine.getStyle();
+    String tagName = styledLine.getStyleName();
+    RichStyle style = (RichStyle) getStyle();
 
     if (!Util.equal(tagName, "default"))
     {
-      Style tagStyle = getStyleFromTag(tagName);
+      RichStyle tagStyle = (RichStyle) getStyleFromTag(tagName);
 
       if (tagStyle != null)
       {
-        if (!tagStyle.hasObserver(this))
-        {
-          tagStyle.addObserver(this);
-        }
-        font = getFontFromStyle(tagStyle);
-        color = getTextColorFromStyle(tagStyle);
-      }
-      else
-      {
-        // unrecognized style tag
-        font = defaultFont;
-        color = defaultColor;
+        style = extendStyle(tagStyle, styledLine);
       }
     }
-    else
-    {
-      font = defaultFont;
-      color = defaultColor;
-    }
+
+    String line = styledLine.getText();
 
     if (line.length() == 0)
     {
       line = " ";
     }
 
+    Font font = getFontFromStyle(style);
+    Color color = getTextColorFromStyle(style);
+
     textChunks.add(new StyledString(font, line, color));
+  }
+
+  private RichStyle extendStyle(RichStyle tagStyle, StyledText styledLine)
+  {
+    RichStyle style = new RichStyle();
+
+    style.addExtension(tagStyle);
+    if (!tagStyle.hasObserver(this))
+    {
+      tagStyle.addObserver(this);
+    }
+
+    for (String styleName : styledLine.getParentStyles())
+    {
+      RichStyle addedStyle = (RichStyle) getStyleFromTag(styleName);
+      if (addedStyle != null)
+      {
+        style.addExtension(addedStyle);
+        if (!addedStyle.hasObserver(this))
+        {
+          addedStyle.addObserver(this);
+        }
+      }
+    }
+    style.addExtension((RichStyle) getStyle());
+    return style;
   }
 
   private Color getTextColorFromStyle(Style tagStyle)
@@ -196,7 +205,10 @@ public class TextPanel extends BasePanel implements StyleObserver
 
   private Font getFontFromStyle(Style style)
   {
-    return new Font(style.getCompiledFontFace().getValue(), style.getCompiledFontStyle().toInt(), style.getCompiledFontSize().getValue());
+    String fontFace = style.getCompiledFontFace().getValue();
+    int fontStyle = style.getCompiledFontStyle().toInt();
+    int fontSize = style.getCompiledFontSize().getValue();
+    return new Font(fontFace, fontStyle, fontSize);
   }
 
   protected Style getStyleFromTag(String tagName)
