@@ -4,8 +4,9 @@
 package limelight.ui.model;
 
 import java.util.LinkedList;
-import java.util.regex.Pattern;
+import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StyledTextParser
 {
@@ -14,10 +15,10 @@ public class StyledTextParser
 
   public LinkedList<StyledText> parse(String text)
   {
-    return parse(text, "default", new LinkedList<StyledText>());
+    return parse(text, "default", new LinkedList<StyledText>(), new LinkedList<String>());
   }
 
-  private LinkedList<StyledText> parse(String text, String defaultStyle, LinkedList<StyledText> list)
+  private LinkedList<StyledText> parse(String text, String defaultStyle, LinkedList<StyledText> list, List<String> parentStyles)
   {
     Matcher matcher = TAG_REGEX.matcher(text);
 
@@ -29,16 +30,18 @@ public class StyledTextParser
       String styledText = matcher.group(2);
 
       if (prefix.length() > 0)
-        list.add(new StyledText(prefix, defaultStyle));
+        list.add(new StyledText(prefix, defaultStyle, parentStyles));
 
-      parse(styledText, styleName, list);
+      List<String> newParents = new LinkedList<String>(parentStyles);
+      newParents.add(defaultStyle);
+      parse(styledText, styleName, list, newParents);
 
       index = matcher.end();
     }
 
     String trailingText = escape(text.substring(index));
     if (trailingText.length() > 0)
-      list.add(new StyledText(trailingText, defaultStyle));
+      list.add(new StyledText(trailingText, defaultStyle, parentStyles));
 
     return list;
   }
