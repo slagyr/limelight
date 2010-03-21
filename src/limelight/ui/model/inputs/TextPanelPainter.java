@@ -1,11 +1,12 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.MockGraphics;
+
 import java.awt.*;
 
 public abstract class TextPanelPainter
 {
-  //TODO Is this the same thing as TextModel.TOP_MARGIN 
-  public static final int HEIGHT_MARGIN = 7;
+  public static final int HEIGHT_MARGIN = 4;
   protected TextModel boxInfo;
   public boolean hasPainted;
   public TextPanelPainter(TextModel boxInfo)
