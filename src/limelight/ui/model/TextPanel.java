@@ -3,7 +3,10 @@
 
 package limelight.ui.model;
 
-import limelight.styles.*;
+import limelight.styles.RichStyle;
+import limelight.styles.Style;
+import limelight.styles.StyleDescriptor;
+import limelight.styles.StyleObserver;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
@@ -20,10 +23,8 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class TextPanel extends BasePanel implements StyleObserver
 {
@@ -73,7 +74,7 @@ public class TextPanel extends BasePanel implements StyleObserver
 
   public void paintOn(Graphics2D graphics)
   {
-    graphics.setColor(getTextColorFromStyle(getStyle()));
+    graphics.setColor(getStyle().getCompiledTextColor().getColor());
     float y = 0;
     if (lines == null)
       return;
@@ -166,10 +167,7 @@ public class TextPanel extends BasePanel implements StyleObserver
       line = " ";
     }
 
-    Font font = getFontFromStyle(style);
-    Color color = getTextColorFromStyle(style);
-
-    textChunks.add(new StyledString(font, line, color));
+    textChunks.add(new StyledString(line, style));
   }
 
   private RichStyle extendStyle(RichStyle tagStyle, StyledText styledLine)
@@ -198,11 +196,6 @@ public class TextPanel extends BasePanel implements StyleObserver
     return style;
   }
 
-  private Color getTextColorFromStyle(Style tagStyle)
-  {
-    return tagStyle.getCompiledTextColor().getColor();
-  }
-
   private Font getFontFromStyle(Style style)
   {
     String fontFace = style.getCompiledFontFace().getValue();
@@ -221,8 +214,7 @@ public class TextPanel extends BasePanel implements StyleObserver
 
   private void closeParagraph()
   {
-    Font font = getFontFromStyle(getStyle());
-    textChunks.add(new StyledString(font, "\n", new Color(0, 0, 0, 0)));
+    textChunks.add(new StyledString("\n", getStyle()));
   }
 
   private synchronized void addLines()
@@ -271,34 +263,35 @@ public class TextPanel extends BasePanel implements StyleObserver
 
   private AttributedString prepareAttributedString()
   {
-    StringBuffer buf = new StringBuffer();
-    List<Integer> fontIndexes = new ArrayList<Integer>();
-    List<Font> fonts = new ArrayList<Font>();
-    List<Color> colors = new ArrayList<Color>();
+    List<StyledString> textChunks = getTextChunks();
 
-    int i = 0;
-    for (StyledString textChunk : getTextChunks())
+    StringBuffer buf = new StringBuffer();
+
+    for (StyledString textChunk : textChunks)
     {
       buf.append(textChunk.text);
-      fontIndexes.add(i);
-      fonts.add(textChunk.font);
-      colors.add(textChunk.color);
-      i = i + textChunk.text.length();
     }
 
-    AttributedString aText = new AttributedString(buf.toString());
-    for (int fontIndex = 0; fontIndex < fonts.size(); fontIndex++)
+    AttributedString attributedString = new AttributedString(buf.toString());
+    
+    int startIndex = 0;
+    int endIndex = 0;
+
+    for (StyledString textChunk : textChunks)
     {
-      int startIndex = fontIndexes.get(fontIndex);
-      int endIndex;
-      if (fontIndex == fonts.size() - 1)
+      if (textChunk == textChunks.get(textChunks.size() - 1))
         endIndex = buf.length();
       else
-        endIndex = fontIndexes.get(fontIndex + 1);
-      aText.addAttribute(TextAttribute.FONT, fonts.get(fontIndex), startIndex, endIndex);
-      aText.addAttribute(TextAttribute.FOREGROUND, colors.get(fontIndex), startIndex, endIndex);
+        endIndex = startIndex + textChunk.text.length();
+
+      Style style = textChunk.style;
+      attributedString.addAttribute(TextAttribute.FONT, getFontFromStyle(style), startIndex, endIndex);
+      attributedString.addAttribute(TextAttribute.FOREGROUND, style.getCompiledTextColor().getColor(), startIndex, endIndex);
+
+      startIndex += textChunk.text.length();
     }
-    return aText;
+    
+    return attributedString;
   }
 
   public List<StyledString> getTextChunks()
@@ -388,14 +381,22 @@ public class TextPanel extends BasePanel implements StyleObserver
   protected class StyledString
   {
     protected String text;
-    protected Font font;
-    protected Color color;
+    protected Style style;
 
-    private StyledString(Font font, String text, Color color)
+    private StyledString(String text, Style style)
     {
-      this.font = font;
+      this.style = style;
       this.text = text;
-      this.color = color;
+    }
+
+    public Color getColor()
+    {
+      return style.getCompiledTextColor().getColor();
+    }
+
+    public Font getFont()
+    {
+      return getFontFromStyle(style);
     }
 
     public int getCharacterCount()
@@ -405,7 +406,7 @@ public class TextPanel extends BasePanel implements StyleObserver
 
     public String toString()
     {
-      return text + "(font: " + font + ", color: " + color + ")";
+      return text + "(font: " + getFont() + ", color: " + getColor() + ")";
     }
   }
 

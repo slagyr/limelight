@@ -291,7 +291,7 @@ public class TextPanelTest extends TestCase
     assertSubString("style=" + defaultFontStyle, onlyLine);
 
     TextPanel.StyledString first = panel.getTextChunks().get(0);
-    assertEquals(defaultTextColor, first.color);
+    assertEquals(defaultTextColor, first.getColor());
   }
 
   public void testStyledAcrossLineBreak()
@@ -320,13 +320,13 @@ public class TextPanelTest extends TestCase
     panel.buildLines();
 
     TextPanel.StyledString first = panel.getTextChunks().get(0);
-    assertEquals(defaultTextColor, first.color);
+    assertEquals(defaultTextColor, first.getColor());
 
     TextPanel.StyledString second = panel.getTextChunks().get(1);
-    assertEquals(new Color(0x0000FF), second.color);
+    assertEquals(new Color(0x0000FF), second.getColor());
 
     TextPanel.StyledString third = panel.getTextChunks().get(2);
-    assertEquals(defaultTextColor, third.color);
+    assertEquals(defaultTextColor, third.getColor());
   }
 
   public void testTextChunksOverwrittenOnCompile() throws Exception
