@@ -41,26 +41,24 @@ public class TextAreaModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    int width2 = modelInfo.getWidthDimension(new TextLayoutImpl("by. And that has made", modelInfo.font, TextPanel.getRenderContext()));
-
+    TextLayoutImpl line = new TextLayoutImpl(modelInfo.getText().substring(0, 5), modelInfo.font, TextPanel.getRenderContext());
+    int width1 = TextModel.SIDE_TEXT_MARGIN + modelInfo.getWidthDimension(line);
     int firstIndex = modelInfo.getXPosFromIndex(0);
-    int newLinePosition = modelInfo.getXPosFromIndex(29);
-    int secondLineStringPosition = modelInfo.getXPosFromIndex(50);
+    int secondIndex = modelInfo.getXPosFromIndex(5);
 
     assertEquals(modelInfo.SIDE_TEXT_MARGIN, firstIndex);
-    assertEquals(modelInfo.SIDE_TEXT_MARGIN, newLinePosition);
-    assertEquals(width2 + modelInfo.SIDE_TEXT_MARGIN, secondLineStringPosition);
+    assertEquals(width1, secondIndex);
   }
 
   @Test
   public void canCalculateTheYPositionForTheCursorViaAnIndex()
   {
     int expectedYForOneLine = TextModel.TOP_MARGIN;
-    int expectedYForTwoLines = 18;
+    int expectedYForTwoLines = 21;
     int expectedYForThreeLines = expectedYForTwoLines * 2 - TextModel.TOP_MARGIN;
 
     int y1 = modelInfo.getYPosFromIndex(0);
-    int y2 = modelInfo.getYPosFromIndex(50);
+    int y2 = modelInfo.getYPosFromIndex(45);
     int y3 = modelInfo.getYPosFromIndex(65);
 
     assertEquals(expectedYForOneLine, y1);
@@ -110,8 +108,8 @@ public class TextAreaModelTest
   @Test
   public void willAddAnotherLineToTheYPositionIfTheLastCharacterBeforeCursorIsAReturn()
   {
-    int expectedYForTwoLines = 18;
-    int expectedYForThreeLines = 32;
+    int expectedYForTwoLines = 21;
+    int expectedYForThreeLines = 35;
     modelInfo.setText("some text\nmore text\n");
 
     int y = modelInfo.getYPosFromIndex(10);
@@ -231,9 +229,9 @@ public class TextAreaModelTest
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
 
-    assertEquals(3, regions.get(0).x);
+    assertEquals(TextModel.SIDE_TEXT_MARGIN, regions.get(0).x);
     assertEquals(0, regions.get(0).y);
-    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()) - 3, regions.get(0).width);
+    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()) - TextModel.SIDE_TEXT_MARGIN, regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(5)), regions.get(0).height);
   }
 
@@ -253,9 +251,9 @@ public class TextAreaModelTest
     assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2), regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(0).height);
 
-    assertEquals(3, regions.get(1).x);
+    assertEquals(TextModel.SIDE_TEXT_MARGIN, regions.get(1).x);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(1).y);
-    assertEquals(modelInfo.getXPosFromIndex(10) - 3, regions.get(1).width);
+    assertEquals(modelInfo.getXPosFromIndex(10) - TextModel.SIDE_TEXT_MARGIN, regions.get(1).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(10)), regions.get(1).height);
   }
 
