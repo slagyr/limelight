@@ -88,7 +88,7 @@ public class TextAreaModelTest
     modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
     modelInfo.setCursorIndex(10);
 
-    assertEquals(0, modelInfo.calculateYOffset());
+    assertEquals(- TextModel.TOP_MARGIN, modelInfo.calculateYOffset());
 
     modelInfo.setCursorIndex(20);
 
@@ -101,7 +101,7 @@ public class TextAreaModelTest
 
     modelInfo.setCursorIndex(0);
 
-    assertEquals(0, modelInfo.calculateYOffset());
+    assertEquals(- TextModel.TOP_MARGIN, modelInfo.calculateYOffset());
 
   }
 
@@ -230,7 +230,7 @@ public class TextAreaModelTest
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
 
     assertEquals(TextModel.SIDE_TEXT_MARGIN, regions.get(0).x);
-    assertEquals(0, regions.get(0).y);
+    assertEquals(TextModel.TOP_MARGIN, regions.get(0).y);
     assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()) - TextModel.SIDE_TEXT_MARGIN, regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(5)), regions.get(0).height);
   }
@@ -247,12 +247,12 @@ public class TextAreaModelTest
 
     assertEquals(2, regions.size());
     assertEquals(modelInfo.getXPosFromIndex(2), regions.get(0).x);
-    assertEquals(0, regions.get(0).y);
-    assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2), regions.get(0).width);
+    assertEquals(TextModel.TOP_MARGIN, regions.get(0).y);
+    assertEquals(panel.getWidth() - modelInfo.getXPosFromIndex(2) - TextModel.SIDE_TEXT_MARGIN, regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(0).height);
 
     assertEquals(TextModel.SIDE_TEXT_MARGIN, regions.get(1).x);
-    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)), regions.get(1).y);
+    assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(2)) + TextModel.TOP_MARGIN, regions.get(1).y);
     assertEquals(modelInfo.getXPosFromIndex(10) - TextModel.SIDE_TEXT_MARGIN, regions.get(1).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(10)), regions.get(1).height);
   }
