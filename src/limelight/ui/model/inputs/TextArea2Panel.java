@@ -65,13 +65,13 @@ public class TextArea2Panel extends TextInputPanel
   @Override
   public void setPaintableRegion(int index)
   {
-    paintableRegion = new Box(0, 0, width, height);
+    resetPaintableRegion();
   }
 
   @Override
   public void resetPaintableRegion()
   {
-    paintableRegion = new Box(0, 0, width, height);
+    paintableRegion = new Box(TextModel.SIDE_TEXT_MARGIN, TextModel.TOP_MARGIN, width - TextModel.SIDE_TEXT_MARGIN * 2, height - TextModel.TOP_MARGIN * 2);
   }
 
   @Override
@@ -99,7 +99,7 @@ public class TextArea2Panel extends TextInputPanel
     if (rootPanel != null)
     {
       int regionHeight = boxInfo.getHeightOfCurrentLine();
-      int cursorY = boxInfo.getYPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().y - TextModel.TOP_MARGIN;
+      int cursorY = boxInfo.getYPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().y;
       int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
       rootPanel.addDirtyRegion(new Box(cursorX, cursorY - boxInfo.yOffset, 1, regionHeight));
     }

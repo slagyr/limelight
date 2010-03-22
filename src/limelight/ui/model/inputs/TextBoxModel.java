@@ -132,10 +132,8 @@ public class TextBoxModel extends TextModel
       initNewTextLayouts("");
       return textLayouts;
     }
-
     else
     {
-
       if (textLayouts == null || isThereSomeDifferentText())
       {
         setLastLayedOutText(getText());

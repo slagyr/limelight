@@ -31,7 +31,7 @@ public class TextBox2PanelTest
   public void canResetPaintableRegion()
   {
     assertEquals(TextModel.SIDE_TEXT_MARGIN, panel.paintableRegion.x);
-    assertEquals(panel.getWidth(),panel.paintableRegion.width);
+    assertEquals(panel.getWidth() - TextModel.SIDE_TEXT_MARGIN * 2,panel.paintableRegion.width);
 
     panel.resetPaintableRegion();
 

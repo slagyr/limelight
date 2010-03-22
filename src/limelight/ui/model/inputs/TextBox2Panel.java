@@ -72,6 +72,12 @@ public class TextBox2Panel extends TextInputPanel
     }
     if(paintableRegion.x < TextModel.SIDE_TEXT_MARGIN)
       paintableRegion.x = TextModel.SIDE_TEXT_MARGIN;
+    if(paintableRegion.x + paintableRegion.width >= this.width)
+    {
+      int overLength = paintableRegion.x + paintableRegion.width - this.width;
+      paintableRegion.width -= overLength + TextModel.SIDE_TEXT_MARGIN;
+    }
+
   }
 
   private boolean isNewPaintableRegion()
@@ -91,7 +97,7 @@ public class TextBox2Panel extends TextInputPanel
 
   public void resetPaintableRegion()
   {
-    int regionHeight = height - 2 * TextModel.TOP_MARGIN;
+    int regionHeight = height - TextModel.TOP_MARGIN;
     if (boxInfo.selectionOn)
     {
       Rectangle selectionRegion = boxInfo.getSelectionRegions().get(0);

@@ -21,7 +21,7 @@ public class TextPanelTextPainter extends TextPanelPainter
     if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
     {
       textDimensions = boxInfo.calculateTextDimensions();
-      Box box = new Box(TextModel.SIDE_TEXT_MARGIN,0,boxInfo.getPanelWidth() - TextModel.SIDE_TEXT_MARGIN,boxInfo.getPanelHeight());
+      Box box = new Box(TextModel.SIDE_TEXT_MARGIN,0,boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
 
       boxInfo.shiftOffset(boxInfo.getCursorIndex());
       boxInfo.getYPosFromIndex(boxInfo.getCursorIndex());

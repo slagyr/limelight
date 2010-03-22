@@ -30,7 +30,7 @@ public class TextAreaModel extends TextModel
     cursorIndex = 0;
     selectionIndex = 0;
     xOffset = 0;
-    yOffset = 0;
+    yOffset = -TOP_MARGIN;
   }
 
   @Override
@@ -69,8 +69,10 @@ public class TextAreaModel extends TextModel
   @Override
   public ArrayList<TypedLayout> getTextLayouts()
   {
-    if (getText() == null || getText().length() == 0)
-      return null;
+    if (getText() == null || getText().length() == 0){
+      textLayouts = new ArrayList<TypedLayout>();
+      textLayouts.add(new TextLayoutImpl("", font, TextPanel.getRenderContext()));
+    }
     else
     {
       if (textLayouts == null || isThereSomeDifferentText())
@@ -78,8 +80,8 @@ public class TextAreaModel extends TextModel
         setLastLayedOutText(getText());
         parseTextForMultipleLayouts();
       }
-      return textLayouts;
     }
+    return textLayouts;
   }
 
   @Override
@@ -114,14 +116,14 @@ public class TextAreaModel extends TextModel
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     int yPos = lineHeight * startingLine - calculateYOffset();
-    regions.add(new Box(startingX, yPos, myPanel.getWidth() - startingX, lineHeight));
+    regions.add(new Box(startingX, yPos, myPanel.getWidth() - startingX - SIDE_TEXT_MARGIN, lineHeight));
     yPos += lineHeight;
     for (int i = startingLine + 1; i < endingLine; i++)
     {
-      regions.add(new Box(SIDE_TEXT_MARGIN, yPos, myPanel.getWidth()-SIDE_TEXT_MARGIN, lineHeight));
+      regions.add(new Box(SIDE_TEXT_MARGIN, yPos, myPanel.getWidth()-SIDE_TEXT_MARGIN * 2, lineHeight));
       yPos += lineHeight;
     }
-    regions.add(new Box(SIDE_TEXT_MARGIN, yPos, endingX -SIDE_TEXT_MARGIN, lineHeight));
+    regions.add(new Box(SIDE_TEXT_MARGIN, yPos, endingX -SIDE_TEXT_MARGIN , lineHeight));
     return regions;
   }
 
@@ -181,17 +183,13 @@ public class TextAreaModel extends TextModel
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     int panelHeight = myPanel.getHeight();
     while(yPos <= yOffset)
-    {
       yOffset -= lineHeight;
     if(yOffset < 0)
        yOffset = 0;
-    }
 
     while((yPos + lineHeight) > yOffset + panelHeight)
-    {
       yOffset += lineHeight;
-    }
-    return yOffset;
+    return yOffset - TextModel.TOP_MARGIN;
   }
 
   @Override
@@ -244,9 +242,9 @@ public class TextAreaModel extends TextModel
   {
     TextLayout layout;
     if (thereAreMoreReturnCharacters(returnCharIndex))
-      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN, newLineCharIndices.get(returnCharIndex) + 1, false);
+      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_TEXT_MARGIN * 2, newLineCharIndices.get(returnCharIndex) + 1, false);
     else
-      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_DETECTION_MARGIN);
+      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_TEXT_MARGIN * 2);
     return layout;
   }
 
