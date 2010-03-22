@@ -115,8 +115,8 @@ public class TextPanelPainterSuite
 
       painter.paint(graphics);
 
-      testBox = graphics.filledShapes.get(0).shape.getBounds();
-      assertTestBoxSize(3, TextModel.TOP_MARGIN, boxInfo.getXPosFromIndex(4) - TextModel.SIDE_TEXT_MARGIN, boxInfo.getPanelHeight() - TextModel.TOP_MARGIN *2);
+      testBox = graphics.drawnShapes.get(0).shape.getBounds();
+      assertTestBoxSize(0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
     }
 
     @Test
@@ -227,9 +227,9 @@ public class TextPanelPainterSuite
       int startX = boxInfo.getXPosFromIndex(boxInfo.selectionIndex);
       assertTestBoxSize(startX,0,panel.getWidth() - startX, boxInfo.getTotalHeightOfLineWithLeadingMargin(0));
       
-      int endX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex) -3;
+      int endX = boxInfo.getXPosFromIndex(boxInfo.cursorIndex) -TextModel.SIDE_TEXT_MARGIN;
       testBox = graphics.filledShapes.get(1).shape.getBounds();
-      assertTestBoxSize(3,boxInfo.getTotalHeightOfLineWithLeadingMargin(0),endX,boxInfo.getTotalHeightOfLineWithLeadingMargin(1));
+      assertTestBoxSize(TextModel.SIDE_TEXT_MARGIN,boxInfo.getTotalHeightOfLineWithLeadingMargin(0),endX,boxInfo.getTotalHeightOfLineWithLeadingMargin(1));
     }
   }
 
@@ -272,8 +272,8 @@ public class TextPanelPainterSuite
     {
       painter.paint(graphics);
 
-      assertEquals(3, (int)layout.getBounds().getX());
-      assertEquals(13, (int)layout.getBounds().getY());
+      assertEquals(TextModel.SIDE_TEXT_MARGIN, (int)layout.getBounds().getX());
+      assertEquals(15, (int)layout.getBounds().getY());
     }
 
     @Test

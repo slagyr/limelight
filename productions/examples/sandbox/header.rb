@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 header do
@@ -17,6 +17,8 @@ header do
   example_link :text => "Background Image", :on_mouse_clicked => "scene.load('background_images')", :id => "background_image_link"
   example_link :text => "Kiosk", :on_mouse_clicked => "scene.load('kiosk')", :id => "kiosk_link"
   example_link :text => "Alerts", :on_mouse_clicked => "scene.load('alerts')", :id => "alerts_link"
+  example_link :text => "Styled Text", :on_mouse_clicked => "scene.load('styled_text')", :id => "styled_text_link"
+  example_link :text => "Text Boxes", :on_mouse_clicked => "scene.load('text_boxes')", :id => "text_boxes_link"
   example_link :text => "Stage Handles", :on_mouse_clicked => "scene.load('stage_handles')", :id => "stage_handles_link"
 end
 

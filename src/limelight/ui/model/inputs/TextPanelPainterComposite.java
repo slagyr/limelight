@@ -1,8 +1,12 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.model.inputs.painters.*;
+import limelight.util.Colors;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class TextPanelPainterComposite
 {

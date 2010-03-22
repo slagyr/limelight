@@ -16,9 +16,10 @@ import java.util.ArrayList;
 public abstract class TextModel implements ClipboardOwner
 {
 
-  public static final int SIDE_TEXT_MARGIN = 3;
-  public static final int SIDE_DETECTION_MARGIN = 4;
-  public static final int TOP_MARGIN = 4;
+  public static final int SIDE_TEXT_MARGIN = 6;
+  public static final int SIDE_DETECTION_MARGIN = SIDE_TEXT_MARGIN + 1;
+  public static final int TOP_MARGIN = 7;
+  public static final int BOTTOM_MARGIN = 7;
 
   public StringBuffer text = new StringBuffer();
   ArrayList<TypedLayout> textLayouts;
@@ -456,7 +457,8 @@ public abstract class TextModel implements ClipboardOwner
     for (int i = 0; i < nextLine; i++)
       charCount += textLayouts.get(i).getText().length();
     int xPos = getXPosFromIndex(cursorIndex);
-    int lineLength = textLayouts.get(nextLine).getText().length();
+    String lineText = textLayouts.get(nextLine).getText();
+    int lineLength = lineText.length();
     int newCursorIndex = charCount + lineLength -1;
     if(nextLine == textLayouts.size() -1)
       newCursorIndex ++;
@@ -466,8 +468,10 @@ public abstract class TextModel implements ClipboardOwner
     }
     else
     {
-      TextHitInfo hitInfo = textLayouts.get(nextLine).hitTestChar(xPos, 5);
-      newCursorIndex = hitInfo.getCharIndex() + charCount;
+      TextHitInfo hitInfo = textLayouts.get(nextLine).hitTestChar(xPos - SIDE_TEXT_MARGIN, 5);
+      newCursorIndex = hitInfo.getInsertionIndex() + charCount;
+      if(newCursorIndex == lineLength && lineText.endsWith("\n"))
+        newCursorIndex--;
       return newCursorIndex;
     }
   }
