@@ -58,7 +58,7 @@ describe "Utilitites Production" do
     return stage != nil && stage.current_scene != nil
   end
 
-  it "should construct stage on load_with_incomptible_version_scene" do
+  it "should construct stage on load_with_incompatible_version_scene" do
     production.load_incompatible_version_scene("Some Production", "1.2.3")
     stage = production.theater["Incompatible Version"]
     stage.should_not == nil
@@ -70,14 +70,14 @@ describe "Utilitites Production" do
     stage.vital?.should == false
   end
 
-  it "should not construct the incomptible_version stage twice" do
+  it "should not construct the incompatible_version stage twice" do
     production.load_incompatible_version_scene("Some Production", "1.2.3")
     stage = production.theater["Incompatible Version"]
 
     lambda { production.load_incompatible_version_scene("Some Production", "1.2.3") }.should_not raise_error
   end
 
-  it "should load the incomptible_version scene" do
+  it "should load the incompatible_version scene" do
     production.load_incompatible_version_scene("Some Production", "1.2.3")
     stage = production.theater["Incompatible Version"]
 
@@ -124,7 +124,7 @@ describe "Utilitites Production" do
     stage.vital?.should == false
   end
 
-  it "should load the incomptible_version scene" do
+  it "should load the alert scene" do
     production.load_alert_scene("Some Message")
     stage = production.theater["Alert"]
 
