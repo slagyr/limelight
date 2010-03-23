@@ -99,6 +99,16 @@ public class MouseProcessorTest
   }
 
   @Test
+  public void shouldNotCrashWhenCalculatingMouseClinkIndexWithNoText() throws Exception
+  {
+    modelInfo.setText("");
+    assertEquals(0, processor.calculateMouseClickIndex(10, 5));
+
+    modelInfo.setText(null);
+    assertEquals(0, processor.calculateMouseClickIndex(10, 5));
+  }
+
+  @Test
   public void willSetCursorAndSelectionIndexOnMouseClickInTheBox()
   {
     processor.processMousePressed(mockMouseEvent);

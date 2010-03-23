@@ -30,7 +30,6 @@ public class TextBoxModel extends TextModel
   {
     TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
     return getWidthDimension(layout) + SIDE_TEXT_MARGIN - xOffset;
-
   }
 
   public void shiftOffset(int index)
@@ -52,7 +51,6 @@ public class TextBoxModel extends TextModel
     this.cursorX = getXPosFromIndex(index);
   }
 
-  @Override
   public boolean isCursorAtCriticalEdge(int xPos)
   {
     if (myPanel.getWidth() > calculateTextDimensions().width)
@@ -169,7 +167,6 @@ public class TextBoxModel extends TextModel
     return regions;
   }
 
-  @Override
   public int calculateYOffset()
   {
     return 0;
@@ -182,31 +179,27 @@ public class TextBoxModel extends TextModel
     return false;
   }
 
-  @Override
   public boolean isMoveUpEvent(int keyCode)
   {
     return false;
   }
 
-  @Override
   public boolean isMoveDownEvent(int keyCode)
   {
     return false;
   }
 
-  @Override
   public int getTopOfStartPositionForCursor()
   {
     return TOP_MARGIN;
   }
 
-  @Override
   public int getBottomPositionForCursor()
   {
-    return myPanel.getHeight() - TOP_MARGIN * 2;
+    TypedLayout layout = getTextLayouts().get(0);
+    return getTopOfStartPositionForCursor() + (int)(getHeightDimension(layout) + 0.5);
   }
 
-  @Override
   public int getIndexOfLastCharInLine(int line)
   {
     return text.length();

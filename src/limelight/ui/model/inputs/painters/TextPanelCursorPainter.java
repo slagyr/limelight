@@ -7,13 +7,11 @@ import java.awt.*;
 
 public class TextPanelCursorPainter extends TextPanelPainter
 {
-
   public TextPanelCursorPainter(TextModel boxInfo)
   {
     super(boxInfo);
   }
 
-  @Override
   public void paint(Graphics2D graphics)
   {
     int x = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex());
