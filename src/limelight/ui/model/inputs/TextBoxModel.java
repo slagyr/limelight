@@ -130,19 +130,25 @@ public class TextBoxModel extends TextModel
 
   public ArrayList<TypedLayout> getTextLayouts()
   {
-    if (getText().length() == 0)
-      return null;
+    if (getText() == null){
+      initNewTextLayouts("");
+      return textLayouts;
+    }
     else
     {
-
       if (textLayouts == null || isThereSomeDifferentText())
       {
         setLastLayedOutText(getText());
-        textLayouts = new ArrayList<TypedLayout>();
-        textLayouts.add(new TextLayoutImpl(getText(), font, TextPanel.getRenderContext()));
+        initNewTextLayouts(getText());
       }
       return textLayouts;
     }
+  }
+
+  private void initNewTextLayouts(String text)
+  {
+    textLayouts = new ArrayList<TypedLayout>();
+    textLayouts.add(new TextLayoutImpl(text, font, TextPanel.getRenderContext()));
   }
 
   public ArrayList<Rectangle> getSelectionRegions()

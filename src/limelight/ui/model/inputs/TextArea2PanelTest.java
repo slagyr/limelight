@@ -31,8 +31,8 @@ public class TextArea2PanelTest
   {
     panel.resetPaintableRegion();
 
-    assertEquals(0, panel.paintableRegion.x);
-    assertEquals(panel.getWidth(),panel.paintableRegion.width);
+    assertEquals(TextModel.SIDE_TEXT_MARGIN, panel.paintableRegion.x);
+    assertEquals(panel.getWidth() - TextModel.SIDE_TEXT_MARGIN * 2,panel.paintableRegion.width);
   }
 
 }

@@ -110,6 +110,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getTotalHeightOfLineWithLeadingMargin(int layoutIndex)
   {
+    textLayouts = getTextLayouts();
     return (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
   }
 
