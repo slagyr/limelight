@@ -16,9 +16,9 @@
 
 package com.android.ninepatch;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import limelight.ui.model.Drawable;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +30,8 @@ import java.util.List;
 /**
  * Represents a 9-Patch bitmap.
  */
-public class NinePatch {
+public class NinePatch implements Drawable
+{
     public static final String EXTENSION_9PATCH = ".9.png";
 
     private BufferedImage mImage;

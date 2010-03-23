@@ -1,11 +1,14 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.inputs.painters.*;
-import limelight.util.Colors;
+import com.android.ninepatch.NinePatch;
+import limelight.ui.model.Drawable;
+import limelight.ui.model.inputs.painters.TextPanelBackgroundPainter;
+import limelight.ui.model.inputs.painters.TextPanelCursorPainter;
+import limelight.ui.model.inputs.painters.TextPanelSelectionPainter;
+import limelight.ui.model.inputs.painters.TextPanelTextPainter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class TextPanelPainterComposite
@@ -18,7 +21,17 @@ public class TextPanelPainterComposite
   public TextPanelPainterComposite(TextModel boxInfo)
   {
     cursorPainter = new TextPanelCursorPainter(boxInfo);
-    panelBackgroundPainter = new TextPanelBackgroundPainter(boxInfo);
+    try
+    {
+      Drawable normalDrawable = NinePatch.load(ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/text_box.9.png")), true, true);
+      Drawable focusDrawable = NinePatch.load(ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/text_box_focus.9.png")), true, true);
+      panelBackgroundPainter = new TextPanelBackgroundPainter(boxInfo, normalDrawable, focusDrawable);
+    }
+    catch(IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+
     selectionPainter = new TextPanelSelectionPainter(boxInfo);
     textPainter = new TextPanelTextPainter(boxInfo);
   }
