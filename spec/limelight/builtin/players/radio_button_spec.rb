@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../../../spec_helper")
@@ -47,14 +47,14 @@ describe Limelight::Builtin::Players::RadioButton do
     prop3.group = "group 2"
     
     group1 = @scene.button_groups["group 1"]
-    group1.elements.include?(@prop.radio_button).should == true
-    group1.elements.include?(prop2.radio_button).should == true
-    group1.elements.include?(prop3.radio_button).should == false
+    group1.buttons.include?(@prop.radio_button).should == true
+    group1.buttons.include?(prop2.radio_button).should == true
+    group1.buttons.include?(prop3.radio_button).should == false
     
     group2 = @scene.button_groups["group 2"]
-    group2.elements.include?(@prop.radio_button).should == false
-    group2.elements.include?(prop2.radio_button).should == false
-    group2.elements.include?(prop3.radio_button).should == true
+    group2.buttons.include?(@prop.radio_button).should == false
+    group2.buttons.include?(prop2.radio_button).should == false
+    group2.buttons.include?(prop3.radio_button).should == true
     
     @prop.button_group.should == group1
     prop2.button_group.should == group1

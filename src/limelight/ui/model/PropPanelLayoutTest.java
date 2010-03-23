@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -594,5 +594,17 @@ public class PropPanelLayoutTest extends TestCase
 
     assertEquals(42, parent.getWidth());
     assertEquals(51, parent.getHeight());
+  }
+
+  public void testScrollContentThatIsntAlignedTopLeft() throws Exception
+  {
+    parent.getStyle().setScrollbars("on");
+    parent.getStyle().setAlignment("center");
+    PropPanel panel = addChildWithSize(parent, "200", "200");
+
+    layout.doLayout(parent);
+
+    assertEquals(0, panel.getX());
+    assertEquals(0, panel.getY());
   }
 }

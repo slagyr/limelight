@@ -66,7 +66,6 @@ public abstract class TextModel implements ClipboardOwner
     return xPos;
   }
 
-
   protected abstract int getXPosFromText(String toIndexString);
 
   public int getYPosFromIndex(int index)
@@ -470,10 +469,10 @@ public abstract class TextModel implements ClipboardOwner
     else
     {
       TextHitInfo hitInfo = textLayouts.get(nextLine).hitTestChar(xPos - SIDE_TEXT_MARGIN, 5);
-      newCursorIndex = hitInfo.getInsertionIndex() + charCount;
+      newCursorIndex = hitInfo.getInsertionIndex();
       if(newCursorIndex == lineLength && lineText.endsWith("\n"))
         newCursorIndex--;
-      return newCursorIndex;
+      return newCursorIndex + charCount;
     }
   }
 

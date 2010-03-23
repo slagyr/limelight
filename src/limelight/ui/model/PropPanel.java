@@ -381,10 +381,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       }
       else if(isBorderDescriptor(descriptor) || isMarginPaddingOrBorder(value))
       {
+        propagateSizeChangeDown();
         borderChanged = true;
         markAsNeedingLayout();
         clearCache();
-        propagateSizeChangeDown();
       }
       else if(descriptor == Style.X || descriptor == Style.Y)
       {
@@ -453,6 +453,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void addVerticalScrollBar()
   {
+    verticalScrollbar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
     verticalScrollbar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
     add(verticalScrollbar);
     childConsumableArea = null;

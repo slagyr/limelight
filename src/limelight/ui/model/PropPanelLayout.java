@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -133,7 +133,7 @@ public class PropPanelLayout implements Layout
     {
       vertical.setHeight(area.height);
       vertical.setLocation(area.right() + 1, area.y);
-      vertical.configure(area.height, consumedDimensions.height);
+      vertical.configure(area.height, consumedDimensions.height);      
     }
     if(horizontal != null)
     {
@@ -198,12 +198,18 @@ public class PropPanelLayout implements Layout
     Style style = panel.getProp().getStyle();
     int y = style.getCompiledVerticalAlignment().getY(consumedDimension.height, panel.getChildConsumableArea());
     if(panel.getVerticalScrollbar() != null)
+    {
+      y = Math.max(0, y);
       y -= panel.getVerticalScrollbar().getValue();
+    }
     for(Row row : rows)
     {
       int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableArea());
       if(panel.getHorizontalScrollbar() != null)
+      {
+        x = Math.max(0, x);
         x -= panel.getHorizontalScrollbar().getValue();
+      }
       row.layoutComponents(x, y, style.getCompiledVerticalAlignment());
       y += row.height;
     }

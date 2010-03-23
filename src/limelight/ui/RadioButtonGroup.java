@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class RadioButtonGroup
 {
   private ArrayList<RadioButtonGroupMember> buttons = new ArrayList<RadioButtonGroupMember>();
-  private RadioButtonGroupMember selected;
 
   public void add(RadioButtonGroupMember button)
   {
@@ -25,4 +24,10 @@ public class RadioButtonGroup
 
     }
   }
+
+  public ArrayList<RadioButtonGroupMember> getButtons()
+  {
+    return buttons;
+  }
+
 }

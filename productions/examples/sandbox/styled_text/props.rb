@@ -1,6 +1,6 @@
 __ :name => "sandbox"
 __install "header.rb"
-arena :vertical_scrollbar => :on do
+arena :vertical_scrollbar => :on, :height => :greedy do
   text_section do
     section_title :text => "Inherits Containing Prop's Styles"
     styled_text :text_color => :dark_red, :text => "All the text here, <big_n_bold>even this text,</big_n_bold> should be red because the parent is red."
@@ -30,4 +30,4 @@ arena :vertical_scrollbar => :on do
     styled_text :text => "Here is some text <padded>that has lots of padding</padded>. Tada!"
     styled_text :text => "Here is some text <background_image>with an image background</background_image>. Tada!"
   end
-end
+end                                                                                                                                                                            
