@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
@@ -44,10 +44,14 @@ public class ScrollLayout extends PropPanelLayout
   public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)
   {
     Style style = panel.getProp().getStyle();
-    int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableArea()) - dy;
+    int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableArea());
+    y = Math.max(0, y);
+    y -= dy;
     for(Row row : rows)
     {
-      int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableArea()) - dx;
+      int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableArea());
+      x = Math.max(0, x);
+      x -= dx;
       row.layoutComponents(x, y, style.getCompiledVerticalAlignment());
       y += row.height;
     }

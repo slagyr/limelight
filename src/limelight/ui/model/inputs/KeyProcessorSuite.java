@@ -332,6 +332,18 @@ public class KeyProcessorSuite
 
       asserter.assertSelection(14, 0, false);
     }
+
+    @Test
+    public void shouldGoToTheEndOfNextLineEvenIfItEndsWithNewline() throws Exception
+    {
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
+      modelInfo.setText("blah\nasdf\nasdf");
+      modelInfo.cursorIndex = 4;
+
+      processor.processKey(mockEvent);
+
+      asserter.assertSelection(9, 0, false);
+    }
   }
 
   public static class CmdKeyProcessorTest
@@ -1310,7 +1322,6 @@ public class KeyProcessorSuite
     }
 
   }
-
 
   public static class SelectionAltShiftCmdKeyProcessorTest
   {
