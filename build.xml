@@ -46,7 +46,10 @@
     
     <target name="compile" depends="init" description="compile the source (make)">
         <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off"/>
-        <copydir src="${src}/limelight/ui/images" dest="${classes}/limelight/ui/images" />
+        <mkdir dir="${classes}/limelight/ui/images" />
+        <copy todir="${classes}/limelight/ui/images">
+            <fileset dir="${src}/limelight/ui/images" includes="*" />
+        </copy>
     </target>
 
     <target name="unit_test" depends="compile" description="run the unit tests">
@@ -57,6 +60,7 @@
             <batchtest fork="no" todir="etc/test_reports">
                 <fileset dir="${src}">
                     <include name="**/*Test.java"/>
+                    <include name="**/*Suite.java"/>
                 </fileset>
             </batchtest>
         </junit>

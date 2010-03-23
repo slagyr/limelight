@@ -3,6 +3,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockGraphics;
 import limelight.ui.MockTextLayout;
 import limelight.ui.TypedLayout;
+import limelight.ui.model.MockDrawable;
 import limelight.ui.model.TextPanel;
 import limelight.ui.model.inputs.painters.TextPanelBackgroundPainter;
 import limelight.ui.model.inputs.painters.TextPanelCursorPainter;
@@ -21,7 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TextPanelPainterSuite.CursorPainter.class, TextPanelPainterSuite.BoxPainter.class, TextPanelPainterSuite.SelectionPainter.class,
+@Suite.SuiteClasses({TextPanelPainterSuite.CursorPainter.class, TextPanelPainterSuite.BackgroundPainter.class, TextPanelPainterSuite.SelectionPainter.class,
     TextPanelPainterSuite.TextPainter.class})
 public class TextPanelPainterSuite
 {
@@ -96,65 +97,62 @@ public class TextPanelPainterSuite
     }
   }
 
-  public static class BoxPainter
+  public static class BackgroundPainter
   {
+    private MockDrawable normalDrawable;
+    private MockDrawable focusDrawable;
 
     @Before
     public void setUp()
     {
       testClassInit();
-      painter = new TextPanelBackgroundPainter(boxInfo);
+
+      normalDrawable = new MockDrawable();
+      focusDrawable = new MockDrawable();
+
+      painter = new TextPanelBackgroundPainter(boxInfo, normalDrawable, focusDrawable);
     }
 
-    @Test
-    public void willFillARectangleAccordingToThePaintableRegionBounds()
+    private void assertDrawn(MockDrawable normalDrawable, Graphics expectedGraphics, int expectedX, int expectedY, int expectedWidth, int expectedHeight)
     {
-      panel.resetPaintableRegion();
-      panel.setPaintableRegion(4);
-      panel.setPaintableRegion(0);
-
-      painter.paint(graphics);
-
-      testBox = graphics.drawnShapes.get(0).shape.getBounds();
-      assertTestBoxSize(0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
+      assertEquals(expectedGraphics, normalDrawable.drawnGraphics2D);
+      assertEquals(expectedX, normalDrawable.drawnX);
+      assertEquals(expectedY, normalDrawable.drawnY);
+      assertEquals(expectedWidth, normalDrawable.drawnWidth);
+      assertEquals(expectedHeight, normalDrawable.drawnHeight);
     }
 
-    @Test
-    public void willFillTheRectangleWithTheCorrectColor()
+    private void assertNotDrawn(MockDrawable normalDrawable)
     {
-      painter.paint(graphics);
-
-      assertEquals(Color.white, graphics.filledShapes.get(0).color);
+      assertEquals(null, normalDrawable.drawnGraphics2D);
+      assertEquals(0, normalDrawable.drawnX);
+      assertEquals(0, normalDrawable.drawnY);
+      assertEquals(0, normalDrawable.drawnWidth);
+      assertEquals(0, normalDrawable.drawnHeight);
     }
-
+    
     @Test
-    public void willOutLineTheBox()
-    {
-      painter.paint(graphics);
-
-      testBox = graphics.drawnShapes.get(0).shape.getBounds();
-      assertTestBoxSize(0, 0, boxInfo.getPanelWidth() - 1, boxInfo.getPanelHeight() - 1);
-    }
-
-    @Test
-    public void willOutLineGreenIfFocused()
+    public void willUseBothBackgroundsWhenFocused()
     {
       boxInfo.myPanel.focused = true;
 
       painter.paint(graphics);
 
-      assertEquals(Color.green, graphics.drawnShapes.get(0).color);
+      assertDrawn(normalDrawable, graphics, 0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
+      assertDrawn(focusDrawable, graphics, 0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
     }
 
     @Test
-    public void willOutLineGrayIfNotFocused()
+    public void willOnlyUseNormalBackgroundIfNotFocused()
     {
       boxInfo.myPanel.focused = false;
 
       painter.paint(graphics);
 
-      assertEquals(Color.gray, graphics.drawnShapes.get(0).color);
+      assertDrawn(normalDrawable, graphics, 0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
+      assertNotDrawn(focusDrawable);
     }
+
   }
 
   public static class SelectionPainter
