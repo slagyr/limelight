@@ -48,7 +48,7 @@ public class MouseProcessor
   {
     ArrayList<TypedLayout> layouts = boxInfo.getTextLayouts();
     if (layouts == null)
-      return -1;
+      return 0;
     int layoutIndex = 0;
     int charCount = 0;
     int layoutYPosition = boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex) + TextModel.TOP_MARGIN;
@@ -69,6 +69,8 @@ public class MouseProcessor
 
   private boolean isMouseXPastLastCharacterAndNotOnNewLine(int x, int index)
   {
+    if(boxInfo.text == null || boxInfo.text.length() == 0)
+      return false;
     return x > boxInfo.getXPosFromIndex(index) && index == boxInfo.text.length() - 1 && boxInfo.text.charAt(index) != '\n';
   }
 
