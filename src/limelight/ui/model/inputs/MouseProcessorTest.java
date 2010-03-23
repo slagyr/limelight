@@ -122,7 +122,7 @@ public class MouseProcessorTest
   public void willMarkCursorProperlyWithAMultiLineText()
   {
     modelInfo.setText("This is\nMulti lined.");
-    mockMouseEvent = new MockMouseEvent(110,120);
+    mockMouseEvent = new MockMouseEvent(110,130);
 
     processor.processMousePressed(mockMouseEvent);
 
@@ -145,7 +145,7 @@ public class MouseProcessorTest
   public void willMarkCursorProperlyWithAMultiLineTextAndClickIsFarRightOfText()
   {
     modelInfo.setText("This is\nMulti lined.");
-    mockMouseEvent = new MockMouseEvent(190,120);
+    mockMouseEvent = new MockMouseEvent(190,130);
 
     processor.processMousePressed(mockMouseEvent);
 
@@ -156,7 +156,7 @@ public class MouseProcessorTest
   public void willPutCursorOnTheSameLineAsTheClickWhenFollowedByNewLine()
   {
     modelInfo.setText("This is\nMulti lined.\n");
-    mockMouseEvent = new MockMouseEvent(190,120);
+    mockMouseEvent = new MockMouseEvent(190,130);
 
     processor.processMousePressed(mockMouseEvent);
 

@@ -576,11 +576,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "Håere are four words");
+      asserter.assertTextState(2, "Haere are four words");
     }
 
     @Test
@@ -725,11 +725,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'Å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "HÅere are four words");
+      asserter.assertTextState(2, "HAere are four words");
     }
 
     @Test
@@ -1203,11 +1203,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "Hå are four words");
+      asserter.assertTextState(2, "Ha are four words");
     }
 
     @Test
@@ -1271,11 +1271,11 @@ public class KeyProcessorSuite
     @Test
     public void canProcessSpecialKeys()
     {
-      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'Å');
+      mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
 
       processor.processKey(mockEvent);
 
-      asserter.assertTextState(2, "HÅ are four words");
+      asserter.assertTextState(2, "HA are four words");
     }
 
     @Test
