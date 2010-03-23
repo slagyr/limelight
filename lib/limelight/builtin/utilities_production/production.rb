@@ -8,6 +8,7 @@ module Production #:nodoc:
   def production_opening
     @monitor = Monitor.new
     @alert_monitor = @monitor.new_cond
+    @incompatible_version_monitor = @monitor.new_cond
   end
 
   def allow_close?
@@ -20,17 +21,14 @@ module Production #:nodoc:
 
   def process_incompatible_version_response(response)
     @incompatible_version_response = response
+    @monitor.synchronize { @incompatible_version_monitor.signal }
     @incompatible_version_stage.close
-    @main_thread.run
   end
 
   def proceed_with_incompatible_version?(production_name, required_version)
     @incompatible_version_response = nil
-    @main_thread = Thread.current
     load_incompatible_version_scene(production_name, required_version)
-    while @incompatible_version_response == nil
-      Thread.stop
-    end
+    @monitor.synchronize { @incompatible_version_monitor.wait } if @incompatible_version_response.nil?
     return @incompatible_version_response
   end
 
@@ -45,7 +43,7 @@ module Production #:nodoc:
   def alert(message)
     @alert_monitor = @monitor.new_cond
     load_alert_scene(message.to_s)
-    @monitor.synchronize{ @alert_monitor.wait }
+    @monitor.synchronize{ @alert_monitor.wait } if @alert_response.nil?
     @alert_stage.close
     return @alert_response
   end
