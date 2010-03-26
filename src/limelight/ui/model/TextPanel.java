@@ -15,6 +15,7 @@ import limelight.ui.text.StyledText;
 import limelight.ui.text.StyledTextParser;
 import limelight.util.Box;
 import limelight.util.Util;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
@@ -155,16 +156,8 @@ public class TextPanel extends BasePanel implements StyleObserver
         styledText.setupStyles(styleMap, (RichStyle)getStyle(), this);
       // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?
 
-      closeParagraph(); // TODO MDM Why is this needed?
       addLines();
     }
-  }
-
-  private void closeParagraph()
-  {
-    StyledText text1 = new StyledText("\n");
-    text1.getStyle().addExtension((RichStyle)getStyle());
-    textChunks.add(text1);
   }
 
   private synchronized void addLines()
@@ -173,31 +166,31 @@ public class TextPanel extends BasePanel implements StyleObserver
     AttributedCharacterIterator styledTextIterator = aText.getIterator();
 
     List<Integer> newlineLocations = getNewlineLocations(styledTextIterator);
-
     LineBreakMeasurer lbm = new LineBreakMeasurer(styledTextIterator, getRenderContext());
-    int currentNewline = 0;
-    int end = styledTextIterator.getEndIndex();
-    while(lbm.getPosition() < end)
+
+    float width = (float) consumableArea.width;
+
+    TextLayout layout;
+    int startOfNextLayout;
+
+    int currentLine = 0;
+    int endIndex = styledTextIterator.getEndIndex();
+
+    do
     {
-      boolean shouldEndLine = false;
+      if(currentLine < newlineLocations.size())
+        startOfNextLayout = newlineLocations.get(currentLine) + 1;
+      else
+        startOfNextLayout = endIndex + 1;
 
-      while(!shouldEndLine)
-      {
-        float width1 = (float) consumableArea.width;
-        TextLayout layout = lbm.nextLayout(width1, newlineLocations.get(currentNewline) + 1, false);
+      layout = lbm.nextLayout(width, startOfNextLayout, false);
 
-        if(layout != null)
-          lines.add(layout);
-        else
-          shouldEndLine = true;
+      lines.add(layout);
 
-        if(lbm.getPosition() == newlineLocations.get(currentNewline) + 1)
-          currentNewline += 1;
-
-        if(lbm.getPosition() == styledTextIterator.getEndIndex())
-          shouldEndLine = true;
-      }
+      if(lbm.getPosition() == startOfNextLayout)
+        currentLine += 1;
     }
+    while(layout != null && lbm.getPosition() < endIndex);
   }
 
   private List<Integer> getNewlineLocations(AttributedCharacterIterator styledTextIterator)
