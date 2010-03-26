@@ -4,17 +4,32 @@ text_section {
   bottom_padding 10
 }
 
-section_title {
-  width "100%"
-  font_size 20
-  font_style "bold"
-  padding 10
+section_header {
+  width "100%" 
   background_color :light_blue
   secondary_background_color :white
   gradient :on
-#  gradient_penetration "70%"
   gradient_angle 270
   vertical_alignment :center
+}
+
+section_title {
+  font_size 20
+  font_style "bold"
+  padding 10
+}
+
+control_panel {
+  width :greedy
+  horizontal_alignment :right
+}
+
+control_link {
+  padding 10
+  text_color :grey
+  hover {
+    text_color :orange
+  }
 }
 
 styled_text {

@@ -9,7 +9,6 @@ import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.ui.Panel;
-import limelight.ui.api.Prop;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Scene;
 import limelight.ui.text.StyledText;
@@ -113,11 +112,23 @@ public class TextPanel extends BasePanel implements StyleObserver
 
   public void compile()
   {
+    cleanup();
     buildLines();
     calculateDimensions();
     flushChanges();
     snapToSize();
     markAsDirty();
+  }
+
+  private void cleanup()
+  {
+    if(textChunks == null)
+      return;
+    
+    for(StyledText chunk : textChunks)
+      chunk.teardownStyles();
+
+    textChunks = null;
   }
 
   public void snapToSize()
@@ -136,33 +147,17 @@ public class TextPanel extends BasePanel implements StyleObserver
       textChunks = parser.parse(text);
 
       // TODO MDM Need a better way to get the styles
-      Prop prop = ((PropablePanel) getPanel()).getProp();
-      Scene scene = prop.getScene();
+      Scene scene = ((PropablePanel) getPanel()).getProp().getScene();
+      if(scene == null)
+        return;
       Map<String, Style> styleMap = scene.getStyles();
       for(StyledText styledText : textChunks)
-        styledText.applyStyles(styleMap, (RichStyle)getStyle(), this);
+        styledText.setupStyles(styleMap, (RichStyle)getStyle(), this);
       // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?
-      // TODO MDM Need to add sandbox for testing the dynaming updating of test style changes
 
       closeParagraph(); // TODO MDM Why is this needed?
       addLines();
     }
-  }
-
-  private Font getFontFromStyle(Style style)
-  {
-    String fontFace = style.getCompiledFontFace().getValue();
-    int fontStyle = style.getCompiledFontStyle().toInt();
-    int fontSize = style.getCompiledFontSize().getValue();
-    return new Font(fontFace, fontStyle, fontSize);
-  }
-
-  protected Style getStyleFromTag(String tagName)
-  {
-    Prop prop = ((PropablePanel) getPanel()).getProp();
-    Scene scene = prop.getScene();
-    Map<String, Style> styles = scene.getStyles();
-    return styles.get(tagName);
   }
 
   private void closeParagraph()
@@ -239,9 +234,8 @@ public class TextPanel extends BasePanel implements StyleObserver
       else
         endIndex = startIndex + textChunk.getText().length();
 
-      Style style = textChunk.getStyle();
-      attributedString.addAttribute(TextAttribute.FONT, getFontFromStyle(style), startIndex, endIndex);
-      attributedString.addAttribute(TextAttribute.FOREGROUND, style.getCompiledTextColor().getColor(), startIndex, endIndex);
+      attributedString.addAttribute(TextAttribute.FONT, textChunk.getFont(), startIndex, endIndex);
+      attributedString.addAttribute(TextAttribute.FOREGROUND, textChunk.getColor(), startIndex, endIndex);
 
       startIndex += textChunk.getText().length();
     }

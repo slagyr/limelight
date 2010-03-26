@@ -3,12 +3,9 @@
 
 package limelight.ui.text;
 
-import limelight.LimelightError;
-import limelight.LimelightException;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.styles.StyleObserver;
-
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,7 +46,7 @@ public class StyledText
     return styles;
   }
 
-  public void applyStyles(Map<String, Style> styleMap, RichStyle defaultStyle, StyleObserver observer)
+  public void setupStyles(Map<String, Style> styleMap, RichStyle defaultStyle, StyleObserver observer)
   {
     for(String styleName : styles)
     {
@@ -59,6 +56,11 @@ public class StyledText
     }
     style.addExtension(defaultStyle);
     style.addObserver(observer);
+  }
+
+  public void teardownStyles()
+  {
+    style.clearExtensions();
   }
 
   public RichStyle getStyle()

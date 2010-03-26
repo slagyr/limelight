@@ -11,54 +11,54 @@ import static org.junit.Assert.assertTrue;
 
 public class TextModelTest
 {
-  TextModel boxModel;
+  TextModel model;
   TextInputPanel panel;
 
   @Before
   public void setUp()
   {
     panel = new TextBox2Panel();
-    boxModel = panel.getModelInfo();
-    boxModel.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
+    model = panel.getModelInfo();
+    model.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
   }
 
   @Test
   public void canSetACopyOfTheLastLayedoutText()
   {
-    boxModel.setLastLayedOutText("text");
+    model.setLastLayedOutText("text");
 
-    assertEquals("text", boxModel.getLastLayedOutText());
+    assertEquals("text", model.getLastLayedOutText());
   }
 
   @Test
   public void canCompareCurrentTextToLastLayedOutText()
   {
-    boxModel.setText("some text");
-    boxModel.setLastLayedOutText("some other text");
+    model.setText("some text");
+    model.setLastLayedOutText("some other text");
 
-    assertTrue(boxModel.isThereSomeDifferentText());
+    assertTrue(model.isThereSomeDifferentText());
 
-    boxModel.setLastLayedOutText("some text");
+    model.setLastLayedOutText("some text");
 
-    assertFalse(boxModel.isThereSomeDifferentText());
+    assertFalse(model.isThereSomeDifferentText());
   }
 
   @Test
   public void willSetLastLayedOutTextWhenGettingLayout()
   {
-    boxModel.setLastLayedOutText("nothing");
-    boxModel.setText("something");
+    model.setLastLayedOutText("nothing");
+    model.setText("something");
 
-    boxModel.getTextLayouts();
+    model.getTextLayouts();
 
-    assertEquals("something", boxModel.getLastLayedOutText());
+    assertEquals("something", model.getLastLayedOutText());
   }
 
   @Test
   public void canCalculateTheTerminatingSpaceWidth()
   {
-    int width = boxModel.getTerminatingSpaceWidth(boxModel.getText());
-    int width2 = boxModel.getTerminatingSpaceWidth("No Terminating Space");
+    int width = model.getTerminatingSpaceWidth(model.getText());
+    int width2 = model.getTerminatingSpaceWidth("No Terminating Space");
 
     assertEquals(6, width);
     assertEquals(0, width2);
@@ -67,16 +67,16 @@ public class TextModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    assertEquals(boxModel.SIDE_TEXT_MARGIN, boxModel.getXPosFromIndex(0));                
-    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("B"), boxModel.getXPosFromIndex(1));
-    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("Bo"), boxModel.getXPosFromIndex(2));
-    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("Bob"), boxModel.getXPosFromIndex(3));
-    assertEquals(boxModel.SIDE_TEXT_MARGIN + widthOf("Bob") + boxModel.spaceWidth(), boxModel.getXPosFromIndex(4));
+    assertEquals(model.SIDE_TEXT_MARGIN, model.getXPosFromIndex(0));
+    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("B"), model.getXPosFromIndex(1));
+    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("Bo"), model.getXPosFromIndex(2));
+    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("Bob"), model.getXPosFromIndex(3));
+    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("Bob") + model.spaceWidth(), model.getXPosFromIndex(4));
   }
 
   private int widthOf(String text)
   {
-    return boxModel.getWidthDimension(new TextLayoutImpl(text, boxModel.font, TextPanel.getRenderContext()));
+    return model.getWidthDimension(new TextLayoutImpl(text, model.font, TextPanel.getRenderContext()));
   }
 
   @Test
@@ -84,16 +84,16 @@ public class TextModelTest
   {
     int expectedY = TextModel.TOP_MARGIN;
 
-    assertEquals(expectedY, boxModel.getYPosFromIndex(0));
+    assertEquals(expectedY, model.getYPosFromIndex(0));
   }
 
   @Test
   public void canGetTheCurrentLine()
   {
-    boxModel.setCursorIndex(0);
+    model.setCursorIndex(0);
     int expectedLine = 0;
 
-    int line = boxModel.getLineNumberOfIndex(boxModel.cursorIndex);
+    int line = model.getLineNumberOfIndex(model.cursorIndex);
 
     assertEquals(expectedLine, line);
   }
@@ -101,9 +101,9 @@ public class TextModelTest
   @Test
   public void canGetTheHeightForTheCurrentLine()
   {
-    int expectedHeight = (int) (boxModel.getHeightDimension(boxModel.getTextLayouts().get(0)) + .5);
+    int expectedHeight = (int) (model.getHeightDimension(model.getTextLayouts().get(0)) + .5);
 
-    int currentLineHeight = boxModel.getHeightOfCurrentLine();
+    int currentLineHeight = model.getHeightOfCurrentLine();
 
     assertEquals(expectedHeight, currentLineHeight);
   }
@@ -111,45 +111,45 @@ public class TextModelTest
   @Test
   public void canMakeUseOfTheClipboard()
   {
-    boxModel.copyText("This Text");
-    String clipboard = boxModel.getClipboardContents();
+    model.copyText("This Text");
+    String clipboard = model.getClipboardContents();
     assertEquals("This Text", clipboard);
   }
 
   @Test
   public void canCopyPasteAndCut()
   {
-    boxModel.setText("Some Text");
-    boxModel.setCursorIndex(0);
-    boxModel.setSelectionIndex(4);
-    boxModel.selectionOn = true;
-    boxModel.copySelection();
-    String clipboard = boxModel.getClipboardContents();
+    model.setText("Some Text");
+    model.setCursorIndex(0);
+    model.setSelectionIndex(4);
+    model.selectionOn = true;
+    model.copySelection();
+    String clipboard = model.getClipboardContents();
     assertEquals("Some", clipboard);
 
-    boxModel.pasteClipboard();
-    assertEquals("SomeSome Text", boxModel.getText());
+    model.pasteClipboard();
+    assertEquals("SomeSome Text", model.getText());
 
-    boxModel.setCursorIndex(0);
-    boxModel.setSelectionIndex(8);
-    boxModel.cutSelection();
-    assertEquals("SomeSome", boxModel.getClipboardContents());
-    assertEquals(" Text", boxModel.getText());
+    model.setCursorIndex(0);
+    model.setSelectionIndex(8);
+    model.cutSelection();
+    assertEquals("SomeSome", model.getClipboardContents());
+    assertEquals(" Text", model.getText());
   }
 
   @Test
   public void willRememberTheLastCursorIndex()
   {
-    boxModel.setCursorIndex(3);
-    boxModel.setCursorIndex(5);
+    model.setCursorIndex(3);
+    model.setCursorIndex(5);
 
-    assertEquals(3, boxModel.getLastCursorIndex());
+    assertEquals(3, model.getLastCursorIndex());
   }
 
   @Test
   public void canGetTheLastCharacterInALine()
   {
-    assertEquals(boxModel.text.length(),boxModel.getIndexOfLastCharInLine(0));
+    assertEquals(model.text.length(), model.getIndexOfLastCharInLine(0));
   }
 
 }

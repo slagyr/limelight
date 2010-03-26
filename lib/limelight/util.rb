@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 module Limelight
@@ -33,7 +33,7 @@ module Limelight
     #
     def self.lobotomize(klass)
       klass.methods.each do |method_name|
-        unless method_name[0..1] == "__" || method_name == "instance_eval"
+        unless method_name[0..1] == "__" || method_name == "instance_eval" || method_name == "methods"
           begin
             klass.instance_eval "undef_method :#{method_name}"
           rescue Exception => e

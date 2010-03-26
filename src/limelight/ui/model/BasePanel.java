@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -24,9 +24,9 @@ public abstract class BasePanel implements Panel
   protected Point absoluteLocation;
   private Box absoluteBounds;
   protected final LinkedList<Panel> children;
+  private List<Panel> readonlyChildren;
   private boolean sterilized;
   private Box boundingBox;
-  private List<Panel> readonlyChildren;
   private Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
 

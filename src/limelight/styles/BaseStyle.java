@@ -5,11 +5,15 @@ package limelight.styles;
 
 import limelight.styles.abstrstyling.StyleAttribute;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class BaseStyle extends Style
 {
-  private LinkedList<StyleObserver> observers;
+  private final LinkedList<StyleObserver> observers = new LinkedList<StyleObserver>();
+  private List<StyleObserver> readonlyObservers;
   private StyleAttribute[] defaults;
 
   public void setDefault(StyleDescriptor descriptor, Object value)
@@ -31,6 +35,7 @@ public abstract class BaseStyle extends Style
       if(value != null)
         return value;
     }
+
     return descriptor.defaultValue;
   }
 
@@ -41,44 +46,42 @@ public abstract class BaseStyle extends Style
 
   public void removeObserver(StyleObserver observer)
   {
-    if(observers != null)
+    synchronized(observers)
     {
-      synchronized(observers)
-      {
-        observers.remove(observer);
-      }
+      observers.remove(observer);
+      readonlyObservers = null;
     }
   }
 
   public void addObserver(StyleObserver observer)
   {
-    if(observers == null)
-      observers = new LinkedList<StyleObserver>();
     synchronized(observers)
     {
       observers.add(observer);
-    }
-  }
-
-  protected void notifyObserversOfChange(StyleDescriptor descriptor, StyleAttribute value)
-  {
-    if(observers != null)
-    {
-      synchronized(observers)
-      {
-        for(StyleObserver observer : observers)
-          observer.styleChanged(descriptor, value);
-      }
+      readonlyObservers = null;
     }
   }
 
   public boolean hasObserver(StyleObserver observer)
   {
-    if(observers == null)
-      return false;
-    synchronized(observers)
+    return getObservers().contains(observer);
+  }
+
+  public List<StyleObserver> getObservers()
+  {
+    if(readonlyObservers == null)
     {
-      return observers.contains(observer);
+      synchronized(observers)
+      {
+        readonlyObservers = Collections.unmodifiableList(new ArrayList<StyleObserver>(observers));
+      }
     }
+    return readonlyObservers;
+  }
+
+  protected void notifyObserversOfChange(StyleDescriptor descriptor, StyleAttribute value)
+  {
+    for(StyleObserver observer : getObservers())
+      observer.styleChanged(descriptor, value);
   }
 }

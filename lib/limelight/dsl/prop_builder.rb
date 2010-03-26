@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/prop'
@@ -19,7 +19,7 @@ module Limelight
     builder = DSL::PropBuilder.new(root)
     builder.__install_instance_variables(instance_variables)
     builder.__loader__ = loader
-    builder.instance_eval(&block) if block
+    builder.instance_eval(&block) if block  
     return root
   end
 
@@ -141,13 +141,18 @@ module Limelight
         end
       end
 
-      def method_missing(sym, options={}, &prop) # :nodoc:
+      def method_missing(sym, options={}, &block) # :nodoc:
         options[:name] ||= sym.to_s
-        builder = PropBuilder.new(options)
-        builder.__install_instance_variables_from_builder(self)
-        builder.__loader__ = @__loader__
-        builder.instance_eval(&prop) if prop
-        @__prop__.add(builder.__prop__)
+#        builder = PropBuilder.new(options)
+#        builder.__install_instance_variables_from_builder(self)
+#        builder.__loader__ = @__loader__
+#        builder.instance_eval(&block) if block
+#        @__prop__.add(builder.__prop__)
+        current_prop = @__prop__
+        @__prop__ = Prop.new(options)
+        instance_eval(&block) if block
+        current_prop.add(@__prop__)
+        @__prop__ = current_prop
       end
     end
 

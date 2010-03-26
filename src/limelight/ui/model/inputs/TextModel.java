@@ -36,11 +36,6 @@ public abstract class TextModel implements ClipboardOwner
   private int spaceWidth;
   public int yOffset;
 
-  public TextModel()
-  {
-
-  }
-
   public abstract void shiftOffset(int index);
 
   public void setCursorAndSelectionStartX()
@@ -111,7 +106,8 @@ public abstract class TextModel implements ClipboardOwner
   public int getTotalHeightOfLineWithLeadingMargin(int layoutIndex)
   {
     textLayouts = getTextLayouts();
-    return (int) (getHeightDimension(textLayouts.get(layoutIndex)) + textLayouts.get(layoutIndex).getLeading() + .5);
+    TypedLayout typedLayout = textLayouts.get(layoutIndex);
+    return (int)(getHeightDimension(typedLayout) + typedLayout.getLeading() + .5);
   }
 
   public int getHeightOfCurrentLine()
@@ -129,7 +125,6 @@ public abstract class TextModel implements ClipboardOwner
   {
     return xOffset;
   }
-
 
   public abstract ArrayList<TypedLayout> getTextLayouts();
 
