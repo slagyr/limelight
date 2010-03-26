@@ -144,7 +144,7 @@ public class TextPanelTest extends TestCase
 
     assertEquals(1, lines.size());
     TextLayout layout = lines.get(0);
-    assertEquals(10, layout.getCharacterCount());
+    assertEquals(9, layout.getCharacterCount());
     assertSubString("family=" + defaultFontFace, layout.toString());
     assertSubString("name=" + defaultFontFace, layout.toString());
     assertSubString("size=" + defaultFontSize, layout.toString());
@@ -162,7 +162,7 @@ public class TextPanelTest extends TestCase
 
     TextLayout layout = lines.get(0);
     assertEquals(1, lines.size());
-    assertEquals(10, layout.getCharacterCount());
+    assertEquals(9, layout.getCharacterCount());
     assertSubString("family=Helvetica", layout.toString());
     assertSubString("name=Helvetica", layout.toString());
     assertSubString("style=bold", layout.toString());
@@ -232,7 +232,7 @@ public class TextPanelTest extends TestCase
     panel.buildLines();
 
     List<StyledText> chunks = panel.getTextChunks();
-    assertEquals(5, chunks.size());
+    assertEquals(4, chunks.size());
 
     StyledText interlacedLayout = chunks.get(2);
     assertNoSubString("name=Cuneiform", interlacedLayout.toString());
@@ -247,7 +247,7 @@ public class TextPanelTest extends TestCase
     panel.buildLines();
 
     List<StyledText> chunks = panel.getTextChunks();
-    assertEquals(5, chunks.size());
+    assertEquals(4, chunks.size());
 
     StyledText interlacedLayout = chunks.get(2);
     assertNoSubString("name=Cuneiform", interlacedLayout.toString());
