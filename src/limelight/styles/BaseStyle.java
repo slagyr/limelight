@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.styles;
@@ -42,27 +42,43 @@ public abstract class BaseStyle extends Style
   public void removeObserver(StyleObserver observer)
   {
     if(observers != null)
-      observers.remove(observer);
+    {
+      synchronized(observers)
+      {
+        observers.remove(observer);
+      }
+    }
   }
 
   public void addObserver(StyleObserver observer)
   {
     if(observers == null)
       observers = new LinkedList<StyleObserver>();
-    observers.add(observer);
+    synchronized(observers)
+    {
+      observers.add(observer);
+    }
   }
 
   protected void notifyObserversOfChange(StyleDescriptor descriptor, StyleAttribute value)
   {
     if(observers != null)
     {
-      for(StyleObserver observer : observers)
-        observer.styleChanged(descriptor, value);
+      synchronized(observers)
+      {
+        for(StyleObserver observer : observers)
+          observer.styleChanged(descriptor, value);
+      }
     }
   }
 
   public boolean hasObserver(StyleObserver observer)
   {
-    return observers != null && observers.contains(observer);
+    if(observers == null)
+      return false;
+    synchronized(observers)
+    {
+      return observers.contains(observer);
+    }
   }
 }

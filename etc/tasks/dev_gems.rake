@@ -19,7 +19,7 @@ task :dev_gems do
   gems_to_install = all_gems - installed_dev_gems
   gems_to_install.each do |gem|
     puts "Installing gem: #{gem}"
-    system "jruby/bin/gem install etc/gems/required_dev_gems/#{gem}.gem -i etc/gems -f --no-rdoc --no-ri"
+    system "gem install etc/gems/required_dev_gems/#{gem}.gem -i etc/gems -f --no-rdoc --no-ri"
   end
 end
 

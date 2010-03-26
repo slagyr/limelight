@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.api.MockScene;
+import limelight.ui.text.StyledText;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +38,7 @@ public class TextPanelTest extends TestCase
     root = new RootPanel(new MockPropFrame());
     root.setPanel(parent);
     style.setTextColor("green");
+    parent.prop.scene = new MockScene();
 
     defaultFontFace = style.getFontFace();
     defaultFontSize = style.getFontSize();
@@ -156,7 +158,6 @@ public class TextPanelTest extends TestCase
     panel.setText("<my_style>some text</my_style>");
     panel.buildLines();
 
-
     List<TextLayout> lines = panel.getLines();
 
     TextLayout layout = lines.get(0);
@@ -170,13 +171,11 @@ public class TextPanelTest extends TestCase
 
   public void testObserverAddedForLineStyling() throws Exception
   {
-    createStyles();
-
-    panel.setText("<my_style>some text</my_style>");
+    panel.setText("some text");
     panel.buildLines();
 
-    Style myStyle = panel.getStyleFromTag("my_style");
-    assertEquals(true, myStyle.hasObserver(panel));
+    Style style = panel.getTextChunks().get(0).getStyle();
+    assertEquals(true, style.hasObserver(panel));
   }
 
   public void testMultipleStylesAppliedToLine() throws Exception
@@ -187,17 +186,17 @@ public class TextPanelTest extends TestCase
     panel.setText("<my_style>some </my_style><my_other_style>text</my_other_style>");
     panel.buildLines();
 
-    List<TextPanel.StyledString> chunks = panel.getTextChunks();
+    List<StyledText> chunks = panel.getTextChunks();
 
-    TextPanel.StyledString layout = chunks.get(0);
-    assertEquals(5, layout.getCharacterCount());
+    StyledText layout = chunks.get(0);
+    assertEquals(5, layout.getText().length());
     assertSubString("family=Helvetica", layout.toString());
     assertSubString("name=Helvetica", layout.toString());
     assertSubString("style=bold", layout.toString());
     assertSubString("size=20", layout.toString());
 
-    TextPanel.StyledString layout2 = chunks.get(1);
-    assertEquals(5, layout.getCharacterCount());
+    StyledText layout2 = chunks.get(1);
+    assertEquals(5, layout.getText().length());
     assertSubString("family=Dialog", layout2.toString());
     assertSubString("name=Cuneiform", layout2.toString());
     assertSubString("style=italic", layout2.toString());
@@ -206,7 +205,6 @@ public class TextPanelTest extends TestCase
 
   private void createStyles()
   {
-    parent.prop.scene = new MockScene();
     RichStyle myStyle = new RichStyle();
     ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
     myStyle.setFontFace("Helvetica");
@@ -233,10 +231,10 @@ public class TextPanelTest extends TestCase
     panel.setText("This is <my_other_style>some </my_other_style> fantastic <my_style>text</my_style>");
     panel.buildLines();
 
-    List<TextPanel.StyledString> chunks = panel.getTextChunks();
+    List<StyledText> chunks = panel.getTextChunks();
     assertEquals(5, chunks.size());
 
-    TextPanel.StyledString interlacedLayout = chunks.get(2);
+    StyledText interlacedLayout = chunks.get(2);
     assertNoSubString("name=Cuneiform", interlacedLayout.toString());
     assertNoSubString("size=19", interlacedLayout.toString());
   }
@@ -248,10 +246,10 @@ public class TextPanelTest extends TestCase
     panel.setText("This is <my_other_style>some </my_other_style><bogus_style>fantastic</bogus_style><my_style>text</my_style>");
     panel.buildLines();
 
-    List<TextPanel.StyledString> chunks = panel.getTextChunks();
+    List<StyledText> chunks = panel.getTextChunks();
     assertEquals(5, chunks.size());
 
-    TextPanel.StyledString interlacedLayout = chunks.get(2);
+    StyledText interlacedLayout = chunks.get(2);
     assertNoSubString("name=Cuneiform", interlacedLayout.toString());
     assertNoSubString("size=19", interlacedLayout.toString());
   }
@@ -290,7 +288,7 @@ public class TextPanelTest extends TestCase
     assertSubString("size=" + "25", onlyLine);
     assertSubString("style=" + defaultFontStyle, onlyLine);
 
-    TextPanel.StyledString first = panel.getTextChunks().get(0);
+    StyledText first = panel.getTextChunks().get(0);
     assertEquals(defaultTextColor, first.getColor());
   }
 
@@ -319,13 +317,13 @@ public class TextPanelTest extends TestCase
     panel.setText("text <my_other_style>here</my_other_style> man");
     panel.buildLines();
 
-    TextPanel.StyledString first = panel.getTextChunks().get(0);
+    StyledText first = panel.getTextChunks().get(0);
     assertEquals(defaultTextColor, first.getColor());
 
-    TextPanel.StyledString second = panel.getTextChunks().get(1);
+    StyledText second = panel.getTextChunks().get(1);
     assertEquals(new Color(0x0000FF), second.getColor());
 
-    TextPanel.StyledString third = panel.getTextChunks().get(2);
+    StyledText third = panel.getTextChunks().get(2);
     assertEquals(defaultTextColor, third.getColor());
   }
 

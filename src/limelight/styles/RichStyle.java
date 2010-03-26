@@ -1,12 +1,14 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.styles;
 
 import limelight.util.Util;
 import limelight.styles.abstrstyling.StyleAttribute;
+import sun.security.x509.CRLExtensions;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 public class RichStyle extends BaseStyle implements StyleObserver
 {
@@ -117,6 +119,11 @@ public class RichStyle extends BaseStyle implements StyleObserver
         return value;
     }
     return null;
+  }
+
+  public LinkedList<RichStyle> getExtentions()
+  {
+    return extensions;
   }
 
   public boolean hasExtension(RichStyle style)
