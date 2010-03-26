@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
@@ -240,6 +240,28 @@ describe Limelight::DSL::PropBuilder do
     child = root.children[0]
     child.name.should == "child"
     child.id.should == "123"
+  end
+
+  it "should allow defining methods inside dsl" do
+    root = Limelight::build_props(@scene, :instance_variables => { :name => "blah" } ) do
+      def foo(value)
+        foo_prop do
+          __ :text => value if !block_given?
+          yield if block_given?
+        end
+      end
+      foo("first") do
+        foo("child")
+      end
+      foo("second")
+    end
+    root.illuminate
+
+    root.children[0].name.should == "foo_prop"
+    root.children[0].children[0].name.should == "foo_prop"
+    root.children[0].children[0].text.should == "child"
+    root.children[1].name.should == "foo_prop"
+    root.children[1].text.should == "second"
   end
 
 end

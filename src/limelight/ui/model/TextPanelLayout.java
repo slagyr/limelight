@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -18,7 +18,7 @@ public class TextPanelLayout implements Layout
       panel.compile();
     }
     catch(Exception e)
-    {
+    {    
       // Can fail if the graphics are not ready.
       panel.markAsNeedingLayout();
       panel.getParent().markAsNeedingLayout();

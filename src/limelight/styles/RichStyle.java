@@ -5,15 +5,13 @@ package limelight.styles;
 
 import limelight.util.Util;
 import limelight.styles.abstrstyling.StyleAttribute;
-import sun.security.x509.CRLExtensions;
 
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 public class RichStyle extends BaseStyle implements StyleObserver
 {
   private final StyleAttribute[] styles;
-  private LinkedList<RichStyle> extensions;
+  private final LinkedList<RichStyle> extensions = new LinkedList<RichStyle>();
 
   public RichStyle()
   {
@@ -24,22 +22,19 @@ public class RichStyle extends BaseStyle implements StyleObserver
   {
     if(styles[key] != null)
       return styles[key];
-    else if(extensions != null)
+
+    synchronized(extensions)
     {
       return getFrom(extensions, key);
     }
-
-    return null;
   }
 
   public void put(StyleDescriptor descriptor, Object value)
   {
     if(value == null)
       return;
-
-    StyleAttribute originalValue  = styles[descriptor.index];
+    StyleAttribute originalValue = styles[descriptor.index];
     StyleAttribute compiledValue = descriptor.compile(value);
-    styles[descriptor.index] = compiledValue;
     if(!Util.equal(originalValue, compiledValue))
     {
       styles[descriptor.index] = compiledValue;
@@ -49,31 +44,47 @@ public class RichStyle extends BaseStyle implements StyleObserver
 
   public void removeExtension(RichStyle extension)
   {
-    if(extensions != null)
+    extension.removeObserver(this);
+    applyChangesFromExtension(extension);
+    synchronized(extensions)
     {
-      extension.removeObserver(this);
-      applyChangesFromExtension(extension);
       extensions.remove(extension);
     }
   }
 
   public void addExtension(RichStyle extension)
   {
-    if(extensions == null)
-      extensions = new LinkedList<RichStyle>();
-
     if(extension != null && !hasExtension(extension))
     {
       applyChangesFromExtension(extension);
-      extensions.add(extension);
+      synchronized(extensions)
+      {
+        extensions.add(extension);
+      }
       if(!extension.hasObserver(this))
         extension.addObserver(this);
     }
   }
 
+  public RichStyle getExtention(int index)
+  {
+    synchronized(extensions)
+    {
+      return extensions.get(index);
+    }
+  }
+
+  public boolean hasExtension(RichStyle style)
+  {
+    synchronized(extensions)
+    {
+      return extensions.contains(style);
+    }
+  }
+
   public void clearExtensions()
   {
-    while(extensions != null && !extensions.isEmpty())
+    while(!extensions.isEmpty())
     {
       RichStyle extension = extensions.getFirst();
       removeExtension(extension);
@@ -101,11 +112,14 @@ public class RichStyle extends BaseStyle implements StyleObserver
   private LinkedList<RichStyle> findSeniorExtensions(RichStyle style)
   {
     LinkedList<RichStyle> seniorExtensions = new LinkedList<RichStyle>();
-    for(RichStyle extension : extensions)
+    synchronized(extensions)
     {
-      if(extension == style)
-        break;
-      seniorExtensions.add(extension);
+      for(RichStyle extension : extensions)
+      {
+        if(extension == style)
+          break;
+        seniorExtensions.add(extension);
+      }
     }
     return seniorExtensions;
   }
@@ -119,16 +133,6 @@ public class RichStyle extends BaseStyle implements StyleObserver
         return value;
     }
     return null;
-  }
-
-  public LinkedList<RichStyle> getExtentions()
-  {
-    return extensions;
-  }
-
-  public boolean hasExtension(RichStyle style)
-  {
-    return extensions != null && extensions.contains(style);
   }
 
   public String toString()

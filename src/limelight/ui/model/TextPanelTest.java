@@ -6,6 +6,7 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
+import limelight.styles.StyleObserver;
 import limelight.ui.api.MockScene;
 import limelight.ui.text.StyledText;
 
@@ -396,6 +397,21 @@ public class TextPanelTest extends TestCase
     panel.consumableAreaChanged();
 
     assertEquals(true, panel.needsLayout());
+  }
+  
+  public void testTeardownStyledTextBeforeDiscarding() throws Exception
+  {
+    panel.setText("Original Text");
+    panel.doLayout();
+    List<StyleObserver> observers = ((RichStyle) panel.getStyle()).getObservers();
+    assertEquals(2, observers.size());
+    StyleObserver observer = observers.get(1);
+
+    panel.doLayout();
+    List<StyleObserver> newObservers = ((RichStyle) panel.getStyle()).getObservers();
+    assertEquals(2, newObservers.size());
+    StyleObserver newObserver = newObservers.get(1);
+    assertNotSame(newObserver, observer);
   }
 }
 
