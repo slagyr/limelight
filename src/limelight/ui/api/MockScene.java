@@ -1,12 +1,10 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.api;
 
 import limelight.ResourceLoader;
-import limelight.MockResourceLoader;
 import limelight.styles.Style;
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -20,7 +18,7 @@ public class MockScene extends MockProp implements Scene
     return loader;
   }
 
-  public Map getStyles()
+  public Map<String, Style> getStyles()
   {
     return styles;
   }
