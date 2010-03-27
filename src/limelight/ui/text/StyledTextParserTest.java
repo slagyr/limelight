@@ -202,4 +202,28 @@ public class StyledTextParserTest extends Assert
     assertEquals("123", matcher.group(2));
   }
 
+//  private static String sampleText = "<opener><limey><big_n_embellished>L</big_n_embellished>imelight</limey> " +
+//      "is <sparkly_red>Ruby</sparkly_red> on the desktop.</opener>  " +
+//      "<plain>Build applications with multiple windows, or just one window.  " +
+//      "Take control of the desktop, or play nicely with the desktop.  " +
+//      "Create fun animated games, or productive business apps.  Develop " +
+//      "rich internet applications, or unwired apps to make you rich.  " +
+//      "Publish your apps on the internet, or keep them for you and your friends.   " +
+//      "Do all this, writing nothing but <sparkly_red>Ruby</sparkly_red> code, in <limey>Limelight</limey>.</plain>";
+//
+//  @Test
+//  public void shouldGetPerformanceMetrics() throws Exception
+//  {
+//    long total = 0;
+//    for(int i = 0; i < 100; i++)
+//    {
+//      long start = System.currentTimeMillis();
+//      parser.parse(sampleText);
+//      total += System.currentTimeMillis() - start;
+//    }
+//
+//    double average = total / 100.0;
+//    System.out.println("total = " + total + " average = " + average);
+//  }
+
 }

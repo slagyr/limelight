@@ -192,7 +192,8 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if (root != null)
       root.destroy();
     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    root = new RootPanel(this);
+    root = new RootPanel();
+    root.setFrame(this);
     root.setPanel(child);
   }
 

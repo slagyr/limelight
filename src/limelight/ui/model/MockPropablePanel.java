@@ -1,8 +1,9 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
 
+import limelight.styles.ScreenableStyle;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
@@ -32,7 +33,7 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   public MockPropablePanel()
   {
     prop = new MockProp();
-    style = prop.getStyle();
+    style = new ScreenableStyle();
   }
 
   public MockPropablePanel(String name)

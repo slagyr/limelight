@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
@@ -137,7 +137,7 @@ describe Limelight::DSL::StylesBuilder do
     styles1 = Limelight.build_styles do
       one { width 100 }
     end
-    styles2 = Limelight.build_styles(styles1) do
+    styles2 = Limelight.build_styles(:extendable_styles => styles1) do
       one { height 200 }
       two { width 123 }
     end
@@ -164,7 +164,7 @@ describe Limelight::DSL::StylesBuilder do
     styles1 = Limelight.build_styles do
       one { width 100; height 200 }
     end
-    styles2 = Limelight.build_styles(styles1) do
+    styles2 = Limelight.build_styles(:extendable_styles => styles1) do
       one { width 300 }
     end
 
@@ -181,13 +181,23 @@ describe Limelight::DSL::StylesBuilder do
     styles1 = Limelight.build_styles do
       one { width 100; height 200 }
     end
-    styles2 = Limelight.build_styles(styles1) do
+    styles2 = Limelight.build_styles(:extendable_styles => styles1) do
       two { extends "one"; x 25 }
     end
 
     styles2["two"].width.should == "100"
     styles2["two"].height.should == "200"
     styles2["two"].x.should == "25"
+  end
+
+  it "should add styles to existing hash if provided" do
+    styles = {}
+    Limelight.build_styles(:styles => styles) do
+      one { width 100; height 200 }
+    end
+    
+    styles["one"].width.should == "100"
+    styles["one"].height.should == "200"
   end
 
 end

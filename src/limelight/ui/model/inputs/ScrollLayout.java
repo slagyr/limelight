@@ -43,7 +43,7 @@ public class ScrollLayout extends PropPanelLayout
 
   public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)
   {
-    Style style = panel.getProp().getStyle();
+    Style style = panel.getStyle();
     int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableArea());
     y = Math.max(0, y);
     y -= dy;

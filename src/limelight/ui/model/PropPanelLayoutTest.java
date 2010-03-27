@@ -21,8 +21,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockPropFrame());
-
+    root = new RootPanel();
+    root.setFrame(new MockPropFrame());
     parent = new PropPanel(new MockProp());
     root.setPanel(parent);
     parent.getStyle().setWidth("100");
@@ -71,8 +71,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testLayoutWithOneChildAlignedBottomRight() throws Exception
   {
-    parent.getProp().getStyle().setVerticalAlignment("bottom");
-    parent.getProp().getStyle().setHorizontalAlignment("right");
+    parent.getStyle().setVerticalAlignment("bottom");
+    parent.getStyle().setHorizontalAlignment("right");
     PropPanel child = addChildWithSize(parent, "50", "50");
 
     layout.doLayout(parent);
@@ -83,8 +83,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testLayoutWithTwoChildrenAlignedCenterCenter() throws Exception
   {
-    parent.getProp().getStyle().setVerticalAlignment("center");
-    parent.getProp().getStyle().setHorizontalAlignment("center");
+    parent.getStyle().setVerticalAlignment("center");
+    parent.getStyle().setHorizontalAlignment("center");
     PropPanel child1 = addChildWithSize(parent, "25", "50");
     PropPanel child2 = addChildWithSize(parent, "25", "50");
 

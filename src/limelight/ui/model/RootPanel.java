@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -10,7 +10,6 @@ import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -20,15 +19,19 @@ import java.util.LinkedList;
 public class RootPanel implements Panel
 {
   private Panel panel;
-  private final Container contentPane;
+  private Container contentPane;
   private EventListener listener;
   private boolean alive;
-  private final PropFrame frame;
+  private PropFrame frame;
   private final ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
 
-  public RootPanel(PropFrame frame)
+  public RootPanel()
+  {
+  }
+
+  public void setFrame(PropFrame frame)
   {
     this.frame = frame;
     contentPane = frame.getContentPane();

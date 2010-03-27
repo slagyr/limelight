@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -23,7 +23,8 @@ public class RootPanelTest extends TestCase
   public void setUp() throws Exception
   {
     PropFrame stageFrame = new MockPropFrame();
-    root = new RootPanel(stageFrame);
+    root = new RootPanel();
+    root.setFrame(stageFrame);
     child = new MockPropablePanel("child");
     contentPane = stageFrame.getContentPane();
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
