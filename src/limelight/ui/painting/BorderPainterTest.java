@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.painting;
@@ -27,8 +27,7 @@ public class BorderPainterTest extends TestCase
   public void setUp() throws Exception
   {
     panel = new MockPropablePanel();
-    MockProp prop = (MockProp) panel.getProp();
-    style = prop.style;
+    style = panel.getStyle();
     border = new Box(5, 5, 100, 100);
     panel.boxInsideMargins = border;
     painter = new BorderPainter(panel);

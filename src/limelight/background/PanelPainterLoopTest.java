@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.background;
@@ -23,7 +23,8 @@ public class PanelPainterLoopTest extends TestCase
     frameManager = new MockFrameManager();
     Context.instance().frameManager = frameManager;
     activeFrame = new MockPropFrame();
-    activeRoot = new RootPanel(activeFrame);
+    activeRoot = new RootPanel();
+    activeRoot.setFrame(activeFrame);
     activeFrame.setRoot(activeRoot);
   }
 

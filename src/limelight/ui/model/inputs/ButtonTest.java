@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
@@ -17,7 +17,8 @@ public class ButtonTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockPropFrame());
+    root = new RootPanel();
+    root.setFrame(new MockPropFrame());
     panel = new ButtonPanel();
     button = new Button(panel);
     root.setPanel(panel);

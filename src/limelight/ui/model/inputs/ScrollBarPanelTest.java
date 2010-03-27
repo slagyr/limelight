@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
@@ -94,7 +94,8 @@ public class ScrollBarPanelTest extends TestCase
   
   public void testChanges() throws Exception
   {
-    RootPanel root = new RootPanel(new MockPropFrame());
+    RootPanel root = new RootPanel();
+    root.setFrame(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
     root.setPanel(parent);
     parent.add(panel);
@@ -106,7 +107,8 @@ public class ScrollBarPanelTest extends TestCase
 
   public void testParentIsMarkedAsChanged() throws Exception
   {
-    RootPanel root = new RootPanel(new MockPropFrame());
+    RootPanel root = new RootPanel();
+    root.setFrame(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
     root.setPanel(parent);
     parent.add(panel);

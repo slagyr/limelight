@@ -37,17 +37,25 @@ public class PropPanelTest extends TestCase
 {
   private MockProp prop;
   private PropPanel panel;
-  private ScreenableStyle style;
+  private Style style;
   private RootPanel root;
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockPropFrame());
-
+    root = new RootPanel();
+    root.setFrame(new MockPropFrame());
     prop = new MockProp();
-    style = prop.getStyle();
     panel = new PropPanel(prop);
+    style = panel.getStyle();
     root.setPanel(panel);
+  }
+
+  public void testCreatesItsStyleInsteadOfGettingItFromProp() throws Exception
+  {
+    panel = new PropPanel(null);
+    
+    assertNotNull(panel.getStyle());
+    assertEquals(ScreenableStyle.class, panel.getStyle().getClass());
   }
 
   public void testOnlyPaintWhenLaidOut() throws Exception

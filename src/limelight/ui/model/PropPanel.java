@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.LimelightError;
+import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
@@ -30,14 +31,14 @@ import java.util.LinkedList;
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
 {
   private final Prop prop;
-  private LinkedList<Painter> painters;
+  private final Style style;
+  private final LinkedList<Painter> painters; // TODO MDM - This silly now.  We don't need a list for the painters.
   private Border borderShaper;
   private TextAccessor textAccessor;
   private Box boxInsideMargins;
   private Box boxInsideBorders;
   private Box boxInsidePadding;
   private Box childConsumableArea;
-  private Style style;
   private PaintAction afterPaintAction;
   private ScrollBarPanel verticalScrollbar;
   private ScrollBarPanel horizontalScrollbar;
@@ -48,14 +49,16 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public PropPanel(Prop prop)
   {
     this.prop = prop;
-    buildPainters();
+    painters = new LinkedList<Painter>();
+    style = new ScreenableStyle();
     textAccessor = new TextPaneTextAccessor(this);
-    getStyle().addObserver(this); // TODO MDM - Is this a memory leak?  When a prop is deleted, we'll have to delete that reference.  
+    buildPainters();
+    style.addObserver(this); // TODO MDM - Is this a memory leak?  When a prop is deleted, we'll have to delete that reference.
   }
 
   private void buildPainters()
   {
-    painters = new LinkedList<Painter>();
+    // TODO MDM - These painters can be static.  They don't need to store the panel as an instance variable.
     painters.add(new BackgroundPainter(this));
     painters.add(new BorderPainter(this));
   }
@@ -69,7 +72,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     if(!Util.equal(text, getText()))
     {
-      markAsNeedingLayout(); // This is questionable...  The text panel would know if layout is needed.
+      markAsNeedingLayout(); // TODO MDM - This is questionable...  The text panel would know if layout is needed.
     }
     textAccessor.setText(text);
   }
@@ -191,8 +194,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public Style getStyle()
   {
-    if(style == null)
-      style = prop.getStyle();
     return style;
   }
 
@@ -490,16 +491,16 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     Style hoverStyle = getProp().getHoverStyle();
     if(hoverStyle != null)
     {
-      getProp().getStyle().applyScreen(hoverStyle);
+      getStyle().applyScreen(hoverStyle);
       getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
   }
 
   private void hoverOff()
   {
-    if(getProp().getStyle().hasScreen())
+    if(getStyle().hasScreen())
     {
-      getProp().getStyle().removeScreen();
+      getStyle().removeScreen();
       RootPanel root = getRoot();
       if(root != null)
         root.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

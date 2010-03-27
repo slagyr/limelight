@@ -33,10 +33,11 @@ public class TextPanelTest extends TestCase
     parent = new MockPropablePanel();
     parent.setLocation(0, 0);
     parent.setSize(100, 100);
-    style = parent.getProp().getStyle();
+    style = parent.getStyle();
     panel = new TextPanel(parent, "Some Text");
     parent.add(panel);
-    root = new RootPanel(new MockPropFrame());
+    root = new RootPanel();
+    root.setFrame(new MockPropFrame());
     root.setPanel(parent);
     style.setTextColor("green");
     parent.prop.scene = new MockScene();

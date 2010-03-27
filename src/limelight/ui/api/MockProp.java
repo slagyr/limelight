@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.api;
@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 
 public class MockProp implements Prop
 {
-  public final ScreenableStyle style;
   public Style hoverStyle;
   public String text;
   public String name;
@@ -41,7 +40,6 @@ public class MockProp implements Prop
 
   public MockProp()
   {
-    style = new ScreenableStyle();
   }
 
   public MockProp(String name)
@@ -57,7 +55,7 @@ public class MockProp implements Prop
 
   public ScreenableStyle getStyle()
   {
-    return style;
+    throw new RuntimeException("getStyle called on MockProp");
   }
 
   public Style getHoverStyle()

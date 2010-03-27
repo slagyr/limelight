@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/util'
@@ -9,15 +9,15 @@ module Limelight
   #
   # See Limelight::Stylesbuilder, Limelight::Stylebuilder
   #
-  def self.build_styles(extendable_styles = nil, &block)
-    builder = DSL::StylesBuilder.new(extendable_styles)
+  def self.build_styles(options = {}, &block)
+    builder = DSL::StylesBuilder.new(options)
     builder.instance_eval(&block) if block
     return builder.__styles
   end
 
-  def self.build_styles_from_file(filename, extendable_styles = nil)
+  def self.build_styles_from_file(filename, options = {})
     content = IO.read(filename)
-    styles = Limelight.build_styles(extendable_styles) do
+    styles = Limelight.build_styles(options) do
       begin
         eval content
       rescue Exception => e
@@ -64,9 +64,9 @@ module Limelight
 
       attr_reader :__styles, :__extendable_styles
 
-      def initialize(extendable_styles = nil)
-        @__extendable_styles = extendable_styles || {}
-        @__styles = {}
+      def initialize(options = {})
+        @__extendable_styles = options[:extendable_styles] || {}
+        @__styles = options[:styles] || {}
       end
 
       def method_missing(sym, &block) #:nodoc:

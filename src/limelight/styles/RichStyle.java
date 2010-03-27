@@ -3,6 +3,7 @@
 
 package limelight.styles;
 
+import limelight.LimelightException;
 import limelight.util.Util;
 import limelight.styles.abstrstyling.StyleAttribute;
 
@@ -40,6 +41,26 @@ public class RichStyle extends BaseStyle implements StyleObserver
       styles[descriptor.index] = compiledValue;
       notifyObserversOfChange(descriptor, compiledValue);
     }
+  }
+
+  public boolean hasScreen()
+  {
+    return false;
+  }
+
+  public void removeScreen()
+  {
+    throw new LimelightException("Can't remove screen from RichStyle");
+  }
+
+  public void applyScreen(Style screenStyle)
+  {
+    throw new LimelightException("Can't apply screen to RichStyle");
+  }
+
+  public Style getScreen()
+  {
+    return null;
   }
 
   public void removeExtension(RichStyle extension)

@@ -43,7 +43,7 @@ public class PropPanelLayout implements Layout
       distributeGreediness(panel, rows);
       doPostLayoutOnChildren(panel);
       calculateConsumedDimentions(rows, consumedDimensions);
-      collapseAutoDimensions(panel, consumedDimensions);
+      collapseAutoDimensions(panel, consumedDimensions);      
       layoutRows(panel, consumedDimensions, rows);
     }
     layoutScrollBars(panel, consumedDimensions);
@@ -195,8 +195,8 @@ public class PropPanelLayout implements Layout
 
   public void layoutRows(PropPanel panel, Dimension consumedDimension, LinkedList<Row> rows)
   {
-    Style style = panel.getProp().getStyle();
-    int y = style.getCompiledVerticalAlignment().getY(consumedDimension.height, panel.getChildConsumableArea());
+    Style style = panel.getStyle();
+    int y = style.getCompiledVerticalAlignment().getY(consumedDimension.height, panel.getChildConsumableArea());    
     if(panel.getVerticalScrollbar() != null)
     {
       y = Math.max(0, y);

@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/file_loader'
@@ -163,12 +163,12 @@ module Limelight
       end
     end
 
-    # Loads the specified 'styles.rb' file and created a Hash of Styles.
+    # Loads all the Style objects in the specified 'styles.rb' file and stores them in a Hash.
     #
     def load_styles(context)
       extendable_styles = Producer.builtin_styles.merge(@production.root_styles)
       return extendable_styles.dup if not File.exists?(context.styles_file)
-      new_styles = Limelight.build_styles_from_file(context.styles_file, extendable_styles)
+      new_styles = Limelight.build_styles_from_file(context.styles_file, :extendable_styles => extendable_styles)
       return extendable_styles.merge(new_styles)
     end
 

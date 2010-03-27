@@ -7,7 +7,6 @@ import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -319,44 +318,6 @@ public abstract class BasePanel implements Panel
     return readonlyChildren;
   }
 
-  public void sterilize()
-  {
-    sterilized = true;
-  }
-
-  public boolean isSterilized()
-  {
-    return sterilized;
-  }
-
-  public void repaint()
-  {
-    getParent().repaint();
-  }
-
-  public Panel getOwnerOfPoint(Point point)
-  {
-    point = new Point(point.x - getX(), point.y - getY());
-    if(children.size() > 0)
-    {
-      synchronized(children)
-      {
-        for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
-        {
-          Panel panel = iterator.previous();
-          if(panel.isFloater() && panel.containsRelativePoint(point))
-            return panel.getOwnerOfPoint(point);
-        }
-        for(Panel panel : children)
-        {
-          if(!panel.isFloater() && panel.containsRelativePoint(point))
-            return panel.getOwnerOfPoint(point);
-        }
-      }
-    }
-    return this;
-  }
-
   public boolean isChild(Panel child)
   {
     return children.contains(child);
@@ -406,6 +367,44 @@ public abstract class BasePanel implements Panel
   protected boolean canRemove(Panel child)
   {
     return true;
+  }
+
+  public void sterilize()
+  {
+    sterilized = true;
+  }
+
+  public boolean isSterilized()
+  {
+    return sterilized;
+  }
+
+  public void repaint()
+  {
+    getParent().repaint();
+  }
+
+  public Panel getOwnerOfPoint(Point point)
+  {
+    point = new Point(point.x - getX(), point.y - getY());
+    if(children.size() > 0)
+    {
+      synchronized(children)
+      {
+        for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
+        {
+          Panel panel = iterator.previous();
+          if(panel.isFloater() && panel.containsRelativePoint(point))
+            return panel.getOwnerOfPoint(point);
+        }
+        for(Panel panel : children)
+        {
+          if(!panel.isFloater() && panel.containsRelativePoint(point))
+            return panel.getOwnerOfPoint(point);
+        }
+      }
+    }
+    return this;
   }
 
   public Box getBoundingBox()
