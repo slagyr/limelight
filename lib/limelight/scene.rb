@@ -10,6 +10,16 @@ require 'limelight/file_loader'
 
 module Limelight
 
+
+  # TODO MDM - Find the JRuby way to make a Java Map behave like a Ruby Hash
+  module Hashiness #:nodoc:
+
+    def merge!(other)
+      other.each { |key, value| self[key] = value }
+    end
+
+  end
+
   # A Scene is a root Prop.  Scenes may be loaded onto a Stage.  In addition to being a Prop object, Scenes have a
   # few extra attributes and behaviors.
   #
@@ -24,7 +34,7 @@ module Limelight
     include UI::Api::Scene
 
     attr_reader :button_groups, :casting_director, :cast
-    attr_accessor :stage, :visible, :production, :styles
+    attr_accessor :stage, :visible, :production
     getters :stage, :loader, :styles
     setters :stage
     event :scene_opened
@@ -38,7 +48,14 @@ module Limelight
       @button_groups = ButtonGroupCache.new
       @prop_index = {}
       @cast = Module.new
+      styles.extend(Hashiness)
 #      illuminate
+    end
+
+    # Returns a hash of all the styles belonging to this scene
+    #
+    def styles
+      return @panel.styles
     end
 
     # Returns self.  A Scene is it's own scene.

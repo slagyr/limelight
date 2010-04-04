@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
@@ -23,11 +23,10 @@ describe Limelight::Scene do
     @scene.button_groups.class.should == Limelight::UI::ButtonGroupCache
   end
 
-  it "should pullout sytles and casting_director from options" do
-    scene = Limelight::Scene.new(:styles_hash => "styles", :casting_director => @casting_director)
+  it "should pullout casting_director from options" do
+    scene = Limelight::Scene.new(:casting_director => @casting_director)
     scene.illuminate
 
-    scene.styles.should == "styles"
     scene.casting_director.should == @casting_director
   end
 
@@ -50,7 +49,7 @@ describe Limelight::Scene do
   end
 
   it "should inherit styles in options" do
-    @scene.styles = Limelight.build_styles do
+    Limelight.build_styles(:styles => @scene.styles) do
       foo { width 100; height 200 }
       bar { x 11; y 22 }
     end
@@ -62,6 +61,11 @@ describe Limelight::Scene do
     @scene.style.height.should == "200"
     @scene.style.x.should == "11"
     @scene.style.y.should == "22"
+  end
+
+  it "should get styles from the Java model" do
+    java_model = @scene.panel
+    @scene.styles.should be(java_model.styles)
   end
 
 #  it "should set the production during illumination before casting" do

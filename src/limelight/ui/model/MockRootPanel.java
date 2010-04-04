@@ -1,8 +1,10 @@
 package limelight.ui.model;
 
+import limelight.styles.Style;
 import limelight.ui.Panel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MockRootPanel extends MockPropablePanel implements RootPanel
 {
@@ -39,5 +41,10 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public boolean isAlive()
   {
     return false;
+  }
+
+  public Map<String, Style> getStyles()
+  {
+    return null;
   }
 }
