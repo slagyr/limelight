@@ -1,10 +1,12 @@
 package limelight.ui.model;
 
+import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.util.Box;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface RootPanel extends Panel
 {
@@ -23,4 +25,6 @@ public interface RootPanel extends Panel
   void addDirtyRegion(Rectangle bounds);
 
   boolean isAlive();
+
+  public Map<String, Style> getStyles();
 }

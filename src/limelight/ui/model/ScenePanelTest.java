@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.styles.Style;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.ui.Panel;
@@ -16,8 +17,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.awt.*;
+import java.util.Map;
 
-public class RootPanelTest extends Assert
+public class ScenePanelTest extends Assert
 { 
   private ScenePanel root;
   private MockPropablePanel child;
@@ -280,5 +282,14 @@ public class RootPanelTest extends Assert
     scene.loader = new MockResourceLoader();
     root.add(child);
     assertNotNull(root.getImageCache());
+  }
+
+  @Test
+  public void shouldHaveStylesMap() throws Exception
+  {
+    Map<String, Style> styleMap = root.getStyles();
+    
+    assertNotNull(styleMap);
+    assertEquals(0, styleMap.size());
   }
 }

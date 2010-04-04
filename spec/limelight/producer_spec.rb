@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
@@ -46,7 +46,8 @@ describe Limelight::Producer do
   end
 
   it "should load builtin styles" do
-    styles = @producer.load_styles(Limelight::Scene.new())
+    styles = {}
+    @producer.load_styles("blah", styles)
 
     styles["limelight_builtin_players_combo_box_popup_list"].should_not == nil
   end
@@ -55,7 +56,8 @@ describe Limelight::Producer do
     TestDir.create_file("test_prod/styles.rb", "alpha { width 100 }")
     Limelight::Producer.stub!(:builtin_styles).and_return({})
 
-    styles = @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod")))
+    styles = {}
+    @producer.load_styles("test_prod/styles.rb", styles)
     styles.size.should == 1
     styles["alpha"].width.should == "100"
   end
@@ -133,10 +135,9 @@ describe Limelight::Producer do
 
   it "should open a scene" do
     stage = mock("stage")
-    scene = mock("scene")
+    scene = mock("scene", :styles_file => "blah", :styles => {})
     @producer.should_receive(:load_props).with(:production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
-    @producer.should_receive(:load_styles).and_return("styles")
-    scene.should_receive(:styles=)
+    @producer.should_receive(:load_styles)
     stage.should_receive(:open).with(scene)
 
     @producer.open_scene("name", stage)
@@ -145,7 +146,10 @@ describe Limelight::Producer do
   it "should load empty styles if styles.rb doesn't exist" do
     Limelight::Producer.stub!(:builtin_styles).and_return({})
 
-    @producer.load_styles(Limelight::Scene.new(:path => TestDir.path("test_prod"))).should == {}
+    styles = {}
+    @producer.load_styles(TestDir.path("test_prod/styles.rb"), styles)
+
+    styles.should == {}
   end
 
   it "should extend the production if production.rb is present" do
@@ -199,10 +203,9 @@ describe Limelight::Producer do
 
   it "should allow options such as instance variables to be passed to open_scene" do
     stage = mock("stage")
-    scene = mock("scene")
+    scene = mock("scene", :styles_file => "blah", :styles => {})
     @producer.should_receive(:load_props).with(:instance_variables => { :foo => "bar" }, :production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
-    @producer.should_receive(:load_styles).and_return("styles")
-    scene.should_receive(:styles=)
+    @producer.should_receive(:load_styles)
     stage.should_receive(:open).with(scene)
 
     @producer.open_scene("name", stage, :instance_variables => { :foo => "bar" })

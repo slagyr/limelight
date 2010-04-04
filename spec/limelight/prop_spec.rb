@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
@@ -157,8 +157,8 @@ describe Limelight::Prop do
   end
 
   it "should set styles upon adding to parent" do
-    styles = Limelight::build_styles { child { width 123 } }
-    scene = Limelight::Scene.new(:casting_director => @casting_director, :styles_hash => styles)
+    scene = Limelight::Scene.new(:casting_director => @casting_director)
+    Limelight::build_styles(:styles => scene.styles) { child { width 123 } }
     prop = Limelight::Prop.new(:name => "child")
     scene.illuminate
 

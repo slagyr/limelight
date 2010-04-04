@@ -123,8 +123,7 @@ module Limelight
       path = @production.scene_directory(name)
       scene_name = File.basename(path)
       scene = load_props(options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name))
-      styles = load_styles(scene)
-      scene.styles = styles
+      styles = load_styles(scene.styles_file, scene.styles)
       stage.open(scene)
       return scene
     end
@@ -165,11 +164,11 @@ module Limelight
 
     # Loads all the Style objects in the specified 'styles.rb' file and stores them in a Hash.
     #
-    def load_styles(context)
+    def load_styles(styles_file, styles)
       extendable_styles = Producer.builtin_styles.merge(@production.root_styles)
-      return extendable_styles.dup if not File.exists?(context.styles_file)
-      new_styles = Limelight.build_styles_from_file(context.styles_file, :extendable_styles => extendable_styles)
-      return extendable_styles.merge(new_styles)
+      styles.merge!(extendable_styles)
+      return if not File.exists?(styles_file)
+      Limelight.build_styles_from_file(styles_file, :styles => styles, :extendable_styles => extendable_styles)
     end
 
     # Closes the specified production.  The producer will trigger the hook, production_closing and production_closed,

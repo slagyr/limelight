@@ -5,14 +5,14 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.ResourceLoader;
+import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 public class ScenePanel extends PropPanel implements RootPanel
 {
@@ -23,10 +23,12 @@ public class ScenePanel extends PropPanel implements RootPanel
   private final ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
   private PropFrame frame;
+  private Map<String, Style> styles;
 
   public ScenePanel(Prop prop)
   {
     super(prop);
+    styles = Collections.synchronizedMap(new HashMap<String, Style>());
   }
 
   public void setFrame(PropFrame frame)
@@ -352,5 +354,10 @@ public class ScenePanel extends PropPanel implements RootPanel
 
   public void valueChanged(Object e)
   {
+  }
+
+  public Map<String, Style> getStyles()
+  {
+    return styles;
   }
 }
