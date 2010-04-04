@@ -7,10 +7,10 @@ import junit.framework.TestCase;
 
 
 import limelight.ui.Panel;
+import limelight.ui.api.MockProp;
 import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.inputs.AwtInputPanel;
 import limelight.ui.model.RootPanel;
-import limelight.ui.model.MockStageFrame;
 import limelight.ui.model.TextAccessor;
 import limelight.ui.MockPanel;
 import limelight.styles.Style;
@@ -32,7 +32,7 @@ public class KeyboardFocusManagerTest extends TestCase
     panel = new MockInputPanel();
     component = panel.mockComponent;
   }
-  
+
   public void testInstall() throws Exception
   {
     assertSame(manager, java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager());
@@ -73,10 +73,10 @@ public class KeyboardFocusManagerTest extends TestCase
 
   public void testFocusNextComponent() throws Exception
   {
-    RootPanel root = new RootPanel();
+    RootPanel root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     Panel panel = new MockPanel();
-    root.setPanel(panel);
+    root.add(panel);
     MockInputPanel input1 = new MockInputPanel();
     MockInputPanel input2 = new MockInputPanel();
     panel.add(input1);
@@ -90,10 +90,10 @@ public class KeyboardFocusManagerTest extends TestCase
 
   public void testFocusPreviousComponent() throws Exception
   {
-    RootPanel root = new RootPanel();
+    RootPanel root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     Panel panel = new MockPanel();
-    root.setPanel(panel);
+    root.add(panel);
     MockInputPanel input1 = new MockInputPanel();
     MockInputPanel input2 = new MockInputPanel();
     panel.add(input1);

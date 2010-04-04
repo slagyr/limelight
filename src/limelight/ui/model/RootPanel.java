@@ -5,7 +5,6 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.ResourceLoader;
-import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
@@ -14,27 +13,34 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 
-public class RootPanel implements Panel
+public class RootPanel extends PropPanel implements IRootPanel
 {
-  private Panel panel;
   private Container contentPane;
   private EventListener listener;
   private boolean alive;
-  private PropFrame frame;
   private final ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
+  private PropFrame frame;
 
-  public RootPanel()
+  public RootPanel(Prop prop)
   {
+    super(prop);
   }
 
   public void setFrame(PropFrame frame)
   {
     this.frame = frame;
     contentPane = frame.getContentPane();
+
+    listener = new EventListener(this);
+    contentPane.addMouseListener(listener);
+    contentPane.addMouseMotionListener(listener);
+    contentPane.addMouseWheelListener(listener);
+    contentPane.addKeyListener(listener);
+    alive = true;
+    addPanelNeedingLayout(this);
   }
 
   public Container getContentPane()
@@ -44,7 +50,7 @@ public class RootPanel implements Panel
 
   public Box getChildConsumableArea()
   {
-    Box box = new Box(getX(), getY(), contentPane.getWidth(), contentPane.getHeight());    
+    Box box = new Box(getX(), getY(), getWidth(), getHeight());
     return box;
   }
 
@@ -99,20 +105,6 @@ public class RootPanel implements Panel
     return getAbsoluteLocation().y;
   }
 
-  public void setPanel(Panel child)
-  {
-    panel = child;
-    panel.setParent(this);
-
-    listener = new EventListener(panel);
-    contentPane.addMouseListener(listener);
-    contentPane.addMouseMotionListener(listener);
-    contentPane.addMouseWheelListener(listener);
-    contentPane.addKeyListener(listener);
-    alive = true;
-    addPanelNeedingLayout(child);
-  }
-
   public void destroy()
   {
     removeKeyboardFocus();                                                                                                     
@@ -120,8 +112,8 @@ public class RootPanel implements Panel
     contentPane.removeMouseMotionListener(listener);
     contentPane.removeMouseWheelListener(listener);
     contentPane.removeKeyListener(listener);
+    removeAll();
     listener = null;
-    panel.setParent(null);
     alive = false;
   }
 
@@ -157,9 +149,10 @@ public class RootPanel implements Panel
     contentPane.setCursor(cursor);
   }
 
+  // TODO MDM - Get rid of me.
   public Panel getPanel()
   {
-    return panel;
+    return this;
   }
 
   public boolean isAlive()
@@ -170,11 +163,6 @@ public class RootPanel implements Panel
   public EventListener getListener()
   {
     return listener;
-  }
-
-  public Iterator<Panel> iterator()
-  {
-    return panel.iterator();
   }
 
   public void addPanelNeedingLayout(Panel child)
@@ -301,120 +289,9 @@ public class RootPanel implements Panel
     return imageCache;
   }
 
-  public String toString()
+  public PropFrame getFrame()
   {
-    return "RootPanel: " + panel.toString();
-  }
-
-  /////////////////////////////////////////////
-  /// NOT NEEDED
-  /// TODO - Need to remove this from the Panel hierarchy somehow to delete these methods
-  /////////////////////////////////////////////
-
-  public void repaint()
-  {
-    System.err.println("rooPanel.repaint!!! Not expected!");
-    doLayout();
-    PaintJob job = new PaintJob(getAbsoluteBounds(), getGraphics().getBackground());
-    job.paint(panel);
-    job.applyTo(getGraphics());
-  }
-
-  public void doLayout()
-  {
-    panel.doLayout();
-  }
-
-  public Layout getDefaultLayout()
-  {
-    throw new RuntimeException("getDefaultLayout() called on RootPanel");
-  }
-
-  public void paintOn(Graphics2D graphics)
-  {
-  }
-
-  public boolean canBeBuffered()
-  {
-    return false;
-  }
-
-  public boolean hasChildren()
-  {
-    return true;
-  }
-
-  public java.util.List<Panel> getChildren()
-  {
-    LinkedList<Panel> panels = new LinkedList<Panel>();
-    panels.add(panel);
-    return panels;
-  }
-
-  public boolean remove(Panel child)
-  {
-    return false;
-  }
-
-  public void removeAll()
-  {
-  }
-
-  public boolean containsAbsolutePoint(Point point)
-  {
-    return false;
-  }
-
-  public void setParent(Panel panel)
-  {
-  }
-
-  public void sterilize()
-  {
-  }
-
-  public boolean isSterilized()
-  {
-    return false;
-  }
-
-  public Panel getParent()
-  {
-    return null;
-  }
-
-  public Style getStyle()
-  {
-    throw new RuntimeException("RootPanel.getStyle()");
-  }
-
-  public boolean isFloater()
-  {
-    return false;
-  }
-
-  public void doFloatLayout()
-  {
-  }
-
-  public void consumableAreaChanged()
-  {
-  }
-
-  public boolean containsRelativePoint(Point point)
-  {
-    return true;
-  }
-
-  public Panel getOwnerOfPoint(Point point)
-  {
-    System.err.println("RootPanel.getOwnerOfPoint()");
-    // never called
-    return this;
-  }
-
-  public void clearCache()
-  {
+    return frame;
   }
 
   public void mousePressed(MouseEvent e)
@@ -455,7 +332,7 @@ public class RootPanel implements Panel
 
   public void focusLost(FocusEvent e)
   {
-  }                                                               
+  }
 
   public void keyTyped(KeyEvent e)
   {
@@ -475,23 +352,5 @@ public class RootPanel implements Panel
 
   public void valueChanged(Object e)
   {
-  }
-
-  public boolean needsLayout()
-  {
-    return false;
-  }
-
-  public void markAsNeedingLayout()
-  {
-  }
-
-  public void add(Panel child)
-  {
-  }
-
-  public PropFrame getStageFrame()
-  {
-    return frame;
   }
 }

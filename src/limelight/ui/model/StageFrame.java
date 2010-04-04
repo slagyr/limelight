@@ -23,7 +23,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
   private static final NoneableAttribute<DimensionAttribute> NONE = new NoneableAttribute<DimensionAttribute>(null);
 
   private Stage stage;
-  protected RootPanel root;
+  protected IRootPanel root;
   private Insets insets;
   private boolean fullscreen;
   private boolean hasMenuBar;
@@ -144,9 +144,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if (root != null)
     {
       if (previousSize == null || !previousSize.equals(getSize()))
-        root.getPanel().consumableAreaChanged();
+        root.consumableAreaChanged();
       else
-        root.getPanel().markAsNeedingLayout();
+        root.markAsNeedingLayout();
     }
     previousSize = getSize();
   }
@@ -187,14 +187,14 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     return yLocationStyle;
   }
 
+  //TODO MDM - Should be RootPanel parameter?
   public void load(Panel child)
   {
-    if (root != null)
+    if(root != null)
       root.destroy();
     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    root = new RootPanel();
+    root = (IRootPanel)child;
     root.setFrame(this);
-    root.setPanel(child);
   }
 
   public Stage getStage()
@@ -202,7 +202,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     return stage;
   }
 
-  public RootPanel getRoot()
+  public IRootPanel getRoot()
   {
     return root;
   }
@@ -262,9 +262,8 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void keyTyped(KeyEvent e)
   {
-    Panel panel = root.getPanel();
-    if (panel != null)
-      panel.keyTyped(e);
+    if (root != null)
+      root.keyTyped(e);
   }
 
   public void keyPressed(KeyEvent e)
@@ -274,9 +273,8 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
       input.keyPressed(e);
     else
     {
-      Panel panel = root.getPanel();
-      if (panel != null)
-        panel.keyPressed(e);
+      if (root != null)
+        root.keyPressed(e);
     }
   }
 
@@ -287,9 +285,8 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
       input.keyReleased(e);
     else
     {
-      Panel panel = root.getPanel();
-      if (panel != null)
-        panel.keyReleased(e);
+      if (root != null)
+        root.keyReleased(e);
     }
   }
 
@@ -475,9 +472,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
     Dimension size = getSize();
     if (widthStyle.isAuto())
-      size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getPanel().getWidth() + widthInsets, NONE, NONE);
+      size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getWidth() + widthInsets, NONE, NONE);
     if (heightStyle.isAuto())
-      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getPanel().getHeight() + heightInsets, NONE, NONE);
+      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getHeight() + heightInsets, NONE, NONE);
 
     setSize(size);
   }

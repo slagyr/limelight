@@ -21,10 +21,10 @@ public class PropPanelLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel();
+    root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     parent = new PropPanel(new MockProp());
-    root.setPanel(parent);
+    root.add(parent);
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("100");
 

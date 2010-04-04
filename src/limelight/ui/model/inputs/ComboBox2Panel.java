@@ -42,7 +42,7 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
   public void setParent(limelight.ui.Panel panel)
   {
     if(panel == null)
-      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getStageFrame());
+      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {

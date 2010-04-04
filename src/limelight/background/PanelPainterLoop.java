@@ -4,8 +4,8 @@
 package limelight.background;
 
 import limelight.ui.Panel;
+import limelight.ui.model.IRootPanel;
 import limelight.ui.model.PaintJob;
-import limelight.ui.model.RootPanel;
 import limelight.ui.model.PropFrame;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
@@ -64,7 +64,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     boolean somethingToDo = false;
     for(PropFrame stageFrame : frameBuffer)
     {
-      RootPanel root = stageFrame.getRoot();
+      IRootPanel root = stageFrame.getRoot();
       if(root != null && (root.hasPanelsNeedingLayout() || root.hasDirtyRegions()))
       {
         somethingToDo = true;
@@ -78,7 +78,7 @@ public class PanelPainterLoop extends IdleThreadLoop
   {
     for(PropFrame stageFrame : frameBuffer)
     {
-      RootPanel root = stageFrame.getRoot();
+      IRootPanel root = stageFrame.getRoot();
       if(root != null)
       {
         doAllLayouts(root);
@@ -93,7 +93,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     timer.sleep(optimalDelayTimeNanos - lastExecutionDuration);
   }
 
-  public RootPanel getActiveRoot()
+  public IRootPanel getActiveRoot()
   {
     PropFrame frame = Context.getActiveFrame();
     if(frame != null)
@@ -102,7 +102,7 @@ public class PanelPainterLoop extends IdleThreadLoop
       return null;
   }
 
-  public void paintDirtyRegions(RootPanel root)
+  public void paintDirtyRegions(IRootPanel root)
   {
     regionBuffer.clear();
     root.getAndClearDirtyRegions(regionBuffer);
@@ -113,7 +113,7 @@ public class PanelPainterLoop extends IdleThreadLoop
       Graphics2D rootGraphics = root.getGraphics();
       if(rootGraphics != null)
       {
-        doPaintJob(root.getPanel(), new Box(rectangle), rootGraphics);
+        doPaintJob(root, new Box(rectangle), rootGraphics);
       }
     }
   }
@@ -126,7 +126,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     job.dispose();
   }
 
-  public void doAllLayouts(RootPanel root)
+  public void doAllLayouts(IRootPanel root)
   {
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);

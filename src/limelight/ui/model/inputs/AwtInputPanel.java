@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.Panel;
 import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.styles.Style;
@@ -44,7 +43,7 @@ public abstract class AwtInputPanel extends BasePanel implements InputPanel
   public void setParent(limelight.ui.Panel panel)
   {
     if(panel == null)
-      Context.instance().keyboardFocusManager.focusFrame((StageFrame)getRoot().getStageFrame());
+      Context.instance().keyboardFocusManager.focusFrame((StageFrame)getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {

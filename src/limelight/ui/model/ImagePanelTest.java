@@ -6,6 +6,7 @@ package limelight.ui.model;
 import junit.framework.TestCase;
 import limelight.MockResourceLoader;
 import limelight.io.StreamReader;
+import limelight.ui.api.MockProp;
 import limelight.util.TestUtil;
 
 import java.io.FileInputStream;
@@ -19,12 +20,13 @@ public class ImagePanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel();
+    MockProp scene = new MockProp();
+    root = new RootPanel(scene);
     root.setFrame(new MockPropFrame());
     parent = new MockPropablePanel();
     loader = new MockResourceLoader();
-    parent.prop.loader = loader;
-    root.setPanel(parent);
+    scene.loader = loader;
+    root.add(parent);
 
     panel = new ImagePanel();
     parent.add(panel);

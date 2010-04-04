@@ -34,7 +34,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void setParent(limelight.ui.Panel panel)
   {
     if (panel == null)
-      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getStageFrame());
+      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if (panel instanceof PropPanel)
     {
@@ -220,7 +220,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     mouseProcessor.processMouseReleased(e);
     Context.instance().keyboardFocusManager.focusPanel(this);
     if(!focused)
-      focusGained(new FocusEvent(getRoot().getStageFrame().getWindow(), 0));
+      focusGained(new FocusEvent(getRoot().getFrame().getWindow(), 0));
     buttonPressed(new ActionEvent(this, 0, "blah"));
   }
 

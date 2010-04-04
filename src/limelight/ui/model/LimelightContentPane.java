@@ -19,16 +19,16 @@ class LimelightContentPane extends JPanel
 
   public void paint(Graphics g)
   {
-    RootPanel rootPanel = frame.getRoot();
+    IRootPanel rootPanel = frame.getRoot();
     if(rootPanel != null)
     {
       if(isWindowResizing())
       {
-        PanelPainterLoop.doPaintJob(rootPanel.getPanel(), rootPanel.getPanel().getAbsoluteBounds(), (Graphics2D) g);
+        PanelPainterLoop.doPaintJob(rootPanel, rootPanel.getAbsoluteBounds(), (Graphics2D) g);
       }
       else
       {
-        rootPanel.addDirtyRegion(frame.getRoot().getPanel().getAbsoluteBounds());
+        rootPanel.addDirtyRegion(frame.getRoot().getAbsoluteBounds());
       }
     }
   }
@@ -45,7 +45,7 @@ class LimelightContentPane extends JPanel
 
   public void doLayout()
   {
-    RootPanel rootPanel = frame.getRoot();
+    IRootPanel rootPanel = frame.getRoot();
     if(rootPanel != null && isWindowResizing())
     {
       rootPanel.doLayout();

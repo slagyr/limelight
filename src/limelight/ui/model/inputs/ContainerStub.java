@@ -1,9 +1,11 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
+import limelight.ui.model.PropFrame;
+import limelight.ui.model.RootPanel;
 
 import java.awt.*;
 
@@ -19,8 +21,8 @@ public class ContainerStub extends Container
   public Container getParent()
   {
     Container parent = null;
-    if(panel != null && panel.getRoot() != null)
-      parent = (panel.getRoot()).getStageFrame().getWindow();
+    if(panel != null && panel.getRoot() != null && panel.getRoot().getFrame() != null)
+      parent = panel.getRoot().getFrame().getWindow();
     return parent;
   }
 

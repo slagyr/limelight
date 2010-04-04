@@ -94,10 +94,10 @@ public class ScrollBarPanelTest extends TestCase
   
   public void testChanges() throws Exception
   {
-    RootPanel root = new RootPanel();
+    RootPanel root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
-    root.setPanel(parent);
+    root.add(parent);
     parent.add(panel);
     parent.doLayout();
     panel.setValue(50);
@@ -107,10 +107,10 @@ public class ScrollBarPanelTest extends TestCase
 
   public void testParentIsMarkedAsChanged() throws Exception
   {
-    RootPanel root = new RootPanel();
+    RootPanel root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
-    root.setPanel(parent);
+    root.add(parent);
     parent.add(panel);
     parent.doLayout();
 
