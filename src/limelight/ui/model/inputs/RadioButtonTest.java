@@ -4,6 +4,7 @@
 package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
+import limelight.ui.api.MockProp;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.MockPropFrame;
 
@@ -17,11 +18,11 @@ public class RadioButtonTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel();
+    root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     panel = new RadioButtonPanel();
     radioButton = new RadioButton(panel);
-    root.setPanel(panel);
+    root.add(panel);
   }
 
   public void testRepaint() throws Exception

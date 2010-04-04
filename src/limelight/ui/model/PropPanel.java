@@ -325,7 +325,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public String toString()
   {
-    return "PropPanel - " + getProp().getName();
+    return getClass().getSimpleName() + " - " + getProp().getName();
   }
 
   public void setAfterPaintAction(PaintAction action)

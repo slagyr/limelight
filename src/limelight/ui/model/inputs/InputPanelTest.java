@@ -26,6 +26,8 @@ public class InputPanelTest extends TestCase
   private boolean pressed;
   private boolean released;
   private boolean clicked;
+  private MockPropFrame frame;
+  private RootPanel root;
 
   private static class TestableInputPanel extends AwtInputPanel
   {
@@ -50,8 +52,12 @@ public class InputPanelTest extends TestCase
 
   public void setUp() throws Exception
   {
+    frame = new MockPropFrame();
+    root = new RootPanel(new MockProp());
+    root.setFrame(frame);
     input = new TestableInputPanel();
     parent = new PropPanel(new MockProp());
+    root.add(parent);
     parent.add(input);
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
   }
@@ -110,11 +116,11 @@ public class InputPanelTest extends TestCase
 
   private void attatchRoot()
   {
-    RootPanel root = new RootPanel();
+    RootPanel root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     MockPanel rootPanel = new MockPanel();
-    root.setPanel(rootPanel);
-    rootPanel.add(parent);
+    root.add(rootPanel);
+    rootPanel.add(this.parent);
   }
 
   public void testSetSize() throws Exception
@@ -158,7 +164,7 @@ public class InputPanelTest extends TestCase
   
   public void testMousePressedEventsGetPassedToParent() throws Exception
   {
-    MockProp prop = (MockProp)parent.getProp();
+    MockProp prop = (MockProp) parent.getProp();
     MouseEvent event = new MouseEvent(input.getComponent(), 1, 2, 3, 4, 5, 6, false);
     input.mousePressed(event);
 
@@ -168,7 +174,7 @@ public class InputPanelTest extends TestCase
 
   public void testMouseReleasedEventsGetPassedToParent() throws Exception
   {
-    MockProp prop = (MockProp)parent.getProp();
+    MockProp prop = (MockProp) parent.getProp();
     MouseEvent event = new MouseEvent(input.getComponent(), 1, 2, 3, 4, 5, 6, false);
     input.mouseReleased(event);
 
@@ -178,7 +184,7 @@ public class InputPanelTest extends TestCase
 
   public void testMouseClickedEventsGetPassedToParent() throws Exception
   {
-    MockProp prop = (MockProp)parent.getProp();
+    MockProp prop = (MockProp) parent.getProp();
     MouseEvent event = new MouseEvent(input.getComponent(), 1, 2, 3, 4, 5, 6, false);
     input.mouseClicked(event);
 
@@ -197,7 +203,7 @@ public class InputPanelTest extends TestCase
     parent = new PropPanel(new MockProp());
     parent.add(input);
 
-    MockProp prop = (MockProp)parent.getProp();
+    MockProp prop = (MockProp) parent.getProp();
     ActionEvent event = new ActionEvent(input.getComponent(), 1, "blah");
     ((JButton)input.getComponent()).getActionListeners()[0].actionPerformed(event);
 
@@ -214,7 +220,7 @@ public class InputPanelTest extends TestCase
   {
     Context.instance().frameManager = new MockFrameManager();
     StageFrame frame = new StageFrame(new MockStage());
-    frame.load(parent);
+    frame.load(root);
     input.mouseClicked(new MouseEvent(input.input, 1, 2, 3, 4, 5, 6, false));
     assertEquals(input.input, Context.instance().keyboardFocusManager.getFocuedComponent());
 

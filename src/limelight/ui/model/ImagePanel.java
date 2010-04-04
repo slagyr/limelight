@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -148,7 +148,8 @@ public class ImagePanel extends BasePanel
         RootPanel rootPanel = getRoot();
         if(rootPanel != null && imageFile != null)
         {
-          setImage(rootPanel.getImageCache().getImage(imageFile));
+          ImageCache imageCache = rootPanel.getImageCache();
+          setImage(imageCache.getImage(imageFile));
         }
       }
       catch(Exception e)

@@ -45,7 +45,7 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
   public void setParent(limelight.ui.Panel panel)
   {
     if(panel == null)
-      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getStageFrame());
+      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {
@@ -107,14 +107,12 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
 
   public void mousePressed(MouseEvent e)
   {
-System.err.println("e = " + e);
     style = selected;
     repaint();
   }
 
   public void mouseReleased(MouseEvent e)
   {
-System.err.println("e = " + e);    
     style = normal;
     repaint();
     super.buttonPressed(new ActionEvent(this, 0, "blah"));

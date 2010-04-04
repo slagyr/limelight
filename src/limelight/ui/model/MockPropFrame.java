@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 public class MockPropFrame implements PropFrame
 {
   private Container contentPane;
-  private RootPanel root;
+  private IRootPanel root;
   public boolean visible;
   private MockPropFrameWindow window;
   public boolean closed;
@@ -32,7 +32,7 @@ public class MockPropFrame implements PropFrame
     return null;
   }
 
-  public RootPanel getRoot()
+  public IRootPanel getRoot()
   {
     return root;
   }
@@ -89,7 +89,7 @@ public class MockPropFrame implements PropFrame
     activated = false;
   }
 
-  public void setRoot(RootPanel root)
+  public void setRoot(IRootPanel root)
   {
     this.root = root;
   }

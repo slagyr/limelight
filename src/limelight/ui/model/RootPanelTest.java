@@ -3,51 +3,59 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
+import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockScene;
 import limelight.Context;
 import limelight.MockResourceLoader;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.awt.*;
 
-public class RootPanelTest extends TestCase
+public class RootPanelTest extends Assert
 { 
   private RootPanel root;
   private MockPropablePanel child;
   private Container contentPane;
+  private PropFrame stageFrame;
 
+  @Before
   public void setUp() throws Exception
   {
-    PropFrame stageFrame = new MockPropFrame();
-    root = new RootPanel();
-    root.setFrame(stageFrame);
+    stageFrame = new MockPropFrame();
+    root = new RootPanel(new MockProp());
     child = new MockPropablePanel("child");
     contentPane = stageFrame.getContentPane();
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
   }
 
-  public void testSetPanelSetsParentOnePanel() throws Exception
+  @Test
+  public void shouldSetPanelSetsParentOnePanel() throws Exception
   {
-    root.setPanel(child);
+    root.add(child);
     assertSame(root, child.getParent());
   }
-  
-  public void testDestroyRemovesChildsParent() throws Exception
-  {
-    root.setPanel(child);
-    root.destroy();
-    assertNull(child.getParent());
-  }
-  
-  public void testSetPanelAddListeners() throws Exception
-  {
-    assertNull(null, root.getListener());
 
-    root.setPanel(child);
+  @Test
+  public void shouldDestroyRemovesChildsParent() throws Exception
+  {
+    root.setFrame(stageFrame);
+    root.add(child);
+    root.destroy();
+    assertEquals(null, child.getParent());
+  }
+
+  @Test
+  public void shouldAddListenersUponSettingTheFrame() throws Exception
+  {
+    assertEquals(null, root.getListener());
+
+    root.setFrame(stageFrame);
     EventListener listener = root.getListener();
     assertNotNull(listener);
 
@@ -57,9 +65,10 @@ public class RootPanelTest extends TestCase
     assertEquals(true, Arrays.asList(contentPane.getKeyListeners()).contains(listener));
   }
 
-  public void testDestroyRemovesListeners() throws Exception
+  @Test
+  public void shouldDestroyRemovesListeners() throws Exception
   {
-    root.setPanel(child);
+    root.setFrame(stageFrame);
     EventListener listener = root.getListener();
     root.destroy();
 
@@ -70,22 +79,25 @@ public class RootPanelTest extends TestCase
     assertNull(root.getListener());
   }
 
-  public void testIsAlive() throws Exception
+  @Test
+  public void shouldBsAliveAfterSettingFrame() throws Exception
   {
     assertEquals(false, root.isAlive());
 
-    root.setPanel(child);
+    root.setFrame(stageFrame);
     assertEquals(true, root.isAlive());
 
     root.destroy();
     assertEquals(false, root.isAlive());
   }
-  
-  public void testKeyboardFocusIfLostWhenDestroyed() throws Exception
+
+  @Test
+  public void shouldKeyboardFocusDoesNotRemainOnChildWhenDestroyed() throws Exception
   {
     TextBoxPanel inputPanel = new TextBoxPanel();
+    root.setFrame(stageFrame);
     child.add(inputPanel);
-    root.setPanel(child);
+    root.add(child);
 
     Context.instance().keyboardFocusManager.focusPanel(inputPanel);
     root.destroy();
@@ -93,7 +105,8 @@ public class RootPanelTest extends TestCase
     assertNotSame(inputPanel, Context.instance().keyboardFocusManager.getFocusedPanel());
   }
 
-  public void testAddPanelNeedingLayout() throws Exception
+  @Test
+  public void shouldAddPanelNeedingLayout() throws Exception
   {
     root.addPanelNeedingLayout(child);
 
@@ -109,7 +122,8 @@ public class RootPanelTest extends TestCase
     assertEquals(0, panels.size());
   }
 
-  public void testAddPanelNeedingLayoutDoesntAllowDuplicates() throws Exception
+  @Test
+  public void shouldAddPanelNeedingLayoutDoesntAllowDuplicates() throws Exception
   {
     root.addPanelNeedingLayout(child);
     root.addPanelNeedingLayout(child);
@@ -124,7 +138,8 @@ public class RootPanelTest extends TestCase
     root.getAndClearPanelsNeedingLayout(panels);
   }
 
-  public void testAddPanelNeedingLayoutWontAddWhenAncestorIsAlreadyInTheList() throws Exception
+  @Test
+  public void shouldAddPanelNeedingLayoutWontAddWhenAncestorIsAlreadyInTheList() throws Exception
   {
     MockPropablePanel grandChild = new MockPropablePanel();
     child.add(grandChild);
@@ -139,7 +154,8 @@ public class RootPanelTest extends TestCase
     assertEquals(child, panels.get(0));
   }
 
-  public void testAddPanelNeedingLayoutWillAddWhenAncestorIsAlreadyInTheListButTheParentDoesntNeedLayout() throws Exception
+  @Test
+  public void shouldAddPanelNeedingLayoutWillAddWhenAncestorIsAlreadyInTheListButTheParentDoesntNeedLayout() throws Exception
   {
     MockPropablePanel grandChild = new MockPropablePanel("grandChild");
     MockPropablePanel greatGrandChild = new MockPropablePanel("greatGrandChild");
@@ -158,7 +174,8 @@ public class RootPanelTest extends TestCase
     assertEquals(greatGrandChild, panels.get(1));
   }
 
-  public void testAddPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
+  @Test
+  public void shouldAddPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
   {
     MockPropablePanel grandChild = new MockPropablePanel();
     child.add(grandChild);
@@ -173,7 +190,8 @@ public class RootPanelTest extends TestCase
     assertEquals(child, panels.get(0));
   }
 
-  public void testAddPanelNeedingLayoutWillNotRemoveChildWhenAncestorIsAddedYetChildsParentDoesntNeedLayout() throws Exception
+  @Test
+  public void shouldAddPanelNeedingLayoutWillNotRemoveChildWhenAncestorIsAddedYetChildsParentDoesntNeedLayout() throws Exception
   {
     MockPropablePanel grandChild = new MockPropablePanel();
     MockPropablePanel greatGrandChild = new MockPropablePanel("greatGrandChild");
@@ -188,11 +206,12 @@ public class RootPanelTest extends TestCase
     root.getAndClearPanelsNeedingLayout(panels);
 
     assertEquals(2, panels.size());
-    assertEquals(greatGrandChild, panels.get(0)); 
+    assertEquals(greatGrandChild, panels.get(0));
     assertEquals(child, panels.get(1));
   }
 
-  public void testAddDirtyRegion() throws Exception
+  @Test
+  public void shouldAddDirtyRegion() throws Exception
   {
     Rectangle rectangle = new Rectangle(1, 2, 3, 4);
     root.addDirtyRegion(rectangle);
@@ -209,7 +228,8 @@ public class RootPanelTest extends TestCase
     assertEquals(0, regions.size());
   }
 
-  public void testWontAddDirtyRegionIfAlreadyCovered() throws Exception
+  @Test
+  public void shouldWontAddDirtyRegionIfAlreadyCovered() throws Exception
   {
     Rectangle big = new Rectangle(0, 0, 100, 100);
     Rectangle small = new Rectangle(1, 2, 3, 4);
@@ -220,10 +240,11 @@ public class RootPanelTest extends TestCase
     root.getAndClearDirtyRegions(regions);
 
     assertEquals(1, regions.size());
-    assertEquals(big, regions.get(0));  
+    assertEquals(big, regions.get(0));
   }
 
-  public void testWillRemoveSmallerRegionsWhenCoveredByLarger() throws Exception
+  @Test
+  public void shouldWillRemoveSmallerRegionsWhenCoveredByLarger() throws Exception
   {
     Rectangle big = new Rectangle(0, 0, 100, 100);
     Rectangle small = new Rectangle(1, 2, 3, 4);
@@ -237,7 +258,8 @@ public class RootPanelTest extends TestCase
     assertEquals(big, regions.get(0));
   }
 
-  public void testRegionsWithNoOrNegativeDimensionsAreNotAdded() throws Exception
+  @Test
+  public void shouldRegionsWithNoOrNegativeDimensionsAreNotAdded() throws Exception
   {
     root.addDirtyRegion(new Rectangle(0, 0, 0, 0));
     root.addDirtyRegion(new Rectangle(10, 10, 0, 0));
@@ -250,12 +272,13 @@ public class RootPanelTest extends TestCase
     assertEquals(0, regions.size());
   }
 
-  public void testHasAnImageCache() throws Exception
+  @Test
+  public void shouldHasAnImageCache() throws Exception
   {
     MockScene scene = new MockScene();
     child.prop.scene = scene;
     scene.loader = new MockResourceLoader();
-    root.setPanel(child);
+    root.add(child);
     assertNotNull(root.getImageCache());
   }
 }

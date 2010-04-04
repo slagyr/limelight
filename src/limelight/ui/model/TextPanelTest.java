@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.styles.StyleObserver;
+import limelight.ui.api.MockProp;
 import limelight.ui.api.MockScene;
 import limelight.ui.text.StyledText;
 
@@ -36,9 +37,9 @@ public class TextPanelTest extends TestCase
     style = parent.getStyle();
     panel = new TextPanel(parent, "Some Text");
     parent.add(panel);
-    root = new RootPanel();
+    root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
-    root.setPanel(parent);
+    root.add(parent);
     style.setTextColor("green");
     parent.prop.scene = new MockScene();
 

@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/java_util'
@@ -13,7 +13,14 @@ module Limelight
   # A Scene is a root Prop.  Scenes may be loaded onto a Stage.  In addition to being a Prop object, Scenes have a
   # few extra attributes and behaviors.
   #
-  class Scene < Prop    
+  class Scene < Prop
+
+    class << self
+      def panel_class #:nodoc:
+        return UI::Model::RootPanel
+      end
+    end
+
     include UI::Api::Scene
 
     attr_reader :button_groups, :casting_director, :cast
@@ -27,7 +34,7 @@ module Limelight
     def initialize(options={})
       path = options.delete(:path) || ""
       @root = FileLoader.for_root(path)
-      super(options)
+      super(options)    
       @button_groups = ButtonGroupCache.new
       @prop_index = {}
       @cast = Module.new

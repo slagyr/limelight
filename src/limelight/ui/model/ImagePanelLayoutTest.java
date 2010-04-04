@@ -4,11 +4,13 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
+import limelight.ui.api.MockProp;
 import limelight.util.TestUtil;
 import limelight.util.Box;
 import limelight.MockResourceLoader;
 
 import java.awt.geom.AffineTransform;
+import java.io.File;
 
 public class ImagePanelLayoutTest extends TestCase
 {
@@ -19,12 +21,13 @@ public class ImagePanelLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel();
+    MockProp scene = new MockProp();
+    root = new RootPanel(scene);
     root.setFrame(new MockPropFrame());
     parent = new MockPropablePanel();
     loader = new MockResourceLoader();
-    parent.prop.loader = loader;
-    root.setPanel(parent);
+    scene.loader = loader;
+    root.add(parent);
 
     panel = new ImagePanel();
     parent.add(panel);
@@ -37,6 +40,8 @@ public class ImagePanelLayoutTest extends TestCase
 
   public void testGetDimensionsWhenAuto() throws Exception
   {
+    System.err.println("new File().getAbsolutePath() = " + new File(".").getAbsolutePath());
+    
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     panel.doLayout();
 

@@ -35,6 +35,9 @@ module Limelight
         define_method("accepts_#{event_symbol}".to_sym) { return self.respond_to?(event_symbol) }
       end
 
+      def panel_class #:nodoc:
+        return UI::Model::Panel
+      end
     end
 
     include UI::Api::Prop
@@ -44,6 +47,8 @@ module Limelight
     attr_reader :children, :parent, :name, :id, :players
     getters :panel, :style, :hover_style, :name, :scene, :loader #:nodoc:
 
+
+
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.
     # The key/value pairs in the initialiaztion options will be used to
     # set properties on the Prop, it Style, or included Player properties. These properties are not set
@@ -52,7 +57,7 @@ module Limelight
     def initialize(hash = {})
       @options = hash || {}
       @children = []
-      @panel = UI::Model::Panel.new(self)
+      @panel = self.class.panel_class.new(self)
       @style = @panel.style
     end
 

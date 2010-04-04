@@ -3,62 +3,77 @@
 
 package limelight.background;
 
-import junit.framework.TestCase;
+import limelight.ui.api.MockProp;
 import limelight.ui.model.*;
 import limelight.ui.MockPanel;
 import limelight.Context;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class PanelPainterLoopTest extends TestCase
+public class PanelPainterLoopTest extends Assert
 {
   private PanelPainterLoop loop;
   private MockFrameManager frameManager;
   private MockPropFrame activeFrame;
   private RootPanel activeRoot;
 
+  @Before
   public void setUp() throws Exception
   {
     loop = new PanelPainterLoop();
     frameManager = new MockFrameManager();
     Context.instance().frameManager = frameManager;
     activeFrame = new MockPropFrame();
-    activeRoot = new RootPanel();
+    activeRoot = new RootPanel(new MockProp());
     activeRoot.setFrame(activeFrame);
     activeFrame.setRoot(activeRoot);
   }
-
-  public void testIsAnIdleThreadLoop() throws Exception
+  
+  @Test
+  public void shouldIsAnIdleThreadLoop() throws Exception
   {
     assertEquals(true, loop instanceof IdleThreadLoop);
   }
 
-  public void testGettingRootWhenNoFrameIsActive() throws Exception
+  @Test
+  public void shouldGettingRootWhenNoFrameIsActive() throws Exception
   {
     assertEquals(null, loop.getActiveRoot());
   }
   
-  public void testGetRootWithActiveFrame() throws Exception
+  @Test
+  public void shouldGetRootWithActiveFrame() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
 
     assertEquals(activeFrame.getRoot(), loop.getActiveRoot());
   }
   
-  public void testShouldIdleWhenThereIsNoRoot() throws Exception
+  @Test
+  public void shouldIdleWhenThereIsNoRoot() throws Exception
   {
     assertEquals(true, loop.shouldBeIdle());
   }
   
-  public void testShouldBeIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
+  @Test
+  public void shouldBeIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
   {
+    activeRoot.getAndClearDirtyRegions(new ArrayList<Rectangle>());
+    activeRoot.getAndClearPanelsNeedingLayout(new ArrayList<limelight.ui.Panel>());
+    
     frameManager.focusedFrame = activeFrame;
+
     assertEquals(false, activeFrame.getRoot().hasPanelsNeedingLayout());
     assertEquals(false, activeFrame.getRoot().hasDirtyRegions());
     assertEquals(true, loop.shouldBeIdle());
   }
 
-  public void testShouldNotBeIdleWhenPanelsNeedLayout() throws Exception
+  @Test
+  public void shouldNotBeIdleWhenPanelsNeedLayout() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
     activeRoot.addPanelNeedingLayout(new MockPanel());
@@ -66,7 +81,8 @@ public class PanelPainterLoopTest extends TestCase
     assertEquals(false, loop.shouldBeIdle());
   }
 
-  public void testShouldNotBeIdleWhenThereAreDirtyRegions() throws Exception
+  @Test
+  public void shouldNotBeIdleWhenThereAreDirtyRegions() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
     activeRoot.addDirtyRegion(new Rectangle(0, 0, 1, 1));
@@ -74,7 +90,8 @@ public class PanelPainterLoopTest extends TestCase
     assertEquals(false, loop.shouldBeIdle());
   }
   
-  public void testDoLayouts() throws Exception
+  @Test
+  public void shouldDoLayouts() throws Exception
   {
     MockPanel panel1 = new MockPanel();
     MockPanel panel2 = new MockPanel();
@@ -89,7 +106,8 @@ public class PanelPainterLoopTest extends TestCase
   }
 
 // TODO Perhaps we need a PaintJobFactory with a PaintJob interface  
-//  public void testPaintDirtyRegions() throws Exception
+//  @Test
+//  public void shouldPaintDirtyRegions() throws Exception
 //  {
 //    activeRoot.addDirtyRegion(new Rectangle(0, 0, 10, 10));
 //
@@ -98,7 +116,8 @@ public class PanelPainterLoopTest extends TestCase
 //    assertEquals(false, activeRoot.hasDirtyRegions());
 //  }
 
-  public void testUpdatesPerSecond() throws Exception
+  @Test
+  public void shouldUpdatesPerSecond() throws Exception
   {
     assertEquals(30, loop.getUpdatesPerSecond());
     assertEquals(1000000000 / 30, loop.getOptimalDelayTimeNanos());

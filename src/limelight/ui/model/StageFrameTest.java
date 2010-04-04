@@ -1,9 +1,10 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
 
 import junit.framework.TestCase;
+import limelight.ui.api.MockProp;
 import limelight.ui.api.MockStage;
 import limelight.ui.*;
 import limelight.Context;
@@ -70,18 +71,18 @@ public class StageFrameTest extends TestCase
 
   public void testLoad() throws Exception
   {
-    MockPanel panel = new MockPanel();
+    RootPanel panel = new RootPanel(new MockProp());
     frame.load(panel);
 
-    RootPanel root = frame.getRoot();
+    IRootPanel root = frame.getRoot();
 
-    assertSame(panel, root.getPanel());
+    assertSame(panel, root);
   }
 
   public void testLoadSetsDefaultCursor() throws Exception
   {
     frame.getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    MockPanel panel = new MockPanel();
+    RootPanel panel = new RootPanel(new MockProp());
     frame.load(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, frame.getContentPane().getCursor().getType());
@@ -89,13 +90,13 @@ public class StageFrameTest extends TestCase
 
   public void testLoadWillDestroyPreviousRoots() throws Exception
   {
-    MockPanel panel = new MockPanel();
+    RootPanel panel = new RootPanel(new MockProp());
     frame.load(panel);
 
-    RootPanel firstRoot = frame.getRoot();
+    IRootPanel firstRoot = frame.getRoot();
     assertEquals(true, firstRoot.isAlive());
 
-    MockPanel panel2 = new MockPanel();
+    RootPanel panel2 = new RootPanel(new MockProp());
     frame.load(panel2);
 
     assertEquals(false, firstRoot.isAlive());
@@ -351,10 +352,10 @@ public class StageFrameTest extends TestCase
 
   public void testSizeChangesPropogateDown() throws Exception
   {
-    MockPanel panel = new MockPanel();
+    MockRootPanel panel = new MockRootPanel();
     frame.load(panel);
 
-    frame.doLayout(); // Called when he stage is resized
+    frame.doLayout(); // Called when the stage is resized
     assertEquals(true, panel.consumableAreaChangedCalled);
 
     panel.consumableAreaChangedCalled = false;
@@ -366,7 +367,7 @@ public class StageFrameTest extends TestCase
   public void testShouldCollapseAutoDimensions() throws Exception
   {
     frame.setSizeStyles("auto", "auto");
-    MockPropablePanel child = new MockPropablePanel();
+    MockRootPanel child = new MockRootPanel();
     child.prepForSnap(300, 200);
     frame.load(child);
 

@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -33,7 +33,7 @@ public class ImageCache extends SimpleCache<String, Image>
 
   private BufferedImage loadImage(String imagePath) throws IOException
   {
-    String imageFilename = loader.pathTo(imagePath);
+    String imageFilename = loader.pathTo(imagePath); 
     BufferedImage image = ImageIO.read(new File(imageFilename));
 
     if(!image.getColorModel().hasAlpha())

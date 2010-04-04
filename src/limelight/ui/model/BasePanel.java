@@ -205,7 +205,7 @@ public abstract class BasePanel implements Panel
   }
 
   public void mousePressed(MouseEvent e)
-  {
+  { 
     parent.mousePressed(e);
   }
 

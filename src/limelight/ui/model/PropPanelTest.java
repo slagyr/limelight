@@ -3,9 +3,6 @@
 
 package limelight.ui.model;
 
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.compiling.ColorAttributeCompiler;
-import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
@@ -42,12 +39,12 @@ public class PropPanelTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new RootPanel();
+    root = new RootPanel(new MockProp());
     root.setFrame(new MockPropFrame());
     prop = new MockProp();
     panel = new PropPanel(prop);
     style = panel.getStyle();
-    root.setPanel(panel);
+    root.add(panel);
   }
 
   public void testCreatesItsStyleInsteadOfGettingItFromProp() throws Exception
