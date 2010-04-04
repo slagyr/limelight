@@ -1,11 +1,11 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui;
 
 import limelight.util.Box;
 import limelight.styles.Style;
-import limelight.ui.model.RootPanel;
+import limelight.ui.model.ScenePanel;
 import limelight.ui.model.Layout;
 
 import java.awt.*;
@@ -32,7 +32,7 @@ public interface Panel extends Iterable<Panel>
 
   Panel getParent();
   void setParent(Panel panel);
-  RootPanel getRoot();
+  ScenePanel getRoot();
   boolean isDescendantOf(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
   Box getChildConsumableArea();

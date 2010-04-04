@@ -19,7 +19,7 @@ import java.awt.*;
 
 public class RootPanelTest extends Assert
 { 
-  private RootPanel root;
+  private ScenePanel root;
   private MockPropablePanel child;
   private Container contentPane;
   private PropFrame stageFrame;
@@ -28,7 +28,7 @@ public class RootPanelTest extends Assert
   public void setUp() throws Exception
   {
     stageFrame = new MockPropFrame();
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     child = new MockPropablePanel("child");
     contentPane = stageFrame.getContentPane();
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();

@@ -23,7 +23,7 @@ public class TextPanelTest extends TestCase
   private Style style;
   private JFrame frame;
   private MockPropablePanel parent;
-  private RootPanel root;
+  private ScenePanel root;
   private String defaultFontFace;
   private String defaultFontSize;
   private String defaultFontStyle;
@@ -37,7 +37,7 @@ public class TextPanelTest extends TestCase
     style = parent.getStyle();
     panel = new TextPanel(parent, "Some Text");
     parent.add(panel);
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     root.add(parent);
     style.setTextColor("green");

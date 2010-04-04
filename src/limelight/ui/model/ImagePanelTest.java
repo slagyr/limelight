@@ -15,13 +15,13 @@ public class ImagePanelTest extends TestCase
 {
   private ImagePanel panel;
   private MockPropablePanel parent;
-  private RootPanel root;
+  private ScenePanel root;
   private MockResourceLoader loader;
 
   public void setUp() throws Exception
   {
     MockProp scene = new MockProp();
-    root = new RootPanel(scene);
+    root = new ScenePanel(scene);
     root.setFrame(new MockPropFrame());
     parent = new MockPropablePanel();
     loader = new MockResourceLoader();

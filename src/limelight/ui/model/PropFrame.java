@@ -9,7 +9,7 @@ public interface PropFrame
 
   Point getLocationOnScreen();
 
-  IRootPanel getRoot();
+  RootPanel getRoot();
   
   void close(WindowEvent e);
 

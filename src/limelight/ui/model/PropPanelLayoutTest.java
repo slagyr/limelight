@@ -17,11 +17,11 @@ public class PropPanelLayoutTest extends TestCase
   private PropPanel parent;
   private PropPanelLayout layout;
   private int scrollGirth;
-  private RootPanel root;
+  private ScenePanel root;
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     parent = new PropPanel(new MockProp());
     root.add(parent);

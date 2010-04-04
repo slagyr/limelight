@@ -31,8 +31,8 @@ module Limelight
 
     module Model #:nodoc:
       Frame = Java::limelight.ui.model.StageFrame
-      Panel = Java::limelight.ui.model.PropPanel
-      RootPanel = Java::limelight.ui.model.RootPanel
+      PropPanel = Java::limelight.ui.model.PropPanel
+      ScenePanel = Java::limelight.ui.model.ScenePanel
       ImagePanel = Java::limelight.ui.model.ImagePanel
 
       module Inputs #:nodoc:

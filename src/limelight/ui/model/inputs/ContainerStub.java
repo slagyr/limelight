@@ -4,8 +4,6 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
-import limelight.ui.model.PropFrame;
-import limelight.ui.model.RootPanel;
 
 import java.awt.*;
 

@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
 import limelight.styles.Style;
 import limelight.styles.FlatStyle;
 import limelight.ui.MockPanel;
@@ -30,7 +29,7 @@ public class BasePanelTest extends Assert
   private MockPanel sibling;
   private MockProp prop;
   private MouseEvent mouseEvent;
-  private RootPanel root;
+  private ScenePanel root;
 
   class TestableBasePanel extends BasePanel
   {
@@ -59,7 +58,7 @@ public class BasePanelTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     panel = new TestableBasePanel();
     root.add(panel);
@@ -137,7 +136,7 @@ public class BasePanelTest extends Assert
 
   private void createFamilyTree()
   {
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     parent = new MockPanel();
     root.add(parent);

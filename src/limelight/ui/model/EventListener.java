@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -93,7 +93,7 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
 
   private void exit(Panel descendant, Panel ancestor, MouseEvent e)
   {
-    while(descendant != ancestor && !(descendant instanceof RootPanel))
+    while(descendant != ancestor && !(descendant instanceof ScenePanel))
     {
       if(descendant != null)
       {

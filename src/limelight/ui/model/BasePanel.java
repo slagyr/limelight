@@ -149,7 +149,7 @@ public abstract class BasePanel implements Panel
   }
 
   //TODO  MDM Change my return type to RootPanel
-  public RootPanel getRoot()
+  public ScenePanel getRoot()
   {
     if(parent == null)
       return null;
@@ -497,7 +497,7 @@ public abstract class BasePanel implements Panel
 
   public void markAsDirty()
   {
-    RootPanel rootPanel = getRoot();
+    ScenePanel rootPanel = getRoot();
     if(rootPanel != null)
       rootPanel.addDirtyRegion(getAbsoluteBounds());
   }
