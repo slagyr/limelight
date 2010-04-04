@@ -27,7 +27,7 @@ public class InputPanelTest extends TestCase
   private boolean released;
   private boolean clicked;
   private MockPropFrame frame;
-  private RootPanel root;
+  private ScenePanel root;
 
   private static class TestableInputPanel extends AwtInputPanel
   {
@@ -53,7 +53,7 @@ public class InputPanelTest extends TestCase
   public void setUp() throws Exception
   {
     frame = new MockPropFrame();
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(frame);
     input = new TestableInputPanel();
     parent = new PropPanel(new MockProp());
@@ -116,7 +116,7 @@ public class InputPanelTest extends TestCase
 
   private void attatchRoot()
   {
-    RootPanel root = new RootPanel(new MockProp());
+    ScenePanel root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     MockPanel rootPanel = new MockPanel();
     root.add(rootPanel);

@@ -204,7 +204,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       expandPaintableRegionToRightBound();
     if(isTextMaxed())
       maxOutPaintableRegion();
-    RootPanel rootPanel = getRoot();
+    ScenePanel rootPanel = getRoot();
     if (rootPanel != null && paintableRegion != null){
       rootPanel.addDirtyRegion(new Box(paintableRegion.x + getAbsoluteLocation().x - 3,
           paintableRegion.y + getAbsoluteLocation().y, paintableRegion.width + 6, paintableRegion.height));

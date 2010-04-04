@@ -1,25 +1,18 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.painting;
 
 import limelight.ui.*;
-import limelight.ui.model.RootPanel;
+import limelight.ui.model.ScenePanel;
 import limelight.ui.model.ImageCache;
-import limelight.ui.model.PaintJob;
 import limelight.ui.api.PropablePanel;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.StringAttribute;
 import limelight.styles.abstrstyling.NoneableAttribute;
-import limelight.util.Colors;
 import limelight.util.Box;
-import limelight.util.NanoTimer;
-import limelight.util.Debug;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class BackgroundPainter extends Painter
@@ -56,7 +49,7 @@ public class BackgroundPainter extends Painter
       try
       {
         Box borderFrame = panel.getBoxInsideBorders();
-        RootPanel rootPanel = ((PropablePanel) panel).getRoot();
+        ScenePanel rootPanel = ((PropablePanel) panel).getRoot();
         ImageCache cache = rootPanel.getImageCache();
         Image image = cache.getImage(backgroundImageAttribute.getAttribute().getValue());
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);

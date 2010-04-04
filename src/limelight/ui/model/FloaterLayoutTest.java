@@ -12,11 +12,11 @@ import limelight.ui.api.MockProp;
 public class FloaterLayoutTest extends TestCase
 {
   private PropPanel panel;
-  private RootPanel root;
+  private ScenePanel root;
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     panel = new PropPanel(new MockProp());
     root.add(panel);

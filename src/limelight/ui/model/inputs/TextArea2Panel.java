@@ -4,7 +4,7 @@ import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
-import limelight.ui.model.RootPanel;
+import limelight.ui.model.ScenePanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.util.Box;
 
@@ -95,7 +95,7 @@ public class TextArea2Panel extends TextInputPanel
 
   protected void markCursorRegionAsDirty()
   {
-    RootPanel rootPanel = getRoot();
+    ScenePanel rootPanel = getRoot();
     if (rootPanel != null)
     {
       int regionHeight = boxInfo.getHeightOfCurrentLine();

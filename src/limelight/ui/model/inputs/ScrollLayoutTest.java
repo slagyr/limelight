@@ -6,12 +6,12 @@ import limelight.ui.model.*;
 
 public class ScrollLayoutTest extends TestCase
 {
-  private RootPanel root;
+  private ScenePanel root;
   private PropPanel parent;
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     parent = new PropPanel(new MockProp());
     root.add(parent);

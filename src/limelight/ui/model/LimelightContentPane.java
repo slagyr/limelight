@@ -19,7 +19,7 @@ class LimelightContentPane extends JPanel
 
   public void paint(Graphics g)
   {
-    IRootPanel rootPanel = frame.getRoot();
+    RootPanel rootPanel = frame.getRoot();
     if(rootPanel != null)
     {
       if(isWindowResizing())
@@ -45,7 +45,7 @@ class LimelightContentPane extends JPanel
 
   public void doLayout()
   {
-    IRootPanel rootPanel = frame.getRoot();
+    RootPanel rootPanel = frame.getRoot();
     if(rootPanel != null && isWindowResizing())
     {
       rootPanel.doLayout();

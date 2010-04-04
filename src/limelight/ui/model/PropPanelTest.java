@@ -35,11 +35,11 @@ public class PropPanelTest extends TestCase
   private MockProp prop;
   private PropPanel panel;
   private Style style;
-  private RootPanel root;
+  private ScenePanel root;
 
   public void setUp() throws Exception
   {
-    root = new RootPanel(new MockProp());
+    root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     prop = new MockProp();
     panel = new PropPanel(prop);

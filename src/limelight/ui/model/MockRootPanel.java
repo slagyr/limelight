@@ -4,7 +4,7 @@ import limelight.ui.Panel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MockRootPanel extends MockPropablePanel implements IRootPanel
+public class MockRootPanel extends MockPropablePanel implements RootPanel
 {
   public void destroy()
   {

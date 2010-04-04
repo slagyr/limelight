@@ -36,7 +36,7 @@ public class MockStageFrame extends StageFrame
     return contentPanel;
   }
 
-  public void setRoot(IRootPanel root)
+  public void setRoot(RootPanel root)
   {
     this.root = root;
   }

@@ -71,10 +71,10 @@ public class StageFrameTest extends TestCase
 
   public void testLoad() throws Exception
   {
-    RootPanel panel = new RootPanel(new MockProp());
+    ScenePanel panel = new ScenePanel(new MockProp());
     frame.load(panel);
 
-    IRootPanel root = frame.getRoot();
+    RootPanel root = frame.getRoot();
 
     assertSame(panel, root);
   }
@@ -82,7 +82,7 @@ public class StageFrameTest extends TestCase
   public void testLoadSetsDefaultCursor() throws Exception
   {
     frame.getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    RootPanel panel = new RootPanel(new MockProp());
+    ScenePanel panel = new ScenePanel(new MockProp());
     frame.load(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, frame.getContentPane().getCursor().getType());
@@ -90,13 +90,13 @@ public class StageFrameTest extends TestCase
 
   public void testLoadWillDestroyPreviousRoots() throws Exception
   {
-    RootPanel panel = new RootPanel(new MockProp());
+    ScenePanel panel = new ScenePanel(new MockProp());
     frame.load(panel);
 
-    IRootPanel firstRoot = frame.getRoot();
+    RootPanel firstRoot = frame.getRoot();
     assertEquals(true, firstRoot.isAlive());
 
-    RootPanel panel2 = new RootPanel(new MockProp());
+    ScenePanel panel2 = new ScenePanel(new MockProp());
     frame.load(panel2);
 
     assertEquals(false, firstRoot.isAlive());

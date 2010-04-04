@@ -17,7 +17,7 @@ module Limelight
 
     class << self
       def panel_class #:nodoc:
-        return UI::Model::RootPanel
+        return UI::Model::ScenePanel
       end
     end
 

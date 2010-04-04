@@ -1,20 +1,16 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.RootPanel;
+import limelight.ui.model.ScenePanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.util.Box;
-import limelight.util.Colors;
 
-import javax.imageio.ImageIO;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class TextBox2Panel extends TextInputPanel
@@ -137,7 +133,7 @@ public class TextBox2Panel extends TextInputPanel
 
   protected void markCursorRegionAsDirty()
   {
-    RootPanel rootPanel = getRoot();
+    ScenePanel rootPanel = getRoot();
     if (rootPanel != null)
     {
       int cursorY =  getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();

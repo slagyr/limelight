@@ -36,7 +36,7 @@ module Limelight
       end
 
       def panel_class #:nodoc:
-        return UI::Model::Panel
+        return UI::Model::PropPanel
       end
     end
 
@@ -46,7 +46,6 @@ module Limelight
     attr_reader :panel #:nodoc:
     attr_reader :children, :parent, :name, :id, :players
     getters :panel, :style, :hover_style, :name, :scene, :loader #:nodoc:
-
 
 
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.

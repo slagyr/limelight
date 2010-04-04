@@ -23,7 +23,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
   private static final NoneableAttribute<DimensionAttribute> NONE = new NoneableAttribute<DimensionAttribute>(null);
 
   private Stage stage;
-  protected IRootPanel root;
+  protected RootPanel root;
   private Insets insets;
   private boolean fullscreen;
   private boolean hasMenuBar;
@@ -193,7 +193,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if(root != null)
       root.destroy();
     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    root = (IRootPanel)child;
+    root = (RootPanel)child;
     root.setFrame(this);
   }
 
@@ -202,7 +202,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     return stage;
   }
 
-  public IRootPanel getRoot()
+  public RootPanel getRoot()
   {
     return root;
   }
