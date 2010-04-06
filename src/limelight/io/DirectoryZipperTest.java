@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.io;
@@ -18,7 +18,7 @@ public class DirectoryZipperTest extends TestCase
   {
     deleteRoot();
     FileUtil.makeDir(TestUtil.TMP_DIR);
-    assertTrue(new File(TestUtil.TMP_DIR).exists());
+    assertEquals(true, new File(TestUtil.TMP_DIR).exists());
   }
 
   public void tearDown() throws Exception

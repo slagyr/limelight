@@ -14,8 +14,8 @@ describe Limelight::Scene do
 
   it "should have a styles hash" do
     @scene.illuminate
-    @scene.styles.should_not == nil
-    @scene.styles.size.should == 0
+    @scene.styles_store.should_not == nil
+    @scene.styles_store.size.should == 0
   end
 
   it "should have a button group cache" do
@@ -48,24 +48,9 @@ describe Limelight::Scene do
     Limelight::Scene.new().path.should == File.expand_path("")
   end
 
-  it "should inherit styles in options" do
-    Limelight.build_styles(:styles => @scene.styles) do
-      foo { width 100; height 200 }
-      bar { x 11; y 22 }
-    end
-    @scene.add_options :styles => "foo", :name => "bar"
-
-    @scene.illuminate
-
-    @scene.style.width.should == "100"
-    @scene.style.height.should == "200"
-    @scene.style.x.should == "11"
-    @scene.style.y.should == "22"
-  end
-
   it "should get styles from the Java model" do
     java_model = @scene.panel
-    @scene.styles.should be(java_model.styles)
+    @scene.styles_store.should be(java_model.styles_store)
   end
 
 #  it "should set the production during illumination before casting" do

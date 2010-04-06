@@ -1,7 +1,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.Context;
-import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
 import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.ui.model.*;
@@ -59,7 +59,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     return getBoundingBox();
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }

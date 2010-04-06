@@ -123,7 +123,7 @@ module Limelight
       path = @production.scene_directory(name)
       scene_name = File.basename(path)
       scene = load_props(options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name))
-      styles = load_styles(scene.styles_file, scene.styles)
+      styles = load_styles(scene.styles_file, scene.styles_store)
       stage.open(scene)
       return scene
     end

@@ -69,7 +69,7 @@ public class MouseProcessorTest
   {
     boolean inside = processor.isMouseEventInBox(mockMouseEvent);
 
-    assertTrue(inside);
+    assertEquals(true, inside);
   }
 
   @Test
@@ -79,7 +79,7 @@ public class MouseProcessorTest
 
     boolean inside = processor.isMouseEventInBox(mockMouseEvent);
 
-    assertFalse(inside);
+    assertEquals(false, inside);
   }
 
   @Test
@@ -178,7 +178,7 @@ public class MouseProcessorTest
   {
     processor.processMousePressed(mockMouseEvent);
 
-    assertTrue(modelInfo.selectionOn);
+    assertEquals(true, modelInfo.selectionOn);
   }
 
   @Test
@@ -194,13 +194,13 @@ public class MouseProcessorTest
   {
     modelInfo.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max\nAndMore?");
     int oldYOffset = modelInfo.calculateYOffset();
-    assertTrue(oldYOffset > 0);
+    assertEquals(true, oldYOffset > 0);
     mockMouseEvent = new MockMouseEvent(110,100);
 
     processor.processMouseDragged(mockMouseEvent);
 
     modelInfo.calculateYOffset();
-    assertTrue(oldYOffset > modelInfo.yOffset);
+    assertEquals(true, oldYOffset > modelInfo.yOffset);
   }
 
   @Test
@@ -214,7 +214,7 @@ public class MouseProcessorTest
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertTrue(oldXOffset > modelInfo.xOffset);
+    assertEquals(true, oldXOffset > modelInfo.xOffset);
   }
 
   @Test
@@ -225,7 +225,7 @@ public class MouseProcessorTest
 
     processor.processMouseDragged(mockMouseEvent);
 
-    assertTrue(modelInfo.xOffset > 0);
+    assertEquals(true, modelInfo.xOffset > 0);
   }
 
   @Test
@@ -237,7 +237,7 @@ public class MouseProcessorTest
     processor.processMouseReleased(mockMouseEvent);
 
 
-    assertFalse(modelInfo.selectionOn);
+    assertEquals(false, modelInfo.selectionOn);
   }
 
   @Test
@@ -249,7 +249,7 @@ public class MouseProcessorTest
 
     assertEquals(4, modelInfo.getCursorIndex());
     assertEquals(0, modelInfo.getSelectionIndex());
-    assertTrue(modelInfo.selectionOn);
+    assertEquals(true, modelInfo.selectionOn);
   }
 
   @Test
@@ -259,7 +259,7 @@ public class MouseProcessorTest
 
     processor.makeExtraSelectionOnMultiClick();
 
-    assertTrue(processor.doubleClickOn);
+    assertEquals(true, processor.doubleClickOn);
   }
 
   @Test

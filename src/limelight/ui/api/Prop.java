@@ -3,8 +3,6 @@
 
 package limelight.ui.api;
 
-import limelight.styles.Style;
-import limelight.styles.ScreenableStyle;
 import limelight.ui.Panel;
 import limelight.ResourceLoader;
 
@@ -13,7 +11,6 @@ import java.awt.event.*;
 public interface Prop
 { 
   Panel getPanel();
-  Style getHoverStyle();
   String getName();
   Scene getScene();
   ResourceLoader getLoader();
@@ -22,8 +19,6 @@ public interface Prop
   boolean accepts_mouse_pressed();
   boolean accepts_mouse_released();
 
-  void hover_on();
-  void hover_off();
   void mouse_clicked(MouseEvent e);
   void mouse_entered(MouseEvent e);
   void mouse_exited(MouseEvent e);

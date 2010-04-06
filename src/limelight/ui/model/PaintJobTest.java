@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -79,7 +79,7 @@ public class PaintJobTest extends TestCase
     assertEquals(false, job.panelIsInClip(panel));
 
     panel.setLocation(200, 300);
-    assertTrue(job.panelIsInClip(panel));
+    assertEquals(true, job.panelIsInClip(panel));
   }
 
   public void testApplyComposite() throws Exception

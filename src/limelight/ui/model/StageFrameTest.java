@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
 import limelight.ui.api.MockProp;
 import limelight.ui.api.MockStage;
 import limelight.ui.*;
@@ -14,12 +13,16 @@ import limelight.styles.styling.*;
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.os.MockOS;
 import limelight.util.Colors;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 
-public class StageFrameTest extends TestCase
+public class StageFrameTest extends Assert
 {
   private MockStage stage;
   private StageFrame frame;
@@ -28,6 +31,7 @@ public class StageFrameTest extends TestCase
   private MockOS os;
   private Insets insets;
 
+  @Before
   public void setUp() throws Exception
   {
     RealStyleAttributeCompilerFactory.install();
@@ -47,6 +51,7 @@ public class StageFrameTest extends TestCase
     Context.instance().os = os;
   }
 
+  @After
   public void tearDown() throws Exception
   {
     try
@@ -58,18 +63,21 @@ public class StageFrameTest extends TestCase
       //ok
     }
   }
-
-  public void testIcon() throws Exception
+  
+  @Test
+  public void shouldIcon() throws Exception
   {
     assertNotNull(frame.getIconImage());
   }
 
-  public void testStage() throws Exception
+  @Test
+  public void shouldStage() throws Exception
   {
     assertSame(stage, frame.getStage());
   }
 
-  public void testLoad() throws Exception
+  @Test
+  public void shouldLoad() throws Exception
   {
     ScenePanel panel = new ScenePanel(new MockProp());
     frame.load(panel);
@@ -79,7 +87,8 @@ public class StageFrameTest extends TestCase
     assertSame(panel, root);
   }
 
-  public void testLoadSetsDefaultCursor() throws Exception
+  @Test
+  public void shouldLoadSetsDefaultCursor() throws Exception
   {
     frame.getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     ScenePanel panel = new ScenePanel(new MockProp());
@@ -88,32 +97,36 @@ public class StageFrameTest extends TestCase
     assertEquals(Cursor.DEFAULT_CURSOR, frame.getContentPane().getCursor().getType());
   }
 
-  public void testLoadWillDestroyPreviousRoots() throws Exception
+  @Test
+  public void shouldLoadWillDestroyPreviousRoots() throws Exception
   {
     ScenePanel panel = new ScenePanel(new MockProp());
     frame.load(panel);
 
     RootPanel firstRoot = frame.getRoot();
-    assertEquals(true, firstRoot.isAlive());
+    assertEquals(true, firstRoot.isIlluminated());
 
     ScenePanel panel2 = new ScenePanel(new MockProp());
     frame.load(panel2);
 
-    assertEquals(false, firstRoot.isAlive());
+    assertEquals(false, firstRoot.isIlluminated());
   }
 
-  public void testAddsSelfToFrameManager() throws Exception
+  @Test
+  public void shouldAddsSelfToFrameManager() throws Exception
   {
     assertEquals(1, frameManager.getFrameCount());
     assertEquals(true, frameManager.isWatching(frame));
   }
 
-  public void testDefaultCloseOperations() throws Exception
+  @Test
+  public void shouldDefaultCloseOperations() throws Exception
   {
     assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame.getDefaultCloseOperation());
   }
 
-  public void testSetFullScreenWhenNotVisible() throws Exception
+  @Test
+  public void shouldSetFullScreenWhenNotVisible() throws Exception
   {
     frame.setFullScreen(true);
 
@@ -122,7 +135,8 @@ public class StageFrameTest extends TestCase
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
   }
 
-  public void testSetFullScreenWhenVisible() throws Exception
+  @Test
+  public void shouldSetFullScreenWhenVisible() throws Exception
   {
     frame.open();
     frame.setFullScreen(true);
@@ -131,7 +145,8 @@ public class StageFrameTest extends TestCase
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
   }
 
-  public void testTurnOffFullScreenWhiledisplayed() throws Exception
+  @Test
+  public void shouldTurnOffFullScreenWhiledisplayed() throws Exception
   {
     frame.setFullScreen(true);
     frame.open();
@@ -141,14 +156,16 @@ public class StageFrameTest extends TestCase
     assertEquals(null, graphicsDevice.getFullScreenWindow());
   }
 
-  public void testSetKioskMode() throws Exception
+  @Test
+  public void shouldSetKioskMode() throws Exception
   {
     frame.setKiosk(true);
 
     assertEquals(true, frame.isKiosk());
   }
 
-  public void testKioskWillGoFullscreenAndFramelessWhenOpened() throws Exception
+  @Test
+  public void shouldKioskWillGoFullscreenAndFramelessWhenOpened() throws Exception
   {
     frame.setKiosk(true);
     frame.open();
@@ -157,7 +174,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, os.isInKioskMode());
   }
 
-  public void testKioskWillGoFullscreenAndFramelessWhenClosed() throws Exception
+  @Test
+  public void shouldKioskWillGoFullscreenAndFramelessWhenClosed() throws Exception
   {
     frame.setKiosk(true);
     frame.open();
@@ -167,7 +185,8 @@ public class StageFrameTest extends TestCase
     assertEquals(false, os.isInKioskMode());
   }
 
-  public void testKioskModePreservesScreenSetting() throws Exception
+  @Test
+  public void shouldKioskModePreservesScreenSetting() throws Exception
   {
     frame.setFullScreen(false);
     frame.setKiosk(true);
@@ -178,7 +197,8 @@ public class StageFrameTest extends TestCase
     assertEquals(false, os.isInKioskMode());
   }
 
-  public void testKioskModePreservesScreenSettingWithFullscreenOn() throws Exception
+  @Test
+  public void shouldKioskModePreservesScreenSettingWithFullscreenOn() throws Exception
   {
     frame.setFullScreen(true);
     frame.setKiosk(true);
@@ -189,7 +209,8 @@ public class StageFrameTest extends TestCase
     assertEquals(false, os.isInKioskMode());
   }
 
-  public void testEnterKioskModeWhileOpen() throws Exception
+  @Test
+  public void shouldEnterKioskModeWhileOpen() throws Exception
   {
     frame.setKiosk(false);
     frame.open();
@@ -199,7 +220,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, os.isInKioskMode());
   }
 
-  public void testHidingWhileInKioskMode() throws Exception
+  @Test
+  public void shouldHidingWhileInKioskMode() throws Exception
   {
     frame.setKiosk(true);
     frame.open();
@@ -209,7 +231,8 @@ public class StageFrameTest extends TestCase
     assertEquals(false, os.isInKioskMode());
   }
 
-  public void testShowingAfterHidingWhileInKioskMode() throws Exception
+  @Test
+  public void shouldShowingAfterHidingWhileInKioskMode() throws Exception
   {
     frame.setKiosk(true);
     frame.open();
@@ -220,7 +243,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, os.isInKioskMode());
   }
 
-  public void testFullscreenOffWhenInKioskMode() throws Exception
+  @Test
+  public void shouldFullscreenOffWhenInKioskMode() throws Exception
   {
     frame.setKiosk(true);
     frame.setFullScreen(true);
@@ -230,7 +254,8 @@ public class StageFrameTest extends TestCase
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
   }
 
-  public void testHideAndShow() throws Exception
+  @Test
+  public void shouldHideAndShow() throws Exception
   {
     frame.open();
     assertEquals(true, frame.isVisible());
@@ -242,7 +267,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, frame.isVisible());
   }
 
-  public void testHideAndShowWithFullScreen() throws Exception
+  @Test
+  public void shouldHideAndShowWithFullScreen() throws Exception
   {
     frame.setFullScreen(true);
     frame.open();
@@ -253,7 +279,8 @@ public class StageFrameTest extends TestCase
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
   }
 
-  public void testSettingFullScreenWhileHidden() throws Exception
+  @Test
+  public void shouldSettingFullScreenWhileHidden() throws Exception
   {
     frame.open();
     frame.setVisible(false);
@@ -261,7 +288,8 @@ public class StageFrameTest extends TestCase
     assertEquals(null, graphicsDevice.getFullScreenWindow());
   }
 
-  public void testSetBackgroundColor() throws Exception
+  @Test
+  public void shouldSetBackgroundColor() throws Exception
   {
     frame.setBackgroundColor("blue");
     assertEquals(Colors.resolve("blue"), frame.getBackground());
@@ -272,7 +300,8 @@ public class StageFrameTest extends TestCase
     assertEquals("#AABBCC", frame.getBackgroundColor());
   }
 
-  public void testShouldRetainSizeAndLocationWhenComingOutOfFullscreen() throws Exception
+  @Test
+  public void shouldShouldRetainSizeAndLocationWhenComingOutOfFullscreen() throws Exception
   {
     frame.setSizeStyles(128, 456);
     frame.setLocationStyles(12, 34);
@@ -285,7 +314,8 @@ public class StageFrameTest extends TestCase
     assertEquals(new Point(12, 34), frame.getLocation());
   }
 
-  public void testShouldAllowClose() throws Exception
+  @Test
+  public void shouldShouldAllowClose() throws Exception
   {
     stage.shouldAllowClose = false;
     assertEquals(false, frame.shouldAllowClose());
@@ -294,7 +324,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, frame.shouldAllowClose());
   }
 
-  public void testSettingDimensionStyles() throws Exception
+  @Test
+  public void shouldSettingDimensionStyles() throws Exception
   {
     graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
     insets.set(10, 20, 30, 40);
@@ -310,7 +341,8 @@ public class StageFrameTest extends TestCase
     assertEquals(new Dimension(470, 960), frame.getSize());
   }
 
-  public void testSettingLocationStyles() throws Exception
+  @Test
+  public void shouldSettingLocationStyles() throws Exception
   {
     graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
     insets.set(10, 20, 30, 40);
@@ -328,7 +360,8 @@ public class StageFrameTest extends TestCase
     assertEquals(new Point(490, 730), frame.getLocation());
   }
 
-  public void testApplyingLocationBeforeSizeWillAdjustBeforeOpening() throws Exception
+  @Test
+  public void shouldApplyingLocationBeforeSizeWillAdjustBeforeOpening() throws Exception
   {
     graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
     insets.set(10, 20, 30, 40);
@@ -341,7 +374,8 @@ public class StageFrameTest extends TestCase
     assertEquals(new Point(390, 440), frame.getLocation());
   }
 
-  public void testVitality() throws Exception
+  @Test
+  public void shouldVitality() throws Exception
   {
     assertEquals(true, frame.isVital());
 
@@ -350,7 +384,8 @@ public class StageFrameTest extends TestCase
     assertEquals(false, frame.isVital());
   }
 
-  public void testSizeChangesPropogateDown() throws Exception
+  @Test
+  public void shouldSizeChangesPropogateDown() throws Exception
   {
     MockRootPanel panel = new MockRootPanel();
     frame.load(panel);
@@ -364,7 +399,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, panel.consumableAreaChangedCalled);
   }
 
-  public void testShouldCollapseAutoDimensions() throws Exception
+  @Test
+  public void shouldShouldCollapseAutoDimensions() throws Exception
   {
     frame.setSizeStyles("auto", "auto");
     MockRootPanel child = new MockRootPanel();
@@ -379,7 +415,8 @@ public class StageFrameTest extends TestCase
     assertEquals(new Dimension(width, height), frame.getSize());
   }
 
-  public void testClosedIsCalledwhenClosed() throws Exception
+  @Test
+  public void shouldClosedIsCalledwhenClosed() throws Exception
   {
     MockContext.stub();
     AlertFrameManager manager = new AlertFrameManager();
@@ -390,7 +427,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, stage.wasClosed);
   }
   
-  public void testIconificationDelegatedToStage() throws Exception
+  @Test
+  public void shouldIconificationDelegatedToStage() throws Exception
   {
     frame.iconified(new WindowEvent(frame, 1));
     assertEquals(true, stage.iconified);
@@ -398,7 +436,8 @@ public class StageFrameTest extends TestCase
     assertEquals(false, stage.iconified);
   }
 
-  public void testActivationDelegatedToStage() throws Exception
+  @Test
+  public void shouldActivationDelegatedToStage() throws Exception
   {
     frame.setVisible(true);
     frame.activated(new WindowEvent(frame, 1));
@@ -407,14 +446,16 @@ public class StageFrameTest extends TestCase
     assertEquals(false, stage.activated);
   }
   
-  public void testStageShouldBeNotifiedWhenClosing() throws Exception
+  @Test
+  public void shouldStageShouldBeNotifiedWhenClosing() throws Exception
   {
     frame.close(null);
 
     assertEquals(true, stage.notifiedOfClosing);
   }
 
-  public void testClosingAndClosedNotCalledMoreThanOnce() throws Exception
+  @Test
+  public void shouldClosingAndClosedNotCalledMoreThanOnce() throws Exception
   {
     frame.close(null);
     frame.closed(null);
@@ -428,7 +469,8 @@ public class StageFrameTest extends TestCase
     assertEquals(false, stage.wasClosed);
   }
 
-  public void testIsClosed() throws Exception
+  @Test
+  public void shouldIsClosed() throws Exception
   {
     assertEquals(false, frame.isClosed());
 
@@ -437,7 +479,8 @@ public class StageFrameTest extends TestCase
     assertEquals(true, frame.isClosed());
   }
 
-  public void testDeactivatedWhenNotPreviouslyActivatedDoesNotPropogate() throws Exception
+  @Test
+  public void shouldDeactivatedWhenNotPreviouslyActivatedDoesNotPropogate() throws Exception
   {
     stage.activated = true;
     frame.deactivated(null);

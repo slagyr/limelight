@@ -73,7 +73,7 @@ public class TextAreaModelTest
 
     modelInfo.calculateYOffset();
 
-    assertTrue(modelInfo.yOffset > 0);
+    assertEquals(true, modelInfo.yOffset > 0);
 
     modelInfo.setCursorIndex(2);
 
@@ -93,7 +93,7 @@ public class TextAreaModelTest
     modelInfo.setCursorIndex(20);
 
     int staticYOffset = modelInfo.calculateYOffset();
-    assertTrue(staticYOffset > 0);
+    assertEquals(true, staticYOffset > 0);
 
     modelInfo.setCursorIndex(10);
 
@@ -217,7 +217,7 @@ public class TextAreaModelTest
   public void canTellIfTheTextPanelIsFull()
   {
     modelInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\n");
-    assertTrue(modelInfo.isBoxFull());
+    assertEquals(true, modelInfo.isBoxFull());
   }
 
   @Test
@@ -266,8 +266,8 @@ public class TextAreaModelTest
     modelInfo.setSelectionIndex(modelInfo.cursorIndex - 15);
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
-    assertTrue(modelInfo.getYPosFromIndex(modelInfo.cursorIndex) > panel.getHeight());
-    assertTrue(regions.get(regions.size() -1).y < panel.getHeight());
+    assertEquals(true, modelInfo.getYPosFromIndex(modelInfo.cursorIndex) > panel.getHeight());
+    assertEquals(true, regions.get(regions.size() -1).y < panel.getHeight());
 
   }
 
@@ -280,8 +280,8 @@ public class TextAreaModelTest
 
     ArrayList<Rectangle> regions = areaInfo.getSelectionRegions();
     
-    assertTrue(areaInfo.getYPosFromIndex(areaInfo.cursorIndex) > panel.getHeight());
-    assertTrue(regions.get(regions.size() -1).y < panel.getHeight());
+    assertEquals(true, areaInfo.getYPosFromIndex(areaInfo.cursorIndex) > panel.getHeight());
+    assertEquals(true, regions.get(regions.size() -1).y < panel.getHeight());
     assertEquals(areaInfo.getYPosFromIndex(areaInfo.cursorIndex) - areaInfo.calculateYOffset() - TextModel.TOP_MARGIN, regions.get(regions.size() - 1).y);
   }
 

@@ -3,6 +3,7 @@
 
 package limelight.ui;
 
+import limelight.styles.ScreenableStyle;
 import limelight.util.Box;
 import limelight.styles.Style;
 import limelight.ui.model.ScenePanel;
@@ -39,7 +40,6 @@ public interface Panel extends Iterable<Panel>
 
   void add(Panel child);
   List<Panel> getChildren();
-
   boolean remove(Panel child);
   void removeAll();
   void sterilize();
@@ -54,7 +54,7 @@ public interface Panel extends Iterable<Panel>
   void doLayout();
   Layout getDefaultLayout();
 
-  Style getStyle();
+  ScreenableStyle getStyle();
   
   boolean isFloater();
   void doFloatLayout();
@@ -79,4 +79,7 @@ public interface Panel extends Iterable<Panel>
   void buttonPressed(ActionEvent e);
   void valueChanged(Object e);
 
+  boolean isIlluminated();
+  void illuminate();
+  void delluminate();
 }

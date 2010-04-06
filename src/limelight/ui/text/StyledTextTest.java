@@ -18,9 +18,9 @@ import java.util.Map;
 public class StyledTextTest extends Assert
 {
   private StyledText styledText;
-  private Map<String, Style> styles;
-  private Style style1;
-  private Style style2;
+  private Map<String, RichStyle> styles;
+  private RichStyle style1;
+  private RichStyle style2;
   private RichStyle defaultStyle;
 
   @Test
@@ -50,7 +50,7 @@ public class StyledTextTest extends Assert
 
   private void makeSampleStyles()
   {
-    styles = new HashMap<String, Style>();
+    styles = new HashMap<String, RichStyle>();
     style1 = new RichStyle();
     style2 = new RichStyle();
     styles.put("fizz", style1);
@@ -77,7 +77,7 @@ public class StyledTextTest extends Assert
   public void shouldBuildFont() throws Exception
   {
     styledText = new StyledText("Blah");
-    styledText.setupStyles(new HashMap<String, Style>(), new RichStyle(), new MockStyleObserver());
+    styledText.setupStyles(new HashMap<String, RichStyle>(), new RichStyle(), new MockStyleObserver());
     styledText.getStyle().setFontFace("Courier");
     styledText.getStyle().setFontStyle("plain");
     styledText.getStyle().setFontSize(12);

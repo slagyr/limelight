@@ -3,15 +3,12 @@
 
 package limelight.ui.model;
 
+import limelight.styles.*;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
-import limelight.styles.FlatStyle;
-import limelight.styles.ScreenableStyle;
-import limelight.styles.Style;
-import limelight.styles.StyleDescriptor;
 import limelight.styles.styling.StaticDimensionAttribute;
 import limelight.styles.styling.SimpleIntegerAttribute;
 import limelight.styles.styling.SimplePercentageAttribute;
@@ -20,7 +17,9 @@ import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
 import limelight.audio.MockAudioPlayer;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.swing.*;
 import java.util.LinkedList;
@@ -30,13 +29,19 @@ import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
 import java.awt.event.*;
 
-public class PropPanelTest extends TestCase
+public class PropPanelTest extends Assert
 {
   private MockProp prop;
   private PropPanel panel;
-  private Style style;
+  private ScreenableStyle style;
   private ScenePanel root;
+  private RichStyle style1;
+  private RichStyle style2;
+  private RichStyle style3;
+  private RichStyle style4;
+  private RichStyle style5;
 
+  @Before
   public void setUp() throws Exception
   {
     root = new ScenePanel(new MockProp());
@@ -46,8 +51,9 @@ public class PropPanelTest extends TestCase
     style = panel.getStyle();
     root.add(panel);
   }
-
-  public void testCreatesItsStyleInsteadOfGettingItFromProp() throws Exception
+  
+  @Test
+  public void shouldCreatesItsStyleInsteadOfGettingItFromProp() throws Exception
   {
     panel = new PropPanel(null);
     
@@ -55,7 +61,8 @@ public class PropPanelTest extends TestCase
     assertEquals(ScreenableStyle.class, panel.getStyle().getClass());
   }
 
-  public void testOnlyPaintWhenLaidOut() throws Exception
+  @Test
+  public void shouldOnlyPaintWhenLaidOut() throws Exception
   {
     MockAfterPaintAction paintAction = new MockAfterPaintAction();
     panel.setAfterPaintAction(paintAction);
@@ -68,13 +75,15 @@ public class PropPanelTest extends TestCase
     assertEquals(true, paintAction.invoked);
   }
 
-  public void testConstructor() throws Exception
+  @Test
+  public void shouldConstructor() throws Exception
   {
     assertSame(prop, panel.getProp());
     assertEquals(TextPaneTextAccessor.class, panel.getTextAccessor().getClass());
   }
 
-  public void testPainters() throws Exception
+  @Test
+  public void shouldPainters() throws Exception
   {
     LinkedList<Painter> painters = panel.getPainters();
 
@@ -83,7 +92,8 @@ public class PropPanelTest extends TestCase
     assertEquals(BorderPainter.class, painters.get(1).getClass());
   }
 
-  public void testText() throws Exception
+  @Test
+  public void shouldText() throws Exception
   {
     panel.setText("blah");
     assertEquals("blah", panel.getText());
@@ -93,7 +103,8 @@ public class PropPanelTest extends TestCase
     assertEquals("foo", panel.getText());
   }
 
-  public void testRactanglesAreCached() throws Exception
+  @Test
+  public void shouldRactanglesAreCached() throws Exception
   {
     Box rectangle = panel.getBoundingBox();
     Box insideMargins = panel.getBoxInsideMargins();
@@ -113,7 +124,8 @@ public class PropPanelTest extends TestCase
     assertNotSame(insidePadding, panel.getBoxInsidePadding());
   }
 
-  public void testIsFloater() throws Exception
+  @Test
+  public void shouldIsFloater() throws Exception
   {
     assertEquals(false, panel.isFloater());
     panel.getStyle().setFloat("on");
@@ -122,7 +134,8 @@ public class PropPanelTest extends TestCase
     assertEquals(false, panel.isFloater());
   }
 
-  public void testAfterPaintAction() throws Exception
+  @Test
+  public void shouldAfterPaintAction() throws Exception
   {
     MockAfterPaintAction action = new MockAfterPaintAction();
     panel.setAfterPaintAction(action);
@@ -135,14 +148,16 @@ public class PropPanelTest extends TestCase
     assertEquals(true, action.invoked);
   }
 
-  public void testHasChangesWhenaStyleIsChanged() throws Exception
+  @Test
+  public void shouldHasChangesWhenaStyleIsChanged() throws Exception
   {
     style.setWidth("100%");
 
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testHasChangesWhenaTextIsChanged() throws Exception
+  @Test
+  public void shouldHasChangesWhenaTextIsChanged() throws Exception
   {
     TextPanel.staticFontRenderingContext = new FontRenderContext(new AffineTransform(), true, true);
     panel.doLayout();
@@ -158,7 +173,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testAddingScrollBarChangesChildConsumableArea() throws Exception
+  @Test
+  public void shouldAddingScrollBarChangesChildConsumableArea() throws Exception
   {
     int scrollWidth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
     style.setMargin("0");
@@ -183,7 +199,8 @@ public class PropPanelTest extends TestCase
     assertEquals(100, panel.getChildConsumableArea().height);
   }
 
-  public void testGetOwnerOfPointGivesPriorityToScrollBars() throws Exception
+  @Test
+  public void shouldGetOwnerOfPointGivesPriorityToScrollBars() throws Exception
   {
     panel.setSize(100, 100);
 
@@ -207,7 +224,8 @@ public class PropPanelTest extends TestCase
     assertSame(horizontal, panel.getOwnerOfPoint(new Point(50, 90)));
   }
 
-  public void testGetOwnerOfPointGivesPriorityToFloaters() throws Exception
+  @Test
+  public void shouldGetOwnerOfPointGivesPriorityToFloaters() throws Exception
   {
     panel.setSize(100, 100);
 
@@ -226,7 +244,8 @@ public class PropPanelTest extends TestCase
     assertSame(floater, panel.getOwnerOfPoint(new Point(50, 50)));
   }
 
-  public void testVerticalMouseWheelMovement() throws Exception
+  @Test
+  public void shouldVerticalMouseWheelMovement() throws Exception
   {
     panel.addVerticalScrollBar();
     panel.getVerticalScrollbar().configure(100, 200);
@@ -244,7 +263,8 @@ public class PropPanelTest extends TestCase
     assertEquals(0, panel.getHorizontalScrollbar().getScrollBar().getValue());
   }
 
-  public void testHorizontalMouseWheelMovement() throws Exception
+  @Test
+  public void shouldHorizontalMouseWheelMovement() throws Exception
   {
     panel.addVerticalScrollBar();
     panel.getVerticalScrollbar().configure(100, 200);
@@ -262,7 +282,8 @@ public class PropPanelTest extends TestCase
     assertEquals(16, panel.getHorizontalScrollbar().getScrollBar().getValue());
   }
 
-  public void testPlayAudioFile() throws Exception
+  @Test
+  public void shouldPlayAudioFile() throws Exception
   {
     MockAudioPlayer audioPlayer = new MockAudioPlayer();
     Context.instance().audioPlayer = audioPlayer;
@@ -272,7 +293,8 @@ public class PropPanelTest extends TestCase
     assertEquals("blah", audioPlayer.playedFile);
   }
 
-  public void testFocusGained() throws Exception
+  @Test
+  public void shouldFocusGained() throws Exception
   {
     FocusEvent event = new FocusEvent(new JPanel(), 1);
     panel.focusGained(event);
@@ -281,7 +303,8 @@ public class PropPanelTest extends TestCase
     assertSame(event, prop.gainedFocus);
   }
 
-  public void testFocusLost() throws Exception
+  @Test
+  public void shouldFocusLost() throws Exception
   {
     FocusEvent event = new FocusEvent(new JPanel(), 1);
     panel.focusLost(event);
@@ -290,7 +313,8 @@ public class PropPanelTest extends TestCase
     assertSame(event, prop.lostFocus);
   }
 
-  public void testKeyPressedEvent() throws Exception
+  @Test
+  public void shouldKeyPressedEvent() throws Exception
   {
     KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
     panel.keyPressed(event);
@@ -298,7 +322,8 @@ public class PropPanelTest extends TestCase
     assertSame(event, prop.pressedKey);
   }
 
-  public void testKeyTypedEvent() throws Exception
+  @Test
+  public void shouldKeyTypedEvent() throws Exception
   {
     KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
     panel.keyTyped(event);
@@ -306,7 +331,8 @@ public class PropPanelTest extends TestCase
     assertSame(event, prop.typedKey);
   }
 
-  public void testKeyReleasedEvent() throws Exception
+  @Test
+  public void shouldKeyReleasedEvent() throws Exception
   {
     KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
     panel.keyReleased(event);
@@ -314,7 +340,8 @@ public class PropPanelTest extends TestCase
     assertSame(event, prop.releasedKey);
   }
 
-  public void testButtonPressedEvent() throws Exception
+  @Test
+  public void shouldButtonPressedEvent() throws Exception
   {
     ActionEvent event = new ActionEvent(new JPanel(), 1, "blah");
     panel.buttonPressed(event);
@@ -322,7 +349,8 @@ public class PropPanelTest extends TestCase
     assertSame(event, prop.pressedButton);
   }
 
-  public void testValueChangedEvent() throws Exception
+  @Test
+  public void shouldValueChangedEvent() throws Exception
   {
     Object event = "blah";
     panel.valueChanged(event);
@@ -330,29 +358,19 @@ public class PropPanelTest extends TestCase
     assertSame(event, prop.changedValue);
   }
 
-  public void testHoverOnWithHoverStyle() throws Exception
+  @Test
+  public void shouldHoverOnWithHoverStyle() throws Exception
   {
     MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
-    prop.hoverStyle = new FlatStyle();
 
     panel.mouseEntered(event);
 
     assertEquals(Cursor.HAND_CURSOR, root.getContentPane().getCursor().getType());
-    assertSame(prop.hoverStyle, style.getScreen());
+    assertSame(panel.getHoverStyle(), style.getScreen());
   }
 
-  public void testHoverOnWithoutHoverStyle() throws Exception
-  {
-    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
-    prop.hoverStyle = null;
-
-    panel.mouseEntered(event);
-
-    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
-    assertEquals(null, style.getScreen());
-  }
-
-  public void testHoverOffWithHoverStyle() throws Exception
+  @Test
+  public void shouldHoverOffWithHoverStyle() throws Exception
   {
     MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
     prop.hoverStyle = new FlatStyle();
@@ -364,7 +382,8 @@ public class PropPanelTest extends TestCase
     assertEquals(null, style.getScreen());
   }
 
-  public void testHoverOffWithoutHoverStyle() throws Exception
+  @Test
+  public void shouldHoverOffWithoutHoverStyle() throws Exception
   {
     MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
     prop.hoverStyle = null;
@@ -376,7 +395,8 @@ public class PropPanelTest extends TestCase
     assertEquals(null, style.getScreen());
   }
 
-  public void testHoverOffWhenHoverStyledWasRemovedFromProp() throws Exception
+  @Test
+  public void shouldHoverOffWhenHoverStyledWasRemovedFromProp() throws Exception
   {
     MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
     prop.hoverStyle = new FlatStyle();
@@ -389,7 +409,8 @@ public class PropPanelTest extends TestCase
     assertEquals(null, style.getScreen());
   }
 
-  public void testWidthOrHeightChanges() throws Exception
+  @Test
+  public void shouldWidthOrHeightChanges() throws Exception
   {
     panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
     assertEquals(true, panel.sizeChangePending());
@@ -402,7 +423,8 @@ public class PropPanelTest extends TestCase
     assertEquals(false, panel.sizeChangePending());
   }
 
-  public void testShouldPropagateConsumableAreaChangeForWidthChange() throws Exception
+  @Test
+  public void shouldShouldPropagateConsumableAreaChangeForWidthChange() throws Exception
   {
     MockPanel child = new MockPanel();
     panel.add(child);
@@ -412,7 +434,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, child.consumableAreaChangedCalled);
   }
 
-  public void testShouldPropagateConsumableAreaChangeForBorderChange() throws Exception
+  @Test
+  public void shouldShouldPropagateConsumableAreaChangeForBorderChange() throws Exception
   {
     MockPanel child = new MockPanel();
     panel.add(child);
@@ -422,7 +445,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, child.consumableAreaChangedCalled);
   }
 
-  public void testBorderStyleChanges() throws Exception
+  @Test
+  public void shouldBorderStyleChanges() throws Exception
   {
     panel.getBorderShaper();
     checkBorderChanged(Style.TOP_BORDER_WIDTH);
@@ -447,7 +471,8 @@ public class PropPanelTest extends TestCase
     assertEquals(false, panel.borderChanged());
   }
 
-  public void testMarginStyleChanges() throws Exception
+  @Test
+  public void shouldMarginStyleChanges() throws Exception
   {
     panel.doLayout();
     assertEquals(false, panel.needsLayout());
@@ -488,7 +513,8 @@ public class PropPanelTest extends TestCase
   }
 
 
-  public void testShouldBuildBufferWhenStyleChanges() throws Exception
+  @Test
+  public void shouldShouldBuildBufferWhenStyleChanges() throws Exception
   {
     SimpleCache<limelight.ui.Panel, BufferedImage> cache = new SimpleCache<limelight.ui.Panel, BufferedImage>();
     Context.instance().bufferedImageCache = cache;
@@ -498,7 +524,8 @@ public class PropPanelTest extends TestCase
     assertEquals(null, cache.retrieve(panel));
   }
 
-  public void testShouldNotBuildBufferWhenTransparencyChanges() throws Exception
+  @Test
+  public void shouldShouldNotBuildBufferWhenTransparencyChanges() throws Exception
   {
     SimpleCache<limelight.ui.Panel, BufferedImage> cache = new SimpleCache<limelight.ui.Panel, BufferedImage>();
     Context.instance().bufferedImageCache = cache;
@@ -508,7 +535,8 @@ public class PropPanelTest extends TestCase
     assertNotNull(cache.retrieve(panel));
   }
 
-  public void testRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
+  @Test
+  public void shouldRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
   {
     for(int i = 0; i < 100; i++)
       panel.add(new PropPanel(new MockProp()));
@@ -530,7 +558,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testAlignmentChangeShouldInvokeLayout() throws Exception
+  @Test
+  public void shouldAlignmentChangeShouldInvokeLayout() throws Exception
   {
     panel.resetLayout();
 
@@ -543,7 +572,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testChangingSizeToZeroWillReLayoutGrandDaddy() throws Exception
+  @Test
+  public void shouldChangingSizeToZeroWillReLayoutGrandDaddy() throws Exception
   {
     PropPanel child = new PropPanel(new MockProp());
     PropPanel grandChild = new PropPanel(new MockProp());
@@ -557,7 +587,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testChangingTextColor() throws Exception
+  @Test
+  public void shouldChangingTextColor() throws Exception
   {
     panel.setText("foo");
     panel.resetLayout();
@@ -567,7 +598,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testChangingFontFace() throws Exception
+  @Test
+  public void shouldChangingFontFace() throws Exception
   {
     panel.setText("foo");
     panel.resetLayout();
@@ -579,7 +611,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.sizeChangePending());
   }
 
-  public void testChangingFontSize() throws Exception
+  @Test
+  public void shouldChangingFontSize() throws Exception
   {
     panel.setText("foo");
     panel.resetLayout();
@@ -591,7 +624,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.sizeChangePending());
   }
 
-  public void testChangingFontStyle() throws Exception
+  @Test
+  public void shouldChangingFontStyle() throws Exception
   {
     panel.setText("foo");
     panel.resetLayout();
@@ -603,7 +637,8 @@ public class PropPanelTest extends TestCase
     assertEquals(true, panel.sizeChangePending());
   }
 
-  public void testScrollbarsDontGetRemovedOnRemoveAll() throws Exception
+  @Test
+  public void shouldScrollbarsDontGetRemovedOnRemoveAll() throws Exception
   {
     panel.addVerticalScrollBar();
     panel.addHorizontalScrollBar();
@@ -616,4 +651,68 @@ public class PropPanelTest extends TestCase
     assertEquals(panel.getHorizontalScrollbar(), panel.children.get(1));
   }
 
+  @Test
+  public void shouldHaveListOfStyles() throws Exception
+  {
+    panel.setStyles("one, two, three");
+
+    assertEquals("one, two, three", panel.getStyles());
+  }
+
+  private void buildStyles()
+  {
+    style1 = new RichStyle();
+    style2 = new RichStyle();
+    style3 = new RichStyle();
+    style4 = new RichStyle();
+    style5 = new RichStyle();
+    root.getStylesStore().put("one", style1);
+    root.getStylesStore().put("two", style2);
+    root.getStylesStore().put("three", style3);
+    root.getStylesStore().put("one.hover", style4);
+    root.getStylesStore().put("two.hover", style5);
+  }
+
+  @Test
+  public void shouldExtendStylesUponIllumination() throws Exception
+  {
+    buildStyles();
+
+    panel.setStyles("one, two, three");
+    panel.illuminate();
+
+    assertEquals(true, panel.getStyle().hasExtension(style1));
+    assertEquals(true, panel.getStyle().hasExtension(style2));
+    assertEquals(true, panel.getStyle().hasExtension(style3));
+  }
+
+  @Test
+  public void shouldExtendHoverStylesUponIllumination() throws Exception
+  {
+    buildStyles();
+
+    panel.setStyles("one, two");
+    panel.illuminate();
+
+    assertEquals(true, panel.getStyle().hasExtension(style1));
+    assertEquals(true, panel.getStyle().hasExtension(style2));
+    assertEquals(false, panel.getStyle().hasExtension(style3));    
+    assertEquals(true, panel.getHoverStyle().hasExtension(style4));
+    assertEquals(true, panel.getHoverStyle().hasExtension(style5));
+  }
+
+  @Test
+  public void shouldClearExtensionUponDellumination() throws Exception
+  {
+    buildStyles();
+    panel.setStyles("one, two, three");
+    panel.illuminate();
+    panel.delluminate();
+
+    assertEquals(false, panel.getStyle().hasExtension(style1));
+    assertEquals(false, panel.getStyle().hasExtension(style2));
+    assertEquals(false, panel.getStyle().hasExtension(style3));
+    assertEquals(false, panel.getHoverStyle().hasExtension(style4));
+    assertEquals(false, panel.getHoverStyle().hasExtension(style5));
+  }
 }

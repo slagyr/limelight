@@ -1,10 +1,10 @@
 package limelight.ui.model.inputs;
 
+import limelight.styles.ScreenableStyle;
 import limelight.ui.model.*;
 import limelight.ui.RadioButtonGroupMember;
 import limelight.ui.RadioButtonGroup;
 import limelight.util.Box;
-import limelight.styles.Style;
 import limelight.Context;
 
 import javax.imageio.ImageIO;
@@ -81,7 +81,7 @@ public class RadioButton2Panel extends BasePanel implements TextAccessor, InputP
       graphics.drawImage(normalImage, 0, 0, null);
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }

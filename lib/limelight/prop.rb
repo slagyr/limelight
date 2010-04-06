@@ -22,7 +22,7 @@ module Limelight
       def event(event_symbol)
         @events ||= []
         @events << event_symbol unless @events.include?(event_symbol)
-        define_method(event_symbol) { |event|  } # do nothing by default
+        define_method(event_symbol) { |event| } # do nothing by default
       end
 
       def events
@@ -54,10 +54,11 @@ module Limelight
     # until the prop is added to a Prop tree with a Scene.
     #
     def initialize(hash = {})
-      @options = hash || {}
-      @children = []
       @panel = self.class.panel_class.new(self)
       @style = @panel.style
+      @children = []
+      @options = {}
+      add_options(hash)
     end
 
     # Add a Prop as a child of this Prop.
@@ -117,7 +118,7 @@ module Limelight
       unless self.is_a?(player_module)
         extend player_module
         self.casted if player_module.instance_methods.include?("casted")
-      end 
+      end
     end
 
     def update #:nodoc:
@@ -154,7 +155,7 @@ module Limelight
     # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
     # Some Players such as text_box, will cause the text to appear in the text_box.
     #
-    def text=(value)    
+    def text=(value)
       @panel.text = value.to_s
     end
 
@@ -166,7 +167,7 @@ module Limelight
 
     # Returns the scene to which this prop belongs to.
     #
-    def scene 
+    def scene
       return nil if @parent.nil?
       @scene = @parent.scene if @scene.nil?
       return @scene
@@ -203,7 +204,13 @@ module Limelight
     # illuminated (added to a scene).
     #
     def add_options(more_options)
+      return unless more_options
       raise "Too late to add options" if illuminated?
+
+      @name = more_options.delete(:name) if more_options.has_key?(:name)
+      @additional_styles = more_options.delete(:styles) if more_options.has_key?(:styles)
+      panel.setStyles("#{@name}, #{@additional_styles}")
+      
       @options.merge!(more_options)
     end
 
@@ -298,17 +305,14 @@ module Limelight
         scene.index_prop(self) if @id
       else
         set_id(@options.delete(:id))
-        @name = @options.delete(:name)
         @players = @options.delete(:players)
-        @additional_styles = @options.delete(:styles)
 
-        inherit_styles
         scene.casting_director.fill_cast(self)
         apply_options
 
         @options = nil
       end
-      
+
       children.each do |child|
         child.illuminate
       end
@@ -316,7 +320,7 @@ module Limelight
 
     def illuminated? #:nodoc:
       return @options.nil?
-    end  
+    end
 
     private ###############################################
 
@@ -347,24 +351,6 @@ module Limelight
     def define_event(symbol, value)
       event_name = symbol.to_s[3..-1]
       self.instance_eval "def #{event_name}(event); #{value}; end"
-    end
-
-    def inherit_styles
-      style_names = []
-      style_names << @name unless @name.nil?
-      style_names += @additional_styles.gsub(',', ' ').split(' ') unless @additional_styles.nil?   
-      style_names.each do |style_name|    
-        new_style = scene.styles[style_name]
-        @style.add_extension(new_style) if new_style
-        new_hover_style = scene.styles["#{style_name}.hover"]
-        if new_hover_style
-          if @hover_style.nil?
-            @hover_style = new_hover_style
-          else
-            @hover_style.add_extension(new_hover_style)
-          end
-        end
-      end
     end
 
   end

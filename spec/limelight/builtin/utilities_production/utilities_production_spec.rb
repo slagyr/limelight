@@ -127,6 +127,7 @@ describe "Utilitites Production" do
   it "should load the alert scene" do
     production.load_alert_scene("Some Message")
     stage = production.theater["Alert"]
+    stage.should_not == nil
 
     stage.current_scene.should_not == nil
     scene = stage.current_scene

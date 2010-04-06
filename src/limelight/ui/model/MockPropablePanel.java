@@ -13,13 +13,12 @@ import limelight.ui.api.PropablePanel;
 import limelight.ui.api.MockProp;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
-import limelight.styles.FlatStyle;
 import limelight.styles.Style;
 
 public class MockPropablePanel extends MockPanel implements PropablePanel, PaintablePanel
 {
   public final MockProp prop;
-  public Style style;
+  public ScreenableStyle style;
   public Box childConsumableBox;
   private int prepForSnapWidth;
   private int prepForSnapHeight;
@@ -77,7 +76,7 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
     return boxInsideBorders;
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return style;
   }

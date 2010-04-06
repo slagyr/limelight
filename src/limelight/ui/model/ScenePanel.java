@@ -3,8 +3,8 @@
 
 package limelight.ui.model;
 
-import limelight.Context;
-import limelight.ResourceLoader;
+import limelight.*;
+import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
@@ -18,31 +18,54 @@ public class ScenePanel extends PropPanel implements RootPanel
 {
   private Container contentPane;
   private EventListener listener;
-  private boolean alive;
-  private final ArrayList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
-  private final ArrayList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
+  private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
+  private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
   private PropFrame frame;
-  private Map<String, Style> styles;
+  private final Map<String, RichStyle> styles;
 
   public ScenePanel(Prop prop)
   {
     super(prop);
-    styles = Collections.synchronizedMap(new HashMap<String, Style>());
+    styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
   }
 
-  public void setFrame(PropFrame frame)
+  public void setFrame(PropFrame newFrame)
   {
-    this.frame = frame;
-    contentPane = frame.getContentPane();
+    if(frame != null && newFrame != frame)
+      delluminate();
+    
+    frame = newFrame;
 
+    if(frame != null)
+    {
+      illuminate();
+      addPanelNeedingLayout(this);
+    }
+  }
+
+  @Override
+  public void illuminate()
+  {
+    contentPane = frame.getContentPane();
     listener = new EventListener(this);
     contentPane.addMouseListener(listener);
     contentPane.addMouseMotionListener(listener);
     contentPane.addMouseWheelListener(listener);
     contentPane.addKeyListener(listener);
-    alive = true;
-    addPanelNeedingLayout(this);
+    super.illuminate();
+  }
+
+  @Override
+  public void delluminate()
+  {
+    removeKeyboardFocus();
+    contentPane.removeMouseListener(listener);
+    contentPane.removeMouseMotionListener(listener);
+    contentPane.removeMouseWheelListener(listener);
+    contentPane.removeKeyListener(listener);
+    listener = null;
+    super.delluminate();
   }
 
   public Container getContentPane()
@@ -50,12 +73,13 @@ public class ScenePanel extends PropPanel implements RootPanel
     return contentPane;
   }
 
+  @Override
   public Box getChildConsumableArea()
   {
-    Box box = new Box(getX(), getY(), getWidth(), getHeight());
-    return box;
+    return new Box(getX(), getY(), getWidth(), getHeight());
   }
 
+  @Override
   public Box getBoxInsidePadding()
   {
     return getChildConsumableArea();
@@ -107,23 +131,14 @@ public class ScenePanel extends PropPanel implements RootPanel
     return getAbsoluteLocation().y;
   }
 
-  public void destroy()
-  {
-    removeKeyboardFocus();                                                                                                     
-    contentPane.removeMouseListener(listener);
-    contentPane.removeMouseMotionListener(listener);
-    contentPane.removeMouseWheelListener(listener);
-    contentPane.removeKeyListener(listener);
-    removeAll();
-    listener = null;
-    alive = false;
-  }
-
   private void removeKeyboardFocus()
   {
-    Panel focuedPanel = Context.instance().keyboardFocusManager.getFocusedPanel();
-    if(focuedPanel != null && focuedPanel.getRoot() == this)
-      Context.instance().keyboardFocusManager.unfocusCurrentlyFocusedComponent();
+    limelight.KeyboardFocusManager focusManager = Context.instance().keyboardFocusManager;
+    if(focusManager == null)
+      return;
+    Panel focusedPanel = focusManager.getFocusedPanel();
+    if(focusedPanel != null && focusedPanel.getRoot() == this)
+      focusManager.unfocusCurrentlyFocusedComponent();
   }
 
   public ScenePanel getRoot()
@@ -155,11 +170,6 @@ public class ScenePanel extends PropPanel implements RootPanel
   public Panel getPanel()
   {
     return this;
-  }
-
-  public boolean isAlive()
-  {
-    return alive;
   }
 
   public EventListener getListener()
@@ -206,20 +216,12 @@ public class ScenePanel extends PropPanel implements RootPanel
     }
   }
 
-  public void getAndClearPanelsNeedingLayout(ArrayList<Panel> buffer)
+  public void getAndClearPanelsNeedingLayout(Collection<Panel> buffer)
   {
     synchronized(panelsNeedingLayout)
     {
       buffer.addAll(panelsNeedingLayout);
       panelsNeedingLayout.clear();
-    }
-  }
-
-  public boolean panelsNeedingUpdateContains(Panel panel)
-  {
-    synchronized(panelsNeedingLayout)
-    {
-      return panelsNeedingLayout.contains(panel);
     }
   }
 
@@ -263,7 +265,7 @@ public class ScenePanel extends PropPanel implements RootPanel
     }
   }
 
-  public void getAndClearDirtyRegions(ArrayList<Rectangle> buffer)
+  public void getAndClearDirtyRegions(Collection<Rectangle> buffer)
   {
     synchronized(dirtyRegions)
     {
@@ -356,7 +358,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
   }
 
-  public Map<String, Style> getStyles()
+  public Map<String, RichStyle> getStylesStore()
   {
     return styles;
   }

@@ -60,6 +60,6 @@ public class TextBox2PanelTest
     panel.expandPaintableRegionToRightBound();
 
     assertEquals(boxInfo.getXPosFromIndex(9)- boxInfo.getXPosFromIndex(2), panel.paintableRegion.width);
-    assertTrue(panel.paintableRegion.x > 10);
+    assertEquals(true, panel.paintableRegion.x > 10);
   }
 }

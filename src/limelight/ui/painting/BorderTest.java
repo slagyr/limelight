@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.painting;
@@ -43,18 +43,18 @@ public class BorderTest extends TestCase
     style.setBorderWidth("0");
     border = new Border(style, insideMargin);
 
-    assertFalse(border.hasTopBorder());
-    assertFalse(border.hasRightBorder());
-    assertFalse(border.hasBottomBorder());
-    assertFalse(border.hasLeftBorder());
+    assertEquals(false, border.hasTopBorder());
+    assertEquals(false, border.hasRightBorder());
+    assertEquals(false, border.hasBottomBorder());
+    assertEquals(false, border.hasLeftBorder());
 
     style.setBorderWidth(null);
     border = new Border(style, insideMargin);
 
-    assertFalse(border.hasTopBorder());
-    assertFalse(border.hasRightBorder());
-    assertFalse(border.hasBottomBorder());
-    assertFalse(border.hasLeftBorder());
+    assertEquals(false, border.hasTopBorder());
+    assertEquals(false, border.hasRightBorder());
+    assertEquals(false, border.hasBottomBorder());
+    assertEquals(false, border.hasLeftBorder());
   }
   
   public void testHasBordersForAnyBorderWhoseWidthIsNotZero() throws Exception
@@ -63,10 +63,10 @@ public class BorderTest extends TestCase
     style.setTopBorderWidth("0");
     border = new Border(style, insideMargin);
 
-    assertFalse(border.hasTopBorder());
-    assertTrue(border.hasRightBorder());
-    assertTrue(border.hasBottomBorder());
-    assertTrue(border.hasLeftBorder());
+    assertEquals(false, border.hasTopBorder());
+    assertEquals(true, border.hasRightBorder());
+    assertEquals(true, border.hasBottomBorder());
+    assertEquals(true, border.hasLeftBorder());
   }
 
   public void testGetLinesFromBorderWithOnePixelWidthAllAround() throws Exception

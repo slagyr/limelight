@@ -22,7 +22,7 @@ public class ButtonGroupCacheTest extends TestCase
     RadioButtonGroup group2 = cache.get("group2");
     assertNotNull(group2);
 
-    assertTrue(group1 != group2);
+    assertEquals(true, group1 != group2);
   }
   
   public void testGroupsAreUniqueByName() throws Exception

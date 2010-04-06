@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface Scene extends Prop
 {
-  Map<String, Style> getStyles();
 }
 
 

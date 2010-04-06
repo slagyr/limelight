@@ -39,7 +39,7 @@ public class PropPanelLayoutTest extends TestCase
 
     layout.doLayout(parent);
 
-    assertTrue(child.isLaidOut());
+    assertEquals(true, child.isLaidOut());
     assertEquals(new Point(0, 0), child.getLocation());
   }
 
@@ -50,8 +50,8 @@ public class PropPanelLayoutTest extends TestCase
 
     layout.doLayout(parent);
 
-    assertTrue(child1.isLaidOut());
-    assertTrue(child2.isLaidOut());
+    assertEquals(true, child1.isLaidOut());
+    assertEquals(true, child2.isLaidOut());
     assertEquals(new Point(0, 0), child1.getLocation());
     assertEquals(new Point(50, 0), child2.getLocation());
   }
@@ -77,7 +77,7 @@ public class PropPanelLayoutTest extends TestCase
 
     layout.doLayout(parent);
 
-    assertTrue(child.isLaidOut());
+    assertEquals(true, child.isLaidOut());
     assertEquals(new Point(50, 50), child.getLocation());
   }
 

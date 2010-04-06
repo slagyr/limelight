@@ -135,7 +135,7 @@ describe Limelight::Producer do
 
   it "should open a scene" do
     stage = mock("stage")
-    scene = mock("scene", :styles_file => "blah", :styles => {})
+    scene = mock("scene", :styles_file => "blah", :styles_store => {})
     @producer.should_receive(:load_props).with(:production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
     @producer.should_receive(:load_styles)
     stage.should_receive(:open).with(scene)
@@ -203,7 +203,7 @@ describe Limelight::Producer do
 
   it "should allow options such as instance variables to be passed to open_scene" do
     stage = mock("stage")
-    scene = mock("scene", :styles_file => "blah", :styles => {})
+    scene = mock("scene", :styles_file => "blah", :styles_store => {})
     @producer.should_receive(:load_props).with(:instance_variables => { :foo => "bar" }, :production => @producer.production, :casting_director => anything, :path => TestDir.path("test_prod/name"), :name => "name").and_return(scene)
     @producer.should_receive(:load_styles)
     stage.should_receive(:open).with(scene)

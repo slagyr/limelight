@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 module Limelight
@@ -30,8 +30,7 @@ module Limelight
             create_player_helper
           end
 
-          styles = @producer.load_styles(@scene)
-          @scene.styles = @producer.load_styles(@scene)
+          @producer.load_styles(@scene.styles_file, @scene.styles_store)
           @stage.open(@scene)
         end
 

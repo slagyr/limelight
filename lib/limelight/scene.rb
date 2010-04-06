@@ -41,21 +41,21 @@ module Limelight
 
     alias :visible? :visible
 
-    def initialize(options={})
+    def initialize(options={})      
       path = options.delete(:path) || ""
       @root = FileLoader.for_root(path)
       super(options)    
       @button_groups = ButtonGroupCache.new
       @prop_index = {}
       @cast = Module.new
-      styles.extend(Hashiness)
+      styles_store.extend(Hashiness)
 #      illuminate
     end
 
     # Returns a hash of all the styles belonging to this scene
     #
-    def styles
-      return @panel.styles
+    def styles_store
+      return @panel.styles_store
     end
 
     # Returns self.  A Scene is it's own scene.

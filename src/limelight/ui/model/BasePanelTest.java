@@ -3,8 +3,7 @@
 
 package limelight.ui.model;
 
-import limelight.styles.Style;
-import limelight.styles.FlatStyle;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
@@ -33,7 +32,7 @@ public class BasePanelTest extends Assert
 
   class TestableBasePanel extends BasePanel
   {
-    public final Style style = new FlatStyle();
+    public final ScreenableStyle style = new ScreenableStyle();
 
     public Box getChildConsumableArea()
     {
@@ -49,7 +48,7 @@ public class BasePanelTest extends Assert
     {
     }
 
-    public Style getStyle()
+    public ScreenableStyle getStyle()
     {
       return style;
     }
@@ -106,18 +105,18 @@ public class BasePanelTest extends Assert
     panel.setLocation(100, 200);
     panel.setSize(300, 400);
 
-    assertFalse(panel.containsRelativePoint(new Point(0, 0)));
-    assertFalse(panel.containsRelativePoint(new Point(1000, 1000)));
-    assertFalse(panel.containsRelativePoint(new Point(99, 400)));
-    assertFalse(panel.containsRelativePoint(new Point(400, 400)));
-    assertFalse(panel.containsRelativePoint(new Point(200, 199)));
-    assertFalse(panel.containsRelativePoint(new Point(200, 600)));
+    assertEquals(false, panel.containsRelativePoint(new Point(0, 0)));
+    assertEquals(false, panel.containsRelativePoint(new Point(1000, 1000)));
+    assertEquals(false, panel.containsRelativePoint(new Point(99, 400)));
+    assertEquals(false, panel.containsRelativePoint(new Point(400, 400)));
+    assertEquals(false, panel.containsRelativePoint(new Point(200, 199)));
+    assertEquals(false, panel.containsRelativePoint(new Point(200, 600)));
 
-    assertTrue(panel.containsRelativePoint(new Point(200, 400)));
-    assertTrue(panel.containsRelativePoint(new Point(100, 400)));
-    assertTrue(panel.containsRelativePoint(new Point(399, 400)));
-    assertTrue(panel.containsRelativePoint(new Point(200, 200)));
-    assertTrue(panel.containsRelativePoint(new Point(200, 599)));
+    assertEquals(true, panel.containsRelativePoint(new Point(200, 400)));
+    assertEquals(true, panel.containsRelativePoint(new Point(100, 400)));
+    assertEquals(true, panel.containsRelativePoint(new Point(399, 400)));
+    assertEquals(true, panel.containsRelativePoint(new Point(200, 200)));
+    assertEquals(true, panel.containsRelativePoint(new Point(200, 599)));
   }
 
   @Test
@@ -125,19 +124,18 @@ public class BasePanelTest extends Assert
   {
     createFamilyTree();
 
-    assertTrue(child.isDescendantOf(parent));
-    assertTrue(sibling.isDescendantOf(parent));
-    assertTrue(grandChild.isDescendantOf(parent));
-    assertTrue(grandChild.isDescendantOf(child));
+    assertEquals(true, child.isDescendantOf(parent));
+    assertEquals(true, sibling.isDescendantOf(parent));
+    assertEquals(true, grandChild.isDescendantOf(parent));
+    assertEquals(true, grandChild.isDescendantOf(child));
 
-    assertFalse(child.isDescendantOf(sibling));
-    assertFalse(child.isDescendantOf(grandChild));
+    assertEquals(false, child.isDescendantOf(sibling));
+    assertEquals(false, child.isDescendantOf(grandChild));
   }
 
   private void createFamilyTree()
   {
     root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
     parent = new MockPanel();
     root.add(parent);
     child = new MockPanel();
@@ -146,6 +144,8 @@ public class BasePanelTest extends Assert
     child.add(grandChild);
     sibling = new MockPanel();
     parent.add(sibling);
+
+    root.setFrame(new MockPropFrame());
   }
 
   @Test
@@ -203,16 +203,16 @@ public class BasePanelTest extends Assert
     grandChild.setLocation(5, 50);
     grandChild.setSize(10, 10);
 
-    assertFalse(grandChild.containsAbsolutePoint(new Point(0, 0)));
-    assertFalse(grandChild.containsAbsolutePoint(new Point(100, 100)));
-    assertFalse(grandChild.containsAbsolutePoint(new Point(7, 85)));
-    assertFalse(grandChild.containsAbsolutePoint(new Point(18, 85)));
-    assertFalse(grandChild.containsAbsolutePoint(new Point(15, 79)));
-    assertFalse(grandChild.containsAbsolutePoint(new Point(15, 90)));
+    assertEquals(false, grandChild.containsAbsolutePoint(new Point(0, 0)));
+    assertEquals(false, grandChild.containsAbsolutePoint(new Point(100, 100)));
+    assertEquals(false, grandChild.containsAbsolutePoint(new Point(7, 85)));
+    assertEquals(false, grandChild.containsAbsolutePoint(new Point(18, 85)));
+    assertEquals(false, grandChild.containsAbsolutePoint(new Point(15, 79)));
+    assertEquals(false, grandChild.containsAbsolutePoint(new Point(15, 90)));
 
-    assertTrue(grandChild.containsAbsolutePoint(new Point(8, 80)));
-    assertTrue(grandChild.containsAbsolutePoint(new Point(17, 89)));
-    assertTrue(grandChild.containsAbsolutePoint(new Point(15, 85)));
+    assertEquals(true, grandChild.containsAbsolutePoint(new Point(8, 80)));
+    assertEquals(true, grandChild.containsAbsolutePoint(new Point(17, 89)));
+    assertEquals(true, grandChild.containsAbsolutePoint(new Point(15, 85)));
   }
 
   @Test
@@ -339,7 +339,7 @@ public class BasePanelTest extends Assert
     }
 
     assertEquals(0, panel.getChildren().size());
-    assertTrue(panel.isSterilized());
+    assertEquals(true, panel.isSterilized());
   }
 
   @Test
@@ -661,7 +661,7 @@ public class BasePanelTest extends Assert
 
     assertEquals(false, panel.needsLayout());
   }
-  
+
   @Test
   public void shouldNeedsLayoutIgnoredOnSubsequentCalls() throws Exception
   {
@@ -678,7 +678,7 @@ public class BasePanelTest extends Assert
     assertEquals(0, buffer.size());
     assertEquals(true, panel.needsLayout());
   }
-  
+
   @Test
   public void shouldAncestorsWithAutoDimensionsRequireLayoutWhenChildrenAdded() throws Exception
   {
@@ -728,7 +728,7 @@ public class BasePanelTest extends Assert
     assertEquals(true, child.needsLayout());
     assertEquals(true, parent.needsLayout());
   }
-  
+
   @Test
   public void shouldRemovingChildrenRemovesTheParent() throws Exception
   {
@@ -745,7 +745,7 @@ public class BasePanelTest extends Assert
   {
     panel.resetLayout();
     panel.doLayout();
-    
+
     assertEquals(panel, BasePanelLayout.instance.lastPanelProcessed);
   }
 
@@ -754,7 +754,7 @@ public class BasePanelTest extends Assert
   {
     panel.resetLayout();
     panel.markAsNeedingLayout(MockLayout.instance);
-    
+
     panel.doLayout();
 
     assertEquals(panel, MockLayout.instance.lastPanelProcessed);
@@ -772,6 +772,84 @@ public class BasePanelTest extends Assert
 
     assertEquals(panel, MockLayout.alwaysOverides.lastPanelProcessed);
     assertEquals(null, MockLayout.instance.lastPanelProcessed);
+  }
+
+  @Test
+  public void shouldKnowWhenItIsIlluminated() throws Exception
+  {
+    panel = new TestableBasePanel();
+    assertEquals(false, panel.isIlluminated());
+
+    panel.illuminate();
+
+    assertEquals(true, panel.isIlluminated());
+
+    panel.delluminate();
+
+    assertEquals(false, panel.isIlluminated());
+  }
+
+  @Test
+  public void shouldNotBeIlluinatedWhenAddedToDelluminatedParent() throws Exception
+  {
+    panel = new TestableBasePanel();
+    BasePanel child = new TestableBasePanel();
+    panel.add(child);
+
+    assertEquals(false, child.isIlluminated());
+  }
+  
+  @Test
+  public void shouldBeIlluinatedWhenAddedToDelluminatedParent() throws Exception
+  {
+    panel = new TestableBasePanel();
+    BasePanel child = new TestableBasePanel();
+    panel.illuminate();
+    panel.add(child);
+
+    assertEquals(true, child.isIlluminated());
+  }
+  
+  @Test
+  public void shouldNotBeIlluminatedWhenRemovedFromParent() throws Exception
+  {
+    panel = new TestableBasePanel();
+    BasePanel child = new TestableBasePanel();
+    panel.illuminate();
+    panel.add(child);
+    child.setParent(null);
+
+    assertEquals(false, child.isIlluminated());
+  }
+
+  @Test
+  public void shouldIlluminateAllOfItsChildren() throws Exception
+  {
+    createFamilyTree();
+
+    root.delluminate();
+    root.illuminate();
+        
+    assertEquals(true, root.isIlluminated());
+    assertEquals(true, parent.isIlluminated());
+    assertEquals(true, child.isIlluminated());
+    assertEquals(true, grandChild.isIlluminated());
+    assertEquals(true, sibling.isIlluminated());
+  }
+  
+  @Test
+  public void shouldDelluminateAllOfItsChildren() throws Exception
+  {
+    createFamilyTree();
+
+    root.illuminate();
+    root.delluminate();
+
+    assertEquals(false, root.isIlluminated());
+    assertEquals(false, parent.isIlluminated());
+    assertEquals(false, child.isIlluminated());
+    assertEquals(false, grandChild.isIlluminated());
+    assertEquals(false, sibling.isIlluminated());
   }
 }
 
