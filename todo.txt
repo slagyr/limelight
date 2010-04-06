@@ -1,10 +1,7 @@
-Casting Director needs to know of scene structure to handle players in different scenes with the same name.
 Build styles from code
 Build style from props.rb
 Make text selectable
 Drop shadows
 Allow production styles and stages to be built in production.rb
-Exit when last stage is closed.  (Windows only?)
 Figure out and implement solution for productions to use gems.
-Default style? - Not sure how this should work eactly
 
