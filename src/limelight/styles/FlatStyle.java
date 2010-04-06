@@ -7,7 +7,7 @@ import limelight.LimelightException;
 import limelight.util.Util;
 import limelight.styles.abstrstyling.StyleAttribute;
 
-public class FlatStyle extends BaseStyle
+public class FlatStyle extends Style
 {
   private final StyleAttribute[] styles;
 
@@ -35,24 +35,15 @@ public class FlatStyle extends BaseStyle
       recordChange(descriptor, compiledValue);
   }
 
-  public boolean hasScreen()
+  @Override
+  protected void putCompiled(StyleDescriptor descriptor, StyleAttribute compiledValue)
   {
-    return false;
-  }
-
-  public void removeScreen()
-  {
-    throw new LimelightException("Can't remove screen from FlatStyle");
-  }
-
-  public void applyScreen(Style screenStyle)
-  {
-    throw new LimelightException("Can't apply screen to FlatStyle");
-  }
-
-  public Style getScreen()
-  {
-    return null;
+    StyleAttribute originalValue = styles[descriptor.index];
+    if(!Util.equal(originalValue, compiledValue))
+    {
+      styles[descriptor.index] = compiledValue;
+      notifyObserversOfChange(descriptor, compiledValue);
+    }
   }
 
   public StyleAttribute[] getStyles()

@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.styles.ScreenableStyle;
 import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.styles.Style;
@@ -86,7 +87,7 @@ public abstract class AwtInputPanel extends BasePanel implements InputPanel
     return getBoundingBox();
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }

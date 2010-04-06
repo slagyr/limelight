@@ -157,17 +157,6 @@ describe Limelight::Prop do
   end
 
   it "should set styles upon adding to parent" do
-    scene = Limelight::Scene.new(:casting_director => @casting_director)
-    Limelight::build_styles(:styles => scene.styles) { child { width 123 } }
-    prop = Limelight::Prop.new(:name => "child")
-    scene.illuminate
-
-    scene << prop
-
-    prop.style.width.should == "123"
-  end
-
-  it "should set styles upon adding to parent" do
     prop = Limelight::Prop.new(:name => "child")
 
     @casting_director.should_receive(:fill_cast).with(prop)
@@ -194,36 +183,6 @@ describe Limelight::Prop do
     prop.style.width.should == "100"
     prop.style.height.should == "200"
     prop.style.horizontal_alignment.should == "center"
-  end
-
-  it "should add additional styles listed in options" do
-    style1 = Limelight::Styles::RichStyle.new()
-    style2 = Limelight::Styles::RichStyle.new()
-    style3 = Limelight::Styles::RichStyle.new()
-    @scene.styles.merge!("one" => style1, "two" => style2, "three" => style3)
-
-    prop = Limelight::Prop.new(:name => "one", :styles => "two three")
-    @scene << prop
-
-    prop.style.should have_extension(style1)
-    prop.style.should have_extension(style2)
-    prop.style.should have_extension(style3)
-  end
-
-  it "should add additional styles and their hover part" do
-    style1 = Limelight::Styles::RichStyle.new()
-    style2 = Limelight::Styles::RichStyle.new()
-    style3 = Limelight::Styles::RichStyle.new()
-    style4 = Limelight::Styles::RichStyle.new()
-    @scene.styles.merge!("one" => style1, "one.hover" => style2, "two" => style3, "two.hover" => style4)
-
-    prop = Limelight::Prop.new(:name => "one", :styles => "two three")
-    @scene << prop
-
-    prop.style.should have_extension(style1)
-    prop.style.should have_extension(style3)
-    prop.hover_style.should == style2
-    prop.hover_style.should have_extension(style4)
   end
 
   it "should be able to remove children" do
@@ -326,6 +285,12 @@ describe Limelight::Prop do
     @scene << prop
 
     prop.illuminated?.should == true;
+  end
+
+  it "should set the styles on the panel" do
+    prop = Limelight::Prop.new(:name => "one", :styles => "two, three")
+    
+    prop.panel.styles.should == "one, two, three"
   end
 
   #TODO remove_all should not remove scrollbars

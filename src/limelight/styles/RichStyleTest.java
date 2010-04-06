@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.styles;
@@ -70,8 +70,8 @@ public class RichStyleTest extends TestCase
 	
 	  style.clearExtensions();
 	
-	  assertFalse(style.hasExtension(style2));
-	  assertFalse(style.hasExtension(style3));
+	  assertEquals(false, style.hasExtension(style2));
+	  assertEquals(false, style.hasExtension(style3));
   }
 
   public void testClearExtensionsRemovesObserver() throws Exception
@@ -80,7 +80,7 @@ public class RichStyleTest extends TestCase
 
     style.clearExtensions();
 
-    assertFalse(style2.hasObserver(style));    
+    assertEquals(false, style2.hasObserver(style));
   }
 
   public void testClearExtensionsWithNoExtensions() throws Exception
@@ -109,28 +109,28 @@ public class RichStyleTest extends TestCase
     style.addExtension(style2);
     style.addExtension(style3);
 
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     style.setWidth("123");
-    assertTrue(observer.changed());
+    assertEquals(true, observer.changed());
 
     observer.flushChanges();
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     style2.setWidth("123");
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     observer.flushChanges();
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     style3.setWidth("123");
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     style3.setHeight("321");
-    assertTrue(observer.changed());
+    assertEquals(true, observer.changed());
 
     observer.flushChanges();
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
   }
 
   public void testSpecificChanges() throws Exception
@@ -138,22 +138,22 @@ public class RichStyleTest extends TestCase
     style.addExtension(style2);
     style.addExtension(style3);
 
-    assertFalse(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(false, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
 
     style3.setWidth("123");
-    assertTrue(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(true, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
     observer.flushChanges();
-    assertFalse(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(false, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
 
     style2.setWidth("123");
-    assertTrue(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(true, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
     observer.flushChanges();
-    assertFalse(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(false, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
   }
 
   public void testAddingToBottomAffectsChanges() throws Exception
@@ -164,12 +164,12 @@ public class RichStyleTest extends TestCase
     newStyle.setWidth("200");
 
     style.addExtension(newStyle);
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     anotherNewStyle.setHeight("100");
     style.addExtension(anotherNewStyle);
-    assertTrue(observer.changed());
-    assertTrue(observer.changed(Style.HEIGHT));
+    assertEquals(true, observer.changed());
+    assertEquals(true, observer.changed(Style.HEIGHT));
   }
 
   public void testRemoveFromBottomAffectsChanges() throws Exception
@@ -182,11 +182,11 @@ public class RichStyleTest extends TestCase
     observer.flushChanges();
 
     style.removeExtension(anotherNewStyle);
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     style.removeExtension(newStyle);
-    assertTrue(observer.changed());
-    assertTrue(observer.changed(Style.WIDTH));
+    assertEquals(true, observer.changed());
+    assertEquals(true, observer.changed(Style.WIDTH));
   }
 
   public void testCanHaveLotsOfExtenders() throws Exception

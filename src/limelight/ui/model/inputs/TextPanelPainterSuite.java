@@ -67,7 +67,7 @@ public class TextPanelPainterSuite
 
       painter.paint(graphics);
 
-      assertTrue(graphics.drawnLines.isEmpty());
+      assertEquals(true, graphics.drawnLines.isEmpty());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class TextPanelPainterSuite
     {
       painter.paint(graphics);
 
-      assertFalse(graphics.drawnLines.isEmpty());
+      assertEquals(false, graphics.drawnLines.isEmpty());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class TextPanelPainterSuite
 
       painter.paint(graphics);
 
-      assertTrue(graphics.filledShapes.isEmpty());
+      assertEquals(true, graphics.filledShapes.isEmpty());
     }
 
     @Test
@@ -184,7 +184,7 @@ public class TextPanelPainterSuite
 
       painter.paint(graphics);
 
-      assertTrue(graphics.filledShapes.isEmpty());
+      assertEquals(true, graphics.filledShapes.isEmpty());
     }
 
     @Test
@@ -253,7 +253,7 @@ public class TextPanelPainterSuite
 
       painter.paint(graphics);
 
-      assertFalse(layout.hasDrawn());
+      assertEquals(false, layout.hasDrawn());
     }
 
     @Test
@@ -261,7 +261,7 @@ public class TextPanelPainterSuite
     {
       painter.paint(graphics);
 
-      assertTrue(layout.hasDrawn());
+      assertEquals(true, layout.hasDrawn());
       assertEquals(boxInfo.getText(), layout.toString());
     }
 

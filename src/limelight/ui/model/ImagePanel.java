@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import limelight.LimelightError;
-import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.Panel;
 import limelight.util.Box;
 
@@ -37,7 +37,7 @@ public class ImagePanel extends BasePanel
     return null;
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }

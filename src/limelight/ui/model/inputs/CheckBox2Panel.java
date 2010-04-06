@@ -1,8 +1,8 @@
 package limelight.ui.model.inputs;
 
+import limelight.styles.ScreenableStyle;
 import limelight.ui.model.*;
 import limelight.util.Box;
-import limelight.styles.Style;
 import limelight.Context;
 import javax.imageio.ImageIO;
 import java.awt.event.MouseEvent;
@@ -77,7 +77,7 @@ public class CheckBox2Panel extends BasePanel implements TextAccessor, InputPane
       graphics.drawImage(normalImage, 0, 0, null);
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }

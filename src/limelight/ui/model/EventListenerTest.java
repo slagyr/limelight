@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model;
@@ -31,6 +31,10 @@ public class EventListenerTest extends TestCase
     childPanel = new PropPanel(childProp);
 
     root.add(childPanel);
+
+    ScenePanel scenePanel = new ScenePanel(new MockProp());
+    scenePanel.add(root);
+    scenePanel.setFrame(new MockPropFrame());
 
     root.setSize(1000, 1000);
     childPanel.setLocation(250, 250);

@@ -1,16 +1,13 @@
 package limelight.ui.model;
 
-import limelight.styles.Style;
+import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 public class MockRootPanel extends MockPropablePanel implements RootPanel
 {
-  public void destroy()
-  {
-  }
 
   public void setFrame(PropFrame frame)
   {
@@ -26,11 +23,11 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
     return false;
   }
 
-  public void getAndClearPanelsNeedingLayout(ArrayList<Panel> panelBuffer)
+  public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)
   {
   }
 
-  public void getAndClearDirtyRegions(ArrayList<Rectangle> regionBuffer)
+  public void getAndClearDirtyRegions(Collection<Rectangle> regionBuffer)
   {
   }
 
@@ -38,12 +35,7 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   {
   }
 
-  public boolean isAlive()
-  {
-    return false;
-  }
-
-  public Map<String, Style> getStyles()
+  public Map<String, RichStyle> getStylesStore()
   {
     return null;
   }

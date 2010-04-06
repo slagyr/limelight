@@ -9,7 +9,7 @@ import limelight.styles.abstrstyling.StyleAttribute;
 
 import java.util.LinkedList;
 
-public class RichStyle extends BaseStyle implements StyleObserver
+public class RichStyle extends Style implements StyleObserver
 {
   private final StyleAttribute[] styles;
   private final LinkedList<RichStyle> extensions = new LinkedList<RichStyle>();
@@ -34,8 +34,14 @@ public class RichStyle extends BaseStyle implements StyleObserver
   {
     if(value == null)
       return;
-    StyleAttribute originalValue = styles[descriptor.index];
     StyleAttribute compiledValue = descriptor.compile(value);
+    putCompiled(descriptor, compiledValue);
+  }
+
+  @Override
+  protected void putCompiled(StyleDescriptor descriptor, StyleAttribute compiledValue)
+  {
+    StyleAttribute originalValue = styles[descriptor.index];
     if(!Util.equal(originalValue, compiledValue))
     {
       styles[descriptor.index] = compiledValue;
@@ -43,24 +49,10 @@ public class RichStyle extends BaseStyle implements StyleObserver
     }
   }
 
-  public boolean hasScreen()
+  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
-    return false;
-  }
-
-  public void removeScreen()
-  {
-    throw new LimelightException("Can't remove screen from RichStyle");
-  }
-
-  public void applyScreen(Style screenStyle)
-  {
-    throw new LimelightException("Can't apply screen to RichStyle");
-  }
-
-  public Style getScreen()
-  {
-    return null;
+    if(styles[descriptor.index] == null)
+      notifyObserversOfChange(descriptor, value);
   }
 
   public void removeExtension(RichStyle extension)
@@ -95,7 +87,7 @@ public class RichStyle extends BaseStyle implements StyleObserver
     }
   }
 
-  public boolean hasExtension(RichStyle style)
+  public boolean hasExtension(Style style)
   {
     synchronized(extensions)
     {
@@ -110,12 +102,6 @@ public class RichStyle extends BaseStyle implements StyleObserver
       RichStyle extension = extensions.getFirst();
       removeExtension(extension);
     }
-  }
-
-  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
-  {
-    if(styles[descriptor.index] == null)
-      notifyObserversOfChange(descriptor, value);
   }
 
   private void applyChangesFromExtension(RichStyle style)

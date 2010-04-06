@@ -50,7 +50,7 @@ public class TextBoxModelTest
   @Test
   public void canTellIfTheTextPanelIsFull()
   {
-    assertTrue(boxModel.isBoxFull());
+    assertEquals(true, boxModel.isBoxFull());
   }
 
   @Test
@@ -58,16 +58,16 @@ public class TextBoxModelTest
   {
     boxModel.calculateLeftShiftingOffset();   
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
     boxModel.setCursorIndex(0);
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
     boxModel.xOffset = 0;
     boxModel.setCursorIndex(boxModel.text.length() -5);
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
   }
 
   @Test
@@ -77,10 +77,10 @@ public class TextBoxModelTest
     int offset = boxModel.calculateTextDimensions().width - panel.getWidth();
     boxModel.xOffset = offset;
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
     boxModel.shiftOffset(boxModel.cursorIndex);
-    assertTrue(boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
+    assertEquals(true, boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
   }
 
   @Test
@@ -91,11 +91,11 @@ public class TextBoxModelTest
 
     boxModel.setCursorIndex(30);
 
-    assertTrue(boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
     boxModel.shiftOffset(boxModel.cursorIndex);
 
-    assertTrue(boxModel.xOffset > 0);
+    assertEquals(true, boxModel.xOffset > 0);
 
   }
 
@@ -108,11 +108,11 @@ public class TextBoxModelTest
 
     boxModel.shiftOffset(boxModel.cursorIndex);
 
-    assertTrue(boxModel.xOffset <= offset / 2 + 2);
+    assertEquals(true, boxModel.xOffset <= offset / 2 + 2);
 
     boxModel.setText("hi");
     boxModel.shiftOffset(boxModel.cursorIndex);
-    assertTrue(boxModel.xOffset == 0);
+    assertEquals(true, boxModel.xOffset == 0);
 
   }
 
@@ -155,7 +155,7 @@ public class TextBoxModelTest
 
     boxModel.getSelectionRegions();
 
-    assertTrue(boxModel.xOffset > 0 && boxModel.xOffset < 100);
+    assertEquals(true, boxModel.xOffset > 0 && boxModel.xOffset < 100);
   }
 
   @Test

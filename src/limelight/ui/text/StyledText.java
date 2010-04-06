@@ -46,7 +46,7 @@ public class StyledText
     return styles;
   }
 
-  public void setupStyles(Map<String, Style> styleMap, RichStyle defaultStyle, StyleObserver observer)
+  public void setupStyles(Map<String, RichStyle> styleMap, RichStyle defaultStyle, StyleObserver observer)
   {
     for(String styleName : styles)
     {

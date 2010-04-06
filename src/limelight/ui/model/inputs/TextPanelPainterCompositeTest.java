@@ -54,10 +54,10 @@ public class TextPanelPainterCompositeTest
 
   private void assertAllPaintersHavePainted()
   {
-    assertTrue(painterComposite.getPanelBackgroundPainter().hasPainted);
-    assertTrue(painterComposite.getTextPainter().hasPainted);
-    assertTrue(painterComposite.getSelectionPainter().hasPainted);
-    assertTrue(painterComposite.getCursorPainter().hasPainted);
+    assertEquals(true, painterComposite.getPanelBackgroundPainter().hasPainted);
+    assertEquals(true, painterComposite.getTextPainter().hasPainted);
+    assertEquals(true, painterComposite.getSelectionPainter().hasPainted);
+    assertEquals(true, painterComposite.getCursorPainter().hasPainted);
   }
 
   private void setMockPainters()

@@ -1,11 +1,10 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui.model.inputs;
 
-import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.model.BasePanel;
-import limelight.util.Debug;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +57,7 @@ public class ScrollBarPanel extends BasePanel
     return getBoundingBox();
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }

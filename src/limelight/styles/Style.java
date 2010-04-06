@@ -6,11 +6,17 @@ package limelight.styles;
 import limelight.Context;
 import limelight.styles.abstrstyling.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Style
 {
   public static final LinkedList<StyleDescriptor> STYLE_LIST = new LinkedList<StyleDescriptor>();
+  private final LinkedList<StyleObserver> observers = new LinkedList<StyleObserver>();
+  private List<StyleObserver> readonlyObservers;
+  private StyleAttribute[] defaults;
 
   private static StyleDescriptor descriptor(String name, String compilerType, String defaultValue)
   {
@@ -83,23 +89,30 @@ public abstract class Style
 
   protected abstract void put(StyleDescriptor descriptor, Object value);
 
-  public abstract void setDefault(StyleDescriptor descriptor, Object value);
+  protected abstract void putCompiled(StyleDescriptor descriptor, StyleAttribute value);
 
-  protected abstract StyleAttribute getDefaultValue(StyleDescriptor descriptor);
+  public void setDefault(StyleDescriptor descriptor, Object value)
+  {
+    if(defaults == null)
+      defaults = new StyleAttribute[Style.STYLE_COUNT];
 
-  public abstract void removeObserver(StyleObserver observer);
+    StyleAttribute compiledValue = descriptor.compile(value);
+    defaults[descriptor.index] = compiledValue;
+    if(get(descriptor.index) == null && value != null && !compiledValue.equals(descriptor.defaultValue))
+      recordChange(descriptor, compiledValue);
+  }
 
-  public abstract void addObserver(StyleObserver observer);
+  protected StyleAttribute getDefaultValue(StyleDescriptor descriptor)
+  {
+    if(defaults != null)
+    {
+      StyleAttribute value = defaults[descriptor.index];
+      if(value != null)
+        return value;
+    }
 
-  public abstract boolean hasObserver(StyleObserver observer);
-
-  public abstract boolean hasScreen();
-
-  public abstract void removeScreen();
-
-  public abstract void applyScreen(Style screenStyle);
-
-  public abstract Style getScreen();
+    return descriptor.defaultValue;
+  }
 
   public String get(StyleDescriptor descriptor)
   {
@@ -114,6 +127,53 @@ public abstract class Style
     else
       return value;
   }
+
+  public void removeObserver(StyleObserver observer)
+  {
+    synchronized(observers)
+    {
+      observers.remove(observer);
+      readonlyObservers = null;
+    }
+  }
+
+  public void addObserver(StyleObserver observer)
+  {
+    synchronized(observers)
+    {
+      observers.add(observer);
+      readonlyObservers = null;
+    }
+  }
+
+  public boolean hasObserver(StyleObserver observer)
+  {
+    return getObservers().contains(observer);
+  }
+
+  protected void recordChange(StyleDescriptor descriptor, StyleAttribute value)
+  {
+    notifyObserversOfChange(descriptor, value);
+  }
+
+  public List<StyleObserver> getObservers()
+  {
+    if(readonlyObservers == null)
+    {
+      synchronized(observers)
+      {
+        readonlyObservers = Collections.unmodifiableList(new ArrayList<StyleObserver>(observers));
+      }
+    }
+    return readonlyObservers;
+  }
+
+  protected void notifyObserversOfChange(StyleDescriptor descriptor, StyleAttribute value)
+  {
+    for(StyleObserver observer : getObservers())
+      observer.styleChanged(descriptor, value);
+  }
+
 
   public boolean hasAutoDimension()
   {
@@ -1067,5 +1127,4 @@ public abstract class Style
     }
 
   }
-
 }

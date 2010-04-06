@@ -3,14 +3,10 @@
 
 package limelight.ui.model;
 
-import limelight.styles.RichStyle;
-import limelight.styles.Style;
-import limelight.styles.StyleDescriptor;
-import limelight.styles.StyleObserver;
+import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
-import limelight.ui.api.Scene;
 import limelight.ui.text.StyledText;
 import limelight.ui.text.StyledTextParser;
 import limelight.util.Box;
@@ -91,7 +87,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     }
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return panel.getStyle();
   }
@@ -147,13 +143,9 @@ public class TextPanel extends BasePanel implements StyleObserver
       StyledTextParser parser = new StyledTextParser();
       textChunks = parser.parse(text);
 
-      // TODO MDM Need a better way to get the styles
-      Scene scene = ((PropablePanel) getPanel()).getProp().getScene();
-      if(scene == null)
-        return;
-      Map<String, Style> styleMap = scene.getStyles();
+      Map<String, RichStyle> styleMap = getRoot().getStylesStore();
       for(StyledText styledText : textChunks)
-        styledText.setupStyles(styleMap, (RichStyle)getStyle(), this);
+        styledText.setupStyles(styleMap, getStyle(), this);
       // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?
 
       addLines();

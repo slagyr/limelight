@@ -44,8 +44,8 @@ public class TextInputPanelTest
   public void canGainFocus()
   {
     panel.focusGained(new MockFocusEvent());
-    assertTrue(panel.focused);
-    assertTrue(panel.cursorThread.isAlive());
+    assertEquals(true, panel.focused);
+    assertEquals(true, panel.cursorThread.isAlive());
     panel.focused = false;
   }
 
@@ -55,8 +55,8 @@ public class TextInputPanelTest
     panel.cursorCycleTime = 0;
     panel.focusGained(new MockFocusEvent());
     panel.focusLost(new MockFocusEvent());
-    assertFalse(panel.focused);
-    assertTrue(panel.cursorThread.isAlive());
+    assertEquals(false, panel.focused);
+    assertEquals(true, panel.cursorThread.isAlive());
   }
 
   @Test
@@ -64,7 +64,7 @@ public class TextInputPanelTest
   {
     boxInfo.setText("This Text is tooooo much text to fit inside the normal textbox");
 
-    assertTrue(panel.isTextMaxed());
+    assertEquals(true, panel.isTextMaxed());
   }
 
   @Test

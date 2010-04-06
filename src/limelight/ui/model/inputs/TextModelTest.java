@@ -36,11 +36,11 @@ public class TextModelTest
     model.setText("some text");
     model.setLastLayedOutText("some other text");
 
-    assertTrue(model.isThereSomeDifferentText());
+    assertEquals(true, model.isThereSomeDifferentText());
 
     model.setLastLayedOutText("some text");
 
-    assertFalse(model.isThereSomeDifferentText());
+    assertEquals(false, model.isThereSomeDifferentText());
   }
 
   @Test

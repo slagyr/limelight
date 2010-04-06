@@ -105,20 +105,20 @@ public class TextPanelTest extends TestCase
 
   public void testTextChanged() throws Exception
   {
-    assertFalse(panel.textChanged());
+    assertEquals(false, panel.textChanged());
 
     panel.setText("Something");
-    assertTrue(panel.needsLayout());
+    assertEquals(true, panel.needsLayout());
 
     panel.resetLayout();
     panel.setText("Something");
-    assertFalse(panel.needsLayout());
+    assertEquals(false, panel.needsLayout());
 
     panel.setText("Something Else");
-    assertTrue(panel.needsLayout());
+    assertEquals(true, panel.needsLayout());
 
     panel.resetLayout();
-    assertFalse(panel.needsLayout());
+    assertEquals(false, panel.needsLayout());
   }
   
   public void testLayoutFlushedChangedText() throws Exception
@@ -209,21 +209,21 @@ public class TextPanelTest extends TestCase
   private void createStyles()
   {
     RichStyle myStyle = new RichStyle();
-    ((MockScene)parent.prop.scene).styles.put("my_style", myStyle);
+    root.getStylesStore().put("my_style", myStyle);
     myStyle.setFontFace("Helvetica");
     myStyle.setFontStyle("bold");
     myStyle.setFontSize("20");
     myStyle.setTextColor("red");
 
     RichStyle myOtherStyle = new RichStyle();
-    ((MockScene)parent.prop.scene).styles.put("my_other_style", myOtherStyle);
+    root.getStylesStore().put("my_other_style", myOtherStyle);
     myOtherStyle.setFontFace("Cuneiform");
     myOtherStyle.setFontStyle("italic");
     myOtherStyle.setFontSize("19");
     myOtherStyle.setTextColor("blue");
 
     RichStyle sizeOnlyStyle = new RichStyle();
-    ((MockScene)parent.prop.scene).styles.put("size_only_style", sizeOnlyStyle);
+    root.getStylesStore().put("size_only_style", sizeOnlyStyle);
     sizeOnlyStyle.setFontSize("25");
   }
 
@@ -345,20 +345,20 @@ public class TextPanelTest extends TestCase
   private void assertSubString(String subString, String fullString)
   {
     int i = fullString.indexOf(subString);
-    assertTrue(subString + " not found in " + fullString, i > -1);
+    assertEquals(subString + " not found in " + fullString, true, i > -1);
   }
 
   private void assertNoSubString(String subString, String fullString)
   {
     int i = fullString.indexOf(subString);
-    assertFalse(subString + " found in " + fullString, i > -1);
+    assertEquals(subString + " found in " + fullString, false, i > -1);
   }
 
   public void testChangingTestRequiresUpdates() throws Exception
   {
     parent.doLayout();
-    assertFalse(panel.needsLayout());
-    assertFalse(parent.needsLayout());
+    assertEquals(false, panel.needsLayout());
+    assertEquals(false, parent.needsLayout());
 
     panel.setText("New Text");
 

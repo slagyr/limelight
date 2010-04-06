@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.TextBoxPanel;
@@ -24,15 +25,15 @@ public class ScenePanelTest extends Assert
   private ScenePanel root;
   private MockPropablePanel child;
   private Container contentPane;
-  private PropFrame stageFrame;
+  private PropFrame frame;
 
   @Before
   public void setUp() throws Exception
   {
-    stageFrame = new MockPropFrame();
+    frame = new MockPropFrame();
     root = new ScenePanel(new MockProp());
     child = new MockPropablePanel("child");
-    contentPane = stageFrame.getContentPane();
+    contentPane = frame.getContentPane();
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
   }
 
@@ -44,20 +45,11 @@ public class ScenePanelTest extends Assert
   }
 
   @Test
-  public void shouldDestroyRemovesChildsParent() throws Exception
-  {
-    root.setFrame(stageFrame);
-    root.add(child);
-    root.destroy();
-    assertEquals(null, child.getParent());
-  }
-
-  @Test
   public void shouldAddListenersUponSettingTheFrame() throws Exception
   {
     assertEquals(null, root.getListener());
 
-    root.setFrame(stageFrame);
+    root.setFrame(frame);
     EventListener listener = root.getListener();
     assertNotNull(listener);
 
@@ -70,9 +62,9 @@ public class ScenePanelTest extends Assert
   @Test
   public void shouldDestroyRemovesListeners() throws Exception
   {
-    root.setFrame(stageFrame);
+    root.setFrame(frame);
     EventListener listener = root.getListener();
-    root.destroy();
+    root.setFrame(null);
 
     assertEquals(false, Arrays.asList(contentPane.getMouseListeners()).contains(listener));
     assertEquals(false, Arrays.asList(contentPane.getMouseMotionListeners()).contains(listener));
@@ -82,27 +74,15 @@ public class ScenePanelTest extends Assert
   }
 
   @Test
-  public void shouldBsAliveAfterSettingFrame() throws Exception
-  {
-    assertEquals(false, root.isAlive());
-
-    root.setFrame(stageFrame);
-    assertEquals(true, root.isAlive());
-
-    root.destroy();
-    assertEquals(false, root.isAlive());
-  }
-
-  @Test
   public void shouldKeyboardFocusDoesNotRemainOnChildWhenDestroyed() throws Exception
   {
     TextBoxPanel inputPanel = new TextBoxPanel();
-    root.setFrame(stageFrame);
+    root.setFrame(frame);
     child.add(inputPanel);
     root.add(child);
 
     Context.instance().keyboardFocusManager.focusPanel(inputPanel);
-    root.destroy();
+    root.setFrame(null);
 
     assertNotSame(inputPanel, Context.instance().keyboardFocusManager.getFocusedPanel());
   }
@@ -287,9 +267,25 @@ public class ScenePanelTest extends Assert
   @Test
   public void shouldHaveStylesMap() throws Exception
   {
-    Map<String, Style> styleMap = root.getStyles();
+    Map<String, RichStyle> styleMap = root.getStylesStore();
     
     assertNotNull(styleMap);
     assertEquals(0, styleMap.size());
+  }
+
+  @Test
+  public void shouldIlluminateWhenSettingFrame() throws Exception
+  {
+    root.setFrame(frame);
+    assertEquals(true, root.isIlluminated());
+  }
+
+  @Test
+  public void shouldDelluminateWhenSettingFrameToNull() throws Exception
+  {
+    root.setFrame(frame);
+    root.setFrame(null);
+    
+    assertEquals(false, root.isIlluminated());
   }
 }

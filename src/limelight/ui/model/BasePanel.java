@@ -28,6 +28,7 @@ public abstract class BasePanel implements Panel
   private Box boundingBox;
   private Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
+  private boolean illuminated;
 
   protected BasePanel()
   {
@@ -126,9 +127,15 @@ public abstract class BasePanel implements Panel
     return parent;
   }
 
-  public void setParent(Panel panel)
+  public void setParent(Panel newParent)
   {
-    parent = panel;
+    if(newParent != parent && isIlluminated())
+      delluminate();
+    
+    parent = newParent;
+
+    if(parent != null && parent.isIlluminated())
+      illuminate();
   }
 
   public boolean containsRelativePoint(Point point)
@@ -519,5 +526,24 @@ public abstract class BasePanel implements Panel
       for(Panel child : children)
         child.consumableAreaChanged();
     }
+  }
+
+  public boolean isIlluminated()
+  {
+    return illuminated;
+  }
+
+  public void illuminate()
+  {
+    illuminated = true;
+    for(Panel child : children)
+      child.illuminate();
+  }
+
+  public void delluminate()
+  {
+    illuminated = false;
+    for(Panel child : children)
+      child.delluminate();
   }
 }

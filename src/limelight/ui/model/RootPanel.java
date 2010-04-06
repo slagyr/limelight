@@ -1,16 +1,13 @@
 package limelight.ui.model;
 
-import limelight.styles.Style;
+import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.util.Box;
-
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 public interface RootPanel extends Panel
 {
-  void destroy();
 
   void setFrame(PropFrame frame);
 
@@ -18,13 +15,11 @@ public interface RootPanel extends Panel
 
   boolean hasDirtyRegions();
 
-  void getAndClearPanelsNeedingLayout(ArrayList<Panel> panelBuffer);
+  void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer);
 
-  void getAndClearDirtyRegions(ArrayList<Rectangle> regionBuffer);
+  void getAndClearDirtyRegions(Collection<Rectangle> regionBuffer);
 
   void addDirtyRegion(Rectangle bounds);
 
-  boolean isAlive();
-
-  public Map<String, Style> getStyles();
+  public Map<String, RichStyle> getStylesStore();
 }

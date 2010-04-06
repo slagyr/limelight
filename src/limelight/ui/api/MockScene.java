@@ -10,16 +10,10 @@ import java.util.HashMap;
 
 public class MockScene extends MockProp implements Scene
 {
-  public Map<String, Style> styles = new HashMap<String, Style>();
   public ResourceLoader loader;
 
   public ResourceLoader getLoader()
   {
     return loader;
-  }
-
-  public Map<String, Style> getStyles()
-  {
-    return styles;
   }
 }

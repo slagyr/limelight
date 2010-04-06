@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.io;
@@ -159,39 +159,39 @@ public class StreamReaderTest extends TestCase
 	{
 		writeToPipe("abcdefghijklmnopqrstuvwxyz");
 		output.close();
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.read(10);
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.read(16);
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.read(1);
-		assertTrue(reader.isEof());
+		assertEquals(true, reader.isEof());
 	}
 
 	public void testEofReadLine() throws Exception
 	{
 		writeToPipe("one line\ntwo lines\nthree lines");
 		output.close();
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.readLine();
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.readLine();
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.readLine();
-		assertTrue(reader.isEof());
+		assertEquals(true, reader.isEof());
 	}
 
 	public void testEofReadUpTo() throws Exception
 	{
 		writeToPipe("mark one, mark two, the end");
 		output.close();
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.readUpTo("one");
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.readUpTo("two");
-		assertFalse(reader.isEof());
+		assertEquals(false, reader.isEof());
 		reader.readUpTo("three");
-		assertTrue(reader.isEof());
+		assertEquals(true, reader.isEof());
 	}
 
 

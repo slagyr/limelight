@@ -5,10 +5,7 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.LimelightError;
-import limelight.styles.ScreenableStyle;
-import limelight.styles.Style;
-import limelight.styles.StyleDescriptor;
-import limelight.styles.StyleObserver;
+import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleAttribute;
 import limelight.styles.abstrstyling.PixelsAttribute;
 import limelight.ui.PaintablePanel;
@@ -27,11 +24,14 @@ import limelight.util.Util;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
 {
   private final Prop prop;
-  private final Style style;
+  private final ScreenableStyle style;
+  private final RichStyle hoverStyle;
+  private String styles;
   private final LinkedList<Painter> painters; // TODO MDM - This silly now.  We don't need a list for the painters.
   private Border borderShaper;
   private TextAccessor textAccessor;
@@ -51,6 +51,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     this.prop = prop;
     painters = new LinkedList<Painter>();
     style = new ScreenableStyle();
+    hoverStyle = new RichStyle();
     textAccessor = new TextPaneTextAccessor(this);
     buildPainters();
     style.addObserver(this); // TODO MDM - Is this a memory leak?  When a prop is deleted, we'll have to delete that reference.
@@ -92,6 +93,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return prop;
   }
 
+  @Override
   public Panel getOwnerOfPoint(Point point)
   {
     Point relativePoint = new Point(point.x - getX(), point.y - getY());
@@ -161,6 +163,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return childConsumableArea;
   }
 
+  @Override
   public Layout getDefaultLayout()
   {
     return PropPanelLayout.instance;
@@ -188,13 +191,28 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
     if(afterPaintAction != null)
     {
-      afterPaintAction.invoke(graphics);      
+      afterPaintAction.invoke(graphics);
     }
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return style;
+  }
+
+  public RichStyle getHoverStyle()
+  {
+    return hoverStyle;
+  }
+
+  public void setStyles(String styles)
+  {
+    this.styles = styles;
+  }
+
+  public String getStyles()
+  {
+    return styles;
   }
 
   public Border getBorderShaper()
@@ -204,6 +222,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return borderShaper;
   }
 
+  @Override
   public void mousePressed(MouseEvent e)
   {
     if(getProp().accepts_mouse_pressed())
@@ -212,6 +231,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       super.mousePressed(e);
   }
 
+  @Override
   public void mouseReleased(MouseEvent e)
   {
     if(getProp().accepts_mouse_released())
@@ -220,6 +240,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       super.mouseReleased(e);
   }
 
+  @Override
   public void mouseClicked(MouseEvent e)
   {
     if(getProp().accepts_mouse_clicked())
@@ -228,28 +249,33 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       super.mouseClicked(e);
   }
 
+  @Override
   public void mouseDragged(MouseEvent e)
   {
     getProp().mouse_dragged(translatedEvent(e));
   }
 
+  @Override
   public void mouseEntered(MouseEvent e)
   {
     getProp().mouse_entered(translatedEvent(e));
     hoverOn();
   }
 
+  @Override
   public void mouseExited(MouseEvent e)
   {
     getProp().mouse_exited(translatedEvent(e));
     hoverOff();
   }
 
+  @Override
   public void mouseMoved(MouseEvent e)
   {
     getProp().mouse_moved(translatedEvent(e));
   }
 
+  @Override
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     boolean isVertical = e.getModifiers() % 2 == 0;
@@ -260,36 +286,43 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       getParent().mouseWheelMoved(e);
   }
 
+  @Override
   public void focusLost(FocusEvent e)
   {
     getProp().focus_lost(e);
   }
 
+  @Override
   public void focusGained(FocusEvent e)
   {
     getProp().focus_gained(e);
   }
 
+  @Override
   public void keyTyped(KeyEvent e)
   {
     getProp().key_typed(e);
   }
 
+  @Override
   public void keyPressed(KeyEvent e)
   {
     getProp().key_pressed(e);
   }
 
+  @Override
   public void keyReleased(KeyEvent e)
   {
     getProp().key_released(e);
   }
 
+  @Override
   public void buttonPressed(ActionEvent e)
   {
     getProp().button_pressed(e);
   }
 
+  @Override
   public void valueChanged(Object e)
   {
     getProp().value_changed(e);
@@ -301,6 +334,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   //TODO I don't think this is needed any longer.
+  @Override
   public void repaint()
   {
 //System.err.println("repaint: " + this + ": " + (getParent() != null) + ", " + (getStyle().changed(Style.WIDTH) || getStyle().changed(Style.WIDTH)));
@@ -323,6 +357,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     repaint();
   }
 
+  @Override
   public String toString()
   {
     return getClass().getSimpleName() + " - " + getProp().getName();
@@ -343,17 +378,20 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return painters;
   }
 
+  @Override
   public boolean isFloater()
   {
     return getStyle().getCompiledFloat().isOn();
   }
 
+  @Override
   public void doFloatLayout()
   {
-   FloaterLayout.instance.doLayout(this);
+    FloaterLayout.instance.doLayout(this);
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
+  @Override
   public synchronized void clearCache()
   {
     super.clearCache();
@@ -364,7 +402,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   }
 
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
-  {    
+  {
     if(Context.instance().bufferedImageCache != null &&
         descriptor != Style.TRANSPARENCY &&
         descriptor != Style.X &&
@@ -395,11 +433,11 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       {
         markAsNeedingLayout();
       }
-      else if (isTextDescriptor(descriptor))
+      else if(isTextDescriptor(descriptor))
       {
-        for (Panel child : getChildren())
+        for(Panel child : getChildren())
         {
-          if (child instanceof TextPanel)
+          if(child instanceof TextPanel)
           {
             sizeChangePending = true;
             ((TextPanel) child).styleChanged(descriptor, value);
@@ -414,9 +452,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private boolean isTextDescriptor(StyleDescriptor descriptor)
   {
     return descriptor == Style.TEXT_COLOR ||
-            descriptor == Style.FONT_FACE ||
-            descriptor == Style.FONT_SIZE ||
-            descriptor == Style.FONT_STYLE;
+        descriptor == Style.FONT_FACE ||
+        descriptor == Style.FONT_SIZE ||
+        descriptor == Style.FONT_STYLE;
   }
 
   private boolean isMarginPaddingOrBorder(StyleAttribute attribute)
@@ -488,12 +526,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   private void hoverOn()
   {
-    Style hoverStyle = getProp().getHoverStyle();
-    if(hoverStyle != null)
-    {
-      getStyle().applyScreen(hoverStyle);
-      getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }
+    getStyle().applyScreen(getHoverStyle());
+    getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
   }
 
   private void hoverOff()
@@ -514,7 +548,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void resetPendingSizeChange()
   {
-    sizeChangePending = false;                                                      
+    sizeChangePending = false;
   }
 
   public boolean borderChanged()
@@ -522,9 +556,39 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return borderChanged;
   }
 
+  @Override
   protected boolean canRemove(Panel child)
   {
     return child != verticalScrollbar && child != horizontalScrollbar;
+  }
+
+  @Override
+  public void illuminate()
+  {
+    if(styles != null)
+    {
+      Map<String, RichStyle> store = getRoot().getStylesStore();
+      String[] styleNames = styles.split("[ ,]+");
+      for(String styleName : styleNames)
+      {
+        RichStyle style = store.get(styleName);
+        if(style != null)
+          getStyle().addExtension(style);
+
+        RichStyle hoverStyle = store.get(styleName + ".hover");
+        if(hoverStyle != null)
+          getHoverStyle().addExtension(hoverStyle);
+      }
+    }
+    super.illuminate();
+  }
+
+  @Override
+  public void delluminate()
+  {
+    getStyle().clearExtensions();
+    getHoverStyle().clearExtensions();
+    super.delluminate();
   }
 }
 

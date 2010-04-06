@@ -1,4 +1,4 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.styles;
@@ -68,39 +68,39 @@ public class FlatStyleTest extends TestCase
 
   public void testChanges() throws Exception
   {
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     style.setWidth("123");
-    assertTrue(observer.changed());
+    assertEquals(true, observer.changed());
 
     observer.flushChanges();
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
 
     style.setHeight("123");
-    assertTrue(observer.changed());
+    assertEquals(true, observer.changed());
 
     observer.flushChanges();
-    assertFalse(observer.changed());
+    assertEquals(false, observer.changed());
   }
 
   public void testSpecificChanges() throws Exception
   {
-    assertFalse(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(false, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
 
     style.setWidth("123");
-    assertTrue(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(true, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
     observer.flushChanges();
-    assertFalse(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(false, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
 
     style.setHeight("321");
-    assertFalse(observer.changed(Style.WIDTH));
-    assertTrue(observer.changed(Style.HEIGHT));
+    assertEquals(false, observer.changed(Style.WIDTH));
+    assertEquals(true, observer.changed(Style.HEIGHT));
     observer.flushChanges();
-    assertFalse(observer.changed(Style.WIDTH));
-    assertFalse(observer.changed(Style.HEIGHT));
+    assertEquals(false, observer.changed(Style.WIDTH));
+    assertEquals(false, observer.changed(Style.HEIGHT));
   }
 
   public void testSetBorderWidthSetsWidthOnSidesAllCorners() throws Exception

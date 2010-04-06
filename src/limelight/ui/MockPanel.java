@@ -1,18 +1,17 @@
-//- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+//- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 package limelight.ui;
 
+import limelight.styles.ScreenableStyle;
 import limelight.ui.model.BasePanel;
 import limelight.util.Box;
-import limelight.styles.Style;
-import limelight.styles.FlatStyle;
 
 import java.awt.*;
 
 public class MockPanel extends BasePanel
 {
-  public final FlatStyle style;
+  public final ScreenableStyle style;
   public static int paintCount;
   public int paintIndex;
   public boolean wasPainted;
@@ -24,7 +23,7 @@ public class MockPanel extends BasePanel
 
   public MockPanel()
   {
-    style = new FlatStyle();
+    style = new ScreenableStyle();
     canBeBuffered = true;
   }
 
@@ -38,7 +37,7 @@ public class MockPanel extends BasePanel
     return getChildConsumableArea();
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return style;
   }

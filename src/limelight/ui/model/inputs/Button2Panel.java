@@ -1,9 +1,9 @@
 package limelight.ui.model.inputs;
 
+import limelight.styles.ScreenableStyle;
 import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.util.Colors;
-import limelight.styles.Style;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
@@ -89,7 +89,7 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
     }
   }
 
-  public Style getStyle()
+  public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }
