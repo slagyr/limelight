@@ -3,11 +3,12 @@
 
 package limelight.styles;
 
-import limelight.LimelightException;
 import limelight.util.Util;
 import limelight.styles.abstrstyling.StyleAttribute;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class RichStyle extends Style implements StyleObserver
 {
@@ -55,16 +56,6 @@ public class RichStyle extends Style implements StyleObserver
       notifyObserversOfChange(descriptor, value);
   }
 
-  public void removeExtension(RichStyle extension)
-  {
-    extension.removeObserver(this);
-    applyChangesFromExtension(extension);
-    synchronized(extensions)
-    {
-      extensions.remove(extension);
-    }
-  }
-
   public void addExtension(RichStyle extension)
   {
     if(extension != null && !hasExtension(extension))
@@ -95,12 +86,36 @@ public class RichStyle extends Style implements StyleObserver
     }
   }
 
+  public void removeExtension(RichStyle extension)
+  {
+    extension.removeObserver(this);
+    applyChangesFromExtension(extension);
+    synchronized(extensions)
+    {
+      extensions.remove(extension);
+    }
+  }
+
   public void clearExtensions()
   {
     while(!extensions.isEmpty())
     {
       RichStyle extension = extensions.getFirst();
       removeExtension(extension);
+    }
+  }
+
+  public void tearDown()
+  {
+    List<RichStyle> copy;
+    synchronized(extensions)
+    {
+      copy = new ArrayList<RichStyle>(extensions);
+      extensions.clear();
+    }
+    for(RichStyle extension : copy)
+    {
+      extension.removeObserver(this);
     }
   }
 

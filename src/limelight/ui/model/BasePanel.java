@@ -506,7 +506,9 @@ public abstract class BasePanel implements Panel
   {
     ScenePanel rootPanel = getRoot();
     if(rootPanel != null)
+    {
       rootPanel.addDirtyRegion(getAbsoluteBounds());
+    }
   }
 
   public boolean isLaidOut()

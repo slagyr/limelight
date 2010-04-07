@@ -403,6 +403,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
   {
+    if(!isIlluminated())
+      return;
+
+    // TODO MDM - move all this login into the StyleDescriptors
     if(Context.instance().bufferedImageCache != null &&
         descriptor != Style.TRANSPARENCY &&
         descriptor != Style.X &&
@@ -586,8 +590,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   @Override
   public void delluminate()
   {
-    getStyle().clearExtensions();
-    getHoverStyle().clearExtensions();
+    getStyle().tearDown();
+    getHoverStyle().tearDown();
     super.delluminate();
   }
 }

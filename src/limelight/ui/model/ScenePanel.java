@@ -5,7 +5,6 @@ package limelight.ui.model;
 
 import limelight.*;
 import limelight.styles.RichStyle;
-import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
@@ -73,18 +72,6 @@ public class ScenePanel extends PropPanel implements RootPanel
     return contentPane;
   }
 
-  @Override
-  public Box getChildConsumableArea()
-  {
-    return new Box(getX(), getY(), getWidth(), getHeight());
-  }
-
-  @Override
-  public Box getBoxInsidePadding()
-  {
-    return getChildConsumableArea();
-  }
-
   public int getWidth()
   {
     return contentPane.getWidth();
@@ -97,6 +84,7 @@ public class ScenePanel extends PropPanel implements RootPanel
 
   public void setLocation(int x, int y)
   {
+    super.setLocation(x, y);
     contentPane.setLocation(x, y);
   }
 
@@ -107,7 +95,8 @@ public class ScenePanel extends PropPanel implements RootPanel
 
   public void setSize(int width, int height)
   {
-    contentPane.setSize(width, height);  
+    super.setSize(width, height);
+    contentPane.setSize(width, height);
   }
 
   public Box getAbsoluteBounds()
@@ -298,64 +287,25 @@ public class ScenePanel extends PropPanel implements RootPanel
     return frame;
   }
 
+  @Override
   public void mousePressed(MouseEvent e)
   {
+    if(getProp().accepts_mouse_pressed())
+      getProp().mouse_pressed(translatedEvent(e));
   }
 
+  @Override
   public void mouseReleased(MouseEvent e)
   {
+    if(getProp().accepts_mouse_released())
+      getProp().mouse_released(translatedEvent(e));
   }
 
+  @Override
   public void mouseClicked(MouseEvent e)
   {
-  }
-
-  public void mouseDragged(MouseEvent e)
-  {
-  }
-
-  public void mouseEntered(MouseEvent e)
-  {
-  }
-
-  public void mouseExited(MouseEvent e)
-  {
-  }
-
-  public void mouseMoved(MouseEvent e)
-  {
-  }
-
-  public void mouseWheelMoved(MouseWheelEvent e)
-  {
-  }
-
-  public void focusGained(FocusEvent e)
-  {
-  }
-
-  public void focusLost(FocusEvent e)
-  {
-  }
-
-  public void keyTyped(KeyEvent e)
-  {
-  }
-
-  public void keyPressed(KeyEvent e)
-  {
-  }
-
-  public void keyReleased(KeyEvent e)
-  {
-  }
-
-  public void buttonPressed(ActionEvent e)
-  {
-  }
-
-  public void valueChanged(Object e)
-  {
+    if(getProp().accepts_mouse_clicked())
+      getProp().mouse_clicked(translatedEvent(e));
   }
 
   public Map<String, RichStyle> getStylesStore()

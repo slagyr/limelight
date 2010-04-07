@@ -48,6 +48,7 @@ module Limelight
       @button_groups = ButtonGroupCache.new
       @prop_index = {}
       @cast = Module.new
+
       styles_store.extend(Hashiness)
 #      illuminate
     end
@@ -55,7 +56,8 @@ module Limelight
     # Returns a hash of all the styles belonging to this scene
     #
     def styles_store
-      return @panel.styles_store
+      @styles_store = @panel.styles_store if @styles_store == nil #cache the java object so we don't loose the Hashiness
+      return @styles_store
     end
 
     # Returns self.  A Scene is it's own scene.

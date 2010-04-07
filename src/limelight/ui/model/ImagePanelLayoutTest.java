@@ -40,8 +40,6 @@ public class ImagePanelLayoutTest extends TestCase
 
   public void testGetDimensionsWhenAuto() throws Exception
   {
-    System.err.println("new File().getAbsolutePath() = " + new File(".").getAbsolutePath());
-    
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     panel.doLayout();
 

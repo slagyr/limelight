@@ -60,7 +60,7 @@ public class StyledText
 
   public void teardownStyles()
   {
-    style.clearExtensions();
+    style.tearDown();
   }
 
   public RichStyle getStyle()
