@@ -144,9 +144,13 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if (root != null)
     {
       if (previousSize == null || !previousSize.equals(getSize()))
+      {
         root.consumableAreaChanged();
+      }
       else
+      {
         root.markAsNeedingLayout();
+      }
     }
     previousSize = getSize();
   }

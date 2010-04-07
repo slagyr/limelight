@@ -405,12 +405,12 @@ public class TextPanelTest extends TestCase
   {
     panel.setText("Original Text");
     panel.doLayout();
-    List<StyleObserver> observers = ((RichStyle) panel.getStyle()).getObservers();
+    List<StyleObserver> observers = panel.getStyle().getObservers();
     assertEquals(1, observers.size());
     StyleObserver observer = observers.get(0);
 
     panel.doLayout();
-    List<StyleObserver> newObservers = ((RichStyle) panel.getStyle()).getObservers();
+    List<StyleObserver> newObservers = panel.getStyle().getObservers();
     assertEquals(1, newObservers.size());
     StyleObserver newObserver = newObservers.get(0);
     assertNotSame(newObserver, observer);
