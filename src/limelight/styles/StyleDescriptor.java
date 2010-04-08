@@ -31,4 +31,10 @@ public class StyleDescriptor
   {
     return compiler.compile(value);
   }
+
+  public boolean nameMatches(String value)
+  {
+    return value.toLowerCase().replaceAll("_|\\-", " ").equals(name.toLowerCase());
+
+  }
 }

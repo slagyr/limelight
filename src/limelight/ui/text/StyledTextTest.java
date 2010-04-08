@@ -4,7 +4,6 @@
 package limelight.ui.text;
 
 import limelight.styles.RichStyle;
-import limelight.styles.Style;
 import limelight.styles.StyleDescriptor;
 import limelight.styles.StyleObserver;
 import limelight.styles.abstrstyling.StyleAttribute;
@@ -30,7 +29,7 @@ public class StyledTextTest extends Assert
     LinkedList<String> styles = new LinkedList<String>();
     styledText = new StyledText("Hello there", styles);
     assertEquals("Hello there", styledText.getText());
-    assertEquals(styles, styledText.getStyles());
+    assertEquals(styles, styledText.getStyleNames());
   }
 
   @Test
@@ -72,6 +71,21 @@ public class StyledTextTest extends Assert
     assertEquals(false, style1.hasObserver(style));
     assertEquals(false, style2.hasObserver(style));
     assertEquals(false, defaultStyle.hasObserver(style));
+  }
+
+  @Test
+  public void shouldNotBuildStylesMoreThanOnce() throws Exception
+  {
+    makeSampleStyles();
+    StyleObserver observer = new MockStyleObserver();
+
+    styledText = new StyledText("Some Text", "fizz", "bang");
+    styledText.setupStyles(styles, defaultStyle, observer);
+    styledText.setupStyles(styles, defaultStyle, observer);
+
+    RichStyle style = styledText.getStyle();
+    assertEquals(3, style.getExtentions().size());
+    assertEquals(1, style.getObservers().size());
   }
 
   @Test

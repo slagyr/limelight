@@ -32,7 +32,9 @@ arena :vertical_scrollbar => :on, :height => :greedy do
     styled_text :text => "The above text should have angle brackets.  And here's an ampersand sign: &amp;"
   end
   make_section("Inline Style Attributes") do
-    styled_text :text => "You can inline styles! <blah text_color=purple>Purple text</blah>. <blah font_size=30>Big text</blah>. <blah font_face='courier new'>Courier text</blah>."
+    attributed_text = "<blah text_color=purple>Purple text</blah>. <blah font_size=30>Big text</blah>. <blah font_face='courier new'>Courier text</blah>."
+    styled_text :text => "You can inline styles! #{attributed_text}"
+    styled_text :text => "src: #{attributed_text.gsub("<", "&lt;").gsub(">", "&gt;")}", :font_size => 10
   end
   make_section("Non-Text Style Attributes") do
     styled_text :text => "Here is some text <background_color>with a blue background</background_color>. Tada!"

@@ -26,6 +26,16 @@ public abstract class Style
     return descriptor;
   }
 
+  public static StyleDescriptor descriptorFor(String name)
+  {
+    for(StyleDescriptor styleDescriptor : STYLE_LIST)
+    {
+      if(styleDescriptor.nameMatches(name))
+        return styleDescriptor;
+    }
+    return null;
+  }
+
   public static final StyleDescriptor WIDTH = descriptor("Width", "dimension", "auto");
   public static final StyleDescriptor HEIGHT = descriptor("Height", "dimension", "auto");
   public static final StyleDescriptor MIN_WIDTH = descriptor("Min Width", "noneable simple dimension", "none");
@@ -151,6 +161,15 @@ public abstract class Style
     return getObservers().contains(observer);
   }
 
+
+  public void tearDown()
+  {
+    synchronized(observers)
+    {
+      observers.clear();
+    }
+  }
+
   protected void recordChange(StyleDescriptor descriptor, StyleAttribute value)
   {
     notifyObserversOfChange(descriptor, value);
@@ -162,6 +181,7 @@ public abstract class Style
     {
       synchronized(observers)
       {
+        // MDM - We create a new ArrayList here cause iterating over the unmodifiableList could still cause Threading issues
         readonlyObservers = Collections.unmodifiableList(new ArrayList<StyleObserver>(observers));
       }
     }

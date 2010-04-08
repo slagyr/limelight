@@ -8,7 +8,9 @@ import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.api.Prop;
+import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -33,7 +35,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
     if(frame != null && newFrame != frame)
       delluminate();
-    
+
     frame = newFrame;
 
     if(frame != null)
@@ -306,6 +308,15 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
     if(getProp().accepts_mouse_clicked())
       getProp().mouse_clicked(translatedEvent(e));
+  }
+
+  @Override
+  public void mouseWheelMoved(MouseWheelEvent e)
+  {
+    boolean isVertical = e.getModifiers() % 2 == 0;
+    ScrollBarPanel scrollBar = isVertical ? getVerticalScrollbar() : getHorizontalScrollbar();
+    if(scrollBar != null)
+      scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
   }
 
   public Map<String, RichStyle> getStylesStore()

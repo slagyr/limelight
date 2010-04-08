@@ -4,7 +4,6 @@
 package limelight.ui.text;
 
 import limelight.styles.RichStyle;
-import limelight.styles.Style;
 import limelight.styles.StyleObserver;
 import java.awt.*;
 import java.util.LinkedList;
@@ -14,21 +13,26 @@ import java.util.Map;
 public class StyledText
 {
   private String text;
-  private LinkedList<String> styles;
+  private LinkedList<String> styleNames;
   private RichStyle style;
 
-  public StyledText(String text, LinkedList<String> styles)
+  public StyledText(String text, RichStyle style, List<String> styleNames)
   {
     setText(text);
-    style = new RichStyle();
-    this.styles = styles;
+    this.style = style == null ? new RichStyle() : style;
+    this.styleNames = new LinkedList<String>(styleNames);
   }
 
-  public StyledText(String text, String... styles)
+  public StyledText(String text, LinkedList<String> styleNames)
+  {
+    this(text, null, styleNames);
+  }
+
+  public StyledText(String text, String... styleNames)
   {
     this(text, new LinkedList<String>());
-    for(String style : styles)
-      this.styles.add(style);
+    for(String style : styleNames)
+      this.styleNames.add(style);
   }
 
   public String getText()
@@ -41,16 +45,19 @@ public class StyledText
     this.text = text;
   }
 
-  public List<String> getStyles()
+  public List<String> getStyleNames()
   {
-    return styles;
+    return styleNames;
   }
 
   public void setupStyles(Map<String, RichStyle> styleMap, RichStyle defaultStyle, StyleObserver observer)
   {
-    for(String styleName : styles)
+    if(style.hasObserver(observer))
+      return;
+    
+    for(String styleName : styleNames)
     {
-      RichStyle extension = (RichStyle) styleMap.get(styleName);
+      RichStyle extension = styleMap.get(styleName);
       if(extension != null)
         style.addExtension(extension);
     }
