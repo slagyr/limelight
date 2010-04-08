@@ -5,8 +5,8 @@ package limelight.styles;
 
 import limelight.util.Util;
 import limelight.styles.abstrstyling.StyleAttribute;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -117,6 +117,7 @@ public class RichStyle extends Style implements StyleObserver
     {
       extension.removeObserver(this);
     }
+    super.tearDown();
   }
 
   private void applyChangesFromExtension(RichStyle style)
@@ -170,5 +171,10 @@ public class RichStyle extends Style implements StyleObserver
       }
     }
     return buffer.toString();
+  }
+
+  public List<RichStyle> getExtentions()
+  {
+    return Collections.unmodifiableList(new ArrayList<RichStyle>(extensions));
   }
 }

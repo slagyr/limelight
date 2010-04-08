@@ -3,6 +3,10 @@
 
 package limelight.ui.text;
 
+import limelight.styles.RichStyle;
+import limelight.styles.Style;
+import limelight.styles.StyleDescriptor;
+
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,43 +14,84 @@ import java.util.regex.Pattern;
 public class StyledTextParser
 {
 
-  public static final Pattern TAG_REGEX = Pattern.compile("<(\\w+)>(.*?)</(\\1)>", Pattern.DOTALL);
+  public static final Pattern TAG_REGEX = Pattern.compile("<(\\w+)(\\s*(?:\\w+\\s*=(?:\\s*\"[^\"]*?\"|'[^']*?'|[^>'\"\\s]+)\\s*)*)>(.*?)</(\\1)>", Pattern.DOTALL);
+  public static final Pattern ATTR_REGEX = Pattern.compile("(\\w+)\\s*=\\s*(\"[^\"]*?\"|'[^']*?'|[^>'\"\\s]+)");
 
   public LinkedList<StyledText> parse(String text)
   {
-    return parse(text, new LinkedList<String>(), new LinkedList<StyledText>());
+    return parse(text, new RichStyle(), new LinkedList<String>(), new LinkedList<StyledText>());
   }
 
-  private LinkedList<StyledText> parse(String text, LinkedList<String> styles, LinkedList<StyledText> list)
+  private LinkedList<StyledText> parse(String text, RichStyle parentStyle, LinkedList<String> styleNames, LinkedList<StyledText> list)
   {
     Matcher matcher = TAG_REGEX.matcher(text);
 
     int index = 0;
     while(matcher.find())
     {
-      String prefix = escape(text.substring(index, matcher.start()));
+//for(int i = 0; i < matcher.groupCount(); i++)
+//System.err.println("matcher.group("+i+") = " + matcher.group(i));
+      handleUndecoratedText(parentStyle, styleNames, list, text.substring(index, matcher.start()));
+
       String styleName = matcher.group(1);
-      String styledText = matcher.group(2);
+      String attributeContent = matcher.group(2);
+      String content = matcher.group(3);
+      RichStyle style = buildStyle(attributeContent);
 
-      if(prefix.length() > 0)
-        list.add(new StyledText(prefix, styles));
-
-      LinkedList<String> newStyles = new LinkedList<String>(styles);
-      newStyles.addFirst(styleName);
-      parse(styledText, newStyles, list);
+      styleNames.addFirst(styleName);
+      parse(content, style, styleNames, list);
+      styleNames.removeFirst();
 
       index = matcher.end();
     }
 
-    String trailingText = escape(text.substring(index));
-    if(trailingText.length() > 0)
-      list.add(new StyledText(trailingText, styles));
+    handleUndecoratedText(parentStyle, styleNames, list, text.substring(index));
 
     return list;
+  }
+
+  private void handleUndecoratedText(RichStyle parentStyle, LinkedList<String> styleNames, LinkedList<StyledText> list, String undecoratedText)
+  {
+    String prefix = escape(undecoratedText);
+    if(prefix.length() > 0)
+      list.add(new StyledText(prefix, parentStyle, styleNames));
   }
 
   private String escape(String text)
   {
     return text.replaceAll("&gt;", ">").replaceAll("&lt;", "<").replaceAll("&amp;", "&");
+  }
+
+  private RichStyle buildStyle(String text)
+  {
+    RichStyle style = new RichStyle();
+    if(text != null && text.length() > 0)
+      parseAttributes(text, style);
+    return style;
+  }
+
+  private void parseAttributes(String text, RichStyle style)
+  {
+    Matcher matcher = ATTR_REGEX.matcher(text);
+    while(matcher.find())
+    {
+//for(int i = 0; i < matcher.groupCount(); i++)
+//System.err.println("@matcher.group("+i+") = " + matcher.group(i));
+      String attributeName = matcher.group(1);
+      if(attributeName != null)
+      {
+        String attributeValue = removeQuotes(matcher.group(2));
+        StyleDescriptor descriptor = Style.descriptorFor(attributeName);
+        style.put(descriptor, attributeValue);
+      }
+    }
+  }
+
+  private String removeQuotes(String value)
+  {
+    if((value.startsWith("'") && value.endsWith("'")) || (value.startsWith("\"") && value.endsWith("\"")))
+      return value.substring(1, value.length() - 1);
+
+    return value;
   }
 }
