@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.MockPanel;
 import limelight.ui.TextLayoutImpl;
 import limelight.ui.model.TextPanel;
 import org.junit.Before;
@@ -23,6 +24,10 @@ public class TextBoxModelTest
   public void setUp()
   {
     panel = new TextBox2Panel();
+    MockPanel parent = new MockPanel();
+    parent.add(panel);
+    parent.setSize(150, 28);
+    panel.doLayout();
     boxModel = panel.getModelInfo();
     boxModel.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
   }
@@ -30,7 +35,7 @@ public class TextBoxModelTest
   @Test
   public void canCalcTheXPosForCursorFromStringWithOffset()
   {
-    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
+    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.getFont(), TextPanel.getRenderContext()));
     int expectedX = width + TextModel.SIDE_TEXT_MARGIN;
     boxModel.xOffset = 10;
 
@@ -42,7 +47,7 @@ public class TextBoxModelTest
   @Test
   public void canCalculateTheXPositionForTheCursorFromAString()
   {
-    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.font, TextPanel.getRenderContext()));
+    int width = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.getFont(), TextPanel.getRenderContext()));
     int expectedX = width + TextModel.SIDE_TEXT_MARGIN;
 
     int x = boxModel.getXPosFromText("ABC");
@@ -59,7 +64,7 @@ public class TextBoxModelTest
   @Test
   public void canTellIfTheCursorIsAtACriticalEdge()
   {
-    boxModel.calculateLeftShiftingOffset();   
+    boxModel.calculateLeftShiftingOffset();
 
     assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
@@ -68,7 +73,7 @@ public class TextBoxModelTest
     assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
 
     boxModel.xOffset = 0;
-    boxModel.setCursorIndex(boxModel.text.length() -5);
+    boxModel.setCursorIndex(boxModel.text.length() - 5);
 
     assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
   }

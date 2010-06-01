@@ -3,10 +3,9 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.DimensionAttribute;
-import limelight.styles.styling.SimplePercentageAttribute;
+import limelight.styles.values.SimplePercentageValue;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,14 +14,14 @@ public class PercentageAttributeCompiler extends StyleAttributeCompiler
 {
   private static final Pattern percentagePattern = Pattern.compile("(\\d+(.\\d+)?)%?");
 
-  public StyleAttribute compile(Object value)
+  public StyleValue compile(Object value)
   {
     try
     {
       if(value instanceof Number)
       {
         double doubleValue = ((Number) value).doubleValue();
-        return new SimplePercentageAttribute(doubleValue);
+        return new SimplePercentageValue(doubleValue);
       }
       else
         return compileString(value.toString());
@@ -33,11 +32,11 @@ public class PercentageAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private SimplePercentageAttribute compileString(String rawValue)
+  private SimplePercentageValue compileString(String rawValue)
   {
     double doubleValue = convertToDouble(rawValue);
     if(doubleValue >= 0)
-      return new SimplePercentageAttribute(doubleValue);
+      return new SimplePercentageValue(doubleValue);
     else
       throw makeError(rawValue);
   }

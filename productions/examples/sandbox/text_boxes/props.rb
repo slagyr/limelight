@@ -37,7 +37,7 @@ arena :vertical_alignment => :center do
     control_panel do
       setting do
         label :text => "Width:"
-        input :players => "text_box", :text => "auto", :id => "text_area_width_input", :on_focus_lost => "scene.find('textbox').style.width = text"
+        input :players => "text_box", :text => "auto", :id => "text_area_width_input", :on_focus_lost => "scene.find('textarea').style.width = text"
       end
       setting do
         label :text => "Height:"

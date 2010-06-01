@@ -4,23 +4,21 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.YCoordinateAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.abstrstyling.YCoordinateValue;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.StaticYCoordinateAttribute;
-import limelight.styles.styling.AlignedYCoordinateAttribute;
-import limelight.styles.styling.PercentageYCoordinateAttribute;
-
-import java.awt.*;
+import limelight.styles.values.AlignedYCoordinateValue;
+import limelight.styles.values.PercentageYCoordinateValue;
+import limelight.styles.values.StaticYCoordinateValue;
 
 public class YCoordinateAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object objValue)
+  public StyleValue compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
-      YCoordinateAttribute attribute;
+      YCoordinateValue attribute;
       attribute = attemptAlignedAttribute(value);
       if(attribute == null)
         attribute = attemptPercentageAttribute(value);
@@ -37,27 +35,27 @@ public class YCoordinateAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private YCoordinateAttribute attemptStaticAttribute(String value)
+  private YCoordinateValue attemptStaticAttribute(String value)
   {
-    return new StaticYCoordinateAttribute(IntegerAttributeCompiler.convertToInt(value));
+    return new StaticYCoordinateValue(IntegerAttributeCompiler.convertToInt(value));
   }
 
-  private YCoordinateAttribute attemptAlignedAttribute(String value)
+  private YCoordinateValue attemptAlignedAttribute(String value)
   {
     VerticalAlignment alignment = VerticalAlignmentAttributeCompiler.parse(value);
     if(alignment != null)
-      return new AlignedYCoordinateAttribute(alignment);
+      return new AlignedYCoordinateValue(alignment);
     else
       return null;
   }
 
-  private YCoordinateAttribute attemptPercentageAttribute(String value)
+  private YCoordinateValue attemptPercentageAttribute(String value)
   {
     if(PercentageAttributeCompiler.isPercentage(value))
     {
       double percentValue = PercentageAttributeCompiler.convertToDouble(value);
       if(percentValue >= 0)
-        return new PercentageYCoordinateAttribute(percentValue);
+        return new PercentageYCoordinateValue(percentValue);
     }
     return null;
   }

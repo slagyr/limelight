@@ -3,15 +3,15 @@
 
 package limelight.styles;
 
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 
 import java.util.LinkedList;
 
 class MockStyleObserver implements StyleObserver
 {
-  public StyleDescriptor changedStyle;
-  public LinkedList<StyleDescriptor> descriptorChanges = new LinkedList<StyleDescriptor>();
-  public LinkedList<StyleAttribute> valueChanges = new LinkedList<StyleAttribute>();
+  public StyleAttribute changedStyle;
+  public LinkedList<StyleAttribute> attributeChanges = new LinkedList<StyleAttribute>();
+  public LinkedList<StyleValue> valueChanges = new LinkedList<StyleValue>();
   private boolean[] changes;
 
   public MockStyleObserver()
@@ -19,11 +19,11 @@ class MockStyleObserver implements StyleObserver
     changes = new boolean[Style.STYLE_COUNT];
   }
 
-  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
+  public void styleChanged(StyleAttribute attribute, StyleValue value)
   {
-    changes[descriptor.index] = true;
-    changedStyle = descriptor;
-    descriptorChanges.add(descriptor);
+    changes[attribute.index] = true;
+    changedStyle = attribute;
+    attributeChanges.add(attribute);
     valueChanges.add(value);
   }
 
@@ -37,9 +37,9 @@ class MockStyleObserver implements StyleObserver
     return false;
   }
 
-  public boolean changed(StyleDescriptor descriptor)
+  public boolean changed(StyleAttribute attribute)
   {
-    return changes[descriptor.index];
+    return changes[attribute.index];
   }
 
   public void flushChanges()

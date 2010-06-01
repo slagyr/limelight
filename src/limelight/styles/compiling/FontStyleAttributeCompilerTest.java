@@ -6,7 +6,7 @@ package limelight.styles.compiling;
 import junit.framework.TestCase;
 import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-import limelight.styles.styling.SimpleFontStyleAttribute;
+import limelight.styles.values.SimpleFontStyleValue;
 
 public class FontStyleAttributeCompilerTest extends TestCase
 {
@@ -20,7 +20,7 @@ public class FontStyleAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    Assert.assertEquals(true, ((SimpleFontStyleAttribute) compiler.compile("bold")).isBold());
+    Assert.assertEquals(true, ((SimpleFontStyleValue) compiler.compile("bold")).isBold());
   }
 
   public void testInvalidValue() throws Exception

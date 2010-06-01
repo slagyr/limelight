@@ -4,7 +4,7 @@
 package limelight.styles.abstrstyling;
 
 import junit.framework.TestCase;
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class StyleAttributeCompilerTest extends TestCase
@@ -13,7 +13,7 @@ public class StyleAttributeCompilerTest extends TestCase
 
   private static class TestableStyleAttributeCompilerTest extends StyleAttributeCompiler
   {
-    public StyleAttribute compile(Object value)
+    public StyleValue compile(Object value)
     {
       return null;
     }

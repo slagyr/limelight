@@ -4,13 +4,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.HorizontalAlignment;
+import limelight.styles.Style;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
-import limelight.ui.model.ScenePanel;
+import limelight.styles.values.SimpleHorizontalAlignmentValue;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
+import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.util.Box;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
@@ -21,21 +21,21 @@ public class TextArea2Panel extends TextInputPanel
 
   public TextArea2Panel()
   {
-    setSize(150, 75);
-    paintableRegion = new Box(0, 0, width, height);
     boxInfo = new TextAreaModel(this);
     keyProcessors = new ArrayList<KeyProcessor>(16);
     initKeyProcessors();
     mouseProcessor = new MouseProcessor(boxInfo);
     painterComposite = new TextPanelPainterComposite(boxInfo);
-    horizontalTextAlignment = new SimpleHorizontalAlignmentAttribute(HorizontalAlignment.LEFT);
-    verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.TOP);
+    horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
+    verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.TOP);
     focused = true;
   }
 
   @Override
-  protected void expandPaintableRegionToRightBound()
+  protected void setDefaultStyles(Style style)
   {
+    style.setDefault(Style.WIDTH, 150);
+    style.setDefault(Style.HEIGHT, 75);
   }
 
   @Override
@@ -66,27 +66,6 @@ public class TextArea2Panel extends TextInputPanel
   }
 
   @Override
-  public void setPaintableRegion(int index)
-  {
-    resetPaintableRegion();
-  }
-
-  @Override
-  public void resetPaintableRegion()
-  {
-    paintableRegion = new Box(TextModel.SIDE_TEXT_MARGIN, TextModel.TOP_MARGIN, width - TextModel.SIDE_TEXT_MARGIN * 2, height - TextModel.TOP_MARGIN * 2);
-  }
-
-  @Override
-  public void maxOutPaintableRegion()
-  {
-    paintableRegion.x = 0;
-    paintableRegion.y = 0;
-    paintableRegion.width = width;
-    paintableRegion.height = height;
-  }
-
-  @Override
   public boolean isTextMaxed()
   {
     return false;
@@ -98,7 +77,7 @@ public class TextArea2Panel extends TextInputPanel
 
   protected void markCursorRegionAsDirty()
   {
-    ScenePanel rootPanel = getRoot();
+    RootPanel rootPanel = getRoot();
     if (rootPanel != null)
     {
       int regionHeight = boxInfo.getHeightOfCurrentLine();

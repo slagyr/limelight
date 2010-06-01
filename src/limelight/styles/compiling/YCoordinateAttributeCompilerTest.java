@@ -6,9 +6,9 @@ package limelight.styles.compiling;
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.StaticYCoordinateAttribute;
-import limelight.styles.styling.PercentageYCoordinateAttribute;
-import limelight.styles.styling.AlignedYCoordinateAttribute;
+import limelight.styles.values.StaticYCoordinateValue;
+import limelight.styles.values.PercentageYCoordinateValue;
+import limelight.styles.values.AlignedYCoordinateValue;
 
 public class YCoordinateAttributeCompilerTest extends TestCase
 {
@@ -22,23 +22,23 @@ public class YCoordinateAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(StaticYCoordinateAttribute.class, compiler.compile("123").getClass());
-    assertEquals(StaticYCoordinateAttribute.class, compiler.compile("-123").getClass());
-    assertEquals(StaticYCoordinateAttribute.class, compiler.compile("123.567").getClass());
-    assertEquals(PercentageYCoordinateAttribute.class, compiler.compile("50%").getClass());
-    assertEquals(PercentageYCoordinateAttribute.class, compiler.compile("3.14%").getClass());
-    assertEquals(AlignedYCoordinateAttribute.class, compiler.compile("top").getClass());
-    assertEquals(AlignedYCoordinateAttribute.class, compiler.compile("center").getClass());
-    assertEquals(AlignedYCoordinateAttribute.class, compiler.compile("bottom").getClass());
+    assertEquals(StaticYCoordinateValue.class, compiler.compile("123").getClass());
+    assertEquals(StaticYCoordinateValue.class, compiler.compile("-123").getClass());
+    assertEquals(StaticYCoordinateValue.class, compiler.compile("123.567").getClass());
+    assertEquals(PercentageYCoordinateValue.class, compiler.compile("50%").getClass());
+    assertEquals(PercentageYCoordinateValue.class, compiler.compile("3.14%").getClass());
+    assertEquals(AlignedYCoordinateValue.class, compiler.compile("top").getClass());
+    assertEquals(AlignedYCoordinateValue.class, compiler.compile("center").getClass());
+    assertEquals(AlignedYCoordinateValue.class, compiler.compile("bottom").getClass());
 
-    assertEquals(123, ((StaticYCoordinateAttribute) compiler.compile("123")).getValue());
-    assertEquals(-123, ((StaticYCoordinateAttribute) compiler.compile("-123")).getValue());
-    assertEquals(0, ((StaticYCoordinateAttribute) compiler.compile("0")).getValue());
-    assertEquals(50.0, ((PercentageYCoordinateAttribute) compiler.compile("50%")).getPercentage(), 0.01);
-    assertEquals(3.14, ((PercentageYCoordinateAttribute) compiler.compile("3.14%")).getPercentage(), 0.01);
-    assertEquals(VerticalAlignment.TOP, ((AlignedYCoordinateAttribute)compiler.compile("top")).getAlignment());
-    assertEquals(VerticalAlignment.CENTER, ((AlignedYCoordinateAttribute)compiler.compile("center")).getAlignment());
-    assertEquals(VerticalAlignment.BOTTOM, ((AlignedYCoordinateAttribute)compiler.compile("bottom")).getAlignment());
+    assertEquals(123, ((StaticYCoordinateValue) compiler.compile("123")).getValue());
+    assertEquals(-123, ((StaticYCoordinateValue) compiler.compile("-123")).getValue());
+    assertEquals(0, ((StaticYCoordinateValue) compiler.compile("0")).getValue());
+    assertEquals(50.0, ((PercentageYCoordinateValue) compiler.compile("50%")).getPercentage(), 0.01);
+    assertEquals(3.14, ((PercentageYCoordinateValue) compiler.compile("3.14%")).getPercentage(), 0.01);
+    assertEquals(VerticalAlignment.TOP, ((AlignedYCoordinateValue)compiler.compile("top")).getAlignment());
+    assertEquals(VerticalAlignment.CENTER, ((AlignedYCoordinateValue)compiler.compile("center")).getAlignment());
+    assertEquals(VerticalAlignment.BOTTOM, ((AlignedYCoordinateValue)compiler.compile("bottom")).getAlignment());
   }
 
   public void testInvalidValues() throws Exception

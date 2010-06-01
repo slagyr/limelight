@@ -13,127 +13,127 @@ import java.util.List;
 
 public abstract class Style
 {
-  public static final LinkedList<StyleDescriptor> STYLE_LIST = new LinkedList<StyleDescriptor>();
+  public static final LinkedList<StyleAttribute> STYLE_LIST = new LinkedList<StyleAttribute>();
   private final LinkedList<StyleObserver> observers = new LinkedList<StyleObserver>();
   private List<StyleObserver> readonlyObservers;
-  private StyleAttribute[] defaults;
+  private StyleValue[] defaults;
 
-  private static StyleDescriptor descriptor(String name, String compilerType, String defaultValue)
+  private static StyleAttribute descriptor(String name, String compilerType, String defaultValue)
   {
     StyleAttributeCompiler compiler = Context.instance().styleAttributeCompilerFactory.compiler(compilerType, name);
-    StyleDescriptor descriptor = new StyleDescriptor(STYLE_LIST.size(), name, compiler, compiler.compile(defaultValue));
-    STYLE_LIST.add(descriptor);
-    return descriptor;
+    StyleAttribute attribute = new StyleAttribute(STYLE_LIST.size(), name, compiler, compiler.compile(defaultValue));
+    STYLE_LIST.add(attribute);
+    return attribute;
   }
 
-  public static StyleDescriptor descriptorFor(String name)
+  public static StyleAttribute descriptorFor(String name)
   {
-    for(StyleDescriptor styleDescriptor : STYLE_LIST)
+    for(StyleAttribute styleAttribute : STYLE_LIST)
     {
-      if(styleDescriptor.nameMatches(name))
-        return styleDescriptor;
+      if(styleAttribute.nameMatches(name))
+        return styleAttribute;
     }
     return null;
   }
 
-  public static final StyleDescriptor WIDTH = descriptor("Width", "dimension", "auto");
-  public static final StyleDescriptor HEIGHT = descriptor("Height", "dimension", "auto");
-  public static final StyleDescriptor MIN_WIDTH = descriptor("Min Width", "noneable simple dimension", "none");
-  public static final StyleDescriptor MIN_HEIGHT = descriptor("Min Height", "noneable simple dimension", "none");
-  public static final StyleDescriptor MAX_WIDTH = descriptor("Max Width", "noneable simple dimension", "none");
-  public static final StyleDescriptor MAX_HEIGHT = descriptor("Max Height", "noneable simple dimension", "none");
-  public static final StyleDescriptor VERTICAL_SCROLLBAR = descriptor("Vertical Scrollbar", "on/off", "off");
-  public static final StyleDescriptor HORIZONTAL_SCROLLBAR = descriptor("Horizontal Scrollbar", "on/off", "off");
-  public static final StyleDescriptor TOP_BORDER_COLOR = descriptor("Top Border Color", "color", "black");
-  public static final StyleDescriptor RIGHT_BORDER_COLOR = descriptor("Right Border Color", "color", "black");
-  public static final StyleDescriptor BOTTOM_BORDER_COLOR = descriptor("Bottom Border Color", "color", "black");
-  public static final StyleDescriptor LEFT_BORDER_COLOR = descriptor("Left Border Color", "color", "black");
-  public static final StyleDescriptor TOP_BORDER_WIDTH = descriptor("Top Border Width", "pixels", "0");
-  public static final StyleDescriptor RIGHT_BORDER_WIDTH = descriptor("Right Border Width", "pixels", "0");
-  public static final StyleDescriptor BOTTOM_BORDER_WIDTH = descriptor("Bottom Border Width", "pixels", "0");
-  public static final StyleDescriptor LEFT_BORDER_WIDTH = descriptor("Left Border Width", "pixels", "0");
-  public static final StyleDescriptor TOP_MARGIN = descriptor("Top Margin", "pixels", "0");
-  public static final StyleDescriptor RIGHT_MARGIN = descriptor("Right Margin", "pixels", "0");
-  public static final StyleDescriptor BOTTOM_MARGIN = descriptor("Bottom Margin", "pixels", "0");
-  public static final StyleDescriptor LEFT_MARGIN = descriptor("Left Margin", "pixels", "0");
-  public static final StyleDescriptor TOP_PADDING = descriptor("Top Padding", "pixels", "0");
-  public static final StyleDescriptor RIGHT_PADDING = descriptor("Right Padding", "pixels", "0");
-  public static final StyleDescriptor BOTTOM_PADDING = descriptor("Bottom Padding", "pixels", "0");
-  public static final StyleDescriptor LEFT_PADDING = descriptor("Left Padding", "pixels", "0");
-  public static final StyleDescriptor BACKGROUND_COLOR = descriptor("Background Color", "color", "transparent");
-  public static final StyleDescriptor SECONDARY_BACKGROUND_COLOR = descriptor("Secondary Background Color", "color", "transparent");
-  public static final StyleDescriptor BACKGROUND_IMAGE = descriptor("Background Image", "noneable string", "none");
-  public static final StyleDescriptor BACKGROUND_IMAGE_FILL_STRATEGY = descriptor("Background Image Fill Strategy", "fill strategy", "repeat");
-  public static final StyleDescriptor GRADIENT = descriptor("Gradient", "on/off", "off");
-  public static final StyleDescriptor GRADIENT_ANGLE = descriptor("Gradient Angle", "degrees", "90");
-  public static final StyleDescriptor GRADIENT_PENETRATION = descriptor("Gradient Penetration", "percentage", "100");
-  public static final StyleDescriptor CYCLIC_GRADIENT = descriptor("Cyclic Gradient", "on/off", "off");
-  public static final StyleDescriptor HORIZONTAL_ALIGNMENT = descriptor("Horizontal Alignment", "horizontal alignment", "left");
-  public static final StyleDescriptor VERTICAL_ALIGNMENT = descriptor("Vertical Alignment", "vertical alignment", "top");
-  public static final StyleDescriptor TEXT_COLOR = descriptor("Text Color", "color", "black");
-  public static final StyleDescriptor FONT_FACE = descriptor("Font Face", "string", "Arial");
-  public static final StyleDescriptor FONT_SIZE = descriptor("Font Size", "integer", "12");
-  public static final StyleDescriptor FONT_STYLE = descriptor("Font Style", "font style", "plain");
-  public static final StyleDescriptor TRANSPARENCY = descriptor("Transparency", "percentage", "0");
-  public static final StyleDescriptor TOP_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Top Right Rounded Corner Radius", "pixels", "0");
-  public static final StyleDescriptor BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Right Rounded Corner Radius", "pixels", "0");
-  public static final StyleDescriptor BOTTOM_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Left Rounded Corner Radius", "pixels", "0");
-  public static final StyleDescriptor TOP_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Top Left Rounded Corner Radius", "pixels", "0");
-  public static final StyleDescriptor TOP_RIGHT_BORDER_WIDTH = descriptor("Top Right Border Width", "pixels", "0");
-  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_WIDTH = descriptor("Bottom Right Border Width", "pixels", "0");
-  public static final StyleDescriptor BOTTOM_LEFT_BORDER_WIDTH = descriptor("Bottom Left Border Width", "pixels", "0");
-  public static final StyleDescriptor TOP_LEFT_BORDER_WIDTH = descriptor("Top Left Border Width", "pixels", "0");
-  public static final StyleDescriptor TOP_RIGHT_BORDER_COLOR = descriptor("Top Right Border Color", "color", "black");
-  public static final StyleDescriptor BOTTOM_RIGHT_BORDER_COLOR = descriptor("Bottom Right Border Color", "color", "black");
-  public static final StyleDescriptor BOTTOM_LEFT_BORDER_COLOR = descriptor("Bottom Left Border Color", "color", "black");
-  public static final StyleDescriptor TOP_LEFT_BORDER_COLOR = descriptor("Top Left Border Color", "color", "black");
-  public static final StyleDescriptor FLOAT = descriptor("Float", "on/off", "off");
-  public static final StyleDescriptor X = descriptor("X", "x-coordinate", "0");
-  public static final StyleDescriptor Y = descriptor("Y", "y-coordinate", "0");
-  public static final StyleDescriptor BACKGROUND_IMAGE_X = descriptor("Background Image X", "x-coordinate", "0");
-  public static final StyleDescriptor BACKGROUND_IMAGE_Y = descriptor("Background Image Y", "y-coordinate", "0");
+  public static final StyleAttribute WIDTH = descriptor("Width", "dimension", "auto");
+  public static final StyleAttribute HEIGHT = descriptor("Height", "dimension", "auto");
+  public static final StyleAttribute MIN_WIDTH = descriptor("Min Width", "noneable simple dimension", "none");
+  public static final StyleAttribute MIN_HEIGHT = descriptor("Min Height", "noneable simple dimension", "none");
+  public static final StyleAttribute MAX_WIDTH = descriptor("Max Width", "noneable simple dimension", "none");
+  public static final StyleAttribute MAX_HEIGHT = descriptor("Max Height", "noneable simple dimension", "none");
+  public static final StyleAttribute VERTICAL_SCROLLBAR = descriptor("Vertical Scrollbar", "on/off", "off");
+  public static final StyleAttribute HORIZONTAL_SCROLLBAR = descriptor("Horizontal Scrollbar", "on/off", "off");
+  public static final StyleAttribute TOP_BORDER_COLOR = descriptor("Top Border Color", "color", "black");
+  public static final StyleAttribute RIGHT_BORDER_COLOR = descriptor("Right Border Color", "color", "black");
+  public static final StyleAttribute BOTTOM_BORDER_COLOR = descriptor("Bottom Border Color", "color", "black");
+  public static final StyleAttribute LEFT_BORDER_COLOR = descriptor("Left Border Color", "color", "black");
+  public static final StyleAttribute TOP_BORDER_WIDTH = descriptor("Top Border Width", "pixels", "0");
+  public static final StyleAttribute RIGHT_BORDER_WIDTH = descriptor("Right Border Width", "pixels", "0");
+  public static final StyleAttribute BOTTOM_BORDER_WIDTH = descriptor("Bottom Border Width", "pixels", "0");
+  public static final StyleAttribute LEFT_BORDER_WIDTH = descriptor("Left Border Width", "pixels", "0");
+  public static final StyleAttribute TOP_MARGIN = descriptor("Top Margin", "pixels", "0");
+  public static final StyleAttribute RIGHT_MARGIN = descriptor("Right Margin", "pixels", "0");
+  public static final StyleAttribute BOTTOM_MARGIN = descriptor("Bottom Margin", "pixels", "0");
+  public static final StyleAttribute LEFT_MARGIN = descriptor("Left Margin", "pixels", "0");
+  public static final StyleAttribute TOP_PADDING = descriptor("Top Padding", "pixels", "0");
+  public static final StyleAttribute RIGHT_PADDING = descriptor("Right Padding", "pixels", "0");
+  public static final StyleAttribute BOTTOM_PADDING = descriptor("Bottom Padding", "pixels", "0");
+  public static final StyleAttribute LEFT_PADDING = descriptor("Left Padding", "pixels", "0");
+  public static final StyleAttribute BACKGROUND_COLOR = descriptor("Background Color", "color", "transparent");
+  public static final StyleAttribute SECONDARY_BACKGROUND_COLOR = descriptor("Secondary Background Color", "color", "transparent");
+  public static final StyleAttribute BACKGROUND_IMAGE = descriptor("Background Image", "noneable string", "none");
+  public static final StyleAttribute BACKGROUND_IMAGE_FILL_STRATEGY = descriptor("Background Image Fill Strategy", "fill strategy", "repeat");
+  public static final StyleAttribute GRADIENT = descriptor("Gradient", "on/off", "off");
+  public static final StyleAttribute GRADIENT_ANGLE = descriptor("Gradient Angle", "degrees", "90");
+  public static final StyleAttribute GRADIENT_PENETRATION = descriptor("Gradient Penetration", "percentage", "100");
+  public static final StyleAttribute CYCLIC_GRADIENT = descriptor("Cyclic Gradient", "on/off", "off");
+  public static final StyleAttribute HORIZONTAL_ALIGNMENT = descriptor("Horizontal Alignment", "horizontal alignment", "left");
+  public static final StyleAttribute VERTICAL_ALIGNMENT = descriptor("Vertical Alignment", "vertical alignment", "top");
+  public static final StyleAttribute TEXT_COLOR = descriptor("Text Color", "color", "black");
+  public static final StyleAttribute FONT_FACE = descriptor("Font Face", "string", "Arial");
+  public static final StyleAttribute FONT_SIZE = descriptor("Font Size", "integer", "12");
+  public static final StyleAttribute FONT_STYLE = descriptor("Font Style", "font style", "plain");
+  public static final StyleAttribute TRANSPARENCY = descriptor("Transparency", "percentage", "0");
+  public static final StyleAttribute TOP_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Top Right Rounded Corner Radius", "pixels", "0");
+  public static final StyleAttribute BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Right Rounded Corner Radius", "pixels", "0");
+  public static final StyleAttribute BOTTOM_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Bottom Left Rounded Corner Radius", "pixels", "0");
+  public static final StyleAttribute TOP_LEFT_ROUNDED_CORNER_RADIUS = descriptor("Top Left Rounded Corner Radius", "pixels", "0");
+  public static final StyleAttribute TOP_RIGHT_BORDER_WIDTH = descriptor("Top Right Border Width", "pixels", "0");
+  public static final StyleAttribute BOTTOM_RIGHT_BORDER_WIDTH = descriptor("Bottom Right Border Width", "pixels", "0");
+  public static final StyleAttribute BOTTOM_LEFT_BORDER_WIDTH = descriptor("Bottom Left Border Width", "pixels", "0");
+  public static final StyleAttribute TOP_LEFT_BORDER_WIDTH = descriptor("Top Left Border Width", "pixels", "0");
+  public static final StyleAttribute TOP_RIGHT_BORDER_COLOR = descriptor("Top Right Border Color", "color", "black");
+  public static final StyleAttribute BOTTOM_RIGHT_BORDER_COLOR = descriptor("Bottom Right Border Color", "color", "black");
+  public static final StyleAttribute BOTTOM_LEFT_BORDER_COLOR = descriptor("Bottom Left Border Color", "color", "black");
+  public static final StyleAttribute TOP_LEFT_BORDER_COLOR = descriptor("Top Left Border Color", "color", "black");
+  public static final StyleAttribute FLOAT = descriptor("Float", "on/off", "off");
+  public static final StyleAttribute X = descriptor("X", "x-coordinate", "0");
+  public static final StyleAttribute Y = descriptor("Y", "y-coordinate", "0");
+  public static final StyleAttribute BACKGROUND_IMAGE_X = descriptor("Background Image X", "x-coordinate", "0");
+  public static final StyleAttribute BACKGROUND_IMAGE_Y = descriptor("Background Image Y", "y-coordinate", "0");
 
   protected static final int STYLE_COUNT = STYLE_LIST.size();
 
-  protected abstract StyleAttribute get(int key);
+  protected abstract StyleValue get(int key);
 
-  protected abstract void put(StyleDescriptor descriptor, Object value);
+  protected abstract void put(StyleAttribute attribute, Object value);
 
-  protected abstract void putCompiled(StyleDescriptor descriptor, StyleAttribute value);
+  protected abstract void putCompiled(StyleAttribute attribute, StyleValue value);
 
-  public void setDefault(StyleDescriptor descriptor, Object value)
+  public void setDefault(StyleAttribute attribute, Object value)
   {
     if(defaults == null)
-      defaults = new StyleAttribute[Style.STYLE_COUNT];
+      defaults = new StyleValue[Style.STYLE_COUNT];
 
-    StyleAttribute compiledValue = descriptor.compile(value);
-    defaults[descriptor.index] = compiledValue;
-    if(get(descriptor.index) == null && value != null && !compiledValue.equals(descriptor.defaultValue))
-      recordChange(descriptor, compiledValue);
+    StyleValue compiledValue = attribute.compile(value);
+    defaults[attribute.index] = compiledValue;
+    if(get(attribute.index) == null && value != null && !compiledValue.equals(attribute.defaultValue))
+      recordChange(attribute, compiledValue);
   }
 
-  protected StyleAttribute getDefaultValue(StyleDescriptor descriptor)
+  protected StyleValue getDefaultValue(StyleAttribute attribute)
   {
     if(defaults != null)
     {
-      StyleAttribute value = defaults[descriptor.index];
+      StyleValue value = defaults[attribute.index];
       if(value != null)
         return value;
     }
 
-    return descriptor.defaultValue;
+    return attribute.defaultValue;
   }
 
-  public String get(StyleDescriptor descriptor)
+  public String get(StyleAttribute attribute)
   {
-    return getCompiled(descriptor).toString();
+    return getCompiled(attribute).toString();
   }
 
-  public StyleAttribute getCompiled(StyleDescriptor descriptor)
+  public StyleValue getCompiled(StyleAttribute attribute)
   {
-    StyleAttribute value = get(descriptor.index);
+    StyleValue value = get(attribute.index);
     if(value == null)
-      return getDefaultValue(descriptor);
+      return getDefaultValue(attribute);
     else
       return value;
   }
@@ -170,9 +170,9 @@ public abstract class Style
     }
   }
 
-  protected void recordChange(StyleDescriptor descriptor, StyleAttribute value)
+  protected void recordChange(StyleAttribute attribute, StyleValue value)
   {
-    notifyObserversOfChange(descriptor, value);
+    notifyObserversOfChange(attribute, value);
   }
 
   public List<StyleObserver> getObservers()
@@ -188,10 +188,10 @@ public abstract class Style
     return readonlyObservers;
   }
 
-  protected void notifyObserversOfChange(StyleDescriptor descriptor, StyleAttribute value)
+  protected void notifyObserversOfChange(StyleAttribute attribute, StyleValue value)
   {
     for(StyleObserver observer : getObservers())
-      observer.styleChanged(descriptor, value);
+      observer.styleChanged(attribute, value);
   }
 
 
@@ -215,9 +215,9 @@ public abstract class Style
     return get(WIDTH);
   }
 
-  public DimensionAttribute getCompiledWidth()
+  public DimensionValue getCompiledWidth()
   {
-    return (DimensionAttribute) getCompiled(WIDTH);
+    return (DimensionValue) getCompiled(WIDTH);
   }
 
   public void setHeight(Object value)
@@ -230,9 +230,9 @@ public abstract class Style
     return get(HEIGHT);
   }
 
-  public DimensionAttribute getCompiledHeight()
+  public DimensionValue getCompiledHeight()
   {
-    return (DimensionAttribute) getCompiled(HEIGHT);
+    return (DimensionValue) getCompiled(HEIGHT);
   }
 
   public void setMinWidth(Object value)
@@ -245,9 +245,9 @@ public abstract class Style
     return get(MIN_WIDTH);
   }
 
-  public NoneableAttribute<DimensionAttribute> getCompiledMinWidth()
+  public NoneableValue<DimensionValue> getCompiledMinWidth()
   {
-    return (NoneableAttribute<DimensionAttribute>) getCompiled(MIN_WIDTH);
+    return (NoneableValue<DimensionValue>) getCompiled(MIN_WIDTH);
   }
 
   public void setMinHeight(Object value)
@@ -260,9 +260,9 @@ public abstract class Style
     return get(MIN_HEIGHT);
   }
 
-  public NoneableAttribute<DimensionAttribute> getCompiledMinHeight()
+  public NoneableValue<DimensionValue> getCompiledMinHeight()
   {
-    return (NoneableAttribute<DimensionAttribute>) getCompiled(MIN_HEIGHT);
+    return (NoneableValue<DimensionValue>) getCompiled(MIN_HEIGHT);
   }
 
   public void setMaxWidth(Object value)
@@ -275,9 +275,9 @@ public abstract class Style
     return get(MAX_WIDTH);
   }
 
-  public NoneableAttribute<DimensionAttribute> getCompiledMaxWidth()
+  public NoneableValue<DimensionValue> getCompiledMaxWidth()
   {
-    return (NoneableAttribute<DimensionAttribute>) getCompiled(MAX_WIDTH);
+    return (NoneableValue<DimensionValue>) getCompiled(MAX_WIDTH);
   }
 
   public void setMaxHeight(Object value)
@@ -290,9 +290,9 @@ public abstract class Style
     return get(MAX_HEIGHT);
   }
 
-  public NoneableAttribute<DimensionAttribute> getCompiledMaxHeight()
+  public NoneableValue<DimensionValue> getCompiledMaxHeight()
   {
-    return (NoneableAttribute<DimensionAttribute>) getCompiled(MAX_HEIGHT);
+    return (NoneableValue<DimensionValue>) getCompiled(MAX_HEIGHT);
   }
 
   public void setTextColor(Object value)
@@ -305,9 +305,9 @@ public abstract class Style
     return get(TEXT_COLOR);
   }
 
-  public ColorAttribute getCompiledTextColor()
+  public ColorValue getCompiledTextColor()
   {
-    return (ColorAttribute) getCompiled(TEXT_COLOR);
+    return (ColorValue) getCompiled(TEXT_COLOR);
   }
 
   public void setBorderColor(Object value)
@@ -327,9 +327,9 @@ public abstract class Style
     return get(TOP_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledTopBorderColor()
+  public ColorValue getCompiledTopBorderColor()
   {
-    return (ColorAttribute) getCompiled(TOP_BORDER_COLOR);
+    return (ColorValue) getCompiled(TOP_BORDER_COLOR);
   }
 
   public String getRightBorderColor()
@@ -337,9 +337,9 @@ public abstract class Style
     return get(RIGHT_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledRightBorderColor()
+  public ColorValue getCompiledRightBorderColor()
   {
-    return (ColorAttribute) getCompiled(RIGHT_BORDER_COLOR);
+    return (ColorValue) getCompiled(RIGHT_BORDER_COLOR);
   }
 
   public String getBottomBorderColor()
@@ -347,9 +347,9 @@ public abstract class Style
     return get(BOTTOM_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledBottomBorderColor()
+  public ColorValue getCompiledBottomBorderColor()
   {
-    return (ColorAttribute) getCompiled(BOTTOM_BORDER_COLOR);
+    return (ColorValue) getCompiled(BOTTOM_BORDER_COLOR);
   }
 
   public String getLeftBorderColor()
@@ -357,9 +357,9 @@ public abstract class Style
     return get(LEFT_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledLeftBorderColor()
+  public ColorValue getCompiledLeftBorderColor()
   {
-    return (ColorAttribute) getCompiled(LEFT_BORDER_COLOR);
+    return (ColorValue) getCompiled(LEFT_BORDER_COLOR);
   }
 
   public void setTopBorderColor(Object value)
@@ -399,9 +399,9 @@ public abstract class Style
     return get(TOP_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledTopBorderWidth()
+  public PixelsValue getCompiledTopBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(TOP_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(TOP_BORDER_WIDTH);
   }
 
   public void setTopBorderWidth(Object topBorderWidth)
@@ -414,9 +414,9 @@ public abstract class Style
     return get(RIGHT_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledRightBorderWidth()
+  public PixelsValue getCompiledRightBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(RIGHT_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(RIGHT_BORDER_WIDTH);
   }
 
   public void setRightBorderWidth(Object rightBorderWidth)
@@ -429,9 +429,9 @@ public abstract class Style
     return get(BOTTOM_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledBottomBorderWidth()
+  public PixelsValue getCompiledBottomBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(BOTTOM_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(BOTTOM_BORDER_WIDTH);
   }
 
   public void setBottomBorderWidth(Object bottomBorderWidth)
@@ -444,9 +444,9 @@ public abstract class Style
     return get(LEFT_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledLeftBorderWidth()
+  public PixelsValue getCompiledLeftBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(LEFT_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(LEFT_BORDER_WIDTH);
   }
 
   public void setLeftBorderWidth(Object leftBorderWidth)
@@ -467,9 +467,9 @@ public abstract class Style
     return get(TOP_MARGIN);
   }
 
-  public PixelsAttribute getCompiledTopMargin()
+  public PixelsValue getCompiledTopMargin()
   {
-    return (PixelsAttribute) getCompiled(TOP_MARGIN);
+    return (PixelsValue) getCompiled(TOP_MARGIN);
   }
 
   public void setTopMargin(Object topMargin)
@@ -482,9 +482,9 @@ public abstract class Style
     return get(RIGHT_MARGIN);
   }
 
-  public PixelsAttribute getCompiledRightMargin()
+  public PixelsValue getCompiledRightMargin()
   {
-    return (PixelsAttribute) getCompiled(RIGHT_MARGIN);
+    return (PixelsValue) getCompiled(RIGHT_MARGIN);
   }
 
   public void setRightMargin(Object rightMargin)
@@ -497,9 +497,9 @@ public abstract class Style
     return get(BOTTOM_MARGIN);
   }
 
-  public PixelsAttribute getCompiledBottomMargin()
+  public PixelsValue getCompiledBottomMargin()
   {
-    return (PixelsAttribute) getCompiled(BOTTOM_MARGIN);
+    return (PixelsValue) getCompiled(BOTTOM_MARGIN);
   }
 
   public void setBottomMargin(Object bottomMargin)
@@ -512,9 +512,9 @@ public abstract class Style
     return get(LEFT_MARGIN);
   }
 
-  public PixelsAttribute getCompiledLeftMargin()
+  public PixelsValue getCompiledLeftMargin()
   {
-    return (PixelsAttribute) getCompiled(LEFT_MARGIN);
+    return (PixelsValue) getCompiled(LEFT_MARGIN);
   }
 
   public void setLeftMargin(Object leftMargin)
@@ -535,9 +535,9 @@ public abstract class Style
     return get(TOP_PADDING);
   }
 
-  public PixelsAttribute getCompiledTopPadding()
+  public PixelsValue getCompiledTopPadding()
   {
-    return (PixelsAttribute) getCompiled(TOP_PADDING);
+    return (PixelsValue) getCompiled(TOP_PADDING);
   }
 
   public void setTopPadding(Object topPadding)
@@ -550,9 +550,9 @@ public abstract class Style
     return get(RIGHT_PADDING);
   }
 
-  public PixelsAttribute getCompiledRightPadding()
+  public PixelsValue getCompiledRightPadding()
   {
-    return (PixelsAttribute) getCompiled(RIGHT_PADDING);
+    return (PixelsValue) getCompiled(RIGHT_PADDING);
   }
 
   public void setRightPadding(Object rightPadding)
@@ -565,9 +565,9 @@ public abstract class Style
     return get(BOTTOM_PADDING);
   }
 
-  public PixelsAttribute getCompiledBottomPadding()
+  public PixelsValue getCompiledBottomPadding()
   {
-    return (PixelsAttribute) getCompiled(BOTTOM_PADDING);
+    return (PixelsValue) getCompiled(BOTTOM_PADDING);
   }
 
   public void setBottomPadding(Object bottomPadding)
@@ -580,9 +580,9 @@ public abstract class Style
     return get(LEFT_PADDING);
   }
 
-  public PixelsAttribute getCompiledLeftPadding()
+  public PixelsValue getCompiledLeftPadding()
   {
-    return (PixelsAttribute) getCompiled(LEFT_PADDING);
+    return (PixelsValue) getCompiled(LEFT_PADDING);
   }
 
   public void setLeftPadding(Object leftPadding)
@@ -600,9 +600,9 @@ public abstract class Style
     return get(BACKGROUND_COLOR);
   }
 
-  public ColorAttribute getCompiledBackgroundColor()
+  public ColorValue getCompiledBackgroundColor()
   {
-    return (ColorAttribute) getCompiled(BACKGROUND_COLOR);
+    return (ColorValue) getCompiled(BACKGROUND_COLOR);
   }
 
   public void setBackgroundImage(Object backgroundImage)
@@ -615,9 +615,9 @@ public abstract class Style
     return get(BACKGROUND_IMAGE);
   }
 
-  public NoneableAttribute<StringAttribute> getCompiledBackgroundImage()
+  public NoneableValue<StringValue> getCompiledBackgroundImage()
   {
-    return (NoneableAttribute<StringAttribute>) getCompiled(BACKGROUND_IMAGE);
+    return (NoneableValue<StringValue>) getCompiled(BACKGROUND_IMAGE);
   }
 
   public String getBackgroundImageFillStrategy()
@@ -625,9 +625,9 @@ public abstract class Style
     return get(BACKGROUND_IMAGE_FILL_STRATEGY);
   }
 
-  public FillStrategyAttribute getCompiledBackgroundImageFillStrategy()
+  public FillStrategyValue getCompiledBackgroundImageFillStrategy()
   {
-    return (FillStrategyAttribute) getCompiled(BACKGROUND_IMAGE_FILL_STRATEGY);
+    return (FillStrategyValue) getCompiled(BACKGROUND_IMAGE_FILL_STRATEGY);
   }
 
   public void setBackgroundImageFillStrategy(Object backgroundImageFillStrategy)
@@ -645,9 +645,9 @@ public abstract class Style
     return get(GRADIENT);
   }
 
-  public OnOffAttribute getCompiledGradient()
+  public OnOffValue getCompiledGradient()
   {
-    return (OnOffAttribute) getCompiled(GRADIENT);
+    return (OnOffValue) getCompiled(GRADIENT);
   }
 
   public void setSecondaryBackgroundColor(Object color)
@@ -660,9 +660,9 @@ public abstract class Style
     return get(SECONDARY_BACKGROUND_COLOR);
   }
 
-  public ColorAttribute getCompiledSecondaryBackgroundColor()
+  public ColorValue getCompiledSecondaryBackgroundColor()
   {
-    return (ColorAttribute) getCompiled(SECONDARY_BACKGROUND_COLOR);
+    return (ColorValue) getCompiled(SECONDARY_BACKGROUND_COLOR);
   }
 
   public void setGradientAngle(Object value)
@@ -675,9 +675,9 @@ public abstract class Style
     return get(GRADIENT_ANGLE);
   }
 
-  public DegreesAttribute getCompiledGradientAngle()
+  public DegreesValue getCompiledGradientAngle()
   {
-    return (DegreesAttribute) getCompiled(GRADIENT_ANGLE);
+    return (DegreesValue) getCompiled(GRADIENT_ANGLE);
   }
 
   public void setGradientPenetration(Object value)
@@ -690,9 +690,9 @@ public abstract class Style
     return get(GRADIENT_PENETRATION);
   }
 
-  public PercentageAttribute getCompiledGradientPenetration()
+  public PercentageValue getCompiledGradientPenetration()
   {
-    return (PercentageAttribute) getCompiled(GRADIENT_PENETRATION);
+    return (PercentageValue) getCompiled(GRADIENT_PENETRATION);
   }
 
   public void setCyclicGradient(Object value)
@@ -705,9 +705,9 @@ public abstract class Style
     return get(CYCLIC_GRADIENT);
   }
 
-  public OnOffAttribute getCompiledCyclicGradient()
+  public OnOffValue getCompiledCyclicGradient()
   {
-    return (OnOffAttribute) getCompiled(CYCLIC_GRADIENT);
+    return (OnOffValue) getCompiled(CYCLIC_GRADIENT);
   }
 
   public void setHorizontalAlignment(Object alignment)
@@ -720,9 +720,9 @@ public abstract class Style
     return get(HORIZONTAL_ALIGNMENT);
   }
 
-  public HorizontalAlignmentAttribute getCompiledHorizontalAlignment()
+  public HorizontalAlignmentValue getCompiledHorizontalAlignment()
   {
-    return (HorizontalAlignmentAttribute) getCompiled(HORIZONTAL_ALIGNMENT);
+    return (HorizontalAlignmentValue) getCompiled(HORIZONTAL_ALIGNMENT);
   }
 
   public void setVerticalAlignment(Object alignment)
@@ -735,9 +735,9 @@ public abstract class Style
     return get(VERTICAL_ALIGNMENT);
   }
 
-  public VerticalAlignmentAttribute getCompiledVerticalAlignment()
+  public VerticalAlignmentValue getCompiledVerticalAlignment()
   {
-    return (VerticalAlignmentAttribute) getCompiled(VERTICAL_ALIGNMENT);
+    return (VerticalAlignmentValue) getCompiled(VERTICAL_ALIGNMENT);
   }
 
   public String getFontFace()
@@ -745,9 +745,9 @@ public abstract class Style
     return get(FONT_FACE);
   }
 
-  public StringAttribute getCompiledFontFace()
+  public StringValue getCompiledFontFace()
   {
-    return (StringAttribute) getCompiled(FONT_FACE);
+    return (StringValue) getCompiled(FONT_FACE);
   }
 
   public void setFontFace(Object fontFace)
@@ -760,9 +760,9 @@ public abstract class Style
     return get(FONT_SIZE);
   }
 
-  public IntegerAttribute getCompiledFontSize()
+  public IntegerValue getCompiledFontSize()
   {
-    return (IntegerAttribute) getCompiled(FONT_SIZE);
+    return (IntegerValue) getCompiled(FONT_SIZE);
   }
 
   public void setFontSize(Object fontSize)
@@ -775,9 +775,9 @@ public abstract class Style
     return get(FONT_STYLE);
   }
 
-  public FontStyleAttribute getCompiledFontStyle()
+  public FontStyleValue getCompiledFontStyle()
   {
-    return (FontStyleAttribute) getCompiled(FONT_STYLE);
+    return (FontStyleValue) getCompiled(FONT_STYLE);
   }
 
   public void setFontStyle(Object fontStyle)
@@ -790,9 +790,9 @@ public abstract class Style
     return get(TRANSPARENCY);
   }
 
-  public PercentageAttribute getCompiledTransparency()
+  public PercentageValue getCompiledTransparency()
   {
-    return (PercentageAttribute) getCompiled(TRANSPARENCY);
+    return (PercentageValue) getCompiled(TRANSPARENCY);
   }
 
   public void setTransparency(Object transparency)
@@ -805,9 +805,9 @@ public abstract class Style
     return get(TOP_RIGHT_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledTopRightBorderWidth()
+  public PixelsValue getCompiledTopRightBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(TOP_RIGHT_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(TOP_RIGHT_BORDER_WIDTH);
   }
 
   public void setTopRightBorderWidth(Object value)
@@ -820,9 +820,9 @@ public abstract class Style
     return get(BOTTOM_RIGHT_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledBottomRightBorderWidth()
+  public PixelsValue getCompiledBottomRightBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(BOTTOM_RIGHT_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(BOTTOM_RIGHT_BORDER_WIDTH);
   }
 
   public void setBottomRightBorderWidth(Object value)
@@ -835,9 +835,9 @@ public abstract class Style
     return get(BOTTOM_LEFT_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledBottomLeftBorderWidth()
+  public PixelsValue getCompiledBottomLeftBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(BOTTOM_LEFT_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(BOTTOM_LEFT_BORDER_WIDTH);
   }
 
   public void setBottomLeftBorderWidth(Object value)
@@ -850,9 +850,9 @@ public abstract class Style
     return get(TOP_LEFT_BORDER_WIDTH);
   }
 
-  public PixelsAttribute getCompiledTopLeftBorderWidth()
+  public PixelsValue getCompiledTopLeftBorderWidth()
   {
-    return (PixelsAttribute) getCompiled(TOP_LEFT_BORDER_WIDTH);
+    return (PixelsValue) getCompiled(TOP_LEFT_BORDER_WIDTH);
   }
 
   public void setTopLeftBorderWidth(Object value)
@@ -865,9 +865,9 @@ public abstract class Style
     return get(TOP_RIGHT_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledTopRightBorderColor()
+  public ColorValue getCompiledTopRightBorderColor()
   {
-    return (ColorAttribute) getCompiled(TOP_RIGHT_BORDER_COLOR);
+    return (ColorValue) getCompiled(TOP_RIGHT_BORDER_COLOR);
   }
 
   public void setTopRightBorderColor(Object value)
@@ -880,9 +880,9 @@ public abstract class Style
     return get(BOTTOM_RIGHT_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledBottomRightBorderColor()
+  public ColorValue getCompiledBottomRightBorderColor()
   {
-    return (ColorAttribute) getCompiled(BOTTOM_RIGHT_BORDER_COLOR);
+    return (ColorValue) getCompiled(BOTTOM_RIGHT_BORDER_COLOR);
   }
 
   public void setBottomRightBorderColor(Object value)
@@ -895,9 +895,9 @@ public abstract class Style
     return get(BOTTOM_LEFT_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledBottomLeftBorderColor()
+  public ColorValue getCompiledBottomLeftBorderColor()
   {
-    return (ColorAttribute) getCompiled(BOTTOM_LEFT_BORDER_COLOR);
+    return (ColorValue) getCompiled(BOTTOM_LEFT_BORDER_COLOR);
   }
 
   public void setBottomLeftBorderColor(Object value)
@@ -910,9 +910,9 @@ public abstract class Style
     return get(TOP_LEFT_BORDER_COLOR);
   }
 
-  public ColorAttribute getCompiledTopLeftBorderColor()
+  public ColorValue getCompiledTopLeftBorderColor()
   {
-    return (ColorAttribute) getCompiled(TOP_LEFT_BORDER_COLOR);
+    return (ColorValue) getCompiled(TOP_LEFT_BORDER_COLOR);
   }
 
   public void setTopLeftBorderColor(Object value)
@@ -938,9 +938,9 @@ public abstract class Style
     return get(TOP_RIGHT_ROUNDED_CORNER_RADIUS);
   }
 
-  public PixelsAttribute getCompiledTopRightRoundedCornerRadius()
+  public PixelsValue getCompiledTopRightRoundedCornerRadius()
   {
-    return (PixelsAttribute) getCompiled(TOP_RIGHT_ROUNDED_CORNER_RADIUS);
+    return (PixelsValue) getCompiled(TOP_RIGHT_ROUNDED_CORNER_RADIUS);
   }
 
   public void setBottomRightRoundedCornerRadius(Object value)
@@ -953,9 +953,9 @@ public abstract class Style
     return get(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
   }
 
-  public PixelsAttribute getCompiledBottomRightRoundedCornerRadius()
+  public PixelsValue getCompiledBottomRightRoundedCornerRadius()
   {
-    return (PixelsAttribute) getCompiled(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
+    return (PixelsValue) getCompiled(BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
   }
 
   public void setBottomLeftRoundedCornerRadius(Object value)
@@ -968,9 +968,9 @@ public abstract class Style
     return get(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
   }
 
-  public PixelsAttribute getCompiledBottomLeftRoundedCornerRadius()
+  public PixelsValue getCompiledBottomLeftRoundedCornerRadius()
   {
-    return (PixelsAttribute) getCompiled(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
+    return (PixelsValue) getCompiled(BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
   }
 
   public void setTopLeftRoundedCornerRadius(Object value)
@@ -983,9 +983,9 @@ public abstract class Style
     return get(TOP_LEFT_ROUNDED_CORNER_RADIUS);
   }
 
-  public PixelsAttribute getCompiledTopLeftRoundedCornerRadius()
+  public PixelsValue getCompiledTopLeftRoundedCornerRadius()
   {
-    return (PixelsAttribute) getCompiled(TOP_LEFT_ROUNDED_CORNER_RADIUS);
+    return (PixelsValue) getCompiled(TOP_LEFT_ROUNDED_CORNER_RADIUS);
   }
 
   public void setTopRoundedCornerRadius(Object radius)
@@ -1017,9 +1017,9 @@ public abstract class Style
     return get(FLOAT);
   }
 
-  public OnOffAttribute getCompiledFloat()
+  public OnOffValue getCompiledFloat()
   {
-    return (OnOffAttribute) getCompiled(FLOAT);
+    return (OnOffValue) getCompiled(FLOAT);
   }
 
   public void setFloat(Object value)
@@ -1032,9 +1032,9 @@ public abstract class Style
     return get(X);
   }
 
-  public XCoordinateAttribute getCompiledX()
+  public XCoordinateValue getCompiledX()
   {
-    return (XCoordinateAttribute) getCompiled(X);
+    return (XCoordinateValue) getCompiled(X);
   }
 
   public void setX(Object value)
@@ -1047,9 +1047,9 @@ public abstract class Style
     return get(Y);
   }
 
-  public YCoordinateAttribute getCompiledY()
+  public YCoordinateValue getCompiledY()
   {
-    return (YCoordinateAttribute) getCompiled(Y);
+    return (YCoordinateValue) getCompiled(Y);
   }
 
   public void setY(Object value)
@@ -1062,9 +1062,9 @@ public abstract class Style
     return get(BACKGROUND_IMAGE_X);
   }
 
-  public XCoordinateAttribute getCompiledBackgroundImageX()
+  public XCoordinateValue getCompiledBackgroundImageX()
   {
-    return (XCoordinateAttribute) getCompiled(BACKGROUND_IMAGE_X);
+    return (XCoordinateValue) getCompiled(BACKGROUND_IMAGE_X);
   }
 
   public void setBackgroundImageX(Object value)
@@ -1077,9 +1077,9 @@ public abstract class Style
     return get(BACKGROUND_IMAGE_Y);
   }
 
-  public YCoordinateAttribute getCompiledBackgroundImageY()
+  public YCoordinateValue getCompiledBackgroundImageY()
   {
-    return (YCoordinateAttribute) getCompiled(BACKGROUND_IMAGE_Y);
+    return (YCoordinateValue) getCompiled(BACKGROUND_IMAGE_Y);
   }
 
   public void setBackgroundImageY(Object value)
@@ -1098,9 +1098,9 @@ public abstract class Style
     return get(VERTICAL_SCROLLBAR);
   }
 
-  public OnOffAttribute getCompiledVerticalScrollbar()
+  public OnOffValue getCompiledVerticalScrollbar()
   {
-    return (OnOffAttribute) getCompiled(VERTICAL_SCROLLBAR);
+    return (OnOffValue) getCompiled(VERTICAL_SCROLLBAR);
   }
 
   public String getHorizontalScrollbar()
@@ -1108,9 +1108,9 @@ public abstract class Style
     return get(HORIZONTAL_SCROLLBAR);
   }
 
-  public OnOffAttribute getCompiledHorizontalScrollbar()
+  public OnOffValue getCompiledHorizontalScrollbar()
   {
-    return (OnOffAttribute) getCompiled(HORIZONTAL_SCROLLBAR);
+    return (OnOffValue) getCompiled(HORIZONTAL_SCROLLBAR);
   }
 
   public void setVerticalScrollbar(Object value)

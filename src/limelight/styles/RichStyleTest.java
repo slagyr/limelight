@@ -30,8 +30,8 @@ public class RichStyleTest extends TestCase
 
   public void testHasDefaultsFirst() throws Exception
   {
-    for(StyleDescriptor descriptor : Style.STYLE_LIST)
-      assertEquals(descriptor.defaultValue, style.getCompiled(descriptor));
+    for(StyleAttribute attribute : Style.STYLE_LIST)
+      assertEquals(attribute.defaultValue, style.getCompiled(attribute));
   }
   
   public void testCanSetNewValues() throws Exception

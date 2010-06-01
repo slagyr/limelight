@@ -3,12 +3,13 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.ScenePanel;
+import limelight.styles.Style;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
+import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.util.Box;
 
 import java.awt.datatransfer.*;
@@ -18,18 +19,22 @@ import java.util.ArrayList;
 
 public class TextBox2Panel extends TextInputPanel
 {
-
   public TextBox2Panel()
   {
-    setSize(150, 28);
-    paintableRegion = new Box(0, TextModel.TOP_MARGIN, width, height - 2 * TextModel.TOP_MARGIN);
     boxInfo = new TextBoxModel(this);
     keyProcessors = new ArrayList<KeyProcessor>(16);
     initKeyProcessors();
     mouseProcessor = new MouseProcessor(boxInfo);
     painterComposite = new TextPanelPainterComposite(boxInfo);
-    horizontalTextAlignment = new SimpleHorizontalAlignmentAttribute(HorizontalAlignment.LEFT);
-    verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
+    horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
+    verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
+  }
+
+  @Override
+  protected void setDefaultStyles(Style style)
+  {
+    style.setDefault(Style.WIDTH, 150);
+    style.setDefault(Style.HEIGHT, 28);
   }
 
   public void initKeyProcessors()
@@ -52,72 +57,19 @@ public class TextBox2Panel extends TextInputPanel
     keyProcessors.add(15, new SelectionOnAltShiftCmdKeyProcessor(boxInfo));
   }
 
+  @Override
+  public void doLayout()
+  {
+    System.err.println("limelight.ui.model.inputs.TextBox2Panel.doLayout: " + neededLayout);
+    super.doLayout();
+  }
+
   public void paintOn(Graphics2D graphics)
   {
     painterComposite.paint(graphics);
   }
 
-  public void setPaintableRegion(int index)
-  {
-    int x = boxInfo.getXPosFromIndex(index);
-    if (isNewPaintableRegion())
-      paintableRegion.x = x;
-    else if (isExpandingRegionToRight(x))
-      paintableRegion.width = x - paintableRegion.x;
-    else if (isExpandingRegionToLeft(x))
-    {
-      paintableRegion.width += paintableRegion.x - x;
-      paintableRegion.x = x;
-    }
-    if(paintableRegion.x < TextModel.SIDE_TEXT_MARGIN)
-      paintableRegion.x = TextModel.SIDE_TEXT_MARGIN;
-    if(paintableRegion.x + paintableRegion.width >= this.width)
-    {
-      int overLength = paintableRegion.x + paintableRegion.width - this.width;
-      paintableRegion.width -= overLength + TextModel.SIDE_TEXT_MARGIN;
-    }
-
-  }
-
-  private boolean isNewPaintableRegion()
-  {
-    return paintableRegion.x == 0 && paintableRegion.width == 0;
-  }
-
-  private boolean isExpandingRegionToLeft(int x)
-  {
-    return x < paintableRegion.x;
-  }
-
-  private boolean isExpandingRegionToRight(int x)
-  {
-    return x > paintableRegion.x + paintableRegion.width;
-  }
-
-  public void resetPaintableRegion()
-  {
-    int regionHeight = height - TextModel.TOP_MARGIN;
-    if (boxInfo.selectionOn)
-    {
-      Rectangle selectionRegion = boxInfo.getSelectionRegions().get(0);
-      paintableRegion = new Box(selectionRegion.x, TextModel.TOP_MARGIN, selectionRegion.width, regionHeight);
-    }
-    else
-      paintableRegion = new Box(0, TextModel.TOP_MARGIN, 0, regionHeight);
-  }
-
-  public void maxOutPaintableRegion()
-  {
-    int regionHeight = height - 2 * TextModel.TOP_MARGIN;
-    int regionWidth = width - 2 * TextModel.SIDE_TEXT_MARGIN;
-    paintableRegion = new Box(TextModel.SIDE_TEXT_MARGIN, TextModel.TOP_MARGIN, regionWidth,regionHeight);
-  }
-
-  public void expandPaintableRegionToRightBound()
-  {
-    setPaintableRegion(boxInfo.getText().length());
-  }
-
+  //TODO Delete me?
   public boolean isTextMaxed()
   {
     return boxInfo.isBoxFull();
@@ -136,7 +88,7 @@ public class TextBox2Panel extends TextInputPanel
 
   protected void markCursorRegionAsDirty()
   {
-    ScenePanel rootPanel = getRoot();
+    RootPanel rootPanel = getRoot();
     if (rootPanel != null)
     {
       int cursorY =  getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();

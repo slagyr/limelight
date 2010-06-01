@@ -4,7 +4,7 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.*;
-import limelight.styles.styling.*;
+import limelight.styles.values.*;
 import limelight.LimelightError;
 import limelight.Context;
 
@@ -35,7 +35,7 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
     else if("dimension".equals(type))
       result = new DimensionAttributeCompiler();
     else if("noneable simple dimension".equals(type))
-      result = new NoneableAttributeCompiler<DimensionAttribute>(new SimpleDimensionAttributeCompiler());
+      result = new NoneableAttributeCompiler<DimensionValue>(new SimpleDimensionAttributeCompiler());
     else if("degrees".equals(type))
       result = new DegreesAttributeCompiler();
     else if("fill strategy".equals(type))
@@ -47,9 +47,9 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
     else if("vertical alignment".equals(type))
       result = new VerticalAlignmentAttributeCompiler();
     else if("noneable integer".equals(type))
-      result = new NoneableAttributeCompiler<SimpleIntegerAttribute>(new IntegerAttributeCompiler());
+      result = new NoneableAttributeCompiler<SimpleIntegerValue>(new IntegerAttributeCompiler());
     else if("noneable string".equals(type))
-      result = new NoneableAttributeCompiler<StringAttribute>(new StringAttributeCompiler());
+      result = new NoneableAttributeCompiler<StringValue>(new StringAttributeCompiler());
     else if("x-coordinate".equals(type))
       result = new XCoordinateAttributeCompiler();
     else if("y-coordinate".equals(type))

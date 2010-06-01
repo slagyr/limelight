@@ -4,8 +4,8 @@
 package limelight.styles.compiling;
 
 import junit.framework.TestCase;
-import limelight.styles.styling.StaticDimensionAttribute;
-import limelight.styles.styling.PercentageDimensionAttribute;
+import limelight.styles.values.PercentageDimensionValue;
+import limelight.styles.values.StaticDimensionValue;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 
 public class SimpleDimensionAttributeCompilerTest extends TestCase
@@ -20,15 +20,15 @@ public class SimpleDimensionAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(StaticDimensionAttribute.class, compiler.compile("123").getClass());
-    assertEquals(StaticDimensionAttribute.class, compiler.compile("123.567").getClass());
-    assertEquals(PercentageDimensionAttribute.class, compiler.compile("50%").getClass());
-    assertEquals(PercentageDimensionAttribute.class, compiler.compile("3.14%").getClass());
+    assertEquals(StaticDimensionValue.class, compiler.compile("123").getClass());
+    assertEquals(StaticDimensionValue.class, compiler.compile("123.567").getClass());
+    assertEquals(PercentageDimensionValue.class, compiler.compile("50%").getClass());
+    assertEquals(PercentageDimensionValue.class, compiler.compile("3.14%").getClass());
 
-    assertEquals(123, ((StaticDimensionAttribute) compiler.compile("123")).getPixels());
-    assertEquals(0, ((StaticDimensionAttribute) compiler.compile("0")).getPixels());
-    assertEquals(50.0, ((PercentageDimensionAttribute) compiler.compile("50%")).getPercentage(), 0.01);
-    assertEquals(3.14, ((PercentageDimensionAttribute) compiler.compile("3.14%")).getPercentage(), 0.01);
+    assertEquals(123, ((StaticDimensionValue) compiler.compile("123")).getPixels());
+    assertEquals(0, ((StaticDimensionValue) compiler.compile("0")).getPixels());
+    assertEquals(50.0, ((PercentageDimensionValue) compiler.compile("50%")).getPercentage(), 0.01);
+    assertEquals(3.14, ((PercentageDimensionValue) compiler.compile("3.14%")).getPercentage(), 0.01);
   }
 
   public void testInvalidValues() throws Exception

@@ -22,7 +22,6 @@ public class TextBoxModel extends TextModel
     this.myPanel = myBox;
     cursorX = SIDE_TEXT_MARGIN;
     selectionOn = false;
-    font = new Font("Arial", Font.PLAIN, 12);
     selectionStartX = 0;
     cursorIndex = 0;
     selectionIndex = 0;
@@ -31,7 +30,7 @@ public class TextBoxModel extends TextModel
 
   protected int getXPosFromText(String toIndexString)
   {
-    TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
+    TypedLayout layout = new TextLayoutImpl(toIndexString, getFont(), TextPanel.getRenderContext());
     return getWidthDimension(layout) + SIDE_TEXT_MARGIN - xOffset;
   }
 
@@ -70,13 +69,13 @@ public class TextBoxModel extends TextModel
 
   private boolean isCriticallyRight(int xPos)
   {
-    return (xPos >= myPanel.getWidth() - SIDE_DETECTION_MARGIN);// && (xOffset + cursorX <= calculateTextDimensions().width));
+    return (xPos >= myPanel.getWidth() - SIDE_DETECTION_MARGIN);
   }
 
   private void calculateRightShiftingOffset()
   {
     String rightShiftingText = getText().substring(0, cursorIndex);
-    TypedLayout layout = new TextLayoutImpl(rightShiftingText, font, TextPanel.getRenderContext());
+    TypedLayout layout = new TextLayoutImpl(rightShiftingText, getFont(), TextPanel.getRenderContext());
     int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(rightShiftingText);
     if (textWidth > getPanelWidth() / 2)
       xOffset -= getPanelWidth() / 2;
@@ -104,7 +103,7 @@ public class TextBoxModel extends TextModel
         leftShiftingText = Character.toString(text.charAt(cursorIndex));
       else
         leftShiftingText = getText().substring(cursorIndex, text.length() - 1);
-      TypedLayout layout = new TextLayoutImpl(leftShiftingText, font, TextPanel.getRenderContext());
+      TypedLayout layout = new TextLayoutImpl(leftShiftingText, getFont(), TextPanel.getRenderContext());
       int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(leftShiftingText);
       if (textWidth > getPanelWidth() / 2)
         xOffset += getPanelWidth() / 2;
@@ -149,7 +148,7 @@ public class TextBoxModel extends TextModel
   private void initNewTextLayouts(String text)
   {
     textLayouts = new ArrayList<TypedLayout>();
-    textLayouts.add(new TextLayoutImpl(text, font, TextPanel.getRenderContext()));
+    textLayouts.add(new TextLayoutImpl(text, getFont(), TextPanel.getRenderContext()));
   }
 
   public ArrayList<Rectangle> getSelectionRegions()
@@ -177,7 +176,7 @@ public class TextBoxModel extends TextModel
 
   public boolean isBoxFull()
   {
-    if (getText().length() > 0)
+    if(getText().length() > 0)
       return (myPanel.getWidth() - TextModel.SIDE_DETECTION_MARGIN * 2 <= calculateTextDimensions().width);
     return false;
   }

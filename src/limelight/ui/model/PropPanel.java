@@ -6,8 +6,8 @@ package limelight.ui.model;
 import limelight.Context;
 import limelight.LimelightError;
 import limelight.styles.*;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.PixelsAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.abstrstyling.PixelsValue;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
@@ -346,7 +346,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     doLayout();
     PaintJob job = new PaintJob(getAbsoluteBounds(), getRoot().getGraphics().getBackground());
     //TODO Why are we painting the root panel here?  So wastful! Maybe. Transparency?
-    job.paint((getRoot()).getPanel()); //TODO - cast should not be neccessary here.
+    job.paint(getRoot().getPanel());
     job.applyTo(getRoot().getGraphics());
 //    }
   }
@@ -401,50 +401,51 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     childConsumableArea = null;
   }
 
-  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
+  public void styleChanged(StyleAttribute attribute, StyleValue value)
   {
     if(!isIlluminated())
       return;
 
     // TODO MDM - move all this login into the StyleDescriptors
-    if(Context.instance().bufferedImageCache != null &&
-        descriptor != Style.TRANSPARENCY &&
-        descriptor != Style.X &&
-        descriptor != Style.Y)
-      Context.instance().bufferedImageCache.expire(this);
 
     if(getParent() != null && getRoot() != null)
     {
-      if(descriptor == Style.WIDTH || descriptor == Style.HEIGHT)
+      if(Context.instance().bufferedImageCache != null &&
+          attribute != Style.TRANSPARENCY &&
+          attribute != Style.X &&
+          attribute != Style.Y)
+        Context.instance().bufferedImageCache.expire(this);
+
+      if(attribute == Style.WIDTH || attribute == Style.HEIGHT)
       {
         sizeChangePending = true;
         markAsNeedingLayout();
         propagateSizeChangeUp(getParent());
         propagateSizeChangeDown();
       }
-      else if(isBorderDescriptor(descriptor) || isMarginPaddingOrBorder(value))
+      else if(isBorderDescriptor(attribute) || isMarginPaddingOrBorder(value))
       {
         propagateSizeChangeDown();
         borderChanged = true;
         markAsNeedingLayout();
         clearCache();
       }
-      else if(descriptor == Style.X || descriptor == Style.Y)
+      else if(attribute == Style.X || attribute == Style.Y)
       {
         markAsNeedingLayout(FloaterLayout.instance);
       }
-      else if(descriptor == Style.HORIZONTAL_ALIGNMENT || descriptor == Style.VERTICAL_ALIGNMENT)
+      else if(attribute == Style.HORIZONTAL_ALIGNMENT || attribute == Style.VERTICAL_ALIGNMENT)
       {
         markAsNeedingLayout();
       }
-      else if(isTextDescriptor(descriptor))
+      else if(isTextDescriptor(attribute))
       {
         for(Panel child : getChildren())
         {
           if(child instanceof TextPanel)
           {
             sizeChangePending = true;
-            ((TextPanel) child).styleChanged(descriptor, value);
+            ((TextPanel) child).styleChanged(attribute, value);
           }
         }
       }
@@ -453,35 +454,35 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     }
   }
 
-  private boolean isTextDescriptor(StyleDescriptor descriptor)
+  private boolean isTextDescriptor(StyleAttribute attribute)
   {
-    return descriptor == Style.TEXT_COLOR ||
-        descriptor == Style.FONT_FACE ||
-        descriptor == Style.FONT_SIZE ||
-        descriptor == Style.FONT_STYLE;
+    return attribute == Style.TEXT_COLOR ||
+        attribute == Style.FONT_FACE ||
+        attribute == Style.FONT_SIZE ||
+        attribute == Style.FONT_STYLE;
   }
 
-  private boolean isMarginPaddingOrBorder(StyleAttribute attribute)
+  private boolean isMarginPaddingOrBorder(StyleValue value)
   {
 
     //TODO Huh?  This doesn't make sense.
-    return attribute instanceof PixelsAttribute;
+    return value instanceof PixelsValue;
   }
 
-  private boolean isBorderDescriptor(StyleDescriptor descriptor)
+  private boolean isBorderDescriptor(StyleAttribute attribute)
   {
-    return descriptor == Style.TOP_BORDER_WIDTH ||
-        descriptor == Style.RIGHT_BORDER_WIDTH ||
-        descriptor == Style.BOTTOM_BORDER_WIDTH ||
-        descriptor == Style.LEFT_BORDER_WIDTH ||
-        descriptor == Style.TOP_RIGHT_BORDER_WIDTH ||
-        descriptor == Style.BOTTOM_RIGHT_BORDER_WIDTH ||
-        descriptor == Style.BOTTOM_LEFT_BORDER_WIDTH ||
-        descriptor == Style.TOP_LEFT_BORDER_WIDTH ||
-        descriptor == Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS ||
-        descriptor == Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS ||
-        descriptor == Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS ||
-        descriptor == Style.TOP_LEFT_ROUNDED_CORNER_RADIUS;
+    return attribute == Style.TOP_BORDER_WIDTH ||
+        attribute == Style.RIGHT_BORDER_WIDTH ||
+        attribute == Style.BOTTOM_BORDER_WIDTH ||
+        attribute == Style.LEFT_BORDER_WIDTH ||
+        attribute == Style.TOP_RIGHT_BORDER_WIDTH ||
+        attribute == Style.BOTTOM_RIGHT_BORDER_WIDTH ||
+        attribute == Style.BOTTOM_LEFT_BORDER_WIDTH ||
+        attribute == Style.TOP_LEFT_BORDER_WIDTH ||
+        attribute == Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS ||
+        attribute == Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS ||
+        attribute == Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS ||
+        attribute == Style.TOP_LEFT_ROUNDED_CORNER_RADIUS;
   }
 
   public ScrollBarPanel getVerticalScrollbar()
@@ -539,7 +540,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(getStyle().hasScreen())
     {
       getStyle().removeScreen();
-      ScenePanel root = getRoot();
+      RootPanel root = getRoot();
       if(root != null)
         root.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }

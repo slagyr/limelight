@@ -26,7 +26,7 @@ public abstract class BasePanel implements Panel
   private List<Panel> readonlyChildren;
   private boolean sterilized;
   private Box boundingBox;
-  private Layout neededLayout = getDefaultLayout();
+  protected Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
   private boolean illuminated;
 
@@ -156,7 +156,7 @@ public abstract class BasePanel implements Panel
   }
 
   //TODO  MDM Change my return type to RootPanel
-  public ScenePanel getRoot()
+  public RootPanel getRoot()
   {
     if(parent == null)
       return null;
@@ -192,10 +192,7 @@ public abstract class BasePanel implements Panel
   {
     Layout layout = neededLayout;
     if(layout != null)
-    {
-//      resetLayout();
       layout.doLayout(this);
-    }
     else
       getDefaultLayout().doLayout(this);
   }
@@ -504,7 +501,7 @@ public abstract class BasePanel implements Panel
 
   public void markAsDirty()
   {
-    ScenePanel rootPanel = getRoot();
+    RootPanel rootPanel = getRoot();
     if(rootPanel != null)
     {
       rootPanel.addDirtyRegion(getAbsoluteBounds());

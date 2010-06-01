@@ -3,9 +3,9 @@
 
 package limelight.styles;
 
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 
 public interface StyleObserver
 {
-  void styleChanged(StyleDescriptor descriptor, StyleAttribute value);
+  void styleChanged(StyleAttribute attribute, StyleValue value);
 }

@@ -28,7 +28,6 @@ public class TextAreaModel extends TextModel
     this.myPanel = myAreaPanel;
     cursorX = SIDE_TEXT_MARGIN;
     selectionOn = false;
-    font = new Font("Arial", Font.PLAIN, 12);
     selectionStartX = 0;
     cursorIndex = 0;
     selectionIndex = 0;
@@ -43,7 +42,7 @@ public class TextAreaModel extends TextModel
 
   protected int getXPosFromText(String toIndexString)
   {
-    TypedLayout layout = new TextLayoutImpl(toIndexString, font, TextPanel.getRenderContext());
+    TypedLayout layout = new TextLayoutImpl(toIndexString, getFont(), TextPanel.getRenderContext());
     int x = getWidthDimension(layout) + SIDE_TEXT_MARGIN;
     if (x < SIDE_TEXT_MARGIN)
       x = SIDE_TEXT_MARGIN;
@@ -74,7 +73,7 @@ public class TextAreaModel extends TextModel
   {
     if (getText() == null || getText().length() == 0){
       textLayouts = new ArrayList<TypedLayout>();
-      textLayouts.add(new TextLayoutImpl("", font, TextPanel.getRenderContext()));
+      textLayouts.add(new TextLayoutImpl("", getFont(), TextPanel.getRenderContext()));
     }
     else
     {
@@ -224,7 +223,7 @@ public class TextAreaModel extends TextModel
   private void addBlankLayoutIfLastLineIsEmpty()
   {
     if(getText().length() > 0 && isTheVeryLastCharANewLineChar())
-      textLayouts.add(new TextLayoutImpl("", font, TextPanel.getRenderContext()));
+      textLayouts.add(new TextLayoutImpl("", getFont(), TextPanel.getRenderContext()));
   }
 
   private int addANewLayoutForTheNextLine(LineBreakMeasurer breaker, int lastCharIndex, int newLineCharIndex)
@@ -232,7 +231,7 @@ public class TextAreaModel extends TextModel
     int firstCharIndex = lastCharIndex;
     lastCharIndex = firstCharIndex + getNextLayout(breaker, newLineCharIndex).getCharacterCount();
     String layoutText = getText().substring(firstCharIndex, lastCharIndex);
-    textLayouts.add(new TextLayoutImpl(layoutText, font, TextPanel.getRenderContext()));
+    textLayouts.add(new TextLayoutImpl(layoutText, getFont(), TextPanel.getRenderContext()));
     return lastCharIndex;
   }
 
@@ -254,7 +253,7 @@ public class TextAreaModel extends TextModel
   private AttributedCharacterIterator getIterator()
   {
     AttributedString attrString = new AttributedString(getText());
-    attrString.addAttribute(TextAttribute.FONT, font);
+    attrString.addAttribute(TextAttribute.FONT, getFont());
     return attrString.getIterator();
   }
 

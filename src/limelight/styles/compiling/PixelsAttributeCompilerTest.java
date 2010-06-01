@@ -5,8 +5,8 @@ package limelight.styles.compiling;
 
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-import limelight.styles.styling.StaticPixelsAttribute;
-import limelight.styles.styling.PercentagePixelsAttribute;
+import limelight.styles.values.StaticPixelsValue;
+import limelight.styles.values.PercentagePixelsValue;
 
 public class PixelsAttributeCompilerTest extends TestCase
 {
@@ -20,16 +20,16 @@ public class PixelsAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(StaticPixelsAttribute.class, compiler.compile("123").getClass());
-    assertEquals(StaticPixelsAttribute.class, compiler.compile("123.567").getClass());
-    assertEquals(PercentagePixelsAttribute.class, compiler.compile("50%").getClass());
-    assertEquals(PercentagePixelsAttribute.class, compiler.compile("3.14%").getClass());
+    assertEquals(StaticPixelsValue.class, compiler.compile("123").getClass());
+    assertEquals(StaticPixelsValue.class, compiler.compile("123.567").getClass());
+    assertEquals(PercentagePixelsValue.class, compiler.compile("50%").getClass());
+    assertEquals(PercentagePixelsValue.class, compiler.compile("3.14%").getClass());
 
-    assertEquals(123, ((StaticPixelsAttribute) compiler.compile("123")).getPixels());
-    assertEquals(0, ((StaticPixelsAttribute) compiler.compile("0")).getPixels());
-    assertEquals(50.0, ((PercentagePixelsAttribute) compiler.compile("50%")).getPercentage(), 0.01);
-    assertEquals(3.14, ((PercentagePixelsAttribute) compiler.compile("3.14%")).getPercentage(), 0.01);
-    assertEquals(0.0, ((PercentagePixelsAttribute) compiler.compile("0%")).getPercentage(), 0.01);
+    assertEquals(123, ((StaticPixelsValue) compiler.compile("123")).getPixels());
+    assertEquals(0, ((StaticPixelsValue) compiler.compile("0")).getPixels());
+    assertEquals(50.0, ((PercentagePixelsValue) compiler.compile("50%")).getPercentage(), 0.01);
+    assertEquals(3.14, ((PercentagePixelsValue) compiler.compile("3.14%")).getPercentage(), 0.01);
+    assertEquals(0.0, ((PercentagePixelsValue) compiler.compile("0%")).getPercentage(), 0.01);
   }
 
   public void testInvalidValues() throws Exception

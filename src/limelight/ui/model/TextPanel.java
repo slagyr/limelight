@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import limelight.styles.*;
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.Panel;
 import limelight.ui.api.PropablePanel;
 import limelight.ui.text.StyledText;
@@ -312,7 +312,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     return lines;
   }
 
-  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
+  public void styleChanged(StyleAttribute attribute, StyleValue value)
   {
     markAsNeedingLayout();
     getParent().markAsNeedingLayout();

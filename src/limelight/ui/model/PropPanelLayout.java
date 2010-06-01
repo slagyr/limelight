@@ -4,9 +4,9 @@
 package limelight.ui.model;
 
 import limelight.styles.Style;
-import limelight.styles.styling.GreedyDimensionAttribute;
-import limelight.styles.styling.AutoDimensionAttribute;
-import limelight.styles.abstrstyling.VerticalAlignmentAttribute;
+import limelight.styles.values.AutoDimensionValue;
+import limelight.styles.values.GreedyDimensionValue;
+import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
@@ -273,7 +273,7 @@ public class PropPanelLayout implements Layout
     Box maxArea = panel.getParent().getChildConsumableArea();
 
     Style style = panel.getStyle();
-    if(style.getCompiledWidth() instanceof AutoDimensionAttribute && style.getCompiledHeight() instanceof GreedyDimensionAttribute)
+    if(style.getCompiledWidth() instanceof AutoDimensionValue && style.getCompiledHeight() instanceof GreedyDimensionValue)
       throw new LimelightException("A greedy height is not allowed with auto width.");
 
     int newWidth = style.getCompiledWidth().calculateDimension(maxArea.width, style.getCompiledMinWidth(), style.getCompiledMaxWidth(), panel.greediness.width);
@@ -331,7 +331,7 @@ public class PropPanelLayout implements Layout
       return (width + panel.getWidth()) <= maxWidth;
     }
 
-    public void layoutComponents(int x, int y, VerticalAlignmentAttribute verticalAlignment)
+    public void layoutComponents(int x, int y, VerticalAlignmentValue verticalAlignment)
     {
       Box area = new Box(x, y, width, height);
       for(Panel panel : items)
@@ -365,12 +365,12 @@ public class PropPanelLayout implements Layout
 
     private boolean hasGreedyWidth(Panel item)
     {
-      return item instanceof PropPanel && item.getStyle().getCompiledWidth() instanceof GreedyDimensionAttribute;
+      return item instanceof PropPanel && item.getStyle().getCompiledWidth() instanceof GreedyDimensionValue;
     }
 
     private boolean hasGreedyHeight(Panel item)
     {
-      return item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute;
+      return item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionValue;
     }
 
     public boolean isGreedy()
@@ -383,7 +383,7 @@ public class PropPanelLayout implements Layout
       height += extraHeight;
       for(Panel item : items)
       {
-        if(item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionAttribute)
+        if(item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionValue)
         {
           PropPanel panel = (PropPanel)item;
           panel.greediness.height = extraHeight;

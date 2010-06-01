@@ -4,13 +4,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
+import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.util.Colors;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.Context;
 
 import javax.imageio.ImageIO;
@@ -29,9 +29,9 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
   private static ButtonStyle selected = new ButtonStyle("button_selected", "#bbd453");
   private static ButtonStyle focusedStyle = new ButtonStyle("button_focus", "transparent");
 
-  private static SimpleHorizontalAlignmentAttribute horizontalTextAlignment = new SimpleHorizontalAlignmentAttribute(HorizontalAlignment.CENTER);
+  private static SimpleHorizontalAlignmentValue horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.CENTER);
 
-  private static SimpleVerticalAlignmentAttribute verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
+  private static SimpleVerticalAlignmentValue verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
   private String text;
   private ButtonStyle style;
   private Rectangle textBounds;

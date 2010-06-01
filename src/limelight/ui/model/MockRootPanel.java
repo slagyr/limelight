@@ -11,6 +11,11 @@ import java.util.Map;
 
 public class MockRootPanel extends MockPropablePanel implements RootPanel
 {
+  @Override
+  public RootPanel getRoot()
+  {
+    return this;
+  }
 
   public void setFrame(PropFrame frame)
   {
@@ -24,6 +29,29 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public boolean hasDirtyRegions()
   {
     return false;
+  }
+
+  public void addPanelNeedingLayout(Panel panel)
+  {
+  }
+
+  public PropFrame getFrame()
+  {
+    return null;
+  }
+
+  public void setCursor(Cursor cursor)
+  {
+  }
+
+  public Panel getPanel()
+  {
+    return null;
+  }
+
+  public ImageCache getImageCache()
+  {
+    return null;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

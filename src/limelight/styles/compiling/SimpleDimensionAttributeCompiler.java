@@ -3,17 +3,17 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.DimensionAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.abstrstyling.DimensionValue;
 
 public class SimpleDimensionAttributeCompiler extends DimensionAttributeCompiler
 {
-  public StyleAttribute compile(Object objValue)
+  public StyleValue compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
-      DimensionAttribute attribute;
+      DimensionValue attribute;
       attribute = attemptPercentageAttribute(value);
       if(attribute == null)
         attribute = attemptStaticAttribute(value);

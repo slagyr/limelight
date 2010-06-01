@@ -6,9 +6,9 @@ package limelight.styles.compiling;
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.HorizontalAlignment;
-import limelight.styles.styling.StaticXCoordinateAttribute;
-import limelight.styles.styling.PercentageXCoordinateAttribute;
-import limelight.styles.styling.AlignedXCoordinateAttribute;
+import limelight.styles.values.StaticXCoordinateValue;
+import limelight.styles.values.PercentageXCoordinateValue;
+import limelight.styles.values.AlignedXCoordinateValue;
 
 public class XCoordinateAttributeCompilerTest extends TestCase
 {
@@ -22,23 +22,23 @@ public class XCoordinateAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(StaticXCoordinateAttribute.class, compiler.compile("123").getClass());
-    assertEquals(StaticXCoordinateAttribute.class, compiler.compile("-123").getClass());
-    assertEquals(StaticXCoordinateAttribute.class, compiler.compile("123.567").getClass());
-    assertEquals(PercentageXCoordinateAttribute.class, compiler.compile("50%").getClass());
-    assertEquals(PercentageXCoordinateAttribute.class, compiler.compile("3.14%").getClass());
-    assertEquals(AlignedXCoordinateAttribute.class, compiler.compile("left").getClass());
-    assertEquals(AlignedXCoordinateAttribute.class, compiler.compile("center").getClass());
-    assertEquals(AlignedXCoordinateAttribute.class, compiler.compile("right").getClass());
+    assertEquals(StaticXCoordinateValue.class, compiler.compile("123").getClass());
+    assertEquals(StaticXCoordinateValue.class, compiler.compile("-123").getClass());
+    assertEquals(StaticXCoordinateValue.class, compiler.compile("123.567").getClass());
+    assertEquals(PercentageXCoordinateValue.class, compiler.compile("50%").getClass());
+    assertEquals(PercentageXCoordinateValue.class, compiler.compile("3.14%").getClass());
+    assertEquals(AlignedXCoordinateValue.class, compiler.compile("left").getClass());
+    assertEquals(AlignedXCoordinateValue.class, compiler.compile("center").getClass());
+    assertEquals(AlignedXCoordinateValue.class, compiler.compile("right").getClass());
 
-    assertEquals(123, ((StaticXCoordinateAttribute) compiler.compile("123")).getValue());
-    assertEquals(-123, ((StaticXCoordinateAttribute) compiler.compile("-123")).getValue());
-    assertEquals(0, ((StaticXCoordinateAttribute) compiler.compile("0")).getValue());
-    assertEquals(50.0, ((PercentageXCoordinateAttribute) compiler.compile("50%")).getPercentage(), 0.01);
-    assertEquals(3.14, ((PercentageXCoordinateAttribute) compiler.compile("3.14%")).getPercentage(), 0.01);
-    assertEquals(HorizontalAlignment.LEFT, ((AlignedXCoordinateAttribute)compiler.compile("left")).getAlignment());
-    assertEquals(HorizontalAlignment.CENTER, ((AlignedXCoordinateAttribute)compiler.compile("center")).getAlignment());
-    assertEquals(HorizontalAlignment.RIGHT, ((AlignedXCoordinateAttribute)compiler.compile("right")).getAlignment());
+    assertEquals(123, ((StaticXCoordinateValue) compiler.compile("123")).getValue());
+    assertEquals(-123, ((StaticXCoordinateValue) compiler.compile("-123")).getValue());
+    assertEquals(0, ((StaticXCoordinateValue) compiler.compile("0")).getValue());
+    assertEquals(50.0, ((PercentageXCoordinateValue) compiler.compile("50%")).getPercentage(), 0.01);
+    assertEquals(3.14, ((PercentageXCoordinateValue) compiler.compile("3.14%")).getPercentage(), 0.01);
+    assertEquals(HorizontalAlignment.LEFT, ((AlignedXCoordinateValue)compiler.compile("left")).getAlignment());
+    assertEquals(HorizontalAlignment.CENTER, ((AlignedXCoordinateValue)compiler.compile("center")).getAlignment());
+    assertEquals(HorizontalAlignment.RIGHT, ((AlignedXCoordinateValue)compiler.compile("right")).getAlignment());
   }
 
   public void testInvalidValues() throws Exception
