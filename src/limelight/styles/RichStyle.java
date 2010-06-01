@@ -3,8 +3,9 @@
 
 package limelight.styles;
 
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.util.Util;
-import limelight.styles.abstrstyling.StyleAttribute;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -12,15 +13,15 @@ import java.util.List;
 
 public class RichStyle extends Style implements StyleObserver
 {
-  private final StyleAttribute[] styles;
+  private final StyleValue[] styles;
   private final LinkedList<RichStyle> extensions = new LinkedList<RichStyle>();
 
   public RichStyle()
   {
-    styles = new StyleAttribute[STYLE_COUNT];
+    styles = new StyleValue[STYLE_COUNT];
   }
 
-  public StyleAttribute get(int key)
+  public StyleValue get(int key)
   {
     if(styles[key] != null)
       return styles[key];
@@ -31,29 +32,29 @@ public class RichStyle extends Style implements StyleObserver
     }
   }
 
-  public void put(StyleDescriptor descriptor, Object value)
+  public void put(StyleAttribute attribute, Object value)
   {
     if(value == null)
       return;
-    StyleAttribute compiledValue = descriptor.compile(value);
-    putCompiled(descriptor, compiledValue);
+    StyleValue compiledValue = attribute.compile(value);
+    putCompiled(attribute, compiledValue);
   }
 
   @Override
-  protected void putCompiled(StyleDescriptor descriptor, StyleAttribute compiledValue)
+  protected void putCompiled(StyleAttribute attribute, StyleValue compiledValue)
   {
-    StyleAttribute originalValue = styles[descriptor.index];
+    StyleValue originalValue = styles[attribute.index];
     if(!Util.equal(originalValue, compiledValue))
     {
-      styles[descriptor.index] = compiledValue;
-      notifyObserversOfChange(descriptor, compiledValue);
+      styles[attribute.index] = compiledValue;
+      notifyObserversOfChange(attribute, compiledValue);
     }
   }
 
-  public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
+  public void styleChanged(StyleAttribute attribute, StyleValue value)
   {
-    if(styles[descriptor.index] == null)
-      notifyObserversOfChange(descriptor, value);
+    if(styles[attribute.index] == null)
+      notifyObserversOfChange(attribute, value);
   }
 
   public void addExtension(RichStyle extension)
@@ -124,11 +125,11 @@ public class RichStyle extends Style implements StyleObserver
   {
     LinkedList<RichStyle> seniorExtensions = findSeniorExtensions(style);
 
-    for(StyleDescriptor descriptor : STYLE_LIST)
+    for(StyleAttribute attribute : STYLE_LIST)
     {
-      StyleAttribute value = style.get(descriptor.index);
-      if(value != null && getFrom(seniorExtensions, descriptor.index) == null)
-        styleChanged(descriptor, value);
+      StyleValue value = style.get(attribute.index);
+      if(value != null && getFrom(seniorExtensions, attribute.index) == null)
+        styleChanged(attribute, value);
     }
   }
 
@@ -147,11 +148,11 @@ public class RichStyle extends Style implements StyleObserver
     return seniorExtensions;
   }
 
-  private StyleAttribute getFrom(LinkedList<RichStyle> extensions, int key)
+  private StyleValue getFrom(LinkedList<RichStyle> extensions, int key)
   {
     for(Style style : extensions)
     {
-      StyleAttribute value = style.get(key);
+      StyleValue value = style.get(key);
       if(value != null)
         return value;
     }
@@ -163,11 +164,11 @@ public class RichStyle extends Style implements StyleObserver
     StringBuffer buffer = new StringBuffer(super.toString());
     for(int i = 0; i < styles.length; i++)
     {
-      StyleAttribute style = styles[i];
+      StyleValue style = styles[i];
       if(style != null)
       {
-        StyleDescriptor descriptor = Style.STYLE_LIST.get(i);
-        buffer.append("\n\t").append(descriptor.name).append(": ").append(style);
+        StyleAttribute attribute = Style.STYLE_LIST.get(i);
+        buffer.append("\n\t").append(attribute.name).append(": ").append(style);
       }
     }
     return buffer.toString();

@@ -132,7 +132,7 @@ public class ScenePanel extends PropPanel implements RootPanel
       focusManager.unfocusCurrentlyFocusedComponent();
   }
 
-  public ScenePanel getRoot()
+  public RootPanel getRoot()
   {
     return this;
   }

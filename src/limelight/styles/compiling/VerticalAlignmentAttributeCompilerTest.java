@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
 
 public class VerticalAlignmentAttributeCompilerTest extends TestCase
 {
@@ -21,10 +21,10 @@ public class VerticalAlignmentAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    Assert.assertEquals(VerticalAlignment.TOP, ((SimpleVerticalAlignmentAttribute) compiler.compile("top")).getAlignment());
-    assertEquals(VerticalAlignment.BOTTOM, ((SimpleVerticalAlignmentAttribute) compiler.compile("bottom")).getAlignment());
-    assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentAttribute) compiler.compile("center")).getAlignment());
-    assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentAttribute) compiler.compile("middle")).getAlignment());
+    Assert.assertEquals(VerticalAlignment.TOP, ((SimpleVerticalAlignmentValue) compiler.compile("top")).getAlignment());
+    assertEquals(VerticalAlignment.BOTTOM, ((SimpleVerticalAlignmentValue) compiler.compile("bottom")).getAlignment());
+    assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentValue) compiler.compile("center")).getAlignment());
+    assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentValue) compiler.compile("middle")).getAlignment());
   }
 
   public void testInvalidValue() throws Exception

@@ -4,9 +4,9 @@
 package limelight.ui.text;
 
 import limelight.styles.RichStyle;
-import limelight.styles.StyleDescriptor;
+import limelight.styles.StyleAttribute;
 import limelight.styles.StyleObserver;
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -106,7 +106,7 @@ public class StyledTextTest extends Assert
 
   private class MockStyleObserver implements StyleObserver
   {
-    public void styleChanged(StyleDescriptor descriptor, StyleAttribute value)
+    public void styleChanged(StyleAttribute attribute, StyleValue value)
     {
     }
   }

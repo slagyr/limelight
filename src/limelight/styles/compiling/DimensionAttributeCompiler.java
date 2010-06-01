@@ -3,22 +3,22 @@
 
 package limelight.styles.compiling;
 
+import limelight.styles.abstrstyling.DimensionValue;
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.DimensionAttribute;
-import limelight.styles.styling.StaticDimensionAttribute;
-import limelight.styles.styling.AutoDimensionAttribute;
-import limelight.styles.styling.PercentageDimensionAttribute;
-import limelight.styles.styling.GreedyDimensionAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.values.GreedyDimensionValue;
+import limelight.styles.values.StaticDimensionValue;
+import limelight.styles.values.AutoDimensionValue;
+import limelight.styles.values.PercentageDimensionValue;
 
 public class DimensionAttributeCompiler extends StyleAttributeCompiler
 { 
-  public StyleAttribute compile(Object objValue)
+  public StyleValue compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
-      DimensionAttribute attribute;
+      DimensionValue attribute;
       attribute = attemptAutoAttribute(value);
       if(attribute == null)
         attribute = attemptGreedyAttribute(value);
@@ -38,39 +38,39 @@ public class DimensionAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private DimensionAttribute attemptGreedyAttribute(String value)
+  private DimensionValue attemptGreedyAttribute(String value)
   {
     if("greedy".equals(value.toLowerCase()))
-      return new GreedyDimensionAttribute();
+      return new GreedyDimensionValue();
     else
       return null;
   }
 
-  protected DimensionAttribute attemptStaticAttribute(String value)
+  protected DimensionValue attemptStaticAttribute(String value)
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
 
     if(intValue >= 0)
-      return new StaticDimensionAttribute(intValue);
+      return new StaticDimensionValue(intValue);
     else
       return null;
   }
 
-  private DimensionAttribute attemptAutoAttribute(String value)
+  private DimensionValue attemptAutoAttribute(String value)
   {
     if("auto".equals(value.toLowerCase()))
-      return new AutoDimensionAttribute();
+      return new AutoDimensionValue();
     else
       return null;
   }
 
-  protected DimensionAttribute attemptPercentageAttribute(String value)
+  protected DimensionValue attemptPercentageAttribute(String value)
   {
     if(PercentageAttributeCompiler.isPercentage(value))
     {
       double percentValue = PercentageAttributeCompiler.convertToDouble(value);
       if(percentValue >= 0)
-        return new PercentageDimensionAttribute(percentValue);
+        return new PercentageDimensionValue(percentValue);
     }
     return null;
   }

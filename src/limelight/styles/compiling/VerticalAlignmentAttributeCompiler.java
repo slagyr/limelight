@@ -4,17 +4,17 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
 
 public class VerticalAlignmentAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object value)
+  public StyleValue compile(Object value)
   {
     VerticalAlignment alignment = parse(value);
     if(alignment != null)
-      return new SimpleVerticalAlignmentAttribute(alignment);
+      return new SimpleVerticalAlignmentValue(alignment);
     else
       throw makeError(value);
   }

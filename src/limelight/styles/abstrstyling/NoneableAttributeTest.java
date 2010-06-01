@@ -4,23 +4,23 @@
 package limelight.styles.abstrstyling;
 
 import junit.framework.TestCase;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.styling.SimpleIntegerAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.values.SimpleIntegerValue;
 
 public class NoneableAttributeTest extends TestCase
 {
-  private NoneableAttribute<SimpleIntegerAttribute> none;
-  private NoneableAttribute<SimpleIntegerAttribute> fifty;
+  private NoneableValue<SimpleIntegerValue> none;
+  private NoneableValue<SimpleIntegerValue> fifty;
 
   public void setUp() throws Exception
   {
-    none = new NoneableAttribute<SimpleIntegerAttribute>(null);
-    fifty = new NoneableAttribute<SimpleIntegerAttribute>(new SimpleIntegerAttribute(50));
+    none = new NoneableValue<SimpleIntegerValue>(null);
+    fifty = new NoneableValue<SimpleIntegerValue>(new SimpleIntegerValue(50));
   }
 
   public void testCreation() throws Exception
   {
-    assertEquals(true, (none instanceof StyleAttribute));
+    assertEquals(true, (none instanceof StyleValue));
     assertEquals(true, none.isNone());
     assertEquals(50, fifty.getAttribute().getValue());
   }
@@ -34,10 +34,10 @@ public class NoneableAttributeTest extends TestCase
   public void testEquality() throws Exception
   {
     assertEquals(true, none.equals(none));
-    assertEquals(true, none.equals(new NoneableAttribute<SimpleIntegerAttribute>(null)));
+    assertEquals(true, none.equals(new NoneableValue<SimpleIntegerValue>(null)));
     assertEquals(false, none.equals(fifty));
     assertEquals(true, fifty.equals(fifty));
-    assertEquals(true, fifty.equals(new NoneableAttribute<SimpleIntegerAttribute>(new SimpleIntegerAttribute(50))));
+    assertEquals(true, fifty.equals(new NoneableValue<SimpleIntegerValue>(new SimpleIntegerValue(50))));
     assertEquals(false, none.equals(null));
   }
 }

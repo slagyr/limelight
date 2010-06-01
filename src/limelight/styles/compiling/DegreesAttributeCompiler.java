@@ -3,20 +3,20 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.styling.SimpleDegreesAttribute;
+import limelight.styles.values.SimpleDegreesValue;
 
 public class DegreesAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object objValue)
+  public StyleValue compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
       int intValue = Integer.parseInt(value);
       if(0 <= intValue && intValue <= 360)
-        return new SimpleDegreesAttribute(intValue);
+        return new SimpleDegreesValue(intValue);
       else
         throw makeError(value);
     }

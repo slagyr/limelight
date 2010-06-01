@@ -25,4 +25,14 @@ public interface RootPanel extends Panel
   void addDirtyRegion(Rectangle bounds);
 
   public Map<String, RichStyle> getStylesStore();
+
+  void addPanelNeedingLayout(Panel panel);
+
+  PropFrame getFrame();
+
+  void setCursor(Cursor cursor);
+
+  Panel getPanel();
+
+  ImageCache getImageCache();
 }

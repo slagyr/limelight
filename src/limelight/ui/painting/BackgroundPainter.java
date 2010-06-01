@@ -3,13 +3,13 @@
 
 package limelight.ui.painting;
 
+import limelight.styles.abstrstyling.NoneableValue;
 import limelight.ui.*;
-import limelight.ui.model.ScenePanel;
+import limelight.ui.model.RootPanel;
 import limelight.ui.model.ImageCache;
 import limelight.ui.api.PropablePanel;
 import limelight.styles.Style;
-import limelight.styles.abstrstyling.StringAttribute;
-import limelight.styles.abstrstyling.NoneableAttribute;
+import limelight.styles.abstrstyling.StringValue;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -43,13 +43,13 @@ public class BackgroundPainter extends Painter
       }
     }
 
-    NoneableAttribute<StringAttribute> backgroundImageAttribute = style.getCompiledBackgroundImage();
+    NoneableValue<StringValue> backgroundImageAttribute = style.getCompiledBackgroundImage();
     if (!backgroundImageAttribute.isNone())
     {
       try
       {
         Box borderFrame = panel.getBoxInsideBorders();
-        ScenePanel rootPanel = ((PropablePanel) panel).getRoot();
+        RootPanel rootPanel = ((PropablePanel) panel).getRoot();
         ImageCache cache = rootPanel.getImageCache();
         Image image = cache.getImage(backgroundImageAttribute.getAttribute().getValue());
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);

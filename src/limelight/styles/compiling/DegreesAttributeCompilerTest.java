@@ -5,9 +5,9 @@ package limelight.styles.compiling;
 
 import junit.framework.TestCase;
 import junit.framework.Assert;
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-import limelight.styles.styling.SimpleDegreesAttribute;
+import limelight.styles.values.SimpleDegreesValue;
 
 public class DegreesAttributeCompilerTest extends TestCase
 {
@@ -21,9 +21,9 @@ public class DegreesAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    StyleAttribute attr = compiler.compile("123");
+    StyleValue attr = compiler.compile("123");
 
-    Assert.assertEquals(123, ((SimpleDegreesAttribute)attr).getDegrees());
+    Assert.assertEquals(123, ((SimpleDegreesValue)attr).getDegrees());
   }
 
   public void testInvalidValue() throws Exception

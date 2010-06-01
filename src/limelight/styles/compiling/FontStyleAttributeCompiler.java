@@ -4,17 +4,17 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.styling.SimpleFontStyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.values.SimpleFontStyleValue;
 
 public class FontStyleAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object value)
+  public StyleValue compile(Object value)
   {
     String lowerCase = value.toString().toLowerCase().trim();
 
     if("plain".equals(lowerCase))
-      return new SimpleFontStyleAttribute("plain");
+      return new SimpleFontStyleValue("plain");
     else
     {
       String[] tokens = lowerCase.split(" ");
@@ -23,7 +23,7 @@ public class FontStyleAttributeCompiler extends StyleAttributeCompiler
         if(!"bold".equals(token) && !"italic".equals(token))
           throw makeError(value);
       }
-      return new SimpleFontStyleAttribute(lowerCase);
+      return new SimpleFontStyleValue(lowerCase);
     }
 
   }

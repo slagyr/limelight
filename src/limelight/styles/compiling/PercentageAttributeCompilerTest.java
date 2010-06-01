@@ -6,7 +6,7 @@ package limelight.styles.compiling;
 import junit.framework.TestCase;
 import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-import limelight.styles.styling.SimplePercentageAttribute;
+import limelight.styles.values.SimplePercentageValue;
 
 public class PercentageAttributeCompilerTest extends TestCase
 {
@@ -20,13 +20,13 @@ public class PercentageAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    Assert.assertEquals(0.0, ((SimplePercentageAttribute) compiler.compile("0")).getPercentage(), 0.01);
-    assertEquals(50.0, ((SimplePercentageAttribute) compiler.compile("50")).getPercentage(), 0.01);
-    assertEquals(100.0, ((SimplePercentageAttribute) compiler.compile("100")).getPercentage(), 0.01);
-    assertEquals(100.0, ((SimplePercentageAttribute) compiler.compile("100%")).getPercentage(), 0.01);
-    assertEquals(50.0, ((SimplePercentageAttribute) compiler.compile("50%")).getPercentage(), 0.01);
-    assertEquals(50.5, ((SimplePercentageAttribute) compiler.compile("50.5%")).getPercentage(), 0.01);
-    assertEquals(3.14, ((SimplePercentageAttribute) compiler.compile("3.14%")).getPercentage(), 0.01);
+    Assert.assertEquals(0.0, ((SimplePercentageValue) compiler.compile("0")).getPercentage(), 0.01);
+    assertEquals(50.0, ((SimplePercentageValue) compiler.compile("50")).getPercentage(), 0.01);
+    assertEquals(100.0, ((SimplePercentageValue) compiler.compile("100")).getPercentage(), 0.01);
+    assertEquals(100.0, ((SimplePercentageValue) compiler.compile("100%")).getPercentage(), 0.01);
+    assertEquals(50.0, ((SimplePercentageValue) compiler.compile("50%")).getPercentage(), 0.01);
+    assertEquals(50.5, ((SimplePercentageValue) compiler.compile("50.5%")).getPercentage(), 0.01);
+    assertEquals(3.14, ((SimplePercentageValue) compiler.compile("3.14%")).getPercentage(), 0.01);
   }
 
   public void testInvalidValue() throws Exception
@@ -44,9 +44,9 @@ public class PercentageAttributeCompilerTest extends TestCase
   
   public void testCompilingFloatValues() throws Exception
   {
-    assertEquals(99.0, ((SimplePercentageAttribute) compiler.compile(99)).getPercentage(), 0.01);
-    assertEquals(3.14, ((SimplePercentageAttribute) compiler.compile(3.14)).getPercentage(), 0.01);
-    assertEquals(45.0, ((SimplePercentageAttribute) compiler.compile(new Long(45))).getPercentage(), 0.01);
-    assertEquals(5.25, ((SimplePercentageAttribute) compiler.compile(new Double(5.25))).getPercentage(), 0.01);
+    assertEquals(99.0, ((SimplePercentageValue) compiler.compile(99)).getPercentage(), 0.01);
+    assertEquals(3.14, ((SimplePercentageValue) compiler.compile(3.14)).getPercentage(), 0.01);
+    assertEquals(45.0, ((SimplePercentageValue) compiler.compile(new Long(45))).getPercentage(), 0.01);
+    assertEquals(5.25, ((SimplePercentageValue) compiler.compile(new Double(5.25))).getPercentage(), 0.01);
   }
 }

@@ -5,19 +5,16 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
+import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-public class TextInputPanelTest
+public class TextInputPanelTest extends Assert
 {
   TextInputPanel panel;
   PropPanel parent;
@@ -70,17 +67,8 @@ public class TextInputPanelTest
     assertEquals(true, panel.isTextMaxed());
   }
 
-  @Test
-  public void canMaxOutPaintableRegionToEncapsulateTextIfPanelFull(){
-    panel.maxOutPaintableRegion();
-
-    assertEquals(panel.getWidth() - 2 * TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.width );
-    assertEquals(TextModel.SIDE_TEXT_MARGIN,panel.paintableRegion.x );
-  }
-
   public static class MockKeyEvent extends KeyEvent
   {
-
     public MockKeyEvent(int modifiers, int keyCode)
     {
       super(new Panel(), 1, 123456789l, modifiers, keyCode, ' ');
@@ -96,5 +84,23 @@ public class TextInputPanelTest
     assertEquals(10, panel.getLastKeyPressed());
   }
 
+  @Test
+  public void shouldHaveDefaultLayout() throws Exception
+  {
+    assertEquals(InputPanelLayout.instance, panel.getDefaultLayout());
+  }
+  
+  @Test
+  public void shouldRequireLayoutAfterConsumableSizeChanges() throws Exception
+  {
+    MockRootPanel root = new MockRootPanel();
+    root.add(panel);
+    panel.getRoot();
+    panel.resetLayout();
+
+    panel.consumableAreaChanged();
+    
+    assertEquals(true, panel.needsLayout());
+  }
 
 }

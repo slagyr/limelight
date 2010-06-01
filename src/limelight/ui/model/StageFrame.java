@@ -20,7 +20,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
   private static final StyleAttributeCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
   private static final StyleAttributeCompiler xCompiler = Context.instance().styleAttributeCompilerFactory.compiler("x-coordinate", "stage x-coordinate");
   private static final StyleAttributeCompiler yCompiler = Context.instance().styleAttributeCompilerFactory.compiler("y-coordinate", "stage y-coordinate");
-  private static final NoneableAttribute<DimensionAttribute> NONE = new NoneableAttribute<DimensionAttribute>(null);
+  private static final NoneableValue<DimensionValue> NONE = new NoneableValue<DimensionValue>(null);
 
   private Stage stage;
   protected RootPanel root;
@@ -32,10 +32,10 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
   private boolean kiosk;
   private Dimension sizeBeforeFullScreen;
   private Point locationBeforeFullScreen;
-  private DimensionAttribute widthStyle = (DimensionAttribute) widthCompiler.compile(500);
-  private DimensionAttribute heightStyle = (DimensionAttribute) heightCompiler.compile(500);
-  private XCoordinateAttribute xLocationStyle = (XCoordinateAttribute) xCompiler.compile("center");
-  private YCoordinateAttribute yLocationStyle = (YCoordinateAttribute) yCompiler.compile("center");
+  private DimensionValue widthStyle = (DimensionValue) widthCompiler.compile(500);
+  private DimensionValue heightStyle = (DimensionValue) heightCompiler.compile(500);
+  private XCoordinateValue xLocationStyle = (XCoordinateValue) xCompiler.compile("center");
+  private YCoordinateValue yLocationStyle = (YCoordinateValue) yCompiler.compile("center");
   private boolean vital = true;
   private Dimension previousSize;
   private boolean opened;
@@ -157,36 +157,36 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void setSizeStyles(Object widthValue, Object heightValue)
   {
-    widthStyle = (DimensionAttribute) widthCompiler.compile(widthValue);
-    heightStyle = (DimensionAttribute) heightCompiler.compile(heightValue);
+    widthStyle = (DimensionValue) widthCompiler.compile(widthValue);
+    heightStyle = (DimensionValue) heightCompiler.compile(heightValue);
 
     applySizeStyles();
   }
 
-  public DimensionAttribute getWidthStyle()
+  public DimensionValue getWidthStyle()
   {
     return widthStyle;
   }
 
-  public DimensionAttribute getHeightStyle()
+  public DimensionValue getHeightStyle()
   {
     return heightStyle;
   }
 
   public void setLocationStyles(Object xValue, Object yValue)
   {
-    xLocationStyle = (XCoordinateAttribute) xCompiler.compile(xValue);
-    yLocationStyle = (YCoordinateAttribute) yCompiler.compile(yValue);
+    xLocationStyle = (XCoordinateValue) xCompiler.compile(xValue);
+    yLocationStyle = (YCoordinateValue) yCompiler.compile(yValue);
 
     applyLocationStyles();
   }
 
-  public XCoordinateAttribute getXLocationStyle()
+  public XCoordinateValue getXLocationStyle()
   {
     return xLocationStyle;
   }
 
-  public YCoordinateAttribute getYLocationStyle()
+  public YCoordinateValue getYLocationStyle()
   {
     return yLocationStyle;
   }

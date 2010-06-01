@@ -4,12 +4,12 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.styling.SimpleIntegerAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.values.SimpleIntegerValue;
 
 public class IntegerAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object value)
+  public StyleValue compile(Object value)
   {
     try
     {
@@ -19,7 +19,7 @@ public class IntegerAttributeCompiler extends StyleAttributeCompiler
       else
         intValue = convertToInt(value.toString());
       
-      return new SimpleIntegerAttribute(intValue);
+      return new SimpleIntegerValue(intValue);
     }
     catch(Exception e)
     {

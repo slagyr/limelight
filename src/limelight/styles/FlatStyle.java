@@ -3,50 +3,49 @@
 
 package limelight.styles;
 
-import limelight.LimelightException;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.util.Util;
-import limelight.styles.abstrstyling.StyleAttribute;
 
 public class FlatStyle extends Style
 {
-  private final StyleAttribute[] styles;
+  private final StyleValue[] styles;
 
   public FlatStyle()
 	{
-    styles = new StyleAttribute[STYLE_COUNT];
+    styles = new StyleValue[STYLE_COUNT];
   }
 
-  protected StyleAttribute get(int key)
+  protected StyleValue get(int key)
 	{
-    StyleAttribute style = styles[key];
+    StyleValue style = styles[key];
     return style == null ? null : style;
 	}
 
-	public void put(StyleDescriptor descriptor, Object value)
+	public void put(StyleAttribute attribute, Object value)
 	{
     if(value == null)
       return;
 
-    StyleAttribute compiledValue = descriptor.compile(value);
+    StyleValue compiledValue = attribute.compile(value);
 
-    StyleAttribute originalValue = styles[descriptor.index];
-    styles[descriptor.index] = compiledValue;
+    StyleValue originalValue = styles[attribute.index];
+    styles[attribute.index] = compiledValue;
     if(!Util.equal(originalValue, compiledValue))
-      recordChange(descriptor, compiledValue);
+      recordChange(attribute, compiledValue);
   }
 
   @Override
-  protected void putCompiled(StyleDescriptor descriptor, StyleAttribute compiledValue)
+  protected void putCompiled(StyleAttribute attribute, StyleValue compiledValue)
   {
-    StyleAttribute originalValue = styles[descriptor.index];
+    StyleValue originalValue = styles[attribute.index];
     if(!Util.equal(originalValue, compiledValue))
     {
-      styles[descriptor.index] = compiledValue;
-      notifyObserversOfChange(descriptor, compiledValue);
+      styles[attribute.index] = compiledValue;
+      notifyObserversOfChange(attribute, compiledValue);
     }
   }
 
-  public StyleAttribute[] getStyles()
+  public StyleValue[] getStyles()
   {
     return styles;
   }

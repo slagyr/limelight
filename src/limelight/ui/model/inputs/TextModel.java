@@ -3,8 +3,9 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.styles.Style;
+import limelight.styles.values.SimpleHorizontalAlignmentValue;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.TextLayoutImpl;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
@@ -31,7 +32,6 @@ public abstract class TextModel implements ClipboardOwner
   int selectionStartX;
   protected int cursorIndex;
   protected int selectionIndex;
-  public Font font;
   int xOffset;
   TextInputPanel myPanel;
   private String lastLayedOutText;
@@ -45,6 +45,15 @@ public abstract class TextModel implements ClipboardOwner
   {
     cursorX = getXPosFromIndex(cursorIndex);
     selectionStartX = getXPosFromIndex(selectionIndex);
+  }
+
+  public Font getFont()
+  {
+    Style style = myPanel.getStyle();
+    String fontFace = style.getCompiledFontFace().getValue();
+    int fontStyle = style.getCompiledFontStyle().toInt();
+    int fontSize = style.getCompiledFontSize().getValue();
+    return new Font(fontFace, fontStyle, fontSize);
   }
 
   public int getXPosFromIndex(int index)
@@ -89,6 +98,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int spaceWidth()
   {
+    Font font = getFont();
     if (spaceWidth == 0)
     {
       TypedLayout layout1 = new TextLayoutImpl("a a", font, TextPanel.getRenderContext());
@@ -110,7 +120,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     textLayouts = getTextLayouts();
     TypedLayout typedLayout = textLayouts.get(layoutIndex);
-    return (int)(getHeightDimension(typedLayout) + typedLayout.getLeading() + .5);
+    return (int)(getHeightDimension(typedLayout) + typedLayout.getLeading() + 0.5);
   }
 
   public int getHeightOfCurrentLine()
@@ -146,17 +156,12 @@ public abstract class TextModel implements ClipboardOwner
     return myPanel.getHeight();
   }
 
-  public Shape getPaintableRegion()
-  {
-    return myPanel.getPaintableRegion();
-  }
-
-  public SimpleHorizontalAlignmentAttribute getHorizontalAlignment()
+  public SimpleHorizontalAlignmentValue getHorizontalAlignment()
   {
     return myPanel.horizontalTextAlignment;
   }
 
-  public SimpleVerticalAlignmentAttribute getVerticalAlignment()
+  public SimpleVerticalAlignmentValue getVerticalAlignment()
   {
     return myPanel.verticalTextAlignment;
   }
@@ -286,7 +291,6 @@ public abstract class TextModel implements ClipboardOwner
   {
     lastCursorIndex = this.cursorIndex;
     this.cursorIndex = cursorIndex;
-    myPanel.setPaintableRegion(cursorIndex);
   }
 
   public int getSelectionIndex()
@@ -297,7 +301,6 @@ public abstract class TextModel implements ClipboardOwner
   public void setSelectionIndex(int selectionIndex)
   {
     this.selectionIndex = selectionIndex;
-    myPanel.setPaintableRegion(selectionIndex);
   }
 
   public abstract boolean isBoxFull();

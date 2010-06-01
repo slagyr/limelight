@@ -4,9 +4,9 @@
 package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
-import limelight.util.Box;
-import limelight.styles.Style;
+import limelight.ui.model.RootPanel;
 import limelight.ui.model.ScenePanel;
+import limelight.util.Box;
 import limelight.ui.model.Layout;
 
 import java.awt.*;
@@ -33,7 +33,7 @@ public interface Panel extends Iterable<Panel>
 
   Panel getParent();
   void setParent(Panel panel);
-  ScenePanel getRoot();
+  RootPanel getRoot();
   boolean isDescendantOf(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
   Box getChildConsumableArea();
@@ -62,6 +62,7 @@ public interface Panel extends Iterable<Panel>
   void consumableAreaChanged();
   boolean needsLayout();
   void markAsNeedingLayout();
+  void markAsDirty();
   
   void mousePressed(MouseEvent e);
   void mouseReleased(MouseEvent e);

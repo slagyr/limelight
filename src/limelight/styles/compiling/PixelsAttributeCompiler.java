@@ -4,21 +4,21 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.PixelsAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.abstrstyling.PixelsValue;
 import limelight.styles.compiling.IntegerAttributeCompiler;
 import limelight.styles.compiling.PercentageAttributeCompiler;
-import limelight.styles.styling.StaticPixelsAttribute;
-import limelight.styles.styling.PercentagePixelsAttribute;
+import limelight.styles.values.StaticPixelsValue;
+import limelight.styles.values.PercentagePixelsValue;
 
 public class PixelsAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object objValue)
+  public StyleValue compile(Object objValue)
   {
     String value = objValue.toString();
     try
     {
-      PixelsAttribute attribute = attemptPercentageAttribute(value);
+      PixelsValue attribute = attemptPercentageAttribute(value);
       if(attribute == null)
         attribute = attemptStaticAttribute(value);
 
@@ -33,23 +33,23 @@ public class PixelsAttributeCompiler extends StyleAttributeCompiler
     }
   }
 
-  private PixelsAttribute attemptStaticAttribute(String value)
+  private PixelsValue attemptStaticAttribute(String value)
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
 
     if(intValue >= 0)
-      return new StaticPixelsAttribute(intValue);
+      return new StaticPixelsValue(intValue);
     else
       return null;
   }
 
-  private PixelsAttribute attemptPercentageAttribute(String value)
+  private PixelsValue attemptPercentageAttribute(String value)
   {
     if(value.indexOf('%') != -1)
     {
       double percentValue = PercentageAttributeCompiler.convertToDouble(value);
       if(percentValue >= 0)
-        return new PercentagePixelsAttribute(percentValue);
+        return new PercentagePixelsValue(percentValue);
     }
     return null;
   }

@@ -9,7 +9,7 @@ import limelight.ui.*;
 import limelight.Context;
 import limelight.KeyboardFocusManager;
 import limelight.MockContext;
-import limelight.styles.styling.*;
+import limelight.styles.values.*;
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.os.MockOS;
 import limelight.util.Colors;
@@ -331,13 +331,13 @@ public class StageFrameTest extends Assert
     insets.set(10, 20, 30, 40);
 
     frame.setSizeStyles(50, 100);
-    assertEquals(new StaticPixelsAttribute(50), frame.getWidthStyle());
-    assertEquals(new StaticPixelsAttribute(100), frame.getHeightStyle());
+    assertEquals(new StaticPixelsValue(50), frame.getWidthStyle());
+    assertEquals(new StaticPixelsValue(100), frame.getHeightStyle());
     assertEquals(new Dimension(50, 100), frame.getSize());
 
     frame.setSizeStyles("50%", "100%");
-    assertEquals(new PercentagePixelsAttribute(50.0), frame.getWidthStyle());
-    assertEquals(new PercentagePixelsAttribute(100.0), frame.getHeightStyle());
+    assertEquals(new PercentagePixelsValue(50.0), frame.getWidthStyle());
+    assertEquals(new PercentagePixelsValue(100.0), frame.getHeightStyle());
     assertEquals(new Dimension(470, 960), frame.getSize());
   }
 
@@ -350,13 +350,13 @@ public class StageFrameTest extends Assert
     frame.setSize(100, 100);
 
     frame.setLocationStyles(50, 100);
-    assertEquals(new StaticXCoordinateAttribute(50), frame.getXLocationStyle());
-    assertEquals(new StaticYCoordinateAttribute(100), frame.getYLocationStyle());
+    assertEquals(new StaticXCoordinateValue(50), frame.getXLocationStyle());
+    assertEquals(new StaticYCoordinateValue(100), frame.getYLocationStyle());
     assertEquals(new Point(insets.left + 50, insets.top + 100), frame.getLocation());
 
     frame.setLocationStyles("50%", "75%");
-    assertEquals(new PercentageXCoordinateAttribute(50.0), frame.getXLocationStyle());
-    assertEquals(new PercentageYCoordinateAttribute(75.0), frame.getYLocationStyle());
+    assertEquals(new PercentageXCoordinateValue(50.0), frame.getXLocationStyle());
+    assertEquals(new PercentageYCoordinateValue(75.0), frame.getYLocationStyle());
     assertEquals(new Point(490, 730), frame.getLocation());
   }
 

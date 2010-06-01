@@ -4,17 +4,17 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.HorizontalAlignment;
-import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
+import limelight.styles.values.SimpleHorizontalAlignmentValue;
 
 public class HorizontalAlignmentAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object value)
+  public StyleValue compile(Object value)
   {
     HorizontalAlignment alignment = parse(value);
     if(alignment != null)
-      return new SimpleHorizontalAlignmentAttribute(alignment);
+      return new SimpleHorizontalAlignmentValue(alignment);
     else
       throw makeError(value);
   }

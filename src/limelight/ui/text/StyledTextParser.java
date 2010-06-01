@@ -5,7 +5,7 @@ package limelight.ui.text;
 
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
-import limelight.styles.StyleDescriptor;
+import limelight.styles.StyleAttribute;
 
 import java.util.LinkedList;
 import java.util.regex.Matcher;
@@ -81,8 +81,8 @@ public class StyledTextParser
       if(attributeName != null)
       {
         String attributeValue = removeQuotes(matcher.group(2));
-        StyleDescriptor descriptor = Style.descriptorFor(attributeName);
-        style.put(descriptor, attributeValue);
+        StyleAttribute attribute = Style.descriptorFor(attributeName);
+        style.put(attribute, attributeValue);
       }
     }
   }

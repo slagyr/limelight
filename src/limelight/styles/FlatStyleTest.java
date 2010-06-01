@@ -4,7 +4,7 @@
 package limelight.styles;
 
 import junit.framework.TestCase;
-import limelight.styles.abstrstyling.PixelsAttribute;
+import limelight.styles.abstrstyling.PixelsValue;
 
 public class FlatStyleTest extends TestCase
 {
@@ -245,41 +245,41 @@ public class FlatStyleTest extends TestCase
   public void testMarginsReturnPixlesAttribute() throws Exception
   {
     style.setMargin("10%");
-    assertEquals(true, style.getCompiledTopMargin() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledRightMargin() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledBottomMargin() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledLeftMargin() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledTopMargin() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledRightMargin() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledBottomMargin() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledLeftMargin() instanceof PixelsValue);
   }
   
   public void testPaddingsReturnPixlesAttribute() throws Exception
   {
     style.setPadding("10%");
-    assertEquals(true, style.getCompiledTopPadding() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledRightPadding() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledBottomPadding() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledLeftPadding() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledTopPadding() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledRightPadding() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledBottomPadding() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledLeftPadding() instanceof PixelsValue);
   }
 
   public void testRoundedCornerRadiusReturnPixlesAttribute() throws Exception
   {
     style.setRightRoundedCornerRadius("10%");
-    assertEquals(true, style.getCompiledTopRightRoundedCornerRadius() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledBottomRightRoundedCornerRadius() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledBottomLeftRoundedCornerRadius() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledTopLeftRoundedCornerRadius() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledTopRightRoundedCornerRadius() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledBottomRightRoundedCornerRadius() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledBottomLeftRoundedCornerRadius() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledTopLeftRoundedCornerRadius() instanceof PixelsValue);
   }
 
   public void testBordersReturnPixlesAttribute() throws Exception
   {
     style.setBorderWidth("10%");
-    assertEquals(true, style.getCompiledTopBorderWidth() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledTopRightBorderWidth() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledRightBorderWidth() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledBottomRightBorderWidth() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledBottomBorderWidth() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledBottomLeftBorderWidth() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledLeftBorderWidth() instanceof PixelsAttribute);
-    assertEquals(true, style.getCompiledTopLeftBorderWidth() instanceof PixelsAttribute);
+    assertEquals(true, style.getCompiledTopBorderWidth() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledTopRightBorderWidth() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledRightBorderWidth() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledBottomRightBorderWidth() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledBottomBorderWidth() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledBottomLeftBorderWidth() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledLeftBorderWidth() instanceof PixelsValue);
+    assertEquals(true, style.getCompiledTopLeftBorderWidth() instanceof PixelsValue);
   }
 
   public void testAlignmentShortCuts() throws Exception

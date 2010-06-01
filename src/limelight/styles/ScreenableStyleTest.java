@@ -108,19 +108,19 @@ public class ScreenableStyleTest extends TestCase
     style2.setHeight("321");
     style.applyScreen(style2);
 
-    assertEquals(2, observer.descriptorChanges.size());
+    assertEquals(2, observer.attributeChanges.size());
     assertEquals(2, observer.valueChanges.size());
-    assertEquals(Style.WIDTH, observer.descriptorChanges.get(0));
-    assertEquals(Style.HEIGHT, observer.descriptorChanges.get(1));
+    assertEquals(Style.WIDTH, observer.attributeChanges.get(0));
+    assertEquals(Style.HEIGHT, observer.attributeChanges.get(1));
     assertEquals("123", observer.valueChanges.get(0).toString());
     assertEquals("321", observer.valueChanges.get(1).toString());
 
     style.removeScreen();
 
-    assertEquals(4, observer.descriptorChanges.size());
+    assertEquals(4, observer.attributeChanges.size());
     assertEquals(4, observer.valueChanges.size());
-    assertEquals(Style.WIDTH, observer.descriptorChanges.get(2));
-    assertEquals(Style.HEIGHT, observer.descriptorChanges.get(3));
+    assertEquals(Style.WIDTH, observer.attributeChanges.get(2));
+    assertEquals(Style.HEIGHT, observer.attributeChanges.get(3));
     assertEquals("auto", observer.valueChanges.get(2).toString());
     assertEquals("auto", observer.valueChanges.get(3).toString());
   }

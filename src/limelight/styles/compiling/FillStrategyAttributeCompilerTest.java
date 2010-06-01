@@ -5,7 +5,7 @@ package limelight.styles.compiling;
 
 import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-import limelight.styles.styling.*;
+import limelight.styles.values.*;
 
 public class FillStrategyAttributeCompilerTest extends TestCase
 {
@@ -19,17 +19,17 @@ public class FillStrategyAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    assertEquals(StaticFillStrategyAttribute.class, compiler.compile("static").getClass());
-    assertEquals(RepeatFillStrategyAttribute.class, compiler.compile("repeat").getClass());
-    assertEquals(RepeatXFillStrategyAttribute.class, compiler.compile("repeat_x").getClass());
-    assertEquals(RepeatYFillStrategyAttribute.class, compiler.compile("repeat_y").getClass());
-    assertEquals(RepeatXFillStrategyAttribute.class, compiler.compile("repeat-x").getClass());
-    assertEquals(RepeatYFillStrategyAttribute.class, compiler.compile("repeat-y").getClass());
-    assertEquals(ScaleFillStrategyAttribute.class, compiler.compile("scale").getClass());
-    assertEquals(ScaleXFillStrategyAttribute.class, compiler.compile("scale_x").getClass());
-    assertEquals(ScaleXFillStrategyAttribute.class, compiler.compile("scale-x").getClass());
-    assertEquals(ScaleYFillStrategyAttribute.class, compiler.compile("scale_y").getClass());
-    assertEquals(ScaleYFillStrategyAttribute.class, compiler.compile("scale-y").getClass());
+    assertEquals(StaticFillStrategyValue.class, compiler.compile("static").getClass());
+    assertEquals(RepeatFillStrategyValue.class, compiler.compile("repeat").getClass());
+    assertEquals(RepeatXFillStrategyValue.class, compiler.compile("repeat_x").getClass());
+    assertEquals(RepeatYFillStrategyValue.class, compiler.compile("repeat_y").getClass());
+    assertEquals(RepeatXFillStrategyValue.class, compiler.compile("repeat-x").getClass());
+    assertEquals(RepeatYFillStrategyValue.class, compiler.compile("repeat-y").getClass());
+    assertEquals(ScaleFillStrategyValue.class, compiler.compile("scale").getClass());
+    assertEquals(ScaleXFillStrategyValue.class, compiler.compile("scale_x").getClass());
+    assertEquals(ScaleXFillStrategyValue.class, compiler.compile("scale-x").getClass());
+    assertEquals(ScaleYFillStrategyValue.class, compiler.compile("scale_y").getClass());
+    assertEquals(ScaleYFillStrategyValue.class, compiler.compile("scale-y").getClass());
   }
 
   public void testInvalidValue() throws Exception

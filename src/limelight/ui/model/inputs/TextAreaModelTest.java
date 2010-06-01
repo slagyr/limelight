@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.MockPanel;
 import limelight.ui.TextLayoutImpl;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
@@ -25,6 +26,10 @@ public class TextAreaModelTest
   public void setUp()
   {
     panel = new TextArea2Panel();
+    MockPanel parent = new MockPanel();
+    parent.add(panel);
+    parent.setSize(150, 75);
+    panel.doLayout();
     modelInfo = panel.getModelInfo();
     areaInfo = new TextAreaModel(panel);
     modelInfo.setText("I took the one less traveled by. And that has made all the difference");
@@ -33,7 +38,7 @@ public class TextAreaModelTest
   @Test
   public void canCalculateTheXPositionForTheCursorFromAString()
   {
-    int width = modelInfo.getWidthDimension(new TextLayoutImpl("ABC", modelInfo.font, TextPanel.getRenderContext()));
+    int width = modelInfo.getWidthDimension(new TextLayoutImpl("ABC", modelInfo.getFont(), TextPanel.getRenderContext()));
     int expectedX = width + modelInfo.SIDE_TEXT_MARGIN;
 
     int x = modelInfo.getXPosFromText("ABC");
@@ -44,7 +49,7 @@ public class TextAreaModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    TextLayoutImpl line = new TextLayoutImpl(modelInfo.getText().substring(0, 5), modelInfo.font, TextPanel.getRenderContext());
+    TextLayoutImpl line = new TextLayoutImpl(modelInfo.getText().substring(0, 5), modelInfo.getFont(), TextPanel.getRenderContext());
     int width1 = TextModel.SIDE_TEXT_MARGIN + modelInfo.getWidthDimension(line);
     int firstIndex = modelInfo.getXPosFromIndex(0);
     int secondIndex = modelInfo.getXPosFromIndex(5);
@@ -56,17 +61,9 @@ public class TextAreaModelTest
   @Test
   public void canCalculateTheYPositionForTheCursorViaAnIndex()
   {
-    int expectedYForOneLine = TextModel.TOP_MARGIN;
-    int expectedYForTwoLines = 21;
-    int expectedYForThreeLines = expectedYForTwoLines * 2 - TextModel.TOP_MARGIN;
-
-    int y1 = modelInfo.getYPosFromIndex(0);
-    int y2 = modelInfo.getYPosFromIndex(45);
-    int y3 = modelInfo.getYPosFromIndex(65);
-
-    assertEquals(expectedYForOneLine, y1);
-    assertEquals(expectedYForTwoLines, y2);
-    assertEquals(expectedYForThreeLines, y3);
+    assertEquals(TextModel.TOP_MARGIN, modelInfo.getYPosFromIndex(0));
+    assertEquals(21, modelInfo.getYPosFromIndex(45));
+    assertEquals(21 * 2 - TextModel.TOP_MARGIN, modelInfo.getYPosFromIndex(65));
   }
 
   @Test
@@ -136,7 +133,7 @@ public class TextAreaModelTest
   @Test
   public void canGetTheHeightOfTheCurrentLine()
   {
-    int expectedHeight = (int) (modelInfo.getHeightDimension(new TextLayoutImpl("A", modelInfo.font, TextPanel.getRenderContext())) + .5);
+    int expectedHeight = (int) (modelInfo.getHeightDimension(new TextLayoutImpl("A", modelInfo.getFont(), TextPanel.getRenderContext())) + .5);
     modelInfo.setCursorIndex(50);
 
     int height = modelInfo.getHeightOfCurrentLine();

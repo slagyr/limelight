@@ -4,7 +4,7 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-import limelight.styles.styling.SimpleOnOffAttribute;
+import limelight.styles.values.SimpleOnOffValue;
 import junit.framework.TestCase;
 import junit.framework.Assert;
 
@@ -20,23 +20,23 @@ public class OnOffAttributeCompilerTest extends TestCase
 
   public void testValidValue() throws Exception
   {
-    Assert.assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("on")).isOn());
-    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("ON")).isOn());
-    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("oN")).isOn());
-    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("On")).isOn());
-    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("off")).isOn());
-    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("OFF")).isOn());
-    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("Off")).isOn());
+    Assert.assertEquals(true, ((SimpleOnOffValue) compiler.compile("on")).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile("ON")).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile("oN")).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile("On")).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile("off")).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile("OFF")).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile("Off")).isOn());
   }
 
   public void testBooleanValue() throws Exception
   {
-    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile(true)).isOn());
-    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("true")).isOn());
-    assertEquals(true, ((SimpleOnOffAttribute) compiler.compile("TRUE")).isOn());
-    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile(false)).isOn());
-    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("false")).isOn());
-    assertEquals(false, ((SimpleOnOffAttribute) compiler.compile("FALSE")).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile(true)).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile("true")).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile("TRUE")).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile(false)).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile("false")).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile("FALSE")).isOn());
   }
 
   public void testInvalidValue() throws Exception

@@ -4,15 +4,14 @@
 package limelight.ui.model;
 
 import limelight.styles.*;
+import limelight.styles.values.*;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
-import limelight.styles.styling.StaticDimensionAttribute;
-import limelight.styles.styling.SimpleIntegerAttribute;
-import limelight.styles.styling.SimplePercentageAttribute;
-import limelight.styles.styling.StaticPixelsAttribute;
+import limelight.styles.values.StaticDimensionValue;
+import limelight.styles.values.StaticPixelsValue;
 import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
@@ -412,12 +411,12 @@ public class PropPanelTest extends Assert
   @Test
   public void shouldWidthOrHeightChanges() throws Exception
   {
-    panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
+    panel.styleChanged(Style.WIDTH, new StaticDimensionValue(20));
     assertEquals(true, panel.sizeChangePending());
     panel.resetPendingSizeChange();
     assertEquals(false, panel.sizeChangePending());
 
-    panel.styleChanged(Style.HEIGHT, new StaticDimensionAttribute(20));
+    panel.styleChanged(Style.HEIGHT, new StaticDimensionValue(20));
     assertEquals(true, panel.sizeChangePending());
     panel.resetPendingSizeChange();
     assertEquals(false, panel.sizeChangePending());
@@ -429,7 +428,7 @@ public class PropPanelTest extends Assert
     MockPanel child = new MockPanel();
     panel.add(child);
 
-    panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
+    panel.styleChanged(Style.WIDTH, new StaticDimensionValue(20));
 
     assertEquals(true, child.consumableAreaChangedCalled);
   }
@@ -440,7 +439,7 @@ public class PropPanelTest extends Assert
     MockPanel child = new MockPanel();
     panel.add(child);
 
-    panel.styleChanged(Style.TOP_BORDER_WIDTH, new SimpleIntegerAttribute(5));
+    panel.styleChanged(Style.TOP_BORDER_WIDTH, new SimpleIntegerValue(5));
 
     assertEquals(true, child.consumableAreaChangedCalled);
   }
@@ -463,9 +462,9 @@ public class PropPanelTest extends Assert
     checkBorderChanged(Style.TOP_LEFT_ROUNDED_CORNER_RADIUS);
   }
 
-  private void checkBorderChanged(StyleDescriptor styleDescriptor)
+  private void checkBorderChanged(StyleAttribute styleAttribute)
   {
-    panel.styleChanged(styleDescriptor, new SimpleIntegerAttribute(5));
+    panel.styleChanged(styleAttribute, new SimpleIntegerValue(5));
     assertEquals(true, panel.borderChanged());
     panel.doLayout();
     assertEquals(false, panel.borderChanged());
@@ -502,10 +501,10 @@ public class PropPanelTest extends Assert
     checkLayoutOnStyle(Style.TOP_LEFT_BORDER_WIDTH);
   }
 
-  private void checkLayoutOnStyle(StyleDescriptor styleDescriptor)
+  private void checkLayoutOnStyle(StyleAttribute styleAttribute)
   {
     Box box = panel.getBoxInsidePadding();
-    panel.styleChanged(styleDescriptor, new StaticPixelsAttribute(20));
+    panel.styleChanged(styleAttribute, new StaticPixelsValue(20));
     assertEquals(true, panel.needsLayout());
     panel.doLayout();
     assertNotSame(box, panel.getBoxInsidePadding());
@@ -520,7 +519,7 @@ public class PropPanelTest extends Assert
     Context.instance().bufferedImageCache = cache;
     cache.cache(panel, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
 
-    panel.styleChanged(Style.WIDTH, new StaticDimensionAttribute(20));
+    panel.styleChanged(Style.WIDTH, new StaticDimensionValue(20));
     assertEquals(null, cache.retrieve(panel));
   }
 
@@ -531,7 +530,7 @@ public class PropPanelTest extends Assert
     Context.instance().bufferedImageCache = cache;
     cache.cache(panel, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
 
-    panel.styleChanged(Style.TRANSPARENCY, new SimplePercentageAttribute(20));
+    panel.styleChanged(Style.TRANSPARENCY, new SimplePercentageValue(20));
     assertNotNull(cache.retrieve(panel));
   }
 
@@ -582,7 +581,7 @@ public class PropPanelTest extends Assert
     child.resetLayout();
     panel.resetLayout();
 
-    grandChild.styleChanged(Style.HEIGHT, new StaticDimensionAttribute(0));
+    grandChild.styleChanged(Style.HEIGHT, new StaticDimensionValue(0));
 
     assertEquals(true, panel.needsLayout());
   }

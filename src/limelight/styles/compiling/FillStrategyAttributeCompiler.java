@@ -4,28 +4,28 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.styling.*;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.values.*;
 
 public class FillStrategyAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object value)
+  public StyleValue compile(Object value)
   {
     String name = value.toString().toLowerCase();
     if("static".equals(name))
-      return new StaticFillStrategyAttribute();
+      return new StaticFillStrategyValue();
     else if("repeat".equals(name))
-      return new RepeatFillStrategyAttribute();
+      return new RepeatFillStrategyValue();
     else if("repeat_x".equals(name) || "repeat-x".equals(name))
-      return new RepeatXFillStrategyAttribute();
+      return new RepeatXFillStrategyValue();
     else if("repeat_y".equals(name) || "repeat-y".equals(name))
-      return new RepeatYFillStrategyAttribute();
+      return new RepeatYFillStrategyValue();
     else if("scale".equals(name))
-      return new ScaleFillStrategyAttribute();
+      return new ScaleFillStrategyValue();
     else if("scale_x".equals(name) || "scale-x".equals(name))
-      return new ScaleXFillStrategyAttribute();      
+      return new ScaleXFillStrategyValue();
     else if("scale_y".equals(name) || "scale-y".equals(name))
-      return new ScaleYFillStrategyAttribute();
+      return new ScaleYFillStrategyValue();
     else
       throw makeError(value);
   }

@@ -4,13 +4,13 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleAttributeCompiler;
-import limelight.styles.abstrstyling.StyleAttribute;
-import limelight.styles.abstrstyling.StringAttribute;
+import limelight.styles.abstrstyling.StyleValue;
+import limelight.styles.abstrstyling.StringValue;
 
 public class StringAttributeCompiler extends StyleAttributeCompiler
 {
-  public StyleAttribute compile(Object value)
+  public StyleValue compile(Object value)
   {
-     return new StringAttribute(value);
+     return new StringValue(value);
   }
 }

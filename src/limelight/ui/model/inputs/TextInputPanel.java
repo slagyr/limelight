@@ -5,8 +5,9 @@ package limelight.ui.model.inputs;
 
 import limelight.Context;
 import limelight.styles.ScreenableStyle;
-import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
+import limelight.styles.Style;
+import limelight.styles.values.SimpleHorizontalAlignmentValue;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.*;
 import limelight.util.Box;
 
@@ -19,7 +20,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
-
 {
   protected TextModel boxInfo;
   protected boolean focused;
@@ -29,22 +29,34 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected ArrayList<KeyProcessor> keyProcessors;
   protected MouseProcessor mouseProcessor;
   protected TextPanelPainterComposite painterComposite;
-  protected Box paintableRegion;
-  protected SimpleHorizontalAlignmentAttribute horizontalTextAlignment;
-  protected SimpleVerticalAlignmentAttribute verticalTextAlignment;
+  protected SimpleHorizontalAlignmentValue horizontalTextAlignment;
+  protected SimpleVerticalAlignmentValue verticalTextAlignment;
   private int lastKeyPressed;
 
   public void setParent(limelight.ui.Panel panel)
   {
-    if (panel == null)
+    if(panel == null)
       Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
-    if (panel instanceof PropPanel)
+    if(panel instanceof PropPanel)
     {
       PropPanel propPanel = (PropPanel) panel;
       propPanel.sterilize();
       propPanel.setTextAccessor(this);
+      setDefaultStyles(propPanel.getStyle());
     }
+  }
+
+  @Override
+  public Layout getDefaultLayout()
+  {
+    return InputPanelLayout.instance;
+  }
+
+  @Override
+  public void consumableAreaChanged()
+  {
+    markAsNeedingLayout();
   }
 
   public TextModel getModelInfo()
@@ -75,7 +87,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public String getText()
   {
-    if (boxInfo.getText() == null)
+    if(boxInfo.getText() == null)
       return null;
     return boxInfo.getText();
   }
@@ -104,13 +116,13 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   private void startCursor()
   {
-    if (cursorThread == null || !cursorThread.isAlive())
+    if(cursorThread == null || !cursorThread.isAlive())
     {
       cursorThread = new Thread(new Runnable()
       {
         public void run()
         {
-          while (focused)
+          while(focused)
           {
             cursorOn = !cursorOn;
             markCursorRegionAsDirty();
@@ -118,7 +130,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
             {
               Thread.sleep(cursorCycleTime);
             }
-            catch (InterruptedException e)
+            catch(InterruptedException e)
             {
               e.printStackTrace();
             }
@@ -142,20 +154,20 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     keyProcessors.get(processorIndex).processKey(e);
     lastKeyPressed = e.getKeyCode();
     cursorOn = true;
-    markPaintableRegionAsDirty();
+    markAsDirty(); //TODO shouldRelyOn keyProcessor to markAsDirty
   }
 
   private int calculateKeyProcessorIndex(KeyEvent e)
   {
     int index = 0;
     int modifiers = e.getModifiers();
-    if (boxInfo.selectionOn)
+    if(boxInfo.selectionOn)
       index += 8;
-    if (isAltPressed(modifiers))
+    if(isAltPressed(modifiers))
       index += 4;
-    if (isShiftPressed(modifiers))
+    if(isShiftPressed(modifiers))
       index += 2;
-    if (isCmdOrCtrlPressed(modifiers))
+    if(isCmdOrCtrlPressed(modifiers))
       index += 1;
     return index;
   }
@@ -189,7 +201,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     mouseProcessor.processMouseDragged(e);
     cursorOn = true;
-    markPaintableRegionAsDirty();    
+    markAsDirty(); //TODO should rely in processor to markAsDirty
   }
 
   public void mousePressed(MouseEvent e)
@@ -197,25 +209,8 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     super.mousePressed(e);
     mouseProcessor.processMousePressed(e);
     cursorOn = true;
-    markPaintableRegionAsDirty();
-    resetPaintableRegion();
+    markAsDirty(); //TODO should rely in processor to markAsDirty
   }
-
-  private void markPaintableRegionAsDirty()
-  {
-    if(boxInfo.getCursorIndex() < boxInfo.getText().length())
-      expandPaintableRegionToRightBound();
-    if(isTextMaxed())
-      maxOutPaintableRegion();
-    ScenePanel rootPanel = getRoot();
-    if (rootPanel != null && paintableRegion != null){
-      rootPanel.addDirtyRegion(new Box(paintableRegion.x + getAbsoluteLocation().x - 3,
-          paintableRegion.y + getAbsoluteLocation().y, paintableRegion.width + 6, paintableRegion.height));
-    }
-  }
-
-  protected abstract void expandPaintableRegionToRightBound();
-
 
   public void mouseReleased(MouseEvent e)
   {
@@ -227,19 +222,11 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     buttonPressed(new ActionEvent(this, 0, "blah"));
   }
 
+  protected abstract void setDefaultStyles(Style style);
+
   public abstract void initKeyProcessors();
 
   public abstract void paintOn(Graphics2D graphics);
-
-  public abstract void setPaintableRegion(int index);
-
-  public Shape getPaintableRegion(){
-    return paintableRegion;
-  }
-
-  public abstract void resetPaintableRegion();
-
-  public abstract void maxOutPaintableRegion();
 
   public abstract boolean isTextMaxed();
 

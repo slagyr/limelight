@@ -3,17 +3,17 @@
 
 package limelight.styles;
 
-import limelight.styles.abstrstyling.StyleAttribute;
+import limelight.styles.abstrstyling.StyleValue;
 
 public class ScreenableStyle extends RichStyle
 {
   private Style screen;
 
-  public StyleAttribute get(int key)
+  public StyleValue get(int key)
   {
     if(screen != null)
     {
-      StyleAttribute value = screen.get(key);
+      StyleValue value = screen.get(key);
       if(value != null)
         return value;
     }
@@ -36,16 +36,16 @@ public class ScreenableStyle extends RichStyle
 
   private void applyChangesFromScreen(Style screen, boolean in)
   {
-    for(StyleDescriptor descriptor : STYLE_LIST)
+    for(StyleAttribute attribute : STYLE_LIST)
     {
-      StyleAttribute value = screen.get(descriptor.index);
-      StyleAttribute originalValue = getCompiled(descriptor);
+      StyleValue value = screen.get(attribute.index);
+      StyleValue originalValue = getCompiled(attribute);
       if(value != null && !value.equals(originalValue))
       {
         if(in)
-          notifyObserversOfChange(descriptor, value);
+          notifyObserversOfChange(attribute, value);
         else
-          notifyObserversOfChange(descriptor, originalValue);
+          notifyObserversOfChange(attribute, originalValue);
       }
     }
   }

@@ -4,13 +4,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
+import limelight.styles.values.SimpleHorizontalAlignmentValue;
+import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.*;
 import limelight.ui.Panel;
 import limelight.util.Box;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
-import limelight.styles.styling.SimpleHorizontalAlignmentAttribute;
-import limelight.styles.styling.SimpleVerticalAlignmentAttribute;
 import limelight.Context;
 
 import javax.imageio.ImageIO;
@@ -28,8 +28,8 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
   private static ComboBoxStyle normal = new ComboBoxStyle("combo_box");
   private static ComboBoxStyle focusedStyle = new ComboBoxStyle("combo_box_focus");
 
-  private static SimpleHorizontalAlignmentAttribute horizontalTextAlignment = new SimpleHorizontalAlignmentAttribute(HorizontalAlignment.LEFT);
-  private static SimpleVerticalAlignmentAttribute verticalTextAlignment = new SimpleVerticalAlignmentAttribute(VerticalAlignment.CENTER);
+  private static SimpleHorizontalAlignmentValue horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
+  private static SimpleVerticalAlignmentValue verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
   private String text;
   private ComboBoxStyle style;
   private Dimension textDimensions;

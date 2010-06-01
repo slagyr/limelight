@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.MockPanel;
 import limelight.ui.TextLayoutImpl;
 import limelight.ui.model.TextPanel;
 import org.junit.Before;
@@ -21,6 +22,10 @@ public class TextModelTest
   public void setUp()
   {
     panel = new TextBox2Panel();
+    MockPanel parent = new MockPanel();
+    parent.setSize(150, 28);
+    parent.add(panel);
+    panel.doLayout();
     model = panel.getModelInfo();
     model.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
   }
@@ -70,16 +75,16 @@ public class TextModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    assertEquals(model.SIDE_TEXT_MARGIN, model.getXPosFromIndex(0));
-    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("B"), model.getXPosFromIndex(1));
-    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("Bo"), model.getXPosFromIndex(2));
-    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("Bob"), model.getXPosFromIndex(3));
-    assertEquals(model.SIDE_TEXT_MARGIN + widthOf("Bob") + model.spaceWidth(), model.getXPosFromIndex(4));
+    assertEquals(TextModel.SIDE_TEXT_MARGIN, model.getXPosFromIndex(0));
+    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("B"), model.getXPosFromIndex(1));
+    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("Bo"), model.getXPosFromIndex(2));
+    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("Bob"), model.getXPosFromIndex(3));
+    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("Bob") + model.spaceWidth(), model.getXPosFromIndex(4));
   }
 
   private int widthOf(String text)
   {
-    return model.getWidthDimension(new TextLayoutImpl(text, model.font, TextPanel.getRenderContext()));
+    return model.getWidthDimension(new TextLayoutImpl(text, model.getFont(), TextPanel.getRenderContext()));
   }
 
   @Test
