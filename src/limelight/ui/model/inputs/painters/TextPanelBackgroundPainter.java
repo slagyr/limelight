@@ -3,29 +3,44 @@
 
 package limelight.ui.model.inputs.painters;
 
+import com.android.ninepatch.NinePatch;
 import limelight.ui.model.Drawable;
 import limelight.ui.model.inputs.TextModel;
 import limelight.ui.model.inputs.TextPanelPainter;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 
 public class TextPanelBackgroundPainter extends TextPanelPainter
 {
-  private Drawable normalDrawable;
-  private Drawable focusDrawable;
+  public static Drawable normalBorder;
+  public static Drawable focusedBorder;
 
-  public TextPanelBackgroundPainter(TextModel boxInfo, Drawable normalDrawable, Drawable focusDrawable)
+  public static TextPanelPainter instance = new TextPanelBackgroundPainter();
+
+  static
   {
-    super(boxInfo);
-    this.normalDrawable = normalDrawable;
-    this.focusDrawable = focusDrawable;
+    try
+    {
+      normalBorder = NinePatch.load(ImageIO.read(ClassLoader.getSystemClassLoader().getResource("limelight/ui/images/text_box.9.png")), true, true);
+      focusedBorder = NinePatch.load(ImageIO.read(ClassLoader.getSystemClassLoader().getResource("limelight/ui/images/text_box_focus.9.png")), true, true);
+    }
+    catch(IOException e)
+    {
+      throw new RuntimeException("Could not load TextPanel border images", e);
+    }
   }
 
-  public void paint(Graphics2D graphics)
+  private TextPanelBackgroundPainter()
+  {
+  }
+
+  public void paint(Graphics2D graphics, TextModel boxInfo)
   {
     Dimension dimension = new Dimension(boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
-    normalDrawable.draw(graphics, 0, 0, dimension.width, dimension.height);
+    normalBorder.draw(graphics, 0, 0, dimension.width, dimension.height);
     if(boxInfo.isFocused())
-      focusDrawable.draw(graphics, 0, 0, dimension.width, dimension.height);
+      focusedBorder.draw(graphics, 0, 0, dimension.width, dimension.height);
   }
 }

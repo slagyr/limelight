@@ -161,7 +161,8 @@ public abstract class TextModel implements ClipboardOwner
   public int getHeightOfCurrentLine()
   {
     int lineNumber = getLineNumberOfIndex(cursorIndex);
-    return (int) getHeightDimension(textLayouts.get(lineNumber));
+    TypedLayout layoutForLine = textLayouts.get(lineNumber);
+    return (int) getHeightDimension(layoutForLine);
   }
 
   public int getWidthDimension(TypedLayout layout)
@@ -556,9 +557,13 @@ public abstract class TextModel implements ClipboardOwner
     return cursorX;
   }
 
-
   public int getSelectionStartX()
   {
     return selectionStartX;
+  }
+
+  public TextInputPanel getPanel()
+  {
+    return myPanel;
   }
 }

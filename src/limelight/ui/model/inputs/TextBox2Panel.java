@@ -14,7 +14,6 @@ import limelight.util.Box;
 
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
-import java.awt.*;
 
 public class TextBox2Panel extends TextInputPanel
 {
@@ -22,7 +21,6 @@ public class TextBox2Panel extends TextInputPanel
   {
     boxInfo = new TextBoxModel(this);
     mouseProcessor = new MouseProcessor(boxInfo);
-    painterComposite = new TextPanelPainterComposite(boxInfo);
     horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
     verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
   }
@@ -34,12 +32,6 @@ public class TextBox2Panel extends TextInputPanel
     style.setDefault(Style.HEIGHT, 28);
   }
 
-  public void paintOn(Graphics2D graphics)
-  {
-    painterComposite.paint(graphics);
-  }
-
-
   public void keyReleased(KeyEvent e)
   {
 
@@ -47,15 +39,15 @@ public class TextBox2Panel extends TextInputPanel
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)
   {
-    //This doesn't have to do anything... how unsettling.
+    //TODO This doesn't have to do anything... how unsettling.
   }
 
   protected void markCursorRegionAsDirty()
   {
     RootPanel rootPanel = getRoot();
-    if (rootPanel != null)
+    if(rootPanel != null)
     {
-      int cursorY =  getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();
+      int cursorY = getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();
       int regionHeight = boxInfo.getBottomPositionForCursor() - boxInfo.getTopOfStartPositionForCursor() + 1;
       int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
       rootPanel.addDirtyRegion(new Box(cursorX, cursorY, 1, regionHeight));
@@ -68,44 +60,60 @@ public class TextBox2Panel extends TextInputPanel
     {
       switch(modifiers)
       {
-        case 0: return SelectionOnKeyProcessor.instance;
-        case 1: return SelectionOnShiftKeyProcessor.instance;
+        case 0:
+          return SelectionOnKeyProcessor.instance;
+        case 1:
+          return SelectionOnShiftKeyProcessor.instance;
         case 3:
         case 5:
-        case 7: return SelectionOnShiftCmdKeyProcessor.instance;
+        case 7:
+          return SelectionOnShiftCmdKeyProcessor.instance;
         case 2:
         case 4:
-        case 6: return SelectionOnCmdKeyProcessor.instance;
-        case 8: return SelectionOnAltKeyProcessor.instance;
-        case 9: return SelectionOnAltShiftKeyProcessor.instance;
+        case 6:
+          return SelectionOnCmdKeyProcessor.instance;
+        case 8:
+          return SelectionOnAltKeyProcessor.instance;
+        case 9:
+          return SelectionOnAltShiftKeyProcessor.instance;
         case 10:
         case 12:
-        case 14: return SelectionOnAltCmdKeyProcessor.instance;
+        case 14:
+          return SelectionOnAltCmdKeyProcessor.instance;
         case 11:
         case 13:
-        case 15: return SelectionOnAltShiftCmdKeyProcessor.instance;
+        case 15:
+          return SelectionOnAltShiftCmdKeyProcessor.instance;
       }
     }
     else
     {
       switch(modifiers)
       {
-        case 0: return NormalKeyProcessor.instance;
-        case 1: return ShiftKeyProcessor.instance;
+        case 0:
+          return NormalKeyProcessor.instance;
+        case 1:
+          return ShiftKeyProcessor.instance;
         case 3:
         case 5:
-        case 7: return ShiftCmdKeyProcessor.instance;
+        case 7:
+          return ShiftCmdKeyProcessor.instance;
         case 2:
         case 4:
-        case 6: return CmdKeyProcessor.instance;
-        case 8: return AltKeyProcessor.instance;
-        case 9: return AltShiftKeyProcessor.instance;
+        case 6:
+          return CmdKeyProcessor.instance;
+        case 8:
+          return AltKeyProcessor.instance;
+        case 9:
+          return AltShiftKeyProcessor.instance;
         case 10:
         case 12:
-        case 14: return AltCmdKeyProcessor.instance;
+        case 14:
+          return AltCmdKeyProcessor.instance;
         case 11:
         case 13:
-        case 15: return AltShiftCmdKeyProcessor.instance;
+        case 15:
+          return AltShiftCmdKeyProcessor.instance;
 
       }
     }

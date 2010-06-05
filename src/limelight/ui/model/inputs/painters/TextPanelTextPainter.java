@@ -12,13 +12,14 @@ import java.awt.*;
 
 public class TextPanelTextPainter extends TextPanelPainter
 {
-  public TextPanelTextPainter(TextModel boxInfo)
+  public static TextPanelPainter instance = new TextPanelTextPainter();
+
+  private TextPanelTextPainter()
   {
-    super(boxInfo);
   }
 
   @Override
-  public void paint(Graphics2D graphics)
+  public void paint(Graphics2D graphics, TextModel boxInfo)
   {
     Dimension textDimensions;
     if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
@@ -34,7 +35,7 @@ public class TextPanelTextPainter extends TextPanelPainter
       float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box) - boxInfo.calculateYOffset();
 
 
-      graphics.setColor(Color.black);
+      graphics.setColor(boxInfo.getPanel().getStyle().getCompiledTextColor().getColor());
       for (TypedLayout layout : boxInfo.getTextLayouts()){
         textY += layout.getAscent();
         layout.draw(graphics, textX, textY + 1);
