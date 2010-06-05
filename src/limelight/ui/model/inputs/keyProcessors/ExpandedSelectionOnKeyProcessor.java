@@ -16,7 +16,7 @@ public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel boxInfo)
   {
     KeyProcessor basicSelectionProcessor = SelectionOnKeyProcessor.instance;
-    boxInfo.selectionOn = false;
+    boxInfo.setSelectionOn(false);
     int keyCode = event.getKeyCode();
     if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB){
       boxInfo.deleteSelection();

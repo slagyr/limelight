@@ -14,7 +14,7 @@ public class SelectionOnKeyProcessor extends KeyProcessor
 
   public void processKey(KeyEvent event, TextModel boxInfo)
   {
-    boxInfo.selectionOn = false;
+    boxInfo.setSelectionOn(false);
     int keyCode = event.getKeyCode();
     if (boxInfo.isMoveRightEvent(keyCode))
       boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);

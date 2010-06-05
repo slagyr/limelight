@@ -22,7 +22,7 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
       case KeyEvent.VK_V:
         boxInfo.deleteSelection();
         boxInfo.pasteClipboard();
-        boxInfo.selectionOn = false;
+        boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_C:
         boxInfo.copySelection();
@@ -30,23 +30,23 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
       case KeyEvent.VK_X:
         boxInfo.copySelection();
         boxInfo.deleteSelection();
-        boxInfo.selectionOn = false;
+        boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_RIGHT:
         boxInfo.sendCursorToEndOfLine();
-        boxInfo.selectionOn = false;
+        boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_LEFT:
         boxInfo.sendCursorToStartOfLine();
-        boxInfo.selectionOn = false;
+        boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_UP:
         boxInfo.setCursorIndex(0);
-        boxInfo.selectionOn = false;
+        boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_DOWN:
         boxInfo.setCursorIndex(boxInfo.getText().length());
-        boxInfo.selectionOn = false;
+        boxInfo.setSelectionOn(false);
         break;
     }
   }

@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 
 import static org.junit.Assert.assertEquals;
 
-public class SelectionCmdKeyProcessorTest extends AbstractKeyProcessorTest
+public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()

@@ -25,14 +25,8 @@ public class TextAreaModel extends TextModel
 
   public TextAreaModel(TextInputPanel myAreaPanel)
   {
-    this.myPanel = myAreaPanel;
-    cursorX = SIDE_TEXT_MARGIN;
-    selectionOn = false;
-    selectionStartX = 0;
-    cursorIndex = 0;
-    selectionIndex = 0;
-    xOffset = 0;
-    yOffset = -TOP_MARGIN;
+    super(myAreaPanel);
+    setYOffset(-TOP_MARGIN);
   }
 
   @Override
@@ -89,24 +83,24 @@ public class TextAreaModel extends TextModel
   @Override
   public ArrayList<Rectangle> getSelectionRegions()
   {
-    int cursorLine = getLineNumberOfIndex(cursorIndex);
-    int selectionLine = getLineNumberOfIndex(selectionIndex);
+    int cursorLine = getLineNumberOfIndex(getCursorIndex());
+    int selectionLine = getLineNumberOfIndex(getSelectionIndex());
     if (cursorLine == selectionLine)
       return selectionRegionsForSingleLine();
     else if (selectionLine > cursorLine)
-      return selectionRegionsForMultipleLines(cursorLine, getXPosFromIndex(cursorIndex), selectionLine, getXPosFromIndex(selectionIndex));
+      return selectionRegionsForMultipleLines(cursorLine, getXPosFromIndex(getCursorIndex()), selectionLine, getXPosFromIndex(getSelectionIndex()));
     else
-      return selectionRegionsForMultipleLines(selectionLine, getXPosFromIndex(selectionIndex), cursorLine, getXPosFromIndex(cursorIndex));
+      return selectionRegionsForMultipleLines(selectionLine, getXPosFromIndex(getSelectionIndex()), cursorLine, getXPosFromIndex(getCursorIndex()));
   }
 
   private ArrayList<Rectangle> selectionRegionsForSingleLine()
   {
-    int cursorX = getXPosFromIndex(cursorIndex);
-    int selectionX = getXPosFromIndex(selectionIndex);
+    int cursorX = getXPosFromIndex(getCursorIndex());
+    int selectionX = getXPosFromIndex(getSelectionIndex());
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);    
-    int yPos = getYPosFromIndex(cursorIndex) - TOP_MARGIN - calculateYOffset();
+    int yPos = getYPosFromIndex(getCursorIndex()) - TOP_MARGIN - calculateYOffset();
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>() ;
-    if (cursorIndex > selectionIndex)
+    if (getCursorIndex() > getSelectionIndex())
       regions.add(new Box(selectionX , yPos, cursorX - selectionX, lineHeight));
     else
       regions.add(new Box(cursorX , yPos, selectionX - cursorX, lineHeight));
@@ -140,19 +134,19 @@ public class TextAreaModel extends TextModel
   @Override
   public boolean isMoveUpEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_UP && getLineNumberOfIndex(cursorIndex) > 0;
+    return keyCode == KeyEvent.VK_UP && getLineNumberOfIndex(getCursorIndex()) > 0;
   }
 
   @Override
   public boolean isMoveDownEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_DOWN && getLineNumberOfIndex(cursorIndex) < textLayouts.size() - 1;
+    return keyCode == KeyEvent.VK_DOWN && getLineNumberOfIndex(getCursorIndex()) < textLayouts.size() - 1;
   }
 
   @Override
   public int getTopOfStartPositionForCursor()
   {
-    return getYPosFromIndex(cursorIndex) - calculateYOffset() - TOP_MARGIN;
+    return getYPosFromIndex(getCursorIndex()) - calculateYOffset() - TOP_MARGIN;
   }
 
   @Override
@@ -181,7 +175,7 @@ public class TextAreaModel extends TextModel
   @Override
   public int calculateYOffset()
   {
-    int yPos = getYPosFromIndex(cursorIndex);
+    int yPos = getYPosFromIndex(getCursorIndex());
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     int panelHeight = myPanel.getHeight();
     while(yPos <= yOffset)

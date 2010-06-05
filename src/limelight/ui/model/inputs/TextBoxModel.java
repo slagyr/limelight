@@ -19,13 +19,7 @@ public class TextBoxModel extends TextModel
 
   public TextBoxModel(TextInputPanel myBox)
   {
-    this.myPanel = myBox;
-    cursorX = SIDE_TEXT_MARGIN;
-    selectionOn = false;
-    selectionStartX = 0;
-    cursorIndex = 0;
-    selectionIndex = 0;
-    xOffset = 0;
+    super(myBox);
   }
 
   protected int getXPosFromText(String toIndexString)
@@ -39,7 +33,7 @@ public class TextBoxModel extends TextModel
     int xPos = getXPosFromIndex(index);
     if (index == 0)
     {
-      this.cursorX = SIDE_DETECTION_MARGIN;
+      setCursorX(SIDE_DETECTION_MARGIN);
       xOffset = 0;
     }
     else if (isCriticallyLeft(xPos))
@@ -50,7 +44,7 @@ public class TextBoxModel extends TextModel
     {
       calculateLeftShiftingOffset();
     }
-    this.cursorX = getXPosFromIndex(index);
+    setCursorX(getXPosFromIndex(index));
   }
 
   public boolean isCursorAtCriticalEdge(int xPos)
@@ -74,7 +68,7 @@ public class TextBoxModel extends TextModel
 
   private void calculateRightShiftingOffset()
   {
-    String rightShiftingText = getText().substring(0, cursorIndex);
+    String rightShiftingText = getText().substring(0, getCursorIndex());
     TypedLayout layout = new TextLayoutImpl(rightShiftingText, getFont(), TextPanel.getRenderContext());
     int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(rightShiftingText);
     if (textWidth > getPanelWidth() / 2)
@@ -88,7 +82,7 @@ public class TextBoxModel extends TextModel
   public void calculateLeftShiftingOffset()
   {
     int defaultOffset = SIDE_TEXT_MARGIN + SIDE_DETECTION_MARGIN;
-    if (cursorIndex == text.length())
+    if (getCursorIndex() == getText().length())
     {
       int textWidth = calculateTextDimensions().width;
       if (textWidth > getPanelWidth())
@@ -99,10 +93,10 @@ public class TextBoxModel extends TextModel
     else
     {
       String leftShiftingText;
-      if (cursorIndex == text.length() - 1)
-        leftShiftingText = Character.toString(text.charAt(cursorIndex));
+      if (getCursorIndex() == getText().length() - 1)
+        leftShiftingText = Character.toString(getText().charAt(getCursorIndex()));
       else
-        leftShiftingText = getText().substring(cursorIndex, text.length() - 1);
+        leftShiftingText = getText().substring(getCursorIndex(), getText().length() - 1);
       TypedLayout layout = new TextLayoutImpl(leftShiftingText, getFont(), TextPanel.getRenderContext());
       int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(leftShiftingText);
       if (textWidth > getPanelWidth() / 2)
@@ -154,9 +148,9 @@ public class TextBoxModel extends TextModel
   public ArrayList<Rectangle> getSelectionRegions()
   {
     if (getText().length() > 0)
-      shiftOffset(cursorIndex);
-    int x1 = getXPosFromIndex(cursorIndex);
-    int x2 = getXPosFromIndex(selectionIndex);
+      shiftOffset(getCursorIndex());
+    int x1 = getXPosFromIndex(getCursorIndex());
+    int x2 = getXPosFromIndex(getSelectionIndex());
     int edgeSelectionExtension = 0;
 
     if (x1 <= SIDE_TEXT_MARGIN || x2 <= SIDE_TEXT_MARGIN)
@@ -204,7 +198,7 @@ public class TextBoxModel extends TextModel
 
   public int getIndexOfLastCharInLine(int line)
   {
-    return text.length();
+    return getText().length();
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)

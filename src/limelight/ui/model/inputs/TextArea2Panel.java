@@ -14,7 +14,6 @@ import limelight.util.Box;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
-import java.util.ArrayList;
 
 public class TextArea2Panel extends TextInputPanel
 {
@@ -22,8 +21,6 @@ public class TextArea2Panel extends TextInputPanel
   public TextArea2Panel()
   {
     boxInfo = new TextAreaModel(this);
-    keyProcessors = new ArrayList<KeyProcessor>(16);
-    initKeyProcessors();
     mouseProcessor = new MouseProcessor(boxInfo);
     painterComposite = new TextPanelPainterComposite(boxInfo);
     horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
@@ -36,27 +33,6 @@ public class TextArea2Panel extends TextInputPanel
   {
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 75);
-  }
-
-  @Override
-  public void initKeyProcessors()
-  {
-    keyProcessors.add(0, ExpandedNormalKeyProcessor.instance);
-    keyProcessors.add(1, CmdKeyProcessor.instance);
-    keyProcessors.add(2, ExpandedShiftKeyProcessor.instance);
-    keyProcessors.add(3, ShiftCmdKeyProcessor.instance);
-    keyProcessors.add(4, AltKeyProcessor.instance);
-    keyProcessors.add(5, AltCmdKeyProcessor.instance);
-    keyProcessors.add(6, AltShiftKeyProcessor.instance);
-    keyProcessors.add(7, AltShiftCmdKeyProcessor.instance);
-    keyProcessors.add(8, ExpandedSelectionOnKeyProcessor.instance);
-    keyProcessors.add(9, SelectionOnCmdKeyProcessor.instance);
-    keyProcessors.add(10, ExpandedSelectionOnShiftKeyProcessor.instance);
-    keyProcessors.add(11, SelectionOnShiftCmdKeyProcessor.instance);
-    keyProcessors.add(12, SelectionOnAltKeyProcessor.instance);
-    keyProcessors.add(13, SelectionOnAltCmdKeyProcessor.instance);
-    keyProcessors.add(14, SelectionOnAltShiftKeyProcessor.instance);
-    keyProcessors.add(15, SelectionOnAltShiftCmdKeyProcessor.instance);
   }
 
   @Override
@@ -77,7 +53,57 @@ public class TextArea2Panel extends TextInputPanel
       int regionHeight = boxInfo.getHeightOfCurrentLine();
       int cursorY = boxInfo.getYPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().y;
       int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
-      rootPanel.addDirtyRegion(new Box(cursorX, cursorY - boxInfo.yOffset, 1, regionHeight));
+      rootPanel.addDirtyRegion(new Box(cursorX, cursorY - boxInfo.getYOffset(), 1, regionHeight));
     }
+  }
+
+  public KeyProcessor getKeyProcessorFor(int modifiers)
+  {
+    if(getModelInfo().isSelectionOn())
+    {
+      switch(modifiers)
+      {
+        case 0: return ExpandedSelectionOnKeyProcessor.instance;
+        case 1: return ExpandedSelectionOnShiftKeyProcessor.instance;
+        case 3:
+        case 5:
+        case 7: return SelectionOnShiftCmdKeyProcessor.instance;
+        case 2:
+        case 4:
+        case 6: return SelectionOnCmdKeyProcessor.instance;
+        case 8: return SelectionOnAltKeyProcessor.instance;
+        case 9: return SelectionOnAltShiftKeyProcessor.instance;
+        case 10:
+        case 12:
+        case 14: return SelectionOnAltCmdKeyProcessor.instance;
+        case 11:
+        case 13:
+        case 15: return SelectionOnAltShiftCmdKeyProcessor.instance;
+      }
+    }
+    else
+    {
+      switch(modifiers)
+      {
+        case 0: return ExpandedNormalKeyProcessor.instance;
+        case 1: return ExpandedShiftKeyProcessor.instance;
+        case 3:
+        case 5:
+        case 7: return ShiftCmdKeyProcessor.instance;
+        case 2:
+        case 4:
+        case 6: return CmdKeyProcessor.instance;
+        case 8: return AltKeyProcessor.instance;
+        case 9: return AltShiftKeyProcessor.instance;
+        case 10:
+        case 12:
+        case 14: return AltCmdKeyProcessor.instance;
+        case 11:
+        case 13:
+        case 15: return AltShiftCmdKeyProcessor.instance;
+
+      }
+    }
+    throw new RuntimeException("Unexpected key modifiers: " + modifiers);
   }
 }

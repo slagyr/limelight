@@ -171,14 +171,14 @@ public class TextPanelPainterSuite
     {
       testClassInit();
       painter = new TextPanelSelectionPainter(boxInfo);
-      boxInfo.selectionOn = true;
+      boxInfo.setSelectionOn(true);
       boxInfo.setSelectionIndex(6);
     }
 
     @Test
     public void willNotPaintIfSelectionIsOff()
     {
-      boxInfo.selectionOn = false;
+      boxInfo.setSelectionOn(false);
 
       painter.paint(graphics);
 
@@ -199,8 +199,8 @@ public class TextPanelPainterSuite
     public void willFillABoxAroundSelectedText()
     {
       boxInfo.setCursorAndSelectionStartX();
-      int start = boxInfo.cursorX;
-      int width = boxInfo.selectionStartX - start;
+      int start = boxInfo.getCursorX();
+      int width = boxInfo.getSelectionStartX() - start;
 
       painter.paint(graphics);
 
@@ -226,7 +226,7 @@ public class TextPanelPainterSuite
 //      panel.doLayout();
 //      boxInfo = panel.getModelInfo();
 //      boxInfo.setText("This is some\nMulti lined text");
-//      boxInfo.selectionOn = true;
+//      boxInfo.setSelectionOn(true);
 //      boxInfo.setSelectionIndex(2);
 //      boxInfo.setCursorIndex(18);
 //      boxInfo.getTextLayouts();

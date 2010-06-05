@@ -6,7 +6,6 @@ import limelight.ui.model.inputs.keyProcessors.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
-import java.util.ArrayList;
 
 public class MockTextInputPanel extends TextInputPanel
 {
@@ -15,14 +14,10 @@ public class MockTextInputPanel extends TextInputPanel
   public MockTextInputPanel()
   {
     boxInfo = mockModel = new MockTextModel(this);
-    keyProcessors = new ArrayList<KeyProcessor>(16);
 //    mouseProcessor = new MouseProcessor(boxInfo);
 //    painterComposite = new TextPanelPainterComposite(boxInfo);
 //    horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
 //    verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
-
-    for(int i = 0; i < 16; i++)
-      keyProcessors.add(i, new MockKeyProcessor());
   }
 
   @Override
@@ -36,13 +31,14 @@ public class MockTextInputPanel extends TextInputPanel
   }
 
   @Override
-  public void initKeyProcessors()
+  public void paintOn(Graphics2D graphics)
   {
   }
 
   @Override
-  public void paintOn(Graphics2D graphics)
+  public KeyProcessor getKeyProcessorFor(int modifiers)
   {
+    return new MockKeyProcessor();
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)

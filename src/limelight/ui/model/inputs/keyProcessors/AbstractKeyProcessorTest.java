@@ -28,7 +28,7 @@ public class AbstractKeyProcessorTest
     parent.setSize(150, 28);
     setUp();
     modelInfo.setSelectionIndex(0);
-    modelInfo.selectionOn = false;
+    modelInfo.setSelectionOn(false);
   }
 
   public void textAreaSetUp()
@@ -38,7 +38,7 @@ public class AbstractKeyProcessorTest
     parent.setSize(150, 75);
     setUp();
     modelInfo.setSelectionIndex(0);
-    modelInfo.selectionOn = false;
+    modelInfo.setSelectionOn(false);
   }
 
   private void setUp()
@@ -60,7 +60,7 @@ public class AbstractKeyProcessorTest
     parent.setSize(150, 28);
     setUp();
     modelInfo.setSelectionIndex(SELECTION_START_INDEX);
-    modelInfo.selectionOn = true;
+    modelInfo.setSelectionOn(true);
   }
 
    protected void selectionAreaSetUp()
@@ -70,7 +70,7 @@ public class AbstractKeyProcessorTest
     parent.setSize(150, 75);
     setUp();
     modelInfo.setSelectionIndex(SELECTION_START_INDEX);
-    modelInfo.selectionOn = true;
+    modelInfo.setSelectionOn(true);
   }
 
   public class MockKeyEvent extends KeyEvent
@@ -101,14 +101,14 @@ public class AbstractKeyProcessorTest
     {
       assertEquals(cursorIndex, modelInfo.getCursorIndex());
       assertEquals(selectionIndex, modelInfo.getSelectionIndex());
-      assertEquals(selectionOn, modelInfo.selectionOn);
+      assertEquals(selectionOn, modelInfo.isSelectionOn());
     }
 
     public void assertTextState(int cursorIndex, String text)
     {
       assertEquals(cursorIndex, modelInfo.getCursorIndex());
       assertEquals(text, modelInfo.getText().toString());
-      if (!modelInfo.selectionOn)
+      if (!modelInfo.isSelectionOn())
         assertEquals(0, modelInfo.getSelectionIndex());
     }
   }

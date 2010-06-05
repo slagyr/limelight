@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.awt.event.KeyEvent;
 
-public class SelectionKeyProcessorTest extends AbstractKeyProcessorTest
+public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()
