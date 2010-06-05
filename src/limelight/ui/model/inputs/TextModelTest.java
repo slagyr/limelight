@@ -101,7 +101,7 @@ public class TextModelTest
     model.setCursorIndex(0);
     int expectedLine = 0;
 
-    int line = model.getLineNumberOfIndex(model.cursorIndex);
+    int line = model.getLineNumberOfIndex(model.getCursorIndex());
 
     assertEquals(expectedLine, line);
   }
@@ -130,7 +130,7 @@ public class TextModelTest
     model.setText("Some Text");
     model.setCursorIndex(0);
     model.setSelectionIndex(4);
-    model.selectionOn = true;
+    model.setSelectionOn(true);
     model.copySelection();
     String clipboard = model.getClipboardContents();
     assertEquals("Some", clipboard);
@@ -157,7 +157,7 @@ public class TextModelTest
   @Test
   public void canGetTheLastCharacterInALine()
   {
-    assertEquals(model.text.length(), model.getIndexOfLastCharInLine(0));
+    assertEquals(model.getText().length(), model.getIndexOfLastCharInLine(0));
   }
 
 }

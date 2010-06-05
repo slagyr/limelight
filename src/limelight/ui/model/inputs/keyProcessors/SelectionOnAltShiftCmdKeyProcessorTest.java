@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.awt.event.KeyEvent;
 
-public class SelectionAltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
+public class SelectionOnAltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()

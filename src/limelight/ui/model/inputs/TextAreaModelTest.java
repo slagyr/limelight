@@ -125,7 +125,7 @@ public class TextAreaModelTest
     int expectedX = TextModel.SIDE_TEXT_MARGIN;
     modelInfo.setText("some text\n");
 
-    int x = modelInfo.getXPosFromIndex(modelInfo.cursorIndex);
+    int x = modelInfo.getXPosFromIndex(modelInfo.getCursorIndex());
 
     assertEquals(expectedX, x);
   }
@@ -224,7 +224,7 @@ public class TextAreaModelTest
   public void canGetASelectedRegion()
   {
     modelInfo.setSelectionIndex(0);
-    modelInfo.selectionOn = true;
+    modelInfo.setSelectionOn(true);
     modelInfo.setCursorIndex(5);
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
@@ -239,7 +239,7 @@ public class TextAreaModelTest
   public void canGetAMultiLinedSelectedRegion()
   {
     modelInfo.setSelectionIndex(2);
-    modelInfo.selectionOn = true;
+    modelInfo.setSelectionOn(true);
     modelInfo.setText("This is\nMulti Lined.");
     modelInfo.setCursorIndex(10);
 
@@ -261,12 +261,12 @@ public class TextAreaModelTest
   public void canGetAMultiLinedSelectedRegionWithAYOffset()
   {
     modelInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\nline");
-    modelInfo.selectionOn = true;
-    modelInfo.setCursorIndex(modelInfo.text.length() - 3);
-    modelInfo.setSelectionIndex(modelInfo.cursorIndex - 15);
+    modelInfo.setSelectionOn(true);
+    modelInfo.setCursorIndex(modelInfo.getText().length() - 3);
+    modelInfo.setSelectionIndex(modelInfo.getCursorIndex() - 15);
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
-    assertEquals(true, modelInfo.getYPosFromIndex(modelInfo.cursorIndex) > panel.getHeight());
+    assertEquals(true, modelInfo.getYPosFromIndex(modelInfo.getCursorIndex()) > panel.getHeight());
     assertEquals(true, regions.get(regions.size() -1).y < panel.getHeight());
 
   }
@@ -275,14 +275,14 @@ public class TextAreaModelTest
   public void willReturnProperSelectedRegionsWhenThereIAYOffest()
   {
     areaInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\n");
-    areaInfo.cursorIndex --;
-    areaInfo.selectionIndex = areaInfo.cursorIndex -2;
+    areaInfo.setCursorIndex(areaInfo.getCursorIndex() - 1);
+    areaInfo.setSelectionIndex(areaInfo.getCursorIndex() - 2);
 
     ArrayList<Rectangle> regions = areaInfo.getSelectionRegions();
     
-    assertEquals(true, areaInfo.getYPosFromIndex(areaInfo.cursorIndex) > panel.getHeight());
+    assertEquals(true, areaInfo.getYPosFromIndex(areaInfo.getCursorIndex()) > panel.getHeight());
     assertEquals(true, regions.get(regions.size() -1).y < panel.getHeight());
-    assertEquals(areaInfo.getYPosFromIndex(areaInfo.cursorIndex) - areaInfo.calculateYOffset() - TextModel.TOP_MARGIN, regions.get(regions.size() - 1).y);
+    assertEquals(areaInfo.getYPosFromIndex(areaInfo.getCursorIndex()) - areaInfo.calculateYOffset() - TextModel.TOP_MARGIN, regions.get(regions.size() - 1).y);
   }
 
   @Test

@@ -12,8 +12,6 @@ import org.junit.Test;
 import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class TextBoxModelTest
 {
@@ -66,16 +64,16 @@ public class TextBoxModelTest
   {
     boxModel.calculateLeftShiftingOffset();
 
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
 
     boxModel.setCursorIndex(0);
 
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
 
     boxModel.xOffset = 0;
-    boxModel.setCursorIndex(boxModel.text.length() - 5);
+    boxModel.setCursorIndex(boxModel.getText().length() - 5);
 
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
   }
 
   @Test
@@ -85,9 +83,9 @@ public class TextBoxModelTest
     int offset = boxModel.calculateTextDimensions().width - panel.getWidth();
     boxModel.xOffset = offset;
 
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
 
-    boxModel.shiftOffset(boxModel.cursorIndex);
+    boxModel.shiftOffset(boxModel.getCursorIndex());
     assertEquals(true, boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
   }
 
@@ -99,9 +97,9 @@ public class TextBoxModelTest
 
     boxModel.setCursorIndex(30);
 
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.cursorIndex)));
+    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
 
-    boxModel.shiftOffset(boxModel.cursorIndex);
+    boxModel.shiftOffset(boxModel.getCursorIndex());
 
     assertEquals(true, boxModel.xOffset > 0);
 
@@ -110,16 +108,16 @@ public class TextBoxModelTest
   @Test
   public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
   {
-    boxModel.shiftOffset(boxModel.cursorIndex);
+    boxModel.shiftOffset(boxModel.getCursorIndex());
     int offset = boxModel.xOffset;
     boxModel.setCursorIndex(0);
 
-    boxModel.shiftOffset(boxModel.cursorIndex);
+    boxModel.shiftOffset(boxModel.getCursorIndex());
 
     assertEquals(true, boxModel.xOffset <= offset / 2 + 2);
 
     boxModel.setText("hi");
-    boxModel.shiftOffset(boxModel.cursorIndex);
+    boxModel.shiftOffset(boxModel.getCursorIndex());
     assertEquals(true, boxModel.xOffset == 0);
 
   }
@@ -142,7 +140,7 @@ public class TextBoxModelTest
   public void canGetTheSelectedRegion()
   {
     boxModel.setSelectionIndex(0);
-    boxModel.selectionOn = true;
+    boxModel.setSelectionOn(true);
 
     Rectangle region = boxModel.getSelectionRegions().get(0);
 
@@ -158,7 +156,7 @@ public class TextBoxModelTest
   {
     boxModel.setSelectionIndex(boxModel.getText().length());
     boxModel.setCursorIndex(10);
-    boxModel.selectionOn = true;
+    boxModel.setSelectionOn(true);
     boxModel.xOffset = 100;
 
     boxModel.getSelectionRegions();
@@ -169,7 +167,7 @@ public class TextBoxModelTest
   @Test
   public void willAlwaysReturnZeroForTheLineNumber()
   {
-    assertEquals(0, boxModel.getLineNumberOfIndex(boxModel.cursorIndex));
+    assertEquals(0, boxModel.getLineNumberOfIndex(boxModel.getCursorIndex()));
   }
 
 }

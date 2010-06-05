@@ -67,14 +67,14 @@ public class MouseProcessor
 
   private boolean notPastTheLastLayout(int y, int i, int layoutPosition)
   {
-    return i < boxInfo.getTextLayouts().size() - 1 && y + boxInfo.yOffset > layoutPosition;
+    return i < boxInfo.getTextLayouts().size() - 1 && y + boxInfo.getYOffset() > layoutPosition;
   }
 
   private boolean isMouseXPastLastCharacterAndNotOnNewLine(int x, int index)
   {
-    if(boxInfo.text == null || boxInfo.text.length() == 0)
+    if(boxInfo.getText() == null || boxInfo.getText().length() == 0)
       return false;
-    return x > boxInfo.getXPosFromIndex(index) && index == boxInfo.text.length() - 1 && boxInfo.text.charAt(index) != '\n';
+    return x > boxInfo.getXPosFromIndex(index) && index == boxInfo.getText().length() - 1 && boxInfo.getText().charAt(index) != '\n';
   }
 
 
@@ -84,7 +84,7 @@ public class MouseProcessor
     {
       int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
       int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
-      boxInfo.selectionOn = true;
+      boxInfo.setSelectionOn(true);
       boxInfo.setSelectionIndex(calculateMouseClickIndex(myX, myY));
       boxInfo.setCursorIndex(boxInfo.getSelectionIndex());
       makeExtraSelectionOnMultiClick();
@@ -151,7 +151,7 @@ public class MouseProcessor
     {
       boxInfo.setCursorIndex(calculateMouseClickIndex(myX, myY));
       if (boxInfo.getCursorIndex() == boxInfo.getSelectionIndex())
-        boxInfo.selectionOn = false;
+        boxInfo.setSelectionOn(false);
     }
   }
 
@@ -192,12 +192,12 @@ public class MouseProcessor
 
     private boolean isSelectionFacingRight()
     {
-      return boxInfo.cursorIndex > boxInfo.selectionIndex;
+      return boxInfo.getCursorIndex() > boxInfo.getSelectionIndex();
     }
 
     private boolean isRightOfTail()
     {
-      return mouseIndex > boxInfo.selectionIndex;
+      return mouseIndex > boxInfo.getSelectionIndex();
     }
   }
 }

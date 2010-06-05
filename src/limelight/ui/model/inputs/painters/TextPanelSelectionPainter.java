@@ -18,7 +18,7 @@ public class TextPanelSelectionPainter extends TextPanelPainter
 
   public void paint(Graphics2D graphics)
   {
-    if (!boxInfo.selectionOn)
+    if (!boxInfo.isSelectionOn())
       return;
     if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
     {

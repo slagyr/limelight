@@ -13,7 +13,7 @@ public class MockTextModel extends TextModel
 
   public MockTextModel(TextInputPanel inputPanel)
   {
-    super();
+    super(inputPanel);
   }
 
   @Override

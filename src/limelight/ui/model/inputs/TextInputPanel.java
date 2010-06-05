@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
 {
@@ -26,12 +25,16 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected boolean cursorOn;
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
-  protected ArrayList<KeyProcessor> keyProcessors;
   protected MouseProcessor mouseProcessor;
   protected TextPanelPainterComposite painterComposite;
   protected SimpleHorizontalAlignmentValue horizontalTextAlignment;
   protected SimpleVerticalAlignmentValue verticalTextAlignment;
   private int lastKeyPressed;
+
+  protected abstract void setDefaultStyles(Style style);
+  public abstract void paintOn(Graphics2D graphics);
+  public abstract KeyProcessor getKeyProcessorFor(int modifiers);
+  protected abstract void markCursorRegionAsDirty();
 
   public void setParent(limelight.ui.Panel panel)
   {
@@ -141,8 +144,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     }
   }
 
-  protected abstract void markCursorRegionAsDirty();
-
   private void stopCursor()
   {
     cursorOn = false;
@@ -150,41 +151,11 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void keyPressed(KeyEvent e)
   {
-    int processorIndex = calculateKeyProcessorIndex(e);
-    keyProcessors.get(processorIndex).processKey(e, boxInfo);
+    KeyProcessor processor = getKeyProcessorFor(e.getModifiers());
+    processor.processKey(e, boxInfo);
     lastKeyPressed = e.getKeyCode();
     cursorOn = true;
     markAsDirty(); //TODO shouldRelyOn keyProcessor to markAsDirty
-  }
-
-  private int calculateKeyProcessorIndex(KeyEvent e)
-  {
-    int index = 0;
-    int modifiers = e.getModifiers();
-    if(boxInfo.selectionOn)
-      index += 8;
-    if(isAltPressed(modifiers))
-      index += 4;
-    if(isShiftPressed(modifiers))
-      index += 2;
-    if(isCmdOrCtrlPressed(modifiers))
-      index += 1;
-    return index;
-  }
-
-  private boolean isCmdOrCtrlPressed(int modifiers)
-  {
-    return (modifiers > 1 && modifiers < 7) || (modifiers > 10);
-  }
-
-  private boolean isShiftPressed(int modifiers)
-  {
-    return modifiers % 2 == 1;
-  }
-
-  private boolean isAltPressed(int modifiers)
-  {
-    return modifiers >= 8;
   }
 
   public boolean isCursorOn()
@@ -221,12 +192,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       focusGained(new FocusEvent(getRoot().getFrame().getWindow(), 0));
     buttonPressed(new ActionEvent(this, 0, "blah"));
   }
-
-  protected abstract void setDefaultStyles(Style style);
-
-  public abstract void initKeyProcessors();
-
-  public abstract void paintOn(Graphics2D graphics);
 
   public int getLastKeyPressed()
   {

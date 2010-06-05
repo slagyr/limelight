@@ -15,15 +15,12 @@ import limelight.util.Box;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class TextBox2Panel extends TextInputPanel
 {
   public TextBox2Panel()
   {
     boxInfo = new TextBoxModel(this);
-    keyProcessors = new ArrayList<KeyProcessor>(16);
-    initKeyProcessors();
     mouseProcessor = new MouseProcessor(boxInfo);
     painterComposite = new TextPanelPainterComposite(boxInfo);
     horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
@@ -35,26 +32,6 @@ public class TextBox2Panel extends TextInputPanel
   {
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 28);
-  }
-
-  public void initKeyProcessors()
-  {
-    keyProcessors.add(0, NormalKeyProcessor.instance);
-    keyProcessors.add(1, CmdKeyProcessor.instance);
-    keyProcessors.add(2, ShiftKeyProcessor.instance);
-    keyProcessors.add(3, ShiftCmdKeyProcessor.instance);
-    keyProcessors.add(4, AltKeyProcessor.instance);
-    keyProcessors.add(5, AltCmdKeyProcessor.instance);
-    keyProcessors.add(6, AltShiftKeyProcessor.instance);
-    keyProcessors.add(7, AltShiftCmdKeyProcessor.instance);
-    keyProcessors.add(8, SelectionOnKeyProcessor.instance);
-    keyProcessors.add(9, SelectionOnCmdKeyProcessor.instance);
-    keyProcessors.add(10, SelectionOnShiftKeyProcessor.instance);
-    keyProcessors.add(11, SelectionOnShiftCmdKeyProcessor.instance);
-    keyProcessors.add(12, SelectionOnAltKeyProcessor.instance);
-    keyProcessors.add(13, SelectionOnAltCmdKeyProcessor.instance);
-    keyProcessors.add(14, SelectionOnAltShiftKeyProcessor.instance);
-    keyProcessors.add(15, SelectionOnAltShiftCmdKeyProcessor.instance);
   }
 
   public void paintOn(Graphics2D graphics)
@@ -85,5 +62,53 @@ public class TextBox2Panel extends TextInputPanel
     }
   }
 
-  
+  public KeyProcessor getKeyProcessorFor(int modifiers)
+  {
+    if(getModelInfo().isSelectionOn())
+    {
+      switch(modifiers)
+      {
+        case 0: return SelectionOnKeyProcessor.instance;
+        case 1: return SelectionOnShiftKeyProcessor.instance;
+        case 3:
+        case 5:
+        case 7: return SelectionOnShiftCmdKeyProcessor.instance;
+        case 2:
+        case 4:
+        case 6: return SelectionOnCmdKeyProcessor.instance;
+        case 8: return SelectionOnAltKeyProcessor.instance;
+        case 9: return SelectionOnAltShiftKeyProcessor.instance;
+        case 10:
+        case 12:
+        case 14: return SelectionOnAltCmdKeyProcessor.instance;
+        case 11:
+        case 13:
+        case 15: return SelectionOnAltShiftCmdKeyProcessor.instance;
+      }
+    }
+    else
+    {
+      switch(modifiers)
+      {
+        case 0: return NormalKeyProcessor.instance;
+        case 1: return ShiftKeyProcessor.instance;
+        case 3:
+        case 5:
+        case 7: return ShiftCmdKeyProcessor.instance;
+        case 2:
+        case 4:
+        case 6: return CmdKeyProcessor.instance;
+        case 8: return AltKeyProcessor.instance;
+        case 9: return AltShiftKeyProcessor.instance;
+        case 10:
+        case 12:
+        case 14: return AltCmdKeyProcessor.instance;
+        case 11:
+        case 13:
+        case 15: return AltShiftCmdKeyProcessor.instance;
+
+      }
+    }
+    throw new RuntimeException("Unexpected key modifiers: " + modifiers);
+  }
 }

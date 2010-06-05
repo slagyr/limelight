@@ -6,45 +6,45 @@ import org.junit.Test;
 
 import java.awt.event.KeyEvent;
 
-public class SelectionAltKeyProcessorTest extends AbstractKeyProcessorTest
+public class SelectionOnAltShiftKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()
   {
     selectionBoxSetUp();
-    processor = SelectionOnAltKeyProcessor.instance;
-    modifier = 8;
+    processor = SelectionOnAltShiftKeyProcessor.instance;
+    modifier = 9;
   }
 
   @Test
   public void canProcessSpecialKeys()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
+    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
 
     processor.processKey(mockEvent, modelInfo);
 
-    asserter.assertTextState(2, "Ha are four words");
+    asserter.assertTextState(2, "HA are four words");
   }
 
   @Test
-  public void canProcessRightArrowAndMoveToStartOfNextWord()
+  public void canProcessRightArrowAndSelectToStartOfNextWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
     processor.processKey(mockEvent, modelInfo);
 
-    asserter.assertSelection(5, SELECTION_START_INDEX, false);
+    asserter.assertSelection(5, SELECTION_START_INDEX, true);
   }
 
   @Test
-  public void canProcessLeftArrowAndMoveToEndOfPreviousWord()
+  public void canProcessLeftArrowAndSelectToEndOfPreviousWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
     modelInfo.setCursorIndex(9);
 
     processor.processKey(mockEvent, modelInfo);
 
-    asserter.assertSelection(5, 4, false);
+    asserter.assertSelection(5, 4, true);
   }
 
 }
