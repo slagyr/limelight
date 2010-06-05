@@ -10,24 +10,21 @@ import java.awt.event.KeyEvent;
 
 public class SelectionOnShiftKeyProcessor extends KeyProcessor
 {
-  public SelectionOnShiftKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new SelectionOnShiftKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     int keyCode = event.getKeyCode();
 
-    if(modelInfo.isMoveRightEvent(keyCode)){
-      modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
+    if(boxInfo.isMoveRightEvent(keyCode)){
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
     }
-    else if(modelInfo.isMoveLeftEvent(keyCode)){
-      modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
+    else if(boxInfo.isMoveLeftEvent(keyCode)){
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
     }
     else if(isACharacter(keyCode)){
-      modelInfo.deleteSelection();
-      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.deleteSelection();
+      boxInfo.insertCharIntoTextBox(event.getKeyChar());
     }
   }
 }

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
 {
-
   public static final int SIDE_TEXT_MARGIN = 6;
   public static final int SIDE_DETECTION_MARGIN = SIDE_TEXT_MARGIN + 1;
   public static final int TOP_MARGIN = 7;

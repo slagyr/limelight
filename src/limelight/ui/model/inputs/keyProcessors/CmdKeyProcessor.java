@@ -10,33 +10,30 @@ import java.awt.event.KeyEvent;
 
 public class CmdKeyProcessor extends KeyProcessor
 {
-  public CmdKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new CmdKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     switch (event.getKeyCode())
     {
       case KeyEvent.VK_A:
-        modelInfo.selectAll();
+        boxInfo.selectAll();
         break;
 
       case KeyEvent.VK_V:
-        modelInfo.pasteClipboard();
+        boxInfo.pasteClipboard();
         break;
       case KeyEvent.VK_RIGHT:
-        modelInfo.sendCursorToEndOfLine();
+        boxInfo.sendCursorToEndOfLine();
         break;
       case KeyEvent.VK_LEFT:
-        modelInfo.sendCursorToStartOfLine();
+        boxInfo.sendCursorToStartOfLine();
         break;
       case KeyEvent.VK_UP:
-        modelInfo.setCursorIndex(0);
+        boxInfo.setCursorIndex(0);
         break;
       case KeyEvent.VK_DOWN:
-        modelInfo.setCursorIndex(modelInfo.getText().length());
+        boxInfo.setCursorIndex(boxInfo.getText().length());
         break;
 
 

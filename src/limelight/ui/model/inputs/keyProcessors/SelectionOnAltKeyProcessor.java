@@ -10,30 +10,27 @@ import java.awt.event.KeyEvent;
 
 public class SelectionOnAltKeyProcessor extends KeyProcessor
 {
-  public SelectionOnAltKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new SelectionOnAltKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     int keyCode = event.getKeyCode();
 
     if (isACharacter(keyCode))
     {
-      modelInfo.deleteSelection();
-      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.deleteSelection();
+      boxInfo.insertCharIntoTextBox(event.getKeyChar());
     }
-    else if (modelInfo.isMoveRightEvent(keyCode))
+    else if (boxInfo.isMoveRightEvent(keyCode))
     {
-      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheRight());
-      modelInfo.selectionOn = false;
+      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheRight());
+      boxInfo.selectionOn = false;
     }
 
-    else if (modelInfo.isMoveLeftEvent(keyCode))
+    else if (boxInfo.isMoveLeftEvent(keyCode))
     {
-      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheLeft());
-      modelInfo.selectionOn = false;
+      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheLeft());
+      boxInfo.selectionOn = false;
     }
 
   }

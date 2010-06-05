@@ -10,26 +10,23 @@ import java.awt.event.KeyEvent;
 
 public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
 {
-  public ExpandedSelectionOnKeyProcessor(TextModel modelInfo)
-  {
-    super(modelInfo);
-  }
+  public static KeyProcessor instance = new ExpandedSelectionOnKeyProcessor();
 
   @Override
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
-    KeyProcessor basicSelectionProcessor = new SelectionOnKeyProcessor(modelInfo);
-    modelInfo.selectionOn = false;
+    KeyProcessor basicSelectionProcessor = SelectionOnKeyProcessor.instance;
+    boxInfo.selectionOn = false;
     int keyCode = event.getKeyCode();
     if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB){
-      modelInfo.deleteSelection();
-      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.deleteSelection();
+      boxInfo.insertCharIntoTextBox(event.getKeyChar());
     }
-    else if (modelInfo.isMoveUpEvent(keyCode))
-      modelInfo.moveCursorUpALine();
-    else if (modelInfo.isMoveDownEvent(keyCode))
-      modelInfo.moveCursorDownALine();
+    else if (boxInfo.isMoveUpEvent(keyCode))
+      boxInfo.moveCursorUpALine();
+    else if (boxInfo.isMoveDownEvent(keyCode))
+      boxInfo.moveCursorDownALine();
     else
-      basicSelectionProcessor.processKey(event);
+      basicSelectionProcessor.processKey(event, boxInfo);
   }
 }

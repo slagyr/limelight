@@ -10,46 +10,43 @@ import java.awt.event.KeyEvent;
 
 public class SelectionOnCmdKeyProcessor extends KeyProcessor
 {
-  public SelectionOnCmdKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new SelectionOnCmdKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     switch (event.getKeyCode())
     {
       case KeyEvent.VK_A:
-        modelInfo.selectAll();
+        boxInfo.selectAll();
         break;
       case KeyEvent.VK_V:
-        modelInfo.deleteSelection();
-        modelInfo.pasteClipboard();
-        modelInfo.selectionOn = false;
+        boxInfo.deleteSelection();
+        boxInfo.pasteClipboard();
+        boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_C:
-        modelInfo.copySelection();
+        boxInfo.copySelection();
         break;
       case KeyEvent.VK_X:
-        modelInfo.copySelection();
-        modelInfo.deleteSelection();
-        modelInfo.selectionOn = false;
+        boxInfo.copySelection();
+        boxInfo.deleteSelection();
+        boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_RIGHT:
-        modelInfo.sendCursorToEndOfLine();
-        modelInfo.selectionOn = false;
+        boxInfo.sendCursorToEndOfLine();
+        boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_LEFT:
-        modelInfo.sendCursorToStartOfLine();
-        modelInfo.selectionOn = false;
+        boxInfo.sendCursorToStartOfLine();
+        boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_UP:
-        modelInfo.setCursorIndex(0);
-        modelInfo.selectionOn = false;
+        boxInfo.setCursorIndex(0);
+        boxInfo.selectionOn = false;
         break;
       case KeyEvent.VK_DOWN:
-        modelInfo.setCursorIndex(modelInfo.getText().length());
-        modelInfo.selectionOn = false;
+        boxInfo.setCursorIndex(boxInfo.getText().length());
+        boxInfo.selectionOn = false;
         break;
     }
   }

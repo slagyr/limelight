@@ -27,4 +27,11 @@ public class TextBox2PanelTest extends Assert
     boxInfo = panel.getModelInfo();
     boxInfo.setText("Some Text");
   }
+
+  @Test
+  public void shouldDefaultStyles() throws Exception
+  {
+    assertEquals("150", panel.getStyle().getWidth());
+    assertEquals("28", panel.getStyle().getHeight());
+  }
 }

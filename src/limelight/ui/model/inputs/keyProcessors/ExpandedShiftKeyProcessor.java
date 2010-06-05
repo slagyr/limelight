@@ -10,29 +10,26 @@ import java.awt.event.KeyEvent;
 
 public class ExpandedShiftKeyProcessor extends KeyProcessor
 {
-  public ExpandedShiftKeyProcessor(TextModel modelInfo)
-  {
-    super(modelInfo);
-  }
+  public static KeyProcessor instance = new ExpandedShiftKeyProcessor();
 
   @Override
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
-    KeyProcessor basicShiftProcessor = new ShiftKeyProcessor(modelInfo);
+    KeyProcessor basicShiftProcessor = ShiftKeyProcessor.instance;
     int keyCode = event.getKeyCode();
 
-    if(modelInfo.isMoveUpEvent(keyCode))
+    if(boxInfo.isMoveUpEvent(keyCode))
     {
-      modelInfo.initSelection();
-      modelInfo.moveCursorUpALine();
+      boxInfo.initSelection();
+      boxInfo.moveCursorUpALine();
     }
-    else if(modelInfo.isMoveDownEvent(keyCode))
+    else if(boxInfo.isMoveDownEvent(keyCode))
     {
-      modelInfo.initSelection();
-      modelInfo.moveCursorDownALine();
+      boxInfo.initSelection();
+      boxInfo.moveCursorDownALine();
 
     }
     else
-      basicShiftProcessor.processKey(event);
+      basicShiftProcessor.processKey(event, boxInfo);
   }
 }
