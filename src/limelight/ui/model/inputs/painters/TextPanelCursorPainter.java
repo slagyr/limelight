@@ -10,12 +10,13 @@ import java.awt.*;
 
 public class TextPanelCursorPainter extends TextPanelPainter
 {
-  public TextPanelCursorPainter(TextModel boxInfo)
+  public static TextPanelPainter instance = new TextPanelCursorPainter();
+
+  private TextPanelCursorPainter()
   {
-    super(boxInfo);
   }
 
-  public void paint(Graphics2D graphics)
+  public void paint(Graphics2D graphics, TextModel boxInfo)
   {
     int x = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex());
     int y = boxInfo.getTopOfStartPositionForCursor();

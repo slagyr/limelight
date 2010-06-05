@@ -11,7 +11,6 @@ import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.util.Box;
-import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 
@@ -22,7 +21,6 @@ public class TextArea2Panel extends TextInputPanel
   {
     boxInfo = new TextAreaModel(this);
     mouseProcessor = new MouseProcessor(boxInfo);
-    painterComposite = new TextPanelPainterComposite(boxInfo);
     horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
     verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.TOP);
     focused = true;
@@ -33,12 +31,6 @@ public class TextArea2Panel extends TextInputPanel
   {
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 75);
-  }
-
-  @Override
-  public void paintOn(Graphics2D graphics)
-  {
-    painterComposite.paint(graphics);
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)

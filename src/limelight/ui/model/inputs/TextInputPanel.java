@@ -9,6 +9,10 @@ import limelight.styles.Style;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.*;
+import limelight.ui.model.inputs.painters.TextPanelBackgroundPainter;
+import limelight.ui.model.inputs.painters.TextPanelCursorPainter;
+import limelight.ui.model.inputs.painters.TextPanelSelectionPainter;
+import limelight.ui.model.inputs.painters.TextPanelTextPainter;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -26,13 +30,11 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
   protected MouseProcessor mouseProcessor;
-  protected TextPanelPainterComposite painterComposite;
   protected SimpleHorizontalAlignmentValue horizontalTextAlignment;
   protected SimpleVerticalAlignmentValue verticalTextAlignment;
   private int lastKeyPressed;
 
   protected abstract void setDefaultStyles(Style style);
-  public abstract void paintOn(Graphics2D graphics);
   public abstract KeyProcessor getKeyProcessorFor(int modifiers);
   protected abstract void markCursorRegionAsDirty();
 
@@ -48,6 +50,14 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       propPanel.setTextAccessor(this);
       setDefaultStyles(propPanel.getStyle());
     }
+  }
+  
+  public void paintOn(Graphics2D graphics)
+  {
+    TextPanelBackgroundPainter.instance.paint(graphics, boxInfo);
+    TextPanelSelectionPainter.instance.paint(graphics, boxInfo);
+    TextPanelTextPainter.instance.paint(graphics, boxInfo);
+    TextPanelCursorPainter.instance.paint(graphics, boxInfo);
   }
 
   @Override
@@ -201,5 +211,15 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void setLastKeyPressed(int keyCode)
   {
     lastKeyPressed = keyCode;
+  }
+
+  public void setCursorOn(boolean value)
+  {
+    cursorOn = value;
+  }
+
+  public void setFocused(boolean value)
+  {
+    focused = value;
   }
 }

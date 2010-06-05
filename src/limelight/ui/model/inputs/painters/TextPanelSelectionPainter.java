@@ -11,12 +11,13 @@ import java.util.ArrayList;
 
 public class TextPanelSelectionPainter extends TextPanelPainter
 {
-  public TextPanelSelectionPainter(TextModel boxInfo)
+  public static TextPanelPainter instance = new TextPanelSelectionPainter();
+
+  private TextPanelSelectionPainter()
   {
-    super(boxInfo);
   }
 
-  public void paint(Graphics2D graphics)
+  public void paint(Graphics2D graphics, TextModel boxInfo)
   {
     if (!boxInfo.isSelectionOn())
       return;
