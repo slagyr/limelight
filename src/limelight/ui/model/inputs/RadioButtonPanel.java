@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.PropablePanel;
 import limelight.ui.model.TextAccessor;
 import limelight.styles.Style;
 
@@ -42,7 +43,7 @@ public class RadioButtonPanel extends AwtInputPanel
       this.button = button;
     }
 
-    public void setText(String text)
+    public void setText(PropablePanel panel, String text)
     {
       button.setText(text);
     }
@@ -50,6 +51,16 @@ public class RadioButtonPanel extends AwtInputPanel
     public String getText()
     {
       return button.getText();
+    }
+
+    public void markAsDirty()
+    {
+      button.getRadioButtonPanel().markAsDirty();
+    }
+
+    public void markAsNeedingLayout()
+    {
+      button.getRadioButtonPanel().markAsNeedingLayout();
     }
   }
 }

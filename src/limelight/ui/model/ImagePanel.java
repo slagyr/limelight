@@ -173,7 +173,7 @@ public class ImagePanel extends BasePanel
     markAsDirty();
     ((BasePanel) getParent()).markAsDirty();
     markAsNeedingLayout();
-    propagateSizeChangeUp(getParent());
+    doPropagateSizeChangeUp(getParent());
   }
 
   public double getRotation()

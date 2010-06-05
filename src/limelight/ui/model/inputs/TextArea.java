@@ -3,6 +3,10 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.*;
+import limelight.ui.Panel;
+import limelight.ui.model.TextAccessor;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -41,5 +45,10 @@ public class TextArea extends JTextArea
   public boolean isShowing()
   {
     return true;
+  }
+
+  public Panel getPanel()
+  {
+    return panel;
   }
 }

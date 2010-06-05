@@ -4,12 +4,12 @@
 package limelight.styles.abstrstyling;
 
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 
 public interface StyleAttributeCompilerFactory
 {
   RealStyleAttributeCompilerFactory compilerFactory = null;
 
-  StyleAttributeCompiler compiler(String type, String name);
+  StyleCompiler compiler(String type, String name);
 
 }

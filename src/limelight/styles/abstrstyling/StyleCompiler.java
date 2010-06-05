@@ -3,10 +3,7 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.abstrstyling.InvalidStyleAttributeError;
-
-public abstract class StyleAttributeCompiler
+public abstract class StyleCompiler
 {
   public String name;
   public String type;

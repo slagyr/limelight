@@ -97,7 +97,7 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
     return getParent().getStyle();
   }
 
-  public void setText(String text)
+  public void setText(PropablePanel panel, String text)
   {
     this.text = text;
     textBounds = null;

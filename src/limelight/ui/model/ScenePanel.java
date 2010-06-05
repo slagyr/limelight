@@ -6,7 +6,7 @@ package limelight.ui.model;
 import limelight.*;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.ui.api.PropablePanel;
+import limelight.ui.model.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;

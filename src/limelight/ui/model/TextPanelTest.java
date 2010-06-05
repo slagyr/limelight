@@ -72,7 +72,7 @@ public class TextPanelTest extends TestCase
   public void testPreferredSizeWithMoreText() throws Exception
   {
     useFrame();
-    panel.setText("Once upon a time, there was a developer working on a tool called Limelight.");
+    panel.setText(parent, "Once upon a time, there was a developer working on a tool called Limelight.");
     panel.doLayout();
     assertEquals(true, panel.getWidth() >= 98 && panel.getWidth() <= 99);
     assertEquals(69, panel.getHeight());
@@ -90,7 +90,7 @@ public class TextPanelTest extends TestCase
   public void testDimensionsWhenLastLineIsLongest() throws Exception
   {
     useFrame();
-    panel.setText("1\n2\n3\nlongest");
+    panel.setText(parent, "1\n2\n3\nlongest");
     panel.doLayout();
     assertEquals(true, panel.getWidth() >= 39 && panel.getWidth() <= 41);
     assertEquals(55, panel.getHeight());
@@ -107,14 +107,14 @@ public class TextPanelTest extends TestCase
   {
     assertEquals(false, panel.textChanged());
 
-    panel.setText("Something");
+    panel.setText(parent, "Something");
     assertEquals(true, panel.needsLayout());
 
     panel.resetLayout();
-    panel.setText("Something");
+    panel.setText(parent, "Something");
     assertEquals(false, panel.needsLayout());
 
-    panel.setText("Something Else");
+    panel.setText(parent, "Something Else");
     assertEquals(true, panel.needsLayout());
 
     panel.resetLayout();
@@ -126,7 +126,7 @@ public class TextPanelTest extends TestCase
     panel.resetLayout();
     assertEquals(false, panel.needsLayout());
 
-    panel.setText("Something");
+    panel.setText(parent, "Something");
     assertEquals(true, panel.needsLayout());
 
     panel.doLayout();
@@ -140,7 +140,7 @@ public class TextPanelTest extends TestCase
 
   public void testBuildingLines() throws Exception
   {
-    panel.setText("some text");
+    panel.setText(parent, "some text");
     panel.buildLines();
 
     List<TextLayout> lines = panel.getLines();
@@ -158,7 +158,7 @@ public class TextPanelTest extends TestCase
     createStyles();
 
     parent.setSize(200, 100);
-    panel.setText("<my_style>some text</my_style>");
+    panel.setText(parent, "<my_style>some text</my_style>");
     panel.buildLines();
 
     List<TextLayout> lines = panel.getLines();
@@ -174,7 +174,7 @@ public class TextPanelTest extends TestCase
 
   public void testObserverAddedForLineStyling() throws Exception
   {
-    panel.setText("some text");
+    panel.setText(parent, "some text");
     panel.buildLines();
 
     Style style = panel.getTextChunks().get(0).getStyle();
@@ -186,7 +186,7 @@ public class TextPanelTest extends TestCase
     createStyles();
 
     parent.setSize(200, 100);
-    panel.setText("<my_style>some </my_style><my_other_style>text</my_other_style>");
+    panel.setText(parent, "<my_style>some </my_style><my_other_style>text</my_other_style>");
     panel.buildLines();
 
     List<StyledText> chunks = panel.getTextChunks();
@@ -231,7 +231,7 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setText("This is <my_other_style>some </my_other_style> fantastic <my_style>text</my_style>");
+    panel.setText(parent, "This is <my_other_style>some </my_other_style> fantastic <my_style>text</my_style>");
     panel.buildLines();
 
     List<StyledText> chunks = panel.getTextChunks();
@@ -246,7 +246,7 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setText("This is <my_other_style>some </my_other_style><bogus_style>fantastic</bogus_style><my_style>text</my_style>");
+    panel.setText(parent, "This is <my_other_style>some </my_other_style><bogus_style>fantastic</bogus_style><my_style>text</my_style>");
     panel.buildLines();
 
     List<StyledText> chunks = panel.getTextChunks();
@@ -261,7 +261,7 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setText("This <my_other_style>some </my_other_style> text");
+    panel.setText(parent, "This <my_other_style>some </my_other_style> text");
     panel.buildLines();
 
     List<TextLayout> lines = panel.getLines();
@@ -280,7 +280,7 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setText("<size_only_style>This some text</size_only_style>");
+    panel.setText(parent, "<size_only_style>This some text</size_only_style>");
     panel.buildLines();
 
     List<TextLayout> lines = panel.getLines();
@@ -299,7 +299,7 @@ public class TextPanelTest extends TestCase
   {
     createStyles();
     parent.setSize(200, 100);
-    panel.setText("This <my_other_style>some\n more</my_other_style> text");
+    panel.setText(parent, "This <my_other_style>some\n more</my_other_style> text");
 
     panel.buildLines();
 
@@ -317,7 +317,7 @@ public class TextPanelTest extends TestCase
   public void testTextColor() throws Exception
   {
     createStyles();
-    panel.setText("text <my_other_style>here</my_other_style> man");
+    panel.setText(parent, "text <my_other_style>here</my_other_style> man");
     panel.buildLines();
 
     StyledText first = panel.getTextChunks().get(0);
@@ -332,7 +332,7 @@ public class TextPanelTest extends TestCase
 
   public void testTextChunksOverwrittenOnCompile() throws Exception
   {
-    panel.setText("Here is some original text.");
+    panel.setText(parent, "Here is some original text.");
     panel.buildLines();
 
     int originalChunks = panel.getTextChunks().size();
@@ -360,7 +360,7 @@ public class TextPanelTest extends TestCase
     assertEquals(false, panel.needsLayout());
     assertEquals(false, parent.needsLayout());
 
-    panel.setText("New Text");
+    panel.setText(parent, "New Text");
 
     assertEquals(true, panel.needsLayout());
     assertEquals(true, parent.needsLayout());        
@@ -378,7 +378,7 @@ public class TextPanelTest extends TestCase
   
   public void testResizesTextWhenSizeChanges() throws Exception
   {
-    panel.setText("Some really long text so that there are multiple lines requiring layout when the size changes.");
+    panel.setText(parent, "Some really long text so that there are multiple lines requiring layout when the size changes.");
     panel.doLayout();
 
     int originalHeight = panel.getHeight();
@@ -403,7 +403,7 @@ public class TextPanelTest extends TestCase
   
   public void testTeardownStyledTextBeforeDiscarding() throws Exception
   {
-    panel.setText("Original Text");
+    panel.setText(parent, "Original Text");
     panel.doLayout();
     List<StyleObserver> observers = panel.getStyle().getObservers();
     assertEquals(1, observers.size());

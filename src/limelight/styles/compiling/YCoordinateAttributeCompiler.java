@@ -3,7 +3,7 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.YCoordinateValue;
 import limelight.styles.VerticalAlignment;
@@ -11,7 +11,7 @@ import limelight.styles.values.AlignedYCoordinateValue;
 import limelight.styles.values.PercentageYCoordinateValue;
 import limelight.styles.values.StaticYCoordinateValue;
 
-public class YCoordinateAttributeCompiler extends StyleAttributeCompiler
+public class YCoordinateAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object objValue)
   {

@@ -3,6 +3,8 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.TextAccessor;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -39,5 +41,10 @@ public class PasswordBox extends JPasswordField
   public boolean isShowing()
   {
     return true;
+  }
+
+  public limelight.ui.Panel getPanel()
+  {
+    return panel;
   }
 }

@@ -4,6 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.Context;
+import limelight.ui.model.TextAccessor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,4 +104,8 @@ public class ComboBox extends JComboBox
     return true;
   }
 
+  public limelight.ui.Panel getComboBoxPanel()
+  {
+    return panel;
+  }
 }

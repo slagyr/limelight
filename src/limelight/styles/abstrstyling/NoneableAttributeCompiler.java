@@ -3,14 +3,14 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 
-public class NoneableAttributeCompiler<A extends StyleValue> extends StyleAttributeCompiler
+public class NoneableAttributeCompiler<A extends StyleValue> extends StyleCompiler
 {
-  private final StyleAttributeCompiler target;
+  private final StyleCompiler target;
 
-  public NoneableAttributeCompiler(StyleAttributeCompiler target)
+  public NoneableAttributeCompiler(StyleCompiler target)
   {
     this.target = target;
   }
@@ -30,7 +30,7 @@ public class NoneableAttributeCompiler<A extends StyleValue> extends StyleAttrib
       return new NoneableValue<A>((A)target.compile(value));
   }
 
-  public StyleAttributeCompiler getTarget()
+  public StyleCompiler getTarget()
   {
     return target;
   }

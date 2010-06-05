@@ -7,8 +7,8 @@ import limelight.Context;
 import limelight.caching.SimpleCache;
 import limelight.styles.compiling.IntegerAttributeCompiler;
 import limelight.styles.values.SimpleIntegerValue;
-import limelight.ui.MockPanel;
 import limelight.ui.Panel;
+import limelight.ui.model.MockChangeablePanel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,20 +18,19 @@ import java.awt.image.BufferedImage;
 public class StyleAttributeTest extends Assert
 {
   private StyleAttribute attribute;
-  private MockPanel panel;
+  private MockChangeablePanel panel;
 
   @Before
   public void setUp() throws Exception
   {
-    panel = new MockPanel();
-    attribute = new StyleAttribute(1, "NAME", new IntegerAttributeCompiler(), new SimpleIntegerValue(50));
+    panel = new MockChangeablePanel();
+    attribute = new StyleAttribute("NAME", new IntegerAttributeCompiler(), new SimpleIntegerValue(50));
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
 
   @Test
   public void testConstruction() throws Exception
   {
-    assertEquals(1, attribute.index);
     assertEquals("NAME", attribute.name);
     assertEquals(IntegerAttributeCompiler.class, attribute.compiler.getClass());
     assertEquals(50, ((SimpleIntegerValue) attribute.defaultValue).getValue());

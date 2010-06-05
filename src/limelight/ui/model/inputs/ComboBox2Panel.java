@@ -97,7 +97,7 @@ public class ComboBox2Panel extends BasePanel implements TextAccessor, InputPane
     return getParent().getStyle();
   }
 
-  public void setText(String text)
+  public void setText(PropablePanel panel, String text)
   {
     this.text = text;
   }

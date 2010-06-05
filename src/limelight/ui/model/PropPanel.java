@@ -12,7 +12,6 @@ import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
-import limelight.ui.api.PropablePanel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.Border;
@@ -26,7 +25,7 @@ import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, StyleObserver
+public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
 {
   private final Prop prop;
   private final ScreenableStyle style;
@@ -52,9 +51,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     painters = new LinkedList<Painter>();
     style = new ScreenableStyle();
     hoverStyle = new RichStyle();
-    textAccessor = new TextPaneTextAccessor(this);
+    textAccessor = TempTextAccessor.instance();
     buildPainters();
-    style.addObserver(this); // TODO MDM - Is this a memory leak?  When a prop is deleted, we'll have to delete that reference.
+    style.addObserver(this);
   }
 
   private void buildPainters()
@@ -75,7 +74,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     {
       markAsNeedingLayout(); // TODO MDM - This is questionable...  The text panel would know if layout is needed.
     }
-    textAccessor.setText(text);
+    textAccessor.setText(this, text);
   }
 
   public TextAccessor getTextAccessor()
@@ -403,86 +402,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   public void styleChanged(StyleAttribute attribute, StyleValue value)
   {
-    if(!isIlluminated())
-      return;
-
-    // TODO MDM - move all this login into the StyleDescriptors
-
-    if(getParent() != null && getRoot() != null)
-    {
-      if(Context.instance().bufferedImageCache != null &&
-          attribute != Style.TRANSPARENCY &&
-          attribute != Style.X &&
-          attribute != Style.Y)
-        Context.instance().bufferedImageCache.expire(this);
-
-      if(attribute == Style.WIDTH || attribute == Style.HEIGHT)
-      {
-        sizeChangePending = true;
-        markAsNeedingLayout();
-        propagateSizeChangeUp(getParent());
-        propagateSizeChangeDown();
-      }
-      else if(isBorderDescriptor(attribute) || isMarginPaddingOrBorder(value))
-      {
-        propagateSizeChangeDown();
-        borderChanged = true;
-        markAsNeedingLayout();
-        clearCache();
-      }
-      else if(attribute == Style.X || attribute == Style.Y)
-      {
-        markAsNeedingLayout(FloaterLayout.instance);
-      }
-      else if(attribute == Style.HORIZONTAL_ALIGNMENT || attribute == Style.VERTICAL_ALIGNMENT)
-      {
-        markAsNeedingLayout();
-      }
-      else if(isTextDescriptor(attribute))
-      {
-        for(Panel child : getChildren())
-        {
-          if(child instanceof TextPanel)
-          {
-            sizeChangePending = true;
-            ((TextPanel) child).styleChanged(attribute, value);
-          }
-        }
-      }
-      else
-        markAsDirty();
-    }
-  }
-
-  private boolean isTextDescriptor(StyleAttribute attribute)
-  {
-    return attribute == Style.TEXT_COLOR ||
-        attribute == Style.FONT_FACE ||
-        attribute == Style.FONT_SIZE ||
-        attribute == Style.FONT_STYLE;
-  }
-
-  private boolean isMarginPaddingOrBorder(StyleValue value)
-  {
-
-    //TODO Huh?  This doesn't make sense.
-    return value instanceof PixelsValue;
-  }
-
-  private boolean isBorderDescriptor(StyleAttribute attribute)
-  {
-    return attribute == Style.TOP_BORDER_WIDTH ||
-        attribute == Style.RIGHT_BORDER_WIDTH ||
-        attribute == Style.BOTTOM_BORDER_WIDTH ||
-        attribute == Style.LEFT_BORDER_WIDTH ||
-        attribute == Style.TOP_RIGHT_BORDER_WIDTH ||
-        attribute == Style.BOTTOM_RIGHT_BORDER_WIDTH ||
-        attribute == Style.BOTTOM_LEFT_BORDER_WIDTH ||
-        attribute == Style.TOP_LEFT_BORDER_WIDTH ||
-        attribute == Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS ||
-        attribute == Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS ||
-        attribute == Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS ||
-        attribute == Style.TOP_LEFT_ROUNDED_CORNER_RADIUS;
+    if(isIlluminated() && getParent() != null && getRoot() != null)
+      attribute.applyChange(this, value);
   }
 
   public ScrollBarPanel getVerticalScrollbar()
@@ -546,9 +467,24 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     }
   }
 
-  public boolean sizeChangePending()
+  public boolean isSizeChangePending()
   {
     return sizeChangePending;
+  }
+
+  public void setSizeChangePending(boolean value)
+  {
+    sizeChangePending = value;
+  }
+
+  public void propagateSizeChangeUp()
+  {
+    doPropagateSizeChangeUp(getParent());
+  }
+
+  public void propagateSizeChangeDown()
+  {
+    doPropagateSizeChangeDown();
   }
 
   public void resetPendingSizeChange()
@@ -556,9 +492,14 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     sizeChangePending = false;
   }
 
-  public boolean borderChanged()
+  public boolean isBorderChanged()
   {
     return borderChanged;
+  }
+
+  public void setBorderChanged(boolean value)
+  {
+    borderChanged = value;
   }
 
   @Override
@@ -591,8 +532,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   @Override
   public void delluminate()
   {
-    getStyle().tearDown();
-    getHoverStyle().tearDown();
+    style.tearDown();
+    hoverStyle.tearDown();
     super.delluminate();
   }
 }

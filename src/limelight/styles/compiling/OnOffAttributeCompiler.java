@@ -3,11 +3,11 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.values.SimpleOnOffValue;
 
-public class OnOffAttributeCompiler extends StyleAttributeCompiler
+public class OnOffAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object value)
   {

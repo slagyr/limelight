@@ -1,9 +1,10 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.api;
+package limelight.ui.model;
 
 import limelight.styles.ScreenableStyle;
+import limelight.ui.api.Prop;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 
@@ -20,6 +21,8 @@ public interface PropablePanel extends limelight.ui.Panel
   void setAfterPaintAction(PaintAction action);
   void setText(String text);
   String getText();
+  TextAccessor getTextAccessor();
+  void setTextAccessor(TextAccessor accessor);
 
   Box getBoundingBox();
   Box getBoxInsideBorders();

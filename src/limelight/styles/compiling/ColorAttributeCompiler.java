@@ -3,7 +3,7 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.values.SimpleColorValue;
 import limelight.util.Colors;
@@ -11,7 +11,7 @@ import limelight.LimelightError;
 
 import java.awt.*;
 
-public class ColorAttributeCompiler extends StyleAttributeCompiler
+public class ColorAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object objValue)
   {

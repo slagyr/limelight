@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.PropablePanel;
 import limelight.ui.model.TextAccessor;
 import limelight.styles.Style;
 
@@ -53,7 +54,7 @@ public class TextBoxPanel extends AwtInputPanel
       this.textBox = textBox;
     }
 
-    public void setText(String text)
+    public void setText(PropablePanel panel, String text)
     {
       textBox.setText(text);
     }
@@ -61,6 +62,16 @@ public class TextBoxPanel extends AwtInputPanel
     public String getText()
     {
       return textBox.getText();
+    }
+
+    public void markAsDirty()
+    {
+      textBox.getPanel().markAsDirty();
+    }
+
+    public void markAsNeedingLayout()
+    {
+      textBox.getPanel().markAsNeedingLayout();
     }
   }
 

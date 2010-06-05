@@ -4,6 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
+import limelight.ui.model.PropablePanel;
 import limelight.ui.model.TextAccessor;
 import limelight.Context;
 
@@ -53,7 +54,7 @@ public class ComboBoxPanel extends AwtInputPanel
       this.comboBox = comboBox;
     }
 
-    public void setText(String text)
+    public void setText(PropablePanel panel, String text)
     {
       comboBox.setSelectedItem(text);
     }
@@ -65,6 +66,16 @@ public class ComboBoxPanel extends AwtInputPanel
         return selectedItem.toString();
       else
         return "";
+    }
+
+    public void markAsDirty()
+    {
+      comboBox.getComboBoxPanel().markAsDirty();
+    }
+
+    public void markAsNeedingLayout()
+    {
+      comboBox.getComboBoxPanel().markAsNeedingLayout();
     }
   }
 
