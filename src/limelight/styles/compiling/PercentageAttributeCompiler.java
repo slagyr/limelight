@@ -4,13 +4,13 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.values.SimplePercentageValue;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PercentageAttributeCompiler extends StyleAttributeCompiler
+public class PercentageAttributeCompiler extends StyleCompiler
 {
   private static final Pattern percentagePattern = Pattern.compile("(\\d+(.\\d+)?)%?");
 

@@ -73,6 +73,11 @@ public abstract class TextModel implements ClipboardOwner
     return xPos;
   }
 
+  public void clearLayouts()
+  {
+    textLayouts = null;
+  }
+
   protected abstract int getXPosFromText(String toIndexString);
 
   public int getYPosFromIndex(int index)

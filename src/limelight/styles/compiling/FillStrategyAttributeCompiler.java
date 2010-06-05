@@ -3,11 +3,11 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.values.*;
 
-public class FillStrategyAttributeCompiler extends StyleAttributeCompiler
+public class FillStrategyAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object value)
   {

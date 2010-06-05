@@ -301,7 +301,7 @@ public abstract class BasePanel implements Panel
     readonlyChildren = null;
 
     child.setParent(this);
-    propagateSizeChangeUp(this);
+    doPropagateSizeChangeUp(this);
     markAsNeedingLayout();
   }
 
@@ -338,7 +338,7 @@ public abstract class BasePanel implements Panel
     {
       child.setParent(null);
       readonlyChildren = null;
-      propagateSizeChangeUp(this);
+      doPropagateSizeChangeUp(this);
       markAsNeedingLayout();
       return true;
     }
@@ -363,7 +363,7 @@ public abstract class BasePanel implements Panel
       }
       readonlyChildren = null;
       sterilized = false;
-      propagateSizeChangeUp(this);
+      doPropagateSizeChangeUp(this);
       markAsNeedingLayout();
     }
   }
@@ -486,16 +486,12 @@ public abstract class BasePanel implements Panel
     return new PanelIterator(this);
   }
 
-  protected void propagateSizeChangeUp(Panel panel)
+  protected void doPropagateSizeChangeUp(Panel panel)
   {
     if(panel != null && !panel.needsLayout() && panel instanceof BasePanel)
     {
-//      Style style = panel.getStyle();
-//      if(style != null && style.hasAutoDimension())
-//      {     
       panel.markAsNeedingLayout();
-      propagateSizeChangeUp(panel.getParent());
-//      }
+      doPropagateSizeChangeUp(panel.getParent());
     }
   }
 
@@ -518,7 +514,7 @@ public abstract class BasePanel implements Panel
     laidOut = true;
   }
 
-  protected void propagateSizeChangeDown()
+  protected void doPropagateSizeChangeDown()
   {
     synchronized(children)
     {

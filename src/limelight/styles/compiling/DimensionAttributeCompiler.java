@@ -4,14 +4,14 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.DimensionValue;
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.values.GreedyDimensionValue;
 import limelight.styles.values.StaticDimensionValue;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.PercentageDimensionValue;
 
-public class DimensionAttributeCompiler extends StyleAttributeCompiler
+public class DimensionAttributeCompiler extends StyleCompiler
 { 
   public StyleValue compile(Object objValue)
   {

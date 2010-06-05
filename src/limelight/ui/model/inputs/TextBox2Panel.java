@@ -57,13 +57,6 @@ public class TextBox2Panel extends TextInputPanel
     keyProcessors.add(15, new SelectionOnAltShiftCmdKeyProcessor(boxInfo));
   }
 
-  @Override
-  public void doLayout()
-  {
-    System.err.println("limelight.ui.model.inputs.TextBox2Panel.doLayout: " + neededLayout);
-    super.doLayout();
-  }
-
   public void paintOn(Graphics2D graphics)
   {
     painterComposite.paint(graphics);

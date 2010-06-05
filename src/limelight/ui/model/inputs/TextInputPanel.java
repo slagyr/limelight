@@ -50,7 +50,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   @Override
   public Layout getDefaultLayout()
   {
-    return InputPanelLayout.instance;
+    return TextInputPanelLayout.instance;
   }
 
   @Override
@@ -79,7 +79,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     return getParent().getStyle();
   }
 
-  public void setText(String text)
+  public void setText(PropablePanel panel, String text)
   {
     this.boxInfo.setText(text);
     boxInfo.setCursorIndex(text.length());

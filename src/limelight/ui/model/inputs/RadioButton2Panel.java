@@ -89,7 +89,7 @@ public class RadioButton2Panel extends BasePanel implements TextAccessor, InputP
     return getParent().getStyle();
   }
 
-  public void setText(String text)
+  public void setText(PropablePanel panel, String text)
   {
     if("on".equals(text))
       selected = true;

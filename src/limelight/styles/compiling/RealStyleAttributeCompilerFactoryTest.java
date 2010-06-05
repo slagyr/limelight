@@ -4,7 +4,7 @@
 package limelight.styles.compiling;
 
 import junit.framework.TestCase;
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.NoneableAttributeCompiler;
 import limelight.Context;
 
@@ -85,14 +85,14 @@ public class RealStyleAttributeCompilerFactoryTest extends TestCase
 
   public void testNoneableInteger() throws Exception
   {
-    StyleAttributeCompiler compiler = factory.compiler("noneable integer", "blah");
+    StyleCompiler compiler = factory.compiler("noneable integer", "blah");
     assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
     assertEquals(IntegerAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
   }
   
   public void testNoneableString() throws Exception
   {
-    StyleAttributeCompiler compiler = factory.compiler("noneable string", "blah");
+    StyleCompiler compiler = factory.compiler("noneable string", "blah");
     assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
     assertEquals(StringAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
   }
@@ -109,7 +109,7 @@ public class RealStyleAttributeCompilerFactoryTest extends TestCase
   
   public void testSimpleDimensions() throws Exception
   {
-    StyleAttributeCompiler compiler = factory.compiler("noneable simple dimension", "blah");
+    StyleCompiler compiler = factory.compiler("noneable simple dimension", "blah");
     assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
     assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
   }

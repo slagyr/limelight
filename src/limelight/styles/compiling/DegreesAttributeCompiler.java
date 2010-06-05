@@ -4,10 +4,10 @@
 package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.values.SimpleDegreesValue;
 
-public class DegreesAttributeCompiler extends StyleAttributeCompiler
+public class DegreesAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object objValue)
   {

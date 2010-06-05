@@ -10,7 +10,6 @@ import limelight.util.Box;
 import limelight.MockResourceLoader;
 
 import java.awt.geom.AffineTransform;
-import java.io.File;
 
 public class ImagePanelLayoutTest extends TestCase
 {

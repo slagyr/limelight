@@ -16,9 +16,9 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
       Context.instance().styleAttributeCompilerFactory = new RealStyleAttributeCompilerFactory();
   }
 
-  public StyleAttributeCompiler compiler(String type, String name)
+  public StyleCompiler compiler(String type, String name)
   {
-    StyleAttributeCompiler result = null;
+    StyleCompiler result = null;
 
     if("string".equals(type))
       result = new StringAttributeCompiler();

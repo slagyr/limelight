@@ -5,6 +5,8 @@ package limelight.ui.model;
 
 public interface TextAccessor
 {
-  void setText(String text);
+  void setText(PropablePanel panel, String text);
   String getText();
+  void markAsDirty();
+  void markAsNeedingLayout();
 }

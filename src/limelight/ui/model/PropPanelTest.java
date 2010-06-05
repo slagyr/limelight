@@ -4,14 +4,12 @@
 package limelight.ui.model;
 
 import limelight.styles.*;
-import limelight.styles.values.*;
+import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.BackgroundPainter;
-import limelight.styles.values.StaticDimensionValue;
-import limelight.styles.values.StaticPixelsValue;
 import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
@@ -19,7 +17,6 @@ import limelight.audio.MockAudioPlayer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import javax.swing.*;
 import java.util.LinkedList;
 import java.awt.*;
@@ -49,6 +46,9 @@ public class PropPanelTest extends Assert
     panel = new PropPanel(prop);
     style = panel.getStyle();
     root.add(panel);
+
+
+    Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
   
   @Test
@@ -78,7 +78,7 @@ public class PropPanelTest extends Assert
   public void shouldConstructor() throws Exception
   {
     assertSame(prop, panel.getProp());
-    assertEquals(TextPaneTextAccessor.class, panel.getTextAccessor().getClass());
+    assertEquals(TempTextAccessor.class, panel.getTextAccessor().getClass());
   }
 
   @Test
@@ -98,8 +98,15 @@ public class PropPanelTest extends Assert
     assertEquals("blah", panel.getText());
     assertEquals("blah", panel.getTextAccessor().getText());
 
-    panel.getTextAccessor().setText("foo");
+    panel.getTextAccessor().setText(panel, "foo");
     assertEquals("foo", panel.getText());
+  }
+
+  @Test
+  public void shouldSettingTextShouldLeadToLayout() throws Exception
+  {
+    panel.resetLayout();
+    panel.setText("Some Text");
   }
 
   @Test
@@ -409,132 +416,6 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void shouldWidthOrHeightChanges() throws Exception
-  {
-    panel.styleChanged(Style.WIDTH, new StaticDimensionValue(20));
-    assertEquals(true, panel.sizeChangePending());
-    panel.resetPendingSizeChange();
-    assertEquals(false, panel.sizeChangePending());
-
-    panel.styleChanged(Style.HEIGHT, new StaticDimensionValue(20));
-    assertEquals(true, panel.sizeChangePending());
-    panel.resetPendingSizeChange();
-    assertEquals(false, panel.sizeChangePending());
-  }
-
-  @Test
-  public void shouldShouldPropagateConsumableAreaChangeForWidthChange() throws Exception
-  {
-    MockPanel child = new MockPanel();
-    panel.add(child);
-
-    panel.styleChanged(Style.WIDTH, new StaticDimensionValue(20));
-
-    assertEquals(true, child.consumableAreaChangedCalled);
-  }
-
-  @Test
-  public void shouldShouldPropagateConsumableAreaChangeForBorderChange() throws Exception
-  {
-    MockPanel child = new MockPanel();
-    panel.add(child);
-
-    panel.styleChanged(Style.TOP_BORDER_WIDTH, new SimpleIntegerValue(5));
-
-    assertEquals(true, child.consumableAreaChangedCalled);
-  }
-
-  @Test
-  public void shouldBorderStyleChanges() throws Exception
-  {
-    panel.getBorderShaper();
-    checkBorderChanged(Style.TOP_BORDER_WIDTH);
-    checkBorderChanged(Style.RIGHT_BORDER_WIDTH);
-    checkBorderChanged(Style.BOTTOM_BORDER_WIDTH);
-    checkBorderChanged(Style.LEFT_BORDER_WIDTH);
-    checkBorderChanged(Style.TOP_RIGHT_BORDER_WIDTH);
-    checkBorderChanged(Style.BOTTOM_RIGHT_BORDER_WIDTH);
-    checkBorderChanged(Style.BOTTOM_LEFT_BORDER_WIDTH);
-    checkBorderChanged(Style.TOP_LEFT_BORDER_WIDTH);
-    checkBorderChanged(Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS);
-    checkBorderChanged(Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
-    checkBorderChanged(Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
-    checkBorderChanged(Style.TOP_LEFT_ROUNDED_CORNER_RADIUS);
-  }
-
-  private void checkBorderChanged(StyleAttribute styleAttribute)
-  {
-    panel.styleChanged(styleAttribute, new SimpleIntegerValue(5));
-    assertEquals(true, panel.borderChanged());
-    panel.doLayout();
-    assertEquals(false, panel.borderChanged());
-  }
-
-  @Test
-  public void shouldMarginStyleChanges() throws Exception
-  {
-    panel.doLayout();
-    assertEquals(false, panel.needsLayout());
-
-    checkLayoutOnStyle(Style.TOP_MARGIN);
-    checkLayoutOnStyle(Style.RIGHT_MARGIN);
-    checkLayoutOnStyle(Style.BOTTOM_MARGIN);
-    checkLayoutOnStyle(Style.LEFT_MARGIN);
-
-    checkLayoutOnStyle(Style.TOP_PADDING);
-    checkLayoutOnStyle(Style.RIGHT_PADDING);
-    checkLayoutOnStyle(Style.BOTTOM_PADDING);
-    checkLayoutOnStyle(Style.LEFT_PADDING);
-
-//    checkLayoutOnStyle(Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS);
-//    checkLayoutOnStyle(Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS);
-//    checkLayoutOnStyle(Style.BOTTOM_LEFT_ROUNDED_CORNER_RADIUS);
-//    checkLayoutOnStyle(Style.TOP_LEFT_ROUNDED_CORNER_RADIUS);
-
-    checkLayoutOnStyle(Style.TOP_BORDER_WIDTH);
-    checkLayoutOnStyle(Style.TOP_RIGHT_BORDER_WIDTH);
-    checkLayoutOnStyle(Style.RIGHT_BORDER_WIDTH);
-    checkLayoutOnStyle(Style.BOTTOM_RIGHT_BORDER_WIDTH);
-    checkLayoutOnStyle(Style.BOTTOM_BORDER_WIDTH);
-    checkLayoutOnStyle(Style.BOTTOM_LEFT_BORDER_WIDTH);
-    checkLayoutOnStyle(Style.LEFT_BORDER_WIDTH);
-    checkLayoutOnStyle(Style.TOP_LEFT_BORDER_WIDTH);
-  }
-
-  private void checkLayoutOnStyle(StyleAttribute styleAttribute)
-  {
-    Box box = panel.getBoxInsidePadding();
-    panel.styleChanged(styleAttribute, new StaticPixelsValue(20));
-    assertEquals(true, panel.needsLayout());
-    panel.doLayout();
-    assertNotSame(box, panel.getBoxInsidePadding());
-    assertEquals(false, panel.needsLayout());
-  }
-
-
-  @Test
-  public void shouldShouldBuildBufferWhenStyleChanges() throws Exception
-  {
-    SimpleCache<limelight.ui.Panel, BufferedImage> cache = new SimpleCache<limelight.ui.Panel, BufferedImage>();
-    Context.instance().bufferedImageCache = cache;
-    cache.cache(panel, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
-
-    panel.styleChanged(Style.WIDTH, new StaticDimensionValue(20));
-    assertEquals(null, cache.retrieve(panel));
-  }
-
-  @Test
-  public void shouldShouldNotBuildBufferWhenTransparencyChanges() throws Exception
-  {
-    SimpleCache<limelight.ui.Panel, BufferedImage> cache = new SimpleCache<limelight.ui.Panel, BufferedImage>();
-    Context.instance().bufferedImageCache = cache;
-    cache.cache(panel, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
-
-    panel.styleChanged(Style.TRANSPARENCY, new SimplePercentageValue(20));
-    assertNotNull(cache.retrieve(panel));
-  }
-
-  @Test
   public void shouldRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
   {
     for(int i = 0; i < 100; i++)
@@ -555,85 +436,6 @@ public class PropPanelTest extends Assert
     thread.join();
 
     assertEquals(true, panel.needsLayout());
-  }
-
-  @Test
-  public void shouldAlignmentChangeShouldInvokeLayout() throws Exception
-  {
-    panel.resetLayout();
-
-    panel.styleChanged(Style.HORIZONTAL_ALIGNMENT, null);
-    assertEquals(true, panel.needsLayout());
-
-    panel.resetLayout();
-    panel.styleChanged(Style.VERTICAL_ALIGNMENT, null);
-
-    assertEquals(true, panel.needsLayout());
-  }
-
-  @Test
-  public void shouldChangingSizeToZeroWillReLayoutGrandDaddy() throws Exception
-  {
-    PropPanel child = new PropPanel(new MockProp());
-    PropPanel grandChild = new PropPanel(new MockProp());
-    panel.add(child);
-    child.add(grandChild);
-    child.resetLayout();
-    panel.resetLayout();
-
-    grandChild.styleChanged(Style.HEIGHT, new StaticDimensionValue(0));
-
-    assertEquals(true, panel.needsLayout());
-  }
-
-  @Test
-  public void shouldChangingTextColor() throws Exception
-  {
-    panel.setText("foo");
-    panel.resetLayout();
-
-    panel.styleChanged(Style.TEXT_COLOR, Style.TEXT_COLOR.compile("red"));
-
-    assertEquals(true, panel.needsLayout());
-  }
-
-  @Test
-  public void shouldChangingFontFace() throws Exception
-  {
-    panel.setText("foo");
-    panel.resetLayout();
-    panel.resetPendingSizeChange();
-
-    panel.styleChanged(Style.FONT_FACE, Style.FONT_FACE.compile("Verdana"));
-
-    assertEquals(true, panel.needsLayout());
-    assertEquals(true, panel.sizeChangePending());
-  }
-
-  @Test
-  public void shouldChangingFontSize() throws Exception
-  {
-    panel.setText("foo");
-    panel.resetLayout();
-    panel.resetPendingSizeChange();
-
-    panel.styleChanged(Style.FONT_SIZE, Style.FONT_SIZE.compile("50"));
-
-    assertEquals(true, panel.needsLayout());
-    assertEquals(true, panel.sizeChangePending());
-  }
-
-  @Test
-  public void shouldChangingFontStyle() throws Exception
-  {
-    panel.setText("foo");
-    panel.resetLayout();
-    panel.resetPendingSizeChange();
-
-    panel.styleChanged(Style.FONT_STYLE, Style.FONT_STYLE.compile("italic"));
-
-    assertEquals(true, panel.needsLayout());
-    assertEquals(true, panel.sizeChangePending());
   }
 
   @Test

@@ -9,11 +9,9 @@ import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
 import limelight.ui.painting.PaintAction;
 import limelight.ui.painting.Border;
-import limelight.ui.api.PropablePanel;
 import limelight.ui.api.MockProp;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
-import limelight.styles.Style;
 
 public class MockPropablePanel extends MockPanel implements PropablePanel, PaintablePanel
 {
@@ -27,7 +25,7 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   public boolean wasFloatLaidOut;
   public Box boxInsideMargins = new Box(0, 0, 100, 100);
   public Box boxInsideBorders = new Box(0, 0, 100, 100);
-  private String name;
+  public String name;
 
   public MockPropablePanel()
   {
@@ -69,6 +67,16 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   public String getText()
   {
     return null;
+  }
+
+  public TextAccessor getTextAccessor()
+  {
+    throw new RuntimeException("MockPropablePanel.getTextAccessor() called");
+  }
+
+  public void setTextAccessor(TextAccessor accessor)
+  {
+    throw new RuntimeException("MockPropablePanel.setTextAccessor() called");
   }
 
   public Box getBoxInsideBorders()

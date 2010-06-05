@@ -28,7 +28,7 @@ public class PropPanelLayout implements Layout
     panel.resetLayout();
     FloaterLayout.instance.doLayout(panel);
     Style style = panel.getStyle();
-    if(panel.sizeChangePending() || style.hasDynamicDimension())
+    if(panel.isSizeChangePending() || style.hasDynamicDimension())
       snapToSize(panel, topLevel);
 
     establishScrollBars(panel);

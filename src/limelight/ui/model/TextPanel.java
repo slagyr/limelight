@@ -6,7 +6,6 @@ package limelight.ui.model;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.Panel;
-import limelight.ui.api.PropablePanel;
 import limelight.ui.text.StyledText;
 import limelight.ui.text.StyledTextParser;
 import limelight.util.Box;
@@ -23,7 +22,7 @@ import java.text.AttributedString;
 import java.util.*;
 import java.util.List;
 
-public class TextPanel extends BasePanel implements StyleObserver
+public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
 {
   private String text;
   private PropablePanel panel;
@@ -50,7 +49,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     return text;
   }
 
-  public void setText(String text)
+  public void setText(PropablePanel panel, String text)
   {
     boolean differentText = !Util.equal(text, this.text);
     if(!needsLayout() && differentText)
@@ -59,7 +58,7 @@ public class TextPanel extends BasePanel implements StyleObserver
     if(differentText)
     {
       markAsNeedingLayout();
-      propagateSizeChangeUp(getParent());
+      doPropagateSizeChangeUp(getParent());
       getParent().markAsNeedingLayout();
     }
   }
@@ -316,7 +315,7 @@ public class TextPanel extends BasePanel implements StyleObserver
   {
     markAsNeedingLayout();
     getParent().markAsNeedingLayout();
-    propagateSizeChangeDown();
-    propagateSizeChangeUp(getParent().getParent());
+    doPropagateSizeChangeDown();
+    doPropagateSizeChangeUp(getParent().getParent());
   }
 }

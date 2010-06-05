@@ -3,12 +3,12 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleAttributeCompiler;
+import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
 
-public class VerticalAlignmentAttributeCompiler extends StyleAttributeCompiler
+public class VerticalAlignmentAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object value)
   {

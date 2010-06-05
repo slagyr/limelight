@@ -11,7 +11,7 @@ public class StyleAttributeCompilerTest extends TestCase
 {
   private TestableStyleAttributeCompilerTest compiler;
 
-  private static class TestableStyleAttributeCompilerTest extends StyleAttributeCompiler
+  private static class TestableStyleAttributeCompilerTest extends StyleCompiler
   {
     public StyleValue compile(Object value)
     {

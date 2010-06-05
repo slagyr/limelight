@@ -5,6 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.RadioButtonGroup;
 import limelight.ui.RadioButtonGroupMember;
+import limelight.ui.model.TextAccessor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,5 +58,10 @@ public class RadioButton extends JRadioButton implements RadioButtonGroupMember,
   {
     if(radioButtonGroup != null && isSelected())
       radioButtonGroup.buttonSelected(this);
+  }
+
+  public RadioButtonPanel getRadioButtonPanel()
+  {
+    return panel;
   }
 }

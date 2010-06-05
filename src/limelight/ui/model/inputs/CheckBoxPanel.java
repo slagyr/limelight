@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.PropablePanel;
 import limelight.ui.model.TextAccessor;
 import limelight.styles.Style;
 
@@ -42,7 +43,7 @@ public class CheckBoxPanel extends AwtInputPanel
       this.checkBox = checkBox;
     }
 
-    public void setText(String text)
+    public void setText(PropablePanel panel, String text)
     {
       checkBox.setText(text);
     }
@@ -50,6 +51,16 @@ public class CheckBoxPanel extends AwtInputPanel
     public String getText()
     {
       return checkBox.getText();
+    }
+
+    public void markAsDirty()
+    {
+      checkBox.getCheckBoxPanel().markAsDirty();
+    }
+
+    public void markAsNeedingLayout()
+    {
+      checkBox.getCheckBoxPanel().markAsNeedingLayout();
     }
   }
 }

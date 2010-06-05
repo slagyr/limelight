@@ -5,9 +5,9 @@ package limelight.ui.painting;
 
 import limelight.styles.abstrstyling.NoneableValue;
 import limelight.ui.*;
+import limelight.ui.model.PropablePanel;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.ImageCache;
-import limelight.ui.api.PropablePanel;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.StringValue;
 import limelight.util.Box;
