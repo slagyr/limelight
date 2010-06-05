@@ -7,9 +7,7 @@ import limelight.Context;
 import limelight.LimelightError;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.abstrstyling.PixelsValue;
 import limelight.ui.PaintablePanel;
-import limelight.ui.Painter;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.model.inputs.ScrollBarPanel;
@@ -22,7 +20,6 @@ import limelight.util.Util;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.LinkedList;
 import java.util.Map;
 
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
@@ -31,7 +28,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private final ScreenableStyle style;
   private final RichStyle hoverStyle;
   private String styles;
-  private final LinkedList<Painter> painters; // TODO MDM - This silly now.  We don't need a list for the painters.
   private Border borderShaper;
   private TextAccessor textAccessor;
   private Box boxInsideMargins;
@@ -48,19 +44,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public PropPanel(Prop prop)
   {
     this.prop = prop;
-    painters = new LinkedList<Painter>();
     style = new ScreenableStyle();
     hoverStyle = new RichStyle();
     textAccessor = TempTextAccessor.instance();
-    buildPainters();
     style.addObserver(this);
-  }
-
-  private void buildPainters()
-  {
-    // TODO MDM - These painters can be static.  They don't need to store the panel as an instance variable.
-    painters.add(new BackgroundPainter(this));
-    painters.add(new BorderPainter(this));
   }
 
   public String getText()
@@ -185,8 +172,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     if(!laidOut)
       return;
-    for(Painter painter : painters)
-      painter.paint(graphics);
+
+    BackgroundPainter.instance.paint(graphics, this);
+    BorderPainter.instance.paint(graphics, this);
 
     if(afterPaintAction != null)
     {
@@ -370,11 +358,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public PaintAction getAfterPaintAction()
   {
     return afterPaintAction;
-  }
-
-  public LinkedList<Painter> getPainters()
-  {
-    return painters;
   }
 
   @Override

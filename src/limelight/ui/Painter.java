@@ -3,24 +3,11 @@
 
 package limelight.ui;
 
-import limelight.styles.Style;
-
 import java.awt.*;
 
 public abstract class Painter
 {
-  protected PaintablePanel panel;
-
-  protected Painter(PaintablePanel panel)
-  {
-    this.panel = panel;
-  }
-
-  protected Painter()
-  {
-  }
-
-  public abstract void paint(Graphics2D graphics);
+  public abstract void paint(Graphics2D graphics, PaintablePanel panel);
 
   protected int resolveInt(String value)
 	{
@@ -34,8 +21,4 @@ public abstract class Painter
 		}
 	}
 
-  protected Style getStyle()
-  {
-    return panel.getStyle();
-  }
 }

@@ -8,8 +8,6 @@ import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.ui.painting.BorderPainter;
-import limelight.ui.painting.BackgroundPainter;
 import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
@@ -18,7 +16,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import javax.swing.*;
-import java.util.LinkedList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
@@ -79,16 +76,6 @@ public class PropPanelTest extends Assert
   {
     assertSame(prop, panel.getProp());
     assertEquals(TempTextAccessor.class, panel.getTextAccessor().getClass());
-  }
-
-  @Test
-  public void shouldPainters() throws Exception
-  {
-    LinkedList<Painter> painters = panel.getPainters();
-
-    assertEquals(2, painters.size());
-    assertEquals(BackgroundPainter.class, painters.get(0).getClass());
-    assertEquals(BorderPainter.class, painters.get(1).getClass());
   }
 
   @Test

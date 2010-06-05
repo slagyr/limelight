@@ -22,12 +22,13 @@ public class BackgroundPainterTest extends TestCase
   private Style style;
   private BackgroundPainter painter;
   private MockGraphics graphics;
+  private MockPropablePanel panel;
 
   public void setUp() throws Exception
   {
-    MockPropablePanel panel = new MockPropablePanel();
+    panel = new MockPropablePanel();
     style = panel.getStyle();
-    painter = new BackgroundPainter(panel);
+    painter = BackgroundPainter.instance;
     graphics = new MockGraphics();
   }
 
@@ -35,7 +36,7 @@ public class BackgroundPainterTest extends TestCase
   {
     style.setBackgroundColor("transparent");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     assertEquals(0, graphics.filledShapes.size());
   }
@@ -49,7 +50,7 @@ public class BackgroundPainterTest extends TestCase
   {
     style.setBackgroundColor("blue");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     assertEquals(1, graphics.filledShapes.size());
     assertEquals(Color.blue, graphics.filledShapes.get(0).color);
@@ -61,7 +62,7 @@ public class BackgroundPainterTest extends TestCase
     style.setBackgroundColor("blue");
     style.setGradient("on");
      
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     assertEquals(1, graphics.filledShapes.size());
     MockGraphics.DrawnShape filledShape = graphics.filledShapes.get(0);
