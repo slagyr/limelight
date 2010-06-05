@@ -16,8 +16,6 @@ that'll teach you everything you need to know to build your own Limelight produc
 Just install Limelight and let'er rip.
 
 == Developing with Limelight
-  jruby -S gem install gemcutter
-  jruby -S gem tumble
   jruby -S gem install limelight
 
   jruby -S limelight create production my_first_production
@@ -35,7 +33,7 @@ Try it out:
 
 == License
 
-Copyright 2008-2009 8th Light, Inc. All Rights Reserved.
+Copyright 2008-2010 8th Light, Inc. All Rights Reserved.
 Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 See license.txt
