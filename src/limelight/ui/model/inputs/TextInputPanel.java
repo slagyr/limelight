@@ -151,7 +151,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void keyPressed(KeyEvent e)
   {
     int processorIndex = calculateKeyProcessorIndex(e);
-    keyProcessors.get(processorIndex).processKey(e);
+    keyProcessors.get(processorIndex).processKey(e, boxInfo);
     lastKeyPressed = e.getKeyCode();
     cursorOn = true;
     markAsDirty(); //TODO shouldRelyOn keyProcessor to markAsDirty
@@ -227,8 +227,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public abstract void initKeyProcessors();
 
   public abstract void paintOn(Graphics2D graphics);
-
-  public abstract boolean isTextMaxed();
 
   public int getLastKeyPressed()
   {

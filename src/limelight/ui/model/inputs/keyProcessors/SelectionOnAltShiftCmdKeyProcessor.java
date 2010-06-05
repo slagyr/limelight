@@ -10,12 +10,9 @@ import java.awt.event.KeyEvent;
 
 public class SelectionOnAltShiftCmdKeyProcessor extends KeyProcessor
 {
-  public SelectionOnAltShiftCmdKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new SelectionOnAltShiftCmdKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
   }
 }

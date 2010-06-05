@@ -10,22 +10,19 @@ import java.awt.event.KeyEvent;
 
 public class ExpandedSelectionOnShiftKeyProcessor extends KeyProcessor
 {
-  public ExpandedSelectionOnShiftKeyProcessor(TextModel modelInfo)
-  {
-    super(modelInfo);
-  }
+  public static KeyProcessor instance = new ExpandedSelectionOnShiftKeyProcessor();
 
   @Override
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
-    KeyProcessor basicSelectionShiftProcessor = new SelectionOnShiftKeyProcessor(modelInfo);
+    KeyProcessor basicSelectionShiftProcessor = SelectionOnShiftKeyProcessor.instance;
     int keyCode = event.getKeyCode();
 
-    if(modelInfo.isMoveUpEvent(keyCode))
-      modelInfo.moveCursorUpALine();
-    else if(modelInfo.isMoveDownEvent(keyCode))
-      modelInfo.moveCursorDownALine();
+    if(boxInfo.isMoveUpEvent(keyCode))
+      boxInfo.moveCursorUpALine();
+    else if(boxInfo.isMoveDownEvent(keyCode))
+      boxInfo.moveCursorDownALine();
     else
-      basicSelectionShiftProcessor.processKey(event);
+      basicSelectionShiftProcessor.processKey(event, boxInfo);
   }
 }

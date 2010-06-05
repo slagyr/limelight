@@ -10,26 +10,23 @@ import java.awt.event.KeyEvent;
 
 public class AltShiftKeyProcessor extends KeyProcessor
 {
-  public AltShiftKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new AltShiftKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     int keyCode = event.getKeyCode();
 
     if (isACharacter(keyCode))
     {
-      modelInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertCharIntoTextBox(event.getKeyChar());
     }
-    else if(modelInfo.isMoveRightEvent(keyCode)){
-      modelInfo.initSelection();
-      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheRight());
+    else if(boxInfo.isMoveRightEvent(keyCode)){
+      boxInfo.initSelection();
+      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheRight());
     }
-    else if(modelInfo.isMoveLeftEvent(keyCode)){
-      modelInfo.initSelection();
-      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheLeft());
+    else if(boxInfo.isMoveLeftEvent(keyCode)){
+      boxInfo.initSelection();
+      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheLeft());
     }
   }
 }

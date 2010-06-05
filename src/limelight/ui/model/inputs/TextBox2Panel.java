@@ -39,33 +39,27 @@ public class TextBox2Panel extends TextInputPanel
 
   public void initKeyProcessors()
   {
-    keyProcessors.add(0, new NormalKeyProcessor(boxInfo));
-    keyProcessors.add(1, new CmdKeyProcessor(boxInfo));
-    keyProcessors.add(2, new ShiftKeyProcessor(boxInfo));
-    keyProcessors.add(3, new ShiftCmdKeyProcessor(boxInfo));
-    keyProcessors.add(4, new AltKeyProcessor(boxInfo));
-    keyProcessors.add(5, new AltCmdKeyProcessor(boxInfo));
-    keyProcessors.add(6, new AltShiftKeyProcessor(boxInfo));
-    keyProcessors.add(7, new AltShiftCmdKeyProcessor(boxInfo));
-    keyProcessors.add(8, new SelectionOnKeyProcessor(boxInfo));
-    keyProcessors.add(9, new SelectionOnCmdKeyProcessor(boxInfo));
-    keyProcessors.add(10, new SelectionOnShiftKeyProcessor(boxInfo));
-    keyProcessors.add(11, new SelectionOnShiftCmdKeyProcessor(boxInfo));
-    keyProcessors.add(12, new SelectionOnAltKeyProcessor(boxInfo));
-    keyProcessors.add(13, new SelectionOnAltCmdKeyProcessor(boxInfo));
-    keyProcessors.add(14, new SelectionOnAltShiftKeyProcessor(boxInfo));
-    keyProcessors.add(15, new SelectionOnAltShiftCmdKeyProcessor(boxInfo));
+    keyProcessors.add(0, NormalKeyProcessor.instance);
+    keyProcessors.add(1, CmdKeyProcessor.instance);
+    keyProcessors.add(2, ShiftKeyProcessor.instance);
+    keyProcessors.add(3, ShiftCmdKeyProcessor.instance);
+    keyProcessors.add(4, AltKeyProcessor.instance);
+    keyProcessors.add(5, AltCmdKeyProcessor.instance);
+    keyProcessors.add(6, AltShiftKeyProcessor.instance);
+    keyProcessors.add(7, AltShiftCmdKeyProcessor.instance);
+    keyProcessors.add(8, SelectionOnKeyProcessor.instance);
+    keyProcessors.add(9, SelectionOnCmdKeyProcessor.instance);
+    keyProcessors.add(10, SelectionOnShiftKeyProcessor.instance);
+    keyProcessors.add(11, SelectionOnShiftCmdKeyProcessor.instance);
+    keyProcessors.add(12, SelectionOnAltKeyProcessor.instance);
+    keyProcessors.add(13, SelectionOnAltCmdKeyProcessor.instance);
+    keyProcessors.add(14, SelectionOnAltShiftKeyProcessor.instance);
+    keyProcessors.add(15, SelectionOnAltShiftCmdKeyProcessor.instance);
   }
 
   public void paintOn(Graphics2D graphics)
   {
     painterComposite.paint(graphics);
-  }
-
-  //TODO Delete me?
-  public boolean isTextMaxed()
-  {
-    return boxInfo.isBoxFull();
   }
 
 

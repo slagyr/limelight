@@ -10,23 +10,19 @@ import java.awt.event.KeyEvent;
 
 public class NormalKeyProcessor extends KeyProcessor
 {
+  public static KeyProcessor instance = new NormalKeyProcessor();
 
-  public NormalKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
-
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     int keyCode = event.getKeyCode();
     if (isACharacter(keyCode))
-      modelInfo.insertCharIntoTextBox(event.getKeyChar());
-    else if (modelInfo.isMoveRightEvent(keyCode))
-      modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
-    else if (modelInfo.isMoveLeftEvent(keyCode))
-      modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
-    else if (keyCode == KeyEvent.VK_BACK_SPACE && modelInfo.getCursorIndex() > 0)
-      modelInfo.deleteEnclosedText(modelInfo.getCursorIndex() -1, modelInfo.getCursorIndex());
+      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+    else if (boxInfo.isMoveRightEvent(keyCode))
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
+    else if (boxInfo.isMoveLeftEvent(keyCode))
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
+    else if (keyCode == KeyEvent.VK_BACK_SPACE && boxInfo.getCursorIndex() > 0)
+      boxInfo.deleteEnclosedText(boxInfo.getCursorIndex() -1, boxInfo.getCursorIndex());
   }
 
 }

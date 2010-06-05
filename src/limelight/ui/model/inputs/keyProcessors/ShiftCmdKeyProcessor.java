@@ -10,32 +10,29 @@ import java.awt.event.KeyEvent;
 
 public class ShiftCmdKeyProcessor extends KeyProcessor
 {
-  public ShiftCmdKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new ShiftCmdKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     int keyCode = event.getKeyCode();
 
-    if(modelInfo.isMoveRightEvent(keyCode)){
-      modelInfo.initSelection();
-      modelInfo.sendCursorToEndOfLine();
+    if(boxInfo.isMoveRightEvent(keyCode)){
+      boxInfo.initSelection();
+      boxInfo.sendCursorToEndOfLine();
     }
-    else if(modelInfo.isMoveLeftEvent(keyCode)){
-      modelInfo.initSelection();
-      modelInfo.sendCursorToStartOfLine();
+    else if(boxInfo.isMoveLeftEvent(keyCode)){
+      boxInfo.initSelection();
+      boxInfo.sendCursorToStartOfLine();
     }
     else if(keyCode == KeyEvent.VK_UP)
     {
-      modelInfo.initSelection();
-      modelInfo.setCursorIndex(0);
+      boxInfo.initSelection();
+      boxInfo.setCursorIndex(0);
     }
     else if(keyCode == KeyEvent.VK_DOWN)
     {
-      modelInfo.initSelection();
-      modelInfo.setCursorIndex(modelInfo.getText().length());
+      boxInfo.initSelection();
+      boxInfo.setCursorIndex(boxInfo.getText().length());
     }
   }
 

@@ -4,20 +4,20 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
+import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 
 public class TextInputPanelTest extends Assert
 {
   TextInputPanel panel;
-  PropPanel parent;
+  Panel parent;
   MockGraphics graphics;
   TextModel boxInfo;
 
@@ -25,14 +25,14 @@ public class TextInputPanelTest extends Assert
   {
     public MockFocusEvent()
     {
-      super(new Panel(), 1);
+      super(new java.awt.Panel(), 1);
     }
   }
 
   @Before
   public void setUp()
   {
-    panel = new TextBox2Panel();
+    panel = new MockTextInputPanel();
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     graphics = new MockGraphics();
@@ -41,12 +41,17 @@ public class TextInputPanelTest extends Assert
   }
 
   @Test
+  public void shouldDefaultLayout() throws Exception
+  {
+    assertSame(TextInputPanelLayout.instance, panel.getDefaultLayout());
+  }
+
+  @Test
   public void canGainFocus()
   {
     panel.focusGained(new MockFocusEvent());
     assertEquals(true, panel.focused);
     assertEquals(true, panel.cursorThread.isAlive());
-    panel.focused = false;
   }
 
   @Test
@@ -59,19 +64,11 @@ public class TextInputPanelTest extends Assert
     assertEquals(true, panel.cursorThread.isAlive());
   }
 
-  @Test
-  public void canTellIfTextMaxesOutTextArea()
-  {
-    boxInfo.setText("This Text is tooooo much text to fit inside the normal textbox");
-
-    assertEquals(true, panel.isTextMaxed());
-  }
-
   public static class MockKeyEvent extends KeyEvent
   {
     public MockKeyEvent(int modifiers, int keyCode)
     {
-      super(new Panel(), 1, 123456789l, modifiers, keyCode, ' ');
+      super(new java.awt.Panel(), 1, 123456789l, modifiers, keyCode, ' ');
     }
   }
 
@@ -82,12 +79,6 @@ public class TextInputPanelTest extends Assert
     panel.keyPressed(event);
 
     assertEquals(10, panel.getLastKeyPressed());
-  }
-
-  @Test
-  public void shouldHaveDefaultLayout() throws Exception
-  {
-    assertEquals(InputPanelLayout.instance, panel.getDefaultLayout());
   }
   
   @Test

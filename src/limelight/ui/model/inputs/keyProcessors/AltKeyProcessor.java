@@ -10,21 +10,18 @@ import java.awt.event.KeyEvent;
 
 public class AltKeyProcessor extends KeyProcessor
 {
-  public AltKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new AltKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     int keyCode = event.getKeyCode();
     if (isACharacter(keyCode))
-      modelInfo.insertCharIntoTextBox(event.getKeyChar());
-    else if(modelInfo.isMoveRightEvent(keyCode)){
-      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheRight());
+      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+    else if(boxInfo.isMoveRightEvent(keyCode)){
+      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheRight());
     }
-    else if(modelInfo.isMoveLeftEvent(keyCode)){
-      modelInfo.setCursorIndex(modelInfo.findNearestWordToTheLeft());
+    else if(boxInfo.isMoveLeftEvent(keyCode)){
+      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheLeft());
     }
   }
 

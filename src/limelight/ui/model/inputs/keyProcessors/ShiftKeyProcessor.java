@@ -10,24 +10,21 @@ import java.awt.event.KeyEvent;
 
 public class ShiftKeyProcessor extends KeyProcessor
 {
-  public ShiftKeyProcessor(TextModel boxInfo)
-  {
-    super(boxInfo);
-  }
+  public static KeyProcessor instance = new ShiftKeyProcessor();
 
-  public void processKey(KeyEvent event)
+  public void processKey(KeyEvent event, TextModel boxInfo)
   {
     int keyCode = event.getKeyCode();
     
     if (isACharacter(keyCode))
-      modelInfo.insertCharIntoTextBox(event.getKeyChar());
-    else if(modelInfo.isMoveRightEvent(keyCode)){
-      modelInfo.initSelection();
-      modelInfo.setCursorIndex(modelInfo.getCursorIndex() + 1);
+      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+    else if(boxInfo.isMoveRightEvent(keyCode)){
+      boxInfo.initSelection();
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
     }
-    else if(modelInfo.isMoveLeftEvent(keyCode)){
-      modelInfo.initSelection();
-      modelInfo.setCursorIndex(modelInfo.getCursorIndex() - 1);
+    else if(boxInfo.isMoveLeftEvent(keyCode)){
+      boxInfo.initSelection();
+      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
     }
   }
 }
