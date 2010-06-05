@@ -4,13 +4,10 @@
 package limelight.ui.painting;
 
 import junit.framework.TestCase;
-import limelight.styles.FlatStyle;
 import limelight.styles.Style;
 import limelight.ui.MockGraphics;
 import limelight.ui.model.MockPropablePanel;
-import limelight.ui.api.MockProp;
 import limelight.util.Box;
-import limelight.util.Colors;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
@@ -30,13 +27,13 @@ public class BorderPainterTest extends TestCase
     style = panel.getStyle();
     border = new Box(5, 5, 100, 100);
     panel.boxInsideMargins = border;
-    painter = new BorderPainter(panel);
+    painter = BorderPainter.instance;
     graphics = new MockGraphics();
   }
 
   public void testNoBorder() throws Exception
   {
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
     assertEquals(0, graphics.drawnShapes.size());
   }
 
@@ -45,7 +42,7 @@ public class BorderPainterTest extends TestCase
     style.setBorderColor("blue");
     style.setBorderWidth("1");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     assertEquals(4, graphics.drawnShapes.size());
 
@@ -62,7 +59,7 @@ public class BorderPainterTest extends TestCase
     style.setBorderWidth("4");
     style.setBorderColor("blue");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     checkLine(graphics.drawnShapes.get(0), 4, Color.blue, 2, 2, 98, 2);
     checkLine(graphics.drawnShapes.get(1), 4, Color.blue, 98, 2, 98, 198);
@@ -77,7 +74,7 @@ public class BorderPainterTest extends TestCase
     style.setBorderWidth("5");
     style.setBorderColor("blue");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     checkLine(graphics.drawnShapes.get(0), 5, Color.blue, 2, 2, 97, 2);
     checkLine(graphics.drawnShapes.get(1), 5, Color.blue, 97, 2, 97, 197);
@@ -90,7 +87,7 @@ public class BorderPainterTest extends TestCase
     style.setBorderColor("blue");
     style.setBorderWidth("2");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     assertEquals(4, graphics.drawnShapes.size());
 
@@ -111,7 +108,7 @@ public class BorderPainterTest extends TestCase
     style.setLeftBorderColor("Black");
     style.setLeftBorderWidth("4");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     assertEquals(4, graphics.drawnShapes.size());
 
@@ -127,7 +124,7 @@ public class BorderPainterTest extends TestCase
     style.setBorderColor("blue");
     style.setRoundedCornerRadius("10");
 
-    painter.paint(graphics);
+    painter.paint(graphics, panel);
 
     assertEquals(8, graphics.drawnShapes.size());
     assertEquals(Line2D.Double.class, graphics.drawnShape(0).shape.getClass());

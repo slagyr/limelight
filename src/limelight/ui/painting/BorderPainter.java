@@ -10,14 +10,15 @@ import java.awt.*;
 
 public class BorderPainter extends Painter
 {
-  public BorderPainter(PaintablePanel panel)
+  public static BorderPainter instance = new BorderPainter();
+
+  private BorderPainter()
   {
-    super(panel);
   }
 
-  public void paint(Graphics2D graphics)
+  public void paint(Graphics2D graphics, PaintablePanel panel)
   {
-    Style style = getStyle();
+    Style style = panel.getStyle();
     Pen pen = new Pen(graphics);
     Border border = panel.getBorderShaper();
 

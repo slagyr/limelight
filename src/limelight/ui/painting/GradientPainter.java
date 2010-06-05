@@ -5,21 +5,21 @@ package limelight.ui.painting;
 
 import limelight.ui.*;
 import limelight.styles.Style;
-import limelight.util.Colors;
 import limelight.util.Box;
 
 import java.awt.*;
 
 public class GradientPainter extends Painter
 {
-  public GradientPainter(PaintablePanel panel)
+  public static GradientPainter instance = new GradientPainter();
+
+  private GradientPainter()
   {
-    super(panel);
   }
 
-  public void paint(Graphics2D graphics)
+  public void paint(Graphics2D graphics, PaintablePanel panel)
   {
-    Style style = getStyle();
+    Style style = panel.getStyle();
     Box r = panel.getBoxInsideBorders();
     Color color1 = style.getCompiledBackgroundColor().getColor();
     Color color2 = style.getCompiledSecondaryBackgroundColor().getColor();

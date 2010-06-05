@@ -17,21 +17,22 @@ import java.io.IOException;
 
 public class BackgroundPainter extends Painter
 {
-  public BackgroundPainter(PaintablePanel panel)
+  public static BackgroundPainter instance = new BackgroundPainter();
+
+  private BackgroundPainter()
   {
-    super(panel);
   }
 
-  public void paint(Graphics2D graphics)
+  public void paint(Graphics2D graphics, PaintablePanel panel)
   {
-    Style style = getStyle();
+    Style style = panel.getStyle();
     Border border = panel.getBorderShaper();
     Shape insideBorder = border.getShapeInsideBorder();
 
     Color backgroundColor = style.getCompiledBackgroundColor().getColor();
 
     if(style.getCompiledGradient().isOn())
-      new GradientPainter(panel).paint(graphics);
+      GradientPainter.instance.paint(graphics, panel);
     else
     {
       if(backgroundColor.getAlpha() > 0)
