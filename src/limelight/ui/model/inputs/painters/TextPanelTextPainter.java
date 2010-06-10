@@ -21,26 +21,23 @@ public class TextPanelTextPainter extends TextPanelPainter
   @Override
   public void paint(Graphics2D graphics, TextModel boxInfo)
   {
-    Dimension textDimensions;
-    if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
+    if(boxInfo.getText() == null || boxInfo.getText().length() == 0)
+      return;
+
+    boxInfo.shiftOffset(boxInfo.getCursorIndex());
+
+    Box box = new Box(0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
+    Dimension textDimensions = boxInfo.calculateTextDimensions();
+    float textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width, box) - boxInfo.getXOffset();
+    float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box) - boxInfo.calculateYOffset();
+
+    graphics.setColor(boxInfo.getPanel().getStyle().getCompiledTextColor().getColor());
+    for(TypedLayout layout : boxInfo.getTextLayouts())
     {
-      textDimensions = boxInfo.calculateTextDimensions();
-      Box box = new Box(TextModel.SIDE_TEXT_MARGIN, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
+      textY += layout.getAscent();
+      layout.draw(graphics, textX, textY + 1);
+      textY += layout.getDescent() + layout.getLeading();
 
-      boxInfo.shiftOffset(boxInfo.getCursorIndex());
-      boxInfo.getYPosFromIndex(boxInfo.getCursorIndex());
-
-      int textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width, box) - boxInfo.getXOffset();
-
-      float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box) - boxInfo.calculateYOffset();
-
-
-      graphics.setColor(boxInfo.getPanel().getStyle().getCompiledTextColor().getColor());
-      for (TypedLayout layout : boxInfo.getTextLayouts()){
-        textY += layout.getAscent();
-        layout.draw(graphics, textX, textY + 1);
-        textY += layout.getDescent() + layout.getLeading();
-      }
     }
   }
 }

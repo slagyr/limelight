@@ -31,6 +31,7 @@ public class TextArea2Panel extends TextInputPanel
   {
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 75);
+    setBorderStyleDefaults(style);
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)

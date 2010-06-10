@@ -149,6 +149,11 @@ public abstract class AwtInputPanel extends BasePanel implements InputPanel
       mouseListener.mouseDragged(e);
   }
 
+  public boolean hasFocus()
+  {
+    return component.hasFocus();
+  }
+
   private static class InputPanelKeyListener implements KeyListener
   {
     private final AwtInputPanel panel;

@@ -34,6 +34,10 @@ public class TextArea2PanelTest extends Assert
   {
     assertEquals("150", panel.getStyle().getWidth());
     assertEquals("75", panel.getStyle().getHeight());
+    assertEquals("4", panel.getStyle().getTopBorderWidth());
+    assertEquals("4", panel.getStyle().getRightBorderWidth());
+    assertEquals("4", panel.getStyle().getBottomBorderWidth());
+    assertEquals("4", panel.getStyle().getLeftBorderWidth());
   }
   
   @Test

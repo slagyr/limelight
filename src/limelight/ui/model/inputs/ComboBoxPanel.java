@@ -77,6 +77,11 @@ public class ComboBoxPanel extends AwtInputPanel
     {
       comboBox.getComboBoxPanel().markAsNeedingLayout();
     }
+
+    public boolean hasFocus()
+    {
+      return comboBox.hasFocus();
+    }
   }
 
   private class ComboBoxPanelItemListener implements ItemListener

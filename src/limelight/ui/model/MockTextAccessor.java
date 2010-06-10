@@ -23,4 +23,9 @@ public class MockTextAccessor implements TextAccessor
   {
     markAsNeedingLayoutCalled = true;
   }
+
+  public boolean hasFocus()
+  {
+    return false;
+  }
 }

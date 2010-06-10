@@ -7,7 +7,6 @@ import limelight.Context;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.InputPanel;
 import limelight.ui.api.Stage;
 
 import javax.swing.*;
@@ -272,7 +271,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void keyPressed(KeyEvent e)
   {
-    InputPanel input = Context.instance().keyboardFocusManager.getFocusedPanel();
+    Panel input = Context.instance().keyboardFocusManager.getFocusedPanel();
     if (input != null)
       input.keyPressed(e);
     else
@@ -284,7 +283,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
 
   public void keyReleased(KeyEvent e)
   {
-    InputPanel input = Context.instance().keyboardFocusManager.getFocusedPanel();
+    Panel input = Context.instance().keyboardFocusManager.getFocusedPanel();
     if (input != null)
       input.keyReleased(e);
     else

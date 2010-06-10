@@ -83,4 +83,6 @@ public interface Panel extends Iterable<Panel>
   boolean isIlluminated();
   void illuminate();
   void delluminate();
+
+  boolean hasFocus();
 }

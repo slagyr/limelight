@@ -15,9 +15,9 @@ import limelight.util.Box;
 import java.awt.*;
 import java.io.IOException;
 
-public class BackgroundPainter extends Painter
+public class BackgroundPainter implements Painter
 {
-  public static BackgroundPainter instance = new BackgroundPainter();
+  public static Painter instance = new BackgroundPainter();
 
   private BackgroundPainter()
   {

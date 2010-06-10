@@ -54,7 +54,7 @@ public class MouseProcessor
       return 0;
     int layoutIndex = 0;
     int charCount = 0;
-    int layoutYPosition = boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex) + TextModel.TOP_MARGIN;
+    int layoutYPosition = boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     while (notPastTheLastLayout(y,layoutIndex, layoutYPosition))
     {
       charCount += layouts.get(layoutIndex).getText().length();

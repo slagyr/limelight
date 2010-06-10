@@ -8,13 +8,11 @@ import limelight.LimelightError;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.ui.painting.BackgroundPainter;
-import limelight.ui.painting.Border;
-import limelight.ui.painting.BorderPainter;
-import limelight.ui.painting.PaintAction;
+import limelight.ui.painting.*;
 import limelight.util.Box;
 import limelight.util.Util;
 
@@ -40,6 +38,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private boolean sizeChangePending = true;
   public boolean borderChanged = true;
   public Dimension greediness = new Dimension(0, 0);
+  private Painter painter = DefaultPainter.instance;
 
   public PropPanel(Prop prop)
   {
@@ -173,8 +172,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     if(!laidOut)
       return;
 
-    BackgroundPainter.instance.paint(graphics, this);
-    BorderPainter.instance.paint(graphics, this);
+    painter.paint(graphics, this);
 
     if(afterPaintAction != null)
     {
@@ -518,6 +516,22 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     style.tearDown();
     hoverStyle.tearDown();
     super.delluminate();
+  }
+
+  public void setPainter(Painter instance)
+  {
+    painter = instance;
+  }
+
+  public Painter getPainter()
+  {
+    return painter;
+  }
+
+  @Override
+  public boolean hasFocus()
+  {
+    return textAccessor.hasFocus();
   }
 }
 

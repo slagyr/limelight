@@ -4,20 +4,23 @@
 package limelight.ui.model.inputs.painters;
 
 import com.android.ninepatch.NinePatch;
+import limelight.Context;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
 import limelight.ui.model.Drawable;
-import limelight.ui.model.inputs.TextModel;
-import limelight.ui.model.inputs.TextPanelPainter;
+import limelight.ui.model.PropPanel;
+import limelight.util.Box;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 
-public class TextPanelBackgroundPainter extends TextPanelPainter
+public class TextPanelBorderPainter implements Painter
 {
   public static Drawable normalBorder;
   public static Drawable focusedBorder;
 
-  public static TextPanelPainter instance = new TextPanelBackgroundPainter();
+  public static Painter instance = new TextPanelBorderPainter();
 
   static
   {
@@ -32,15 +35,15 @@ public class TextPanelBackgroundPainter extends TextPanelPainter
     }
   }
 
-  private TextPanelBackgroundPainter()
+  private TextPanelBorderPainter()
   {
   }
 
-  public void paint(Graphics2D graphics, TextModel boxInfo)
+  public void paint(Graphics2D graphics, PaintablePanel panel)
   {
-    Dimension dimension = new Dimension(boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
-    normalBorder.draw(graphics, 0, 0, dimension.width, dimension.height);
-    if(boxInfo.isFocused())
-      focusedBorder.draw(graphics, 0, 0, dimension.width, dimension.height);
+    Box bounds = panel.getBoxInsideMargins();
+    normalBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
+    if(panel.hasFocus())
+      focusedBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
   }
 }

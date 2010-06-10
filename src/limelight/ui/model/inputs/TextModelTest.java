@@ -10,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class TextModelTest
 {
@@ -75,11 +73,11 @@ public class TextModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    assertEquals(TextModel.SIDE_TEXT_MARGIN, model.getXPosFromIndex(0));
-    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("B"), model.getXPosFromIndex(1));
-    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("Bo"), model.getXPosFromIndex(2));
-    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("Bob"), model.getXPosFromIndex(3));
-    assertEquals(TextModel.SIDE_TEXT_MARGIN + widthOf("Bob") + model.spaceWidth(), model.getXPosFromIndex(4));
+    assertEquals(0, model.getXPosFromIndex(0));
+    assertEquals(widthOf("B"), model.getXPosFromIndex(1));
+    assertEquals(widthOf("Bo"), model.getXPosFromIndex(2));
+    assertEquals(widthOf("Bob"), model.getXPosFromIndex(3));
+    assertEquals(widthOf("Bob") + model.spaceWidth(), model.getXPosFromIndex(4));
   }
 
   private int widthOf(String text)
@@ -90,9 +88,7 @@ public class TextModelTest
   @Test
   public void canCalculateTheYPositionFromAnIndex()
   {
-    int expectedY = TextModel.TOP_MARGIN;
-
-    assertEquals(expectedY, model.getYPosFromIndex(0));
+    assertEquals(0, model.getYPosFromIndex(0));
   }
 
   @Test

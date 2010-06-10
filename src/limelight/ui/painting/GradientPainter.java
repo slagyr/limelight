@@ -9,7 +9,7 @@ import limelight.util.Box;
 
 import java.awt.*;
 
-public class GradientPainter extends Painter
+public class GradientPainter implements Painter
 {
   public static GradientPainter instance = new GradientPainter();
 

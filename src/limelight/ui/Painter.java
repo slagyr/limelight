@@ -5,20 +5,7 @@ package limelight.ui;
 
 import java.awt.*;
 
-public abstract class Painter
+public interface Painter
 {
-  public abstract void paint(Graphics2D graphics, PaintablePanel panel);
-
-  protected int resolveInt(String value)
-	{
-		try
-		{
-			return Integer.parseInt(value);
-		}
-		catch(NumberFormatException e)
-		{
-			return 0;
-		}
-	}
-
+  void paint(Graphics2D graphics, PaintablePanel panel);
 }

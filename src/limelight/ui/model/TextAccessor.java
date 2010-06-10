@@ -9,4 +9,5 @@ public interface TextAccessor
   String getText();
   void markAsDirty();
   void markAsNeedingLayout();
+  boolean hasFocus();
 }
