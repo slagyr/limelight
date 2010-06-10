@@ -47,4 +47,9 @@ public class TempTextAccessor implements TextAccessor
   public void markAsNeedingLayout()
   {
   }
+
+  public boolean hasFocus()
+  {
+    return false;
+  }
 }

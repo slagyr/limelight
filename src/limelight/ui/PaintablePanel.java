@@ -3,19 +3,20 @@
 
 package limelight.ui;
 
-import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.painting.Border;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
 
-public interface PaintablePanel
+public interface PaintablePanel extends Panel
 {
-  Style getStyle();
+  ScreenableStyle getStyle();
 
   Border getBorderShaper();
 
   Box getBoxInsideBorders();
 
-  Prop getProp();
+  Box getBoxInsideMargins();
 
+  Prop getProp();
 }

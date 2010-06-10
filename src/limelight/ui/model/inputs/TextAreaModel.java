@@ -26,7 +26,7 @@ public class TextAreaModel extends TextModel
   public TextAreaModel(TextInputPanel myAreaPanel)
   {
     super(myAreaPanel);
-    setYOffset(-TOP_MARGIN);
+    setYOffset(0);
   }
 
   @Override
@@ -37,9 +37,9 @@ public class TextAreaModel extends TextModel
   protected int getXPosFromText(String toIndexString)
   {
     TypedLayout layout = new TextLayoutImpl(toIndexString, getFont(), TextPanel.getRenderContext());
-    int x = getWidthDimension(layout) + SIDE_TEXT_MARGIN;
-    if (x < SIDE_TEXT_MARGIN)
-      x = SIDE_TEXT_MARGIN;
+    int x = getWidthDimension(layout);
+    if (x < 0)
+      x = 0;
     return x;
   }
 
@@ -98,7 +98,7 @@ public class TextAreaModel extends TextModel
     int cursorX = getXPosFromIndex(getCursorIndex());
     int selectionX = getXPosFromIndex(getSelectionIndex());
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);    
-    int yPos = getYPosFromIndex(getCursorIndex()) - TOP_MARGIN - calculateYOffset();
+    int yPos = getYPosFromIndex(getCursorIndex()) - calculateYOffset();
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>() ;
     if (getCursorIndex() > getSelectionIndex())
       regions.add(new Box(selectionX , yPos, cursorX - selectionX, lineHeight));
@@ -112,14 +112,14 @@ public class TextAreaModel extends TextModel
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     int yPos = lineHeight * startingLine - calculateYOffset();
-    regions.add(new Box(startingX, yPos, myPanel.getWidth() - startingX - SIDE_TEXT_MARGIN, lineHeight));
+    regions.add(new Box(startingX, yPos, myPanel.getWidth() - startingX, lineHeight));
     yPos += lineHeight;
     for (int i = startingLine + 1; i < endingLine; i++)
     {
-      regions.add(new Box(SIDE_TEXT_MARGIN, yPos, myPanel.getWidth()-SIDE_TEXT_MARGIN * 2, lineHeight));
+      regions.add(new Box(0, yPos, myPanel.getWidth(), lineHeight));
       yPos += lineHeight;
     }
-    regions.add(new Box(SIDE_TEXT_MARGIN, yPos, endingX -SIDE_TEXT_MARGIN , lineHeight));
+    regions.add(new Box(0, yPos, endingX, lineHeight));
     return regions;
   }
 
@@ -127,7 +127,7 @@ public class TextAreaModel extends TextModel
   public boolean isBoxFull()
   {
     if (getText().length() > 0)
-      return (myPanel.getHeight() - TextModel.TOP_MARGIN * 2 <= calculateTextDimensions().height);
+      return (myPanel.getHeight() <= calculateTextDimensions().height);
     return false;
   }
 
@@ -146,7 +146,7 @@ public class TextAreaModel extends TextModel
   @Override
   public int getTopOfStartPositionForCursor()
   {
-    return getYPosFromIndex(getCursorIndex()) - calculateYOffset() - TOP_MARGIN;
+    return getYPosFromIndex(getCursorIndex()) - calculateYOffset();
   }
 
   @Override
@@ -185,7 +185,7 @@ public class TextAreaModel extends TextModel
 
     while((yPos + lineHeight) > yOffset + panelHeight)
       yOffset += lineHeight;
-    return yOffset - TextModel.TOP_MARGIN;
+    return yOffset;
   }
 
   @Override
@@ -238,9 +238,9 @@ public class TextAreaModel extends TextModel
   {
     TextLayout layout;
     if (thereAreMoreReturnCharacters(returnCharIndex))
-      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_TEXT_MARGIN * 2, newLineCharIndices.get(returnCharIndex) + 1, false);
+      layout = breaker.nextLayout(myPanel.getWidth(), newLineCharIndices.get(returnCharIndex) + 1, false);
     else
-      layout = breaker.nextLayout(myPanel.getWidth() - SIDE_TEXT_MARGIN * 2);
+      layout = breaker.nextLayout(myPanel.getWidth());
     return layout;
   }
 

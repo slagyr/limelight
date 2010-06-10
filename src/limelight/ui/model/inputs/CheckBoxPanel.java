@@ -62,5 +62,10 @@ public class CheckBoxPanel extends AwtInputPanel
     {
       checkBox.getCheckBoxPanel().markAsNeedingLayout();
     }
+
+    public boolean hasFocus()
+    {
+      return checkBox.hasFocus();
+    }
   }
 }

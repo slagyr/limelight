@@ -3,6 +3,7 @@ package limelight.ui.model.inputs.painters;
 import limelight.ui.MockTextLayout;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
+import limelight.util.Colors;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,5 +59,15 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
     painter.paint(graphics, boxInfo);
 
     assertEquals(Color.black, graphics.color);
+  }
+
+  @Test
+  public void shouldColorOfText() throws Exception
+  {
+    parent.getStyle().setTextColor("red");
+
+    painter.paint(graphics, boxInfo);
+
+    assertEquals(Colors.resolve("red"), graphics.color);
   }
 }

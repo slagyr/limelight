@@ -19,10 +19,7 @@ import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
 {
-  public static final int SIDE_TEXT_MARGIN = 6;
-  public static final int SIDE_DETECTION_MARGIN = SIDE_TEXT_MARGIN + 1;
-  public static final int TOP_MARGIN = 7;
-  public static final int BOTTOM_MARGIN = 7;
+  public static final int PIXEL_WIDTH = 1;
 
   protected TextInputPanel myPanel;
   protected ArrayList<TypedLayout> textLayouts;
@@ -65,7 +62,7 @@ public abstract class TextModel implements ClipboardOwner
   public TextModel(TextInputPanel panel)
   {
     this.myPanel = panel;
-    cursorX = SIDE_TEXT_MARGIN;
+    cursorX = 0;
     selectionOn = false;
     selectionStartX = 0;
     cursorIndex = 0;
@@ -91,17 +88,17 @@ public abstract class TextModel implements ClipboardOwner
   public int getXPosFromIndex(int index)
   {
     if(text == null || text.length() == 0)
-      return SIDE_TEXT_MARGIN;
+      return 0;
     int lineNumber = getLineNumberOfIndex(index);
     int startOfLineIndex = 0;
     for(int i = 0; i < lineNumber; i++)
       startOfLineIndex += textLayouts.get(i).getText().length();
     if(index <= 0 || startOfLineIndex == index)
-      return SIDE_TEXT_MARGIN;
+      return 0;
     String toIndexString = text.substring(startOfLineIndex, index);
     int xPos = getXPosFromText(toIndexString) + getTerminatingSpaceWidth(toIndexString);
-    if(xPos < SIDE_TEXT_MARGIN)
-      return SIDE_TEXT_MARGIN;
+    if(xPos < 0)
+      return 0;
     return xPos;
   }
 
@@ -112,7 +109,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getYPosFromIndex(int index)
   {
-    int yPos = TOP_MARGIN;
+    int yPos = 0;
     if(text == null || text.length() == 0)
       return yPos;
     int lineNumber = getLineNumberOfIndex(index);
@@ -499,7 +496,7 @@ public abstract class TextModel implements ClipboardOwner
     }
     else
     {
-      TextHitInfo hitInfo = textLayouts.get(nextLine).hitTestChar(xPos - SIDE_TEXT_MARGIN, 5);
+      TextHitInfo hitInfo = textLayouts.get(nextLine).hitTestChar(xPos, 5);
       newCursorIndex = hitInfo.getInsertionIndex();
       if(newCursorIndex == lineLength && lineText.endsWith("\n"))
         newCursorIndex--;

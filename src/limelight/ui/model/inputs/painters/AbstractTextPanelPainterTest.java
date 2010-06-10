@@ -14,16 +14,17 @@ import java.awt.*;
 
 public class AbstractTextPanelPainterTest
 {
-  static TextPanelPainter painter;
-  static TextModel boxInfo;
-  static TextInputPanel panel;
-  static MockGraphics graphics;
-  static Rectangle testBox;
+  public TextPanelPainter painter;
+  public TextModel boxInfo;
+  public TextInputPanel panel;
+  public MockGraphics graphics;
+  public Rectangle testBox;
+  public MockPanel parent;
 
   protected void testClassInit()
   {
     panel = new TextBox2Panel();
-    MockPanel parent = new MockPanel();
+    parent = new MockPanel();
     parent.add(panel);
     parent.setSize(150, 28);
     panel.doLayout();

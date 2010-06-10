@@ -74,6 +74,11 @@ public class TextAreaPanel extends AwtInputPanel
     {
       textArea.getPanel().markAsNeedingLayout();
     }
+
+    public boolean hasFocus()
+    {
+      return textArea.hasFocus();
+    }
   }
 
   public void mouseEntered(MouseEvent e)

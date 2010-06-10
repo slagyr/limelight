@@ -541,4 +541,9 @@ public abstract class BasePanel implements Panel
     for(Panel child : children)
       child.delluminate();
   }
+
+  public boolean hasFocus()
+  {
+    return false;
+  }
 }

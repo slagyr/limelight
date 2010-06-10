@@ -30,11 +30,16 @@ public class TextBox2Panel extends TextInputPanel
   {
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 28);
+    setBorderStyleDefaults(style);
+
+    style.setDefault(Style.TOP_PADDING, 2);
+    style.setDefault(Style.RIGHT_PADDING, 2);
+    style.setDefault(Style.BOTTOM_PADDING, 2);
+    style.setDefault(Style.LEFT_PADDING, 2);
   }
 
   public void keyReleased(KeyEvent e)
   {
-
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)

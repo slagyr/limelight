@@ -9,10 +9,7 @@ import limelight.styles.Style;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.*;
-import limelight.ui.model.inputs.painters.TextPanelBackgroundPainter;
-import limelight.ui.model.inputs.painters.TextPanelCursorPainter;
-import limelight.ui.model.inputs.painters.TextPanelSelectionPainter;
-import limelight.ui.model.inputs.painters.TextPanelTextPainter;
+import limelight.ui.model.inputs.painters.*;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -49,12 +46,12 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       propPanel.sterilize();
       propPanel.setTextAccessor(this);
       setDefaultStyles(propPanel.getStyle());
+      propPanel.setPainter(TextPanelPropPainter.instance);
     }
   }
   
   public void paintOn(Graphics2D graphics)
   {
-    TextPanelBackgroundPainter.instance.paint(graphics, boxInfo);
     TextPanelSelectionPainter.instance.paint(graphics, boxInfo);
     TextPanelTextPainter.instance.paint(graphics, boxInfo);
     TextPanelCursorPainter.instance.paint(graphics, boxInfo);
@@ -114,6 +111,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     focused = true;
     markAsDirty();
+    getParent().markAsDirty();
     startCursor();
     super.focusGained(e);
   }
@@ -123,6 +121,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     focused = false;
     stopCursor();
     markAsDirty();
+    getParent().markAsDirty();
     super.focusLost(e);
 
   }
@@ -221,5 +220,18 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void setFocused(boolean value)
   {
     focused = value;
+  }
+
+  protected void setBorderStyleDefaults(Style style)
+  {
+    style.setDefault(Style.TOP_BORDER_WIDTH, 4);
+    style.setDefault(Style.RIGHT_BORDER_WIDTH, 4);
+    style.setDefault(Style.BOTTOM_BORDER_WIDTH, 4);
+    style.setDefault(Style.LEFT_BORDER_WIDTH, 4);
+  }
+
+  public boolean hasFocus()
+  {
+    return Context.instance().keyboardFocusManager.getFocusedPanel() == this;
   }
 }

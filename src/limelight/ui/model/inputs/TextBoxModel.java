@@ -25,7 +25,7 @@ public class TextBoxModel extends TextModel
   protected int getXPosFromText(String toIndexString)
   {
     TypedLayout layout = new TextLayoutImpl(toIndexString, getFont(), TextPanel.getRenderContext());
-    return getWidthDimension(layout) + SIDE_TEXT_MARGIN - xOffset;
+    return getWidthDimension(layout) - xOffset;
   }
 
   public void shiftOffset(int index)
@@ -33,7 +33,7 @@ public class TextBoxModel extends TextModel
     int xPos = getXPosFromIndex(index);
     if (index == 0)
     {
-      setCursorX(SIDE_DETECTION_MARGIN);
+      setCursorX(PIXEL_WIDTH);
       xOffset = 0;
     }
     else if (isCriticallyLeft(xPos))
@@ -58,12 +58,12 @@ public class TextBoxModel extends TextModel
 
   private boolean isCriticallyLeft(int xPos)
   {
-    return (xPos <= SIDE_DETECTION_MARGIN && xOffset != 0);
+    return (xPos <= PIXEL_WIDTH && xOffset != 0);
   }
 
   private boolean isCriticallyRight(int xPos)
   {
-    return (xPos >= myPanel.getWidth() - SIDE_DETECTION_MARGIN);
+    return (xPos >= myPanel.getWidth() - PIXEL_WIDTH);
   }
 
   private void calculateRightShiftingOffset()
@@ -81,7 +81,7 @@ public class TextBoxModel extends TextModel
 
   public void calculateLeftShiftingOffset()
   {
-    int defaultOffset = SIDE_TEXT_MARGIN + SIDE_DETECTION_MARGIN;
+    int defaultOffset = PIXEL_WIDTH;
     if (getCursorIndex() == getText().length())
     {
       int textWidth = calculateTextDimensions().width;
@@ -153,13 +153,13 @@ public class TextBoxModel extends TextModel
     int x2 = getXPosFromIndex(getSelectionIndex());
     int edgeSelectionExtension = 0;
 
-    if (x1 <= SIDE_TEXT_MARGIN || x2 <= SIDE_TEXT_MARGIN)
-      edgeSelectionExtension = SIDE_TEXT_MARGIN;
+    if (x1 <= 0 || x2 <= 0)
+      edgeSelectionExtension = 0;
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     if (x1 > x2)
-      regions.add(new Box(x2 - edgeSelectionExtension, TOP_MARGIN, x1 - x2 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2));
+      regions.add(new Box(x2 - edgeSelectionExtension, 0, x1 - x2 + edgeSelectionExtension, getPanelHeight() * 2));
     else
-      regions.add(new Box(x1 - edgeSelectionExtension, TOP_MARGIN, x2 - x1 + edgeSelectionExtension, getPanelHeight() - TOP_MARGIN * 2));
+      regions.add(new Box(x1 - edgeSelectionExtension, 0, x2 - x1 + edgeSelectionExtension, getPanelHeight() * 2));
     return regions;
   }
 
@@ -171,7 +171,7 @@ public class TextBoxModel extends TextModel
   public boolean isBoxFull()
   {
     if(getText().length() > 0)
-      return (myPanel.getWidth() - TextModel.SIDE_DETECTION_MARGIN * 2 <= calculateTextDimensions().width);
+      return (myPanel.getWidth() - (TextModel.PIXEL_WIDTH * 2) <= calculateTextDimensions().width);
     return false;
   }
 
@@ -187,7 +187,8 @@ public class TextBoxModel extends TextModel
 
   public int getTopOfStartPositionForCursor()
   {
-    return TOP_MARGIN;
+    int textHeight = getHeightOfCurrentLine();
+    return getVerticalAlignment().getY(textHeight, myPanel.getBoundingBox());
   }
 
   public int getBottomPositionForCursor()

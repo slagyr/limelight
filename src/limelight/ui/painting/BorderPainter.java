@@ -8,9 +8,9 @@ import limelight.styles.Style;
 
 import java.awt.*;
 
-public class BorderPainter extends Painter
+public class BorderPainter implements Painter
 {
-  public static BorderPainter instance = new BorderPainter();
+  public static Painter instance = new BorderPainter();
 
   private BorderPainter()
   {

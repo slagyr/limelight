@@ -7,6 +7,7 @@ import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
+import limelight.ui.model.inputs.painters.TextPanelPropPainter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +35,20 @@ public class TextBox2PanelTest extends Assert
   {
     assertEquals("150", panel.getStyle().getWidth());
     assertEquals("28", panel.getStyle().getHeight());
+    assertEquals("4", panel.getStyle().getTopBorderWidth());
+    assertEquals("4", panel.getStyle().getRightBorderWidth());
+    assertEquals("4", panel.getStyle().getBottomBorderWidth());
+    assertEquals("4", panel.getStyle().getLeftBorderWidth());
+  }
+
+  @Test
+  public void shouldSetPainterOnParent() throws Exception
+  {
+    PropPanel newParent = new PropPanel(new MockProp());
+    
+    panel.setParent(newParent);
+
+    assertEquals(TextPanelPropPainter.instance, newParent.getPainter());
   }
 
   @Test

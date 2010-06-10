@@ -172,7 +172,7 @@ public class MouseProcessorTest
 
     processor.processMousePressed(mockMouseEvent);
 
-    assertEquals(20, modelInfo.getCursorIndex());
+    assertEquals(21, modelInfo.getCursorIndex());
   }
 
   @Test
@@ -210,9 +210,10 @@ public class MouseProcessorTest
   {
     setUpTextBox();
     modelInfo.calculateLeftShiftingOffset();
-    modelInfo.setSelectionOn(true);;
+    modelInfo.setSelectionOn(true);
     modelInfo.setSelectionIndex(modelInfo.getCursorIndex());
     int oldXOffset = modelInfo.xOffset;
+    mockMouseEvent = new MockMouseEvent(100, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 
@@ -223,7 +224,7 @@ public class MouseProcessorTest
   public void wontGetCaughtOnAnEdgeUnableToFurtherDrag()
   {
     setUpTextBox();
-    mockMouseEvent = new MockMouseEvent(246,115);
+    mockMouseEvent = new MockMouseEvent(249,115);
 
     processor.processMouseDragged(mockMouseEvent);
 
@@ -322,7 +323,7 @@ public class MouseProcessorTest
     processor.doubleClickOn = true;
     modelInfo.setSelectionIndex(14);
     modelInfo.setCursorIndex(5);
-    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(10) + modelInfo.getPanelAbsoluteLocation().x, 115);
+    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(10) + modelInfo.getPanelAbsoluteLocation().x + 1, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 
@@ -352,7 +353,7 @@ public class MouseProcessorTest
     processor.doubleClickOn = true;
     modelInfo.setSelectionIndex(9);
     modelInfo.setCursorIndex(5);
-    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(10) + modelInfo.getPanelAbsoluteLocation().x, 115);
+    mockMouseEvent = new MockMouseEvent(modelInfo.getXPosFromIndex(10) + modelInfo.getPanelAbsoluteLocation().x + 1, 115);
 
     processor.processMouseDragged(mockMouseEvent);
 

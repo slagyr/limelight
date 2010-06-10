@@ -4,6 +4,7 @@
 package limelight.ui.painting;
 
 import junit.framework.TestCase;
+import limelight.ui.Painter;
 import limelight.util.Colors;
 import limelight.ui.MockGraphics;
 import limelight.ui.model.MockPropablePanel;
@@ -20,7 +21,7 @@ public class BackgroundPainterTest extends TestCase
   }
 
   private Style style;
-  private BackgroundPainter painter;
+  private Painter painter;
   private MockGraphics graphics;
   private MockPropablePanel panel;
 

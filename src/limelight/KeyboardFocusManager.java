@@ -3,8 +3,8 @@
 
 package limelight;
 
+import limelight.ui.Panel;
 import limelight.ui.model.inputs.AwtInputPanel;
-import limelight.ui.model.inputs.InputPanel;
 import limelight.ui.model.inputs.InputPanelUtil;
 
 import java.awt.*;
@@ -13,7 +13,7 @@ import java.awt.event.FocusListener;
 
 public class KeyboardFocusManager extends DefaultKeyboardFocusManager
 {
-  private InputPanel focusedPanel;
+  private limelight.ui.Panel focusedPanel;
   public Frame frame;
 
   public void install()
@@ -21,7 +21,7 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     java.awt.KeyboardFocusManager.setCurrentKeyboardFocusManager(this);
   }
 
-  public void focusPanel(InputPanel inputPanel)
+  public void focusPanel(Panel inputPanel)
   {
     if(focusedPanel != inputPanel && inputPanel != null)
     {
@@ -102,7 +102,7 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     return this;
   }
 
-  public InputPanel getFocusedPanel()
+  public Panel getFocusedPanel()
   {
     return focusedPanel;
   }

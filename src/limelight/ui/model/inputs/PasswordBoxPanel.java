@@ -73,6 +73,11 @@ public class PasswordBoxPanel extends AwtInputPanel
     {
       textBox.getPanel().markAsNeedingLayout();
     }
+
+    public boolean hasFocus()
+    {
+      return textBox.hasFocus();
+    }
   }
 
   public void mouseEntered(MouseEvent e)

@@ -84,6 +84,11 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
     return boxInsideBorders;
   }
 
+  public Box getBoxInsideMargins()
+  {
+    return boxInsideMargins;
+  }
+
   public ScreenableStyle getStyle()
   {
     return style;

@@ -62,5 +62,10 @@ public class RadioButtonPanel extends AwtInputPanel
     {
       button.getRadioButtonPanel().markAsNeedingLayout();
     }
+
+    public boolean hasFocus()
+    {
+      return button.hasFocus();
+    }
   }
 }

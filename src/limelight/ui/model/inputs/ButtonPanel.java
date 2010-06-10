@@ -66,5 +66,10 @@ public class ButtonPanel extends AwtInputPanel
     {
       button.getButtonPanel().markAsNeedingLayout();
     }
+
+    public boolean hasFocus()
+    {
+      return button.hasFocus();
+    }
   }
 }

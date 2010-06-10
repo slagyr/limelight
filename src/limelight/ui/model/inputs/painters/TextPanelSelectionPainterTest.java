@@ -1,6 +1,5 @@
 package limelight.ui.model.inputs.painters;
 
-import limelight.ui.model.inputs.TextModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,15 +48,10 @@ public class TextPanelSelectionPainterTest extends AbstractTextPanelPainterTest
     painter.paint(graphics, boxInfo);
 
     testBox = graphics.filledShapes.getLast().shape.getBounds();
-    assertTestBoxSize(start, TextModel.TOP_MARGIN, width, boxInfo.getPanelHeight() - TextModel.TOP_MARGIN * 2);
-  }
-  
-  protected void assertTestBoxSize(int x1, int y1, int x2, int y2)
-  {
-    assertEquals(x1, testBox.x);
-    assertEquals(y1, testBox.y);
-    assertEquals(x2, testBox.width);
-    assertEquals(y2, testBox.height);
+    assertEquals(start, testBox.x);
+    assertEquals(0, testBox.y);
+    assertEquals(width, testBox.width);
+    assertEquals(true, testBox.height > 0);
   }
 
   @Test

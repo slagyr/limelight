@@ -7,7 +7,5 @@ import java.awt.*;
 
 public abstract class TextPanelPainter
 {
-  public boolean hasPainted;
-
   abstract public void paint(Graphics2D graphics, TextModel boxInfo);
 }
