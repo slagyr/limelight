@@ -23,13 +23,13 @@ public class SelectionOnAltKeyProcessor extends KeyProcessor
     }
     else if (boxInfo.isMoveRightEvent(keyCode))
     {
-      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheRight());
+      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheRight());
       boxInfo.setSelectionOn(false);
     }
 
     else if (boxInfo.isMoveLeftEvent(keyCode))
     {
-      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheLeft());
+      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheLeft());
       boxInfo.setSelectionOn(false);
     }
 

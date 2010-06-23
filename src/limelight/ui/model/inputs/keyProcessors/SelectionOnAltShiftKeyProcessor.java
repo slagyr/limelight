@@ -21,10 +21,10 @@ public class SelectionOnAltShiftKeyProcessor extends KeyProcessor
       boxInfo.insertCharIntoTextBox(event.getKeyChar());
     }
     else if (boxInfo.isMoveRightEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheRight());
+      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheRight());
 
     else if (boxInfo.isMoveLeftEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheLeft());
+      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheLeft());
 
   }
 }

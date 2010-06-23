@@ -13,7 +13,7 @@ public class MockTextInputPanel extends TextInputPanel
 
   public MockTextInputPanel()
   {
-    boxInfo = mockModel = new MockTextModel(this);
+    model = mockModel = new MockTextModel(this);
 //    mouseProcessor = new MouseProcessor(boxInfo);
 //    painterComposite = new TextPanelPainterComposite(boxInfo);
 //    horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);

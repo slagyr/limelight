@@ -3,27 +3,28 @@
 
 package limelight.ui;
 
+import limelight.util.Box;
+import sun.font.FontDesignMetrics;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextHitInfo;
 import java.awt.font.TextLayout;
-import java.awt.geom.Rectangle2D;
 
 public class TextLayoutImpl implements TypedLayout
 {
   TextLayout layout;
   String text;
   public boolean hasDrawn;
+  private Font font;
+  private FontRenderContext fontRenderContet;
+  private FontMetrics metrics;
 
   public TextLayoutImpl(String string, Font font, FontRenderContext frc)
   {
-    if(string.length() == 0)
-    {
-      Character nonChar = KeyEvent.CHAR_UNDEFINED;
-      string = nonChar.toString();
-    }
-    layout = new TextLayout(string, font, frc);
+    this.font = font;
+    fontRenderContet = frc;
     text = string;
     hasDrawn = false;
   }
@@ -31,7 +32,7 @@ public class TextLayoutImpl implements TypedLayout
   public void draw(Graphics2D graphics, float x, float y)
   {
     hasDrawn = true;
-    layout.draw(graphics, x, y);
+    getLayout().draw(graphics, x, y);
   }
 
   public boolean hasDrawn()
@@ -41,38 +42,69 @@ public class TextLayoutImpl implements TypedLayout
 
   public float getAscent()
   {
-    return layout.getAscent();
+    return getLayout().getAscent();
   }
 
   public float getDescent()
   {
-    return layout.getDescent();
+    return getLayout().getDescent();
   }
 
   public float getLeading()
   {
-    return layout.getLeading();
-  }
-
-  public Rectangle2D getBounds()
-  {
-    return layout.getBounds();
+    return getLayout().getLeading();
   }
 
   public TextHitInfo hitTestChar(float x, float y)
   {
-    return layout.hitTestChar(x,y);
+    return getLayout().hitTestChar(x, y);
+  }
+
+  public Box getCaretShape(int caretIndex)
+  {
+    String textLeftOfCaret = text.substring(0, caretIndex);
+    int x = getMetrics().stringWidth(textLeftOfCaret);
+    return new Box(x, 0, 1, getHeight());
   }
 
   public String toString()
   {
-    return layout.toString();
+    return getLayout().toString();
   }
 
   public String getText()
   {
-    if (text.length() == 1 && text.charAt(0) == KeyEvent.CHAR_UNDEFINED)
+    if(text.length() == 1 && text.charAt(0) == KeyEvent.CHAR_UNDEFINED)
       return "";
     return text;
+  }
+
+  public int getWidth()
+  {
+    return getMetrics().stringWidth(text);
+  }
+
+  private int getHeight()
+  {
+    return getMetrics().getAscent() + getMetrics().getDescent();
+  }
+
+  private FontMetrics getMetrics()
+  {
+    if(metrics == null)
+      metrics = FontDesignMetrics.getMetrics(font, fontRenderContet);
+    return metrics;
+  }
+
+  public TextLayout getLayout()
+  {
+    if(layout == null)
+    {
+      if(text == null || text.length() == 0)
+        layout = new TextLayout("" + KeyEvent.CHAR_UNDEFINED, font, fontRenderContet);
+      else
+        layout = new TextLayout(text, font, fontRenderContet);
+    }
+    return layout;
   }
 }

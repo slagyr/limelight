@@ -18,11 +18,11 @@ public class NormalKeyProcessor extends KeyProcessor
     if (isACharacter(keyCode))
       boxInfo.insertCharIntoTextBox(event.getKeyChar());
     else if (boxInfo.isMoveRightEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
+      boxInfo.setCaretIndex(boxInfo.getCaretIndex() + 1);
     else if (boxInfo.isMoveLeftEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
-    else if (keyCode == KeyEvent.VK_BACK_SPACE && boxInfo.getCursorIndex() > 0)
-      boxInfo.deleteEnclosedText(boxInfo.getCursorIndex() -1, boxInfo.getCursorIndex());
+      boxInfo.setCaretIndex(boxInfo.getCaretIndex() - 1);
+    else if (keyCode == KeyEvent.VK_BACK_SPACE && boxInfo.getCaretIndex() > 0)
+      boxInfo.deleteEnclosedText(boxInfo.getCaretIndex() -1, boxInfo.getCaretIndex());
   }
 
 }

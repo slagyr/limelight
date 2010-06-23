@@ -41,11 +41,11 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
         boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_UP:
-        boxInfo.setCursorIndex(0);
+        boxInfo.setCaretIndex(0);
         boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_DOWN:
-        boxInfo.setCursorIndex(boxInfo.getText().length());
+        boxInfo.setCaretIndex(boxInfo.getText().length());
         boxInfo.setSelectionOn(false);
         break;
     }

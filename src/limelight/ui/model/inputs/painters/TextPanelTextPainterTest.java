@@ -1,8 +1,6 @@
 package limelight.ui.model.inputs.painters;
 
-import limelight.ui.MockTextLayout;
-import limelight.ui.TypedLayout;
-import limelight.ui.model.TextPanel;
+import limelight.ui.MockTypedLayout;
 import limelight.util.Colors;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,15 +11,15 @@ import static org.junit.Assert.assertEquals;
 
 public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
 {
-  private TypedLayout layout;
+  private MockTypedLayout layout;
 
   @Before
   public void setUp()
   {
     testClassInit();
     painter = TextPanelTextPainter.instance;
-    layout = new MockTextLayout(boxInfo.getText(), boxInfo.getFont(), TextPanel.getRenderContext());
-    boxInfo.getTextLayouts().add(layout);
+    layout = new MockTypedLayout(boxInfo.getText());
+    boxInfo.getTypedLayouts().add(layout);
     boxInfo.setLastLayedOutText("Some Text");
   }
 
@@ -41,7 +39,7 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
     painter.paint(graphics, boxInfo);
 
     assertEquals(true, layout.hasDrawn());
-    assertEquals(boxInfo.getText(), layout.toString());
+    assertEquals(boxInfo.getText(), layout.text);
   }
 
 //  @Test

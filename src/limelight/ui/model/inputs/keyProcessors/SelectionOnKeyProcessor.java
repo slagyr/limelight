@@ -17,9 +17,9 @@ public class SelectionOnKeyProcessor extends KeyProcessor
     boxInfo.setSelectionOn(false);
     int keyCode = event.getKeyCode();
     if (boxInfo.isMoveRightEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() + 1);
+      boxInfo.setCaretIndex(boxInfo.getCaretIndex() + 1);
     else if (boxInfo.isMoveLeftEvent(keyCode))
-      boxInfo.setCursorIndex(boxInfo.getCursorIndex() - 1);
+      boxInfo.setCaretIndex(boxInfo.getCaretIndex() - 1);
     else if (isACharacter(keyCode))
     {
       boxInfo.deleteSelection();

@@ -35,7 +35,7 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(5, modelInfo.getCursorIndex());
+    assertEquals(5, modelInfo.getCaretIndex());
   }
 
   @Test
@@ -43,11 +43,11 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
     modelInfo.setText("Here are    many  spaces");
-    modelInfo.setCursorIndex(5);
+    modelInfo.setCaretIndex(5);
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(12, modelInfo.getCursorIndex());
+    assertEquals(12, modelInfo.getCaretIndex());
   }
 
   @Test
@@ -55,11 +55,11 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
     modelInfo.setText("H s");
-    modelInfo.setCursorIndex(0);
+    modelInfo.setCaretIndex(0);
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(2, modelInfo.getCursorIndex());
+    assertEquals(2, modelInfo.getCaretIndex());
   }
 
   @Test
@@ -67,11 +67,11 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
     modelInfo.setText("Here is some\ntext");
-    modelInfo.setCursorIndex(9);
+    modelInfo.setCaretIndex(9);
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(13, modelInfo.getCursorIndex());
+    assertEquals(13, modelInfo.getCaretIndex());
   }
 
    @Test
@@ -79,11 +79,11 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
     modelInfo.setText("Here is some\n\n\ntext");
-    modelInfo.setCursorIndex(9);
+    modelInfo.setCaretIndex(9);
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(15, modelInfo.getCursorIndex());
+    assertEquals(15, modelInfo.getCaretIndex());
   }
 
    @Test
@@ -91,22 +91,22 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
     modelInfo.setText("Here is some \ntext");
-    modelInfo.setCursorIndex(9);
+    modelInfo.setCaretIndex(9);
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(14, modelInfo.getCursorIndex());
+    assertEquals(14, modelInfo.getCaretIndex());
   }
 
   @Test
   public void canProcessLeftArrowAndJumpToThePreviousWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setCursorIndex(9);
+    modelInfo.setCaretIndex(9);
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(5, modelInfo.getCursorIndex());
+    assertEquals(5, modelInfo.getCaretIndex());
   }
 
   @Test
@@ -114,11 +114,11 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
     modelInfo.setText("Here are    many  spaces");
-    modelInfo.setCursorIndex(12);
+    modelInfo.setCaretIndex(12);
 
     processor.processKey(mockEvent, modelInfo);
 
-    assertEquals(5, modelInfo.getCursorIndex());
+    assertEquals(5, modelInfo.getCaretIndex());
   }
 
 }

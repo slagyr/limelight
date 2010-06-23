@@ -62,4 +62,10 @@ public class Box extends java.awt.Rectangle
       return false;
     return width == other.width && height == other.height;
   }
+
+  public Box translated(Point offset)
+  {
+    translate(offset.x, offset.y);
+    return this;
+  }
 }

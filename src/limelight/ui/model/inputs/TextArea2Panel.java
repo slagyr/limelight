@@ -3,26 +3,18 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.styles.HorizontalAlignment;
 import limelight.styles.Style;
-import limelight.styles.VerticalAlignment;
-import limelight.styles.values.SimpleHorizontalAlignmentValue;
-import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.util.Box;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.Transferable;
 
 public class TextArea2Panel extends TextInputPanel
 {
 
   public TextArea2Panel()
   {
-    boxInfo = new TextAreaModel(this);
-    mouseProcessor = new MouseProcessor(boxInfo);
-    horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
-    verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.TOP);
+    model = new TextAreaModel(this);
+    mouseProcessor = new MouseProcessor(model);
     focused = true;
   }
 
@@ -32,27 +24,12 @@ public class TextArea2Panel extends TextInputPanel
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 75);
     setBorderStyleDefaults(style);
-  }
-
-  public void lostOwnership(Clipboard clipboard, Transferable contents)
-  {
-  }
-
-  protected void markCursorRegionAsDirty()
-  {
-    RootPanel rootPanel = getRoot();
-    if (rootPanel != null)
-    {
-      int regionHeight = boxInfo.getHeightOfCurrentLine();
-      int cursorY = boxInfo.getYPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().y;
-      int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
-      rootPanel.addDirtyRegion(new Box(cursorX, cursorY - boxInfo.getYOffset(), 1, regionHeight));
-    }
+    setPaddingDefaults(style);
   }
 
   public KeyProcessor getKeyProcessorFor(int modifiers)
   {
-    if(getModelInfo().isSelectionOn())
+    if(getModel().isSelectionOn())
     {
       switch(modifiers)
       {

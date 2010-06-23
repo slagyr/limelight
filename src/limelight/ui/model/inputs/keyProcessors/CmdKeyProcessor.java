@@ -30,10 +30,10 @@ public class CmdKeyProcessor extends KeyProcessor
         boxInfo.sendCursorToStartOfLine();
         break;
       case KeyEvent.VK_UP:
-        boxInfo.setCursorIndex(0);
+        boxInfo.setCaretIndex(0);
         break;
       case KeyEvent.VK_DOWN:
-        boxInfo.setCursorIndex(boxInfo.getText().length());
+        boxInfo.setCaretIndex(boxInfo.getText().length());
         break;
 
 

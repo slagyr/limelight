@@ -4,8 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockPanel;
-import limelight.ui.TextLayoutImpl;
-import limelight.ui.model.TextPanel;
+import limelight.ui.MockTypedLayoutFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +14,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class TextBoxModelTest
 {
-  TextModel boxModel;
+  TextModel model;
   TextInputPanel panel;
 
   @Before
@@ -24,146 +23,198 @@ public class TextBoxModelTest
     panel = new TextBox2Panel();
     MockPanel parent = new MockPanel();
     parent.add(panel);
-    parent.setSize(150, 28);
+    parent.setSize(100, 28);
     panel.doLayout();
-    boxModel = panel.getModelInfo();
-    boxModel.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
+    model = panel.getModel();
+    model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }
 
   @Test
-  public void canCalcTheXPosForCursorFromStringWithOffset()
+  public void canCalcTheXPosForCursorFromString()
   {
-    int expectedX = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.getFont(), TextPanel.getRenderContext()));
-    boxModel.xOffset = 10;
-
-    int x = boxModel.getXPosFromText("ABC");
-
-    assertEquals(expectedX - 10, x);
+    assertEquals(30, model.getXPosFromText("ABC"));
   }
-
-  @Test
-  public void canCalculateTheXPositionForTheCursorFromAString()
-  {
-    int expectedX = boxModel.getWidthDimension(new TextLayoutImpl("ABC", boxModel.getFont(), TextPanel.getRenderContext()));
-
-    int x = boxModel.getXPosFromText("ABC");
-
-    assertEquals(expectedX, x);
-  }
-
-  @Test
-  public void canTellIfTheTextPanelIsFull()
-  {
-    assertEquals(true, boxModel.isBoxFull());
-  }
-
-  @Test
-  public void canTellIfTheCursorIsAtACriticalEdge()
-  {
-    boxModel.calculateLeftShiftingOffset();
-
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
-
-    boxModel.setCursorIndex(0);
-
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
-
-    boxModel.xOffset = 0;
-    boxModel.setCursorIndex(boxModel.getText().length() - 5);
-
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
-  }
-
-  @Test
-  public void canShiftTheCursorAndTextRightAboutHalfTheDistanceOfTheBoxWidthIfCriticallyLeft()
-  {
-    boxModel.setCursorIndex(10);
-    int offset = boxModel.calculateTextDimensions().width - panel.getWidth();
-    boxModel.xOffset = offset;
-
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
-
-    boxModel.shiftOffset(boxModel.getCursorIndex());
-    assertEquals(true, boxModel.xOffset <= offset / 2 + 5 && boxModel.xOffset != 0);
-  }
-
-  @Test
-  public void canShiftTheCursorAndTextLeftIfCriticallyRight()
-  {
-    boxModel.setCursorIndex(0);
-    boxModel.xOffset = 0;
-
-    boxModel.setCursorIndex(30);
-
-    assertEquals(true, boxModel.isCursorAtCriticalEdge(boxModel.getXPosFromIndex(boxModel.getCursorIndex())));
-
-    boxModel.shiftOffset(boxModel.getCursorIndex());
-
-    assertEquals(true, boxModel.xOffset > 0);
-
-  }
-
-  @Test
-  public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
-  {
-    boxModel.shiftOffset(boxModel.getCursorIndex());
-    int offset = boxModel.xOffset;
-    boxModel.setCursorIndex(0);
-
-    boxModel.shiftOffset(boxModel.getCursorIndex());
-
-    assertEquals(true, boxModel.xOffset <= offset / 2 + 2);
-
-    boxModel.setText("hi");
-    boxModel.shiftOffset(boxModel.getCursorIndex());
-    assertEquals(true, boxModel.xOffset == 0);
-
-  }
-
-  @Test
-  public void canCalculateTheTextModelsDimensions()
-  {
-    boxModel.setText("");
-    Dimension dim = boxModel.calculateTextDimensions();
-    assertEquals(null, dim);
-
-    boxModel.setText("X");
-    dim = boxModel.calculateTextDimensions();
-    assertEquals(8, dim.width);
-    assertEquals(14, dim.height);
-  }
-
-  @Test
-  public void canGetTheSelectedRegion()
-  {
-    boxModel.setSelectionIndex(0);
-    boxModel.setSelectionOn(true);
-
-    Rectangle region = boxModel.getSelectionRegions().get(0);
-
-    assertEquals(0, region.x);
-    assertEquals(0, region.y);
-    assertEquals(true, region.width > 0);
-    assertEquals(true, region.height > 0);
-  }
-
-  @Test
-  public void willRecalculateXOffsetIfTextIsFullWhenGettingSelection()
-  {
-    boxModel.setSelectionIndex(boxModel.getText().length());
-    boxModel.setCursorIndex(10);
-    boxModel.setSelectionOn(true);
-    boxModel.xOffset = 100;
-
-    boxModel.getSelectionRegions();
-
-    assertEquals(true, boxModel.xOffset > 0 && boxModel.xOffset < 100);
-  }
+//
+//  @Test
+//  public void canTellIfTheCursorIsAtACriticalEdge()
+//  {
+//    assertEquals(true, model.isCursorAtCriticalEdge(0));
+//    assertEquals(true, model.isCursorAtCriticalEdge(model.getXPosFromIndex(0)));
+//    assertEquals(true, model.isCursorAtCriticalEdge(model.getXPosFromIndex(model.getText().length() - 5)));
+//  }
+//
+//  @Test
+//  public void canShiftTheCursorAndTextLeftIfCriticallyRight()
+//  {
+//    model.setCaretIndex(0);
+//    model.setOffset(0, 0);
+//
+//    model.setCaretIndex(30);
+//
+//    assertEquals(true, model.isCursorAtCriticalEdge(model.getXPosFromIndex(model.getCaretIndex())));
+//
+//    model.calculateXOffset();
+//
+//    assertEquals(true, model.getOffset().x > 0);
+//  }
+//
+//  @Test
+//  public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
+//  {
+//    model.calculateXOffset();
+//    int offset = model.getOffset().x;
+//    model.setCaretIndex(0);
+//
+//    model.calculateXOffset();
+//
+//    assertEquals(true, model.getOffset().x <= offset / 2 + 2);
+//
+//    model.setText("hi");
+//    model.calculateXOffset();
+//    assertEquals(true, model.getOffset().x == 0);
+//
+//  }
+//
+//  @Test
+//  public void canCalculateTheTextModelsDimensions()
+//  {
+//    model.setText("");
+//    Dimension dim = model.getTextDimensions();
+//    assertEquals(null, dim);
+//
+//    model.setText("X");
+//    dim = model.getTextDimensions();
+//    assertEquals(8, dim.width);
+//    assertEquals(14, dim.height);
+//  }
+//
+//  @Test
+//  public void canGetTheSelectedRegion()
+//  {
+//    model.setSelectionIndex(0);
+//    model.setSelectionOn(true);
+//
+//    Rectangle region = model.getSelectionRegions().get(0);
+//
+//    assertEquals(0, region.x);
+//    assertEquals(0, region.y);
+//    assertEquals(true, region.width > 0);
+//    assertEquals(true, region.height > 0);
+//  }
 
   @Test
   public void willAlwaysReturnZeroForTheLineNumber()
   {
-    assertEquals(0, boxModel.getLineNumberOfIndex(boxModel.getCursorIndex()));
+    assertEquals(0, model.getLineNumberOfIndex(model.getCaretIndex()));
   }
+
+  @Test
+  public void shouldPositionCaretWithNoText() throws Exception
+  {
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(0, model.getXOffset());
+  }
+
+  @Test
+  public void shouldPositionCaretAfterAbitOfText() throws Exception
+  {
+    model.setText("one two three");
+    model.setOffset(0, 0);
+    model.setCaretIndex(3);
+
+    assertEquals(3, model.getCaretIndex());
+    assertEquals(0, model.getXOffset());
+  }
+
+  @Test
+  public void shouldPositionCaretAfterFallingOffTheRight() throws Exception
+  {
+    model.setText("one two three four");
+    model.setOffset(0, 0);
+    model.setCaretIndex(11);
+
+    assertEquals(11, model.getCaretIndex());
+    assertEquals(-60, model.getXOffset());
+  }
+
+  @Test
+  public void shouldPositionCaretAfterFallingOffTheRightButNotLeaveSpaceOnTheRight() throws Exception
+  {
+    model.setText("one two three");
+    model.setOffset(0, 0);
+    model.setCaretIndex(11);
+
+    assertEquals(11, model.getCaretIndex());
+    assertEquals(-31, model.getXOffset());
+  }
+
+  @Test
+  public void shouldPositionCaretAfterFallingOffTheLeft() throws Exception
+  {
+    model.setText("one two three four");
+    model.setCaretIndex(7);
+
+    assertEquals(7, model.getCaretIndex());
+    assertEquals(-20, model.getXOffset());
+  }
+
+  @Test
+  public void shouldPositionCaretAfterFallingOffTheLeftButNotLeaveSpaceOnLeft() throws Exception
+  {
+    model.setText("one two three");
+    model.setCaretIndex(2);
+
+    assertEquals(2, model.getCaretIndex());
+    assertEquals(0, model.getXOffset());
+  }
+
+  @Test
+  public void shouldLeaveRoomOnTheRightSideForTheCaret() throws Exception
+  {
+    model.setText("one two th");
+    
+    assertEquals(10, model.getCaretIndex());
+    assertEquals(TextModel.CARET_WIDTH * -1, model.getXOffset());
+  }
+  
+  @Test
+  public void shouldAccountForRightHorizontalAllignment() throws Exception
+  {
+    panel.getStyle().setHorizontalAlignment("right");
+    model.setText("123");
+
+    assertEquals(3, model.getCaretIndex());
+    assertEquals(-70, model.getXOffset());
+  }
+
+//
+//  @Test
+//  public void shouldCalculateOffsetToTheRightWhenCursorMovesPassedRightEdge() throws Exception
+//  {
+//    model.setCaretIndex(15); //On the right edge
+//
+//    assertEquals(-75, model.calculateRightShiftingOffset()); // half the width of the box
+//  }
+//
+//  @Test
+//  public void shouldCalulateOffsetToTheRightWhenCaretMovesPassedRightEdgeAndIsAlreadyOffset() throws Exception
+//  {
+//    model.setOffset(-75, 0);
+//    model.setCaretIndex(23);
+//
+//    int xOffset = model.calculateRightShiftingOffset();
+//    assertEquals(-150, xOffset);
+//  }
+//
+//  @Test
+//  public void shouldCalculateOffsetToLeftWhenCaretMovesLeftBounds() throws Exception
+//  {
+//    model.setOffset(-75, 0);
+//    model.setCaretIndex(5);
+//
+//    int xOffset = model.calculateLeftShiftingOffset();
+//    assertEquals(0, xOffset);
+//
+//  }
 
 }

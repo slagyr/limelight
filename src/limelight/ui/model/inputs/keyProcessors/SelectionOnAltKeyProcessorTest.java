@@ -40,7 +40,7 @@ public class SelectionOnAltKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessLeftArrowAndMoveToEndOfPreviousWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setCursorIndex(9);
+    modelInfo.setCaretIndex(9);
 
     processor.processKey(mockEvent, modelInfo);
 

@@ -6,14 +6,14 @@ package limelight.ui.model.inputs;
 import limelight.Context;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
-import limelight.styles.values.SimpleHorizontalAlignmentValue;
-import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.*;
 import limelight.ui.model.inputs.painters.*;
 import limelight.util.Box;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
@@ -21,19 +21,23 @@ import java.awt.event.MouseEvent;
 
 public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
 {
-  protected TextModel boxInfo;
+  protected TextModel model;
   protected boolean focused;
   protected boolean cursorOn;
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
   protected MouseProcessor mouseProcessor;
-  protected SimpleHorizontalAlignmentValue horizontalTextAlignment;
-  protected SimpleVerticalAlignmentValue verticalTextAlignment;
   private int lastKeyPressed;
 
   protected abstract void setDefaultStyles(Style style);
   public abstract KeyProcessor getKeyProcessorFor(int modifiers);
-  protected abstract void markCursorRegionAsDirty();
+
+  protected void markCursorRegionAsDirty()
+  {
+    RootPanel rootPanel = getRoot();
+    if(rootPanel != null)
+      rootPanel.addDirtyRegion(model.getCaretShape());
+  }
 
   public void setParent(limelight.ui.Panel panel)
   {
@@ -52,9 +56,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   
   public void paintOn(Graphics2D graphics)
   {
-    TextPanelSelectionPainter.instance.paint(graphics, boxInfo);
-    TextPanelTextPainter.instance.paint(graphics, boxInfo);
-    TextPanelCursorPainter.instance.paint(graphics, boxInfo);
+    TextPanelSelectionPainter.instance.paint(graphics, model);
+    TextPanelTextPainter.instance.paint(graphics, model);
+    TextPanelCaretPainter.instance.paint(graphics, model);
   }
 
   @Override
@@ -69,9 +73,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     markAsNeedingLayout();
   }
 
-  public TextModel getModelInfo()
+  public TextModel getModel()
   {
-    return boxInfo;
+    return model;
   }
 
   public Box getBoxInsidePadding()
@@ -91,15 +95,15 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void setText(PropablePanel panel, String text)
   {
-    this.boxInfo.setText(text);
-    boxInfo.setCursorIndex(text.length());
+    this.model.setText(text);
+    model.setCaretIndex(text.length());
   }
 
   public String getText()
   {
-    if(boxInfo.getText() == null)
+    if(model.getText() == null)
       return null;
-    return boxInfo.getText();
+    return model.getText();
   }
 
   public Point getAbsoluteLocation()
@@ -161,7 +165,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public void keyPressed(KeyEvent e)
   {
     KeyProcessor processor = getKeyProcessorFor(e.getModifiers());
-    processor.processKey(e, boxInfo);
+    processor.processKey(e, model);
     lastKeyPressed = e.getKeyCode();
     cursorOn = true;
     markAsDirty(); //TODO shouldRelyOn keyProcessor to markAsDirty
@@ -233,5 +237,22 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   public boolean hasFocus()
   {
     return Context.instance().keyboardFocusManager.getFocusedPanel() == this;
+  }
+
+  protected void setPaddingDefaults(Style style)
+  {
+    style.setDefault(Style.TOP_PADDING, 2);
+    style.setDefault(Style.RIGHT_PADDING, 2);
+    style.setDefault(Style.BOTTOM_PADDING, 2);
+    style.setDefault(Style.LEFT_PADDING, 2);
+  }
+
+  public void lostOwnership(Clipboard clipboard, Transferable contents)
+  {
+  }
+
+  public void setModel(TextModel model)
+  {
+    this.model = model;
   }
 }

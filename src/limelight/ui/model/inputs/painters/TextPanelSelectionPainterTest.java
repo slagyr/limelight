@@ -42,7 +42,7 @@ public class TextPanelSelectionPainterTest extends AbstractTextPanelPainterTest
   public void willFillABoxAroundSelectedText()
   {
     boxInfo.setCursorAndSelectionStartX();
-    int start = boxInfo.getCursorX();
+    int start = boxInfo.getCaretX();
     int width = boxInfo.getSelectionStartX() - start;
 
     painter.paint(graphics, boxInfo);
