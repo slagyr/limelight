@@ -22,11 +22,11 @@ public class AltShiftKeyProcessor extends KeyProcessor
     }
     else if(boxInfo.isMoveRightEvent(keyCode)){
       boxInfo.initSelection();
-      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheRight());
+      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheRight());
     }
     else if(boxInfo.isMoveLeftEvent(keyCode)){
       boxInfo.initSelection();
-      boxInfo.setCursorIndex(boxInfo.findNearestWordToTheLeft());
+      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheLeft());
     }
   }
 }

@@ -40,7 +40,7 @@ public class AltShiftKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessLeftArrowAndSelectToThePreviousWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setCursorIndex(9);
+    modelInfo.setCaretIndex(9);
 
     processor.processKey(mockEvent, modelInfo);
 

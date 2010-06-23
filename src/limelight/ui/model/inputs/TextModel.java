@@ -4,40 +4,47 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.styles.values.SimpleHorizontalAlignmentValue;
-import limelight.styles.values.SimpleVerticalAlignmentValue;
+import limelight.styles.abstrstyling.HorizontalAlignmentValue;
+import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.TextLayoutImpl;
+import limelight.ui.TextTypedLayoutFactory;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.TextPanel;
+import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextHitInfo;
+import java.awt.font.TextLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
 {
-  public static final int PIXEL_WIDTH = 1;
+  public static final int CARET_WIDTH = 1;
 
   protected TextInputPanel myPanel;
   protected ArrayList<TypedLayout> textLayouts;
-  protected int yOffset;
-  protected int xOffset;
+  private TypedLayoutFactory typedLayoutFactory = TextTypedLayoutFactory.instance;
 
   private StringBuffer text = new StringBuffer();
-  private int cursorX;
+  private int spaceWidth;
+  protected Point offset = new Point(0, 0);
+  protected int caretX;
+  private int caretIndex;
+  private int lastCaretIndex;
   private boolean selectionOn;
   private int selectionStartX;
-  private int cursorIndex;
   private int selectionIndex;
   private String lastLayedOutText;
-  private int lastCursorIndex;
-  private int spaceWidth;
-  private int YOffset;
 
-  public abstract void shiftOffset(int index);
+  public abstract int calculateYOffset();
+
+  public abstract int getXOffset();
+
+  public abstract int getYOffset();
 
   protected abstract int getXPosFromText(String toIndexString);
 
@@ -47,32 +54,26 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract boolean isMoveDownEvent(int keyCode);
 
-  public abstract int getTopOfStartPositionForCursor();
-
-  public abstract int getBottomPositionForCursor();
-
   public abstract int getIndexOfLastCharInLine(int line);
 
-  public abstract void calculateLeftShiftingOffset();
-
-  public abstract int calculateYOffset();
-
   public abstract boolean isCursorAtCriticalEdge(int cursorX);
+
+  public abstract ArrayList<TypedLayout> getTypedLayouts();
+
+  protected abstract void recalculateOffset();
+  
+  public abstract TypedLayout getActiveLayout();
+
+  public abstract Box getCaretShape();
 
   public TextModel(TextInputPanel panel)
   {
     this.myPanel = panel;
-    cursorX = 0;
-    selectionOn = false;
-    selectionStartX = 0;
-    cursorIndex = 0;
-    selectionIndex = 0;
-    xOffset = 0;
   }
 
   public void setCursorAndSelectionStartX()
   {
-    cursorX = getXPosFromIndex(cursorIndex);
+    caretX = getXPosFromIndex(caretIndex);
     selectionStartX = getXPosFromIndex(selectionIndex);
   }
 
@@ -140,7 +141,7 @@ public abstract class TextModel implements ClipboardOwner
     return spaceWidth;
   }
 
-  public abstract Dimension calculateTextDimensions();
+  public abstract Dimension getTextDimensions();
 
   public float getHeightDimension(TypedLayout layout)
   {
@@ -150,29 +151,22 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getTotalHeightOfLineWithLeadingMargin(int layoutIndex)
   {
-    textLayouts = getTextLayouts();
+    textLayouts = getTypedLayouts();
     TypedLayout typedLayout = textLayouts.get(layoutIndex);
     return (int) (getHeightDimension(typedLayout) + typedLayout.getLeading() + 0.5);
   }
 
   public int getHeightOfCurrentLine()
   {
-    int lineNumber = getLineNumberOfIndex(cursorIndex);
+    int lineNumber = getLineNumberOfIndex(caretIndex);
     TypedLayout layoutForLine = textLayouts.get(lineNumber);
     return (int) getHeightDimension(layoutForLine);
   }
 
   public int getWidthDimension(TypedLayout layout)
   {
-    return (int) (layout.getBounds().getWidth() + layout.getBounds().getX() + 0.5);
+    return layout.getWidth();
   }
-
-  public int getXOffset()
-  {
-    return xOffset;
-  }
-
-  public abstract ArrayList<TypedLayout> getTextLayouts();
 
   public Point getPanelAbsoluteLocation()
   {
@@ -189,14 +183,32 @@ public abstract class TextModel implements ClipboardOwner
     return myPanel.getHeight();
   }
 
-  public SimpleHorizontalAlignmentValue getHorizontalAlignment()
+  public int getYAlignmentOffset()
   {
-    return myPanel.horizontalTextAlignment;
+    try
+    {
+      return getVerticalAlignment().getY(getTextDimensions().height, myPanel.getBoundingBox());
+    }
+    catch(Exception e)
+    {
+Debug.log("e = " + e);
+      return 0;
+    }
   }
 
-  public SimpleVerticalAlignmentValue getVerticalAlignment()
+  public VerticalAlignmentValue getVerticalAlignment()
   {
-    return myPanel.verticalTextAlignment;
+    return myPanel.getStyle().getCompiledVerticalAlignment();
+  }
+
+  public int getXAlignmentOffset()
+  {
+    return getHorizontalAlignment().getX(getTextDimensions().width, myPanel.getBoundingBox()) - getOffset().x;
+  }
+
+  public HorizontalAlignmentValue getHorizontalAlignment()
+  {
+    return myPanel.getStyle().getCompiledHorizontalAlignment();
   }
 
   public boolean isCursorOn()
@@ -243,10 +255,10 @@ public abstract class TextModel implements ClipboardOwner
   public void copySelection()
   {
     String clipboard;
-    if(selectionIndex < cursorIndex)
-      clipboard = text.substring(selectionIndex, cursorIndex);
+    if(selectionIndex < caretIndex)
+      clipboard = text.substring(selectionIndex, caretIndex);
     else
-      clipboard = text.substring(cursorIndex, selectionIndex);
+      clipboard = text.substring(caretIndex, selectionIndex);
     copyText(clipboard);
   }
 
@@ -255,8 +267,8 @@ public abstract class TextModel implements ClipboardOwner
     String clipboard = getClipboardContents();
     if(clipboard != null && clipboard.length() > 0)
     {
-      text.insert(cursorIndex, clipboard);
-      setCursorIndex(cursorIndex + clipboard.length());
+      text.insert(caretIndex, clipboard);
+      setCaretIndex(caretIndex + clipboard.length());
     }
   }
 
@@ -268,16 +280,16 @@ public abstract class TextModel implements ClipboardOwner
 
   public void deleteSelection()
   {
-    if(selectionIndex < cursorIndex)
-      deleteEnclosedText(selectionIndex, cursorIndex);
+    if(selectionIndex < caretIndex)
+      deleteEnclosedText(selectionIndex, caretIndex);
     else
-      deleteEnclosedText(cursorIndex, selectionIndex);
+      deleteEnclosedText(caretIndex, selectionIndex);
   }
 
   public void deleteEnclosedText(int first, int second)
   {
     text.delete(first, second);
-    setCursorIndex(first);
+    setCaretIndex(first);
     setSelectionIndex(0);
   }
 
@@ -315,15 +327,16 @@ public abstract class TextModel implements ClipboardOwner
     return (text.charAt(i - 1) == ' ' || text.charAt(i - 1) == '\n') && (text.charAt(i) != ' ' && text.charAt(i) != '\n');
   }
 
-  public int getCursorIndex()
+  public int getCaretIndex()
   {
-    return cursorIndex;
+    return caretIndex;
   }
 
-  public void setCursorIndex(int cursorIndex)
+  public void setCaretIndex(int cursorIndex)
   {
-    lastCursorIndex = this.cursorIndex;
-    this.cursorIndex = cursorIndex;
+    lastCaretIndex = this.caretIndex;
+    this.caretIndex = cursorIndex;
+    recalculateOffset();
   }
 
   public int getSelectionIndex()
@@ -343,7 +356,7 @@ public abstract class TextModel implements ClipboardOwner
     else
     {
       this.text = new StringBuffer(text);
-      setCursorIndex(text.length());
+      setCaretIndex(text.length());
     }
   }
 
@@ -374,14 +387,14 @@ public abstract class TextModel implements ClipboardOwner
     myPanel.setLastKeyPressed(keyCode);
   }
 
-  public int getLastCursorIndex()
+  public int getLastCaretIndex()
   {
-    return lastCursorIndex;
+    return lastCaretIndex;
   }
 
-  public void setLastCursorIndex(int index)
+  public void setLastCaretIndex(int index)
   {
-    lastCursorIndex = index;
+    lastCaretIndex = index;
   }
 
   public boolean isThereSomeDifferentText()
@@ -392,7 +405,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getLineNumberOfIndex(int index)
   {
-    getTextLayouts();
+    getTypedLayouts();
     int lineNumber = 0;
     for(; lineNumber < textLayouts.size() - 1; lineNumber++)
     {
@@ -408,34 +421,34 @@ public abstract class TextModel implements ClipboardOwner
   {
     if(c == KeyEvent.CHAR_UNDEFINED)
       return;
-    text.insert(getCursorIndex(), c);
-    setCursorIndex(getCursorIndex() + 1);
+    text.insert(getCaretIndex(), c);
+    setCaretIndex(getCaretIndex() + 1);
   }
 
   public boolean isMoveRightEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_RIGHT && getCursorIndex() < getText().length();
+    return keyCode == KeyEvent.VK_RIGHT && getCaretIndex() < getText().length();
   }
 
   public boolean isMoveLeftEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_LEFT && getCursorIndex() > 0;
+    return keyCode == KeyEvent.VK_LEFT && getCaretIndex() > 0;
   }
 
   public void initSelection()
   {
     selectionOn = true;
-    setSelectionIndex(getCursorIndex());
+    setSelectionIndex(getCaretIndex());
   }
 
   public int findNearestWordToTheLeft()
   {
-    return findWordsLeftEdge(getCursorIndex() - 1);
+    return findWordsLeftEdge(getCaretIndex() - 1);
   }
 
   public int findNearestWordToTheRight()
   {
-    return findNextWordSkippingSpacesOrNewLines(findWordsRightEdge(cursorIndex));
+    return findNextWordSkippingSpacesOrNewLines(findWordsRightEdge(caretIndex));
   }
 
   protected int findNextWordSkippingSpacesOrNewLines(int startIndex)
@@ -452,7 +465,7 @@ public abstract class TextModel implements ClipboardOwner
   public void selectAll()
   {
     selectionOn = true;
-    setCursorIndex(getText().length());
+    setCaretIndex(getText().length());
     setSelectionIndex(0);
   }
 
@@ -460,23 +473,23 @@ public abstract class TextModel implements ClipboardOwner
   {
     if(getLastKeyPressed() == KeyEvent.VK_DOWN)
     {
-      setCursorIndex(getLastCursorIndex());
+      setCaretIndex(getLastCaretIndex());
       return;
     }
-    int previousLine = getLineNumberOfIndex(cursorIndex) - 1;
-    setCursorIndex(getNewCursorPositionAfterMovingByALine(previousLine));
+    int previousLine = getLineNumberOfIndex(caretIndex) - 1;
+    setCaretIndex(getNewCursorPositionAfterMovingByALine(previousLine));
   }
 
   public void moveCursorDownALine()
   {
     if(getLastKeyPressed() == KeyEvent.VK_UP)
     {
-      setCursorIndex(getLastCursorIndex());
+      setCaretIndex(getLastCaretIndex());
       return;
     }
-    int nextLine = getLineNumberOfIndex(cursorIndex) + 1;
+    int nextLine = getLineNumberOfIndex(caretIndex) + 1;
     int newCursorIndex = getNewCursorPositionAfterMovingByALine(nextLine);
-    setCursorIndex(newCursorIndex);
+    setCaretIndex(newCursorIndex);
   }
 
   private int getNewCursorPositionAfterMovingByALine(int nextLine)
@@ -484,7 +497,7 @@ public abstract class TextModel implements ClipboardOwner
     int charCount = 0;
     for(int i = 0; i < nextLine; i++)
       charCount += textLayouts.get(i).getText().length();
-    int xPos = getXPosFromIndex(cursorIndex);
+    int xPos = getXPosFromIndex(caretIndex);
     String lineText = textLayouts.get(nextLine).getText();
     int lineLength = lineText.length();
     int newCursorIndex = charCount + lineLength - 1;
@@ -506,22 +519,22 @@ public abstract class TextModel implements ClipboardOwner
 
   public void sendCursorToStartOfLine()
   {
-    int currentLine = getLineNumberOfIndex(cursorIndex);
+    int currentLine = getLineNumberOfIndex(caretIndex);
 
     if(currentLine == 0)
     {
-      setCursorIndex(0);
+      setCaretIndex(0);
     }
     else
     {
-      setCursorIndex(getIndexOfLastCharInLine(currentLine - 1) + 1);
+      setCaretIndex(getIndexOfLastCharInLine(currentLine - 1) + 1);
     }
   }
 
   public void sendCursorToEndOfLine()
   {
-    int currentLine = getLineNumberOfIndex(cursorIndex);
-    setCursorIndex(getIndexOfLastCharInLine(currentLine));
+    int currentLine = getLineNumberOfIndex(caretIndex);
+    setCaretIndex(getIndexOfLastCharInLine(currentLine));
   }
 
   public void setSelectionOn(boolean value)
@@ -534,24 +547,14 @@ public abstract class TextModel implements ClipboardOwner
     return selectionOn;
   }
 
-  public int getYOffset()
+  public void setCaretX(int x)
   {
-    return YOffset;
+    caretX = x;
   }
 
-  public void setYOffset(int yOffset)
+  public int getCaretX()
   {
-    this.yOffset = yOffset;
-  }
-
-  public void setCursorX(int x)
-  {
-    cursorX = x;
-  }
-
-  public int getCursorX()
-  {
-    return cursorX;
+    return caretX;
   }
 
   public int getSelectionStartX()
@@ -562,5 +565,51 @@ public abstract class TextModel implements ClipboardOwner
   public TextInputPanel getPanel()
   {
     return myPanel;
+  }
+  
+  public int getTopOfStartPositionForCursor()
+  {
+    return getYPosFromIndex(getCaretIndex()) - getOffset().y;
+  }
+
+  public int getBottomPositionForCursor()
+  {
+    return getTopOfStartPositionForCursor() + getHeightOfCurrentLine() - 1;
+  }
+
+  public Point getOffset()
+  {
+    return offset;
+  }
+
+  public void setOffset(int x, int y)
+  {
+    offset.setLocation(x, y);
+  }
+
+  public int calculateRightShiftingOffset()
+  {
+    return 0;
+  }
+
+  public int calculateLeftShiftingOffset()
+  {
+    return 0;
+  }
+
+  public void lostOwnership(Clipboard clipboard, Transferable contents)
+  {
+    //this doesn't have to do anything...
+  }
+
+  protected TypedLayout createLayout(String text)
+  {
+    return typedLayoutFactory.createLayout(text, getFont(), TextPanel.getRenderContext());
+  }
+
+
+  public void setTypedLayoutFactory(TypedLayoutFactory factory)
+  {
+    typedLayoutFactory = factory;
   }
 }

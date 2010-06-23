@@ -3,6 +3,8 @@
 
 package limelight.ui;
 
+import limelight.util.Box;
+
 import java.awt.*;
 import java.awt.font.TextHitInfo;
 import java.awt.geom.Rectangle2D;
@@ -17,7 +19,9 @@ public interface TypedLayout
   public abstract float getAscent();
   public abstract float getDescent();
   public abstract float getLeading();
-  public abstract Rectangle2D getBounds();
+  int getWidth();
 
   public TextHitInfo hitTestChar(float x, float y);
+
+  Box getCaretShape(int caretIndex);
 }

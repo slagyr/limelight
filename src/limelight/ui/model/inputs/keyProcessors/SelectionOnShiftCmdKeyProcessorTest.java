@@ -30,7 +30,7 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   public void canProcessLeftArrowAndContinueSelectionToTheLeftEdge()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setCursorIndex(2);
+    modelInfo.setCaretIndex(2);
 
     processor.processKey(mockEvent, modelInfo);
 

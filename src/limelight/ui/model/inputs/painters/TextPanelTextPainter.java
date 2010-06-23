@@ -6,7 +6,6 @@ package limelight.ui.model.inputs.painters;
 import limelight.ui.TypedLayout;
 import limelight.ui.model.inputs.TextModel;
 import limelight.ui.model.inputs.TextPanelPainter;
-import limelight.util.Box;
 
 import java.awt.*;
 
@@ -24,15 +23,13 @@ public class TextPanelTextPainter extends TextPanelPainter
     if(boxInfo.getText() == null || boxInfo.getText().length() == 0)
       return;
 
-    boxInfo.shiftOffset(boxInfo.getCursorIndex());
+//    boxInfo.setOffset(boxInfo.calculateXOffset(), boxInfo.calculateYOffset());
 
-    Box box = new Box(0, 0, boxInfo.getPanelWidth(), boxInfo.getPanelHeight());
-    Dimension textDimensions = boxInfo.calculateTextDimensions();
-    float textX = boxInfo.getHorizontalAlignment().getX(textDimensions.width, box) - boxInfo.getXOffset();
-    float textY = boxInfo.getVerticalAlignment().getY(textDimensions.height, box) - boxInfo.calculateYOffset();
+    float textX = boxInfo.getXOffset();//boxInfo.getXAlignmentOffset();
+    float textY = boxInfo.getYAlignmentOffset();
 
     graphics.setColor(boxInfo.getPanel().getStyle().getCompiledTextColor().getColor());
-    for(TypedLayout layout : boxInfo.getTextLayouts())
+    for(TypedLayout layout : boxInfo.getTypedLayouts())
     {
       textY += layout.getAscent();
       layout.draw(graphics, textX, textY + 1);
@@ -40,4 +37,5 @@ public class TextPanelTextPainter extends TextPanelPainter
 
     }
   }
+
 }

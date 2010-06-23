@@ -9,14 +9,10 @@ import limelight.ui.model.TextPanel;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
-
 
 public class TextBoxModel extends TextModel
 {
-
   public TextBoxModel(TextInputPanel myBox)
   {
     super(myBox);
@@ -24,95 +20,99 @@ public class TextBoxModel extends TextModel
 
   protected int getXPosFromText(String toIndexString)
   {
-    TypedLayout layout = new TextLayoutImpl(toIndexString, getFont(), TextPanel.getRenderContext());
-    return getWidthDimension(layout) - xOffset;
+    TypedLayout layout = createLayout(toIndexString);
+    return getWidthDimension(layout);
   }
 
-  public void shiftOffset(int index)
+  @Override
+  public int calculateYOffset()
   {
-    int xPos = getXPosFromIndex(index);
-    if (index == 0)
-    {
-      setCursorX(PIXEL_WIDTH);
-      xOffset = 0;
-    }
-    else if (isCriticallyLeft(xPos))
-    {
-      calculateRightShiftingOffset();
-    }
-    else if (isCriticallyRight(xPos))
-    {
-      calculateLeftShiftingOffset();
-    }
-    setCursorX(getXPosFromIndex(index));
+    return 0;
   }
 
   public boolean isCursorAtCriticalEdge(int xPos)
   {
-    if (myPanel.getWidth() > calculateTextDimensions().width)
+    if(myPanel.getWidth() > getTextDimensions().width)
       return false;
-    if (!isCriticallyRight(xPos) && !isCriticallyLeft(xPos))
-      return false;
-    return true;
+    return isCriticallyRight(xPos) || isCriticallyLeft(xPos);
   }
 
   private boolean isCriticallyLeft(int xPos)
   {
-    return (xPos <= PIXEL_WIDTH && xOffset != 0);
+    return (xPos <= CARET_WIDTH && getOffset().x != 0);
   }
 
   private boolean isCriticallyRight(int xPos)
   {
-    return (xPos >= myPanel.getWidth() - PIXEL_WIDTH);
+    return (xPos >= myPanel.getWidth() - CARET_WIDTH);
   }
 
-  private void calculateRightShiftingOffset()
+  public int calculateRightShiftingOffset()
   {
-    String rightShiftingText = getText().substring(0, getCursorIndex());
-    TypedLayout layout = new TextLayoutImpl(rightShiftingText, getFont(), TextPanel.getRenderContext());
-    int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(rightShiftingText);
-    if (textWidth > getPanelWidth() / 2)
+    int xOffset = getXOffset();
+
+    int textWidth = widthOfTextBeforeCaret();
+
+    if(textWidth > getPanelWidth() / 2)
       xOffset -= getPanelWidth() / 2;
     else
       xOffset -= textWidth;
-    if (xOffset < 0)
-      xOffset = 0;
+
+    return xOffset;
   }
 
-  public void calculateLeftShiftingOffset()
+  private int widthOfTextBeforeCaret()
   {
-    int defaultOffset = PIXEL_WIDTH;
-    if (getCursorIndex() == getText().length())
+    String textBeforeCaret = getText().substring(0, getCaretIndex());
+    TypedLayout layout = createLayout(textBeforeCaret);  //TODO Very inefficient creating a layout here.
+    int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(textBeforeCaret);
+    return textWidth;
+  }
+
+  public int calculateLeftShiftingOffset()
+  {
+    int xOffset = getXOffset();
+
+    if(getCaretIndex() == getText().length())
     {
-      int textWidth = calculateTextDimensions().width;
-      if (textWidth > getPanelWidth())
-      {
-        xOffset = textWidth - getPanelWidth() + defaultOffset;
-      }
+      int textWidth = getTextDimensions().width;
+      if(textWidth > getPanelWidth())
+        xOffset = textWidth - getPanelWidth() + CARET_WIDTH;
     }
     else
     {
-      String leftShiftingText;
-      if (getCursorIndex() == getText().length() - 1)
-        leftShiftingText = Character.toString(getText().charAt(getCursorIndex()));
-      else
-        leftShiftingText = getText().substring(getCursorIndex(), getText().length() - 1);
-      TypedLayout layout = new TextLayoutImpl(leftShiftingText, getFont(), TextPanel.getRenderContext());
-      int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(leftShiftingText);
-      if (textWidth > getPanelWidth() / 2)
+      int textWidth = widthOfTextAfterCaret();
+      if(textWidth > getPanelWidth() / 2)
         xOffset += getPanelWidth() / 2;
       else
         xOffset += textWidth;
     }
+
+    return xOffset;
   }
 
-  public Dimension calculateTextDimensions()
+  private int widthOfTextAfterCaret()
   {
-    if (getText() != null && getText().length() > 0)
+    if(getText().length() == 0 || getText().length() == getCaretIndex())
+      return 0;
+
+    String leftShiftingText;
+    if(getCaretIndex() == getText().length() - 1)
+      leftShiftingText = Character.toString(getText().charAt(getCaretIndex()));
+    else
+      leftShiftingText = getText().substring(getCaretIndex(), getText().length() - 1);
+    TypedLayout layout = new TextLayoutImpl(leftShiftingText, getFont(), TextPanel.getRenderContext());
+    int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(leftShiftingText);
+    return textWidth;
+  }
+
+  public Dimension getTextDimensions()
+  {
+    if(getText() != null && getText().length() > 0)
     {
       int height = 0;
       int width = 0;
-      for (TypedLayout layout : getTextLayouts())
+      for(TypedLayout layout : getTypedLayouts())
       {
         height += (int) (getHeightDimension(layout) + layout.getLeading() + .5);
         width += getWidthDimension(layout);
@@ -122,15 +122,16 @@ public class TextBoxModel extends TextModel
     return null;
   }
 
-  public ArrayList<TypedLayout> getTextLayouts()
+  public ArrayList<TypedLayout> getTypedLayouts()
   {
-    if (getText() == null){
+    if(getText() == null)
+    {
       initNewTextLayouts("");
       return textLayouts;
     }
     else
     {
-      if (textLayouts == null || isThereSomeDifferentText())
+      if(textLayouts == null || isThereSomeDifferentText())
       {
         setLastLayedOutText(getText());
         initNewTextLayouts(getText());
@@ -139,31 +140,71 @@ public class TextBoxModel extends TextModel
     }
   }
 
+  @Override
+  protected void recalculateOffset()
+  {
+    int absoluteCaretX = widthOfTextBeforeCaret();
+    int relativeCaretX = absoluteCaretX + getXOffset();
+    int panelWidth = getPanel().getWidth();
+    if(relativeCaretX >= panelWidth || relativeCaretX < 0)
+    {
+      int xOffset = (absoluteCaretX - panelWidth / 2) * -1;
+      int maxOffset = panelWidth - getTextDimensions().width - CARET_WIDTH;
+      if(xOffset < maxOffset)
+        xOffset = maxOffset;
+      else if(xOffset > 0)
+        xOffset = 0;
+
+      relativeCaretX = absoluteCaretX + xOffset;
+      if(relativeCaretX == panelWidth)
+        xOffset -= CARET_WIDTH;
+
+      setOffset(xOffset, getYOffset());
+    }
+  }
+
+  @Override
+  public TypedLayout getActiveLayout()
+  {
+    return textLayouts.get(0);
+  }
+
+  @Override
+  public Box getCaretShape()
+  {
+    return getActiveLayout().getCaretShape(getCaretIndex()).translated(getOffset());
+  }
+
   private void initNewTextLayouts(String text)
   {
     textLayouts = new ArrayList<TypedLayout>();
-    textLayouts.add(new TextLayoutImpl(text, getFont(), TextPanel.getRenderContext()));
+    textLayouts.add(createLayout(text));
   }
 
   public ArrayList<Rectangle> getSelectionRegions()
   {
-    if (getText().length() > 0)
-      shiftOffset(getCursorIndex());
-    int x1 = getXPosFromIndex(getCursorIndex());
+//    if(getText().length() > 0)
+//      setOffset(calculateXOffset(), calculateYOffset());
+    int x1 = getXPosFromIndex(getCaretIndex());
     int x2 = getXPosFromIndex(getSelectionIndex());
     int edgeSelectionExtension = 0;
 
-    if (x1 <= 0 || x2 <= 0)
+    if(x1 <= 0 || x2 <= 0)
       edgeSelectionExtension = 0;
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
-    if (x1 > x2)
+    if(x1 > x2)
       regions.add(new Box(x2 - edgeSelectionExtension, 0, x1 - x2 + edgeSelectionExtension, getPanelHeight() * 2));
     else
       regions.add(new Box(x1 - edgeSelectionExtension, 0, x2 - x1 + edgeSelectionExtension, getPanelHeight() * 2));
     return regions;
   }
 
-  public int calculateYOffset()
+  public int getXOffset()
+  {
+    return offset == null ? 0 : offset.x;
+  }
+
+  public int getYOffset()
   {
     return 0;
   }
@@ -171,7 +212,7 @@ public class TextBoxModel extends TextModel
   public boolean isBoxFull()
   {
     if(getText().length() > 0)
-      return (myPanel.getWidth() - (TextModel.PIXEL_WIDTH * 2) <= calculateTextDimensions().width);
+      return (myPanel.getWidth() - (TextModel.CARET_WIDTH * 2) <= getTextDimensions().width);
     return false;
   }
 
@@ -185,25 +226,8 @@ public class TextBoxModel extends TextModel
     return false;
   }
 
-  public int getTopOfStartPositionForCursor()
-  {
-    int textHeight = getHeightOfCurrentLine();
-    return getVerticalAlignment().getY(textHeight, myPanel.getBoundingBox());
-  }
-
-  public int getBottomPositionForCursor()
-  {
-    TypedLayout layout = getTextLayouts().get(0);
-    return getTopOfStartPositionForCursor() + (int)(getHeightDimension(layout) + 0.5);
-  }
-
   public int getIndexOfLastCharInLine(int line)
   {
     return getText().length();
-  }
-
-  public void lostOwnership(Clipboard clipboard, Transferable contents)
-  {
-    //this doesn't have to do anything...
   }
 }

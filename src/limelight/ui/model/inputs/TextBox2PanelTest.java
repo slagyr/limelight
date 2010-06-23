@@ -26,7 +26,7 @@ public class TextBox2PanelTest extends Assert
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     graphics = new MockGraphics();
-    boxInfo = panel.getModelInfo();
+    boxInfo = panel.getModel();
     boxInfo.setText("Some Text");
   }
 
@@ -35,10 +35,31 @@ public class TextBox2PanelTest extends Assert
   {
     assertEquals("150", panel.getStyle().getWidth());
     assertEquals("28", panel.getStyle().getHeight());
+  }
+
+  @Test
+  public void shouldHaveDefaultPadding()
+  {
+    assertEquals("2", panel.getStyle().getTopPadding());
+    assertEquals("2", panel.getStyle().getRightPadding());
+    assertEquals("2", panel.getStyle().getBottomPadding());
+    assertEquals("2", panel.getStyle().getLeftPadding());
+  }
+
+  @Test
+  public void shouldHaveDefaultBorders()
+  {
     assertEquals("4", panel.getStyle().getTopBorderWidth());
     assertEquals("4", panel.getStyle().getRightBorderWidth());
     assertEquals("4", panel.getStyle().getBottomBorderWidth());
     assertEquals("4", panel.getStyle().getLeftBorderWidth());
+  }
+  
+  @Test
+  public void shouldHaveDefaultAlignment() throws Exception
+  {
+    assertEquals("center", panel.getStyle().getVerticalAlignment());
+    assertEquals("left", panel.getStyle().getHorizontalAlignment());
   }
 
   @Test

@@ -61,7 +61,7 @@ public class ExpandedSelectionKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
     modelInfo.setText("This is\nMulti lined.");
-    modelInfo.setCursorIndex(11);
+    modelInfo.setCaretIndex(11);
 
     processor.processKey(mockEvent, modelInfo);
 
@@ -73,7 +73,7 @@ public class ExpandedSelectionKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
     modelInfo.setText("This is\nMulti lined.");
-    modelInfo.setCursorIndex(3);
+    modelInfo.setCaretIndex(3);
 
     processor.processKey(mockEvent, modelInfo);
 

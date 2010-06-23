@@ -4,25 +4,18 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
-import limelight.styles.HorizontalAlignment;
-import limelight.styles.VerticalAlignment;
-import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.util.Box;
 
-import java.awt.datatransfer.*;
-import java.awt.event.KeyEvent;
+import java.awt.*;
 
 public class TextBox2Panel extends TextInputPanel
 {
   public TextBox2Panel()
   {
-    boxInfo = new TextBoxModel(this);
-    mouseProcessor = new MouseProcessor(boxInfo);
-    horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
-    verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
+    model = new TextBoxModel(this);
+    mouseProcessor = new MouseProcessor(model);
   }
 
   @Override
@@ -30,38 +23,14 @@ public class TextBox2Panel extends TextInputPanel
   {
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 28);
+    style.setDefault(Style.VERTICAL_ALIGNMENT, "center");
     setBorderStyleDefaults(style);
-
-    style.setDefault(Style.TOP_PADDING, 2);
-    style.setDefault(Style.RIGHT_PADDING, 2);
-    style.setDefault(Style.BOTTOM_PADDING, 2);
-    style.setDefault(Style.LEFT_PADDING, 2);
-  }
-
-  public void keyReleased(KeyEvent e)
-  {
-  }
-
-  public void lostOwnership(Clipboard clipboard, Transferable contents)
-  {
-    //TODO This doesn't have to do anything... how unsettling.
-  }
-
-  protected void markCursorRegionAsDirty()
-  {
-    RootPanel rootPanel = getRoot();
-    if(rootPanel != null)
-    {
-      int cursorY = getAbsoluteLocation().y + boxInfo.getTopOfStartPositionForCursor();
-      int regionHeight = boxInfo.getBottomPositionForCursor() - boxInfo.getTopOfStartPositionForCursor() + 1;
-      int cursorX = boxInfo.getXPosFromIndex(boxInfo.getCursorIndex()) + getAbsoluteLocation().x;
-      rootPanel.addDirtyRegion(new Box(cursorX, cursorY, 1, regionHeight));
-    }
+    setPaddingDefaults(style);
   }
 
   public KeyProcessor getKeyProcessorFor(int modifiers)
   {
-    if(getModelInfo().isSelectionOn())
+    if(getModel().isSelectionOn())
     {
       switch(modifiers)
       {

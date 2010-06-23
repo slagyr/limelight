@@ -36,7 +36,7 @@ public class TextInputPanelTest extends Assert
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     graphics = new MockGraphics();
-    boxInfo = panel.getModelInfo();
+    boxInfo = panel.getModel();
     boxInfo.setText("Some Text");
   }
 

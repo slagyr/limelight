@@ -27,12 +27,12 @@ public class ShiftCmdKeyProcessor extends KeyProcessor
     else if(keyCode == KeyEvent.VK_UP)
     {
       boxInfo.initSelection();
-      boxInfo.setCursorIndex(0);
+      boxInfo.setCaretIndex(0);
     }
     else if(keyCode == KeyEvent.VK_DOWN)
     {
       boxInfo.initSelection();
-      boxInfo.setCursorIndex(boxInfo.getText().length());
+      boxInfo.setCaretIndex(boxInfo.getText().length());
     }
   }
 

@@ -15,16 +15,17 @@ public class TextModelTest
 {
   TextModel model;
   TextInputPanel panel;
+  private MockPanel parent;
 
   @Before
   public void setUp()
   {
     panel = new TextBox2Panel();
-    MockPanel parent = new MockPanel();
+    parent = new MockPanel();
     parent.setSize(150, 28);
     parent.add(panel);
     panel.doLayout();
-    model = panel.getModelInfo();
+    model = panel.getModel();
     model.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
   }
 
@@ -55,7 +56,7 @@ public class TextModelTest
     model.setLastLayedOutText("nothing");
     model.setText("something");
 
-    model.getTextLayouts();
+    model.getTypedLayouts();
 
     assertEquals("something", model.getLastLayedOutText());
   }
@@ -94,10 +95,10 @@ public class TextModelTest
   @Test
   public void canGetTheCurrentLine()
   {
-    model.setCursorIndex(0);
+    model.setCaretIndex(0);
     int expectedLine = 0;
 
-    int line = model.getLineNumberOfIndex(model.getCursorIndex());
+    int line = model.getLineNumberOfIndex(model.getCaretIndex());
 
     assertEquals(expectedLine, line);
   }
@@ -105,7 +106,7 @@ public class TextModelTest
   @Test
   public void canGetTheHeightForTheCurrentLine()
   {
-    int expectedHeight = (int) (model.getHeightDimension(model.getTextLayouts().get(0)) + .5);
+    int expectedHeight = (int) (model.getHeightDimension(model.getTypedLayouts().get(0)) + .5);
 
     int currentLineHeight = model.getHeightOfCurrentLine();
 
@@ -124,7 +125,7 @@ public class TextModelTest
   public void canCopyPasteAndCut()
   {
     model.setText("Some Text");
-    model.setCursorIndex(0);
+    model.setCaretIndex(0);
     model.setSelectionIndex(4);
     model.setSelectionOn(true);
     model.copySelection();
@@ -134,7 +135,7 @@ public class TextModelTest
     model.pasteClipboard();
     assertEquals("SomeSome Text", model.getText());
 
-    model.setCursorIndex(0);
+    model.setCaretIndex(0);
     model.setSelectionIndex(8);
     model.cutSelection();
     assertEquals("SomeSome", model.getClipboardContents());
@@ -144,16 +145,30 @@ public class TextModelTest
   @Test
   public void willRememberTheLastCursorIndex()
   {
-    model.setCursorIndex(3);
-    model.setCursorIndex(5);
+    model.setCaretIndex(3);
+    model.setCaretIndex(5);
 
-    assertEquals(3, model.getLastCursorIndex());
+    assertEquals(3, model.getLastCaretIndex());
   }
 
   @Test
   public void canGetTheLastCharacterInALine()
   {
     assertEquals(model.getText().length(), model.getIndexOfLastCharInLine(0));
+  }
+
+  @Test
+  public void shouldGetAlignment() throws Exception
+  {
+    parent.getStyle().setVerticalAlignment("center");
+    parent.getStyle().setHorizontalAlignment("center");
+    assertEquals("center", model.getVerticalAlignment().toString());
+    assertEquals("center", model.getHorizontalAlignment().toString());
+
+    parent.getStyle().setVerticalAlignment("bottom");
+    parent.getStyle().setHorizontalAlignment("right");
+    assertEquals("bottom", model.getVerticalAlignment().toString());
+    assertEquals("right", model.getHorizontalAlignment().toString());
   }
 
 }

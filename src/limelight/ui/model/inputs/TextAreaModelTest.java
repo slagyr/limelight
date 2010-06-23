@@ -30,7 +30,7 @@ public class TextAreaModelTest
     parent.add(panel);
     parent.setSize(150, 75);
     panel.doLayout();
-    modelInfo = panel.getModelInfo();
+    modelInfo = panel.getModel();
     areaInfo = new TextAreaModel(panel);
     text = "I took the one less traveled by. And that has made all the difference";
     modelInfo.setText(text);
@@ -72,37 +72,33 @@ public class TextAreaModelTest
   {
     modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
 
-    modelInfo.calculateYOffset();
+    assertEquals(true, modelInfo.getOffset().y > 0);
 
-    assertEquals(true, modelInfo.yOffset > 0);
+    modelInfo.setCaretIndex(2);
 
-    modelInfo.setCursorIndex(2);
-
-    modelInfo.calculateYOffset();
-
-    assertEquals(0, modelInfo.yOffset);
+    assertEquals(0, modelInfo.getOffset().y);
   }
 
   @Test
   public void willOnlyShiftYOffsetIfCursorIsAtTheTopOrBottomEdge()
   {
     modelInfo.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
-    modelInfo.setCursorIndex(10);
+    modelInfo.setCaretIndex(10);
 
-    assertEquals(0, modelInfo.calculateYOffset());
+    assertEquals(0, modelInfo.getOffset().y);
 
-    modelInfo.setCursorIndex(20);
+    modelInfo.setCaretIndex(20);
 
-    int staticYOffset = modelInfo.calculateYOffset();
+    int staticYOffset = modelInfo.getOffset().y;
     assertEquals(true, staticYOffset > 0);
 
-    modelInfo.setCursorIndex(10);
+//    modelInfo.setCursorIndex(10);
+//
+//    assertEquals(staticYOffset, modelInfo.getOffset().y);
 
-    assertEquals(staticYOffset, modelInfo.calculateYOffset());
+    modelInfo.setCaretIndex(0);
 
-    modelInfo.setCursorIndex(0);
-
-    assertEquals(0, modelInfo.calculateYOffset());
+    assertEquals(0, modelInfo.getOffset().y);
 
   }
 
@@ -125,7 +121,7 @@ public class TextAreaModelTest
   {
     modelInfo.setText("some text\n");
 
-    int x = modelInfo.getXPosFromIndex(modelInfo.getCursorIndex());
+    int x = modelInfo.getXPosFromIndex(modelInfo.getCaretIndex());
 
     assertEquals(0, x);
   }
@@ -134,7 +130,7 @@ public class TextAreaModelTest
   public void canGetTheHeightOfTheCurrentLine()
   {
     int expectedHeight = (int) (modelInfo.getHeightDimension(new TextLayoutImpl("A", modelInfo.getFont(), TextPanel.getRenderContext())) + .5);
-    modelInfo.setCursorIndex(50);
+    modelInfo.setCaretIndex(50);
 
     int height = modelInfo.getHeightOfCurrentLine();
 
@@ -179,7 +175,7 @@ public class TextAreaModelTest
   {
     areaInfo.setText("This is more than 1 line\rand should be 2 lines");
 
-    ArrayList<TypedLayout> textLayouts = areaInfo.getTextLayouts();
+    ArrayList<TypedLayout> textLayouts = areaInfo.getTypedLayouts();
     assertEquals(2, textLayouts.size());
     assertEquals("This is more than 1 line\r", textLayouts.get(0).getText());
     assertEquals("and should be 2 lines", textLayouts.get(1).getText());
@@ -189,7 +185,7 @@ public class TextAreaModelTest
   public void willStoreATextLayoutForAnEmptyLine()
   {
     areaInfo.setText("This has an empty line\n");
-    ArrayList<TypedLayout> textLayouts = areaInfo.getTextLayouts();
+    ArrayList<TypedLayout> textLayouts = areaInfo.getTypedLayouts();
     assertEquals(2, textLayouts.size());
     assertEquals("", textLayouts.get(1).getText());
   }
@@ -199,7 +195,7 @@ public class TextAreaModelTest
   {
     modelInfo.setText("This is going to be a very large amount of text. It seems to be the only way to make sure this works. Here\nis\n\nsome new lines");
 
-    modelInfo.getTextLayouts();
+    modelInfo.getTypedLayouts();
 
     assertEquals(7, modelInfo.textLayouts.size());
   }
@@ -208,7 +204,7 @@ public class TextAreaModelTest
   public void canCalculateTheTextModelsDimensions()
   {
     modelInfo.setText("line 1\nline 2");
-    Dimension dim = modelInfo.calculateTextDimensions();
+    Dimension dim = modelInfo.getTextDimensions();
     assertEquals(true, dim.width >= 29 && dim.width <= 30);
     assertEquals(28, dim.height);
   }
@@ -225,13 +221,13 @@ public class TextAreaModelTest
   {
     modelInfo.setSelectionIndex(0);
     modelInfo.setSelectionOn(true);
-    modelInfo.setCursorIndex(5);
+    modelInfo.setCaretIndex(5);
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
 
     assertEquals(0, regions.get(0).x);
     assertEquals(0, regions.get(0).y);
-    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCursorIndex()), regions.get(0).width);
+    assertEquals(modelInfo.getXPosFromIndex(modelInfo.getCaretIndex()), regions.get(0).width);
     assertEquals(modelInfo.getTotalHeightOfLineWithLeadingMargin(modelInfo.getLineNumberOfIndex(5)), regions.get(0).height);
   }
 
@@ -241,7 +237,7 @@ public class TextAreaModelTest
     modelInfo.setSelectionIndex(2);
     modelInfo.setSelectionOn(true);
     modelInfo.setText("This is\nMulti Lined.");
-    modelInfo.setCursorIndex(10);
+    modelInfo.setCaretIndex(10);
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
 
@@ -262,11 +258,11 @@ public class TextAreaModelTest
   {
     modelInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\nline");
     modelInfo.setSelectionOn(true);
-    modelInfo.setCursorIndex(modelInfo.getText().length() - 3);
-    modelInfo.setSelectionIndex(modelInfo.getCursorIndex() - 15);
+    modelInfo.setCaretIndex(modelInfo.getText().length() - 3);
+    modelInfo.setSelectionIndex(modelInfo.getCaretIndex() - 15);
 
     ArrayList<Rectangle> regions = modelInfo.getSelectionRegions();
-    assertEquals(true, modelInfo.getYPosFromIndex(modelInfo.getCursorIndex()) > panel.getHeight());
+    assertEquals(true, modelInfo.getYPosFromIndex(modelInfo.getCaretIndex()) > panel.getHeight());
     assertEquals(true, regions.get(regions.size() -1).y < panel.getHeight());
 
   }
@@ -275,14 +271,14 @@ public class TextAreaModelTest
   public void willReturnProperSelectedRegionsWhenThereIAYOffest()
   {
     areaInfo.setText("line\nline\nline\nline\nline\nline\nline\nline\n");
-    areaInfo.setCursorIndex(areaInfo.getCursorIndex() - 1);
-    areaInfo.setSelectionIndex(areaInfo.getCursorIndex() - 2);
+    areaInfo.setCaretIndex(areaInfo.getCaretIndex() - 1);
+    areaInfo.setSelectionIndex(areaInfo.getCaretIndex() - 2);
 
     ArrayList<Rectangle> regions = areaInfo.getSelectionRegions();
     
-    assertEquals(true, areaInfo.getYPosFromIndex(areaInfo.getCursorIndex()) > panel.getHeight());
+    assertEquals(true, areaInfo.getYPosFromIndex(areaInfo.getCaretIndex()) > panel.getHeight());
     assertEquals(true, regions.get(regions.size() -1).y < panel.getHeight());
-    assertEquals(areaInfo.getYPosFromIndex(areaInfo.getCursorIndex()) - areaInfo.calculateYOffset(), regions.get(regions.size() - 1).y);
+    assertEquals(areaInfo.getYPosFromIndex(areaInfo.getCaretIndex()) - areaInfo.getOffset().y, regions.get(regions.size() - 1).y);
   }
 
   @Test

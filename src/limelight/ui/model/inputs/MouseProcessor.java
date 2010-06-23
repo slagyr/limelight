@@ -12,7 +12,6 @@ import java.util.Date;
 
 public class MouseProcessor
 {
-
   TextModel boxInfo;
   public long lastClickTime;
   public boolean doubleClickOn;
@@ -49,7 +48,7 @@ public class MouseProcessor
 
   private int getIndexByLoopingThroughLayouts(int x, int y)
   {
-    ArrayList<TypedLayout> layouts = boxInfo.getTextLayouts();
+    ArrayList<TypedLayout> layouts = boxInfo.getTypedLayouts();
     if (layouts == null)
       return 0;
     int layoutIndex = 0;
@@ -61,13 +60,13 @@ public class MouseProcessor
       layoutIndex++;
       layoutYPosition += boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex);
     }
-    TextHitInfo hitInfo = layouts.get(layoutIndex).hitTestChar(x + boxInfo.getXOffset(), y);
+    TextHitInfo hitInfo = layouts.get(layoutIndex).hitTestChar(x + boxInfo.getOffset().x, y);
     return hitInfo.getCharIndex() + charCount;
   }
 
   private boolean notPastTheLastLayout(int y, int i, int layoutPosition)
   {
-    return i < boxInfo.getTextLayouts().size() - 1 && y + boxInfo.getYOffset() > layoutPosition;
+    return i < boxInfo.getTypedLayouts().size() - 1 && y + boxInfo.getOffset().y > layoutPosition;
   }
 
   private boolean isMouseXPastLastCharacterAndNotOnNewLine(int x, int index)
@@ -86,7 +85,7 @@ public class MouseProcessor
       int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
       boxInfo.setSelectionOn(true);
       boxInfo.setSelectionIndex(calculateMouseClickIndex(myX, myY));
-      boxInfo.setCursorIndex(boxInfo.getSelectionIndex());
+      boxInfo.setCaretIndex(boxInfo.getSelectionIndex());
       makeExtraSelectionOnMultiClick();
       lastClickTime = (new Date()).getTime();
     }
@@ -108,13 +107,13 @@ public class MouseProcessor
   private void selectAllOnTripleClick()
   {
     boxInfo.setSelectionIndex(0);
-    boxInfo.setCursorIndex(boxInfo.getText().length());
+    boxInfo.setCaretIndex(boxInfo.getText().length());
   }
 
   private void selectWordOnDoubleClick()
   {
-    boxInfo.setSelectionIndex(boxInfo.findWordsLeftEdge(boxInfo.getCursorIndex()));
-    boxInfo.setCursorIndex(boxInfo.findWordsRightEdge(boxInfo.getCursorIndex()));
+    boxInfo.setSelectionIndex(boxInfo.findWordsLeftEdge(boxInfo.getCaretIndex()));
+    boxInfo.setCaretIndex(boxInfo.findWordsRightEdge(boxInfo.getCaretIndex()));
     doubleClickOn = true;
   }
 
@@ -128,14 +127,13 @@ public class MouseProcessor
     {
       if (boxInfo.getXPosFromIndex(tempIndex) < myX && tempIndex < boxInfo.getText().length())
         tempIndex++;
-      boxInfo.shiftOffset(tempIndex);
       tempIndex--;
     }
     if (doubleClickOn)
       selectWord(tempIndex);
 
     else
-      boxInfo.setCursorIndex(tempIndex);
+      boxInfo.setCaretIndex(tempIndex);
   }
 
   private void selectWord(int tempIndex)
@@ -149,8 +147,8 @@ public class MouseProcessor
     int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
     if (!doubleClickOn)
     {
-      boxInfo.setCursorIndex(calculateMouseClickIndex(myX, myY));
-      if (boxInfo.getCursorIndex() == boxInfo.getSelectionIndex())
+      boxInfo.setCaretIndex(calculateMouseClickIndex(myX, myY));
+      if (boxInfo.getCaretIndex() == boxInfo.getSelectionIndex())
         boxInfo.setSelectionOn(false);
     }
   }
@@ -182,17 +180,17 @@ public class MouseProcessor
 
     private void turnAround()
     {
-      boxInfo.setSelectionIndex(boxInfo.getCursorIndex());
+      boxInfo.setSelectionIndex(boxInfo.getCaretIndex());
     }
 
     private void repositionHead(int newHead)
     {
-      boxInfo.setCursorIndex(newHead);
+      boxInfo.setCaretIndex(newHead);
     }
 
     private boolean isSelectionFacingRight()
     {
-      return boxInfo.getCursorIndex() > boxInfo.getSelectionIndex();
+      return boxInfo.getCaretIndex() > boxInfo.getSelectionIndex();
     }
 
     private boolean isRightOfTail()

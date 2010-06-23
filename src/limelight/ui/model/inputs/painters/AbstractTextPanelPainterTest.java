@@ -28,9 +28,9 @@ public class AbstractTextPanelPainterTest
     parent.add(panel);
     parent.setSize(150, 28);
     panel.doLayout();
-    boxInfo = panel.getModelInfo();
+    boxInfo = panel.getModel();
     boxInfo.setText("Some Text");
-    boxInfo.setCursorIndex(4);
+    boxInfo.setCaretIndex(4);
     graphics = new MockGraphics();
     panel.setCursorOn(true);
   }

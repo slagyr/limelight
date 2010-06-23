@@ -80,7 +80,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
     modelInfo.setText("This is\nMulti lined.");
-    modelInfo.setCursorIndex(3);
+    modelInfo.setCaretIndex(3);
 
     processor.processKey(mockEvent, modelInfo);
 
@@ -92,7 +92,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
     modelInfo.setText("This is\nMulti lined.");
-    modelInfo.setCursorIndex(11);
+    modelInfo.setCaretIndex(11);
 
     processor.processKey(mockEvent, modelInfo);
 
@@ -116,7 +116,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
     modelInfo.setText("This is\nMulti lined.");
-    modelInfo.setCursorIndex(3);
+    modelInfo.setCaretIndex(3);
 
     processor.processKey(mockEvent, modelInfo);
 
@@ -141,8 +141,8 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
     modelInfo.setText("This is\nMulti lined.");
     modelInfo.setLastKeyPressed(KeyEvent.VK_UP);
-    modelInfo.setCursorIndex(3);
-    modelInfo.setLastCursorIndex(11);
+    modelInfo.setCaretIndex(3);
+    modelInfo.setLastCaretIndex(11);
 
     processor.processKey(mockEvent, modelInfo);
 
@@ -166,7 +166,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
     modelInfo.setText("blah\nasdf\nasdf");
-    modelInfo.setCursorIndex(4);
+    modelInfo.setCaretIndex(4);
 
     processor.processKey(mockEvent, modelInfo);
 

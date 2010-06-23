@@ -43,11 +43,11 @@ public class AbstractKeyProcessorTest
 
   private void setUp()
   {
-    modelInfo = panel.getModelInfo();
+    modelInfo = panel.getModel();
     asserter = new TextModelAsserter(modelInfo);
 
     modelInfo.setText("Here are four words");
-    modelInfo.setCursorIndex(1);
+    modelInfo.setCaretIndex(1);
 
     parent.add(panel);
     panel.doLayout();
@@ -99,14 +99,14 @@ public class AbstractKeyProcessorTest
 
     public void assertSelection(int cursorIndex, int selectionIndex, boolean selectionOn)
     {
-      assertEquals(cursorIndex, modelInfo.getCursorIndex());
+      assertEquals(cursorIndex, modelInfo.getCaretIndex());
       assertEquals(selectionIndex, modelInfo.getSelectionIndex());
       assertEquals(selectionOn, modelInfo.isSelectionOn());
     }
 
     public void assertTextState(int cursorIndex, String text)
     {
-      assertEquals(cursorIndex, modelInfo.getCursorIndex());
+      assertEquals(cursorIndex, modelInfo.getCaretIndex());
       assertEquals(text, modelInfo.getText().toString());
       if (!modelInfo.isSelectionOn())
         assertEquals(0, modelInfo.getSelectionIndex());

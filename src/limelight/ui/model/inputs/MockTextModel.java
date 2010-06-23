@@ -1,10 +1,10 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.TypedLayout;
+import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 
 public class MockTextModel extends TextModel
@@ -14,6 +14,8 @@ public class MockTextModel extends TextModel
   public MockTextModel(TextInputPanel inputPanel)
   {
     super(inputPanel);
+    inputPanel.setModel(this);
+    setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }
 
   @Override
@@ -23,8 +25,21 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  public void shiftOffset(int index)
+  public int calculateYOffset()
   {
+    return 0;
+  }
+
+  @Override
+  public int getXOffset()
+  {
+    return 0;
+  }
+
+  @Override
+  public int getYOffset()
+  {
+    return 0;
   }
 
   @Override
@@ -34,15 +49,34 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  public Dimension calculateTextDimensions()
+  public Dimension getTextDimensions()
   {
     return null;
   }
 
   @Override
-  public ArrayList<TypedLayout> getTextLayouts()
+  public ArrayList<TypedLayout> getTypedLayouts()
   {
-    return null;
+    if(textLayouts == null)
+      addLayout(getText());
+    return textLayouts;
+  }
+
+  @Override
+  protected void recalculateOffset()
+  {
+  }
+
+  @Override
+  public TypedLayout getActiveLayout()
+  {
+    return textLayouts.get(0);
+  }
+
+  @Override
+  public Box getCaretShape()
+  {
+    return textLayouts.get(0).getCaretShape(getCaretIndex());
   }
 
   @Override
@@ -86,25 +120,17 @@ public class MockTextModel extends TextModel
   {
     return 0;
   }
-
-  @Override
-  public void calculateLeftShiftingOffset()
-  {
-  }
-
-  @Override
-  public int calculateYOffset()
-  {
-    return 0;
-  }
-
+  
   @Override
   public boolean isCursorAtCriticalEdge(int cursorX)
   {
     return false;
   }
 
-  public void lostOwnership(Clipboard clipboard, Transferable contents)
+  public void addLayout(String value)
   {
+    if(textLayouts == null)
+      textLayouts = new ArrayList<TypedLayout>();
+    textLayouts.add(createLayout(value));
   }
 }
