@@ -108,18 +108,8 @@ public class TextBoxModel extends TextModel
 
   public Dimension getTextDimensions()
   {
-    if(getText() != null && getText().length() > 0)
-    {
-      int height = 0;
-      int width = 0;
-      for(TypedLayout layout : getTypedLayouts())
-      {
-        height += (int) (getHeightDimension(layout) + layout.getLeading() + .5);
-        width += getWidthDimension(layout);
-      }
-      return new Dimension(width, height);
-    }
-    return null;
+    TypedLayout activeLayout = getActiveLayout();
+    return new Dimension(activeLayout.getWidth(), activeLayout.getHeight());
   }
 
   public ArrayList<TypedLayout> getTypedLayouts()
@@ -143,30 +133,40 @@ public class TextBoxModel extends TextModel
   @Override
   protected void recalculateOffset()
   {
+    int xOffset = getXOffset();
+    int yOffset = getYOffset();
     int absoluteCaretX = widthOfTextBeforeCaret();
-    int relativeCaretX = absoluteCaretX + getXOffset();
-    int panelWidth = getPanel().getWidth();
-    if(relativeCaretX >= panelWidth || relativeCaretX < 0)
+    int relativeCaretX = absoluteCaretX + xOffset;
+    Box boundingBox = getPanel().getBoundingBox();
+    Dimension textDimensions = getTextDimensions();
+    
+    if(relativeCaretX >= boundingBox.width || relativeCaretX < 0)
     {
-      int xOffset = (absoluteCaretX - panelWidth / 2) * -1;
-      int maxOffset = panelWidth - getTextDimensions().width - CARET_WIDTH;
+      xOffset = (absoluteCaretX - boundingBox.width / 2) * -1;
+      int maxOffset = boundingBox.width - textDimensions.width - CARET_WIDTH;
       if(xOffset < maxOffset)
         xOffset = maxOffset;
       else if(xOffset > 0)
         xOffset = 0;
 
       relativeCaretX = absoluteCaretX + xOffset;
-      if(relativeCaretX == panelWidth)
+      if(relativeCaretX == boundingBox.width)
         xOffset -= CARET_WIDTH;
-
-      setOffset(xOffset, getYOffset());
     }
+
+    if(textDimensions.width < boundingBox.width)
+      xOffset = getHorizontalAlignment().getX(textDimensions.width, boundingBox);
+
+    if(textDimensions.height < boundingBox.height)
+      yOffset = getVerticalAlignment().getY(textDimensions.height, boundingBox);
+
+    setOffset(xOffset, yOffset);
   }
 
   @Override
   public TypedLayout getActiveLayout()
   {
-    return textLayouts.get(0);
+    return getTypedLayouts().get(0);
   }
 
   @Override
@@ -206,7 +206,7 @@ public class TextBoxModel extends TextModel
 
   public int getYOffset()
   {
-    return 0;
+    return offset.y;
   }
 
   public boolean isBoxFull()

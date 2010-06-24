@@ -69,4 +69,9 @@ public class MockTypedLayout implements TypedLayout
   {
     return CHAR_WIDTH * text.length();
   }
+
+  public int getHeight()
+  {
+    return 10;
+  }
 }

@@ -18,22 +18,20 @@ public class TextPanelTextPainter extends TextPanelPainter
   }
 
   @Override
-  public void paint(Graphics2D graphics, TextModel boxInfo)
+  public void paint(Graphics2D graphics, TextModel model)
   {
-    if(boxInfo.getText() == null || boxInfo.getText().length() == 0)
+    if(model.getText() == null || model.getText().length() == 0)
       return;
 
-//    boxInfo.setOffset(boxInfo.calculateXOffset(), boxInfo.calculateYOffset());
+    float x = model.getXOffset();
+    float y = model.getYOffset();
 
-    float textX = boxInfo.getXOffset();//boxInfo.getXAlignmentOffset();
-    float textY = boxInfo.getYAlignmentOffset();
-
-    graphics.setColor(boxInfo.getPanel().getStyle().getCompiledTextColor().getColor());
-    for(TypedLayout layout : boxInfo.getTypedLayouts())
+    graphics.setColor(model.getPanel().getStyle().getCompiledTextColor().getColor());
+    for(TypedLayout layout : model.getTypedLayouts())
     {
-      textY += layout.getAscent();
-      layout.draw(graphics, textX, textY + 1);
-      textY += layout.getDescent() + layout.getLeading();
+      y += layout.getAscent();
+      layout.draw(graphics, x, y + 1);
+      y += layout.getDescent() + layout.getLeading();
 
     }
   }

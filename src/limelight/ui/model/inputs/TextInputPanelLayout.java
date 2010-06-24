@@ -8,7 +8,9 @@ public class TextInputPanelLayout extends InputPanelLayout
 
   public void doLayout(Panel thePanel)
   {
-    ((TextInputPanel)thePanel).getModel().clearLayouts();
+    TextInputPanel textInputPanel = (TextInputPanel) thePanel;
+    textInputPanel.getModel().clearLayouts();
     super.doLayout(thePanel);
+    textInputPanel.getModel().recalculateOffset();
   }
 }

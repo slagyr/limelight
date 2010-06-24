@@ -9,7 +9,10 @@ import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.model.Drawable;
 import limelight.ui.model.PropPanel;
+import limelight.ui.painting.BorderPainter;
 import limelight.util.Box;
+import limelight.util.Colors;
+import limelight.util.Debug;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -41,9 +44,19 @@ public class TextPanelBorderPainter implements Painter
 
   public void paint(Graphics2D graphics, PaintablePanel panel)
   {
-    Box bounds = panel.getBoxInsideMargins();
-    normalBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
-    if(panel.hasFocus())
-      focusedBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
+    if(shouldPaintSpecialBorder(panel))
+    {
+      Box bounds = panel.getBoxInsideMargins();
+      normalBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
+      if(panel.hasFocus())
+        focusedBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
+    }
+    else
+      BorderPainter.instance.paint(graphics, panel);
+  }
+
+  private boolean shouldPaintSpecialBorder(PaintablePanel panel)
+  {
+    return panel.getStyle().getCompiledTopBorderColor().getColor().equals(Colors.TRANSPARENT);
   }
 }

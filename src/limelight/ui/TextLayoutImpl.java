@@ -64,7 +64,7 @@ public class TextLayoutImpl implements TypedLayout
   {
     String textLeftOfCaret = text.substring(0, caretIndex);
     int x = getMetrics().stringWidth(textLeftOfCaret);
-    return new Box(x, 0, 1, getHeight());
+    return new Box(x, 0, 1, getHeight() + 1);
   }
 
   public String toString()
@@ -84,7 +84,7 @@ public class TextLayoutImpl implements TypedLayout
     return getMetrics().stringWidth(text);
   }
 
-  private int getHeight()
+  public int getHeight()
   {
     return getMetrics().getAscent() + getMetrics().getDescent();
   }

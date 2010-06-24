@@ -22,6 +22,6 @@ public class VerticalAlignmentAttributeTest extends AbstractStyleAttributeTest
   @Test
   public void shouldStyleChanged() throws Exception
   {
-    checkDefaultLayoutRequested();
+    checkAlignmentChange();
   }
 }

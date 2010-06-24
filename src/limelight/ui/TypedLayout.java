@@ -20,6 +20,7 @@ public interface TypedLayout
   public abstract float getDescent();
   public abstract float getLeading();
   int getWidth();
+  int getHeight();
 
   public TextHitInfo hitTestChar(float x, float y);
 

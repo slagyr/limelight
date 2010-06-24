@@ -100,4 +100,17 @@ public class AbstractStyleAttributeTest extends Assert
     assertEquals(true, panel.propagateSizeChangeUpCalled);
     assertEquals(null, cache.retrieve(panel));
   }
+
+  protected void checkAlignmentChange() throws Exception
+  {
+    setUpPanel();
+    MockTextAccessor accessor = new MockTextAccessor();
+    panel.textAccessor = accessor;
+
+    attribute.applyChange(panel, null);
+
+    assertEquals(true, accessor.markAsNeedingLayoutCalled);
+    assertEquals(true, panel.markAsNeedingLayoutCalled);
+    assertEquals(null, cache.retrieve(panel));
+  }
 }

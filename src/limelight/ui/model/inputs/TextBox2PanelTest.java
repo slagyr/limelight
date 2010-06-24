@@ -47,12 +47,21 @@ public class TextBox2PanelTest extends Assert
   }
 
   @Test
-  public void shouldHaveDefaultBorders()
+  public void shouldHaveDefaultBorderWidths()
   {
     assertEquals("4", panel.getStyle().getTopBorderWidth());
     assertEquals("4", panel.getStyle().getRightBorderWidth());
     assertEquals("4", panel.getStyle().getBottomBorderWidth());
     assertEquals("4", panel.getStyle().getLeftBorderWidth());
+  }
+
+  @Test
+  public void shouldHaveDefaultBorderColors()
+  {
+    assertEquals("#00000000", panel.getStyle().getTopBorderColor());
+    assertEquals("#00000000", panel.getStyle().getRightBorderColor());
+    assertEquals("#00000000", panel.getStyle().getBottomBorderColor());
+    assertEquals("#00000000", panel.getStyle().getLeftBorderColor());
   }
   
   @Test

@@ -9,6 +9,7 @@ import limelight.styles.Style;
 import limelight.ui.model.*;
 import limelight.ui.model.inputs.painters.*;
 import limelight.util.Box;
+import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -36,7 +37,10 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     RootPanel rootPanel = getRoot();
     if(rootPanel != null)
-      rootPanel.addDirtyRegion(model.getCaretShape());
+    {
+      Box caret = model.getCaretShape().translated(getAbsoluteLocation());
+      rootPanel.addDirtyRegion(caret);
+    }
   }
 
   public void setParent(limelight.ui.Panel panel)
@@ -55,7 +59,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   }
   
   public void paintOn(Graphics2D graphics)
-  {
+  {  
     TextPanelSelectionPainter.instance.paint(graphics, model);
     TextPanelTextPainter.instance.paint(graphics, model);
     TextPanelCaretPainter.instance.paint(graphics, model);
@@ -232,6 +236,10 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     style.setDefault(Style.RIGHT_BORDER_WIDTH, 4);
     style.setDefault(Style.BOTTOM_BORDER_WIDTH, 4);
     style.setDefault(Style.LEFT_BORDER_WIDTH, 4);
+    style.setDefault(Style.TOP_BORDER_COLOR, "transparent");
+    style.setDefault(Style.RIGHT_BORDER_COLOR, "transparent");
+    style.setDefault(Style.BOTTOM_BORDER_COLOR, "transparent");
+    style.setDefault(Style.LEFT_BORDER_COLOR, "transparent");
   }
 
   public boolean hasFocus()
