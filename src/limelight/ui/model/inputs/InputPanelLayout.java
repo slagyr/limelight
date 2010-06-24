@@ -19,6 +19,7 @@ public class InputPanelLayout implements Layout
     Box bounds = panel.getParent().getBoxInsidePadding();
     panel.setLocation(bounds.x, bounds.y);
     panel.setSize(bounds.width, bounds.height);
+    panel.markAsDirty();
   }
 
   public boolean overides(Layout other)

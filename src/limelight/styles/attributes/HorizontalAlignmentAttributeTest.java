@@ -1,5 +1,6 @@
 package limelight.styles.attributes;
 
+import limelight.ui.model.MockTextAccessor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class HorizontalAlignmentAttributeTest extends AbstractStyleAttributeTest
   @Test
   public void shouldStyleChanged() throws Exception
   {
-    checkDefaultLayoutRequested();
+    checkAlignmentChange();
   }
+
 }

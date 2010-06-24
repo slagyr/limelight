@@ -66,6 +66,8 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract Box getCaretShape();
 
+  public abstract Dimension getTextDimensions();
+
   public TextModel(TextInputPanel panel)
   {
     this.myPanel = panel;
@@ -140,8 +142,6 @@ public abstract class TextModel implements ClipboardOwner
     }
     return spaceWidth;
   }
-
-  public abstract Dimension getTextDimensions();
 
   public float getHeightDimension(TypedLayout layout)
   {

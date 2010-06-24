@@ -15,6 +15,7 @@ public class VerticalAlignmentAttribute extends StyleAttribute
   public void applyChange(ChangeablePanel panel, StyleValue value)
   {
     expireCache(panel);
+    panel.getTextAccessor().markAsNeedingLayout();
     panel.markAsNeedingLayout();
   }
 }

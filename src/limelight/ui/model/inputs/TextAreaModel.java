@@ -38,20 +38,19 @@ public class TextAreaModel extends TextModel
   @Override
   public Dimension getTextDimensions()
   {
-    if(getText() != null && getText().length() > 0)
+    if(getText() == null && getText().length() == 0)
+      return new Dimension(0, 0);
+
+    int height = 0;
+    int width = 0;
+    for(TypedLayout layout : getTypedLayouts())
     {
-      int height = 0;
-      int width = 0;
-      for(TypedLayout layout : getTypedLayouts())
-      {
-        height += (int) (getHeightDimension(layout) + layout.getLeading() + .5);
-        int dimWidth = getWidthDimension(layout);
-        if(dimWidth > width)
-          width = dimWidth;
-      }
-      return new Dimension(width, height);
+      height += layout.getHeight();
+      int lineWidth = layout.getWidth();
+      if(lineWidth > width)
+        width = lineWidth;
     }
-    return null;
+    return new Dimension(width, height);
   }
 
   @Override

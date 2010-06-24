@@ -8,6 +8,8 @@ import limelight.ui.api.MockProp;
 import limelight.ui.model.MockDrawable;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.TextBox2Panel;
+import limelight.ui.painting.BorderPainter;
+import limelight.ui.painting.MockPainter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +38,7 @@ public class TextPanelBorderPainterTest extends Assert
     TextPanelBorderPainter.focusedBorder = focusDrawable = new MockDrawable();
 
     painter = TextPanelBorderPainter.instance;
+    parent.getStyle().setBorderColor("transparent");
   }
 
   private void assertDrawn(MockDrawable normalDrawable, Graphics expectedGraphics, int expectedX, int expectedY, int expectedWidth, int expectedHeight)
@@ -74,6 +77,20 @@ public class TextPanelBorderPainterTest extends Assert
 
     assertDrawn(normalDrawable, graphics, 0, 0, parent.getWidth(), parent.getWidth());
     assertNotDrawn(focusDrawable);
+  }
+
+  @Test
+  public void shouldDelegateToDefaultBorderPainterIfBorderColorIsSpecified() throws Exception
+  {
+    MockPainter defaultBorderPainter = new MockPainter();
+    BorderPainter.instance = defaultBorderPainter;
+    parent.getStyle().setTopBorderColor("blue");
+
+    painter.paint(graphics, parent);
+
+    assertNotDrawn(normalDrawable);
+    assertNotDrawn(focusDrawable);
+    assertEquals(true, defaultBorderPainter.painted);
   }
 
 }

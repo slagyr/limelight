@@ -23,7 +23,7 @@ public class TextBoxModelTest
     panel = new TextBox2Panel();
     MockPanel parent = new MockPanel();
     parent.add(panel);
-    parent.setSize(100, 28);
+    parent.setSize(100, 20);
     panel.doLayout();
     model = panel.getModel();
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
@@ -184,7 +184,16 @@ public class TextBoxModelTest
     model.setText("123");
 
     assertEquals(3, model.getCaretIndex());
-    assertEquals(-70, model.getXOffset());
+    assertEquals(70, model.getXOffset());
+  }
+
+  @Test
+  public void shouldAccountForVerticalAlignment() throws Exception
+  {
+    panel.getStyle().setVerticalAlignment("bottom");
+    model.setText("123");
+    
+    assertEquals(10, model.getYOffset());
   }
 
 //
