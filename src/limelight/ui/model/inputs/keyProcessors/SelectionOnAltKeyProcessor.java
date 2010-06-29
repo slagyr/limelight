@@ -19,7 +19,7 @@ public class SelectionOnAltKeyProcessor extends KeyProcessor
     if (isACharacter(keyCode))
     {
       boxInfo.deleteSelection();
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertChar(event.getKeyChar());
     }
     else if (boxInfo.isMoveRightEvent(keyCode))
     {

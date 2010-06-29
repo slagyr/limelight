@@ -12,17 +12,17 @@ public class NormalKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new NormalKeyProcessor();
 
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
     if (isACharacter(keyCode))
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
-    else if (boxInfo.isMoveRightEvent(keyCode))
-      boxInfo.setCaretIndex(boxInfo.getCaretIndex() + 1);
-    else if (boxInfo.isMoveLeftEvent(keyCode))
-      boxInfo.setCaretIndex(boxInfo.getCaretIndex() - 1);
-    else if (keyCode == KeyEvent.VK_BACK_SPACE && boxInfo.getCaretIndex() > 0)
-      boxInfo.deleteEnclosedText(boxInfo.getCaretIndex() -1, boxInfo.getCaretIndex());
+      model.insertChar(event.getKeyChar());
+    else if (model.isMoveRightEvent(keyCode))
+      model.setCaretIndex(model.getCaretIndex() + 1);
+    else if (model.isMoveLeftEvent(keyCode))
+      model.setCaretIndex(model.getCaretIndex() - 1);
+    else if (keyCode == KeyEvent.VK_BACK_SPACE && model.getCaretIndex() > 0)  //TODO MDM Need to also support delete key
+      model.deleteEnclosedText(model.getCaretIndex() -1, model.getCaretIndex());
   }
 
 }

@@ -23,7 +23,7 @@ public class SelectionOnKeyProcessor extends KeyProcessor
     else if (isACharacter(keyCode))
     {
       boxInfo.deleteSelection();
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertChar(event.getKeyChar());
     }
     else if (keyCode == KeyEvent.VK_BACK_SPACE)
       boxInfo.deleteSelection();

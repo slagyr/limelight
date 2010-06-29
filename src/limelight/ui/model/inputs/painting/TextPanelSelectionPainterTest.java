@@ -38,21 +38,21 @@ public class TextPanelSelectionPainterTest extends AbstractTextPanelPainterTest
     assertEquals(true, graphics.filledShapes.isEmpty());
   }
 
-  @Test
-  public void willFillABoxAroundSelectedText()
-  {
-    boxInfo.setCursorAndSelectionStartX();
-    int start = boxInfo.getCaretX();
-    int width = boxInfo.getSelectionStartX() - start;
-
-    painter.paint(graphics, boxInfo);
-
-    testBox = graphics.filledShapes.getLast().shape.getBounds();
-    assertEquals(start, testBox.x);
-    assertEquals(0, testBox.y);
-    assertEquals(width, testBox.width);
-    assertEquals(true, testBox.height > 0);
-  }
+//  @Test
+//  public void willFillABoxAroundSelectedText()
+//  {
+//    boxInfo.setCursorAndSelectionStartX();
+//    int start = boxInfo.getCaretX();
+//    int width = boxInfo.getSelectionStartX() - start;
+//
+//    painter.paint(graphics, boxInfo);
+//
+//    testBox = graphics.filledShapes.getLast().shape.getBounds();
+//    assertEquals(start, testBox.x);
+//    assertEquals(0, testBox.y);
+//    assertEquals(width, testBox.width);
+//    assertEquals(true, testBox.height > 0);
+//  }
 
   @Test
   public void willFillTheBoxCyan()

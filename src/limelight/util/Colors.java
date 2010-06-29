@@ -107,6 +107,7 @@ public class Colors
     namedColors.put("light_yellow", Color.decode("#FFFFE0"));
     namedColors.put("lime", Color.decode("#00FF00"));
     namedColors.put("lime_green", Color.decode("#32CD32"));
+    namedColors.put("limelight_green", Color.decode("#BBD453"));
     namedColors.put("linen", Color.decode("#FAF0E6"));
     namedColors.put("magenta", Color.decode("#FF00FF"));
     namedColors.put("maroon", Color.decode("#800000"));
@@ -170,7 +171,7 @@ public class Colors
     namedColors.put("white_smoke", Color.decode("#F5F5F5"));
     namedColors.put("yellow", Color.decode("#FFFF00"));
     namedColors.put("yellow_green", Color.decode("#9ACD32"));
-    namedColors.put("transparent", new Color(0, 0, 0, 0));
+    namedColors.put("transparent", TRANSPARENT);
   }
 
   public static Color resolve(String value)

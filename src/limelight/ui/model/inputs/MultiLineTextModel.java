@@ -62,26 +62,29 @@ public class MultiLineTextModel extends TextModel
   @Override
   public ArrayList<TypedLayout> getLines()
   {
-    if(getText() == null || getText().length() == 0)
-    {
-      typedLayouts = new ArrayList<TypedLayout>();
-      typedLayouts.add(createLayout(""));
-    }
-    else
-    {
-      if(typedLayouts == null || isThereSomeDifferentText())
-      {
-        setLastLayedOutText(getText());
-        parseTextForMultipleLayouts();
-      }
-    }
+    if(typedLayouts == null)
+      buildLines();
     return typedLayouts;
   }
 
-  @Override
-  protected TypedLayout getLineWithCaret()
+  private void buildLines()
   {
-    return getLines().get(getCaretLine());
+    synchronized(text)
+    {
+      if(getText() == null || getText().length() == 0)
+      {
+        typedLayouts = new ArrayList<TypedLayout>();
+        typedLayouts.add(createLayout(""));
+      }
+      else
+      {
+        if(typedLayouts == null || isThereSomeDifferentText())
+        {
+          setLastLayedOutText(getText());
+          parseTextForMultipleLayouts();
+        }
+      }
+    }
   }
 
   @Override
@@ -113,7 +116,7 @@ public class MultiLineTextModel extends TextModel
   }
 
   @Override
-  public ArrayList<Rectangle> getSelectionRegions()
+  public ArrayList<Box> getSelectionRegions()
   {
     int cursorLine = getLineNumberOfIndex(getCaretIndex());
     int selectionLine = getLineNumberOfIndex(getSelectionIndex());
@@ -125,13 +128,13 @@ public class MultiLineTextModel extends TextModel
       return selectionRegionsForMultipleLines(selectionLine, getXPosFromIndex(getSelectionIndex()), cursorLine, getXPosFromIndex(getCaretIndex()));
   }
 
-  private ArrayList<Rectangle> selectionRegionsForSingleLine()
+  private ArrayList<Box> selectionRegionsForSingleLine()
   {
     int cursorX = getXPosFromIndex(getCaretIndex());
     int selectionX = getXPosFromIndex(getSelectionIndex());
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     int yPos = getYPosFromIndex(getCaretIndex()) - calculateYOffset();
-    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    ArrayList<Box> regions = new ArrayList<Box>();
     if(getCaretIndex() > getSelectionIndex())
       regions.add(new Box(selectionX, yPos, cursorX - selectionX, lineHeight));
     else
@@ -139,9 +142,9 @@ public class MultiLineTextModel extends TextModel
     return regions;
   }
 
-  private ArrayList<Rectangle> selectionRegionsForMultipleLines(int startingLine, int startingX, int endingLine, int endingX)
+  private ArrayList<Box> selectionRegionsForMultipleLines(int startingLine, int startingX, int endingLine, int endingX)
   {
-    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
+    ArrayList<Box> regions = new ArrayList<Box>();
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     int yPos = lineHeight * startingLine - calculateYOffset();
     regions.add(new Box(startingX, yPos, container.getWidth() - startingX, lineHeight));
@@ -290,10 +293,10 @@ public class MultiLineTextModel extends TextModel
     return indices;
   }
 
-  public int getCaretLine()
+  protected int getLineNumber(int index)
   {
     int line = 0;
-    int remainder = getCaretIndex();
+    int remainder = index;
     for(TypedLayout textLayout : getLines())
     {
       if(textLayout.getText().length() > remainder)

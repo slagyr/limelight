@@ -6,6 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TypedLayout;
+import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -195,7 +196,7 @@ public class MultiLineTextModelTest
     model.setSelectionOn(true);
     model.setCaretIndex(5);
 
-    ArrayList<Rectangle> regions = model.getSelectionRegions();
+    ArrayList<Box> regions = model.getSelectionRegions();
 
     assertEquals(0, regions.get(0).x);
     assertEquals(0, regions.get(0).y);
@@ -211,7 +212,7 @@ public class MultiLineTextModelTest
     model.setText("This is\nMulti Lined.");
     model.setCaretIndex(10);
 
-    ArrayList<Rectangle> regions = model.getSelectionRegions();
+    ArrayList<Box> regions = model.getSelectionRegions();
 
     assertEquals(2, regions.size());
     assertEquals(model.getXPosFromIndex(2), regions.get(0).x);
@@ -233,7 +234,7 @@ public class MultiLineTextModelTest
     model.setCaretIndex(model.getText().length() - 3);
     model.setSelectionIndex(model.getCaretIndex() - 15);
 
-    ArrayList<Rectangle> regions = model.getSelectionRegions();
+    ArrayList<Box> regions = model.getSelectionRegions();
     assertEquals(48, model.getYPosFromIndex(model.getCaretIndex()));
     assertEquals(48, regions.get(regions.size() -1).y);
   }
@@ -245,7 +246,7 @@ public class MultiLineTextModelTest
     model.setCaretIndex(model.getCaretIndex() - 1);
     model.setSelectionIndex(model.getCaretIndex() - 2);
 
-    ArrayList<Rectangle> regions = model.getSelectionRegions();
+    ArrayList<Box> regions = model.getSelectionRegions();
     
     assertEquals(42, model.getYPosFromIndex(model.getCaretIndex()));
     assertEquals(42, regions.get(regions.size() -1).y);
