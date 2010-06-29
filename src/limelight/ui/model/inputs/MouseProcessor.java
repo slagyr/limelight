@@ -3,6 +3,9 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
+import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Date;

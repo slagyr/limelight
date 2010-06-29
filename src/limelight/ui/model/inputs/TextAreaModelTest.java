@@ -5,9 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.TextLayoutImpl;
-import limelight.ui.TypedLayout;
-import limelight.ui.model.TextPanel;
+import limelight.ui.text.TypedLayout;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package limelight.ui;
+package limelight.ui.text;
 
 import limelight.ui.model.TextPanel;
 import org.junit.BeforeClass;

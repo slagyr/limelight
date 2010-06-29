@@ -1,10 +1,9 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.model.inputs.painters;
+package limelight.ui.model.inputs.painting;
 
 import limelight.ui.model.inputs.TextModel;
-import limelight.ui.model.inputs.TextPanelPainter;
 
 import java.awt.*;
 import java.util.ArrayList;

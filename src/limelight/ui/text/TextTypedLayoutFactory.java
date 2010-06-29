@@ -1,6 +1,4 @@
-package limelight.ui;
-
-import limelight.ui.model.inputs.TypedLayoutFactory;
+package limelight.ui.text;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;

@@ -6,10 +6,13 @@ package limelight.ui.model.inputs;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
-import limelight.ui.TextLayoutImpl;
-import limelight.ui.TextTypedLayoutFactory;
-import limelight.ui.TypedLayout;
+import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
+import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.text.TextLayoutImpl;
+import limelight.ui.text.TextTypedLayoutFactory;
+import limelight.ui.text.TypedLayout;
 import limelight.ui.model.TextPanel;
+import limelight.ui.text.TypedLayoutFactory;
 import limelight.util.Box;
 import limelight.util.Debug;
 

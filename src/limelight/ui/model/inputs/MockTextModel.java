@@ -1,7 +1,9 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.TypedLayout;
+import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
+import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
 
 import java.awt.*;

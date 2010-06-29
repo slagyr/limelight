@@ -1,4 +1,4 @@
-package limelight.ui.model.inputs.painters;
+package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockTypedLayout;
 import limelight.util.Colors;

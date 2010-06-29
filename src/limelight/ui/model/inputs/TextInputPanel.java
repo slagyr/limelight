@@ -7,9 +7,8 @@ import limelight.Context;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.model.*;
-import limelight.ui.model.inputs.painters.*;
+import limelight.ui.model.inputs.painting.*;
 import limelight.util.Box;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

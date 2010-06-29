@@ -1,5 +1,6 @@
 package limelight.ui;
 
+import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
 
 import java.awt.*;
