@@ -207,7 +207,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     Context.instance().keyboardFocusManager.focusPanel(this);
     if(!focused)
       focusGained(new FocusEvent(getRoot().getFrame().getWindow(), 0));
-    buttonPressed(new ActionEvent(this, 0, "blah"));
+    buttonPressed(new ActionEvent(this, 0, "blah")); //TODO Why?
   }
 
   public int getLastKeyPressed()

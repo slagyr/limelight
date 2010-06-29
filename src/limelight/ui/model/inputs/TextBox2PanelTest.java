@@ -70,7 +70,13 @@ public class TextBox2PanelTest extends Assert
     assertEquals("center", panel.getStyle().getVerticalAlignment());
     assertEquals("left", panel.getStyle().getHorizontalAlignment());
   }
-
+  
+  @Test
+  public void shouldHaveDefaultCursor() throws Exception
+  {
+    assertEquals("text", panel.getStyle().getCursor());
+  }
+          
   @Test
   public void shouldSetPainterOnParent() throws Exception
   {
@@ -83,7 +89,7 @@ public class TextBox2PanelTest extends Assert
 
   @Test
   public void shouldKeyProcessorsWithNoSelection() throws Exception
-  {
+  {                                                                                                                                  
     assertEquals(NormalKeyProcessor.instance, panel.getKeyProcessorFor(0));
     assertEquals(ShiftKeyProcessor.instance, panel.getKeyProcessorFor(1));
     assertEquals(CmdKeyProcessor.instance, panel.getKeyProcessorFor(2));

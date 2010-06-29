@@ -62,6 +62,12 @@ public class TextArea2PanelTest extends Assert
   }
   
   @Test
+  public void shouldHaveDefaultCursor() throws Exception
+  {
+    assertEquals("text", panel.getStyle().getCursor());
+  }
+  
+  @Test
   public void shouldKeyProcessorsWithNoSelection() throws Exception
   {
     assertEquals(ExpandedNormalKeyProcessor.instance, panel.getKeyProcessorFor(0));

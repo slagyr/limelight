@@ -11,6 +11,6 @@ public class TextInputPanelLayout extends InputPanelLayout
     TextInputPanel textInputPanel = (TextInputPanel) thePanel;
     textInputPanel.getModel().clearLayouts();
     super.doLayout(thePanel);
-    textInputPanel.getModel().recalculateOffset();
+    textInputPanel.getModel().recalculateOffset(XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);
   }
 }

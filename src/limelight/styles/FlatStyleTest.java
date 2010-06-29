@@ -3,14 +3,20 @@
 
 package limelight.styles;
 
-import junit.framework.TestCase;
 import limelight.styles.abstrstyling.PixelsValue;
+import limelight.styles.values.SimpleCursorValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class FlatStyleTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
+
+public class FlatStyleTest
 {
   private FlatStyle style;
   private MockStyleObserver observer;
 
+  @Before
   public void setUp() throws Exception
   {
     style = new FlatStyle();
@@ -18,7 +24,8 @@ public class FlatStyleTest extends TestCase
     style.addObserver(observer);
   }
 
-  public void testObserving() throws Exception
+  @Test
+  public void shouldHandleObserving() throws Exception
   {
     MockStyleObserver observer = new MockStyleObserver();
     observer.changedStyle = null;
@@ -35,7 +42,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(Style.WIDTH, observer.changedStyle);
   }
 
-  public void testMultipleObservers() throws Exception
+  @Test
+  public void shouldHandleMultipleObservers() throws Exception
   {
     MockStyleObserver observer1 = new MockStyleObserver();
     style.addObserver(observer1);
@@ -48,7 +56,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(Style.HEIGHT, observer2.changedStyle);
   }
 
-  public void testRemoveObserver() throws Exception
+  @Test
+  public void shouldHandleRemoveObserver() throws Exception
   {
     MockStyleObserver observer1 = new MockStyleObserver();
     style.addObserver(observer1);
@@ -66,7 +75,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(Style.HEIGHT, observer2.changedStyle);
   }
 
-  public void testChanges() throws Exception
+  @Test
+  public void shouldHandleChanges() throws Exception
   {
     assertEquals(false, observer.changed());
 
@@ -83,7 +93,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(false, observer.changed());
   }
 
-  public void testSpecificChanges() throws Exception
+  @Test
+  public void shouldHandleSpecificChanges() throws Exception
   {
     assertEquals(false, observer.changed(Style.WIDTH));
     assertEquals(false, observer.changed(Style.HEIGHT));
@@ -103,7 +114,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(false, observer.changed(Style.HEIGHT));
   }
 
-  public void testSetBorderWidthSetsWidthOnSidesAllCorners() throws Exception
+  @Test
+  public void shouldHandleSetBorderWidthSetsWidthOnSidesAllCorners() throws Exception
   {
     style.setBorderWidth("5");
 
@@ -117,7 +129,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("5", style.getTopLeftBorderWidth());
   }
 
-  public void testSetBorderColorSetsColorOnSidesAllCorners() throws Exception
+  @Test
+  public void shouldHandleSetBorderColorSetsColorOnSidesAllCorners() throws Exception
   {
     style.setBorderColor("blue");
 
@@ -131,7 +144,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("#0000ffff", style.getTopLeftBorderColor());
   }
 
-  public void testSettingRoundedCorderRadiusSetsRadiusOnAllCorders() throws Exception
+  @Test
+  public void shouldHandleSettingRoundedCorderRadiusSetsRadiusOnAllCorders() throws Exception
   {
     style.setRoundedCornerRadius("5");
 
@@ -141,7 +155,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("5", style.getTopLeftRoundedCornerRadius());
   }
 
-  public void testSetTopRoundedCornerRadius() throws Exception
+  @Test
+  public void shouldHandleSetTopRoundedCornerRadius() throws Exception
   {
     style.setTopRoundedCornerRadius("6");    
 
@@ -149,7 +164,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("6", style.getTopLeftRoundedCornerRadius());
   }
 
-  public void testSetRightRoundedCornerRadius() throws Exception
+  @Test
+  public void shouldHandleSetRightRoundedCornerRadius() throws Exception
   {
     style.setRightRoundedCornerRadius("6");
 
@@ -157,7 +173,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("6", style.getBottomRightRoundedCornerRadius());
   }
 
-  public void testSetBottomRoundedCornerRadius() throws Exception
+  @Test
+  public void shouldHandleSetBottomRoundedCornerRadius() throws Exception
   {
     style.setBottomRoundedCornerRadius("6");
 
@@ -165,7 +182,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("6", style.getBottomLeftRoundedCornerRadius());
   }
 
-  public void testSetLeftRoundedCornerRadius() throws Exception
+  @Test
+  public void shouldHandleSetLeftRoundedCornerRadius() throws Exception
   {
     style.setLeftRoundedCornerRadius("6");
 
@@ -173,7 +191,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("6", style.getBottomLeftRoundedCornerRadius());
   }
 
-  public void testFloatingStyle() throws Exception
+  @Test
+  public void shouldHandleFloatingStyle() throws Exception
   {
     assertEquals("off", style.getFloat());
 
@@ -182,7 +201,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("on", style.getFloat());
   }
 
-  public void testXandY() throws Exception
+  @Test
+  public void shouldHandleXandY() throws Exception
   {
     assertEquals("0", style.getX());
     assertEquals("0", style.getY());
@@ -194,7 +214,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("2", style.getY());
   }
 
-  public void testScrollBars() throws Exception
+  @Test
+  public void shouldHandleScrollBars() throws Exception
   {
     style.setScrollbars("on");
     assertEquals("on", style.getVerticalScrollbar());
@@ -207,7 +228,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("off", style.getHorizontalScrollbar());
   }
 
-  public void testSettingDefaultAffecsChanges() throws Exception
+  @Test
+  public void shouldHandleSettingDefaultAffecsChanges() throws Exception
   {
     assertEquals(false, observer.changed(Style.WIDTH));
 
@@ -218,7 +240,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(true, observer.changed(Style.WIDTH));
   }
 
-  public void testMaxWidthAndHeight() throws Exception
+  @Test
+  public void shouldHandleMaxWidthAndHeight() throws Exception
   {
     assertEquals("none", style.getMaxWidth());
     assertEquals("none", style.getMaxHeight());
@@ -230,7 +253,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("200", style.getMaxHeight());
   }
 
-  public void testMinWidthAndHeight() throws Exception
+  @Test
+  public void shouldHandleMinWidthAndHeight() throws Exception
   {
     assertEquals("none", style.getMinWidth());
     assertEquals("none", style.getMinHeight());
@@ -242,7 +266,8 @@ public class FlatStyleTest extends TestCase
     assertEquals("200", style.getMinHeight());
   }
   
-  public void testMarginsReturnPixlesAttribute() throws Exception
+  @Test
+  public void shouldHandleMarginsReturnPixlesAttribute() throws Exception
   {
     style.setMargin("10%");
     assertEquals(true, style.getCompiledTopMargin() instanceof PixelsValue);
@@ -251,7 +276,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(true, style.getCompiledLeftMargin() instanceof PixelsValue);
   }
   
-  public void testPaddingsReturnPixlesAttribute() throws Exception
+  @Test
+  public void shouldHandlePaddingsReturnPixlesAttribute() throws Exception
   {
     style.setPadding("10%");
     assertEquals(true, style.getCompiledTopPadding() instanceof PixelsValue);
@@ -260,7 +286,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(true, style.getCompiledLeftPadding() instanceof PixelsValue);
   }
 
-  public void testRoundedCornerRadiusReturnPixlesAttribute() throws Exception
+  @Test
+  public void shouldHandleRoundedCornerRadiusReturnPixlesAttribute() throws Exception
   {
     style.setRightRoundedCornerRadius("10%");
     assertEquals(true, style.getCompiledTopRightRoundedCornerRadius() instanceof PixelsValue);
@@ -269,7 +296,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(true, style.getCompiledTopLeftRoundedCornerRadius() instanceof PixelsValue);
   }
 
-  public void testBordersReturnPixlesAttribute() throws Exception
+  @Test
+  public void shouldHandleBordersReturnPixlesAttribute() throws Exception
   {
     style.setBorderWidth("10%");
     assertEquals(true, style.getCompiledTopBorderWidth() instanceof PixelsValue);
@@ -282,7 +310,8 @@ public class FlatStyleTest extends TestCase
     assertEquals(true, style.getCompiledTopLeftBorderWidth() instanceof PixelsValue);
   }
 
-  public void testAlignmentShortCuts() throws Exception
+  @Test
+  public void shouldHandleAlignmentShortCuts() throws Exception
   {
     checkSetAlignment("center", "center", "center");
     checkSetAlignment("center center", "center", "center");
@@ -296,10 +325,21 @@ public class FlatStyleTest extends TestCase
     assertEquals(expectedVerticalAlignment, style.getVerticalAlignment());
     assertEquals(expectedHorizontalAlignment, style.getHorizontalAlignment());
   }
+  
+  @Test
+  public void shouldHandleCursor() throws Exception
+  {
+    style.setCuror("hand");
+    assertEquals("hand", style.getCursor());
+    assertSame(SimpleCursorValue.HAND, style.getCompiledCursor());
+  }
+
+
 
 //  // String-Hash based : 3800000 sets and 3500000 gets took = 2611.0 milliseconds
 //  // Array based: 3800000 sets and 3500000 gets took = 1863.0 milliseconds
-//  public void testPerformance() throws Exception
+//  @Test
+//  public void shouldHandlePerformance() throws Exception
 //  {
 //    int iterations = 100000;
 //    ArrayList<Method> setters = new ArrayList<Method>();

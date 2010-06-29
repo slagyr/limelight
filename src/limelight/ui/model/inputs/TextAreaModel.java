@@ -54,34 +54,47 @@ public class TextAreaModel extends TextModel
   }
 
   @Override
+  public int getIndexAt(int x, int y)
+  {
+    return 0;
+  }
+
+  @Override
   public ArrayList<TypedLayout> getTypedLayouts()
   {
     if(getText() == null || getText().length() == 0)
     {
-      textLayouts = new ArrayList<TypedLayout>();
-      textLayouts.add(createLayout(""));
+      typedLayouts = new ArrayList<TypedLayout>();
+      typedLayouts.add(createLayout(""));
     }
     else
     {
-      if(textLayouts == null || isThereSomeDifferentText())
+      if(typedLayouts == null || isThereSomeDifferentText())
       {
         setLastLayedOutText(getText());
         parseTextForMultipleLayouts();
       }
     }
-    return textLayouts;
+    return typedLayouts;
   }
 
-  @Override
-  protected void recalculateOffset()
+  public int getCaretY()
   {
+    int line = getCaretLine();
+    int height = 0;
+    for(int i = 0; i < line; i++)
+    {
+      TypedLayout layout = getTypedLayouts().get(i);
+      height += layout.getHeight() + layout.getLeading();
+    }
+    return height;
   }
 
   @Override
   public TypedLayout getActiveLayout()
   {
     int chars = getCaretIndex();
-    for(TypedLayout textLayout : textLayouts)
+    for(TypedLayout textLayout : typedLayouts)
     {
       int lineChars = textLayout.getText().length();
       if(lineChars >= chars)
@@ -95,7 +108,7 @@ public class TextAreaModel extends TextModel
   public Box getCaretShape()
   {
     int index = getCaretIndex();
-    for(TypedLayout textLayout : textLayouts)
+    for(TypedLayout textLayout : typedLayouts)
     {
       int lineChars = textLayout.getText().length();
       if(lineChars >= index)
@@ -165,7 +178,7 @@ public class TextAreaModel extends TextModel
   @Override
   public boolean isMoveDownEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_DOWN && getLineNumberOfIndex(getCaretIndex()) < textLayouts.size() - 1;
+    return keyCode == KeyEvent.VK_DOWN && getLineNumberOfIndex(getCaretIndex()) < typedLayouts.size() - 1;
   }
 
   @Override
@@ -174,8 +187,8 @@ public class TextAreaModel extends TextModel
     getTypedLayouts();
     int numberOfCharacters = 0;
     for(int i = 0; i <= line; i++)
-      numberOfCharacters += textLayouts.get(i).getText().length();
-    if(line != textLayouts.size() - 1)
+      numberOfCharacters += typedLayouts.get(i).getText().length();
+    if(line != typedLayouts.size() - 1)
       numberOfCharacters--;
     return numberOfCharacters;
   }
@@ -212,6 +225,12 @@ public class TextAreaModel extends TextModel
   }
 
   @Override
+  public int getCaretX()
+  {
+    return 0;
+  }
+
+  @Override
   public boolean isCursorAtCriticalEdge(int cursorX)
   {
     return false;
@@ -222,7 +241,7 @@ public class TextAreaModel extends TextModel
     AttributedCharacterIterator iterator = getIterator();
 
     newLineCharIndices = findNewLineCharIndices(getText());
-    textLayouts = new ArrayList<TypedLayout>();
+    typedLayouts = new ArrayList<TypedLayout>();
 
     LineBreakMeasurer breaker = new LineBreakMeasurer(iterator, TextPanel.getRenderContext());
     int lastCharIndex = 0, newLineCharIndex = 0;
@@ -234,13 +253,13 @@ public class TextAreaModel extends TextModel
     }
     addBlankLayoutIfLastLineIsEmpty();
 
-    return textLayouts;
+    return typedLayouts;
   }
 
   private void addBlankLayoutIfLastLineIsEmpty()
   {
     if(getText().length() > 0 && isTheVeryLastCharANewLineChar())
-      textLayouts.add(createLayout(""));
+      typedLayouts.add(createLayout(""));
   }
 
   private int addANewLayoutForTheNextLine(LineBreakMeasurer breaker, int lastCharIndex, int newLineCharIndex)
@@ -248,7 +267,7 @@ public class TextAreaModel extends TextModel
     int firstCharIndex = lastCharIndex;
     lastCharIndex = firstCharIndex + getNextLayout(breaker, newLineCharIndex).getCharacterCount();
     String layoutText = getText().substring(firstCharIndex, lastCharIndex);
-    textLayouts.add(createLayout(layoutText));
+    typedLayouts.add(createLayout(layoutText));
     return lastCharIndex;
   }
 
@@ -293,5 +312,22 @@ public class TextAreaModel extends TextModel
         indices.add(i);
     }
     return indices;
+  }
+
+  public int getCaretLine()
+  {
+    int line = 0;
+    int remainder = getCaretIndex();
+    for(TypedLayout textLayout : getTypedLayouts())
+    {
+      if(textLayout.getText().length() > remainder)
+        return line;
+      else
+      {
+        line += 1;
+        remainder -= textLayout.getText().length();
+      }
+    }
+    return line;
   }
 }

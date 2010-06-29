@@ -32,6 +32,8 @@ public interface RootPanel extends Panel
 
   void setCursor(Cursor cursor);
 
+  Cursor getCursor();
+
   Panel getPanel();
 
   ImageCache getImageCache();

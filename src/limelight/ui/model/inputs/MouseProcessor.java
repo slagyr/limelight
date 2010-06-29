@@ -3,99 +3,46 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.TypedLayout;
-
+import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.font.TextHitInfo;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MouseProcessor
 {
-  TextModel boxInfo;
+  TextModel model;
   public long lastClickTime;
   public boolean doubleClickOn;
 
-  public MouseProcessor(TextModel boxInfo)
+  public MouseProcessor(TextModel model)
   {
-    this.boxInfo = boxInfo;
+    this.model = model;
   }
-
-  public boolean isMouseEventInBox(MouseEvent e)
-  {
-    int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
-    int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
-    return isWithinMyXRange(myX) && isWithinMyYRange(myY);
-  }
-
-  private boolean isWithinMyYRange(int myY)
-  {
-    return myY > 0 && myY < boxInfo.getPanelHeight();
-  }
-
-  private boolean isWithinMyXRange(int myX)
-  {
-    return myX > 0 && myX < boxInfo.getPanelWidth();
-  }
-
-  public int calculateMouseClickIndex(int x, int y)
-  {
-    int index = getIndexByLoopingThroughLayouts(x, y);
-    if (isMouseXPastLastCharacterAndNotOnNewLine(x, index))
-      index += 1;
-    return index;
-  }
-
-  private int getIndexByLoopingThroughLayouts(int x, int y)
-  {
-    ArrayList<TypedLayout> layouts = boxInfo.getTypedLayouts();
-    if (layouts == null)
-      return 0;
-    int layoutIndex = 0;
-    int charCount = 0;
-    int layoutYPosition = boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex);
-    while (notPastTheLastLayout(y,layoutIndex, layoutYPosition))
-    {
-      charCount += layouts.get(layoutIndex).getText().length();
-      layoutIndex++;
-      layoutYPosition += boxInfo.getTotalHeightOfLineWithLeadingMargin(layoutIndex);
-    }
-    TextHitInfo hitInfo = layouts.get(layoutIndex).hitTestChar(x + boxInfo.getOffset().x, y);
-    return hitInfo.getCharIndex() + charCount;
-  }
-
-  private boolean notPastTheLastLayout(int y, int i, int layoutPosition)
-  {
-    return i < boxInfo.getTypedLayouts().size() - 1 && y + boxInfo.getOffset().y > layoutPosition;
-  }
-
-  private boolean isMouseXPastLastCharacterAndNotOnNewLine(int x, int index)
-  {
-    if(boxInfo.getText() == null || boxInfo.getText().length() == 0)
-      return false;
-    return x > boxInfo.getXPosFromIndex(index) && index == boxInfo.getText().length() - 1 && boxInfo.getText().charAt(index) != '\n';
-  }
-
 
   public void processMousePressed(MouseEvent e)
   {
-    if (isMouseEventInBox(e))
-    {
-      int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
-      int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
-      boxInfo.setSelectionOn(true);
-      boxInfo.setSelectionIndex(calculateMouseClickIndex(myX, myY));
-      boxInfo.setCaretIndex(boxInfo.getSelectionIndex());
-      makeExtraSelectionOnMultiClick();
-      lastClickTime = (new Date()).getTime();
-    }
+    Point location = getRelativeMouseLocation(e);
+
+    int index = model.getIndexAt(location.x, location.y);
+    model.setSelectionOn(true);
+    model.setSelectionIndex(index);
+    model.setCaretIndex(index, XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);  // TODO MDM - need a new strategy here...
+
+    makeExtraSelectionOnMultiClick();
+
+    lastClickTime = (new Date()).getTime();
+  }
+
+  private Point getRelativeMouseLocation(MouseEvent e)
+  {
+    Point location = model.getPanel().getAbsoluteLocation();
+    return new Point(e.getPoint().x - location.x, e.getPoint().y - location.y);
   }
 
   public void makeExtraSelectionOnMultiClick()
   {
-    if (lastClickTime >= (new Date()).getTime() - 300)
+    if(lastClickTime >= (new Date()).getTime() - 300)
     {
-      if (doubleClickOn)
+      if(doubleClickOn)
         selectAllOnTripleClick();
       else
         selectWordOnDoubleClick();
@@ -106,34 +53,33 @@ public class MouseProcessor
 
   private void selectAllOnTripleClick()
   {
-    boxInfo.setSelectionIndex(0);
-    boxInfo.setCaretIndex(boxInfo.getText().length());
+    model.setSelectionIndex(0);
+    model.setCaretIndex(model.getText().length());
   }
 
   private void selectWordOnDoubleClick()
   {
-    boxInfo.setSelectionIndex(boxInfo.findWordsLeftEdge(boxInfo.getCaretIndex()));
-    boxInfo.setCaretIndex(boxInfo.findWordsRightEdge(boxInfo.getCaretIndex()));
+    model.setSelectionIndex(model.findWordsLeftEdge(model.getCaretIndex()));
+    model.setCaretIndex(model.findWordsRightEdge(model.getCaretIndex()));
     doubleClickOn = true;
   }
 
   public void processMouseDragged(MouseEvent e)
   {
-    int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
-    int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
+    Point location = getRelativeMouseLocation(e);
 
-    int tempIndex = calculateMouseClickIndex(myX, myY);
-    if (boxInfo.isCursorAtCriticalEdge(myX))
+    int tempIndex = model.getIndexAt(location.x, location.y);
+    if(model.isCursorAtCriticalEdge(location.x))
     {
-      if (boxInfo.getXPosFromIndex(tempIndex) < myX && tempIndex < boxInfo.getText().length())
+      if(model.getXPosFromIndex(tempIndex) < location.x && tempIndex < model.getText().length())
         tempIndex++;
       tempIndex--;
     }
-    if (doubleClickOn)
+    if(doubleClickOn)
       selectWord(tempIndex);
 
     else
-      boxInfo.setCaretIndex(tempIndex);
+      model.setCaretIndex(tempIndex);
   }
 
   private void selectWord(int tempIndex)
@@ -143,13 +89,13 @@ public class MouseProcessor
 
   public void processMouseReleased(MouseEvent e)
   {
-    int myX = e.getX() - boxInfo.getPanelAbsoluteLocation().x;
-    int myY = e.getY() - boxInfo.getPanelAbsoluteLocation().y;
-    if (!doubleClickOn)
+    int myX = e.getX() - model.getPanelAbsoluteLocation().x;
+    int myY = e.getY() - model.getPanelAbsoluteLocation().y;
+    if(!doubleClickOn)
     {
-      boxInfo.setCaretIndex(calculateMouseClickIndex(myX, myY));
-      if (boxInfo.getCaretIndex() == boxInfo.getSelectionIndex())
-        boxInfo.setSelectionOn(false);
+      model.setCaretIndex(model.getIndexAt(myX, myY));
+      if(model.getCaretIndex() == model.getSelectionIndex())
+        model.setSelectionOn(false);
     }
   }
 
@@ -169,33 +115,33 @@ public class MouseProcessor
       boolean selectionFacingRight = isSelectionFacingRight();
 
       boolean isMouseTrailingTheTail = selectionFacingRight && !rightOfTail || !selectionFacingRight && rightOfTail;
-      if (isMouseTrailingTheTail)
+      if(isMouseTrailingTheTail)
         turnAround();
 
-      if (rightOfTail)
-        repositionHead(boxInfo.findWordsRightEdge(mouseIndex));
+      if(rightOfTail)
+        repositionHead(model.findWordsRightEdge(mouseIndex));
       else
-        repositionHead(boxInfo.findWordsLeftEdge(mouseIndex));
+        repositionHead(model.findWordsLeftEdge(mouseIndex));
     }
 
     private void turnAround()
     {
-      boxInfo.setSelectionIndex(boxInfo.getCaretIndex());
+      model.setSelectionIndex(model.getCaretIndex());
     }
 
     private void repositionHead(int newHead)
     {
-      boxInfo.setCaretIndex(newHead);
+      model.setCaretIndex(newHead);
     }
 
     private boolean isSelectionFacingRight()
     {
-      return boxInfo.getCaretIndex() > boxInfo.getSelectionIndex();
+      return model.getCaretIndex() > model.getSelectionIndex();
     }
 
     private boolean isRightOfTail()
     {
-      return mouseIndex > boxInfo.getSelectionIndex();
+      return mouseIndex > model.getSelectionIndex();
     }
   }
 }

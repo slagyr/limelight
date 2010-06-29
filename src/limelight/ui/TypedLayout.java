@@ -22,7 +22,10 @@ public interface TypedLayout
   int getWidth();
   int getHeight();
 
+  int getWidthOf(String text);
+
   public TextHitInfo hitTestChar(float x, float y);
+  int getIndexAt(int x);
 
   Box getCaretShape(int caretIndex);
 }

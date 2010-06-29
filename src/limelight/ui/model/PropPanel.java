@@ -39,6 +39,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public boolean borderChanged = true;
   public Dimension greediness = new Dimension(0, 0);
   private Painter painter = DefaultPainter.instance;
+  
+  private Cursor preHoverCursor;
 
   public PropPanel(Prop prop)
   {
@@ -433,18 +435,26 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   private void hoverOn()
   {
-    getStyle().applyScreen(getHoverStyle());
-    getRoot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    getStyle().applyScreen(getHoverStyle()); // TODO - MDM - This seems inefficient considering most of the time, there's no change in styles.
+
+    Cursor currentCursor = getRoot().getCursor();
+    Cursor hoverCursor = getStyle().getCompiledCursor().getCursor();
+    if(hoverCursor != currentCursor)
+    {
+      preHoverCursor = currentCursor;
+      getRoot().setCursor(hoverCursor);
+    }
   }
 
   private void hoverOff()
   {
     if(getStyle().hasScreen())
-    {
       getStyle().removeScreen();
-      RootPanel root = getRoot();
-      if(root != null)
-        root.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+    if(preHoverCursor != null)
+    {
+      getRoot().setCursor(preHoverCursor);
+      preHoverCursor = null;
     }
   }
 
@@ -504,7 +514,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
         RichStyle hoverStyle = store.get(styleName + ".hover");
         if(hoverStyle != null)
+        {
           getHoverStyle().addExtension(hoverStyle);
+          getStyle().setDefault(Style.CURSOR, "hand");
+        }
       }
     }
     super.illuminate();

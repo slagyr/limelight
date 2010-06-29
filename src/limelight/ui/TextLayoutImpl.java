@@ -60,6 +60,24 @@ public class TextLayoutImpl implements TypedLayout
     return getLayout().hitTestChar(x, y);
   }
 
+  public int getIndexAt(int x)
+  {
+    int index = 0;
+    int remainder = x;
+    int charWidth = 0;
+    while(remainder > 0 && index < text.length())
+    {
+      charWidth = getMetrics().charWidth(text.charAt(index));
+      remainder -= charWidth;
+      index++;
+    }
+
+    if(remainder < 0 && Math.abs(remainder) > (charWidth / 2))
+      index --;
+    
+    return index;
+  }
+
   public Box getCaretShape(int caretIndex)
   {
     String textLeftOfCaret = text.substring(0, caretIndex);
@@ -81,12 +99,17 @@ public class TextLayoutImpl implements TypedLayout
 
   public int getWidth()
   {
-    return getMetrics().stringWidth(text);
+    return getWidthOf(text);
   }
 
   public int getHeight()
   {
     return getMetrics().getAscent() + getMetrics().getDescent();
+  }
+
+  public int getWidthOf(String text)
+  {
+    return getMetrics().stringWidth(text);
   }
 
   private FontMetrics getMetrics()

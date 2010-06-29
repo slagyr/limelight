@@ -3,7 +3,7 @@
 
 package limelight.styles;
 
-import junit.framework.TestCase;
+import limelight.styles.attributes.CursorAttribute;
 import limelight.styles.values.SimpleColorValue;
 import limelight.styles.compiling.PixelsAttributeCompiler;
 import limelight.styles.compiling.XCoordinateAttributeCompiler;
@@ -11,18 +11,23 @@ import limelight.styles.compiling.YCoordinateAttributeCompiler;
 import limelight.styles.compiling.SimpleDimensionAttributeCompiler;
 import limelight.styles.abstrstyling.NoneableAttributeCompiler;
 import limelight.util.Colors;
+import org.junit.Test;
 
 import java.awt.*;
 
-public class StyleTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class StyleTest
 {
-  public void testSizeDefaults() throws Exception
+  @Test
+  public void shouldHandleSizeDefaults() throws Exception
   {
     assertEquals("auto", Style.WIDTH.defaultValue.toString());
     assertEquals("auto", Style.HEIGHT.defaultValue.toString());
   }
 
-  public void testFontDefaults() throws Exception
+  @Test
+  public void shouldHandleFontDefaults() throws Exception
   {
     assertEquals("Arial", Style.FONT_FACE.defaultValue.toString());
     assertEquals("12", Style.FONT_SIZE.defaultValue.toString());
@@ -30,20 +35,23 @@ public class StyleTest extends TestCase
     assertEquals("plain", Style.FONT_STYLE.defaultValue.toString());
   }
 
-  public void testScrolling() throws Exception
+  @Test
+  public void shouldHandleScrolling() throws Exception
   {
     assertEquals("off", Style.VERTICAL_SCROLLBAR.defaultValue.toString());
     assertEquals("off", Style.HORIZONTAL_SCROLLBAR.defaultValue.toString());
   }
 
-  public void testBackgroundDefaults() throws Exception
+  @Test
+  public void shouldHandleBackgroundDefaults() throws Exception
   {
     assertEquals(Colors.resolve("transparent"), ((SimpleColorValue)Style.BACKGROUND_COLOR.defaultValue).getColor());
     assertEquals("none", Style.BACKGROUND_IMAGE.defaultValue.toString());
     assertEquals("repeat", Style.BACKGROUND_IMAGE_FILL_STRATEGY.defaultValue.toString());
   }
 
-  public void testGradientDefaults() throws Exception
+  @Test
+  public void shouldHandleGradientDefaults() throws Exception
   {
     assertEquals("off", Style.GRADIENT.defaultValue.toString());
     assertEquals(Colors.resolve("transparent"), ((SimpleColorValue)Style.SECONDARY_BACKGROUND_COLOR.defaultValue).getColor());
@@ -52,12 +60,14 @@ public class StyleTest extends TestCase
     assertEquals("off", Style.CYCLIC_GRADIENT.defaultValue.toString());
   }
 
-  public void testTransparencyDefaults() throws Exception
+  @Test
+  public void shouldHandleTransparencyDefaults() throws Exception
   {
     assertEquals("0%", Style.TRANSPARENCY.defaultValue.toString());
   }
 
-  public void testMarginDefaults() throws Exception
+  @Test
+  public void shouldHandleMarginDefaults() throws Exception
   {
     assertEquals("0", Style.TOP_MARGIN.defaultValue.toString());
     assertEquals("0", Style.RIGHT_MARGIN.defaultValue.toString());
@@ -65,7 +75,8 @@ public class StyleTest extends TestCase
     assertEquals("0", Style.LEFT_MARGIN.defaultValue.toString());
   }
   
-  public void testPaddingDefaults() throws Exception
+  @Test
+  public void shouldHandlePaddingDefaults() throws Exception
   {
     assertEquals("0", Style.TOP_PADDING.defaultValue.toString());
     assertEquals("0", Style.RIGHT_PADDING.defaultValue.toString());
@@ -73,7 +84,8 @@ public class StyleTest extends TestCase
     assertEquals("0", Style.LEFT_PADDING.defaultValue.toString());
   }
 
-  public void testBorderColorDefaults() throws Exception
+  @Test
+  public void shouldHandleBorderColorDefaults() throws Exception
   {
     assertEquals("#000000ff", Style.TOP_BORDER_COLOR.defaultValue.toString());
     assertEquals("#000000ff", Style.RIGHT_BORDER_COLOR.defaultValue.toString());
@@ -81,7 +93,8 @@ public class StyleTest extends TestCase
     assertEquals("#000000ff", Style.LEFT_BORDER_COLOR.defaultValue.toString());
   }
 
-  public void testBorderWidthDefaults() throws Exception
+  @Test
+  public void shouldHandleBorderWidthDefaults() throws Exception
   {
     assertEquals("0", Style.TOP_BORDER_WIDTH.defaultValue.toString());
     assertEquals("0", Style.RIGHT_BORDER_WIDTH.defaultValue.toString());
@@ -89,7 +102,8 @@ public class StyleTest extends TestCase
     assertEquals("0", Style.LEFT_BORDER_WIDTH.defaultValue.toString());
   }
 
-  public void testRoundedCorderRadiusDefaults() throws Exception
+  @Test
+  public void shouldHandleRoundedCorderRadiusDefaults() throws Exception
   {
     assertEquals("0", Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS.defaultValue.toString());
     assertEquals("0", Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS.defaultValue.toString());
@@ -97,7 +111,8 @@ public class StyleTest extends TestCase
     assertEquals("0", Style.TOP_LEFT_ROUNDED_CORNER_RADIUS.defaultValue.toString());
   }
 
-  public void testRoundedCorderWidthDefaults() throws Exception
+  @Test
+  public void shouldHandleRoundedCorderWidthDefaults() throws Exception
   {
     assertEquals("0", Style.TOP_RIGHT_BORDER_WIDTH.defaultValue.toString());
     assertEquals("0", Style.BOTTOM_RIGHT_BORDER_WIDTH.defaultValue.toString());
@@ -105,7 +120,8 @@ public class StyleTest extends TestCase
     assertEquals("0", Style.TOP_LEFT_BORDER_WIDTH.defaultValue.toString());
   }
 
-  public void testRoundedCorderColorDefaults() throws Exception
+  @Test
+  public void shouldHandleRoundedCorderColorDefaults() throws Exception
   {
     assertEquals("#000000ff", Style.TOP_RIGHT_BORDER_COLOR.defaultValue.toString());
     assertEquals("#000000ff", Style.BOTTOM_RIGHT_BORDER_COLOR.defaultValue.toString());
@@ -113,7 +129,8 @@ public class StyleTest extends TestCase
     assertEquals("#000000ff", Style.TOP_LEFT_BORDER_COLOR.defaultValue.toString());
   }
 
-  public void testMinAndMaxWidthAndHeight() throws Exception
+  @Test
+  public void shouldHandleMinAndMaxWidthAndHeight() throws Exception
   {
     assertEquals("none", Style.MIN_WIDTH.defaultValue.toString());
     assertEquals("none", Style.MIN_HEIGHT.defaultValue.toString());
@@ -121,7 +138,8 @@ public class StyleTest extends TestCase
     assertEquals("none", Style.MAX_HEIGHT.defaultValue.toString());
   }
 
-  public void testMarginsUsePixleCompilers() throws Exception
+  @Test
+  public void shouldHandleMarginsUsePixleCompilers() throws Exception
   {
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_MARGIN.compiler.getClass());
     assertEquals(PixelsAttributeCompiler.class, Style.RIGHT_MARGIN.compiler.getClass());
@@ -129,7 +147,8 @@ public class StyleTest extends TestCase
     assertEquals(PixelsAttributeCompiler.class, Style.LEFT_MARGIN.compiler.getClass());
   }
 
-  public void testPaddingsUsesPixleCompilers() throws Exception
+  @Test
+  public void shouldHandlePaddingsUsesPixleCompilers() throws Exception
   {
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_PADDING.compiler.getClass());
     assertEquals(PixelsAttributeCompiler.class, Style.RIGHT_PADDING.compiler.getClass());
@@ -137,7 +156,8 @@ public class StyleTest extends TestCase
     assertEquals(PixelsAttributeCompiler.class, Style.LEFT_PADDING.compiler.getClass());
   }
 
-  public void testRoundedCornerRadiusUsesPixleCompilers() throws Exception
+  @Test
+  public void shouldHandleRoundedCornerRadiusUsesPixleCompilers() throws Exception
   {
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_RIGHT_ROUNDED_CORNER_RADIUS.compiler.getClass());
     assertEquals(PixelsAttributeCompiler.class, Style.BOTTOM_RIGHT_ROUNDED_CORNER_RADIUS.compiler.getClass());
@@ -145,7 +165,8 @@ public class StyleTest extends TestCase
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_LEFT_ROUNDED_CORNER_RADIUS.compiler.getClass());
   }
 
-  public void testBordersUsesPixleCompilers() throws Exception
+  @Test
+  public void shouldHandleBordersUsesPixleCompilers() throws Exception
   {
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_BORDER_WIDTH.compiler.getClass());
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_RIGHT_BORDER_WIDTH.compiler.getClass());
@@ -157,19 +178,22 @@ public class StyleTest extends TestCase
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_LEFT_BORDER_WIDTH.compiler.getClass());
   }
   
-  public void testXandY() throws Exception
+  @Test
+  public void shouldHandleXandY() throws Exception
   {
     assertEquals(XCoordinateAttributeCompiler.class, Style.X.compiler.getClass());
     assertEquals(YCoordinateAttributeCompiler.class, Style.Y.compiler.getClass());
   }
 
-  public void testBackgroundImageXandY() throws Exception
+  @Test
+  public void shouldHandleBackgroundImageXandY() throws Exception
   {
     assertEquals(XCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_X.compiler.getClass());
     assertEquals(YCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_Y.compiler.getClass());
   }
   
-  public void testMinMaxWidthAndMinHeightCompilers() throws Exception
+  @Test
+  public void shouldHandleMinMaxWidthAndMinHeightCompilers() throws Exception
   {
     assertEquals(NoneableAttributeCompiler.class, Style.MIN_WIDTH.compiler.getClass());
     assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)Style.MIN_WIDTH.compiler).getTarget().getClass());
@@ -180,4 +204,11 @@ public class StyleTest extends TestCase
     assertEquals(NoneableAttributeCompiler.class, Style.MAX_HEIGHT.compiler.getClass());
     assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)Style.MIN_HEIGHT.compiler).getTarget().getClass());
   }
+  
+  @Test
+  public void shouldHandleCursorStyle() throws Exception
+  {
+    assertEquals(CursorAttribute.class, Style.CURSOR.getClass());
+  }
+
 }

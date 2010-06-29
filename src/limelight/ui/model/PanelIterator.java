@@ -8,6 +8,7 @@ import limelight.LimelightError;
 import java.util.Iterator;
 import java.util.Stack;
 
+// TODO MDM Does anyone use me?
 public class PanelIterator implements Iterator<Panel>
 {
   private final Stack<Iterator<Panel>> iterators = new Stack<Iterator<Panel>>();

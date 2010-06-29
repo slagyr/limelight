@@ -503,4 +503,14 @@ public class PropPanelTest extends Assert
     assertEquals(false, panel.getHoverStyle().hasExtension(style4));
     assertEquals(false, panel.getHoverStyle().hasExtension(style5));
   }
+
+  @Test
+  public void shouldHaveHandCursorWhenHoverStyleIsSpecified() throws Exception
+  {
+    buildStyles();
+    panel.setStyles("one");
+    panel.illuminate();
+
+    assertEquals("hand", panel.getStyle().getCursor());
+  }
 }

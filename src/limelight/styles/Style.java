@@ -6,6 +6,7 @@ package limelight.styles;
 import limelight.styles.abstrstyling.*;
 import limelight.styles.attributes.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -90,6 +91,7 @@ public abstract class Style
   public static final StyleAttribute Y = descriptor(new YAttribute());
   public static final StyleAttribute BACKGROUND_IMAGE_X = descriptor(new BackgroundImageXAttribute());
   public static final StyleAttribute BACKGROUND_IMAGE_Y = descriptor(new BackgroundImageYAttribute());
+  public static final StyleAttribute CURSOR = descriptor(new CursorAttribute());
 
   protected static final int STYLE_COUNT = STYLE_LIST.size();
 
@@ -1143,6 +1145,20 @@ public abstract class Style
     {
       throw new InvalidStyleAttributeError("Invalid value for alignment: " + value);
     }
+  }
 
+  public void setCuror(Object value)
+  {
+    put(CURSOR, value);
+  }
+
+  public String getCursor()
+  {
+    return get(CURSOR);
+  }
+
+  public CursorValue getCompiledCursor()
+  {
+    return (CursorValue)getCompiled(CURSOR);
   }
 }

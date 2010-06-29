@@ -51,7 +51,7 @@ public class TextBoxModel extends TextModel
   {
     int xOffset = getXOffset();
 
-    int textWidth = widthOfTextBeforeCaret();
+    int textWidth = getCaretX();
 
     if(textWidth > getPanelWidth() / 2)
       xOffset -= getPanelWidth() / 2;
@@ -61,12 +61,20 @@ public class TextBoxModel extends TextModel
     return xOffset;
   }
 
-  private int widthOfTextBeforeCaret()
+  public int getCaretX()
   {
     String textBeforeCaret = getText().substring(0, getCaretIndex());
-    TypedLayout layout = createLayout(textBeforeCaret);  //TODO Very inefficient creating a layout here.
-    int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(textBeforeCaret);
-    return textWidth;
+    return getActiveLayout().getWidthOf(textBeforeCaret);
+//    String textBeforeCaret = getText().substring(0, getCaretIndex());
+//    TypedLayout layout = createLayout(textBeforeCaret);  //TODO Very inefficient creating a layout here.
+//    int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(textBeforeCaret);
+//    return textWidth;
+  }
+
+  @Override
+  public int getCaretY()
+  {
+    return 0;
   }
 
   public int calculateLeftShiftingOffset()
@@ -108,8 +116,16 @@ public class TextBoxModel extends TextModel
 
   public Dimension getTextDimensions()
   {
+    //TODO MDM could cache here
     TypedLayout activeLayout = getActiveLayout();
     return new Dimension(activeLayout.getWidth(), activeLayout.getHeight());
+  }
+
+  @Override
+  public int getIndexAt(int x, int y)
+  {
+    TypedLayout layout = getActiveLayout();
+    return layout.getIndexAt(x - getXOffset());
   }
 
   public ArrayList<TypedLayout> getTypedLayouts()
@@ -117,50 +133,17 @@ public class TextBoxModel extends TextModel
     if(getText() == null)
     {
       initNewTextLayouts("");
-      return textLayouts;
+      return typedLayouts;
     }
     else
     {
-      if(textLayouts == null || isThereSomeDifferentText())
+      if(typedLayouts == null || isThereSomeDifferentText())
       {
         setLastLayedOutText(getText());
         initNewTextLayouts(getText());
       }
-      return textLayouts;
+      return typedLayouts;
     }
-  }
-
-  @Override
-  protected void recalculateOffset()
-  {
-    int xOffset = getXOffset();
-    int yOffset = getYOffset();
-    int absoluteCaretX = widthOfTextBeforeCaret();
-    int relativeCaretX = absoluteCaretX + xOffset;
-    Box boundingBox = getPanel().getBoundingBox();
-    Dimension textDimensions = getTextDimensions();
-    
-    if(relativeCaretX >= boundingBox.width || relativeCaretX < 0)
-    {
-      xOffset = (absoluteCaretX - boundingBox.width / 2) * -1;
-      int maxOffset = boundingBox.width - textDimensions.width - CARET_WIDTH;
-      if(xOffset < maxOffset)
-        xOffset = maxOffset;
-      else if(xOffset > 0)
-        xOffset = 0;
-
-      relativeCaretX = absoluteCaretX + xOffset;
-      if(relativeCaretX == boundingBox.width)
-        xOffset -= CARET_WIDTH;
-    }
-
-    if(textDimensions.width < boundingBox.width)
-      xOffset = getHorizontalAlignment().getX(textDimensions.width, boundingBox);
-
-    if(textDimensions.height < boundingBox.height)
-      yOffset = getVerticalAlignment().getY(textDimensions.height, boundingBox);
-
-    setOffset(xOffset, yOffset);
   }
 
   @Override
@@ -177,8 +160,8 @@ public class TextBoxModel extends TextModel
 
   private void initNewTextLayouts(String text)
   {
-    textLayouts = new ArrayList<TypedLayout>();
-    textLayouts.add(createLayout(text));
+    typedLayouts = new ArrayList<TypedLayout>();
+    typedLayouts.add(createLayout(text));
   }
 
   public ArrayList<Rectangle> getSelectionRegions()

@@ -24,6 +24,7 @@ public class TextBox2Panel extends TextInputPanel
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 28);
     style.setDefault(Style.VERTICAL_ALIGNMENT, "center");
+    style.setDefault(Style.CURSOR, "text");
     setBorderStyleDefaults(style);
     setPaddingDefaults(style);
   }
