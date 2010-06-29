@@ -43,6 +43,18 @@ public class MockTextModel extends TextModel
   }
 
   @Override
+  public int getCaretX()
+  {
+    return 0;
+  }
+
+  @Override
+  public int getCaretY()
+  {
+    return 0;
+  }
+
+  @Override
   protected int getXPosFromText(String toIndexString)
   {
     return 0;
@@ -55,28 +67,34 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  public ArrayList<TypedLayout> getTypedLayouts()
+  public int getIndexAt(int x, int y)
   {
-    if(textLayouts == null)
-      addLayout(getText());
-    return textLayouts;
+    return 0;
   }
 
   @Override
-  protected void recalculateOffset()
+  public ArrayList<TypedLayout> getTypedLayouts()
+  {
+    if(typedLayouts == null)
+      addLayout(getText());
+    return typedLayouts;
+  }
+
+  @Override
+  protected void recalculateOffset(XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
   {
   }
 
   @Override
   public TypedLayout getActiveLayout()
   {
-    return textLayouts.get(0);
+    return typedLayouts.get(0);
   }
 
   @Override
   public Box getCaretShape()
   {
-    return textLayouts.get(0).getCaretShape(getCaretIndex());
+    return typedLayouts.get(0).getCaretShape(getCaretIndex());
   }
 
   @Override
@@ -129,8 +147,8 @@ public class MockTextModel extends TextModel
 
   public void addLayout(String value)
   {
-    if(textLayouts == null)
-      textLayouts = new ArrayList<TypedLayout>();
-    textLayouts.add(createLayout(value));
+    if(typedLayouts == null)
+      typedLayouts = new ArrayList<TypedLayout>();
+    typedLayouts.add(createLayout(value));
   }
 }

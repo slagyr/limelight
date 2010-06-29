@@ -11,7 +11,7 @@ import limelight.styles.values.SimpleVerticalAlignmentValue;
 
 public class VerticalAlignmentAttributeCompilerTest extends TestCase
 {
-    private VerticalAlignmentAttributeCompiler compiler;
+  private VerticalAlignmentAttributeCompiler compiler;
 
   public void setUp() throws Exception
   {

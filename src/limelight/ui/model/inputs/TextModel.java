@@ -17,7 +17,6 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextHitInfo;
-import java.awt.font.TextLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,13 +25,12 @@ public abstract class TextModel implements ClipboardOwner
   public static final int CARET_WIDTH = 1;
 
   protected TextInputPanel myPanel;
-  protected ArrayList<TypedLayout> textLayouts;
+  protected ArrayList<TypedLayout> typedLayouts;
   private TypedLayoutFactory typedLayoutFactory = TextTypedLayoutFactory.instance;
 
   private StringBuffer text = new StringBuffer();
   private int spaceWidth;
   protected Point offset = new Point(0, 0);
-  protected int caretX;
   private int caretIndex;
   private int lastCaretIndex;
   private boolean selectionOn;
@@ -45,6 +43,10 @@ public abstract class TextModel implements ClipboardOwner
   public abstract int getXOffset();
 
   public abstract int getYOffset();
+
+  public abstract int getCaretX();
+
+  public abstract int getCaretY();
 
   protected abstract int getXPosFromText(String toIndexString);
 
@@ -60,13 +62,13 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract ArrayList<TypedLayout> getTypedLayouts();
 
-  protected abstract void recalculateOffset();
-  
   public abstract TypedLayout getActiveLayout();
 
   public abstract Box getCaretShape();
 
   public abstract Dimension getTextDimensions();
+
+  public abstract int getIndexAt(int x, int y);
 
   public TextModel(TextInputPanel panel)
   {
@@ -75,7 +77,6 @@ public abstract class TextModel implements ClipboardOwner
 
   public void setCursorAndSelectionStartX()
   {
-    caretX = getXPosFromIndex(caretIndex);
     selectionStartX = getXPosFromIndex(selectionIndex);
   }
 
@@ -88,6 +89,26 @@ public abstract class TextModel implements ClipboardOwner
     return new Font(fontFace, fontStyle, fontSize);
   }
 
+  protected void recalculateOffset(XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
+  {
+    int xOffset = getXOffset();
+    int yOffset = getYOffset();
+    Box boundingBox = getPanel().getBoundingBox();
+    Dimension textDimensions = getTextDimensions();
+
+    if(textDimensions.width < boundingBox.width)
+      xOffset = getHorizontalAlignment().getX(textDimensions.width, boundingBox);
+    else
+      xOffset = xOffsetStrategy.calculateXOffset(this);
+
+    if(textDimensions.height < boundingBox.height)
+      yOffset = getVerticalAlignment().getY(textDimensions.height, boundingBox);
+    else
+      yOffset = yOffsetStrategy.calculateYOffset(this);
+
+    setOffset(xOffset, yOffset);
+  }
+
   public int getXPosFromIndex(int index)
   {
     if(text == null || text.length() == 0)
@@ -95,7 +116,7 @@ public abstract class TextModel implements ClipboardOwner
     int lineNumber = getLineNumberOfIndex(index);
     int startOfLineIndex = 0;
     for(int i = 0; i < lineNumber; i++)
-      startOfLineIndex += textLayouts.get(i).getText().length();
+      startOfLineIndex += typedLayouts.get(i).getText().length();
     if(index <= 0 || startOfLineIndex == index)
       return 0;
     String toIndexString = text.substring(startOfLineIndex, index);
@@ -107,7 +128,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public void clearLayouts()
   {
-    textLayouts = null;
+    typedLayouts = null;
   }
 
   public int getYPosFromIndex(int index)
@@ -151,16 +172,14 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getTotalHeightOfLineWithLeadingMargin(int layoutIndex)
   {
-    textLayouts = getTypedLayouts();
-    TypedLayout typedLayout = textLayouts.get(layoutIndex);
+    typedLayouts = getTypedLayouts();
+    TypedLayout typedLayout = typedLayouts.get(layoutIndex);
     return (int) (getHeightDimension(typedLayout) + typedLayout.getLeading() + 0.5);
   }
 
   public int getHeightOfCurrentLine()
   {
-    int lineNumber = getLineNumberOfIndex(caretIndex);
-    TypedLayout layoutForLine = textLayouts.get(lineNumber);
-    return (int) getHeightDimension(layoutForLine);
+    return getActiveLayout().getHeight();
   }
 
   public int getWidthDimension(TypedLayout layout)
@@ -191,7 +210,7 @@ public abstract class TextModel implements ClipboardOwner
     }
     catch(Exception e)
     {
-Debug.log("e = " + e);
+      Debug.log("e = " + e);
       return 0;
     }
   }
@@ -332,11 +351,16 @@ Debug.log("e = " + e);
     return caretIndex;
   }
 
-  public void setCaretIndex(int cursorIndex)
+  public void setCaretIndex(int index)
   {
-    lastCaretIndex = this.caretIndex;
-    this.caretIndex = cursorIndex;
-    recalculateOffset();
+    setCaretIndex(index, XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);
+  }
+
+  public void setCaretIndex(int index, XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
+  {
+    lastCaretIndex = caretIndex;
+    caretIndex = index;
+    recalculateOffset(xOffsetStrategy, yOffsetStrategy);
   }
 
   public int getSelectionIndex()
@@ -354,10 +378,8 @@ Debug.log("e = " + e);
     if(text == null)
       this.text = null;
     else
-    {
       this.text = new StringBuffer(text);
-      setCaretIndex(text.length());
-    }
+    setCaretIndex(text.length());
   }
 
   public String getText()
@@ -407,9 +429,9 @@ Debug.log("e = " + e);
   {
     getTypedLayouts();
     int lineNumber = 0;
-    for(; lineNumber < textLayouts.size() - 1; lineNumber++)
+    for(; lineNumber < typedLayouts.size() - 1; lineNumber++)
     {
-      index -= textLayouts.get(lineNumber).getText().length();
+      index -= typedLayouts.get(lineNumber).getText().length();
       if(index < 0)
         break;
     }
@@ -496,12 +518,12 @@ Debug.log("e = " + e);
   {
     int charCount = 0;
     for(int i = 0; i < nextLine; i++)
-      charCount += textLayouts.get(i).getText().length();
+      charCount += typedLayouts.get(i).getText().length();
     int xPos = getXPosFromIndex(caretIndex);
-    String lineText = textLayouts.get(nextLine).getText();
+    String lineText = typedLayouts.get(nextLine).getText();
     int lineLength = lineText.length();
     int newCursorIndex = charCount + lineLength - 1;
-    if(nextLine == textLayouts.size() - 1)
+    if(nextLine == typedLayouts.size() - 1)
       newCursorIndex++;
     if(getXPosFromIndex(newCursorIndex) < xPos)
     {
@@ -509,7 +531,7 @@ Debug.log("e = " + e);
     }
     else
     {
-      TextHitInfo hitInfo = textLayouts.get(nextLine).hitTestChar(xPos, 5);
+      TextHitInfo hitInfo = typedLayouts.get(nextLine).hitTestChar(xPos, 5);
       newCursorIndex = hitInfo.getInsertionIndex();
       if(newCursorIndex == lineLength && lineText.endsWith("\n"))
         newCursorIndex--;
@@ -547,16 +569,6 @@ Debug.log("e = " + e);
     return selectionOn;
   }
 
-  public void setCaretX(int x)
-  {
-    caretX = x;
-  }
-
-  public int getCaretX()
-  {
-    return caretX;
-  }
-
   public int getSelectionStartX()
   {
     return selectionStartX;
@@ -566,7 +578,7 @@ Debug.log("e = " + e);
   {
     return myPanel;
   }
-  
+
   public int getTopOfStartPositionForCursor()
   {
     return getYPosFromIndex(getCaretIndex()) - getOffset().y;
@@ -611,5 +623,10 @@ Debug.log("e = " + e);
   public void setTypedLayoutFactory(TypedLayoutFactory factory)
   {
     typedLayoutFactory = factory;
+  }
+
+  public int getCaretWidth()
+  {
+    return CARET_WIDTH;
   }
 }

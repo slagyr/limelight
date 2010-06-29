@@ -23,6 +23,7 @@ public class TextArea2Panel extends TextInputPanel
   {
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 75);
+    style.setDefault(Style.CURSOR, "text");
     setBorderStyleDefaults(style);
     setPaddingDefaults(style);
   }

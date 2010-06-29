@@ -44,6 +44,11 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   {
   }
 
+  public Cursor getCursor()
+  {
+    return Cursor.getDefaultCursor();
+  }
+
   public Panel getPanel()
   {
     return null;

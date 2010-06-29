@@ -55,6 +55,7 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
     // IGNORE
   }
 
+  //TODO - MDM - Need the concept of a drag owners so that dragged props can receive the event even if the drag occurs outside their bounds.
   public void mouseDragged(MouseEvent e)
   {
     Panel panel = panelFor(e.getPoint());

@@ -8,8 +8,6 @@ import limelight.ui.MockTypedLayoutFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
-
 import static junit.framework.Assert.assertEquals;
 
 public class TextBoxModelTest
@@ -34,59 +32,7 @@ public class TextBoxModelTest
   {
     assertEquals(30, model.getXPosFromText("ABC"));
   }
-//
-//  @Test
-//  public void canTellIfTheCursorIsAtACriticalEdge()
-//  {
-//    assertEquals(true, model.isCursorAtCriticalEdge(0));
-//    assertEquals(true, model.isCursorAtCriticalEdge(model.getXPosFromIndex(0)));
-//    assertEquals(true, model.isCursorAtCriticalEdge(model.getXPosFromIndex(model.getText().length() - 5)));
-//  }
-//
-//  @Test
-//  public void canShiftTheCursorAndTextLeftIfCriticallyRight()
-//  {
-//    model.setCaretIndex(0);
-//    model.setOffset(0, 0);
-//
-//    model.setCaretIndex(30);
-//
-//    assertEquals(true, model.isCursorAtCriticalEdge(model.getXPosFromIndex(model.getCaretIndex())));
-//
-//    model.calculateXOffset();
-//
-//    assertEquals(true, model.getOffset().x > 0);
-//  }
-//
-//  @Test
-//  public void canCutTheXOffsetInHalfWhenTheCursorIsOnTheLeftEdge()
-//  {
-//    model.calculateXOffset();
-//    int offset = model.getOffset().x;
-//    model.setCaretIndex(0);
-//
-//    model.calculateXOffset();
-//
-//    assertEquals(true, model.getOffset().x <= offset / 2 + 2);
-//
-//    model.setText("hi");
-//    model.calculateXOffset();
-//    assertEquals(true, model.getOffset().x == 0);
-//
-//  }
-//
-//  @Test
-//  public void canCalculateTheTextModelsDimensions()
-//  {
-//    model.setText("");
-//    Dimension dim = model.getTextDimensions();
-//    assertEquals(null, dim);
-//
-//    model.setText("X");
-//    dim = model.getTextDimensions();
-//    assertEquals(8, dim.width);
-//    assertEquals(14, dim.height);
-//  }
+
 //
 //  @Test
 //  public void canGetTheSelectedRegion()
@@ -196,34 +142,15 @@ public class TextBoxModelTest
     assertEquals(10, model.getYOffset());
   }
 
-//
-//  @Test
-//  public void shouldCalculateOffsetToTheRightWhenCursorMovesPassedRightEdge() throws Exception
-//  {
-//    model.setCaretIndex(15); //On the right edge
-//
-//    assertEquals(-75, model.calculateRightShiftingOffset()); // half the width of the box
-//  }
-//
-//  @Test
-//  public void shouldCalulateOffsetToTheRightWhenCaretMovesPassedRightEdgeAndIsAlreadyOffset() throws Exception
-//  {
-//    model.setOffset(-75, 0);
-//    model.setCaretIndex(23);
-//
-//    int xOffset = model.calculateRightShiftingOffset();
-//    assertEquals(-150, xOffset);
-//  }
-//
-//  @Test
-//  public void shouldCalculateOffsetToLeftWhenCaretMovesLeftBounds() throws Exception
-//  {
-//    model.setOffset(-75, 0);
-//    model.setCaretIndex(5);
-//
-//    int xOffset = model.calculateLeftShiftingOffset();
-//    assertEquals(0, xOffset);
-//
-//  }
+  @Test
+  public void shouldGetIndex() throws Exception
+  {
+    model.setText("some text");
+
+    assertEquals(0, model.getIndexAt(0, 0));
+    assertEquals(1, model.getIndexAt(10, 0));
+    assertEquals(5, model.getIndexAt(50, 0));
+    assertEquals(9, model.getIndexAt(1000, 0));
+  }
 
 }

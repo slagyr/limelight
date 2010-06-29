@@ -57,7 +57,15 @@ public class MockTypedLayout implements TypedLayout
 
   public TextHitInfo hitTestChar(float x, float y)
   {
-    throw new RuntimeException("MockTypedLayout.hitTestChar");
+    int index = (int) (x / 10);
+    index = Math.min(index, text.length());
+    return TextHitInfo.leading(index);
+  }
+
+  public int getIndexAt(int x)
+  {
+    int index = x / 10;
+    return Math.min(index, text.length());
   }
 
   public Box getCaretShape(int caretIndex)
@@ -67,11 +75,16 @@ public class MockTypedLayout implements TypedLayout
 
   public int getWidth()
   {
-    return CHAR_WIDTH * text.length();
+    return getWidthOf(text);
   }
 
   public int getHeight()
   {
     return 10;
+  }
+
+  public int getWidthOf(String text)
+  {
+    return CHAR_WIDTH * text.length();
   }
 }

@@ -54,6 +54,8 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
       result = new XCoordinateAttributeCompiler();
     else if("y-coordinate".equals(type))
       result = new YCoordinateAttributeCompiler();
+    else if("cursor".equals(type))
+      result = new CursorAttributeCompiler();
     else
       throw new LimelightError("Unknown StyleAttributeCompiler named " + type);
 

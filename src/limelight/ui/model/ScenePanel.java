@@ -6,7 +6,6 @@ package limelight.ui.model;
 import limelight.*;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.ui.model.PropablePanel;
 import limelight.ui.api.Prop;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
@@ -154,7 +153,13 @@ public class ScenePanel extends PropPanel implements RootPanel
 
   public void setCursor(Cursor cursor)
   {
-    contentPane.setCursor(cursor);
+    if(contentPane.getCursor() != cursor)
+      contentPane.setCursor(cursor);
+  }
+
+  public Cursor getCursor()
+  {
+    return contentPane.getCursor();
   }
 
   // TODO MDM - Get rid of me.
