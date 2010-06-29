@@ -16,11 +16,11 @@ import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.ArrayList;
 
-public class TextAreaModel extends TextModel
+public class MultiLineTextModel extends TextModel
 {
   private ArrayList<Integer> newLineCharIndices;
 
-  public TextAreaModel(TextInputPanel myAreaPanel)
+  public MultiLineTextModel(TextContainer myAreaPanel)
   {
     super(myAreaPanel);
     setOffset(0, 0);
@@ -43,7 +43,7 @@ public class TextAreaModel extends TextModel
 
     int height = 0;
     int width = 0;
-    for(TypedLayout layout : getTypedLayouts())
+    for(TypedLayout layout : getLines())
     {
       height += layout.getHeight();
       int lineWidth = layout.getWidth();
@@ -60,7 +60,7 @@ public class TextAreaModel extends TextModel
   }
 
   @Override
-  public ArrayList<TypedLayout> getTypedLayouts()
+  public ArrayList<TypedLayout> getLines()
   {
     if(getText() == null || getText().length() == 0)
     {
@@ -78,16 +78,10 @@ public class TextAreaModel extends TextModel
     return typedLayouts;
   }
 
-  public int getCaretY()
+  @Override
+  protected TypedLayout getLineWithCaret()
   {
-    int line = getCaretLine();
-    int height = 0;
-    for(int i = 0; i < line; i++)
-    {
-      TypedLayout layout = getTypedLayouts().get(i);
-      height += layout.getHeight() + layout.getLeading();
-    }
-    return height;
+    return getLines().get(getCaretLine());
   }
 
   @Override
@@ -150,11 +144,11 @@ public class TextAreaModel extends TextModel
     ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
     int yPos = lineHeight * startingLine - calculateYOffset();
-    regions.add(new Box(startingX, yPos, myPanel.getWidth() - startingX, lineHeight));
+    regions.add(new Box(startingX, yPos, container.getWidth() - startingX, lineHeight));
     yPos += lineHeight;
     for(int i = startingLine + 1; i < endingLine; i++)
     {
-      regions.add(new Box(0, yPos, myPanel.getWidth(), lineHeight));
+      regions.add(new Box(0, yPos, container.getWidth(), lineHeight));
       yPos += lineHeight;
     }
     regions.add(new Box(0, yPos, endingX, lineHeight));
@@ -165,7 +159,7 @@ public class TextAreaModel extends TextModel
   public boolean isBoxFull()
   {
     if(getText().length() > 0)
-      return (myPanel.getHeight() <= getTextDimensions().height);
+      return (container.getHeight() <= getTextDimensions().height);
     return false;
   }
 
@@ -184,7 +178,7 @@ public class TextAreaModel extends TextModel
   @Override
   public int getIndexOfLastCharInLine(int line)
   {
-    getTypedLayouts();
+    getLines();
     int numberOfCharacters = 0;
     for(int i = 0; i <= line; i++)
       numberOfCharacters += typedLayouts.get(i).getText().length();
@@ -198,7 +192,7 @@ public class TextAreaModel extends TextModel
     int yOffset = 0;
     int yPos = getYPosFromIndex(getCaretIndex());
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
-    int panelHeight = myPanel.getHeight();
+    int panelHeight = container.getHeight();
 
     while(yPos <= yOffset)
       yOffset -= lineHeight;
@@ -210,24 +204,6 @@ public class TextAreaModel extends TextModel
       yOffset += lineHeight;
 
     return yOffset;
-  }
-
-  @Override
-  public int getXOffset()
-  {
-    return 0;
-  }
-
-  @Override
-  public int getYOffset()
-  {
-    return offset == null ? 0 : offset.y;
-  }
-
-  @Override
-  public int getCaretX()
-  {
-    return 0;
   }
 
   @Override
@@ -280,9 +256,9 @@ public class TextAreaModel extends TextModel
   {
     TextLayout layout;
     if(thereAreMoreReturnCharacters(returnCharIndex))
-      layout = breaker.nextLayout(myPanel.getWidth(), newLineCharIndices.get(returnCharIndex) + 1, false);
+      layout = breaker.nextLayout(container.getWidth(), newLineCharIndices.get(returnCharIndex) + 1, false);
     else
-      layout = breaker.nextLayout(myPanel.getWidth());
+      layout = breaker.nextLayout(container.getWidth());
     return layout;
   }
 
@@ -318,7 +294,7 @@ public class TextAreaModel extends TextModel
   {
     int line = 0;
     int remainder = getCaretIndex();
-    for(TypedLayout textLayout : getTypedLayouts())
+    for(TypedLayout textLayout : getLines())
     {
       if(textLayout.getText().length() > remainder)
         return line;

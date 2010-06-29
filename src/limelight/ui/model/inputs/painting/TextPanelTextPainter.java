@@ -25,8 +25,8 @@ public class TextPanelTextPainter extends TextPanelPainter
     float x = model.getXOffset();
     float y = model.getYOffset();
 
-    graphics.setColor(model.getPanel().getStyle().getCompiledTextColor().getColor());
-    for(TypedLayout layout : model.getTypedLayouts())
+    graphics.setColor(model.getContainer().getStyle().getCompiledTextColor().getColor());
+    for(TypedLayout layout : model.getLines())
     {
       y += layout.getAscent();
       layout.draw(graphics, x, y + 1);

@@ -37,7 +37,7 @@ public class MouseProcessor
 
   private Point getRelativeMouseLocation(MouseEvent e)
   {
-    Point location = model.getPanel().getAbsoluteLocation();
+    Point location = model.getContainer().getAbsoluteLocation();
     return new Point(e.getPoint().x - location.x, e.getPoint().y - location.y);
   }
 

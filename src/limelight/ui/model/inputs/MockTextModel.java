@@ -33,27 +33,15 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  public int getXOffset()
+  protected int getCaretLine()
   {
     return 0;
   }
 
   @Override
-  public int getYOffset()
+  protected TypedLayout getLineWithCaret()
   {
-    return 0;
-  }
-
-  @Override
-  public int getCaretX()
-  {
-    return 0;
-  }
-
-  @Override
-  public int getCaretY()
-  {
-    return 0;
+    return getActiveLayout();
   }
 
   @Override
@@ -65,7 +53,8 @@ public class MockTextModel extends TextModel
   @Override
   public Dimension getTextDimensions()
   {
-    return null;
+    TypedLayout activeLayout = getActiveLayout();
+    return new Dimension(activeLayout.getWidth(), activeLayout.getHeight());
   }
 
   @Override
@@ -75,16 +64,11 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  public ArrayList<TypedLayout> getTypedLayouts()
+  public ArrayList<TypedLayout> getLines()
   {
     if(typedLayouts == null)
       addLayout(getText());
     return typedLayouts;
-  }
-
-  @Override
-  protected void recalculateOffset(XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
-  {
   }
 
   @Override

@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
-public class TextBoxModelTest
+public class SingleLineTextModelTest
 {
   TextModel model;
   TextInputPanel panel;
