@@ -24,7 +24,7 @@ public class SelectionOnShiftKeyProcessor extends KeyProcessor
     }
     else if(isACharacter(keyCode)){
       boxInfo.deleteSelection();
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertChar(event.getKeyChar());
     }
   }
 }

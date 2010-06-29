@@ -4,6 +4,8 @@
 package limelight.ui.model.inputs.painting;
 
 import limelight.ui.model.inputs.TextModel;
+import limelight.util.Box;
+import limelight.util.Colors;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ public class TextPanelSelectionPainter extends TextPanelPainter
       return;
     if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
     {
-      graphics.setColor(Color.cyan);
-      ArrayList<Rectangle> regions = boxInfo.getSelectionRegions();
+      graphics.setColor(Colors.resolve("#BBD453AA"));
+      ArrayList<Box> regions = boxInfo.getSelectionRegions();
       if (regions != null)
       {
         for (Rectangle rect : regions) {

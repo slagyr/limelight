@@ -62,9 +62,9 @@ public class SingleLineTextModel extends TextModel
   }
 
   @Override
-  protected TypedLayout getLineWithCaret()
+  protected int getLineNumber(int index)
   {
-    return getActiveLayout();
+    return 0;
   }
 
   public int calculateLeftShiftingOffset()
@@ -154,28 +154,16 @@ public class SingleLineTextModel extends TextModel
     typedLayouts.add(createLayout(text));
   }
 
-  public ArrayList<Rectangle> getSelectionRegions()
+  public ArrayList<Box> getSelectionRegions()
   {
-//    if(getText().length() > 0)
-//      setOffset(calculateXOffset(), calculateYOffset());
-    int x1 = getXPosFromIndex(getCaretIndex());
-    int x2 = getXPosFromIndex(getSelectionIndex());
-    int edgeSelectionExtension = 0;
+    int x1 = getCaretX();
+    int x2 = getSelectionX();
+    int start = Math.min(x1, x2);
+    int end = Math.max(x1, x2);
 
-    if(x1 <= 0 || x2 <= 0)
-      edgeSelectionExtension = 0;
-    ArrayList<Rectangle> regions = new ArrayList<Rectangle>();
-    if(x1 > x2)
-      regions.add(new Box(x2 - edgeSelectionExtension, 0, x1 - x2 + edgeSelectionExtension, getPanelHeight() * 2));
-    else
-      regions.add(new Box(x1 - edgeSelectionExtension, 0, x2 - x1 + edgeSelectionExtension, getPanelHeight() * 2));
+    ArrayList<Box> regions = new ArrayList<Box>();
+    regions.add(new Box(start, 0, end - start, getActiveLayout().getHeight() + 1).translated(getOffset()));
     return regions;
-  }
-
-  @Override
-  protected int getCaretLine()
-  {
-    return 0;
   }
 
   public boolean isBoxFull()

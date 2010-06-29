@@ -28,7 +28,7 @@ public class MouseProcessor
     int index = model.getIndexAt(location.x, location.y);
     model.setSelectionOn(true);
     model.setSelectionIndex(index);
-    model.setCaretIndex(index, XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);  // TODO MDM - need a new strategy here...
+    model.setCaretIndex(index, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
 
     makeExtraSelectionOnMultiClick();
 
@@ -72,17 +72,16 @@ public class MouseProcessor
     Point location = getRelativeMouseLocation(e);
 
     int tempIndex = model.getIndexAt(location.x, location.y);
-    if(model.isCursorAtCriticalEdge(location.x))
-    {
-      if(model.getXPosFromIndex(tempIndex) < location.x && tempIndex < model.getText().length())
-        tempIndex++;
+    // TODO MDM - This needs work.  Ideally, the text will scroll smoothly, a pixel at a time, without the mouse moving.  The scoll speed increased as the mouse moves away.  
+    if(location.x < 3 && tempIndex > 0)
       tempIndex--;
-    }
+    else if(location.x > (model.getContainer().getWidth() - 3) && tempIndex < model.getText().length())
+      tempIndex++;
+
     if(doubleClickOn)
       selectWord(tempIndex);
-
     else
-      model.setCaretIndex(tempIndex);
+      model.setCaretIndex(tempIndex, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
   }
 
   private void selectWord(int tempIndex)
@@ -134,7 +133,7 @@ public class MouseProcessor
 
     private void repositionHead(int newHead)
     {
-      model.setCaretIndex(newHead);
+      model.setCaretIndex(newHead, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
     }
 
     private boolean isSelectionFacingRight()

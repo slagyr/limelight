@@ -33,15 +33,9 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  protected int getCaretLine()
+  protected int getLineNumber(int index)
   {
     return 0;
-  }
-
-  @Override
-  protected TypedLayout getLineWithCaret()
-  {
-    return getActiveLayout();
   }
 
   @Override
@@ -84,7 +78,7 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  public ArrayList<Rectangle> getSelectionRegions()
+  public ArrayList<Box> getSelectionRegions()
   {
     return null;
   }

@@ -18,7 +18,7 @@ public class AltShiftKeyProcessor extends KeyProcessor
 
     if (isACharacter(keyCode))
     {
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertChar(event.getKeyChar());
     }
     else if(boxInfo.isMoveRightEvent(keyCode)){
       boxInfo.initSelection();

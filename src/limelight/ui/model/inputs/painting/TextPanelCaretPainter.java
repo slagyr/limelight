@@ -16,13 +16,13 @@ public class TextPanelCaretPainter extends TextPanelPainter
   {
   }
 
-  public void paint(Graphics2D graphics, TextModel boxInfo)
+  public void paint(Graphics2D graphics, TextModel model)
   {
-    if(!boxInfo.isCursorOn())
+    if(!model.isCursorOn())
       return;
 
-    Box caret = boxInfo.getCaretShape();
-    graphics.setColor(Color.black);
+    Box caret = model.getCaretShape();
+    graphics.setColor(model.getContainer().getStyle().getCompiledTextColor().getColor());
     graphics.fill(caret);
   }
 }

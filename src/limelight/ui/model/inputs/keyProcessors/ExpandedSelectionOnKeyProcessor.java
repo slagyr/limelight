@@ -20,7 +20,7 @@ public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
     int keyCode = event.getKeyCode();
     if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB){
       boxInfo.deleteSelection();
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertChar(event.getKeyChar());
     }
     else if (boxInfo.isMoveUpEvent(keyCode))
       boxInfo.moveCursorUpALine();

@@ -18,7 +18,7 @@ public class ExpandedNormalKeyProcessor extends KeyProcessor
     KeyProcessor basicKeyProcessor = NormalKeyProcessor.instance;
     int keyCode = event.getKeyCode();
     if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB)
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertChar(event.getKeyChar());
     else if (boxInfo.isMoveUpEvent(keyCode))
       boxInfo.moveCursorUpALine();
     else if (boxInfo.isMoveDownEvent(keyCode))

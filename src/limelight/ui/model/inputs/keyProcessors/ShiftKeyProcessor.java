@@ -17,7 +17,7 @@ public class ShiftKeyProcessor extends KeyProcessor
     int keyCode = event.getKeyCode();
     
     if (isACharacter(keyCode))
-      boxInfo.insertCharIntoTextBox(event.getKeyChar());
+      boxInfo.insertChar(event.getKeyChar());
     else if(boxInfo.isMoveRightEvent(keyCode)){
       boxInfo.initSelection();
       boxInfo.setCaretIndex(boxInfo.getCaretIndex() + 1);
