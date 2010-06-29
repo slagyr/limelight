@@ -4,17 +4,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
-import limelight.util.Box;
-
-import java.awt.*;
 
 public class TextBox2Panel extends TextInputPanel
 {
   public TextBox2Panel()
   {
-    model = new TextBoxModel(this);
+    model = new SingleLineTextModel(this);
     mouseProcessor = new MouseProcessor(model);
   }
 

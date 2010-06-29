@@ -19,7 +19,7 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
     testClassInit();
     painter = TextPanelTextPainter.instance;
     layout = new MockTypedLayout(boxInfo.getText());
-    boxInfo.getTypedLayouts().add(layout);
+    boxInfo.getLines().add(layout);
     boxInfo.setLastLayedOutText("Some Text");
   }
 

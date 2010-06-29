@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
 
-public class TextAreaModelTest
+public class MultiLineTextModelTest
 {
-  private TextAreaModel model;
+  private MultiLineTextModel model;
   private TextInputPanel panel;
 
   @Before
@@ -27,7 +27,7 @@ public class TextAreaModelTest
     parent.add(panel);
     parent.setSize(150, 75);
     panel.doLayout();
-    model = (TextAreaModel)panel.getModel();
+    model = (MultiLineTextModel)panel.getModel();
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("I took the one less traveled by. And that has made all the difference");
   }
@@ -148,7 +148,7 @@ public class TextAreaModelTest
   {
     model.setText("This is more than 1 line\rand should be 2 lines");
 
-    ArrayList<TypedLayout> textLayouts = model.getTypedLayouts();
+    ArrayList<TypedLayout> textLayouts = model.getLines();
     assertEquals(2, textLayouts.size());
     assertEquals("This is more than 1 line\r", textLayouts.get(0).getText());
     assertEquals("and should be 2 lines", textLayouts.get(1).getText());
@@ -158,7 +158,7 @@ public class TextAreaModelTest
   public void willStoreATextLayoutForAnEmptyLine()
   {
     model.setText("This has an empty line\n");
-    ArrayList<TypedLayout> textLayouts = model.getTypedLayouts();
+    ArrayList<TypedLayout> textLayouts = model.getLines();
     assertEquals(2, textLayouts.size());
     assertEquals("", textLayouts.get(1).getText());
   }
@@ -168,7 +168,7 @@ public class TextAreaModelTest
   {
     model.setText("This is going to be a very large amount of text. It seems to be the only way to make sure this works. Here\nis\n\nsome new lines");
 
-    model.getTypedLayouts();
+    model.getLines();
 
     assertEquals(7, model.typedLayouts.size());
   }

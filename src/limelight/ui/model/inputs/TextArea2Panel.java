@@ -4,16 +4,14 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.ui.model.RootPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
-import limelight.util.Box;
 
 public class TextArea2Panel extends TextInputPanel
 {
 
   public TextArea2Panel()
   {
-    model = new TextAreaModel(this);
+    model = new MultiLineTextModel(this);
     mouseProcessor = new MouseProcessor(model);
     focused = true;
   }

@@ -3,22 +3,21 @@ package limelight.ui.model.inputs.offsetting;
 import limelight.ui.model.inputs.TextModel;
 import limelight.util.Box;
 
-import java.awt.*;
-
 public class CenteredXOffsetStrategy implements XOffsetStrategy
 {
   public int calculateXOffset(TextModel model)
   {
     int xOffset = model.getXOffset();
-    Box boundingBox = model.getPanel().getBoundingBox();
-    Dimension textDimensions = model.getTextDimensions();
+    Box boundingBox = model.getContainer().getBoundingBox();
     int absoluteCaretX = model.getCaretX();
     int relativeCaretX = absoluteCaretX + xOffset;
 
     if(relativeCaretX >= boundingBox.width || relativeCaretX < 0)
     {
       xOffset = (absoluteCaretX - boundingBox.width / 2) * -1;
-      int maxOffset = boundingBox.width - textDimensions.width - model.getCaretWidth();
+
+      int maxOffset = boundingBox.width - model.getTextDimensions().width - model.getCaretWidth();
+
       if(xOffset < maxOffset)
         xOffset = maxOffset;
       else if(xOffset > 0)

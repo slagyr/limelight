@@ -56,7 +56,7 @@ public class TextModelTest
     model.setLastLayedOutText("nothing");
     model.setText("something");
 
-    model.getTypedLayouts();
+    model.getLines();
 
     assertEquals("something", model.getLastLayedOutText());
   }
@@ -106,7 +106,7 @@ public class TextModelTest
   @Test
   public void canGetTheHeightForTheCurrentLine()
   {
-    int expectedHeight = (int) (model.getHeightDimension(model.getTypedLayouts().get(0)) + .5);
+    int expectedHeight = (int) (model.getHeightDimension(model.getLines().get(0)) + .5);
 
     int currentLineHeight = model.getHeightOfCurrentLine();
 

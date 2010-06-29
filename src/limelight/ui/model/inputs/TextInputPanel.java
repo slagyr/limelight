@@ -19,7 +19,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner
+public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner, TextContainer
 {
   protected TextModel model;
   protected boolean focused;

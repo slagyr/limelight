@@ -27,7 +27,7 @@ public abstract class TextModel implements ClipboardOwner
 {
   public static final int CARET_WIDTH = 1;
 
-  protected TextInputPanel myPanel;
+  protected TextContainer container;
   protected ArrayList<TypedLayout> typedLayouts;
   private TypedLayoutFactory typedLayoutFactory = TextTypedLayoutFactory.instance;
 
@@ -41,15 +41,9 @@ public abstract class TextModel implements ClipboardOwner
   private int selectionIndex;
   private String lastLayedOutText;
 
-  public abstract int calculateYOffset();
+  protected abstract int getCaretLine();
 
-  public abstract int getXOffset();
-
-  public abstract int getYOffset();
-
-  public abstract int getCaretX();
-
-  public abstract int getCaretY();
+  protected abstract TypedLayout getLineWithCaret();
 
   protected abstract int getXPosFromText(String toIndexString);
 
@@ -63,7 +57,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract boolean isCursorAtCriticalEdge(int cursorX);
 
-  public abstract ArrayList<TypedLayout> getTypedLayouts();
+  public abstract ArrayList<TypedLayout> getLines();
 
   public abstract TypedLayout getActiveLayout();
 
@@ -73,9 +67,11 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract int getIndexAt(int x, int y);
 
-  public TextModel(TextInputPanel panel)
+  public abstract int calculateYOffset();
+
+  public TextModel(TextContainer container)
   {
-    this.myPanel = panel;
+    this.container = container;
   }
 
   public void setCursorAndSelectionStartX()
@@ -85,18 +81,47 @@ public abstract class TextModel implements ClipboardOwner
 
   public Font getFont()
   {
-    Style style = myPanel.getStyle();
+    Style style = container.getStyle();
     String fontFace = style.getCompiledFontFace().getValue();
     int fontStyle = style.getCompiledFontStyle().toInt();
     int fontSize = style.getCompiledFontSize().getValue();
     return new Font(fontFace, fontStyle, fontSize);
   }
 
+  public int getXOffset()
+  {
+    return offset.x;
+  }
+
+  public int getYOffset()
+  {
+    return offset.y;
+  }
+
+  public int getCaretX()
+  {
+    TypedLayout line = getLineWithCaret();
+    String textBeforeCaret = line.getText().substring(0, getCaretIndex());
+    return line.getWidthOf(textBeforeCaret);
+  }
+
+  public int getCaretY()
+  {
+    int line = getCaretLine();
+    int height = 0;
+    for(int i = 0; i < line; i++)
+    {
+      TypedLayout layout = getLines().get(i);
+      height += layout.getHeight() + layout.getLeading();
+    }
+    return height;
+  }
+
   protected void recalculateOffset(XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
   {
     int xOffset = getXOffset();
     int yOffset = getYOffset();
-    Box boundingBox = getPanel().getBoundingBox();
+    Box boundingBox = getContainer().getBoundingBox();
     Dimension textDimensions = getTextDimensions();
 
     if(textDimensions.width < boundingBox.width)
@@ -175,7 +200,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getTotalHeightOfLineWithLeadingMargin(int layoutIndex)
   {
-    typedLayouts = getTypedLayouts();
+    typedLayouts = getLines();
     TypedLayout typedLayout = typedLayouts.get(layoutIndex);
     return (int) (getHeightDimension(typedLayout) + typedLayout.getLeading() + 0.5);
   }
@@ -192,24 +217,24 @@ public abstract class TextModel implements ClipboardOwner
 
   public Point getPanelAbsoluteLocation()
   {
-    return myPanel.getAbsoluteLocation();
+    return container.getAbsoluteLocation();
   }
 
   public int getPanelWidth()
   {
-    return myPanel.getWidth();
+    return container.getWidth();
   }
 
   public int getPanelHeight()
   {
-    return myPanel.getHeight();
+    return container.getHeight();
   }
 
   public int getYAlignmentOffset()
   {
     try
     {
-      return getVerticalAlignment().getY(getTextDimensions().height, myPanel.getBoundingBox());
+      return getVerticalAlignment().getY(getTextDimensions().height, container.getBoundingBox());
     }
     catch(Exception e)
     {
@@ -220,27 +245,27 @@ public abstract class TextModel implements ClipboardOwner
 
   public VerticalAlignmentValue getVerticalAlignment()
   {
-    return myPanel.getStyle().getCompiledVerticalAlignment();
+    return container.getStyle().getCompiledVerticalAlignment();
   }
 
   public int getXAlignmentOffset()
   {
-    return getHorizontalAlignment().getX(getTextDimensions().width, myPanel.getBoundingBox()) - getOffset().x;
+    return getHorizontalAlignment().getX(getTextDimensions().width, container.getBoundingBox()) - getOffset().x;
   }
 
   public HorizontalAlignmentValue getHorizontalAlignment()
   {
-    return myPanel.getStyle().getCompiledHorizontalAlignment();
+    return container.getStyle().getCompiledHorizontalAlignment();
   }
 
   public boolean isCursorOn()
   {
-    return myPanel.isCursorOn();
+    return container.isCursorOn();
   }
 
   public boolean isFocused()
   {
-    return myPanel.isFocused();
+    return container.isFocused();
   }
 
   public void copyText(String clipboard)
@@ -356,7 +381,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public void setCaretIndex(int index)
   {
-    setCaretIndex(index, XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);
+    setCaretIndex(index, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
   }
 
   public void setCaretIndex(int index, XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
@@ -404,12 +429,12 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getLastKeyPressed()
   {
-    return myPanel.getLastKeyPressed();
+    return container.getLastKeyPressed();
   }
 
   public void setLastKeyPressed(int keyCode)
   {
-    myPanel.setLastKeyPressed(keyCode);
+    container.setLastKeyPressed(keyCode);
   }
 
   public int getLastCaretIndex()
@@ -430,7 +455,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getLineNumberOfIndex(int index)
   {
-    getTypedLayouts();
+    getLines();
     int lineNumber = 0;
     for(; lineNumber < typedLayouts.size() - 1; lineNumber++)
     {
@@ -577,9 +602,9 @@ public abstract class TextModel implements ClipboardOwner
     return selectionStartX;
   }
 
-  public TextInputPanel getPanel()
+  public TextContainer getContainer()
   {
-    return myPanel;
+    return container;
   }
 
   public int getTopOfStartPositionForCursor()
@@ -632,4 +657,5 @@ public abstract class TextModel implements ClipboardOwner
   {
     return CARET_WIDTH;
   }
+
 }

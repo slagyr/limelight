@@ -11,9 +11,9 @@ import limelight.util.Box;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class TextBoxModel extends TextModel
+public class SingleLineTextModel extends TextModel
 {
-  public TextBoxModel(TextInputPanel myBox)
+  public SingleLineTextModel(TextContainer myBox)
   {
     super(myBox);
   }
@@ -32,7 +32,7 @@ public class TextBoxModel extends TextModel
 
   public boolean isCursorAtCriticalEdge(int xPos)
   {
-    if(myPanel.getWidth() > getTextDimensions().width)
+    if(container.getWidth() > getTextDimensions().width)
       return false;
     return isCriticallyRight(xPos) || isCriticallyLeft(xPos);
   }
@@ -44,7 +44,7 @@ public class TextBoxModel extends TextModel
 
   private boolean isCriticallyRight(int xPos)
   {
-    return (xPos >= myPanel.getWidth() - CARET_WIDTH);
+    return (xPos >= container.getWidth() - CARET_WIDTH);
   }
 
   public int calculateRightShiftingOffset()
@@ -61,20 +61,10 @@ public class TextBoxModel extends TextModel
     return xOffset;
   }
 
-  public int getCaretX()
-  {
-    String textBeforeCaret = getText().substring(0, getCaretIndex());
-    return getActiveLayout().getWidthOf(textBeforeCaret);
-//    String textBeforeCaret = getText().substring(0, getCaretIndex());
-//    TypedLayout layout = createLayout(textBeforeCaret);  //TODO Very inefficient creating a layout here.
-//    int textWidth = getWidthDimension(layout) + getTerminatingSpaceWidth(textBeforeCaret);
-//    return textWidth;
-  }
-
   @Override
-  public int getCaretY()
+  protected TypedLayout getLineWithCaret()
   {
-    return 0;
+    return getActiveLayout();
   }
 
   public int calculateLeftShiftingOffset()
@@ -128,7 +118,7 @@ public class TextBoxModel extends TextModel
     return layout.getIndexAt(x - getXOffset());
   }
 
-  public ArrayList<TypedLayout> getTypedLayouts()
+  public ArrayList<TypedLayout> getLines()
   {
     if(getText() == null)
     {
@@ -149,7 +139,7 @@ public class TextBoxModel extends TextModel
   @Override
   public TypedLayout getActiveLayout()
   {
-    return getTypedLayouts().get(0);
+    return getLines().get(0);
   }
 
   @Override
@@ -182,20 +172,16 @@ public class TextBoxModel extends TextModel
     return regions;
   }
 
-  public int getXOffset()
+  @Override
+  protected int getCaretLine()
   {
-    return offset == null ? 0 : offset.x;
-  }
-
-  public int getYOffset()
-  {
-    return offset.y;
+    return 0;
   }
 
   public boolean isBoxFull()
   {
     if(getText().length() > 0)
-      return (myPanel.getWidth() - (TextModel.CARET_WIDTH * 2) <= getTextDimensions().width);
+      return (container.getWidth() - (TextModel.CARET_WIDTH * 2) <= getTextDimensions().width);
     return false;
   }
 
