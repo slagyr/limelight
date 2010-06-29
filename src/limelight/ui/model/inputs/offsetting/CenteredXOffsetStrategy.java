@@ -1,5 +1,6 @@
-package limelight.ui.model.inputs;
+package limelight.ui.model.inputs.offsetting;
 
+import limelight.ui.model.inputs.TextModel;
 import limelight.util.Box;
 
 import java.awt.*;

@@ -1,4 +1,4 @@
-package limelight.ui.model.inputs.painters;
+package limelight.ui.model.inputs.painting;
 
 import org.junit.Before;
 import org.junit.Test;

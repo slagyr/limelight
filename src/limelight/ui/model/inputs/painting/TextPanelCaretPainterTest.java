@@ -1,10 +1,9 @@
-package limelight.ui.model.inputs.painters;
+package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
 import limelight.ui.model.inputs.MockTextModel;
 import limelight.ui.model.inputs.TextBox2Panel;
-import limelight.ui.model.inputs.TextPanelPainter;
 import org.junit.Before;
 import org.junit.Test;
 

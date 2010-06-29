@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.TypedLayout;
+import limelight.ui.text.TypedLayout;
 import limelight.ui.model.TextPanel;
 import limelight.util.Box;
 

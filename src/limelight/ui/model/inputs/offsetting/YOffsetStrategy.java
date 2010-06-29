@@ -1,4 +1,6 @@
-package limelight.ui.model.inputs;
+package limelight.ui.model.inputs.offsetting;
+
+import limelight.ui.model.inputs.TextModel;
 
 public interface YOffsetStrategy
 {

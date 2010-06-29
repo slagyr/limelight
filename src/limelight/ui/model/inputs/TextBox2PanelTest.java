@@ -7,7 +7,7 @@ import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
-import limelight.ui.model.inputs.painters.TextPanelPropPainter;
+import limelight.ui.model.inputs.painting.TextPanelPropPainter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

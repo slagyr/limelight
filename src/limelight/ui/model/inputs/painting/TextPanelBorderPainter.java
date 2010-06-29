@@ -1,18 +1,15 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.model.inputs.painters;
+package limelight.ui.model.inputs.painting;
 
 import com.android.ninepatch.NinePatch;
-import limelight.Context;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.model.Drawable;
-import limelight.ui.model.PropPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.util.Box;
 import limelight.util.Colors;
-import limelight.util.Debug;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
