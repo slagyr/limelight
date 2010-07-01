@@ -77,15 +77,6 @@ public class TextModelTest
     assertEquals("SomeSome", model.getClipboardContents());
     assertEquals(" Text", model.getText());
   }
-
-  @Test
-  public void willRememberTheLastCursorIndex()
-  {
-    model.setCaretIndex(3);
-    model.setCaretIndex(5);
-
-    assertEquals(3, model.getLastCaretIndex());
-  }
   
   @Test
   public void shouldGetAlignment() throws Exception

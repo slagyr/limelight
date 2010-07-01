@@ -100,7 +100,9 @@ public class MultiLineTextModel extends TextModel
   {
     TextLocation caretLocation = TextLocation.fromIndex(getLines(), getCaretIndex());
     TypedLayout line = getLines().get(caretLocation.line);
-    return line.getCaretShape(caretLocation.index);
+    Box caretShape = line.getCaretShape(caretLocation.index);
+    caretShape.translate(getXOffset(), getCaretY() + getYOffset());
+    return caretShape;
   }
 
   @Override

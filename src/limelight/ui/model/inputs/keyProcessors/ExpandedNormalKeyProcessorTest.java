@@ -136,20 +136,6 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   }
 
   @Test
-  public void willRecallTheLastCursorPlaceToJumpBackTo()
-  {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
-    model.setText("This is\nMulti lined.");
-    model.setLastKeyPressed(KeyEvent.VK_UP);
-    model.setCaretIndex(3);
-    model.setLastCaretIndex(11);
-
-    processor.processKey(mockEvent, model);
-
-    assertSelection(11, 0, false);
-  }
-
-  @Test
   public void shouldGoToTheEndOfPreviousLineEvenIfItEndsWithNewline() throws Exception
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);

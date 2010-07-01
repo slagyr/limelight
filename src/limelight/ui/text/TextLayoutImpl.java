@@ -4,6 +4,7 @@
 package limelight.ui.text;
 
 import limelight.util.Box;
+import limelight.util.StringUtil;
 import sun.font.FontDesignMetrics;
 
 import java.awt.*;
@@ -33,11 +34,6 @@ public class TextLayoutImpl implements TypedLayout
   {
     hasDrawn = true;
     getLayout().draw(graphics, x, y);
-  }
-
-  public boolean hasDrawn()
-  {
-    return hasDrawn;
   }
 
   public float getAscent()
@@ -73,8 +69,11 @@ public class TextLayoutImpl implements TypedLayout
     }
 
     if(remainder < 0 && Math.abs(remainder) > (charWidth / 2))
-      index --;
-    
+      index--;
+
+    while(index > 0 && StringUtil.isNewlineChar(text.charAt(index - 1)))
+      index--;
+
     return index;
   }
 
@@ -105,6 +104,12 @@ public class TextLayoutImpl implements TypedLayout
   public int getHeight()
   {
     return getMetrics().getAscent() + getMetrics().getDescent();
+  }
+
+  public int getX(int index)
+  {
+    String textBeforeIndex = getText().substring(0, index);
+    return getWidthOf(textBeforeIndex);
   }
 
   public int getWidthOf(String text)
