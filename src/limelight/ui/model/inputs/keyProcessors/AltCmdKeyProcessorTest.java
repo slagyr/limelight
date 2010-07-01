@@ -11,7 +11,7 @@ public class AltCmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Before
   public void setUp()
   {
-    textBoxSetUp();
+    setUpSingleLine();
     processor = AltCmdKeyProcessor.instance;
     modifier = 12;
   }
@@ -21,9 +21,9 @@ public class AltCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(1, 0, false);
+    assertSelection(1, 0, false);
   }
 
   @Test
@@ -31,9 +31,9 @@ public class AltCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(1, "Here are four words");
+    assertTextState(1, "Here are four words");
   }
 
 }

@@ -21,9 +21,9 @@ public class SelectionOnShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(2, SELECTION_START_INDEX, true);
+    assertSelection(2, SELECTION_START_INDEX, true);
   }
 
   @Test
@@ -31,9 +31,9 @@ public class SelectionOnShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, SELECTION_START_INDEX, true);
+    assertSelection(0, SELECTION_START_INDEX, true);
   }
 
   @Test
@@ -41,9 +41,9 @@ public class SelectionOnShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(2, "HA are four words");
+    assertTextState(2, "HA are four words");
   }
 
 }

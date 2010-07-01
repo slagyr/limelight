@@ -11,7 +11,7 @@ public class ShiftKeyProcessorTest extends AbstractKeyProcessorTest
   @Before
   public void setUp()
   {
-    textBoxSetUp();
+    setUpSingleLine();
     processor = ShiftKeyProcessor.instance;
     modifier = 1;
   }
@@ -21,9 +21,9 @@ public class ShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(2, "HAere are four words");
+    assertTextState(2, "HAere are four words");
   }
 
   @Test
@@ -31,9 +31,9 @@ public class ShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(2, 1, true);
+    assertSelection(2, 1, true);
   }
 
   @Test
@@ -41,9 +41,9 @@ public class ShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, 1, true);
+    assertSelection(0, 1, true);
   }
 
 }

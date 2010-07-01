@@ -8,13 +8,13 @@ import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.Date;
 
 public class MouseProcessor
 {
   TextModel model;
   public long lastClickTime;
   public boolean doubleClickOn;
+  private final int MULTI_CLICK_MILLIS = 300;
 
   public MouseProcessor(TextModel model)
   {
@@ -32,7 +32,7 @@ public class MouseProcessor
 
     makeExtraSelectionOnMultiClick();
 
-    lastClickTime = (new Date()).getTime();
+    lastClickTime = System.currentTimeMillis();
   }
 
   private Point getRelativeMouseLocation(MouseEvent e)
@@ -43,7 +43,7 @@ public class MouseProcessor
 
   public void makeExtraSelectionOnMultiClick()
   {
-    if(lastClickTime >= (new Date()).getTime() - 300)
+    if(lastClickTime >= (System.currentTimeMillis() - MULTI_CLICK_MILLIS))
     {
       if(doubleClickOn)
         selectAllOnTripleClick();
@@ -91,8 +91,9 @@ public class MouseProcessor
 
   public void processMouseReleased(MouseEvent e)
   {
-    int myX = e.getX() - model.getPanelAbsoluteLocation().x;
-    int myY = e.getY() - model.getPanelAbsoluteLocation().y;
+    Point absoluteLocation = model.getContainer().getAbsoluteLocation();
+    int myX = e.getX() - absoluteLocation.x;
+    int myY = e.getY() - absoluteLocation.y;
     if(!doubleClickOn)
     {
       model.setCaretIndex(model.getIndexAt(myX, myY));

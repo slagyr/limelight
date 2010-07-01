@@ -21,20 +21,20 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, true);
+    assertSelection(model.getText().length(), SELECTION_START_INDEX, true);
   }
 
   @Test
   public void canProcessLeftArrowAndContinueSelectionToTheLeftEdge()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setCaretIndex(2);
+    model.setCaretIndex(2);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, SELECTION_START_INDEX, true);
+    assertSelection(0, SELECTION_START_INDEX, true);
   }
 
   @Test
@@ -42,9 +42,9 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, SELECTION_START_INDEX, true);
+    assertSelection(0, SELECTION_START_INDEX, true);
   }
 
   @Test
@@ -52,9 +52,9 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, true);
+    assertSelection(model.getText().length(), SELECTION_START_INDEX, true);
   }
 
 }

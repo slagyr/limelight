@@ -5,32 +5,30 @@ package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
-import limelight.ui.model.inputs.TextBox2Panel;
-import limelight.ui.model.inputs.TextInputPanel;
-import limelight.ui.model.inputs.TextModel;
+import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.model.inputs.*;
+import limelight.util.Box;
 
 import java.awt.*;
 
 public class AbstractTextPanelPainterTest
 {
   public TextPanelPainter painter;
-  public TextModel boxInfo;
-  public TextInputPanel panel;
+  public TextModel model;
+  public MockTextContainer container;
   public MockGraphics graphics;
-  public Rectangle testBox;
-  public MockPanel parent;
 
   protected void testClassInit()
   {
-    panel = new TextBox2Panel();
-    parent = new MockPanel();
-    parent.add(panel);
-    parent.setSize(150, 28);
-    panel.doLayout();
-    boxInfo = panel.getModel();
-    boxInfo.setText("Some Text");
-    boxInfo.setCaretIndex(4);
+    container = new MockTextContainer();
+    container.bounds = new Box(0, 0, 150, 28);
+
+    model = new MultiLineTextModel(container);
+    model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
+    model.setText("Some Text");
+    model.setCaretIndex(4);
+
     graphics = new MockGraphics();
-    panel.setCursorOn(true);
+    container.cursorOn = true;
   }
 }

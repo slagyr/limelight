@@ -1,6 +1,5 @@
 package limelight.styles.attributes;
 
-import limelight.ui.model.MockTextAccessor;
 import org.junit.Before;
 import org.junit.Test;
 

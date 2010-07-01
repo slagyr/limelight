@@ -27,12 +27,6 @@ public class SingleLineTextModelTest
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }
 
-  @Test
-  public void canCalcTheXPosForCursorFromString()
-  {
-    assertEquals(30, model.getXPosFromText("ABC"));
-  }
-
 //
 //  @Test
 //  public void canGetTheSelectedRegion()
@@ -51,7 +45,7 @@ public class SingleLineTextModelTest
   @Test
   public void willAlwaysReturnZeroForTheLineNumber()
   {
-    assertEquals(0, model.getLineNumberOfIndex(model.getCaretIndex()));
+    assertEquals(0, model.getLineNumber(model.getCaretIndex()));
   }
 
   @Test
@@ -120,7 +114,7 @@ public class SingleLineTextModelTest
     model.setText("one two th");
     
     assertEquals(10, model.getCaretIndex());
-    assertEquals(TextModel.CARET_WIDTH * -1, model.getXOffset());
+    assertEquals(-1, model.getXOffset());
   }
   
   @Test

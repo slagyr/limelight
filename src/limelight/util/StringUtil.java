@@ -24,4 +24,10 @@ public class StringUtil
 
     return joined.toString();
   }
+
+  public static boolean endsWithNewline(String value)
+  {
+    // MDM - Is there a better way to detect newline chars?
+    return value.endsWith("\n");
+  }
 }

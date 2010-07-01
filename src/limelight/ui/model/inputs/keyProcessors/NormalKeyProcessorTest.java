@@ -11,7 +11,7 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   @Before
   public void setUp()
   {
-    textBoxSetUp();
+    setUpSingleLine();
     processor = NormalKeyProcessor.instance;
     modifier = 0;
   }
@@ -21,9 +21,9 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(2, "Haere are four words");
+    assertTextState(2, "Haere are four words");
   }
 
   @Test
@@ -31,9 +31,9 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, KeyEvent.CHAR_UNDEFINED);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(1, "Here are four words");
+    assertTextState(1, "Here are four words");
   }
 
   @Test
@@ -41,9 +41,9 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_BACK_SPACE);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(0, "ere are four words");
+    assertTextState(0, "ere are four words");
   }
 
   @Test
@@ -51,9 +51,9 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(2, 0, false);
+    assertSelection(2, 0, false);
   }
 
   @Test
@@ -61,9 +61,9 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, 0, false);
+    assertSelection(0, 0, false);
   }
 
 }

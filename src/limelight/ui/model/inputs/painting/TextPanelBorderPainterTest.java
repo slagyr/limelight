@@ -8,15 +8,29 @@ import limelight.ui.api.MockProp;
 import limelight.ui.model.MockDrawable;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.TextBox2Panel;
+import limelight.ui.painting.BackgroundPainter;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.MockPainter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+
 import java.awt.*;
 
 public class TextPanelBorderPainterTest extends Assert
 {
+  private static Painter realBorderPainter;
+
+  @BeforeClass
+  public static void recordPainters()
+  {
+    realBorderPainter = BorderPainter.instance;
+  }
+
+  @AfterClass
+  public static void restorePainters()
+  {
+    BorderPainter.instance = realBorderPainter;
+  }
+
   private MockDrawable normalDrawable;
   private MockDrawable focusDrawable;
 

@@ -354,6 +354,7 @@ public class PropPanelTest extends Assert
   @Test
   public void shouldHoverOnWithHoverStyle() throws Exception
   {
+    panel.getHoverStyle().setCuror("hand");
     MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
 
     panel.mouseEntered(event);

@@ -13,7 +13,7 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   @Before
   public void setUp()
   {
-    textBoxSetUp();
+    setUpSingleLine();
     processor = AltKeyProcessor.instance;
     modifier = 8;
   }
@@ -23,9 +23,9 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(2, "Haere are four words");
+    assertTextState(2, "Haere are four words");
   }
 
   @Test
@@ -33,92 +33,92 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(5, modelInfo.getCaretIndex());
+    assertEquals(5, model.getCaretIndex());
   }
 
   @Test
   public void canProcessRightArrowAndSkipOverExtraSpacesToNextWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-    modelInfo.setText("Here are    many  spaces");
-    modelInfo.setCaretIndex(5);
+    model.setText("Here are    many  spaces");
+    model.setCaretIndex(5);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(12, modelInfo.getCaretIndex());
+    assertEquals(12, model.getCaretIndex());
   }
 
   @Test
   public void canProcessRightArrowAndJumpToTheNextWordInATinyString()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-    modelInfo.setText("H s");
-    modelInfo.setCaretIndex(0);
+    model.setText("H s");
+    model.setCaretIndex(0);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(2, modelInfo.getCaretIndex());
+    assertEquals(2, model.getCaretIndex());
   }
 
   @Test
   public void canProcessRightArrowAndStopAtReturnCharacters()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-    modelInfo.setText("Here is some\ntext");
-    modelInfo.setCaretIndex(9);
+    model.setText("Here is some\ntext");
+    model.setCaretIndex(9);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(13, modelInfo.getCaretIndex());
+    assertEquals(13, model.getCaretIndex());
   }
 
    @Test
   public void canProcessRightArrowAndStopAtReturnCharactersUnlessItIsAChainOfReturnChars()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-    modelInfo.setText("Here is some\n\n\ntext");
-    modelInfo.setCaretIndex(9);
+    model.setText("Here is some\n\n\ntext");
+    model.setCaretIndex(9);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(15, modelInfo.getCaretIndex());
+    assertEquals(15, model.getCaretIndex());
   }
 
    @Test
   public void canProcessRightArrowAndWontStopAtReturnCharactersIfPreceededByASpace()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-    modelInfo.setText("Here is some \ntext");
-    modelInfo.setCaretIndex(9);
+    model.setText("Here is some \ntext");
+    model.setCaretIndex(9);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(14, modelInfo.getCaretIndex());
+    assertEquals(14, model.getCaretIndex());
   }
 
   @Test
   public void canProcessLeftArrowAndJumpToThePreviousWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setCaretIndex(9);
+    model.setCaretIndex(9);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(5, modelInfo.getCaretIndex());
+    assertEquals(5, model.getCaretIndex());
   }
 
   @Test
   public void canProcessLeftArrowAndSkipOverExtraSpacesToPreviousWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setText("Here are    many  spaces");
-    modelInfo.setCaretIndex(12);
+    model.setText("Here are    many  spaces");
+    model.setCaretIndex(12);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    assertEquals(5, modelInfo.getCaretIndex());
+    assertEquals(5, model.getCaretIndex());
   }
 
 }

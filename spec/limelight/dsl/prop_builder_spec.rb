@@ -166,7 +166,7 @@ describe Limelight::DSL::PropBuilder do
         __install "external.rb"
       end
     rescue Limelight::DSL::BuildException => e
-      e.message.include?("external.rb:1: (eval):1: , unexpected end-of-file").should == true
+      e.message.include?("external.rb:1: (eval):1: syntax error, unexpected end-of-file").should == true
     end
   end
 
@@ -176,7 +176,7 @@ describe Limelight::DSL::PropBuilder do
     scene << prop
     builder = Limelight::DSL::PropBuilder.new(prop)
     block = Proc.new { one; two { three } }
-    builder.instance_eval(&block)
+    builder.instance_eval(& block)
     scene.illuminate
 
     prop.children.length.should == 2
@@ -199,7 +199,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow instance variables" do
-    root = Limelight::build_props(@scene, :instance_variables => { :id1 => "abc", :id2 => "xyz" } ) do
+    root = Limelight::build_props(@scene, :instance_variables => {:id1 => "abc", :id2 => "xyz"}) do
       __ :id => @id1
       child :id => @id2
     end
@@ -211,7 +211,7 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should propogate instance variables to nested levels" do
-    root = Limelight::build_props(@scene, :instance_variables => { :name => "blah" } ) do
+    root = Limelight::build_props(@scene, :instance_variables => {:name => "blah"}) do
       child :id => "child", :name => @name do
         grand_child :id => "grand_child", :name => @name do
           great_grand_child :id => "great_grand_child", :name => @name do
@@ -243,13 +243,14 @@ describe Limelight::DSL::PropBuilder do
   end
 
   it "should allow defining methods inside dsl" do
-    root = Limelight::build_props(@scene, :instance_variables => { :name => "blah" } ) do
+    root = Limelight::build_props(@scene, :instance_variables => {:name => "blah"}) do
       def foo(value)
         foo_prop do
           __ :text => value if !block_given?
           yield if block_given?
         end
       end
+
       foo("first") do
         foo("child")
       end

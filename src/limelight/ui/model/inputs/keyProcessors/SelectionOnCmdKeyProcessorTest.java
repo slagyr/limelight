@@ -23,21 +23,21 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(modelInfo.getText().length(), 0, true);
+    assertSelection(model.getText().length(), 0, true);
   }
 
   @Test
   public void canPasteAtCursor()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_V);
-    modelInfo.copyText("oot");
+    model.copyText("oot");
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(SELECTION_START_INDEX, "Hoot are four words");
-    asserter.assertSelection(SELECTION_START_INDEX, 0, false);
+    assertTextState(SELECTION_START_INDEX, "Hoot are four words");
+    assertSelection(SELECTION_START_INDEX, 0, false);
   }
 
   @Test
@@ -45,11 +45,11 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_C);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(1, "Here are four words");
-    asserter.assertSelection(1, SELECTION_START_INDEX, true);
-    assertEquals("ere", modelInfo.getClipboardContents());
+    assertTextState(1, "Here are four words");
+    assertSelection(1, SELECTION_START_INDEX, true);
+    assertEquals("ere", model.getClipboardContents());
   }
 
   @Test
@@ -57,11 +57,11 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_X);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(1, "H are four words");
-    asserter.assertSelection(1, 0, false);
-    assertEquals("ere", modelInfo.getClipboardContents());
+    assertTextState(1, "H are four words");
+    assertSelection(1, 0, false);
+    assertEquals("ere", model.getClipboardContents());
   }
 
   @Test
@@ -69,9 +69,9 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, false);
+    assertSelection(model.getText().length(), SELECTION_START_INDEX, false);
   }
 
   @Test
@@ -79,9 +79,9 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, SELECTION_START_INDEX, false);
+    assertSelection(0, SELECTION_START_INDEX, false);
   }
 
    @Test
@@ -89,9 +89,9 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, SELECTION_START_INDEX, false);
+    assertSelection(0, SELECTION_START_INDEX, false);
   }
 
   @Test
@@ -99,9 +99,9 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(modelInfo.getText().length(), SELECTION_START_INDEX, false);
+    assertSelection(model.getText().length(), SELECTION_START_INDEX, false);
   }
 
 }

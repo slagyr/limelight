@@ -10,6 +10,7 @@ public class MockTextContainer implements TextContainer
 {
   public RichStyle style;
   public Box bounds;
+  public boolean cursorOn;
 
   public MockTextContainer()
   {
@@ -43,7 +44,7 @@ public class MockTextContainer implements TextContainer
 
   public boolean isCursorOn()
   {
-    return false;
+    return cursorOn;
   }
 
   public boolean isFocused()
