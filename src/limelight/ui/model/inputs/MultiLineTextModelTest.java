@@ -201,4 +201,54 @@ public class MultiLineTextModelTest
     assertEquals(91, regions.get(regions.size() -1).y);
   }
 
+  @Test
+  public void shouldGetCaretShape() throws Exception
+  {
+    model.setText("line 1\n line 2\n line 3");
+    
+    model.setCaretIndex(3);
+    assertEquals(new Box(30, 0, 1, 10), model.getCaretShape());
+
+    model.setCaretIndex(10);
+    assertEquals(new Box(30, 13, 1, 10), model.getCaretShape());
+    
+    model.setCaretIndex(18);
+    assertEquals(new Box(30, 26, 1, 10), model.getCaretShape());
+  }
+
+  @Test
+  public void shouldMoveTheCaretDown() throws Exception
+  {
+    model.setText("line 1\nline 2\nline 3");
+    model.setCaretIndex(2);
+    
+    model.moveCursorDownALine();
+    assertEquals(9, model.getCaretIndex());
+
+    model.moveCursorDownALine();
+    assertEquals(16, model.getCaretIndex());
+
+    model.moveCursorDownALine();
+    assertEquals(16, model.getCaretIndex());
+  }
+
+  @Test
+  public void shouldRememberItsXpositionWhenMovingVerticallyBetweenLines() throws Exception
+  {
+    model.setText("Relatively long line\nshort line\ntiny");
+    model.setCaretIndex(20);
+
+    model.moveCursorDownALine();
+    assertEquals(31, model.getCaretIndex());
+
+    model.moveCursorDownALine();
+    assertEquals(36, model.getCaretIndex());
+
+    model.moveCursorUpALine();
+    assertEquals(31, model.getCaretIndex());
+
+    model.moveCursorUpALine();
+    assertEquals(20, model.getCaretIndex());
+  }
+
 }

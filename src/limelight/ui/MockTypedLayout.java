@@ -2,6 +2,7 @@ package limelight.ui;
 
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
+import limelight.util.StringUtil;
 
 import java.awt.*;
 import java.awt.font.TextHitInfo;
@@ -29,11 +30,6 @@ public class MockTypedLayout implements TypedLayout
     hasDrawn = true;
     this.drawnX = (int)x;
     this.drawnY = (int)y;
-  }
-
-  public boolean hasDrawn()
-  {
-    return hasDrawn;
   }
 
   public String getText()
@@ -65,13 +61,17 @@ public class MockTypedLayout implements TypedLayout
 
   public int getIndexAt(int x)
   {
-    int index = x / 10;
-    return Math.min(index, text.length());
+    int index = Math.min(x / 10, text.length());
+
+    while(index > 0 && StringUtil.isNewlineChar(text.charAt(index - 1)))
+      index--;
+
+    return index;
   }
 
   public Box getCaretShape(int caretIndex)
   {
-    return new Box(0, 0, 1, CHAR_HEIGHT);
+    return new Box(caretIndex * CHAR_WIDTH, 0, 1, CHAR_HEIGHT);
   }
 
   public int getWidth()
@@ -82,6 +82,11 @@ public class MockTypedLayout implements TypedLayout
   public int getHeight()
   {
     return CHAR_HEIGHT;
+  }
+
+  public int getX(int index)
+  {
+    return index * CHAR_WIDTH;
   }
 
   public int getWidthOf(String text)

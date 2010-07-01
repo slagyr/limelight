@@ -12,20 +12,18 @@ import java.awt.geom.Rectangle2D;
 public interface TypedLayout
 {
 
-  public abstract void draw(Graphics2D graphics, float x, float y);
-  public abstract boolean hasDrawn();
-  public abstract String toString();
-  public abstract String getText();
-  public abstract float getAscent();
-  public abstract float getDescent();
-  public abstract float getLeading();
+  void draw(Graphics2D graphics, float x, float y);
+  String toString();
+  String getText();
+  float getAscent();
+  float getDescent();
+  float getLeading();
+  int getWidthOf(String text);
   int getWidth();
   int getHeight();
-
-  int getWidthOf(String text);
+  int getX(int index);
+  int getIndexAt(int x);
+  Box getCaretShape(int caretIndex);
 
   public TextHitInfo hitTestChar(float x, float y);
-  int getIndexAt(int x);
-
-  Box getCaretShape(int caretIndex);
 }

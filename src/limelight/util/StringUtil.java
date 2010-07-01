@@ -30,4 +30,9 @@ public class StringUtil
     // MDM - Is there a better way to detect newline chars?
     return value.endsWith("\n");
   }
+
+  public static boolean isNewlineChar(char c)
+  {
+    return c == '\n' || c == '\r';
+  }
 }

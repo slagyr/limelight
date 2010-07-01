@@ -19,6 +19,7 @@ import java.awt.font.TextHitInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//TODO MDM Store the caret location as a TextLocation rather than an index
 public abstract class TextModel implements ClipboardOwner
 {
   protected TextContainer container;
@@ -26,12 +27,11 @@ public abstract class TextModel implements ClipboardOwner
   private TypedLayoutFactory typedLayoutFactory = TextTypedLayoutFactory.instance;
 
   protected final StringBuffer text = new StringBuffer();
-  private int spaceWidth;
   protected Point offset = new Point(0, 0);
   private int caretIndex;
-  private int lastCaretIndex;
   private boolean selectionOn;
   private int selectionIndex;
+  private TextLocation verticalOrigin;
 
   protected abstract int getLineNumber(int index);
 
@@ -95,8 +95,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     TextLocation location = TextLocation.fromIndex(getLines(), index);
     TypedLayout line = getLines().get(location.line);
-    String textBeforeCaret = line.getText().substring(0, location.index);
-    return line.getWidthOf(textBeforeCaret);
+    return line.getX(location.index);
   }
 
   public int getCaretY()
@@ -144,7 +143,7 @@ public abstract class TextModel implements ClipboardOwner
   public int getTotalHeightOfLineWithLeadingMargin(int layoutIndex)
   {
     TypedLayout line = getLines().get(layoutIndex);
-    return (int)(line.getHeight() + line.getLeading() + 0.5);
+    return (int) (line.getHeight() + line.getLeading() + 0.5);
   }
 
   public VerticalAlignmentValue getVerticalAlignment()
@@ -285,8 +284,8 @@ public abstract class TextModel implements ClipboardOwner
 
   public void setCaretIndex(int index, XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
   {
-    lastCaretIndex = caretIndex;
     caretIndex = index;
+    verticalOrigin = null;
     recalculateOffset(xOffsetStrategy, yOffsetStrategy);
   }
 
@@ -325,16 +324,6 @@ public abstract class TextModel implements ClipboardOwner
   public void setLastKeyPressed(int keyCode)
   {
     container.setLastKeyPressed(keyCode);
-  }
-
-  public int getLastCaretIndex()
-  {
-    return lastCaretIndex;
-  }
-
-  public void setLastCaretIndex(int index)
-  {
-    lastCaretIndex = index;
   }
 
   public synchronized void insertChar(char c)
@@ -391,49 +380,31 @@ public abstract class TextModel implements ClipboardOwner
 
   public void moveCursorUpALine()
   {
-    if(getLastKeyPressed() == KeyEvent.VK_DOWN)
-    {
-      setCaretIndex(getLastCaretIndex());
-      return;
-    }
-    int previousLine = getLineNumber(getCaretIndex()) - 1;
-    setCaretIndex(getNewCursorPositionAfterMovingByALine(previousLine));
+    moveCaretToNewLine(-1);
   }
 
   public void moveCursorDownALine()
   {
-    if(getLastKeyPressed() == KeyEvent.VK_UP)
-    {
-      setCaretIndex(getLastCaretIndex());
-      return;
-    }
-    int nextLine = getLineNumber(getCaretIndex()) + 1;
-    int newCursorIndex = getNewCursorPositionAfterMovingByALine(nextLine);
-    setCaretIndex(newCursorIndex);
+    moveCaretToNewLine(1);
   }
 
-  private int getNewCursorPositionAfterMovingByALine(int nextLine)
+  public void moveCaretToNewLine(int lineDelta)
   {
-    int charCount = 0;
-    for(int i = 0; i < nextLine; i++)
-      charCount += lines.get(i).getText().length();
-    int xPos = getX(caretIndex);
-    String lineText = lines.get(nextLine).getText();
-    int lineLength = lineText.length();
-    int newCursorIndex = charCount + lineLength - 1;
-    if(nextLine == lines.size() - 1)
-      newCursorIndex++;
-    if(getX(newCursorIndex) < xPos)
+    ArrayList<TypedLayout> lines = getLines();
+    TextLocation location = TextLocation.fromIndex(lines, getCaretIndex());
+    int newLineNumber = location.line + lineDelta;
+    if(newLineNumber >= 0 && newLineNumber < lines.size())
     {
-      return newCursorIndex;
-    }
-    else
-    {
-      TextHitInfo hitInfo = lines.get(nextLine).hitTestChar(xPos, 5);
-      newCursorIndex = hitInfo.getInsertionIndex();
-      if(newCursorIndex == lineLength && lineText.endsWith("\n"))
-        newCursorIndex--;
-      return newCursorIndex + charCount;
+      TextLocation origin = verticalOrigin != null ? verticalOrigin : location;
+      int desiredX = lines.get(origin.line).getX(origin.index);
+
+      TypedLayout newLine = lines.get(newLineNumber);
+      int newIndex = newLine.getIndexAt(desiredX);
+
+      TextLocation newLocation = TextLocation.at(newLineNumber, newIndex);
+      setCaretIndex(newLocation.toIndex(lines));
+
+      verticalOrigin = origin;
     }
   }
 
