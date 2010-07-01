@@ -4,12 +4,11 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.api.MockProp;
 import limelight.ui.model.PropPanel;
+import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Date;
 
@@ -18,80 +17,58 @@ import static org.junit.Assert.assertEquals;
 public class MouseProcessorTest
 {
   MouseProcessor processor;
-  TextInputPanel panel;
+  MockTextContainer container;
   TextModel model;
   PropPanel parent;
-  MouseEvent mockMouseEvent;
 
-  public class MockMouseEvent extends MouseEvent
+  private MouseEvent event(int x, int y)
   {
-
-    public MockMouseEvent(int x, int y)
-    {
-      super(new Panel(), 0, 12098310293l, 0, x, y, 1, false);
-    }
+    return new MouseEvent(new java.awt.Panel(), 0, 12098310293l, 0, x, y, 1, false);
   }
 
   @Before
   public void setUp()
   {
-    setUpWithText("Some Text");
+    setUpWithText("Some Text", true);
   }
 
   public void setUpTextBox()
   {
-    setUpWithText("Some Text that will prove. to be longer than can fit in this box");
+    setUpWithText("Some Text that will prove. to be longer than can fit in this box", false);
   }
 
-  private void setUpWithText(String text)
+  private void setUpWithText(String text, boolean multiline)
   {
-    panel = new TextArea2Panel();
+    container = new MockTextContainer();
+    container.bounds = new Box(0, 0, 150, 75);
 
-    model = panel.getModel();
+    if(multiline)
+      model = new MultiLineTextModel(container);
+    else
+      model = new SingleLineTextModel(container);
+
+    model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText(text);
     model.setCaretIndex(0);
-    model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
 
     processor = new MouseProcessor(model);
-
-    parent = new PropPanel(new MockProp());
-    parent.add(panel);
-    parent.setParent(null);
-    parent.setLocation(0, 0);
-    panel.setParent(parent);
-    panel.setLocation(100, 100);
-    panel.setSize(150, 75);
-
-    mockMouseEvent = new MockMouseEvent(110, 115);
   }
   
   @Test
   public void willSetCursorAndSelectionIndexOnMouseClickInTheBox()
   {
-    processor.processMousePressed(mockMouseEvent);
+    processor.processMousePressed(event(10, 5));
 
     assertEquals(1, model.getCaretIndex());
     assertEquals(1, model.getSelectionIndex());
   }
 
   @Test
-  public void willNotSetCursorAndSelectionIndexOnMouseClickOutSideTheBox()
-  {
-    mockMouseEvent = new MockMouseEvent(42, 42);
-
-    processor.processMousePressed(mockMouseEvent);
-
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
-  }
-
-  @Test
   public void willMarkCursorProperlyWithAMultiLineText()
   {
     model.setText("This is\nMulti lined.");
-    mockMouseEvent = new MockMouseEvent(110,130);
 
-    processor.processMousePressed(mockMouseEvent);
+    processor.processMousePressed(event(10,15));
 
     assertEquals(9, model.getCaretIndex());
   }
@@ -100,10 +77,8 @@ public class MouseProcessorTest
   public void willMarkCursorProperlyWithAMultiLineTextAndAYOffset()
   {
     model.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max");
-    model.calculateYOffset();
-    mockMouseEvent = new MockMouseEvent(105,165);
 
-    processor.processMousePressed(mockMouseEvent);
+    processor.processMousePressed(event(5,65));
 
     assertEquals(42, model.getCaretIndex());
   }
@@ -112,9 +87,8 @@ public class MouseProcessorTest
   public void willMarkCursorProperlyWithAMultiLineTextAndClickIsFarRightOfText()
   {
     model.setText("This is\nMulti lined.");
-    mockMouseEvent = new MockMouseEvent(190,130);
 
-    processor.processMousePressed(mockMouseEvent);
+    processor.processMousePressed(event(90,30));
 
     assertEquals(20, model.getCaretIndex());
   }
@@ -123,9 +97,8 @@ public class MouseProcessorTest
   public void willPutCursorOnTheSameLineAsTheClickWhenFollowedByNewLine()
   {
     model.setText("This is\nMulti lined.\n");
-    mockMouseEvent = new MockMouseEvent(190,130);
 
-    processor.processMousePressed(mockMouseEvent);
+    processor.processMousePressed(event(90,30));
 
     assertEquals(21, model.getCaretIndex());
   }
@@ -133,7 +106,7 @@ public class MouseProcessorTest
   @Test
   public void willSetSelectionOnToTrueIfMouseClickInTheBox()
   {
-    processor.processMousePressed(mockMouseEvent);
+    processor.processMousePressed(event(10, 15));
 
     assertEquals(true, model.isSelectionOn());
   }
@@ -141,7 +114,7 @@ public class MouseProcessorTest
   @Test
   public void willChangeTheCursorIndexForMouseDragged()
   {
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(10, 05));
 
     assertEquals(1, model.getCaretIndex());
   }
@@ -150,13 +123,11 @@ public class MouseProcessorTest
   public void willChangeTheYOffsetWhileDraggingPastCriticalEdge()
   {
     model.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max\nAndMore?");
-    int oldYOffset = model.getOffset().y;
-    assertEquals(true, oldYOffset > 0);
-    mockMouseEvent = new MockMouseEvent(110,100);
+    assertEquals(-6, model.getYOffset());
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(0,0));
 
-    assertEquals(true, oldYOffset > model.getOffset().y);
+    assertEquals(0, model.getYOffset());
   }
 
   @Test
@@ -165,23 +136,20 @@ public class MouseProcessorTest
     setUpTextBox();
     model.setSelectionOn(true);
     model.setSelectionIndex(0);
-    int oldXOffset = model.getOffset().x;
-    mockMouseEvent = new MockMouseEvent(100, 115);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(200, 5));
 
-    assertEquals(true, oldXOffset > model.getOffset().x);
+    assertEquals(-61, model.getXOffset());
   }
 
   @Test
   public void wontGetCaughtOnAnEdgeUnableToFurtherDrag()
   {
     setUpTextBox();
-    mockMouseEvent = new MockMouseEvent(249,115);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(149, 5));
 
-    assertEquals(true, model.getOffset().x > 0);
+    assertEquals(-1, model.getXOffset());
   }
 
   @Test
@@ -190,8 +158,7 @@ public class MouseProcessorTest
     model.setSelectionIndex(1);
     model.setSelectionOn(true);
 
-    processor.processMouseReleased(mockMouseEvent);
-
+    processor.processMouseReleased(event(10, 5));
 
     assertEquals(false, model.isSelectionOn());
   }
@@ -199,9 +166,9 @@ public class MouseProcessorTest
   @Test
   public void willSelectWordForDoubleClick()
   {
-    processor.lastClickTime = (new Date()).getTime();
+    processor.lastClickTime = System.currentTimeMillis();
 
-    processor.processMousePressed(mockMouseEvent);
+    processor.processMousePressed(event(10, 5));
 
     assertEquals(4, model.getCaretIndex());
     assertEquals(0, model.getSelectionIndex());
@@ -224,7 +191,7 @@ public class MouseProcessorTest
     processor.doubleClickOn = true;
     model.setCaretIndex(5);
 
-    processor.processMouseReleased(mockMouseEvent);
+    processor.processMouseReleased(event(10, 15));
 
     assertEquals(5, model.getCaretIndex());
   }
@@ -235,9 +202,8 @@ public class MouseProcessorTest
     processor.doubleClickOn = true;
     model.setSelectionIndex(0);
     model.setCaretIndex(4);
-    mockMouseEvent = new MockMouseEvent(model.getXPosFromIndex(8) + model.getPanelAbsoluteLocation().x, 115);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(model.getX(8) + model.getContainer().getAbsoluteLocation().x, 115));
 
     assertEquals(model.getText().length(), model.getCaretIndex());
   }
@@ -249,7 +215,7 @@ public class MouseProcessorTest
     model.setSelectionIndex(5);
     model.setCaretIndex(9);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(10, 5));
 
     assertEquals(9, model.getSelectionIndex());
     assertEquals(0, model.getCaretIndex());
@@ -263,7 +229,7 @@ public class MouseProcessorTest
     model.setSelectionIndex(14);
     model.setCaretIndex(5);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(10, 5));
 
     assertEquals(14, model.getSelectionIndex());
     assertEquals(0, model.getCaretIndex());
@@ -276,9 +242,8 @@ public class MouseProcessorTest
     processor.doubleClickOn = true;
     model.setSelectionIndex(14);
     model.setCaretIndex(5);
-    mockMouseEvent = new MockMouseEvent(model.getXPosFromIndex(10) + model.getPanelAbsoluteLocation().x + 1, 115);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(101, 15));
 
     assertEquals(14, model.getSelectionIndex());
     assertEquals(10, model.getCaretIndex());
@@ -291,9 +256,8 @@ public class MouseProcessorTest
     processor.doubleClickOn = true;
     model.setSelectionIndex(5);
     model.setCaretIndex(14);
-    mockMouseEvent = new MockMouseEvent(model.getXPosFromIndex(7) + model.getPanelAbsoluteLocation().x, 115);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(70, 5));
 
     assertEquals(5, model.getSelectionIndex());
     assertEquals(9, model.getCaretIndex());
@@ -306,9 +270,8 @@ public class MouseProcessorTest
     processor.doubleClickOn = true;
     model.setSelectionIndex(9);
     model.setCaretIndex(5);
-    mockMouseEvent = new MockMouseEvent(model.getXPosFromIndex(10) + model.getPanelAbsoluteLocation().x + 1, 115);
 
-    processor.processMouseDragged(mockMouseEvent);
+    processor.processMouseDragged(event(101, 115));
 
     assertEquals(5, model.getSelectionIndex());
     assertEquals(14, model.getCaretIndex());

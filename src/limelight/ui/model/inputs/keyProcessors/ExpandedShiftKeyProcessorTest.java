@@ -11,7 +11,7 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
   @Before
   public void setUp()
   {
-    textAreaSetUp();
+    setUpMultiLine();
     processor = ExpandedShiftKeyProcessor.instance;
     modifier = 1;
   }
@@ -21,9 +21,9 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(2, "HAere are four words");
+    assertTextState(2, "HAere are four words");
   }
 
   @Test
@@ -31,9 +31,9 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(2, 1, true);
+    assertSelection(2, 1, true);
   }
 
   @Test
@@ -41,32 +41,32 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, 1, true);
+    assertSelection(0, 1, true);
   }
 
   @Test
   public void canProcessUpArrowAndMoveUpALineWithSelection()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
-    modelInfo.setText("This is\nMulti lined.");
-    modelInfo.setCaretIndex(11);
+    model.setText("This is\nMulti lined.");
+    model.setCaretIndex(11);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(3, 11, true);
+    assertSelection(3, 11, true);
   }
 
   @Test
   public void canProcessDownArrowAndMoveDownALineWithSelection()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
-    modelInfo.setText("This is\nMulti lined.");
-    modelInfo.setCaretIndex(3);
+    model.setText("This is\nMulti lined.");
+    model.setCaretIndex(3);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(10, 3, true);
+    assertSelection(11, 3, true);
   }
 }

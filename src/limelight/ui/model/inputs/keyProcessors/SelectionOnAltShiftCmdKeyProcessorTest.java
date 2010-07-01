@@ -20,9 +20,9 @@ public class SelectionOnAltShiftCmdKeyProcessorTest extends AbstractKeyProcessor
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(1, SELECTION_START_INDEX, true);
+    assertSelection(1, SELECTION_START_INDEX, true);
   }
 
 }

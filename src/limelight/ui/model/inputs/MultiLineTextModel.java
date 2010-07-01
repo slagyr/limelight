@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.ui.model.TextPanel;
 import limelight.util.Box;
@@ -26,15 +27,6 @@ public class MultiLineTextModel extends TextModel
     setOffset(0, 0);
   }
 
-  protected int getXPosFromText(String toIndexString)
-  {
-    TypedLayout layout = createLayout(toIndexString);
-    int x = getWidthDimension(layout);
-    if(x < 0)
-      x = 0;
-    return x;
-  }
-
   @Override
   public Dimension getTextDimensions()
   {
@@ -56,84 +48,82 @@ public class MultiLineTextModel extends TextModel
   @Override
   public int getIndexAt(int x, int y)
   {
-    return 0;
-  }
-
-  @Override
-  public ArrayList<TypedLayout> getLines()
-  {
-    if(typedLayouts == null)
-      buildLines();
-    return typedLayouts;
-  }
-
-  private void buildLines()
-  {
-    synchronized(text)
+    int index = 0;
+    int remainingY = y - getYOffset();
+    ArrayList<TypedLayout> lines = getLines();
+    for(TypedLayout line : lines)
     {
-      if(getText() == null || getText().length() == 0)
-      {
-        typedLayouts = new ArrayList<TypedLayout>();
-        typedLayouts.add(createLayout(""));
-      }
+      int lineHeight = line.getHeight();
+      if(lineHeight > remainingY)
+        return index + line.getIndexAt(x - getXOffset());
       else
       {
-        if(typedLayouts == null || isThereSomeDifferentText())
-        {
-          setLastLayedOutText(getText());
-          parseTextForMultipleLayouts();
-        }
+        index += line.getText().length();
+        remainingY -= lineHeight;
       }
     }
+    return getText().length();
+  }
+
+  public TypedLayout getLineAt(int y)
+  {
+    int remainingY = y - getYOffset();
+    ArrayList<TypedLayout> lines = getLines();
+    for(TypedLayout line : lines)
+    {
+      int lineHeight = line.getHeight();
+      if(lineHeight > remainingY)
+        return line;
+      else
+        remainingY -= lineHeight;
+    }
+    return lines.get(lines.size() - 1);
+  }
+
+  protected void buildLines(ArrayList<TypedLayout> lines)
+  {
+    if(getText() == null || getText().length() == 0)
+      lines.add(createLayout(""));
+    else
+      parseTextForMultipleLayouts(lines);
   }
 
   @Override
   public TypedLayout getActiveLayout()
   {
-    int chars = getCaretIndex();
-    for(TypedLayout textLayout : typedLayouts)
-    {
-      int lineChars = textLayout.getText().length();
-      if(lineChars >= chars)
-        return textLayout;
-      chars -= lineChars;
-    }
-    throw new RuntimeException("Could not find active layout for index: " + getCaretIndex());
+    TextLocation caretLocation = TextLocation.fromIndex(getLines(), getCaretIndex());
+    return getLines().get(caretLocation.line);
   }
 
   @Override
   public Box getCaretShape()
   {
-    int index = getCaretIndex();
-    for(TypedLayout textLayout : typedLayouts)
-    {
-      int lineChars = textLayout.getText().length();
-      if(lineChars >= index)
-        return textLayout.getCaretShape(index);
-      index -= lineChars;
-    }
-    throw new RuntimeException("Could not find layout containing caret");
+    TextLocation caretLocation = TextLocation.fromIndex(getLines(), getCaretIndex());
+    TypedLayout line = getLines().get(caretLocation.line);
+    return line.getCaretShape(caretLocation.index);
   }
 
   @Override
   public ArrayList<Box> getSelectionRegions()
   {
-    int cursorLine = getLineNumberOfIndex(getCaretIndex());
-    int selectionLine = getLineNumberOfIndex(getSelectionIndex());
+    int cursorLine = getLineNumber(getCaretIndex());
+    int selectionLine = getLineNumber(getSelectionIndex());
     if(cursorLine == selectionLine)
       return selectionRegionsForSingleLine();
     else if(selectionLine > cursorLine)
-      return selectionRegionsForMultipleLines(cursorLine, getXPosFromIndex(getCaretIndex()), selectionLine, getXPosFromIndex(getSelectionIndex()));
+      return selectionRegionsForMultipleLines(cursorLine, getCaretX(), selectionLine, getX(getSelectionIndex()));
     else
-      return selectionRegionsForMultipleLines(selectionLine, getXPosFromIndex(getSelectionIndex()), cursorLine, getXPosFromIndex(getCaretIndex()));
+      return selectionRegionsForMultipleLines(selectionLine, getX(getSelectionIndex()), cursorLine, getX(getCaretIndex()));
   }
 
   private ArrayList<Box> selectionRegionsForSingleLine()
   {
-    int cursorX = getXPosFromIndex(getCaretIndex());
-    int selectionX = getXPosFromIndex(getSelectionIndex());
+    int cursorX = getX(getCaretIndex());
+    int selectionX = getX(getSelectionIndex());
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
-    int yPos = getYPosFromIndex(getCaretIndex()) - calculateYOffset();
+
+    int yPos = getCaretY();
+
     ArrayList<Box> regions = new ArrayList<Box>();
     if(getCaretIndex() > getSelectionIndex())
       regions.add(new Box(selectionX, yPos, cursorX - selectionX, lineHeight));
@@ -146,7 +136,7 @@ public class MultiLineTextModel extends TextModel
   {
     ArrayList<Box> regions = new ArrayList<Box>();
     int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
-    int yPos = lineHeight * startingLine - calculateYOffset();
+    int yPos = lineHeight * startingLine - getYOffset();
     regions.add(new Box(startingX, yPos, container.getWidth() - startingX, lineHeight));
     yPos += lineHeight;
     for(int i = startingLine + 1; i < endingLine; i++)
@@ -159,94 +149,46 @@ public class MultiLineTextModel extends TextModel
   }
 
   @Override
-  public boolean isBoxFull()
-  {
-    if(getText().length() > 0)
-      return (container.getHeight() <= getTextDimensions().height);
-    return false;
-  }
-
-  @Override
   public boolean isMoveUpEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_UP && getLineNumberOfIndex(getCaretIndex()) > 0;
+    return keyCode == KeyEvent.VK_UP && getLineNumber(getCaretIndex()) > 0;
   }
 
   @Override
   public boolean isMoveDownEvent(int keyCode)
   {
-    return keyCode == KeyEvent.VK_DOWN && getLineNumberOfIndex(getCaretIndex()) < typedLayouts.size() - 1;
+    return keyCode == KeyEvent.VK_DOWN && getLineNumber(getCaretIndex()) < getLines().size() - 1;
   }
 
-  @Override
-  public int getIndexOfLastCharInLine(int line)
-  {
-    getLines();
-    int numberOfCharacters = 0;
-    for(int i = 0; i <= line; i++)
-      numberOfCharacters += typedLayouts.get(i).getText().length();
-    if(line != typedLayouts.size() - 1)
-      numberOfCharacters--;
-    return numberOfCharacters;
-  }
-
-  public int calculateYOffset()
-  {
-    int yOffset = 0;
-    int yPos = getYPosFromIndex(getCaretIndex());
-    int lineHeight = getTotalHeightOfLineWithLeadingMargin(0);
-    int panelHeight = container.getHeight();
-
-    while(yPos <= yOffset)
-      yOffset -= lineHeight;
-
-    if(yOffset < 0)
-      yOffset = 0;
-
-    while((yPos + lineHeight) > yOffset + panelHeight)
-      yOffset += lineHeight;
-
-    return yOffset;
-  }
-
-  @Override
-  public boolean isCursorAtCriticalEdge(int cursorX)
-  {
-    return false;
-  }
-
-  public ArrayList<TypedLayout> parseTextForMultipleLayouts()
+  public void parseTextForMultipleLayouts(ArrayList<TypedLayout> lines)
   {
     AttributedCharacterIterator iterator = getIterator();
 
     newLineCharIndices = findNewLineCharIndices(getText());
-    typedLayouts = new ArrayList<TypedLayout>();
 
     LineBreakMeasurer breaker = new LineBreakMeasurer(iterator, TextPanel.getRenderContext());
     int lastCharIndex = 0, newLineCharIndex = 0;
     while(breaker.getPosition() < iterator.getEndIndex())
     {
-      lastCharIndex = addANewLayoutForTheNextLine(breaker, lastCharIndex, newLineCharIndex);
+      lastCharIndex = addNewLayoutForTheNextLine(lines, breaker, lastCharIndex, newLineCharIndex);
       if(layoutEndedOnNewLineChar(lastCharIndex, newLineCharIndex))
         newLineCharIndex++;
     }
-    addBlankLayoutIfLastLineIsEmpty();
-
-    return typedLayouts;
+    addBlankLayoutIfLastLineIsEmpty(lines);
   }
 
-  private void addBlankLayoutIfLastLineIsEmpty()
+  private void addBlankLayoutIfLastLineIsEmpty(ArrayList<TypedLayout> lines)
   {
     if(getText().length() > 0 && isTheVeryLastCharANewLineChar())
-      typedLayouts.add(createLayout(""));
+      lines.add(createLayout(""));
   }
 
-  private int addANewLayoutForTheNextLine(LineBreakMeasurer breaker, int lastCharIndex, int newLineCharIndex)
+  private int addNewLayoutForTheNextLine(ArrayList<TypedLayout> lines, LineBreakMeasurer breaker, int lastCharIndex, int newLineCharIndex)
   {
     int firstCharIndex = lastCharIndex;
     lastCharIndex = firstCharIndex + getNextLayout(breaker, newLineCharIndex).getCharacterCount();
     String layoutText = getText().substring(firstCharIndex, lastCharIndex);
-    typedLayouts.add(createLayout(layoutText));
+    lines.add(createLayout(layoutText));
     return lastCharIndex;
   }
 
@@ -295,18 +237,6 @@ public class MultiLineTextModel extends TextModel
 
   protected int getLineNumber(int index)
   {
-    int line = 0;
-    int remainder = index;
-    for(TypedLayout textLayout : getLines())
-    {
-      if(textLayout.getText().length() > remainder)
-        return line;
-      else
-      {
-        line += 1;
-        remainder -= textLayout.getText().length();
-      }
-    }
-    return line;
+    return TextLocation.fromIndex(getLines(), index).line;
   }
 }

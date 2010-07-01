@@ -11,7 +11,7 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Before
   public void setUp()
   {
-    textBoxSetUp();
+    setUpSingleLine();
     processor = ShiftCmdKeyProcessor.instance;
     modifier = 5;
   }
@@ -21,9 +21,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(modelInfo.getText().length(), 1, true);
+    assertSelection(model.getText().length(), 1, true);
   }
 
   @Test
@@ -31,9 +31,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, 1, true);
+    assertSelection(0, 1, true);
   }
 
   @Test
@@ -41,9 +41,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(0, 1, true);
+    assertSelection(0, 1, true);
   }
 
   @Test
@@ -51,9 +51,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(modelInfo.getText().length(), 1, true);
+    assertSelection(model.getText().length(), 1, true);
   }
 
 }

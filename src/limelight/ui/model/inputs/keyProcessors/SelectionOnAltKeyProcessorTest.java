@@ -21,9 +21,9 @@ public class SelectionOnAltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertTextState(2, "Ha are four words");
+    assertTextState(2, "Ha are four words");
   }
 
   @Test
@@ -31,20 +31,20 @@ public class SelectionOnAltKeyProcessorTest extends AbstractKeyProcessorTest
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(5, SELECTION_START_INDEX, false);
+    assertSelection(5, SELECTION_START_INDEX, false);
   }
 
   @Test
   public void canProcessLeftArrowAndMoveToEndOfPreviousWord()
   {
     mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-    modelInfo.setCaretIndex(9);
+    model.setCaretIndex(9);
 
-    processor.processKey(mockEvent, modelInfo);
+    processor.processKey(mockEvent, model);
 
-    asserter.assertSelection(5, 4, false);
+    assertSelection(5, 4, false);
   }
 
 }

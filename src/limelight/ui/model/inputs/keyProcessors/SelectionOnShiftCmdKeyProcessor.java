@@ -18,7 +18,7 @@ public class SelectionOnShiftCmdKeyProcessor extends KeyProcessor
 
     if (boxInfo.isMoveRightEvent(keyCode))
     {
-      boxInfo.sendCursorToEndOfLine();
+      boxInfo.sendCaretToEndOfLine();
     }
     else if (boxInfo.isMoveLeftEvent(keyCode))
     {

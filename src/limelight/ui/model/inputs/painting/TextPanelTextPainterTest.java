@@ -18,17 +18,16 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
   {
     testClassInit();
     painter = TextPanelTextPainter.instance;
-    layout = new MockTypedLayout(boxInfo.getText());
-    boxInfo.getLines().add(layout);
-    boxInfo.setLastLayedOutText("Some Text");
+    layout = new MockTypedLayout(model.getText());
+    model.getLines().add(layout);
   }
 
   @Test
   public void willNotPaintTextIfTextIsNull()
   {
-    boxInfo.setText(null);
+    model.setText(null);
 
-    painter.paint(graphics, boxInfo);
+    painter.paint(graphics, model);
 
     assertEquals(false, layout.hasDrawn());
   }
@@ -36,25 +35,25 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
   @Test
   public void willDrawTextToLayout()
   {
-    painter.paint(graphics, boxInfo);
+    painter.paint(graphics, model);
 
     assertEquals(true, layout.hasDrawn());
-    assertEquals(boxInfo.getText(), layout.text);
+    assertEquals(model.getText(), layout.text);
   }
 
-//  @Test
-//  public void willDrawTextToCorrectLocation()
-//  {
-//    painter.paint(graphics, boxInfo);
-//
-//    assertEquals(TextModel.SIDE_TEXT_MARGIN, (int) layout.getBounds().getX());
-//    assertEquals(15, (int) layout.getBounds().getY());
-//  }
+  @Test
+  public void willDrawTextToCorrectLocation()
+  {
+    painter.paint(graphics, model);
+
+    assertEquals(0, layout.drawnX);
+    assertEquals(8, layout.drawnY);
+  }
 
   @Test
   public void willDrawTextWithTheRightColor()
   {
-    painter.paint(graphics, boxInfo);
+    painter.paint(graphics, model);
 
     assertEquals(Color.black, graphics.color);
   }
@@ -62,9 +61,9 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
   @Test
   public void shouldColorOfText() throws Exception
   {
-    parent.getStyle().setTextColor("red");
+    container.style.setTextColor("red");
 
-    painter.paint(graphics, boxInfo);
+    painter.paint(graphics, model);
 
     assertEquals(Colors.resolve("red"), graphics.color);
   }

@@ -60,6 +60,7 @@
             <batchtest fork="no" todir="etc/test_reports">
                 <fileset dir="${src}">
                     <include name="**/*Test.java"/>
+                    <exclude name="**/Abstract*Test.java"/>
                     <include name="**/*Suite.java"/>
                 </fileset>
             </batchtest>

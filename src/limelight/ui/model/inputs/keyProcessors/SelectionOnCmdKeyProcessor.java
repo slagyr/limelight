@@ -33,7 +33,7 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
         boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_RIGHT:
-        boxInfo.sendCursorToEndOfLine();
+        boxInfo.sendCaretToEndOfLine();
         boxInfo.setSelectionOn(false);
         break;
       case KeyEvent.VK_LEFT:

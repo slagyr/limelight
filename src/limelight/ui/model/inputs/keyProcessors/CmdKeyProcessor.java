@@ -24,7 +24,7 @@ public class CmdKeyProcessor extends KeyProcessor
         boxInfo.pasteClipboard();
         break;
       case KeyEvent.VK_RIGHT:
-        boxInfo.sendCursorToEndOfLine();
+        boxInfo.sendCaretToEndOfLine();
         break;
       case KeyEvent.VK_LEFT:
         boxInfo.sendCursorToStartOfLine();

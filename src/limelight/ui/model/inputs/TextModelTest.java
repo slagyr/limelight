@@ -4,8 +4,10 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockPanel;
+import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TextLayoutImpl;
 import limelight.ui.model.TextPanel;
+import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,82 +16,26 @@ import static junit.framework.Assert.assertEquals;
 public class TextModelTest
 {
   TextModel model;
-  TextInputPanel panel;
-  private MockPanel parent;
+  MockTextContainer container;
 
   @Before
   public void setUp()
   {
-    panel = new TextBox2Panel();
-    parent = new MockPanel();
-    parent.setSize(150, 28);
-    parent.add(panel);
-    panel.doLayout();
-    model = panel.getModel();
+    container = new MockTextContainer();
+    container.bounds = new Box(0, 0, 150, 20);
+    model = new SingleLineTextModel(container);
+    model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("Bob Dole likes to hear Bob Dole say 'Bob Dole'  ");
-  }
-
-  @Test
-  public void canSetACopyOfTheLastLayedoutText()
-  {
-    model.setLastLayedOutText("text");
-
-    assertEquals("text", model.getLastLayedOutText());
-  }
-
-  @Test
-  public void canCompareCurrentTextToLastLayedOutText()
-  {
-    model.setText("some text");
-    model.setLastLayedOutText("some other text");
-
-    assertEquals(true, model.isThereSomeDifferentText());
-
-    model.setLastLayedOutText("some text");
-
-    assertEquals(false, model.isThereSomeDifferentText());
-  }
-
-  @Test
-  public void willSetLastLayedOutTextWhenGettingLayout()
-  {
-    model.setLastLayedOutText("nothing");
-    model.setText("something");
-
-    model.getLines();
-
-    assertEquals("something", model.getLastLayedOutText());
-  }
-
-  @Test
-  public void canCalculateTheTerminatingSpaceWidth()
-  {
-    int width = model.getTerminatingSpaceWidth(model.getText());
-    int width2 = model.getTerminatingSpaceWidth("No Terminating Space");
-
-    assertEquals(6, width);
-    assertEquals(0, width2);
   }
 
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
-    assertEquals(0, model.getXPosFromIndex(0));
-    assertEquals(widthOf("B"), model.getXPosFromIndex(1));
-    assertEquals(widthOf("Bo"), model.getXPosFromIndex(2));
-    assertEquals(widthOf("Bob"), model.getXPosFromIndex(3));
-    assertEquals(widthOf("Bob") + model.spaceWidth(), model.getXPosFromIndex(4));
-  }
-
-  private int widthOf(String text)
-  {
-    return model.getWidthDimension(new TextLayoutImpl(text, model.getFont(), TextPanel.getRenderContext()));
-  }
-
-  @Test
-  public void canCalculateTheYPositionFromAnIndex()
-  {
-    assertEquals(0, model.getYPosFromIndex(0));
+    assertEquals(0, model.getX(0));
+    assertEquals(10, model.getX(1));
+    assertEquals(20, model.getX(2));
+    assertEquals(30, model.getX(3));
+    assertEquals(40, model.getX(4));
   }
 
   @Test
@@ -98,19 +44,9 @@ public class TextModelTest
     model.setCaretIndex(0);
     int expectedLine = 0;
 
-    int line = model.getLineNumberOfIndex(model.getCaretIndex());
+    int line = model.getLineNumber(model.getCaretIndex());
 
     assertEquals(expectedLine, line);
-  }
-
-  @Test
-  public void canGetTheHeightForTheCurrentLine()
-  {
-    int expectedHeight = (int) (model.getHeightDimension(model.getLines().get(0)) + .5);
-
-    int currentLineHeight = model.getHeightOfCurrentLine();
-
-    assertEquals(expectedHeight, currentLineHeight);
   }
 
   @Test
@@ -150,23 +86,17 @@ public class TextModelTest
 
     assertEquals(3, model.getLastCaretIndex());
   }
-
-  @Test
-  public void canGetTheLastCharacterInALine()
-  {
-    assertEquals(model.getText().length(), model.getIndexOfLastCharInLine(0));
-  }
-
+  
   @Test
   public void shouldGetAlignment() throws Exception
   {
-    parent.getStyle().setVerticalAlignment("center");
-    parent.getStyle().setHorizontalAlignment("center");
+    container.style.setVerticalAlignment("center");
+    container.style.setHorizontalAlignment("center");
     assertEquals("center", model.getVerticalAlignment().toString());
     assertEquals("center", model.getHorizontalAlignment().toString());
 
-    parent.getStyle().setVerticalAlignment("bottom");
-    parent.getStyle().setHorizontalAlignment("right");
+    container.style.setVerticalAlignment("bottom");
+    container.style.setHorizontalAlignment("right");
     assertEquals("bottom", model.getVerticalAlignment().toString());
     assertEquals("right", model.getHorizontalAlignment().toString());
   }

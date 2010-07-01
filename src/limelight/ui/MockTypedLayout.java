@@ -16,8 +16,8 @@ public class MockTypedLayout implements TypedLayout
 
   public String text;
   public boolean hasDrawn;
-  public int x;
-  public int y;
+  public int drawnX;
+  public int drawnY;
 
   public MockTypedLayout(String value)
   {
@@ -27,8 +27,8 @@ public class MockTypedLayout implements TypedLayout
   public void draw(Graphics2D graphics, float x, float y)
   {
     hasDrawn = true;
-    this.x = (int)x;
-    this.y = (int)y;
+    this.drawnX = (int)x;
+    this.drawnY = (int)y;
   }
 
   public boolean hasDrawn()
@@ -71,7 +71,7 @@ public class MockTypedLayout implements TypedLayout
 
   public Box getCaretShape(int caretIndex)
   {
-    return new Box(0, 0, 1, 10);
+    return new Box(0, 0, 1, CHAR_HEIGHT);
   }
 
   public int getWidth()
@@ -81,7 +81,7 @@ public class MockTypedLayout implements TypedLayout
 
   public int getHeight()
   {
-    return 10;
+    return CHAR_HEIGHT;
   }
 
   public int getWidthOf(String text)

@@ -4,73 +4,64 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 import limelight.ui.MockPanel;
+import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.model.inputs.*;
+import limelight.util.Box;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
+
 import static org.junit.Assert.assertEquals;
 
 public class AbstractKeyProcessorTest
 {
   public final int SELECTION_START_INDEX = 4;
 
-  public TextModel modelInfo;
-  public TextInputPanel panel;
+  public TextModel model;
+  public MockTextContainer container;
   public KeyProcessor processor;
-  public TextModelAsserter asserter;
   public MockKeyEvent mockEvent;
   public MockPanel parent;
   public int modifier;
 
-  public void textBoxSetUp()
+  public void setUpSingleLine()
   {
-    panel = new TextBox2Panel();
-    parent = new MockPanel();
-    parent.setSize(150, 28);
+    container = new MockTextContainer();
+    container.bounds = new Box(0, 0, 150, 20);
+    model = new SingleLineTextModel(container);
     setUp();
-    modelInfo.setSelectionIndex(0);
-    modelInfo.setSelectionOn(false);
   }
 
-  public void textAreaSetUp()
+  public void setUpMultiLine()
   {
-    panel = new TextArea2Panel();
-    parent = new MockPanel();
-    parent.setSize(150, 75);
+    container = new MockTextContainer();
+    container.bounds = new Box(0, 0, 150, 75);
+    model = new MultiLineTextModel(container);
     setUp();
-    modelInfo.setSelectionIndex(0);
-    modelInfo.setSelectionOn(false);
   }
 
   private void setUp()
   {
-    modelInfo = panel.getModel();
-    asserter = new TextModelAsserter(modelInfo);
+    model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
+    model.setText("Here are four words");
+    model.setCaretIndex(1);
 
-    modelInfo.setText("Here are four words");
-    modelInfo.setCaretIndex(1);
-
-    parent.add(panel);
-    panel.doLayout();
+    model.setSelectionIndex(0);
+    model.setSelectionOn(false);
   }
 
   protected void selectionBoxSetUp()
   {
-    panel = new TextBox2Panel();
-    parent = new MockPanel();
-    parent.setSize(150, 28);
-    setUp();
-    modelInfo.setSelectionIndex(SELECTION_START_INDEX);
-    modelInfo.setSelectionOn(true);
+    setUpSingleLine();
+    model.setSelectionIndex(SELECTION_START_INDEX);
+    model.setSelectionOn(true);
   }
 
-   protected void selectionAreaSetUp()
+  protected void selectionAreaSetUp()
   {
-    panel = new TextArea2Panel();
-    parent = new MockPanel();
-    parent.setSize(150, 75);
-    setUp();
-    modelInfo.setSelectionIndex(SELECTION_START_INDEX);
-    modelInfo.setSelectionOn(true);
+    setUpMultiLine();
+    model.setSelectionIndex(SELECTION_START_INDEX);
+    model.setSelectionOn(true);
   }
 
   public class MockKeyEvent extends KeyEvent
@@ -87,30 +78,19 @@ public class AbstractKeyProcessorTest
     }
   }
 
-  public class TextModelAsserter
+  public void assertSelection(int cursorIndex, int selectionIndex, boolean selectionOn)
   {
-    TextModel modelInfo;
+    assertEquals(cursorIndex, model.getCaretIndex());
+    assertEquals(selectionIndex, model.getSelectionIndex());
+    assertEquals(selectionOn, model.isSelectionOn());
+  }
 
-    public TextModelAsserter(TextModel modelInfo)
-    {
-      this.modelInfo = modelInfo;
-    }
-
-
-    public void assertSelection(int cursorIndex, int selectionIndex, boolean selectionOn)
-    {
-      assertEquals(cursorIndex, modelInfo.getCaretIndex());
-      assertEquals(selectionIndex, modelInfo.getSelectionIndex());
-      assertEquals(selectionOn, modelInfo.isSelectionOn());
-    }
-
-    public void assertTextState(int cursorIndex, String text)
-    {
-      assertEquals(cursorIndex, modelInfo.getCaretIndex());
-      assertEquals(text, modelInfo.getText().toString());
-      if (!modelInfo.isSelectionOn())
-        assertEquals(0, modelInfo.getSelectionIndex());
-    }
+  public void assertTextState(int cursorIndex, String text)
+  {
+    assertEquals(cursorIndex, model.getCaretIndex());
+    assertEquals(text, model.getText());
+    if(!model.isSelectionOn())
+      assertEquals(0, model.getSelectionIndex());
   }
 
 }

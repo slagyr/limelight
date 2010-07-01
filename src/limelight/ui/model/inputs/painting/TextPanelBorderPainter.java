@@ -14,6 +14,7 @@ import limelight.util.Colors;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 
 public class TextPanelBorderPainter implements Painter
 {
@@ -26,12 +27,19 @@ public class TextPanelBorderPainter implements Painter
   {
     try
     {
-      normalBorder = NinePatch.load(ImageIO.read(ClassLoader.getSystemClassLoader().getResource("limelight/ui/images/text_box.9.png")), true, true);
-      focusedBorder = NinePatch.load(ImageIO.read(ClassLoader.getSystemClassLoader().getResource("limelight/ui/images/text_box_focus.9.png")), true, true);
+      ClassLoader classLoader = TextPanelBorderPainter.class.getClassLoader();
+      normalBorder = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/text_box.9.png")), true, true);
+      focusedBorder = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/text_box_focus.9.png")), true, true);
     }
     catch(IOException e)
     {
       throw new RuntimeException("Could not load TextPanel border images", e);
+    }
+    catch(Exception e)
+    {
+      System.err.println("e = " + e);
+      e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 

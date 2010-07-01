@@ -200,7 +200,7 @@ module Limelight
     #   jruby -S limelight open --drb_port=9000 my_production
     #
     def publish_production_on_drb(port)
-puts "publishing production (#{@production.name}) on port: #{port}"      
+#      puts "publishing production (#{@production.name}) on port: #{port}"
       @drb_service = DRb.start_service("druby://localhost:#{port}", @production)
     end
 
