@@ -85,12 +85,12 @@ public class AbstractKeyProcessorTest
     assertEquals(selectionOn, model.isSelectionOn());
   }
 
-  public void assertTextState(int cursorIndex, String text)
+  public void assertTextState(int caretIndex, int selectionIndex, String text)
   {
-    assertEquals(cursorIndex, model.getCaretIndex());
+    assertEquals(caretIndex, model.getCaretIndex());
     assertEquals(text, model.getText());
     if(!model.isSelectionOn())
-      assertEquals(0, model.getSelectionIndex());
+      assertEquals(selectionIndex, model.getSelectionIndex());
   }
 
 }

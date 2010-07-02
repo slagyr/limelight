@@ -54,11 +54,37 @@ public class TextLocation
     return "TextLocation: " + "line: " + line + ", index: " + index;
   }
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    if(obj instanceof TextLocation)
+    {
+      TextLocation other = (TextLocation)obj;
+      return this.line == other.line && this.index == other.index;
+    }
+    else
+      return false;
+  }
+
   public int toIndex(List<TypedLayout> lines)
   {
     int index = 0;
     for(int i = 0; i < line; i++)
       index += lines.get(i).getText().length();
     return index + this.index;
+  }
+
+  public boolean before(TextLocation other)
+  {
+    if(line < other.line)
+      return true;
+    else if(line == other.line)
+      return index < other.index;
+    return false;
+  }
+
+  public boolean atStart()
+  {
+    return line == 0 && index == 0;
   }
 }

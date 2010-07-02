@@ -5,9 +5,12 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
 import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.text.TextLocation;
+import limelight.ui.text.TypedLayout;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MouseProcessor
 {
@@ -23,12 +26,12 @@ public class MouseProcessor
 
   public void processMousePressed(MouseEvent e)
   {
-    Point location = getRelativeMouseLocation(e);
+    Point pressPoint = getRelativeMouseLocation(e);
 
-    int index = model.getIndexAt(location.x, location.y);
+    TextLocation location = model.getLocationAt(pressPoint);
     model.setSelectionOn(true);
-    model.setSelectionIndex(index);
-    model.setCaretIndex(index, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
+    model.setSelectionLocation(location);
+    model.setCaretLocation(location, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
 
     makeExtraSelectionOnMultiClick();
 
@@ -69,19 +72,20 @@ public class MouseProcessor
 
   public void processMouseDragged(MouseEvent e)
   {
-    Point location = getRelativeMouseLocation(e);
+    Point mousePoint = getRelativeMouseLocation(e);
 
-    int tempIndex = model.getIndexAt(location.x, location.y);
+    ArrayList<TypedLayout> lines = model.getLines();
+    int tempIndex = model.getLocationAt(mousePoint).toIndex(lines);
     // TODO MDM - This needs work.  Ideally, the text will scroll smoothly, a pixel at a time, without the mouse moving.  The scoll speed increased as the mouse moves away.  
-    if(location.x < 3 && tempIndex > 0)
+    if(mousePoint.x < 3 && tempIndex > 0)
       tempIndex--;
-    else if(location.x > (model.getContainer().getWidth() - 3) && tempIndex < model.getText().length())
+    else if(mousePoint.x > (model.getContainer().getWidth() - 3) && tempIndex < model.getText().length())
       tempIndex++;
 
     if(doubleClickOn)
       selectWord(tempIndex);
     else
-      model.setCaretIndex(tempIndex, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
+      model.setCaretLocation(TextLocation.fromIndex(lines, tempIndex), XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
   }
 
   private void selectWord(int tempIndex)
@@ -91,12 +95,10 @@ public class MouseProcessor
 
   public void processMouseReleased(MouseEvent e)
   {
-    Point absoluteLocation = model.getContainer().getAbsoluteLocation();
-    int myX = e.getX() - absoluteLocation.x;
-    int myY = e.getY() - absoluteLocation.y;
+    Point mousePoint = getRelativeMouseLocation(e);
     if(!doubleClickOn)
     {
-      model.setCaretIndex(model.getIndexAt(myX, myY));
+      model.setCaretLocation(model.getLocationAt(mousePoint));
       if(model.getCaretIndex() == model.getSelectionIndex())
         model.setSelectionOn(false);
     }
@@ -134,7 +136,7 @@ public class MouseProcessor
 
     private void repositionHead(int newHead)
     {
-      model.setCaretIndex(newHead, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
+      model.setCaretLocation(TextLocation.fromIndex(model.getLines(), newHead), XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
     }
 
     private boolean isSelectionFacingRight()
