@@ -5,8 +5,11 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -141,10 +144,10 @@ public class SingleLineTextModelTest
   {
     model.setText("some text");
 
-    assertEquals(0, model.getIndexAt(0, 0));
-    assertEquals(1, model.getIndexAt(10, 0));
-    assertEquals(5, model.getIndexAt(50, 0));
-    assertEquals(9, model.getIndexAt(1000, 0));
+    assertEquals(TextLocation.at(0, 0), model.getLocationAt(new Point(0, 0)));
+    assertEquals(TextLocation.at(0, 1), model.getLocationAt(new Point(10, 0)));
+    assertEquals(TextLocation.at(0, 5), model.getLocationAt(new Point(50, 0)));
+    assertEquals(TextLocation.at(0, 9), model.getLocationAt(new Point(1000, 0)));
   }
 
 }

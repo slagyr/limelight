@@ -23,7 +23,7 @@ public class SelectionOnAltKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "Ha are four words");
+    assertTextState(2, 0, "Ha are four words");
   }
 
   @Test

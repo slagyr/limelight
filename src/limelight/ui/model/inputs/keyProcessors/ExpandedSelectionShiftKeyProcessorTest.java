@@ -43,7 +43,7 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "HA are four words");
+    assertTextState(2, 0, "HA are four words");
   }
 
   @Test

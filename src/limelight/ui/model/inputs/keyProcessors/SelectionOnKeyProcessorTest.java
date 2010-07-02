@@ -23,7 +23,7 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "Ha are four words");
+    assertTextState(2, 1, "Ha are four words");
   }
 
   @Test
@@ -33,7 +33,7 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(1, "H are four words");
+    assertTextState(1, 1, "H are four words");
   }
 
   @Test

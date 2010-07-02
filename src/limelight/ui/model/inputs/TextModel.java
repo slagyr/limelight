@@ -15,11 +15,9 @@ import limelight.util.Box;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
-import java.awt.font.TextHitInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//TODO MDM Store the caret location as a TextLocation rather than an index
 public abstract class TextModel implements ClipboardOwner
 {
   protected TextContainer container;
@@ -28,9 +26,11 @@ public abstract class TextModel implements ClipboardOwner
 
   protected final StringBuffer text = new StringBuffer();
   protected Point offset = new Point(0, 0);
-  private int caretIndex;
+  private TextLocation caretLocation = TextLocation.at(0, 0);
+//  private int caretIndex;
   private boolean selectionOn;
-  private int selectionIndex;
+  private TextLocation selectionLocation = TextLocation.at(0, 0);
+//  private int selectionIndex;
   private TextLocation verticalOrigin;
 
   protected abstract int getLineNumber(int index);
@@ -47,7 +47,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public abstract Dimension getTextDimensions();
 
-  public abstract int getIndexAt(int x, int y);
+  public abstract TextLocation getLocationAt(Point point);
 
   public abstract ArrayList<Box> getSelectionRegions();
 
@@ -88,12 +88,17 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getCaretX()
   {
-    return getX(caretIndex);
+    return getX(caretLocation);
   }
 
   public int getX(int index)
   {
     TextLocation location = TextLocation.fromIndex(getLines(), index);
+    return getX(location);
+  }
+
+  private int getX(TextLocation location)
+  {
     TypedLayout line = getLines().get(location.line);
     return line.getX(location.index);
   }
@@ -112,7 +117,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getSelectionX()
   {
-    return getX(selectionIndex);
+    return getX(selectionLocation);
   }
 
   protected void recalculateOffset(XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
@@ -200,19 +205,24 @@ public abstract class TextModel implements ClipboardOwner
   public void copySelection()
   {
     String clipboard;
-    if(selectionIndex < caretIndex)
-      clipboard = text.substring(selectionIndex, caretIndex);
+    ArrayList<TypedLayout> lines = getLines();
+    if(selectionLocation.before(caretLocation))
+      clipboard = text.substring(selectionLocation.toIndex(lines), caretLocation.toIndex(lines));
     else
-      clipboard = text.substring(caretIndex, selectionIndex);
+      clipboard = text.substring(caretLocation.toIndex(lines), selectionLocation.toIndex(lines));
     copyText(clipboard);
   }
 
-  public synchronized void pasteClipboard()
+  public void pasteClipboard()
   {
     String clipboard = getClipboardContents();
     if(clipboard != null && clipboard.length() > 0)
     {
-      text.insert(caretIndex, clipboard);
+      int caretIndex = caretLocation.toIndex(getLines());
+      synchronized(this)
+      {
+        text.insert(caretIndex, clipboard);
+      }
       clearCache();
       setCaretIndex(caretIndex + clipboard.length());
     }
@@ -226,10 +236,10 @@ public abstract class TextModel implements ClipboardOwner
 
   public void deleteSelection()
   {
-    if(selectionIndex < caretIndex)
-      deleteEnclosedText(selectionIndex, caretIndex);
+    if(selectionLocation.before(caretLocation))
+      deleteEnclosedText(selectionLocation, caretLocation);
     else
-      deleteEnclosedText(caretIndex, selectionIndex);
+      deleteEnclosedText(caretLocation, selectionLocation);
   }
 
   public synchronized void deleteEnclosedText(int first, int second)
@@ -238,6 +248,22 @@ public abstract class TextModel implements ClipboardOwner
     lines = null;
     setCaretIndex(first);
     setSelectionIndex(0);
+  }
+
+
+  public void deleteEnclosedText(TextLocation first, TextLocation second)
+  {
+    ArrayList<TypedLayout> lines = getLines();
+    int startIndex = first.toIndex(lines);
+    int endIndex = second.toIndex(lines);
+    synchronized(this)
+    {
+      text.delete(startIndex, endIndex);
+      this.lines = null;
+    }
+    setCaretLocation(first);
+    setCaretIndex(startIndex);
+    setSelectionIndex(startIndex);
   }
 
   public int findWordsRightEdge(int index)
@@ -274,29 +300,39 @@ public abstract class TextModel implements ClipboardOwner
 
   public int getCaretIndex()
   {
-    return caretIndex;
+    return caretLocation.toIndex(getLines());
   }
 
   public void setCaretIndex(int index)
   {
-    setCaretIndex(index, XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);
+    setCaretLocation(TextLocation.fromIndex(getLines(), index));
   }
 
-  public void setCaretIndex(int index, XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
+  public void setCaretLocation(TextLocation location)
   {
-    caretIndex = index;
+    setCaretLocation(location, XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);
+  }
+
+  public void setCaretLocation(TextLocation location, XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
+  {
+    caretLocation = location;
     verticalOrigin = null;
     recalculateOffset(xOffsetStrategy, yOffsetStrategy);
   }
 
   public int getSelectionIndex()
   {
-    return selectionIndex;
+    return selectionLocation.toIndex(getLines());
   }
 
   public void setSelectionIndex(int selectionIndex)
   {
-    this.selectionIndex = selectionIndex;
+    setSelectionLocation(TextLocation.fromIndex(getLines(), selectionIndex));
+  }
+
+  public void setSelectionLocation(TextLocation location)
+  {
+    selectionLocation = location;
   }
 
   public synchronized void setText(String newText)
@@ -358,7 +394,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public int findNearestWordToTheRight()
   {
-    return findNextWordSkippingSpacesOrNewLines(findWordsRightEdge(caretIndex));
+    return findNextWordSkippingSpacesOrNewLines(findWordsRightEdge(caretLocation.toIndex(getLines())));
   }
 
   protected int findNextWordSkippingSpacesOrNewLines(int startIndex)

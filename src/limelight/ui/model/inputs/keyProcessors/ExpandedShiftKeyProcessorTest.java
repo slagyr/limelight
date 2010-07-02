@@ -23,7 +23,7 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "HAere are four words");
+    assertTextState(2, 0, "HAere are four words");
   }
 
   @Test

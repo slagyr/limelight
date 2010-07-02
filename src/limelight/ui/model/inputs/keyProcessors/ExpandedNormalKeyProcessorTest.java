@@ -22,7 +22,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "H\rere are four words");
+    assertTextState(2, 0, "H\rere are four words");
   }
 
   @Test
@@ -32,7 +32,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "H\tere are four words");
+    assertTextState(2, 0, "H\tere are four words");
   }
 
   @Test
@@ -42,7 +42,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "Haere are four words");
+    assertTextState(2, 0, "Haere are four words");
   }
 
   @Test
@@ -52,7 +52,7 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(0, "ere are four words");
+    assertTextState(0, 0, "ere are four words");
   }
 
   @Test

@@ -25,7 +25,7 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(2, "Haere are four words");
+    assertTextState(2, 0, "Haere are four words");
   }
 
   @Test

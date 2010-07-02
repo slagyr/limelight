@@ -1,6 +1,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
 
@@ -43,9 +44,9 @@ public class MockTextModel extends TextModel
   }
 
   @Override
-  public int getIndexAt(int x, int y)
+  public TextLocation getLocationAt(Point point)
   {
-    return 0;
+    return TextLocation.at(0, 0);
   }
 
   @Override

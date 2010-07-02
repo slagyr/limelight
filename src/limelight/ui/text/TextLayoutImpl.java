@@ -17,7 +17,6 @@ public class TextLayoutImpl implements TypedLayout
 {
   TextLayout layout;
   String text;
-  public boolean hasDrawn;
   private Font font;
   private FontRenderContext fontRenderContet;
   private FontMetrics metrics;
@@ -27,12 +26,10 @@ public class TextLayoutImpl implements TypedLayout
     this.font = font;
     fontRenderContet = frc;
     text = string;
-    hasDrawn = false;
   }
 
   public void draw(Graphics2D graphics, float x, float y)
   {
-    hasDrawn = true;
     getLayout().draw(graphics, x, y);
   }
 

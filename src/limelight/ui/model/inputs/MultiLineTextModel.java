@@ -46,23 +46,25 @@ public class MultiLineTextModel extends TextModel
   }
 
   @Override
-  public int getIndexAt(int x, int y)
+  public TextLocation getLocationAt(Point point)
   {
-    int index = 0;
-    int remainingY = y - getYOffset();
+    int remainingY = point.y - getYOffset();
     ArrayList<TypedLayout> lines = getLines();
-    for(TypedLayout line : lines)
+    for(int lineNumber = 0; lineNumber < lines.size(); lineNumber++)
     {
+      TypedLayout line = lines.get(lineNumber);
       int lineHeight = line.getHeight();
       if(lineHeight > remainingY)
-        return index + line.getIndexAt(x - getXOffset());
+      {
+        int lineIndex = line.getIndexAt(point.x - getXOffset());
+        return TextLocation.at(lineNumber, lineIndex);
+      }
       else
       {
-        index += line.getText().length();
         remainingY -= lineHeight;
       }
     }
-    return getText().length();
+    return TextLocation.fromIndex(lines, getText().length());
   }
 
   public TypedLayout getLineAt(int y)

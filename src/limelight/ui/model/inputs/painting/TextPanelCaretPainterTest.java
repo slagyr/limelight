@@ -57,7 +57,7 @@ public class TextPanelCaretPainterTest
   {
     painter.paint(graphics, model);
 
-    assertEquals(new Box(0, 0, 1, 10), graphics.filledShapes.get(0).shape);
+    assertEquals(new Box(40, 0, 1, 10), graphics.filledShapes.get(0).shape);
   }
 
   @Test

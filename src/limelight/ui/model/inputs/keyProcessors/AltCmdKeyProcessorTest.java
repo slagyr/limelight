@@ -33,7 +33,7 @@ public class AltCmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(1, "Here are four words");
+    assertTextState(1, 0, "Here are four words");
   }
 
 }

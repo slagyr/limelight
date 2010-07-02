@@ -36,8 +36,8 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(SELECTION_START_INDEX, "Hoot are four words");
-    assertSelection(SELECTION_START_INDEX, 0, false);
+    assertTextState(SELECTION_START_INDEX, 1, "Hoot are four words");
+    assertSelection(SELECTION_START_INDEX, 1, false);
   }
 
   @Test
@@ -47,7 +47,7 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(1, "Here are four words");
+    assertTextState(1, 0, "Here are four words");
     assertSelection(1, SELECTION_START_INDEX, true);
     assertEquals("ere", model.getClipboardContents());
   }
@@ -59,8 +59,8 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(1, "H are four words");
-    assertSelection(1, 0, false);
+    assertTextState(1, 1, "H are four words");
+    assertSelection(1, 1, false);
     assertEquals("ere", model.getClipboardContents());
   }
 

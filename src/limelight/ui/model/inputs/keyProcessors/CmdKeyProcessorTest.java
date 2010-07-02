@@ -36,7 +36,7 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(mockEvent, model);
 
-    assertTextState(model.getText().length(), "Bob Dole");
+    assertTextState(model.getText().length(), 0, "Bob Dole");
   }
 
   @Test
