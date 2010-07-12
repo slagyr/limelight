@@ -66,8 +66,8 @@ public class SingleLineTextModel extends TextModel
 
   public ArrayList<Box> getSelectionRegions()
   {
-    int x1 = getX(getCaretLocation());
-    int x2 = getX(getSelectionLocation());
+    int x1 = getAbsoluteX(getCaretLocation());
+    int x2 = getAbsoluteX(getSelectionLocation());
     int start = Math.min(x1, x2);
     int end = Math.max(x1, x2);
 

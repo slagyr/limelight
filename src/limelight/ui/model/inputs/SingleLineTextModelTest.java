@@ -6,6 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TextLocation;
+import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,20 +31,15 @@ public class SingleLineTextModelTest
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }
 
-//
-//  @Test
-//  public void canGetTheSelectedRegion()
-//  {
-//    model.setSelectionIndex(0);
-//    model.setSelectionOn(true);
-//
-//    Rectangle region = model.getSelectionRegions().get(0);
-//
-//    assertEquals(0, region.x);
-//    assertEquals(0, region.y);
-//    assertEquals(true, region.width > 0);
-//    assertEquals(true, region.height > 0);
-//  }
+  @Test
+  public void canGetTheSelectedRegion()
+  {
+    model.setText("blah");
+    model.setSelectionIndex(0);
+    model.setSelectionOn(true);
+
+    assertEquals(new Box(0, 0, 40, 11), model.getSelectionRegions().get(0));
+  }
 
   @Test
   public void willAlwaysReturnZeroForTheLineNumber()
