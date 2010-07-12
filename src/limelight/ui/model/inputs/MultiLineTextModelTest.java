@@ -3,8 +3,8 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class MultiLineTextModelTest
   {
     model.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
 
-    assertEquals(-71, model.getYOffset());
+    assertEquals(-67, model.getYOffset());
 
     model.setCaretIndex(2);
 
@@ -70,7 +70,7 @@ public class MultiLineTextModelTest
   @Test
   public void shouldBeAbleToFindNewLineIndices()
   {
-    ArrayList<Integer> indices = model.findNewLineCharIndices("this\nIs\nA new \rline");
+    ArrayList<Integer> indices = Lineator.findNewLineCharIndices("this\nIs\nA new \nline");
 
     assertEquals(3, indices.size());
     assertEquals(4, (int) indices.get(0));
@@ -83,7 +83,7 @@ public class MultiLineTextModelTest
   {
     model.setText("this is the first line\nthis is the second line");
     ArrayList<TypedLayout> lines = new ArrayList<TypedLayout>();
-    model.parseTextForMultipleLayouts(lines);
+    Lineator.parseTextForMultipleLayouts(model, lines);
 
     assertEquals(2, lines.size());
     assertEquals("this is the first line\n", lines.get(0).getText());
@@ -95,7 +95,7 @@ public class MultiLineTextModelTest
   {
     model.setText("This here is the first full line. This is the second line");
     ArrayList<TypedLayout> lines = new ArrayList<TypedLayout>();
-    model.parseTextForMultipleLayouts(lines);
+    Lineator.parseTextForMultipleLayouts(model, lines);
 
     assertEquals(2, lines.size());
     assertEquals("This here is the first full line.", lines.get(0).getText().trim());
@@ -105,11 +105,11 @@ public class MultiLineTextModelTest
   @Test
   public void willStoreATextLayoutForEachLine()
   {
-    model.setText("This is more than 1 line\rand should be 2 lines");
+    model.setText("This is more than 1 line\r\nand should be 2 lines");
 
     ArrayList<TypedLayout> textLayouts = model.getLines();
     assertEquals(2, textLayouts.size());
-    assertEquals("This is more than 1 line\r", textLayouts.get(0).getText());
+    assertEquals("This is more than 1 line\r\n", textLayouts.get(0).getText());
     assertEquals("and should be 2 lines", textLayouts.get(1).getText());
   }
 
@@ -141,43 +141,6 @@ public class MultiLineTextModelTest
   }
 
   @Test
-  public void canGetASelectedRegion()
-  {
-    model.setSelectionIndex(0);
-    model.setSelectionOn(true);
-    model.setCaretIndex(5);
-
-    ArrayList<Box> regions = model.getSelectionRegions();
-
-    assertEquals(0, regions.get(0).x);
-    assertEquals(0, regions.get(0).y);
-    assertEquals(model.getX(model.getCaretIndex()), regions.get(0).width);
-    assertEquals(model.getTotalHeightOfLineWithLeadingMargin(model.getLineNumber(5)), regions.get(0).height);
-  }
-
-  @Test
-  public void canGetAMultiLinedSelectedRegion()
-  {
-    model.setSelectionIndex(2);
-    model.setSelectionOn(true);
-    model.setText("This is\nMulti Lined.");
-    model.setCaretIndex(10);
-
-    ArrayList<Box> regions = model.getSelectionRegions();
-
-    assertEquals(2, regions.size());
-    assertEquals(model.getX(2), regions.get(0).x);
-    assertEquals(0, regions.get(0).y);
-    assertEquals(container.getWidth() - model.getX(2), regions.get(0).width);
-    assertEquals(model.getTotalHeightOfLineWithLeadingMargin(model.getLineNumber(2)), regions.get(0).height);
-
-    assertEquals(0, regions.get(1).x);
-    assertEquals(model.getTotalHeightOfLineWithLeadingMargin(model.getLineNumber(2)), regions.get(1).y);
-    assertEquals(model.getX(10), regions.get(1).width);
-    assertEquals(model.getTotalHeightOfLineWithLeadingMargin(model.getLineNumber(10)), regions.get(1).height);
-  }
-
-  @Test
   public void canGetAMultiLinedSelectedRegionWithAYOffset()
   {
     model.setText("line\nline\nline\nline\nline\nline\nline\nline\nline");
@@ -186,7 +149,7 @@ public class MultiLineTextModelTest
     model.setSelectionIndex(model.getCaretIndex() - 15);
 
     ArrayList<Box> regions = model.getSelectionRegions();
-    assertEquals(123, regions.get(regions.size() -1).y);
+    assertEquals(65, regions.get(regions.size() -1).y);
   }
 
   @Test
@@ -198,7 +161,7 @@ public class MultiLineTextModelTest
 
     ArrayList<Box> regions = model.getSelectionRegions();
 
-    assertEquals(91, regions.get(regions.size() -1).y);
+    assertEquals(54, regions.get(regions.size() -1).y);
   }
 
   @Test
@@ -210,10 +173,10 @@ public class MultiLineTextModelTest
     assertEquals(new Box(30, 0, 1, 10), model.getCaretShape());
 
     model.setCaretIndex(10);
-    assertEquals(new Box(30, 13, 1, 10), model.getCaretShape());
+    assertEquals(new Box(30, 11, 1, 10), model.getCaretShape());
     
     model.setCaretIndex(18);
-    assertEquals(new Box(30, 26, 1, 10), model.getCaretShape());
+    assertEquals(new Box(30, 22, 1, 10), model.getCaretShape());
   }
 
   @Test
@@ -222,13 +185,13 @@ public class MultiLineTextModelTest
     model.setText("line 1\nline 2\nline 3");
     model.setCaretIndex(2);
     
-    model.moveCursorDownALine();
+    model.moveCaretDownALine();
     assertEquals(9, model.getCaretIndex());
 
-    model.moveCursorDownALine();
+    model.moveCaretDownALine();
     assertEquals(16, model.getCaretIndex());
 
-    model.moveCursorDownALine();
+    model.moveCaretDownALine();
     assertEquals(16, model.getCaretIndex());
   }
 
@@ -238,17 +201,83 @@ public class MultiLineTextModelTest
     model.setText("Relatively long line\nshort line\ntiny");
     model.setCaretIndex(20);
 
-    model.moveCursorDownALine();
+    model.moveCaretDownALine();
     assertEquals(31, model.getCaretIndex());
 
-    model.moveCursorDownALine();
+    model.moveCaretDownALine();
     assertEquals(36, model.getCaretIndex());
 
-    model.moveCursorUpALine();
+    model.moveCaretUpALine();
     assertEquals(31, model.getCaretIndex());
 
-    model.moveCursorUpALine();
+    model.moveCaretUpALine();
     assertEquals(20, model.getCaretIndex());
+  }
+
+  @Test
+  public void shouldMoveCaret() throws Exception
+  {
+    model.setText("a\nbc\r\nd");
+
+    assertEquals(TextLocation.at(2, 1), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(2, 0), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(1, 2), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(1, 1), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(1, 0), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(0, 0), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(0, 0), model.getCaretLocation());
+
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(1, 0), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(1, 1), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(1, 2), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(2, 0), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(2, 1), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(2, 1), model.getCaretLocation());
+  }
+  
+  @Test
+  public void shouldMoveCaretThroughNewlines() throws Exception
+  {
+    model.setText("a\n\n\nb");
+
+    assertEquals(TextLocation.at(3, 1), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(3, 0), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(2, 0), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(1, 0), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    model.moveCaret(-1);
+    assertEquals(TextLocation.at(0, 0), model.getCaretLocation());
+
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(1, 0), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(2, 0), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(3, 0), model.getCaretLocation());
+    model.moveCaret(1);
+    assertEquals(TextLocation.at(3, 1), model.getCaretLocation());
   }
 
 }

@@ -38,7 +38,7 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
     painter.paint(graphics, model);
 
     assertEquals(true, layout.hasDrawn);
-    assertEquals(model.getText(), layout.text);
+    assertEquals(model.getText(), layout.getText());
   }
 
   @Test
@@ -47,7 +47,7 @@ public class TextPanelTextPainterTest extends AbstractTextPanelPainterTest
     painter.paint(graphics, model);
 
     assertEquals(0, layout.drawnX);
-    assertEquals(8, layout.drawnY);
+    assertEquals(18, layout.drawnY);
   }
 
   @Test

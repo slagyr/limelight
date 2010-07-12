@@ -9,7 +9,7 @@ public class FittingXOffsetStrategy implements XOffsetStrategy
   {
     int xOffset = model.getXOffset();
     Box boundingBox = model.getContainer().getBoundingBox();
-    int absoluteCaretX = model.getCaretX();
+    int absoluteCaretX = model.getAbsoluteX(model.getCaretLocation());
     int relativeCaretX = absoluteCaretX + xOffset;
 
     if(relativeCaretX >= boundingBox.width)

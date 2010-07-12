@@ -48,7 +48,7 @@ public class SingleLineTextModelTest
   @Test
   public void willAlwaysReturnZeroForTheLineNumber()
   {
-    assertEquals(0, model.getLineNumber(model.getCaretIndex()));
+    assertEquals(0, model.getCaretLocation().line);
   }
 
   @Test

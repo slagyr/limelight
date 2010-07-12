@@ -15,16 +15,15 @@ public class ExpandedNormalKeyProcessor extends KeyProcessor
   @Override
   public void processKey(KeyEvent event, TextModel boxInfo)
   {
-    KeyProcessor basicKeyProcessor = NormalKeyProcessor.instance;
     int keyCode = event.getKeyCode();
     if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB)
       boxInfo.insertChar(event.getKeyChar());
     else if (boxInfo.isMoveUpEvent(keyCode))
-      boxInfo.moveCursorUpALine();
+      boxInfo.moveCaretUpALine();
     else if (boxInfo.isMoveDownEvent(keyCode))
-      boxInfo.moveCursorDownALine();
+      boxInfo.moveCaretDownALine();
     else
-      basicKeyProcessor.processKey(event, boxInfo);
+      NormalKeyProcessor.instance.processKey(event, boxInfo);
   }
 
 }

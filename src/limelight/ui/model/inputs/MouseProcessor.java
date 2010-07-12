@@ -17,7 +17,7 @@ public class MouseProcessor
   TextModel model;
   public long lastClickTime;
   public boolean doubleClickOn;
-  private final int MULTI_CLICK_MILLIS = 300;
+  private static final int MULTI_CLICK_MILLIS = 300;
 
   public MouseProcessor(TextModel model)
   {
@@ -65,8 +65,8 @@ public class MouseProcessor
 
   private void selectWordOnDoubleClick()
   {
-    model.setSelectionIndex(model.findWordsLeftEdge(model.getCaretIndex()));
-    model.setCaretIndex(model.findWordsRightEdge(model.getCaretIndex()));
+    model.setSelectionIndex(model.findWordsLeftEdge(model.getCaretLocation()));
+    model.setCaretIndex(model.findWordsRightEdge(model.getCaretLocation()));
     doubleClickOn = true;
   }
 
@@ -75,22 +75,23 @@ public class MouseProcessor
     Point mousePoint = getRelativeMouseLocation(e);
 
     ArrayList<TypedLayout> lines = model.getLines();
-    int tempIndex = model.getLocationAt(mousePoint).toIndex(lines);
+    TextLocation tempLocation = model.getLocationAt(mousePoint);
+
     // TODO MDM - This needs work.  Ideally, the text will scroll smoothly, a pixel at a time, without the mouse moving.  The scoll speed increased as the mouse moves away.  
-    if(mousePoint.x < 3 && tempIndex > 0)
-      tempIndex--;
-    else if(mousePoint.x > (model.getContainer().getWidth() - 3) && tempIndex < model.getText().length())
-      tempIndex++;
+    if(mousePoint.x < 3 && tempLocation.index > 0)
+      tempLocation = tempLocation.moved(lines, -1);
+    else if(mousePoint.x > (model.getContainer().getWidth() - 3) && tempLocation.atEnd(lines))
+      tempLocation = tempLocation.moved(lines, +1);
 
     if(doubleClickOn)
-      selectWord(tempIndex);
+      selectWord(tempLocation);
     else
-      model.setCaretLocation(TextLocation.fromIndex(lines, tempIndex), XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
+      model.setCaretLocation(tempLocation, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
   }
 
-  private void selectWord(int tempIndex)
+  private void selectWord(TextLocation tempLocation)
   {
-    new WordSelector(tempIndex).processWordSelection();
+    new WordSelector(tempLocation).processWordSelection();
   }
 
   public void processMouseReleased(MouseEvent e)
@@ -106,11 +107,11 @@ public class MouseProcessor
 
   private class WordSelector
   {
-    private int mouseIndex;
+    private TextLocation mouseLocation;
 
-    public WordSelector(int mouseIndex)
+    public WordSelector(TextLocation location)
     {
-      this.mouseIndex = mouseIndex;
+      this.mouseLocation = location;
     }
 
     public void processWordSelection()
@@ -124,9 +125,9 @@ public class MouseProcessor
         turnAround();
 
       if(rightOfTail)
-        repositionHead(model.findWordsRightEdge(mouseIndex));
+        repositionHead(model.findWordsRightEdge(mouseLocation));
       else
-        repositionHead(model.findWordsLeftEdge(mouseIndex));
+        repositionHead(model.findWordsLeftEdge(mouseLocation));
     }
 
     private void turnAround()
@@ -141,12 +142,12 @@ public class MouseProcessor
 
     private boolean isSelectionFacingRight()
     {
-      return model.getCaretIndex() > model.getSelectionIndex();
+      return model.getCaretLocation().isAfter(model.getSelectionLocation());
     }
 
     private boolean isRightOfTail()
     {
-      return mouseIndex > model.getSelectionIndex();
+      return mouseLocation.isAfter(model.getSelectionLocation());
     }
   }
 }

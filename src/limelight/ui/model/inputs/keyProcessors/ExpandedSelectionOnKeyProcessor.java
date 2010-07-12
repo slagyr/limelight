@@ -22,9 +22,9 @@ public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
       boxInfo.insertChar(event.getKeyChar());
     }
     else if (boxInfo.isMoveUpEvent(keyCode))
-      boxInfo.moveCursorUpALine();
+      boxInfo.moveCaretUpALine();
     else if (boxInfo.isMoveDownEvent(keyCode))
-      boxInfo.moveCursorDownALine();
+      boxInfo.moveCaretDownALine();
     else
       SelectionOnKeyProcessor.instance.processKey(event, boxInfo);
   }

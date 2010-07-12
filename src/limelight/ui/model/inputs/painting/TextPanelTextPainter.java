@@ -7,6 +7,7 @@ import limelight.ui.text.TypedLayout;
 import limelight.ui.model.inputs.TextModel;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TextPanelTextPainter extends TextPanelPainter
 {
@@ -26,13 +27,22 @@ public class TextPanelTextPainter extends TextPanelPainter
     float y = model.getYOffset();
 
     graphics.setColor(model.getContainer().getStyle().getCompiledTextColor().getColor());
-    for(TypedLayout layout : model.getLines())
-    {
-      y += layout.getAscent();
-      layout.draw(graphics, x, y + 1);
-      y += layout.getDescent() + layout.getLeading();
 
+    ArrayList<TypedLayout> lines = model.getLines();
+    for(TypedLayout line : lines)
+    {
+      y += line.getAscent();
+      line.draw(graphics, x, y);
+      y += line.getDescent() + line.getLeading();
     }
+//
+//    for(TypedLayout layout : model.getLines())
+//    {
+//      y += layout.getAscent();
+//      layout.draw(graphics, x, y + 1);
+//      y += layout.getDescent() + layout.getLeading();
+//
+//    }
   }
 
 }

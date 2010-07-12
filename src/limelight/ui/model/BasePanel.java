@@ -297,8 +297,8 @@ public abstract class BasePanel implements Panel
         children.add(child);
       else
         children.add(index, child);
+      readonlyChildren = null;
     }
-    readonlyChildren = null;
 
     child.setParent(this);
     doPropagateSizeChangeUp(this);
@@ -317,9 +317,11 @@ public abstract class BasePanel implements Panel
       synchronized(children)
       {
         readonlyChildren = Collections.unmodifiableList(new ArrayList<Panel>(children));
+        return readonlyChildren;
       }
     }
-    return readonlyChildren;
+    else
+      return readonlyChildren;
   }
 
   public boolean isChild(Panel child)
@@ -333,11 +335,11 @@ public abstract class BasePanel implements Panel
     synchronized(children)
     {
       removed = children.remove(child);
+      readonlyChildren = null;
     }
     if(removed)
     {
       child.setParent(null);
-      readonlyChildren = null;
       doPropagateSizeChangeUp(this);
       markAsNeedingLayout();
       return true;
@@ -360,8 +362,8 @@ public abstract class BasePanel implements Panel
             iterator.remove();
           }
         }
+        readonlyChildren = null;
       }
-      readonlyChildren = null;
       sterilized = false;
       doPropagateSizeChangeUp(this);
       markAsNeedingLayout();
