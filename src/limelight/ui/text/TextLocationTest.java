@@ -20,11 +20,14 @@ public class TextLocationTest
     lines = new ArrayList<TypedLayout>();
   }
 
-
-
   private void addLine(String text)
   {
     lines.add(new MockTypedLayout(text));
+  }
+
+  private TextLocation location(int line, int index)
+  {
+    return TextLocation.at(line, index);
   }
 
   @Test
@@ -32,10 +35,7 @@ public class TextLocationTest
   {
     addLine("blah");
 
-    TextLocation location = TextLocation.fromIndex(lines, 0);
-
-    assertEquals(0, location.line);
-    assertEquals(0, location.index);
+    assertEquals(location(0, 0), TextLocation.fromIndex(lines, 0));
   }
 
   @Test
@@ -43,10 +43,7 @@ public class TextLocationTest
   {
     addLine("blah");
 
-    TextLocation location = TextLocation.fromIndex(lines, 4);
-
-    assertEquals(0, location.line);
-    assertEquals(4, location.index);
+    assertEquals(location(0, 4), TextLocation.fromIndex(lines, 4));
   }
 
   @Test
@@ -56,10 +53,39 @@ public class TextLocationTest
     addLine("foo\n");
     addLine("bar");
 
-    TextLocation location = TextLocation.fromIndex(lines, 12);
+    assertEquals(location(2, 3), TextLocation.fromIndex(lines, 12));
+  }
 
-    assertEquals(2, location.line);
-    assertEquals(3, location.index);
+  @Test
+  public void shouldHandleNewlinesDivisions() throws Exception
+  {
+    addLine("a\n");
+    addLine("b\n");
+    addLine("c");
+
+    assertEquals(location(0, 0), TextLocation.fromIndex(lines, 0));
+    assertEquals(location(0, 1), TextLocation.fromIndex(lines, 1));
+    assertEquals(location(1, 0), TextLocation.fromIndex(lines, 2));
+    assertEquals(location(1, 1), TextLocation.fromIndex(lines, 3));
+    assertEquals(location(2, 0), TextLocation.fromIndex(lines, 4));
+    assertEquals(location(2, 1), TextLocation.fromIndex(lines, 5));
+  }
+
+  @Test
+  public void shouldHandleCarriageReturnChars() throws Exception
+  {
+    addLine("a\r\n");
+    addLine("b\r\n");
+    addLine("c");
+
+    assertEquals(location(0, 0), TextLocation.fromIndex(lines, 0));
+    assertEquals(location(0, 1), TextLocation.fromIndex(lines, 1));
+    assertEquals(location(0, 2), TextLocation.fromIndex(lines, 2));
+    assertEquals(location(1, 0), TextLocation.fromIndex(lines, 3));
+    assertEquals(location(1, 1), TextLocation.fromIndex(lines, 4));
+    assertEquals(location(1, 2), TextLocation.fromIndex(lines, 5));
+    assertEquals(location(2, 0), TextLocation.fromIndex(lines, 6));
+    assertEquals(location(2, 1), TextLocation.fromIndex(lines, 7));
   }
 
   @Test
@@ -68,10 +94,7 @@ public class TextLocationTest
     addLine("blah\n");
     addLine("");
 
-    TextLocation location = TextLocation.fromIndex(lines, 5);
-
-    assertEquals(1, location.line);
-    assertEquals(0, location.index);
+    assertEquals(location(1, 0), TextLocation.fromIndex(lines, 5));
   }
   
   @Test

@@ -21,12 +21,12 @@ public class ExpandedShiftKeyProcessor extends KeyProcessor
     if(boxInfo.isMoveUpEvent(keyCode))
     {
       boxInfo.initSelection();
-      boxInfo.moveCursorUpALine();
+      boxInfo.moveCaretUpALine();
     }
     else if(boxInfo.isMoveDownEvent(keyCode))
     {
       boxInfo.initSelection();
-      boxInfo.moveCursorDownALine();
+      boxInfo.moveCaretDownALine();
 
     }
     else

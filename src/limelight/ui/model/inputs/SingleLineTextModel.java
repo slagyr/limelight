@@ -3,6 +3,8 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
+import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
@@ -18,15 +20,21 @@ public class SingleLineTextModel extends TextModel
   }
 
   @Override
-  protected int getLineNumber(int index)
-  {
-    return 0;
-  }
-
-  @Override
   protected void buildLines(ArrayList<TypedLayout> lines)
   {
     lines.add(createLayout(getText()));
+  }
+
+  @Override
+  protected XOffsetStrategy getDefaultXOffsetStrategy()
+  {
+    return XOffsetStrategy.CENTERED;
+  }
+
+  @Override
+  protected YOffsetStrategy getDefaultYOffsetStrategy()
+  {
+    return YOffsetStrategy.STATIONARY;
   }
 
   public Dimension getTextDimensions()
@@ -58,8 +66,8 @@ public class SingleLineTextModel extends TextModel
 
   public ArrayList<Box> getSelectionRegions()
   {
-    int x1 = getCaretX();
-    int x2 = getSelectionX();
+    int x1 = getX(getCaretLocation());
+    int x2 = getX(getSelectionLocation());
     int start = Math.min(x1, x2);
     int end = Math.max(x1, x2);
 

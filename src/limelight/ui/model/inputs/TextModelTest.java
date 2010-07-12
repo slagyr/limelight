@@ -7,6 +7,7 @@ import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TextLayoutImpl;
 import limelight.ui.model.TextPanel;
+import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,22 +32,12 @@ public class TextModelTest
   @Test
   public void canCalculateTheXPositionFromTheCursorIndex()
   {
+    model.setCaretLocation(TextLocation.at(0, 0));
     assertEquals(0, model.getX(0));
     assertEquals(10, model.getX(1));
     assertEquals(20, model.getX(2));
     assertEquals(30, model.getX(3));
     assertEquals(40, model.getX(4));
-  }
-
-  @Test
-  public void canGetTheCurrentLine()
-  {
-    model.setCaretIndex(0);
-    int expectedLine = 0;
-
-    int line = model.getLineNumber(model.getCaretIndex());
-
-    assertEquals(expectedLine, line);
   }
 
   @Test

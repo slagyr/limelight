@@ -17,6 +17,12 @@ public class MockTextContainer implements TextContainer
     style = new RichStyle();
   }
 
+  public MockTextContainer(Box bounds)
+  {
+    this();
+    this.bounds = bounds;
+  }
+
   public Style getStyle()
   {
     return style;

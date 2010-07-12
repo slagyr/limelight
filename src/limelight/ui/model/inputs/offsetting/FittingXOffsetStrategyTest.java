@@ -3,6 +3,7 @@ package limelight.ui.model.inputs.offsetting;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.SingleLineTextModel;
+import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class FittingXOffsetStrategyTest
   @Test
   public void shouldMoveOneCharToTheLeft() throws Exception
   {
-    model.setCaretIndex(9);
+    model.setCaretLocation(TextLocation.at(0, 9));
     model.setOffset(-100, 0);
 
     assertEquals(-90, strategy.calculateXOffset(model));

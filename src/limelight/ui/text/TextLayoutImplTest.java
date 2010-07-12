@@ -27,6 +27,62 @@ public class TextLayoutImplTest
     assertEquals("blah", new TextLayoutImpl("blah", courier, context).getText());
   }
 
+  @Test
+  public void shouldGetIndexAtXIsAlwaysGreaterThenZero() throws Exception
+  {
+    TextLayoutImpl line = new TextLayoutImpl("blah", courier, context);
+    assertEquals(0, line.getIndexAt(-1));
+    assertEquals(0, line.getIndexAt(-10));
+  }
+  
+  @Test
+  public void shouldKnowWhenTextDoesntEndInNewline() throws Exception
+  {
+    TextLayoutImpl line = new TextLayoutImpl("blah", courier, context);
+
+    assertEquals(false, line.endsWithNewline());
+    assertEquals("blah", line.getText());
+    assertEquals(4, line.length());
+    assertEquals("blah", line.getVisibleText());
+    assertEquals(4, line.visibleLength());
+  }
+
+  @Test
+  public void shouldRemoveNewlinesFromText() throws Exception
+  {
+    TextLayoutImpl line = new TextLayoutImpl("blah\n", courier, context);
+
+    assertEquals(true, line.endsWithNewline());
+    assertEquals("blah\n", line.getText());
+    assertEquals(5, line.length());
+    assertEquals("blah", line.getVisibleText());
+    assertEquals(4, line.visibleLength());
+  }
+
+  @Test
+  public void shouldRemoveNewlinesFromTextWithCarriageReturn() throws Exception
+  {
+    TextLayoutImpl line = new TextLayoutImpl("blah\r\n", courier, context);
+
+    assertEquals(true, line.endsWithNewline());
+    assertEquals("blah\r\n", line.getText());
+    assertEquals(6, line.length());
+    assertEquals("blah", line.getVisibleText());
+    assertEquals(4, line.visibleLength());
+  }
+
+  @Test
+  public void shouldHandleLineWithOnlyNewline() throws Exception
+  {
+    TextLayoutImpl line = new TextLayoutImpl("\n", courier, context);
+
+    assertEquals(true, line.endsWithNewline());
+    assertEquals("\n", line.getText());
+    assertEquals(1, line.length());
+    assertEquals("", line.getVisibleText());
+    assertEquals(0, line.visibleLength());
+  }
+
 // MDM - The actual measurements of text can vary at runtime causing these tests to occasionally fail.
   
 //  @Test

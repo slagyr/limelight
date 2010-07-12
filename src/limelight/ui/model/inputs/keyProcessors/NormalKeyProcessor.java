@@ -18,9 +18,9 @@ public class NormalKeyProcessor extends KeyProcessor
     if (isACharacter(keyCode))
       model.insertChar(event.getKeyChar());
     else if (model.isMoveRightEvent(keyCode))
-      model.setCaretIndex(model.getCaretIndex() + 1);
+      model.moveCaret(+1);
     else if (model.isMoveLeftEvent(keyCode))
-      model.setCaretIndex(model.getCaretIndex() - 1);
+      model.moveCaret(-1);
     else if (keyCode == KeyEvent.VK_BACK_SPACE && model.getCaretIndex() > 0)  //TODO MDM Need to also support delete key
       model.deleteEnclosedText(model.getCaretIndex() -1, model.getCaretIndex());
   }

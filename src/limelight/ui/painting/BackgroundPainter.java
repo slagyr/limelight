@@ -50,7 +50,12 @@ public class BackgroundPainter implements Painter
       try
       {
         Box borderFrame = panel.getBoxInsideBorders();
-        RootPanel rootPanel = ((PropablePanel) panel).getRoot();
+        RootPanel rootPanel = panel.getRoot();
+
+        // TODO MDM - getting a NullPointer here. The Panel was removed from the scene in between the start of the paint cycle and here.
+        if(rootPanel == null)
+          return;
+
         ImageCache cache = rootPanel.getImageCache();
         Image image = cache.getImage(backgroundImageAttribute.getAttribute().getValue());
         Graphics2D borderedGraphics = (Graphics2D) graphics.create(borderFrame.x, borderFrame.y, borderFrame.width, borderFrame.height);

@@ -13,19 +13,18 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextHitInfo;
 import java.awt.font.TextLayout;
 
-public class TextLayoutImpl implements TypedLayout
+public class TextLayoutImpl extends TypedLayout
 {
   TextLayout layout;
-  String text;
   private Font font;
   private FontRenderContext fontRenderContet;
   private FontMetrics metrics;
 
-  public TextLayoutImpl(String string, Font font, FontRenderContext frc)
+  public TextLayoutImpl(String text, Font font, FontRenderContext frc)
   {
+    super(text);
     this.font = font;
     fontRenderContet = frc;
-    text = string;
   }
 
   public void draw(Graphics2D graphics, float x, float y)
@@ -35,17 +34,17 @@ public class TextLayoutImpl implements TypedLayout
 
   public float getAscent()
   {
-    return getLayout().getAscent();
+    return getMetrics().getAscent();
   }
 
   public float getDescent()
   {
-    return getLayout().getDescent();
+    return getMetrics().getDescent();
   }
 
   public float getLeading()
   {
-    return getLayout().getLeading();
+    return getMetrics().getLeading();
   }
 
   public TextHitInfo hitTestChar(float x, float y)
@@ -65,7 +64,7 @@ public class TextLayoutImpl implements TypedLayout
       index++;
     }
 
-    if(remainder < 0 && Math.abs(remainder) > (charWidth / 2))
+    if(index > 0 && remainder < 0 && Math.abs(remainder) > (charWidth / 2))
       index--;
 
     while(index > 0 && StringUtil.isNewlineChar(text.charAt(index - 1)))
@@ -81,18 +80,6 @@ public class TextLayoutImpl implements TypedLayout
     return new Box(x, 0, 1, getHeight() + 1);
   }
 
-  public String toString()
-  {
-    return getLayout().toString();
-  }
-
-  public String getText()
-  {
-    if(text.length() == 1 && text.charAt(0) == KeyEvent.CHAR_UNDEFINED)
-      return "";
-    return text;
-  }
-
   public int getWidth()
   {
     return getWidthOf(text);
@@ -101,6 +88,11 @@ public class TextLayoutImpl implements TypedLayout
   public int getHeight()
   {
     return getMetrics().getAscent() + getMetrics().getDescent();
+  }
+
+  public int getHeightWithLeading()
+  {
+    return getHeight() + getMetrics().getLeading();
   }
 
   public int getX(int index)
@@ -125,11 +117,12 @@ public class TextLayoutImpl implements TypedLayout
   {
     if(layout == null)
     {
-      if(text == null || text.length() == 0)
+      if(getText() == null || getText().length() == 0)
         layout = new TextLayout("" + KeyEvent.CHAR_UNDEFINED, font, fontRenderContet);
       else
-        layout = new TextLayout(text, font, fontRenderContet);
+        layout = new TextLayout(getText(), font, fontRenderContet);
     }
     return layout;
   }
+
 }

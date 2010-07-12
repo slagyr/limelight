@@ -32,7 +32,7 @@ public class MouseProcessorTest
     setUpWithText("Some Text", true);
   }
 
-  public void setUpTextBox()
+  public void setUpSingleLine()
   {
     setUpWithText("Some Text that will prove. to be longer than can fit in this box", false);
   }
@@ -123,9 +123,9 @@ public class MouseProcessorTest
   public void willChangeTheYOffsetWhileDraggingPastCriticalEdge()
   {
     model.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max\nAndMore?");
-    assertEquals(-6, model.getYOffset());
+    assertEquals(-12, model.getYOffset());
 
-    processor.processMouseDragged(event(0,0));
+    processor.processMouseDragged(event(0,-10));
 
     assertEquals(0, model.getYOffset());
   }
@@ -133,23 +133,23 @@ public class MouseProcessorTest
   @Test
   public void willChangeTheXOffestWhileDraggingIfPastCriticalEdge()
   {
-    setUpTextBox();
+    setUpSingleLine();
     model.setSelectionOn(true);
     model.setSelectionIndex(0);
 
     processor.processMouseDragged(event(200, 5));
 
-    assertEquals(-61, model.getXOffset());
+    assertEquals(-51, model.getXOffset());
   }
 
   @Test
   public void wontGetCaughtOnAnEdgeUnableToFurtherDrag()
   {
-    setUpTextBox();
+    setUpSingleLine();
 
     processor.processMouseDragged(event(149, 5));
 
-    assertEquals(-1, model.getXOffset());
+    assertEquals(0, model.getXOffset());
   }
 
   @Test

@@ -3,6 +3,7 @@ package limelight.ui.text;
 import limelight.LimelightException;
 import limelight.util.StringUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TextLocation
@@ -59,7 +60,7 @@ public class TextLocation
   {
     if(obj instanceof TextLocation)
     {
-      TextLocation other = (TextLocation)obj;
+      TextLocation other = (TextLocation) obj;
       return this.line == other.line && this.index == other.index;
     }
     else
@@ -83,8 +84,55 @@ public class TextLocation
     return false;
   }
 
+  public boolean isAfter(TextLocation other)
+  {
+    return other.before(this);
+  }
+
   public boolean atStart()
   {
     return line == 0 && index == 0;
+  }
+
+  public boolean atEnd(ArrayList<TypedLayout> lines)
+  {
+    return line == lines.size() - 1 && index == lines.get(line).getText().length();
+  }
+
+  public TextLocation moved(ArrayList<TypedLayout> lines, int places)
+  {
+    int newLine = line;
+    int newIndex = index + places;
+    int lineLength = lines.get(newLine).visibleLength();
+
+    while(newIndex > lineLength)
+    {
+      newLine++;
+      newIndex -= lineLength + 1;
+      if(newLine >= lines.size())
+      {
+        newLine = lines.size() - 1;
+        newIndex = lineLength;
+      }
+      else
+        lineLength = lines.get(newLine).visibleLength();
+    }
+
+    while(newIndex < 0)
+    {
+      newLine--;
+      if(newLine < 0)
+      {
+        newLine = 0;
+        newIndex = 0;
+      }
+      else
+      {
+        lineLength = lines.get(newLine).visibleLength();
+        newIndex += lineLength + 1;
+      }
+    }
+
+    return TextLocation.at(newLine, newIndex);
   }
 }

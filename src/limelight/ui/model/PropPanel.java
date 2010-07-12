@@ -435,7 +435,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
   private void hoverOn()
   {
-    getStyle().applyScreen(getHoverStyle()); // TODO - MDM - This seems inefficient considering most of the time, there's no change in styles.
+    //TODO MDM - If the prop has no suface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
+    if(!getStyle().hasScreen())
+      getStyle().applyScreen(getHoverStyle()); // TODO - MDM - This seems inefficient considering most of the time, there's no change in styles.
 
     Cursor currentCursor = getRoot().getCursor();
     Cursor hoverCursor = getStyle().getCompiledCursor().getCursor();

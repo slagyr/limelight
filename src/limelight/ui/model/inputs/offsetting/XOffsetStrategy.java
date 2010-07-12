@@ -4,6 +4,7 @@ import limelight.ui.model.inputs.TextModel;
 
 public interface XOffsetStrategy
 {
+  XOffsetStrategy STATIONARY = new StationaryXOffsetStrategy();
   XOffsetStrategy CENTERED = new CenteredXOffsetStrategy();
   XOffsetStrategy FITTING = new FittingXOffsetStrategy();
 
