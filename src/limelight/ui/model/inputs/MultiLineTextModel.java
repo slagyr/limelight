@@ -50,7 +50,7 @@ public class MultiLineTextModel extends TextModel
       int lineHeight = line.getHeight();
       if(lineHeight > remainingY)
       {
-        int lineIndex = line.getIndexAt(point.x - getXOffset());
+        int lineIndex = line.getIndexAt(point.x - getXOffset(line));
         return TextLocation.at(lineNumber, lineIndex);
       }
       else
@@ -97,18 +97,12 @@ public class MultiLineTextModel extends TextModel
   }
 
   @Override
-  public TypedLayout getActiveLayout()
-  {
-    return getLines().get(getCaretLocation().line);
-  }
-
-  @Override
   public Box getCaretShape()
   {
     TextLocation caretLocation = getCaretLocation();
     TypedLayout line = getLines().get(caretLocation.line);
     Box caretShape = line.getCaretShape(caretLocation.index);
-    caretShape.translate(getXOffset(), getY(caretLocation));
+    caretShape.translate(getXOffset(line), getY(caretLocation));
     return caretShape;
   }
 
@@ -126,10 +120,10 @@ public class MultiLineTextModel extends TextModel
     for(int i = start.line; i <= end.line; i++)
     {
       TypedLayout line = lines.get(i);
-      int startX = i == start.line ? line.getX(start.index) : 0;
-      int endX = i == end.line ? line.getX(end.index) : getContainer().getWidth();
+      int startX = i == start.line ? line.getX(start.index) + getXOffset(line) : 0;
+      int endX = i == end.line ? line.getX(end.index) + getXOffset(line) : getContainer().getWidth();
 
-      regions.add(new Box(startX + getXOffset(), y, endX - startX, line.getHeight()));
+      regions.add(new Box(startX, y, endX - startX, line.getHeight()));
 
       y += line.getHeight() + line.getLeading();
     }

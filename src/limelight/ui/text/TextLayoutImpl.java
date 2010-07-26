@@ -85,6 +85,12 @@ public class TextLayoutImpl extends TypedLayout
     return getWidthOf(text);
   }
 
+  @Override
+  public int getVisibleWidth()
+  {
+    return getWidthOf(getVisibleText());
+  }
+
   public int getHeight()
   {
     return getMetrics().getAscent() + getMetrics().getDescent();

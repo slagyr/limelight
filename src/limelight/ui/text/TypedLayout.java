@@ -65,6 +65,7 @@ public abstract class TypedLayout
   public abstract float getLeading();
   public abstract int getWidthOf(String text);
   public abstract int getWidth();
+  public abstract int getVisibleWidth();
   public abstract int getHeight();
   public abstract int getHeightWithLeading();
   public abstract int getX(int index);
