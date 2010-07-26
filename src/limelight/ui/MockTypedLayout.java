@@ -73,6 +73,12 @@ public class MockTypedLayout extends TypedLayout
     return getWidthOf(text);
   }
 
+  @Override
+  public int getVisibleWidth()
+  {
+    return getWidth();
+  }
+
   public int getHeight()
   {
     return CHAR_HEIGHT;
@@ -90,6 +96,6 @@ public class MockTypedLayout extends TypedLayout
 
   public int getWidthOf(String text)
   {
-    return CHAR_WIDTH * text.length();
+    return CHAR_WIDTH * text.replace("\n", "").replace("\r", "").length();
   }
 }

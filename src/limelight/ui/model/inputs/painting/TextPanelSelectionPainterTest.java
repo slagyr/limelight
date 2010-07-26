@@ -1,5 +1,6 @@
 package limelight.ui.model.inputs.painting;
 
+import limelight.ui.MockGraphics;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.MultiLineTextModel;
@@ -11,12 +12,26 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TextPanelSelectionPainterTest extends AbstractTextPanelPainterTest
+public class TextPanelSelectionPainterTest
 {
+  public TextPanelPainter painter;
+  public TextModel model;
+  public MockTextContainer container;
+  public MockGraphics graphics;
+  
   @Before
   public void setUp()
   {
-    testClassInit();
+    container = new MockTextContainer();
+    container.bounds = new Box(0, 0, 150, 28);
+
+    model = new MultiLineTextModel(container);
+    model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
+    model.setText("Some Text");
+    model.setCaretIndex(4);
+
+    graphics = new MockGraphics();
+    container.cursorOn = true;
     painter = TextPanelSelectionPainter.instance;
     model.setSelectionOn(true);
     model.setSelectionIndex(6);

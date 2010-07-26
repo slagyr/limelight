@@ -10,6 +10,7 @@ import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
@@ -278,6 +279,53 @@ public class MultiLineTextModelTest
     assertEquals(TextLocation.at(3, 0), model.getCaretLocation());
     model.moveCaret(1);
     assertEquals(TextLocation.at(3, 1), model.getCaretLocation());
+  }
+
+  @Test
+  public void shouldSelectionRegionsWithCenteredText() throws Exception
+  {
+    container.getStyle().setHorizontalAlignment("center");
+    model.setText("1 line\nand\nanother line\n.");
+    model.setSelectionLocation(TextLocation.at(0, 0));
+    model.setSelectionOn(true);
+
+    ArrayList<Box> regions = model.getSelectionRegions();
+  
+    assertEquals(new Box(45, 0, 105, 10), regions.get(0));
+    assertEquals(new Box(0, 11, 150, 10), regions.get(1));
+    assertEquals(new Box(0, 22, 150, 10), regions.get(2));
+    assertEquals(new Box(0, 33, 80, 10), regions.get(3));
+  }
+
+  @Test
+  public void shouldGiveCaretShapeWithCenteredText() throws Exception
+  {
+    container.getStyle().setHorizontalAlignment("center");
+    model.setText("1 line\nand\nanother line\n.");
+                                                  
+    model.setCaretLocation(TextLocation.at(0, 0));
+    assertEquals(new Box(45, 0, 1, 10), model.getCaretShape());
+
+    model.setCaretLocation(TextLocation.at(1, 0));
+    assertEquals(new Box(60, 11, 1, 10), model.getCaretShape());
+
+    model.setCaretLocation(TextLocation.at(2, 0));
+    assertEquals(new Box(15, 22, 1, 10), model.getCaretShape());
+
+    model.setCaretLocation(TextLocation.at(3, 0));
+    assertEquals(new Box(70, 33, 1, 10), model.getCaretShape());
+  }
+
+  @Test
+  public void shouldGetLocationAtPointWithCenteredText() throws Exception
+  {
+    container.getStyle().setHorizontalAlignment("center");
+    model.setText("1 line\nand\nanother line\n.");
+    
+    assertEquals(TextLocation.at(0, 0), model.getLocationAt(new Point(45, 0)));
+    assertEquals(TextLocation.at(1, 0), model.getLocationAt(new Point(60, 11)));
+    assertEquals(TextLocation.at(2, 0), model.getLocationAt(new Point(15, 22)));
+    assertEquals(TextLocation.at(3, 0), model.getLocationAt(new Point(70, 33)));
   }
 
 }

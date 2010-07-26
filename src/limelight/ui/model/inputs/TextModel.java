@@ -31,11 +31,11 @@ public abstract class TextModel implements ClipboardOwner
   private TextLocation selectionLocation = TextLocation.at(0, 0);
   private TextLocation verticalOrigin;
 
+  //TODO MDM remove me
   public abstract boolean isMoveUpEvent(int keyCode);
 
+  //TODO MDM remove me
   public abstract boolean isMoveDownEvent(int keyCode);
-
-  public abstract TypedLayout getActiveLayout();
 
   public abstract Box getCaretShape();
 
@@ -79,6 +79,12 @@ public abstract class TextModel implements ClipboardOwner
   public int getXOffset()
   {
     return offset.x;
+  }
+
+  public int getXOffset(TypedLayout line)
+  {
+    HorizontalAlignmentValue horizontalAlignment = getContainer().getStyle().getCompiledHorizontalAlignment();
+    return horizontalAlignment.getX(line.getWidth(), getContainer().getBoundingBox());
   }
 
   public int getYOffset()
@@ -288,6 +294,8 @@ public abstract class TextModel implements ClipboardOwner
 
   public boolean isAtStartOfWord(int i)
   {
+    if(i < 0 || i > getText().length())
+      return true;
     return (text.charAt(i - 1) == ' ' || text.charAt(i - 1) == '\n') && (text.charAt(i) != ' ' && text.charAt(i) != '\n');
   }
 
@@ -296,11 +304,13 @@ public abstract class TextModel implements ClipboardOwner
     return caretLocation;
   }
 
+  //TODO MDM - Remove me
   public int getCaretIndex()
   {
     return caretLocation.toIndex(getLines());
   }
 
+  //TODO MDM - Remove me
   public void setCaretIndex(int index)
   {
     setCaretLocation(TextLocation.fromIndex(getLines(), index));
@@ -318,6 +328,7 @@ public abstract class TextModel implements ClipboardOwner
     recalculateOffset(xOffsetStrategy, yOffsetStrategy);
   }
 
+  //TODO MDM - Remove me
   public int getSelectionIndex()
   {
     return selectionLocation.toIndex(getLines());
@@ -328,6 +339,7 @@ public abstract class TextModel implements ClipboardOwner
     return selectionLocation;
   }
 
+  //TODO MDM - Remove me
   public void setSelectionIndex(int selectionIndex)
   {
     setSelectionLocation(TextLocation.fromIndex(getLines(), selectionIndex));

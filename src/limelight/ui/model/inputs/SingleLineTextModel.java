@@ -40,28 +40,26 @@ public class SingleLineTextModel extends TextModel
   public Dimension getTextDimensions()
   {
     //TODO MDM could cache here
-    TypedLayout activeLayout = getActiveLayout();
-    return new Dimension(activeLayout.getWidth(), activeLayout.getHeight());
+    return new Dimension(getLine().getWidth(), getLine().getHeight());
   }
 
   @Override
   public TextLocation getLocationAt(Point point)
   {
-    TypedLayout layout = getActiveLayout();
+    TypedLayout layout = getLine();
     int index = layout.getIndexAt(point.x - getXOffset());
     return TextLocation.at(0, index);
   }
 
   @Override
-  public TypedLayout getActiveLayout()
-  {
-    return getLines().get(0);
-  }
-
-  @Override
   public Box getCaretShape()
   {
-    return getActiveLayout().getCaretShape(getCaretIndex()).translated(getOffset());
+    return getLine().getCaretShape(getCaretIndex()).translated(getOffset());
+  }
+
+  private TypedLayout getLine()
+  {
+    return getLines().get(0);
   }
 
   public ArrayList<Box> getSelectionRegions()
@@ -72,7 +70,7 @@ public class SingleLineTextModel extends TextModel
     int end = Math.max(x1, x2);
 
     ArrayList<Box> regions = new ArrayList<Box>();
-    regions.add(new Box(start, 0, end - start, getActiveLayout().getHeight() + 1).translated(getOffset()));
+    regions.add(new Box(start, 0, end - start, getLine().getHeight() + 1).translated(getOffset()));
     return regions;
   }
 

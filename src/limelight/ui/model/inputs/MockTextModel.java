@@ -47,7 +47,7 @@ public class MockTextModel extends TextModel
   @Override
   public Dimension getTextDimensions()
   {
-    TypedLayout activeLayout = getActiveLayout();
+    TypedLayout activeLayout = getLines().get(0);
     return new Dimension(activeLayout.getWidth(), activeLayout.getHeight());
   }
 
@@ -55,12 +55,6 @@ public class MockTextModel extends TextModel
   public TextLocation getLocationAt(Point point)
   {
     return TextLocation.at(0, 0);
-  }
-
-  @Override
-  public TypedLayout getActiveLayout()
-  {
-    return getLines().get(0);
   }
 
   @Override
