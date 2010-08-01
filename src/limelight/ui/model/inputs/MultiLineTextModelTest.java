@@ -137,7 +137,7 @@ public class MultiLineTextModelTest
   public void canCalculateTheTextModelsDimensions()
   {
     model.setText("line 1\nline 2");
-    assertEquals(70, model.getTextDimensions().width);
+    assertEquals(60, model.getTextDimensions().width);
     assertEquals(20, model.getTextDimensions().height);
   }
 

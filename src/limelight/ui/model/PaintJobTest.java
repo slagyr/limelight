@@ -63,7 +63,7 @@ public class PaintJobTest extends TestCase
 
     job.paint(panel);
 
-    assertEquals(new Box(-99, -198, 1000, 1000), graphics.createdGraphicsBox);
+    assertEquals(new Box(-99, -198, 1000, 1000), graphics.subGraphics.get(0).clip);
   }
 
   public void testPanelIsInClip() throws Exception
@@ -165,7 +165,7 @@ public class PaintJobTest extends TestCase
     job.paintChildren(panel, graphics);
 
     assertEquals(new Box(12, 34, 56, 78), graphics.clippedRectangle);
-    assertEquals(new Box(123, 456, 100, 200), graphics.createdGraphicsBox);
+    assertEquals(new Box(123, 456, 100, 200), graphics.subGraphics.get(0).clip);
   }
 
   public void testFloaterArePutAtTheBackOfTheLine() throws Exception

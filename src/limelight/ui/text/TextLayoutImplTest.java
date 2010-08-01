@@ -133,11 +133,11 @@ public class TextLayoutImplTest
 //    assertEquals(6, layout.getIndexAt(40));
 //    assertEquals(6, layout.getIndexAt(44));
 //  }
-
-  @Test
-  public void shouldHaveSameWidthWithOrWithoutNewline() throws Exception
-  {
-    assertEquals(28, new TextLayoutImpl("blah", courier, context).getWidth());
-    assertEquals(28, new TextLayoutImpl("blah\n", courier, context).getWidth());
-  }
+//
+//  @Test
+//  public void shouldHaveSameWidthWithOrWithoutNewline() throws Exception
+//  {
+//    assertEquals(28, new TextLayoutImpl("blah", courier, context).getWidth());
+//    assertEquals(28, new TextLayoutImpl("blah\n", courier, context).getWidth());
+//  }
 }
