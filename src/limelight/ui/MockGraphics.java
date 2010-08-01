@@ -24,8 +24,7 @@ public class MockGraphics extends java.awt.Graphics2D
   public final Hashtable<Object, Object> hints;
   public Box clip;
   public Paint paint;
-  public Box createdGraphicsBox;
-  public MockGraphics createdGraphics;
+  public final LinkedList<MockGraphics> subGraphics = new LinkedList<MockGraphics>();
   public Box clippedRectangle;
   private Composite composite;
 
@@ -301,14 +300,17 @@ public class MockGraphics extends java.awt.Graphics2D
 
   public Graphics create()
   {
-    createdGraphics = new MockGraphics();
+    MockGraphics createdGraphics = new MockGraphics();
+    subGraphics.add(createdGraphics);
     return createdGraphics;
   }
 
   public Graphics create(int x, int y, int width, int height)
   {
-    createdGraphicsBox = new Box(x, y, width, height);
-    return super.create(x, y, width, height);
+    MockGraphics createdGraphics = new MockGraphics();
+    subGraphics.add(createdGraphics);
+    createdGraphics.clip = new Box(x, y, width, height);
+    return createdGraphics;
   }
 
   public Color getColor()

@@ -11,6 +11,7 @@ import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
+import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.*;
 import limelight.util.Box;
@@ -33,8 +34,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private Box boxInsidePadding;
   private Box childConsumableArea;
   private PaintAction afterPaintAction;
-  private ScrollBarPanel verticalScrollbar;
-  private ScrollBarPanel horizontalScrollbar;
+  private ScrollBar2Panel verticalScrollbar;
+  private ScrollBar2Panel horizontalScrollbar;
   private boolean sizeChangePending = true;
   public boolean borderChanged = true;
   public Dimension greediness = new Dimension(0, 0);
@@ -266,7 +267,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     boolean isVertical = e.getModifiers() % 2 == 0;
-    ScrollBarPanel scrollBar = isVertical ? verticalScrollbar : horizontalScrollbar;
+    ScrollBar2Panel scrollBar = isVertical ? verticalScrollbar : horizontalScrollbar;
     if(scrollBar != null)
       scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
     else
@@ -389,27 +390,26 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       attribute.applyChange(this, value);
   }
 
-  public ScrollBarPanel getVerticalScrollbar()
+  public ScrollBar2Panel getVerticalScrollbar()
   {
     return verticalScrollbar;
   }
 
-  public ScrollBarPanel getHorizontalScrollbar()
+  public ScrollBar2Panel getHorizontalScrollbar()
   {
     return horizontalScrollbar;
   }
 
   public void addVerticalScrollBar()
   {
-    verticalScrollbar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
-    verticalScrollbar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
+    verticalScrollbar = new ScrollBar2Panel(ScrollBar2Panel.VERTICAL);
     add(verticalScrollbar);
     childConsumableArea = null;
   }
 
   public void addHorizontalScrollBar()
   {
-    horizontalScrollbar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
+    horizontalScrollbar = new ScrollBar2Panel(ScrollBar2Panel.HORIZONTAL);
     add(horizontalScrollbar);
     childConsumableArea = null;
   }

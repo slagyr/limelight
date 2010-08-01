@@ -91,33 +91,33 @@ public class ScrollBarPanelTest extends TestCase
 
     assertEquals(true, dragged);
   }
-  
-  public void testChanges() throws Exception
-  {
-    ScenePanel root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
-    PropPanel parent = new PropPanel(new MockProp());
-    root.add(parent);
-    parent.add(panel);
-    parent.doLayout();
-    panel.setValue(50);
-
-    assertEquals(true, parent.needsLayout());
-  }
-
-  public void testParentIsMarkedAsChanged() throws Exception
-  {
-    ScenePanel root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
-    PropPanel parent = new PropPanel(new MockProp());
-    root.add(parent);
-    parent.add(panel);
-    parent.doLayout();
-
-    panel.setValue(50);
-
-    assertEquals(true, parent.needsLayout());
-  }
+//
+//  public void testChanges() throws Exception
+//  {
+//    ScenePanel root = new ScenePanel(new MockProp());
+//    root.setFrame(new MockPropFrame());
+//    PropPanel parent = new PropPanel(new MockProp());
+//    root.add(parent);
+//    parent.add(panel);
+//    parent.doLayout();
+//    panel.setValue(50);
+//
+//    assertEquals(true, parent.needsLayout());
+//  }
+//
+//  public void testParentIsMarkedAsChanged() throws Exception
+//  {
+//    ScenePanel root = new ScenePanel(new MockProp());
+//    root.setFrame(new MockPropFrame());
+//    PropPanel parent = new PropPanel(new MockProp());
+//    root.add(parent);
+//    parent.add(panel);
+//    parent.doLayout();
+//
+//    panel.setValue(50);
+//
+//    assertEquals(true, parent.needsLayout());
+//  }
 
   public void testConfigure() throws Exception
   {

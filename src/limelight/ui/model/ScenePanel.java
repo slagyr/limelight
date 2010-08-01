@@ -7,6 +7,7 @@ import limelight.*;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
+import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
@@ -319,7 +320,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     boolean isVertical = e.getModifiers() % 2 == 0;
-    ScrollBarPanel scrollBar = isVertical ? getVerticalScrollbar() : getHorizontalScrollbar();
+    ScrollBar2Panel scrollBar = isVertical ? getVerticalScrollbar() : getHorizontalScrollbar();
     if(scrollBar != null)
       scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
   }

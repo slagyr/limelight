@@ -7,19 +7,17 @@ import limelight.ui.model.Layout;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.PropPanelLayout;
 import limelight.ui.Panel;
-import limelight.util.Debug;
 import limelight.styles.Style;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
 public class ScrollLayout extends PropPanelLayout
 {
   private int orientation;
-  private JScrollBar scrollBar;
+  private ScrollBar2Panel scrollBar;
 
-  public ScrollLayout(int orientation, JScrollBar scrollBar)
+  public ScrollLayout(int orientation, ScrollBar2Panel scrollBar)
   {
     this.orientation = orientation;
     this.scrollBar = scrollBar;

@@ -8,6 +8,7 @@ import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.GreedyDimensionValue;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.Panel;
+import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 import limelight.LimelightException;
@@ -126,8 +127,8 @@ public class PropPanelLayout implements Layout
 
   private void layoutScrollBars(PropPanel panel, Dimension consumedDimensions)
   {
-    ScrollBarPanel vertical = panel.getVerticalScrollbar();
-    ScrollBarPanel horizontal = panel.getHorizontalScrollbar();
+    ScrollBar2Panel vertical = panel.getVerticalScrollbar();
+    ScrollBar2Panel horizontal = panel.getHorizontalScrollbar();
     Box area = panel.getChildConsumableArea();
     if(vertical != null)
     {
@@ -222,7 +223,7 @@ public class PropPanelLayout implements Layout
 
     for(Panel child : panel.getChildren())
     {
-      if(!(child instanceof ScrollBarPanel) && !child.isFloater())
+      if(!(child instanceof ScrollBar2Panel) && !child.isFloater())
       {
         if(!currentRow.isEmpty() && !currentRow.fits(child))
         {

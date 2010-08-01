@@ -7,6 +7,7 @@ import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
+import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 import limelight.Context;
@@ -203,11 +204,11 @@ public class PropPanelTest extends Assert
     panel.add(child);
 
     panel.addVerticalScrollBar();
-    ScrollBarPanel vertical = panel.getVerticalScrollbar();
+    ScrollBar2Panel vertical = panel.getVerticalScrollbar();
     vertical.setSize(15, 100);
     vertical.setLocation(85, 0);
     panel.addHorizontalScrollBar();
-    ScrollBarPanel horizontal = panel.getHorizontalScrollbar();
+    ScrollBar2Panel horizontal = panel.getHorizontalScrollbar();
     horizontal.setSize(100, 15);
     horizontal.setLocation(0, 85);
 
@@ -252,8 +253,8 @@ public class PropPanelTest extends Assert
 
     panel.mouseWheelMoved(e);
 
-    assertEquals(16, panel.getVerticalScrollbar().getScrollBar().getValue());
-    assertEquals(0, panel.getHorizontalScrollbar().getScrollBar().getValue());
+    assertEquals(16, panel.getVerticalScrollbar().getValue());
+    assertEquals(0, panel.getHorizontalScrollbar().getValue());
   }
 
   @Test
@@ -271,8 +272,8 @@ public class PropPanelTest extends Assert
 
     panel.mouseWheelMoved(e);
 
-    assertEquals(0, panel.getVerticalScrollbar().getScrollBar().getValue());
-    assertEquals(16, panel.getHorizontalScrollbar().getScrollBar().getValue());
+    assertEquals(0, panel.getVerticalScrollbar().getValue());
+    assertEquals(16, panel.getHorizontalScrollbar().getValue());
   }
 
   @Test
