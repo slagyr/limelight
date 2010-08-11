@@ -26,7 +26,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   protected boolean cursorOn;
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
-  protected MouseProcessor mouseProcessor;
+  protected TextPanelMouseProcessor mouseProcessor;
   private int lastKeyPressed;
 
   protected abstract void setDefaultStyles(Style style);

@@ -9,7 +9,8 @@ import limelight.Context;
 public abstract class Animation
 {
   private static final int MaxMakeups = 5;
-  
+  private static final double ONE_BILLION = 1000000000.0;
+
   private long delayNanos;
   private final NanoTimer timer = new NanoTimer();
   private boolean running;
@@ -23,10 +24,16 @@ public abstract class Animation
 
   protected abstract void doUpdate();
 
+  // TODO MDM What is updatesPerSecond is zero
   public void setUpdatesPerSecond(double updatesPerSecond)
   {
-    delayNanos = (long)(1000000000.0 / updatesPerSecond);
+    delayNanos = (long)(ONE_BILLION / updatesPerSecond);
     tolerableDelay = (long)(delayNanos * 0.95);
+  }
+
+  public double getUpdatesPerSecond()
+  {
+    return ONE_BILLION / delayNanos;
   }
 
   public long getDelayNanos()

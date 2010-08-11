@@ -11,7 +11,7 @@ public class TextBox2Panel extends TextInputPanel
   public TextBox2Panel()
   {
     model = new SingleLineTextModel(this);
-    mouseProcessor = new MouseProcessor(model);
+    mouseProcessor = new TextPanelMouseProcessor(model);
   }
 
   @Override

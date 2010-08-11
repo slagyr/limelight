@@ -2,6 +2,7 @@ package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.model.inputs.ScrollBar2Panel;
+import limelight.util.Box;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -107,9 +108,9 @@ public class ScrollBarPainterTest
 
     MockGraphics fillerGraphics = graphics.subGraphics.get(0);
     assertEquals(13, fillerGraphics.clip.x);
-    assertEquals(-11, fillerGraphics.drawnImages.get(0).x);
-    assertEquals(6, fillerGraphics.drawnImages.get(1).x);
-    assertEquals(23, fillerGraphics.drawnImages.get(2).x);
+    assertEquals(-5, fillerGraphics.drawnImages.get(0).x);
+    assertEquals(12, fillerGraphics.drawnImages.get(1).x);
+    assertEquals(29, fillerGraphics.drawnImages.get(2).x);
   }
 
   @Test
@@ -127,8 +128,122 @@ public class ScrollBarPainterTest
 
     MockGraphics fillerGraphics = graphics.subGraphics.get(0);
     assertEquals(13, fillerGraphics.clip.y);
-    assertEquals(-11, fillerGraphics.drawnImages.get(0).y);
-    assertEquals(6, fillerGraphics.drawnImages.get(1).y);
-    assertEquals(23, fillerGraphics.drawnImages.get(2).y);
+    assertEquals(-5, fillerGraphics.drawnImages.get(0).y);
+    assertEquals(12, fillerGraphics.drawnImages.get(1).y);
+    assertEquals(29, fillerGraphics.drawnImages.get(2).y);
+  }
+
+  @Test
+  public void paintsAtTheCorrectStartingPointVertically() throws Exception
+  {
+    setUpVertically();
+    scrollBar.configure(10, 100);
+    scrollBar.setValue(50);
+
+    painter.paintOn(graphics, scrollBar);
+    
+    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
+    assertEquals(scrollBar.getGemLocation(), outsideGemCap.y);
+  }
+
+  @Test
+  public void paintsAtTheCorrectStartingPointHorizontally() throws Exception
+  {
+    setUpHorizontally();
+    scrollBar.configure(10, 100);
+    scrollBar.setValue(50);
+
+    painter.paintOn(graphics, scrollBar);
+
+    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
+    assertEquals(scrollBar.getGemLocation(), outsideGemCap.x);
+  }
+
+  @Test
+  public void paintsActivatedIncreasingButtonVertically() throws Exception
+  {
+    setUpVertically();
+    scrollBar.setIncreasingButtonActive(true);
+
+    painter.paintOn(graphics, scrollBar);
+
+    assertEquals(images.buttonsOutsideSelected, graphics.drawnImages.get(11).image);
+  }
+
+  @Test
+  public void paintsActivatedDecreasingButtonVertically() throws Exception
+  {
+    setUpVertically();
+    scrollBar.setDecreasingButtonActive(true);
+
+    painter.paintOn(graphics, scrollBar);
+
+    assertEquals(images.buttonsInsideSelected, graphics.drawnImages.get(11).image);
+  }
+
+  @Test
+  public void paintsActivatedIncreasingButtonHorizontally() throws Exception
+  {
+    setUpHorizontally();
+    scrollBar.setIncreasingButtonActive(true);
+
+    painter.paintOn(graphics, scrollBar);
+
+    assertEquals(images.buttonsOutsideSelected, graphics.drawnImages.get(11).image);
+  }
+  
+  @Test
+  public void paintsActivatedDecreasingButtonHorizontally() throws Exception
+  {
+    setUpHorizontally();
+    scrollBar.setDecreasingButtonActive(true);
+
+    painter.paintOn(graphics, scrollBar);
+
+    assertEquals(images.buttonsInsideSelected, graphics.drawnImages.get(11).image);
+  }
+
+  @Test
+  public void shouldBuildIncreaseBoxForHorizontal() throws Exception
+  {
+    setUpHorizontally();
+    scrollBar.setSize(100, 15);
+
+    Box increasing = painter.getIncreasingBox(scrollBar);
+
+    assertEquals(new Box(82, 0, 18, 15), increasing);
+  }
+
+  @Test
+  public void shouldBuildIncreaseBoxForVertical() throws Exception
+  {
+    setUpVertically();
+    scrollBar.setSize(15, 100);
+
+    Box increasing = painter.getIncreasingBox(scrollBar);
+
+    assertEquals(new Box(0, 82, 15, 18), increasing);
+  }
+
+  @Test
+  public void shouldBuildDecreaseBoxForHorizontal() throws Exception
+  {
+    setUpHorizontally();
+    scrollBar.setSize(100, 15);
+
+    Box increasing = painter.getDecreasingBox(scrollBar);
+
+    assertEquals(new Box(64, 0, 18, 15), increasing);
+  }
+
+  @Test
+  public void shouldBuildDecreaseBoxForVertical() throws Exception
+  {
+    setUpVertically();
+    scrollBar.setSize(15, 100);
+
+    Box increasing = painter.getDecreasingBox(scrollBar);
+
+    assertEquals(new Box(0, 64, 15, 18), increasing);
   }
 }
