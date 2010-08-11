@@ -7,12 +7,8 @@ import limelight.ui.model.ScenePanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.MockPropFrame;
 import limelight.ui.api.MockProp;
-import limelight.ui.model.inputs.painting.ScrollBarPainter;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.*;
-import java.awt.event.MouseEvent;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -20,16 +16,16 @@ public class ScrollBar2PanelTest
 {
   private ScrollBar2Panel verticalScrollBar;
   private ScrollBar2Panel horizontalScrollBar;
-  private boolean clicked;
-  private boolean pressed;
-  private boolean released;
-  private boolean dragged;
 
   @Before
   public void setUp() throws Exception
   {
     verticalScrollBar = new ScrollBar2Panel(ScrollBar2Panel.VERTICAL);
+    verticalScrollBar.setSize(15, 100);
+    verticalScrollBar.configure(10, 100);
     horizontalScrollBar = new ScrollBar2Panel(ScrollBar2Panel.HORIZONTAL);
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(10, 100);
   }
 
   @Test
@@ -59,48 +55,8 @@ public class ScrollBar2PanelTest
     assertEquals(15, horizontalScrollBar.getHeight());
   }
 
-//  @Test
-//  public void shouldMousePressedCaptured() throws Exception
-//  {
-////    addMouseListener();
-//
-//    verticalScrollBar.mousePressed(new MouseEvent(new java.awt.Panel(), 1, 2, 3, 4, 5, 6, false));
-//
-//    assertEquals(true, pressed);
-//  }
-//
-//  @Test
-//  public void shouldMouseReleasedCaptured() throws Exception
-//  {
-////    addMouseListener();
-//
-//    verticalScrollBar.mouseReleased(new MouseEvent(new java.awt.Panel(), 1, 2, 3, 4, 5, 6, false));
-//
-//    assertEquals(true, released);
-//  }
-//
-//  @Test
-//  public void shouldMouseClickedCaptured() throws Exception
-//  {
-////    addMouseListener();
-//
-//    verticalScrollBar.mouseClicked(new MouseEvent(new java.awt.Panel(), 1, 2, 3, 4, 5, 6, false));
-//
-//    assertEquals(true, clicked);
-//  }
-//
-//  @Test
-//  public void shouldMouseDragCaptured() throws Exception
-//  {
-////    addMouseMotionListener();
-//
-//    verticalScrollBar.mouseDragged(new MouseEvent(new java.awt.Panel(), 1, 2, 3, 4, 5, 6, false));
-//
-//    assertEquals(true, dragged);
-//  }
-
   @Test
-  public void shouldChanges() throws Exception
+  public void changesCausesLayout() throws Exception
   {
     ScenePanel root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
@@ -188,6 +144,21 @@ public class ScrollBar2PanelTest
     horizontalScrollBar.setValue(50);
     assertEquals(36, horizontalScrollBar.getGemLocation());
   }
+  
+  @Test
+  public void CannotSetValueLessThanMin() throws Exception
+  {
+    verticalScrollBar.setValue(-1);
 
+    assertEquals(0, verticalScrollBar.getValue());
+  }
+  
+  @Test
+  public void CannotSetValueHigherThanMax() throws Exception
+  {
+    verticalScrollBar.configure(10, 100);
+    verticalScrollBar.setValue(1000);
 
+    assertEquals(verticalScrollBar.getMaxValue(), verticalScrollBar.getValue());
+  }
 }

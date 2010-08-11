@@ -27,8 +27,8 @@ public class ScrollLayout extends PropPanelLayout
   {
     PropPanel panel = (PropPanel) aPanel;
     panel.resetLayout();
-    int dx = orientation == ScrollBarPanel.HORIZONTAL ? scrollBar.getValue() : 0;
-    int dy = orientation == ScrollBarPanel.VERTICAL ? scrollBar.getValue() : 0;
+    int dx = orientation == ScrollBar2Panel.HORIZONTAL ? scrollBar.getValue() : 0;
+    int dy = orientation == ScrollBar2Panel.VERTICAL ? scrollBar.getValue() : 0;
 
     LinkedList<PropPanelLayout.Row> rows = buildRows(panel);
     Dimension consumedDimensions = new Dimension();

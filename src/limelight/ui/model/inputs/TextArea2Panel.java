@@ -12,7 +12,7 @@ public class TextArea2Panel extends TextInputPanel
   public TextArea2Panel()
   {
     model = new MultiLineTextModel(this);
-    mouseProcessor = new MouseProcessor(model);
+    mouseProcessor = new TextPanelMouseProcessor(model);
     focused = true;
   }
 

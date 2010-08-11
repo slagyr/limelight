@@ -209,6 +209,7 @@ public abstract class BasePanel implements Panel
     return BasePanelLayout.instance;
   }
 
+  // TODO MDM The mouse events should delegate to a mouse processor... so that we don't have to delegate in multiple subclasses.
   public void mousePressed(MouseEvent e)
   { 
     parent.mousePressed(e);

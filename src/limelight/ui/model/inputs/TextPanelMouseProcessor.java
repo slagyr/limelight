@@ -12,14 +12,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class MouseProcessor
+public class TextPanelMouseProcessor
 {
   TextModel model;
   public long lastClickTime;
   public boolean doubleClickOn;
   private static final int MULTI_CLICK_MILLIS = 300;
 
-  public MouseProcessor(TextModel model)
+  public TextPanelMouseProcessor(TextModel model)
   {
     this.model = model;
   }

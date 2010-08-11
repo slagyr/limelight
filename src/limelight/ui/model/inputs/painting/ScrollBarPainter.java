@@ -10,13 +10,14 @@ import java.io.IOException;
 
 public class ScrollBarPainter
 {
-  public static int OUTSIDE_CUSHION = 5;
-  public static int INSIDE_CUSHION = 33;
-  public static int MIN_GEM_SIZE = 16;
+  public static final int OUTSIDE_CUSHION = 5;
+  public static final int INSIDE_CUSHION = 33;
+  public static final int MIN_GEM_SIZE = 16;
+  private static final int INCREASING_BOX_LENGTH = 18;
+  private static final int DECREASING_BOX_LENGTH = 18;
 
   public static ScrollBarImages horizontalImages;
   public static ScrollBarImages verticalImages;
-
   public static ScrollBarPainter instance = new ScrollBarPainter();
 
   public static class ScrollBarImages
@@ -50,8 +51,8 @@ public class ScrollBarPainter
       verticalImages = new ScrollBarImages();
       verticalImages.background = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_background.png"));
       verticalImages.buttons = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons.png"));
-      verticalImages.buttonsInsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_down_selected.png"));
-      verticalImages.buttonsOutsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_up_selected.png"));
+      verticalImages.buttonsInsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_up_selected.png"));
+      verticalImages.buttonsOutsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_down_selected.png"));
       verticalImages.cap = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_cap.png"));
       verticalImages.gemCapInside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_bottom.png"));
       verticalImages.gemCapOutside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_top.png"));
@@ -93,15 +94,34 @@ public class ScrollBarPainter
       drawVertically(graphics, bounds, scrollBar);
   }
 
+  public Box getIncreasingBox(ScrollBar2Panel scrollBar)
+  {
+    Box bounds = scrollBar.getAbsoluteBounds();
+    if(scrollBar.isHorizontal())
+      return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH, bounds.y, INCREASING_BOX_LENGTH, bounds.height);
+    else
+      return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
+  }
+  
+  public Box getDecreasingBox(ScrollBar2Panel scrollBar)
+  {
+    Box bounds = scrollBar.getAbsoluteBounds();
+    if(scrollBar.isHorizontal())
+      return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.y, DECREASING_BOX_LENGTH, bounds.height);
+    else
+      return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
+  }
+
   private static void drawVertically(Graphics2D graphics, Box bounds, ScrollBar2Panel scrollBar)
   {
     ScrollBarImages images = verticalImages;
     for(int y = 0; y < bounds.height; y += images.background.getHeight())
       graphics.drawImage(images.background, 0, y, null);
     graphics.drawImage(images.cap, 0, 0, null);
-    graphics.drawImage(images.buttons, 0, bounds.height - images.buttons.getHeight(), null);
 
-    int y = OUTSIDE_CUSHION;
+    graphics.drawImage(buttonsImageFor(scrollBar, images), 0, bounds.height - images.buttons.getHeight(), null);
+
+    int y = scrollBar.getGemLocation();
     graphics.drawImage(images.gemCapOutside, 0, y, null);
     y += images.gemCapOutside.getHeight();
 
@@ -110,15 +130,25 @@ public class ScrollBarPainter
     graphics.drawImage(images.gemCapInside, 0, y, null);
   }
 
+  private static BufferedImage buttonsImageFor(ScrollBar2Panel scrollBar, ScrollBarImages images)
+  {
+    if(scrollBar.isDecreasingButtonActive())
+      return images.buttonsInsideSelected;
+    else if(scrollBar.isIncreasingButtonActive())
+      return images.buttonsOutsideSelected;
+    else
+      return images.buttons;
+  }
+
   private static void drawHorizontally(Graphics2D graphics, Box bounds, ScrollBar2Panel scrollBar)
   {
     ScrollBarImages images = horizontalImages;
     for(int x = 0; x < bounds.width; x += images.background.getWidth())
       graphics.drawImage(images.background, x, 0, null);
     graphics.drawImage(images.cap, 0, 0, null);
-    graphics.drawImage(images.buttons, bounds.width - images.buttons.getWidth(), 0, null);
+    graphics.drawImage(buttonsImageFor(scrollBar, images), bounds.width - images.buttons.getWidth(), 0, null);
 
-    int x = OUTSIDE_CUSHION;
+    int x = scrollBar.getGemLocation();
     graphics.drawImage(images.gemCapOutside, x, 0, null);
     x += images.gemCapOutside.getWidth();
 
@@ -129,12 +159,12 @@ public class ScrollBarPainter
 
   private static int paintHorizontalFiller(Graphics2D graphics, ScrollBar2Panel scrollBar, ScrollBarImages images, int x)
   {
-    int fillerSize = scrollBar.getGemSize() - images.gemCapOutside.getWidth() - images.gemCapInside.getWidth(); 
+    int fillerSize = scrollBar.getGemSize() - images.gemCapOutside.getWidth() - images.gemCapInside.getWidth();
     if(fillerSize > 0)
     {
       Graphics fillerGraphics = graphics.create(x, 0, fillerSize, images.gemFiller.getHeight());
       int fillerWidth = images.gemFiller.getWidth();
-      int fillerX = -(fillerWidth - (fillerSize % fillerWidth));
+      int fillerX = scrollBar.getGemLocation() % fillerWidth * -1;
       while(fillerX < fillerSize)
       {
         fillerGraphics.drawImage(images.gemFiller, fillerX, 0, null);
@@ -152,7 +182,7 @@ public class ScrollBarPainter
     {
       Graphics fillerGraphics = graphics.create(0, y, images.gemFiller.getWidth(), fillerSize);
       int fillerHeight = images.gemFiller.getHeight();
-      int fillerY = -(fillerHeight - (fillerSize % fillerHeight));
+      int fillerY = scrollBar.getGemLocation() % fillerHeight * -1;
       while(fillerY < fillerSize)
       {
         fillerGraphics.drawImage(images.gemFiller, 0, fillerY, null);

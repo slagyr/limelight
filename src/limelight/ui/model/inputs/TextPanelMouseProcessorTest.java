@@ -14,9 +14,9 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-public class MouseProcessorTest
+public class TextPanelMouseProcessorTest
 {
-  MouseProcessor processor;
+  TextPanelMouseProcessor processor;
   MockTextContainer container;
   TextModel model;
   PropPanel parent;
@@ -51,7 +51,7 @@ public class MouseProcessorTest
     model.setText(text);
     model.setCaretIndex(0);
 
-    processor = new MouseProcessor(model);
+    processor = new TextPanelMouseProcessor(model);
   }
   
   @Test

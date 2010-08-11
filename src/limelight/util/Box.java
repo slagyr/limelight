@@ -68,4 +68,10 @@ public class Box extends java.awt.Rectangle
     translate(offset.x, offset.y);
     return this;
   }
+
+  public Box translated(int x, int y)
+  {
+    translate(x, y);
+    return this;
+  }
 }

@@ -6,7 +6,9 @@ package limelight.ui.model.inputs;
 import limelight.styles.ScreenableStyle;
 import limelight.ui.model.BasePanel;
 import limelight.ui.model.inputs.painting.ScrollBarPainter;
+import limelight.util.Box;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -15,7 +17,9 @@ public class ScrollBar2Panel extends BasePanel
   public static final int VERTICAL = 0;
   public static final int HORIZONTAL = 1;
 
-  private ScrollBarPainter painter;
+  private ScrollBarPainter painter = ScrollBarPainter.instance;
+  private ScrollMouseProcessor mouseProcessor = new ScrollMouseProcessor(this);
+
   private final int preferredGirth;
   private int orientation;
   private int availableAmount;
@@ -29,10 +33,13 @@ public class ScrollBar2Panel extends BasePanel
   private int minGemLocation;
   private int maxGemLocation;
   private int gemPlay;
+  private Box increasingButtonBounds;
+  private Box decreasingButtonBounds;
+  private boolean increasingButtonActive;
+  private boolean decreasingButtonActive;
 
   public ScrollBar2Panel(int orientation)
   {
-    painter = ScrollBarPainter.instance;
     this.orientation = orientation;
     if(getOrientation() == VERTICAL)
       preferredGirth = width = 15;
@@ -60,6 +67,7 @@ public class ScrollBar2Panel extends BasePanel
     return getParent().getStyle();
   }
 
+  @Override
   public void setSize(int width, int height)
   {
     if(getOrientation() == VERTICAL)
@@ -67,6 +75,11 @@ public class ScrollBar2Panel extends BasePanel
     else
       height = preferredGirth;
     super.setSize(width, height);
+
+    increasingButtonBounds = painter.getIncreasingBox(this);
+    decreasingButtonBounds = painter.getDecreasingBox(this);
+
+    markAsDirty();
   }
 
   public void setHeight(int height)
@@ -79,20 +92,46 @@ public class ScrollBar2Panel extends BasePanel
     setSize(width, preferredGirth);
   }
 
+  @Override
   public void mousePressed(MouseEvent e)
   {
+    mouseProcessor.mousePressed(e);
   }
 
+  @Override
   public void mouseReleased(MouseEvent e)
-  {
+  { 
+    mouseProcessor.mouseReleased(e);
   }
 
+  @Override
   public void mouseClicked(MouseEvent e)
   {
+    mouseProcessor.mouseClicked(e);
   }
 
+  @Override
   public void mouseDragged(MouseEvent e)
   {
+    mouseProcessor.mouseDragged(e);
+  }
+
+  @Override
+  public void mouseEntered(MouseEvent e)
+  {
+    mouseProcessor.mouseEntered(e);
+  }
+
+  @Override
+  public void mouseExited(MouseEvent e)
+  {
+    mouseProcessor.mouseExited(e);
+  }
+
+  @Override
+  public void mouseMoved(MouseEvent e)
+  {
+    mouseProcessor.mouseMoved(e);
   }
 
   public void paintOn(Graphics2D graphics)
@@ -107,7 +146,12 @@ public class ScrollBar2Panel extends BasePanel
 
   public void setValue(int value)
   {
-    if(this.value != value)
+    if(value < 0)
+      value = 0;
+    else if(value > maxValue)
+      value = maxValue;
+
+    if(value != getValue())
     {
       this.value = value;
       calculateGemLocation();
@@ -126,6 +170,11 @@ public class ScrollBar2Panel extends BasePanel
   public int getValue()
   {
     return value;
+  }
+
+  public int getMaxValue()
+  {
+    return maxValue;
   }
 
   public int getAvailableAmount()
@@ -160,7 +209,7 @@ public class ScrollBar2Panel extends BasePanel
       availableAmount = available;
       visibleAmount = visible;
       maxValue = available - visible;
-      unitIncrement = (int) (visible * 0.1);
+      unitIncrement = (int) (visible * 0.05);
       blockIncrement = (int) (visible * 0.9);
       calculateGemSize();
       calculateGemLocation();
@@ -184,7 +233,6 @@ public class ScrollBar2Panel extends BasePanel
   {
     double valueRatio = (double)value / maxValue;
     gemLocation = minGemLocation + (int)(gemPlay * valueRatio + 0.5);
-    
   }
 
   public boolean isHorizontal()
@@ -195,5 +243,40 @@ public class ScrollBar2Panel extends BasePanel
   public int getGemLocation()
   {
     return gemLocation;
+  }
+
+  public Box getIncreasingButtonBounds()
+  {
+    return increasingButtonBounds;
+  }
+
+  public Box getDecreasingButtonBounds()
+  {
+    return decreasingButtonBounds;
+  }
+
+  public ScrollMouseProcessor getMouseProcessor()
+  {
+    return mouseProcessor;
+  }
+
+  public boolean isIncreasingButtonActive()
+  {
+    return increasingButtonActive;
+  }
+
+  public boolean isDecreasingButtonActive()
+  {
+    return decreasingButtonActive;
+  }
+
+  public void setIncreasingButtonActive(boolean value)
+  {
+    increasingButtonActive = value;
+  }
+
+  public void setDecreasingButtonActive(boolean value)
+  {
+    decreasingButtonActive = value;
   }
 }
