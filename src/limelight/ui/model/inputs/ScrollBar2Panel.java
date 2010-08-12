@@ -8,7 +8,6 @@ import limelight.ui.model.BasePanel;
 import limelight.ui.model.inputs.painting.ScrollBarPainter;
 import limelight.util.Box;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -37,6 +36,8 @@ public class ScrollBar2Panel extends BasePanel
   private Box decreasingButtonBounds;
   private boolean increasingButtonActive;
   private boolean decreasingButtonActive;
+  private Box trackBounds;
+  private Box gemBounds = new Box(0, 0, 0, 0);
 
   public ScrollBar2Panel(int orientation)
   {
@@ -78,6 +79,7 @@ public class ScrollBar2Panel extends BasePanel
 
     increasingButtonBounds = painter.getIncreasingBox(this);
     decreasingButtonBounds = painter.getDecreasingBox(this);
+    trackBounds = painter.getTrackBox(this);
 
     markAsDirty();
   }
@@ -95,7 +97,14 @@ public class ScrollBar2Panel extends BasePanel
   @Override
   public void mousePressed(MouseEvent e)
   {
-    mouseProcessor.mousePressed(e);
+    mouseProcessor.mousePressed(translatedMouseEvent(e));
+  }
+
+  private MouseEvent translatedMouseEvent(MouseEvent e)
+  {
+    Point p = e.getPoint();
+    e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), p.x - getAbsoluteLocation().x, p.y - getAbsoluteLocation().y, e.getClickCount(), false);
+    return e;
   }
 
   @Override
@@ -231,12 +240,22 @@ public class ScrollBar2Panel extends BasePanel
     minGemLocation = painter.getOutsideCusion();
     maxGemLocation = fullSize - painter.getInsideCushion() - gemSize;
     gemPlay = maxGemLocation - minGemLocation;
+
+    if(isHorizontal())
+      gemBounds.width = gemSize;
+    else
+      gemBounds.height = gemSize;
   }
 
   private void calculateGemLocation()
   {
     double valueRatio = (double)value / maxValue;
     gemLocation = minGemLocation + (int)(gemPlay * valueRatio + 0.5);
+
+    if(isHorizontal())
+      gemBounds.x = gemLocation;
+    else
+      gemBounds.y = gemLocation;
   }
 
   public boolean isHorizontal()
@@ -249,6 +268,16 @@ public class ScrollBar2Panel extends BasePanel
     return gemLocation;
   }
 
+  public int getMinGemLocation()
+  {
+    return minGemLocation;
+  }
+
+  public int getMaxGemLocation()
+  {
+    return maxGemLocation;
+  }
+
   public Box getIncreasingButtonBounds()
   {
     return increasingButtonBounds;
@@ -257,6 +286,16 @@ public class ScrollBar2Panel extends BasePanel
   public Box getDecreasingButtonBounds()
   {
     return decreasingButtonBounds;
+  }
+
+  public Box getTrackBounds()
+  {
+    return trackBounds;
+  }
+  
+  public Box getGemBounds()
+  {
+    return gemBounds;
   }
 
   public ScrollMouseProcessor getMouseProcessor()

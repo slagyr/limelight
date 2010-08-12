@@ -181,4 +181,38 @@ public class ScrollMouseProcessorTest
     assertEquals(false, verticalProcessor.getRepeater().isRunning());
     assertEquals(false, verticalScrollBar.isIncreasingButtonActive());
   }
+
+  @Test
+  public void pressingTrackIncreasesByBlockVertically() throws Exception
+  {
+    press(verticalScrollBar, 7, 60);
+
+    assertEquals(verticalScrollBar.getBlockIncrement(), verticalScrollBar.getValue());
+  }
+
+  @Test
+  public void pressingTrackDecreasesByBlockVertically() throws Exception
+  {
+    verticalScrollBar.setValue(verticalScrollBar.getMaxValue());
+    press(verticalScrollBar, 7, 10);
+
+    assertEquals(verticalScrollBar.getMaxValue() - verticalScrollBar.getBlockIncrement(), verticalScrollBar.getValue());
+  }
+
+  @Test
+  public void pressingTrackIncreasesByBlockHorizontally() throws Exception
+  {
+    press(horizontalScrollBar, 60, 7);
+
+    assertEquals(horizontalScrollBar.getBlockIncrement(), horizontalScrollBar.getValue());
+  }
+  
+  @Test
+  public void pressingTrackDecreasesByBlockHorizontally() throws Exception
+  {
+    horizontalScrollBar.setValue(horizontalScrollBar.getMaxValue());
+    press(horizontalScrollBar, 10, 7);
+
+    assertEquals(horizontalScrollBar.getMaxValue() - horizontalScrollBar.getBlockIncrement(), horizontalScrollBar.getValue());
+  }
 }
