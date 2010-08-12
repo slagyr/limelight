@@ -63,11 +63,57 @@ public class ScrollMouseProcessorTest
     scrollBar.mouseReleased(event(x, y));
   }
 
+
+  @Test
+  public void pressingHorizontalIncreaseScrollButtonWillIncrement() throws Exception
+  {
+    assertEquals(false, horizontalScrollBar.isIncreasingButtonActive());
+
+    press(horizontalScrollBar, 90, 7);
+
+    assertEquals(true, horizontalScrollBar.isIncreasingButtonActive());
+    assertEquals(5, horizontalScrollBar.getValue());
+  }
+
+  @Test
+  public void pressingHorizontalDecreaseScrollButtonWillDecrement() throws Exception
+  {
+    horizontalScrollBar.setValue(50);
+    assertEquals(false, horizontalScrollBar.isDecreasingButtonActive());
+
+    press(horizontalScrollBar, 80, 7);
+
+    assertEquals(true, horizontalScrollBar.isDecreasingButtonActive());
+    assertEquals(45, horizontalScrollBar.getValue());
+  }
+
+  @Test
+  public void pressingVerticalIncreaseScrollButtonWillIncrement() throws Exception
+  {
+    assertEquals(false, verticalScrollBar.isIncreasingButtonActive());
+
+    press(verticalScrollBar, 7, 90);
+
+    assertEquals(true, verticalScrollBar.isIncreasingButtonActive());
+    assertEquals(5, verticalScrollBar.getValue());
+  }
+
+  @Test
+  public void pressingVerticalDecreaseScrollButtonWillDecrement() throws Exception
+  {
+    verticalScrollBar.setValue(50);
+    assertEquals(false, verticalScrollBar.isDecreasingButtonActive());
+
+    press(verticalScrollBar, 7, 80);
+
+    assertEquals(true, verticalScrollBar.isDecreasingButtonActive());
+    assertEquals(45, verticalScrollBar.getValue());
+  }
+
   @Test
   public void pressingHorizontalIncreaseScrollButtonWillStartRepeater() throws Exception
   {
     ScrollRepeater repeater = horizontalProcessor.getRepeater();
-    assertEquals(false, horizontalScrollBar.isIncreasingButtonActive());
     assertEquals(false, repeater.isRunning());
 
     press(horizontalScrollBar, 90, 7);
@@ -75,14 +121,12 @@ public class ScrollMouseProcessorTest
     assertEquals(true, repeater.isRunning());
 //    assertEquals(5, repeater.getUpdatesPerSecond(), 0.01);
     assertEquals(horizontalScrollBar.getUnitIncrement(), repeater.getScrollDelta());
-    assertEquals(true, horizontalScrollBar.isIncreasingButtonActive());
   }
 
   @Test
   public void pressingHorizontalDecreaseScrollButtonWillStartRepeater() throws Exception
   {
     ScrollRepeater repeater = horizontalProcessor.getRepeater();
-    assertEquals(false, horizontalScrollBar.isDecreasingButtonActive());
     assertEquals(false, repeater.isRunning());
 
     press(horizontalScrollBar, 80, 7);
@@ -90,14 +134,12 @@ public class ScrollMouseProcessorTest
     assertEquals(true, repeater.isRunning());
 //    assertEquals(5, repeater.getUpdatesPerSecond(), 0.01);
     assertEquals(-horizontalScrollBar.getUnitIncrement(), repeater.getScrollDelta());
-    assertEquals(true, horizontalScrollBar.isDecreasingButtonActive());
   }
 
   @Test
   public void pressingVerticalIncreaseScrollButtonWillStartRepeater() throws Exception
   {
     ScrollRepeater repeater = verticalProcessor.getRepeater();
-    assertEquals(false, verticalScrollBar.isIncreasingButtonActive());
     assertEquals(false, repeater.isRunning());
 
     press(verticalScrollBar, 7, 90);
@@ -105,14 +147,12 @@ public class ScrollMouseProcessorTest
     assertEquals(true, repeater.isRunning());
 //    assertEquals(5, repeater.getUpdatesPerSecond(), 0.01);
     assertEquals(verticalScrollBar.getUnitIncrement(), repeater.getScrollDelta());
-    assertEquals(true, verticalScrollBar.isIncreasingButtonActive());
   }
 
   @Test
   public void pressingVerticalDecreaseScrollButtonWillStartRepeater() throws Exception
   {
     ScrollRepeater repeater = verticalProcessor.getRepeater();
-    assertEquals(false, verticalScrollBar.isDecreasingButtonActive());
     assertEquals(false, repeater.isRunning());
 
     press(verticalScrollBar, 7, 80);
@@ -120,7 +160,6 @@ public class ScrollMouseProcessorTest
     assertEquals(true, repeater.isRunning());
 //    assertEquals(5, repeater.getUpdatesPerSecond(), 0.01);
     assertEquals(-verticalScrollBar.getUnitIncrement(), repeater.getScrollDelta());
-    assertEquals(true, verticalScrollBar.isDecreasingButtonActive());
   }
   
   @Test

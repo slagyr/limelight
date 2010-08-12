@@ -24,7 +24,7 @@ public class ScrollBar2Panel extends BasePanel
   private int orientation;
   private int availableAmount;
   private int visibleAmount;
-  private int unitIncrement;
+  private int unitIncrement = 5;
   private int blockIncrement;
   private int value;
   private int maxValue;
@@ -192,6 +192,11 @@ public class ScrollBar2Panel extends BasePanel
     return unitIncrement;
   }
 
+  public void setUnitIncrement(int unitIncrement)
+  {
+    this.unitIncrement = unitIncrement;
+  }
+
   public int getBlockIncrement()
   {
     return blockIncrement;
@@ -209,7 +214,6 @@ public class ScrollBar2Panel extends BasePanel
       availableAmount = available;
       visibleAmount = visible;
       maxValue = available - visible;
-      unitIncrement = (int) (visible * 0.05);
       blockIncrement = (int) (visible * 0.9);
       calculateGemSize();
       calculateGemLocation();
