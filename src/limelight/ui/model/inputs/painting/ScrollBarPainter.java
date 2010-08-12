@@ -15,6 +15,7 @@ public class ScrollBarPainter
   public static final int MIN_GEM_SIZE = 16;
   private static final int INCREASING_BOX_LENGTH = 18;
   private static final int DECREASING_BOX_LENGTH = 18;
+  private static final int CAP_LENGTH = 7;
 
   public static ScrollBarImages horizontalImages;
   public static ScrollBarImages verticalImages;
@@ -96,7 +97,7 @@ public class ScrollBarPainter
 
   public Box getIncreasingBox(ScrollBar2Panel scrollBar)
   {
-    Box bounds = scrollBar.getAbsoluteBounds();
+    Box bounds = scrollBar.getBoundingBox();
     if(scrollBar.isHorizontal())
       return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH, bounds.y, INCREASING_BOX_LENGTH, bounds.height);
     else
@@ -105,11 +106,20 @@ public class ScrollBarPainter
   
   public Box getDecreasingBox(ScrollBar2Panel scrollBar)
   {
-    Box bounds = scrollBar.getAbsoluteBounds();
+    Box bounds = scrollBar.getBoundingBox();
     if(scrollBar.isHorizontal())
       return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.y, DECREASING_BOX_LENGTH, bounds.height);
     else
       return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
+  }
+
+  public Box getTrackBox(ScrollBar2Panel scrollBar)
+  {
+    Box bounds = scrollBar.getBoundingBox();
+    if(scrollBar.isHorizontal())
+      return new Box(bounds.x + CAP_LENGTH, bounds.y, bounds.width - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH, bounds.height);
+    else
+      return new Box(bounds.x, bounds.y + CAP_LENGTH, bounds.width, bounds.height - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH);
   }
 
   private static void drawVertically(Graphics2D graphics, Box bounds, ScrollBar2Panel scrollBar)

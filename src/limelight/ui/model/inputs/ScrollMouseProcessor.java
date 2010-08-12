@@ -1,5 +1,8 @@
 package limelight.ui.model.inputs;
 
+import limelight.util.Box;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class ScrollMouseProcessor
@@ -27,18 +30,41 @@ public class ScrollMouseProcessor
 
   public void mousePressed(MouseEvent e)
   {
-    if(scrollBar.getIncreasingButtonBounds().contains(e.getPoint()))
+    final Point point = e.getPoint();
+    if(scrollBar.getIncreasingButtonBounds().contains(point))
     {
       scrollBar.setIncreasingButtonActive(true);
       scrollBar.setValue(scrollBar.getValue() + scrollBar.getUnitIncrement());
       startRepeater(scrollBar.getUnitIncrement());
     }
-    else if(scrollBar.getDecreasingButtonBounds().contains(e.getPoint()))
+    else if(scrollBar.getDecreasingButtonBounds().contains(point))
     {
       scrollBar.setDecreasingButtonActive(true);
       scrollBar.setValue(scrollBar.getValue() - scrollBar.getUnitIncrement());
       startRepeater(-scrollBar.getUnitIncrement());
     }
+    else if(scrollBar.getTrackBounds().contains(point))
+    {
+      Box gemBounds = scrollBar.getGemBounds();
+      if(isBeforeGem(point, gemBounds))
+      {
+        scrollBar.setValue(scrollBar.getValue() - scrollBar.getBlockIncrement());
+      }
+      else if(isAfterGem(point, gemBounds))
+      {
+        scrollBar.setValue(scrollBar.getValue() + scrollBar.getBlockIncrement());
+      }
+    }
+  }
+
+  private boolean isAfterGem(Point point, Box gemBounds)
+  {
+    return scrollBar.isHorizontal() ? point.x > gemBounds.right() : point.y > gemBounds.bottom();
+  }
+
+  private boolean isBeforeGem(Point point, Box gemBounds)
+  {
+    return scrollBar.isHorizontal() ? point.x < gemBounds.x : point.y < gemBounds.y;
   }
 
   public void mouseReleased(MouseEvent e)

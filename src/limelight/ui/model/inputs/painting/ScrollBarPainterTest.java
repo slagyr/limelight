@@ -246,4 +246,26 @@ public class ScrollBarPainterTest
 
     assertEquals(new Box(0, 64, 15, 18), increasing);
   }
+
+  @Test
+  public void buildsTrackBoxVertically() throws Exception
+  {
+    setUpVertically();
+    scrollBar.setSize(15, 100);
+
+    Box track = painter.getTrackBox(scrollBar);
+
+    assertEquals(new Box(0, 7, 15, 57), track);
+  }
+
+  @Test
+  public void buildsTrackBoxHorizontally() throws Exception
+  {
+    setUpHorizontally();
+    scrollBar.setSize(100, 15);
+
+    Box track = painter.getTrackBox(scrollBar);
+
+    assertEquals(new Box(7, 0, 57, 15), track);
+  }
 }
