@@ -6,17 +6,43 @@ public class ScrollRepeater extends Animation
 {
   private int scrollDelta;
   private ScrollBar2Panel scrollBar;
+  private int maxScrollDelta;
+  private int ticks;
+  private boolean accelerating;
 
   public ScrollRepeater(ScrollBar2Panel scrollBar)
   {
-    super(1);
+    super(2);
     this.scrollBar = scrollBar;
   }
 
   @Override
   protected void doUpdate()
   {
-    scrollBar.setValue(scrollBar.getValue() + scrollDelta);    
+    scrollBar.setValue(scrollBar.getValue() + scrollDelta);
+    if(accelerating)
+      handleAcceleration();
+    else
+      startAccelerating();
+  }
+
+  private void startAccelerating()
+  {
+    stop();
+    setUpdatesPerSecond(20);
+    accelerating = true;
+    start();
+  }
+
+  private void handleAcceleration()
+  {
+    ticks++;
+    if(ticks >= 10 && scrollDelta < maxScrollDelta)
+    {
+      scrollDelta *= 1.25;
+      scrollDelta = Math.min(scrollDelta, maxScrollDelta);
+      ticks = 0;
+    }
   }
 
   public int getScrollDelta()
@@ -27,5 +53,13 @@ public class ScrollRepeater extends Animation
   public void setScrollDelta(int delta)
   {
     scrollDelta = delta;
+    maxScrollDelta = delta * 5;
+  }
+
+  public void reset()
+  {
+    ticks = 0;
+    accelerating = false;
+    setUpdatesPerSecond(2);
   }
 }

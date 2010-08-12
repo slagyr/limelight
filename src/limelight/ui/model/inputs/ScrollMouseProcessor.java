@@ -20,7 +20,6 @@ public class ScrollMouseProcessor
 
   private void startRepeater(int delta)
   {
-    repeater.setUpdatesPerSecond(10);
     repeater.setScrollDelta(delta);
     repeater.resetTimer();
     repeater.start();
@@ -31,11 +30,13 @@ public class ScrollMouseProcessor
     if(scrollBar.getIncreasingButtonBounds().contains(e.getPoint()))
     {
       scrollBar.setIncreasingButtonActive(true);
+      scrollBar.setValue(scrollBar.getValue() + scrollBar.getUnitIncrement());
       startRepeater(scrollBar.getUnitIncrement());
     }
     else if(scrollBar.getDecreasingButtonBounds().contains(e.getPoint()))
     {
       scrollBar.setDecreasingButtonActive(true);
+      scrollBar.setValue(scrollBar.getValue() - scrollBar.getUnitIncrement());
       startRepeater(-scrollBar.getUnitIncrement());
     }
   }
@@ -43,6 +44,7 @@ public class ScrollMouseProcessor
   public void mouseReleased(MouseEvent e)
   {
     repeater.stop();
+    repeater.reset();
     scrollBar.setDecreasingButtonActive(false);
     scrollBar.setIncreasingButtonActive(false);
     scrollBar.markAsDirty();

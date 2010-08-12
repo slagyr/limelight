@@ -90,13 +90,13 @@ public class ScrollBar2PanelTest
     verticalScrollBar.configure(100, 500);
     assertEquals(100, verticalScrollBar.getVisibleAmount());
     assertEquals(500, verticalScrollBar.getAvailableAmount());
-    assertEquals(10, verticalScrollBar.getUnitIncrement());
+    assertEquals(5, verticalScrollBar.getUnitIncrement());
     assertEquals(90, verticalScrollBar.getBlockIncrement());
 
     verticalScrollBar.configure(500, 1000);
     assertEquals(500, verticalScrollBar.getVisibleAmount());
     assertEquals(1000, verticalScrollBar.getAvailableAmount());
-    assertEquals(50, verticalScrollBar.getUnitIncrement());
+    assertEquals(5, verticalScrollBar.getUnitIncrement());
     assertEquals(450, verticalScrollBar.getBlockIncrement());
   }
 
