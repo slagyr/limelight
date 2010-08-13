@@ -7,8 +7,12 @@ import java.awt.event.MouseEvent;
 
 public class ScrollMouseProcessor
 {
+  private final ScrollRepeater.ScrollCondition notInSliderScrollCondition = new NotInSliderScrollCondition(this);
   private ScrollBar2Panel scrollBar;
   private ScrollRepeater repeater;
+  private Point mouseLocation;
+  private boolean sliderDragOn;
+  private int sliderDragDelta;
 
   public ScrollMouseProcessor(ScrollBar2Panel scrollBar)
   {
@@ -30,41 +34,24 @@ public class ScrollMouseProcessor
 
   public void mousePressed(MouseEvent e)
   {
-    final Point point = e.getPoint();
-    if(scrollBar.getIncreasingButtonBounds().contains(point))
+    mouseLocation = e.getPoint();
+    if(scrollBar.getIncreasingButtonBounds().contains(mouseLocation))
+      initiateUnitIncrement(scrollBar.getUnitIncrement());
+    else if(scrollBar.getDecreasingButtonBounds().contains(mouseLocation))
+      initiateUnitIncrement(-scrollBar.getUnitIncrement());
+    else if(scrollBar.getTrackBounds().contains(mouseLocation))
     {
-      scrollBar.setIncreasingButtonActive(true);
-      scrollBar.setValue(scrollBar.getValue() + scrollBar.getUnitIncrement());
-      startRepeater(scrollBar.getUnitIncrement());
-    }
-    else if(scrollBar.getDecreasingButtonBounds().contains(point))
-    {
-      scrollBar.setDecreasingButtonActive(true);
-      scrollBar.setValue(scrollBar.getValue() - scrollBar.getUnitIncrement());
-      startRepeater(-scrollBar.getUnitIncrement());
-    }
-    else if(scrollBar.getTrackBounds().contains(point))
-    {
-      Box gemBounds = scrollBar.getGemBounds();
-      if(isBeforeGem(point, gemBounds))
+      Box sliderBounds = scrollBar.getSliderBounds();
+      if(isAfterSlider(mouseLocation, sliderBounds))
+        initiateBlockIncrement(scrollBar.getBlockIncrement());
+      else if(isBeforeSlider(mouseLocation, sliderBounds))
+        initiateBlockIncrement(-scrollBar.getBlockIncrement());
+      else if(scrollBar.getSliderBounds().contains(mouseLocation))
       {
-        scrollBar.setValue(scrollBar.getValue() - scrollBar.getBlockIncrement());
-      }
-      else if(isAfterGem(point, gemBounds))
-      {
-        scrollBar.setValue(scrollBar.getValue() + scrollBar.getBlockIncrement());
+        sliderDragOn = true;
+        sliderDragDelta = (int)(scrollBar.isHorizontal() ? mouseLocation.getX() - scrollBar.getSliderPosition() : mouseLocation.getY() - scrollBar.getSliderPosition());
       }
     }
-  }
-
-  private boolean isAfterGem(Point point, Box gemBounds)
-  {
-    return scrollBar.isHorizontal() ? point.x > gemBounds.right() : point.y > gemBounds.bottom();
-  }
-
-  private boolean isBeforeGem(Point point, Box gemBounds)
-  {
-    return scrollBar.isHorizontal() ? point.x < gemBounds.x : point.y < gemBounds.y;
   }
 
   public void mouseReleased(MouseEvent e)
@@ -73,6 +60,7 @@ public class ScrollMouseProcessor
     repeater.reset();
     scrollBar.setDecreasingButtonActive(false);
     scrollBar.setIncreasingButtonActive(false);
+    sliderDragOn = false;
     scrollBar.markAsDirty();
   }
 
@@ -82,6 +70,13 @@ public class ScrollMouseProcessor
 
   public void mouseDragged(MouseEvent e)
   {
+    if(sliderDragOn)
+    {
+      if(scrollBar.isHorizontal())
+        scrollBar.setSliderPosition(e.getX() - sliderDragDelta);
+      else
+        scrollBar.setSliderPosition(e.getY() - sliderDragDelta);
+    }
   }
 
   public void mouseEntered(MouseEvent e)
@@ -97,5 +92,68 @@ public class ScrollMouseProcessor
   public void mouseMoved(MouseEvent e)
   {
 
+  }
+
+  private void initiateBlockIncrement(int scrollDelta)
+  {
+    scrollBar.setValue(scrollBar.getValue() + scrollDelta);
+    repeater.setScrollCondition(getNotInSliderScrollCondition());
+    startRepeater(scrollDelta);
+  }
+
+  private void initiateUnitIncrement(int scrollDelta)
+  {
+    if(scrollDelta > 0)
+      scrollBar.setIncreasingButtonActive(true);
+    else
+      scrollBar.setDecreasingButtonActive(true);
+
+    scrollBar.setValue(scrollBar.getValue() + scrollDelta);
+    startRepeater(scrollDelta);
+  }
+
+  private boolean isAfterSlider(Point point, Box sliderBounds)
+  {
+    return scrollBar.isHorizontal() ? point.x > sliderBounds.right() : point.y > sliderBounds.bottom();
+  }
+
+  private boolean isBeforeSlider(Point point, Box sliderBounds)
+  {
+    return scrollBar.isHorizontal() ? point.x < sliderBounds.x : point.y < sliderBounds.y;
+  }
+
+  public Point getMouseLocation()
+  {
+    return mouseLocation;
+  }
+
+  public ScrollRepeater.ScrollCondition getNotInSliderScrollCondition()
+  {
+    return notInSliderScrollCondition;
+  }
+
+  public void setMouseLocation(int x, int y)
+  {
+    mouseLocation = new Point(x, y);
+  }
+
+  public boolean isSliderDragOn()
+  {
+    return sliderDragOn;
+  }
+
+  private static class NotInSliderScrollCondition implements ScrollRepeater.ScrollCondition
+  {
+    private ScrollMouseProcessor scrollMouseProcessor;
+
+    public NotInSliderScrollCondition(ScrollMouseProcessor scrollMouseProcessor)
+    {
+      this.scrollMouseProcessor = scrollMouseProcessor;
+    }
+
+    public boolean canScroll()
+    {
+      return !scrollMouseProcessor.scrollBar.getSliderBounds().contains(scrollMouseProcessor.getMouseLocation());
+    }
   }
 }

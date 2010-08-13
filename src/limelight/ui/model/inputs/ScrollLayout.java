@@ -14,12 +14,10 @@ import java.util.LinkedList;
 
 public class ScrollLayout extends PropPanelLayout
 {
-  private int orientation;
   private ScrollBar2Panel scrollBar;
 
-  public ScrollLayout(int orientation, ScrollBar2Panel scrollBar)
+  public ScrollLayout(ScrollBar2Panel scrollBar)
   {
-    this.orientation = orientation;
     this.scrollBar = scrollBar;
   }
 
@@ -27,8 +25,8 @@ public class ScrollLayout extends PropPanelLayout
   {
     PropPanel panel = (PropPanel) aPanel;
     panel.resetLayout();
-    int dx = orientation == ScrollBar2Panel.HORIZONTAL ? scrollBar.getValue() : 0;
-    int dy = orientation == ScrollBar2Panel.VERTICAL ? scrollBar.getValue() : 0;
+    int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
+    int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
 
     LinkedList<PropPanelLayout.Row> rows = buildRows(panel);
     Dimension consumedDimensions = new Dimension();

@@ -87,7 +87,22 @@ public class ScrollRepeaterTest
       repeater.doUpdate();
 
     assertEquals(500, repeater.getScrollDelta());
+  }
+  
+  @Test
+  public void addingRepeatConditionPreventsScrolling() throws Exception
+  {
+    repeater.setScrollDelta(5);
+    repeater.setScrollCondition(new ScrollRepeater.ScrollCondition(){
+      public boolean canScroll()
+      {
+        return false;
+      }
+    });
 
+    repeater.doUpdate();
+
+    assertEquals(0, scrollBar.getValue());
   }
 }
 
