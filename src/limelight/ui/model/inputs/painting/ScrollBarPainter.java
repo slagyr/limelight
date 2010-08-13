@@ -28,9 +28,9 @@ public class ScrollBarPainter
     public BufferedImage buttons;
     public BufferedImage buttonsInsideSelected;
     public BufferedImage buttonsOutsideSelected;
-    public BufferedImage gemCapInside;
-    public BufferedImage gemCapOutside;
-    public BufferedImage gemFiller;
+    public BufferedImage sliderCapInside;
+    public BufferedImage sliderCapOutside;
+    public BufferedImage sliderFiller;
   }
 
   static
@@ -45,9 +45,9 @@ public class ScrollBarPainter
       horizontalImages.buttonsInsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_buttons_left_selected.png"));
       horizontalImages.buttonsOutsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_buttons_right_selected.png"));
       horizontalImages.cap = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_cap.png"));
-      horizontalImages.gemCapInside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_cap_right.png"));
-      horizontalImages.gemCapOutside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_cap_left.png"));
-      horizontalImages.gemFiller = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_filler.png"));
+      horizontalImages.sliderCapInside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_cap_right.png"));
+      horizontalImages.sliderCapOutside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_cap_left.png"));
+      horizontalImages.sliderFiller = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_filler.png"));
 
       verticalImages = new ScrollBarImages();
       verticalImages.background = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_background.png"));
@@ -55,9 +55,9 @@ public class ScrollBarPainter
       verticalImages.buttonsInsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_up_selected.png"));
       verticalImages.buttonsOutsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_down_selected.png"));
       verticalImages.cap = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_cap.png"));
-      verticalImages.gemCapInside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_bottom.png"));
-      verticalImages.gemCapOutside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_top.png"));
-      verticalImages.gemFiller = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_filler.png"));
+      verticalImages.sliderCapInside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_bottom.png"));
+      verticalImages.sliderCapOutside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_top.png"));
+      verticalImages.sliderFiller = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_filler.png"));
     }
     catch(IOException e)
     {
@@ -81,7 +81,7 @@ public class ScrollBarPainter
     return INSIDE_CUSHION;
   }
 
-  public int getMinGemSize()
+  public int getMinSliderSize()
   {
     return MIN_GEM_SIZE;
   }
@@ -131,13 +131,13 @@ public class ScrollBarPainter
 
     graphics.drawImage(buttonsImageFor(scrollBar, images), 0, bounds.height - images.buttons.getHeight(), null);
 
-    int y = scrollBar.getGemLocation();
-    graphics.drawImage(images.gemCapOutside, 0, y, null);
-    y += images.gemCapOutside.getHeight();
+    int y = scrollBar.getSliderPosition();
+    graphics.drawImage(images.sliderCapOutside, 0, y, null);
+    y += images.sliderCapOutside.getHeight();
 
     y = paintVerticalFiller(graphics, scrollBar, images, y);
 
-    graphics.drawImage(images.gemCapInside, 0, y, null);
+    graphics.drawImage(images.sliderCapInside, 0, y, null);
   }
 
   private static BufferedImage buttonsImageFor(ScrollBar2Panel scrollBar, ScrollBarImages images)
@@ -158,26 +158,26 @@ public class ScrollBarPainter
     graphics.drawImage(images.cap, 0, 0, null);
     graphics.drawImage(buttonsImageFor(scrollBar, images), bounds.width - images.buttons.getWidth(), 0, null);
 
-    int x = scrollBar.getGemLocation();
-    graphics.drawImage(images.gemCapOutside, x, 0, null);
-    x += images.gemCapOutside.getWidth();
+    int x = scrollBar.getSliderPosition();
+    graphics.drawImage(images.sliderCapOutside, x, 0, null);
+    x += images.sliderCapOutside.getWidth();
 
     x = paintHorizontalFiller(graphics, scrollBar, images, x);
 
-    graphics.drawImage(images.gemCapInside, x, 0, null);
+    graphics.drawImage(images.sliderCapInside, x, 0, null);
   }
 
   private static int paintHorizontalFiller(Graphics2D graphics, ScrollBar2Panel scrollBar, ScrollBarImages images, int x)
   {
-    int fillerSize = scrollBar.getGemSize() - images.gemCapOutside.getWidth() - images.gemCapInside.getWidth();
+    int fillerSize = scrollBar.getSliderSize() - images.sliderCapOutside.getWidth() - images.sliderCapInside.getWidth();
     if(fillerSize > 0)
     {
-      Graphics fillerGraphics = graphics.create(x, 0, fillerSize, images.gemFiller.getHeight());
-      int fillerWidth = images.gemFiller.getWidth();
-      int fillerX = scrollBar.getGemLocation() % fillerWidth * -1;
+      Graphics fillerGraphics = graphics.create(x, 0, fillerSize, images.sliderFiller.getHeight());
+      int fillerWidth = images.sliderFiller.getWidth();
+      int fillerX = scrollBar.getSliderPosition() % fillerWidth * -1;
       while(fillerX < fillerSize)
       {
-        fillerGraphics.drawImage(images.gemFiller, fillerX, 0, null);
+        fillerGraphics.drawImage(images.sliderFiller, fillerX, 0, null);
         fillerX += fillerWidth;
       }
       x += fillerSize;
@@ -187,15 +187,15 @@ public class ScrollBarPainter
 
   private static int paintVerticalFiller(Graphics2D graphics, ScrollBar2Panel scrollBar, ScrollBarImages images, int y)
   {
-    int fillerSize = scrollBar.getGemSize() - images.gemCapOutside.getHeight() - images.gemCapInside.getHeight();
+    int fillerSize = scrollBar.getSliderSize() - images.sliderCapOutside.getHeight() - images.sliderCapInside.getHeight();
     if(fillerSize > 0)
     {
-      Graphics fillerGraphics = graphics.create(0, y, images.gemFiller.getWidth(), fillerSize);
-      int fillerHeight = images.gemFiller.getHeight();
-      int fillerY = scrollBar.getGemLocation() % fillerHeight * -1;
+      Graphics fillerGraphics = graphics.create(0, y, images.sliderFiller.getWidth(), fillerSize);
+      int fillerHeight = images.sliderFiller.getHeight();
+      int fillerY = scrollBar.getSliderPosition() % fillerHeight * -1;
       while(fillerY < fillerSize)
       {
-        fillerGraphics.drawImage(images.gemFiller, 0, fillerY, null);
+        fillerGraphics.drawImage(images.sliderFiller, 0, fillerY, null);
         fillerY += fillerHeight;
       }
       y += fillerSize;

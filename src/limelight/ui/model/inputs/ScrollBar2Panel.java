@@ -27,30 +27,46 @@ public class ScrollBar2Panel extends BasePanel
   private int blockIncrement;
   private int value;
   private int maxValue;
-  private int gemSize;
-  private int gemLocation;
-  private int minGemLocation;
-  private int maxGemLocation;
-  private int gemPlay;
+  private int sliderSize;
+  private int sliderPosition;
+  private int minSliderPosition;
+  private int maxSliderPosition;
+  private int trackSize;
   private Box increasingButtonBounds;
   private Box decreasingButtonBounds;
   private boolean increasingButtonActive;
   private boolean decreasingButtonActive;
   private Box trackBounds;
-  private Box gemBounds = new Box(0, 0, 0, 0);
+  private Box sliderBounds;
 
   public ScrollBar2Panel(int orientation)
   {
     this.orientation = orientation;
     if(getOrientation() == VERTICAL)
+    {
       preferredGirth = width = 15;
+      sliderBounds = new Box(0, 0, preferredGirth, 0);
+    }
     else
+    {
       preferredGirth = height = 15;
+      sliderBounds = new Box(0, 0, 0, preferredGirth);
+    }
   }
 
   public int getOrientation()
   {
     return orientation;
+  }
+
+  public boolean isVertical()
+  {
+    return orientation == VERTICAL;
+  }
+  
+  public boolean isHorizontal()
+  {
+    return orientation == HORIZONTAL;
   }
 
   public limelight.util.Box getChildConsumableArea()
@@ -103,44 +119,44 @@ public class ScrollBar2Panel extends BasePanel
   private MouseEvent translatedMouseEvent(MouseEvent e)
   {
     Point p = e.getPoint();
-    e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), p.x - getAbsoluteLocation().x, p.y - getAbsoluteLocation().y, e.getClickCount(), false);
+    e = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), p.x - getAbsoluteLocation().x, p.y - getAbsoluteLocation().y, e.getClickCount(), false);
     return e;
   }
 
   @Override
   public void mouseReleased(MouseEvent e)
-  { 
-    mouseProcessor.mouseReleased(e);
+  {
+    mouseProcessor.mouseReleased(translatedMouseEvent(e));
   }
 
   @Override
   public void mouseClicked(MouseEvent e)
   {
-    mouseProcessor.mouseClicked(e);
+    mouseProcessor.mouseClicked(translatedMouseEvent(e));
   }
 
   @Override
   public void mouseDragged(MouseEvent e)
   {
-    mouseProcessor.mouseDragged(e);
+    mouseProcessor.mouseDragged(translatedMouseEvent(e));
   }
 
   @Override
   public void mouseEntered(MouseEvent e)
   {
-    mouseProcessor.mouseEntered(e);
+    mouseProcessor.mouseEntered(translatedMouseEvent(e));
   }
 
   @Override
   public void mouseExited(MouseEvent e)
   {
-    mouseProcessor.mouseExited(e);
+    mouseProcessor.mouseExited(translatedMouseEvent(e));
   }
 
   @Override
   public void mouseMoved(MouseEvent e)
   {
-    mouseProcessor.mouseMoved(e);
+    mouseProcessor.mouseMoved(translatedMouseEvent(e));
   }
 
   public void paintOn(Graphics2D graphics)
@@ -163,7 +179,7 @@ public class ScrollBar2Panel extends BasePanel
     if(value != getValue())
     {
       this.value = value;
-      calculateGemLocation();
+      calculateSliderPosition();
       configurationChanged();
     }
   }
@@ -173,7 +189,7 @@ public class ScrollBar2Panel extends BasePanel
     //TODO - could improve performance here... no need to create new instance of layout every time
     BasePanel parent = (BasePanel) getParent();
     if(parent != null)
-      parent.markAsNeedingLayout(new ScrollLayout(getOrientation(), this));
+      parent.markAsNeedingLayout(new ScrollLayout(this));
   }
 
   public int getValue()
@@ -211,9 +227,9 @@ public class ScrollBar2Panel extends BasePanel
     return blockIncrement;
   }
 
-  public int getGemSize()
+  public int getSliderSize()
   {
-    return gemSize;
+    return sliderSize;
   }
 
   public void configure(int visible, int available)
@@ -224,58 +240,62 @@ public class ScrollBar2Panel extends BasePanel
       visibleAmount = visible;
       maxValue = available - visible;
       blockIncrement = (int) (visible * 0.9);
-      calculateGemSize();
-      calculateGemLocation();
+      calculateSliderSize();
+      calculateSliderPosition();
     }
     configurationChanged();
   }
 
-  private void calculateGemSize()
+  private void calculateSliderSize()
   {
     double proportion = (double) visibleAmount / availableAmount;
     int fullSize = isHorizontal() ? getWidth() : getHeight();
     int avaiableSize = fullSize - painter.getOutsideCusion() - painter.getInsideCushion();
-    int calculatedGemSize = (int) (avaiableSize * proportion + 0.5);
-    gemSize = Math.max(calculatedGemSize, painter.getMinGemSize());
-    minGemLocation = painter.getOutsideCusion();
-    maxGemLocation = fullSize - painter.getInsideCushion() - gemSize;
-    gemPlay = maxGemLocation - minGemLocation;
+    int calculatedSliderSize = (int) (avaiableSize * proportion + 0.5);
+    sliderSize = Math.max(calculatedSliderSize, painter.getMinSliderSize());
+    minSliderPosition = painter.getOutsideCusion();
+    maxSliderPosition = fullSize - painter.getInsideCushion() - sliderSize;
+    trackSize = maxSliderPosition - minSliderPosition;
 
     if(isHorizontal())
-      gemBounds.width = gemSize;
+      sliderBounds.width = sliderSize;
     else
-      gemBounds.height = gemSize;
+      sliderBounds.height = sliderSize;
   }
 
-  private void calculateGemLocation()
+  private void calculateSliderPosition()
   {
-    double valueRatio = (double)value / maxValue;
-    gemLocation = minGemLocation + (int)(gemPlay * valueRatio + 0.5);
+    double valueRatio = (double) value / maxValue;
+    sliderPosition = minSliderPosition + (int) (trackSize * valueRatio + 0.5);
 
     if(isHorizontal())
-      gemBounds.x = gemLocation;
+      sliderBounds.x = sliderPosition;
     else
-      gemBounds.y = gemLocation;
+      sliderBounds.y = sliderPosition;
   }
 
-  public boolean isHorizontal()
+  public void setSliderPosition(int position)
   {
-    return orientation == HORIZONTAL;
+    sliderPosition = Math.min(Math.max(position, minSliderPosition), maxSliderPosition);
+    
+    double positionRatio = (double)(position - minSliderPosition) / (maxSliderPosition - minSliderPosition);
+    int value = (int)(positionRatio * maxValue + 0.5);
+    setValue(value);
   }
 
-  public int getGemLocation()
+  public int getSliderPosition()
   {
-    return gemLocation;
+    return sliderPosition;
   }
 
-  public int getMinGemLocation()
+  public int getMinSliderPosition()
   {
-    return minGemLocation;
+    return minSliderPosition;
   }
 
-  public int getMaxGemLocation()
+  public int getMaxSliderPosition()
   {
-    return maxGemLocation;
+    return maxSliderPosition;
   }
 
   public Box getIncreasingButtonBounds()
@@ -292,10 +312,10 @@ public class ScrollBar2Panel extends BasePanel
   {
     return trackBounds;
   }
-  
-  public Box getGemBounds()
+
+  public Box getSliderBounds()
   {
-    return gemBounds;
+    return sliderBounds;
   }
 
   public ScrollMouseProcessor getMouseProcessor()

@@ -107,42 +107,71 @@ public class ScrollBar2PanelTest
   }
 
   @Test
-  public void shouldCalculateGemSize() throws Exception
+  public void shouldCalculateSliderSize() throws Exception
   {
     horizontalScrollBar.setSize(100, 15);
 
     horizontalScrollBar.configure(50, 100);
-    assertEquals(31, horizontalScrollBar.getGemSize());
+    assertEquals(31, horizontalScrollBar.getSliderSize());
 
     horizontalScrollBar.configure(25, 100);
-    assertEquals(16, horizontalScrollBar.getGemSize());
+    assertEquals(16, horizontalScrollBar.getSliderSize());
 
     horizontalScrollBar.configure(33, 100);
-    assertEquals(20, horizontalScrollBar.getGemSize());
+    assertEquals(20, horizontalScrollBar.getSliderSize());
   }
 
   @Test
-  public void shouldHaveMinimunGemSize() throws Exception
+  public void shouldHaveMinimumSliderSize() throws Exception
   {
     horizontalScrollBar.setSize(100, 15);
     horizontalScrollBar.configure(1, 100);
-    assertEquals(16, horizontalScrollBar.getGemSize());
+    assertEquals(16, horizontalScrollBar.getSliderSize());
   }
 
   @Test
-  public void shouldCalculateGemLocation() throws Exception
+  public void shouldCalculateSliderLocation() throws Exception
   {
     horizontalScrollBar.setSize(100, 15);
     horizontalScrollBar.configure(50, 100);
     
     horizontalScrollBar.setValue(0);
-    assertEquals(5, horizontalScrollBar.getGemLocation());
+    assertEquals(5, horizontalScrollBar.getSliderPosition());
 
     horizontalScrollBar.setValue(25);
-    assertEquals(21, horizontalScrollBar.getGemLocation());
+    assertEquals(21, horizontalScrollBar.getSliderPosition());
 
     horizontalScrollBar.setValue(50);
-    assertEquals(36, horizontalScrollBar.getGemLocation());
+    assertEquals(36, horizontalScrollBar.getSliderPosition());
+  }
+
+  @Test
+  public void settingSliderLocation() throws Exception
+  {
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(50, 100);
+    
+    horizontalScrollBar.setSliderPosition(5);
+    assertEquals(0, horizontalScrollBar.getValue());
+
+    horizontalScrollBar.setSliderPosition(21);
+    assertEquals(26, horizontalScrollBar.getValue());
+
+    horizontalScrollBar.setSliderPosition(36);
+    assertEquals(50, horizontalScrollBar.getValue());
+  }
+  
+  @Test
+  public void slidePositionStaysWithinBounds() throws Exception
+  {
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(50, 100);
+
+    horizontalScrollBar.setSliderPosition(-1);
+    assertEquals(horizontalScrollBar.getMinSliderPosition(), horizontalScrollBar.getSliderPosition());
+
+    horizontalScrollBar.setSliderPosition(99999);
+    assertEquals(horizontalScrollBar.getMaxSliderPosition(), horizontalScrollBar.getSliderPosition());
   }
   
   @Test
@@ -161,4 +190,6 @@ public class ScrollBar2PanelTest
 
     assertEquals(verticalScrollBar.getMaxValue(), verticalScrollBar.getValue());
   }
+
+
 }

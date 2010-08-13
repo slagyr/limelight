@@ -46,8 +46,8 @@ public class ScrollBarPainterTest
       assertEquals(images.background, graphics.drawnImages.get(i).image);
     assertEquals(images.cap, graphics.drawnImages.get(10).image);
     assertEquals(images.buttons, graphics.drawnImages.get(11).image);
-    assertEquals(images.gemCapOutside, graphics.drawnImages.get(12).image);
-    assertEquals(images.gemCapInside, graphics.drawnImages.get(13).image);
+    assertEquals(images.sliderCapOutside, graphics.drawnImages.get(12).image);
+    assertEquals(images.sliderCapInside, graphics.drawnImages.get(13).image);
   }
 
   @Test
@@ -61,50 +61,50 @@ public class ScrollBarPainterTest
       assertEquals(images.background, graphics.drawnImages.get(i).image);
     assertEquals(images.cap, graphics.drawnImages.get(10).image);
     assertEquals(images.buttons, graphics.drawnImages.get(11).image);
-    assertEquals(images.gemCapOutside, graphics.drawnImages.get(12).image);
-    assertEquals(images.gemCapInside, graphics.drawnImages.get(13).image);
+    assertEquals(images.sliderCapOutside, graphics.drawnImages.get(12).image);
+    assertEquals(images.sliderCapInside, graphics.drawnImages.get(13).image);
   }
 
   @Test
-  public void shouldStartHorizontalGemAtLeftEdgeForMinValue() throws Exception
+  public void shouldStartHorizontalSliderAtLeftEdgeForMinValue() throws Exception
   {
     setUpHorizontally();
     
     painter.paintOn(graphics, scrollBar);
 
-    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
-    MockGraphics.DrawnImage insideGemCap = graphics.drawnImages.get(13);
-    assertEquals(5, outsideGemCap.x);
-    assertEquals(13, insideGemCap.x);
+    MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
+    MockGraphics.DrawnImage insideSliderCap = graphics.drawnImages.get(13);
+    assertEquals(5, outsideSliderCap.x);
+    assertEquals(13, insideSliderCap.x);
   }
 
   @Test
-  public void shouldStartVerticallyGemAtLeftEdgeForMinValue() throws Exception
+  public void shouldStartVerticallySliderAtLeftEdgeForMinValue() throws Exception
   {
     setUpVertically();
     painter.paintOn(graphics, scrollBar);
 
-    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
-    MockGraphics.DrawnImage insideGemCap = graphics.drawnImages.get(13);
-    assertEquals(5, outsideGemCap.y);
-    assertEquals(13, insideGemCap.y);
+    MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
+    MockGraphics.DrawnImage insideSliderCap = graphics.drawnImages.get(13);
+    assertEquals(5, outsideSliderCap.y);
+    assertEquals(13, insideSliderCap.y);
   }
 
   @Test
-  public void shouldPaintWideGemHorizontally() throws Exception
+  public void shouldPaintWideSliderHorizontally() throws Exception
   {
     setUpHorizontally();
     scrollBar.configure(90, 100);
     
-//    System.err.println("scrollBar.getGemSize() = " + scrollBar.getGemSize());
-//    scrollBar.getGemSize() = 56
+//    System.err.println("scrollBar.getSliderSize() = " + scrollBar.getSliderSize());
+//    scrollBar.getSliderSize() = 56
 
     painter.paintOn(graphics, scrollBar);
-    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
-    MockGraphics.DrawnImage insideGemCap = graphics.drawnImages.get(13);
+    MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
+    MockGraphics.DrawnImage insideSliderCap = graphics.drawnImages.get(13);
 
-    assertEquals(5, outsideGemCap.x);
-    assertEquals(53, insideGemCap.x);
+    assertEquals(5, outsideSliderCap.x);
+    assertEquals(53, insideSliderCap.x);
 
     MockGraphics fillerGraphics = graphics.subGraphics.get(0);
     assertEquals(13, fillerGraphics.clip.x);
@@ -114,17 +114,17 @@ public class ScrollBarPainterTest
   }
 
   @Test
-  public void shouldPaintTallGemVertically() throws Exception
+  public void shouldPaintTallSliderVertically() throws Exception
   {
     setUpVertically();
     scrollBar.configure(90, 100);
 
     painter.paintOn(graphics, scrollBar);
-    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
-    MockGraphics.DrawnImage insideGemCap = graphics.drawnImages.get(13);
+    MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
+    MockGraphics.DrawnImage insideSliderCap = graphics.drawnImages.get(13);
 
-    assertEquals(5, outsideGemCap.y);
-    assertEquals(53, insideGemCap.y);
+    assertEquals(5, outsideSliderCap.y);
+    assertEquals(53, insideSliderCap.y);
 
     MockGraphics fillerGraphics = graphics.subGraphics.get(0);
     assertEquals(13, fillerGraphics.clip.y);
@@ -142,8 +142,8 @@ public class ScrollBarPainterTest
 
     painter.paintOn(graphics, scrollBar);
     
-    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
-    assertEquals(scrollBar.getGemLocation(), outsideGemCap.y);
+    MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
+    assertEquals(scrollBar.getSliderPosition(), outsideSliderCap.y);
   }
 
   @Test
@@ -155,8 +155,8 @@ public class ScrollBarPainterTest
 
     painter.paintOn(graphics, scrollBar);
 
-    MockGraphics.DrawnImage outsideGemCap = graphics.drawnImages.get(12);
-    assertEquals(scrollBar.getGemLocation(), outsideGemCap.x);
+    MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
+    assertEquals(scrollBar.getSliderPosition(), outsideSliderCap.x);
   }
 
   @Test
@@ -268,4 +268,6 @@ public class ScrollBarPainterTest
 
     assertEquals(new Box(7, 0, 57, 15), track);
   }
+
+  //TODO MDM Need to test painting when slider is larger than track.
 }

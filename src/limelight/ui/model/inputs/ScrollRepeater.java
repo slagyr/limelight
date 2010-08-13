@@ -9,6 +9,7 @@ public class ScrollRepeater extends Animation
   private int maxScrollDelta;
   private int ticks;
   private boolean accelerating;
+  private ScrollCondition scrollCondition;
 
   public ScrollRepeater(ScrollBar2Panel scrollBar)
   {
@@ -19,6 +20,9 @@ public class ScrollRepeater extends Animation
   @Override
   protected void doUpdate()
   {
+    if (scrollCondition != null && !scrollCondition.canScroll())
+      return;
+
     scrollBar.setValue(scrollBar.getValue() + scrollDelta);
     if(accelerating)
       handleAcceleration();
@@ -61,5 +65,20 @@ public class ScrollRepeater extends Animation
     ticks = 0;
     accelerating = false;
     setUpdatesPerSecond(2);
+  }
+
+  public void setScrollCondition(ScrollCondition scrollCondition)
+  {
+    this.scrollCondition = scrollCondition;
+  }
+
+  public ScrollCondition getScrollCondition()
+  {
+    return scrollCondition;
+  }
+
+  public interface ScrollCondition
+  {
+    public boolean canScroll();
   }
 }
