@@ -55,55 +55,15 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
     // IGNORE
   }
 
-  //TODO - MDM - Need the concept of a drag owners so that dragged props can receive the event even if the drag occurs outside their bounds.
   public void mouseDragged(MouseEvent e)
   {
     Panel panel = panelFor(e.getPoint());
     if(panel != hooveredPanel)
       transition(panel, e);
-    panel.mouseDragged(e);
+    if(pressedPanel != null)
+      pressedPanel.mouseDragged(e);
   }
-
-  private void transition(Panel panel, MouseEvent e)
-  {
-    if(hooveredPanel == null)
-    {
-      panel.mouseEntered(e);
-      enter(panel, panel, e);
-    }
-    else if(hooveredPanel.isDescendantOf(panel))
-      exit(hooveredPanel, panel, e);
-    else if(panel.isDescendantOf(hooveredPanel))
-      enter(panel, hooveredPanel, e);
-    else
-    {
-      Panel ancestor = hooveredPanel.getClosestCommonAncestor(panel);
-      exit(hooveredPanel, ancestor, e);
-      enter(panel, ancestor, e);
-    }
-    hooveredPanel = panel;
-  }
-
-  private void enter(Panel descendant, Panel ancestor, MouseEvent e)
-  {
-    if(descendant == ancestor || descendant == null)
-      return;
-    enter(descendant.getParent(), ancestor, e);
-    descendant.mouseEntered(e);
-  }
-
-  private void exit(Panel descendant, Panel ancestor, MouseEvent e)
-  {
-    while(descendant != ancestor && !(descendant instanceof ScenePanel))
-    {
-      if(descendant != null)
-      {
-        descendant.mouseExited(e);
-        descendant = descendant.getParent();
-      }
-    }
-  }
-
+  
   public void mouseMoved(MouseEvent e)
   {
     Panel panel = panelFor(e.getPoint());
@@ -148,5 +108,45 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
 //      KeyListener keyListener = keyListeners[i];
 //      keyListener.keyReleased(e);
 //    }
+  }
+
+  private void transition(Panel panel, MouseEvent e)
+  {
+    if(hooveredPanel == null)
+    {
+      panel.mouseEntered(e);
+      enter(panel, panel, e);
+    }
+    else if(hooveredPanel.isDescendantOf(panel))
+      exit(hooveredPanel, panel, e);
+    else if(panel.isDescendantOf(hooveredPanel))
+      enter(panel, hooveredPanel, e);
+    else
+    {
+      Panel ancestor = hooveredPanel.getClosestCommonAncestor(panel);
+      exit(hooveredPanel, ancestor, e);
+      enter(panel, ancestor, e);
+    }
+    hooveredPanel = panel;
+  }
+
+  private void enter(Panel descendant, Panel ancestor, MouseEvent e)
+  {
+    if(descendant == ancestor || descendant == null)
+      return;
+    enter(descendant.getParent(), ancestor, e);
+    descendant.mouseEntered(e);
+  }
+
+  private void exit(Panel descendant, Panel ancestor, MouseEvent e)
+  {
+    while(descendant != ancestor && !(descendant instanceof ScenePanel))
+    {
+      if(descendant != null)
+      {
+        descendant.mouseExited(e);
+        descendant = descendant.getParent();
+      }
+    }
   }
 }

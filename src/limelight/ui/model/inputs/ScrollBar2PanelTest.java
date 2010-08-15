@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.MockPropFrame;
@@ -191,5 +192,29 @@ public class ScrollBar2PanelTest
     assertEquals(verticalScrollBar.getMaxValue(), verticalScrollBar.getValue());
   }
 
+  @Test
+  public void isDirtyAfterSettingValue() throws Exception
+  {
+    MockRootPanel root = new MockRootPanel();
+    root.add(verticalScrollBar);
+    verticalScrollBar.configure(10, 100);
 
+    verticalScrollBar.setValue(10);
+
+    assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));
+  }
+
+  @Test
+  public void pressingButtonsWillMakeDirty() throws Exception
+  {
+    MockRootPanel root = new MockRootPanel();
+    root.add(verticalScrollBar);
+
+    verticalScrollBar.setIncreasingButtonActive(true);
+    assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));
+    
+    root.dirtyRegions.clear();
+    verticalScrollBar.setDecreasingButtonActive(true);
+    assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));
+  }
 }

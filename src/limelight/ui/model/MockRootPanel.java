@@ -3,14 +3,18 @@
 
 package limelight.ui.model;
 
+import com.sun.jndi.dns.DnsName;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class MockRootPanel extends MockPropablePanel implements RootPanel
 {
+  public LinkedList<Rectangle> dirtyRegions = new LinkedList<Rectangle>();
+
   @Override
   public RootPanel getRoot()
   {
@@ -69,6 +73,7 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
 
   public void addDirtyRegion(Rectangle bounds)
   {
+    dirtyRegions.add(bounds);
   }
 
   public Map<String, RichStyle> getStylesStore()

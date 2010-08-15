@@ -10,12 +10,10 @@ import java.io.IOException;
 
 public class ScrollBarPainter
 {
-  public static final int OUTSIDE_CUSHION = 5;
-  public static final int INSIDE_CUSHION = 33;
-  public static final int MIN_GEM_SIZE = 16;
-  private static final int INCREASING_BOX_LENGTH = 18;
-  private static final int DECREASING_BOX_LENGTH = 18;
-  private static final int CAP_LENGTH = 7;
+  private static final int MIN_GEM_SIZE = 16;
+  private static final int INCREASING_BOX_LENGTH = 16;
+  private static final int DECREASING_BOX_LENGTH = 17;
+  private static final int CAP_LENGTH = 5;
 
   public static ScrollBarImages horizontalImages;
   public static ScrollBarImages verticalImages;
@@ -73,12 +71,12 @@ public class ScrollBarPainter
 
   public int getOutsideCusion()
   {
-    return OUTSIDE_CUSHION;
+    return CAP_LENGTH;
   }
 
   public int getInsideCushion()
   {
-    return INSIDE_CUSHION;
+    return INCREASING_BOX_LENGTH + DECREASING_BOX_LENGTH;
   }
 
   public int getMinSliderSize()
@@ -89,7 +87,7 @@ public class ScrollBarPainter
   public void paintOn(Graphics2D graphics, ScrollBar2Panel scrollBar)
   {
     Box bounds = scrollBar.getBoundingBox();
-    if(scrollBar.getOrientation() == ScrollBar2Panel.HORIZONTAL)
+    if(scrollBar.isHorizontal())
       drawHorizontally(graphics, bounds, scrollBar);
     else
       drawVertically(graphics, bounds, scrollBar);
@@ -127,6 +125,10 @@ public class ScrollBarPainter
     ScrollBarImages images = verticalImages;
     for(int y = 0; y < bounds.height; y += images.background.getHeight())
       graphics.drawImage(images.background, 0, y, null);
+
+    if(scrollBar.getSliderSize() >= scrollBar.getTrackSize())
+      return;
+
     graphics.drawImage(images.cap, 0, 0, null);
 
     graphics.drawImage(buttonsImageFor(scrollBar, images), 0, bounds.height - images.buttons.getHeight(), null);
@@ -155,6 +157,10 @@ public class ScrollBarPainter
     ScrollBarImages images = horizontalImages;
     for(int x = 0; x < bounds.width; x += images.background.getWidth())
       graphics.drawImage(images.background, x, 0, null);
+    
+    if(scrollBar.getSliderSize() >= scrollBar.getTrackSize())
+      return;
+
     graphics.drawImage(images.cap, 0, 0, null);
     graphics.drawImage(buttonsImageFor(scrollBar, images), bounds.width - images.buttons.getWidth(), 0, null);
 
