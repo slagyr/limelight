@@ -27,11 +27,7 @@ public class ScrollBar2Panel extends BasePanel
   private int blockIncrement;
   private int value;
   private int maxValue;
-  private int sliderSize;
   private int sliderPosition;
-  private int minSliderPosition;
-  private int maxSliderPosition;
-  private int trackSize;
   private Box increasingButtonBounds;
   private Box decreasingButtonBounds;
   private boolean increasingButtonActive;
@@ -45,11 +41,13 @@ public class ScrollBar2Panel extends BasePanel
     if(getOrientation() == VERTICAL)
     {
       preferredGirth = width = 15;
+      setSize(preferredGirth, 50);
       sliderBounds = new Box(0, 0, preferredGirth, 0);
     }
     else
     {
       preferredGirth = height = 15;
+      setSize(50, preferredGirth);
       sliderBounds = new Box(0, 0, 0, preferredGirth);
     }
   }
@@ -169,6 +167,60 @@ public class ScrollBar2Panel extends BasePanel
     return false;
   }
 
+  private synchronized void configurationChanged()
+  {
+    //TODO - could improve performance here... no need to create new instance of layout every time
+    BasePanel parent = (BasePanel) getParent();
+    if(parent != null)
+      parent.markAsNeedingLayout(new ScrollLayout(this));
+  }
+
+  public void configure(int visible, int available)
+  {
+    synchronized(this)
+    {
+      availableAmount = available;
+      visibleAmount = visible;
+      maxValue = available - visible;
+      blockIncrement = (int) (visible * 0.9);
+      calculateSliderSize();
+      calculateSliderPosition();
+    }
+    configurationChanged();
+  }
+
+  private void calculateSliderSize()
+  {
+    double proportion = (double) visibleAmount / availableAmount;
+    int calculatedSliderSize = (int) (getTrackSize() * proportion + 0.5);
+    int sliderSize = Math.max(calculatedSliderSize, painter.getMinSliderSize());
+
+    if(isHorizontal())
+      sliderBounds.width = sliderSize;
+    else
+      sliderBounds.height = sliderSize;
+  }
+
+  private void calculateSliderPosition()
+  {
+    double valueRatio = (double) value / maxValue;
+    sliderPosition = getMinSliderPosition() + (int) (getSliderPlay() * valueRatio + 0.5);
+
+    if(isHorizontal())
+      sliderBounds.x = sliderPosition;
+    else
+      sliderBounds.y = sliderPosition;
+  }
+
+  public void setSliderPosition(int position)
+  {
+    sliderPosition = Math.min(Math.max(position, getMinSliderPosition()), getMaxSliderPosition());
+    
+    double positionRatio = (double)(position - getMinSliderPosition()) / getSliderPlay();
+    int value = (int)(positionRatio * maxValue + 0.5);
+    setValue(value);
+  }
+
   public void setValue(int value)
   {
     if(value < 0)
@@ -181,15 +233,8 @@ public class ScrollBar2Panel extends BasePanel
       this.value = value;
       calculateSliderPosition();
       configurationChanged();
+      markAsDirty();
     }
-  }
-
-  private synchronized void configurationChanged()
-  {
-    //TODO - could improve performance here... no need to create new instance of layout every time
-    BasePanel parent = (BasePanel) getParent();
-    if(parent != null)
-      parent.markAsNeedingLayout(new ScrollLayout(this));
   }
 
   public int getValue()
@@ -229,58 +274,17 @@ public class ScrollBar2Panel extends BasePanel
 
   public int getSliderSize()
   {
-    return sliderSize;
+    return isHorizontal() ? sliderBounds.width : sliderBounds.height;
   }
 
-  public void configure(int visible, int available)
+  public int getTrackSize()
   {
-    synchronized(this)
-    {
-      availableAmount = available;
-      visibleAmount = visible;
-      maxValue = available - visible;
-      blockIncrement = (int) (visible * 0.9);
-      calculateSliderSize();
-      calculateSliderPosition();
-    }
-    configurationChanged();
+    return isHorizontal() ? trackBounds.width : trackBounds.height;
   }
 
-  private void calculateSliderSize()
+  private int getSliderPlay()
   {
-    double proportion = (double) visibleAmount / availableAmount;
-    int fullSize = isHorizontal() ? getWidth() : getHeight();
-    int avaiableSize = fullSize - painter.getOutsideCusion() - painter.getInsideCushion();
-    int calculatedSliderSize = (int) (avaiableSize * proportion + 0.5);
-    sliderSize = Math.max(calculatedSliderSize, painter.getMinSliderSize());
-    minSliderPosition = painter.getOutsideCusion();
-    maxSliderPosition = fullSize - painter.getInsideCushion() - sliderSize;
-    trackSize = maxSliderPosition - minSliderPosition;
-
-    if(isHorizontal())
-      sliderBounds.width = sliderSize;
-    else
-      sliderBounds.height = sliderSize;
-  }
-
-  private void calculateSliderPosition()
-  {
-    double valueRatio = (double) value / maxValue;
-    sliderPosition = minSliderPosition + (int) (trackSize * valueRatio + 0.5);
-
-    if(isHorizontal())
-      sliderBounds.x = sliderPosition;
-    else
-      sliderBounds.y = sliderPosition;
-  }
-
-  public void setSliderPosition(int position)
-  {
-    sliderPosition = Math.min(Math.max(position, minSliderPosition), maxSliderPosition);
-    
-    double positionRatio = (double)(position - minSliderPosition) / (maxSliderPosition - minSliderPosition);
-    int value = (int)(positionRatio * maxValue + 0.5);
-    setValue(value);
+    return getMaxSliderPosition() - getMinSliderPosition();
   }
 
   public int getSliderPosition()
@@ -290,12 +294,12 @@ public class ScrollBar2Panel extends BasePanel
 
   public int getMinSliderPosition()
   {
-    return minSliderPosition;
+    return isHorizontal() ? trackBounds.x : trackBounds.y;
   }
 
   public int getMaxSliderPosition()
   {
-    return maxSliderPosition;
+    return (isHorizontal() ? trackBounds.width + trackBounds.x : trackBounds.height + trackBounds.y) - getSliderSize();
   }
 
   public Box getIncreasingButtonBounds()
@@ -336,10 +340,13 @@ public class ScrollBar2Panel extends BasePanel
   public void setIncreasingButtonActive(boolean value)
   {
     increasingButtonActive = value;
+    markAsDirty();
   }
 
   public void setDecreasingButtonActive(boolean value)
   {
     decreasingButtonActive = value;
+    markAsDirty();
   }
+
 }

@@ -1,6 +1,7 @@
 package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
+import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.util.Box;
 import org.junit.Test;
@@ -211,7 +212,7 @@ public class ScrollBarPainterTest
 
     Box increasing = painter.getIncreasingBox(scrollBar);
 
-    assertEquals(new Box(82, 0, 18, 15), increasing);
+    assertEquals(new Box(84, 0, 16, 15), increasing);
   }
 
   @Test
@@ -222,7 +223,7 @@ public class ScrollBarPainterTest
 
     Box increasing = painter.getIncreasingBox(scrollBar);
 
-    assertEquals(new Box(0, 82, 15, 18), increasing);
+    assertEquals(new Box(0, 84, 15, 16), increasing);
   }
 
   @Test
@@ -233,7 +234,7 @@ public class ScrollBarPainterTest
 
     Box increasing = painter.getDecreasingBox(scrollBar);
 
-    assertEquals(new Box(64, 0, 18, 15), increasing);
+    assertEquals(new Box(67, 0, 17, 15), increasing);
   }
 
   @Test
@@ -244,7 +245,7 @@ public class ScrollBarPainterTest
 
     Box increasing = painter.getDecreasingBox(scrollBar);
 
-    assertEquals(new Box(0, 64, 15, 18), increasing);
+    assertEquals(new Box(0, 67, 15, 16), increasing);
   }
 
   @Test
@@ -255,7 +256,7 @@ public class ScrollBarPainterTest
 
     Box track = painter.getTrackBox(scrollBar);
 
-    assertEquals(new Box(0, 7, 15, 57), track);
+    assertEquals(new Box(0, 5, 15, 62), track);
   }
 
   @Test
@@ -266,8 +267,41 @@ public class ScrollBarPainterTest
 
     Box track = painter.getTrackBox(scrollBar);
 
-    assertEquals(new Box(7, 0, 57, 15), track);
+    assertEquals(new Box(5, 0, 62, 15), track);
   }
 
-  //TODO MDM Need to test painting when slider is larger than track.
+  @Test
+  public void onlyTrackIsDrawnWhenGemIsLargerThanTrack() throws Exception
+  {
+    setUpHorizontally();
+    scrollBar.setSize(100, 15);
+    scrollBar.configure(100, 50);
+
+    painter.paintOn(graphics, scrollBar);
+    
+    assertEquals(10, graphics.drawnImages.size());
+    for(MockGraphics.DrawnImage drawnImage : graphics.drawnImages)
+    {
+      assertEquals(images.background, drawnImage.image);
+    }
+  }
+   
+  @Test
+  public void onlyTrackIsDrawnWhenGemIsSameSizeAsTrack() throws Exception
+  {
+    setUpVertically();
+    scrollBar.setSize(15, 100);
+    scrollBar.configure(100, 100);
+
+    painter.paintOn(graphics, scrollBar);
+
+    assertEquals(10, graphics.drawnImages.size());
+    for(MockGraphics.DrawnImage drawnImage : graphics.drawnImages)
+    {
+      assertEquals(images.background, drawnImage.image);
+    }
+  }
+
+//  TODO MDM Need to paint pressed button even if at max or min
+
 }

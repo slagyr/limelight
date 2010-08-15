@@ -3,14 +3,19 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
 import limelight.ui.api.MockProp;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class EventListenerTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertSame;
+
+public class EventListenerTest
 {
   private EventListener listener;
   private PropPanel root;
@@ -19,6 +24,7 @@ public class EventListenerTest extends TestCase
   private MockProp rootProp;
   private JPanel jpanel;
 
+  @Before
   public void setUp() throws Exception
   {
     jpanel = new JPanel();
@@ -41,7 +47,8 @@ public class EventListenerTest extends TestCase
     childPanel.setSize(500, 500);
   }
 
-  public void testMousePressed() throws Exception
+  @Test
+  public void mousePressed() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mousePressed(e1);
@@ -54,7 +61,8 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, childProp.pressedMouse, 250, 250);
   }
 
-  public void testMousePressedWhenChildDoesntAcceptIt() throws Exception
+  @Test
+  public void mousePressedWhenChildDoesntAcceptIt() throws Exception
   {
     MouseEvent e2 = mouseEvent(500, 500);
     childProp.accept_mouse_pressed = false;
@@ -72,7 +80,8 @@ public class EventListenerTest extends TestCase
     assertEquals(y, actual.getX());
   }
 
-  public void testMouseReleased() throws Exception
+  @Test
+  public void mouseReleased() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseReleased(e1);
@@ -83,7 +92,8 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, childProp.releasedMouse, 250, 250);
   }
 
-  public void testMouseReleasedWhenChildDoesntAcceptIt() throws Exception
+  @Test
+  public void mouseReleasedWhenChildDoesntAcceptIt() throws Exception
   {
     MouseEvent e2 = mouseEvent(500, 500);
     childProp.accept_mouse_released = false;
@@ -92,7 +102,8 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, rootProp.releasedMouse, 500, 500);
   }
 
-  public void testMouseClick() throws Exception
+  @Test
+  public void mouseClick() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mousePressed(e1);
@@ -105,7 +116,8 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, childProp.clickedMouse, 250, 250);
   }
 
-  public void testMouseClickWhenChildDoesntAcceptIt() throws Exception
+  @Test
+  public void mouseClickWhenChildDoesntAcceptIt() throws Exception
   {
     MouseEvent e2 = mouseEvent(500, 500);
     childProp.accept_mouse_clicked = false;
@@ -115,7 +127,8 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, rootProp.clickedMouse, 500, 500);
   }
 
-  public void testMouseClickButPanelChanged() throws Exception
+  @Test
+  public void mouseClickButPanelChanged() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     MouseEvent e2 = mouseEvent(500, 500);
@@ -127,7 +140,8 @@ public class EventListenerTest extends TestCase
     assertNull(childProp.clickedMouse);
   }
 
-  public void testMouseMoved() throws Exception
+  @Test
+  public void mouseMoved() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseMoved(e1);
@@ -138,18 +152,36 @@ public class EventListenerTest extends TestCase
     checkEvent(e2, childProp.movedMouse, 250, 250);
   }
 
-  public void testMouseDragged() throws Exception
+  @Test
+  public void mouseDraggedIsOnlyEffectiveAfterPress() throws Exception
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseDragged(e1);
+    assertEquals(null, rootProp.draggedMouse);
+
+    listener.mousePressed(e1);
+    listener.mouseDragged(e1);
     checkEvent(e1, rootProp.draggedMouse, 0, 0);
+  }
+  
+  @Test
+  public void mouseDraggedIsOnlyEffectiveOnPressedPanel() throws Exception
+  {
+    MouseEvent e1 = mouseEvent(0, 0);
+    listener.mousePressed(e1);
 
     MouseEvent e2 = mouseEvent(500, 500);
+    listener.mouseDragged(e2);
+    assertEquals(null, childProp.draggedMouse);
+    checkEvent(e2, rootProp.draggedMouse, 500, 500);
+
+    listener.mousePressed(e2);
     listener.mouseDragged(e2);
     checkEvent(e2, childProp.draggedMouse, 250, 250);
   }
 
-  public void testMouseEnteredAndExited() throws Exception
+  @Test
+  public void mouseEnteredAndExited() throws Exception
   {
     MockProp child2Block = new MockProp();
     PropPanel child2Panel = new PropPanel(child2Block);
@@ -176,11 +208,12 @@ public class EventListenerTest extends TestCase
     checkEvent(e3, child2Block.exitedMouse, 499, 499);
     checkEvent(e3, childProp.enteredMouse, 250, 250);
   }
-
-  public void testMouseEnteredAndExitedWhileDragging() throws Exception
+  
+  @Test
+  public void draggingInvokesEnteredAndExited() throws Exception
   {
-    MockProp child2Block = new MockProp();
-    PropPanel child2Panel = new PropPanel(child2Block);
+    MockProp child2 = new MockProp();
+    PropPanel child2Panel = new PropPanel(child2);
     root.add(child2Panel);
     child2Panel.setLocation(1, 1);
     child2Panel.setSize(100, 100);
@@ -190,6 +223,7 @@ public class EventListenerTest extends TestCase
     MouseEvent e3 = mouseEvent(500, 500);
     assertNull(listener.hooveredPanel);
 
+    listener.mousePressed(e1);
     listener.mouseDragged(e1);
     assertSame(root, listener.hooveredPanel);
     checkEvent(e1, rootProp.enteredMouse, 0, 0);
@@ -197,12 +231,14 @@ public class EventListenerTest extends TestCase
     listener.mouseDragged(e2);
     assertSame(child2Panel, listener.hooveredPanel);
     assertNull(rootProp.exitedMouse);
-    checkEvent(e2, child2Block.enteredMouse, 49, 49);
+    checkEvent(e2, child2.enteredMouse, 49, 49);
+    assertEquals(null, child2.draggedMouse);
 
     listener.mouseDragged(e3);
     assertSame(childPanel, listener.hooveredPanel);
-    checkEvent(e3, child2Block.exitedMouse, 499, 499);
+    checkEvent(e3, child2.exitedMouse, 499, 499);
     checkEvent(e3, childProp.enteredMouse, 250, 250);
+    assertEquals(null, childProp.draggedMouse);
   }
 
   private MouseEvent mouseEvent(int x, int y)

@@ -11,8 +11,10 @@ public class ScrollMouseProcessor
   private ScrollBar2Panel scrollBar;
   private ScrollRepeater repeater;
   private Point mouseLocation;
-  private boolean sliderDragOn;
   private int sliderDragDelta;
+  private boolean sliderDragOn;
+  private boolean unitIncrementOn;
+  private boolean blockIncrementOn;
 
   public ScrollMouseProcessor(ScrollBar2Panel scrollBar)
   {
@@ -28,12 +30,24 @@ public class ScrollMouseProcessor
   private void startRepeater(int delta)
   {
     repeater.setScrollDelta(delta);
-    repeater.resetTimer();
-    repeater.start();
+    startRepeater();
+  }
+
+  private void startRepeater()
+  {
+    if(!repeater.isRunning())
+    {
+      repeater.resetTimer();
+      repeater.start();
+    }
   }
 
   public void mousePressed(MouseEvent e)
   {
+    sliderDragOn = false;
+    unitIncrementOn = false;
+    blockIncrementOn = false;
+
     mouseLocation = e.getPoint();
     if(scrollBar.getIncreasingButtonBounds().contains(mouseLocation))
       initiateUnitIncrement(scrollBar.getUnitIncrement());
@@ -49,7 +63,7 @@ public class ScrollMouseProcessor
       else if(scrollBar.getSliderBounds().contains(mouseLocation))
       {
         sliderDragOn = true;
-        sliderDragDelta = (int)(scrollBar.isHorizontal() ? mouseLocation.getX() - scrollBar.getSliderPosition() : mouseLocation.getY() - scrollBar.getSliderPosition());
+        sliderDragDelta = (int) (scrollBar.isHorizontal() ? mouseLocation.getX() - scrollBar.getSliderPosition() : mouseLocation.getY() - scrollBar.getSliderPosition());
       }
     }
   }
@@ -60,7 +74,6 @@ public class ScrollMouseProcessor
     repeater.reset();
     scrollBar.setDecreasingButtonActive(false);
     scrollBar.setIncreasingButtonActive(false);
-    sliderDragOn = false;
     scrollBar.markAsDirty();
   }
 
@@ -70,13 +83,13 @@ public class ScrollMouseProcessor
 
   public void mouseDragged(MouseEvent e)
   {
+    mouseLocation = e.getPoint();
     if(sliderDragOn)
-    {
-      if(scrollBar.isHorizontal())
-        scrollBar.setSliderPosition(e.getX() - sliderDragDelta);
-      else
-        scrollBar.setSliderPosition(e.getY() - sliderDragDelta);
-    }
+      processSliderDrag();
+    else if(unitIncrementOn)
+      processUnitIncrementDrag();
+    else if(blockIncrementOn)
+      processBlockIncremementDrag();
   }
 
   public void mouseEntered(MouseEvent e)
@@ -86,7 +99,8 @@ public class ScrollMouseProcessor
 
   public void mouseExited(MouseEvent e)
   {
-
+    repeater.stop();
+    deactivateButtons();
   }
 
   public void mouseMoved(MouseEvent e)
@@ -94,8 +108,70 @@ public class ScrollMouseProcessor
 
   }
 
+  private void processBlockIncremementDrag()
+  {
+    if(scrollBar.getTrackBounds().contains(mouseLocation))
+    {
+      Box sliderBounds = scrollBar.getSliderBounds();
+      final boolean shouldReverseBlockIncrement = (repeater.getScrollDelta() < 0 && isAfterSlider(mouseLocation, sliderBounds))
+                                               || (repeater.getScrollDelta() > 0 && isBeforeSlider(mouseLocation, sliderBounds));
+      if(shouldReverseBlockIncrement)
+        repeater.setScrollDelta(repeater.getScrollDelta() * -1);
+
+      startRepeater();
+    }
+    else
+      repeater.stop();
+  }
+
+  private void processUnitIncrementDrag()
+  {
+    if(scrollBar.getDecreasingButtonBounds().contains(mouseLocation))
+    {
+      scrollBar.setDecreasingButtonActive(true);
+      if(repeater.getScrollDelta() > 0)
+      {
+        scrollBar.setIncreasingButtonActive(false);
+        repeater.setScrollDelta(repeater.getScrollDelta() * -1);
+      }
+      startRepeater();
+    }
+    else if(scrollBar.getIncreasingButtonBounds().contains(mouseLocation))
+    {
+      scrollBar.setIncreasingButtonActive(true);
+      if(repeater.getScrollDelta() < 0)
+      {
+        scrollBar.setDecreasingButtonActive(false);
+        repeater.setScrollDelta(repeater.getScrollDelta() * -1);
+      }
+      startRepeater();
+    }
+    else
+    {
+      deactivateButtons();
+      repeater.stop();
+    }
+  }
+
+  private void processSliderDrag()
+  {
+    if(scrollBar.isHorizontal())
+      scrollBar.setSliderPosition(mouseLocation.x - sliderDragDelta);
+    else
+      scrollBar.setSliderPosition(mouseLocation.y - sliderDragDelta);
+  }
+
+  private void deactivateButtons()
+  {
+    if(scrollBar.isIncreasingButtonActive())
+      scrollBar.setIncreasingButtonActive(false);
+    else if(scrollBar.isDecreasingButtonActive())
+      scrollBar.setDecreasingButtonActive(false);
+  }
+
   private void initiateBlockIncrement(int scrollDelta)
   {
+    blockIncrementOn = true;
     scrollBar.setValue(scrollBar.getValue() + scrollDelta);
     repeater.setScrollCondition(getNotInSliderScrollCondition());
     startRepeater(scrollDelta);
@@ -103,6 +179,8 @@ public class ScrollMouseProcessor
 
   private void initiateUnitIncrement(int scrollDelta)
   {
+    unitIncrementOn = true;
+
     if(scrollDelta > 0)
       scrollBar.setIncreasingButtonActive(true);
     else
@@ -140,6 +218,16 @@ public class ScrollMouseProcessor
   public boolean isSliderDragOn()
   {
     return sliderDragOn;
+  }
+
+  public boolean isUnitIncrementOn()
+  {
+    return unitIncrementOn;
+  }
+
+  public boolean isBlockIncrementOn()
+  {
+    return blockIncrementOn;
   }
 
   private static class NotInSliderScrollCondition implements ScrollRepeater.ScrollCondition
