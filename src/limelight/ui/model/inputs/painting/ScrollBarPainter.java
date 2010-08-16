@@ -59,7 +59,7 @@ public class ScrollBarPainter
     }
     catch(IOException e)
     {
-      throw new RuntimeException("Could not load TextPanel border images", e);
+      throw new RuntimeException("Could not load ScrollBar images", e);
     }
     catch(Exception e)
     {

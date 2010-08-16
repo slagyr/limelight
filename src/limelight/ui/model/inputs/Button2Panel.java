@@ -3,37 +3,57 @@
 
 package limelight.ui.model.inputs;
 
+import com.android.ninepatch.NinePatch;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.ui.model.*;
 import limelight.util.Box;
-import limelight.util.Colors;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.Context;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
 import java.awt.font.TextLayout;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
 {
-  private static Font font = new Font("Arial", Font.BOLD, 12);
-  private static ButtonStyle normal = new ButtonStyle("button", "#e0e0e0");
-  private static ButtonStyle selected = new ButtonStyle("button_selected", "#bbd453");
-  private static ButtonStyle focusedStyle = new ButtonStyle("button_focus", "transparent");
+  private static Drawable normalPatch;
+  private static Drawable selectedPatch;
+  private static Drawable focusPatch;
 
+  static
+  {
+    try
+    {
+      ClassLoader classLoader = Button2Panel.class.getClassLoader();
+
+      normalPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/button.9.png")), true, true);
+      selectedPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/button_selected.9.png")), true, true);
+      focusPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/button_focus.9.png")), true, true);
+    }
+    catch(IOException e)
+    {
+      throw new RuntimeException("Could not load ButtonPanel images", e);
+    }
+    catch(Exception e)
+    {
+      System.err.println("e = " + e);
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static Font font = new Font("Arial", Font.BOLD, 12); // TODO MDM should pull font from style
   private static SimpleHorizontalAlignmentValue horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.CENTER);
-
   private static SimpleVerticalAlignmentValue verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
+
+  private Drawable activePatch;
   private String text;
-  private ButtonStyle style;
   private Rectangle textBounds;
   private Dimension textDimensions;
   private TextLayout textLayout;
@@ -41,8 +61,8 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
 
   public Button2Panel()
   {
-    style = normal;
-    setSize(128, 29);
+    activePatch = normalPatch;
+    setSize(128, 27);
   }
 
   public void setParent(limelight.ui.Panel panel)
@@ -71,8 +91,8 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
   public void paintOn(Graphics2D graphics)
   {
     if(focused)
-      focusedStyle.paintOn(graphics, this);
-    style.paintOn(graphics, this);
+      focusPatch.draw(graphics, 0, 0, width, height);
+    activePatch.draw(graphics, 0, 0, width, height);
 
     graphics.setColor(Color.BLACK);
     calculateTextDimentions();
@@ -110,13 +130,13 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
 
   public void mousePressed(MouseEvent e)
   {
-    style = selected;
+    activePatch = selectedPatch;
     repaint();
   }
 
   public void mouseReleased(MouseEvent e)
   {
-    style = normal;
+    activePatch = normalPatch;
     repaint();
     super.buttonPressed(new ActionEvent(this, 0, "blah"));
   }
@@ -133,77 +153,5 @@ public class Button2Panel extends BasePanel implements TextAccessor, InputPanel
     focused = false;
     repaint();
     super.focusLost(e);
-  }
-
-  private static class ButtonStyle
-  {
-    private String prefix;
-    private boolean loaded;
-
-    private ButtonStyle(String prefix, String interiorColor)
-    {
-      this.prefix = prefix;
-      this.interior = Colors.resolve(interiorColor);
-    }
-
-    public BufferedImage topLeftImage;
-    public BufferedImage topImage;
-    public BufferedImage topRightImage;
-    public BufferedImage rightImage;
-    public BufferedImage bottomRightImage;
-    public BufferedImage bottomImage;
-    public BufferedImage bottomLeftImage;
-    public BufferedImage leftImage;
-    public Color interior;
-
-
-    public void load()
-    {
-      if(loaded)
-        return;
-      try
-      {
-        topLeftImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_tl.png"));
-        topImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_t.png"));
-        topRightImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_tr.png"));
-        rightImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_r.png"));
-        bottomRightImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_br.png"));
-        bottomImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_b.png"));
-        bottomLeftImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_bl.png"));
-        leftImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/" + prefix + "_l.png"));
-        loaded = true;
-      }
-      catch(IOException e)
-      {
-        throw new RuntimeException(e);
-      }
-    }
-
-    public void paintOn(Graphics2D graphics, Button2Panel button)
-    {
-      load();
-      int innerTopY = topImage.getHeight();
-      int innerBottomY = button.getHeight() - bottomImage.getHeight();
-      int innerLeftX = leftImage.getWidth();
-      int innerRightX = button.getWidth() - rightImage.getWidth();
-
-      graphics.drawImage(topLeftImage, 0, 0, null);
-      graphics.drawImage(topRightImage, innerRightX, 0, null);
-      graphics.drawImage(bottomLeftImage, 0, innerBottomY, null);
-      graphics.drawImage(bottomRightImage, innerRightX, innerBottomY, null);
-      for(int x = innerLeftX; x < innerRightX; x++)
-      {
-        graphics.drawImage(topImage, x, 0, null);
-        graphics.drawImage(bottomImage, x, innerBottomY, null);
-      }
-      for(int y = innerTopY; y < innerBottomY; y++)
-      {
-        graphics.drawImage(leftImage, 0, y, null);
-        graphics.drawImage(rightImage, innerRightX, y, null);
-      }
-      graphics.setColor(interior);
-      Rectangle interiorArea = new Rectangle(innerLeftX, innerTopY, innerRightX - innerLeftX, innerBottomY - innerTopY);
-      graphics.fill(interiorArea);
-    }
   }
 }
