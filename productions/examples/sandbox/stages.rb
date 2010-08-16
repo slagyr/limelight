@@ -3,7 +3,7 @@
 
 stage "Limelight Sandbox" do
 #  default_scene "click_me"
-  default_scene "scrolling"
+  default_scene "inputs"
   size [900, 900]
   location :center, :center
 end

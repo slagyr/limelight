@@ -9,12 +9,12 @@ import limelight.ui.api.MockProp;
 
 public class ButtonPanelTest extends TestCase
 {
-  private ButtonPanel panel;
+  private Button2Panel panel;
   private PropPanel parent;
 
   public void setUp() throws Exception
   {
-    panel = new ButtonPanel();
+    panel = new Button2Panel();
     parent = new PropPanel(new MockProp());
     parent.add(panel);
   }
@@ -27,7 +27,7 @@ public class ButtonPanelTest extends TestCase
   public void testSettingParentSetsTextAccessor() throws Exception
   {
     parent.setText("blah");
-    assertEquals("blah", panel.getButton().getText());
+    assertEquals("blah", panel.getText());
   }
   
   public void testSettingParentSteralizesParent() throws Exception
