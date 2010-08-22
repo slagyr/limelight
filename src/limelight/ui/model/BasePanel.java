@@ -4,8 +4,8 @@
 package limelight.ui.model;
 
 import limelight.styles.Style;
+import limelight.ui.EventAction;
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
@@ -30,12 +30,14 @@ public abstract class BasePanel implements Panel
   protected Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
   private boolean illuminated;
+  private EventHandler eventHandler;
 
   protected BasePanel()
   {
     width = 50;
     height = 50;
     children = new LinkedList<Panel>();
+    eventHandler = new EventHandler(this);
   }
 
   public int getHeight()
@@ -209,6 +211,11 @@ public abstract class BasePanel implements Panel
     return BasePanelLayout.instance;
   }
 
+  public EventHandler getEventHandler()
+  {
+    return eventHandler;
+  }
+
   // TODO MDM The mouse events should delegate to a mouse processor... so that we don't have to delegate in multiple subclasses.
   public void mousePressed(MouseEvent e)
   { 
@@ -290,7 +297,7 @@ public abstract class BasePanel implements Panel
 
   public void add(int index, Panel child)
   {
-    if(sterilized && !(child instanceof ScrollBar2Panel))
+    if(sterilized && !(child instanceof ScrollBarPanel))
       throw new SterilePanelException("Unknown name");
 
     synchronized(children)

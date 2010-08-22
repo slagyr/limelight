@@ -4,7 +4,6 @@
 package limelight;
 
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.AwtInputPanel;
 import limelight.ui.model.inputs.InputPanelUtil;
 
 import java.awt.*;
@@ -25,8 +24,8 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
   {
     if(focusedPanel != inputPanel && inputPanel != null)
     {
-      if(inputPanel instanceof AwtInputPanel)
-        focusComponent(((AwtInputPanel)inputPanel).getComponent());
+      if(focusedPanel != null)
+        focusedPanel.focusLost(null);
       focusedPanel = inputPanel;
       focusedPanel.focusGained(null);
     }

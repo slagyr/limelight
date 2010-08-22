@@ -27,9 +27,9 @@ limelight_builtin_players_combo_box_popup_list_item {
   left_padding 10
   hover {
     text_color :white
-    background_color "#0f38e8"
-    secondary_background_color "#506ff6"
-    gradient_angle 90
+    background_color "#bbd453"
+    secondary_background_color "#9fb454"
+    gradient_angle 270
     gradient :on
   }
 }

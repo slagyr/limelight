@@ -6,9 +6,9 @@ import limelight.ui.MockGraphics;
 import limelight.ui.Painter;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.MockDrawable;
+import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.inputs.TextBox2Panel;
-import limelight.ui.painting.BackgroundPainter;
+import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.MockPainter;
 import org.junit.*;
@@ -18,6 +18,7 @@ import java.awt.*;
 public class TextPanelBorderPainterTest extends Assert
 {
   private static Painter realBorderPainter;
+  private MockRootPanel root;
 
   @BeforeClass
   public static void recordPainters()
@@ -37,16 +38,17 @@ public class TextPanelBorderPainterTest extends Assert
   private PropPanel parent;
   private Painter painter;
   private MockGraphics graphics;
-  private TextBox2Panel panel;
+  private TextBoxPanel panel;
 
   @Before
   public void setUp() throws Exception
   {
+    root = new MockRootPanel();
     parent = new PropPanel(new MockProp());
-    panel = new TextBox2Panel();
+    root.add(parent);
+    panel = new TextBoxPanel();
     parent.add(panel);
     graphics = new MockGraphics();
-    Context.instance().keyboardFocusManager = new KeyboardFocusManager();
 
     TextPanelBorderPainter.normalBorder = normalDrawable = new MockDrawable();
     TextPanelBorderPainter.focusedBorder = focusDrawable = new MockDrawable();
@@ -76,7 +78,8 @@ public class TextPanelBorderPainterTest extends Assert
   @Test
   public void willUseBothBackgroundsWhenFocused()
   {
-    Context.instance().keyboardFocusManager.focusPanel(panel);
+    root.getKeyListener().focusOn(panel);
+//    Context.instance().keyboardFocusManager.focusPanel(panel);
 
     painter.paint(graphics, parent);
 

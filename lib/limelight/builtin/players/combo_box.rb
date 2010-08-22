@@ -27,13 +27,13 @@ module Limelight
         class << self
           def extended(prop) #:nodoc:
             combo_box = Limelight::UI::Model::Inputs::ComboBoxPanel.new
+            prop.combo_box = combo_box
             prop.panel.add(combo_box)
-            prop.combo_box = combo_box.combo_box
             prop.clear
           end
         end
 
-        attr_accessor :combo_box #:nodoc:
+        attr_accessor :combo_box
         attr_reader :choices
 
         def clear #:nodoc:
@@ -50,8 +50,7 @@ module Limelight
           value = eval(value) if value.is_a? String
           raise "Invalid choices type: #{value.class}.  Choices have to be an array." if !value.is_a?(Array)
           @choices = value
-          combo_box.remove_all_items
-          value.each { |choice| combo_box.add_item(choice) }
+          self.value = @choices[0]
         end
 
         # Sets the value of the combo box. The value provided should be one choices in the combo box.
@@ -80,7 +79,7 @@ module Limelight
           end
 
           curtains.add(popup_list)
-          scene.add(curtains)      
+          scene.add(curtains)
         end
 
       end

@@ -164,9 +164,9 @@ public abstract class TextModel implements ClipboardOwner
     return container.isCursorOn();
   }
 
-  public boolean isFocused()
+  public boolean hasFocus()
   {
-    return container.isFocused();
+    return container.hasFocus();
   }
 
   public void copyText(String clipboard)

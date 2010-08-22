@@ -156,7 +156,7 @@ public class Main
 
   private void installCommonConfigComponents()
   {
-    context.keyboardFocusManager = new KeyboardFocusManager().installed();
+//    context.keyboardFocusManager = new KeyboardFocusManager().installed();
     initializeTempDirectory();
     context.audioPlayer = new RealAudioPlayer();
     context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);

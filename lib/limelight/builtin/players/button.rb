@@ -26,11 +26,9 @@ module Limelight
           def extended(prop) #:nodoc:
             button = Limelight::UI::Model::Inputs::ButtonPanel.new
             prop.panel.add(button)
-            prop.button = button.button
           end
+          
         end
-
-        attr_accessor :button #:nodoc:
 
       end
 

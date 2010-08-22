@@ -5,7 +5,8 @@ package limelight.ui.model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.awt.event.KeyListener;
 
 public class MockPropFrame implements PropFrame
 {
@@ -19,6 +20,7 @@ public class MockPropFrame implements PropFrame
   public boolean wasClosed;
   public boolean iconified;
   public boolean vital = true;
+  public KeyListener keyListener;
 
   public MockPropFrame()
   {
@@ -90,6 +92,11 @@ public class MockPropFrame implements PropFrame
   public void deactivated(WindowEvent e)
   {
     activated = false;
+  }
+
+  public void addKeyListener(java.awt.event.KeyListener keyListener)
+  {
+    this.keyListener = keyListener;
   }
 
   public void setRoot(RootPanel root)

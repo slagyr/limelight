@@ -9,13 +9,13 @@ import static junit.framework.Assert.assertEquals;
 
 public class ScrollRepeaterTest
 {
-  private ScrollBar2Panel scrollBar;
+  private ScrollBarPanel scrollBar;
   private ScrollRepeater repeater;
 
   @Before
   public void setUp() throws Exception
   {
-    scrollBar = new ScrollBar2Panel(ScrollBar2Panel.HORIZONTAL);
+    scrollBar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
     scrollBar.configure(10, 100);
     repeater = scrollBar.getMouseProcessor().getRepeater();
 

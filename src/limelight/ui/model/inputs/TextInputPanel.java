@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.Context;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.model.*;
@@ -22,7 +21,6 @@ import java.awt.event.MouseEvent;
 public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner, TextContainer
 {
   protected TextModel model;
-  protected boolean focused;
   protected boolean cursorOn;
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
@@ -44,8 +42,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void setParent(limelight.ui.Panel panel)
   {
-    if(panel == null)
-      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
+// MDM - Why was this needed?
+//    if(panel == null)
+//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {
@@ -116,7 +115,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void focusGained(FocusEvent e)
   {
-    focused = true;
     markAsDirty();
     getParent().markAsDirty();
     startCursor();
@@ -125,7 +123,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void focusLost(FocusEvent e)
   {
-    focused = false;
     stopCursor();
     markAsDirty();
     getParent().markAsDirty();
@@ -137,11 +134,12 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     if(cursorThread == null || !cursorThread.isAlive())
     {
+      // TODO MDM - Use the Animation instead
       cursorThread = new Thread(new Runnable()
       {
         public void run()
         {
-          while(focused)
+          while(hasFocus())
           {
             cursorOn = !cursorOn;
             markCursorRegionAsDirty();
@@ -179,11 +177,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     return cursorOn;
   }
 
-  public boolean isFocused()
-  {
-    return focused;
-  }
-
   public void mouseDragged(MouseEvent e)
   {
     mouseProcessor.processMouseDragged(e);
@@ -203,9 +196,10 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     super.mouseReleased(e);
     mouseProcessor.processMouseReleased(e);
-    Context.instance().keyboardFocusManager.focusPanel(this);
-    if(!focused)
-      focusGained(new FocusEvent(getRoot().getFrame().getWindow(), 0));
+    getRoot().getKeyListener().focusOn(this);
+//    Context.instance().keyboardFocusManager.focusPanel(this);
+//    if(!focused)
+//      focusGained(new FocusEvent(getRoot().getFrame().getWindow(), 0));
     buttonPressed(new ActionEvent(this, 0, "blah")); //TODO Why?
   }
 
@@ -224,11 +218,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     cursorOn = value;
   }
 
-  public void setFocused(boolean value)
-  {
-    focused = value;
-  }
-
   protected void setBorderStyleDefaults(Style style)
   {
     style.setDefault(Style.TOP_BORDER_WIDTH, 4);
@@ -243,7 +232,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public boolean hasFocus()
   {
-    return Context.instance().keyboardFocusManager.getFocusedPanel() == this;
+    return getRoot().getKeyListener().getFocusedPanel() == this;
   }
 
   protected void setPaddingDefaults(Style style)

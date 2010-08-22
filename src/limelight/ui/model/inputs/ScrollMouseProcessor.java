@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 public class ScrollMouseProcessor
 {
   private final ScrollRepeater.ScrollCondition notInSliderScrollCondition = new NotInSliderScrollCondition(this);
-  private ScrollBar2Panel scrollBar;
+  private ScrollBarPanel scrollBar;
   private ScrollRepeater repeater;
   private Point mouseLocation;
   private int sliderDragDelta;
@@ -16,7 +16,7 @@ public class ScrollMouseProcessor
   private boolean unitIncrementOn;
   private boolean blockIncrementOn;
 
-  public ScrollMouseProcessor(ScrollBar2Panel scrollBar)
+  public ScrollMouseProcessor(ScrollBarPanel scrollBar)
   {
     this.scrollBar = scrollBar;
     repeater = new ScrollRepeater(scrollBar);

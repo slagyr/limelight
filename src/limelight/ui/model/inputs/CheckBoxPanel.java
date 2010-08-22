@@ -3,69 +3,143 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.PropablePanel;
-import limelight.ui.model.TextAccessor;
-import limelight.styles.Style;
-
+import limelight.styles.ScreenableStyle;
+import limelight.ui.model.*;
+import limelight.util.Box;
+import limelight.Context;
+import javax.imageio.ImageIO;
+import java.awt.event.MouseEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.awt.*;
+import java.io.IOException;
 
-public class CheckBoxPanel extends AwtInputPanel
+public class CheckBoxPanel extends BasePanel implements TextAccessor, InputPanel
 {
-  private CheckBox checkBox;
+  private boolean focused;
+  private boolean imagesLoaded;
+  private BufferedImage normalImage;
+  private BufferedImage selectedImage;
+  private BufferedImage focusImage;
+  private boolean selected;
 
-  protected Component createComponent()
+  public CheckBoxPanel()
   {
-    return checkBox = new CheckBox(this);
+    setSize(20, 20);
   }
 
-  protected TextAccessor createTextAccessor()
+  public void setParent(limelight.ui.Panel panel)
   {
-    return new CheckBoxTextAccessor(checkBox);
+// MDM - Why was this needed?
+//    if(panel == null)
+//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
+    super.setParent(panel);
+    if(panel instanceof PropPanel)
+    {
+      PropPanel propPanel = (PropPanel) panel;
+      propPanel.sterilize();
+      propPanel.setTextAccessor(this);
+    }
   }
 
-  protected void setDefaultStyles(Style style)
+  public Box getBoxInsidePadding()
   {
-    style.setDefault(Style.WIDTH, "" + checkBox.getPreferredSize().width);
-    style.setDefault(Style.HEIGHT, "" + checkBox.getPreferredSize().height);
+    return getBoundingBox();
   }
 
-  public CheckBox getCheckBox()
+  public Box getChildConsumableArea()
   {
-    return checkBox;
+    return getBoundingBox();
   }
 
-  private static class CheckBoxTextAccessor implements TextAccessor
+  public void loadImages()
   {
-    private final CheckBox checkBox;
-
-    public CheckBoxTextAccessor(CheckBox checkBox)
+    if(imagesLoaded)
+      return;
+    try
     {
-      this.checkBox = checkBox;
+      normalImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/checkbox.png"));
+      selectedImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/checkbox_selected.png"));
+      focusImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/checkbox_focus.png"));
+      imagesLoaded = true;
     }
-
-    public void setText(PropablePanel panel, String text)
+    catch(IOException e)
     {
-      checkBox.setText(text);
+      throw new RuntimeException(e);
     }
+  }
 
-    public String getText()
-    {
-      return checkBox.getText();
-    }
+  public void paintOn(Graphics2D graphics)
+  {
+    loadImages();
+    if(focused)
+      graphics.drawImage(focusImage, 0, 0, null);
+    if(selected)
+      graphics.drawImage(selectedImage, 0, 0, null);
+    else
+      graphics.drawImage(normalImage, 0, 0, null);
+  }
 
-    public void markAsDirty()
-    {
-      checkBox.getCheckBoxPanel().markAsDirty();
-    }
+  public ScreenableStyle getStyle()
+  {
+    return getParent().getStyle();
+  }
 
-    public void markAsNeedingLayout()
-    {
-      checkBox.getCheckBoxPanel().markAsNeedingLayout();
-    }
+  public void setText(PropablePanel panel, String text)
+  {
+    if("on".equals(text))
+      selected = true;
+    else
+      selected = false;
+  }
 
-    public boolean hasFocus()
-    {
-      return checkBox.hasFocus();
-    }
+  public String getText()
+  {
+    return selected ? "on" : "off";
+  }
+
+  public boolean isSelected()
+  {
+    return selected;
+  }
+
+  public void setSelected(boolean value)
+  {
+    if(value == selected)
+      return;
+    this.selected = value;
+    repaint();
+  }
+
+  public boolean getSelected()
+  {
+    return selected;
+  }
+
+  public void mousePressed(MouseEvent e)
+  {
+    super.mousePressed(e);
+  }
+
+  public void mouseReleased(MouseEvent e)
+  {
+    super.mouseReleased(e);
+    setSelected(!selected);
+    super.buttonPressed(new ActionEvent(this, 0, "blah"));
+  }
+
+  public void focusGained(FocusEvent e)
+  {
+    focused = true;
+    repaint();
+    super.focusGained(e);
+  }
+
+  public void focusLost(FocusEvent e)
+  {
+    focused = false;
+    repaint();
+    super.focusLost(e);
   }
 }

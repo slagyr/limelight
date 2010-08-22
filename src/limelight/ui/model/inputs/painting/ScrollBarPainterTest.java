@@ -1,8 +1,7 @@
 package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
-import limelight.ui.Panel;
-import limelight.ui.model.inputs.ScrollBar2Panel;
+import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 import org.junit.Test;
 
@@ -10,7 +9,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class ScrollBarPainterTest
 {
-  private ScrollBar2Panel scrollBar;
+  private ScrollBarPanel scrollBar;
   private MockGraphics graphics;
   private ScrollBarPainter.ScrollBarImages images;
   private ScrollBarPainter painter = ScrollBarPainter.instance;
@@ -18,7 +17,7 @@ public class ScrollBarPainterTest
 
   private void setUpHorizontally()
   {
-    scrollBar = new ScrollBar2Panel(ScrollBar2Panel.HORIZONTAL);
+    scrollBar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
     scrollBar.setSize(100, 15);
     scrollBar.setValue(0);
     scrollBar.configure(1, 100);
@@ -28,7 +27,7 @@ public class ScrollBarPainterTest
 
   private void setUpVertically()
   {
-    scrollBar = new ScrollBar2Panel(ScrollBar2Panel.VERTICAL);
+    scrollBar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
     scrollBar.setSize(15, 100);
     scrollBar.setValue(0);
     scrollBar.configure(1, 100);

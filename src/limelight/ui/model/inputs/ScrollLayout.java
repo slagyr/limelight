@@ -14,9 +14,9 @@ import java.util.LinkedList;
 
 public class ScrollLayout extends PropPanelLayout
 {
-  private ScrollBar2Panel scrollBar;
+  private ScrollBarPanel scrollBar;
 
-  public ScrollLayout(ScrollBar2Panel scrollBar)
+  public ScrollLayout(ScrollBarPanel scrollBar)
   {
     this.scrollBar = scrollBar;
   }

@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, KeyListener
+public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 {
   private static final StyleCompiler widthCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage width");
   private static final StyleCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
@@ -57,7 +57,6 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    addKeyListener(this);
   }
 
   public void doLayout()
@@ -263,36 +262,6 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     hasMenuBar = value;
   }
 
-  public void keyTyped(KeyEvent e)
-  {
-    if (root != null)
-      root.keyTyped(e);
-  }
-
-  public void keyPressed(KeyEvent e)
-  {
-    Panel input = Context.instance().keyboardFocusManager.getFocusedPanel();
-    if (input != null)
-      input.keyPressed(e);
-    else
-    {
-      if (root != null)
-        root.keyPressed(e);
-    }
-  }
-
-  public void keyReleased(KeyEvent e)
-  {
-    Panel input = Context.instance().keyboardFocusManager.getFocusedPanel();
-    if (input != null)
-      input.keyReleased(e);
-    else
-    {
-      if (root != null)
-        root.keyReleased(e);
-    }
-  }
-
   public void setBackgroundColor(Object colorString)
   {
     setBackground(Colors.resolve(colorString.toString()));
@@ -360,7 +329,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow, Ke
     if (isVisible())
     {
       // MDM - It happens that the frame is activated and deactivated before it's ever visible.  This causes problems.
-      // Only propogate the event is the frame is visible
+      // Only propogate the event if the frame is visible
       previouslyActivated = true;
       stage.activated(e);
     }

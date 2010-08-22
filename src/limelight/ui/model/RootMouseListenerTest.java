@@ -15,34 +15,38 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 
-public class EventListenerTest
+public class RootMouseListenerTest
 {
-  private EventListener listener;
-  private PropPanel root;
+  private RootMouseListener listener;
+  private PropPanel parent;
   private MockProp childProp;
   private PropPanel childPanel;
-  private MockProp rootProp;
+  private MockProp parentProp;
   private JPanel jpanel;
+  private MockRootPanel root;
 
   @Before
   public void setUp() throws Exception
   {
     jpanel = new JPanel();
 
-    rootProp = new MockProp("rootProp");
-    root = new PropPanel(rootProp);
-    listener = new EventListener(root);
+    root = new MockRootPanel();
+    listener = new RootMouseListener(root);
+
+    parentProp = new MockProp("rootProp");
+    parent = new PropPanel(parentProp);
 
     childProp = new MockProp("childProp");
     childPanel = new PropPanel(childProp);
 
-    root.add(childPanel);
+    root.add(parent);
+    parent.add(childPanel);
 
     ScenePanel scenePanel = new ScenePanel(new MockProp());
-    scenePanel.add(root);
+    scenePanel.add(parent);
     scenePanel.setFrame(new MockPropFrame());
 
-    root.setSize(1000, 1000);
+    parent.setSize(1000, 1000);
     childPanel.setLocation(250, 250);
     childPanel.setSize(500, 500);
   }
@@ -52,13 +56,13 @@ public class EventListenerTest
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mousePressed(e1);
-    assertSame(root, listener.pressedPanel);
-    checkEvent(e1, rootProp.pressedMouse, 0, 0);
+    assertSame(parent, listener.pressedPanel);
+    checkEvent(parentProp.pressedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mousePressed(e2);
     assertSame(childPanel, listener.pressedPanel);
-    checkEvent(e2, childProp.pressedMouse, 250, 250);
+    checkEvent(childProp.pressedMouse, 250, 250);
   }
 
   @Test
@@ -69,13 +73,12 @@ public class EventListenerTest
     listener.mousePressed(e2);
     assertSame(childPanel, listener.pressedPanel);
     assertEquals(null, childProp.pressedMouse);
-    checkEvent(e2, rootProp.pressedMouse, 500, 500);
+    checkEvent(parentProp.pressedMouse, 500, 500);
   }
 
-  private void checkEvent(MouseEvent expectedEvent, Object actualEvent, int x, int y)
+  private void checkEvent(Object actualEvent, int x, int y)
   {
     MouseEvent actual = (MouseEvent)actualEvent;
-//    assertEquals(expectedEvent, actualEvent);
     assertEquals(x, actual.getX());
     assertEquals(y, actual.getX());
   }
@@ -85,11 +88,11 @@ public class EventListenerTest
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseReleased(e1);
-    checkEvent(e1, rootProp.releasedMouse, 0, 0);
+    checkEvent(parentProp.releasedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mouseReleased(e2);
-    checkEvent(e2, childProp.releasedMouse, 250, 250);
+    checkEvent(childProp.releasedMouse, 250, 250);
   }
 
   @Test
@@ -99,7 +102,7 @@ public class EventListenerTest
     childProp.accept_mouse_released = false;
     listener.mouseReleased(e2);
     assertEquals(null, childProp.releasedMouse);
-    checkEvent(e2, rootProp.releasedMouse, 500, 500);
+    checkEvent(parentProp.releasedMouse, 500, 500);
   }
 
   @Test
@@ -108,12 +111,12 @@ public class EventListenerTest
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mousePressed(e1);
     listener.mouseReleased(e1);
-    checkEvent(e1, rootProp.clickedMouse, 0, 0);
+    checkEvent(parentProp.clickedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mousePressed(e2);
     listener.mouseReleased(e2);
-    checkEvent(e2, childProp.clickedMouse, 250, 250);
+    checkEvent(childProp.clickedMouse, 250, 250);
   }
 
   @Test
@@ -124,7 +127,7 @@ public class EventListenerTest
     listener.mousePressed(e2);
     listener.mouseReleased(e2);
     assertEquals(null, childProp.clickedMouse);
-    checkEvent(e2, rootProp.clickedMouse, 500, 500);
+    checkEvent(parentProp.clickedMouse, 500, 500);
   }
 
   @Test
@@ -136,7 +139,7 @@ public class EventListenerTest
     listener.mousePressed(e1);
     listener.mouseReleased(e2);
 
-    assertNull(rootProp.clickedMouse);
+    assertNull(parentProp.clickedMouse);
     assertNull(childProp.clickedMouse);
   }
 
@@ -145,11 +148,11 @@ public class EventListenerTest
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseMoved(e1);
-    checkEvent(e1, rootProp.movedMouse, 0, 0);
+    checkEvent(parentProp.movedMouse, 0, 0);
 
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mouseMoved(e2);
-    checkEvent(e2, childProp.movedMouse, 250, 250);
+    checkEvent(childProp.movedMouse, 250, 250);
   }
 
   @Test
@@ -157,11 +160,11 @@ public class EventListenerTest
   {
     MouseEvent e1 = mouseEvent(0, 0);
     listener.mouseDragged(e1);
-    assertEquals(null, rootProp.draggedMouse);
+    assertEquals(null, parentProp.draggedMouse);
 
     listener.mousePressed(e1);
     listener.mouseDragged(e1);
-    checkEvent(e1, rootProp.draggedMouse, 0, 0);
+    checkEvent(parentProp.draggedMouse, 0, 0);
   }
   
   @Test
@@ -173,11 +176,11 @@ public class EventListenerTest
     MouseEvent e2 = mouseEvent(500, 500);
     listener.mouseDragged(e2);
     assertEquals(null, childProp.draggedMouse);
-    checkEvent(e2, rootProp.draggedMouse, 500, 500);
+    checkEvent(parentProp.draggedMouse, 500, 500);
 
     listener.mousePressed(e2);
     listener.mouseDragged(e2);
-    checkEvent(e2, childProp.draggedMouse, 250, 250);
+    checkEvent(childProp.draggedMouse, 250, 250);
   }
 
   @Test
@@ -185,7 +188,7 @@ public class EventListenerTest
   {
     MockProp child2Block = new MockProp();
     PropPanel child2Panel = new PropPanel(child2Block);
-    root.add(child2Panel);
+    parent.add(child2Panel);
     child2Panel.setLocation(1, 1);
     child2Panel.setSize(100, 100);
 
@@ -195,18 +198,18 @@ public class EventListenerTest
     assertNull(listener.hooveredPanel);
 
     listener.mouseMoved(e1);
-    assertSame(root, listener.hooveredPanel);
-    checkEvent(e1, rootProp.enteredMouse, 0, 0);
+    assertSame(parent, listener.hooveredPanel);
+    checkEvent(parentProp.enteredMouse, 0, 0);
 
     listener.mouseMoved(e2);
     assertSame(child2Panel, listener.hooveredPanel);
-    assertNull(rootProp.exitedMouse);
-    checkEvent(e2, child2Block.enteredMouse, 49, 49);
+    assertNull(parentProp.exitedMouse);
+    checkEvent(child2Block.enteredMouse, 49, 49);
 
     listener.mouseMoved(e3);
     assertSame(childPanel, listener.hooveredPanel);
-    checkEvent(e3, child2Block.exitedMouse, 499, 499);
-    checkEvent(e3, childProp.enteredMouse, 250, 250);
+    checkEvent(child2Block.exitedMouse, 499, 499);
+    checkEvent(childProp.enteredMouse, 250, 250);
   }
   
   @Test
@@ -214,7 +217,7 @@ public class EventListenerTest
   {
     MockProp child2 = new MockProp();
     PropPanel child2Panel = new PropPanel(child2);
-    root.add(child2Panel);
+    parent.add(child2Panel);
     child2Panel.setLocation(1, 1);
     child2Panel.setSize(100, 100);
 
@@ -225,19 +228,19 @@ public class EventListenerTest
 
     listener.mousePressed(e1);
     listener.mouseDragged(e1);
-    assertSame(root, listener.hooveredPanel);
-    checkEvent(e1, rootProp.enteredMouse, 0, 0);
+    assertSame(parent, listener.hooveredPanel);
+    checkEvent(parentProp.enteredMouse, 0, 0);
 
     listener.mouseDragged(e2);
     assertSame(child2Panel, listener.hooveredPanel);
-    assertNull(rootProp.exitedMouse);
-    checkEvent(e2, child2.enteredMouse, 49, 49);
+    assertNull(parentProp.exitedMouse);
+    checkEvent(child2.enteredMouse, 49, 49);
     assertEquals(null, child2.draggedMouse);
 
     listener.mouseDragged(e3);
     assertSame(childPanel, listener.hooveredPanel);
-    checkEvent(e3, child2.exitedMouse, 499, 499);
-    checkEvent(e3, childProp.enteredMouse, 250, 250);
+    checkEvent(child2.exitedMouse, 499, 499);
+    checkEvent(childProp.enteredMouse, 250, 250);
     assertEquals(null, childProp.draggedMouse);
   }
 

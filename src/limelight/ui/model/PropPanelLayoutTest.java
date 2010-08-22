@@ -5,7 +5,7 @@ package limelight.ui.model;
 
 import junit.framework.TestCase;
 import limelight.ui.api.MockProp;
-import limelight.ui.model.inputs.ScrollBar2Panel;
+import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
 
 import javax.swing.*;
@@ -281,11 +281,11 @@ public class PropPanelLayoutTest extends TestCase
 
     layout.doLayout(parent);
 
-    ScrollBar2Panel verticalScrollBar = parent.getVerticalScrollbar();
+    ScrollBarPanel verticalScrollBar = parent.getVerticalScrollbar();
     assertEquals(100 - scrollGirth, verticalScrollBar.getX());
     assertEquals(0, verticalScrollBar.getY());
 
-    ScrollBar2Panel horizontalScrollBar = parent.getHorizontalScrollbar();
+    ScrollBarPanel horizontalScrollBar = parent.getHorizontalScrollbar();
     assertEquals(0, horizontalScrollBar.getX());
     assertEquals(100 - scrollGirth, horizontalScrollBar.getY());
   }

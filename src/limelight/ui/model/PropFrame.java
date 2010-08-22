@@ -33,4 +33,6 @@ public interface PropFrame
   void deiconified(WindowEvent e);
 
   void deactivated(WindowEvent e);
+
+  void addKeyListener(java.awt.event.KeyListener keyListener);
 }

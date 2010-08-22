@@ -3,183 +3,218 @@
 
 package limelight.ui.model.inputs;
 
-import junit.framework.TestCase;
-
-import javax.swing.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-
+import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.MockPropFrame;
 import limelight.ui.api.MockProp;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ScrollBarPanelTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class ScrollBarPanelTest
 {
-  private ScrollBarPanel panel;
-  private ScrollBarPanel horizontalPanel;
-  private boolean clicked;
-  private boolean pressed;
-  private boolean released;
-  private boolean dragged;
+  private ScrollBarPanel verticalScrollBar;
+  private ScrollBarPanel horizontalScrollBar;
 
+  @Before
   public void setUp() throws Exception
   {
-    panel = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
-    horizontalPanel = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
+    verticalScrollBar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
+    verticalScrollBar.setSize(15, 100);
+    verticalScrollBar.configure(10, 100);
+    horizontalScrollBar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(10, 100);
   }
 
-  public void testHasScrollBarWithOrientation() throws Exception
+  @Test
+  public void shouldHasScrollBarWithOrientation() throws Exception
   {
-    assertEquals(ScrollBarPanel.VERTICAL, panel.getOrientation());
-    assertEquals(JScrollBar.VERTICAL, panel.getScrollBar().getOrientation());
+    assertEquals(ScrollBarPanel.VERTICAL, verticalScrollBar.getOrientation());
 
-    assertEquals(ScrollBarPanel.HORIZONTAL, horizontalPanel.getOrientation());
-    assertEquals(JScrollBar.HORIZONTAL, horizontalPanel.getScrollBar().getOrientation());
+    assertEquals(ScrollBarPanel.HORIZONTAL, horizontalScrollBar.getOrientation());
+  }
+
+  @Test
+  public void shouldDefaultSizes() throws Exception
+  {
+    assertEquals(15, verticalScrollBar.getWidth());
+    assertEquals(15, horizontalScrollBar.getHeight());
+  }
+
+  @Test
+  public void shouldSize() throws Exception
+  {
+    verticalScrollBar.setSize(100, 200);
+    assertEquals(200, verticalScrollBar.getHeight());
+    assertEquals(15, verticalScrollBar.getWidth());
+
+    horizontalScrollBar.setSize(100, 200);
+    assertEquals(100, horizontalScrollBar.getWidth());
+    assertEquals(15, horizontalScrollBar.getHeight());
+  }
+
+  @Test
+  public void changesCausesLayout() throws Exception
+  {
+    ScenePanel root = new ScenePanel(new MockProp());
+    root.setFrame(new MockPropFrame());
+    PropPanel parent = new PropPanel(new MockProp());
+    root.add(parent);
+    parent.add(verticalScrollBar);
+    parent.doLayout();
+    verticalScrollBar.setValue(50);
+
+    assertEquals(true, parent.needsLayout());
+  }
+
+  @Test
+  public void shouldParentIsMarkedAsChanged() throws Exception
+  {
+    ScenePanel root = new ScenePanel(new MockProp());
+    root.setFrame(new MockPropFrame());
+    PropPanel parent = new PropPanel(new MockProp());
+    root.add(parent);
+    parent.add(verticalScrollBar);
+    parent.doLayout();
+
+    verticalScrollBar.setValue(50);
+
+    assertEquals(true, parent.needsLayout());
+  }
+
+  @Test
+  public void shouldConfigure() throws Exception
+  {
+    verticalScrollBar.configure(100, 500);
+    assertEquals(100, verticalScrollBar.getVisibleAmount());
+    assertEquals(500, verticalScrollBar.getAvailableAmount());
+    assertEquals(5, verticalScrollBar.getUnitIncrement());
+    assertEquals(90, verticalScrollBar.getBlockIncrement());
+
+    verticalScrollBar.configure(500, 1000);
+    assertEquals(500, verticalScrollBar.getVisibleAmount());
+    assertEquals(1000, verticalScrollBar.getAvailableAmount());
+    assertEquals(5, verticalScrollBar.getUnitIncrement());
+    assertEquals(450, verticalScrollBar.getBlockIncrement());
+  }
+
+  @Test
+  public void shouldCannotBeBuffered() throws Exception
+  {
+    assertEquals(false, verticalScrollBar.canBeBuffered());
+  }
+
+  @Test
+  public void shouldCalculateSliderSize() throws Exception
+  {
+    horizontalScrollBar.setSize(100, 15);
+
+    horizontalScrollBar.configure(50, 100);
+    assertEquals(31, horizontalScrollBar.getSliderSize());
+
+    horizontalScrollBar.configure(25, 100);
+    assertEquals(16, horizontalScrollBar.getSliderSize());
+
+    horizontalScrollBar.configure(33, 100);
+    assertEquals(20, horizontalScrollBar.getSliderSize());
+  }
+
+  @Test
+  public void shouldHaveMinimumSliderSize() throws Exception
+  {
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(1, 100);
+    assertEquals(16, horizontalScrollBar.getSliderSize());
+  }
+
+  @Test
+  public void shouldCalculateSliderLocation() throws Exception
+  {
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(50, 100);
+    
+    horizontalScrollBar.setValue(0);
+    assertEquals(5, horizontalScrollBar.getSliderPosition());
+
+    horizontalScrollBar.setValue(25);
+    assertEquals(21, horizontalScrollBar.getSliderPosition());
+
+    horizontalScrollBar.setValue(50);
+    assertEquals(36, horizontalScrollBar.getSliderPosition());
+  }
+
+  @Test
+  public void settingSliderLocation() throws Exception
+  {
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(50, 100);
+    
+    horizontalScrollBar.setSliderPosition(5);
+    assertEquals(0, horizontalScrollBar.getValue());
+
+    horizontalScrollBar.setSliderPosition(21);
+    assertEquals(26, horizontalScrollBar.getValue());
+
+    horizontalScrollBar.setSliderPosition(36);
+    assertEquals(50, horizontalScrollBar.getValue());
   }
   
-  public void testDefaultSizes() throws Exception
+  @Test
+  public void slidePositionStaysWithinBounds() throws Exception
   {
-    assertEquals(panel.getScrollBar().getPreferredSize().width, panel.getWidth());
-    assertEquals(horizontalPanel.getScrollBar().getPreferredSize().height, horizontalPanel.getHeight());
-  }
+    horizontalScrollBar.setSize(100, 15);
+    horizontalScrollBar.configure(50, 100);
 
-  public void testSize() throws Exception
-  {
-    panel.setSize(100, 200);
-    assertEquals(200, panel.getHeight());
-    assertEquals(panel.getScrollBar().getPreferredSize().width, panel.getWidth());
+    horizontalScrollBar.setSliderPosition(-1);
+    assertEquals(horizontalScrollBar.getMinSliderPosition(), horizontalScrollBar.getSliderPosition());
 
-    horizontalPanel.setSize(100, 200);
-    assertEquals(100, horizontalPanel.getWidth());
-    assertEquals(horizontalPanel.getScrollBar().getPreferredSize().height, horizontalPanel.getHeight());
+    horizontalScrollBar.setSliderPosition(99999);
+    assertEquals(horizontalScrollBar.getMaxSliderPosition(), horizontalScrollBar.getSliderPosition());
   }
   
-  public void testMousePressedCaptured() throws Exception
+  @Test
+  public void CannotSetValueLessThanMin() throws Exception
   {
-    addMouseListener();
+    verticalScrollBar.setValue(-1);
 
-    panel.mousePressed(new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false));
-
-    assertEquals(true, pressed);
-  }
-
-  public void testMouseReleasedCaptured() throws Exception
-  {
-    addMouseListener();
-
-    panel.mouseReleased(new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false));
-
-    assertEquals(true, released);
-  }
-
-  public void testMouseClickedCaptured() throws Exception
-  {
-    addMouseListener();
-
-    panel.mouseClicked(new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false));
-
-    assertEquals(true, clicked);
+    assertEquals(0, verticalScrollBar.getValue());
   }
   
-  public void testMouseDragCaptured() throws Exception
+  @Test
+  public void CannotSetValueHigherThanMax() throws Exception
   {
-    addMouseMotionListener();
+    verticalScrollBar.configure(10, 100);
+    verticalScrollBar.setValue(1000);
 
-    panel.mouseDragged(new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false));
-
-    assertEquals(true, dragged);
-  }
-//
-//  public void testChanges() throws Exception
-//  {
-//    ScenePanel root = new ScenePanel(new MockProp());
-//    root.setFrame(new MockPropFrame());
-//    PropPanel parent = new PropPanel(new MockProp());
-//    root.add(parent);
-//    parent.add(panel);
-//    parent.doLayout();
-//    panel.setValue(50);
-//
-//    assertEquals(true, parent.needsLayout());
-//  }
-//
-//  public void testParentIsMarkedAsChanged() throws Exception
-//  {
-//    ScenePanel root = new ScenePanel(new MockProp());
-//    root.setFrame(new MockPropFrame());
-//    PropPanel parent = new PropPanel(new MockProp());
-//    root.add(parent);
-//    parent.add(panel);
-//    parent.doLayout();
-//
-//    panel.setValue(50);
-//
-//    assertEquals(true, parent.needsLayout());
-//  }
-
-  public void testConfigure() throws Exception
-  {
-    panel.configure(100, 500);
-    assertEquals(100, panel.getVisibleAmount());
-    assertEquals(500, panel.getMaximumValue());
-    assertEquals(10, panel.getUnitIncrement());
-    assertEquals(90, panel.getBlockIncrement());
-
-    panel.configure(500, 1000);
-    assertEquals(500, panel.getVisibleAmount());
-    assertEquals(1000, panel.getMaximumValue());
-    assertEquals(50, panel.getUnitIncrement());
-    assertEquals(450, panel.getBlockIncrement());
+    assertEquals(verticalScrollBar.getMaxValue(), verticalScrollBar.getValue());
   }
 
-  public void testCannotBeBuffered() throws Exception
+  @Test
+  public void isDirtyAfterSettingValue() throws Exception
   {
-    assertEquals(false, panel.canBeBuffered());
+    MockRootPanel root = new MockRootPanel();
+    root.add(verticalScrollBar);
+    verticalScrollBar.configure(10, 100);
+
+    verticalScrollBar.setValue(10);
+
+    assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));
   }
 
-  private void addMouseMotionListener()
+  @Test
+  public void pressingButtonsWillMakeDirty() throws Exception
   {
-    panel.getScrollBar().addMouseMotionListener(new MouseMotionListener(){
-      public void mouseDragged(MouseEvent e)
-      {
-        dragged = true;
-      }
+    MockRootPanel root = new MockRootPanel();
+    root.add(verticalScrollBar);
 
-      public void mouseMoved(MouseEvent e)
-      {
-      }
-    });
+    verticalScrollBar.setIncreasingButtonActive(true);
+    assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));
+    
+    root.dirtyRegions.clear();
+    verticalScrollBar.setDecreasingButtonActive(true);
+    assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));
   }
-
-  private void addMouseListener()
-  {
-    panel.getScrollBar().addMouseListener(new MouseListener(){
-      public void mouseClicked(MouseEvent e)
-      {
-        clicked = true;
-      }
-
-      public void mousePressed(MouseEvent e)
-      {
-        pressed = true;
-      }
-
-      public void mouseReleased(MouseEvent e)
-      {
-        released = true;
-      }
-
-      public void mouseEntered(MouseEvent e)
-      {
-      }
-
-      public void mouseExited(MouseEvent e)
-      {
-      }
-    });
-  }
-
-
 }

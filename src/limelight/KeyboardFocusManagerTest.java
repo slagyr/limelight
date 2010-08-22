@@ -10,19 +10,12 @@ import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.ScenePanel;
-import limelight.ui.model.inputs.AwtInputPanel;
-import limelight.ui.model.TextAccessor;
 import limelight.ui.MockPanel;
-import limelight.styles.Style;
-
-import java.awt.*;
-import java.awt.event.FocusListener;
-import java.awt.event.FocusEvent;
+import limelight.ui.model.inputs.InputPanel;
 
 public class KeyboardFocusManagerTest extends TestCase
 {
   private KeyboardFocusManager manager;
-  private MockComponent component;
   private MockInputPanel panel;
 
   public void setUp() throws Exception
@@ -30,7 +23,6 @@ public class KeyboardFocusManagerTest extends TestCase
     manager = new KeyboardFocusManager();
     manager.install();
     panel = new MockInputPanel();
-    component = panel.mockComponent;
   }
 
   public void testInstall() throws Exception
@@ -42,9 +34,7 @@ public class KeyboardFocusManagerTest extends TestCase
   {
     manager.focusPanel(panel);
 
-    assertEquals(1, component.mockFocusListener.gained);
     assertEquals(panel, manager.getFocusedPanel());
-    assertEquals(component, manager.getFocuedComponent());
     assertEquals(true, panel.hasFocus);
   }
 
@@ -53,7 +43,6 @@ public class KeyboardFocusManagerTest extends TestCase
     manager.focusPanel(panel);
     manager.focusPanel(panel);
 
-    assertEquals(1, component.mockFocusListener.gained);
     assertEquals(panel, manager.getFocusedPanel());
   }
   
@@ -63,101 +52,46 @@ public class KeyboardFocusManagerTest extends TestCase
     manager.focusPanel(panel);
     manager.focusPanel(panel2);
 
-    assertEquals(1, component.mockFocusListener.gained);
-    assertEquals(1, component.mockFocusListener.lost);
-    assertEquals(1, panel2.mockComponent.mockFocusListener.gained);
     assertEquals(panel2, manager.getFocusedPanel());
     assertEquals(false, panel.hasFocus);
     assertEquals(true, panel2.hasFocus);
   }
 
-  public void testFocusNextComponent() throws Exception
+//  public void testFocusNextComponent() throws Exception
+//  {
+//    ScenePanel root = new ScenePanel(new MockProp());
+//    root.setFrame(new MockPropFrame());
+//    Panel panel = new MockPanel();
+//    root.add(panel);
+//    MockInputPanel input1 = new MockInputPanel();
+//    MockInputPanel input2 = new MockInputPanel();
+//    panel.add(input1);
+//    panel.add(input2);
+//    manager.focusPanel(input1);
+//
+//    manager.focusNextComponent();
+//
+//    assertSame(input2, manager.getFocusedPanel());
+//  }
+//
+//  public void testFocusPreviousComponent() throws Exception
+//  {
+//    ScenePanel root = new ScenePanel(new MockProp());
+//    root.setFrame(new MockPropFrame());
+//    Panel panel = new MockPanel();
+//    root.add(panel);
+//    MockInputPanel input1 = new MockInputPanel();
+//    MockInputPanel input2 = new MockInputPanel();
+//    panel.add(input1);
+//    panel.add(input2);
+//    manager.focusPanel(input2);
+//
+//    manager.focusPreviousComponent();
+//
+//    assertSame(input1, manager.getFocusedPanel());
+//  }
+
+  private class MockInputPanel extends MockPanel implements InputPanel
   {
-    ScenePanel root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
-    Panel panel = new MockPanel();
-    root.add(panel);
-    MockInputPanel input1 = new MockInputPanel();
-    MockInputPanel input2 = new MockInputPanel();
-    panel.add(input1);
-    panel.add(input2);
-    manager.focusPanel(input1);
-
-    manager.focusNextComponent();
-
-    assertSame(input2, manager.getFocusedPanel());
-  }
-
-  public void testFocusPreviousComponent() throws Exception
-  {
-    ScenePanel root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
-    Panel panel = new MockPanel();
-    root.add(panel);
-    MockInputPanel input1 = new MockInputPanel();
-    MockInputPanel input2 = new MockInputPanel();
-    panel.add(input1);
-    panel.add(input2);
-    manager.focusPanel(input2);
-
-    manager.focusPreviousComponent();
-
-    assertSame(input1, manager.getFocusedPanel());
-  }         
-
-  private static class MockComponent extends Component
-  {
-    public final MockFocusListener mockFocusListener = new MockFocusListener();
-
-    public synchronized FocusListener[] getFocusListeners()
-    {
-      return new FocusListener[] {mockFocusListener};
-    }
-  }
-
-  private static class MockFocusListener implements FocusListener
-  {
-    public int gained;
-    public int lost;
-
-    public void focusGained(FocusEvent e)
-    {
-      gained += 1;
-    }
-
-    public void focusLost(FocusEvent e)
-    {
-      lost += 1;
-    }
-  }
-
-  private class MockInputPanel extends AwtInputPanel
-  {
-    public MockComponent mockComponent;
-    public boolean hasFocus;
-
-    protected Component createComponent()
-    {
-      return mockComponent = new MockComponent();
-    }
-
-    protected TextAccessor createTextAccessor()
-    {
-      return null;
-    }
-
-    protected void setDefaultStyles(Style style)
-    {
-    }
-
-    public void focusLost(FocusEvent e)
-    {
-      hasFocus = false;
-    }
-
-    public void focusGained(FocusEvent e)
-    {
-      hasFocus = true;
-    }
   }
 }

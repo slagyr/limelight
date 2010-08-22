@@ -1,6 +1,6 @@
 package limelight.ui.model.inputs.painting;
 
-import limelight.ui.model.inputs.ScrollBar2Panel;
+import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
 import javax.imageio.ImageIO;
@@ -84,7 +84,7 @@ public class ScrollBarPainter
     return MIN_GEM_SIZE;
   }
 
-  public void paintOn(Graphics2D graphics, ScrollBar2Panel scrollBar)
+  public void paintOn(Graphics2D graphics, ScrollBarPanel scrollBar)
   {
     Box bounds = scrollBar.getBoundingBox();
     if(scrollBar.isHorizontal())
@@ -93,7 +93,7 @@ public class ScrollBarPainter
       drawVertically(graphics, bounds, scrollBar);
   }
 
-  public Box getIncreasingBox(ScrollBar2Panel scrollBar)
+  public Box getIncreasingBox(ScrollBarPanel scrollBar)
   {
     Box bounds = scrollBar.getBoundingBox();
     if(scrollBar.isHorizontal())
@@ -102,7 +102,7 @@ public class ScrollBarPainter
       return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
   }
   
-  public Box getDecreasingBox(ScrollBar2Panel scrollBar)
+  public Box getDecreasingBox(ScrollBarPanel scrollBar)
   {
     Box bounds = scrollBar.getBoundingBox();
     if(scrollBar.isHorizontal())
@@ -111,7 +111,7 @@ public class ScrollBarPainter
       return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
   }
 
-  public Box getTrackBox(ScrollBar2Panel scrollBar)
+  public Box getTrackBox(ScrollBarPanel scrollBar)
   {
     Box bounds = scrollBar.getBoundingBox();
     if(scrollBar.isHorizontal())
@@ -120,7 +120,7 @@ public class ScrollBarPainter
       return new Box(bounds.x, bounds.y + CAP_LENGTH, bounds.width, bounds.height - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH);
   }
 
-  private static void drawVertically(Graphics2D graphics, Box bounds, ScrollBar2Panel scrollBar)
+  private static void drawVertically(Graphics2D graphics, Box bounds, ScrollBarPanel scrollBar)
   {
     ScrollBarImages images = verticalImages;
     for(int y = 0; y < bounds.height; y += images.background.getHeight())
@@ -142,7 +142,7 @@ public class ScrollBarPainter
     graphics.drawImage(images.sliderCapInside, 0, y, null);
   }
 
-  private static BufferedImage buttonsImageFor(ScrollBar2Panel scrollBar, ScrollBarImages images)
+  private static BufferedImage buttonsImageFor(ScrollBarPanel scrollBar, ScrollBarImages images)
   {
     if(scrollBar.isDecreasingButtonActive())
       return images.buttonsInsideSelected;
@@ -152,7 +152,7 @@ public class ScrollBarPainter
       return images.buttons;
   }
 
-  private static void drawHorizontally(Graphics2D graphics, Box bounds, ScrollBar2Panel scrollBar)
+  private static void drawHorizontally(Graphics2D graphics, Box bounds, ScrollBarPanel scrollBar)
   {
     ScrollBarImages images = horizontalImages;
     for(int x = 0; x < bounds.width; x += images.background.getWidth())
@@ -173,7 +173,7 @@ public class ScrollBarPainter
     graphics.drawImage(images.sliderCapInside, x, 0, null);
   }
 
-  private static int paintHorizontalFiller(Graphics2D graphics, ScrollBar2Panel scrollBar, ScrollBarImages images, int x)
+  private static int paintHorizontalFiller(Graphics2D graphics, ScrollBarPanel scrollBar, ScrollBarImages images, int x)
   {
     int fillerSize = scrollBar.getSliderSize() - images.sliderCapOutside.getWidth() - images.sliderCapInside.getWidth();
     if(fillerSize > 0)
@@ -191,7 +191,7 @@ public class ScrollBarPainter
     return x;
   }
 
-  private static int paintVerticalFiller(Graphics2D graphics, ScrollBar2Panel scrollBar, ScrollBarImages images, int y)
+  private static int paintVerticalFiller(Graphics2D graphics, ScrollBarPanel scrollBar, ScrollBarImages images, int y)
   {
     int fillerSize = scrollBar.getSliderSize() - images.sliderCapOutside.getHeight() - images.sliderCapInside.getHeight();
     if(fillerSize > 0)

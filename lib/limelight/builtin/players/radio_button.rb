@@ -28,7 +28,7 @@ module Limelight
           def extended(prop) #:nodoc:
             radio_button = Limelight::UI::Model::Inputs::RadioButtonPanel.new
             prop.panel.add(radio_button)
-            prop.radio_button = radio_button.radio_button
+            prop.radio_button = radio_button
           end
         end
 

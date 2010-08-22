@@ -7,7 +7,6 @@ import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
-import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 import limelight.Context;
@@ -204,11 +203,11 @@ public class PropPanelTest extends Assert
     panel.add(child);
 
     panel.addVerticalScrollBar();
-    ScrollBar2Panel vertical = panel.getVerticalScrollbar();
+    ScrollBarPanel vertical = panel.getVerticalScrollbar();
     vertical.setSize(15, 100);
     vertical.setLocation(85, 0);
     panel.addHorizontalScrollBar();
-    ScrollBar2Panel horizontal = panel.getHorizontalScrollbar();
+    ScrollBarPanel horizontal = panel.getHorizontalScrollbar();
     horizontal.setSize(100, 15);
     horizontal.setLocation(0, 85);
 

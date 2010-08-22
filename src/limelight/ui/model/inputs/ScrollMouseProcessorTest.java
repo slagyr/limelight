@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class ScrollMouseProcessorTest
 {
-  private ScrollBar2Panel scrollBar;
+  private ScrollBarPanel scrollBar;
   private Panel panel;
   private ScrollMouseProcessor processor;
   private ScrollRepeater repeater;
@@ -40,7 +40,7 @@ public class ScrollMouseProcessorTest
 
   private void setUpHorizontally()
   {
-    scrollBar = new ScrollBar2Panel(ScrollBar2Panel.HORIZONTAL);
+    scrollBar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
     scrollBar.setSize(100, 15);
     scrollBar.configure(10, 100);
     processor = scrollBar.getMouseProcessor();
@@ -49,7 +49,7 @@ public class ScrollMouseProcessorTest
 
   private void setUpVertically()
   {
-    scrollBar = new ScrollBar2Panel(ScrollBar2Panel.VERTICAL);
+    scrollBar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
     scrollBar.setSize(15, 100);
     scrollBar.configure(10, 100);
     processor = scrollBar.getMouseProcessor();
@@ -61,22 +61,22 @@ public class ScrollMouseProcessorTest
     return new MouseEvent(panel, 1, 2, 3, x, y, 0, false);
   }
 
-  private void press(ScrollBar2Panel scrollBar, int x, int y)
+  private void press(ScrollBarPanel scrollBar, int x, int y)
   {
     scrollBar.mousePressed(event(x, y));
   }
 
-  private void release(ScrollBar2Panel scrollBar, int x, int y)
+  private void release(ScrollBarPanel scrollBar, int x, int y)
   {
     scrollBar.mouseReleased(event(x, y));
   }
 
-  private void drag(ScrollBar2Panel scrollBar, int x, int y)
+  private void drag(ScrollBarPanel scrollBar, int x, int y)
   {
     scrollBar.mouseDragged(event(x, y));
   }
 
-  private void exit(ScrollBar2Panel scrollBar, int x, int y)
+  private void exit(ScrollBarPanel scrollBar, int x, int y)
   {
     scrollBar.mouseExited(event(x, y));
   }
