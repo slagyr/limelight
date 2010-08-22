@@ -26,8 +26,8 @@ public class RadioButtonPanelTest extends TestCase
 
   public void testSettingParentSetsTextAccessor() throws Exception
   {
-    parent.setText("blah");
-    assertEquals("blah", panel.getRadioButton().getText());
+    parent.setText("on");
+    assertEquals("on", panel.getText());
   }
 
   public void testSettingParentSteralizesParent() throws Exception

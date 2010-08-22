@@ -4,10 +4,12 @@
 package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
+import limelight.ui.model.EventHandler;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.util.Box;
 import limelight.ui.model.Layout;
+import sun.rmi.server.Dispatcher;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -85,4 +87,6 @@ public interface Panel extends Iterable<Panel>
   void delluminate();
 
   boolean hasFocus();
+
+  EventHandler getEventHandler();
 }

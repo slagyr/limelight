@@ -19,7 +19,7 @@ public interface TextContainer
 
   boolean isCursorOn();
 
-  boolean isFocused();
+  boolean hasFocus();
 
   int getLastKeyPressed();
 

@@ -8,6 +8,8 @@ import limelight.ui.model.BasePanel;
 import limelight.util.Box;
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 
 public class MockPanel extends BasePanel
 {
@@ -21,6 +23,10 @@ public class MockPanel extends BasePanel
   public boolean floater;
   public boolean consumableAreaChangedCalled;
   public boolean markedAsDirty;
+  public boolean hasFocus;
+  public KeyEvent typedKeyEvent;
+  public KeyEvent pressedKeyEvent;
+  public KeyEvent releasedKeyEvent;
 
 
   public MockPanel()
@@ -81,5 +87,35 @@ public class MockPanel extends BasePanel
   public void markAsDirty()
   {
     markedAsDirty = true;
+  }
+
+  @Override
+  public void focusLost(FocusEvent e)
+  {
+    hasFocus = false;
+  }
+
+  @Override
+  public void focusGained(FocusEvent e)
+  {
+    hasFocus = true;
+  }
+
+  @Override
+  public void keyTyped(KeyEvent e)
+  {
+    typedKeyEvent = e;
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e)
+  {
+    pressedKeyEvent = e;
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e)
+  {
+    releasedKeyEvent = e;
   }
 }

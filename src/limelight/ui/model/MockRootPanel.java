@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import com.sun.jndi.dns.DnsName;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;
@@ -14,6 +13,12 @@ import java.util.Map;
 public class MockRootPanel extends MockPropablePanel implements RootPanel
 {
   public LinkedList<Rectangle> dirtyRegions = new LinkedList<Rectangle>();
+  private RootKeyListener keyListener;
+
+  public MockRootPanel()
+  {
+    keyListener = new RootKeyListener(this);
+  }
 
   @Override
   public RootPanel getRoot()
@@ -61,6 +66,11 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public ImageCache getImageCache()
   {
     return null;
+  }
+
+  public RootKeyListener getKeyListener()
+  {
+    return keyListener;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

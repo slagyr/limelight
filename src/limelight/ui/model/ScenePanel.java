@@ -7,18 +7,19 @@ import limelight.*;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
-import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.*;
 
 public class ScenePanel extends PropPanel implements RootPanel
 {
   private Container contentPane;
-  private EventListener listener;
+  private RootMouseListener mouseListener;
+  private RootKeyListener keyListener;
   private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
@@ -49,11 +50,16 @@ public class ScenePanel extends PropPanel implements RootPanel
   public void illuminate()
   {
     contentPane = frame.getContentPane();
-    listener = new EventListener(this);
-    contentPane.addMouseListener(listener);
-    contentPane.addMouseMotionListener(listener);
-    contentPane.addMouseWheelListener(listener);
-    contentPane.addKeyListener(listener);
+
+    mouseListener = new RootMouseListener(this);
+    contentPane.addMouseListener(mouseListener);
+    contentPane.addMouseMotionListener(mouseListener);
+    contentPane.addMouseWheelListener(mouseListener);
+
+    keyListener = new RootKeyListener(this);
+
+    frame.addKeyListener(keyListener);
+
     super.illuminate();
   }
 
@@ -61,11 +67,11 @@ public class ScenePanel extends PropPanel implements RootPanel
   public void delluminate()
   {
     removeKeyboardFocus();
-    contentPane.removeMouseListener(listener);
-    contentPane.removeMouseMotionListener(listener);
-    contentPane.removeMouseWheelListener(listener);
-    contentPane.removeKeyListener(listener);
-    listener = null;
+    contentPane.removeMouseListener(mouseListener);
+    contentPane.removeMouseMotionListener(mouseListener);
+    contentPane.removeMouseWheelListener(mouseListener);
+    contentPane.removeKeyListener(keyListener);
+    mouseListener = null;
     super.delluminate();
   }
 
@@ -169,9 +175,9 @@ public class ScenePanel extends PropPanel implements RootPanel
     return this;
   }
 
-  public EventListener getListener()
+  public RootMouseListener getMouseListener()
   {
-    return listener;
+    return mouseListener;
   }
 
   public void addPanelNeedingLayout(Panel child)
@@ -320,7 +326,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     boolean isVertical = e.getModifiers() % 2 == 0;
-    ScrollBar2Panel scrollBar = isVertical ? getVerticalScrollbar() : getHorizontalScrollbar();
+    ScrollBarPanel scrollBar = isVertical ? getVerticalScrollbar() : getHorizontalScrollbar();
     if(scrollBar != null)
       scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
   }
@@ -328,5 +334,10 @@ public class ScenePanel extends PropPanel implements RootPanel
   public Map<String, RichStyle> getStylesStore()
   {
     return styles;
+  }
+
+  public RootKeyListener getKeyListener()
+  {
+    return keyListener;
   }
 }

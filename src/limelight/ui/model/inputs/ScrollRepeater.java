@@ -5,13 +5,13 @@ import limelight.background.Animation;
 public class ScrollRepeater extends Animation
 {
   private int scrollDelta;
-  private ScrollBar2Panel scrollBar;
+  private ScrollBarPanel scrollBar;
   private int maxScrollDelta;
   private int ticks;
   private boolean accelerating;
   private ScrollCondition scrollCondition;
 
-  public ScrollRepeater(ScrollBar2Panel scrollBar)
+  public ScrollRepeater(ScrollBarPanel scrollBar)
   {
     super(2);
     this.scrollBar = scrollBar;

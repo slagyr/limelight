@@ -53,7 +53,7 @@ public class MockTextContainer implements TextContainer
     return cursorOn;
   }
 
-  public boolean isFocused()
+  public boolean hasFocus()
   {
     return false;
   }

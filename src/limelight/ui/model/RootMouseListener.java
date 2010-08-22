@@ -8,13 +8,13 @@ import limelight.ui.Panel;
 import java.awt.event.*;
 import java.awt.*;
 
-public class EventListener implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener
+public class RootMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener
 {
-  private final Panel panel;
+  private final RootPanel panel;
   public Panel pressedPanel;
   public Panel hooveredPanel;
 
-  public EventListener(Panel panel)
+  public RootMouseListener(RootPanel panel)
   {
     this.panel = panel;
   }
@@ -75,39 +75,6 @@ public class EventListener implements MouseListener, MouseMotionListener, MouseW
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     panelFor(e.getPoint()).mouseWheelMoved(e);
-  }
-
-  public void keyTyped(KeyEvent e)
-  {
-    System.err.println("keyTyped");
-//    KeyListener[] keyListeners = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getKeyListeners();
-//    for(int i = 0; i < keyListeners.length; i++)
-//    {
-//      KeyListener keyListener = keyListeners[i];
-//      keyListener.keyTyped(e);
-//    }
-  }
-
-  public void keyPressed(KeyEvent e)
-  {
-    System.err.println("keyPressed");
-//    KeyListener[] keyListeners = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getKeyListeners();
-//    for(int i = 0; i < keyListeners.length; i++)
-//    {
-//      KeyListener keyListener = keyListeners[i];
-//      keyListener.keyPressed(e);
-//    }
-  }
-
-  public void keyReleased(KeyEvent e)
-  {
-    System.err.println("keyReleased");
-//    KeyListener[] keyListeners = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getKeyListeners();
-//    for(int i = 0; i < keyListeners.length; i++)
-//    {
-//      KeyListener keyListener = keyListeners[i];
-//      keyListener.keyReleased(e);
-//    }
   }
 
   private void transition(Panel panel, MouseEvent e)

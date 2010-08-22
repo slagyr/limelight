@@ -11,7 +11,6 @@ import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
-import limelight.ui.model.inputs.ScrollBar2Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.*;
 import limelight.util.Box;
@@ -34,8 +33,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private Box boxInsidePadding;
   private Box childConsumableArea;
   private PaintAction afterPaintAction;
-  private ScrollBar2Panel verticalScrollbar;
-  private ScrollBar2Panel horizontalScrollbar;
+  private ScrollBarPanel verticalScrollbar;
+  private ScrollBarPanel horizontalScrollbar;
   private boolean sizeChangePending = true;
   public boolean borderChanged = true;
   public Dimension greediness = new Dimension(0, 0);
@@ -267,7 +266,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     boolean isVertical = e.getModifiers() % 2 == 0;
-    ScrollBar2Panel scrollBar = isVertical ? verticalScrollbar : horizontalScrollbar;
+    ScrollBarPanel scrollBar = isVertical ? verticalScrollbar : horizontalScrollbar;
     if(scrollBar != null)
       scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
     else
@@ -390,26 +389,26 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       attribute.applyChange(this, value);
   }
 
-  public ScrollBar2Panel getVerticalScrollbar()
+  public ScrollBarPanel getVerticalScrollbar()
   {
     return verticalScrollbar;
   }
 
-  public ScrollBar2Panel getHorizontalScrollbar()
+  public ScrollBarPanel getHorizontalScrollbar()
   {
     return horizontalScrollbar;
   }
 
   public void addVerticalScrollBar()
   {
-    verticalScrollbar = new ScrollBar2Panel(ScrollBar2Panel.VERTICAL);
+    verticalScrollbar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
     add(verticalScrollbar);
     childConsumableArea = null;
   }
 
   public void addHorizontalScrollBar()
   {
-    horizontalScrollbar = new ScrollBar2Panel(ScrollBar2Panel.HORIZONTAL);
+    horizontalScrollbar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
     add(horizontalScrollbar);
     childConsumableArea = null;
   }
@@ -455,7 +454,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
     if(preHoverCursor != null)
     {
-      getRoot().setCursor(preHoverCursor);
+      final RootPanel root = getRoot();
+      // TODO MDM - If the panel is removed from the scene, the cursor is never changed.  Perhaps the right way to do this is in the MouseListener... when ever entering a panel, get the cursor and change it.... when exiting a panel, pop the cursor
+      if(root != null)
+        root.setCursor(preHoverCursor);
       preHoverCursor = null;
     }
   }

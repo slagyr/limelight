@@ -7,21 +7,18 @@ arena do
   table do
     cell do
       text_box_input :players => "text_box", :id => "text_box_input"
-      text_box_input :players => "text_box2", :id => "text_box2_input", :text => "bob dobbs"
     end
   	cell(:border_width => "1") { input_log :id => "text_box_log" }
   	cell(:border_width => "1") { input_results :id => "text_box_results" }
     # end row
     cell do
-      #text_area_input :players => "text_area", :id => "text_area_input", :text => "none"
-      text_area_input :players => "text_area2", :id => "text_area2_input", :text => "Some more text"
+      text_area_input :players => "text_area", :id => "text_area_input", :text => "none"
      end
   	cell(:border_width => "1") { input_log :id => "text_area_log" }
   	cell(:border_width => "1") { input_results :id => "text_area_results" }
     # end row
     cell do
       check_box_input :players => "check_box", :id => "check_box_input"
-      check_box_input :players => "check_box2", :id => "check_box2_input"
     end
   	cell { input_log :id => "check_box_log" }
   	cell(:border_width => "1") { input_results :id => "check_box_results" }
@@ -33,26 +30,18 @@ arena do
       radio_label :text => "Two"
       radio_button_input :players => "radio_button", :id => "radio_3", :group => "radios"
       radio_label :text => "Three"
-      radio_button_input :players => "radio_button2", :id => "radio_4", :group => "radios"
-      radio_label :text => "Four"
-      radio_button_input :players => "radio_button2", :id => "radio_5", :group => "radios"
-      radio_label :text => "Five"
-      radio_button_input :players => "radio_button2", :id => "radio_6", :group => "radios"
-      radio_label :text => "Six"
     end
   	cell { input_log :id => "radio_button_log" }
   	cell(:border_width => "1") { input_results :id => "radio_button_results" }
     # end row
     cell do
       combo_box_input :players => "combo_box", :choices => "%w{Red Orange Yellow Green Blue Indigo Violet}", :id => "combo_box_input"
-      combo_box_input :players => "combo_box2", :choices => "%w{Red Orange Yellow Green Blue Indigo Violet}", :id => "combo_box2_input"
     end
   	cell { input_log :id => "combo_box_log" }
   	cell(:border_width => "1") { input_results :id => "combo_box_results" }
     # end row
     cell do
       button_input :players => "button", :text => "A Button", :id => "button_input"
-      button_input :players => "button2", :text => "LL Button", :id => "button2_input"
     end
   	cell { input_log :id => "button_log" }
   	cell(:border_width => "1") { input_results :id => "button_results" }

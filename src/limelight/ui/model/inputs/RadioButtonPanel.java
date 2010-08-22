@@ -3,69 +3,154 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.PropablePanel;
-import limelight.ui.model.TextAccessor;
-import limelight.styles.Style;
+import limelight.styles.ScreenableStyle;
+import limelight.ui.model.*;
+import limelight.ui.RadioButtonGroupMember;
+import limelight.ui.RadioButtonGroup;
+import limelight.util.Box;
+import limelight.Context;
 
+import javax.imageio.ImageIO;
+import java.awt.event.MouseEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.awt.*;
+import java.io.IOException;
 
-public class RadioButtonPanel extends AwtInputPanel
+public class RadioButtonPanel extends BasePanel implements TextAccessor, InputPanel, RadioButtonGroupMember
 {
-  private RadioButton radioButton;
+  private boolean focused;
+  private boolean imagesLoaded;
+  private BufferedImage normalImage;
+  private BufferedImage selectedImage;
+  private BufferedImage focusImage;
+  private boolean selected;
+  private RadioButtonGroup radioButtonGroup;
 
-  protected Component createComponent()
+  public RadioButtonPanel()
   {
-    return radioButton = new RadioButton(this);
+    setSize(21, 21);
   }
 
-  protected TextAccessor createTextAccessor()
+  public void setParent(limelight.ui.Panel panel)
   {
-    return new RadioButtonTextAccessor(radioButton);
+// MDM - Why was this needed?
+//    if(panel == null)
+//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
+    super.setParent(panel);
+    if(panel instanceof PropPanel)
+    {
+      PropPanel propPanel = (PropPanel) panel;
+      propPanel.sterilize();
+      propPanel.setTextAccessor(this);
+    }
   }
 
-  protected void setDefaultStyles(Style style)
+  public Box getBoxInsidePadding()
   {
-    style.setDefault(Style.WIDTH, "" + radioButton.getPreferredSize().width);
-    style.setDefault(Style.HEIGHT, "" + radioButton.getPreferredSize().height);
+    return getBoundingBox();
   }
 
-  public RadioButton getRadioButton()
+  public Box getChildConsumableArea()
   {
-    return radioButton;
+    return getBoundingBox();
   }
 
-  private static class RadioButtonTextAccessor implements TextAccessor
+  public void loadImages()
   {
-    private final RadioButton button;
-
-    public RadioButtonTextAccessor(RadioButton button)
+    if(imagesLoaded)
+      return;
+    try
     {
-      this.button = button;
+      normalImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/radio_button.png"));
+      selectedImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/radio_button_selected.png"));
+      focusImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/radio_button_focus.png"));
+      imagesLoaded = true;
     }
-
-    public void setText(PropablePanel panel, String text)
+    catch(IOException e)
     {
-      button.setText(text);
+      throw new RuntimeException(e);
     }
+  }
 
-    public String getText()
-    {
-      return button.getText();
-    }
+  public void paintOn(Graphics2D graphics)
+  {
+    loadImages();
+    if(focused)
+      graphics.drawImage(focusImage, 0, 0, null);
+    if(selected)
+      graphics.drawImage(selectedImage, 0, 0, null);
+    else
+      graphics.drawImage(normalImage, 0, 0, null);
+  }
 
-    public void markAsDirty()
-    {
-      button.getRadioButtonPanel().markAsDirty();
-    }
+  public ScreenableStyle getStyle()
+  {
+    return getParent().getStyle();
+  }
 
-    public void markAsNeedingLayout()
-    {
-      button.getRadioButtonPanel().markAsNeedingLayout();
-    }
+  public void setText(PropablePanel panel, String text)
+  {
+    if("on".equals(text))
+      selected = true;
+    else
+      selected = false;
+  }
 
-    public boolean hasFocus()
-    {
-      return button.hasFocus();
-    }
+  public String getText()
+  {
+    return selected ? "on" : "off";
+  }
+
+  public boolean isSelected()
+  {
+    return selected;
+  }
+
+  public void setGroup(RadioButtonGroup radioButtonGroup)
+  {
+    this.radioButtonGroup = radioButtonGroup;
+  }
+
+  public void setSelected(boolean value)
+  {
+    if(value == selected)
+      return;
+    this.selected = value;
+    if(selected)
+      radioButtonGroup.buttonSelected(this);
+    repaint();
+  }
+
+  public boolean getSelected()
+  {
+    return selected;
+  }
+
+  public void mousePressed(MouseEvent e)
+  {
+    super.mousePressed(e);
+  }
+
+  public void mouseReleased(MouseEvent e)
+  {
+    super.mouseReleased(e);
+    setSelected(true);
+    super.buttonPressed(new ActionEvent(this, 0, "blah"));
+  }
+
+  public void focusGained(FocusEvent e)
+  {
+    focused = true;
+    repaint();
+    super.focusGained(e);
+  }
+
+  public void focusLost(FocusEvent e)
+  {
+    focused = false;
+    repaint();
+    super.focusLost(e);
   }
 }

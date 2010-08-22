@@ -8,16 +8,21 @@ import limelight.ui.api.MockStudio;
 import limelight.Context;
 import limelight.MockContext;
 import limelight.KeyboardFocusManager;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class AlertFrameManagerTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class AlertFrameManagerTest
 {
   private AlertFrameManager manager;
   private MockPropFrame frame;
   private MockStudio studio;
 
+  @Before
   public void setUp() throws Exception
   {
     manager = new AlertFrameManager();
@@ -28,7 +33,8 @@ public class AlertFrameManagerTest extends TestCase
     frame = new MockPropFrame();
   }
 
-  public void testCloseAllFrames() throws Exception
+  @Test
+  public void closeAllFrames() throws Exception
   {
     manager.watch(frame);
 
@@ -37,14 +43,16 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(true, frame.closed);
   }
 
-  public void testTheaterIsNotifiedOfActivatedStage() throws Exception
+  @Test
+  public void theaterIsNotifiedOfActivatedStage() throws Exception
   {
     manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
 
     assertEquals(true, frame.activated);
   }
 
-  public void testShouldAskStageFrameIfItCanClose() throws Exception
+  @Test
+  public void shouldAskStageFrameIfItCanClose() throws Exception
   {
     frame.shouldAllowClose = false;
     manager.windowClosing(new WindowEvent(frame.getWindow(), 1));
@@ -55,7 +63,8 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(true, frame.closed);
   }
 
-  public void testCheckingWithStudioBeforeShuttingDown() throws Exception
+  @Test
+  public void checkingWithStudioBeforeShuttingDown() throws Exception
   {
     MockContext context = MockContext.stub();
     manager.watch(frame);
@@ -63,7 +72,8 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(true, context.shutdownAttempted);
   }
 
-  public void testShouldNotInvokeShutdownForNonVitalFrames() throws Exception
+  @Test
+  public void shouldNotInvokeShutdownForNonVitalFrames() throws Exception
   {
     MockContext context = MockContext.stub();
     frame.setVital(false);
@@ -72,7 +82,8 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(false, context.shutdownAttempted);
   }
   
-  public void testShouldInvokeShutdownWhenOnlyNonVitalFramesRemain() throws Exception
+  @Test
+  public void shouldInvokeShutdownWhenOnlyNonVitalFramesRemain() throws Exception
   {
     MockContext context = MockContext.stub();
     frame.setVital(false);
@@ -84,7 +95,8 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(true, context.shutdownAttempted);
   }
 
-  public void testGetActiveFrameWhenNoneHasGainedFocus() throws Exception
+  @Test
+  public void getActiveFrameWhenNoneHasGainedFocus() throws Exception
   {
     manager.watch(frame);
     assertEquals(null, manager.getFocusedFrame());
@@ -93,7 +105,8 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(frame, manager.getFocusedFrame());
   }
 
-  public void testGetVisibleFrames() throws Exception
+  @Test
+  public void getVisibleFrames() throws Exception
   {
     ArrayList<PropFrame> result = new ArrayList<PropFrame>();
     frame.visible = true;
@@ -120,7 +133,8 @@ public class AlertFrameManagerTest extends TestCase
     result.clear();
   }
 
-  public void testFrameIsNotifiedOfClose() throws Exception
+  @Test
+  public void frameIsNotifiedOfClose() throws Exception
   {
     MockContext.stub();
     frame.setVital(false);
@@ -130,7 +144,8 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(true, frame.wasClosed);
   }
 
-  public void testTellsKeyboradFocusManagerToReleaseStageUponClosing() throws Exception
+  @Test
+  public void tellsKeyboradFocusManagerToReleaseStageUponClosing() throws Exception
   {
     KeyboardFocusManager keyboard = new KeyboardFocusManager();
     Context.instance().keyboardFocusManager = keyboard;
@@ -142,14 +157,25 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(null, keyboard.getFocusedFrame());
   }
 
-  public void testStageNotifiedWhenActivationLost() throws Exception
+  @Test
+  public void stageNotifiedWhenActivationLost() throws Exception
   {
     frame.activated = true;
     manager.windowDeactivated(new WindowEvent(frame.getWindow(), 1));
     assertEquals(false, frame.activated);
   }
+  
+  @Test
+  public void activatingFrame() throws Exception
+  {
+    frame.activated = false;
+    manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
 
-  public void testFrameNotifiedWhenIconifiedAndDeiconified() throws Exception
+    assertEquals(true, frame.activated);
+  }
+
+  @Test
+  public void frameNotifiedWhenIconifiedAndDeiconified() throws Exception
   {
     manager.windowIconified(new WindowEvent(frame.getWindow(), 1));
     assertEquals(true, frame.iconified);                
@@ -157,7 +183,8 @@ public class AlertFrameManagerTest extends TestCase
     assertEquals(false, frame.iconified);
   }
 
-  public void testFrameNotifiedWhenActivatedAndDeactivated() throws Exception
+  @Test
+  public void frameNotifiedWhenActivatedAndDeactivated() throws Exception
   {
     manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
     assertEquals(true, frame.activated);                

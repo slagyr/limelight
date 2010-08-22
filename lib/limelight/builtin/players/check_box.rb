@@ -25,7 +25,7 @@ module Limelight
           def extended(prop) #:nodoc:
             check_box = Limelight::UI::Model::Inputs::CheckBoxPanel.new
             prop.panel.add(check_box)
-            prop.check_box = check_box.check_box
+            prop.check_box = check_box
           end
         end
 

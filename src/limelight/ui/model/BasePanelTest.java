@@ -1,9 +1,9 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
+//    assertEquals(true, panel.canBeBuffered());
 package limelight.ui.model;
 
-import limelight.styles.ScreenableStyle;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
@@ -11,8 +11,8 @@ import limelight.util.Box;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -29,30 +29,6 @@ public class BasePanelTest extends Assert
   private MockProp prop;
   private MouseEvent mouseEvent;
   private ScenePanel root;
-
-  class TestableBasePanel extends BasePanel
-  {
-    public final ScreenableStyle style = new ScreenableStyle();
-
-    public Box getChildConsumableArea()
-    {
-      return null;
-    }
-
-    public Box getBoxInsidePadding()
-    {
-      return null;
-    }
-
-    public void paintOn(Graphics2D graphics)
-    {
-    }
-
-    public ScreenableStyle getStyle()
-    {
-      return style;
-    }
-  }
 
   @Before
   public void setUp() throws Exception
@@ -472,11 +448,9 @@ public class BasePanelTest extends Assert
 
     assertNotNull(prop.movedMouse);
   }
-
 //  @Test
 //  public void shouldCanBeBuffered() throws Exception
-//  {
-//    assertEquals(true, panel.canBeBuffered());
+
 //  }
 
   @Test
@@ -798,7 +772,7 @@ public class BasePanelTest extends Assert
 
     assertEquals(false, child.isIlluminated());
   }
-  
+
   @Test
   public void shouldBeIlluinatedWhenAddedToDelluminatedParent() throws Exception
   {
@@ -809,7 +783,7 @@ public class BasePanelTest extends Assert
 
     assertEquals(true, child.isIlluminated());
   }
-  
+
   @Test
   public void shouldNotBeIlluminatedWhenRemovedFromParent() throws Exception
   {
@@ -829,14 +803,14 @@ public class BasePanelTest extends Assert
 
     root.delluminate();
     root.illuminate();
-        
+
     assertEquals(true, root.isIlluminated());
     assertEquals(true, parent.isIlluminated());
     assertEquals(true, child.isIlluminated());
     assertEquals(true, grandChild.isIlluminated());
     assertEquals(true, sibling.isIlluminated());
   }
-  
+
   @Test
   public void shouldDelluminateAllOfItsChildren() throws Exception
   {

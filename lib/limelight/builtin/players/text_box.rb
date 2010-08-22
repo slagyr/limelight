@@ -20,7 +20,7 @@ module Limelight
           def extended(prop) #:nodoc:
             text_box = Limelight::UI::Model::Inputs::TextBoxPanel.new
             prop.panel.add(text_box)
-            prop.text_box = text_box.text_box
+            prop.text_box = text_box
           end
 
         end

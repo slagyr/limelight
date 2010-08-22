@@ -37,4 +37,8 @@ public interface RootPanel extends Panel
   Panel getPanel();
 
   ImageCache getImageCache();
+
+  RootKeyListener getKeyListener();
 }
+
+

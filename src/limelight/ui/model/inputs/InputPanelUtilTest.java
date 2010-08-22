@@ -24,27 +24,9 @@ public class InputPanelUtilTest extends TestCase
   private TestableInputPanel input2;
   private TestableInputPanel input3;
 
-  private static class TestableInputPanel extends AwtInputPanel
+  private static class TestableInputPanel extends MockPanel implements InputPanel
   {
-    public Component input;
-
-    protected Component createComponent()
-    {
-      return input = new JPanel();
-    }
-
-    protected TextAccessor createTextAccessor()
-    {
-      return null;
-    }
-
-    protected void setDefaultStyles(Style style)
-    {
-      style.setWidth("123");
-      style.setHeight("456");
-    }
   }
-
 
   public void setUp() throws Exception
   {

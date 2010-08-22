@@ -22,7 +22,7 @@ public class SingleLineTextModelTest
   @Before
   public void setUp()
   {
-    panel = new TextBox2Panel();
+    panel = new TextBoxPanel();
     MockPanel parent = new MockPanel();
     parent.add(panel);
     parent.setSize(100, 20);

@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.MockGraphics;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.MockRootPanel;
@@ -11,33 +10,23 @@ import limelight.ui.model.PropPanel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 
 public class TextInputPanelTest extends Assert
 {
-  TextInputPanel panel;
-  Panel parent;
-  MockGraphics graphics;
-  TextModel boxInfo;
-
-  public class MockFocusEvent extends FocusEvent
-  {
-    public MockFocusEvent()
-    {
-      super(new java.awt.Panel(), 1);
-    }
-  }
+  private TextInputPanel panel;
+  private MockRootPanel root;
 
   @Before
   public void setUp()
   {
+    root = new MockRootPanel();
     panel = new MockTextInputPanel();
-    parent = new PropPanel(new MockProp());
+    Panel parent = new PropPanel(new MockProp());
     parent.add(panel);
-    graphics = new MockGraphics();
-    boxInfo = panel.getModel();
-    boxInfo.setText("Some Text");
+    root.add(parent);
+    TextModel model = panel.getModel();
+    model.setText("Some Text");
   }
 
   @Test
@@ -49,8 +38,8 @@ public class TextInputPanelTest extends Assert
   @Test
   public void canGainFocus()
   {
-    panel.focusGained(new MockFocusEvent());
-    assertEquals(true, panel.focused);
+    root.getKeyListener().focusOn(panel);
+    assertEquals(true, panel.hasFocus());
     assertEquals(true, panel.cursorThread.isAlive());
   }
 
@@ -58,9 +47,9 @@ public class TextInputPanelTest extends Assert
   public void canLoseFocus()
   {
     panel.cursorCycleTime = 0;
-    panel.focusGained(new MockFocusEvent());
-    panel.focusLost(new MockFocusEvent());
-    assertEquals(false, panel.focused);
+    root.getKeyListener().focusOn(panel);
+    root.getKeyListener().focusOn(root);
+    assertEquals(false, panel.hasFocus());
     assertEquals(true, panel.cursorThread.isAlive());
   }
 

@@ -59,12 +59,12 @@ public class MainTest extends TestCase
     assertEquals(RealAudioPlayer.class, Context.instance().audioPlayer.getClass());
   }
   
-  public void testKeyboardFocusListenerIsInstalled() throws Exception
-  {
-    main.configureContext();
-
-    assertSame(Context.instance().keyboardFocusManager, java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager());
-  }
+//  public void testKeyboardFocusListenerIsInstalled() throws Exception
+//  {
+//    main.configureContext();
+//
+//    assertSame(Context.instance().keyboardFocusManager, java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager());
+//  }
 
   public void testBufferedImagePoolIsInstalled() throws Exception
   {
