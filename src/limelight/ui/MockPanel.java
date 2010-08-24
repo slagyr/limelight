@@ -5,6 +5,7 @@ package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
 import limelight.ui.model.BasePanel;
+import limelight.ui.model.MockEventHandler;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -27,12 +28,13 @@ public class MockPanel extends BasePanel
   public KeyEvent typedKeyEvent;
   public KeyEvent pressedKeyEvent;
   public KeyEvent releasedKeyEvent;
-
+  public MockEventHandler mockEventHandler;
 
   public MockPanel()
   {
     style = new ScreenableStyle();
     canBeBuffered = true;
+    eventHandler = mockEventHandler = new MockEventHandler(this);
   }
 
   public Box getChildConsumableArea()

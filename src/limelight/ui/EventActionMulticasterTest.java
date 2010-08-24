@@ -1,9 +1,9 @@
 package limelight.ui;
 
+import limelight.ui.events.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class EventActionMulticasterTest
       this.id = id;
     }
 
-    public void invoke(AWTEvent event)
+    public void invoke(Event event)
     {
       invokations.add(this);
     }

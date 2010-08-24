@@ -1,8 +1,8 @@
 package limelight.ui;
 
-import java.awt.*;
+import limelight.ui.events.Event;
 
 public interface EventAction
 {
-  void invoke(AWTEvent event);
+  void invoke(Event event);
 }

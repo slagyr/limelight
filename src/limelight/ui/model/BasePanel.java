@@ -30,7 +30,7 @@ public abstract class BasePanel implements Panel
   protected Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
   private boolean illuminated;
-  private EventHandler eventHandler;
+  protected EventHandler eventHandler;
 
   protected BasePanel()
   {

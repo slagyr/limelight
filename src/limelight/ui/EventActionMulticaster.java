@@ -1,6 +1,7 @@
 package limelight.ui;
 
-import java.awt.*;
+import limelight.ui.events.Event;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class EventActionMulticaster implements EventAction
     return second;
   }
 
-  public void invoke(AWTEvent event)
+  public void invoke(Event event)
   {
     first.invoke(event);
     second.invoke(event);
