@@ -1,11 +1,12 @@
 package limelight.ui.model;
 
 import limelight.ui.EventAction;
+import limelight.ui.events.*;
+import limelight.ui.events.Event;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.awt.event.*;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -15,7 +16,6 @@ public class EventHandlerTest
   private BasePanel panel;
   private BasePanel parent;
   private EventHandler handler;
-  private Component component;
 
   @Before
   public void setUp() throws Exception
@@ -24,7 +24,6 @@ public class EventHandlerTest
     parent = new TestableBasePanel();
     panel = new TestableBasePanel();
     parent.add(panel);
-    component = new java.awt.Panel();
 
     handler = panel.getEventHandler();
   }
@@ -32,33 +31,18 @@ public class EventHandlerTest
   private static class MemoryAction implements EventAction
   {
     public boolean invoked;
-    public void invoke(AWTEvent event)
+    public void invoke(Event event)
     {
       invoked = true;
     }
   }
-
-  private MouseEvent mouseEvent(int id)
-  {
-    return new MouseEvent(component, id, 2, 3, 4, 5, 6, false);
-  }
-
-  private FocusEvent focusEvent(int id)
-  {
-    return new FocusEvent(component, id);
-  }
-
-  private KeyEvent keyEvent(int id)
-  {
-    return new KeyEvent(component, id, 2, 3, KeyEvent.VK_UNDEFINED, 'a');
-  }
-
+  
   @Test
   public void unhandledInheritableEventsArePassedToParent() throws Exception
   {
-    parent.getEventHandler().add(MouseEvent.MOUSE_PRESSED, action);
+    parent.getEventHandler().add(MousePressedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new MouseEvent(component, MouseEvent.MOUSE_PRESSED, 1, 2, 3, 4, 5, false));
+    panel.getEventHandler().dispatch(new MousePressedEvent(panel, 0, new Point(0, 0), 0));
 
     assertEquals(true, action.invoked);
   }
@@ -66,37 +50,18 @@ public class EventHandlerTest
   @Test
   public void unhandledNoninheritableEventsArePassedToParent() throws Exception
   {
-    parent.getEventHandler().add(KeyEvent.KEY_PRESSED, action);
+    parent.getEventHandler().add(KeyPressedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new KeyEvent(component, KeyEvent.KEY_PRESSED, 1, 2, 3, 'a'));
+    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_ENTER, KeyEvent.LOCATION_LEFT));
 
     assertEquals(false, action.invoked);
-  }
-
-  @Test
-  public void inhertiableEvents() throws Exception
-  {
-    assertEquals(true, EventHandler.isInheritable(MouseEvent.MOUSE_PRESSED));
-    assertEquals(true, EventHandler.isInheritable(MouseEvent.MOUSE_RELEASED));
-    assertEquals(true, EventHandler.isInheritable(MouseEvent.MOUSE_CLICKED));
-    assertEquals(true, EventHandler.isInheritable(MouseEvent.MOUSE_DRAGGED));
-    assertEquals(true, EventHandler.isInheritable(MouseEvent.MOUSE_MOVED));
-    assertEquals(true, EventHandler.isInheritable(MouseEvent.MOUSE_WHEEL));
-
-    assertEquals(false, EventHandler.isInheritable(MouseEvent.MOUSE_ENTERED));
-    assertEquals(false, EventHandler.isInheritable(MouseEvent.MOUSE_EXITED));
-    assertEquals(false, EventHandler.isInheritable(KeyEvent.KEY_PRESSED));
-    assertEquals(false, EventHandler.isInheritable(KeyEvent.KEY_RELEASED));
-    assertEquals(false, EventHandler.isInheritable(KeyEvent.KEY_TYPED));
-    assertEquals(false, EventHandler.isInheritable(FocusEvent.FOCUS_GAINED));
-    assertEquals(false, EventHandler.isInheritable(FocusEvent.FOCUS_LOST));
   }
 
   @Test
   public void addingMousePressAction() throws Exception
   {
     handler.onMousePress(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_PRESSED));
+    handler.dispatch(new MousePressedEvent(panel, 0, new Point(0, 0), 0));
     assertEquals(true, action.invoked);
   }
 
@@ -104,7 +69,7 @@ public class EventHandlerTest
   public void addingMouseReleaseAction() throws Exception
   {
     handler.onMouseRelease(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_RELEASED));
+    handler.dispatch(new MouseReleasedEvent(panel, 0, new Point(0, 0), 0));
     assertEquals(true, action.invoked);
   }
 
@@ -112,7 +77,7 @@ public class EventHandlerTest
   public void addingMouseClickAction() throws Exception
   {
     handler.onMouseClick(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_CLICKED));
+    handler.dispatch(new MouseClickedEvent(panel, 0, new Point(0, 0), 0));
     assertEquals(true, action.invoked);
   }
 
@@ -120,7 +85,7 @@ public class EventHandlerTest
   public void addingMouseMoveAction() throws Exception
   {
     handler.onMouseMove(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_MOVED));
+    handler.dispatch(new MouseMovedEvent(panel, 0, new Point(0, 0), 0));
     assertEquals(true, action.invoked);
   }
 
@@ -128,7 +93,7 @@ public class EventHandlerTest
   public void addingMouseDragAction() throws Exception
   {
     handler.onMouseDrag(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_DRAGGED));
+    handler.dispatch(new MouseDraggedEvent(panel, 0, new Point(0, 0), 0));
     assertEquals(true, action.invoked);
   }
 
@@ -136,7 +101,7 @@ public class EventHandlerTest
   public void addingMouseEnterAction() throws Exception
   {
     handler.onMouseEnter(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_ENTERED));
+    handler.dispatch(new MouseEnteredEvent(panel, 0, new Point(0, 0), 0));
     assertEquals(true, action.invoked);
   }
 
@@ -144,7 +109,7 @@ public class EventHandlerTest
   public void addingMouseExitAction() throws Exception
   {
     handler.onMouseExit(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_EXITED));
+    handler.dispatch(new MouseExitedEvent(panel, 0, new Point(0, 0), 0));
     assertEquals(true, action.invoked);
   }
 
@@ -152,7 +117,7 @@ public class EventHandlerTest
   public void addingMouseWheelMovedAction() throws Exception
   {
     handler.onMouseWheel(action);
-    handler.dispatch(mouseEvent(MouseEvent.MOUSE_WHEEL));
+    handler.dispatch(new MouseWheelEvent(panel, 0, new Point(0, 0), 0, 1, 2, 3));
     assertEquals(true, action.invoked);
   }
 
@@ -160,7 +125,7 @@ public class EventHandlerTest
   public void addingFocusLostAction() throws Exception
   {
     handler.onFocusLost(action);
-    handler.dispatch(focusEvent(FocusEvent.FOCUS_LOST));
+    handler.dispatch(new FocusLostEvent(panel));
     assertEquals(true, action.invoked);
   }
 
@@ -168,15 +133,15 @@ public class EventHandlerTest
   public void addingFocusGainedAction() throws Exception
   {
     handler.onFocusGained(action);
-    handler.dispatch(focusEvent(FocusEvent.FOCUS_GAINED));
+    handler.dispatch(new FocusGainedEvent(panel));
     assertEquals(true, action.invoked);
   }
    
   @Test
-  public void addingKeyTypedAction() throws Exception
+  public void addingCharTypedAction() throws Exception
   {
-    handler.onKeyType(action);
-    handler.dispatch(keyEvent(KeyEvent.KEY_TYPED));
+    handler.onCharTyped(action);
+    handler.dispatch(new CharTypedEvent(panel, 0, 'a'));
     assertEquals(true, action.invoked);
   }
 
@@ -184,7 +149,7 @@ public class EventHandlerTest
   public void addingKeyPressAction() throws Exception
   {
     handler.onKeyPress(action);
-    handler.dispatch(keyEvent(KeyEvent.KEY_PRESSED));
+    handler.dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_ENTER, KeyEvent.LOCATION_LEFT));
     assertEquals(true, action.invoked);
   }
 
@@ -192,23 +157,7 @@ public class EventHandlerTest
   public void addingKeyReleaseAction() throws Exception
   {
     handler.onKeyRelease(action);
-    handler.dispatch(keyEvent(KeyEvent.KEY_RELEASED));
+    handler.dispatch(new KeyReleasedEvent(panel, 0, KeyEvent.KEY_ENTER, KeyEvent.LOCATION_LEFT));
     assertEquals(true, action.invoked);
   }
-//
-//  @Test
-//  public void addingButtonPressAction() throws Exception
-//  {
-//    handler.onButtonPress(action);
-//    handler.buttonPressed(focusEvent());
-//    assertEquals(true, action.invoked);
-//  }
-//
-//  @Test
-//  public void addingValueChangeAction() throws Exception
-//  {
-//    handler.onValueChange(action);
-//    handler.valueChanged(focusEvent());
-//    assertEquals(true, action.invoked);
-//  }
 }

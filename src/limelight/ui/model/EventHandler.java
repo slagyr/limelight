@@ -3,11 +3,10 @@ package limelight.ui.model;
 import limelight.ui.EventAction;
 import limelight.ui.EventActionMulticaster;
 import limelight.ui.Panel;
+import limelight.ui.events.*;
+import limelight.ui.events.Event;
 
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
 public class EventHandler
@@ -16,29 +15,14 @@ public class EventHandler
 
   private static class EventDispatcher
   {
-    private int id;
+    private Class eventClass;
     private EventAction action;
 
-    private EventDispatcher(int id, EventAction action)
+    private EventDispatcher(Class eventClass, EventAction action)
     {
-      this.id = id;
+      this.eventClass = eventClass;
       this.action = action;
     }
-  }
-
-  public static boolean isInheritable(int id)
-  {
-    switch(id)
-    {
-      case MouseEvent.MOUSE_PRESSED:
-      case MouseEvent.MOUSE_RELEASED:
-      case MouseEvent.MOUSE_CLICKED:
-      case MouseEvent.MOUSE_DRAGGED:
-      case MouseEvent.MOUSE_MOVED:
-      case MouseEvent.MOUSE_WHEEL:
-        return true;
-    }
-    return false;
   }
 
   private LinkedList<EventDispatcher> dispatchers;
@@ -48,7 +32,7 @@ public class EventHandler
     this.panel = panel;
   }
 
-  public void add(int id, EventAction action)
+  public void add(Class eventClass, EventAction action)
   {
     if(action == null)
       return;
@@ -56,32 +40,32 @@ public class EventHandler
     if(dispatchers == null)
       dispatchers = new LinkedList<EventDispatcher>();
 
-    EventDispatcher dispatcher = get(id);
+    EventDispatcher dispatcher = get(eventClass);
     if(dispatcher == null)
-      dispatchers.add(new EventDispatcher(id, action));
+      dispatchers.add(new EventDispatcher(eventClass, action));
     else
       dispatcher.action = EventActionMulticaster.add(dispatcher.action, action);
   }
 
-  private EventDispatcher get(int id)
+  private EventDispatcher get(Class eventClass)
   {
     if(dispatchers == null)
       return null;
 
     for(EventDispatcher dispatcher : dispatchers)
     {
-      if(dispatcher.id == id)
+      if(dispatcher.eventClass == eventClass)
         return dispatcher;
     }
     return null;
   }
 
-  public void dispatch(AWTEvent event)
+  public void dispatch(Event event)
   {
-    EventDispatcher dispatcher = get(event.getID());
+    EventDispatcher dispatcher = get(event.getClass());
     if(dispatcher != null)
       dispatcher.action.invoke(event);
-    else if(isInheritable(event.getID()))
+    else if(event.isInheritable())
     {
       Panel parent = panel.getParent();
       if(parent != null)
@@ -91,66 +75,66 @@ public class EventHandler
 
   public void onMousePress(EventAction action)
   {
-    add(MouseEvent.MOUSE_PRESSED, action);
+    add(MousePressedEvent.class, action);
   }
 
   public void onMouseRelease(EventAction action)
   {
-    add(MouseEvent.MOUSE_RELEASED, action);
+    add(MouseReleasedEvent.class, action);
   }
 
   public void onMouseClick(EventAction action)
   {
-    add(MouseEvent.MOUSE_CLICKED, action);
+    add(MouseClickedEvent.class, action);
   }
 
   public void onMouseMove(EventAction action)
   {
-    add(MouseEvent.MOUSE_MOVED, action);
+    add(MouseMovedEvent.class, action);
   }
 
   public void onMouseDrag(EventAction action)
   {
-    add(MouseEvent.MOUSE_DRAGGED, action);
+    add(MouseDraggedEvent.class, action);
   }
 
   public void onMouseEnter(EventAction action)
   {
-    add(MouseEvent.MOUSE_ENTERED, action);
+    add(MouseEnteredEvent.class, action);
   }
 
   public void onMouseExit(EventAction action)
   {
-    add(MouseEvent.MOUSE_EXITED, action);
+    add(MouseExitedEvent.class, action);
   }
 
   public void onMouseWheel(EventAction action)
   {
-    add(MouseEvent.MOUSE_WHEEL, action);
+    add(MouseWheelEvent.class, action);
   }
 
   public void onFocusGained(EventAction action)
   {
-    add(FocusEvent.FOCUS_GAINED, action);
+    add(FocusGainedEvent.class, action);
   }
 
   public void onFocusLost(EventAction action)
   {
-    add(FocusEvent.FOCUS_LOST, action);
+    add(FocusLostEvent.class, action);
   }
 
-  public void onKeyType(EventAction action)
+  public void onCharTyped(EventAction action)
   {
-    add(KeyEvent.KEY_TYPED, action);
+    add(CharTypedEvent.class, action);
   }
 
   public void onKeyRelease(EventAction action)
   {
-    add(KeyEvent.KEY_RELEASED, action);
+    add(KeyReleasedEvent.class, action);
   }
 
   public void onKeyPress(EventAction action)
   {
-    add(KeyEvent.KEY_PRESSED, action);
+    add(KeyPressedEvent.class, action);
   }
 }

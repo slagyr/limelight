@@ -45,9 +45,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public PropPanel(Prop prop)
   {
     this.prop = prop;
+    textAccessor = TempTextAccessor.instance();
     style = new ScreenableStyle();
     hoverStyle = new RichStyle();
-    textAccessor = TempTextAccessor.instance();
     style.addObserver(this);
   }
 
