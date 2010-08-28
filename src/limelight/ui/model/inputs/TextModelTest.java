@@ -3,10 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.text.TextLayoutImpl;
-import limelight.ui.model.TextPanel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import org.junit.Before;
@@ -81,6 +78,19 @@ public class TextModelTest
     container.style.setHorizontalAlignment("right");
     assertEquals("bottom", model.getVerticalAlignment().toString());
     assertEquals("right", model.getHorizontalAlignment().toString());
+  }
+
+  @Test
+  public void insertingSomethingWillDeleteASelectionIfOneExists() throws Exception
+  {
+    model.setText("abc123");
+    model.setCaretIndex(0);
+    model.initSelection();
+    model.setCaretIndex(3);
+
+    model.insertChar('0');
+
+    assertEquals("0123", model.getText());
   }
 
 }

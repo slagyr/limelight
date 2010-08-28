@@ -1,9 +1,8 @@
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class MockKeyProcessor extends KeyProcessor
 {
@@ -15,7 +14,7 @@ public class MockKeyProcessor extends KeyProcessor
   }
 
   @Override
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
     processedEvent = event;
   }

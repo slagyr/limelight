@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,15 +12,13 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     setUpSingleLine();
     processor = ShiftCmdKeyProcessor.instance;
-    modifier = 5;
+    modifiers = 5;
   }
 
   @Test
   public void canProcessRightArrowAndSelectToTheRightEdge()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
     assertSelection(model.getText().length(), 1, true);
   }
@@ -29,9 +26,7 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessLeftArrowAndSelectToTheLeftEdge()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
     assertSelection(0, 1, true);
   }
@@ -39,9 +34,7 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessUpArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_UP), model);
 
     assertSelection(0, 1, true);
   }
@@ -49,9 +42,7 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessDownArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
     assertSelection(model.getText().length(), 1, true);
   }

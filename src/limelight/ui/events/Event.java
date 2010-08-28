@@ -4,17 +4,17 @@ import limelight.ui.Panel;
 
 public abstract class Event
 {
-  private Panel source;
+  private Panel panel;
   private boolean consumed;
 
   public Event(Panel source)
   {
-    this.source = source;
+    this.panel = source;
   }
 
-  public Panel getSource()
+  public Panel getPanel()
   {
-    return source;
+    return panel;
   }
 
   public boolean isConsumed()

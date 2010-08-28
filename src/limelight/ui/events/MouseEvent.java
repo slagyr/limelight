@@ -38,7 +38,7 @@ public abstract class MouseEvent extends ModifiableEvent
 
   public Point getLocation()
   {
-    return new Point(location.x - getSource().getX(), location.y - getSource().getY());
+    return new Point(location.x - getPanel().getX(), location.y - getPanel().getY());
   }
 
   public boolean isButton1()

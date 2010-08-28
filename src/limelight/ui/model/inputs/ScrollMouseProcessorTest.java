@@ -2,6 +2,10 @@ package limelight.ui.model.inputs;
 
 import limelight.Context;
 import limelight.background.AnimationLoop;
+import limelight.ui.events.MouseDraggedEvent;
+import limelight.ui.events.MouseExitedEvent;
+import limelight.ui.events.MousePressedEvent;
+import limelight.ui.events.MouseReleasedEvent;
 import limelight.util.Box;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -9,14 +13,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 import static junit.framework.Assert.assertEquals;
 
 public class ScrollMouseProcessorTest
 {
   private ScrollBarPanel scrollBar;
-  private Panel panel;
   private ScrollMouseProcessor processor;
   private ScrollRepeater repeater;
 
@@ -35,7 +37,6 @@ public class ScrollMouseProcessorTest
   @Before
   public void setUp() throws Exception
   {
-    panel = new Panel();
   }
 
   private void setUpHorizontally()
@@ -56,29 +57,24 @@ public class ScrollMouseProcessorTest
     repeater = processor.getRepeater();
   }
 
-  private MouseEvent event(int x, int y)
-  {
-    return new MouseEvent(panel, 1, 2, 3, x, y, 0, false);
-  }
-
   private void press(ScrollBarPanel scrollBar, int x, int y)
   {
-    scrollBar.mousePressed(event(x, y));
+    scrollBar.getEventHandler().dispatch(new MousePressedEvent(scrollBar, 0, new Point(x, y), 0));
   }
 
   private void release(ScrollBarPanel scrollBar, int x, int y)
   {
-    scrollBar.mouseReleased(event(x, y));
+    scrollBar.getEventHandler().dispatch(new MouseReleasedEvent(scrollBar, 0, new Point(x, y), 0));
   }
 
   private void drag(ScrollBarPanel scrollBar, int x, int y)
   {
-    scrollBar.mouseDragged(event(x, y));
+    scrollBar.getEventHandler().dispatch(new MouseDraggedEvent(scrollBar, 0, new Point(x, y), 0));
   }
 
   private void exit(ScrollBarPanel scrollBar, int x, int y)
   {
-    scrollBar.mouseExited(event(x, y));
+    scrollBar.getEventHandler().dispatch(new MouseExitedEvent(scrollBar, 0, new Point(x, y), 0));
   }
 
   @Test

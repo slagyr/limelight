@@ -2,9 +2,7 @@ package limelight.ui.events;
 
 import limelight.ui.Panel;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseWheelListener;
 
 public class MouseWheelEvent extends MouseEvent
 {
@@ -46,5 +44,10 @@ public class MouseWheelEvent extends MouseEvent
   public boolean isHorizontal()
   {
     return (getModifiers() & ModifiableEvent.SHIFT_MASK) != 0;
+  }
+
+  public int getUnitsToScroll()
+  {
+    return scrollAmount * wheelRotation;
   }
 }

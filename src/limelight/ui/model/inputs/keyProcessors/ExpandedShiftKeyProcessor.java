@@ -3,33 +3,32 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class ExpandedShiftKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new ExpandedShiftKeyProcessor();
 
   @Override
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
     KeyProcessor basicShiftProcessor = ShiftKeyProcessor.instance;
     int keyCode = event.getKeyCode();
 
-    if(boxInfo.isMoveUpEvent(keyCode))
+    if(model.isMoveUpEvent(keyCode))
     {
-      boxInfo.initSelection();
-      boxInfo.moveCaretUpALine();
+      model.initSelection();
+      model.moveCaretUpALine();
     }
-    else if(boxInfo.isMoveDownEvent(keyCode))
+    else if(model.isMoveDownEvent(keyCode))
     {
-      boxInfo.initSelection();
-      boxInfo.moveCaretDownALine();
+      model.initSelection();
+      model.moveCaretDownALine();
 
     }
     else
-      basicShiftProcessor.processKey(event, boxInfo);
+      basicShiftProcessor.processKey(event, model);
   }
 }

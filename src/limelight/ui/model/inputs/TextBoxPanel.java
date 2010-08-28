@@ -10,10 +10,10 @@ import limelight.ui.model.inputs.keyProcessors.*;
 
 public class TextBoxPanel extends TextInputPanel
 {
-  public TextBoxPanel()
+  @Override
+  protected TextModel createModel()
   {
-    model = new SingleLineTextModel(this);
-    mouseProcessor = new TextPanelMouseProcessor(model);
+    return new SingleLineTextModel(this);
   }
 
   @Override

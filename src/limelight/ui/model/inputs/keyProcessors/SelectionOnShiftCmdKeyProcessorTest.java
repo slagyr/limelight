@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,15 +12,13 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     selectionBoxSetUp();
     processor = SelectionOnShiftCmdKeyProcessor.instance;
-    modifier = 5;
+    modifiers = 5;
   }
 
   @Test
   public void canProcessRightArrowAndContinueSelectionToTheRightEdge()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
     assertSelection(model.getText().length(), SELECTION_START_INDEX, true);
   }
@@ -29,10 +26,9 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   @Test
   public void canProcessLeftArrowAndContinueSelectionToTheLeftEdge()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
     model.setCaretIndex(2);
 
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
     assertSelection(0, SELECTION_START_INDEX, true);
   }
@@ -40,9 +36,7 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   @Test
   public void canProcessUpArrowAndJumpToTheStart()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_UP), model);
 
     assertSelection(0, SELECTION_START_INDEX, true);
   }
@@ -50,9 +44,7 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   @Test
   public void canProcessDownArrowAndJumpToTheEnd()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
     assertSelection(model.getText().length(), SELECTION_START_INDEX, true);
   }

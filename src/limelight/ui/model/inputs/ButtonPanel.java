@@ -6,6 +6,8 @@ package limelight.ui.model.inputs;
 import com.android.ninepatch.NinePatch;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
+import limelight.ui.EventAction;
+import limelight.ui.events.*;
 import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.styles.HorizontalAlignment;
@@ -13,13 +15,10 @@ import limelight.styles.VerticalAlignment;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.ActionEvent;
 import java.awt.font.TextLayout;
 import java.io.IOException;
 
-public class ButtonPanel extends BasePanel implements TextAccessor, InputPanel
+public class ButtonPanel extends InputPanel implements TextAccessor
 {
   private static Drawable normalPatch;
   private static Drawable selectedPatch;
@@ -56,19 +55,17 @@ public class ButtonPanel extends BasePanel implements TextAccessor, InputPanel
   private Rectangle textBounds;
   private Dimension textDimensions;
   private TextLayout textLayout;
-  private boolean focused;
 
   public ButtonPanel()
   {
     activePatch = normalPatch;
     setSize(128, 27);
+    getEventHandler().add(MousePressedEvent.class, MousePressedAction.instance);
+    getEventHandler().add(MouseReleasedEvent.class, MouseReleasedAction.instance);
   }
 
   public void setParent(limelight.ui.Panel panel)
   {
-// MDM - Why was this needed?    
-//    if(panel == null)
-//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {
@@ -90,7 +87,7 @@ public class ButtonPanel extends BasePanel implements TextAccessor, InputPanel
 
   public void paintOn(Graphics2D graphics)
   {
-    if(focused)
+    if(hasFocus())
       focusPatch.draw(graphics, 0, 0, width, height);
     activePatch.draw(graphics, 0, 0, width, height);
 
@@ -128,30 +125,27 @@ public class ButtonPanel extends BasePanel implements TextAccessor, InputPanel
     return text;
   }
 
-  public void mousePressed(MouseEvent e)
+  private static class MousePressedAction implements EventAction
   {
-    activePatch = selectedPatch;
-    repaint();
+    public static MousePressedAction instance = new MousePressedAction();
+
+    public void invoke(limelight.ui.events.Event event)
+    {
+      ButtonPanel panel = (ButtonPanel)event.getPanel();
+      panel.activePatch = selectedPatch;
+      panel.markAsDirty();
+    }
   }
 
-  public void mouseReleased(MouseEvent e)
+  private static class MouseReleasedAction implements EventAction
   {
-    activePatch = normalPatch;
-    repaint();
-    super.buttonPressed(new ActionEvent(this, 0, "blah"));
-  }
+    public static MouseReleasedAction instance = new MouseReleasedAction();
 
-  public void focusGained(FocusEvent e)
-  {
-    focused = true;
-    repaint();
-    super.focusGained(e);
-  }
-
-  public void focusLost(FocusEvent e)
-  {
-    focused = false;
-    repaint();
-    super.focusLost(e);
+    public void invoke(limelight.ui.events.Event event)
+    {
+      ButtonPanel panel = (ButtonPanel)event.getPanel();
+      panel.activePatch = normalPatch;
+      panel.markAsDirty();
+    }
   }
 }

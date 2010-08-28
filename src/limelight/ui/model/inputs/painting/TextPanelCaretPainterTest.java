@@ -35,7 +35,7 @@ public class TextPanelCaretPainterTest
   }
 
   @Test
-  public void willNotPaintIfTheCursorIsOff()
+  public void willNotPaintIfTheCaretIsOff()
   {
     container.cursorOn = false;
 
@@ -45,24 +45,27 @@ public class TextPanelCaretPainterTest
   }
 
   @Test
-  public void willPaintIfTheCursorIsOn()
+  public void willPaintIfTheCaretIsOn()
   {
+    model.setCaretOn(true);
     painter.paint(graphics, model);
 
     assertEquals(false, graphics.filledShapes.isEmpty());
   }
 
   @Test
-  public void willPaintTheCursorAtTheCursorX()
+  public void willPaintTheCaretAtTheCaretX()
   {
+    model.setCaretOn(true);
     painter.paint(graphics, model);
 
     assertEquals(new Box(40, 0, 1, 10), graphics.filledShapes.get(0).shape);
   }
 
   @Test
-  public void willPaintTheCursorBlack()
+  public void willPaintTheCaretBlack()
   {
+    model.setCaretOn(true);
     painter.paint(graphics, model);
 
     assertEquals(Color.black, graphics.getColor());

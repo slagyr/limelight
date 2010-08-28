@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class SelectionOnAltCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,15 +12,13 @@ public class SelectionOnAltCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     selectionBoxSetUp();
     processor = SelectionOnAltCmdKeyProcessor.instance;
-    modifier = 12;
+    modifiers = 12;
   }
 
   @Test
   public void canProcessCharacterAndDoNothing()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_A), model);
 
     assertSelection(1, SELECTION_START_INDEX, true);
   }

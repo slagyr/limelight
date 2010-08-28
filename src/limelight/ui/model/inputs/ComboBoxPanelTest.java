@@ -3,15 +3,19 @@
 
 package limelight.ui.model.inputs;
 
-import junit.framework.TestCase;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ComboBoxPanelTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class ComboBoxPanelTest
 {
   private ComboBoxPanel panel;
   private PropPanel parent;
 
+  @Before
   public void setUp() throws Exception
   {
     panel = new ComboBoxPanel();
@@ -19,7 +23,8 @@ public class ComboBoxPanelTest extends TestCase
     parent.add(panel);
   }
 
-  public void testCanBeBuffered() throws Exception
+  @Test
+  public void canBeBuffered() throws Exception
   {
     assertEquals(false, panel.canBeBuffered());
   }
@@ -32,7 +37,8 @@ public class ComboBoxPanelTest extends TestCase
 //    assertEquals("blah", panel.getSelectedItem().toString());
 //  }
 
-  public void testSettingParentSteralizesParent() throws Exception
+  @Test
+  public void settingParentSteralizesParent() throws Exception
   {
     assertEquals(true, parent.isSterilized());
   }

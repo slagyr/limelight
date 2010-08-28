@@ -3,36 +3,35 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class ShiftCmdKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new ShiftCmdKeyProcessor();
 
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
 
-    if(boxInfo.isMoveRightEvent(keyCode)){
-      boxInfo.initSelection();
-      boxInfo.sendCaretToEndOfLine();
+    if(model.isMoveRightEvent(keyCode)){
+      model.initSelection();
+      model.sendCaretToEndOfLine();
     }
-    else if(boxInfo.isMoveLeftEvent(keyCode)){
-      boxInfo.initSelection();
-      boxInfo.sendCursorToStartOfLine();
+    else if(model.isMoveLeftEvent(keyCode)){
+      model.initSelection();
+      model.sendCursorToStartOfLine();
     }
-    else if(keyCode == KeyEvent.VK_UP)
+    else if(keyCode == KeyEvent.KEY_UP)
     {
-      boxInfo.initSelection();
-      boxInfo.setCaretIndex(0);
+      model.initSelection();
+      model.setCaretIndex(0);
     }
-    else if(keyCode == KeyEvent.VK_DOWN)
+    else if(keyCode == KeyEvent.KEY_DOWN)
     {
-      boxInfo.initSelection();
-      boxInfo.setCaretIndex(boxInfo.getText().length());
+      model.initSelection();
+      model.setCaretIndex(model.getText().length());
     }
   }
 

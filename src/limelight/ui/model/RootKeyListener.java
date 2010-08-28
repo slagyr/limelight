@@ -1,6 +1,7 @@
 package limelight.ui.model;
 
 import limelight.ui.Panel;
+import limelight.ui.events.*;
 import limelight.ui.model.inputs.InputPanel;
 
 import java.awt.event.KeyEvent;
@@ -16,17 +17,17 @@ public class RootKeyListener implements java.awt.event.KeyListener
 
   public void keyTyped(KeyEvent e)
   {
-    focusedPanel.keyTyped(e);
+    focusedPanel.getEventHandler().dispatch(new CharTypedEvent(focusedPanel, e.getModifiers(), e.getKeyChar()));
   }
 
   public void keyPressed(KeyEvent e)
   {
-    focusedPanel.keyPressed(e);
+    focusedPanel.getEventHandler().dispatch(new KeyPressedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()));
   }
 
   public void keyReleased(KeyEvent e)
   {
-    focusedPanel.keyReleased(e);
+    focusedPanel.getEventHandler().dispatch(new KeyReleasedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()));
   }
 
   public Panel getFocusedPanel()
@@ -43,9 +44,9 @@ public class RootKeyListener implements java.awt.event.KeyListener
     focusedPanel = panel;
 
     if(previouslyFocusPanel != null)
-      previouslyFocusPanel.focusLost(null);
+      previouslyFocusPanel.getEventHandler().dispatch(new FocusLostEvent(previouslyFocusPanel));
 
-    panel.focusGained(null);
+    panel.getEventHandler().dispatch(new FocusGainedEvent(panel));
   }
 
   public void focusOnNextInput()

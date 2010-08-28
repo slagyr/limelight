@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,16 +12,15 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     setUpSingleLine();
     processor = CmdKeyProcessor.instance;
-    modifier = 4;
+    modifiers = 4;
   }
 
   @Test
   public void canSelectAll()
   {
     model.setText("Bob");
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A);
 
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_A), model);
 
     assertSelection(3, 0, true);
   }
@@ -32,9 +30,8 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     model.setText("Bob");
     model.copyText(" Dole");
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_V);
 
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_V), model);
 
     assertTextState(model.getText().length(), 0, "Bob Dole");
   }
@@ -42,9 +39,7 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessRightArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
     assertSelection(model.getText().length(), 0, false);
   }
@@ -52,9 +47,7 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessLeftArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
     assertSelection(0, 0, false);
   }
@@ -62,9 +55,7 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessUpArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_UP), model);
 
     assertSelection(0, 0, false);
   }
@@ -72,9 +63,7 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessDownArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
     assertSelection(model.getText().length(), 0, false);
   }

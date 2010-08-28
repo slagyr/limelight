@@ -17,8 +17,6 @@ public interface TextContainer
 
   Box getBoundingBox();
 
-  boolean isCursorOn();
-
   boolean hasFocus();
 
   int getLastKeyPressed();

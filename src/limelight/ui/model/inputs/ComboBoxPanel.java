@@ -11,17 +11,13 @@ import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
-import limelight.Context;
 
 import javax.imageio.ImageIO;
-import java.awt.event.MouseEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.ActionEvent;
 import java.awt.font.TextLayout;
 import java.awt.*;
 import java.io.IOException;
 
-public class ComboBoxPanel extends BasePanel implements TextAccessor, InputPanel
+public class ComboBoxPanel extends InputPanel implements TextAccessor
 {
   private static NinePatch normalPatch;
   private static NinePatch focusPatch;
@@ -56,8 +52,6 @@ public class ComboBoxPanel extends BasePanel implements TextAccessor, InputPanel
   private String text;
   private Dimension textDimensions;
   private TextLayout textLayout;
-  private boolean focused;
-
   public ComboBoxPanel()
   {
     setSize(128, 27);
@@ -65,9 +59,6 @@ public class ComboBoxPanel extends BasePanel implements TextAccessor, InputPanel
 
   public void setParent(limelight.ui.Panel panel)
   {
-// MDM - Why was this needed?
-//    if(panel == null)
-//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {
@@ -89,7 +80,7 @@ public class ComboBoxPanel extends BasePanel implements TextAccessor, InputPanel
 
   public void paintOn(Graphics2D graphics)
   {
-    if(focused)
+    if(hasFocus())
       focusPatch.draw(graphics, 0, 0, width, height);
     normalPatch.draw(graphics, 0, 0, width, height);
 
@@ -129,36 +120,10 @@ public class ComboBoxPanel extends BasePanel implements TextAccessor, InputPanel
     return text;
   }
 
-  public void mousePressed(MouseEvent e)
-  {
-    super.mousePressed(e);
-  }
-
-  public void mouseReleased(MouseEvent e)
-  {
-    super.mouseReleased(e);
-    super.buttonPressed(new ActionEvent(this, 0, "blah"));
-  }
-
-  public void focusGained(FocusEvent e)
-  {
-    focused = true;
-    repaint();
-    super.focusGained(e);
-  }
-
-  public void focusLost(FocusEvent e)
-  {
-    focused = false;
-    repaint();
-    super.focusLost(e);
-  }
-
   public void addItem(String item)
   {
     // TODO
   }
-
 
   public String getSelectedItem()
   {

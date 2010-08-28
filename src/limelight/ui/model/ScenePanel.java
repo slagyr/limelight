@@ -11,7 +11,6 @@ import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.*;
 
@@ -299,36 +298,6 @@ public class ScenePanel extends PropPanel implements RootPanel
   public PropFrame getFrame()
   {
     return frame;
-  }
-
-  @Override
-  public void mousePressed(MouseEvent e)
-  {
-    if(getProp().accepts_mouse_pressed())
-      getProp().mouse_pressed(translatedEvent(e));
-  }
-
-  @Override
-  public void mouseReleased(MouseEvent e)
-  {
-    if(getProp().accepts_mouse_released())
-      getProp().mouse_released(translatedEvent(e));
-  }
-
-  @Override
-  public void mouseClicked(MouseEvent e)
-  {
-    if(getProp().accepts_mouse_clicked())
-      getProp().mouse_clicked(translatedEvent(e));
-  }
-
-  @Override
-  public void mouseWheelMoved(MouseWheelEvent e)
-  {
-    boolean isVertical = e.getModifiers() % 2 == 0;
-    ScrollBarPanel scrollBar = isVertical ? getVerticalScrollbar() : getHorizontalScrollbar();
-    if(scrollBar != null)
-      scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
   }
 
   public Map<String, RichStyle> getStylesStore()

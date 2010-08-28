@@ -7,17 +7,19 @@ import limelight.Context;
 import limelight.LimelightError;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
+import limelight.ui.EventAction;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
+import limelight.ui.events.*;
+import limelight.ui.events.Event;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.*;
 import limelight.util.Box;
 import limelight.util.Util;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Map;
 
 public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
@@ -39,7 +41,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public boolean borderChanged = true;
   public Dimension greediness = new Dimension(0, 0);
   private Painter painter = DefaultPainter.instance;
-  
+
   private Cursor preHoverCursor;
 
   public PropPanel(Prop prop)
@@ -49,6 +51,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     style = new ScreenableStyle();
     hoverStyle = new RichStyle();
     style.addObserver(this);
+    getEventHandler().add(MouseWheelEvent.class, MouseWheelAction.instance);
+    getEventHandler().add(MouseEnteredEvent.class, HoverOnAction.instance);
+    getEventHandler().add(MouseExitedEvent.class, HoverOffAction.instance);
   }
 
   public String getText()
@@ -209,112 +214,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return borderShaper;
   }
 
-  @Override
-  public void mousePressed(MouseEvent e)
-  {
-    if(getProp().accepts_mouse_pressed())
-      getProp().mouse_pressed(translatedEvent(e));
-    else
-      super.mousePressed(e);
-  }
-
-  @Override
-  public void mouseReleased(MouseEvent e)
-  {
-    if(getProp().accepts_mouse_released())
-      getProp().mouse_released(translatedEvent(e));
-    else
-      super.mouseReleased(e);
-  }
-
-  @Override
-  public void mouseClicked(MouseEvent e)
-  {
-    if(getProp().accepts_mouse_clicked())
-      getProp().mouse_clicked(translatedEvent(e));
-    else
-      super.mouseClicked(e);
-  }
-
-  @Override
-  public void mouseDragged(MouseEvent e)
-  {
-    getProp().mouse_dragged(translatedEvent(e));
-  }
-
-  @Override
-  public void mouseEntered(MouseEvent e)
-  {
-    getProp().mouse_entered(translatedEvent(e));
-    hoverOn();
-  }
-
-  @Override
-  public void mouseExited(MouseEvent e)
-  {
-    getProp().mouse_exited(translatedEvent(e));
-    hoverOff();
-  }
-
-  @Override
-  public void mouseMoved(MouseEvent e)
-  {
-    getProp().mouse_moved(translatedEvent(e));
-  }
-
-  @Override
-  public void mouseWheelMoved(MouseWheelEvent e)
-  {
-    boolean isVertical = e.getModifiers() % 2 == 0;
-    ScrollBarPanel scrollBar = isVertical ? verticalScrollbar : horizontalScrollbar;
-    if(scrollBar != null)
-      scrollBar.setValue(scrollBar.getValue() + e.getUnitsToScroll());
-    else
-      getParent().mouseWheelMoved(e);
-  }
-
-  @Override
-  public void focusLost(FocusEvent e)
-  {
-    getProp().focus_lost(e);
-  }
-
-  @Override
-  public void focusGained(FocusEvent e)
-  {
-    getProp().focus_gained(e);
-  }
-
-  @Override
-  public void keyTyped(KeyEvent e)
-  {
-    getProp().key_typed(e);
-  }
-
-  @Override
-  public void keyPressed(KeyEvent e)
-  {
-    getProp().key_pressed(e);
-  }
-
-  @Override
-  public void keyReleased(KeyEvent e)
-  {
-    getProp().key_released(e);
-  }
-
-  @Override
-  public void buttonPressed(ActionEvent e)
-  {
-    getProp().button_pressed(e);
-  }
-
-  @Override
-  public void valueChanged(Object e)
-  {
-    getProp().value_changed(e);
-  }
-
   public void setCursor(Cursor cursor)
   {
     getRoot().setCursor(cursor);
@@ -432,36 +331,6 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     Context.instance().audioPlayer.playAuFile(filename);
   }
 
-  private void hoverOn()
-  {
-    //TODO MDM - If the prop has no suface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
-    if(!getStyle().hasScreen())
-      getStyle().applyScreen(getHoverStyle()); // TODO - MDM - This seems inefficient considering most of the time, there's no change in styles.
-
-    Cursor currentCursor = getRoot().getCursor();
-    Cursor hoverCursor = getStyle().getCompiledCursor().getCursor();
-    if(hoverCursor != currentCursor)
-    {
-      preHoverCursor = currentCursor;
-      getRoot().setCursor(hoverCursor);
-    }
-  }
-
-  private void hoverOff()
-  {
-    if(getStyle().hasScreen())
-      getStyle().removeScreen();
-
-    if(preHoverCursor != null)
-    {
-      final RootPanel root = getRoot();
-      // TODO MDM - If the panel is removed from the scene, the cursor is never changed.  Perhaps the right way to do this is in the MouseListener... when ever entering a panel, get the cursor and change it.... when exiting a panel, pop the cursor
-      if(root != null)
-        root.setCursor(preHoverCursor);
-      preHoverCursor = null;
-    }
-  }
-
   public boolean isSizeChangePending()
   {
     return sizeChangePending;
@@ -549,6 +418,65 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   public boolean hasFocus()
   {
     return textAccessor.hasFocus();
+  }
+
+  private static class MouseWheelAction implements EventAction
+  {
+    public static MouseWheelAction instance = new MouseWheelAction();
+
+    public void invoke(Event event)
+    {
+      if(!(event.getPanel() instanceof PropPanel))
+        return;
+      
+      MouseWheelEvent wheelEvent = (MouseWheelEvent) event;
+      PropPanel panel = (PropPanel) event.getPanel();
+      ScrollBarPanel scrollBar = wheelEvent.isVertical() ? panel.getVerticalScrollbar() : panel.getHorizontalScrollbar();
+      if(scrollBar != null)
+        scrollBar.setValue(scrollBar.getValue() + wheelEvent.getUnitsToScroll());
+    }
+  }
+
+  private static class HoverOnAction implements EventAction
+  {
+    public static HoverOnAction instance = new HoverOnAction();
+
+    public void invoke(Event event)
+    {
+      final PropPanel panel = (PropPanel) event.getPanel();
+      //TODO MDM - If the prop has no suface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
+      if(!panel.getStyle().hasScreen())
+        panel.getStyle().applyScreen(panel.getHoverStyle()); // TODO - MDM - This seems inefficient considering most of the time, there's no change in styles.
+
+      Cursor currentCursor = panel.getRoot().getCursor();
+      Cursor hoverCursor = panel.getStyle().getCompiledCursor().getCursor();
+      if(hoverCursor != currentCursor)
+      {
+        panel.preHoverCursor = currentCursor;
+        panel.getRoot().setCursor(hoverCursor);
+      }
+    }
+  }
+
+  private static class HoverOffAction implements EventAction
+  {
+    public static HoverOffAction instance = new HoverOffAction();
+
+    public void invoke(Event event)
+    {
+      final PropPanel panel = (PropPanel) event.getPanel();
+      if(panel.getStyle().hasScreen())
+        panel.getStyle().removeScreen();
+
+      if(panel.preHoverCursor != null)
+      {
+        final RootPanel root = panel.getRoot();
+        // TODO MDM - If the panel is removed from the scene, the cursor is never changed.  Perhaps the right way to do this is in the MouseListener... when ever entering a panel, get the cursor and change it.... when exiting a panel, pop the cursor
+        if(root != null)
+          root.setCursor(panel.preHoverCursor);
+        panel.preHoverCursor = null;
+      }
+    }
   }
 }
 

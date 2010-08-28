@@ -3,34 +3,33 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class SelectionOnAltKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new SelectionOnAltKeyProcessor();
 
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
 
-    if (isACharacter(keyCode))
+//    if (isACharacter(keyCode))
+//    {
+//      boxInfo.deleteSelection();
+//      boxInfo.insertChar(event.getKeyChar());
+//    }
+    if (model.isMoveRightEvent(keyCode))
     {
-      boxInfo.deleteSelection();
-      boxInfo.insertChar(event.getKeyChar());
-    }
-    else if (boxInfo.isMoveRightEvent(keyCode))
-    {
-      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheRight());
-      boxInfo.setSelectionOn(false);
+      model.setCaretIndex(model.findNearestWordToTheRight());
+      model.setSelectionOn(false);
     }
 
-    else if (boxInfo.isMoveLeftEvent(keyCode))
+    else if (model.isMoveLeftEvent(keyCode))
     {
-      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheLeft());
-      boxInfo.setSelectionOn(false);
+      model.setCaretIndex(model.findNearestWordToTheLeft());
+      model.setSelectionOn(false);
     }
 
   }

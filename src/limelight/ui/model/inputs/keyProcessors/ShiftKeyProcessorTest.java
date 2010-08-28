@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class ShiftKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,25 +12,23 @@ public class ShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     setUpSingleLine();
     processor = ShiftKeyProcessor.instance;
-    modifier = 1;
+    modifiers = 1;
   }
 
-  @Test
-  public void canProcessCharacters()
-  {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
-
-    processor.processKey(mockEvent, model);
-
-    assertTextState(2, 0, "HAere are four words");
-  }
+//  @Test
+//  public void canProcessCharacters()
+//  {
+//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'A');
+//
+//    processor.processKey(mockEvent, model);
+//
+//    assertTextState(2, 0, "HAere are four words");
+//  }
 
   @Test
   public void canProcessRightArrowAndBeingSelection()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
     assertSelection(2, 1, true);
   }
@@ -39,9 +36,7 @@ public class ShiftKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessLeftArrowAndBeginSelection()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
     assertSelection(0, 1, true);
   }

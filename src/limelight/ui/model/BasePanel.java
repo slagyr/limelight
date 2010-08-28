@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import limelight.styles.Style;
-import limelight.ui.EventAction;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
@@ -216,78 +215,9 @@ public abstract class BasePanel implements Panel
     return eventHandler;
   }
 
-  // TODO MDM The mouse events should delegate to a mouse processor... so that we don't have to delegate in multiple subclasses.
-  public void mousePressed(MouseEvent e)
-  { 
-    parent.mousePressed(e);
-  }
-
-  public void mouseReleased(MouseEvent e)
-  {
-    parent.mouseReleased(e);
-  }
-
-  public void mouseClicked(MouseEvent e)
-  {
-    parent.mouseClicked(e);
-  }
-
-  public void mouseDragged(MouseEvent e)
-  {
-    parent.mouseDragged(e);
-  }
-
-  public void mouseEntered(MouseEvent e)
-  {
-  }
-
-  public void mouseExited(MouseEvent e)
-  {
-  }
-
-  public void mouseMoved(MouseEvent e)
-  {
-    parent.mouseMoved(e);
-  }
-
-  public void mouseWheelMoved(MouseWheelEvent e)
-  {
-    parent.mouseWheelMoved(e);
-  }
-
-  public void focusLost(FocusEvent e)
-  {
-    parent.focusLost(e);
-  }
-
-  public void focusGained(FocusEvent e)
-  {
-    parent.focusGained(e);
-  }
-
-  public void keyTyped(KeyEvent e)
-  {
-    parent.keyTyped(e);
-  }
-
   public void keyPressed(KeyEvent e)
   {
     parent.keyPressed(e);
-  }
-
-  public void keyReleased(KeyEvent e)
-  {
-    parent.keyReleased(e);
-  }
-
-  public void buttonPressed(ActionEvent e)
-  {
-    parent.buttonPressed(e);
-  }
-
-  public void valueChanged(Object e)
-  {
-    parent.valueChanged(e);
   }
 
   public void add(Panel panel)

@@ -3,13 +3,10 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
-import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.events.KeyPressedEvent;
 import limelight.ui.model.inputs.*;
 import limelight.util.Box;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,9 +17,7 @@ public class AbstractKeyProcessorTest
   public TextModel model;
   public MockTextContainer container;
   public KeyProcessor processor;
-  public MockKeyEvent mockEvent;
-  public MockPanel parent;
-  public int modifier;
+  public int modifiers;
 
   public void setUpSingleLine()
   {
@@ -50,6 +45,11 @@ public class AbstractKeyProcessorTest
     model.setSelectionOn(false);
   }
 
+  protected KeyPressedEvent press(int code)
+  {
+    return new KeyPressedEvent(container, modifiers, code, 0);
+  }
+
   protected void selectionBoxSetUp()
   {
     setUpSingleLine();
@@ -62,20 +62,6 @@ public class AbstractKeyProcessorTest
     setUpMultiLine();
     model.setSelectionIndex(SELECTION_START_INDEX);
     model.setSelectionOn(true);
-  }
-
-  public class MockKeyEvent extends KeyEvent
-  {
-
-    public MockKeyEvent(int modifiers, int keyCode)
-    {
-      super(new Panel(), 1, 123456789l, modifiers, keyCode, ' ');
-    }
-
-    public MockKeyEvent(int modifiers, int keyCode, char c)
-    {
-      super(new Panel(), 1, 123456789l, modifiers, keyCode, c);
-    }
   }
 
   public void assertSelection(int cursorIndex, int selectionIndex, boolean selectionOn)

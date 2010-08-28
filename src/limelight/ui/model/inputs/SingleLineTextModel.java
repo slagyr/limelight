@@ -37,6 +37,12 @@ public class SingleLineTextModel extends TextModel
     return YOffsetStrategy.STATIONARY;
   }
 
+  @Override
+  public int getXOffset(TypedLayout line)
+  {
+    return super.getXOffset(line) + getXOffset();
+  }
+
   public Dimension getTextDimensions()
   {
     //TODO MDM could cache here

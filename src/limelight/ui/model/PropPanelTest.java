@@ -7,6 +7,9 @@ import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
+import limelight.ui.events.MouseEnteredEvent;
+import limelight.ui.events.MouseExitedEvent;
+import limelight.ui.events.MouseWheelEvent;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 import limelight.Context;
@@ -20,7 +23,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
-import java.awt.event.*;
 
 public class PropPanelTest extends Assert
 {
@@ -43,7 +45,6 @@ public class PropPanelTest extends Assert
     panel = new PropPanel(prop);
     style = panel.getStyle();
     root.add(panel);
-
 
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
@@ -248,9 +249,8 @@ public class PropPanelTest extends Assert
     int modifer = 0;
     int scrollAmount = 8;
     int wheelRotation = 2;
-    MouseWheelEvent e = new MouseWheelEvent(root.getContentPane(), 1, 2, modifer, 4, 5, 6, false, 7, scrollAmount, wheelRotation);
 
-    panel.mouseWheelMoved(e);
+    panel.getEventHandler().dispatch(new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation));
 
     assertEquals(16, panel.getVerticalScrollbar().getValue());
     assertEquals(0, panel.getHorizontalScrollbar().getValue());
@@ -267,9 +267,7 @@ public class PropPanelTest extends Assert
     int modifer = 1;
     int scrollAmount = 8;
     int wheelRotation = 2;
-    MouseWheelEvent e = new MouseWheelEvent(root.getContentPane(), 1, 2, modifer, 4, 5, 6, false, 7, scrollAmount, wheelRotation);
-
-    panel.mouseWheelMoved(e);
+    panel.getEventHandler().dispatch(new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation));
 
     assertEquals(0, panel.getVerticalScrollbar().getValue());
     assertEquals(16, panel.getHorizontalScrollbar().getValue());
@@ -287,77 +285,11 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void shouldFocusGained() throws Exception
-  {
-    FocusEvent event = new FocusEvent(new JPanel(), 1);
-    panel.focusGained(event);
-
-    assertNotNull(prop.gainedFocus);
-    assertSame(event, prop.gainedFocus);
-  }
-
-  @Test
-  public void shouldFocusLost() throws Exception
-  {
-    FocusEvent event = new FocusEvent(new JPanel(), 1);
-    panel.focusLost(event);
-
-    assertNotNull(prop.lostFocus);
-    assertSame(event, prop.lostFocus);
-  }
-
-  @Test
-  public void shouldKeyPressedEvent() throws Exception
-  {
-    KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
-    panel.keyPressed(event);
-
-    assertSame(event, prop.pressedKey);
-  }
-
-  @Test
-  public void shouldKeyTypedEvent() throws Exception
-  {
-    KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
-    panel.keyTyped(event);
-
-    assertSame(event, prop.typedKey);
-  }
-
-  @Test
-  public void shouldKeyReleasedEvent() throws Exception
-  {
-    KeyEvent event = new KeyEvent(new JPanel(), 1, 2, 3, 4, 'a');
-    panel.keyReleased(event);
-
-    assertSame(event, prop.releasedKey);
-  }
-
-  @Test
-  public void shouldButtonPressedEvent() throws Exception
-  {
-    ActionEvent event = new ActionEvent(new JPanel(), 1, "blah");
-    panel.buttonPressed(event);
-
-    assertSame(event, prop.pressedButton);
-  }
-
-  @Test
-  public void shouldValueChangedEvent() throws Exception
-  {
-    Object event = "blah";
-    panel.valueChanged(event);
-
-    assertSame(event, prop.changedValue);
-  }
-
-  @Test
   public void shouldHoverOnWithHoverStyle() throws Exception
   {
     panel.getHoverStyle().setCuror("hand");
-    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
 
-    panel.mouseEntered(event);
+    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
 
     assertEquals(Cursor.HAND_CURSOR, root.getContentPane().getCursor().getType());
     assertSame(panel.getHoverStyle(), style.getScreen());
@@ -366,11 +298,10 @@ public class PropPanelTest extends Assert
   @Test
   public void shouldHoverOffWithHoverStyle() throws Exception
   {
-    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
     prop.hoverStyle = new FlatStyle();
 
-    panel.mouseEntered(event);
-    panel.mouseExited(event);
+    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
+    panel.getEventHandler().dispatch(new MouseExitedEvent(panel, 0, null, 0));
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
     assertEquals(null, style.getScreen());
@@ -379,11 +310,10 @@ public class PropPanelTest extends Assert
   @Test
   public void shouldHoverOffWithoutHoverStyle() throws Exception
   {
-    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
     prop.hoverStyle = null;
 
-    panel.mouseEntered(event);
-    panel.mouseExited(event);
+    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
+    panel.getEventHandler().dispatch(new MouseExitedEvent(panel, 0, null, 0));
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
     assertEquals(null, style.getScreen());
@@ -392,12 +322,11 @@ public class PropPanelTest extends Assert
   @Test
   public void shouldHoverOffWhenHoverStyledWasRemovedFromProp() throws Exception
   {
-    MouseEvent event = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
     prop.hoverStyle = new FlatStyle();
 
-    panel.mouseEntered(event);
+    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
     prop.hoverStyle = null;
-    panel.mouseExited(event);
+    panel.getEventHandler().dispatch(new MouseExitedEvent(panel, 0, null, 0));
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
     assertEquals(null, style.getScreen());

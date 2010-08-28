@@ -5,29 +5,41 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
+import limelight.ui.*;
+import limelight.ui.events.*;
 import limelight.ui.model.*;
 import limelight.ui.model.inputs.painting.*;
 import limelight.util.Box;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
-public abstract class TextInputPanel extends BasePanel implements TextAccessor, InputPanel, ClipboardOwner, TextContainer
+public abstract class TextInputPanel extends InputPanel implements TextAccessor, ClipboardOwner, TextContainer
 {
   protected TextModel model;
-  protected boolean cursorOn;
   protected Thread cursorThread;
   protected int cursorCycleTime = 500;
   protected TextPanelMouseProcessor mouseProcessor;
   private int lastKeyPressed;
 
+  protected TextInputPanel()
+  {
+    model = createModel();
+    mouseProcessor = new TextPanelMouseProcessor(model);
+    getEventHandler().add(MousePressedEvent.class, mouseProcessor);
+    getEventHandler().add(MouseReleasedEvent.class, mouseProcessor);
+    getEventHandler().add(MouseDraggedEvent.class, mouseProcessor);
+    getEventHandler().add(FocusGainedEvent.class, FocusGainedAction.instance);
+    getEventHandler().add(FocusLostEvent.class, FocusLostAction.instance);
+    getEventHandler().add(KeyPressedEvent.class, KeyPressedAction.instance);
+    getEventHandler().add(CharTypedEvent.class, CharTypedAction.instance);
+  }
+
+  protected abstract TextModel createModel();
+
   protected abstract void setDefaultStyles(Style style);
+
   public abstract KeyProcessor getKeyProcessorFor(int modifiers);
 
   protected void markCursorRegionAsDirty()
@@ -42,9 +54,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
 
   public void setParent(limelight.ui.Panel panel)
   {
-// MDM - Why was this needed?
-//    if(panel == null)
-//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {
@@ -55,9 +64,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
       propPanel.setPainter(TextPanelPropPainter.instance);
     }
   }
-  
+
   public void paintOn(Graphics2D graphics)
-  {  
+  {
     TextPanelSelectionPainter.instance.paint(graphics, model);
     TextPanelTextPainter.instance.paint(graphics, model);
     TextPanelCaretPainter.instance.paint(graphics, model);
@@ -113,35 +122,17 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     return super.getAbsoluteLocation();
   }
 
-  public void focusGained(FocusEvent e)
-  {
-    markAsDirty();
-    getParent().markAsDirty();
-    startCursor();
-    super.focusGained(e);
-  }
-
-  public void focusLost(FocusEvent e)
-  {
-    stopCursor();
-    markAsDirty();
-    getParent().markAsDirty();
-    super.focusLost(e);
-
-  }
-
-  private void startCursor()
+  private void startCaret()
   {
     if(cursorThread == null || !cursorThread.isAlive())
     {
-      // TODO MDM - Use the Animation instead
+      // TODO MDM - Use Animation instead
       cursorThread = new Thread(new Runnable()
       {
         public void run()
         {
           while(hasFocus())
           {
-            cursorOn = !cursorOn;
             markCursorRegionAsDirty();
             try
             {
@@ -151,6 +142,7 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
             {
               e.printStackTrace();
             }
+            model.setCaretOn(!model.isCaretOn());
           }
         }
       });
@@ -158,49 +150,9 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     }
   }
 
-  private void stopCursor()
+  private void stopCaret()
   {
-    cursorOn = false;
-  }
-
-  public void keyPressed(KeyEvent e)
-  {
-    KeyProcessor processor = getKeyProcessorFor(e.getModifiers());
-    processor.processKey(e, model);
-    lastKeyPressed = e.getKeyCode();
-    cursorOn = true;
-    markAsDirty(); //TODO shouldRelyOn keyProcessor to markAsDirty
-  }
-
-  public boolean isCursorOn()
-  {
-    return cursorOn;
-  }
-
-  public void mouseDragged(MouseEvent e)
-  {
-    mouseProcessor.processMouseDragged(e);
-    cursorOn = true;
-    markAsDirty(); //TODO should rely in processor to markAsDirty
-  }
-
-  public void mousePressed(MouseEvent e)
-  {
-    super.mousePressed(e);
-    mouseProcessor.processMousePressed(e);
-    cursorOn = true;
-    markAsDirty(); //TODO should rely in processor to markAsDirty
-  }
-
-  public void mouseReleased(MouseEvent e)
-  {
-    super.mouseReleased(e);
-    mouseProcessor.processMouseReleased(e);
-    getRoot().getKeyListener().focusOn(this);
-//    Context.instance().keyboardFocusManager.focusPanel(this);
-//    if(!focused)
-//      focusGained(new FocusEvent(getRoot().getFrame().getWindow(), 0));
-    buttonPressed(new ActionEvent(this, 0, "blah")); //TODO Why?
+    model.setCaretOn(false);
   }
 
   public int getLastKeyPressed()
@@ -213,11 +165,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     lastKeyPressed = keyCode;
   }
 
-  public void setCursorOn(boolean value)
-  {
-    cursorOn = value;
-  }
-
   protected void setBorderStyleDefaults(Style style)
   {
     style.setDefault(Style.TOP_BORDER_WIDTH, 4);
@@ -228,11 +175,6 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
     style.setDefault(Style.RIGHT_BORDER_COLOR, "transparent");
     style.setDefault(Style.BOTTOM_BORDER_COLOR, "transparent");
     style.setDefault(Style.LEFT_BORDER_COLOR, "transparent");
-  }
-
-  public boolean hasFocus()
-  {
-    return getRoot().getKeyListener().getFocusedPanel() == this;
   }
 
   protected void setPaddingDefaults(Style style)
@@ -251,4 +193,66 @@ public abstract class TextInputPanel extends BasePanel implements TextAccessor, 
   {
     this.model = model;
   }
+
+  private static class FocusGainedAction implements EventAction
+  {
+    private static FocusGainedAction instance = new FocusGainedAction();
+
+    public void invoke(limelight.ui.events.Event event)
+    {
+      final TextInputPanel panel = (TextInputPanel) event.getPanel();
+      panel.markAsDirty();
+      panel.getParent().markAsDirty();
+      panel.startCaret();
+    }
+  }
+
+  private static class FocusLostAction implements EventAction
+  {
+    private static FocusLostAction instance = new FocusLostAction();
+
+    public void invoke(limelight.ui.events.Event event)
+    {
+      final TextInputPanel panel = (TextInputPanel) event.getPanel();
+      panel.stopCaret();
+      panel.markAsDirty();
+      panel.getParent().markAsDirty();
+    }
+  }
+
+  private static class KeyPressedAction implements EventAction
+  {
+    private static KeyPressedAction instance = new KeyPressedAction();
+
+    public void invoke(limelight.ui.events.Event event)
+    {
+      final TextInputPanel panel = (TextInputPanel) event.getPanel();
+      KeyPressedEvent press = (KeyPressedEvent)event;
+      KeyProcessor processor = panel.getKeyProcessorFor(press.getModifiers());
+      processor.processKey(press, panel.model);
+      panel.lastKeyPressed = press.getKeyCode();
+      panel.model.setCaretOn(true);
+      panel.markAsDirty();
+    }
+  }
+
+  private static class CharTypedAction implements EventAction
+  {
+    private static CharTypedAction instance = new CharTypedAction();
+
+    public void invoke(limelight.ui.events.Event event)
+    {
+      final TextInputPanel panel = (TextInputPanel) event.getPanel();
+      CharTypedEvent typeEvent = (CharTypedEvent)event;
+      if(!(typeEvent.isCommandDown() || typeEvent.isControlDown()))
+      {
+        final char aChar = typeEvent.getChar();
+        if(Character.getType(aChar) != Character.CONTROL || Character.isWhitespace(aChar))
+          panel.getModel().insertChar(aChar);
+      }
+      panel.markAsDirty();
+    }
+  }
+
+
 }

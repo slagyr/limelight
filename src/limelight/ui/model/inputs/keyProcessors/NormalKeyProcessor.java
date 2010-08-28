@@ -3,10 +3,9 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class NormalKeyProcessor extends KeyProcessor
 {
@@ -15,14 +14,15 @@ public class NormalKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-    if (isACharacter(keyCode))
-      model.insertChar(event.getKeyChar());
-    else if (model.isMoveRightEvent(keyCode))
+    if (model.isMoveRightEvent(keyCode))
       model.moveCaret(+1);
     else if (model.isMoveLeftEvent(keyCode))
       model.moveCaret(-1);
-    else if (keyCode == KeyEvent.VK_BACK_SPACE && model.getCaretIndex() > 0)  //TODO MDM Need to also support delete key
-      model.deleteEnclosedText(model.getCaretIndex() -1, model.getCaretIndex());
+    else if (keyCode == KeyEvent.KEY_BACK_SPACE)  //TODO MDM Need to also support delete key
+    {
+      if(model.getCaretIndex() > 0)
+        model.deleteEnclosedText(model.getCaretIndex() -1, model.getCaretIndex());
+    }
   }
 
 }

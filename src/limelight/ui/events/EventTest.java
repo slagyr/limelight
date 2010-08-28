@@ -31,7 +31,7 @@ public class EventTest
   @Test
   public void rememberThePanel() throws Exception
   {
-    assertSame(panel, event.getSource());
+    assertSame(panel, event.getPanel());
   }
   
   @Test

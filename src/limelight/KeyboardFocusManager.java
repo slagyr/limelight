@@ -24,10 +24,10 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
   {
     if(focusedPanel != inputPanel && inputPanel != null)
     {
-      if(focusedPanel != null)
-        focusedPanel.focusLost(null);
-      focusedPanel = inputPanel;
-      focusedPanel.focusGained(null);
+//      if(focusedPanel != null)
+//        focusedPanel.focusLost(null);
+//      focusedPanel = inputPanel;
+//      focusedPanel.focusGained(null);
     }
   }
 
@@ -73,7 +73,7 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
       setGlobalFocusOwner(frame);
       if(focusedPanel != null)
       {
-        focusedPanel.focusLost(null);
+//        focusedPanel.focusLost(null);
         focusedPanel = null;
       }
       FocusEvent gained = new FocusEvent(focused, FocusEvent.FOCUS_LOST);

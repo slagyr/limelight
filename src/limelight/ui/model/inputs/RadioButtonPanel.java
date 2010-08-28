@@ -4,23 +4,19 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
+import limelight.ui.EventAction;
+import limelight.ui.events.MouseClickedEvent;
 import limelight.ui.model.*;
 import limelight.ui.RadioButtonGroupMember;
 import limelight.ui.RadioButtonGroup;
 import limelight.util.Box;
-import limelight.Context;
-
 import javax.imageio.ImageIO;
-import java.awt.event.MouseEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.IOException;
 
-public class RadioButtonPanel extends BasePanel implements TextAccessor, InputPanel, RadioButtonGroupMember
+public class RadioButtonPanel extends InputPanel implements TextAccessor, RadioButtonGroupMember
 {
-  private boolean focused;
   private boolean imagesLoaded;
   private BufferedImage normalImage;
   private BufferedImage selectedImage;
@@ -31,13 +27,11 @@ public class RadioButtonPanel extends BasePanel implements TextAccessor, InputPa
   public RadioButtonPanel()
   {
     setSize(21, 21);
+    getEventHandler().add(MouseClickedEvent.class, SelectAction.instance);
   }
 
   public void setParent(limelight.ui.Panel panel)
   {
-// MDM - Why was this needed?
-//    if(panel == null)
-//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {
@@ -77,7 +71,7 @@ public class RadioButtonPanel extends BasePanel implements TextAccessor, InputPa
   public void paintOn(Graphics2D graphics)
   {
     loadImages();
-    if(focused)
+    if(hasFocus())
       graphics.drawImage(focusImage, 0, 0, null);
     if(selected)
       graphics.drawImage(selectedImage, 0, 0, null);
@@ -92,10 +86,7 @@ public class RadioButtonPanel extends BasePanel implements TextAccessor, InputPa
 
   public void setText(PropablePanel panel, String text)
   {
-    if("on".equals(text))
-      selected = true;
-    else
-      selected = false;
+    selected = "on".equals(text);
   }
 
   public String getText()
@@ -120,7 +111,7 @@ public class RadioButtonPanel extends BasePanel implements TextAccessor, InputPa
     this.selected = value;
     if(selected)
       radioButtonGroup.buttonSelected(this);
-    repaint();
+    markAsDirty();
   }
 
   public boolean getSelected()
@@ -128,29 +119,14 @@ public class RadioButtonPanel extends BasePanel implements TextAccessor, InputPa
     return selected;
   }
 
-  public void mousePressed(MouseEvent e)
+  private static class SelectAction implements EventAction
   {
-    super.mousePressed(e);
-  }
+    private static SelectAction instance = new SelectAction();
 
-  public void mouseReleased(MouseEvent e)
-  {
-    super.mouseReleased(e);
-    setSelected(true);
-    super.buttonPressed(new ActionEvent(this, 0, "blah"));
-  }
-
-  public void focusGained(FocusEvent e)
-  {
-    focused = true;
-    repaint();
-    super.focusGained(e);
-  }
-
-  public void focusLost(FocusEvent e)
-  {
-    focused = false;
-    repaint();
-    super.focusLost(e);
+    public void invoke(limelight.ui.events.Event event)
+    {
+      final RadioButtonPanel panel = (RadioButtonPanel) event.getPanel();
+      panel.setSelected(!panel.isSelected());
+    }
   }
 }
