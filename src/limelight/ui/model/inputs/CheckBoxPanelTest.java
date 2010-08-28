@@ -3,35 +3,57 @@
 
 package limelight.ui.model.inputs;
 
-import junit.framework.TestCase;
+import limelight.ui.events.MouseClickedEvent;
+import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
+import org.junit.Before;
+import org.junit.Test;
 
-public class CheckBoxPanelTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class CheckBoxPanelTest
 {
   private CheckBoxPanel panel;
   private PropPanel parent;
+  private MockRootPanel root;
 
+  @Before
   public void setUp() throws Exception
   {
     panel = new CheckBoxPanel();
     parent = new PropPanel(new MockProp());
     parent.add(panel);
+    root = new MockRootPanel();
+    root.add(parent);
   }
 
-  public void testCanBeBuffered() throws Exception
+  @Test
+  public void canBeBuffered() throws Exception
   {
     assertEquals(false, panel.canBeBuffered());
   }
-  
-  public void testSettingParentSetsTextAccessor() throws Exception
+
+  @Test
+  public void settingParentSetsTextAccessor() throws Exception
   {
     parent.setText("on");
     assertEquals("on", panel.getText());
   }
 
-  public void testSettingParentSteralizesParent() throws Exception
+  @Test
+  public void settingParentSteralizesParent() throws Exception
   {
     assertEquals(true, parent.isSterilized());
+  }
+
+  @Test
+  public void mouseClickSelectedCheckBox() throws Exception
+  {
+    assertEquals(false, panel.isSelected());
+
+    panel.getEventHandler().dispatch(new MouseClickedEvent(panel, 0, null, 0));
+
+    assertEquals(true, panel.isSelected());
   }
 }

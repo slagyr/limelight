@@ -7,14 +7,9 @@ import junit.framework.TestCase;
 import limelight.ui.model.ScenePanel;
 import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.TextAccessor;
 import limelight.ui.MockPanel;
 import limelight.ui.api.MockProp;
 import limelight.Context;
-import limelight.styles.Style;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class InputPanelUtilTest extends TestCase
 {
@@ -23,10 +18,6 @@ public class InputPanelUtilTest extends TestCase
   private MockPanel rootPanel;
   private TestableInputPanel input2;
   private TestableInputPanel input3;
-
-  private static class TestableInputPanel extends MockPanel implements InputPanel
-  {
-  }
 
   public void setUp() throws Exception
   {

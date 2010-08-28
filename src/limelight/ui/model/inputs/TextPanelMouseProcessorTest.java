@@ -4,27 +4,22 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.model.PropPanel;
-import limelight.util.Box;
+import limelight.ui.events.MouseDraggedEvent;
+import limelight.ui.events.MousePressedEvent;
+import limelight.ui.events.MouseReleasedEvent;
+import limelight.ui.model.MockRootPanel;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.event.MouseEvent;
-import java.util.Date;
+import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
 
 public class TextPanelMouseProcessorTest
 {
-  TextPanelMouseProcessor processor;
-  MockTextContainer container;
-  TextModel model;
-  PropPanel parent;
-
-  private MouseEvent event(int x, int y)
-  {
-    return new MouseEvent(new java.awt.Panel(), 0, 12098310293l, 0, x, y, 1, false);
-  }
+  private TextModel model;
+  private TextInputPanel panel;
+  private MockRootPanel root;
 
   @Before
   public void setUp()
@@ -39,25 +34,56 @@ public class TextPanelMouseProcessorTest
 
   private void setUpWithText(String text, boolean multiline)
   {
-    container = new MockTextContainer();
-    container.bounds = new Box(0, 0, 150, 75);
-
     if(multiline)
-      model = new MultiLineTextModel(container);
+      panel = new TextAreaPanel();
     else
-      model = new SingleLineTextModel(container);
+      panel = new TextBoxPanel();
+
+    panel.setSize(150, 75);
+    root = new MockRootPanel();
+    root.add(panel);
+
+    model = panel.getModel();
+//
+//    container = new MockTextContainer();
+//    container.bounds = new Box(0, 0, 150, 75);
+//
+//    if(multiline)
+//      model = new MultiLineTextModel(container);
+//    else
+//      model = new SingleLineTextModel(container);
 
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText(text);
     model.setCaretIndex(0);
 
-    processor = new TextPanelMouseProcessor(model);
+//    processor = new TextPanelMouseProcessor(model);
   }
-  
+
+  private void pressAt(int x, int y)
+  {
+    multiplePressAt(x, y, 0);
+  }
+
+  private void releasePanelAt(int x, int y)
+  {
+    panel.getEventHandler().dispatch(new MouseReleasedEvent(panel, 0, new Point(x, y), 0));
+  }
+
+  private void multiplePressAt(int x, int y, int count)
+  {
+    panel.getEventHandler().dispatch(new MousePressedEvent(panel, 0, new Point(x, y), count));
+  }
+
+  private void dragAt(int x, int y)
+  {
+    panel.getEventHandler().dispatch(new MouseDraggedEvent(panel, 0, new Point(x, y), 0));
+  }
+
   @Test
   public void willSetCursorAndSelectionIndexOnMouseClickInTheBox()
   {
-    processor.processMousePressed(event(10, 5));
+    pressAt(10, 5);
 
     assertEquals(1, model.getCaretIndex());
     assertEquals(1, model.getSelectionIndex());
@@ -68,7 +94,7 @@ public class TextPanelMouseProcessorTest
   {
     model.setText("This is\nMulti lined.");
 
-    processor.processMousePressed(event(10,15));
+    pressAt(10, 15);
 
     assertEquals(9, model.getCaretIndex());
   }
@@ -77,8 +103,7 @@ public class TextPanelMouseProcessorTest
   public void willMarkCursorProperlyWithAMultiLineTextAndAYOffset()
   {
     model.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max");
-
-    processor.processMousePressed(event(5,65));
+    pressAt(5, 65);
 
     assertEquals(42, model.getCaretIndex());
   }
@@ -88,7 +113,7 @@ public class TextPanelMouseProcessorTest
   {
     model.setText("This is\nMulti lined.");
 
-    processor.processMousePressed(event(90,30));
+    pressAt(90, 30);
 
     assertEquals(20, model.getCaretIndex());
   }
@@ -98,7 +123,7 @@ public class TextPanelMouseProcessorTest
   {
     model.setText("This is\nMulti lined.\n");
 
-    processor.processMousePressed(event(90,30));
+    pressAt(90, 30);
 
     assertEquals(21, model.getCaretIndex());
   }
@@ -106,7 +131,7 @@ public class TextPanelMouseProcessorTest
   @Test
   public void willSetSelectionOnToTrueIfMouseClickInTheBox()
   {
-    processor.processMousePressed(event(10, 15));
+    pressAt(10, 15);
 
     assertEquals(true, model.isSelectionOn());
   }
@@ -114,7 +139,7 @@ public class TextPanelMouseProcessorTest
   @Test
   public void willChangeTheCursorIndexForMouseDragged()
   {
-    processor.processMouseDragged(event(10, 05));
+    dragAt(10, 5);
 
     assertEquals(1, model.getCaretIndex());
   }
@@ -125,7 +150,7 @@ public class TextPanelMouseProcessorTest
     model.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max\nAndMore?");
     assertEquals(-12, model.getYOffset());
 
-    processor.processMouseDragged(event(0,-10));
+    dragAt(0, -10);
 
     assertEquals(0, model.getYOffset());
   }
@@ -137,7 +162,7 @@ public class TextPanelMouseProcessorTest
     model.setSelectionOn(true);
     model.setSelectionIndex(0);
 
-    processor.processMouseDragged(event(200, 5));
+    dragAt(200, 5);
 
     assertEquals(-51, model.getXOffset());
   }
@@ -147,7 +172,7 @@ public class TextPanelMouseProcessorTest
   {
     setUpSingleLine();
 
-    processor.processMouseDragged(event(149, 5));
+    dragAt(149, 5);
 
     assertEquals(0, model.getXOffset());
   }
@@ -158,7 +183,7 @@ public class TextPanelMouseProcessorTest
     model.setSelectionIndex(1);
     model.setSelectionOn(true);
 
-    processor.processMouseReleased(event(10, 5));
+    releasePanelAt(10, 5);
 
     assertEquals(false, model.isSelectionOn());
   }
@@ -166,9 +191,7 @@ public class TextPanelMouseProcessorTest
   @Test
   public void willSelectWordForDoubleClick()
   {
-    processor.lastClickTime = System.currentTimeMillis();
-
-    processor.processMousePressed(event(10, 5));
+    multiplePressAt(10, 5, 2);
 
     assertEquals(4, model.getCaretIndex());
     assertEquals(0, model.getSelectionIndex());
@@ -176,22 +199,12 @@ public class TextPanelMouseProcessorTest
   }
 
   @Test
-  public void willSetStateForDoubleClickSelection()
-  {
-    processor.lastClickTime = (new Date()).getTime();
-
-    processor.makeExtraSelectionOnMultiClick();
-
-    assertEquals(true, processor.doubleClickOn);
-  }
-
-  @Test
   public void willNotChangeTheCursorPositionOnMouseReleaseIfDoubleClickIsOn()
   {
-    processor.doubleClickOn = true;
+    multiplePressAt(10, 5, 2);
     model.setCaretIndex(5);
 
-    processor.processMouseReleased(event(10, 15));
+    releasePanelAt(10, 15);
 
     assertEquals(5, model.getCaretIndex());
   }
@@ -199,11 +212,11 @@ public class TextPanelMouseProcessorTest
   @Test
   public void willBeginWordSelectionIfDoubleClickIsOn()
   {
-    processor.doubleClickOn = true;
+    multiplePressAt(10, 5, 2);
     model.setSelectionIndex(0);
     model.setCaretIndex(4);
 
-    processor.processMouseDragged(event(model.getX(8) + model.getContainer().getAbsoluteLocation().x, 115));
+    dragAt(model.getX(8) + model.getContainer().getAbsoluteLocation().x, 115);
 
     assertEquals(model.getText().length(), model.getCaretIndex());
   }
@@ -211,11 +224,11 @@ public class TextPanelMouseProcessorTest
   @Test
   public void canWordSelectGoingToTheLeft()
   {
-    processor.doubleClickOn = true;
+    multiplePressAt(10, 5, 2);
     model.setSelectionIndex(5);
     model.setCaretIndex(9);
 
-    processor.processMouseDragged(event(10, 5));
+    dragAt(10, 5);
 
     assertEquals(9, model.getSelectionIndex());
     assertEquals(0, model.getCaretIndex());
@@ -225,11 +238,11 @@ public class TextPanelMouseProcessorTest
   public void canWordSelectManyWordsToTheLeft()
   {
     model.setText("Some Text Here");
-    processor.doubleClickOn = true;
+    multiplePressAt(10, 5, 2);
     model.setSelectionIndex(14);
     model.setCaretIndex(5);
 
-    processor.processMouseDragged(event(10, 5));
+    dragAt(10, 5);
 
     assertEquals(14, model.getSelectionIndex());
     assertEquals(0, model.getCaretIndex());
@@ -239,11 +252,11 @@ public class TextPanelMouseProcessorTest
   public void willDeselectOneWordAtATimeWhenDraggingRightOverSelection()
   {
     model.setText("Some Text Here");
-    processor.doubleClickOn = true;
+    multiplePressAt(10, 5, 2);
     model.setSelectionIndex(14);
     model.setCaretIndex(5);
 
-    processor.processMouseDragged(event(101, 15));
+    dragAt(101, 15);
 
     assertEquals(14, model.getSelectionIndex());
     assertEquals(10, model.getCaretIndex());
@@ -253,11 +266,11 @@ public class TextPanelMouseProcessorTest
   public void willDeselectOneWordAtATimeWhenDraggingLeftOverSelection()
   {
     model.setText("Some Text Here");
-    processor.doubleClickOn = true;
+    multiplePressAt(10, 5, 2);
     model.setSelectionIndex(5);
     model.setCaretIndex(14);
 
-    processor.processMouseDragged(event(70, 5));
+    dragAt(70, 5);
 
     assertEquals(5, model.getSelectionIndex());
     assertEquals(9, model.getCaretIndex());
@@ -267,11 +280,11 @@ public class TextPanelMouseProcessorTest
   public void willKeepTheOriginalWordSelectedIfDraggedPastRightEdgeOfWordAfterSelectingToTheLeft()
   {
     model.setText("Some Text Here");
-    processor.doubleClickOn = true;
+    multiplePressAt(10, 5, 2);
     model.setSelectionIndex(9);
     model.setCaretIndex(5);
 
-    processor.processMouseDragged(event(101, 115));
+    dragAt(101, 115);
 
     assertEquals(5, model.getSelectionIndex());
     assertEquals(14, model.getCaretIndex());
@@ -280,14 +293,48 @@ public class TextPanelMouseProcessorTest
   @Test
   public void willSelectAllForTripleClick()
   {
-    processor.doubleClickOn = true;
-    processor.lastClickTime = (new Date()).getTime();
-
-    processor.makeExtraSelectionOnMultiClick();
+    multiplePressAt(10, 5, 3);
 
     assertEquals(0, model.getSelectionIndex());
     assertEquals(9, model.getCaretIndex());
   }
+  
+  @Test
+  public void pressingTurnsCaretOn() throws Exception
+  {
+    assertEquals(false, model.isCaretOn());
+
+    pressAt(0, 0);
+
+    assertEquals(true, model.isCaretOn());
+  }
+  
+  @Test
+  public void pressingMakesPanelDirty() throws Exception
+  {
+    assertEquals(0, root.dirtyRegions.size());
+
+    pressAt(0, 0);
+
+    assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
+  }
+  
+  @Test
+  public void pressingFocusesOnPanel() throws Exception
+  {
+    pressAt(0, 0);
+
+    assertEquals(panel, root.getKeyListener().getFocusedPanel());
+  }
+  
+  @Test
+  public void draggingMakePanelDirty() throws Exception
+  {
+    dragAt(0, 0);
+
+    assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
+  }
+
 }
 
 

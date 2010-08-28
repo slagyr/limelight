@@ -3,16 +3,18 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
 
-import java.awt.event.KeyEvent;
-
+// TODO MDM Get rid of all the SelectionOn processors.  They are more weight than their worth.
+// The Non-SelectionOn processors will have to check if selection is on.
+// Maybe.  At least look into it.
 public class SelectionOnAltCmdKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new SelectionOnAltCmdKeyProcessor();
 
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
   }
 }

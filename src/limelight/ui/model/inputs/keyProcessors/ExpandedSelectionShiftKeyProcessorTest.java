@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,15 +12,13 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   {
     selectionAreaSetUp();
     processor = ExpandedSelectionOnShiftKeyProcessor.instance;
-    modifier = 1;
+    modifiers = 1;
   }
 
   @Test
   public void canProcessRightArrowAndContinueSelectionToTheRight()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
     assertSelection(2, SELECTION_START_INDEX, true);
   }
@@ -29,31 +26,28 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   @Test
   public void canProcessLeftArrowAndContinueSelectionToTheLeft()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
     assertSelection(0, SELECTION_START_INDEX, true);
   }
 
-  @Test
-  public void canProcessCharacterAndPlaceUppercaseCharAtCursorIndex()
-  {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'A');
-
-    processor.processKey(mockEvent, model);
-
-    assertTextState(2, 0, "HA are four words");
-  }
+//  @Test
+//  public void canProcessCharacterAndPlaceUppercaseCharAtCursorIndex()
+//  {
+//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'A');
+//
+//    processor.processKey(mockEvent, model);
+//
+//    assertTextState(2, 0, "HA are four words");
+//  }
 
   @Test
   public void canProcessUpArrowAndMoveUpALineWithSelection()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_UP);
     model.setText("This is\nMulti lined.");
     model.setCaretIndex(11);
 
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_UP), model);
 
     assertSelection(3, SELECTION_START_INDEX, true);
   }
@@ -61,11 +55,10 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   @Test
   public void canProcessDownArrowAndMoveDownALineWithSelection()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_DOWN);
     model.setText("This is\nMulti lined.");
     model.setCaretIndex(3);
 
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
     assertSelection(11, SELECTION_START_INDEX, true);
   }

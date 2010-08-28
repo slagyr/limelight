@@ -3,29 +3,29 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new ExpandedSelectionOnKeyProcessor();
 
+  // TODO MDM - DELETE ME, I duplicate the non-selectionOn version
   @Override
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
-    boxInfo.setSelectionOn(false);
+    model.setSelectionOn(false);
     int keyCode = event.getKeyCode();
-    if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_TAB){
-      boxInfo.deleteSelection();
-      boxInfo.insertChar(event.getKeyChar());
-    }
-    else if (boxInfo.isMoveUpEvent(keyCode))
-      boxInfo.moveCaretUpALine();
-    else if (boxInfo.isMoveDownEvent(keyCode))
-      boxInfo.moveCaretDownALine();
+//    if (keyCode == KeyEvent.KEY_ENTER || keyCode == KeyEvent.KEY_TAB){
+//      boxInfo.deleteSelection();
+//      boxInfo.insertChar(event.getKeyChar());
+//    }
+    if (model.isMoveUpEvent(keyCode))
+      model.moveCaretUpALine();
+    else if (model.isMoveDownEvent(keyCode))
+      model.moveCaretDownALine();
     else
-      SelectionOnKeyProcessor.instance.processKey(event, boxInfo);
+      SelectionOnKeyProcessor.instance.processKey(event, model);
   }
 }

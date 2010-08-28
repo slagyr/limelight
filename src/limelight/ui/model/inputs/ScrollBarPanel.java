@@ -4,12 +4,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
+import limelight.ui.events.MouseDraggedEvent;
+import limelight.ui.events.MouseExitedEvent;
+import limelight.ui.events.MousePressedEvent;
+import limelight.ui.events.MouseReleasedEvent;
 import limelight.ui.model.BasePanel;
 import limelight.ui.model.inputs.painting.ScrollBarPainter;
 import limelight.util.Box;
-
-import java.awt.*;
-import java.awt.event.*;
 
 public class ScrollBarPanel extends BasePanel
 {
@@ -50,6 +51,11 @@ public class ScrollBarPanel extends BasePanel
       setSize(50, preferredGirth);
       sliderBounds = new Box(0, 0, 0, preferredGirth);
     }
+    
+    getEventHandler().add(MousePressedEvent.class, mouseProcessor);
+    getEventHandler().add(MouseReleasedEvent.class, mouseProcessor);
+    getEventHandler().add(MouseDraggedEvent.class, mouseProcessor);
+    getEventHandler().add(MouseExitedEvent.class, mouseProcessor);
   }
 
   public int getOrientation()
@@ -67,12 +73,12 @@ public class ScrollBarPanel extends BasePanel
     return orientation == HORIZONTAL;
   }
 
-  public limelight.util.Box getChildConsumableArea()
+  public Box getChildConsumableArea()
   {
     return getBoundingBox();
   }
 
-  public limelight.util.Box getBoxInsidePadding()
+  public Box getBoxInsidePadding()
   {
     return getBoundingBox();
   }
@@ -108,56 +114,7 @@ public class ScrollBarPanel extends BasePanel
     setSize(width, preferredGirth);
   }
 
-  @Override
-  public void mousePressed(MouseEvent e)
-  {
-    mouseProcessor.mousePressed(translatedMouseEvent(e));
-  }
-
-  private MouseEvent translatedMouseEvent(MouseEvent e)
-  {
-    Point p = e.getPoint();
-    e = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), p.x - getAbsoluteLocation().x, p.y - getAbsoluteLocation().y, e.getClickCount(), false);
-    return e;
-  }
-
-  @Override
-  public void mouseReleased(MouseEvent e)
-  {
-    mouseProcessor.mouseReleased(translatedMouseEvent(e));
-  }
-
-  @Override
-  public void mouseClicked(MouseEvent e)
-  {
-    mouseProcessor.mouseClicked(translatedMouseEvent(e));
-  }
-
-  @Override
-  public void mouseDragged(MouseEvent e)
-  {
-    mouseProcessor.mouseDragged(translatedMouseEvent(e));
-  }
-
-  @Override
-  public void mouseEntered(MouseEvent e)
-  {
-    mouseProcessor.mouseEntered(translatedMouseEvent(e));
-  }
-
-  @Override
-  public void mouseExited(MouseEvent e)
-  {
-    mouseProcessor.mouseExited(translatedMouseEvent(e));
-  }
-
-  @Override
-  public void mouseMoved(MouseEvent e)
-  {
-    mouseProcessor.mouseMoved(translatedMouseEvent(e));
-  }
-
-  public void paintOn(Graphics2D graphics)
+  public void paintOn(java.awt.Graphics2D graphics)
   {
     painter.paintOn(graphics, this);
   }

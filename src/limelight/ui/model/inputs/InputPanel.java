@@ -3,8 +3,32 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.Panel;
+import limelight.ui.EventAction;
+import limelight.ui.events.Event;
+import limelight.ui.events.FocusGainedEvent;
+import limelight.ui.events.FocusLostEvent;
+import limelight.ui.model.BasePanel;
 
-public interface InputPanel extends Panel
+public abstract class InputPanel extends BasePanel
 {
+  protected InputPanel()
+  {
+    getEventHandler().add(FocusGainedEvent.class, MakeDirtyAction.instance);
+    getEventHandler().add(FocusLostEvent.class, MakeDirtyAction.instance);
+  }
+
+  public boolean hasFocus()
+  {
+    return getRoot().getKeyListener().getFocusedPanel() == this;
+  }
+
+  private static class MakeDirtyAction implements EventAction
+  {
+    private static MakeDirtyAction instance = new MakeDirtyAction();
+
+    public void invoke(Event event)
+    {
+      event.getPanel().markAsDirty();
+    }
+  }
 }

@@ -3,37 +3,35 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class CmdKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new CmdKeyProcessor();
 
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
     switch (event.getKeyCode())
     {
-      case KeyEvent.VK_A:
-        boxInfo.selectAll();
+      case KeyEvent.KEY_A:
+        model.selectAll();
         break;
-
-      case KeyEvent.VK_V:
-        boxInfo.pasteClipboard();
+      case KeyEvent.KEY_V:
+        model.pasteClipboard();
         break;
-      case KeyEvent.VK_RIGHT:
-        boxInfo.sendCaretToEndOfLine();
+      case KeyEvent.KEY_RIGHT:
+        model.sendCaretToEndOfLine();
         break;
-      case KeyEvent.VK_LEFT:
-        boxInfo.sendCursorToStartOfLine();
+      case KeyEvent.KEY_LEFT:
+        model.sendCursorToStartOfLine();
         break;
-      case KeyEvent.VK_UP:
-        boxInfo.setCaretIndex(0);
+      case KeyEvent.KEY_UP:
+        model.setCaretIndex(0);
         break;
-      case KeyEvent.VK_DOWN:
-        boxInfo.setCaretIndex(boxInfo.getText().length());
+      case KeyEvent.KEY_DOWN:
+        model.setCaretIndex(model.getText().length());
         break;
 
 

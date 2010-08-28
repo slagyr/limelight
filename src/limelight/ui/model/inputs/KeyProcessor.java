@@ -3,7 +3,8 @@
 
 package limelight.ui.model.inputs;
 
-import java.awt.event.KeyEvent;
+import limelight.ui.events.KeyEvent;
+
 import java.lang.reflect.Field;
 
 public abstract class KeyProcessor
@@ -29,11 +30,6 @@ public abstract class KeyProcessor
     // to bypass normal constructor
   }
 
-  public abstract void processKey(KeyEvent event, TextModel boxInfo);
-
-  protected boolean isACharacter(int keyCode)
-  {
-    return (keyCode > 40 && keyCode < 100 || keyCode == 222 || keyCode == 32);
-  }
+  public abstract void processKey(KeyEvent event, TextModel model);
 }
 

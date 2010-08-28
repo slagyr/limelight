@@ -5,8 +5,6 @@ import limelight.ui.EventActionMulticaster;
 import limelight.ui.Panel;
 import limelight.ui.events.*;
 import limelight.ui.events.Event;
-
-import java.awt.*;
 import java.util.LinkedList;
 
 public class EventHandler
@@ -32,7 +30,7 @@ public class EventHandler
     this.panel = panel;
   }
 
-  public void add(Class eventClass, EventAction action)
+  public synchronized void add(Class eventClass, EventAction action)
   {
     if(action == null)
       return;
@@ -60,7 +58,7 @@ public class EventHandler
     return null;
   }
 
-  public void dispatch(Event event)
+  public synchronized void dispatch(Event event)
   {
     EventDispatcher dispatcher = get(event.getClass());
     if(dispatcher != null)

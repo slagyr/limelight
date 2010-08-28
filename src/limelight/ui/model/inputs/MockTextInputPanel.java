@@ -2,6 +2,7 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
 import limelight.ui.model.inputs.keyProcessors.*;
+import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -10,10 +11,12 @@ import java.awt.datatransfer.Transferable;
 public class MockTextInputPanel extends TextInputPanel
 {
   public MockTextModel mockModel;
+  public Box bounds;
 
-  public MockTextInputPanel()
+  @Override
+  protected TextModel createModel()
   {
-    model = mockModel = new MockTextModel(this);
+    return mockModel = new MockTextModel(this);
   }
 
   @Override

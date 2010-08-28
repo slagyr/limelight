@@ -3,30 +3,29 @@
 
 package limelight.ui.model.inputs.keyProcessors;
 
+import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
-
-import java.awt.event.KeyEvent;
 
 public class AltShiftKeyProcessor extends KeyProcessor
 {
   public static KeyProcessor instance = new AltShiftKeyProcessor();
 
-  public void processKey(KeyEvent event, TextModel boxInfo)
+  public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
 
-    if (isACharacter(keyCode))
-    {
-      boxInfo.insertChar(event.getKeyChar());
+//    if (isACharacter(keyCode))
+//    {
+//      boxInfo.insertChar(event.getKeyChar());
+//    }
+    if(model.isMoveRightEvent(keyCode)){
+      model.initSelection();
+      model.setCaretIndex(model.findNearestWordToTheRight());
     }
-    else if(boxInfo.isMoveRightEvent(keyCode)){
-      boxInfo.initSelection();
-      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheRight());
-    }
-    else if(boxInfo.isMoveLeftEvent(keyCode)){
-      boxInfo.initSelection();
-      boxInfo.setCaretIndex(boxInfo.findNearestWordToTheLeft());
+    else if(model.isMoveLeftEvent(keyCode)){
+      model.initSelection();
+      model.setCaretIndex(model.findNearestWordToTheLeft());
     }
   }
 }

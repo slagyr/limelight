@@ -405,55 +405,6 @@ public class BasePanelTest extends Assert
   }
 
   @Test
-  public void shouldMousePressed() throws Exception
-  {
-    addPropPanel();
-    panel.mousePressed(mouseEvent);
-
-    assertNotNull(prop.pressedMouse);
-  }
-
-  @Test
-  public void shouldMouseReleased() throws Exception
-  {
-    addPropPanel();
-    panel.mouseReleased(mouseEvent);
-
-    assertNotNull(prop.releasedMouse);
-  }
-
-  @Test
-  public void shouldMouseClicked() throws Exception
-  {
-    addPropPanel();
-    panel.mouseClicked(mouseEvent);
-
-    assertNotNull(prop.clickedMouse);
-  }
-
-  @Test
-  public void shouldMouseDragged() throws Exception
-  {
-    addPropPanel();
-    panel.mouseDragged(mouseEvent);
-
-    assertNotNull(prop.draggedMouse);
-  }
-
-  @Test
-  public void shouldMouseMoved() throws Exception
-  {
-    addPropPanel();
-    panel.mouseMoved(mouseEvent);
-
-    assertNotNull(prop.movedMouse);
-  }
-//  @Test
-//  public void shouldCanBeBuffered() throws Exception
-
-//  }
-
-  @Test
   public void shouldClearingCacheIsRecursive() throws Exception
   {
     panel.setLocation(20, 21);

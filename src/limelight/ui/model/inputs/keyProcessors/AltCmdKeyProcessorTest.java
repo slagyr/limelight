@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class AltCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,15 +12,13 @@ public class AltCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     setUpSingleLine();
     processor = AltCmdKeyProcessor.instance;
-    modifier = 12;
+    modifiers = 12;
   }
 
   @Test
   public void canProcessRightArrowAndNothingHappens()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
     assertSelection(1, 0, false);
   }
@@ -29,9 +26,7 @@ public class AltCmdKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessCharacterAndNothingHappens()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_A), model);
 
     assertTextState(1, 0, "Here are four words");
   }

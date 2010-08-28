@@ -4,6 +4,8 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
+import limelight.ui.EventAction;
+import limelight.ui.events.*;
 import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.Context;
@@ -15,9 +17,8 @@ import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.IOException;
 
-public class CheckBoxPanel extends BasePanel implements TextAccessor, InputPanel
+public class CheckBoxPanel extends InputPanel implements TextAccessor
 {
-  private boolean focused;
   private boolean imagesLoaded;
   private BufferedImage normalImage;
   private BufferedImage selectedImage;
@@ -27,13 +28,11 @@ public class CheckBoxPanel extends BasePanel implements TextAccessor, InputPanel
   public CheckBoxPanel()
   {
     setSize(20, 20);
+    getEventHandler().add(MouseClickedEvent.class, SelectAction.instance);
   }
 
   public void setParent(limelight.ui.Panel panel)
   {
-// MDM - Why was this needed?
-//    if(panel == null)
-//      Context.instance().keyboardFocusManager.focusFrame((StageFrame) getRoot().getFrame());
     super.setParent(panel);
     if(panel instanceof PropPanel)
     {
@@ -73,7 +72,7 @@ public class CheckBoxPanel extends BasePanel implements TextAccessor, InputPanel
   public void paintOn(Graphics2D graphics)
   {
     loadImages();
-    if(focused)
+    if(hasFocus())
       graphics.drawImage(focusImage, 0, 0, null);
     if(selected)
       graphics.drawImage(selectedImage, 0, 0, null);
@@ -109,37 +108,22 @@ public class CheckBoxPanel extends BasePanel implements TextAccessor, InputPanel
     if(value == selected)
       return;
     this.selected = value;
-    repaint();
+    markAsDirty();
   }
 
   public boolean getSelected()
   {
     return selected;
   }
-
-  public void mousePressed(MouseEvent e)
+  
+  private static class SelectAction implements EventAction
   {
-    super.mousePressed(e);
-  }
+    private static SelectAction instance = new SelectAction();
 
-  public void mouseReleased(MouseEvent e)
-  {
-    super.mouseReleased(e);
-    setSelected(!selected);
-    super.buttonPressed(new ActionEvent(this, 0, "blah"));
-  }
-
-  public void focusGained(FocusEvent e)
-  {
-    focused = true;
-    repaint();
-    super.focusGained(e);
-  }
-
-  public void focusLost(FocusEvent e)
-  {
-    focused = false;
-    repaint();
-    super.focusLost(e);
+    public void invoke(limelight.ui.events.Event event)
+    {
+      final CheckBoxPanel panel = (CheckBoxPanel) event.getPanel();
+      panel.setSelected(!panel.isSelected());
+    }
   }
 }

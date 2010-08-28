@@ -28,6 +28,7 @@ public abstract class TextModel implements ClipboardOwner
   protected Point offset = new Point(0, 0);
   private TextLocation caretLocation = TextLocation.at(0, 0);
   private boolean selectionOn;
+  protected boolean caretOn;
   private TextLocation selectionLocation = TextLocation.at(0, 0);
   private TextLocation verticalOrigin;
 
@@ -64,6 +65,17 @@ public abstract class TextModel implements ClipboardOwner
     int fontStyle = style.getCompiledFontStyle().toInt();
     int fontSize = style.getCompiledFontSize().getValue();
     return new Font(fontFace, fontStyle, fontSize);
+  }
+
+
+  public boolean isCaretOn()
+  {
+    return caretOn;
+  }
+
+  public void setCaretOn(boolean value)
+  {
+    caretOn = value;
   }
 
   public synchronized final ArrayList<TypedLayout> getLines()
@@ -159,11 +171,6 @@ public abstract class TextModel implements ClipboardOwner
     return container.getStyle().getCompiledHorizontalAlignment();
   }
 
-  public boolean isCursorOn()
-  {
-    return container.isCursorOn();
-  }
-
   public boolean hasFocus()
   {
     return container.hasFocus();
@@ -240,11 +247,11 @@ public abstract class TextModel implements ClipboardOwner
       deleteEnclosedText(caretLocation, selectionLocation);
   }
 
-  public synchronized void deleteEnclosedText(int first, int second)
+  public synchronized void deleteEnclosedText(int start, int end)
   {
-    text.delete(first, second);
+    text.delete(start, end);
     lines = null;
-    setCaretIndex(first);
+    setCaretIndex(start);
     setSelectionIndex(0);
   }
 
@@ -381,6 +388,11 @@ public abstract class TextModel implements ClipboardOwner
   {
     if(c == KeyEvent.CHAR_UNDEFINED)
       return;
+    if(selectionOn)
+    {
+      deleteSelection();
+      setSelectionOn(false);
+    }
     text.insert(getCaretIndex(), c);
     clearCache();
     setCaretIndex(getCaretIndex() + 1);

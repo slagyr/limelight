@@ -8,11 +8,10 @@ import limelight.ui.model.inputs.keyProcessors.*;
 
 public class TextAreaPanel extends TextInputPanel
 {
-
-  public TextAreaPanel()
+  @Override
+  protected TextModel createModel()
   {
-    model = new MultiLineTextModel(this);
-    mouseProcessor = new TextPanelMouseProcessor(model);
+    return new MultiLineTextModel(this);
   }
 
   @Override

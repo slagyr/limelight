@@ -6,10 +6,8 @@ package limelight.ui;
 import limelight.styles.ScreenableStyle;
 import limelight.ui.model.EventHandler;
 import limelight.ui.model.RootPanel;
-import limelight.ui.model.ScenePanel;
 import limelight.util.Box;
 import limelight.ui.model.Layout;
-import sun.rmi.server.Dispatcher;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -65,22 +63,8 @@ public interface Panel extends Iterable<Panel>
   boolean needsLayout();
   void markAsNeedingLayout();
   void markAsDirty();
-  
-  void mousePressed(MouseEvent e);
-  void mouseReleased(MouseEvent e);
-  void mouseClicked(MouseEvent e);
-  void mouseDragged(MouseEvent e);
-  void mouseEntered(MouseEvent e);
-  void mouseExited(MouseEvent e);
-  void mouseMoved(MouseEvent e);
-  void mouseWheelMoved(MouseWheelEvent e);
-  void focusGained(FocusEvent e);
-  void focusLost(FocusEvent e);
-  void keyTyped(KeyEvent e);
+
   void keyPressed(KeyEvent e);
-  void keyReleased(KeyEvent e);
-  void buttonPressed(ActionEvent e);
-  void valueChanged(Object e);
 
   boolean isIlluminated();
   void illuminate();

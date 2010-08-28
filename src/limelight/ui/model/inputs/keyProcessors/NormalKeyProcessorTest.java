@@ -1,10 +1,9 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 
+import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.event.KeyEvent;
 
 public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
 {
@@ -13,35 +12,33 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     setUpSingleLine();
     processor = NormalKeyProcessor.instance;
-    modifier = 0;
+    modifiers = 0;
   }
 
-  @Test
-  public void canProcessCharacters()
-  {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, 'a');
+//  @Test
+//  public void canProcessCharacters()
+//  {
+//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'a');
+//
+//    processor.processKey(mockEvent, model);
+//
+//    assertTextState(2, 0, "Haere are four words");
+//  }
 
-    processor.processKey(mockEvent, model);
-
-    assertTextState(2, 0, "Haere are four words");
-  }
-
-  @Test
-  public void willNotInsertAnUndefinedCharacter()
-  {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_A, KeyEvent.CHAR_UNDEFINED);
-
-    processor.processKey(mockEvent, model);
-
-    assertTextState(1, 0, "Here are four words");
-  }
+//  @Test
+//  public void willNotInsertAnUndefinedCharacter()
+//  {
+//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, KeyEvent.CHAR_UNDEFINED);
+//
+//    processor.processKey(mockEvent, model);
+//
+//    assertTextState(1, 0, "Here are four words");
+//  }
 
   @Test
   public void canProcessBackSpace()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_BACK_SPACE);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_BACK_SPACE), model);
 
     assertTextState(0, 0, "ere are four words");
   }
@@ -49,9 +46,7 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessRightArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_RIGHT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
     assertSelection(2, 0, false);
   }
@@ -59,9 +54,7 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   @Test
   public void canProcessLeftArrow()
   {
-    mockEvent = new MockKeyEvent(modifier, KeyEvent.VK_LEFT);
-
-    processor.processKey(mockEvent, model);
+    processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
     assertSelection(0, 0, false);
   }

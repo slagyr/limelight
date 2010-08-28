@@ -146,4 +146,14 @@ public class SingleLineTextModelTest
     assertEquals(TextLocation.at(0, 9), model.getLocationAt(new Point(1000, 0)));
   }
 
+    @Test
+  public void gettingOffsetForLineWhenTextIsTooBigToFit() throws Exception
+  {
+    model.setText("one two three four");
+    model.setOffset(0, 0);
+    model.setCaretIndex(11);
+
+    assertEquals(-60, model.getXOffset(model.getLines().get(0)));
+  }
+
 }

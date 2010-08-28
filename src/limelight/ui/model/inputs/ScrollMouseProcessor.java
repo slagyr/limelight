@@ -1,11 +1,13 @@
 package limelight.ui.model.inputs;
 
+import limelight.ui.EventAction;
+import limelight.ui.events.*;
+import limelight.ui.events.Event;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
-public class ScrollMouseProcessor
+public class ScrollMouseProcessor implements EventAction
 {
   private final ScrollRepeater.ScrollCondition notInSliderScrollCondition = new NotInSliderScrollCondition(this);
   private ScrollBarPanel scrollBar;
@@ -20,6 +22,18 @@ public class ScrollMouseProcessor
   {
     this.scrollBar = scrollBar;
     repeater = new ScrollRepeater(scrollBar);
+  }
+  
+  public void invoke(Event event)
+  {
+    if(event instanceof MousePressedEvent)
+      mousePressed((MousePressedEvent)event);
+    else if(event instanceof MouseReleasedEvent)
+      mouseReleased((MouseReleasedEvent)event);
+    else if(event instanceof MouseDraggedEvent)
+      mouseDragged((MouseDraggedEvent)event);
+    else if(event instanceof MouseExitedEvent)
+      mouseExited((MouseExitedEvent)event);
   }
 
   public ScrollRepeater getRepeater()
@@ -42,13 +56,13 @@ public class ScrollMouseProcessor
     }
   }
 
-  public void mousePressed(MouseEvent e)
+  public void mousePressed(MousePressedEvent e)
   {
     sliderDragOn = false;
     unitIncrementOn = false;
     blockIncrementOn = false;
 
-    mouseLocation = e.getPoint();
+    mouseLocation = e.getLocation();
     if(scrollBar.getIncreasingButtonBounds().contains(mouseLocation))
       initiateUnitIncrement(scrollBar.getUnitIncrement());
     else if(scrollBar.getDecreasingButtonBounds().contains(mouseLocation))
@@ -68,7 +82,7 @@ public class ScrollMouseProcessor
     }
   }
 
-  public void mouseReleased(MouseEvent e)
+  public void mouseReleased(MouseReleasedEvent e)
   {
     repeater.stop();
     repeater.reset();
@@ -77,13 +91,9 @@ public class ScrollMouseProcessor
     scrollBar.markAsDirty();
   }
 
-  public void mouseClicked(MouseEvent e)
+  public void mouseDragged(MouseDraggedEvent e)
   {
-  }
-
-  public void mouseDragged(MouseEvent e)
-  {
-    mouseLocation = e.getPoint();
+    mouseLocation = e.getLocation();
     if(sliderDragOn)
       processSliderDrag();
     else if(unitIncrementOn)
@@ -92,20 +102,10 @@ public class ScrollMouseProcessor
       processBlockIncremementDrag();
   }
 
-  public void mouseEntered(MouseEvent e)
-  {
-
-  }
-
-  public void mouseExited(MouseEvent e)
+  public void mouseExited(MouseExitedEvent e)
   {
     repeater.stop();
     deactivateButtons();
-  }
-
-  public void mouseMoved(MouseEvent e)
-  {
-
   }
 
   private void processBlockIncremementDrag()
