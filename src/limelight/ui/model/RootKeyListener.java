@@ -21,8 +21,7 @@ public class RootKeyListener implements java.awt.event.KeyListener
   }
 
   public void keyPressed(KeyEvent e)
-  {
-System.err.println("e = " + e);    
+  {    
     focusedPanel.getEventHandler().dispatch(new KeyPressedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()));
   }
 

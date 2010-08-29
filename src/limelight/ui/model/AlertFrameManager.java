@@ -62,8 +62,8 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
       lastFrameAdded = null;
     if(focusedFrame == frame)
       focusedFrame = null;
-    if(Context.instance().keyboardFocusManager != null)
-      Context.instance().keyboardFocusManager.releaseFrame(frame.getWindow());
+//    if(Context.instance().keyboardFocusManager != null)
+//      Context.instance().keyboardFocusManager.releaseFrame(frame.getWindow());
     frames.remove(frame);
     frame.closed(e);
     if(frame.isVital() && !hasVisibleVitalFrame())
@@ -143,8 +143,8 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
   {
     focusedFrame = ((PropFrameWindow) e.getWindow()).getPropFrame();
 
-    if(Context.instance().keyboardFocusManager != null)
-      Context.instance().keyboardFocusManager.focusFrame(focusedFrame.getWindow());
+//    if(Context.instance().keyboardFocusManager != null)
+//      Context.instance().keyboardFocusManager.focusFrame(focusedFrame.getWindow());
 
     focusedFrame.activated(e);
   }

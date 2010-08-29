@@ -300,17 +300,4 @@ public class ScenePanelTest extends Assert
     
     assertEquals(false, root.isIlluminated());
   }
-
-  @Test
-  public void pressingTabFocusesOnFirstInput() throws Exception
-  {
-    root.setFrame(new MockPropFrame());
-    root.illuminate();
-    TestableInputPanel input = new TestableInputPanel();
-    root.add(input);
-
-    root.getEventHandler().dispatch(new KeyPressedEvent(root, 0, KeyEvent.KEY_TAB, 0));
-    
-    assertEquals(input, root.getKeyListener().getFocusedPanel());
-  }
 }

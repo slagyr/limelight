@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.background.PanelPainterLoop;
 import limelight.styles.abstrstyling.*;
 import limelight.util.Colors;
 import limelight.ui.Panel;
@@ -13,7 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
+public class StageFrame extends java.awt.Frame implements PropFrame, PropFrameWindow
 {
   private static final StyleCompiler widthCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage width");
   private static final StyleCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
@@ -25,7 +26,6 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
   protected RootPanel root;
   private Insets insets;
   private boolean fullscreen;
-  private boolean hasMenuBar;
   private GraphicsDevice graphicsDevice; //used for testing
   private Insets screenInsets; //used for testing
   private boolean kiosk;
@@ -51,17 +51,46 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
   {
     this();
     this.stage = stage;
-    setContentPane(new LimelightContentPane(this));
     setBackground(Color.WHITE);
 
     Context.instance().frameManager.watch(this);
     setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
-    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+  }
+
+  public void paint(Graphics g)
+  {
+    if(root != null)
+    {
+      if(isWindowResizing())
+      {
+        PanelPainterLoop.doPaintJob(root, root.getAbsoluteBounds(), (Graphics2D) g);
+      }
+      else
+      {
+        root.addDirtyRegion(root.getAbsoluteBounds());
+      }
+    }
+  }
+
+  // MDM - When the window is resizing, the layout and painting have to take place
+  // immediately.  Otherwise, the window flashes and flickers annoyingly.
+  // The best way to tell if the window is being resized (as far as I can tell), is to
+  // check the currentEvent in the EventQueue. I didn't see anything in particular about
+  // the event that tells us what's happening.
+  private boolean isWindowResizing()
+  {
+    return EventQueue.getCurrentEvent() != null;
   }
 
   public void doLayout()
   {
-    super.doLayout();
+    if(root != null && isWindowResizing())
+    {
+      root.doLayout();
+    }
+    else
+      super.doLayout();
+
     refresh();
   }
 
@@ -72,7 +101,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void close(WindowEvent e)
   {
-    if (closing)
+    if(closing)
       return;
     closing = true;
     stage.closing(e);
@@ -94,7 +123,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void closed(WindowEvent e)
   {
-    if (closed)
+    if(closed)
       return;
     closed = true;
     stage.closed(e);
@@ -107,10 +136,8 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void open()
   {
-    if (opened)
+    if(opened)
       return;
-    if (!hasMenuBar)
-      setJMenuBar(null);
 
     addNotify(); // MDM - Force the loading of the native peer to calculate insets.
 
@@ -125,11 +152,11 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void setVisible(boolean visible)
   {
-    if (visible == isVisible())
+    if(visible == isVisible())
       return;
     super.setVisible(visible);
 
-    if (visible)
+    if(visible)
     {
       enterKioskOrFullscreenIfNeeded();
     }
@@ -139,9 +166,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void refresh()
   {
-    if (root != null)
+    if(root != null)
     {
-      if (previousSize == null || !previousSize.equals(getSize()))
+      if(previousSize == null || !previousSize.equals(getSize()))
       {
         root.consumableAreaChanged();
       }
@@ -195,13 +222,18 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
     if(root != null)
       root.setFrame(null);
     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    root = (RootPanel)child;
+    root = (RootPanel) child;
     root.setFrame(this);
   }
 
   public Stage getStage()
   {
     return stage;
+  }
+
+  public Container getContentPane()
+  {
+    return this;
   }
 
   public RootPanel getRoot()
@@ -211,26 +243,26 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public int getVerticalInsetWidth()
   {
-    if (insets == null)
+    if(insets == null)
       calculateInsets();
     return insets.top + insets.bottom;
   }
 
   public int getHorizontalInsetWidth()
   {
-    if (insets == null)
+    if(insets == null)
       calculateInsets();
     return insets.left + insets.right;
   }
 
   public void setFullScreen(boolean setting)
   {
-    if (fullscreen != setting)
+    if(fullscreen != setting)
     {
       fullscreen = setting;
-      if (fullscreen && isVisible() && this != getGraphicsDevice().getFullScreenWindow())
+      if(fullscreen && isVisible() && this != getGraphicsDevice().getFullScreenWindow())
         turnFullScreenOn();
-      else if (this == getGraphicsDevice().getFullScreenWindow() && !kiosk)
+      else if(this == getGraphicsDevice().getFullScreenWindow() && !kiosk)
         turnFullscreenOff();
     }
   }
@@ -247,7 +279,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public GraphicsDevice getGraphicsDevice()
   {
-    if (graphicsDevice != null)
+    if(graphicsDevice != null)
       return graphicsDevice;
     return getGraphicsConfiguration().getDevice();
   }
@@ -255,11 +287,6 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
   public boolean isFullScreen()
   {
     return fullscreen;
-  }
-
-  public void setHasMenuBar(boolean value)
-  {
-    hasMenuBar = value;
   }
 
   public void setBackgroundColor(Object colorString)
@@ -274,20 +301,20 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void setKiosk(boolean value)
   {
-    if (kiosk == value)
+    if(kiosk == value)
       return;
     kiosk = value;
-    if (isVisible())
+    if(isVisible())
     {
-      if (kiosk)
+      if(kiosk)
       {
-        if (getGraphicsDevice().getFullScreenWindow() != this)
+        if(getGraphicsDevice().getFullScreenWindow() != this)
           turnFullScreenOn();
         Context.instance().os.enterKioskMode();
       }
       else
       {
-        if (!fullscreen && getGraphicsDevice().getFullScreenWindow() == this)
+        if(!fullscreen && getGraphicsDevice().getFullScreenWindow() == this)
           turnFullscreenOff();
         Context.instance().os.exitKioskMode();
       }
@@ -326,7 +353,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void activated(WindowEvent e)
   {
-    if (isVisible())
+    if(isVisible())
     {
       // MDM - It happens that the frame is activated and deactivated before it's ever visible.  This causes problems.
       // Only propogate the event if the frame is visible
@@ -337,7 +364,7 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   public void deactivated(WindowEvent e)
   {
-    if (previouslyActivated)
+    if(previouslyActivated)
     {
       previouslyActivated = false;
       stage.deactivated(e);
@@ -355,9 +382,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   private void enterKioskOrFullscreenIfNeeded()
   {
-    if (fullscreen || kiosk)
+    if(fullscreen || kiosk)
       turnFullScreenOn();
-    if (kiosk)
+    if(kiosk)
       Context.instance().os.enterKioskMode();
   }
 
@@ -369,15 +396,13 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
     insets = getInsets();
     setVisible(false);
     setSize(size);
-    if (getJMenuBar() != null)
-      insets.top += getJMenuBar().getHeight();
   }
 
   private void exitKioskOrFullscreenIfNeeded()
   {
-    if (fullscreen || kiosk)
+    if(fullscreen || kiosk)
       turnFullscreenOff();
-    if (kiosk)
+    if(kiosk)
       Context.instance().os.exitKioskMode();
   }
 
@@ -391,9 +416,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
   private void turnFullscreenOff()
   {
     getGraphicsDevice().setFullScreenWindow(null);
-    if (sizeBeforeFullScreen != null)
+    if(sizeBeforeFullScreen != null)
       super.setSize(sizeBeforeFullScreen);
-    if (locationBeforeFullScreen != null)
+    if(locationBeforeFullScreen != null)
       super.setLocation(locationBeforeFullScreen);
   }
 
@@ -431,11 +456,10 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
 
   private void collapseAutoDimensions()
   {
-    if (root == null)
+    if(root == null)
       return;
 
     super.doLayout();
-    getRootPane().doLayout();
     root.doLayout();
 
     Insets insets = getInsets();
@@ -443,9 +467,9 @@ public class StageFrame extends JFrame implements PropFrame, PropFrameWindow
     int heightInsets = insets.top + insets.bottom;
 
     Dimension size = getSize();
-    if (widthStyle.isAuto())
+    if(widthStyle.isAuto())
       size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getWidth() + widthInsets, NONE, NONE);
-    if (heightStyle.isAuto())
+    if(heightStyle.isAuto())
       size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getHeight() + heightInsets, NONE, NONE);
 
     setSize(size);

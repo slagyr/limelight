@@ -3,12 +3,8 @@
 
 package limelight;
 
-import limelight.ui.Panel;
-import limelight.ui.model.inputs.InputPanelUtil;
-
+import limelight.ui.model.StageFrame;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 public class KeyboardFocusManager extends DefaultKeyboardFocusManager
 {
@@ -20,105 +16,128 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     java.awt.KeyboardFocusManager.setCurrentKeyboardFocusManager(this);
   }
 
-  public void focusPanel(Panel inputPanel)
-  {
-    if(focusedPanel != inputPanel && inputPanel != null)
-    {
-//      if(focusedPanel != null)
-//        focusedPanel.focusLost(null);
-//      focusedPanel = inputPanel;
-//      focusedPanel.focusGained(null);
-    }
-  }
-
-  //TODO Hacked in
-  public void focusFrame(Frame frame)
-  {
-    this.frame = frame;
-    focusComponent(this.frame);
-//    focusedPanel = frame.getRoot();
-  }
-
-  public Frame getFocusedFrame()
-  {
-    return frame;
-  }
-
-  private void focusComponent(Component newlyFocused)
-  {
-    try
-    {
-      if(newlyFocused != getGlobalFocusOwner())
-      {
-        unfocusCurrentlyFocusedComponent();
-        FocusEvent gained = new FocusEvent(newlyFocused, FocusEvent.FOCUS_GAINED);
-        FocusListener[] listeners = newlyFocused.getFocusListeners();
-        for(FocusListener listener : listeners)
-          listener.focusGained(gained);
-
-        this.setGlobalFocusOwner(newlyFocused);
-      }
-    }
-    catch(SecurityException e)
-    {
-      // happens in tests
-    }
-  }
-
-  public void unfocusCurrentlyFocusedComponent()
-  {
-    Component focused = getGlobalFocusOwner();
-    if(focused != null)
-    {
-      setGlobalFocusOwner(frame);
-      if(focusedPanel != null)
-      {
-//        focusedPanel.focusLost(null);
-        focusedPanel = null;
-      }
-      FocusEvent gained = new FocusEvent(focused, FocusEvent.FOCUS_LOST);
-      FocusListener[] listeners = focused.getFocusListeners();
-      for(FocusListener listener : listeners)
-        listener.focusLost(gained);
-    }
-  }
-
-  public void focusNextComponent(Component aComponent)
-  {
-    if(focusedPanel != null)
-      focusPanel(InputPanelUtil.nextInputPanel(focusedPanel));
-  }
-
-  public void focusPreviousComponent(Component aComponent)
-  {
-    if(focusedPanel != null)
-      focusPanel(InputPanelUtil.previousInputPanel(focusedPanel));
-  }
-
   public KeyboardFocusManager installed()
   {
     install();
     return this;
   }
 
-  public Panel getFocusedPanel()
+  @Override
+  public void focusNextComponent(Component aComponent)
   {
-    return focusedPanel;
-  }
-
-  public Component getFocuedComponent()
-  {
-    return getGlobalFocusOwner();
-  }
-
-  public void releaseFrame(Frame frame)
-  {
-    if(this.frame == frame)
+    final Window window = getActiveWindow();
+    if(window instanceof StageFrame)
     {
-      this.frame = null;
-      focusedPanel = null;
-      setGlobalFocusedWindow(null);
-      setGlobalFocusOwner(null);
+      StageFrame frame = (StageFrame)window;
+      frame.getRoot().getKeyListener().focusOnNextInput();
     }
   }
+
+  @Override
+  public void focusPreviousComponent(Component aComponent)
+  {
+    final Window window = getActiveWindow();
+    if(window instanceof StageFrame)
+    {
+      StageFrame frame = (StageFrame)window;
+      frame.getRoot().getKeyListener().focusOnPreviousInput();
+    }
+  }
+
+  //
+//  public void focusPanel(Panel inputPanel)
+//  {
+//    if(focusedPanel != inputPanel && inputPanel != null)
+//    {
+////      if(focusedPanel != null)
+////        focusedPanel.focusLost(null);
+////      focusedPanel = inputPanel;
+////      focusedPanel.focusGained(null);
+//    }
+//  }
+//
+//  //TODO Hacked in
+//  public void focusFrame(Frame frame)
+//  {
+//    this.frame = frame;
+//    focusComponent(this.frame);
+////    focusedPanel = frame.getRoot();
+//  }
+//
+//  public Frame getFocusedFrame()
+//  {
+//    return frame;
+//  }
+//
+//  private void focusComponent(Component newlyFocused)
+//  {
+//    try
+//    {
+//      if(newlyFocused != getGlobalFocusOwner())
+//      {
+//        unfocusCurrentlyFocusedComponent();
+//        FocusEvent gained = new FocusEvent(newlyFocused, FocusEvent.FOCUS_GAINED);
+//        FocusListener[] listeners = newlyFocused.getFocusListeners();
+//        for(FocusListener listener : listeners)
+//          listener.focusGained(gained);
+//
+//        this.setGlobalFocusOwner(newlyFocused);
+//      }
+//    }
+//    catch(SecurityException e)
+//    {
+//      // happens in tests
+//    }
+//  }
+//
+//  public void unfocusCurrentlyFocusedComponent()
+//  {
+//    Component focused = getGlobalFocusOwner();
+//    if(focused != null)
+//    {
+//      setGlobalFocusOwner(frame);
+//      if(focusedPanel != null)
+//      {
+////        focusedPanel.focusLost(null);
+//        focusedPanel = null;
+//      }
+//      FocusEvent gained = new FocusEvent(focused, FocusEvent.FOCUS_LOST);
+//      FocusListener[] listeners = focused.getFocusListeners();
+//      for(FocusListener listener : listeners)
+//        listener.focusLost(gained);
+//    }
+//  }
+//
+//  public void focusNextComponent(Component aComponent)
+//  {
+//    if(focusedPanel != null)
+//      focusPanel(InputPanelUtil.nextInputPanel(focusedPanel));
+//  }
+//
+//  public void focusPreviousComponent(Component aComponent)
+//  {
+//    if(focusedPanel != null)
+//      focusPanel(InputPanelUtil.previousInputPanel(focusedPanel));
+//  }
+
+//  public Panel getFocusedPanel()
+//  {
+//    return focusedPanel;
+//  }
+//
+//  public Component getFocuedComponent()
+//  {
+//    return getGlobalFocusOwner();
+//  }
+//
+//  public void releaseFrame(Frame frame)
+//  {
+//    if(this.frame == frame)
+//    {
+//      this.frame = null;
+//      focusedPanel = null;
+//      setGlobalFocusedWindow(null);
+//      setGlobalFocusOwner(null);
+//    }
+//  }
 }
