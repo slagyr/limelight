@@ -4,10 +4,9 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.EventAction;
-import limelight.ui.events.Event;
-import limelight.ui.events.FocusGainedEvent;
-import limelight.ui.events.FocusLostEvent;
+import limelight.ui.events.*;
 import limelight.ui.model.BasePanel;
+import limelight.ui.model.InputTabbingAction;
 
 public abstract class InputPanel extends BasePanel
 {
@@ -15,6 +14,7 @@ public abstract class InputPanel extends BasePanel
   {
     getEventHandler().add(FocusGainedEvent.class, MakeDirtyAction.instance);
     getEventHandler().add(FocusLostEvent.class, MakeDirtyAction.instance);
+    getEventHandler().add(KeyPressedEvent.class, InputTabbingAction.instance);
   }
 
   public boolean hasFocus()

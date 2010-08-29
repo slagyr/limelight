@@ -9,6 +9,9 @@ import limelight.ui.Panel;
 import limelight.ui.api.MockScene;
 import limelight.Context;
 import limelight.MockResourceLoader;
+import limelight.ui.events.KeyEvent;
+import limelight.ui.events.KeyPressedEvent;
+import limelight.ui.model.inputs.TestableInputPanel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -296,5 +299,18 @@ public class ScenePanelTest extends Assert
     root.setFrame(null);
     
     assertEquals(false, root.isIlluminated());
+  }
+
+  @Test
+  public void pressingTabFocusesOnFirstInput() throws Exception
+  {
+    root.setFrame(new MockPropFrame());
+    root.illuminate();
+    TestableInputPanel input = new TestableInputPanel();
+    root.add(input);
+
+    root.getEventHandler().dispatch(new KeyPressedEvent(root, 0, KeyEvent.KEY_TAB, 0));
+    
+    assertEquals(input, root.getKeyListener().getFocusedPanel());
   }
 }

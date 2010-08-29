@@ -7,11 +7,10 @@ import limelight.*;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
-import limelight.ui.model.inputs.ScrollBarPanel;
+import limelight.ui.events.*;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.event.MouseWheelEvent;
 import java.util.*;
 
 public class ScenePanel extends PropPanel implements RootPanel
@@ -29,6 +28,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
     super(prop);
     styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
+    getEventHandler().add(KeyPressedEvent.class, InputTabbingAction.instance);
   }
 
   public void setFrame(PropFrame newFrame)
@@ -309,4 +309,5 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
     return keyListener;
   }
+
 }
