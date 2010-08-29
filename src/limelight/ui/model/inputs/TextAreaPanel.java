@@ -4,8 +4,6 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.ui.events.CharTypedEvent;
-import limelight.ui.model.InputTabbingAction;
 import limelight.ui.model.inputs.keyProcessors.*;
 
 public class TextAreaPanel extends TextInputPanel

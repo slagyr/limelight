@@ -144,18 +144,18 @@ public class AlertFrameManagerTest
     assertEquals(true, frame.wasClosed);
   }
 
-  @Test
-  public void tellsKeyboradFocusManagerToReleaseStageUponClosing() throws Exception
-  {
-    KeyboardFocusManager keyboard = new KeyboardFocusManager();
-    Context.instance().keyboardFocusManager = keyboard;
-    keyboard.focusFrame(frame.getWindow());
-
-    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
-
-    assertEquals(null, keyboard.getFocusedWindow());
-    assertEquals(null, keyboard.getFocusedFrame());
-  }
+//  @Test
+//  public void tellsKeyboradFocusManagerToReleaseStageUponClosing() throws Exception
+//  {
+//    KeyboardFocusManager keyboard = new KeyboardFocusManager();
+//    Context.instance().keyboardFocusManager = keyboard;
+//    keyboard.focusFrame(frame.getWindow());
+//
+//    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
+//
+//    assertEquals(null, keyboard.getFocusedWindow());
+//    assertEquals(null, keyboard.getFocusedFrame());
+//  }
 
   @Test
   public void stageNotifiedWhenActivationLost() throws Exception

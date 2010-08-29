@@ -28,7 +28,6 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
     super(prop);
     styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
-    getEventHandler().add(KeyPressedEvent.class, InputTabbingAction.instance);
   }
 
   public void setFrame(PropFrame newFrame)
@@ -65,7 +64,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   @Override
   public void delluminate()
   {
-    removeKeyboardFocus();
+//    removeKeyboardFocus();
     contentPane.removeMouseListener(mouseListener);
     contentPane.removeMouseMotionListener(mouseListener);
     contentPane.removeMouseWheelListener(mouseListener);
@@ -127,15 +126,15 @@ public class ScenePanel extends PropPanel implements RootPanel
     return getAbsoluteLocation().y;
   }
 
-  private void removeKeyboardFocus()
-  {
-    limelight.KeyboardFocusManager focusManager = Context.instance().keyboardFocusManager;
-    if(focusManager == null)
-      return;
-    Panel focusedPanel = focusManager.getFocusedPanel();
-    if(focusedPanel != null && focusedPanel.getRoot() == this)
-      focusManager.unfocusCurrentlyFocusedComponent();
-  }
+//  private void removeKeyboardFocus()
+//  {
+//    limelight.KeyboardFocusManager focusManager = Context.instance().keyboardFocusManager;
+//    if(focusManager == null)
+//      return;
+//    Panel focusedPanel = focusManager.getFocusedPanel();
+//    if(focusedPanel != null && focusedPanel.getRoot() == this)
+//      focusManager.unfocusCurrentlyFocusedComponent();
+//  }
 
   public RootPanel getRoot()
   {
