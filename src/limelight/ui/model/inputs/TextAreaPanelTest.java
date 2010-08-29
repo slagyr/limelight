@@ -3,13 +3,20 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.EventAction;
 import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
+import limelight.ui.events.CharTypedEvent;
+import limelight.ui.model.InputTabbingAction;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
+import static junit.framework.Assert.assertEquals;
 
 public class TextAreaPanelTest extends Assert
 {

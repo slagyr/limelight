@@ -5,24 +5,28 @@ import limelight.ui.EventActionMulticaster;
 import limelight.ui.Panel;
 import limelight.ui.events.*;
 import limelight.ui.events.Event;
-import java.util.LinkedList;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+// TODO MDM - Add a way to remove actions
 public class EventHandler
 {
-  private Panel panel;
 
   private static class EventDispatcher
   {
-    private Class eventClass;
+    private Class<? extends Event> eventClass;
     private EventAction action;
 
-    private EventDispatcher(Class eventClass, EventAction action)
+    private EventDispatcher(Class<? extends Event> eventClass, EventAction action)
     {
       this.eventClass = eventClass;
       this.action = action;
     }
   }
 
+  private Panel panel;
   private LinkedList<EventDispatcher> dispatchers;
 
   public EventHandler(Panel panel)
@@ -30,7 +34,7 @@ public class EventHandler
     this.panel = panel;
   }
 
-  public synchronized void add(Class eventClass, EventAction action)
+  public synchronized void add(Class<? extends Event> eventClass, EventAction action)
   {
     if(action == null)
       return;
@@ -45,7 +49,14 @@ public class EventHandler
       dispatcher.action = EventActionMulticaster.add(dispatcher.action, action);
   }
 
-  private EventDispatcher get(Class eventClass)
+  public void remove(Class<? extends Event> eventClass, EventAction action)
+  {
+    final EventDispatcher dispatcher = get(eventClass);
+    if(dispatcher != null)
+      dispatcher.action = EventActionMulticaster.remove(dispatcher.action, action);
+  }
+
+  private EventDispatcher get(Class<? extends Event> eventClass)
   {
     if(dispatchers == null)
       return null;
@@ -58,6 +69,15 @@ public class EventHandler
     return null;
   }
 
+  public List<EventAction> getActions(Class<? extends Event> eventClass)
+  {
+    final EventDispatcher dispatcher = get(eventClass);
+    if(dispatcher != null)
+      return EventActionMulticaster.collect(dispatcher.action);
+    else
+      return Collections.EMPTY_LIST;
+  }
+  
   public synchronized void dispatch(Event event)
   {
     EventDispatcher dispatcher = get(event.getClass());
