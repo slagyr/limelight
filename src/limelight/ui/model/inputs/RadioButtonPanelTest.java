@@ -4,6 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.RadioButtonGroup;
+import limelight.ui.events.ButtonPushedEvent;
 import limelight.ui.events.MouseClickedEvent;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
@@ -28,6 +29,12 @@ public class RadioButtonPanelTest
     group = new RadioButtonGroup();
     group.add(panel);
   }
+  
+  @Test
+  public void isButton() throws Exception
+  {
+    assertEquals(true, AbstractButtonPanel.class.isInstance(panel));
+  }
 
   @Test
   public void canBeBuffered() throws Exception
@@ -49,11 +56,11 @@ public class RadioButtonPanelTest
   }
 
   @Test
-  public void mouseClickSelectedCheckBox() throws Exception
+  public void pushSelectesButton() throws Exception
   {
     assertEquals(false, panel.isSelected());
 
-    panel.getEventHandler().dispatch(new MouseClickedEvent(panel, 0, null, 0));
+    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
 
     assertEquals(true, panel.isSelected());
   }

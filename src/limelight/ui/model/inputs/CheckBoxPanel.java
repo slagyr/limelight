@@ -3,21 +3,15 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.styles.ScreenableStyle;
 import limelight.ui.EventAction;
 import limelight.ui.events.*;
 import limelight.ui.model.*;
-import limelight.util.Box;
-import limelight.Context;
 import javax.imageio.ImageIO;
-import java.awt.event.MouseEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.IOException;
 
-public class CheckBoxPanel extends InputPanel implements TextAccessor
+public class CheckBoxPanel extends AbstractButtonPanel implements TextAccessor
 {
   private boolean imagesLoaded;
   private BufferedImage normalImage;
@@ -28,7 +22,7 @@ public class CheckBoxPanel extends InputPanel implements TextAccessor
   public CheckBoxPanel()
   {
     setSize(20, 20);
-    getEventHandler().add(MouseClickedEvent.class, SelectAction.instance);
+    getEventHandler().add(ButtonPushedEvent.class, SelectAction.instance);
   }
 
   public void setParent(limelight.ui.Panel panel)
@@ -40,16 +34,6 @@ public class CheckBoxPanel extends InputPanel implements TextAccessor
       propPanel.sterilize();
       propPanel.setTextAccessor(this);
     }
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return getBoundingBox();
-  }
-
-  public Box getChildConsumableArea()
-  {
-    return getBoundingBox();
   }
 
   public void loadImages()
@@ -80,17 +64,9 @@ public class CheckBoxPanel extends InputPanel implements TextAccessor
       graphics.drawImage(normalImage, 0, 0, null);
   }
 
-  public ScreenableStyle getStyle()
-  {
-    return getParent().getStyle();
-  }
-
   public void setText(PropablePanel panel, String text)
   {
-    if("on".equals(text))
-      selected = true;
-    else
-      selected = false;
+    selected = "on".equals(text);
   }
 
   public String getText()

@@ -17,7 +17,7 @@ import java.awt.font.TextLayout;
 import java.awt.*;
 import java.io.IOException;
 
-public class ComboBoxPanel extends InputPanel implements TextAccessor
+public class ComboBoxPanel extends AbstractButtonPanel implements TextAccessor
 {
   private static NinePatch normalPatch;
   private static NinePatch focusPatch;
@@ -52,6 +52,7 @@ public class ComboBoxPanel extends InputPanel implements TextAccessor
   private String text;
   private Dimension textDimensions;
   private TextLayout textLayout;
+  
   public ComboBoxPanel()
   {
     setSize(128, 27);
@@ -66,16 +67,6 @@ public class ComboBoxPanel extends InputPanel implements TextAccessor
       propPanel.sterilize();
       propPanel.setTextAccessor(this);
     }
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return getBoundingBox();
-  }
-
-  public Box getChildConsumableArea()
-  {
-    return getBoundingBox();
   }
 
   public void paintOn(Graphics2D graphics)
@@ -103,11 +94,6 @@ public class ComboBoxPanel extends InputPanel implements TextAccessor
       int width = (int) (textLayout.getBounds().getWidth() + textLayout.getBounds().getX() + 0.5);
       textDimensions = new Dimension(width, height);
     }
-  }
-
-  public ScreenableStyle getStyle()
-  {
-    return getParent().getStyle();
   }
 
   public void setText(PropablePanel panel, String text)

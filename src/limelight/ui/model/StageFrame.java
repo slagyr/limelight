@@ -10,9 +10,11 @@ import limelight.util.Colors;
 import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 public class StageFrame extends java.awt.Frame implements PropFrame, PropFrameWindow
 {
@@ -54,7 +56,14 @@ public class StageFrame extends java.awt.Frame implements PropFrame, PropFrameWi
     setBackground(Color.WHITE);
 
     Context.instance().frameManager.watch(this);
-    setIconImage(new ImageIcon(Context.instance().limelightHome + "/bin/icons/icon_48.gif").getImage());
+    try
+    {
+      setIconImage(ImageIO.read(new File(Context.instance().limelightHome + "/bin/icons/icon_48.gif").toURI().toURL()));
+    }
+    catch(IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 
   public void paint(Graphics g)

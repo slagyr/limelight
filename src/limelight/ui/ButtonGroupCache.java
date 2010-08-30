@@ -3,7 +3,6 @@
 
 package limelight.ui;
 
-import javax.swing.*;
 import java.util.Hashtable;
 
 public class ButtonGroupCache

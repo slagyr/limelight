@@ -5,6 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
 import limelight.ui.EventAction;
+import limelight.ui.events.ButtonPushedEvent;
 import limelight.ui.events.MouseClickedEvent;
 import limelight.ui.model.*;
 import limelight.ui.RadioButtonGroupMember;
@@ -15,7 +16,7 @@ import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.IOException;
 
-public class RadioButtonPanel extends InputPanel implements TextAccessor, RadioButtonGroupMember
+public class RadioButtonPanel extends AbstractButtonPanel implements TextAccessor, RadioButtonGroupMember
 {
   private boolean imagesLoaded;
   private BufferedImage normalImage;
@@ -27,7 +28,7 @@ public class RadioButtonPanel extends InputPanel implements TextAccessor, RadioB
   public RadioButtonPanel()
   {
     setSize(21, 21);
-    getEventHandler().add(MouseClickedEvent.class, SelectAction.instance);
+    getEventHandler().add(ButtonPushedEvent.class, SelectAction.instance);
   }
 
   public void setParent(limelight.ui.Panel panel)
@@ -39,16 +40,6 @@ public class RadioButtonPanel extends InputPanel implements TextAccessor, RadioB
       propPanel.sterilize();
       propPanel.setTextAccessor(this);
     }
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return getBoundingBox();
-  }
-
-  public Box getChildConsumableArea()
-  {
-    return getBoundingBox();
   }
 
   public void loadImages()
@@ -77,11 +68,6 @@ public class RadioButtonPanel extends InputPanel implements TextAccessor, RadioB
       graphics.drawImage(selectedImage, 0, 0, null);
     else
       graphics.drawImage(normalImage, 0, 0, null);
-  }
-
-  public ScreenableStyle getStyle()
-  {
-    return getParent().getStyle();
   }
 
   public void setText(PropablePanel panel, String text)
@@ -126,7 +112,7 @@ public class RadioButtonPanel extends InputPanel implements TextAccessor, RadioB
     public void invoke(limelight.ui.events.Event event)
     {
       final RadioButtonPanel panel = (RadioButtonPanel) event.getPanel();
-      panel.setSelected(!panel.isSelected());
+      panel.setSelected(!panel.isSelected());        
     }
   }
 }

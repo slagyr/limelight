@@ -18,7 +18,6 @@ import limelight.audio.MockAudioPlayer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
@@ -170,23 +169,22 @@ public class PropPanelTest extends Assert
   @Test
   public void shouldAddingScrollBarChangesChildConsumableArea() throws Exception
   {
-    int scrollWidth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
     style.setMargin("0");
     style.setPadding("0");
     style.setBorderWidth("0");
     panel.setSize(100, 100);
 
     panel.addVerticalScrollBar();
-    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().width);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().width);
     assertEquals(100, panel.getChildConsumableArea().height);
 
     panel.addHorizontalScrollBar();
-    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().width);
-    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().height);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().width);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().height);
 
     panel.removeVerticalScrollBar();
     assertEquals(100, panel.getChildConsumableArea().width);
-    assertEquals(100 - scrollWidth, panel.getChildConsumableArea().height);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().height);
 
     panel.removeHorizontalScrollBar();
     assertEquals(100, panel.getChildConsumableArea().width);

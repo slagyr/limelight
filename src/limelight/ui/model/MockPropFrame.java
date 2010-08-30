@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.KeyListener;
@@ -109,7 +108,7 @@ public class MockPropFrame implements PropFrame
     this.vital = vital;
   }
 
-  private static class MockPropFrameWindow extends JFrame implements PropFrameWindow
+  private static class MockPropFrameWindow extends Frame implements PropFrameWindow
   {
     private PropFrame frame;
 

@@ -8,7 +8,6 @@ import limelight.ui.api.MockProp;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ public class PropPanelLayoutTest extends TestCase
 {
   private PropPanel parent;
   private PropPanelLayout layout;
-  private int scrollGirth;
+  private int scrollGirth = ScrollBarPanel.GIRTH;
   private ScenePanel root;
 
   public void setUp() throws Exception
@@ -30,7 +29,7 @@ public class PropPanelLayoutTest extends TestCase
 
 
     layout = PropPanelLayout.instance;
-    scrollGirth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
+//    scrollGirth = new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().width;
   }
 
   public void testLayoutWithOneFullSizedChild() throws Exception

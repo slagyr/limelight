@@ -17,6 +17,8 @@ public class ScrollBarPanel extends BasePanel
   public static final int VERTICAL = 0;
   public static final int HORIZONTAL = 1;
 
+  public static final int GIRTH = 15;
+
   private ScrollBarPainter painter = ScrollBarPainter.instance;
   private ScrollMouseProcessor mouseProcessor = new ScrollMouseProcessor(this);
 
@@ -41,13 +43,13 @@ public class ScrollBarPanel extends BasePanel
     this.orientation = orientation;
     if(getOrientation() == VERTICAL)
     {
-      preferredGirth = width = 15;
+      preferredGirth = width = GIRTH;
       setSize(preferredGirth, 50);
       sliderBounds = new Box(0, 0, preferredGirth, 0);
     }
     else
     {
-      preferredGirth = height = 15;
+      preferredGirth = height = GIRTH;
       setSize(50, preferredGirth);
       sliderBounds = new Box(0, 0, 0, preferredGirth);
     }
