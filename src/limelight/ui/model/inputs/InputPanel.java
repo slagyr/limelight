@@ -3,9 +3,14 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.styles.ScreenableStyle;
 import limelight.ui.EventAction;
 import limelight.ui.events.*;
+import limelight.ui.events.Event;
 import limelight.ui.model.BasePanel;
+import limelight.util.Box;
+
+import java.awt.*;
 
 public abstract class InputPanel extends BasePanel
 {
@@ -28,5 +33,20 @@ public abstract class InputPanel extends BasePanel
     {
       event.getPanel().markAsDirty();
     }
+  }
+
+  public Box getBoxInsidePadding()
+  {
+    return getBoundingBox();
+  }
+
+  public Box getChildConsumableArea()
+  {
+    return getBoundingBox();
+  }
+
+  public ScreenableStyle getStyle()
+  {
+    return getParent().getStyle();
   }
 }

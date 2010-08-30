@@ -22,6 +22,12 @@ public class ComboBoxPanelTest
     parent = new PropPanel(new MockProp());
     parent.add(panel);
   }
+  
+  @Test
+  public void isButton() throws Exception
+  {
+    assertEquals(true, AbstractButtonPanel.class.isInstance(panel));
+  }
 
   @Test
   public void canBeBuffered() throws Exception

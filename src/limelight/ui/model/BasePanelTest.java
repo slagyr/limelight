@@ -11,10 +11,8 @@ import limelight.util.Box;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,8 +24,6 @@ public class BasePanelTest extends Assert
   private MockPanel child;
   private MockPanel grandChild;
   private MockPanel sibling;
-  private MockProp prop;
-  private MouseEvent mouseEvent;
   private ScenePanel root;
 
   @Before
@@ -398,10 +394,9 @@ public class BasePanelTest extends Assert
 
   void addPropPanel()
   {
-    prop = new MockProp();
+    MockProp prop = new MockProp();
     PropPanel propPanel = new PropPanel(prop);
     propPanel.add(panel);
-    mouseEvent = new MouseEvent(new JPanel(), 1, 2, 3, 4, 5, 6, false);
   }
 
   @Test

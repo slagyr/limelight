@@ -89,21 +89,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     return model;
   }
 
-  public Box getBoxInsidePadding()
-  {
-    return getBoundingBox();
-  }
-
-  public Box getChildConsumableArea()
-  {
-    return getBoundingBox();
-  }
-
-  public ScreenableStyle getStyle()
-  {
-    return getParent().getStyle();
-  }
-
   public void setText(PropablePanel panel, String text)
   {
     this.model.setText(text);

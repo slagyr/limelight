@@ -10,8 +10,6 @@ import limelight.styles.StyleObserver;
 import limelight.ui.api.MockProp;
 import limelight.ui.api.MockScene;
 import limelight.ui.text.StyledText;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextLayout;
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class TextPanelTest extends TestCase
 {
   private TextPanel panel;
   private Style style;
-  private JFrame frame;
+  private Frame frame;
   private MockPropablePanel parent;
   private ScenePanel root;
   private String defaultFontFace;
@@ -98,7 +96,7 @@ public class TextPanelTest extends TestCase
 
   private void useFrame()
   {
-    frame = new JFrame();
+    frame = new Frame();
     frame.setVisible(true);
     panel.setGraphics(frame.getGraphics());
   }

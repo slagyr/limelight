@@ -99,23 +99,8 @@ public class KeyboardFocusManagerTest extends TestCase
   {
     public boolean hasFocus;
 
-    public Box getBoxInsidePadding()
-    {
-      return null;
-    }
-
-    public Box getChildConsumableArea()
-    {
-      return null;
-    }
-
     public void paintOn(Graphics2D graphics)
     {
-    }
-
-    public ScreenableStyle getStyle()
-    {
-      return null;
     }
   }
 }

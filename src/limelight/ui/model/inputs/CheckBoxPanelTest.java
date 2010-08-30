@@ -27,6 +27,12 @@ public class CheckBoxPanelTest
     root = new MockRootPanel();
     root.add(parent);
   }
+  
+  @Test
+  public void isButton() throws Exception
+  {
+    assertEquals(true, AbstractButtonPanel.class.isInstance(panel));
+  }
 
   @Test
   public void canBeBuffered() throws Exception
@@ -48,7 +54,7 @@ public class CheckBoxPanelTest
   }
 
   @Test
-  public void mouseClickSelectedCheckBox() throws Exception
+  public void pushingSelectesCheckBox() throws Exception
   {
     assertEquals(false, panel.isSelected());
 
@@ -56,4 +62,6 @@ public class CheckBoxPanelTest
 
     assertEquals(true, panel.isSelected());
   }
+
+  
 }
