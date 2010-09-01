@@ -14,6 +14,7 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
 {
   public LinkedList<Rectangle> dirtyRegions = new LinkedList<Rectangle>();
   private RootKeyListener keyListener;
+  public Map<String, RichStyle> styleStore;
 
   public MockRootPanel()
   {
@@ -88,6 +89,6 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
 
   public Map<String, RichStyle> getStylesStore()
   {
-    return null;
+    return styleStore;
   }
 }

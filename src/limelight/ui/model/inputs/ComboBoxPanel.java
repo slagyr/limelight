@@ -3,59 +3,29 @@
 
 package limelight.ui.model.inputs;
 
-import com.android.ninepatch.NinePatch;
-import limelight.styles.ScreenableStyle;
-import limelight.styles.values.SimpleHorizontalAlignmentValue;
-import limelight.styles.values.SimpleVerticalAlignmentValue;
+import limelight.ui.*;
+import limelight.ui.events.*;
+import limelight.ui.events.Event;
 import limelight.ui.model.*;
-import limelight.util.Box;
-import limelight.styles.HorizontalAlignment;
-import limelight.styles.VerticalAlignment;
+import limelight.ui.model.inputs.painting.ComboBoxPainter;
 
-import javax.imageio.ImageIO;
-import java.awt.font.TextLayout;
 import java.awt.*;
-import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 public class ComboBoxPanel extends AbstractButtonPanel implements TextAccessor
 {
-  private static NinePatch normalPatch;
-  private static NinePatch focusPatch;
-  private static final int BUTTON_WIDTH = 25;
-  private static final int LEFT_PADDING = 8; //TODO MDM - Use style padding
+  private Object selectedOption;
+  private java.util.List<Object> options;
+  private ComboBoxPopup popup;
 
-  static
-  {
-    try
-    {
-      ClassLoader classLoader = ComboBoxPanel.class.getClassLoader();
-
-      normalPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/combo_box.9.png")), true, true);
-      focusPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/combo_box_focus.9.png")), true, true);
-    }
-    catch(IOException e)
-    {
-      throw new RuntimeException("Could not load ButtonPanel images", e);
-    }
-    catch(Exception e)
-    {
-      System.err.println("e = " + e);
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
-  }
-
-  private static Font font = new Font("Arial", Font.BOLD, 12);
-
-  private static SimpleHorizontalAlignmentValue horizontalTextAlignment = new SimpleHorizontalAlignmentValue(HorizontalAlignment.LEFT);
-  private static SimpleVerticalAlignmentValue verticalTextAlignment = new SimpleVerticalAlignmentValue(VerticalAlignment.CENTER);
-  private String text;
-  private Dimension textDimensions;
-  private TextLayout textLayout;
-  
   public ComboBoxPanel()
   {
     setSize(128, 27);
+    options = new LinkedList<Object>();
+    getEventHandler().add(ButtonPushedEvent.class, LoadPopupListAction.instance);
+    getEventHandler().add(KeyPressedEvent.class, PopupKeyControlAction.instance);
+    getEventHandler().add(FocusLostEvent.class, ClosePopupOnFocusLostAction.instance);
   }
 
   public void setParent(limelight.ui.Panel panel)
@@ -71,49 +41,140 @@ public class ComboBoxPanel extends AbstractButtonPanel implements TextAccessor
 
   public void paintOn(Graphics2D graphics)
   {
-    if(hasFocus())
-      focusPatch.draw(graphics, 0, 0, width, height);
-    normalPatch.draw(graphics, 0, 0, width, height);
-
-    if(text != null)
-    {
-      graphics.setColor(Color.BLACK);
-      calculateTextDimentions();
-      int textX = horizontalTextAlignment.getX(textDimensions.width, getBoundingBox()) + LEFT_PADDING;
-      float textY = verticalTextAlignment.getY(textDimensions.height, getBoundingBox()) + textLayout.getAscent();
-      textLayout.draw(graphics, textX, textY + 1);
-    }
-  }
-
-  private void calculateTextDimentions()
-  {
-    if(text != null)
-    {
-      textLayout = new TextLayout(text, font, TextPanel.staticFontRenderingContext);
-      int height = (int) ((textLayout.getAscent() + textLayout.getDescent() + textLayout.getLeading()) + 0.5);
-      int width = (int) (textLayout.getBounds().getWidth() + textLayout.getBounds().getX() + 0.5);
-      textDimensions = new Dimension(width, height);
-    }
+    ComboBoxPainter.paintOn(graphics, this);
   }
 
   public void setText(PropablePanel panel, String text)
   {
-    this.text = text;
+    setText(text);
+  }
+
+  public void setText(String text)
+  {
+    if(text == null)
+      return;
+
+    for(Object option : options)
+    {
+      if(text.equals(option.toString()))
+      {
+        selectedOption = option;
+        return;
+      }
+    }
   }
 
   public String getText()
   {
-    return text;
+    if(selectedOption == null)
+      return "";
+    else
+      return selectedOption.toString();
   }
 
-  public void addItem(String item)
+  public void addOption(Object option)
   {
-    // TODO
+    if(option == null)
+      return;
+
+    options.add(option);
+    if(selectedOption == null)
+      selectedOption = option;
   }
 
-  public String getSelectedItem()
+  public Object getSelectedOption()
   {
-    // TODO
-    return null;
+    return selectedOption;
+  }
+
+  public void setOptions(Object... options)
+  {
+    clear();
+    selectedOption = null;
+    for(Object option : options)
+    {
+      addOption(option);
+    }
+  }
+
+  public void setSelectedOption(Object option)
+  {
+    if(options.contains(option))
+      selectedOption = option;
+  }
+
+  public List<Object> getOptions()
+  {
+    return new LinkedList<Object>(options);
+  }
+
+  public void clear()
+  {
+    this.options.clear();
+  }
+
+  public void setPopup(ComboBoxPopup comboBoxPopup)
+  {
+    popup = comboBoxPopup;
+  }
+
+  public ComboBoxPopup getPopup()
+  {
+    return popup;
+  }
+
+  private static class LoadPopupListAction implements EventAction
+  {
+    private static LoadPopupListAction instance = new LoadPopupListAction();
+
+    public void invoke(limelight.ui.events.Event event)
+    {
+      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getPanel();
+      if(comboBox.getPopup() == null)
+      {
+        final ComboBoxPopup popup = new ComboBoxPopup(comboBox);
+        popup.open();
+      }
+    }
+  }
+
+  private static class PopupKeyControlAction implements EventAction
+  {
+    private static PopupKeyControlAction instance = new PopupKeyControlAction();
+
+    public void invoke(Event event)
+    {
+      ComboBoxPanel comboBox = (ComboBoxPanel) event.getPanel();
+      final ComboBoxPopup popup = comboBox.getPopup();
+      if(popup == null)
+        return;
+
+      KeyPressedEvent keyEvent = (KeyPressedEvent) event;
+      switch(keyEvent.getKeyCode())
+      {
+        case KeyEvent.KEY_ESCAPE:
+          popup.close();
+          break;
+        case KeyEvent.KEY_DOWN:
+          popup.selectNext();
+          break;
+        case KeyEvent.KEY_UP:
+          popup.selectPrevious();
+          break;
+        case KeyEvent.KEY_ENTER:
+          popup.choose(popup.getSelectedItem());
+      }
+    }
+  }
+
+  private static class ClosePopupOnFocusLostAction implements EventAction
+  {
+    private static ClosePopupOnFocusLostAction instance = new ClosePopupOnFocusLostAction();
+    public void invoke(Event event)
+    {
+      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getPanel();
+      if(comboBox.getPopup() != null)
+        comboBox.getPopup().close();
+    }
   }
 }

@@ -8,6 +8,10 @@ module Limelight
   Context = Java::limelight.Context
   Studio = Java::limelight.Studio
 
+  module BuiltIn
+    Styles = Java::limelight.builtin.BuiltInStyles
+  end
+
   module Background
     Animation = Java::limelight.background.Animation
   end

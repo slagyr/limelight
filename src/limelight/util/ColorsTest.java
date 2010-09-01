@@ -93,10 +93,10 @@ public class ColorsTest extends TestCase
 
   public void testToString() throws Exception
   {
-    assertEquals("#FF0000", Colors.toString(Color.RED));
-    assertEquals("#00FF00", Colors.toString(Color.GREEN));
-    assertEquals("#0000FF", Colors.toString(Color.BLUE));
-    assertEquals("#ABCDEF", Colors.toString(Colors.resolve("#abcdef")));
+    assertEquals("#ff0000ff", Colors.toString(Color.RED));
+    assertEquals("#00ff00ff", Colors.toString(Color.GREEN));
+    assertEquals("#0000ffff", Colors.toString(Color.BLUE));
+    assertEquals("#abcdefff", Colors.toString(Colors.resolve("#abcdef")));
     assertEquals("#12345678", Colors.toString(Colors.resolve("#12345678"))); 
     assertEquals("#00000000", Colors.toString(Colors.resolve("#0000")));
   }

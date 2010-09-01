@@ -131,4 +131,6 @@ public class ButtonPanel extends AbstractButtonPanel implements TextAccessor
       panel.markAsDirty();
     }
   }
+
+  // TODO MDM - Change color when space bar is pressed
 }
