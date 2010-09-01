@@ -42,8 +42,10 @@ module Limelight
       #
       def builtin_styles
         unless @builtin_styles
-          builtin_styles_file = File.join($LIMELIGHT_LIB, "limelight", "builtin", "styles.rb")
-          @builtin_styles = Limelight.build_styles_from_file(builtin_styles_file)
+          @builtin_styles = {}
+          BuiltIn::Styles.all.key_set.each do |name|
+            @builtin_styles[name] = BuiltIn::Styles.all.get(name);
+          end
         end
         return @builtin_styles
       end

@@ -280,19 +280,28 @@ public class Colors
 
   public static String toString(Color color)
   {
+    String r = Integer.toHexString(color.getRed());
+    String g = Integer.toHexString(color.getGreen());
+    String b = Integer.toHexString(color.getBlue());
+    String a = Integer.toHexString(color.getAlpha());
     StringBuffer buffer = new StringBuffer("#");
-    buffer.append(hexValue(color.getRed()));
-    buffer.append(hexValue(color.getGreen()));
-    buffer.append(hexValue(color.getBlue()));
-    if(color.getAlpha() < 255)
-      buffer.append(hexValue(color.getAlpha()));
-    return
-        buffer.toString();
-  }
 
-  private static String hexValue(int decimalValue)
-  {
-    String value = Integer.toString(decimalValue, 16).toUpperCase();
-    return value.length() == 1 ? "0" + value : value;
+    if(r.length() == 1)
+      buffer.append("0");
+    buffer.append(r);
+
+    if(g.length() == 1)
+      buffer.append("0");
+    buffer.append(g);
+
+    if(b.length() == 1)
+      buffer.append("0");
+    buffer.append(b);
+
+    if(a.length() == 1)
+      buffer.append("0");
+    buffer.append(a);
+
+    return buffer.toString();
   }
 }
