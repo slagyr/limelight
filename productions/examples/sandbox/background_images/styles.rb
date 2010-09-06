@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 control_panel {
@@ -35,6 +35,10 @@ image_area {
 
 logo {
   border_width 1
+}
+
+input {
+  width :auto
 }
 
 

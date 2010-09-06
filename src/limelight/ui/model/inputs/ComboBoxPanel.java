@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.styles.Style;
 import limelight.ui.*;
 import limelight.ui.events.*;
 import limelight.ui.events.Event;
@@ -13,7 +14,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class ComboBoxPanel extends AbstractButtonPanel implements TextAccessor
+public class ComboBoxPanel extends AbstractButtonPanel
 {
   private Object selectedOption;
   private java.util.List<Object> options;
@@ -21,22 +22,17 @@ public class ComboBoxPanel extends AbstractButtonPanel implements TextAccessor
 
   public ComboBoxPanel()
   {
-    setSize(128, 27);
     options = new LinkedList<Object>();
     getEventHandler().add(ButtonPushedEvent.class, LoadPopupListAction.instance);
     getEventHandler().add(KeyPressedEvent.class, PopupKeyControlAction.instance);
     getEventHandler().add(FocusLostEvent.class, ClosePopupOnFocusLostAction.instance);
   }
 
-  public void setParent(limelight.ui.Panel panel)
-  {
-    super.setParent(panel);
-    if(panel instanceof PropPanel)
-    {
-      PropPanel propPanel = (PropPanel) panel;
-      propPanel.sterilize();
-      propPanel.setTextAccessor(this);
-    }
+  @Override
+  protected void setDefaultStyles(Style style)
+  {    
+    style.setDefault(Style.WIDTH, 128);
+    style.setDefault(Style.HEIGHT, 27);
   }
 
   public void paintOn(Graphics2D graphics)

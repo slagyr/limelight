@@ -56,6 +56,13 @@ public class RadioButtonPanelTest
   }
 
   @Test
+  public void shouldDefaultStyles() throws Exception
+  {
+    assertEquals("21", panel.getStyle().getWidth());
+    assertEquals("21", panel.getStyle().getHeight());
+  }
+
+  @Test
   public void pushSelectesButton() throws Exception
   {
     assertEquals(false, panel.isSelected());

@@ -54,6 +54,13 @@ public class CheckBoxPanelTest
   }
 
   @Test
+  public void shouldDefaultStyles() throws Exception
+  {
+    assertEquals("20", panel.getStyle().getWidth());
+    assertEquals("20", panel.getStyle().getHeight());
+  }
+
+  @Test
   public void pushingSelectesCheckBox() throws Exception
   {
     assertEquals(false, panel.isSelected());

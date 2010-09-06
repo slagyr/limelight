@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.styles.Style;
 import limelight.ui.EventAction;
 import limelight.ui.events.*;
 import limelight.ui.images.Images;
@@ -13,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.IOException;
 
-public class CheckBoxPanel extends AbstractButtonPanel implements TextAccessor
+public class CheckBoxPanel extends AbstractButtonPanel
 {
   private boolean imagesLoaded;
   private BufferedImage normalImage;
@@ -23,19 +24,14 @@ public class CheckBoxPanel extends AbstractButtonPanel implements TextAccessor
 
   public CheckBoxPanel()
   {
-    setSize(20, 20);
     getEventHandler().add(ButtonPushedEvent.class, SelectAction.instance);
   }
 
-  public void setParent(limelight.ui.Panel panel)
+  @Override
+  protected void setDefaultStyles(Style style)
   {
-    super.setParent(panel);
-    if(panel instanceof PropPanel)
-    {
-      PropPanel propPanel = (PropPanel) panel;
-      propPanel.sterilize();
-      propPanel.setTextAccessor(this);
-    }
+    style.setDefault(Style.WIDTH, 20);
+    style.setDefault(Style.HEIGHT, 20);
   }
 
   public void loadImages()

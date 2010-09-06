@@ -38,8 +38,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
   protected abstract TextModel createModel();
 
-  protected abstract void setDefaultStyles(Style style);
-
   public abstract KeyProcessor getKeyProcessorFor(int modifiers);
 
   protected void markCursorRegionAsDirty()
@@ -58,9 +56,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     if(panel instanceof PropPanel)
     {
       PropPanel propPanel = (PropPanel) panel;
-      propPanel.sterilize();
-      propPanel.setTextAccessor(this);
-      setDefaultStyles(propPanel.getStyle());
       propPanel.setPainter(TextPanelPropPainter.instance);
     }
   }

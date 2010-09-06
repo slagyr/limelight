@@ -4,6 +4,7 @@
 package limelight.ui.model.inputs;
 
 import com.android.ninepatch.NinePatch;
+import limelight.styles.Style;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.ui.EventAction;
 import limelight.ui.events.*;
@@ -16,7 +17,7 @@ import limelight.styles.values.SimpleVerticalAlignmentValue;
 import java.awt.*;
 import java.awt.font.TextLayout;
 
-public class ButtonPanel extends AbstractButtonPanel implements TextAccessor
+public class ButtonPanel extends AbstractButtonPanel
 {
   private static Drawable normalPatch;
   private static Drawable selectedPatch;
@@ -42,20 +43,15 @@ public class ButtonPanel extends AbstractButtonPanel implements TextAccessor
   public ButtonPanel()
   {
     activePatch = normalPatch;
-    setSize(128, 27);
     getEventHandler().add(MousePressedEvent.class, MousePressedAction.instance);
     getEventHandler().add(MouseReleasedEvent.class, MouseReleasedAction.instance);
   }
 
-  public void setParent(limelight.ui.Panel panel)
+  @Override
+  protected void setDefaultStyles(Style style)
   {
-    super.setParent(panel);
-    if(panel instanceof PropPanel)
-    {
-      PropPanel propPanel = (PropPanel) panel;
-      propPanel.sterilize();
-      propPanel.setTextAccessor(this);
-    }
+    style.setDefault(Style.WIDTH, 128);
+    style.setDefault(Style.HEIGHT, 27);
   }
 
   public void paintOn(Graphics2D graphics)

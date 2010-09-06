@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.styles.Style;
 import limelight.ui.EventAction;
 import limelight.ui.events.ButtonPushedEvent;
 import limelight.ui.images.Images;
@@ -12,7 +13,7 @@ import limelight.ui.RadioButtonGroup;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 
-public class RadioButtonPanel extends AbstractButtonPanel implements TextAccessor, RadioButtonGroupMember
+public class RadioButtonPanel extends AbstractButtonPanel implements RadioButtonGroupMember
 {
   private boolean imagesLoaded;
   private BufferedImage normalImage;
@@ -23,19 +24,14 @@ public class RadioButtonPanel extends AbstractButtonPanel implements TextAccesso
 
   public RadioButtonPanel()
   {
-    setSize(21, 21);
     getEventHandler().add(ButtonPushedEvent.class, SelectAction.instance);
   }
 
-  public void setParent(limelight.ui.Panel panel)
+  @Override
+  protected void setDefaultStyles(Style style)
   {
-    super.setParent(panel);
-    if(panel instanceof PropPanel)
-    {
-      PropPanel propPanel = (PropPanel) panel;
-      propPanel.sterilize();
-      propPanel.setTextAccessor(this);
-    }
+    style.setDefault(Style.WIDTH, 21);
+    style.setDefault(Style.HEIGHT, 21);
   }
 
   public void loadImages()
