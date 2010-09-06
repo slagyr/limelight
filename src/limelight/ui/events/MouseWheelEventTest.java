@@ -45,4 +45,10 @@ public class MouseWheelEventTest
     assertEquals(false, event.isVertical());
     assertEquals(true, event.isHorizontal());
   }
+  
+  @Test
+  public void isInheritable() throws Exception
+  {
+    assertEquals(true, event.isInheritable());
+  }
 }

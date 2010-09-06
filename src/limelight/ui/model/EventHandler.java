@@ -87,7 +87,7 @@ public class EventHandler
     {
       Panel parent = panel.getParent();
       if(parent != null)
-        parent.getEventHandler().dispatch(event);
+        parent.getEventHandler().dispatch(event.withPanel(parent));
     }
   }
 }

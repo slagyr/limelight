@@ -31,9 +31,12 @@ public class EventHandlerTest
   private static class MemoryAction implements EventAction
   {
     public boolean invoked;
+    private Event event;
+
     public void invoke(Event event)
     {
       invoked = true;
+      this.event = event;
     }
   }
   
@@ -45,10 +48,11 @@ public class EventHandlerTest
     panel.getEventHandler().dispatch(new MousePressedEvent(panel, 0, new Point(0, 0), 0));
 
     assertEquals(true, action.invoked);
+    assertEquals(parent, action.event.getPanel());
   }
 
   @Test
-  public void unhandledNoninheritableEventsArePassedToParent() throws Exception
+  public void unhandledNoninheritableEventsAreNotPassedToParent() throws Exception
   {
     parent.getEventHandler().add(KeyPressedEvent.class, action);
 

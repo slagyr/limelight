@@ -79,7 +79,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
 
   public void mouseWheelMoved(MouseWheelEvent e)
   {
-    final Panel panel = panelFor(e.getPoint());
+    final Panel panel = panelFor(e.getPoint());  
     panel.getEventHandler().dispatch(new limelight.ui.events.MouseWheelEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));
   }
 

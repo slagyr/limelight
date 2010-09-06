@@ -433,6 +433,8 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
       ScrollBarPanel scrollBar = wheelEvent.isVertical() ? panel.getVerticalScrollbar() : panel.getHorizontalScrollbar();
       if(scrollBar != null)
         scrollBar.setValue(scrollBar.getValue() + wheelEvent.getUnitsToScroll());
+      else if(panel.getParent() != null)
+        panel.getParent().getEventHandler().dispatch(event.withPanel(panel.getParent()));
     }
   }
 

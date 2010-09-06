@@ -17,6 +17,12 @@ public class ModifiableEvent extends Event
     this.modifiers = modifiers;
   }
 
+  @Override
+  public String toString()
+  {
+    return super.toString() + " modifiers=" + getModifiers();
+  }
+
   public int getModifiers()
   {
     return modifiers;
