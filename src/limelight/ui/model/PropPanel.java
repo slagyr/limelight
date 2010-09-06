@@ -88,10 +88,9 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   @Override
   public Panel getOwnerOfPoint(Point point)
   {
-    Point relativePoint = new Point(point.x - getX(), point.y - getY());
-    if(verticalScrollbar != null && verticalScrollbar.containsRelativePoint(relativePoint))
+    if(verticalScrollbar != null && verticalScrollbar.getAbsoluteBounds().contains(point))
       return verticalScrollbar;
-    else if(horizontalScrollbar != null && horizontalScrollbar.containsRelativePoint(relativePoint))
+    else if(horizontalScrollbar != null && horizontalScrollbar.getAbsoluteBounds().contains(point))
       return horizontalScrollbar;
 
     return super.getOwnerOfPoint(point);
@@ -442,8 +441,10 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     public static HoverOnAction instance = new HoverOnAction();
 
     public void invoke(Event event)
-    {
+    {                     
       final PropPanel panel = (PropPanel) event.getPanel();
+      if(panel.getRoot() == null)
+        return;
       //TODO MDM - If the prop has no suface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
       if(!panel.getStyle().hasScreen())
         panel.getStyle().applyScreen(panel.getHoverStyle()); // TODO - MDM - This seems inefficient considering most of the time, there's no change in styles.

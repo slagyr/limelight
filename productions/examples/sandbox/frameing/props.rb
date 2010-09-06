@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 hamlet = <<END
@@ -12,7 +12,7 @@ arena :vertical_alignment => :center do
   control_panel do
     setting do
       label :text => "Margin:"
-      input :players => "text_box", :id => "margin_input", :text => "10%", :on_focus_lost => "scene.apply(:margin, text)"
+      input :players => "text_box", :id => "margin_input", :text => "10%", :on_focus_lost => "puts 'Hiho!'; scene.apply(:margin, text)"
     end
     setting do
       label :text => "Border Width:"

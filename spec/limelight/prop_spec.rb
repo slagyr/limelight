@@ -42,6 +42,7 @@ describe Limelight::Prop do
     end
 
     attr_reader :was_casted
+
     def casted
       @was_casted = true
     end
@@ -64,13 +65,13 @@ describe Limelight::Prop do
     @prop.illuminate
     @prop.id.should == "root"
   end
-  
+
   it "not start out being illuminated" do
     prop = Limelight::Prop.new(nil)
-    
+
     prop.should_not be_illuminated
   end
-  
+
 
   def build_prop_tree
     @child1 = Limelight::Prop.new(:id => "child1", :name => "child_class")
@@ -137,12 +138,12 @@ describe Limelight::Prop do
   end
 
   it "should define event through constructor using a string" do
-    prop = Limelight::Prop.new(:on_mouse_entered => "return event")
+    prop = Limelight::Prop.new(:on_mouse_clicked => "$RESULT = self")
     @scene << prop
 
-    value = prop.mouse_entered("my event")
+    prop.panel.event_handler.dispatch(Limelight::UI::Events::MouseClickedEvent.new(prop.panel, 0, nil, 0))
 
-    value.should == "my event"
+    $RESULT.should == prop
   end
 
   it "should pass scene on to children" do
@@ -217,7 +218,7 @@ describe Limelight::Prop do
   end
 
   it "should set after paint action" do
-    block = Proc.new { |pen| }
+    block = Proc.new { |pen|}
 
     @prop.after_painting &block
 
@@ -289,7 +290,7 @@ describe Limelight::Prop do
 
   it "should set the styles on the panel" do
     prop = Limelight::Prop.new(:name => "one", :styles => "two, three")
-    
+
     prop.panel.styles.should == "one, two, three"
   end
 
@@ -297,22 +298,28 @@ describe Limelight::Prop do
 
   describe "events" do
 
-    it "should not accept mouse_clicked events to start with" do
-      @prop.accepts_mouse_clicked().should == false
-      @prop.instance_eval("def mouse_clicked(e); puts 'hi'; end;")
-      @prop.accepts_mouse_clicked().should == true
-    end
+    [{:method => :on_mouse_pressed, :klass => Limelight::UI::Events::MousePressedEvent},
+     {:method => :on_mouse_released, :klass => Limelight::UI::Events::MouseReleasedEvent},
+     {:method => :on_mouse_clicked, :klass => Limelight::UI::Events::MouseClickedEvent},
+     {:method => :on_mouse_moved, :klass => Limelight::UI::Events::MouseMovedEvent},
+     {:method => :on_mouse_dragged, :klass => Limelight::UI::Events::MouseDraggedEvent},
+     {:method => :on_mouse_entered, :klass => Limelight::UI::Events::MouseEnteredEvent},
+     {:method => :on_mouse_exited, :klass => Limelight::UI::Events::MouseExitedEvent},
+     {:method => :on_mouse_wheel, :klass => Limelight::UI::Events::MouseWheelEvent},
+     {:method => :on_key_pressed, :klass => Limelight::UI::Events::KeyPressedEvent},
+     {:method => :on_key_released, :klass => Limelight::UI::Events::KeyReleasedEvent},
+     {:method => :on_char_typed, :klass => Limelight::UI::Events::CharTypedEvent},
+     {:method => :on_focus_gained, :klass => Limelight::UI::Events::FocusGainedEvent},
+     {:method => :on_focus_lost, :klass => Limelight::UI::Events::FocusLostEvent},
+     {:method => :on_button_pushed, :klass => Limelight::UI::Events::ButtonPushedEvent}
+    ].each do |event|
+      it "adds #{event[:method]} actions" do
+        action = Proc.new { puts "I should never get printed" }
+        @prop.send(event[:method], & action)
 
-    it "should not accept mouse_pressed events to start with" do
-      @prop.accepts_mouse_pressed().should == false
-      @prop.instance_eval("def mouse_pressed(e); puts 'hi'; end;")
-      @prop.accepts_mouse_pressed().should == true
-    end
-
-    it "should not accept mouse_released events to start with" do
-      @prop.accepts_mouse_released().should == false
-      @prop.instance_eval("def mouse_released(e); puts 'hi'; end;")
-      @prop.accepts_mouse_released().should == true
+        actions = @prop.panel.event_handler.get_actions(event[:klass])
+        actions.contains(action).should == true
+      end
     end
 
   end
@@ -355,7 +362,7 @@ describe Limelight::Prop do
       @scene.find("child").should == nil
       @scene.find("grandchild").should == nil
     end
-    
+
     it "should index it's id when being re-added to the prop tree" do
       child = Limelight::Prop.new(:id => "child")
       @prop << child
@@ -364,7 +371,7 @@ describe Limelight::Prop do
 
       @scene.find("child").should == child
     end
-    
+
     it "should traverse and index children when being re-added to the prop tree" do
       grandchild = Limelight::Prop.new(:id => "grandchild")
       child = Limelight::Prop.new(:id => "child")
@@ -372,10 +379,10 @@ describe Limelight::Prop do
       @prop << child
       @prop.remove(child)
       @prop << child
-      
+
       @scene.find("grandchild").should == grandchild
     end
-    
+
 
   end
 

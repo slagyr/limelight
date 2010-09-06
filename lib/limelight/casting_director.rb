@@ -1,6 +1,7 @@
 #- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
+require 'limelight/player'
 require 'limelight/builtin/players'
 
 module Limelight
@@ -38,9 +39,9 @@ module Limelight
       end
     end
 
-    def cast_player(prop, player_name)      
+    def cast_player(prop, player_name)
       recruiter = Recruiter.new(prop, player_name, @loader)
-      prop.include_player(recruiter.player) if recruiter.player_exists?
+      Limelight::Player.cast(recruiter.player, prop) if recruiter.player_exists?
     end
   end
 
@@ -98,15 +99,19 @@ module Limelight
           return nil
         end
       end
-      
+
       return player_filename
     end
 
     def load_player(player_filename)
       src = IO.read(@loader.path_to(player_filename))
-      @cast.module_eval(src, player_filename)
+
+      player = Player.new
+      player.module_eval(src, player_filename)
+      @cast.const_set(@module_name, player)
     end
 
   end
+
 
 end

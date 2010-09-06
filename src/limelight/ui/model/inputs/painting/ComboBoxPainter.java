@@ -5,13 +5,12 @@ import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
+import limelight.ui.images.Images;
 import limelight.ui.model.TextPanel;
 import limelight.ui.model.inputs.ComboBoxPanel;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.TextLayout;
-import java.io.IOException;
 
 public class ComboBoxPainter
 {
@@ -22,23 +21,8 @@ public class ComboBoxPainter
 
   static
   {
-    try
-    {
-      ClassLoader classLoader = ComboBoxPanel.class.getClassLoader();
-
-      normalPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/combo_box.9.png")), true, true);
-      focusPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/combo_box_focus.9.png")), true, true);
-    }
-    catch(IOException e)
-    {
-      throw new RuntimeException("Could not load ButtonPanel images", e);
-    }
-    catch(Exception e)
-    {
-      System.err.println("e = " + e);
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
+    normalPatch = NinePatch.load(Images.load("combo_box.9.png"), true, true);
+    focusPatch = NinePatch.load(Images.load("combo_box_focus.9.png"), true, true);
   }
 
 

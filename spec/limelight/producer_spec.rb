@@ -49,7 +49,7 @@ describe Limelight::Producer do
     styles = {}
     @producer.load_styles("blah", styles)
 
-    styles["limelight_builtin_players_combo_box_popup_list"].should_not == nil
+    styles["limelight_builtin_combo_box_popup_list"].should_not == nil
   end
 
   it "should load styles" do
@@ -213,7 +213,7 @@ describe Limelight::Producer do
   
   it "should give the same buildin_styles hash twice" do
     Limelight::Producer.builtin_styles.should be(Limelight::Producer.builtin_styles)
-    Limelight::Producer.builtin_styles["limelight_builtin_players_curtains"].should_not == nil
+    Limelight::Producer.builtin_styles["limelight_builtin_curtains"].should_not == nil
   end
 
   it "should close a production" do

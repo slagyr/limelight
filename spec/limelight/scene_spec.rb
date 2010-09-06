@@ -30,8 +30,12 @@ describe Limelight::Scene do
     scene.casting_director.should == @casting_director
   end
 
-  it "should have opened event" do
-    @scene.should respond_to(:scene_opened)
+  it "adds on_scene_opened actions" do
+    action = Proc.new { puts "I should never get printed" }
+    @scene.on_scene_opened &action
+
+    actions = @scene.panel.event_handler.get_actions(Limelight::UI::Events::SceneOpenedEvent)
+    actions.contains(action).should == true
   end
 
   it "should have a cast" do
@@ -107,12 +111,12 @@ describe Limelight::Scene do
 
       @scene.find("some_id").should == nil
     end
-    
+
     it "should unindex child's prop" do
       prop = Limelight::Prop.new(:id => "some_id")
       child = Limelight::Prop.new(:id => "child_id")
       prop.children << child
-      
+
       @scene << child
       @scene << prop
 
@@ -121,12 +125,12 @@ describe Limelight::Scene do
       @scene.find("some_id").should == nil
       @scene.find("child_id").should == nil
     end
-    
+
     it "should not blow up if child has no id" do
       prop = Limelight::Prop.new(:id => "some_id")
       child = Limelight::Prop.new(:id => nil)
       prop.children << child
-      
+
       @scene << child
       @scene << prop
 
@@ -134,23 +138,23 @@ describe Limelight::Scene do
 
       @scene.find("some_id").should == nil
     end
-    
+
     it "should unindex grandchildren props" do
       prop = Limelight::Prop.new(:id => "some_id")
       child = Limelight::Prop.new(:id => "child_id")
       grandchild = Limelight::Prop.new(:id => "grandchild_id")
       child.children << grandchild
       prop.children << child
-      
+
       @scene << grandchild
       @scene << child
       @scene << prop
-      
+
       @scene.unindex_prop(prop)
-      
+
       @scene.find("grandchild_id").should == nil
     end
-        
+
     it "should convert ids to string when finding" do
       prop = Limelight::Prop.new(:id => 123)
       @scene << prop
@@ -158,5 +162,5 @@ describe Limelight::Scene do
       @scene.find(123).should == prop
     end
   end
-  
+
 end

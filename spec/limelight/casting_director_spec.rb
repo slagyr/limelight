@@ -12,7 +12,6 @@ describe Limelight::CastingDirector do
   before(:each) do
     TestDir.clean
     $casted_props = []
-    $casted_players = []
     @scene = Limelight::Scene.new(:casting_director => mock("casting_director", :fill_cast => nil), :path => TestDir.path("scene_path"))
     @scene.illuminate
     @loader = Limelight::FileLoader.for_root(TestDir.root)
@@ -26,7 +25,7 @@ describe Limelight::CastingDirector do
 
   def prepare_player(location, name, src = nil)
     if src == nil
-      src = "module #{name.camalized}; def self.extended(prop); $casted_props << prop; $casted_players << self; end; end;"
+      src = "on_cast { $casted_props << self }"
     end
     TestDir.create_file("#{location}/players/#{name}.rb", src)
   end
@@ -39,8 +38,7 @@ describe Limelight::CastingDirector do
 
     $casted_props.length.should == 1
     $casted_props[0].should == @root
-    $casted_players[0].name.include?("Root").should == true
-    @root.is_a?($casted_players[0]).should == true
+    @root.is_a?(@scene.cast::Root).should == true
   end
 
   it "should not creat the player in the scene's cast and not currupt the global namespace" do
@@ -60,18 +58,6 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
 
     $casted_props.length.should == 0
-    $casted_players.length.should == 0
-  end
-  
-  it "should not load any players if they don't define a module with the right name" do
-    make_root(:name => "root")
-    prepare_player("scene_path", "root", "# empty file")
-    @root.should_not_receive(:include_player)
-
-    @casting_director.fill_cast(@root)
-
-    $casted_props.length.should == 0
-    $casted_players.length.should == 0
   end
 
   it "should load builtin players" do
@@ -89,8 +75,7 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
 
     $casted_props[0].should == @root
-    $casted_players[0].name.include?("CustomPlayer").should == true
-    @root.is_a?($casted_players[0]).should == true
+    @root.is_a?(@scene.cast::CustomPlayer).should == true
   end       
 
   it "should handle multiple players" do
@@ -102,11 +87,9 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
 
     $casted_props[0].should == @root
-    $casted_players[0].name.include?("Root").should == true
-    @root.is_a?($casted_players[0]).should == true
+    @root.is_a?(@scene.cast::Root).should == true
     @root.is_a?(Limelight::Builtin::Players::Button).should == true
-    $casted_players[1].name.include?("CustomPlayer").should == true
-    @root.is_a?($casted_players[1]).should == true
+    @root.is_a?(@scene.cast::CustomPlayer).should == true
   end
 
   it "should load shared custom players" do
@@ -120,10 +103,8 @@ describe Limelight::CastingDirector do
     @casting_director.fill_cast(@root)
 
     $casted_props[0].should == @root
-    $casted_players[0].name.include?("Root").should == true
-    $casted_players[1].name.include?("SharedPlayer").should == true
-    @root.is_a?($casted_players[0]).should == true
-    @root.is_a?($casted_players[1]).should == true
+    @root.is_a?(@scene.cast::Root).should == true
+    @root.is_a?(@scene.cast::SharedPlayer).should == true
   end
 
   it "should not allow casting without a scene" do
@@ -135,7 +116,7 @@ describe Limelight::CastingDirector do
 
     make_root(:name => "root")
     @casting_director.fill_cast(@root)
-    first_root_player = $casted_players[0]
+    first_root_player = @scene.cast::Root
 
     prepare_player("scene_path", "root", "module Root; def foo; end; end;")
     make_root(:name => "root")
@@ -150,7 +131,7 @@ describe Limelight::CastingDirector do
 
     make_root(:name => "root")
     @casting_director.fill_cast(@root)
-    first_root_player = $casted_players[0]
+    first_root_player = @scene.cast::Root
 
     @casting_director = Limelight::CastingDirector.new(@loader)
     prepare_player("scene_path", "root", "module Root; def foo; end; end;")

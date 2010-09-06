@@ -192,7 +192,7 @@ module Limelight
       load_scene(scene)
       @frame.open unless @should_remain_hidden
       scene.visible = true
-      scene.scene_opened(self)
+      scene.panel.event_handler.dispatch(Limelight::UI::Events::SceneOpenedEvent.new(scene.panel))
     end
 
     # Closes the Stage. It's window will no longer be displayed on the screen.

@@ -15,6 +15,6 @@ Would you like to open this production anyway?
 END
 advise :text => advise_text
 buttons do
-  button :id => "cancel_button", :text => "Cancel", :players => "button", :on_button_pressed => "production.process_incompatible_version_response(false)"
-  button :id => "proceed_button", :width => "150", :text => "Open Production", :players => "button", :on_button_pressed => "production.process_incompatible_version_response(true)"
+  button :id => "cancel_button", :text => "Cancel", :players => "button", :on_button_pushed => "production.process_incompatible_version_response(false)"
+  button :id => "proceed_button", :width => "150", :text => "Open Production", :players => "button", :on_button_pushed => "production.process_incompatible_version_response(true)"
 end

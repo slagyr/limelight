@@ -37,7 +37,6 @@ module Limelight
     attr_accessor :stage, :visible, :production
     getters :stage, :loader, :styles
     setters :stage
-    event :scene_opened
 
     alias :visible? :visible
 
@@ -51,6 +50,11 @@ module Limelight
 
       styles_store.extend(Hashiness)
 #      illuminate
+    end
+
+
+    def on_scene_opened(& action)
+      @panel.event_handler.add(Limelight::UI::Events::SceneOpenedEvent, action)
     end
 
     # Returns a hash of all the styles belonging to this scene

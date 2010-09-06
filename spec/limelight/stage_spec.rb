@@ -66,7 +66,7 @@ describe Limelight::Stage do
   it "should set the background color" do
     @stage.background_color = "red"
 
-    @stage.background_color.should == "#FF0000"
+    @stage.background_color.should == "#ff0000ff"
   end
 
   it "should be framed or not" do
@@ -115,7 +115,7 @@ describe Limelight::Stage do
   it "should allow contructor options" do
     stage = Limelight::Stage.new(@theater, "Ringo", :framed => false, :background_color => "blue")
     stage.framed?.should == false
-    stage.background_color.should == "#0000FF"
+    stage.background_color.should == "#0000ffff"
   end
 
   it "should handle vitality" do
@@ -158,7 +158,9 @@ describe Limelight::Stage do
     end
 
     it "should call scene.scene_opened at the end of opening a scene" do
-      @scene.should_receive(:scene_opened)
+      event = mock("scene_opened event") 
+      Limelight::UI::Events::SceneOpenedEvent.should_receive(:new).with(@scene.panel).and_return(event)
+      @scene.panel.event_handler.should_receive(:dispatch).with(event)
 
       @stage.open(@scene)
     end

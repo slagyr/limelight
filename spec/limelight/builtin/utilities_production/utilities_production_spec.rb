@@ -58,13 +58,23 @@ describe "Utilitites Production" do
     return stage != nil && stage.current_scene != nil
   end
 
+  def wait_for_stage(stage_name)
+    stage = nil
+    while stage.nil?
+      stage = production.theater[stage_name]
+      sleep(0.1)
+    end
+    raise "the stage '#{stage_name}' was never loaded" if stage.nil?
+    return stage
+  end
+
   it "should construct stage on load_with_incompatible_version_scene" do
     production.load_incompatible_version_scene("Some Production", "1.2.3")
-    stage = production.theater["Incompatible Version"]
+    stage = wait_for_stage("Incompatible Version")
     stage.should_not == nil
     stage.location.should == ["center", "center"]
     stage.size.should == ["400", "auto"]
-    stage.background_color.should == "#FFFFFF"
+    stage.background_color.should == "#ffffffff"
     stage.framed?.should == false
     stage.always_on_top?.should == true
     stage.vital?.should == false
@@ -72,14 +82,14 @@ describe "Utilitites Production" do
 
   it "should not construct the incompatible_version stage twice" do
     production.load_incompatible_version_scene("Some Production", "1.2.3")
-    stage = production.theater["Incompatible Version"]
+    stage = wait_for_stage("Incompatible Version")
 
     lambda { production.load_incompatible_version_scene("Some Production", "1.2.3") }.should_not raise_error
   end
 
   it "should load the incompatible_version scene" do
     production.load_incompatible_version_scene("Some Production", "1.2.3")
-    stage = production.theater["Incompatible Version"]
+    stage = wait_for_stage("Incompatible Version")
 
     stage.current_scene.should_not == nil
     scene = stage.current_scene
@@ -93,8 +103,9 @@ describe "Utilitites Production" do
     start_proceed_with_incompatible_version()
     wait_for { scene_open?("Incompatible Version") }
 
-    scene = production.theater["Incompatible Version"].current_scene
-    scene.find("proceed_button").button_pressed(nil)
+    stage = wait_for_stage("Incompatible Version")
+    scene = stage.current_scene
+    mouse.click(scene.find("proceed_button"))
     wait_for { !@thread.alive? }
 
     @result.should == true
@@ -105,8 +116,9 @@ describe "Utilitites Production" do
     start_proceed_with_incompatible_version()
     wait_for { scene_open?("Incompatible Version") }
 
-    scene = production.theater["Incompatible Version"].current_scene
-    scene.find("cancel_button").button_pressed(nil)
+    stage = wait_for_stage("Incompatible Version")
+    scene = stage.current_scene
+    mouse.click(scene.find("cancel_button"))
     wait_for { !@thread.alive? }
 
     @result.should == false
@@ -118,7 +130,7 @@ describe "Utilitites Production" do
     stage.should_not == nil
     stage.location.should == ["center", "center"]
     stage.size.should == ["400", "auto"]
-    stage.background_color.should == "#FFFFFF"
+    stage.background_color.should == "#ffffffff"
     stage.framed?.should == false
     stage.always_on_top?.should == true
     stage.vital?.should == false
@@ -126,7 +138,7 @@ describe "Utilitites Production" do
 
   it "should load the alert scene" do
     production.load_alert_scene("Some Message")
-    stage = production.theater["Alert"]
+    stage = wait_for_stage("Alert")
     stage.should_not == nil
 
     stage.current_scene.should_not == nil
@@ -139,8 +151,9 @@ describe "Utilitites Production" do
     start_alert
     wait_for { scene_open?("Alert") }
 
-    scene = production.theater["Alert"].current_scene
-    scene.find("ok_button").button_pressed(nil)
+    stage = wait_for_stage("Alert")
+    scene = stage.current_scene
+    mouse.click(scene.find("ok_button"))
 
     wait_for { !@thread.alive? }
     @result.should == true

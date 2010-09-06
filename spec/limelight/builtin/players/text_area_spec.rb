@@ -3,13 +3,13 @@
 
 require File.expand_path(File.dirname(__FILE__) + "/../../../spec_helper")
 require 'limelight/prop'
-require 'limelight/builtin/players/text_area'
+require 'limelight/builtin/players'
 
 describe Limelight::Builtin::Players::TextArea do
 
   before(:each) do
     @prop = Limelight::Prop.new
-    @prop.include_player(Limelight::Builtin::Players::TextArea)
+    Limelight::Player.cast(Limelight::Builtin::Players::TextArea, @prop)
   end
   
   it "should have a JTextArea" do
@@ -20,7 +20,7 @@ describe Limelight::Builtin::Players::TextArea do
     @prop.text = "blah"
     @prop.panel.children[0].text.should == "blah"
     
-    @prop.panel.children[0].text = "harumph"
+    @prop.panel.text = "harumph"
     @prop.text.should == "harumph"
   end
 

@@ -4,14 +4,14 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../../spec_helper")
 require 'limelight/scene'
 require 'limelight/prop'
-require 'limelight/builtin/players/combo_box'
+require 'limelight/builtin/players'
 
 describe Limelight::Builtin::Players::ComboBox do
 
   before(:each) do
     @scene = Limelight::Scene.new(:casting_director => mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new(:scene => @scene)
-    @prop.include_player(Limelight::Builtin::Players::ComboBox)
+    Limelight::Player.cast(Limelight::Builtin::Players::ComboBox, @prop)
   end
   
   it "should have a ComboBox" do

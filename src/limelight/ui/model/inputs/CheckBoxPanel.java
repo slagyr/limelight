@@ -5,7 +5,9 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.EventAction;
 import limelight.ui.events.*;
+import limelight.ui.images.Images;
 import limelight.ui.model.*;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.*;
@@ -40,17 +42,11 @@ public class CheckBoxPanel extends AbstractButtonPanel implements TextAccessor
   {
     if(imagesLoaded)
       return;
-    try
-    {
-      normalImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/checkbox.png"));
-      selectedImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/checkbox_selected.png"));
-      focusImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/checkbox_focus.png"));
-      imagesLoaded = true;
-    }
-    catch(IOException e)
-    {
-      throw new RuntimeException(e);
-    }
+    
+    normalImage = Images.load("checkbox.png");
+    selectedImage = Images.load("checkbox_selected.png");
+    focusImage = Images.load("checkbox_focus.png");
+    imagesLoaded = true;
   }
 
   public void paintOn(Graphics2D graphics)
@@ -91,7 +87,7 @@ public class CheckBoxPanel extends AbstractButtonPanel implements TextAccessor
   {
     return selected;
   }
-  
+
   private static class SelectAction implements EventAction
   {
     private static SelectAction instance = new SelectAction();

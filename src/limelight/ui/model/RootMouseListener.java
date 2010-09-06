@@ -36,18 +36,15 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
   {
     pressedPanel = panelFor(e.getPoint());
     pressedPanel.getEventHandler().dispatch(new MousePressedEvent(pressedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//    pressedPanel.mousePressed(e);
   }
 
   public void mouseReleased(MouseEvent e)
   {
     Panel releasedPanel = panelFor(e.getPoint());
     releasedPanel.getEventHandler().dispatch(new MouseReleasedEvent(releasedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//    releasedPanel.mouseReleased(e);
     if(releasedPanel == pressedPanel)
     {
       releasedPanel.getEventHandler().dispatch(new MouseClickedEvent(releasedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//      releasedPanel.mouseClicked(e);
     }
   }
 
@@ -69,7 +66,6 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
     if(pressedPanel != null)
     {
       pressedPanel.getEventHandler().dispatch(new MouseDraggedEvent(pressedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//      pressedPanel.mouseDragged(e);
     }
   }
 
@@ -79,14 +75,12 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
     if(panel != hooveredPanel)
       transition(panel, e);
     panel.getEventHandler().dispatch(new MouseMovedEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//    panel.mouseMoved(e);
   }
 
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     final Panel panel = panelFor(e.getPoint());
     panel.getEventHandler().dispatch(new limelight.ui.events.MouseWheelEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));
-//    panel.mouseWheelMoved(e);
   }
 
   private void transition(Panel panel, MouseEvent e)
@@ -94,7 +88,6 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
     if(hooveredPanel == null)
     {
       panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//      panel.mouseEntered(e);
       enter(panel, panel, e);
     }
     else if(hooveredPanel.isDescendantOf(panel))
@@ -116,7 +109,6 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
       return;
     enter(descendant.getParent(), ancestor, e);
     descendant.getEventHandler().dispatch(new MouseEnteredEvent(descendant, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//    descendant.mouseEntered(e);
   }
 
   private void exit(Panel descendant, Panel ancestor, MouseEvent e)
@@ -126,7 +118,6 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
       if(descendant != null)
       {
         descendant.getEventHandler().dispatch(new MouseExitedEvent(descendant, e.getModifiers(), e.getPoint(), e.getClickCount()));
-//        descendant.mouseExited(e);
         descendant = descendant.getParent();
       }
     }

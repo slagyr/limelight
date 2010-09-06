@@ -3,18 +3,14 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.styles.ScreenableStyle;
 import limelight.ui.EventAction;
 import limelight.ui.events.ButtonPushedEvent;
-import limelight.ui.events.MouseClickedEvent;
+import limelight.ui.images.Images;
 import limelight.ui.model.*;
 import limelight.ui.RadioButtonGroupMember;
 import limelight.ui.RadioButtonGroup;
-import limelight.util.Box;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import java.io.IOException;
 
 public class RadioButtonPanel extends AbstractButtonPanel implements TextAccessor, RadioButtonGroupMember
 {
@@ -46,17 +42,11 @@ public class RadioButtonPanel extends AbstractButtonPanel implements TextAccesso
   {
     if(imagesLoaded)
       return;
-    try
-    {
-      normalImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/radio_button.png"));
-      selectedImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/radio_button_selected.png"));
-      focusImage = ImageIO.read(getClass().getClassLoader().getResource("limelight/ui/images/radio_button_focus.png"));
-      imagesLoaded = true;
-    }
-    catch(IOException e)
-    {
-      throw new RuntimeException(e);
-    }
+    
+    normalImage = Images.load("radio_button.png");
+    selectedImage = Images.load("radio_button_selected.png");
+    focusImage = Images.load("radio_button_focus.png");
+    imagesLoaded = true;
   }
 
   public void paintOn(Graphics2D graphics)
@@ -95,7 +85,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements TextAccesso
     if(value == selected)
       return;
     this.selected = value;
-    if(selected)
+    if(selected && radioButtonGroup != null)
       radioButtonGroup.buttonSelected(this);
     markAsDirty();
   }
@@ -112,7 +102,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements TextAccesso
     public void invoke(limelight.ui.events.Event event)
     {
       final RadioButtonPanel panel = (RadioButtonPanel) event.getPanel();
-      panel.setSelected(!panel.isSelected());        
+      panel.setSelected(!panel.isSelected());
     }
   }
 }

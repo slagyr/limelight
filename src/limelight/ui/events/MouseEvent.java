@@ -10,13 +10,14 @@ public abstract class MouseEvent extends ModifiableEvent
   public static final int BUTTON2_MASK = ModifiableEvent.ALT_MASK;
   public static final int BUTTON3_MASK = ModifiableEvent.COMMAND_MASK;
 
+  private Point absoluteLocation;
   private Point location;
   private int clickCount;
 
   public MouseEvent(Panel source, int modifiers, Point location, int clickCount)
   {
     super(source, modifiers);
-    this.location = location;
+    this.absoluteLocation = location;
     this.clickCount = clickCount;
   }
 
@@ -28,7 +29,7 @@ public abstract class MouseEvent extends ModifiableEvent
 
   public Point getAbsoluteLocation()
   {
-    return location;
+    return absoluteLocation;
   }
 
   public int getClickCount()
@@ -38,7 +39,19 @@ public abstract class MouseEvent extends ModifiableEvent
 
   public Point getLocation()
   {
-    return new Point(location.x - getPanel().getX(), location.y - getPanel().getY());
+    if(location == null)
+      location = new Point(absoluteLocation.x - getPanel().getAbsoluteBounds().x, absoluteLocation.y - getPanel().getAbsoluteBounds().y);
+    return location;
+  }
+
+  public int getX()
+  {
+    return getLocation().x;
+  }
+
+  public int getY()
+  {
+    return getLocation().y;
   }
 
   public boolean isButton1()
