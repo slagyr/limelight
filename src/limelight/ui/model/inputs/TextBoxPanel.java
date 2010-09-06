@@ -5,6 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
 import limelight.ui.model.inputs.keyProcessors.*;
+import limelight.util.Colors;
 
 // TODO MDM - Need to support password fields
 
@@ -23,6 +24,7 @@ public class TextBoxPanel extends TextInputPanel
     style.setDefault(Style.HEIGHT, 28);
     style.setDefault(Style.VERTICAL_ALIGNMENT, "center");
     style.setDefault(Style.CURSOR, "text");
+    style.setDefault(Style.BACKGROUND_COLOR, "white");
     setBorderStyleDefaults(style);
     setPaddingDefaults(style);
   }
