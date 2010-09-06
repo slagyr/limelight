@@ -90,6 +90,13 @@ class ComboBoxPopup
     popupList.getStyle().setX(comboBox.getAbsoluteLocation().x);
     popupList.getStyle().setY(comboBox.getAbsoluteLocation().y);
     popupList.getStyle().setWidth(comboBox.getWidth());
+    popupList.getEventHandler().add(MouseClickedEvent.class, new EventAction()
+    {
+      public void invoke(Event event)
+      {
+        // eat the event so the curtains won't get it
+      }
+    });
   }
 
   private void createCurtains()

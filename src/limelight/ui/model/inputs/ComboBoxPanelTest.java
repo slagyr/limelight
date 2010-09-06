@@ -192,7 +192,7 @@ public class ComboBoxPanelTest
     panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_ENTER, 0));
 
     assertEquals("2", panel.getText());
-    assertEquals(null, panel.getPopup());
+    assertEquals(false, isPopupOpen());
   }
   
   @Test
@@ -203,7 +203,24 @@ public class ComboBoxPanelTest
 
     panel.getEventHandler().dispatch(new FocusLostEvent(panel));
 
-    assertEquals(null, panel.getPopup());
+    assertEquals(false, isPopupOpen());
+  }
+  
+  @Test
+  public void clickingOnListDoesNotCloseThePopup() throws Exception
+  {
+    panel.setOptions(1, 2, 3);
+    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+
+    final PropPanel popupList = panel.getPopup().getPopupList();
+    popupList.getEventHandler().dispatch(new MouseClickedEvent(popupList, 0, null, 0));
+
+    assertEquals(true, isPopupOpen());
+  }
+
+  private boolean isPopupOpen()
+  {
+    return panel.getPopup() != null;
   }
 }
 
