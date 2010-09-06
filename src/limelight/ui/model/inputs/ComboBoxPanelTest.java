@@ -225,6 +225,15 @@ public class ComboBoxPanelTest
     assertEquals(true, isPopupOpen());
   }
 
+  @Test
+  public void acquiresFocusWhenPressed() throws Exception
+  {
+    panel.setOptions(1, 2, 3);
+    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+
+    assertEquals(true, panel.hasFocus());
+  }
+
   private boolean isPopupOpen()
   {
     return panel.getPopup() != null;
