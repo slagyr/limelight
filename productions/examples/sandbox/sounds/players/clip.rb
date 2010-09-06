@@ -1,10 +1,6 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-module Clip
-
-  def mouse_clicked(e)
-    play_sound("sounds/#{text}.au")
-  end
-
+on_mouse_clicked do
+  play_sound("sounds/#{text}.au")
 end

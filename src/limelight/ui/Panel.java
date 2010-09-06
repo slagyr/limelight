@@ -26,8 +26,6 @@ public interface Panel extends Iterable<Panel>
   Point getAbsoluteLocation();
   Box getAbsoluteBounds();
   Box getBoxInsidePadding();
-  boolean containsAbsolutePoint(Point point);
-  boolean containsRelativePoint(Point point);
   Panel getOwnerOfPoint(Point point);
   void clearCache();
 
@@ -63,8 +61,6 @@ public interface Panel extends Iterable<Panel>
   boolean needsLayout();
   void markAsNeedingLayout();
   void markAsDirty();
-
-  void keyPressed(KeyEvent e);
 
   boolean isIlluminated();
   void illuminate();

@@ -2,14 +2,14 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../../../spec_helper")
-require 'limelight/builtin/players/image'
+require 'limelight/builtin/players'
 require 'limelight/prop'
 
 describe Limelight::Builtin::Players::Image do
 
   before(:each) do
     @prop = Limelight::Prop.new
-    @prop.include_player(Limelight::Builtin::Players::Image)
+    Limelight::Player.cast(Limelight::Builtin::Players::Image, @prop)
   end
 
   it "should have a ImagePanel" do

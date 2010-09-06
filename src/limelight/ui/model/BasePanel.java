@@ -102,13 +102,13 @@ public abstract class BasePanel implements Panel
       int x = this.x;
       int y = this.y;
 
-      Panel p = parent;
-      while(p != null)
+      if(parent != null)
       {
-        x += p.getX();
-        y += p.getY();
-        p = p.getParent();
+        Point absoluteParentLocation = parent.getAbsoluteLocation();
+        x += absoluteParentLocation.x;
+        y += absoluteParentLocation.y;
       }
+
       absoluteLocation = new Point(x, y);
     }
     return absoluteLocation;
@@ -138,23 +138,6 @@ public abstract class BasePanel implements Panel
 
     if(parent != null && parent.isIlluminated())
       illuminate();
-  }
-
-  public boolean containsRelativePoint(Point point)
-  {
-    return point.x >= x &&
-        point.x < x + width &&
-        point.y >= y &&
-        point.y < y + height;
-  }
-
-  public boolean containsAbsolutePoint(Point point)
-  {
-    Point absoluteLocation = getAbsoluteLocation();
-    return point.x >= absoluteLocation.x &&
-        point.x < absoluteLocation.x + width &&
-        point.y >= absoluteLocation.y &&
-        point.y < absoluteLocation.y + height;
   }
 
   //TODO  MDM Change my return type to RootPanel
@@ -213,11 +196,6 @@ public abstract class BasePanel implements Panel
   public EventHandler getEventHandler()
   {
     return eventHandler;
-  }
-
-  public void keyPressed(KeyEvent e)
-  {
-    parent.keyPressed(e);
   }
 
   public void add(Panel panel)
@@ -331,7 +309,6 @@ public abstract class BasePanel implements Panel
 
   public Panel getOwnerOfPoint(Point point)
   {
-    point = new Point(point.x - getX(), point.y - getY());
     if(children.size() > 0)
     {
       synchronized(children)
@@ -339,12 +316,12 @@ public abstract class BasePanel implements Panel
         for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
         {
           Panel panel = iterator.previous();
-          if(panel.isFloater() && panel.containsRelativePoint(point))
+          if(panel.isFloater() && panel.getAbsoluteBounds().contains(point))
             return panel.getOwnerOfPoint(point);
         }
         for(Panel panel : children)
         {
-          if(!panel.isFloater() && panel.containsRelativePoint(point))
+          if(!panel.isFloater() && panel.getAbsoluteBounds().contains(point))
             return panel.getOwnerOfPoint(point);
         }
       }

@@ -41,9 +41,10 @@ module Production #:nodoc:
   end
 
   def alert(message)
+    @alert_response = nil
     @alert_monitor = @monitor.new_cond
     load_alert_scene(message.to_s)
-    @monitor.synchronize{ @alert_monitor.wait } if @alert_response.nil?
+    @monitor.synchronize{ @alert_monitor.wait }
     @alert_stage.close
     return @alert_response
   end

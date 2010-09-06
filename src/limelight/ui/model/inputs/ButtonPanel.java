@@ -7,14 +7,14 @@ import com.android.ninepatch.NinePatch;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.ui.EventAction;
 import limelight.ui.events.*;
+import limelight.ui.images.Images;
 import limelight.ui.model.*;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
-import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.font.TextLayout;
-import java.io.IOException;
 
 public class ButtonPanel extends AbstractButtonPanel implements TextAccessor
 {
@@ -24,24 +24,9 @@ public class ButtonPanel extends AbstractButtonPanel implements TextAccessor
 
   static
   {
-    try
-    {
-      ClassLoader classLoader = ButtonPanel.class.getClassLoader();
-
-      normalPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/button.9.png")), true, true);
-      selectedPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/button_selected.9.png")), true, true);
-      focusPatch = NinePatch.load(ImageIO.read(classLoader.getResource("limelight/ui/images/button_focus.9.png")), true, true);
-    }
-    catch(IOException e)
-    {
-      throw new RuntimeException("Could not load ButtonPanel images", e);
-    }
-    catch(Exception e)
-    {
-      System.err.println("e = " + e);
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
+    normalPatch = NinePatch.load(Images.load("button.9.png"), true, true);
+    selectedPatch = NinePatch.load(Images.load("button_selected.9.png"), true, true);
+    focusPatch = NinePatch.load(Images.load("button_focus.9.png"), true, true);
   }
 
   private static Font font = new Font("Arial", Font.BOLD, 12); // TODO MDM should pull font from style
@@ -114,7 +99,7 @@ public class ButtonPanel extends AbstractButtonPanel implements TextAccessor
 
     public void invoke(limelight.ui.events.Event event)
     {
-      ButtonPanel panel = (ButtonPanel)event.getPanel();
+      ButtonPanel panel = (ButtonPanel) event.getPanel();
       panel.activePatch = selectedPatch;
       panel.markAsDirty();
     }
@@ -126,7 +111,7 @@ public class ButtonPanel extends AbstractButtonPanel implements TextAccessor
 
     public void invoke(limelight.ui.events.Event event)
     {
-      ButtonPanel panel = (ButtonPanel)event.getPanel();
+      ButtonPanel panel = (ButtonPanel) event.getPanel();
       panel.activePatch = normalPatch;
       panel.markAsDirty();
     }

@@ -2,8 +2,8 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../lib/init")
-
 require 'spec'
+require 'limelight/mouse'
 
 Limelight::Main.new.configureTestContext
 context = Limelight::Context.instance
@@ -52,6 +52,24 @@ class TestDir
   end
 end
 
+module Spec #:nodoc:
+  module Example
+    class ExampleGroup
+
+      def mouse
+        if @mouse.nil?
+          @mouse = Limelight::Mouse.new
+        end
+        return @mouse
+      end
+
+    end
+  end
+end
+
+
+
+# TODO Delete me
 class MouseEvent
 
   attr_accessor :x, :y

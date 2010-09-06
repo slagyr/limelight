@@ -86,12 +86,13 @@ describe Limelight::DSL::PropBuilder do
 
   it "should allow defining events through constructor" do
     root = Limelight::build_props(@scene) do
-      child :on_mouse_entered => "return [self, event]"
+      child :on_mouse_clicked => "$RECIPIENT = self"
     end
     root.illuminate
 
     child = root.children[0]
-    child.mouse_entered("blah").should == [child, "blah"]
+    mouse.click(child)
+    $RECIPIENT.should == child
   end
 
   it "should allow scene configuration" do
@@ -165,8 +166,10 @@ describe Limelight::DSL::PropBuilder do
       root = Limelight::build_props(@scene, :id => 321, :build_loader => loader) do
         __install "external.rb"
       end
+      "exception should have been thrown".should == nil?
     rescue Limelight::DSL::BuildException => e
-      e.message.include?("external.rb:1: (eval):1: syntax error, unexpected end-of-file").should == true
+      e.message.include?("external.rb:1: (eval):1:").should == true
+      e.message.include?("unexpected end-of-file").should == true
     end
   end
 

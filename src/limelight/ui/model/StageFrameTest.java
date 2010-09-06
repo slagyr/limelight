@@ -292,11 +292,11 @@ public class StageFrameTest extends Assert
   {
     frame.setBackgroundColor("blue");
     assertEquals(Colors.resolve("blue"), frame.getBackground());
-    assertEquals("#0000FF", frame.getBackgroundColor());
+    assertEquals("#0000ffff", frame.getBackgroundColor());
 
     frame.setBackgroundColor("#abc");
     assertEquals(Colors.resolve("#abc"), frame.getBackground());
-    assertEquals("#AABBCC", frame.getBackgroundColor());
+    assertEquals("#aabbccff", frame.getBackgroundColor());
   }
 
   @Test

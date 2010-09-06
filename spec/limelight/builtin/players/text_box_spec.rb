@@ -3,13 +3,13 @@
 
 require File.expand_path(File.dirname(__FILE__) + "/../../../spec_helper")
 require 'limelight/prop'
-require 'limelight/builtin/players/text_box'
+require 'limelight/builtin/players'
 
 describe Limelight::Builtin::Players::TextBox do
 
   before(:each) do
     @prop = Limelight::Prop.new
-    @prop.include_player(Limelight::Builtin::Players::TextBox)
+    Limelight::Player.cast(Limelight::Builtin::Players::TextBox, @prop)
   end
 
   it "should have a TextField" do
@@ -20,7 +20,7 @@ describe Limelight::Builtin::Players::TextBox do
     @prop.text = "blah"
     @prop.panel.children[0].text.should == "blah"
     
-    @prop.panel.children[0].text = "harumph"
+    @prop.panel.text = "harumph"
     @prop.text.should == "harumph"
   end
 

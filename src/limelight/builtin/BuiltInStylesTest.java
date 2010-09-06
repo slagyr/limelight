@@ -24,7 +24,7 @@ public class BuiltInStylesTest
   @Test
   public void hasCurtains() throws Exception
   {
-    Style curtains = styles.get("limelight_builtin__curtains");
+    Style curtains = styles.get("limelight_builtin_curtains");
 
     assertNotNull(curtains);
     assertEquals("on", curtains.getFloat());
@@ -33,7 +33,7 @@ public class BuiltInStylesTest
   @Test
   public void hasComboBoxPopupList() throws Exception
   {
-    Style popup = styles.get("limelight_builtin__combo_box_popup_list");
+    Style popup = styles.get("limelight_builtin_combo_box_popup_list");
 
     assertNotNull(popup);
     assertEquals("on", popup.getFloat());
@@ -42,7 +42,7 @@ public class BuiltInStylesTest
   @Test
   public void hasComboBoxListItem() throws Exception
   {
-    Style popup = styles.get("limelight_builtin__combo_box_popup_list_item");
+    Style popup = styles.get("limelight_builtin_combo_box_popup_list_item");
 
     assertNotNull(popup);
     assertEquals("10", popup.getLeftPadding());

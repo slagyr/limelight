@@ -1,12 +1,11 @@
 package limelight.ui.model.inputs.painting;
 
+import limelight.ui.images.Images;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class ScrollBarPainter
 {
@@ -33,40 +32,25 @@ public class ScrollBarPainter
 
   static
   {
-    try
-    {
-      ClassLoader classLoader = TextPanelBorderPainter.class.getClassLoader();
+    horizontalImages = new ScrollBarImages();
+    horizontalImages.background = Images.load("scroll_horizontal_background.png");
+    horizontalImages.buttons = Images.load("scroll_horizontal_buttons.png");
+    horizontalImages.buttonsInsideSelected = Images.load("scroll_horizontal_buttons_left_selected.png");
+    horizontalImages.buttonsOutsideSelected = Images.load("scroll_horizontal_buttons_right_selected.png");
+    horizontalImages.cap = Images.load("scroll_horizontal_cap.png");
+    horizontalImages.sliderCapInside = Images.load("scroll_horizontal_gem_cap_right.png");
+    horizontalImages.sliderCapOutside = Images.load("scroll_horizontal_gem_cap_left.png");
+    horizontalImages.sliderFiller = Images.load("scroll_horizontal_gem_filler.png");
 
-      horizontalImages = new ScrollBarImages();
-      horizontalImages.background = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_background.png"));
-      horizontalImages.buttons = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_buttons.png"));
-      horizontalImages.buttonsInsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_buttons_left_selected.png"));
-      horizontalImages.buttonsOutsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_buttons_right_selected.png"));
-      horizontalImages.cap = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_cap.png"));
-      horizontalImages.sliderCapInside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_cap_right.png"));
-      horizontalImages.sliderCapOutside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_cap_left.png"));
-      horizontalImages.sliderFiller = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_horizontal_gem_filler.png"));
-
-      verticalImages = new ScrollBarImages();
-      verticalImages.background = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_background.png"));
-      verticalImages.buttons = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons.png"));
-      verticalImages.buttonsInsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_up_selected.png"));
-      verticalImages.buttonsOutsideSelected = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_buttons_down_selected.png"));
-      verticalImages.cap = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_cap.png"));
-      verticalImages.sliderCapInside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_bottom.png"));
-      verticalImages.sliderCapOutside = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_cap_top.png"));
-      verticalImages.sliderFiller = ImageIO.read(classLoader.getResource("limelight/ui/images/scroll_vertical_gem_filler.png"));
-    }
-    catch(IOException e)
-    {
-      throw new RuntimeException("Could not load ScrollBar images", e);
-    }
-    catch(Exception e)
-    {
-      System.err.println("e = " + e);
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
+    verticalImages = new ScrollBarImages();
+    verticalImages.background = Images.load("scroll_vertical_background.png");
+    verticalImages.buttons = Images.load("scroll_vertical_buttons.png");
+    verticalImages.buttonsInsideSelected = Images.load("scroll_vertical_buttons_up_selected.png");
+    verticalImages.buttonsOutsideSelected = Images.load("scroll_vertical_buttons_down_selected.png");
+    verticalImages.cap = Images.load("scroll_vertical_cap.png");
+    verticalImages.sliderCapInside = Images.load("scroll_vertical_gem_cap_bottom.png");
+    verticalImages.sliderCapOutside = Images.load("scroll_vertical_gem_cap_top.png");
+    verticalImages.sliderFiller = Images.load("scroll_vertical_gem_filler.png");
   }
 
   public int getOutsideCusion()
@@ -101,7 +85,7 @@ public class ScrollBarPainter
     else
       return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
   }
-  
+
   public Box getDecreasingBox(ScrollBarPanel scrollBar)
   {
     Box bounds = scrollBar.getBoundingBox();
@@ -157,7 +141,7 @@ public class ScrollBarPainter
     ScrollBarImages images = horizontalImages;
     for(int x = 0; x < bounds.width; x += images.background.getWidth())
       graphics.drawImage(images.background, x, 0, null);
-    
+
     if(scrollBar.getSliderSize() >= scrollBar.getTrackSize())
       return;
 

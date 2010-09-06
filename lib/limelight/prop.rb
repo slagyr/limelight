@@ -18,23 +18,6 @@ module Limelight
   class Prop
 
     class << self
-
-      def event(event_symbol)
-        @events ||= []
-        @events << event_symbol unless @events.include?(event_symbol)
-        define_method(event_symbol) { |event| } # do nothing by default
-      end
-
-      def events
-        return @events
-      end
-
-      def event2(event_symbol)
-        @events ||= []
-        @events << event_symbol unless @events.include?(event_symbol)
-        define_method("accepts_#{event_symbol}".to_sym) { return self.respond_to?(event_symbol) }
-      end
-
       def panel_class #:nodoc:
         return UI::Model::PropPanel
       end
@@ -87,12 +70,12 @@ module Limelight
     #      child2
     #    end
     #
-    def build(options = {}, &block)
+    def build(options = {}, & block)
       require 'limelight/dsl/prop_builder'
       builder = Limelight::DSL::PropBuilder.new(self)
       builder.__install_instance_variables(options)
       builder.__loader__ = scene.loader
-      builder.instance_eval(&block)
+      builder.instance_eval(& block)
     end
 
     # Removes a child Prop.  The child Prop will be parentless after removal.
@@ -135,9 +118,9 @@ module Limelight
 
     # A hook to invoke behavior after a Prop is painted.
     #
-    def after_painting(flag = true, &block)
+    def after_painting(flag = true, & block)
       if flag
-        @panel.after_paint_action = PaintAction.new(&block)
+        @panel.after_paint_action = PaintAction.new(& block)
       else
         @panel.after_paint_action = nil
       end
@@ -210,7 +193,7 @@ module Limelight
       @name = more_options.delete(:name) if more_options.has_key?(:name)
       @additional_styles = more_options.delete(:styles) if more_options.has_key?(:styles)
       panel.setStyles("#{@name}, #{@additional_styles}")
-      
+
       @options.merge!(more_options)
     end
 
@@ -255,7 +238,7 @@ module Limelight
     #
     # This above example will cause the Prop's border to grow until it is 60 pixels wide.
     #
-    def animate(options={}, &block)
+    def animate(options={}, & block)
       animation = Animation.new(self, block, options)
       animation.start
       return animation
@@ -282,21 +265,61 @@ module Limelight
 
     # GUI Events ##########################################
 
-    # TODO MDM - This may be very inefficient.  If seems like these methods are generated for each instance of prop.
-    event2 :mouse_clicked
-    event :mouse_entered
-    event :mouse_exited
-    event2 :mouse_pressed
-    event2 :mouse_released
-    event :mouse_dragged
-    event :mouse_moved
-    event :key_typed
-    event :key_pressed
-    event :key_released
-    event :focus_gained
-    event :focus_lost
-    event :button_pressed
-    event :value_changed
+    def on_mouse_pressed(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MousePressedEvent, action)
+    end
+
+    def on_mouse_released(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MouseReleasedEvent, action)
+    end
+
+    def on_mouse_clicked(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MouseClickedEvent, action)
+    end
+
+    def on_mouse_moved(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MouseMovedEvent, action)
+    end
+
+    def on_mouse_dragged(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MouseDraggedEvent, action)
+    end
+
+    def on_mouse_entered(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MouseEnteredEvent, action)
+    end
+
+    def on_mouse_exited(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MouseExitedEvent, action)
+    end
+
+    def on_mouse_wheel(& action)
+      @panel.event_handler.add(Limelight::UI::Events::MouseWheelEvent, action)
+    end
+
+    def on_key_pressed(& action)
+      @panel.event_handler.add(Limelight::UI::Events::KeyPressedEvent, action)
+    end
+
+    def on_key_released(& action)
+      @panel.event_handler.add(Limelight::UI::Events::KeyReleasedEvent, action)
+    end
+
+    def on_char_typed(& action)
+      @panel.event_handler.add(Limelight::UI::Events::CharTypedEvent, action)
+    end
+
+    def on_focus_gained(& action)
+      @panel.event_handler.add(Limelight::UI::Events::FocusGainedEvent, action)
+    end
+
+    def on_focus_lost(& action)
+      @panel.event_handler.add(Limelight::UI::Events::FocusLostEvent, action)
+    end
+
+    def on_button_pushed(& action)
+      @panel.event_handler.add(Limelight::UI::Events::ButtonPushedEvent, action)
+    end
 
     # TODO Try to get me out of public scope
     #
@@ -345,12 +368,12 @@ module Limelight
 
     def is_event_setter(symbol)
       string_value = symbol.to_s
-      return string_value[0..2] == "on_" && self.class.events.include?(string_value[3..-1].to_sym)
+      return string_value[0..2] == "on_" && self.respond_to?(symbol)
     end
 
     def define_event(symbol, value)
       event_name = symbol.to_s[3..-1]
-      self.instance_eval "def #{event_name}(event); #{value}; end"
+      self.send(symbol) { eval(value) };
     end
 
   end

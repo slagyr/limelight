@@ -4,7 +4,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../../spec_helper")
 require 'limelight/scene'
 require 'limelight/prop'
-require 'limelight/builtin/players/radio_button'
+require 'limelight/builtin/players'
 
 describe Limelight::Builtin::Players::RadioButton do
 
@@ -12,7 +12,7 @@ describe Limelight::Builtin::Players::RadioButton do
     @scene = Limelight::Scene.new(:casting_director => mock("caster", :fill_cast => nil))
     @prop = Limelight::Prop.new
     @scene << @prop
-    @prop.include_player(Limelight::Builtin::Players::RadioButton)
+    Limelight::Player.cast(Limelight::Builtin::Players::RadioButton, @prop)
   end
   
   it "should have a RadioButton" do

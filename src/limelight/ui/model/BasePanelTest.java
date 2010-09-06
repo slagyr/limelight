@@ -72,26 +72,6 @@ public class BasePanelTest extends Assert
   }
 
   @Test
-  public void shouldContainsRealativePoint() throws Exception
-  {
-    panel.setLocation(100, 200);
-    panel.setSize(300, 400);
-
-    assertEquals(false, panel.containsRelativePoint(new Point(0, 0)));
-    assertEquals(false, panel.containsRelativePoint(new Point(1000, 1000)));
-    assertEquals(false, panel.containsRelativePoint(new Point(99, 400)));
-    assertEquals(false, panel.containsRelativePoint(new Point(400, 400)));
-    assertEquals(false, panel.containsRelativePoint(new Point(200, 199)));
-    assertEquals(false, panel.containsRelativePoint(new Point(200, 600)));
-
-    assertEquals(true, panel.containsRelativePoint(new Point(200, 400)));
-    assertEquals(true, panel.containsRelativePoint(new Point(100, 400)));
-    assertEquals(true, panel.containsRelativePoint(new Point(399, 400)));
-    assertEquals(true, panel.containsRelativePoint(new Point(200, 200)));
-    assertEquals(true, panel.containsRelativePoint(new Point(200, 599)));
-  }
-
-  @Test
   public void shouldIsAncestor() throws Exception
   {
     createFamilyTree();
@@ -140,15 +120,6 @@ public class BasePanelTest extends Assert
     createFamilyTree();
 
     assertEquals(null, parent.getClosestCommonAncestor(new MockPanel()));
-
-//    try
-//    {
-//      parent.getClosestCommonAncestor(new MockPanel());
-//      fail("An exception is expected");
-//    }
-//    catch(LimelightError e)
-//    {
-//    }
   }
 
   @Test
@@ -163,28 +134,6 @@ public class BasePanelTest extends Assert
     assertEquals(new Point(1, 10), parent.getAbsoluteLocation());
     assertEquals(new Point(3, 30), child.getAbsoluteLocation());
     assertEquals(new Point(8, 80), grandChild.getAbsoluteLocation());
-  }
-
-  @Test
-  public void shouldContainsAbsolutePoint() throws Exception
-  {
-    createFamilyTree();
-
-    parent.setLocation(1, 10);
-    child.setLocation(2, 20);
-    grandChild.setLocation(5, 50);
-    grandChild.setSize(10, 10);
-
-    assertEquals(false, grandChild.containsAbsolutePoint(new Point(0, 0)));
-    assertEquals(false, grandChild.containsAbsolutePoint(new Point(100, 100)));
-    assertEquals(false, grandChild.containsAbsolutePoint(new Point(7, 85)));
-    assertEquals(false, grandChild.containsAbsolutePoint(new Point(18, 85)));
-    assertEquals(false, grandChild.containsAbsolutePoint(new Point(15, 79)));
-    assertEquals(false, grandChild.containsAbsolutePoint(new Point(15, 90)));
-
-    assertEquals(true, grandChild.containsAbsolutePoint(new Point(8, 80)));
-    assertEquals(true, grandChild.containsAbsolutePoint(new Point(17, 89)));
-    assertEquals(true, grandChild.containsAbsolutePoint(new Point(15, 85)));
   }
 
   @Test
