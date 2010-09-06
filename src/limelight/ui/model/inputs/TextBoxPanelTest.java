@@ -35,6 +35,7 @@ public class TextBoxPanelTest extends Assert
   {
     assertEquals("150", panel.getStyle().getWidth());
     assertEquals("28", panel.getStyle().getHeight());
+    assertEquals("#ffffffff", panel.getStyle().getBackgroundColor());
   }
 
   @Test

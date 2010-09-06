@@ -21,6 +21,7 @@ public class TextAreaPanel extends TextInputPanel
     style.setDefault(Style.WIDTH, 150);
     style.setDefault(Style.HEIGHT, 75);
     style.setDefault(Style.CURSOR, "text");
+    style.setDefault(Style.BACKGROUND_COLOR, "white");
     setBorderStyleDefaults(style);
     setPaddingDefaults(style);
   }
