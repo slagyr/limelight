@@ -126,6 +126,10 @@ public class ComboBoxPanel extends AbstractButtonPanel
     public void invoke(limelight.ui.events.Event event)
     {
       final ComboBoxPanel comboBox = (ComboBoxPanel) event.getPanel();
+      if(!comboBox.hasFocus() && comboBox.getRoot() != null)
+      {
+        comboBox.getRoot().getKeyListener().focusOn(comboBox);
+      }
       if(comboBox.getPopup() == null)
       {
         final ComboBoxPopup popup = new ComboBoxPopup(comboBox);
