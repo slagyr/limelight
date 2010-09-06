@@ -47,6 +47,13 @@ public class ButtonPanelTest
   {
     assertEquals(true, parent.isSterilized());
   }
+
+  @Test
+  public void shouldDefaultStyles() throws Exception
+  {
+    assertEquals("128", panel.getStyle().getWidth());
+    assertEquals("27", panel.getStyle().getHeight());
+  }
   
   @Test
   public void pressingMouse() throws Exception

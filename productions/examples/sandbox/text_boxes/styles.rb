@@ -31,3 +31,6 @@ sample {
   horizontal_alignment :center
 }
 
+input {
+  width :auto
+}

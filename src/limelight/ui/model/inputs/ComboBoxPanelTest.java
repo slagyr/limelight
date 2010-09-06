@@ -28,7 +28,7 @@ public class ComboBoxPanelTest
     parent.add(panel);
 
     root = new MockRootPanel();
-    root.add(panel);
+    root.add(parent);
     root.styleStore = BuiltInStyles.all();
   }
 
@@ -57,6 +57,13 @@ public class ComboBoxPanelTest
   public void settingParentSteralizesParent() throws Exception
   {
     assertEquals(true, parent.isSterilized());
+  }
+
+  @Test
+  public void shouldDefaultStyles() throws Exception
+  {   
+    assertEquals("128", panel.getStyle().getWidth());
+    assertEquals("27", panel.getStyle().getHeight());
   }
 
   @Test

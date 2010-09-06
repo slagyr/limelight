@@ -91,11 +91,6 @@ public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
     return panel.getStyle();
   }
 
-  public void doLayout()
-  {
-    TextPanelLayout.instance.doLayout(this);
-  }
-
   public Layout getDefaultLayout()
   {
     return TextPanelLayout.instance;
