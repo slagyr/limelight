@@ -22,6 +22,12 @@ public abstract class MouseEvent extends ModifiableEvent
   }
 
   @Override
+  public String toString()
+  {
+    return super.toString() + " absLocation=" + getAbsoluteLocation() + " clickCount=" + clickCount; 
+  }
+
+  @Override
   public boolean isInheritable()
   {
     return true;

@@ -272,6 +272,27 @@ public class PropPanelTest extends Assert
   }
 
   @Test
+  public void wheelEventsArePassedToParentIfTheresNoScrollbar() throws Exception
+  {
+    PropPanel child = new PropPanel(new MockProp());
+    panel.add(child);
+
+    panel.addVerticalScrollBar();
+    panel.getVerticalScrollbar().configure(100, 200);
+    panel.addHorizontalScrollBar();
+    panel.getHorizontalScrollbar().configure(100, 200);
+
+    int modifer = 0;
+    int scrollAmount = 8;
+    int wheelRotation = 2;
+
+    child.getEventHandler().dispatch(new MouseWheelEvent(child, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation));
+
+    assertEquals(16, panel.getVerticalScrollbar().getValue());
+    assertEquals(0, panel.getHorizontalScrollbar().getValue());
+  }
+
+  @Test
   public void shouldPlayAudioFile() throws Exception
   {
     MockAudioPlayer audioPlayer = new MockAudioPlayer();

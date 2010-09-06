@@ -50,4 +50,10 @@ public class MouseWheelEvent extends MouseEvent
   {
     return scrollAmount * wheelRotation;
   }
+
+  @Override
+  public String toString()
+  {
+    return super.toString() + " scrollType=" + scrollType + " scrollAmount=" + scrollAmount + " wheelRotation=" + wheelRotation;
+  }
 }

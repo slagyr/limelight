@@ -12,6 +12,12 @@ public abstract class Event
     this.panel = source;
   }
 
+  @Override
+  public String toString()
+  {
+    return getClass().getSimpleName() + ": panel=" + getPanel(); 
+  }
+
   public Panel getPanel()
   {
     return panel;
@@ -30,5 +36,11 @@ public abstract class Event
   public boolean isInheritable()
   {
     return false;
+  }
+
+  public Event withPanel(Panel panel)
+  {
+    this.panel = panel;
+    return this;
   }
 }
