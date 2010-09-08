@@ -27,7 +27,10 @@ public abstract class AbstractButtonPanel extends InputPanel
 
     public void invoke(Event event)
     {
-      if(!event.isConsumed() && isPushEvent(event))
+      if(event.isConsumed())
+        return;
+
+      if(isPushEvent(event))
       {
         final Panel panel = event.getRecipient();
         new ButtonPushedEvent(panel).dispatch(panel);

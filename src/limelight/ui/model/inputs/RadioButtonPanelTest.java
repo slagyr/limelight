@@ -71,4 +71,14 @@ public class RadioButtonPanelTest
 
     assertEquals(true, panel.isSelected());
   }
+
+  @Test
+  public void consumedPushDoesNothing() throws Exception
+  {
+    assertEquals(false, panel.isSelected());
+
+    new ButtonPushedEvent(panel).consumed().dispatch(panel);
+
+    assertEquals(false, panel.isSelected());
+  }
 }

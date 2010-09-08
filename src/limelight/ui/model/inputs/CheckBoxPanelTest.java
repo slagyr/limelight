@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.events.ButtonPushedEvent;
 import limelight.ui.events.MouseClickedEvent;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
@@ -61,13 +62,23 @@ public class CheckBoxPanelTest
   }
 
   @Test
-  public void pushingSelectesCheckBox() throws Exception
+  public void pushingSelectsCheckBox() throws Exception
   {
     assertEquals(false, panel.isSelected());
 
     new MouseClickedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(true, panel.isSelected());
+  }
+
+  @Test
+  public void consumedPushesDoNothing() throws Exception
+  {
+    assertEquals(false, panel.isSelected());
+
+    new ButtonPushedEvent(panel).consumed().dispatch(panel);
+
+    assertEquals(false, panel.isSelected());
   }
 
   

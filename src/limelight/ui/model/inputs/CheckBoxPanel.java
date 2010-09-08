@@ -88,6 +88,9 @@ public class CheckBoxPanel extends AbstractButtonPanel
 
     public void invoke(limelight.ui.events.Event event)
     {
+      if(event.isConsumed())
+        return;
+
       final CheckBoxPanel panel = (CheckBoxPanel) event.getRecipient();
       panel.setSelected(!panel.isSelected());
     }

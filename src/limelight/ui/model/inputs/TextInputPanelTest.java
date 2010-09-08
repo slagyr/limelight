@@ -4,15 +4,15 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.api.MockProp;
-import limelight.ui.events.CharTypedEvent;
-import limelight.ui.events.KeyEvent;
-import limelight.ui.events.KeyPressedEvent;
+import limelight.ui.events.*;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
 
 public class TextInputPanelTest extends Assert
 {
@@ -47,7 +47,7 @@ public class TextInputPanelTest extends Assert
     root.getKeyListener().focusOn(panel);
 
     assertEquals(true, panel.hasFocus());
-    assertEquals(true, panel.cursorThread.isAlive());
+    assertEquals(true, panel.caretThread.isAlive());
     assertEquals(true, root.dirtyRegions.contains(panel.getBoundingBox()));
     assertEquals(true, root.dirtyRegions.contains(parent.getBoundingBox()));
   }
@@ -61,17 +61,9 @@ public class TextInputPanelTest extends Assert
     root.getKeyListener().focusOn(root);
 
     assertEquals(false, panel.hasFocus());
-    assertEquals(true, panel.cursorThread.isAlive());
+    assertEquals(true, panel.caretThread.isAlive());
     assertEquals(true, root.dirtyRegions.contains(panel.getBoundingBox()));
     assertEquals(true, root.dirtyRegions.contains(parent.getBoundingBox()));
-  }
-
-  @Test
-  public void willRememberTheLastKeyPressed()
-  {
-    new KeyPressedEvent(panel, 0, 10, 0).dispatch(panel);
-
-    assertEquals(10, panel.getLastKeyPressed());
   }
   
   @Test
@@ -145,6 +137,62 @@ public class TextInputPanelTest extends Assert
     new CharTypedEvent(panel, 0, '\n').dispatch(panel);
 
     assertEquals("\nSome Text", model.getText());
+  }
+
+  @Test
+  public void consumedMousePressEventsDoNothing() throws Exception
+  {
+    new MousePressedEvent(panel, 0, new Point(0, 0), 3).consumed().dispatch(panel);
+    
+    assertEquals(false, model.hasSelection());
+  }
+  
+  @Test
+  public void consumedMouseDragEventsDoNothing() throws Exception
+  {
+    new MousePressedEvent(panel, 0, new Point(0, 0), 1).dispatch(panel);
+    new MouseDraggedEvent(panel, 0, new Point(25, 5), 1).consumed().dispatch(panel);
+
+    assertEquals(false, model.hasSelection());
+  }
+
+  @Test
+  public void consumedFocusGainedEventsShouldNotStartTheCaret() throws Exception
+  {
+    new FocusGainedEvent(panel).consumed().dispatch(panel);
+
+    assertEquals(false, panel.isCaretBlinking());
+  }
+  
+  @Test
+  public void consumedFocusLostEventsShouldNotStopTheCaret() throws Exception
+  {
+    new FocusGainedEvent(panel).dispatch(panel);
+    new FocusLostEvent(panel).consumed().dispatch(panel);
+
+    assertEquals(true, panel.isCaretBlinking());
+  }
+
+  @Test
+  public void consumedKeyPressEventsDoNothing() throws Exception
+  {
+    panel = new TextBoxPanel();
+    root.add(panel);
+    panel.getModel().setText("Some Text");
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_BACK_SPACE, 0).consumed().dispatch(panel);
+
+    assertEquals("Some Text", panel.getText());
+  }
+
+  @Test
+  public void consumedCharTypedEventsDoNothing() throws Exception
+  {
+    panel = new TextBoxPanel();
+    root.add(panel);
+    panel.getModel().setText("Some Text");
+    new CharTypedEvent(panel, 0, 'A').consumed().dispatch(panel);
+
+    assertEquals("Some Text", panel.getText());
   }
 
 }
