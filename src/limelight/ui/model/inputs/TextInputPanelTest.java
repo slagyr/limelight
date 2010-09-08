@@ -69,7 +69,7 @@ public class TextInputPanelTest extends Assert
   @Test
   public void willRememberTheLastKeyPressed()
   {
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, 10, 0));
+    new KeyPressedEvent(panel, 0, 10, 0).dispatch(panel);
 
     assertEquals(10, panel.getLastKeyPressed());
   }
@@ -92,7 +92,7 @@ public class TextInputPanelTest extends Assert
   {
     model.setCaretLocation(TextLocation.origin);
 
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, 'Z'));
+    new CharTypedEvent(panel, 0, 'Z').dispatch(panel);
 
     assertEquals("ZSome Text", model.getText());
   }
@@ -102,7 +102,7 @@ public class TextInputPanelTest extends Assert
   {
     model.setCaretLocation(TextLocation.origin);
 
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, KeyEvent.COMMAND_MASK, 'A'));
+    new CharTypedEvent(panel, KeyEvent.COMMAND_MASK, 'A').dispatch(panel);
 
     assertEquals("Some Text", model.getText());
   }
@@ -112,7 +112,7 @@ public class TextInputPanelTest extends Assert
   {
     model.setCaretLocation(TextLocation.origin);
 
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, KeyEvent.CONTROL_MASK, 'A'));
+    new CharTypedEvent(panel, KeyEvent.CONTROL_MASK, 'A').dispatch(panel);
 
     assertEquals("Some Text", model.getText());
   }
@@ -123,7 +123,7 @@ public class TextInputPanelTest extends Assert
     assertEquals(0, root.dirtyRegions.size());
 
     model.setCaretLocation(TextLocation.origin);
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, 'Z'));
+    new CharTypedEvent(panel, 0, 'Z').dispatch(panel);
 
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
@@ -133,7 +133,7 @@ public class TextInputPanelTest extends Assert
   public void backspaceIsNotTyped() throws Exception
   {
     model.setCaretLocation(TextLocation.origin);
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, '\b'));
+    new CharTypedEvent(panel, 0, '\b').dispatch(panel);
 
     assertEquals("Some Text", model.getText());
   }
@@ -142,7 +142,7 @@ public class TextInputPanelTest extends Assert
   public void newlineIsTyped() throws Exception
   {
     model.setCaretLocation(TextLocation.origin);
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, '\n'));
+    new CharTypedEvent(panel, 0, '\n').dispatch(panel);
 
     assertEquals("\nSome Text", model.getText());
   }

@@ -9,10 +9,8 @@ import limelight.ui.events.*;
 import limelight.ui.images.Images;
 import limelight.ui.model.*;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import java.io.IOException;
 
 public class CheckBoxPanel extends AbstractButtonPanel
 {
@@ -90,7 +88,7 @@ public class CheckBoxPanel extends AbstractButtonPanel
 
     public void invoke(limelight.ui.events.Event event)
     {
-      final CheckBoxPanel panel = (CheckBoxPanel) event.getPanel();
+      final CheckBoxPanel panel = (CheckBoxPanel) event.getRecipient();
       panel.setSelected(!panel.isSelected());
     }
   }

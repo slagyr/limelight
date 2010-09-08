@@ -125,7 +125,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
 
     public void invoke(limelight.ui.events.Event event)
     {
-      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getPanel();
+      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getRecipient();
       if(!comboBox.hasFocus() && comboBox.getRoot() != null)
       {
         comboBox.getRoot().getKeyListener().focusOn(comboBox);
@@ -144,7 +144,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
 
     public void invoke(Event event)
     {
-      ComboBoxPanel comboBox = (ComboBoxPanel) event.getPanel();
+      ComboBoxPanel comboBox = (ComboBoxPanel) event.getRecipient();
       final ComboBoxPopup popup = comboBox.getPopup();
       if(popup == null)
         return;
@@ -172,7 +172,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
     private static ClosePopupOnFocusLostAction instance = new ClosePopupOnFocusLostAction();
     public void invoke(Event event)
     {
-      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getPanel();
+      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getRecipient();
       if(comboBox.getPopup() != null)
         comboBox.getPopup().close();
     }

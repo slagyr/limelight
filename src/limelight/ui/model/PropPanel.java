@@ -425,16 +425,16 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
     public void invoke(Event event)
     {
-      if(!(event.getPanel() instanceof PropPanel))
+      if(!(event.getRecipient() instanceof PropPanel))
         return;
       
       MouseWheelEvent wheelEvent = (MouseWheelEvent) event;
-      PropPanel panel = (PropPanel) event.getPanel();
+      PropPanel panel = (PropPanel) event.getRecipient();
       ScrollBarPanel scrollBar = wheelEvent.isVertical() ? panel.getVerticalScrollbar() : panel.getHorizontalScrollbar();
       if(scrollBar != null)
         scrollBar.setValue(scrollBar.getValue() + wheelEvent.getUnitsToScroll());
       else if(panel.getParent() != null)
-        panel.getParent().getEventHandler().dispatch(event.withPanel(panel.getParent()));
+        event.dispatch(panel.getParent());
     }
   }
 
@@ -444,7 +444,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
     public void invoke(Event event)
     {                     
-      final PropPanel panel = (PropPanel) event.getPanel();
+      final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getRoot() == null)
         return;
       //TODO MDM - If the prop has no suface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
@@ -467,7 +467,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
 
     public void invoke(Event event)
     {
-      final PropPanel panel = (PropPanel) event.getPanel();
+      final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getStyle().hasScreen())
         panel.getStyle().removeScreen();
 

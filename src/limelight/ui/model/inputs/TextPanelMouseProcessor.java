@@ -15,7 +15,7 @@ import limelight.ui.text.TypedLayout;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class TextPanelMouseProcessor implements EventAction
+public class TextPanelMouseProcessor
 {
   TextModel model;
   public long lastClickTime;
@@ -26,17 +26,9 @@ public class TextPanelMouseProcessor implements EventAction
     this.model = model;
   }
 
-  public void invoke(Event event)
-  {
-    if(event instanceof MousePressedEvent)
-      processMousePressed((MousePressedEvent) event);
-    else if(event instanceof MouseDraggedEvent)
-      processMouseDragged((MouseDraggedEvent) event);
-  }
-
   public void processMousePressed(MousePressedEvent e)
   {
-    final Panel panel = e.getPanel();
+    final Panel panel = e.getRecipient();
     inWordSelectionMode = false;
 
     TextLocation location = model.getLocationAt(e.getLocation());
@@ -84,7 +76,7 @@ public class TextPanelMouseProcessor implements EventAction
     else
       model.setCaretLocation(tempLocation, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
 
-    e.getPanel().markAsDirty();
+    e.getRecipient().markAsDirty();
   }
 
   private void selectWord(TextLocation tempLocation)

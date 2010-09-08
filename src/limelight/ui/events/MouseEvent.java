@@ -33,6 +33,13 @@ public abstract class MouseEvent extends ModifiableEvent
     return true;
   }
 
+  @Override
+  public void setRecipient(Panel panel)
+  {
+    super.setRecipient(panel);
+    location = null;
+  }
+
   public Point getAbsoluteLocation()
   {
     return absoluteLocation;
@@ -46,7 +53,7 @@ public abstract class MouseEvent extends ModifiableEvent
   public Point getLocation()
   {
     if(location == null)
-      location = new Point(absoluteLocation.x - getPanel().getAbsoluteBounds().x, absoluteLocation.y - getPanel().getAbsoluteBounds().y);
+      location = new Point(absoluteLocation.x - getRecipient().getAbsoluteBounds().x, absoluteLocation.y - getRecipient().getAbsoluteBounds().y);
     return location;
   }
 

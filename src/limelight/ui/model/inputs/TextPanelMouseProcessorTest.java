@@ -58,17 +58,17 @@ public class TextPanelMouseProcessorTest
 
   private void releaseAt(int x, int y)
   {
-    panel.getEventHandler().dispatch(new MouseReleasedEvent(panel, 0, new Point(x, y), 0));
+    new MouseReleasedEvent(panel, 0, new Point(x, y), 0).dispatch(panel);
   }
 
   private void multiplePressAt(int x, int y, int count)
   {
-    panel.getEventHandler().dispatch(new MousePressedEvent(panel, 0, new Point(x, y), count));
+    new MousePressedEvent(panel, 0, new Point(x, y), count).dispatch(panel);
   }
 
   private void dragAt(int x, int y)
   {
-    panel.getEventHandler().dispatch(new MouseDraggedEvent(panel, 0, new Point(x, y), 0));
+    new MouseDraggedEvent(panel, 0, new Point(x, y), 0).dispatch(panel);
   }
 
   @Test

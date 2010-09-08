@@ -17,17 +17,17 @@ public class RootKeyListener implements java.awt.event.KeyListener
 
   public void keyTyped(KeyEvent e)
   {
-    focusedPanel.getEventHandler().dispatch(new CharTypedEvent(focusedPanel, e.getModifiers(), e.getKeyChar()));
+    new CharTypedEvent(focusedPanel, e.getModifiers(), e.getKeyChar()).dispatch(focusedPanel);
   }
 
   public void keyPressed(KeyEvent e)
   {    
-    focusedPanel.getEventHandler().dispatch(new KeyPressedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()));
+    new KeyPressedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
   }
 
   public void keyReleased(KeyEvent e)
   {
-    focusedPanel.getEventHandler().dispatch(new KeyReleasedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()));
+    new KeyReleasedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
   }
 
   public Panel getFocusedPanel()
@@ -44,9 +44,9 @@ public class RootKeyListener implements java.awt.event.KeyListener
     focusedPanel = panel;
 
     if(previouslyFocusPanel != null)
-      previouslyFocusPanel.getEventHandler().dispatch(new FocusLostEvent(previouslyFocusPanel));
+      new FocusLostEvent(previouslyFocusPanel).dispatch(previouslyFocusPanel);
 
-    panel.getEventHandler().dispatch(new FocusGainedEvent(panel));
+    new FocusGainedEvent(panel).dispatch(panel);
   }
 
   public void focusOnNextInput()

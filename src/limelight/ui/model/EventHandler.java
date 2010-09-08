@@ -3,9 +3,9 @@ package limelight.ui.model;
 import limelight.ui.EventAction;
 import limelight.ui.EventActionMulticaster;
 import limelight.ui.Panel;
-import limelight.ui.events.*;
 import limelight.ui.events.Event;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
 // TODO MDM - Add a way to remove actions
 public class EventHandler
 {
+  private static final List<EventAction> NO_ACTIONS = Collections.unmodifiableList(new ArrayList<EventAction>());
 
   private static class EventDispatcher
   {
@@ -75,7 +76,7 @@ public class EventHandler
     if(dispatcher != null)
       return EventActionMulticaster.collect(dispatcher.action);
     else
-      return Collections.EMPTY_LIST;
+      return NO_ACTIONS;
   }
   
   public synchronized void dispatch(Event event)
@@ -87,7 +88,7 @@ public class EventHandler
     {
       Panel parent = panel.getParent();
       if(parent != null)
-        parent.getEventHandler().dispatch(event.withPanel(parent));
+        event.dispatch(parent);
     }
   }
 }

@@ -1,26 +1,39 @@
 package limelight.ui.events;
 
 import limelight.ui.Panel;
+import limelight.ui.model.EventHandler;
 
 public abstract class Event
 {
-  private Panel panel;
+  private Panel source;
   private boolean consumed;
+  private Panel recipient;
 
   public Event(Panel source)
   {
-    this.panel = source;
+    this.source = source;
+    recipient = source;
   }
 
   @Override
   public String toString()
   {
-    return getClass().getSimpleName() + ": panel=" + getPanel(); 
+    return getClass().getSimpleName() + ": source=" + getSource() + " recipient=" + getRecipient();
   }
 
-  public Panel getPanel()
+  public Panel getSource()
   {
-    return panel;
+    return source;
+  }
+
+  public Panel getRecipient()
+  {
+    return recipient;
+  }
+
+  public void setRecipient(Panel panel)
+  {
+    recipient = panel;
   }
 
   public boolean isConsumed()
@@ -33,14 +46,23 @@ public abstract class Event
     consumed = true;
   }
 
+  public Event consumed()
+  {
+    consume();
+    return this;
+  }
+
   public boolean isInheritable()
   {
     return false;
   }
 
-  public Event withPanel(Panel panel)
+  public void dispatch(Panel panel)
   {
-    this.panel = panel;
-    return this;
+    Panel previousRecipient = recipient;
+    setRecipient(panel);
+    final EventHandler eventHandler = recipient.getEventHandler();
+    eventHandler.dispatch(this);
+    setRecipient(previousRecipient);
   }
 }

@@ -9,20 +9,32 @@ import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.ui.events.*;
 import limelight.ui.events.Event;
-import limelight.ui.model.BasePanel;
-import limelight.ui.model.Layout;
-import limelight.ui.model.PropPanel;
-import limelight.ui.model.TextAccessor;
+import limelight.ui.model.*;
 import limelight.util.Box;
 
-import java.awt.*;
+import static junit.framework.Assert.assertEquals;
 
 public abstract class InputPanel extends BasePanel implements TextAccessor
 {
   protected InputPanel()
   {
-    getEventHandler().add(FocusGainedEvent.class, MakeDirtyAction.instance);
-    getEventHandler().add(FocusLostEvent.class, MakeDirtyAction.instance);
+    final EventHandler handler = getEventHandler();
+    handler.add(FocusGainedEvent.class, MakeDirtyAction.instance);
+    handler.add(FocusLostEvent.class, MakeDirtyAction.instance);
+
+    handler.add(MousePressedEvent.class, PropogateToParentAction.instance);
+    handler.add(MouseReleasedEvent.class, PropogateToParentAction.instance);
+    handler.add(MouseClickedEvent.class, PropogateToParentAction.instance);
+    handler.add(MouseMovedEvent.class, PropogateToParentAction.instance);
+    handler.add(MouseDraggedEvent.class, PropogateToParentAction.instance);
+    handler.add(MouseEnteredEvent.class, PropogateToParentAction.instance);
+    handler.add(MouseExitedEvent.class, PropogateToParentAction.instance);
+    handler.add(MouseWheelEvent.class, PropogateToParentAction.instance);
+    handler.add(KeyPressedEvent.class, PropogateToParentAction.instance);
+    handler.add(KeyReleasedEvent.class, PropogateToParentAction.instance);
+    handler.add(CharTypedEvent.class, PropogateToParentAction.instance);
+    handler.add(FocusGainedEvent.class, PropogateToParentAction.instance);
+    handler.add(FocusLostEvent.class, PropogateToParentAction.instance);
   }
 
   protected abstract void setDefaultStyles(Style style);
@@ -58,7 +70,7 @@ public abstract class InputPanel extends BasePanel implements TextAccessor
 
     public void invoke(Event event)
     {
-      event.getPanel().markAsDirty();
+      event.getRecipient().markAsDirty();
     }
   }
 

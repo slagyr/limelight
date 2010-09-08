@@ -248,7 +248,7 @@ public class PropPanelTest extends Assert
     int scrollAmount = 8;
     int wheelRotation = 2;
 
-    panel.getEventHandler().dispatch(new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation));
+    new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
 
     assertEquals(16, panel.getVerticalScrollbar().getValue());
     assertEquals(0, panel.getHorizontalScrollbar().getValue());
@@ -265,7 +265,7 @@ public class PropPanelTest extends Assert
     int modifer = 1;
     int scrollAmount = 8;
     int wheelRotation = 2;
-    panel.getEventHandler().dispatch(new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation));
+    new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
 
     assertEquals(0, panel.getVerticalScrollbar().getValue());
     assertEquals(16, panel.getHorizontalScrollbar().getValue());
@@ -286,7 +286,7 @@ public class PropPanelTest extends Assert
     int scrollAmount = 8;
     int wheelRotation = 2;
 
-    child.getEventHandler().dispatch(new MouseWheelEvent(child, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation));
+    new MouseWheelEvent(child, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
 
     assertEquals(16, panel.getVerticalScrollbar().getValue());
     assertEquals(0, panel.getHorizontalScrollbar().getValue());
@@ -308,7 +308,7 @@ public class PropPanelTest extends Assert
   {
     panel.getHoverStyle().setCuror("hand");
 
-    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
+    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.HAND_CURSOR, root.getContentPane().getCursor().getType());
     assertSame(panel.getHoverStyle(), style.getScreen());
@@ -319,8 +319,8 @@ public class PropPanelTest extends Assert
   {
     prop.hoverStyle = new FlatStyle();
 
-    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
-    panel.getEventHandler().dispatch(new MouseExitedEvent(panel, 0, null, 0));
+    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
     assertEquals(null, style.getScreen());
@@ -331,8 +331,8 @@ public class PropPanelTest extends Assert
   {
     prop.hoverStyle = null;
 
-    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
-    panel.getEventHandler().dispatch(new MouseExitedEvent(panel, 0, null, 0));
+    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
     assertEquals(null, style.getScreen());
@@ -343,9 +343,9 @@ public class PropPanelTest extends Assert
   {
     prop.hoverStyle = new FlatStyle();
 
-    panel.getEventHandler().dispatch(new MouseEnteredEvent(panel, 0, null, 0));
+    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
     prop.hoverStyle = null;
-    panel.getEventHandler().dispatch(new MouseExitedEvent(panel, 0, null, 0));
+    new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
     assertEquals(null, style.getScreen());

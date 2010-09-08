@@ -95,7 +95,7 @@ public class ButtonPanel extends AbstractButtonPanel
 
     public void invoke(limelight.ui.events.Event event)
     {
-      ButtonPanel panel = (ButtonPanel) event.getPanel();
+      ButtonPanel panel = (ButtonPanel) event.getRecipient();
       panel.activePatch = selectedPatch;
       panel.markAsDirty();
     }
@@ -107,7 +107,7 @@ public class ButtonPanel extends AbstractButtonPanel
 
     public void invoke(limelight.ui.events.Event event)
     {
-      ButtonPanel panel = (ButtonPanel) event.getPanel();
+      ButtonPanel panel = (ButtonPanel) event.getRecipient();
       panel.activePatch = normalPatch;
       panel.markAsDirty();
     }
