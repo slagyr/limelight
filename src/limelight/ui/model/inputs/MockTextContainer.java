@@ -48,13 +48,4 @@ public class MockTextContainer extends MockPanel implements TextContainer
   {
     return false;
   }
-
-  public int getLastKeyPressed()
-  {
-    return 0;
-  }
-
-  public void setLastKeyPressed(int keyCode)
-  {
-  }
 }

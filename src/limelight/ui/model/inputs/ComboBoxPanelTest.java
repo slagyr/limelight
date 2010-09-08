@@ -123,6 +123,16 @@ public class ComboBoxPanelTest
   }
 
   @Test
+  public void consumedButtonPushedEventsDoNotLoadPopup() throws Exception
+  {
+    panel.setOptions(1, 2, 3);
+
+    new ButtonPushedEvent(panel).consumed().dispatch(panel);
+
+    assertEquals(1, root.getChildren().size());
+  }
+
+  @Test
   public void pressingEscapeWillClosePopupList() throws Exception
   {
     panel.setOptions(1, 2, 3);
@@ -130,6 +140,16 @@ public class ComboBoxPanelTest
 
     new KeyPressedEvent(panel, 0, KeyEvent.KEY_ESCAPE, 0).dispatch(panel);
     assertEquals(1, root.getChildren().size());
+  }
+
+  @Test
+  public void consumedKeyPressedEventsDoNothing() throws Exception
+  {
+    panel.setOptions(1, 2, 3);
+    new ButtonPushedEvent(panel).dispatch(panel);
+
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_ESCAPE, 0).consumed().dispatch(panel);
+    assertEquals(2, root.getChildren().size());
   }
 
   @Test
@@ -211,6 +231,17 @@ public class ComboBoxPanelTest
     new FocusLostEvent(panel).dispatch(panel);
 
     assertEquals(false, isPopupOpen());
+  }
+
+  @Test
+  public void consumedFocusLostEventDoesNothing() throws Exception
+  {
+    panel.setOptions(1, 2, 3);
+    new ButtonPushedEvent(panel).dispatch(panel);
+
+    new FocusLostEvent(panel).consumed().dispatch(panel);
+
+    assertEquals(true, isPopupOpen());
   }
   
   @Test

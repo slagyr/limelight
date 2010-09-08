@@ -18,8 +18,4 @@ public interface TextContainer
   Box getBoundingBox();
 
   boolean hasFocus();
-
-  int getLastKeyPressed();
-
-  void setLastKeyPressed(int keyCode);
 }

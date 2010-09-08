@@ -18,9 +18,10 @@ import java.awt.datatransfer.Transferable;
 public abstract class TextInputPanel extends InputPanel implements TextAccessor, ClipboardOwner, TextContainer
 {
   protected TextModel model;
-  protected Thread cursorThread;
+  protected Thread caretThread;
   protected int cursorCycleTime = 500;
   protected TextPanelMouseProcessor mouseProcessor;
+  private boolean caretRunning;
 
   protected TextInputPanel()
   {
@@ -102,14 +103,15 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
   private void startCaret()
   {
-    if(cursorThread == null || !cursorThread.isAlive())
+    if(caretThread == null || !caretThread.isAlive())
     {
+      caretRunning = true;
       // TODO MDM - Use Animation instead
-      cursorThread = new Thread(new Runnable()
+      caretThread = new Thread(new Runnable()
       {
         public void run()
         {
-          while(hasFocus())
+          while(caretRunning)
           {
             markCursorRegionAsDirty();
             try
@@ -118,18 +120,19 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
             }
             catch(InterruptedException e)
             {
-              e.printStackTrace();
+              break;
             }
             model.setCaretOn(!model.isCaretOn());
           }
         }
       });
-      cursorThread.start();
+      caretThread.start();
     }
   }
 
-  private void stopCaret()
+  public void stopCaret()
   {
+    caretRunning = false;
     model.setCaretOn(false);
   }
 
@@ -162,12 +165,20 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     this.model = model;
   }
 
+  public boolean isCaretBlinking()
+  {
+    return caretThread != null && caretThread.isAlive();
+  }
+
   private static class FocusGainedAction implements EventAction
   {
     private static FocusGainedAction instance = new FocusGainedAction();
 
     public void invoke(limelight.ui.events.Event event)
     {
+      if(event.isConsumed())
+        return;
+
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       panel.markAsDirty();
       panel.getParent().markAsDirty();
@@ -181,6 +192,9 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
     public void invoke(limelight.ui.events.Event event)
     {
+      if(event.isConsumed())
+        return;
+      
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       panel.stopCaret();
       panel.markAsDirty();
@@ -194,6 +208,9 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
     public void invoke(limelight.ui.events.Event event)
     {
+      if(event.isConsumed())
+        return;
+
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       if(event instanceof MousePressedEvent)
         panel.mouseProcessor.processMousePressed((MousePressedEvent) event);
@@ -208,6 +225,9 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
     public void invoke(limelight.ui.events.Event event)
     {
+      if(event.isConsumed())
+        return;
+
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       KeyPressedEvent press = (KeyPressedEvent) event;
       KeyProcessor processor = panel.getKeyProcessorFor(press.getModifiers());
@@ -223,6 +243,9 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
     public void invoke(limelight.ui.events.Event event)
     {
+      if(event.isConsumed())
+        return;
+
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       CharTypedEvent typeEvent = (CharTypedEvent) event;
       if(!(typeEvent.isCommandDown() || typeEvent.isControlDown()))

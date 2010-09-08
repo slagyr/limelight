@@ -97,6 +97,9 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
 
     public void invoke(limelight.ui.events.Event event)
     {
+      if(event.isConsumed())
+        return;
+
       final RadioButtonPanel panel = (RadioButtonPanel) event.getRecipient();
       panel.setSelected(!panel.isSelected());
     }
