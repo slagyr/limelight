@@ -1,15 +1,19 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class SelectionOnAltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()
   {
-    selectionBoxSetUp();
+    setUpSingleLine();
+    model.startSelection(TextLocation.at(0, 4));
     processor = SelectionOnAltShiftCmdKeyProcessor.instance;
     modifiers = 13;
   }
@@ -19,7 +23,9 @@ public class SelectionOnAltShiftCmdKeyProcessorTest extends AbstractKeyProcessor
   {
     processor.processKey(press(KeyEvent.KEY_A), model);
 
-    assertSelection(1, SELECTION_START_INDEX, true);
+    assertEquals(1, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
 }

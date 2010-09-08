@@ -15,17 +15,14 @@ public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
   @Override
   public void processKey(KeyEvent event, TextModel model)
   {
-    model.setSelectionOn(false);
     int keyCode = event.getKeyCode();
-//    if (keyCode == KeyEvent.KEY_ENTER || keyCode == KeyEvent.KEY_TAB){
-//      boxInfo.deleteSelection();
-//      boxInfo.insertChar(event.getKeyChar());
-//    }
-    if (model.isMoveUpEvent(keyCode))
+    if (keyCode == KeyEvent.KEY_UP && hasLineAboveCaret(model))
       model.moveCaretUpALine();
-    else if (model.isMoveDownEvent(keyCode))
+    else if (keyCode == KeyEvent.KEY_DOWN && hasLineBelowCaret(model))
       model.moveCaretDownALine();
     else
       SelectionOnKeyProcessor.instance.processKey(event, model);
+
+    model.deactivateSelection();
   }
 }

@@ -8,7 +8,6 @@ import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -130,17 +129,4 @@ public class MultiLineTextModel extends TextModel
 
     return regions;
   }
-
-  @Override
-  public boolean isMoveUpEvent(int keyCode)
-  {
-    return keyCode == KeyEvent.VK_UP && getCaretLocation().line > 0;
-  }
-
-  @Override
-  public boolean isMoveDownEvent(int keyCode)
-  {
-    return keyCode == KeyEvent.VK_DOWN && getCaretLocation().line < getLines().size() - 1;
-  }
-
 }

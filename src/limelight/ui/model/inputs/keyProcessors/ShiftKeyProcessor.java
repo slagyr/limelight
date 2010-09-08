@@ -14,16 +14,15 @@ public class ShiftKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-    
-//    if (isACharacter(keyCode))
-//      boxInfo.insertChar(event.getKeyChar());
-    if(model.isMoveRightEvent(keyCode)){
-      model.initSelection();
-      model.setCaretIndex(model.getCaretIndex() + 1);
+    if(model.isMoveRightEvent(keyCode))
+    {
+      model.startSelection(model.getCaretLocation());
+      model.setCaretLocation(model.getCaretLocation().moved(model.getLines(), 1));
     }
-    else if(model.isMoveLeftEvent(keyCode)){
-      model.initSelection();
-      model.setCaretIndex(model.getCaretIndex() - 1);
+    else if(model.isMoveLeftEvent(keyCode))
+    {
+      model.startSelection(model.getCaretLocation());
+      model.setCaretLocation(model.getCaretLocation().moved(model.getLines(), -1));
     }
   }
 }

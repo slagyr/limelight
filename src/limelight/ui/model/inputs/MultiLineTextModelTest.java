@@ -145,9 +145,8 @@ public class MultiLineTextModelTest
   public void canGetAMultiLinedSelectedRegionWithAYOffset()
   {
     model.setText("line\nline\nline\nline\nline\nline\nline\nline\nline");
-    model.setSelectionOn(true);
-    model.setCaretIndex(model.getText().length() - 3);
-    model.setSelectionIndex(model.getCaretIndex() - 15);
+    model.startSelection(TextLocation.at(6, 1));
+    model.setCaretLocation(TextLocation.at(8, 1));
 
     ArrayList<Box> regions = model.getSelectionRegions();
     assertEquals(65, regions.get(regions.size() -1).y);
@@ -286,8 +285,7 @@ public class MultiLineTextModelTest
   {
     container.getStyle().setHorizontalAlignment("center");
     model.setText("1 line\nand\nanother line\n.");
-    model.setSelectionLocation(TextLocation.at(0, 0));
-    model.setSelectionOn(true);
+    model.startSelection(TextLocation.origin);
 
     ArrayList<Box> regions = model.getSelectionRegions();
   

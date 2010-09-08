@@ -2,15 +2,19 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()
   {
-    selectionBoxSetUp();
+    setUpSingleLine();
+    model.startSelection(TextLocation.at(0, 4));
     processor = SelectionOnKeyProcessor.instance;
     modifiers = 0;
   }
@@ -30,7 +34,10 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_BACK_SPACE), model);
 
-    assertTextState(1, 1, "H are four words");
+    assertEquals(1, model.getCaretIndex());
+    assertEquals("H are four words", model.getText());
+    if(!model.isSelectionActivated())
+      assertEquals(1, model.getSelectionIndex());
   }
 
   @Test
@@ -38,7 +45,9 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(2, SELECTION_START_INDEX, false);
+    assertEquals(2, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -46,7 +55,9 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(0, SELECTION_START_INDEX, false);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
 }

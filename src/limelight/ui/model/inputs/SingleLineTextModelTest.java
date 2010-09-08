@@ -35,8 +35,7 @@ public class SingleLineTextModelTest
   public void canGetTheSelectedRegion()
   {
     model.setText("blah");
-    model.setSelectionIndex(0);
-    model.setSelectionOn(true);
+    model.startSelection(TextLocation.origin);
 
     assertEquals(new Box(0, 0, 40, 11), model.getSelectionRegions().get(0));
   }

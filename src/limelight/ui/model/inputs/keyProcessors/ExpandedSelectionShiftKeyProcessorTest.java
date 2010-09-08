@@ -2,15 +2,19 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()
   {
-    selectionAreaSetUp();
+    setUpMultiLine();
+    model.startSelection(TextLocation.at(0, 4));
     processor = ExpandedSelectionOnShiftKeyProcessor.instance;
     modifiers = 1;
   }
@@ -20,7 +24,9 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(2, SELECTION_START_INDEX, true);
+    assertEquals(2, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -28,18 +34,10 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(0, SELECTION_START_INDEX, true);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
-
-//  @Test
-//  public void canProcessCharacterAndPlaceUppercaseCharAtCursorIndex()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'A');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "HA are four words");
-//  }
 
   @Test
   public void canProcessUpArrowAndMoveUpALineWithSelection()
@@ -49,7 +47,9 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertSelection(3, SELECTION_START_INDEX, true);
+    assertEquals(3, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -60,6 +60,8 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(11, SELECTION_START_INDEX, true);
+    assertEquals(11, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 }

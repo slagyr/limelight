@@ -19,7 +19,7 @@ public class TextPanelMouseProcessor implements EventAction
 {
   TextModel model;
   public long lastClickTime;
-  public boolean wordSelectionOn;
+  public boolean inWordSelectionMode;
 
   public TextPanelMouseProcessor(TextModel model)
   {
@@ -32,17 +32,15 @@ public class TextPanelMouseProcessor implements EventAction
       processMousePressed((MousePressedEvent) event);
     else if(event instanceof MouseDraggedEvent)
       processMouseDragged((MouseDraggedEvent) event);
-    else if(event instanceof MouseReleasedEvent)
-      processMouseReleased((MouseReleasedEvent) event);
   }
 
   public void processMousePressed(MousePressedEvent e)
   {
     final Panel panel = e.getPanel();
+    inWordSelectionMode = false;
 
     TextLocation location = model.getLocationAt(e.getLocation());
-    model.setSelectionOn(true);
-    model.setSelectionLocation(location);
+    model.startSelection(location);
     model.setCaretLocation(location, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
     model.setCaretOn(true);
 
@@ -54,30 +52,17 @@ public class TextPanelMouseProcessor implements EventAction
     lastClickTime = System.currentTimeMillis();
   }
 
-  public void processMouseReleased(MouseReleasedEvent e)
-  {
-    Point mousePoint = e.getLocation();
-    if(!wordSelectionOn)
-    {
-      model.setCaretLocation(model.getLocationAt(mousePoint));
-      if(model.getCaretIndex() == model.getSelectionIndex())
-        model.setSelectionOn(false);
-    }
-    wordSelectionOn = false;
-  }
-
   private void handleMultipleClicks(MousePressedEvent e)
   {
     if(e.getClickCount() == 2)
     {
-      wordSelectionOn = true;
-      model.setSelectionIndex(model.findWordsLeftEdge(model.getCaretLocation()));
-      model.setCaretIndex(model.findWordsRightEdge(model.getCaretLocation()));
+      inWordSelectionMode = true;
+      model.setSelectionLocation(model.findWordsLeftEdge(model.getCaretLocation()));
+      model.setCaretLocation(model.findWordsRightEdge(model.getCaretLocation()));
     }
     else if(e.getClickCount() == 3)
     {
-      model.setSelectionIndex(0);
-      model.setCaretIndex(model.getText().length());
+      model.selectAll();
     }
   }
 
@@ -94,7 +79,7 @@ public class TextPanelMouseProcessor implements EventAction
     else if(mousePoint.x > (model.getContainer().getWidth() - 3) && tempLocation.atEnd(lines))
       tempLocation = tempLocation.moved(lines, +1);
 
-    if(wordSelectionOn)
+    if(inWordSelectionMode)
       selectWord(tempLocation);
     else
       model.setCaretLocation(tempLocation, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
@@ -137,9 +122,9 @@ public class TextPanelMouseProcessor implements EventAction
       model.setSelectionIndex(model.getCaretIndex());
     }
 
-    private void repositionHead(int newHead)
+    private void repositionHead(TextLocation newHead)
     {
-      model.setCaretLocation(TextLocation.fromIndex(model.getLines(), newHead), XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
+      model.setCaretLocation(newHead, XOffsetStrategy.FITTING, YOffsetStrategy.FITTING);
     }
 
     private boolean isSelectionFacingRight()

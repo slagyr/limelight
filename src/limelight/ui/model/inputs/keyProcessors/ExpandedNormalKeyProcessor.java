@@ -15,11 +15,9 @@ public class ExpandedNormalKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-//    if (keyCode == KeyEvent.KEY_ENTER || keyCode == KeyEvent.KEY_TAB)
-//      boxInfo.insertChar(event.getKeyChar());
-    if (model.isMoveUpEvent(keyCode))
+    if (keyCode == KeyEvent.KEY_UP && hasLineAboveCaret(model))
       model.moveCaretUpALine();
-    else if (model.isMoveDownEvent(keyCode))
+    else if (keyCode == KeyEvent.KEY_DOWN && hasLineBelowCaret(model))
       model.moveCaretDownALine();
     else
       NormalKeyProcessor.instance.processKey(event, model);

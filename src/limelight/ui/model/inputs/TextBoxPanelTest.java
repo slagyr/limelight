@@ -8,6 +8,7 @@ import limelight.ui.api.MockProp;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.ui.model.inputs.painting.TextPanelPropPainter;
+import limelight.ui.text.TextLocation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class TextBoxPanelTest extends Assert
   TextBoxPanel panel;
   PropPanel parent;
   MockGraphics graphics;
-  TextModel boxInfo;
+  TextModel model;
 
   @Before
   public void setUp()
@@ -26,8 +27,8 @@ public class TextBoxPanelTest extends Assert
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     graphics = new MockGraphics();
-    boxInfo = panel.getModel();
-    boxInfo.setText("Some Text");
+    model = panel.getModel();
+    model.setText("Some Text");
   }
 
   @Test
@@ -112,7 +113,7 @@ public class TextBoxPanelTest extends Assert
   @Test
   public void shouldKeyProcessorsWithSelection() throws Exception
   {
-    boxInfo.setSelectionOn(true);
+    model.startSelection(TextLocation.origin);
     assertEquals(SelectionOnKeyProcessor.instance, panel.getKeyProcessorFor(0));
     assertEquals(SelectionOnShiftKeyProcessor.instance, panel.getKeyProcessorFor(1));
     assertEquals(SelectionOnCmdKeyProcessor.instance, panel.getKeyProcessorFor(2));

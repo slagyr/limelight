@@ -6,6 +6,7 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
+import limelight.ui.text.TextLocation;
 
 public class NormalKeyProcessor extends KeyProcessor
 {
@@ -21,7 +22,11 @@ public class NormalKeyProcessor extends KeyProcessor
     else if (keyCode == KeyEvent.KEY_BACK_SPACE)  //TODO MDM Need to also support delete key
     {
       if(model.getCaretIndex() > 0)
-        model.deleteEnclosedText(model.getCaretIndex() -1, model.getCaretIndex());
+      {
+        TextLocation end = model.getCaretLocation();
+        TextLocation start = end.moved(model.getLines(), -1);
+        model.deleteEnclosedText(start, end);
+      }
     }
   }
 

@@ -5,6 +5,8 @@ import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
@@ -40,7 +42,10 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_BACK_SPACE), model);
 
-    assertTextState(0, 0, "ere are four words");
+    assertEquals(0, model.getCaretIndex());
+    assertEquals("ere are four words", model.getText());
+    if(!model.isSelectionActivated())
+      assertEquals(0, model.getSelectionIndex());
   }
 
   @Test
@@ -48,7 +53,9 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(2, 0, false);
+    assertEquals(2, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -56,7 +63,9 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(0, 0, false);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
 }

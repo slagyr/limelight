@@ -8,6 +8,8 @@ import java.util.List;
 
 public class TextLocation
 {
+  public static final TextLocation origin = TextLocation.at(0, 0);
+
   // MDM - Static constructor so that we can optimize the creation of these commonly used objects.
   public static TextLocation at(int lineNumber, int index)
   {

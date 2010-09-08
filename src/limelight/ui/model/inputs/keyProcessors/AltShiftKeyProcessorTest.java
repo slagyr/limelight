@@ -5,6 +5,8 @@ import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class AltShiftKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
@@ -30,7 +32,9 @@ public class AltShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(5, 1, true);
+    assertEquals(5, model.getCaretIndex());
+    assertEquals(1, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -40,7 +44,9 @@ public class AltShiftKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(5, 9, true);
+    assertEquals(5, model.getCaretIndex());
+    assertEquals(9, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
 }

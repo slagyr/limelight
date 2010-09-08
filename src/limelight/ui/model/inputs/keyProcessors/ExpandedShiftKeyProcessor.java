@@ -17,16 +17,15 @@ public class ExpandedShiftKeyProcessor extends KeyProcessor
     KeyProcessor basicShiftProcessor = ShiftKeyProcessor.instance;
     int keyCode = event.getKeyCode();
 
-    if(model.isMoveUpEvent(keyCode))
+    if(keyCode == KeyEvent.KEY_UP && hasLineAboveCaret(model))
     {
-      model.initSelection();
+      model.startSelection(model.getCaretLocation());
       model.moveCaretUpALine();
     }
-    else if(model.isMoveDownEvent(keyCode))
+    else if(keyCode == KeyEvent.KEY_DOWN && hasLineBelowCaret(model))
     {
-      model.initSelection();
+      model.startSelection(model.getCaretLocation());
       model.moveCaretDownALine();
-
     }
     else
       basicShiftProcessor.processKey(event, model);

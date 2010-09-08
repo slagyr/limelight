@@ -6,14 +6,13 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.events.KeyPressedEvent;
 import limelight.ui.model.inputs.*;
+import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 
 import static org.junit.Assert.assertEquals;
 
 public class AbstractKeyProcessorTest
 {
-  public final int SELECTION_START_INDEX = 4;
-
   public TextModel model;
   public MockTextContainer container;
   public KeyProcessor processor;
@@ -39,44 +38,12 @@ public class AbstractKeyProcessorTest
   {
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("Here are four words");
-    model.setCaretIndex(1);
-
-    model.setSelectionIndex(0);
-    model.setSelectionOn(false);
+    model.setCaretLocation(TextLocation.at(0, 1));
   }
 
   protected KeyPressedEvent press(int code)
   {
     return new KeyPressedEvent(container, modifiers, code, 0);
-  }
-
-  protected void selectionBoxSetUp()
-  {
-    setUpSingleLine();
-    model.setSelectionIndex(SELECTION_START_INDEX);
-    model.setSelectionOn(true);
-  }
-
-  protected void selectionAreaSetUp()
-  {
-    setUpMultiLine();
-    model.setSelectionIndex(SELECTION_START_INDEX);
-    model.setSelectionOn(true);
-  }
-
-  public void assertSelection(int cursorIndex, int selectionIndex, boolean selectionOn)
-  {
-    assertEquals(cursorIndex, model.getCaretIndex());
-    assertEquals(selectionIndex, model.getSelectionIndex());
-    assertEquals(selectionOn, model.isSelectionOn());
-  }
-
-  public void assertTextState(int caretIndex, int selectionIndex, String text)
-  {
-    assertEquals(caretIndex, model.getCaretIndex());
-    assertEquals(text, model.getText());
-    if(!model.isSelectionOn())
-      assertEquals(selectionIndex, model.getSelectionIndex());
   }
 
 }

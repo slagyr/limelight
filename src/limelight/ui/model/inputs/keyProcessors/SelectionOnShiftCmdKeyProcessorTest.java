@@ -2,15 +2,19 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()
   {
-    selectionBoxSetUp();
+    setUpSingleLine();
+    model.startSelection(TextLocation.at(0, 4));
     processor = SelectionOnShiftCmdKeyProcessor.instance;
     modifiers = 5;
   }
@@ -20,7 +24,9 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(model.getText().length(), SELECTION_START_INDEX, true);
+    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -30,7 +36,9 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
 
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(0, SELECTION_START_INDEX, true);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -38,7 +46,9 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertSelection(0, SELECTION_START_INDEX, true);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -46,7 +56,9 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(model.getText().length(), SELECTION_START_INDEX, true);
+    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
 }

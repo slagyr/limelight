@@ -69,18 +69,6 @@ public class MockTextModel extends TextModel
     return null;
   }
 
-  @Override
-  public boolean isMoveUpEvent(int keyCode)
-  {
-    return false;
-  }
-
-  @Override
-  public boolean isMoveDownEvent(int keyCode)
-  {
-    return false;
-  }
-
   public void addLayout(String value)
   {
     getLines().add(createLayout(value));

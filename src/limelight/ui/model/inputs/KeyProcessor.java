@@ -25,6 +25,17 @@ public abstract class KeyProcessor
     }
   }
 
+  protected static boolean hasLineBelowCaret(TextModel model)
+  {
+    final int lineCount = model.getLines().size();
+    return lineCount > 1 && model.getCaretLocation().line < (lineCount - 1);
+  }
+
+  protected static boolean hasLineAboveCaret(TextModel model)
+  {
+    return model.getLines().size() > 1 && model.getCaretLocation().line > 0;
+  }
+
   public KeyProcessor(Object o)
   {
     // to bypass normal constructor

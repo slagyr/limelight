@@ -13,19 +13,14 @@ public class SelectionOnKeyProcessor extends KeyProcessor
 
   public void processKey(KeyEvent event, TextModel model)
   {
-    model.setSelectionOn(false);
     int keyCode = event.getKeyCode();
     if (model.isMoveRightEvent(keyCode))
       model.setCaretIndex(model.getCaretIndex() + 1);
     else if (model.isMoveLeftEvent(keyCode))
       model.setCaretIndex(model.getCaretIndex() - 1);
-//    else if (isACharacter(keyCode))
-//    {
-//      boxInfo.deleteSelection();
-//      boxInfo.insertChar(event.getKeyChar());
-//    }
     else if (keyCode == KeyEvent.KEY_BACK_SPACE)
       model.deleteSelection();
 
+    model.deactivateSelection();
   }
 }
