@@ -14,14 +14,10 @@ public class AltKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-//    if (isACharacter(keyCode))
-//      boxInfo.insertChar(event.getKeyChar());
-    if(model.isMoveRightEvent(keyCode)){
-      model.setCaretIndex(model.findNearestWordToTheRight());
-    }
-    else if(model.isMoveLeftEvent(keyCode)){
-      model.setCaretIndex(model.findNearestWordToTheLeft());
-    }
+    if(model.isMoveRightEvent(keyCode))
+      model.setCaretLocation(model.findNearestWordToTheRight());
+    else if(model.isMoveLeftEvent(keyCode))
+      model.setCaretLocation(model.findNearestWordToTheLeft());
   }
 
 }

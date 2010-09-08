@@ -27,16 +27,10 @@ public abstract class TextModel implements ClipboardOwner
   protected final StringBuffer text = new StringBuffer();
   protected Point offset = new Point(0, 0);
   private TextLocation caretLocation = TextLocation.at(0, 0);
-  private boolean selectionOn;
+  private boolean selectionActivated;
   protected boolean caretOn;
   private TextLocation selectionLocation = TextLocation.at(0, 0);
   private TextLocation verticalOrigin;
-
-  //TODO MDM remove me
-  public abstract boolean isMoveUpEvent(int keyCode);
-
-  //TODO MDM remove me
-  public abstract boolean isMoveDownEvent(int keyCode);
 
   public abstract Box getCaretShape();
 
@@ -241,37 +235,25 @@ public abstract class TextModel implements ClipboardOwner
 
   public void deleteSelection()
   {
-    if(selectionLocation.before(caretLocation))
-      deleteEnclosedText(selectionLocation, caretLocation);
-    else
-      deleteEnclosedText(caretLocation, selectionLocation);
+    deleteEnclosedText(getSelectionStart(), getSelectionEnd());
+    deactivateSelection();
   }
 
-  public synchronized void deleteEnclosedText(int start, int end)
-  {
-    text.delete(start, end);
-    lines = null;
-    setCaretIndex(start);
-    setSelectionIndex(0);
-  }
-
-
-  public void deleteEnclosedText(TextLocation first, TextLocation second)
+  public void deleteEnclosedText(TextLocation start, TextLocation end)
   {
     ArrayList<TypedLayout> lines = getLines();
-    int startIndex = first.toIndex(lines);
-    int endIndex = second.toIndex(lines);
+    int startIndex = start.toIndex(lines);
+    int endIndex = end.toIndex(lines);
     synchronized(this)
     {
       text.delete(startIndex, endIndex);
       this.lines = null;
     }
-    setCaretLocation(first);
-    setCaretIndex(startIndex);
-    setSelectionIndex(startIndex);
+    setCaretLocation(start);
+    setSelectionLocation(start);
   }
 
-  public int findWordsRightEdge(TextLocation location)
+  public TextLocation findWordsRightEdge(TextLocation location)
   {
 
     for(int i = location.toIndex(getLines()); i <= text.length() - 1; i++)
@@ -279,24 +261,24 @@ public abstract class TextModel implements ClipboardOwner
       if(i == 0)
         i = 1;
       if(isAtEndOfWord(i))
-        return i;
+        return TextLocation.fromIndex(getLines(), i);
     }
-    return text.length();
+    return getEndLocation();
+  }
+
+  public TextLocation findWordsLeftEdge(TextLocation location)
+  {
+    for(int i = location.toIndex(getLines()); i > 1; i--)
+    {
+      if(isAtStartOfWord(i))
+        return TextLocation.fromIndex(getLines(), i);
+    }
+    return TextLocation.origin;
   }
 
   public boolean isAtEndOfWord(int i)
   {
     return text.charAt(i - 1) != ' ' && text.charAt(i - 1) != '\n' && (text.charAt(i) == ' ' || text.charAt(i) == '\n');
-  }
-
-  public int findWordsLeftEdge(TextLocation location)
-  {
-    for(int i = location.toIndex(getLines()); i > 1; i--)
-    {
-      if(isAtStartOfWord(i))
-        return i;
-    }
-    return 0;
   }
 
   public boolean isAtStartOfWord(int i)
@@ -388,11 +370,8 @@ public abstract class TextModel implements ClipboardOwner
   {
     if(c == KeyEvent.CHAR_UNDEFINED)
       return;
-    if(selectionOn)
-    {
+    if(selectionActivated)
       deleteSelection();
-      setSelectionOn(false);
-    }
     text.insert(getCaretIndex(), c);
     clearCache();
     setCaretIndex(getCaretIndex() + 1);
@@ -408,37 +387,35 @@ public abstract class TextModel implements ClipboardOwner
     return keyCode == KeyEvent.VK_LEFT && getCaretIndex() > 0;
   }
 
-  public void initSelection()
-  {
-    selectionOn = true;
-    setSelectionIndex(getCaretIndex());
-  }
-
-  public int findNearestWordToTheLeft()
+  public TextLocation findNearestWordToTheLeft()
   {
     return findWordsLeftEdge(getCaretLocation().moved(getLines(), -1));
   }
 
-  public int findNearestWordToTheRight()
+  public TextLocation findNearestWordToTheRight()
   {
     return findNextWordSkippingSpacesOrNewLines(findWordsRightEdge(caretLocation));
   }
 
-  protected int findNextWordSkippingSpacesOrNewLines(int startIndex)
+  protected TextLocation findNextWordSkippingSpacesOrNewLines(TextLocation startLocation)
   {
-    for(int i = startIndex; i <= getText().length() - 1; i++)
+    for(int i = startLocation.toIndex(getLines()); i <= text.length() - 1; i++)
     {
       if(isAtStartOfWord(i))
-        return i;
+        return TextLocation.fromIndex(getLines(), i);
     }
-    return getText().length();
+    return getEndLocation();
+  }
+
+  public TextLocation getEndLocation()
+  {
+    return TextLocation.fromIndex(getLines(), text.length());
   }
 
   public void selectAll()
   {
-    selectionOn = true;
-    setCaretIndex(getText().length());
-    setSelectionIndex(0);
+    startSelection(TextLocation.origin);
+    setCaretLocation(getEndLocation());
   }
 
   public void moveCaret(int places)
@@ -487,14 +464,46 @@ public abstract class TextModel implements ClipboardOwner
     setCaretLocation(TextLocation.at(getCaretLocation().line, caretLine.getText().length()));
   }
 
-  public void setSelectionOn(boolean value)
+  public void startSelection(TextLocation location)
   {
-    selectionOn = value;
+    selectionLocation = location;
+    selectionActivated = true;
   }
 
-  public boolean isSelectionOn()
+  public void deactivateSelection()
   {
-    return selectionOn;
+    selectionActivated = false;
+  }
+
+  public boolean hasSelection()
+  {
+    return selectionActivated && !selectionLocation.equals(caretLocation);
+  }
+
+  public boolean isSelectionActivated()
+  {
+    return selectionActivated;
+  }
+
+  public String getSelectedText()
+  {
+    if(!hasSelection())
+      return "";
+
+    int startIndex = getSelectionStart().toIndex(getLines());
+    int endIndex = getSelectionEnd().toIndex(getLines());
+
+    return text.substring(startIndex, endIndex);
+  }
+
+  public TextLocation getSelectionStart()
+  {
+    return caretLocation.before(selectionLocation) ? caretLocation : selectionLocation;
+  }
+
+  private TextLocation getSelectionEnd()
+  {
+    return caretLocation.before(selectionLocation) ? selectionLocation : caretLocation;
   }
 
   public TextContainer getContainer()

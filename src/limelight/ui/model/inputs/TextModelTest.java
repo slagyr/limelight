@@ -50,8 +50,7 @@ public class TextModelTest
   {
     model.setText("Some Text");
     model.setCaretIndex(0);
-    model.setSelectionIndex(4);
-    model.setSelectionOn(true);
+    model.startSelection(TextLocation.at(0, 4));
     model.copySelection();
     String clipboard = model.getClipboardContents();
     assertEquals("Some", clipboard);
@@ -84,13 +83,48 @@ public class TextModelTest
   public void insertingSomethingWillDeleteASelectionIfOneExists() throws Exception
   {
     model.setText("abc123");
-    model.setCaretIndex(0);
-    model.initSelection();
-    model.setCaretIndex(3);
+    model.startSelection(TextLocation.origin);
+    model.setCaretLocation(TextLocation.at(0, 3));
 
     model.insertChar('0');
 
     assertEquals("0123", model.getText());
+  }
+
+  @Test
+  public void startingASelection() throws Exception
+  {
+    model.setText("abc");
+
+    model.startSelection(TextLocation.origin);
+
+    assertEquals(true, model.hasSelection());
+    assertEquals(true, model.isSelectionActivated());
+    assertEquals("abc", model.getSelectedText());
+  }
+  
+  @Test
+  public void deactivatingSelection() throws Exception
+  {
+    model.setText("abc");
+    model.startSelection(TextLocation.origin);
+
+    model.deactivateSelection();
+
+    assertEquals(false, model.hasSelection());
+    assertEquals(false, model.isSelectionActivated());
+    assertEquals("", model.getSelectedText());
+  }
+  
+  @Test
+  public void selectionActivatedAtCaretLocation() throws Exception
+  {
+    model.setText("abc");
+    model.startSelection(model.getCaretLocation());
+
+    assertEquals(false, model.hasSelection());
+    assertEquals(true, model.isSelectionActivated());
+    assertEquals("", model.getSelectedText());
   }
 
 }

@@ -14,16 +14,10 @@ public class SelectionOnAltShiftKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-//    if (isACharacter(keyCode))
-//    {
-//      boxInfo.deleteSelection();
-//      boxInfo.insertChar(event.getKeyChar());
-//    }
     if (model.isMoveRightEvent(keyCode))
-      model.setCaretIndex(model.findNearestWordToTheRight());
-
+      model.setCaretLocation(model.findNearestWordToTheRight());
     else if (model.isMoveLeftEvent(keyCode))
-      model.setCaretIndex(model.findNearestWordToTheLeft());
+      model.setCaretLocation(model.findNearestWordToTheLeft());
 
   }
 }

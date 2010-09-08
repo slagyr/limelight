@@ -8,6 +8,7 @@ import limelight.ui.events.MouseDraggedEvent;
 import limelight.ui.events.MousePressedEvent;
 import limelight.ui.events.MouseReleasedEvent;
 import limelight.ui.model.MockRootPanel;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,20 +45,10 @@ public class TextPanelMouseProcessorTest
     root.add(panel);
 
     model = panel.getModel();
-//
-//    container = new MockTextContainer();
-//    container.bounds = new Box(0, 0, 150, 75);
-//
-//    if(multiline)
-//      model = new MultiLineTextModel(container);
-//    else
-//      model = new SingleLineTextModel(container);
 
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText(text);
     model.setCaretIndex(0);
-
-//    processor = new TextPanelMouseProcessor(model);
   }
 
   private void pressAt(int x, int y)
@@ -65,7 +56,7 @@ public class TextPanelMouseProcessorTest
     multiplePressAt(x, y, 0);
   }
 
-  private void releasePanelAt(int x, int y)
+  private void releaseAt(int x, int y)
   {
     panel.getEventHandler().dispatch(new MouseReleasedEvent(panel, 0, new Point(x, y), 0));
   }
@@ -133,7 +124,7 @@ public class TextPanelMouseProcessorTest
   {
     pressAt(10, 15);
 
-    assertEquals(true, model.isSelectionOn());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -159,8 +150,7 @@ public class TextPanelMouseProcessorTest
   public void willChangeTheXOffestWhileDraggingIfPastCriticalEdge()
   {
     setUpSingleLine();
-    model.setSelectionOn(true);
-    model.setSelectionIndex(0);
+    model.startSelection(TextLocation.origin);
 
     dragAt(200, 5);
 
@@ -178,24 +168,13 @@ public class TextPanelMouseProcessorTest
   }
 
   @Test
-  public void willSetSelectionOnToFalseIfMouseReleaseIsAtSameIndexAsTheClick()
-  {
-    model.setSelectionIndex(1);
-    model.setSelectionOn(true);
-
-    releasePanelAt(10, 5);
-
-    assertEquals(false, model.isSelectionOn());
-  }
-
-  @Test
   public void willSelectWordForDoubleClick()
   {
     multiplePressAt(10, 5, 2);
 
     assertEquals(4, model.getCaretIndex());
     assertEquals(0, model.getSelectionIndex());
-    assertEquals(true, model.isSelectionOn());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -204,7 +183,7 @@ public class TextPanelMouseProcessorTest
     multiplePressAt(10, 5, 2);
     model.setCaretIndex(5);
 
-    releasePanelAt(10, 15);
+    releaseAt(10, 15);
 
     assertEquals(5, model.getCaretIndex());
   }
@@ -294,9 +273,11 @@ public class TextPanelMouseProcessorTest
   public void willSelectAllForTripleClick()
   {
     multiplePressAt(10, 5, 3);
+    releaseAt(10, 5);
 
     assertEquals(0, model.getSelectionIndex());
     assertEquals(9, model.getCaretIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
   
   @Test

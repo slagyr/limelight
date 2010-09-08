@@ -5,6 +5,8 @@ import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
@@ -22,7 +24,9 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_A), model);
 
-    assertSelection(3, 0, true);
+    assertEquals(3, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -33,7 +37,10 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_V), model);
 
-    assertTextState(model.getText().length(), 0, "Bob Dole");
+    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals("Bob Dole", model.getText());
+    if(!model.isSelectionActivated())
+      assertEquals(0, model.getSelectionIndex());
   }
 
   @Test
@@ -41,7 +48,9 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(model.getText().length(), 0, false);
+    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -49,7 +58,9 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(0, 0, false);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -57,7 +68,9 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertSelection(0, 0, false);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -65,6 +78,8 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(model.getText().length(), 0, false);
+    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 }

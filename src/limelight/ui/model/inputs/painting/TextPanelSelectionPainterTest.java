@@ -5,6 +5,7 @@ import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.MultiLineTextModel;
 import limelight.ui.model.inputs.TextModel;
+import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.Colors;
 import org.junit.Before;
@@ -33,14 +34,13 @@ public class TextPanelSelectionPainterTest
     graphics = new MockGraphics();
     container.cursorOn = true;
     painter = TextPanelSelectionPainter.instance;
-    model.setSelectionOn(true);
-    model.setSelectionIndex(6);
+    model.startSelection(TextLocation.at(0, 6));
   }
 
   @Test
   public void willNotPaintIfSelectionIsOff()
   {
-    model.setSelectionOn(false);
+    model.deactivateSelection();
 
     painter.paint(graphics, model);
 
@@ -81,8 +81,7 @@ public class TextPanelSelectionPainterTest
     model = new MultiLineTextModel(container);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("This is some\nMulti lined text");
-    model.setSelectionOn(true);
-    model.setSelectionIndex(2);
+    model.startSelection(TextLocation.at(0, 2));
     model.setCaretIndex(18);
 
     painter.paint(graphics, model);

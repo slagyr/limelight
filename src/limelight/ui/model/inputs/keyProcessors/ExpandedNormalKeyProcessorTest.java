@@ -4,6 +4,8 @@ import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
@@ -14,42 +16,15 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
     modifiers = 0;
   }
 
-//  @Test
-//  public void canProcessTheReturnKey()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_ENTER, '\r');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "H\rere are four words");
-//  }
-//
-//  @Test
-//  public void canProcessTheTabKey()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_TAB, '\t');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "H\tere are four words");
-//  }
-//
-//  @Test
-//  public void canProcessCharacters()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'a');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "Haere are four words");
-//  }
-
   @Test
   public void canProcessBackSpace()
   {
     processor.processKey(press(KeyEvent.KEY_BACK_SPACE), model);
 
-    assertTextState(0, 0, "ere are four words");
+    assertEquals(0, model.getCaretIndex());
+    assertEquals("ere are four words", model.getText());
+    if(!model.isSelectionActivated())
+      assertEquals(0, model.getSelectionIndex());
   }
 
   @Test
@@ -57,7 +32,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(2, 0, false);
+    assertEquals(2, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -65,7 +42,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(0, 0, false);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -76,7 +55,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertSelection(3, 0, false);
+    assertEquals(3, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -87,7 +68,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertSelection(3, 0, false);
+    assertEquals(3, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -98,7 +81,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(11, 0, false);
+    assertEquals(11, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -109,7 +94,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(11, 0, false);
+    assertEquals(11, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -120,7 +107,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(29, 0, false);
+    assertEquals(29, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -131,7 +120,9 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertSelection(13, 0, false);
+    assertEquals(13, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -142,6 +133,8 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(9, 0, false);
+    assertEquals(9, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 }

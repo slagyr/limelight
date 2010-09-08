@@ -14,18 +14,15 @@ public class AltShiftKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-
-//    if (isACharacter(keyCode))
-//    {
-//      boxInfo.insertChar(event.getKeyChar());
-//    }
-    if(model.isMoveRightEvent(keyCode)){
-      model.initSelection();
-      model.setCaretIndex(model.findNearestWordToTheRight());
+    if(model.isMoveRightEvent(keyCode))
+    {
+      model.startSelection(model.getCaretLocation());
+      model.setCaretLocation(model.findNearestWordToTheRight());
     }
-    else if(model.isMoveLeftEvent(keyCode)){
-      model.initSelection();
-      model.setCaretIndex(model.findNearestWordToTheLeft());
+    else if(model.isMoveLeftEvent(keyCode))
+    {
+      model.startSelection(model.getCaretLocation());
+      model.setCaretLocation(model.findNearestWordToTheLeft());
     }
   }
 }

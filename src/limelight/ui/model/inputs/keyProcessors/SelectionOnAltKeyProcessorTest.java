@@ -2,35 +2,31 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class SelectionOnAltKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
   public void setUp()
   {
-    selectionBoxSetUp();
+    setUpSingleLine();
+    model.startSelection(TextLocation.at(0, 4));
     processor = SelectionOnAltKeyProcessor.instance;
     modifiers = 8;
   }
-
-//  @Test
-//  public void canProcessSpecialKeys()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'a');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "Ha are four words");
-//  }
 
   @Test
   public void canProcessRightArrowAndMoveToStartOfNextWord()
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(5, SELECTION_START_INDEX, false);
+    assertEquals(5, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -40,7 +36,9 @@ public class SelectionOnAltKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(5, 4, false);
+    assertEquals(5, model.getCaretIndex());
+    assertEquals(4, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
 }

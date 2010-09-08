@@ -6,6 +6,7 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
+import limelight.ui.text.TextLocation;
 
 public class ShiftCmdKeyProcessor extends KeyProcessor
 {
@@ -15,23 +16,25 @@ public class ShiftCmdKeyProcessor extends KeyProcessor
   {
     int keyCode = event.getKeyCode();
 
-    if(model.isMoveRightEvent(keyCode)){
-      model.initSelection();
+    if(model.isMoveRightEvent(keyCode))
+    {
+      model.startSelection(model.getCaretLocation());
       model.sendCaretToEndOfLine();
     }
-    else if(model.isMoveLeftEvent(keyCode)){
-      model.initSelection();
+    else if(model.isMoveLeftEvent(keyCode))
+    {
+      model.startSelection(model.getCaretLocation());
       model.sendCursorToStartOfLine();
     }
     else if(keyCode == KeyEvent.KEY_UP)
     {
-      model.initSelection();
-      model.setCaretIndex(0);
+      model.startSelection(model.getCaretLocation());
+      model.setCaretLocation(TextLocation.origin);
     }
     else if(keyCode == KeyEvent.KEY_DOWN)
     {
-      model.initSelection();
-      model.setCaretIndex(model.getText().length());
+      model.startSelection(model.getCaretLocation());
+      model.setCaretLocation(model.getEndLocation());
     }
   }
 

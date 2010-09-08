@@ -28,7 +28,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     model = createModel();
     mouseProcessor = new TextPanelMouseProcessor(model);
     getEventHandler().add(MousePressedEvent.class, mouseProcessor);
-    getEventHandler().add(MouseReleasedEvent.class, mouseProcessor);
     getEventHandler().add(MouseDraggedEvent.class, mouseProcessor);
     getEventHandler().add(FocusGainedEvent.class, FocusGainedAction.instance);
     getEventHandler().add(FocusLostEvent.class, FocusLostAction.instance);

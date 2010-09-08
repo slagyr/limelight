@@ -28,7 +28,7 @@ public class TextAreaPanel extends TextInputPanel
 
   public KeyProcessor getKeyProcessorFor(int modifiers)
   {
-    if(getModel().isSelectionOn())
+    if(getModel().isSelectionActivated())
     {
       switch(modifiers)
       {

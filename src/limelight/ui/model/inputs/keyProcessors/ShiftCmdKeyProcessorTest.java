@@ -5,6 +5,8 @@ import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
@@ -20,7 +22,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(model.getText().length(), 1, true);
+    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals(1, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -28,7 +32,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertSelection(0, 1, true);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(1, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -36,7 +42,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertSelection(0, 1, true);
+    assertEquals(0, model.getCaretIndex());
+    assertEquals(1, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
@@ -44,7 +52,9 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertSelection(model.getText().length(), 1, true);
+    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals(1, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
   }
 
 }

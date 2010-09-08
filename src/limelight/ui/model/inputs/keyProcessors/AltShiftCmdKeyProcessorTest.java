@@ -5,6 +5,8 @@ import limelight.ui.events.KeyEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class AltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
 {
   @Before
@@ -20,7 +22,9 @@ public class AltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertSelection(1, 0, false);
+    assertEquals(1, model.getCaretIndex());
+    assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -28,7 +32,10 @@ public class AltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_A), model);
 
-    assertTextState(1, 0, "Here are four words");
+    assertEquals(1, model.getCaretIndex());
+    assertEquals("Here are four words", model.getText());
+    if(!model.isSelectionActivated())
+      assertEquals(0, model.getSelectionIndex());
   }
 
 }

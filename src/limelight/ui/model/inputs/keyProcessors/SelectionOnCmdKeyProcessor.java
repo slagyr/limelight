@@ -21,7 +21,7 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
       case KeyEvent.KEY_V:
         model.deleteSelection();
         model.pasteClipboard();
-        model.setSelectionOn(false);
+        model.deactivateSelection();
         break;
       case KeyEvent.KEY_C:
         model.copySelection();
@@ -29,23 +29,23 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
       case KeyEvent.KEY_X:
         model.copySelection();
         model.deleteSelection();
-        model.setSelectionOn(false);
+        model.deactivateSelection();
         break;
       case KeyEvent.KEY_RIGHT:
         model.sendCaretToEndOfLine();
-        model.setSelectionOn(false);
+        model.deactivateSelection();
         break;
       case KeyEvent.KEY_LEFT:
         model.sendCursorToStartOfLine();
-        model.setSelectionOn(false);
+        model.deactivateSelection();
         break;
       case KeyEvent.KEY_UP:
         model.setCaretIndex(0);
-        model.setSelectionOn(false);
+        model.deactivateSelection();
         break;
       case KeyEvent.KEY_DOWN:
         model.setCaretIndex(model.getText().length());
-        model.setSelectionOn(false);
+        model.deactivateSelection();
         break;
     }
   }

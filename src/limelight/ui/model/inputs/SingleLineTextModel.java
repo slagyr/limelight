@@ -79,15 +79,4 @@ public class SingleLineTextModel extends TextModel
     regions.add(new Box(start, 0, end - start, getLine().getHeight() + 1).translated(getOffset()));
     return regions;
   }
-
-  public boolean isMoveUpEvent(int keyCode)
-  {
-    return false;
-  }
-
-  public boolean isMoveDownEvent(int keyCode)
-  {
-    return false;
-  }
-
 }
