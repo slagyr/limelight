@@ -60,7 +60,7 @@ public class ButtonPanelTest
   {
     assertEquals(0, root.dirtyRegions.size());
 
-    panel.getEventHandler().dispatch(new MousePressedEvent(panel, 0, null, 0));
+    new MousePressedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
@@ -71,7 +71,7 @@ public class ButtonPanelTest
   {
     assertEquals(0, root.dirtyRegions.size());
 
-    panel.getEventHandler().dispatch(new MouseReleasedEvent(panel, 0, null, 0));
+    new MouseReleasedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));

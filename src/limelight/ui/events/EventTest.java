@@ -1,7 +1,9 @@
 package limelight.ui.events;
 
+import limelight.ui.EventAction;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
+import limelight.ui.model.TestableBasePanel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +13,7 @@ import static junit.framework.Assert.assertSame;
 public class EventTest
 {
   private Event event;
-  private MockPanel panel;
+  private MockPanel source;
 
   private static class TestableEvent extends Event
   {
@@ -24,14 +26,14 @@ public class EventTest
   @Before
   public void setUp() throws Exception
   {
-    panel = new MockPanel();
-    event = new TestableEvent(panel);
+    source = new MockPanel();
+    event = new TestableEvent(source);
   }
   
   @Test
   public void rememberThePanel() throws Exception
   {
-    assertSame(panel, event.getPanel());
+    assertSame(source, event.getSource());
   }
   
   @Test
@@ -50,4 +52,40 @@ public class EventTest
     assertEquals(false, event.isInheritable());
   }
 
+  @Test
+  public void recipientIsSameAsSourceByDefault() throws Exception
+  {
+    assertEquals(source, event.getRecipient());
+  }
+  
+  @Test
+  public void dispatching() throws Exception
+  {
+    MockPanel recipient = new MockPanel();
+
+    event.dispatch(recipient);
+
+    assertEquals(event, recipient.mockEventHandler.events.get(0));
+    assertEquals(source, event.getSource());
+    assertEquals(source, event.getRecipient());
+  }
+  
+  private Panel dispatchedRecipient;
+  @Test
+  public void theRecipientIsSetOnlyDuringDispatchAndThenRestored() throws Exception
+  {
+    TestableBasePanel recipient = new TestableBasePanel();
+    recipient.getEventHandler().add(TestableEvent.class, new EventAction(){
+      public void invoke(Event event)
+      {
+        dispatchedRecipient = event.getRecipient();
+      }
+    });
+
+    event.dispatch(recipient);
+
+    assertEquals(recipient, dispatchedRecipient);
+    assertEquals(source, event.getRecipient());
+
+  }
 }

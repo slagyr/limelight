@@ -50,9 +50,19 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new MouseClickedEvent(panel, 0, null, 0));
+    new MouseClickedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(true, action.invoked);
+  }
+                                      
+  @Test
+  public void buttonPressedEventNotInvokedWhenClickIsConsumed() throws Exception
+  {
+    panel.getEventHandler().add(ButtonPushedEvent.class, action);
+
+    new MouseClickedEvent(panel, 0, null, 0).consumed().dispatch(panel);
+
+    assertEquals(false, action.invoked);
   }
   
   @Test
@@ -62,10 +72,10 @@ public class AbstractButtonPanelTest
     parent.add(panel);
     parent.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new MouseClickedEvent(panel, 0, null, 0));
+    new MouseClickedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(true, action.invoked);
-    assertEquals(parent, action.event.getPanel());
+    assertEquals(parent, action.recipient);
   }
 
   @Test
@@ -73,9 +83,19 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, ' '));
+    new CharTypedEvent(panel, 0, ' ').dispatch(panel);
 
     assertEquals(true, action.invoked);
+  }
+
+  @Test
+  public void buttonPressedEventNotInvokedWhenSpaceTypedEventIsConsumed() throws Exception
+  {
+    panel.getEventHandler().add(ButtonPushedEvent.class, action);
+
+    new CharTypedEvent(panel, 0, ' ').consumed().dispatch(panel);
+
+    assertEquals(false, action.invoked);
   }
                                      
   @Test
@@ -83,7 +103,7 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, 'a'));
+    new CharTypedEvent(panel, 0, 'a').dispatch(panel);
 
     assertEquals(false, action.invoked);
   }

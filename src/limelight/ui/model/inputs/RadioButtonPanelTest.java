@@ -67,7 +67,7 @@ public class RadioButtonPanelTest
   {
     assertEquals(false, panel.isSelected());
 
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
     assertEquals(true, panel.isSelected());
   }

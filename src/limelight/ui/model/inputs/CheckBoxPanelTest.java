@@ -65,7 +65,7 @@ public class CheckBoxPanelTest
   {
     assertEquals(false, panel.isSelected());
 
-    panel.getEventHandler().dispatch(new MouseClickedEvent(panel, 0, null, 0));
+    new MouseClickedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(true, panel.isSelected());
   }

@@ -49,6 +49,22 @@ public class MouseEventTest
     assertEquals(100, relativeLocation.x);
     assertEquals(400, relativeLocation.y);
   }
+  
+  @Test
+  public void locationIsRelativeToChangedPanel() throws Exception
+  {
+    panel.setLocation(23, 56);
+    assertEquals(100, event.getLocation().x);
+    assertEquals(400, event.getLocation().y);
+
+    MockPanel recipient = new MockPanel();
+    recipient.setLocation(100, 400);
+
+    event.setRecipient(recipient);
+
+    assertEquals(23, event.getLocation().x);
+    assertEquals(56, event.getLocation().y);
+  }
 
   @Test
   public void mouseModifiersOff() throws Exception

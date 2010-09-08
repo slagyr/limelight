@@ -1,6 +1,7 @@
 package limelight.ui.events;
 
 import limelight.ui.Panel;
+import sun.rmi.server.Dispatcher;
 
 import java.awt.*;
 

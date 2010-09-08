@@ -1,8 +1,7 @@
 package limelight.ui.model;
 
-import limelight.ui.EventAction;
 import limelight.ui.events.*;
-import limelight.ui.events.Event;
+import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,34 +11,19 @@ import static junit.framework.Assert.assertEquals;
 
 public class EventHandlerTest
 {
-  private MemoryAction action;
+  private MockEventAction action;
   private BasePanel panel;
   private BasePanel parent;
-  private EventHandler handler;
 
   @Before
   public void setUp() throws Exception
   {
-    action = new MemoryAction();
+    action = new MockEventAction();
     parent = new TestableBasePanel();
     panel = new TestableBasePanel();
     parent.add(panel);
-
-    handler = panel.getEventHandler();
   }
 
-  private static class MemoryAction implements EventAction
-  {
-    public boolean invoked;
-    private Event event;
-
-    public void invoke(Event event)
-    {
-      invoked = true;
-      this.event = event;
-    }
-  }
-  
   @Test
   public void unhandledInheritableEventsArePassedToParent() throws Exception
   {
@@ -48,7 +32,7 @@ public class EventHandlerTest
     panel.getEventHandler().dispatch(new MousePressedEvent(panel, 0, new Point(0, 0), 0));
 
     assertEquals(true, action.invoked);
-    assertEquals(parent, action.event.getPanel());
+    assertEquals(parent, action.recipient);
   }
 
   @Test

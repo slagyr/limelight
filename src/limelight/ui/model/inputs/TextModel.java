@@ -332,16 +332,6 @@ public abstract class TextModel implements ClipboardOwner
     return text.toString();
   }
 
-  public int getLastKeyPressed()
-  {
-    return container.getLastKeyPressed();
-  }
-
-  public void setLastKeyPressed(int keyCode)
-  {
-    container.setLastKeyPressed(keyCode);
-  }
-
   public synchronized void insertChar(char c)
   {
     if(c == KeyEvent.CHAR_UNDEFINED)

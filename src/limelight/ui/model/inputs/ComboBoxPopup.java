@@ -41,7 +41,7 @@ class ComboBoxPopup
     {
       public void invoke(Event event)
       {
-        choose((PropPanel) event.getPanel());
+        choose((PropPanel) event.getRecipient());
       }
     };
 
@@ -49,7 +49,7 @@ class ComboBoxPopup
     {
       public void invoke(Event event)
       {
-        select((PropPanel) event.getPanel());
+        select((PropPanel) event.getRecipient());
       }
     };
 

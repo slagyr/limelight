@@ -101,7 +101,7 @@ public class ComboBoxPanelTest
   {
     panel.setOptions(1, 2, 3);
 
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
     assertEquals(2, root.getChildren().size());
     PropPanel curtains = (PropPanel) root.getChildren().get(1);
@@ -126,9 +126,9 @@ public class ComboBoxPanelTest
   public void pressingEscapeWillClosePopupList() throws Exception
   {
     panel.setOptions(1, 2, 3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_ESCAPE, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_ESCAPE, 0).dispatch(panel);
     assertEquals(1, root.getChildren().size());
   }
 
@@ -137,7 +137,7 @@ public class ComboBoxPanelTest
   {
     panel.setOptions(1, 2, 3);
     panel.setSelectedOption(3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
     final PropPanel selected = panel.getPopup().getSelectedItem();
     assertEquals("3", selected.getText());
@@ -148,15 +148,15 @@ public class ComboBoxPanelTest
   public void pressingDownSelectsTheNextItem() throws Exception
   {
     panel.setOptions(1, 2, 3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0).dispatch(panel);
     assertEquals("2", panel.getPopup().getSelectedItem().getText());
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0).dispatch(panel);
     assertEquals("3", panel.getPopup().getSelectedItem().getText());
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0).dispatch(panel);
     assertEquals("3", panel.getPopup().getSelectedItem().getText());
   }
 
@@ -165,15 +165,15 @@ public class ComboBoxPanelTest
   {
     panel.setOptions(1, 2, 3);
     panel.setSelectedOption(3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_UP, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_UP, 0).dispatch(panel);
     assertEquals("2", panel.getPopup().getSelectedItem().getText());
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_UP, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_UP, 0).dispatch(panel);
     assertEquals("1", panel.getPopup().getSelectedItem().getText());
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_UP, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_UP, 0).dispatch(panel);
     assertEquals("1", panel.getPopup().getSelectedItem().getText());
   }
 
@@ -181,10 +181,10 @@ public class ComboBoxPanelTest
   public void itemsIsSelectedOnMouseEnter() throws Exception
   {
     panel.setOptions(1, 2, 3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
     final Panel item3 = panel.getPopup().getPopupList().getChildren().get(2);
 
-    item3.getEventHandler().dispatch(new MouseEnteredEvent(item3, 0, null, 0));
+    new MouseEnteredEvent(item3, 0, null, 0).dispatch(item3);
 
     assertEquals("3", panel.getPopup().getSelectedItem().getText());
   }
@@ -193,10 +193,10 @@ public class ComboBoxPanelTest
   public void pressingReturnConfirmsSelection() throws Exception
   {
     panel.setOptions(1, 2, 3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0));
+    new ButtonPushedEvent(panel).dispatch(panel);
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_DOWN, 0).dispatch(panel);
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_ENTER, 0));
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_ENTER, 0).dispatch(panel);
 
     assertEquals("2", panel.getText());
     assertEquals(false, isPopupOpen());
@@ -206,9 +206,9 @@ public class ComboBoxPanelTest
   public void popupClosesWhenFocusIsLost() throws Exception
   {
     panel.setOptions(1, 2, 3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
-    panel.getEventHandler().dispatch(new FocusLostEvent(panel));
+    new FocusLostEvent(panel).dispatch(panel);
 
     assertEquals(false, isPopupOpen());
   }
@@ -217,10 +217,10 @@ public class ComboBoxPanelTest
   public void clickingOnListDoesNotCloseThePopup() throws Exception
   {
     panel.setOptions(1, 2, 3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
     final PropPanel popupList = panel.getPopup().getPopupList();
-    popupList.getEventHandler().dispatch(new MouseClickedEvent(popupList, 0, null, 0));
+    new MouseClickedEvent(popupList, 0, null, 0).dispatch(panel);
 
     assertEquals(true, isPopupOpen());
   }
@@ -229,7 +229,7 @@ public class ComboBoxPanelTest
   public void acquiresFocusWhenPressed() throws Exception
   {
     panel.setOptions(1, 2, 3);
-    panel.getEventHandler().dispatch(new ButtonPushedEvent(panel));
+    new ButtonPushedEvent(panel).dispatch(panel);
 
     assertEquals(true, panel.hasFocus());
   }
