@@ -18,26 +18,16 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
     processor = SelectionOnKeyProcessor.instance;
     modifiers = 0;
   }
-
-//  @Test
-//  public void canProcessCharactersAndReplaceSelection()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'a');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 1, "Ha are four words");
-//  }
-
+  
+  
   @Test
   public void canProcessBackSpaceAndDeleteSelection()
   {
     processor.processKey(press(KeyEvent.KEY_BACK_SPACE), model);
 
-    assertEquals(1, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("H are four words", model.getText());
-    if(!model.isSelectionActivated())
-      assertEquals(1, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
   @Test
@@ -45,8 +35,8 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(2, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -55,8 +45,8 @@ public class SelectionOnKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 

@@ -24,20 +24,20 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
   public void canProcessLeftArrowAndContinueSelectionToTheLeftEdge()
   {
-    model.setCaretIndex(2);
+    model.setCaretLocation(TextLocation.at(0, 2));
 
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -46,8 +46,8 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -56,8 +56,8 @@ public class SelectionOnShiftCmdKeyProcessorTest extends AbstractKeyProcessorTes
   {
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 

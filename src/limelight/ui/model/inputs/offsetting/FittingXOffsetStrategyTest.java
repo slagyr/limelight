@@ -30,7 +30,7 @@ public class FittingXOffsetStrategyTest
   @Test
   public void shouldMoveOneCharToTheRight() throws Exception
   {
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(0, 11));
     model.setOffset(0, 0);
 
     assertEquals(-11, strategy.calculateXOffset(model));
@@ -39,7 +39,7 @@ public class FittingXOffsetStrategyTest
   @Test
   public void shouldJumpToRightCursorLocation() throws Exception
   {
-    model.setCaretIndex(20);
+    model.setCaretLocation(TextLocation.at(0, 20));
     model.setOffset(0, 0);
 
     assertEquals(-101, strategy.calculateXOffset(model));
@@ -57,7 +57,7 @@ public class FittingXOffsetStrategyTest
   @Test
   public void shouldJumpToLeftCursorLocation() throws Exception
   {
-    model.setCaretIndex(2);
+    model.setCaretLocation(TextLocation.at(0, 2));
     model.setOffset(-200, 0);
 
     assertEquals(-20, strategy.calculateXOffset(model));

@@ -49,7 +49,7 @@ public class SingleLineTextModelTest
   @Test
   public void shouldPositionCaretWithNoText() throws Exception
   {
-    assertEquals(0, model.getCaretIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(0, model.getXOffset());
   }
 
@@ -58,9 +58,9 @@ public class SingleLineTextModelTest
   {
     model.setText("one two three");
     model.setOffset(0, 0);
-    model.setCaretIndex(3);
+    model.setCaretLocation(TextLocation.at(0, 3));
 
-    assertEquals(3, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(0, model.getXOffset());
   }
 
@@ -69,9 +69,9 @@ public class SingleLineTextModelTest
   {
     model.setText("one two three four");
     model.setOffset(0, 0);
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(0, 11));
 
-    assertEquals(11, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 11), model.getCaretLocation());
     assertEquals(-60, model.getXOffset());
   }
 
@@ -80,9 +80,9 @@ public class SingleLineTextModelTest
   {
     model.setText("one two three");
     model.setOffset(0, 0);
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(0, 11));
 
-    assertEquals(11, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 11), model.getCaretLocation());
     assertEquals(-31, model.getXOffset());
   }
 
@@ -90,9 +90,9 @@ public class SingleLineTextModelTest
   public void shouldPositionCaretAfterFallingOffTheLeft() throws Exception
   {
     model.setText("one two three four");
-    model.setCaretIndex(7);
+    model.setCaretLocation(TextLocation.at(0, 7));
 
-    assertEquals(7, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 7), model.getCaretLocation());
     assertEquals(-20, model.getXOffset());
   }
 
@@ -100,9 +100,9 @@ public class SingleLineTextModelTest
   public void shouldPositionCaretAfterFallingOffTheLeftButNotLeaveSpaceOnLeft() throws Exception
   {
     model.setText("one two three");
-    model.setCaretIndex(2);
+    model.setCaretLocation(TextLocation.at(0, 2));
 
-    assertEquals(2, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
     assertEquals(0, model.getXOffset());
   }
 
@@ -111,7 +111,7 @@ public class SingleLineTextModelTest
   {
     model.setText("one two th");
     
-    assertEquals(10, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 10), model.getCaretLocation());
     assertEquals(-1, model.getXOffset());
   }
   
@@ -121,7 +121,7 @@ public class SingleLineTextModelTest
     panel.getStyle().setHorizontalAlignment("right");
     model.setText("123");
 
-    assertEquals(3, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(70, model.getXOffset());
   }
 
@@ -150,7 +150,7 @@ public class SingleLineTextModelTest
   {
     model.setText("one two three four");
     model.setOffset(0, 0);
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(0, 11));
 
     assertEquals(-60, model.getXOffset(model.getLines().get(0)));
   }

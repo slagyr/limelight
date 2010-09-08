@@ -9,6 +9,7 @@ import limelight.ui.events.KeyEvent;
 import limelight.ui.events.KeyPressedEvent;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
+import limelight.ui.text.TextLocation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,7 +90,7 @@ public class TextInputPanelTest extends Assert
   @Test
   public void typingACharWillInsertIt() throws Exception
   {
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
 
     panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, 'Z'));
 
@@ -99,7 +100,7 @@ public class TextInputPanelTest extends Assert
   @Test
   public void typedCharsWithCommandModifierDoNothing() throws Exception
   {
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
 
     panel.getEventHandler().dispatch(new CharTypedEvent(panel, KeyEvent.COMMAND_MASK, 'A'));
 
@@ -109,7 +110,7 @@ public class TextInputPanelTest extends Assert
   @Test
   public void typedCharsWithControlModifierDoNothing() throws Exception
   {
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
 
     panel.getEventHandler().dispatch(new CharTypedEvent(panel, KeyEvent.CONTROL_MASK, 'A'));
 
@@ -121,7 +122,7 @@ public class TextInputPanelTest extends Assert
   {
     assertEquals(0, root.dirtyRegions.size());
 
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
     panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, 'Z'));
 
     assertEquals(1, root.dirtyRegions.size());
@@ -131,7 +132,7 @@ public class TextInputPanelTest extends Assert
   @Test
   public void backspaceIsNotTyped() throws Exception
   {
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
     panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, '\b'));
 
     assertEquals("Some Text", model.getText());
@@ -140,7 +141,7 @@ public class TextInputPanelTest extends Assert
   @Test
   public void newlineIsTyped() throws Exception
   {
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
     panel.getEventHandler().dispatch(new CharTypedEvent(panel, 0, '\n'));
 
     assertEquals("\nSome Text", model.getText());

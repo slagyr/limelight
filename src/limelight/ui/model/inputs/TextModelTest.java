@@ -49,7 +49,7 @@ public class TextModelTest
   public void canCopyPasteAndCut()
   {
     model.setText("Some Text");
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
     model.startSelection(TextLocation.at(0, 4));
     model.copySelection();
     String clipboard = model.getClipboardContents();
@@ -58,8 +58,8 @@ public class TextModelTest
     model.pasteClipboard();
     assertEquals("SomeSome Text", model.getText());
 
-    model.setCaretIndex(0);
-    model.setSelectionIndex(8);
+    model.setCaretLocation(TextLocation.origin);
+    model.startSelection(TextLocation.at(0, 8));
     model.cutSelection();
     assertEquals("SomeSome", model.getClipboardContents());
     assertEquals(" Text", model.getText());

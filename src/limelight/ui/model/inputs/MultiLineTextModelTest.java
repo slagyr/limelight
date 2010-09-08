@@ -37,7 +37,7 @@ public class MultiLineTextModelTest
 
     assertEquals(-67, model.getYOffset());
 
-    model.setCaretIndex(2);
+    model.setCaretLocation(TextLocation.at(0, 2));
 
     assertEquals(0, model.getYOffset());
   }
@@ -46,16 +46,16 @@ public class MultiLineTextModelTest
   public void willOnlyShiftYOffsetIfCursorIsAtTheTopOrBottomEdge()
   {
     model.setText("hi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\nhi\nbye\n");
-    model.setCaretIndex(0);
-    model.setCaretIndex(10);
+    model.setCaretLocation(TextLocation.origin);
+    model.setCaretLocation(TextLocation.at(3, 0));
 
     assertEquals(0, model.getYOffset());
 
-    model.setCaretIndex(20);
+    model.setCaretLocation(TextLocation.at(5, 3));
 
     assertEquals(0, model.getYOffset());
 
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
 
     assertEquals(0, model.getYOffset());
   }
@@ -65,7 +65,7 @@ public class MultiLineTextModelTest
   {
     model.setText("some text\n");
 
-    assertEquals(0, model.getX(model.getCaretIndex()));
+    assertEquals(0, model.getX(model.getCaretLocation()));
   }
 
   @Test
@@ -156,8 +156,8 @@ public class MultiLineTextModelTest
   public void willReturnProperSelectedRegionsWhenThereIAYOffest()
   {
     model.setText("line\nline\nline\nline\nline\nline\nline\nline\n");
-    model.setCaretIndex(model.getCaretIndex() - 1);
-    model.setSelectionIndex(model.getCaretIndex() - 2);
+    model.setCaretLocation(TextLocation.at(7, 4));
+    model.setSelectionLocation(TextLocation.at(7, 2));
 
     ArrayList<Box> regions = model.getSelectionRegions();
 
@@ -169,13 +169,13 @@ public class MultiLineTextModelTest
   {
     model.setText("line 1\n line 2\n line 3");
     
-    model.setCaretIndex(3);
+    model.setCaretLocation(TextLocation.at(0, 3));
     assertEquals(new Box(30, 0, 1, 10), model.getCaretShape());
 
-    model.setCaretIndex(10);
+    model.setCaretLocation(TextLocation.at(1, 3));
     assertEquals(new Box(30, 11, 1, 10), model.getCaretShape());
     
-    model.setCaretIndex(18);
+    model.setCaretLocation(TextLocation.at(2, 3));
     assertEquals(new Box(30, 22, 1, 10), model.getCaretShape());
   }
 
@@ -183,35 +183,35 @@ public class MultiLineTextModelTest
   public void shouldMoveTheCaretDown() throws Exception
   {
     model.setText("line 1\nline 2\nline 3");
-    model.setCaretIndex(2);
+    model.setCaretLocation(TextLocation.at(0, 2));
     
     model.moveCaretDownALine();
-    assertEquals(9, model.getCaretIndex());
+    assertEquals(TextLocation.at(1, 2), model.getCaretLocation());
 
     model.moveCaretDownALine();
-    assertEquals(16, model.getCaretIndex());
+    assertEquals(TextLocation.at(2, 2), model.getCaretLocation());
 
     model.moveCaretDownALine();
-    assertEquals(16, model.getCaretIndex());
+    assertEquals(TextLocation.at(2, 2), model.getCaretLocation());
   }
 
   @Test
   public void shouldRememberItsXpositionWhenMovingVerticallyBetweenLines() throws Exception
   {
     model.setText("Relatively long line\nshort line\ntiny");
-    model.setCaretIndex(20);
+    model.setCaretLocation(TextLocation.at(0, 20));
 
     model.moveCaretDownALine();
-    assertEquals(31, model.getCaretIndex());
+    assertEquals(TextLocation.at(1, 10), model.getCaretLocation());
 
     model.moveCaretDownALine();
-    assertEquals(36, model.getCaretIndex());
+    assertEquals(TextLocation.at(2, 4), model.getCaretLocation());
 
     model.moveCaretUpALine();
-    assertEquals(31, model.getCaretIndex());
+    assertEquals(TextLocation.at(1, 10), model.getCaretLocation());
 
     model.moveCaretUpALine();
-    assertEquals(20, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 20), model.getCaretLocation());
   }
 
   @Test

@@ -2,6 +2,7 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,98 +18,88 @@ public class AltKeyProcessorTest extends AbstractKeyProcessorTest
     modifiers = 8;
   }
 
-//  @Test
-//  public void canProcessSpecialKeys()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'a');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "Haere are four words");
-//  }
-
   @Test
   public void canProcessRightArrowAndJumpToTheNextWord()
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(5, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
   }
 
   @Test
   public void canProcessRightArrowAndSkipOverExtraSpacesToNextWord()
   {
     model.setText("Here are    many  spaces");
-    model.setCaretIndex(5);
+    model.setCaretLocation(TextLocation.at(0, 5));
 
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(12, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 12), model.getCaretLocation());
   }
 
   @Test
   public void canProcessRightArrowAndJumpToTheNextWordInATinyString()
   {
     model.setText("H s");
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
 
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(2, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
   }
 
   @Test
   public void canProcessRightArrowAndStopAtReturnCharacters()
   {
     model.setText("Here is some\ntext");
-    model.setCaretIndex(9);
+    model.setCaretLocation(TextLocation.at(0, 9));
 
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(13, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 13), model.getCaretLocation());
   }
 
    @Test
   public void canProcessRightArrowAndStopAtReturnCharactersUnlessItIsAChainOfReturnChars()
   {
     model.setText("Here is some\n\n\ntext");
-    model.setCaretIndex(9);
+    model.setCaretLocation(TextLocation.at(0, 9));
 
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(15, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 15), model.getCaretLocation());
   }
 
    @Test
   public void canProcessRightArrowAndWontStopAtReturnCharactersIfPreceededByASpace()
   {
     model.setText("Here is some \ntext");
-    model.setCaretIndex(9);
+    model.setCaretLocation(TextLocation.at(0, 9));
 
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(14, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 14), model.getCaretLocation());
   }
 
   @Test
   public void canProcessLeftArrowAndJumpToThePreviousWord()
   {
-    model.setCaretIndex(9);
+    model.setCaretLocation(TextLocation.at(0, 9));
 
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(5, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
   }
 
   @Test
   public void canProcessLeftArrowAndSkipOverExtraSpacesToPreviousWord()
   {
     model.setText("Here are    many  spaces");
-    model.setCaretIndex(12);
+    model.setCaretLocation(TextLocation.at(0, 12));
 
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(5, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
   }
 
 }

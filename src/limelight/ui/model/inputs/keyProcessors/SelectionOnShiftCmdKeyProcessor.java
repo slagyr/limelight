@@ -6,6 +6,7 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
+import limelight.ui.text.TextLocation;
 
 public class SelectionOnShiftCmdKeyProcessor extends KeyProcessor
 {
@@ -15,21 +16,21 @@ public class SelectionOnShiftCmdKeyProcessor extends KeyProcessor
   {
     int keyCode = event.getKeyCode();
 
-    if (model.isMoveRightEvent(keyCode))
+    if (keyCode == KeyEvent.KEY_RIGHT && canMoveRight(model))
     {
       model.sendCaretToEndOfLine();
     }
-    else if (model.isMoveLeftEvent(keyCode))
+    else if (keyCode == KeyEvent.KEY_LEFT && canMoveLeft(model))
     {
       model.sendCursorToStartOfLine();
     }
     else if (keyCode == KeyEvent.KEY_UP)
     {
-      model.setCaretIndex(0);
+      model.setCaretLocation(TextLocation.origin);
     }
     else if (keyCode == KeyEvent.KEY_DOWN)
     {
-      model.setCaretIndex(model.getText().length());
+      model.setCaretLocation(model.getEndLocation());
     }
   }
 }

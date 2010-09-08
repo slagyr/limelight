@@ -119,7 +119,7 @@ public class TextPanelMouseProcessor implements EventAction
 
     private void turnAround()
     {
-      model.setSelectionIndex(model.getCaretIndex());
+      model.setSelectionLocation(model.getCaretLocation());
     }
 
     private void repositionHead(TextLocation newHead)

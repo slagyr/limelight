@@ -2,6 +2,7 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,8 +23,8 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -32,8 +33,8 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -42,8 +43,8 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -52,8 +53,8 @@ public class ShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 

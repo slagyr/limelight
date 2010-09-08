@@ -14,13 +14,13 @@ public class SelectionOnAltKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-    if (model.isMoveRightEvent(keyCode))
+    if (keyCode == KeyEvent.KEY_RIGHT && canMoveRight(model))
     {
       model.setCaretLocation(model.findNearestWordToTheRight());
       model.deactivateSelection();
     }
 
-    else if (model.isMoveLeftEvent(keyCode))
+    else if (keyCode == KeyEvent.KEY_LEFT && canMoveLeft(model))
     {
       model.setCaretLocation(model.findNearestWordToTheLeft());
       model.deactivateSelection();

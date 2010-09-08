@@ -6,6 +6,7 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
+import limelight.ui.text.TextLocation;
 
 public class SelectionOnCmdKeyProcessor extends KeyProcessor
 {
@@ -40,11 +41,11 @@ public class SelectionOnCmdKeyProcessor extends KeyProcessor
         model.deactivateSelection();
         break;
       case KeyEvent.KEY_UP:
-        model.setCaretIndex(0);
+        model.setCaretLocation(TextLocation.origin);
         model.deactivateSelection();
         break;
       case KeyEvent.KEY_DOWN:
-        model.setCaretIndex(model.getText().length());
+        model.setCaretLocation(model.getEndLocation());
         model.deactivateSelection();
         break;
     }
