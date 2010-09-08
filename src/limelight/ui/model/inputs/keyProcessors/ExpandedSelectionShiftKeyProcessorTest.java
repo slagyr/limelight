@@ -24,8 +24,8 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(2, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -34,8 +34,8 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 0), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -43,12 +43,12 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   public void canProcessUpArrowAndMoveUpALineWithSelection()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(1, 3));
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(3, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -56,12 +56,12 @@ public class ExpandedSelectionShiftKeyProcessorTest extends AbstractKeyProcessor
   public void canProcessDownArrowAndMoveDownALineWithSelection()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(3);
+    model.setCaretLocation(TextLocation.at(0, 3));
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(11, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 }

@@ -6,6 +6,7 @@ import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.MultiLineTextModel;
 import limelight.ui.model.inputs.TextModel;
+import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.Colors;
 import org.junit.Before;
@@ -31,7 +32,7 @@ public class TextPanelTextPainterTest
     model = new MultiLineTextModel(container);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("Some Text");
-    model.setCaretIndex(4);
+    model.setCaretLocation(TextLocation.at(0, 4));
 
     graphics = new MockGraphics();
     container.cursorOn = true;

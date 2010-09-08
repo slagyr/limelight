@@ -223,7 +223,7 @@ public abstract class TextModel implements ClipboardOwner
         text.insert(caretIndex, clipboard);
       }
       clearCache();
-      setCaretIndex(caretIndex + clipboard.length());
+      setCaretLocation(TextLocation.fromIndex(getLines(), caretIndex + clipboard.length()));
     }
   }
 
@@ -293,18 +293,6 @@ public abstract class TextModel implements ClipboardOwner
     return caretLocation;
   }
 
-  //TODO MDM - Remove me
-  public int getCaretIndex()
-  {
-    return caretLocation.toIndex(getLines());
-  }
-
-  //TODO MDM - Remove me
-  public void setCaretIndex(int index)
-  {
-    setCaretLocation(TextLocation.fromIndex(getLines(), index));
-  }
-
   public void setCaretLocation(TextLocation location)
   {
     setCaretLocation(location, getDefaultXOffsetStrategy(), getDefaultYOffsetStrategy());
@@ -317,21 +305,9 @@ public abstract class TextModel implements ClipboardOwner
     recalculateOffset(xOffsetStrategy, yOffsetStrategy);
   }
 
-  //TODO MDM - Remove me
-  public int getSelectionIndex()
-  {
-    return selectionLocation.toIndex(getLines());
-  }
-
   public TextLocation getSelectionLocation()
   {
     return selectionLocation;
-  }
-
-  //TODO MDM - Remove me
-  public void setSelectionIndex(int selectionIndex)
-  {
-    setSelectionLocation(TextLocation.fromIndex(getLines(), selectionIndex));
   }
 
   public void setSelectionLocation(TextLocation location)
@@ -346,7 +322,7 @@ public abstract class TextModel implements ClipboardOwner
 
     text.replace(0, text.length(), newText);
     clearCache();
-    setCaretIndex(newText.length());
+    setCaretLocation(getEndLocation());
   }
 
   public String getText()
@@ -372,19 +348,9 @@ public abstract class TextModel implements ClipboardOwner
       return;
     if(selectionActivated)
       deleteSelection();
-    text.insert(getCaretIndex(), c);
+    text.insert(getCaretLocation().toIndex(getLines()), c);
     clearCache();
-    setCaretIndex(getCaretIndex() + 1);
-  }
-
-  public boolean isMoveRightEvent(int keyCode)
-  {
-    return keyCode == KeyEvent.VK_RIGHT && getCaretIndex() < getText().length();
-  }
-
-  public boolean isMoveLeftEvent(int keyCode)
-  {
-    return keyCode == KeyEvent.VK_LEFT && getCaretIndex() > 0;
+    setCaretLocation(getCaretLocation().moved(getLines(), 1));
   }
 
   public TextLocation findNearestWordToTheLeft()
@@ -436,11 +402,10 @@ public abstract class TextModel implements ClipboardOwner
   public void moveCaretToNewLine(int lineDelta)
   {
     ArrayList<TypedLayout> lines = getLines();
-    TextLocation location = TextLocation.fromIndex(lines, getCaretIndex());
-    int newLineNumber = location.line + lineDelta;
+    int newLineNumber = caretLocation.line + lineDelta;
     if(newLineNumber >= 0 && newLineNumber < lines.size())
     {
-      TextLocation origin = verticalOrigin != null ? verticalOrigin : location;
+      TextLocation origin = verticalOrigin != null ? verticalOrigin : caretLocation;
       int desiredX = lines.get(origin.line).getX(origin.index);
 
       TypedLayout newLine = lines.get(newLineNumber);
@@ -460,8 +425,9 @@ public abstract class TextModel implements ClipboardOwner
 
   public void sendCaretToEndOfLine()
   {
-    TypedLayout caretLine = getLines().get(getCaretLocation().line);
-    setCaretLocation(TextLocation.at(getCaretLocation().line, caretLine.getText().length()));
+    final TextLocation caret = getCaretLocation();
+    TypedLayout caretLine = getLines().get(caret.line);
+    setCaretLocation(TextLocation.at(caret.line, caretLine.getText().length()));
   }
 
   public void startSelection(TextLocation location)

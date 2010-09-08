@@ -24,8 +24,8 @@ public class SelectionOnAltCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_A), model);
 
-    assertEquals(1, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 

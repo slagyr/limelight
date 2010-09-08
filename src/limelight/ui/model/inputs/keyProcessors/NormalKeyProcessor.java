@@ -15,13 +15,13 @@ public class NormalKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-    if (model.isMoveRightEvent(keyCode))
+    if (keyCode == KeyEvent.KEY_RIGHT && canMoveRight(model))
       model.moveCaret(+1);
-    else if (model.isMoveLeftEvent(keyCode))
+    else if (keyCode == KeyEvent.KEY_LEFT && canMoveLeft(model))
       model.moveCaret(-1);
     else if (keyCode == KeyEvent.KEY_BACK_SPACE)  //TODO MDM Need to also support delete key
     {
-      if(model.getCaretIndex() > 0)
+      if(TextLocation.origin.before(model.getCaretLocation()))
       {
         TextLocation end = model.getCaretLocation();
         TextLocation start = end.moved(model.getLines(), -1);

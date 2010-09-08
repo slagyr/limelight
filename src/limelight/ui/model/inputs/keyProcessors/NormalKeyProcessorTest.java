@@ -2,6 +2,7 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,35 +18,13 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
     modifiers = 0;
   }
 
-//  @Test
-//  public void canProcessCharacters()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'a');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "Haere are four words");
-//  }
-
-//  @Test
-//  public void willNotInsertAnUndefinedCharacter()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, KeyEvent.CHAR_UNDEFINED);
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(1, 0, "Here are four words");
-//  }
-
   @Test
   public void canProcessBackSpace()
   {
     processor.processKey(press(KeyEvent.KEY_BACK_SPACE), model);
 
-    assertEquals(0, model.getCaretIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals("ere are four words", model.getText());
-    if(!model.isSelectionActivated())
-      assertEquals(0, model.getSelectionIndex());
   }
 
   @Test
@@ -53,8 +32,8 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(2, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -63,8 +42,8 @@ public class NormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 

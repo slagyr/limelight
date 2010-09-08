@@ -24,8 +24,8 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_A), model);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -36,12 +36,11 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
 
     processor.processKey(press(KeyEvent.KEY_V), model);
 
-    assertEquals(4, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 4), model.getCaretLocation());
     assertEquals("Hoot are four words", model.getText());
-    if(!model.isSelectionActivated())
-      assertEquals(1, model.getSelectionIndex());
-    assertEquals(4, model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
+    assertEquals(TextLocation.at(0, 4), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -50,12 +49,11 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_C), model);
 
-    assertEquals(1, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("Here are four words", model.getText());
-    if(!model.isSelectionActivated())
-      assertEquals(0, model.getSelectionIndex());
-    assertEquals(1, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(true, model.isSelectionActivated());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
     assertEquals("ere", model.getClipboardContents());
   }
@@ -65,12 +63,11 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_X), model);
 
-    assertEquals(1, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("H are four words", model.getText());
-    if(!model.isSelectionActivated())
-      assertEquals(1, model.getSelectionIndex());
-    assertEquals(1, model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
     assertEquals("ere", model.getClipboardContents());
   }
@@ -80,8 +77,8 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -90,8 +87,8 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -100,8 +97,8 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -110,8 +107,8 @@ public class SelectionOnCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 

@@ -2,6 +2,7 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,8 +23,8 @@ public class AltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(1, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -32,10 +33,9 @@ public class AltShiftCmdKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_A), model);
 
-    assertEquals(1, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("Here are four words", model.getText());
-    if(!model.isSelectionActivated())
-      assertEquals(0, model.getSelectionIndex());
+    assertEquals(false, model.isSelectionActivated());
   }
 
 }

@@ -60,7 +60,7 @@ public class SingleLineTextModel extends TextModel
   @Override
   public Box getCaretShape()
   {
-    return getLine().getCaretShape(getCaretIndex()).translated(getOffset());
+    return getLine().getCaretShape(getCaretLocation().index).translated(getOffset());
   }
 
   private TypedLayout getLine()

@@ -48,7 +48,7 @@ public class TextPanelMouseProcessorTest
 
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText(text);
-    model.setCaretIndex(0);
+    model.setCaretLocation(TextLocation.origin);
   }
 
   private void pressAt(int x, int y)
@@ -76,8 +76,8 @@ public class TextPanelMouseProcessorTest
   {
     pressAt(10, 5);
 
-    assertEquals(1, model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
   }
 
   @Test
@@ -87,7 +87,7 @@ public class TextPanelMouseProcessorTest
 
     pressAt(10, 15);
 
-    assertEquals(9, model.getCaretIndex());
+    assertEquals(TextLocation.at(1, 1), model.getCaretLocation());
   }
 
   @Test
@@ -96,7 +96,7 @@ public class TextPanelMouseProcessorTest
     model.setText("This is\nMulti lined.\nSuper\nMulti\nLined\nTo\nThe Max");
     pressAt(5, 65);
 
-    assertEquals(42, model.getCaretIndex());
+    assertEquals(TextLocation.at(6, 0), model.getCaretLocation());
   }
 
   @Test
@@ -106,7 +106,7 @@ public class TextPanelMouseProcessorTest
 
     pressAt(90, 30);
 
-    assertEquals(20, model.getCaretIndex());
+    assertEquals(TextLocation.at(1, 12), model.getCaretLocation());
   }
 
   @Test
@@ -116,7 +116,7 @@ public class TextPanelMouseProcessorTest
 
     pressAt(90, 30);
 
-    assertEquals(21, model.getCaretIndex());
+    assertEquals(TextLocation.at(2, 0), model.getCaretLocation());
   }
 
   @Test
@@ -132,7 +132,7 @@ public class TextPanelMouseProcessorTest
   {
     dragAt(10, 5);
 
-    assertEquals(1, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
   }
 
   @Test
@@ -172,8 +172,8 @@ public class TextPanelMouseProcessorTest
   {
     multiplePressAt(10, 5, 2);
 
-    assertEquals(4, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 4), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -181,36 +181,36 @@ public class TextPanelMouseProcessorTest
   public void willNotChangeTheCursorPositionOnMouseReleaseIfDoubleClickIsOn()
   {
     multiplePressAt(10, 5, 2);
-    model.setCaretIndex(5);
+    model.setCaretLocation(TextLocation.at(0, 5));
 
     releaseAt(10, 15);
 
-    assertEquals(5, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
   }
 
   @Test
   public void willBeginWordSelectionIfDoubleClickIsOn()
   {
     multiplePressAt(10, 5, 2);
-    model.setSelectionIndex(0);
-    model.setCaretIndex(4);
+    model.startSelection(TextLocation.origin);
+    model.setCaretLocation(TextLocation.at(0, 4));
 
     dragAt(model.getX(8) + model.getContainer().getAbsoluteLocation().x, 115);
 
-    assertEquals(model.getText().length(), model.getCaretIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
   }
 
   @Test
   public void canWordSelectGoingToTheLeft()
   {
     multiplePressAt(10, 5, 2);
-    model.setSelectionIndex(5);
-    model.setCaretIndex(9);
+    model.startSelection(TextLocation.at(0, 5));
+    model.setCaretLocation(TextLocation.at(0, 9));
 
     dragAt(10, 5);
 
-    assertEquals(9, model.getSelectionIndex());
-    assertEquals(0, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 9), model.getSelectionLocation());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
   }
 
   @Test
@@ -218,13 +218,13 @@ public class TextPanelMouseProcessorTest
   {
     model.setText("Some Text Here");
     multiplePressAt(10, 5, 2);
-    model.setSelectionIndex(14);
-    model.setCaretIndex(5);
+    model.startSelection(TextLocation.at(0, 14));
+    model.setCaretLocation(TextLocation.at(0, 5));
 
     dragAt(10, 5);
 
-    assertEquals(14, model.getSelectionIndex());
-    assertEquals(0, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 14), model.getSelectionLocation());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
   }
 
   @Test
@@ -232,13 +232,13 @@ public class TextPanelMouseProcessorTest
   {
     model.setText("Some Text Here");
     multiplePressAt(10, 5, 2);
-    model.setSelectionIndex(14);
-    model.setCaretIndex(5);
+    model.startSelection(TextLocation.at(0, 14));
+    model.setCaretLocation(TextLocation.at(0, 5));
 
     dragAt(101, 15);
 
-    assertEquals(14, model.getSelectionIndex());
-    assertEquals(10, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 14), model.getSelectionLocation());
+    assertEquals(TextLocation.at(0, 10), model.getCaretLocation());
   }
 
   @Test
@@ -246,13 +246,13 @@ public class TextPanelMouseProcessorTest
   {
     model.setText("Some Text Here");
     multiplePressAt(10, 5, 2);
-    model.setSelectionIndex(5);
-    model.setCaretIndex(14);
+    model.startSelection(TextLocation.at(0, 5));
+    model.setCaretLocation(TextLocation.at(0, 14));
 
     dragAt(70, 5);
 
-    assertEquals(5, model.getSelectionIndex());
-    assertEquals(9, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 5), model.getSelectionLocation());
+    assertEquals(TextLocation.at(0, 9), model.getCaretLocation());
   }
 
   @Test
@@ -260,13 +260,13 @@ public class TextPanelMouseProcessorTest
   {
     model.setText("Some Text Here");
     multiplePressAt(10, 5, 2);
-    model.setSelectionIndex(9);
-    model.setCaretIndex(5);
+    model.startSelection(TextLocation.at(0, 9));
+    model.setCaretLocation(TextLocation.at(0, 5));
 
     dragAt(101, 115);
 
-    assertEquals(5, model.getSelectionIndex());
-    assertEquals(14, model.getCaretIndex());
+    assertEquals(TextLocation.at(0, 5), model.getSelectionLocation());
+    assertEquals(TextLocation.at(0, 14), model.getCaretLocation());
   }
 
   @Test
@@ -275,8 +275,8 @@ public class TextPanelMouseProcessorTest
     multiplePressAt(10, 5, 3);
     releaseAt(10, 5);
 
-    assertEquals(0, model.getSelectionIndex());
-    assertEquals(9, model.getCaretIndex());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
+    assertEquals(TextLocation.at(0, 9), model.getCaretLocation());
     assertEquals(true, model.isSelectionActivated());
   }
   

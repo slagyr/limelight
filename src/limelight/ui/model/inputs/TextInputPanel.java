@@ -86,7 +86,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   public void setText(PropablePanel panel, String text)
   {
     this.model.setText(text);
-    model.setCaretIndex(text.length());
+    model.setCaretLocation(model.getEndLocation());
   }
 
   public String getText()

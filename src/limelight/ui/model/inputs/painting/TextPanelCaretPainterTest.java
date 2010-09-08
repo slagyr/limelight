@@ -4,6 +4,7 @@ import limelight.ui.MockGraphics;
 import limelight.ui.MockPanel;
 import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.MockTextModel;
+import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class TextPanelCaretPainterTest
 
     model = new MockTextModel(container);
     model.addLayout("Some Text");
-    model.setCaretIndex(4);
+    model.setCaretLocation(TextLocation.at(0, 4));
 
     graphics = new MockGraphics();
     container.cursorOn = true;

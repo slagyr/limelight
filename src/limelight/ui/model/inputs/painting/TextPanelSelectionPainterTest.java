@@ -29,7 +29,7 @@ public class TextPanelSelectionPainterTest
     model = new MultiLineTextModel(container);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("Some Text");
-    model.setCaretIndex(4);
+    model.setCaretLocation(TextLocation.at(0, 4));
 
     graphics = new MockGraphics();
     container.cursorOn = true;
@@ -82,7 +82,7 @@ public class TextPanelSelectionPainterTest
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("This is some\nMulti lined text");
     model.startSelection(TextLocation.at(0, 2));
-    model.setCaretIndex(18);
+    model.setCaretLocation(TextLocation.at(1, 5));
 
     painter.paint(graphics, model);
 

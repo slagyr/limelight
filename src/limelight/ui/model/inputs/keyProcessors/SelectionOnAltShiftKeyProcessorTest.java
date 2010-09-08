@@ -24,20 +24,20 @@ public class SelectionOnAltShiftKeyProcessorTest extends AbstractKeyProcessorTes
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(5, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
   @Test
   public void canProcessLeftArrowAndSelectToEndOfPreviousWord()
   {
-    model.setCaretIndex(9);
+    model.setCaretLocation(TextLocation.at(0, 9));
 
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(5, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 

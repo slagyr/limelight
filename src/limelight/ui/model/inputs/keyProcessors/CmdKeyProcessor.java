@@ -6,6 +6,7 @@ package limelight.ui.model.inputs.keyProcessors;
 import limelight.ui.events.KeyEvent;
 import limelight.ui.model.inputs.KeyProcessor;
 import limelight.ui.model.inputs.TextModel;
+import limelight.ui.text.TextLocation;
 
 public class CmdKeyProcessor extends KeyProcessor
 {
@@ -28,10 +29,10 @@ public class CmdKeyProcessor extends KeyProcessor
         model.sendCursorToStartOfLine();
         break;
       case KeyEvent.KEY_UP:
-        model.setCaretIndex(0);
+        model.setCaretLocation(TextLocation.origin);
         break;
       case KeyEvent.KEY_DOWN:
-        model.setCaretIndex(model.getText().length());
+        model.setCaretLocation(model.getEndLocation());
         break;
 
 

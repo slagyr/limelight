@@ -2,6 +2,7 @@ package limelight.ui.model.inputs.keyProcessors;
 
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,23 +18,13 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
     modifiers = 1;
   }
 
-//  @Test
-//  public void canProcessCharacters()
-//  {
-//    mockEvent = new MockKeyEvent(modifiers, KeyEvent.KEY_A, 'A');
-//
-//    processor.processKey(mockEvent, model);
-//
-//    assertTextState(2, 0, "HAere are four words");
-//  }
-
   @Test
   public void canProcessRightArrowAndBeingSelection()
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(2, model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -42,8 +33,8 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(1, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -51,12 +42,12 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessUpArrowAndMoveUpALineWithSelection()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(1, 3));
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(3, model.getCaretIndex());
-    assertEquals(11, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
+    assertEquals(TextLocation.at(1, 3), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -64,12 +55,12 @@ public class ExpandedShiftKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessDownArrowAndMoveDownALineWithSelection()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(3);
+    model.setCaretLocation(TextLocation.at(0, 3));
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(11, model.getCaretIndex());
-    assertEquals(3, model.getSelectionIndex());
+    assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 3), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 }

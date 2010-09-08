@@ -24,8 +24,8 @@ public class SelectionOnShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(2, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 
@@ -34,8 +34,8 @@ public class SelectionOnShiftKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(4, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
     assertEquals(true, model.isSelectionActivated());
   }
 

@@ -1,6 +1,7 @@
 package limelight.ui.model.inputs.keyProcessors;
 
 import limelight.ui.events.KeyEvent;
+import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,10 +22,8 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_BACK_SPACE), model);
 
-    assertEquals(0, model.getCaretIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals("ere are four words", model.getText());
-    if(!model.isSelectionActivated())
-      assertEquals(0, model.getSelectionIndex());
   }
 
   @Test
@@ -32,8 +31,8 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_RIGHT), model);
 
-    assertEquals(2, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -42,8 +41,8 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   {
     processor.processKey(press(KeyEvent.KEY_LEFT), model);
 
-    assertEquals(0, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.origin, model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -51,12 +50,12 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessUpArrowAndDoNothingWhenAllTheWayUp()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(3);
+    model.setCaretLocation(TextLocation.at(0, 3));
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(3, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -64,12 +63,12 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessUpArrowAndMoveUpALine()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(1, 3));
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(3, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -77,12 +76,12 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessDownArrowAndDoNothingWhenAtBottom()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(11);
+    model.setCaretLocation(TextLocation.at(1, 3));
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(11, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -90,12 +89,12 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessDownArrowAndMoveDownALine()
   {
     model.setText("This is\nMulti lined.");
-    model.setCaretIndex(3);
+    model.setCaretLocation(TextLocation.at(0, 3));
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(11, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -103,12 +102,12 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   public void canProcessDownArrowAndMoveDownALineToTheLastCharacterIfTheFirstLineRunsPastTheSecond()
   {
     model.setText("This is a longer\nMulti lined.");
-    model.setCaretIndex(15);
+    model.setCaretLocation(TextLocation.at(0, 15));
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(29, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(model.getEndLocation(), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -116,12 +115,12 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   public void shouldGoToTheEndOfPreviousLineEvenIfItEndsWithNewline() throws Exception
   {
     model.setText("Some more text\nand some more");
-    model.setCaretIndex(28);
+    model.setCaretLocation(model.getEndLocation());
 
     processor.processKey(press(KeyEvent.KEY_UP), model);
 
-    assertEquals(13, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(0, 13), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 
@@ -129,12 +128,12 @@ public class ExpandedNormalKeyProcessorTest extends AbstractKeyProcessorTest
   public void shouldGoToTheEndOfNextLineEvenIfItEndsWithNewline() throws Exception
   {
     model.setText("blah\nasdf\nasdf");
-    model.setCaretIndex(4);
+    model.setCaretLocation(TextLocation.at(0, 4));
 
     processor.processKey(press(KeyEvent.KEY_DOWN), model);
 
-    assertEquals(9, model.getCaretIndex());
-    assertEquals(0, model.getSelectionIndex());
+    assertEquals(TextLocation.at(1, 4), model.getCaretLocation());
+    assertEquals(TextLocation.origin, model.getSelectionLocation());
     assertEquals(false, model.isSelectionActivated());
   }
 }

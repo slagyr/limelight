@@ -16,9 +16,9 @@ public class ExpandedSelectionOnKeyProcessor extends KeyProcessor
   public void processKey(KeyEvent event, TextModel model)
   {
     int keyCode = event.getKeyCode();
-    if (keyCode == KeyEvent.KEY_UP && hasLineAboveCaret(model))
+    if (keyCode == KeyEvent.KEY_UP && canMoveUp(model))
       model.moveCaretUpALine();
-    else if (keyCode == KeyEvent.KEY_DOWN && hasLineBelowCaret(model))
+    else if (keyCode == KeyEvent.KEY_DOWN && canMoveDown(model))
       model.moveCaretDownALine();
     else
       SelectionOnKeyProcessor.instance.processKey(event, model);

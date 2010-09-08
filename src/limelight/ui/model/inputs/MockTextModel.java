@@ -60,7 +60,7 @@ public class MockTextModel extends TextModel
   @Override
   public Box getCaretShape()
   {
-    return getLines().get(0).getCaretShape(getCaretIndex());
+    return getLines().get(0).getCaretShape(getCaretLocation().index);
   }
 
   @Override
