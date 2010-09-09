@@ -269,5 +269,19 @@ public class ComboBoxPanelTest
   {
     return panel.getPopup() != null;
   }
+  
+  @Test
+  public void valuChangedEventInvokedWhenChangingText() throws Exception
+  {
+    panel.setOptions(1, 2, 3);
+    final MockEventAction action = new MockEventAction();
+    panel.getEventHandler().add(ValueChangedEvent.class, action);
+
+    panel.setSelectedOption(1);
+    assertEquals(false, action.invoked);
+
+    panel.setSelectedOption(3);
+    assertEquals(true, action.invoked);
+  }
 }
 

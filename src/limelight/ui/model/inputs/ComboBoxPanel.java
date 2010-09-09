@@ -7,7 +7,6 @@ import limelight.styles.Style;
 import limelight.ui.*;
 import limelight.ui.events.*;
 import limelight.ui.events.Event;
-import limelight.ui.model.*;
 import limelight.ui.model.inputs.painting.ComboBoxPainter;
 
 import java.awt.*;
@@ -40,11 +39,6 @@ public class ComboBoxPanel extends AbstractButtonPanel
     ComboBoxPainter.paintOn(graphics, this);
   }
 
-  public void setText(PropablePanel panel, String text)
-  {
-    setText(text);
-  }
-
   public void setText(String text)
   {
     if(text == null)
@@ -54,7 +48,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
     {
       if(text.equals(option.toString()))
       {
-        selectedOption = option;
+        setSelectedOption(option);
         return;
       }
     }
@@ -74,8 +68,8 @@ public class ComboBoxPanel extends AbstractButtonPanel
       return;
 
     options.add(option);
-    if(selectedOption == null)
-      selectedOption = option;
+    if(options.size() == 1)
+      setSelectedOption(option);
   }
 
   public Object getSelectedOption()
@@ -86,17 +80,20 @@ public class ComboBoxPanel extends AbstractButtonPanel
   public void setOptions(Object... options)
   {
     clear();
-    selectedOption = null;
     for(Object option : options)
-    {
       addOption(option);
-    }
   }
 
   public void setSelectedOption(Object option)
   {
+    if(option != null && option.equals(selectedOption))
+      return;
+
     if(options.contains(option))
+    {
       selectedOption = option;
+      valueChanged();
+    }
   }
 
   public List<Object> getOptions()
@@ -107,6 +104,8 @@ public class ComboBoxPanel extends AbstractButtonPanel
   public void clear()
   {
     this.options.clear();
+    selectedOption = null;
+    markAsDirty();
   }
 
   public void setPopup(ComboBoxPopup comboBoxPopup)

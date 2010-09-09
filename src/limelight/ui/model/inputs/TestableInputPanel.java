@@ -16,7 +16,7 @@ public class TestableInputPanel extends InputPanel
   {
   }
 
-  public void setText(PropablePanel panel, String text)
+  public void setText(String text)
   {
   }
 

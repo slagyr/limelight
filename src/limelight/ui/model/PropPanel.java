@@ -67,7 +67,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     {
       markAsNeedingLayout(); // TODO MDM - This is questionable...  The text panel would know if layout is needed.
     }
-    textAccessor.setText(this, text);
+    textAccessor.setText(text, this);
   }
 
   public TextAccessor getTextAccessor()

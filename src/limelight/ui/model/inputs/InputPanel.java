@@ -35,9 +35,16 @@ public abstract class InputPanel extends BasePanel implements TextAccessor
     handler.add(CharTypedEvent.class, PropogateToParentAction.instance);
     handler.add(FocusGainedEvent.class, PropogateToParentAction.instance);
     handler.add(FocusLostEvent.class, PropogateToParentAction.instance);
+    handler.add(ValueChangedEvent.class, PropogateToParentAction.instance);
   }
 
   protected abstract void setDefaultStyles(Style style);
+  public abstract void setText(String text);
+
+  public void setText(String text, PropablePanel panel)
+  {
+    setText(text);
+  }
 
   @Override
   public Layout getDefaultLayout()
@@ -62,6 +69,11 @@ public abstract class InputPanel extends BasePanel implements TextAccessor
       propPanel.setTextAccessor(this);      
       setDefaultStyles(propPanel.getStyle());
     }
+  }
+  
+  protected void valueChanged()
+  {
+    new ValueChangedEvent(this).dispatch(this);
   }
 
   private static class MakeDirtyAction implements EventAction

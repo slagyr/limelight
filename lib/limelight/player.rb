@@ -96,6 +96,10 @@ module Limelight
       __add_action(Limelight::UI::Events::ButtonPushedEvent, action)
     end
 
+    def on_value_changed(& action)
+      __add_action(Limelight::UI::Events::ValueChangedEvent, action)
+    end
+
     def on_scene_opened(& action)
       __add_action(Limelight::UI::Events::SceneOpenedEvent, action)
     end

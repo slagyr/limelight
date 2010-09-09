@@ -20,17 +20,17 @@ import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
 {
-  protected TextContainer container;
+  private TextContainer container;
+  private StringBuffer text = new StringBuffer();
   private ArrayList<TypedLayout> lines;
+  private Point offset = new Point(0, 0);
+  private boolean caretOn;
   private TypedLayoutFactory typedLayoutFactory = TextTypedLayoutFactory.instance;
-
-  protected final StringBuffer text = new StringBuffer();
-  protected Point offset = new Point(0, 0);
   private TextLocation caretLocation = TextLocation.at(0, 0);
   private boolean selectionActivated;
-  protected boolean caretOn;
   private TextLocation selectionLocation = TextLocation.at(0, 0);
   private TextLocation verticalOrigin;
+  private boolean changeFlag;
 
   public abstract Box getCaretShape();
 
@@ -152,6 +152,7 @@ public abstract class TextModel implements ClipboardOwner
 
   public synchronized void clearCache()
   {
+    changeFlag = true;
     lines = null;
   }
 
@@ -170,46 +171,26 @@ public abstract class TextModel implements ClipboardOwner
     return container.hasFocus();
   }
 
-  public void copyText(String clipboard)
-  {
-    StringSelection stringSelection = new StringSelection(clipboard);
-    Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    systemClipboard.setContents(stringSelection, this);
-  }
-
   public String getClipboardContents()
   {
-    String clipboardString = "";
-    Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    Transferable contents = systemClipboard.getContents(null);
-    boolean hasText = (contents != null) && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
-    if(hasText)
+    Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+    if(contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor))
     {
       try
       {
-        clipboardString = (String) contents.getTransferData(DataFlavor.stringFlavor);
+        return (String) contents.getTransferData(DataFlavor.stringFlavor);
       }
-      catch(UnsupportedFlavorException e)
+      catch(Exception e)
       {
-        e.printStackTrace();
-      }
-      catch(IOException e)
-      {
-        e.printStackTrace();
+        return "";
       }
     }
-    return clipboardString;
+    return "";
   }
 
   public void copySelection()
   {
-    String clipboard;
-    ArrayList<TypedLayout> lines = getLines();
-    if(selectionLocation.before(caretLocation))
-      clipboard = text.substring(selectionLocation.toIndex(lines), caretLocation.toIndex(lines));
-    else
-      clipboard = text.substring(caretLocation.toIndex(lines), selectionLocation.toIndex(lines));
-    copyText(clipboard);
+    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(getSelectedText()), this);
   }
 
   public void pasteClipboard()
@@ -221,8 +202,8 @@ public abstract class TextModel implements ClipboardOwner
       synchronized(this)
       {
         text.insert(caretIndex, clipboard);
+        clearCache();
       }
-      clearCache();
       setCaretLocation(TextLocation.fromIndex(getLines(), caretIndex + clipboard.length()));
     }
   }
@@ -247,7 +228,7 @@ public abstract class TextModel implements ClipboardOwner
     synchronized(this)
     {
       text.delete(startIndex, endIndex);
-      this.lines = null;
+      clearCache();
     }
     setCaretLocation(start);
     setSelectionLocation(start);
@@ -320,15 +301,16 @@ public abstract class TextModel implements ClipboardOwner
     if(newText == null)
       newText = "";
 
-    text.replace(0, text.length(), newText);
+    if(newText.length() == text.length() && newText.equals(getText()))
+      return;
+
+    text = new StringBuffer(newText);
     clearCache();
     setCaretLocation(getEndLocation());
   }
 
   public String getText()
   {
-    if(text == null)
-      return null;
     return text.toString();
   }
 
@@ -495,5 +477,15 @@ public abstract class TextModel implements ClipboardOwner
   public int getCaretWidth()
   {
     return 1;
+  }
+
+  public void resetChangeFlag()
+  {
+    changeFlag = false;
+  }
+
+  public boolean hasChanged()
+  {
+    return changeFlag;    
   }
 }

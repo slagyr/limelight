@@ -5,6 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.events.MousePressedEvent;
 import limelight.ui.events.MouseReleasedEvent;
+import limelight.ui.events.ValueChangedEvent;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
@@ -54,7 +55,7 @@ public class ButtonPanelTest
     assertEquals("128", panel.getStyle().getWidth());
     assertEquals("27", panel.getStyle().getHeight());
   }
-  
+
   @Test
   public void pressingMouse() throws Exception
   {
@@ -65,7 +66,7 @@ public class ButtonPanelTest
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
   }
-  
+
   @Test
   public void releasingMouse() throws Exception
   {
@@ -75,5 +76,19 @@ public class ButtonPanelTest
 
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
+  }
+
+  @Test
+  public void valuChangedEventInvokedWhenChangingText() throws Exception
+  {
+    panel.setText("foo");
+    final MockEventAction action = new MockEventAction();
+    panel.getEventHandler().add(ValueChangedEvent.class, action);
+
+    panel.setText("foo");
+    assertEquals(false, action.invoked);
+
+    panel.setText("bar");
+    assertEquals(true, action.invoked);
   }
 }

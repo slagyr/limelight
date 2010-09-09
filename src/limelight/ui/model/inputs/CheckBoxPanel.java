@@ -7,7 +7,6 @@ import limelight.styles.Style;
 import limelight.ui.EventAction;
 import limelight.ui.events.*;
 import limelight.ui.images.Images;
-import limelight.ui.model.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.*;
@@ -54,7 +53,7 @@ public class CheckBoxPanel extends AbstractButtonPanel
       graphics.drawImage(normalImage, 0, 0, null);
   }
 
-  public void setText(PropablePanel panel, String text)
+  public void setText(String text)
   {
     selected = "on".equals(text);
   }
@@ -73,8 +72,11 @@ public class CheckBoxPanel extends AbstractButtonPanel
   {
     if(value == selected)
       return;
+
     this.selected = value;
+
     markAsDirty();
+    valueChanged();
   }
 
   public boolean getSelected()

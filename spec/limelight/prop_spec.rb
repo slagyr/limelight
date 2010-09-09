@@ -311,7 +311,8 @@ describe Limelight::Prop do
      {:method => :on_char_typed, :klass => Limelight::UI::Events::CharTypedEvent},
      {:method => :on_focus_gained, :klass => Limelight::UI::Events::FocusGainedEvent},
      {:method => :on_focus_lost, :klass => Limelight::UI::Events::FocusLostEvent},
-     {:method => :on_button_pushed, :klass => Limelight::UI::Events::ButtonPushedEvent}
+     {:method => :on_button_pushed, :klass => Limelight::UI::Events::ButtonPushedEvent},
+     {:method => :on_value_changed, :klass => Limelight::UI::Events::ValueChangedEvent}
     ].each do |event|
       it "adds #{event[:method]} actions" do
         action = Proc.new { puts "I should never get printed" }

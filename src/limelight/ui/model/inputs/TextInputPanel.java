@@ -83,16 +83,17 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     return model;
   }
 
-  public void setText(PropablePanel panel, String text)
+  public void setText(String text)
   {
-    this.model.setText(text);
-    model.setCaretLocation(model.getEndLocation());
+    if(getText().equals(text))
+      return;
+
+    model.setText(text);
+    valueChanged();
   }
 
   public String getText()
   {
-    if(model.getText() == null)
-      return null;
     return model.getText();
   }
 
@@ -183,6 +184,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
       panel.markAsDirty();
       panel.getParent().markAsDirty();
       panel.startCaret();
+      panel.getModel().resetChangeFlag();
     }
   }
 
@@ -199,6 +201,8 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
       panel.stopCaret();
       panel.markAsDirty();
       panel.getParent().markAsDirty();
+      if(panel.getModel().hasChanged())
+        panel.valueChanged();
     }
   }
 

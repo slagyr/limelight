@@ -321,6 +321,10 @@ module Limelight
       @panel.event_handler.add(Limelight::UI::Events::ButtonPushedEvent, action)
     end
 
+    def on_value_changed(& action)
+      @panel.event_handler.add(Limelight::UI::Events::ValueChangedEvent, action)
+    end
+
     # TODO Try to get me out of public scope
     #
     def illuminate #:nodoc:
