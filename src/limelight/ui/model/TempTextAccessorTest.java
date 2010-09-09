@@ -12,7 +12,7 @@ public class TempTextAccessorTest extends Assert
     PropPanel panel = new PropPanel(new MockProp());
     assertEquals(TempTextAccessor.instance(), panel.getTextAccessor());
 
-    TempTextAccessor.instance().setText(panel, "Howdy");
+    TempTextAccessor.instance().setText("Howdy", panel);
 
     TextAccessor newAccessor = panel.getTextAccessor();
     assertEquals(TextPanel.class, newAccessor.getClass());

@@ -9,6 +9,9 @@ import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+
 import static junit.framework.Assert.assertEquals;
 
 public class TextModelTest
@@ -40,7 +43,7 @@ public class TextModelTest
   @Test
   public void canMakeUseOfTheClipboard()
   {
-    model.copyText("This Text");
+    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("This Text"), model);
     String clipboard = model.getClipboardContents();
     assertEquals("This Text", clipboard);
   }
@@ -125,6 +128,49 @@ public class TextModelTest
     assertEquals(false, model.hasSelection());
     assertEquals(true, model.isSelectionActivated());
     assertEquals("", model.getSelectedText());
+  }
+
+  @Test
+  public void modelReportsAsChangedWhenTextIsSet() throws Exception
+  {
+    model.setText("blah");
+    model.resetChangeFlag();
+    assertEquals(false, model.hasChanged());
+
+    model.setText("blah");
+    assertEquals(false, model.hasChanged());
+
+    model.setText("yum");
+    assertEquals(true, model.hasChanged());
+  }
+  
+  @Test
+  public void modelReportsChangeWhenCharIsInserted() throws Exception
+  {
+    model.setText("blah");
+    model.resetChangeFlag();
+    model.insertChar('a');
+    assertEquals(true, model.hasChanged());
+  }
+  
+  @Test
+  public void reportsChangeWhenSelectionIsDeleted() throws Exception
+  {
+    model.setText("blah");
+    model.resetChangeFlag();
+    model.selectAll();
+    model.deleteSelection();
+    assertEquals(true, model.hasChanged());
+  }
+
+  @Test
+  public void reportsChangeWhenTextIsPasted() throws Exception
+  {
+    model.setText("blah");
+    model.resetChangeFlag();
+    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("yum"), model);
+    model.pasteClipboard();
+    assertEquals(true, model.hasChanged());
   }
 
 }

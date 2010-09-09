@@ -28,7 +28,7 @@ public class AbstractButtonPanelTest
     {
     }
 
-    public void setText(PropablePanel panel, String text)
+    public void setText(String text)
     {
     }
 

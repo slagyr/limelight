@@ -6,6 +6,9 @@ import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+
 import static org.junit.Assert.assertEquals;
 
 public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
@@ -34,7 +37,7 @@ public class CmdKeyProcessorTest extends AbstractKeyProcessorTest
   public void canPasteAtCursor()
   {
     model.setText("Bob");
-    model.copyText(" Dole");
+    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(" Dole"), model);
 
     processor.processKey(press(KeyEvent.KEY_V), model);
 

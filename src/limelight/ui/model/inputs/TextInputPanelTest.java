@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import java.awt.*;
 
+import static junit.framework.Assert.assertEquals;
+
 public class TextInputPanelTest extends Assert
 {
   private TextInputPanel panel;
@@ -193,6 +195,34 @@ public class TextInputPanelTest extends Assert
     new CharTypedEvent(panel, 0, 'A').consumed().dispatch(panel);
 
     assertEquals("Some Text", panel.getText());
+  }
+
+  @Test
+  public void valuChangedEventInvokedWhenChangingText() throws Exception
+  {
+    panel.setText("foo");
+    final MockEventAction action = new MockEventAction();
+    panel.getEventHandler().add(ValueChangedEvent.class, action);
+
+    panel.setText("foo");
+    assertEquals(false, action.invoked);
+
+    panel.setText("bar");
+    assertEquals(true, action.invoked);
+  }
+  
+  @Test
+  public void changesToModelAreReportedOnFocusLost() throws Exception
+  {
+    final MockEventAction action = new MockEventAction();
+    panel.getEventHandler().add(ValueChangedEvent.class, action);
+
+    new FocusGainedEvent(panel).dispatch(panel);
+    model.insertChar('a');
+    assertEquals(true, model.hasChanged());
+    new FocusLostEvent(panel).dispatch(panel);
+
+    assertEquals(true, action.invoked);
   }
 
 }

@@ -60,5 +60,6 @@ public class InputPanelTest
     assertEquals(true, handler.getActions(CharTypedEvent.class).contains(PropogateToParentAction.instance));
     assertEquals(true, handler.getActions(FocusGainedEvent.class).contains(PropogateToParentAction.instance));
     assertEquals(true, handler.getActions(FocusLostEvent.class).contains(PropogateToParentAction.instance));
+    assertEquals(true, handler.getActions(ValueChangedEvent.class).contains(PropogateToParentAction.instance));
   }
 }

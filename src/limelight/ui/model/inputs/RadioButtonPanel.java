@@ -7,9 +7,9 @@ import limelight.styles.Style;
 import limelight.ui.EventAction;
 import limelight.ui.events.ButtonPushedEvent;
 import limelight.ui.images.Images;
-import limelight.ui.model.*;
 import limelight.ui.RadioButtonGroupMember;
 import limelight.ui.RadioButtonGroup;
+
 import java.awt.image.BufferedImage;
 import java.awt.*;
 
@@ -56,7 +56,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
       graphics.drawImage(normalImage, 0, 0, null);
   }
 
-  public void setText(PropablePanel panel, String text)
+  public void setText(String text)
   {
     selected = "on".equals(text);
   }
@@ -80,9 +80,12 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
   {
     if(value == selected)
       return;
+
     this.selected = value;
     if(selected && radioButtonGroup != null)
       radioButtonGroup.buttonSelected(this);
+
+    valueChanged();
     markAsDirty();
   }
 

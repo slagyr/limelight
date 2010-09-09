@@ -49,7 +49,7 @@ public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
     return text;
   }
 
-  public void setText(PropablePanel panel, String text)
+  public void setText(String text, PropablePanel panel)
   {
     boolean differentText = !Util.equal(text, this.text);
     if(!needsLayout() && differentText)

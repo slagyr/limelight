@@ -78,10 +78,15 @@ public class ButtonPanel extends AbstractButtonPanel
     }
   }
 
-  public void setText(PropablePanel panel, String text)
+  public void setText(String text)
   {
+    if(text.equals(this.text))
+      return;
+
     this.text = text;
     textBounds = null;
+
+    valueChanged();
   }
 
   public String getText()

@@ -8,6 +8,7 @@ describe Limelight::Player do
   before do
     @prop = Limelight::Prop.new
     @player = Limelight::Player.new
+    $RECIPIENT = nil
   end
 
   it "will call on_cast when extending a prop" do
@@ -82,8 +83,9 @@ describe Limelight::Player do
   end
 
   [ {:name => "on_focus_gained", :klass => Limelight::UI::Events::FocusGainedEvent},
-    {:name => "on_focus_lost", :klass => Limelight::UI::Events::FocusLostEvent}  ,
-    {:name => "on_button_pushed", :klass => Limelight::UI::Events::ButtonPushedEvent}
+    {:name => "on_focus_lost", :klass => Limelight::UI::Events::FocusLostEvent},
+    {:name => "on_button_pushed", :klass => Limelight::UI::Events::ButtonPushedEvent},
+    {:name => "on_value_changed", :klass => Limelight::UI::Events::ValueChangedEvent}
   ].each do |event|
     it "handles #{event[:name]} actions" do
       @player.module_eval "#{event[:name]} { $RECIPIENT = self }"

@@ -5,7 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.RadioButtonGroup;
 import limelight.ui.events.ButtonPushedEvent;
-import limelight.ui.events.MouseClickedEvent;
+import limelight.ui.events.ValueChangedEvent;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
 import org.junit.Before;
@@ -17,7 +17,6 @@ public class RadioButtonPanelTest
 {
   private RadioButtonPanel panel;
   private PropPanel parent;
-  private RadioButtonGroup group;
 
   @Before
   public void setUp() throws Exception
@@ -26,7 +25,7 @@ public class RadioButtonPanelTest
     parent = new PropPanel(new MockProp());
     parent.add(panel);
 
-    group = new RadioButtonGroup();
+    RadioButtonGroup group = new RadioButtonGroup();
     group.add(panel);
   }
   
@@ -50,7 +49,7 @@ public class RadioButtonPanelTest
   }
 
   @Test
-  public void settingParentSteralizesParent() throws Exception
+  public void settingParentSterilizesParent() throws Exception
   {
     assertEquals(true, parent.isSterilized());
   }
@@ -63,7 +62,7 @@ public class RadioButtonPanelTest
   }
 
   @Test
-  public void pushSelectesButton() throws Exception
+  public void pushSelectsButton() throws Exception
   {
     assertEquals(false, panel.isSelected());
 
@@ -80,5 +79,19 @@ public class RadioButtonPanelTest
     new ButtonPushedEvent(panel).consumed().dispatch(panel);
 
     assertEquals(false, panel.isSelected());
+  }
+
+  @Test
+  public void valueChangedEventGetsThrownWhenChangingTheValue() throws Exception
+  {
+    final MockEventAction action = new MockEventAction();
+    panel.getEventHandler().add(ValueChangedEvent.class, action);
+
+    assertEquals(false, panel.isSelected());
+    panel.setSelected(false);
+    assertEquals(false, action.invoked);
+
+    panel.setSelected(true);
+    assertEquals(true, action.invoked);
   }
 }

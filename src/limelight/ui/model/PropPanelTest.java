@@ -85,7 +85,7 @@ public class PropPanelTest extends Assert
     assertEquals("blah", panel.getText());
     assertEquals("blah", panel.getTextAccessor().getText());
 
-    panel.getTextAccessor().setText(panel, "foo");
+    panel.getTextAccessor().setText("foo", panel);
     assertEquals("foo", panel.getText());
   }
 

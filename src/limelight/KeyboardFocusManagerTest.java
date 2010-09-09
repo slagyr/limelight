@@ -6,12 +6,10 @@ package limelight;
 import junit.framework.TestCase;
 
 
-import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropablePanel;
 import limelight.ui.model.inputs.InputPanel;
-import limelight.util.Box;
 
 import java.awt.*;
 
@@ -49,7 +47,7 @@ public class KeyboardFocusManagerTest extends TestCase
     {
     }
 
-    public void setText(PropablePanel panel, String text)
+    public void setText(String text)
     {
     }
 

@@ -23,6 +23,7 @@ public class MockTextModel extends TextModel
   @Override
   public void clearCache()
   {
+    super.clearCache();
     clearLayoutsCalled = true;
   }
 

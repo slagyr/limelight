@@ -1,4 +1,4 @@
-#- Copyright © 2008-2009 8th Light, Inc. All Rights Reserved.
+#- Copyright ï¿½ 2008-2009 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 __ :name => "sandbox"
@@ -15,7 +15,7 @@ arena :vertical_alignment => :center do
     end
     setting do
       label :text => "Scaled:", :width => "100%"
-      input :players => "check_box", :checked => true, :id => "scaled_checkbox", :on_button_pressed => "scene.find('logo').scaled = checked?"
+      input :players => "check_box", :checked => true, :id => "scaled_checkbox", :on_button_pushed => "scene.find('logo').scaled = checked?"
     end
     setting do
       label :text => "Rotation:"
