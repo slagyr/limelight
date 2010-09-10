@@ -1,7 +1,6 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -32,12 +31,6 @@ public class MockTextInputPanel extends TextInputPanel
   @Override
   public void paintOn(Graphics2D graphics)
   {
-  }
-
-  @Override
-  public KeyProcessor getKeyProcessorFor(int modifiers)
-  {
-    return new MockKeyProcessor();
   }
 
   public void lostOwnership(Clipboard clipboard, Transferable contents)

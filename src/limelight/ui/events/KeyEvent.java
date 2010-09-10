@@ -218,4 +218,10 @@ public class KeyEvent extends ModifiableEvent
   {
     return keyLocation;
   }
+
+  @Override
+  public String toString()
+  {
+    return super.toString() + " keyCode=" + keyCode + "/0x" + Integer.toHexString(keyCode) + " location=" + keyLocation;
+  }
 }

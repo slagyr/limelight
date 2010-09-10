@@ -5,12 +5,15 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
+import limelight.ui.events.*;
+import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.inputs.keyProcessors.*;
 import limelight.ui.text.TextLocation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -20,6 +23,7 @@ public class TextAreaPanelTest extends Assert
   PropPanel parent;
   MockGraphics graphics;
   TextModel model;
+  private MockRootPanel root;
 
   @Before
   public void setUp()
@@ -27,6 +31,10 @@ public class TextAreaPanelTest extends Assert
     panel = new TextAreaPanel();
     parent = new PropPanel(new MockProp());
     parent.add(panel);
+
+    root = new MockRootPanel();
+    root.add(parent);
+
     graphics = new MockGraphics();
     model = panel.getModel();
     model.setText("Some Text");
@@ -70,48 +78,35 @@ public class TextAreaPanelTest extends Assert
   {
     assertEquals("text", panel.getStyle().getCursor());
   }
-  
-  @Test
-  public void shouldKeyProcessorsWithNoSelection() throws Exception
-  {
-    assertEquals(ExpandedNormalKeyProcessor.instance, panel.getKeyProcessorFor(0));
-    assertEquals(ExpandedShiftKeyProcessor.instance, panel.getKeyProcessorFor(1));
-    assertEquals(CmdKeyProcessor.instance, panel.getKeyProcessorFor(2));
-    assertEquals(ShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(3));
-    assertEquals(CmdKeyProcessor.instance, panel.getKeyProcessorFor(4));
-    assertEquals(ShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(5));
-    assertEquals(CmdKeyProcessor.instance, panel.getKeyProcessorFor(6));
-    assertEquals(ShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(7));
-    assertEquals(AltKeyProcessor.instance, panel.getKeyProcessorFor(8));
-    assertEquals(AltShiftKeyProcessor.instance, panel.getKeyProcessorFor(9));
-    assertEquals(AltCmdKeyProcessor.instance, panel.getKeyProcessorFor(10));
-    assertEquals(AltShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(11));
-    assertEquals(AltCmdKeyProcessor.instance, panel.getKeyProcessorFor(12));
-    assertEquals(AltShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(13));
-    assertEquals(AltCmdKeyProcessor.instance, panel.getKeyProcessorFor(14));
-    assertEquals(AltShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(15));
-  }
 
   @Test
-  public void shouldKeyProcessorsWithSelection() throws Exception
+  public void typingTestOnSelectionWillReplaceTheSelection() throws Exception
   {
-    model.startSelection(TextLocation.origin);
-    assertEquals(ExpandedSelectionOnKeyProcessor.instance, panel.getKeyProcessorFor(0));
-    assertEquals(ExpandedSelectionOnShiftKeyProcessor.instance, panel.getKeyProcessorFor(1));
-    assertEquals(SelectionOnCmdKeyProcessor.instance, panel.getKeyProcessorFor(2));
-    assertEquals(SelectionOnShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(3));
-    assertEquals(SelectionOnCmdKeyProcessor.instance, panel.getKeyProcessorFor(4));
-    assertEquals(SelectionOnShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(5));
-    assertEquals(SelectionOnCmdKeyProcessor.instance, panel.getKeyProcessorFor(6));
-    assertEquals(SelectionOnShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(7));
-    assertEquals(SelectionOnAltKeyProcessor.instance, panel.getKeyProcessorFor(8));
-    assertEquals(SelectionOnAltShiftKeyProcessor.instance, panel.getKeyProcessorFor(9));
-    assertEquals(SelectionOnAltCmdKeyProcessor.instance, panel.getKeyProcessorFor(10));
-    assertEquals(SelectionOnAltShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(11));
-    assertEquals(SelectionOnAltCmdKeyProcessor.instance, panel.getKeyProcessorFor(12));
-    assertEquals(SelectionOnAltShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(13));
-    assertEquals(SelectionOnAltCmdKeyProcessor.instance, panel.getKeyProcessorFor(14));
-    assertEquals(SelectionOnAltShiftCmdKeyProcessor.instance, panel.getKeyProcessorFor(15));
-  }
+    panel.setText("blah");
 
+//dispatching: MousePressedEvent: source=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 recipient=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 modifiers=16 absLocation=java.awt.Point[x=140,y=306] clickCount=1
+//dispatching: FocusGainedEvent: source=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 recipient=limelight.ui.model.inputs.TextAreaPanel@4d7777a1
+//dispatching: MouseReleasedEvent: source=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 recipient=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 modifiers=16 absLocation=java.awt.Point[x=140,y=306] clickCount=1
+//dispatching: MouseClickedEvent: source=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 recipient=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 modifiers=16 absLocation=java.awt.Point[x=140,y=306] clickCount=1
+//dispatching: MousePressedEvent: source=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 recipient=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 modifiers=16 absLocation=java.awt.Point[x=140,y=306] clickCount=2
+//dispatching: MouseReleasedEvent: source=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 recipient=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 modifiers=16 absLocation=java.awt.Point[x=140,y=306] clickCount=2
+//dispatching: MouseClickedEvent: source=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 recipient=limelight.ui.model.inputs.TextAreaPanel@4d7777a1 modifiers=16 absLocation=java.awt.Point[x=140,y=306] clickCount=2
+//dispatching: KeyPressedEvent: source=limelight.ui.model.inputs.TextAreaPanel@584b62a7 recipient=limelight.ui.model.inputs.TextAreaPanel@584b62a7 modifiers=0 keyCode=65/41 location=1
+//dispatching: CharTypedEvent: source=limelight.ui.model.inputs.TextAreaPanel@584b62a7 recipient=limelight.ui.model.inputs.TextAreaPanel@584b62a7 modifiers=0 char=97/a
+//dispatching: KeyReleasedEvent: source=limelight.ui.model.inputs.TextAreaPanel@584b62a7 recipient=limelight.ui.model.inputs.TextAreaPanel@584b62a7 modifiers=0 keyCode=65/41 location=1
+//dispatching: KeyPressedEvent: source=limelight.ui.model.inputs.TextAreaPanel@584b62a7 recipient=limelight.ui.model.inputs.TextAreaPanel@584b62a7 modifiers=4 keyCode=157/9d location=2
+
+    new MousePressedEvent(panel, 16, new Point(5, 5), 1).dispatch(panel);
+    new FocusGainedEvent(panel).dispatch(panel);
+    new MouseReleasedEvent(panel, 16, new Point(5, 5), 1).dispatch(panel);
+    new MouseClickedEvent(panel, 16, new Point(5, 5), 1).dispatch(panel);
+    new MousePressedEvent(panel, 16, new Point(5, 5), 2).dispatch(panel);
+    new MouseReleasedEvent(panel, 16, new Point(5, 5), 2).dispatch(panel);
+    new MouseClickedEvent(panel, 16, new Point(5, 5), 2).dispatch(panel);
+    new KeyPressedEvent(panel, 0, KeyEvent.KEY_A, KeyEvent.LOCATION_STANDARD);
+    new CharTypedEvent(panel, 0, 'a').dispatch(panel);
+    new KeyReleasedEvent(panel, 0, KeyEvent.KEY_A, KeyEvent.LOCATION_STANDARD);
+
+    assertEquals("a", panel.getText());
+  }
 }

@@ -37,8 +37,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
   protected abstract TextModel createModel();
 
-  public abstract KeyProcessor getKeyProcessorFor(int modifiers);
-
   protected void markCursorRegionAsDirty()
   {
     RootPanel rootPanel = getRoot();
@@ -234,8 +232,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       KeyPressedEvent press = (KeyPressedEvent) event;
-      KeyProcessor processor = panel.getKeyProcessorFor(press.getModifiers());
-      processor.processKey(press, panel.model);
+      TextInputKeyProcessor.instance.processKey(press, panel.model);
       panel.model.setCaretOn(true);
       panel.markAsDirty();
     }

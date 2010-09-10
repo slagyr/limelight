@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public abstract class TextModel implements ClipboardOwner
 {
   private TextContainer container;
-  private StringBuffer text = new StringBuffer();
+  private StringBuffer text = new StringBuffer(); // TODO MDM Storing the text in both StringBuffer and List of TextLayouts leads to some major inefficiencies.  Should make an attempt to get rid of StringBuffer.
   private ArrayList<TypedLayout> lines;
   private Point offset = new Point(0, 0);
   private boolean caretOn;
@@ -210,12 +210,18 @@ public abstract class TextModel implements ClipboardOwner
 
   public void cutSelection()
   {
+    if(!selectionActivated)
+      return;
+
     copySelection();
     deleteSelection();
   }
 
   public void deleteSelection()
   {
+    if(!selectionActivated)
+      return;
+
     deleteEnclosedText(getSelectionStart(), getSelectionEnd());
     deactivateSelection();
   }
@@ -325,12 +331,12 @@ public abstract class TextModel implements ClipboardOwner
     setCaretLocation(getCaretLocation().moved(getLines(), 1));
   }
 
-  public TextLocation findNearestWordToTheLeft()
+  public TextLocation locateNearestWordToTheLeft()
   {
     return findWordsLeftEdge(getCaretLocation().moved(getLines(), -1));
   }
 
-  public TextLocation findNearestWordToTheRight()
+  public TextLocation locateNearestWordToTheRight()
   {
     return findNextWordSkippingSpacesOrNewLines(findWordsRightEdge(caretLocation));
   }
@@ -390,7 +396,7 @@ public abstract class TextModel implements ClipboardOwner
     }
   }
 
-  public void sendCursorToStartOfLine()
+  public void sendCaretToStartOfLine()
   {
     setCaretLocation(TextLocation.at(getCaretLocation().line, 0));
   }
@@ -399,7 +405,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     final TextLocation caret = getCaretLocation();
     TypedLayout caretLine = getLines().get(caret.line);
-    setCaretLocation(TextLocation.at(caret.line, caretLine.getText().length()));
+    setCaretLocation(TextLocation.at(caret.line, caretLine.visibleLength()));
   }
 
   public void startSelection(TextLocation location)
@@ -439,7 +445,7 @@ public abstract class TextModel implements ClipboardOwner
     return caretLocation.before(selectionLocation) ? caretLocation : selectionLocation;
   }
 
-  private TextLocation getSelectionEnd()
+  public TextLocation getSelectionEnd()
   {
     return caretLocation.before(selectionLocation) ? selectionLocation : caretLocation;
   }
@@ -486,6 +492,12 @@ public abstract class TextModel implements ClipboardOwner
 
   public boolean hasChanged()
   {
-    return changeFlag;    
+    return changeFlag;
+  }
+
+
+  public boolean isSingleLine()
+  {
+    return false;
   }
 }
