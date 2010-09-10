@@ -82,13 +82,17 @@ public abstract class Animation
   {
     running = true;
     AnimationLoop loop = Context.instance().animationLoop;
+    if(loop == null)
+      return;
     loop.add(this);
     loop.go();
   }
 
   public void stop()
   {
-    Context.instance().animationLoop.remove(this);
+    final AnimationLoop loop = Context.instance().animationLoop;
+    if(loop != null)
+      loop.remove(this);
     running = false;
   }
 

@@ -8,15 +8,15 @@ import limelight.ui.events.*;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
 
-public class TextInputPanelTest extends Assert
+public class TextInputPanelTest
 {
   private TextInputPanel panel;
   private MockRootPanel root;
@@ -49,7 +49,7 @@ public class TextInputPanelTest extends Assert
     root.getKeyListener().focusOn(panel);
 
     assertEquals(true, panel.hasFocus());
-    assertEquals(true, panel.caretThread.isAlive());
+    assertEquals(true, panel.isCaretBlinking());
     assertEquals(true, root.dirtyRegions.contains(panel.getBoundingBox()));
     assertEquals(true, root.dirtyRegions.contains(parent.getBoundingBox()));
   }
@@ -57,13 +57,12 @@ public class TextInputPanelTest extends Assert
   @Test
   public void canLoseFocus()
   {
-    panel.cursorCycleTime = 0;
     root.getKeyListener().focusOn(panel);
     root.dirtyRegions.clear();
     root.getKeyListener().focusOn(root);
 
     assertEquals(false, panel.hasFocus());
-    assertEquals(true, panel.caretThread.isAlive());
+    assertEquals(false, panel.isCaretBlinking());
     assertEquals(true, root.dirtyRegions.contains(panel.getBoundingBox()));
     assertEquals(true, root.dirtyRegions.contains(parent.getBoundingBox()));
   }
@@ -161,6 +160,8 @@ public class TextInputPanelTest extends Assert
   @Test
   public void consumedFocusGainedEventsShouldNotStartTheCaret() throws Exception
   {
+    assertEquals(false, panel.isCaretBlinking());
+    
     new FocusGainedEvent(panel).consumed().dispatch(panel);
 
     assertEquals(false, panel.isCaretBlinking());
@@ -223,6 +224,17 @@ public class TextInputPanelTest extends Assert
     new FocusLostEvent(panel).dispatch(panel);
 
     assertEquals(true, action.invoked);
+  }
+  
+  @Test
+  public void caretAnimationIsStoppedWhenPanelIsDisowned() throws Exception
+  {
+    root.getKeyListener().focusOn(panel);
+    assertEquals(true, panel.isCaretBlinking());
+
+    panel.setParent(null);
+
+    assertEquals(false, panel.isCaretBlinking());
   }
 
 }
