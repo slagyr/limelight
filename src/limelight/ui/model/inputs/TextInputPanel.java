@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.background.Animation;
 import limelight.styles.Style;
 import limelight.ui.*;
 import limelight.ui.events.*;
@@ -18,10 +19,8 @@ import java.awt.datatransfer.Transferable;
 public abstract class TextInputPanel extends InputPanel implements TextAccessor, ClipboardOwner, TextContainer
 {
   protected TextModel model;
-  protected Thread caretThread;
-  protected int cursorCycleTime = 500;
   protected TextPanelMouseProcessor mouseProcessor;
-  private boolean caretRunning;
+  private CaretAnimator caretAnimator;
 
   protected TextInputPanel()
   {
@@ -55,6 +54,8 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
       PropPanel propPanel = (PropPanel) panel;
       propPanel.setPainter(TextPanelPropPainter.instance);
     }
+    if(panel == null)
+      caretAnimator.stop();
   }
 
   public void paintOn(Graphics2D graphics)
@@ -102,37 +103,21 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
   private void startCaret()
   {
-    if(caretThread == null || !caretThread.isAlive())
-    {
-      caretRunning = true;
-      // TODO MDM - Use Animation instead
-      caretThread = new Thread(new Runnable()
-      {
-        public void run()
-        {
-          while(caretRunning)
-          {
-            markCursorRegionAsDirty();
-            try
-            {
-              Thread.sleep(cursorCycleTime);
-            }
-            catch(InterruptedException e)
-            {
-              break;
-            }
-            model.setCaretOn(!model.isCaretOn());
-          }
-        }
-      });
-      caretThread.start();
-    }
+    if(caretAnimator == null)
+      caretAnimator = new CaretAnimator(this);
+
+    caretAnimator.start();
   }
 
-  public void stopCaret()
+  private void stopCaret()
   {
-    caretRunning = false;
+    caretAnimator.stop();
     model.setCaretOn(false);
+  }
+
+  public boolean isCaretBlinking()
+  {
+    return caretAnimator != null && caretAnimator.isRunning();
   }
 
   protected void setBorderStyleDefaults(Style style)
@@ -164,9 +149,23 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     this.model = model;
   }
 
-  public boolean isCaretBlinking()
+  private static class CaretAnimator extends Animation
   {
-    return caretThread != null && caretThread.isAlive();
+    private TextInputPanel panel;
+
+    public CaretAnimator(TextInputPanel panel)
+    {
+      super(2);
+      this.panel = panel;
+    }
+
+    @Override
+    protected void doUpdate()
+    {
+      TextModel model = panel.getModel();
+      model.setCaretOn(!model.isCaretOn());
+      panel.markAsDirty();
+    }
   }
 
   private static class FocusGainedAction implements EventAction

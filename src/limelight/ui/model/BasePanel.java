@@ -22,7 +22,7 @@ public abstract class BasePanel implements Panel
   private Panel parent;
   protected Point absoluteLocation;
   private Box absoluteBounds;
-  protected final LinkedList<Panel> children;
+  protected final LinkedList<Panel> children; // TODO MDM There are several subclasses of BasePanel that will never have children.  Can this be abstracted?
   private List<Panel> readonlyChildren;
   private boolean sterilized;
   private Box boundingBox;
@@ -150,12 +150,7 @@ public abstract class BasePanel implements Panel
 
   public boolean isDescendantOf(Panel panel)
   {
-    if(parent == null)
-      return false;
-    else if(parent == panel)
-      return true;
-    else
-      return parent.isDescendantOf(panel);
+    return parent != null && (parent == panel || parent.isDescendantOf(panel));
   }
 
   public Panel getClosestCommonAncestor(Panel panel)
