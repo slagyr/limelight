@@ -18,7 +18,7 @@ public class TextPanelCaretPainter extends TextPanelPainter
 
   public void paint(Graphics2D graphics, TextModel model)
   {
-    if(!model.isCaretOn())
+    if(!model.isCaretOn() || model.hasSelection())
       return;
 
     Box caret = model.getCaretShape();
