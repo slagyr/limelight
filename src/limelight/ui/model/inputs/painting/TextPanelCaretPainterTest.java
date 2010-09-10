@@ -1,9 +1,9 @@
 package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
-import limelight.ui.MockPanel;
 import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.MockTextModel;
+import limelight.ui.model.inputs.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import org.junit.Before;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class TextPanelCaretPainterTest
 {
   private MockTextContainer container;
-  private MockTextModel model;
+  private TextModel model;
   private MockGraphics graphics;
   private TextPanelPainter painter;
 
@@ -27,7 +27,7 @@ public class TextPanelCaretPainterTest
     container.bounds = new Box(0, 0, 150, 20);
 
     model = new MockTextModel(container);
-    model.addLayout("Some Text");
+    model.setText("Some Text");
     model.setCaretLocation(TextLocation.at(0, 4));
 
     graphics = new MockGraphics();
@@ -52,6 +52,16 @@ public class TextPanelCaretPainterTest
     painter.paint(graphics, model);
 
     assertEquals(false, graphics.filledShapes.isEmpty());
+  }
+  
+  @Test
+  public void willNotPaintIfTheModelHasASelection()
+  {
+    model.setCaretOn(true);
+    model.selectAll();
+    painter.paint(graphics, model);
+
+    assertEquals(true, graphics.filledShapes.isEmpty());
   }
 
   @Test
