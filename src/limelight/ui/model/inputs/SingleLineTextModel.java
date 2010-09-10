@@ -63,6 +63,12 @@ public class SingleLineTextModel extends TextModel
     return getLine().getCaretShape(getCaretLocation().index).translated(getOffset());
   }
 
+  @Override
+  public boolean isSingleLine()
+  {
+    return true;
+  }
+
   private TypedLayout getLine()
   {
     return getLines().get(0);

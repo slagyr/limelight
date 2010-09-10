@@ -16,4 +16,10 @@ public class CharTypedEvent extends ModifiableEvent
   {
     return c;
   }
+
+  @Override
+  public String toString()
+  {
+    return super.toString() + " char=" + (int)c + "/" + c;
+  }
 }

@@ -23,6 +23,11 @@ public class ModifiableEvent extends Event
     return super.toString() + " modifiers=" + getModifiers();
   }
 
+  public boolean hasModifier()
+  {
+    return modifiers != 0;
+  }
+
   public int getModifiers()
   {
     return modifiers;

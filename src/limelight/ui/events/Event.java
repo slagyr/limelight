@@ -2,6 +2,7 @@ package limelight.ui.events;
 
 import limelight.ui.Panel;
 import limelight.ui.model.EventHandler;
+import limelight.ui.model.inputs.TextAreaPanel;
 
 public abstract class Event
 {

@@ -326,4 +326,22 @@ public class MultiLineTextModelTest
     assertEquals(TextLocation.at(3, 0), model.getLocationAt(new Point(70, 33)));
   }
 
+  @Test
+  public void sendingCareToEndOfLine() throws Exception
+  {
+    model.setText("line 1\nline 2 \nline 3\t\nline4");
+
+    model.setCaretLocation(TextLocation.at(0, 1));
+    model.sendCaretToEndOfLine();
+    assertEquals(TextLocation.at(0, 6), model.getCaretLocation());
+    
+    model.setCaretLocation(TextLocation.at(1, 1));
+    model.sendCaretToEndOfLine();
+    assertEquals(TextLocation.at(1, 7), model.getCaretLocation());
+
+    model.setCaretLocation(TextLocation.at(2, 1));
+    model.sendCaretToEndOfLine();
+    assertEquals(TextLocation.at(2, 7), model.getCaretLocation());
+  }
+
 }

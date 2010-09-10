@@ -6,6 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -171,6 +172,60 @@ public class TextModelTest
     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("yum"), model);
     model.pasteClipboard();
     assertEquals(true, model.hasChanged());
+  }
+
+  @Test
+  public void nearestWordToTheRight()
+  {
+    model.setText("Here are four words");
+    model.setCaretLocation(TextLocation.at(0, 1));
+    Assert.assertEquals(TextLocation.at(0, 5), model.locateNearestWordToTheRight());
+  }
+
+  @Test
+  public void nearestWordToTheRightStopsAtReturnCharacters()
+  {
+    model.setText("Here is some\ntext");
+    model.setCaretLocation(TextLocation.at(0, 9));
+    Assert.assertEquals(TextLocation.at(0, 13), model.locateNearestWordToTheRight());
+  }
+
+  @Test
+  public void nearestWordToTheRightStopsAtReturnCharactersUnlessItIsAChainOfReturnChars()
+  {
+    model.setText("Here is some\n\n\ntext");
+    model.setCaretLocation(TextLocation.at(0, 9));
+    Assert.assertEquals(TextLocation.at(0, 15), model.locateNearestWordToTheRight());
+  }
+
+  @Test
+  public void nearestWordToTheRightWontStopAtReturnCharactersIfPrecededByASpace()
+  {
+    model.setText("Here is some \ntext");
+    model.setCaretLocation(TextLocation.at(0, 9));
+    Assert.assertEquals(TextLocation.at(0, 14), model.locateNearestWordToTheRight());
+  }
+  
+  @Test
+  public void nearestWordToTheLeft()
+  {
+    model.setText("Here are four words");
+    model.setCaretLocation(TextLocation.at(0, 9));
+    Assert.assertEquals(TextLocation.at(0, 5), model.locateNearestWordToTheLeft());
+  }
+
+  @Test
+  public void nearestWordToTheLeftSkipsOverExtraSpacesToPreviousWord()
+  {
+    model.setText("Here are    many  spaces");
+    model.setCaretLocation(TextLocation.at(0, 12));
+    Assert.assertEquals(TextLocation.at(0, 5), model.locateNearestWordToTheLeft());
+  }
+
+  @Test
+  public void sendingCareToEndOfLine() throws Exception
+  {
+    model.setText("This is some text\n");
   }
 
 }
