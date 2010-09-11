@@ -7,15 +7,12 @@ import limelight.*;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
-import limelight.ui.events.*;
-import limelight.util.Box;
 
 import java.awt.*;
 import java.util.*;
 
 public class ScenePanel extends PropPanel implements RootPanel
 {
-  private Container contentPane;
   private RootMouseListener mouseListener;
   private RootKeyListener keyListener;
   private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
@@ -47,12 +44,10 @@ public class ScenePanel extends PropPanel implements RootPanel
   @Override
   public void illuminate()
   {
-    contentPane = frame.getContentPane();
-
     mouseListener = new RootMouseListener(this);
-    contentPane.addMouseListener(mouseListener);
-    contentPane.addMouseMotionListener(mouseListener);
-    contentPane.addMouseWheelListener(mouseListener);
+    frame.addMouseListener(mouseListener);
+    frame.addMouseMotionListener(mouseListener);
+    frame.addMouseWheelListener(mouseListener);
 
     keyListener = new RootKeyListener(this);
 
@@ -65,65 +60,50 @@ public class ScenePanel extends PropPanel implements RootPanel
   public void delluminate()
   {
 //    removeKeyboardFocus();
-    contentPane.removeMouseListener(mouseListener);
-    contentPane.removeMouseMotionListener(mouseListener);
-    contentPane.removeMouseWheelListener(mouseListener);
-    contentPane.removeKeyListener(keyListener);
+    frame.removeMouseListener(mouseListener);
+    frame.removeMouseMotionListener(mouseListener);
+    frame.removeMouseWheelListener(mouseListener);
+    frame.removeKeyListener(keyListener);
     mouseListener = null;
     super.delluminate();
   }
 
-  public Container getContentPane()
-  {
-    return contentPane;
-  }
-
+  @Override
   public int getWidth()
   {
-    return contentPane.getWidth();
+    if(frame != null)
+    {
+      Insets offsets = frame.getInsets();
+      return frame.getWidth() - offsets.left - offsets.right;
+    }
+    return super.getWidth();
   }
 
+  @Override
   public int getHeight()
   {
-    return contentPane.getHeight();
+    if(frame != null)
+    {
+      Insets offsets = frame.getInsets();
+      return frame.getHeight() - offsets.top - offsets.bottom;
+    }
+    return super.getHeight();
   }
 
-  public void setLocation(int x, int y)
-  {
-    super.setLocation(x, y);
-    contentPane.setLocation(x, y);
-  }
-
-  public Point getLocation()
-  {
-    return contentPane.getLocation();
-  }
-
-  public void setSize(int width, int height)
-  {
-    super.setSize(width, height);
-    contentPane.setSize(width, height);
-  }
-
-  public Box getAbsoluteBounds()
-  {
-    Rectangle bounds = contentPane.getBounds();
-    return new Box(0, 0, bounds.width, bounds.height);
-  }
-
-  public Point getAbsoluteLocation()
-  {
-    return new Point(0, 0);
-  }
-
+  @Override
   public int getX()
   {
-    return getAbsoluteLocation().x;
+    if(frame != null)
+      return frame.getInsets().left;
+    return super.getX();
   }
 
+  @Override
   public int getY()
   {
-    return getAbsoluteLocation().y;
+    if(frame != null)
+      return frame.getInsets().top;
+    return super.getY();
   }
 
 //  private void removeKeyboardFocus()
@@ -136,41 +116,40 @@ public class ScenePanel extends PropPanel implements RootPanel
 //      focusManager.unfocusCurrentlyFocusedComponent();
 //  }
 
+  @Override
   public RootPanel getRoot()
   {
     return this;
   }
 
+  @Override
   public Graphics2D getGraphics()
   {
-    return (Graphics2D) contentPane.getGraphics();
+    return (Graphics2D)frame.getGraphics();
   }
 
+  @Override
   public boolean isDescendantOf(Panel panel)
   {
     return panel == this;
   }
 
+  @Override
   public Panel getClosestCommonAncestor(Panel panel)
   {
     return this;
   }
 
+  @Override
   public void setCursor(Cursor cursor)
   {
-    if(contentPane.getCursor() != cursor)
-      contentPane.setCursor(cursor);
+    if(frame.getCursor() != cursor)
+      frame.setCursor(cursor);
   }
 
   public Cursor getCursor()
   {
-    return contentPane.getCursor();
-  }
-
-  // TODO MDM - Get rid of me.
-  public Panel getPanel()
-  {
-    return this;
+    return frame.getCursor();
   }
 
   public RootMouseListener getMouseListener()
@@ -287,7 +266,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
     if(imageCache == null)
     {
-      Prop prop = ((PropablePanel) getPanel()).getProp();
+      Prop prop = getProp();
       ResourceLoader loader = prop.getLoader();
       imageCache = new ImageCache(loader);
     }

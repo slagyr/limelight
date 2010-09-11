@@ -34,8 +34,6 @@ public interface RootPanel extends Panel
 
   Cursor getCursor();
 
-  Panel getPanel();
-
   ImageCache getImageCache();
 
   RootKeyListener getKeyListener();

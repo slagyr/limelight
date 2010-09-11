@@ -4,12 +4,10 @@
 package limelight.ui.model;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 public interface PropFrame
 {
-  Container getContentPane();
-
   Point getLocationOnScreen();
 
   RootPanel getRoot();
@@ -34,5 +32,28 @@ public interface PropFrame
 
   void deactivated(WindowEvent e);
 
-  void addKeyListener(java.awt.event.KeyListener keyListener);
+  void addKeyListener(KeyListener listener);
+  void addMouseListener(MouseListener listener);
+  void addMouseMotionListener(MouseMotionListener listener);
+  void addMouseWheelListener(MouseWheelListener listener);
+  void removeKeyListener(KeyListener listener);
+  void removeMouseListener(MouseListener listener);
+  void removeMouseMotionListener(MouseMotionListener listener);
+  void removeMouseWheelListener(MouseWheelListener listener);
+  MouseListener[] getMouseListeners();
+  MouseMotionListener[] getMouseMotionListeners();
+  MouseWheelListener[] getMouseWheelListeners();
+  KeyListener[] getKeyListeners();
+
+  int getWidth();
+
+  int getHeight();
+
+  Graphics getGraphics();
+
+  Cursor getCursor();
+
+  void setCursor(Cursor cursor);
+
+  Insets getInsets();
 }

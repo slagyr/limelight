@@ -310,7 +310,7 @@ public class PropPanelTest extends Assert
 
     new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
 
-    assertEquals(Cursor.HAND_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(Cursor.HAND_CURSOR, root.getCursor().getType());
     assertSame(panel.getHoverStyle(), style.getScreen());
   }
 
@@ -322,7 +322,7 @@ public class PropPanelTest extends Assert
     new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
     new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
-    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
   }
 
@@ -334,7 +334,7 @@ public class PropPanelTest extends Assert
     new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
     new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
-    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
   }
 
@@ -347,7 +347,7 @@ public class PropPanelTest extends Assert
     prop.hoverStyle = null;
     new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
-    assertEquals(Cursor.DEFAULT_CURSOR, root.getContentPane().getCursor().getType());
+    assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
   }
 
