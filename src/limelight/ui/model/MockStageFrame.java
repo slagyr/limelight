@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 
 public class MockStageFrame extends StageFrame
 {
-  private final Container contentPanel;
   public boolean wasRefreshed;
   public boolean closed;
   public boolean shouldAllowClose;
@@ -23,17 +22,6 @@ public class MockStageFrame extends StageFrame
   public MockStageFrame()
   {
     setStage(new MockStage());
-    contentPanel = new Container(){
-      public Graphics getGraphics()
-      {
-        return new MockGraphics();
-      }
-    };
-  }
-
-  public Container getContentPane()
-  {
-    return contentPanel;
   }
 
   public void setRoot(RootPanel root)
@@ -85,4 +73,6 @@ public class MockStageFrame extends StageFrame
   {
     activated = false;
   }
+
+  
 }

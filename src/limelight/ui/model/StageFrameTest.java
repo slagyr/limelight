@@ -89,11 +89,11 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldLoadSetsDefaultCursor() throws Exception
   {
-    frame.getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     ScenePanel panel = new ScenePanel(new MockProp());
     frame.load(panel);
 
-    assertEquals(Cursor.DEFAULT_CURSOR, frame.getContentPane().getCursor().getType());
+    assertEquals(Cursor.DEFAULT_CURSOR, frame.getCursor().getType());
   }
 
   @Test

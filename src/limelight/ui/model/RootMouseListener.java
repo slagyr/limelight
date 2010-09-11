@@ -70,7 +70,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
   }
 
   public void mouseMoved(MouseEvent e)
-  {
+  { 
     Panel panel = panelFor(e.getPoint());
     if(panel != hooveredPanel)
       transition(panel, e);

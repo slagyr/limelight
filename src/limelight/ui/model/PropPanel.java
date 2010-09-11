@@ -231,7 +231,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     doLayout();
     PaintJob job = new PaintJob(getAbsoluteBounds(), getRoot().getGraphics().getBackground());
     //TODO Why are we painting the root panel here?  So wastful! Maybe. Transparency?
-    job.paint(getRoot().getPanel());
+    job.paint(getRoot());
     job.applyTo(getRoot().getGraphics());
 //    }
   }

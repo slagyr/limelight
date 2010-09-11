@@ -99,8 +99,8 @@ public abstract class BasePanel implements Panel
   {
     if(absoluteLocation == null)
     {
-      int x = this.x;
-      int y = this.y;
+      int x = getX();
+      int y = getY();
 
       if(parent != null)
       {

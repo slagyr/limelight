@@ -17,11 +17,13 @@ public class PropPanelLayoutTest extends TestCase
   private PropPanelLayout layout;
   private int scrollGirth = ScrollBarPanel.GIRTH;
   private ScenePanel root;
+  private MockPropFrame frame;
 
   public void setUp() throws Exception
   {
     root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
+    frame = new MockPropFrame();
+    root.setFrame(frame);
     parent = new PropPanel(new MockProp());
     root.add(parent);
     parent.getStyle().setWidth("100");
@@ -533,7 +535,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testSizeUsingAutoWidthAndHeight() throws Exception
   {
-    root.setSize(100, 100);
+    frame.setSize(100, 100);
     parent.getStyle().setWidth("auto");
     parent.getStyle().setHeight("auto");
     layout.snapToSize(parent, false);
@@ -555,7 +557,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testSnapToSizeWithMaxSizeAgainstAutoSizing() throws Exception
   {
-    root.setSize(100, 100);
+    frame.setSize(100, 100);
     parent.getStyle().setWidth("auto");
     parent.getStyle().setHeight("auto");
     parent.getStyle().setMaxWidth("75");
@@ -569,7 +571,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testSnapToSizeWithMaxSizeAgainstPercentageSizing() throws Exception
   {
-    root.setSize(100, 100);
+    frame.setSize(100, 100);
     parent.getStyle().setWidth("90%");
     parent.getStyle().setHeight("90%");
     parent.getStyle().setMaxWidth("75");

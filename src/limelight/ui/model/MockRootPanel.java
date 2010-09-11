@@ -59,11 +59,6 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
     return Cursor.getDefaultCursor();
   }
 
-  public Panel getPanel()
-  {
-    return null;
-  }
-
   public ImageCache getImageCache()
   {
     return null;

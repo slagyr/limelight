@@ -59,10 +59,8 @@ module Limelight
       return Java::java.awt.Point.new(local_x, local_y)
     end
 
-    def owner_of(location, prop)
-puts "location: #{location} prop.location #{prop.panel.absolute_location}"      
+    def owner_of(location, prop)      
       owner = prop.panel.get_owner_of_point(location)
-      puts "owner: #{owner}"
       return owner
     end
 

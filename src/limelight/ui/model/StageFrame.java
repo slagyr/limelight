@@ -14,7 +14,7 @@ import limelight.ui.api.Stage;
 import java.awt.*;
 import java.awt.event.*;
 
-public class StageFrame extends java.awt.Frame implements PropFrame, PropFrameWindow
+public class StageFrame extends Frame implements PropFrame, PropFrameWindow
 {
   private static final StyleCompiler widthCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage width");
   private static final StyleCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
@@ -221,7 +221,7 @@ public class StageFrame extends java.awt.Frame implements PropFrame, PropFrameWi
   {
     if(root != null)
       root.setFrame(null);
-    getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     root = (RootPanel) child;
     root.setFrame(this);
   }
@@ -229,11 +229,6 @@ public class StageFrame extends java.awt.Frame implements PropFrame, PropFrameWi
   public Stage getStage()
   {
     return stage;
-  }
-
-  public Container getContentPane()
-  {
-    return this;
   }
 
   public RootPanel getRoot()

@@ -9,9 +9,6 @@ import limelight.ui.Panel;
 import limelight.ui.api.MockScene;
 import limelight.Context;
 import limelight.MockResourceLoader;
-import limelight.ui.events.KeyEvent;
-import limelight.ui.events.KeyPressedEvent;
-import limelight.ui.model.inputs.TestableInputPanel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +22,6 @@ public class ScenePanelTest extends Assert
 { 
   private ScenePanel root;
   private MockPropablePanel child;
-  private Container contentPane;
   private MockPropFrame frame;
 
   @Before
@@ -34,7 +30,6 @@ public class ScenePanelTest extends Assert
     frame = new MockPropFrame();
     root = new ScenePanel(new MockProp());
     child = new MockPropablePanel("child");
-    contentPane = frame.getContentPane();
     Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
   }
 
@@ -54,9 +49,9 @@ public class ScenePanelTest extends Assert
     RootMouseListener listener = root.getMouseListener();
     assertNotNull(listener);
 
-    assertEquals(true, Arrays.asList(contentPane.getMouseListeners()).contains(listener));
-    assertEquals(true, Arrays.asList(contentPane.getMouseMotionListeners()).contains(listener));
-    assertEquals(true, Arrays.asList(contentPane.getMouseWheelListeners()).contains(listener));
+    assertEquals(true, Arrays.asList(frame.getMouseListeners()).contains(listener));
+    assertEquals(true, Arrays.asList(frame.getMouseMotionListeners()).contains(listener));
+    assertEquals(true, Arrays.asList(frame.getMouseWheelListeners()).contains(listener));
   }
 
   @Test
@@ -78,13 +73,14 @@ public class ScenePanelTest extends Assert
     RootMouseListener listener = root.getMouseListener();
     root.setFrame(null);
 
-    assertEquals(false, Arrays.asList(contentPane.getMouseListeners()).contains(listener));
-    assertEquals(false, Arrays.asList(contentPane.getMouseMotionListeners()).contains(listener));
-    assertEquals(false, Arrays.asList(contentPane.getMouseWheelListeners()).contains(listener));
-    assertEquals(false, Arrays.asList(contentPane.getKeyListeners()).contains(listener));
+    assertEquals(false, Arrays.asList(frame.getMouseListeners()).contains(listener));
+    assertEquals(false, Arrays.asList(frame.getMouseMotionListeners()).contains(listener));
+    assertEquals(false, Arrays.asList(frame.getMouseWheelListeners()).contains(listener));
+    assertEquals(false, Arrays.asList(frame.getKeyListeners()).contains(listener));
     assertNull(root.getMouseListener());
   }
 
+    // TODO MDM - make siure this works
 //  @Test
 //  public void keyboardFocusDoesNotRemainOnChildWhenDestroyed() throws Exception
 //  {
