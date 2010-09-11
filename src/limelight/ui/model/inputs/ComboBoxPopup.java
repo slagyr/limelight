@@ -87,8 +87,8 @@ class ComboBoxPopup
   {
     popupList = new PropPanel(new MockProp("limelight_builtin_combo_box_popup_list"));
     popupList.getStyle().addExtension(stylesStore.get("limelight_builtin_combo_box_popup_list"));
-    popupList.getStyle().setX(comboBox.getAbsoluteLocation().x);
-    popupList.getStyle().setY(comboBox.getAbsoluteLocation().y);
+    popupList.getStyle().setX(comboBox.getAbsoluteLocation().x - comboBox.getRoot().getX());
+    popupList.getStyle().setY(comboBox.getAbsoluteLocation().y - comboBox.getRoot().getY());
     popupList.getStyle().setWidth(comboBox.getWidth());
     popupList.getEventHandler().add(MouseClickedEvent.class, new EventAction()
     {
