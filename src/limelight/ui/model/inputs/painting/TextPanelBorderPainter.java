@@ -35,10 +35,17 @@ public class TextPanelBorderPainter implements Painter
   {
     if(shouldPaintSpecialBorder(panel))
     {
-      Box bounds = panel.getBoxInsideMargins();  
-      normalBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
-      if(panel.hasFocus())
-        focusedBorder.draw(graphics, 0, 0, bounds.width, bounds.height);
+      try
+      {
+        Box bounds = panel.getBoxInsideMargins();
+        normalBorder.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
+        if(panel.hasFocus())
+          focusedBorder.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
+      }
+      catch(Exception e)
+      {
+        System.err.println("TextPanel: NinePatch choked again");
+      }
     }
     else
       BorderPainter.instance.paint(graphics, panel);

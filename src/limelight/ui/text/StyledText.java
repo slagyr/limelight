@@ -5,6 +5,8 @@ package limelight.ui.text;
 
 import limelight.styles.RichStyle;
 import limelight.styles.StyleObserver;
+import limelight.ui.Fonts;
+
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,10 +79,7 @@ public class StyledText
 
   public Font getFont()
   {
-    String fontFace = style.getCompiledFontFace().getValue();
-    int fontStyle = style.getCompiledFontStyle().toInt();
-    int fontSize = style.getCompiledFontSize().getValue();
-    return new Font(fontFace, fontStyle, fontSize);
+    return Fonts.fromStyle(style);
   }
 
   public Color getColor()
