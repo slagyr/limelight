@@ -5,8 +5,6 @@ package limelight.ui.model;
 
 import limelight.LimelightError;
 import limelight.styles.ScreenableStyle;
-import limelight.ui.Panel;
-import limelight.util.Box;
 
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
@@ -15,7 +13,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.io.ByteArrayInputStream;
 
-public class ImagePanel extends BasePanel
+public class ImagePanel extends PanelBase
 {
   private double rotation;
   private String imageFile;
@@ -27,22 +25,13 @@ public class ImagePanel extends BasePanel
   private double imageHeight;
   private boolean scaled = true;
 
-  public Box getChildConsumableArea()
-  {
-    return null;
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return null;
-  }
-
   public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
   }
 
-  public void setParent(Panel panel)
+  @Override
+  public void setParent(ParentPanelBase panel)
   {
     super.setParent(panel);
     panel.sterilize();
@@ -86,11 +75,6 @@ public class ImagePanel extends BasePanel
   public Layout getDefaultLayout()
   {
     return ImagePanelLayout.instance;
-  }
-
-  public void consumableAreaChanged()
-  {
-    markAsNeedingLayout();
   }
 
   public void paintOn(Graphics2D graphics)
@@ -171,7 +155,7 @@ public class ImagePanel extends BasePanel
   {
     rotation = angle;
     markAsDirty();
-    ((BasePanel) getParent()).markAsDirty();
+    ((PanelBase) getParent()).markAsDirty();
     markAsNeedingLayout();
     doPropagateSizeChangeUp(getParent());
   }

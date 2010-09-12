@@ -7,14 +7,20 @@ import junit.framework.TestCase;
 import limelight.ui.MockPanel;
 import limelight.background.MockAnimation;
 import limelight.Context;
+import org.junit.Before;
+import org.junit.Test;
 
-public class AnimationTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
+
+public class AnimationTest
 {
   public static final int oneSecond = 1000000000;
 
   private MockAnimation animation;
   private AnimationLoop loop;
 
+  @Before
   public void setUp() throws Exception
   {
     animation = new MockAnimation(100, new MockPanel());
@@ -22,12 +28,14 @@ public class AnimationTest extends TestCase
     Context.instance().animationLoop = loop;
   }
 
-  public void testGetOptimalSleepNanos() throws Exception
+  @Test
+  public void getOptimalSleepNanos() throws Exception
   {
     assertEquals(oneSecond / 100, animation.getDelayNanos());
   }
 
-  public void testIsReady() throws Exception
+  @Test
+  public void isReady() throws Exception
   {
     assertEquals(true, animation.isReady());
 
@@ -41,21 +49,24 @@ public class AnimationTest extends TestCase
     assertEquals(false, animation.isReady());
   }
 
-  public void testLastExecutionTime() throws Exception
+  @Test
+  public void lastExecutionTime() throws Exception
   {
     animation.update();
 
     assertEquals("too long: " + animation.nanosSinceLastUpdate(), true, animation.nanosSinceLastUpdate() < 100000000);
   }
 
-  public void testCallsDoPerform() throws Exception
+  @Test
+  public void callsDoPerform() throws Exception
   {
     animation.update();
 
     assertEquals(1, animation.updates);
   }
 
-  public void testMissedPerformancesAreMadeup() throws Exception
+  @Test
+  public void missedPerformancesAreMadeup() throws Exception
   {
     animation.update();
 
@@ -65,7 +76,8 @@ public class AnimationTest extends TestCase
     assertEquals(true, animation.updates >= 3);
   }
 
-  public void testMaximumMakeupPerformancesIs5() throws Exception
+  @Test
+  public void maximumMakeupPerformancesIs5() throws Exception
   {
     animation.update();
 
@@ -75,7 +87,8 @@ public class AnimationTest extends TestCase
     assertEquals(7, animation.updates);
   }
 
-  public void testStartAndStop() throws Exception
+  @Test
+  public void startAndStop() throws Exception
   {
     animation.start();
 
@@ -85,8 +98,9 @@ public class AnimationTest extends TestCase
     animation.stop();
     assertEquals(0, loop.getAnimations().size());
   }
-
-  public void testTolerance() throws Exception
+       
+  @Test
+  public void tolerance() throws Exception
   {
     animation = new MockAnimation(100, new MockPanel());
 
@@ -95,7 +109,8 @@ public class AnimationTest extends TestCase
     assertEquals(tolerableDelay, animation.getTolerableDelay());
   }
 
-  public void testLessThanOneUpdatePerSecond() throws Exception
+  @Test
+  public void lessThanOneUpdatePerSecond() throws Exception
   {
     animation = new MockAnimation(0.5, new MockPanel());
     animation.update();
@@ -106,4 +121,26 @@ public class AnimationTest extends TestCase
     animation.getTimer().moveMarkBackInTime(oneSecond);
     assertEquals(true, animation.isReady());          
   }
+
+  @Test
+  public void settingUpdatesPerSecondToZero() throws Exception
+  {
+    animation.setUpdatesPerSecond(0);
+    assertEquals(0, animation.getUpdatesPerSecond(), 0.0001);
+    assertEquals(0, loop.getAnimations().size());
+    
+    animation.start();
+    assertEquals(false, animation.isRunning());
+    assertEquals(0, loop.getAnimations().size());
+  }
+  
+  @Test
+  public void settingUpdatesPerSecondToNegativeValue() throws Exception
+  {
+    animation.setUpdatesPerSecond(-1);
+    assertEquals(0, animation.getUpdatesPerSecond(), 0.0001);
+    assertEquals(0, loop.getAnimations().size());
+  }
+
+
 }

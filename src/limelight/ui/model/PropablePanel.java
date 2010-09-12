@@ -4,13 +4,15 @@
 package limelight.ui.model;
 
 import limelight.styles.ScreenableStyle;
+import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 
 import java.awt.*;
 
-public interface PropablePanel extends limelight.ui.Panel
+
+public interface PropablePanel extends ParentPanel
 {
   void add(limelight.ui.Panel child);
   boolean remove(limelight.ui.Panel child);

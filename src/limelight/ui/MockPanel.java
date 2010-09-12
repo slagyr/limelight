@@ -4,16 +4,14 @@
 package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
-import limelight.ui.model.BasePanel;
+import limelight.ui.model.PanelBase;
 import limelight.ui.model.MockEventHandler;
-import limelight.util.Box;
 
 import java.awt.*;
 
-public class MockPanel extends BasePanel
+public class MockPanel extends PanelBase
 {
   public final ScreenableStyle style;
-  public static int paintCount;
   public int paintIndex;
   public boolean wasPainted;
   public boolean canBeBuffered;
@@ -31,16 +29,6 @@ public class MockPanel extends BasePanel
     eventHandler = mockEventHandler = new MockEventHandler(this);
   }
 
-  public Box getChildConsumableArea()
-  {
-    return new Box(0, 0, getWidth(), getHeight());
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return getChildConsumableArea();
-  }
-
   public ScreenableStyle getStyle()
   {
     return style;
@@ -50,7 +38,6 @@ public class MockPanel extends BasePanel
   public void paintOn(Graphics2D graphics)
   {
     wasPainted = true;
-    paintIndex = paintCount++;
   }
 
   public boolean canBeBuffered()

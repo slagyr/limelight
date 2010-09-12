@@ -46,7 +46,8 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     }
   }
 
-  public void setParent(limelight.ui.Panel panel)
+  @Override
+  public void setParent(ParentPanelBase panel)
   {
     super.setParent(panel);
     if(panel instanceof PropPanel)
@@ -71,12 +72,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     return TextInputPanelLayout.instance;
   }
 
-  @Override
-  public void consumableAreaChanged()
-  {
-    markAsNeedingLayout();
-  }
-
   public TextModel getModel()
   {
     return model;
@@ -96,6 +91,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     return model.getText();
   }
 
+  @Override
   public Point getAbsoluteLocation()
   {
     return super.getAbsoluteLocation();

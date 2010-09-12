@@ -3,7 +3,7 @@ package limelight.ui.events;
 import limelight.ui.EventAction;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
-import limelight.ui.model.TestableBasePanel;
+import limelight.ui.model.TestablePanelBase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,7 +74,7 @@ public class EventTest
   @Test
   public void theRecipientIsSetOnlyDuringDispatchAndThenRestored() throws Exception
   {
-    TestableBasePanel recipient = new TestableBasePanel();
+    TestablePanelBase recipient = new TestablePanelBase();
     recipient.getEventHandler().add(TestableEvent.class, new EventAction(){
       public void invoke(Event event)
       {

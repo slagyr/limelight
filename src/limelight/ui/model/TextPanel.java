@@ -22,7 +22,7 @@ import java.text.AttributedString;
 import java.util.*;
 import java.util.List;
 
-public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
+public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
 {
   private String text;
   private PropablePanel panel;
@@ -63,7 +63,7 @@ public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
     }
   }
 
-  public Panel getPanel()
+  public ParentPanel getPanel()
   {
     return panel;
   }
@@ -96,11 +96,6 @@ public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
     return TextPanelLayout.instance;
   }
 
-  public void consumableAreaChanged()
-  {
-    markAsNeedingLayout();
-  }
-
   public void compile()
   {
     cleanup();
@@ -129,7 +124,7 @@ public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
 
   public synchronized void buildLines()
   {
-    consumableArea = panel.getChildConsumableArea();
+    consumableArea = panel.getChildConsumableBounds();
     lines = new LinkedList<TextLayout>();
 
     if(text != null && text.length() > 0)
@@ -273,16 +268,6 @@ public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
     textChanged = false;
   }
 
-  public Box getChildConsumableArea()
-  {
-    return null;
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return null;
-  }
-
   public Graphics2D getGraphics()
   {
     if(graphics != null)
@@ -310,7 +295,6 @@ public class TextPanel extends BasePanel implements StyleObserver, TextAccessor
   {
     markAsNeedingLayout();
     getParent().markAsNeedingLayout();
-    doPropagateSizeChangeDown();
     doPropagateSizeChangeUp(getParent().getParent());
   }
 }

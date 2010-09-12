@@ -9,12 +9,11 @@ import limelight.ui.model.*;
 
 public class ScrollLayoutTest extends TestCase
 {
-  private ScenePanel root;
   private PropPanel parent;
 
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockProp());
+    ScenePanel root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
     parent = new PropPanel(new MockProp());
     root.add(parent);
@@ -40,7 +39,7 @@ public class ScrollLayoutTest extends TestCase
     assertEquals(-2, panel.getX());
   }
 
-  private PropPanel addChildWithSize(BasePanel parent, String width, String height)
+  private PropPanel addChildWithSize(ParentPanelBase parent, String width, String height)
   {
     PropPanel panel = new PropPanel(new MockProp());
     panel.getStyle().setWidth(width);

@@ -1,11 +1,10 @@
 package limelight.ui.model;
 
 import limelight.styles.ScreenableStyle;
-import limelight.util.Box;
 
 import java.awt.*;
 
-public class MockChangeablePanel extends BasePanel implements ChangeablePanel
+public class MockChangeablePanel extends PanelBase implements ChangeablePanel
 {
   public boolean sizeChangePending;
   public boolean propagateSizeChangeUpCalled;
@@ -15,16 +14,6 @@ public class MockChangeablePanel extends BasePanel implements ChangeablePanel
   public boolean borderChanged;
   public boolean clearCacheCalled;
   public TextAccessor textAccessor;
-
-  public Box getBoxInsidePadding()
-  {
-    return null;
-  }
-
-  public Box getChildConsumableArea()
-  {
-    return null;
-  }
 
   public void paintOn(Graphics2D graphics)
   {

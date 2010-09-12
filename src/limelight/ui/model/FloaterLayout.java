@@ -13,11 +13,11 @@ public class FloaterLayout implements Layout
   //TODO Floater need to change position when scrolled too.
   public void doLayout(Panel thePanel)
   {
-    BasePanel panel = (BasePanel)thePanel;
+    PanelBase panel = (PanelBase)thePanel;
     if(panel.isFloater())
     {
       panel.resetLayout();
-      Box area = panel.getParent().getChildConsumableArea();
+      Box area = panel.getParent().getChildConsumableBounds();
       int newX = panel.getStyle().getCompiledX().getX(0, area);
       int newY = panel.getStyle().getCompiledY().getY(0, area);
       panel.markAsDirty();

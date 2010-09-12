@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
-import limelight.ui.model.BasePanel;
+import limelight.ui.model.PanelBase;
 import limelight.ui.model.Layout;
 import limelight.util.Box;
 
@@ -14,9 +14,9 @@ public class InputPanelLayout implements Layout
 
   public void doLayout(Panel thePanel)
   { 
-    BasePanel panel = (BasePanel)thePanel;
+    PanelBase panel = (PanelBase)thePanel;
     panel.resetLayout();
-    Box bounds = panel.getParent().getBoxInsidePadding();
+    Box bounds = panel.getParent().getChildConsumableBounds();
     panel.setLocation(bounds.x, bounds.y);
     panel.setSize(bounds.width, bounds.height);
     panel.markAsDirty();

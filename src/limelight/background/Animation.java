@@ -24,15 +24,24 @@ public abstract class Animation
 
   protected abstract void doUpdate();
 
-  // TODO MDM What is updatesPerSecond is zero
   public void setUpdatesPerSecond(double updatesPerSecond)
   {
-    delayNanos = (long)(ONE_BILLION / updatesPerSecond);
-    tolerableDelay = (long)(delayNanos * 0.95);
+    if (updatesPerSecond < 0.01)
+    {
+      delayNanos = Long.MAX_VALUE;
+      stop();
+    }
+    else
+    {
+      delayNanos = (long) (ONE_BILLION / updatesPerSecond);
+      tolerableDelay = (long) (delayNanos * 0.95);
+    }
   }
 
   public double getUpdatesPerSecond()
   {
+    if(delayNanos == Long.MAX_VALUE)
+      return 0.0;
     return ONE_BILLION / delayNanos;
   }
 
@@ -62,7 +71,7 @@ public abstract class Animation
   private void makeupMissedUpdates()
   {
     long missedUpdates = nanosSinceLastUpdate() / delayNanos;
-    for(int i = 1; i < missedUpdates && i < (MaxMakeups + 1); i++)
+    for (int i = 1; i < missedUpdates && i < (MaxMakeups + 1); i++)
     {
       doUpdate();
     }
@@ -80,9 +89,12 @@ public abstract class Animation
 
   public void start()
   {
+    if(delayNanos == Long.MAX_VALUE)
+      return;
+    
     running = true;
     AnimationLoop loop = Context.instance().animationLoop;
-    if(loop == null)
+    if (loop == null)
       return;
     loop.add(this);
     loop.go();
@@ -91,7 +103,7 @@ public abstract class Animation
   public void stop()
   {
     final AnimationLoop loop = Context.instance().animationLoop;
-    if(loop != null)
+    if (loop != null)
       loop.remove(this);
     running = false;
   }

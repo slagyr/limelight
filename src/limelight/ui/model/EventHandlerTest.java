@@ -12,15 +12,15 @@ import static junit.framework.Assert.assertEquals;
 public class EventHandlerTest
 {
   private MockEventAction action;
-  private BasePanel panel;
-  private BasePanel parent;
+  private PanelBase panel;
+  private ParentPanelBase parent;
 
   @Before
   public void setUp() throws Exception
   {
     action = new MockEventAction();
-    parent = new TestableBasePanel();
-    panel = new TestableBasePanel();
+    parent = new TestableParentPanel();
+    panel = new TestablePanelBase();
     parent.add(panel);
   }
 

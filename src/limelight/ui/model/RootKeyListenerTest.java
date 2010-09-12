@@ -17,7 +17,7 @@ public class RootKeyListenerTest
 {
   private RootKeyListener listener;
   private MockRootPanel root;
-  private MockPanel panel;
+  private MockParentPanel panel;
   private Component component;
   private TestableInputPanel input;
   private TestableInputPanel input2;
@@ -29,7 +29,7 @@ public class RootKeyListenerTest
   {
     root = new MockRootPanel();
     listener = new RootKeyListener(root);
-    panel = new MockPanel();
+    panel = new MockParentPanel();
     panelEvents = panel.mockEventHandler;
     root.add(panel);
     component = new Panel();
@@ -111,7 +111,7 @@ public class RootKeyListenerTest
 
   private void buildInputTree()
   {
-    MockPanel parent = new MockPanel();
+    MockParentPanel parent = new MockParentPanel();
     panel.add(parent);
     input = new TestableInputPanel();
     parent.add(input);

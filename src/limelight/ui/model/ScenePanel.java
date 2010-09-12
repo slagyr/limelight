@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.*;
 import limelight.styles.RichStyle;
+import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 
@@ -69,52 +70,10 @@ public class ScenePanel extends PropPanel implements RootPanel
   }
 
   @Override
-  public int getWidth()
+  public Layout getDefaultLayout()
   {
-    if(frame != null)
-    {
-      Insets offsets = frame.getInsets();
-      return frame.getWidth() - offsets.left - offsets.right;
-    }
-    return super.getWidth();
+    return SceneLayout.instance;
   }
-
-  @Override
-  public int getHeight()
-  {
-    if(frame != null)
-    {
-      Insets offsets = frame.getInsets();
-      return frame.getHeight() - offsets.top - offsets.bottom;
-    }
-    return super.getHeight();
-  }
-
-  @Override
-  public int getX()
-  {
-    if(frame != null)
-      return frame.getInsets().left;
-    return super.getX();
-  }
-
-  @Override
-  public int getY()
-  {
-    if(frame != null)
-      return frame.getInsets().top;
-    return super.getY();
-  }
-
-//  private void removeKeyboardFocus()
-//  {
-//    limelight.KeyboardFocusManager focusManager = Context.instance().keyboardFocusManager;
-//    if(focusManager == null)
-//      return;
-//    Panel focusedPanel = focusManager.getFocusedPanel();
-//    if(focusedPanel != null && focusedPanel.getRoot() == this)
-//      focusManager.unfocusCurrentlyFocusedComponent();
-//  }
 
   @Override
   public RootPanel getRoot()
@@ -288,4 +247,36 @@ public class ScenePanel extends PropPanel implements RootPanel
     return keyListener;
   }
 
+  private static class SceneLayout implements Layout
+  {
+    public static Layout instance = new SceneLayout();
+
+    public void doLayout(Panel panel)
+    {
+      ScenePanel scene = (ScenePanel)panel;
+      Style style = scene.getStyle();
+      final PropFrame fame = scene.frame;
+      Insets insets = fame.getInsets();
+
+      panel.setLocation(insets.left, insets.top);
+
+      final int consumableWidth = fame.getWidth() - insets.left - insets.right;
+      final int consumableHeight = fame.getHeight() - insets.top - insets.bottom;
+      final int width = style.getCompiledWidth().calculateDimension(consumableWidth, style.getCompiledMinWidth(), style.getCompiledMaxWidth(), 0);
+      final int height = style.getCompiledHeight().calculateDimension(consumableHeight, style.getCompiledMinHeight(), style.getCompiledMaxHeight(), 0);
+      scene.setSize(width, height);
+
+      PropPanelLayout.instance.doLayout(scene);
+    }
+
+    public boolean overides(Layout other)
+    {
+      return true;
+    }
+
+    public void doLayout(Panel panel, boolean topLevel)
+    {
+      doLayout(panel);
+    }
+  }
 }

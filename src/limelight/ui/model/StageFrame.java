@@ -8,7 +8,6 @@ import limelight.background.PanelPainterLoop;
 import limelight.styles.abstrstyling.*;
 import limelight.ui.images.Images;
 import limelight.util.Colors;
-import limelight.ui.Panel;
 import limelight.ui.api.Stage;
 
 import java.awt.*;
@@ -24,7 +23,6 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
 
   private Stage stage;
   protected RootPanel root;
-  private Insets insets;
   private boolean fullscreen;
   private GraphicsDevice graphicsDevice; //used for testing
   private Insets screenInsets; //used for testing
@@ -216,13 +214,12 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
     return yLocationStyle;
   }
 
-  //TODO MDM - Should be RootPanel parameter?
-  public void load(Panel child)
+  public void load(RootPanel child)
   {
     if(root != null)
       root.setFrame(null);
-    setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    root = (RootPanel) child;
+    setCursor(child.getStyle().getCompiledCursor().getCursor());
+    root = child;
     root.setFrame(this);
   }
 
@@ -234,20 +231,6 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
   public RootPanel getRoot()
   {
     return root;
-  }
-
-  public int getVerticalInsetWidth()
-  {
-    if(insets == null)
-      calculateInsets();
-    return insets.top + insets.bottom;
-  }
-
-  public int getHorizontalInsetWidth()
-  {
-    if(insets == null)
-      calculateInsets();
-    return insets.left + insets.right;
   }
 
   public void setFullScreen(boolean setting)
@@ -381,16 +364,6 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
       turnFullScreenOn();
     if(kiosk)
       Context.instance().os.enterKioskMode();
-  }
-
-  private void calculateInsets()
-  {
-    Dimension size = getSize();
-    setSize(0, 0);
-    setVisible(true);
-    insets = getInsets();
-    setVisible(false);
-    setSize(size);
   }
 
   private void exitKioskOrFullscreenIfNeeded()

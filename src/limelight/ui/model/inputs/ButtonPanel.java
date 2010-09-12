@@ -56,9 +56,16 @@ public class ButtonPanel extends AbstractButtonPanel
 
   public void paintOn(Graphics2D graphics)
   {
-    if(hasFocus())
-      focusPatch.draw(graphics, 0, 0, width, height);
-    activePatch.draw(graphics, 0, 0, width, height);
+    try
+    {
+      if(hasFocus())
+        focusPatch.draw(graphics, 0, 0, width, height);
+      activePatch.draw(graphics, 0, 0, width, height);
+    }
+    catch(IndexOutOfBoundsException e)
+    {
+      System.err.println("ButtonPanel: NinePatch choked again");
+    }
 
     graphics.setColor(Color.BLACK);
     calculateTextDimentions();

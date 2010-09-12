@@ -4,10 +4,10 @@
 package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
+import limelight.ui.model.MockParentPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.PropPanel;
-import limelight.ui.MockPanel;
 import limelight.ui.api.MockProp;
 import limelight.Context;
 
@@ -15,7 +15,7 @@ public class InputPanelUtilTest extends TestCase
 {
   private TestableInputPanel input;
   private PropPanel parent;
-  private MockPanel rootPanel;
+  private MockParentPanel rootPanel;
   private TestableInputPanel input2;
   private TestableInputPanel input3;
 
@@ -31,7 +31,7 @@ public class InputPanelUtilTest extends TestCase
   {
     ScenePanel root = new ScenePanel(new MockProp());
     root.setFrame(new MockPropFrame());
-    rootPanel = new MockPanel();
+    rootPanel = new MockParentPanel();
     root.add(rootPanel);
     rootPanel.add(parent);
   }

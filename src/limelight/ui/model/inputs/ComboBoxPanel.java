@@ -32,6 +32,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
   {    
     style.setDefault(Style.WIDTH, 128);
     style.setDefault(Style.HEIGHT, 27);
+    style.setDefault(Style.LEFT_PADDING, 8);
   }
 
   public void paintOn(Graphics2D graphics)
