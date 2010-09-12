@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
 
 public class ComboBoxPanelTest
 {
@@ -65,6 +66,18 @@ public class ComboBoxPanelTest
     assertEquals("128", panel.getStyle().getWidth());
     assertEquals("27", panel.getStyle().getHeight());
     assertEquals("8", panel.getStyle().getLeftPadding());
+    assertEquals("left", panel.getStyle().getHorizontalAlignment());
+    assertEquals("center", panel.getStyle().getVerticalAlignment());
+    assertEquals("Arial", panel.getStyle().getFontFace());
+    assertEquals("bold", panel.getStyle().getFontStyle());
+    assertEquals("12", panel.getStyle().getFontSize());
+    assertEquals("#000000ff", panel.getStyle().getTextColor());
+  }
+  
+  @Test
+  public void propPainterReset() throws Exception
+  {
+    assertSame(ComboBoxPanel.ComboBoxPropPainter.instance, parent.getPainter());
   }
 
   @Test

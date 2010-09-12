@@ -6,8 +6,6 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.inputs.painting.TextPanelPropPainter;
-import limelight.ui.text.TextLocation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,6 +83,6 @@ public class TextBoxPanelTest extends Assert
     
     panel.setParent(newParent);
 
-    assertEquals(TextPanelPropPainter.instance, newParent.getPainter());
+    assertEquals(TextInputPanel.TextInputPropPainter.instance, newParent.getPainter());
   }
 }

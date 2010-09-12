@@ -9,6 +9,7 @@ import limelight.ui.*;
 import limelight.ui.events.*;
 import limelight.ui.events.Event;
 import limelight.ui.model.*;
+import limelight.ui.painting.DefaultPainter;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -66,9 +67,15 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
       propPanel.sterilize();
       propPanel.setTextAccessor(this);      
       setDefaultStyles(propPanel.getStyle());
+      propPanel.setPainter(getPropPainter(propPanel));
     }
   }
-  
+
+  protected Painter getPropPainter(PropPanel propPanel)
+  {
+    return DefaultPainter.instance;
+  }
+
   protected void valueChanged()
   {
     new ValueChangedEvent(this).dispatch(this);
@@ -80,7 +87,10 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
 
     public void invoke(Event event)
     {
-      event.getRecipient().markAsDirty();
+      final Panel panel = event.getRecipient();
+      panel.markAsDirty();
+      if(panel.getParent() != null)
+        panel.getParent().markAsDirty();
     }
   }
 

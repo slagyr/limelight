@@ -9,6 +9,7 @@ import limelight.ui.*;
 import limelight.ui.events.*;
 import limelight.ui.model.*;
 import limelight.ui.model.inputs.painting.*;
+import limelight.ui.painting.BackgroundPainter;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -50,13 +51,14 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   public void setParent(ParentPanelBase panel)
   {
     super.setParent(panel);
-    if(panel instanceof PropPanel)
-    {
-      PropPanel propPanel = (PropPanel) panel;
-      propPanel.setPainter(TextPanelPropPainter.instance);
-    }
     if(panel == null)
       caretAnimator.stop();
+  }
+
+  @Override
+  protected Painter getPropPainter(PropPanel propPanel)
+  {
+    return TextInputPropPainter.instance;
   }
 
   public void paintOn(Graphics2D graphics)
@@ -174,8 +176,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
         return;
 
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
-      panel.markAsDirty();
-      panel.getParent().markAsDirty();
       panel.startCaret();
       panel.getModel().resetChangeFlag();
     }
@@ -192,8 +192,6 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
       
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       panel.stopCaret();
-      panel.markAsDirty();
-      panel.getParent().markAsDirty();
       if(panel.getModel().hasChanged())
         panel.valueChanged();
     }
@@ -254,5 +252,14 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     }
   }
 
+  public static class TextInputPropPainter implements Painter
+  {
+    public static Painter instance = new TextInputPropPainter();
 
+    public void paint(Graphics2D graphics, PaintablePanel panel)
+    {
+      BackgroundPainter.instance.paint(graphics, panel);
+      TextPanelBorderPainter.instance.paint(graphics, panel);
+    }
+  }
 }

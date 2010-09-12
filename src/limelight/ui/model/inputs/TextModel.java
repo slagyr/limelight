@@ -6,6 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
+import limelight.ui.Fonts;
 import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
 import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
 import limelight.ui.text.*;
@@ -54,11 +55,7 @@ public abstract class TextModel implements ClipboardOwner
   public Font getFont()
   {
     // TODO MDM This is inefficient... should cache value
-    Style style = container.getStyle();
-    String fontFace = style.getCompiledFontFace().getValue();
-    int fontStyle = style.getCompiledFontStyle().toInt();
-    int fontSize = style.getCompiledFontSize().getValue();
-    return new Font(fontFace, fontStyle, fontSize);
+    return Fonts.fromStyle(container.getStyle());
   }
 
 

@@ -1,6 +1,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
+import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
 import limelight.ui.events.*;
 import limelight.ui.model.PropPanel;
@@ -19,10 +20,6 @@ public class AbstractButtonPanelTest
 
   private static class TestableAbstractButtonPanel extends AbstractButtonPanel
   {
-    public void paintOn(Graphics2D graphics)
-    {
-    }
-
     @Override
     protected void setDefaultStyles(Style style)
     {
