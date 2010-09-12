@@ -71,7 +71,7 @@ public class PropPanelLayout implements Layout
         greedyRows++;
     }
 
-    int leftOver = panel.getChildConsumableArea().height - consumedHeight;
+    int leftOver = panel.getChildConsumableBounds().height - consumedHeight;
     if(leftOver > 0 && greedyRows > 0)
     {
       int[] split = splitEvenly(leftOver, greedyRows);
@@ -128,7 +128,7 @@ public class PropPanelLayout implements Layout
   {
     ScrollBarPanel vertical = panel.getVerticalScrollbar();
     ScrollBarPanel horizontal = panel.getHorizontalScrollbar();
-    Box area = panel.getChildConsumableArea();
+    Box area = panel.getChildConsumableBounds();
     if(vertical != null)
     {
       vertical.setHeight(area.height);
@@ -196,7 +196,7 @@ public class PropPanelLayout implements Layout
   public void layoutRows(PropPanel panel, Dimension consumedDimension, LinkedList<Row> rows)
   {
     Style style = panel.getStyle();
-    int y = style.getCompiledVerticalAlignment().getY(consumedDimension.height, panel.getChildConsumableArea());    
+    int y = style.getCompiledVerticalAlignment().getY(consumedDimension.height, panel.getChildConsumableBounds());
     if(panel.getVerticalScrollbar() != null)
     {
       y = Math.max(0, y);
@@ -204,7 +204,7 @@ public class PropPanelLayout implements Layout
     }
     for(Row row : rows)
     {
-      int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableArea());
+      int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableBounds());
       if(panel.getHorizontalScrollbar() != null)
       {
         x = Math.max(0, x);
@@ -236,7 +236,7 @@ public class PropPanelLayout implements Layout
 
   private Row newRow(PropPanel panel, LinkedList<Row> rows)
   {
-    Row currentRow = new Row(panel.getChildConsumableArea().width);
+    Row currentRow = new Row(panel.getChildConsumableBounds().width);
     rows.add(currentRow);
     return currentRow;
   }
@@ -270,7 +270,7 @@ public class PropPanelLayout implements Layout
   {
     if(panel.getParent() == null) // can happen if removed from tree
       return;
-    Box maxArea = panel.getParent().getChildConsumableArea();
+    Box maxArea = panel.getParent().getChildConsumableBounds();
 
     Style style = panel.getStyle();
     if(style.getCompiledWidth() instanceof AutoDimensionValue && style.getCompiledHeight() instanceof GreedyDimensionValue)

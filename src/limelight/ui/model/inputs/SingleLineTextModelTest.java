@@ -3,8 +3,8 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.MockPanel;
 import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.model.MockParentPanel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import org.junit.Before;
@@ -23,7 +23,7 @@ public class SingleLineTextModelTest
   public void setUp()
   {
     panel = new TextBoxPanel();
-    MockPanel parent = new MockPanel();
+    MockParentPanel parent = new MockParentPanel();
     parent.add(panel);
     parent.setSize(100, 20);
     panel.doLayout();

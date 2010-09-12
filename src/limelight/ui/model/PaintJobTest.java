@@ -157,7 +157,7 @@ public class PaintJobTest extends TestCase
   {
     MockPropablePanel child = new MockPropablePanel();
     panel.add(child);
-    panel.childConsumableBox = new Box(12, 34, 56, 78);
+    panel.childConsumableBounds = new Box(12, 34, 56, 78);
     child.setLocation(123, 456);
     child.setSize(100, 200);
     MockGraphics graphics = new MockGraphics();
@@ -168,7 +168,7 @@ public class PaintJobTest extends TestCase
     assertEquals(new Box(123, 456, 100, 200), graphics.subGraphics.get(0).clip);
   }
 
-  public void testFloaterArePutAtTheBackOfTheLine() throws Exception
+  public void testFloatersArePutAtTheBackOfTheLine() throws Exception
   {
     MockPropablePanel child1 = new MockPropablePanel();
     MockPropablePanel child2 = new MockPropablePanel();
@@ -185,7 +185,7 @@ public class PaintJobTest extends TestCase
     child1.floater = true;
     child3.floater = true;
 
-    MockPanel.paintCount = 0;
+    MockParentPanel.paintCount = 0;
     panel.setSize(100, 100);
     job = new PaintJob(new Box(0, 0, 100, 100), Colors.TRANSPARENT);
     job.paintChildren(panel, graphics);

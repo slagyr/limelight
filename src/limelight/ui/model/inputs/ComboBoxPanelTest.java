@@ -64,6 +64,7 @@ public class ComboBoxPanelTest
   {   
     assertEquals("128", panel.getStyle().getWidth());
     assertEquals("27", panel.getStyle().getHeight());
+    assertEquals("8", panel.getStyle().getLeftPadding());
   }
 
   @Test

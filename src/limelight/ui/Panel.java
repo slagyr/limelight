@@ -5,13 +5,12 @@ package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
 import limelight.ui.model.EventHandler;
+import limelight.ui.model.ParentPanelBase;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
 import limelight.ui.model.Layout;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
 
 public interface Panel extends Iterable<Panel>
 {
@@ -25,24 +24,14 @@ public interface Panel extends Iterable<Panel>
   
   Point getAbsoluteLocation();
   Box getAbsoluteBounds();
-  Box getBoxInsidePadding();
   Panel getOwnerOfPoint(Point point);
   void clearCache();
 
-  Panel getParent();
-  void setParent(Panel panel);
+  ParentPanelBase getParent();
+  void setParent(ParentPanelBase panel);
   RootPanel getRoot();
   boolean isDescendantOf(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
-  Box getChildConsumableArea();
-
-  void add(Panel child);
-  List<Panel> getChildren();
-  boolean remove(Panel child);
-  void removeAll();
-  void sterilize();
-  boolean isSterilized();
-  boolean hasChildren();
 
   void repaint();     
   Graphics2D getGraphics();

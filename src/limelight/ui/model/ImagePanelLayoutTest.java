@@ -51,7 +51,7 @@ public class ImagePanelLayoutTest extends TestCase
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
     parent.style.setHeight("150");
-    parent.childConsumableBox = new Box(0, 0, 100, 150);
+    parent.childConsumableBounds = new Box(0, 0, 100, 150);
     parent.doLayout();
 
     assertEquals(100, panel.getWidth());
@@ -73,7 +73,7 @@ public class ImagePanelLayoutTest extends TestCase
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
     parent.style.setHeight("150");
-    parent.childConsumableBox = new Box(0, 0, 100, 150);
+    parent.childConsumableBounds = new Box(0, 0, 100, 150);
     parent.doLayout();
 
     AffineTransform tranform = panel.getTransform();
@@ -100,7 +100,7 @@ public class ImagePanelLayoutTest extends TestCase
     panel.setScaled(false);
     parent.style.setWidth("100");
     parent.style.setHeight("150");
-    parent.childConsumableBox = new Box(0, 0, 100, 150);
+    parent.childConsumableBounds = new Box(0, 0, 100, 150);
     parent.doLayout();
 
     AffineTransform tranform = panel.getTransform();
@@ -112,7 +112,7 @@ public class ImagePanelLayoutTest extends TestCase
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
-    parent.childConsumableBox = new Box(0, 0, 100, 200);
+    parent.childConsumableBounds = new Box(0, 0, 100, 200);
     parent.doLayout();
 
     AffineTransform tranform = panel.getTransform();
@@ -124,7 +124,7 @@ public class ImagePanelLayoutTest extends TestCase
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setHeight("100");
-    parent.childConsumableBox = new Box(0, 0, 200, 100);
+    parent.childConsumableBounds = new Box(0, 0, 200, 100);
     parent.doLayout();
 
     AffineTransform tranform = panel.getTransform();
@@ -138,7 +138,7 @@ public class ImagePanelLayoutTest extends TestCase
     panel.setScaled(false);
     parent.style.setHeight("400");
     parent.style.setHeight("400");
-    parent.childConsumableBox = new Box(0, 0, 400, 400);
+    parent.childConsumableBounds = new Box(0, 0, 400, 400);
     parent.doLayout();
 
     AffineTransform tranform = panel.getTransform();

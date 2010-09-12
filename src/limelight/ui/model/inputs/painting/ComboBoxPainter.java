@@ -16,8 +16,6 @@ public class ComboBoxPainter
 {
   private static NinePatch normalPatch;
   private static NinePatch focusPatch;
-  private static final int BUTTON_WIDTH = 25;
-  private static final int LEFT_PADDING = 8; //TODO MDM - Use style padding
 
   static
   {
@@ -32,9 +30,16 @@ public class ComboBoxPainter
 
   public static void paintOn(Graphics2D graphics, ComboBoxPanel panel)
   {
-    if(panel.hasFocus())
-      focusPatch.draw(graphics, 0, 0, panel.getWidth(), panel.getHeight());
-    normalPatch.draw(graphics, 0, 0, panel.getWidth(), panel.getHeight());
+    try
+    {
+      if(panel.hasFocus())
+        focusPatch.draw(graphics, 0, 0, panel.getWidth(), panel.getHeight());
+      normalPatch.draw(graphics, 0, 0, panel.getWidth(), panel.getHeight());
+    }
+    catch(IndexOutOfBoundsException e)
+    {
+      System.err.println("ComboBox: NinePatch choked again");
+    }
 
     if(panel.getSelectedOption() != null)
     {
@@ -45,7 +50,7 @@ public class ComboBoxPainter
       int width = (int) (textLayout.getBounds().getWidth() + textLayout.getBounds().getX() + 0.5);
       final Dimension textDimensions = new Dimension(width, height);
 
-      int textX = horizontalTextAlignment.getX(textDimensions.width, panel.getBoundingBox()) + LEFT_PADDING;
+      int textX = horizontalTextAlignment.getX(textDimensions.width, panel.getBoundingBox());
       float textY = verticalTextAlignment.getY(textDimensions.height, panel.getBoundingBox()) + textLayout.getAscent();
       textLayout.draw(graphics, textX, textY + 1);
     }

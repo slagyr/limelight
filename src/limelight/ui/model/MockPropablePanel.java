@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import limelight.styles.ScreenableStyle;
-import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
 import limelight.ui.painting.PaintAction;
@@ -13,11 +12,12 @@ import limelight.ui.api.MockProp;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
 
-public class MockPropablePanel extends MockPanel implements PropablePanel, PaintablePanel
+import java.awt.*;
+
+public class MockPropablePanel extends MockParentPanel implements PropablePanel, PaintablePanel
 {
   public final MockProp prop;
-  public ScreenableStyle style;
-  public Box childConsumableBox;
+  public Box childConsumableBounds;
   private int prepForSnapWidth;
   private int prepForSnapHeight;
   public boolean wasLaidOut;
@@ -30,7 +30,6 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   public MockPropablePanel()
   {
     prop = new MockProp();
-    style = new ScreenableStyle();
   }
 
   public MockPropablePanel(String name)
@@ -39,12 +38,12 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
     this.name = name;
   }
 
-  public Box getChildConsumableArea()
+  public Box getChildConsumableBounds()
   {
-    if(childConsumableBox != null)
-      return childConsumableBox;
+    if(childConsumableBounds != null)
+      return childConsumableBounds;
     else
-      return super.getChildConsumableArea();
+      return getBoundingBox();
   }
 
   public void paintImmediately(int x, int y, int width, int height)
@@ -87,11 +86,6 @@ public class MockPropablePanel extends MockPanel implements PropablePanel, Paint
   public Box getBoxInsideMargins()
   {
     return boxInsideMargins;
-  }
-
-  public ScreenableStyle getStyle()
-  {
-    return style;
   }
 
   public Border getBorderShaper()

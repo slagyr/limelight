@@ -40,12 +40,12 @@ public class ScrollLayout extends PropPanelLayout
   public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)
   {
     Style style = panel.getStyle();
-    int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableArea());
+    int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableBounds());
     y = Math.max(0, y);
     y -= dy;
     for(Row row : rows)
     {
-      int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableArea());
+      int x = style.getCompiledHorizontalAlignment().getX(row.width, panel.getChildConsumableBounds());
       x = Math.max(0, x);
       x -= dx;
       row.layoutComponents(x, y, style.getCompiledVerticalAlignment());

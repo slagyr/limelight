@@ -21,7 +21,7 @@ import static junit.framework.Assert.assertSame;
 public class RootMouseListenerTest
 {
   private RootMouseListener listener;
-  private MockPanel parent;
+  private MockParentPanel parent;
   private MockPanel child;
   private Component component;
   private MockEventHandler parentEvents;
@@ -35,7 +35,7 @@ public class RootMouseListenerTest
     MockRootPanel root = new MockRootPanel();
     listener = new RootMouseListener(root);
 
-    parent = new MockPanel();
+    parent = new MockParentPanel();
     child = new MockPanel();
 
     root.add(parent);

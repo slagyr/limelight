@@ -8,11 +8,11 @@ import limelight.ui.events.MouseDraggedEvent;
 import limelight.ui.events.MouseExitedEvent;
 import limelight.ui.events.MousePressedEvent;
 import limelight.ui.events.MouseReleasedEvent;
-import limelight.ui.model.BasePanel;
+import limelight.ui.model.PanelBase;
 import limelight.ui.model.inputs.painting.ScrollBarPainter;
 import limelight.util.Box;
 
-public class ScrollBarPanel extends BasePanel
+public class ScrollBarPanel extends PanelBase
 {
   public static final int VERTICAL = 0;
   public static final int HORIZONTAL = 1;
@@ -75,16 +75,6 @@ public class ScrollBarPanel extends BasePanel
     return orientation == HORIZONTAL;
   }
 
-  public Box getChildConsumableArea()
-  {
-    return getBoundingBox();
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return getBoundingBox();
-  }
-
   public ScreenableStyle getStyle()
   {
     return getParent().getStyle();
@@ -129,7 +119,7 @@ public class ScrollBarPanel extends BasePanel
   private synchronized void configurationChanged()
   {
     //TODO - could improve performance here... no need to create new instance of layout every time
-    BasePanel parent = (BasePanel) getParent();
+    PanelBase parent = (PanelBase) getParent();
     if(parent != null)
       parent.markAsNeedingLayout(new ScrollLayout(this));
   }

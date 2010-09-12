@@ -3,6 +3,7 @@
 
 package limelight.background;
 
+import limelight.BufferedImagePool;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.*;
 import limelight.ui.MockPanel;
@@ -105,16 +106,16 @@ public class PanelPainterLoopTest extends Assert
     assertEquals(false, activeRoot.hasPanelsNeedingLayout());
   }
 
-// TODO Perhaps we need a PaintJobFactory with a PaintJob interface  
-//  @Test
-//  public void shouldPaintDirtyRegions() throws Exception
-//  {
-//    activeRoot.addDirtyRegion(new Rectangle(0, 0, 10, 10));
-//
-//    loop.paintDirtyRegions(activeRoot);
-//
-//    assertEquals(false, activeRoot.hasDirtyRegions());
-//  }
+  @Test
+  public void shouldPaintDirtyRegions() throws Exception
+  {
+    Context.instance().bufferedImagePool = new BufferedImagePool(0.1);
+    activeRoot.addDirtyRegion(new Rectangle(0, 0, 10, 10));
+
+    loop.paintDirtyRegions(activeRoot);
+
+    assertEquals(false, activeRoot.hasDirtyRegions());
+  }
 
   @Test
   public void shouldUpdatesPerSecond() throws Exception

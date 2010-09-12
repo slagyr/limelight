@@ -3,15 +3,15 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.model.BasePanel;
+import limelight.ui.model.PanelBase;
 
 import java.awt.*;
 
 public class ScrollPane
 {
-  private final BasePanel panel;
+  private final PanelBase panel;
 
-  public ScrollPane(BasePanel panel)
+  public ScrollPane(PanelBase panel)
   {
     this.panel = panel;
   }

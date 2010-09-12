@@ -3,39 +3,32 @@
 
 package limelight.ui.model;
 
-import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.List;
 
-public abstract class BasePanel implements Panel
+public abstract class PanelBase implements Panel
 {
   protected int height;
   protected int width;
   private int x;
   private int y;
-  private Panel parent;
+  private ParentPanelBase parent;
   protected Point absoluteLocation;
   private Box absoluteBounds;
-  protected final LinkedList<Panel> children; // TODO MDM There are several subclasses of BasePanel that will never have children.  Can this be abstracted?
-  private List<Panel> readonlyChildren;
-  private boolean sterilized;
   private Box boundingBox;
   protected Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
   private boolean illuminated;
   protected EventHandler eventHandler;
 
-  protected BasePanel()
+  protected PanelBase()
   {
     width = 50;
     height = 50;
-    children = new LinkedList<Panel>();
     eventHandler = new EventHandler(this);
   }
 
@@ -77,9 +70,6 @@ public abstract class BasePanel implements Panel
     absoluteLocation = null;
     boundingBox = null;
     absoluteBounds = null;
-
-    for(Panel child : getChildren())
-      child.clearCache();
   }
 
   public void setLocation(int x, int y)
@@ -124,12 +114,12 @@ public abstract class BasePanel implements Panel
     return absoluteBounds;
   }
 
-  public Panel getParent()
+  public ParentPanelBase getParent()
   {
     return parent;
   }
 
-  public void setParent(Panel newParent)
+  public void setParent(ParentPanelBase newParent)
   {
     if(newParent != parent && isIlluminated())
       delluminate();
@@ -193,110 +183,6 @@ public abstract class BasePanel implements Panel
     return eventHandler;
   }
 
-  public void add(Panel panel)
-  {
-    add(-1, panel);
-  }
-
-  public void add(int index, Panel child)
-  {
-    if(sterilized && !(child instanceof ScrollBarPanel))
-      throw new SterilePanelException("Unknown name");
-
-    synchronized(children)
-    {
-      if(index == -1)
-        children.add(child);
-      else
-        children.add(index, child);
-      readonlyChildren = null;
-    }
-
-    child.setParent(this);
-    doPropagateSizeChangeUp(this);
-    markAsNeedingLayout();
-  }
-
-  public boolean hasChildren()
-  {
-    return children.size() > 0;
-  }
-
-  public List<Panel> getChildren()
-  {
-    if(readonlyChildren == null)
-    {
-      synchronized(children)
-      {
-        readonlyChildren = Collections.unmodifiableList(new ArrayList<Panel>(children));
-        return readonlyChildren;
-      }
-    }
-    else
-      return readonlyChildren;
-  }
-
-  public boolean isChild(Panel child)
-  {
-    return children.contains(child);
-  }
-
-  public boolean remove(Panel child)
-  {
-    boolean removed = false;
-    synchronized(children)
-    {
-      removed = children.remove(child);
-      readonlyChildren = null;
-    }
-    if(removed)
-    {
-      child.setParent(null);
-      doPropagateSizeChangeUp(this);
-      markAsNeedingLayout();
-      return true;
-    }
-    return false;
-  }
-
-  public void removeAll()
-  {
-    if(children.size() > 0)
-    {
-      synchronized(children)
-      {
-        for(Iterator<Panel> iterator = children.iterator(); iterator.hasNext();)
-        {
-          Panel child = iterator.next();
-          if(canRemove(child))
-          {
-            child.setParent(null);
-            iterator.remove();
-          }
-        }
-        readonlyChildren = null;
-      }
-      sterilized = false;
-      doPropagateSizeChangeUp(this);
-      markAsNeedingLayout();
-    }
-  }
-
-  protected boolean canRemove(Panel child)
-  {
-    return true;
-  }
-
-  public void sterilize()
-  {
-    sterilized = true;
-  }
-
-  public boolean isSterilized()
-  {
-    return sterilized;
-  }
-
   public void repaint()
   {
     getParent().repaint();
@@ -304,23 +190,6 @@ public abstract class BasePanel implements Panel
 
   public Panel getOwnerOfPoint(Point point)
   {
-    if(children.size() > 0)
-    {
-      synchronized(children)
-      {
-        for(ListIterator<Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
-        {
-          Panel panel = iterator.previous();
-          if(panel.isFloater() && panel.getAbsoluteBounds().contains(point))
-            return panel.getOwnerOfPoint(point);
-        }
-        for(Panel panel : children)
-        {
-          if(!panel.isFloater() && panel.getAbsoluteBounds().contains(point))
-            return panel.getOwnerOfPoint(point);
-        }
-      }
-    }
     return this;
   }
 
@@ -343,16 +212,7 @@ public abstract class BasePanel implements Panel
 
   public void consumableAreaChanged()
   {
-    Style style = getStyle();    
-    if(!needsLayout() && style != null && style.hasDynamicDimension())
-    {
-      markAsNeedingLayout();
-      synchronized(children)
-      {
-        for(Panel child : children)
-          child.consumableAreaChanged();
-      }
-    }
+    markAsNeedingLayout();
   }
 
   public boolean canBeBuffered()
@@ -401,7 +261,7 @@ public abstract class BasePanel implements Panel
 
   protected void doPropagateSizeChangeUp(Panel panel)
   {
-    if(panel != null && !panel.needsLayout() && panel instanceof BasePanel)
+    if(panel != null && !panel.needsLayout() && panel instanceof PanelBase)
     {
       panel.markAsNeedingLayout();
       doPropagateSizeChangeUp(panel.getParent());
@@ -427,15 +287,6 @@ public abstract class BasePanel implements Panel
     laidOut = true;
   }
 
-  protected void doPropagateSizeChangeDown()
-  {
-    synchronized(children)
-    {
-      for(Panel child : children)
-        child.consumableAreaChanged();
-    }
-  }
-
   public boolean isIlluminated()
   {
     return illuminated;
@@ -444,15 +295,11 @@ public abstract class BasePanel implements Panel
   public void illuminate()
   {
     illuminated = true;
-    for(Panel child : children)
-      child.illuminate();
   }
 
   public void delluminate()
   {
     illuminated = false;
-    for(Panel child : children)
-      child.delluminate();
   }
 
   public boolean hasFocus()

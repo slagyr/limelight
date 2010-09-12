@@ -14,21 +14,21 @@ import java.util.Set;
 
 public class PanelIteratorTest extends TestCase
 {
-  private MockPanel root;
-  private MockPanel child1;
-  private MockPanel child2;
-  private MockPanel grandChild1;
-  private MockPanel grandChild2;
-  private MockPanel grandChild3;
+  private MockParentPanel root;
+  private MockParentPanel child1;
+  private MockParentPanel child2;
+  private MockParentPanel grandChild1;
+  private MockParentPanel grandChild2;
+  private MockParentPanel grandChild3;
 
   public void setUp() throws Exception
   {
-    root = new MockPanel();
-    child1 = new MockPanel();
-    child2 = new MockPanel();
-    grandChild1 = new MockPanel();
-    grandChild2 = new MockPanel();
-    grandChild3 = new MockPanel();
+    root = new MockParentPanel();
+    child1 = new MockParentPanel();
+    child2 = new MockParentPanel();
+    grandChild1 = new MockParentPanel();
+    grandChild2 = new MockParentPanel();
+    grandChild3 = new MockParentPanel();
 
     root.add(child1);
     root.add(child2);

@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.Map;
 
-public interface RootPanel extends Panel
+public interface RootPanel extends Panel, ParentPanel
 {
 
   void setFrame(PropFrame frame);

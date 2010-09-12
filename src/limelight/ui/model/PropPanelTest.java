@@ -175,20 +175,20 @@ public class PropPanelTest extends Assert
     panel.setSize(100, 100);
 
     panel.addVerticalScrollBar();
-    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().width);
-    assertEquals(100, panel.getChildConsumableArea().height);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableBounds().width);
+    assertEquals(100, panel.getChildConsumableBounds().height);
 
     panel.addHorizontalScrollBar();
-    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().width);
-    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().height);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableBounds().width);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableBounds().height);
 
     panel.removeVerticalScrollBar();
-    assertEquals(100, panel.getChildConsumableArea().width);
-    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableArea().height);
+    assertEquals(100, panel.getChildConsumableBounds().width);
+    assertEquals(100 - ScrollBarPanel.GIRTH, panel.getChildConsumableBounds().height);
 
     panel.removeHorizontalScrollBar();
-    assertEquals(100, panel.getChildConsumableArea().width);
-    assertEquals(100, panel.getChildConsumableArea().height);
+    assertEquals(100, panel.getChildConsumableBounds().width);
+    assertEquals(100, panel.getChildConsumableBounds().height);
   }
 
   @Test

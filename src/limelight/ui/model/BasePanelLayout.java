@@ -12,7 +12,7 @@ public class BasePanelLayout implements Layout
 
   public void doLayout(Panel thePanel)
   {
-    BasePanel panel = (BasePanel) thePanel;
+    PanelBase panel = (PanelBase) thePanel;
     panel.resetLayout();
     panel.wasLaidOut();
     lastPanelProcessed = thePanel;

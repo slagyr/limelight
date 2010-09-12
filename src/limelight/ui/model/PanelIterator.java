@@ -14,10 +14,11 @@ public class PanelIterator implements Iterator<Panel>
   private final Stack<Iterator<Panel>> iterators = new Stack<Iterator<Panel>>();
   private Panel next;
 
-  public PanelIterator(Panel root)
+  public PanelIterator(PanelBase root)
   {
     this.next = root;
-    iterators.push(root.getChildren().iterator());
+    if(root instanceof ParentPanel)
+      iterators.push(((ParentPanel)root).getChildren().iterator());
   }
 
   public boolean hasNext()
@@ -35,8 +36,13 @@ public class PanelIterator implements Iterator<Panel>
       if(iterator != null)
       {
         next = iterator.next();
-        if(next.hasChildren())
-          iterators.push(next.getChildren().iterator());
+
+        if(next instanceof ParentPanelBase)
+        {
+          final ParentPanelBase nextParent = (ParentPanelBase) next;
+          if(nextParent.hasChildren())
+            iterators.push(nextParent.getChildren().iterator());
+        }
       }
     }
 

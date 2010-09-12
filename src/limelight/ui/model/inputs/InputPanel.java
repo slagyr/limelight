@@ -6,15 +6,13 @@ package limelight.ui.model.inputs;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.*;
-import limelight.ui.Panel;
 import limelight.ui.events.*;
 import limelight.ui.events.Event;
 import limelight.ui.model.*;
-import limelight.util.Box;
 
 import static junit.framework.Assert.assertEquals;
 
-public abstract class InputPanel extends BasePanel implements TextAccessor
+public abstract class InputPanel extends PanelBase implements TextAccessor
 {
   protected InputPanel()
   {
@@ -59,7 +57,7 @@ public abstract class InputPanel extends BasePanel implements TextAccessor
   }
 
   @Override
-  public void setParent(Panel panel)
+  public void setParent(ParentPanelBase panel)
   {
     super.setParent(panel);
     if(panel instanceof PropPanel)
@@ -84,16 +82,6 @@ public abstract class InputPanel extends BasePanel implements TextAccessor
     {
       event.getRecipient().markAsDirty();
     }
-  }
-
-  public Box getBoxInsidePadding()
-  {
-    return getBoundingBox();
-  }
-
-  public Box getChildConsumableArea()
-  {
-    return getBoundingBox();
   }
 
   public ScreenableStyle getStyle()

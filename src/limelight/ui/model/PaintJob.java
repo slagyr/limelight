@@ -52,7 +52,8 @@ public class PaintJob
     applyAlphaCompositeFor(panel, graphics);
     paintClipFor(panel, graphics);
     restoreComposite(graphics);
-    paintChildren(panel, graphics);
+    if(panel instanceof ParentPanelBase)
+      paintChildren((ParentPanelBase)panel, graphics);
   }
 
   public Box getClip()
@@ -112,11 +113,11 @@ public class PaintJob
     graphics.setComposite(composite);
   }
 
-  public void paintChildren(Panel panel, Graphics2D graphics)
+  public void paintChildren(ParentPanelBase panel, Graphics2D graphics)
   {
     if(panel.hasChildren())
     {
-      Box innards = panel.getBoxInsidePadding();
+      Box innards = panel instanceof PropPanel ? ((PropPanel)panel).getBoxInsidePadding() :  panel.getChildConsumableBounds() ;
       graphics.clipRect(innards.x, innards.y, innards.width, innards.height);
       for(Panel child : panel.getChildren())
         if(!child.isFloater())

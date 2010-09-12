@@ -7,9 +7,7 @@ import limelight.Context;
 import limelight.LimelightError;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.ui.EventAction;
-import limelight.ui.PaintablePanel;
-import limelight.ui.Painter;
+import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
 import limelight.ui.events.*;
@@ -22,7 +20,7 @@ import limelight.util.Util;
 import java.awt.*;
 import java.util.Map;
 
-public class PropPanel extends BasePanel implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
+public class PropPanel extends ParentPanelBase implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
 {
   private final Prop prop;
   private final ScreenableStyle style;
@@ -33,7 +31,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   private Box boxInsideMargins;
   private Box boxInsideBorders;
   private Box boxInsidePadding;
-  private Box childConsumableArea;
+  private Box childConsumableBounds;
   private PaintAction afterPaintAction;
   private ScrollBarPanel verticalScrollbar;
   private ScrollBarPanel horizontalScrollbar;
@@ -141,17 +139,23 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     return boxInsidePadding;
   }
 
-  public Box getChildConsumableArea()
+  public Box getChildConsumableBounds()
   {
-    if(childConsumableArea == null)
+    if(childConsumableBounds == null)
     {
-      getBoxInsidePadding();
       Box boxInsidePadding = getBoxInsidePadding();
       int width = verticalScrollbar == null ? boxInsidePadding.width : boxInsidePadding.width - verticalScrollbar.getWidth();
       int height = horizontalScrollbar == null ? boxInsidePadding.height : boxInsidePadding.height - horizontalScrollbar.getHeight();
-      childConsumableArea = new Box(boxInsidePadding.x, boxInsidePadding.y, width, height);
+      childConsumableBounds = new Box(boxInsidePadding.x, boxInsidePadding.y, width, height);
     }
-    return childConsumableArea;
+    return childConsumableBounds;
+  }
+
+  public void consumableAreaChanged()
+  {
+    Style style = getStyle();
+    if(!needsLayout() && style != null && style.hasDynamicDimension())
+      super.consumableAreaChanged();
   }
 
   @Override
@@ -278,7 +282,7 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
     boxInsideMargins = null;
     boxInsideBorders = null;
     boxInsidePadding = null;
-    childConsumableArea = null;
+    childConsumableBounds = null;
   }
 
   public void styleChanged(StyleAttribute attribute, StyleValue value)
@@ -301,28 +305,28 @@ public class PropPanel extends BasePanel implements PropablePanel, PaintablePane
   {
     verticalScrollbar = new ScrollBarPanel(ScrollBarPanel.VERTICAL);
     add(verticalScrollbar);
-    childConsumableArea = null;
+    childConsumableBounds = null;
   }
 
   public void addHorizontalScrollBar()
   {
     horizontalScrollbar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);
     add(horizontalScrollbar);
-    childConsumableArea = null;
+    childConsumableBounds = null;
   }
 
   public void removeVerticalScrollBar()
   {
     remove(verticalScrollbar);
     verticalScrollbar = null;
-    childConsumableArea = null;
+    childConsumableBounds = null;
   }
 
   public void removeHorizontalScrollBar()
   {
     remove(horizontalScrollbar);
     horizontalScrollbar = null;
-    childConsumableArea = null;
+    childConsumableBounds = null;
   }
 
   public void playSound(String filename)
