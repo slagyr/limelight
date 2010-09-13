@@ -5,20 +5,15 @@ package limelight.ui.model.inputs;
 
 import com.android.ninepatch.NinePatch;
 import limelight.styles.Style;
-import limelight.styles.values.SimpleHorizontalAlignmentValue;
 import limelight.ui.EventAction;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.events.*;
 import limelight.ui.images.Images;
 import limelight.ui.model.*;
-import limelight.styles.HorizontalAlignment;
-import limelight.styles.VerticalAlignment;
-import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.font.TextLayout;
 
 public class ButtonPanel extends AbstractButtonPanel
 {
@@ -113,7 +108,7 @@ public class ButtonPanel extends AbstractButtonPanel
     {
       try
       {
-        final Box bounds = panel.getBoxInsideMargins();
+        final Box bounds = panel.getMarginedBounds();
         if(panel.hasFocus())
           focusPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
 

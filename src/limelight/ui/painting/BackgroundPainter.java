@@ -5,7 +5,6 @@ package limelight.ui.painting;
 
 import limelight.styles.abstrstyling.NoneableValue;
 import limelight.ui.*;
-import limelight.ui.model.PropablePanel;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.ImageCache;
 import limelight.styles.Style;
@@ -49,7 +48,7 @@ public class BackgroundPainter implements Painter
     {
       try
       {
-        Box borderFrame = panel.getBoxInsideBorders();
+        Box borderFrame = panel.getBorderedBounds();
         RootPanel rootPanel = panel.getRoot();
 
         // TODO MDM - getting a NullPointer here. The Panel was removed from the scene in between the start of the paint cycle and here.

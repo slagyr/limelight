@@ -104,6 +104,13 @@ public abstract class PanelBase implements Panel
     return absoluteLocation;
   }
 
+  public Box getBounds()
+  {
+    if(boundingBox == null)
+      boundingBox = new Box(getX(), getY(), getWidth(), getHeight());
+    return boundingBox;
+  }
+
   public Box getAbsoluteBounds()
   {
     if(absoluteBounds == null)
@@ -130,7 +137,6 @@ public abstract class PanelBase implements Panel
       illuminate();
   }
 
-  //TODO  MDM Change my return type to RootPanel
   public RootPanel getRoot()
   {
     if(parent == null)
@@ -191,13 +197,6 @@ public abstract class PanelBase implements Panel
   public Panel getOwnerOfPoint(Point point)
   {
     return this;
-  }
-
-  public Box getBoundingBox()
-  {
-    if(boundingBox == null)
-      boundingBox = new Box(0, 0, getWidth(), getHeight());
-    return boundingBox;
   }
 
   public boolean isFloater()

@@ -197,28 +197,48 @@ module Limelight
       @options.merge!(more_options)
     end
 
-    # Returns a Box representing the relative bounds of the Prop. Is useful with usign the Pen.
+    # Returns a Point representing the location of the Prop's top-left corner within its parent.
     #
-    #   box = prop.area
+    #   location = prop.location
+    #   location.x # the Prop's distance from the left of its parent's bounds
+    #   location.y # the Prop's distance from the top of its parent's bounds
+    #
+    def location
+      return panel.get_location
+    end
+
+    # Returns a Point representing the location of the Prop's top-left corner within its Stage (Window).
+    #
+    #   location = prop.absolute_location
+    #   location.x # the Prop's distance from the left edge of the stage
+    #   location.y # the Prop's distance from the top edge of the stage
+    #
+    def absolute_location
+      return panel.get_absolute_location.clone
+    end
+
+    # Returns a Box representing the relative bounds of the Prop. Is useful with using the Pen.
+    #
+    #   box = prop.bounds
     #   box.x, box.y # represents the Prop's location within its parent Prop
     #   box.width, box.height # represents the Prop's dimensions
     #
-    def area
-      return panel.get_bounding_box.clone
+    def bounds
+      return panel.get_bounds.clone
     end
 
     # Returns a Box representing the bounds inside the borders of the prop.  If the Prop's style has no margin or
-    # border_width, then this will be equivalant to area.
+    # border_width, then this will be equivalent to area.
     #
-    def bordered_area
-      return panel.get_box_inside_borders.clone
+    def bordered_bounds
+      return panel.get_bordered_bounds.clone
     end
 
-    # Returns a Box representing the bounds inside the padding of the prop.  This is the area where child props may
+    # Returns a Box representing the bounds inside the padding of the Prop.  This is the area where child Props may
     # be located
     #
-    def child_area
-      return panel.getChildConsumableArea().clone
+    def padded_bounds
+      return panel.get_padded_bounds.clone
     end
 
     # Returns a Pen object. Pen objects allow to you to draw directly on the screen, withing to bounds of this Prop.

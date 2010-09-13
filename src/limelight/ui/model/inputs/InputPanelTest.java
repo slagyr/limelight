@@ -29,8 +29,8 @@ public class InputPanelTest
     new FocusGainedEvent(panel).dispatch(panel);
 
     assertEquals(2, root.dirtyRegions.size());
-    assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
-    assertEquals(root.getBoundingBox(), root.dirtyRegions.get(0));
+    assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
+    assertEquals(root.getBounds(), root.dirtyRegions.get(0));
   }
   
   @Test
@@ -41,8 +41,8 @@ public class InputPanelTest
     new FocusLostEvent(panel).dispatch(panel);
 
     assertEquals(2, root.dirtyRegions.size());
-    assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
-    assertEquals(root.getBoundingBox(), root.dirtyRegions.get(0));
+    assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
+    assertEquals(root.getBounds(), root.dirtyRegions.get(0));
   }
 
   @Test

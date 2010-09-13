@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.styles.Style;
 import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.Fonts;
@@ -16,7 +15,6 @@ import limelight.util.Box;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
@@ -87,7 +85,7 @@ public abstract class TextModel implements ClipboardOwner
   public int getXOffset(TypedLayout line)
   {
     HorizontalAlignmentValue horizontalAlignment = getContainer().getStyle().getCompiledHorizontalAlignment();
-    return horizontalAlignment.getX(line.getWidth(), getContainer().getBoundingBox());
+    return horizontalAlignment.getX(line.getWidth(), getContainer().getBounds());
   }
 
   public int getYOffset()
@@ -131,7 +129,7 @@ public abstract class TextModel implements ClipboardOwner
   {
     int xOffset = getXOffset();
     int yOffset = getYOffset();
-    Box boundingBox = getContainer().getBoundingBox();
+    Box boundingBox = getContainer().getBounds();
     Dimension textDimensions = getTextDimensions();
 
     if(textDimensions.width < boundingBox.width)

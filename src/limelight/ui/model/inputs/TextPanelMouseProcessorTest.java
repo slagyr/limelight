@@ -297,7 +297,7 @@ public class TextPanelMouseProcessorTest
 
     pressAt(0, 0);
 
-    assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
+    assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
   }
   
   @Test
@@ -313,7 +313,7 @@ public class TextPanelMouseProcessorTest
   {
     dragAt(0, 0);
 
-    assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
+    assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
   }
 
 }

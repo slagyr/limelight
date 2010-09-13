@@ -15,7 +15,7 @@ public interface TextContainer
 
   int getHeight();
 
-  Box getBoundingBox();
+  Box getBounds();
 
   boolean hasFocus();
 }

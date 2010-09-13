@@ -26,7 +26,7 @@ public class MockParentPanel extends ParentPanelBase
   @Override
   public Box getChildConsumableBounds()
   {
-    return getBoundingBox();
+    return getBounds();
   }
 
   public void paintOn(Graphics2D graphics)

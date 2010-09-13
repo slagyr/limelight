@@ -20,7 +20,7 @@ public class GradientPainter implements Painter
   public void paint(Graphics2D graphics, PaintablePanel panel)
   {
     Style style = panel.getStyle();
-    Box r = panel.getBoxInsideBorders();
+    Box r = panel.getBorderedBounds();
     Color color1 = style.getCompiledBackgroundColor().getColor();
     Color color2 = style.getCompiledSecondaryBackgroundColor().getColor();
     int angle = style.getCompiledGradientAngle().getDegrees();
