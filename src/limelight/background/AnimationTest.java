@@ -3,9 +3,7 @@
 
 package limelight.background;
 
-import junit.framework.TestCase;
 import limelight.ui.MockPanel;
-import limelight.background.MockAnimation;
 import limelight.Context;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +24,7 @@ public class AnimationTest
     animation = new MockAnimation(100, new MockPanel());
     loop = new AnimationLoop();
     Context.instance().animationLoop = loop;
+    IdleThreadLoop.verbose = false;
   }
 
   @Test
@@ -142,5 +141,21 @@ public class AnimationTest
     assertEquals(0, loop.getAnimations().size());
   }
 
-
+  @Test
+  public void stopsItselfWhenAndExceptionIsThrownDuringUpdate() throws Exception
+  {
+    Animation animation = new Animation(60){
+      @Override
+      protected void doUpdate()
+      {
+        throw new RuntimeException("blah");
+      }
+    }; 
+    animation.start();
+    loop.start();
+    Thread.sleep(50);
+    loop.stop();
+    assertEquals(false, animation.isRunning());
+    assertEquals(0, loop.getAnimations().size());
+  }
 }

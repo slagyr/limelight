@@ -3,8 +3,11 @@
 
 package limelight.background;
 
+import limelight.LimelightException;
 import limelight.util.NanoTimer;
 import limelight.Context;
+
+// TODO MDM - Animations should stop if they throw an exception
 
 public abstract class Animation
 {
@@ -54,7 +57,15 @@ public abstract class Animation
   {
     makeupMissedUpdates();
     timer.markTime();
-    doUpdate();
+    try
+    {
+      doUpdate();
+    }
+    catch(Exception e)
+    {
+      stop();
+      throw new LimelightException("Animation Cancelled", e);
+    }
   }
 
   public boolean isReady()

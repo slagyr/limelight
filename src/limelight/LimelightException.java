@@ -5,8 +5,13 @@ package limelight;
 
 public class LimelightException extends RuntimeException
 {
-  public LimelightException(String s)
+  public LimelightException(String message)
   {
-    super(s);
+    super(message);
+  }
+
+  public LimelightException(String message, Throwable cause)
+  {
+    super(message, cause);
   }
 }
