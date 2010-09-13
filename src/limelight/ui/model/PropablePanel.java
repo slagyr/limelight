@@ -26,8 +26,8 @@ public interface PropablePanel extends ParentPanel
   TextAccessor getTextAccessor();
   void setTextAccessor(TextAccessor accessor);
 
-  Box getBoundingBox();
-  Box getBoxInsideBorders();
+  Box getBounds();
+  Box getBorderedBounds();
   Graphics2D getGraphics();
   ScreenableStyle getStyle();
   Prop getProp();

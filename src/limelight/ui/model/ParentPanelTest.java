@@ -193,13 +193,13 @@ public class ParentPanelTest
   @Test
   public void shouldRactanglesAreCached() throws Exception
   {
-    Box rectangle = panel.getBoundingBox();
+    Box rectangle = panel.getBounds();
 
-    assertSame(rectangle, panel.getBoundingBox());
+    assertSame(rectangle, panel.getBounds());
 
     panel.setSize(123, 456);
 
-    assertNotSame(rectangle, panel.getBoundingBox());
+    assertNotSame(rectangle, panel.getBounds());
   }
 
   @Test
@@ -235,7 +235,7 @@ public class ParentPanelTest
 
     panel.setSize(123, 456);
 
-    assertNotSame(bounds, panel.getBoundingBox());
+    assertNotSame(bounds, panel.getBounds());
     assertEquals(123, panel.getAbsoluteBounds().width);
     assertEquals(456, panel.getAbsoluteBounds().height);
   }

@@ -99,22 +99,22 @@ public class PropPanelTest extends Assert
   @Test
   public void shouldRactanglesAreCached() throws Exception
   {
-    Box rectangle = panel.getBoundingBox();
-    Box insideMargins = panel.getBoxInsideMargins();
-    Box insideBorders = panel.getBoxInsideBorders();
-    Box insidePadding = panel.getBoxInsidePadding();
+    Box rectangle = panel.getBounds();
+    Box insideMargins = panel.getMarginedBounds();
+    Box insideBorders = panel.getBorderedBounds();
+    Box insidePadding = panel.getPaddedBounds();
 
-    assertSame(rectangle, panel.getBoundingBox());
-    assertSame(insideMargins, panel.getBoxInsideMargins());
-    assertSame(insideBorders, panel.getBoxInsideBorders());
-    assertSame(insidePadding, panel.getBoxInsidePadding());
+    assertSame(rectangle, panel.getBounds());
+    assertSame(insideMargins, panel.getMarginedBounds());
+    assertSame(insideBorders, panel.getBorderedBounds());
+    assertSame(insidePadding, panel.getPaddedBounds());
 
     panel.setSize(123, 456);
 
-    assertNotSame(rectangle, panel.getBoundingBox());
-    assertNotSame(insideMargins, panel.getBoxInsideMargins());
-    assertNotSame(insideBorders, panel.getBoxInsideBorders());
-    assertNotSame(insidePadding, panel.getBoxInsidePadding());
+    assertNotSame(rectangle, panel.getBounds());
+    assertNotSame(insideMargins, panel.getMarginedBounds());
+    assertNotSame(insideBorders, panel.getBorderedBounds());
+    assertNotSame(insidePadding, panel.getPaddedBounds());
   }
 
   @Test

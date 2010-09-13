@@ -201,11 +201,21 @@ describe Limelight::Prop do
   end
 
   it "should make dimensions accessible" do
-    @prop.panel.should_receive(:get_bounding_box).and_return("whole area")
-    @prop.panel.should_receive(:get_box_inside_borders).and_return("area inside borders")
+    @prop.panel.should_receive(:get_bounds).and_return("whole area")
+    @prop.panel.should_receive(:get_bordered_bounds).and_return("area inside borders")
+    @prop.panel.should_receive(:get_padded_bounds).and_return("area inside padding")
 
-    @prop.area.should == "whole area"
-    @prop.bordered_area.should == "area inside borders"
+    @prop.bounds.should == "whole area"
+    @prop.bordered_bounds.should == "area inside borders"
+    @prop.padded_bounds.should == "area inside padding"
+  end
+  
+  it "provides location" do
+    @prop.panel.should_receive(:get_location).and_return("location")
+    @prop.panel.should_receive(:get_absolute_location).and_return("absolute location")
+
+    @prop.location.should == "location"
+    @prop.absolute_location.should == "absolute location"
   end
 
   it "should give you a pen" do

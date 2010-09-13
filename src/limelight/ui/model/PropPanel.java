@@ -28,9 +28,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   private String styles;
   private Border borderShaper;
   private TextAccessor textAccessor;
-  private Box boxInsideMargins;
-  private Box boxInsideBorders;
-  private Box boxInsidePadding;
+  private Box marginedBounds;
+  private Box borderedBounds;
+  private Box paddedBounds;
   private Box childConsumableBounds;
   private PaintAction afterPaintAction;
   private ScrollBarPanel verticalScrollbar;
@@ -94,56 +94,56 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     return super.getOwnerOfPoint(point);
   }
 
-  public synchronized Box getBoxInsideMargins()
+  public synchronized Box getMarginedBounds()
   {
-    if(boxInsideMargins == null)
+    if(marginedBounds == null)
     {
-      Box bounds = getBoundingBox();
-      boxInsideMargins = (Box) bounds.clone();
+      Box bounds = getBounds();
+      marginedBounds = (Box) bounds.clone();
       Style style = getStyle();
-      boxInsideMargins.shave(style.getCompiledTopMargin().pixelsFor(bounds.height),
+      marginedBounds.shave(style.getCompiledTopMargin().pixelsFor(bounds.height),
           style.getCompiledRightMargin().pixelsFor(bounds.width),
           style.getCompiledBottomMargin().pixelsFor(bounds.height),
           style.getCompiledLeftMargin().pixelsFor(bounds.width));
     }
-    return boxInsideMargins;
+    return marginedBounds;
   }
 
-  public synchronized Box getBoxInsideBorders()
+  public synchronized Box getBorderedBounds()
   {
-    if(boxInsideBorders == null)
+    if(borderedBounds == null)
     {
-      Box bounds = getBoxInsideMargins();
-      boxInsideBorders = (Box) bounds.clone();
+      Box bounds = getMarginedBounds();
+      borderedBounds = (Box) bounds.clone();
       Style style = getStyle();
-      boxInsideBorders.shave(style.getCompiledTopBorderWidth().pixelsFor(bounds.height),
+      borderedBounds.shave(style.getCompiledTopBorderWidth().pixelsFor(bounds.height),
           style.getCompiledRightBorderWidth().pixelsFor(bounds.width),
           style.getCompiledBottomBorderWidth().pixelsFor(bounds.height),
           style.getCompiledLeftBorderWidth().pixelsFor(bounds.width));
     }
-    return boxInsideBorders;
+    return borderedBounds;
   }
 
-  public synchronized Box getBoxInsidePadding()
+  public synchronized Box getPaddedBounds()
   {
-    if(boxInsidePadding == null)
+    if(paddedBounds == null)
     {
-      Box bounds = getBoxInsideBorders();
-      boxInsidePadding = (Box) bounds.clone();
+      Box bounds = getBorderedBounds();
+      paddedBounds = (Box) bounds.clone();
       Style style = getStyle();
-      boxInsidePadding.shave(style.getCompiledTopPadding().pixelsFor(bounds.height),
+      paddedBounds.shave(style.getCompiledTopPadding().pixelsFor(bounds.height),
           style.getCompiledRightPadding().pixelsFor(bounds.width),
           style.getCompiledBottomPadding().pixelsFor(bounds.height),
           style.getCompiledLeftPadding().pixelsFor(bounds.width));
     }
-    return boxInsidePadding;
+    return paddedBounds;
   }
 
   public Box getChildConsumableBounds()
   {
     if(childConsumableBounds == null)
     {
-      Box boxInsidePadding = getBoxInsidePadding();
+      Box boxInsidePadding = getPaddedBounds();
       int width = verticalScrollbar == null ? boxInsidePadding.width : boxInsidePadding.width - verticalScrollbar.getWidth();
       int height = horizontalScrollbar == null ? boxInsidePadding.height : boxInsidePadding.height - horizontalScrollbar.getHeight();
       childConsumableBounds = new Box(boxInsidePadding.x, boxInsidePadding.y, width, height);
@@ -168,7 +168,7 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   {
     if(borderShaper != null)
     {
-      borderShaper.setBounds(getBoxInsideMargins());
+      borderShaper.setBounds(getMarginedBounds());
       if(borderChanged)
       {
         borderShaper.updateDimentions();
@@ -213,7 +213,7 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   public Border getBorderShaper()
   {
     if(borderShaper == null)
-      borderShaper = new Border(getStyle(), getBoxInsideMargins());
+      borderShaper = new Border(getStyle(), getMarginedBounds());
     return borderShaper;
   }
 
@@ -279,9 +279,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   public synchronized void clearCache()
   {
     super.clearCache();
-    boxInsideMargins = null;
-    boxInsideBorders = null;
-    boxInsidePadding = null;
+    marginedBounds = null;
+    borderedBounds = null;
+    paddedBounds = null;
     childConsumableBounds = null;
   }
 

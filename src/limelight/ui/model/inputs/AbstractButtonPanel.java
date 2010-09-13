@@ -61,8 +61,8 @@ public abstract class AbstractButtonPanel extends InputPanel
       int width = (int) (textLayout.getBounds().getWidth() + textLayout.getBounds().getX() + 0.5);
       final Dimension textDimensions = new Dimension(width, height);
 
-      int textX = style.getCompiledHorizontalAlignment().getX(textDimensions.width, panel.getBoundingBox());
-      float textY = style.getCompiledVerticalAlignment().getY(textDimensions.height, panel.getBoundingBox()) + textLayout.getAscent();
+      int textX = style.getCompiledHorizontalAlignment().getX(textDimensions.width, panel.getBounds());
+      float textY = style.getCompiledVerticalAlignment().getY(textDimensions.height, panel.getBounds()) + textLayout.getAscent();
       textLayout.draw(graphics, textX, textY + 1);
     }
   }

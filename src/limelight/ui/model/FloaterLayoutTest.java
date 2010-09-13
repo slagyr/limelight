@@ -48,7 +48,7 @@ public class FloaterLayoutTest extends TestCase
     panel.getStyle().setY(200);
     panel.getStyle().setFloat(true);
     root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
-    Rectangle before = panel.getBoundingBox();
+    Rectangle before = panel.getBounds();
 
     FloaterLayout.instance.doLayout(panel);
 

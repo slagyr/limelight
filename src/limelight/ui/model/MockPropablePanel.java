@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import limelight.styles.ScreenableStyle;
 import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
 import limelight.ui.painting.PaintAction;
@@ -11,8 +10,6 @@ import limelight.ui.painting.Border;
 import limelight.ui.api.MockProp;
 import limelight.ui.api.Prop;
 import limelight.util.Box;
-
-import java.awt.*;
 
 public class MockPropablePanel extends MockParentPanel implements PropablePanel, PaintablePanel
 {
@@ -43,7 +40,7 @@ public class MockPropablePanel extends MockParentPanel implements PropablePanel,
     if(childConsumableBounds != null)
       return childConsumableBounds;
     else
-      return getBoundingBox();
+      return getBounds();
   }
 
   public void paintImmediately(int x, int y, int width, int height)
@@ -78,12 +75,12 @@ public class MockPropablePanel extends MockParentPanel implements PropablePanel,
     throw new RuntimeException("MockPropablePanel.setTextAccessor() called");
   }
 
-  public Box getBoxInsideBorders()
+  public Box getBorderedBounds()
   {
     return boxInsideBorders;
   }
 
-  public Box getBoxInsideMargins()
+  public Box getMarginedBounds()
   {
     return boxInsideMargins;
   }

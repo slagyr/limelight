@@ -70,7 +70,7 @@ public class ScrollBarPainter
 
   public void paintOn(Graphics2D graphics, ScrollBarPanel scrollBar)
   {
-    Box bounds = scrollBar.getBoundingBox();
+    Box bounds = scrollBar.getBounds();
     if(scrollBar.isHorizontal())
       drawHorizontally(graphics, bounds, scrollBar);
     else
@@ -79,7 +79,7 @@ public class ScrollBarPainter
 
   public Box getIncreasingBox(ScrollBarPanel scrollBar)
   {
-    Box bounds = scrollBar.getBoundingBox();
+    Box bounds = scrollBar.getBounds();
     if(scrollBar.isHorizontal())
       return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH, bounds.y, INCREASING_BOX_LENGTH, bounds.height);
     else
@@ -88,7 +88,7 @@ public class ScrollBarPainter
 
   public Box getDecreasingBox(ScrollBarPanel scrollBar)
   {
-    Box bounds = scrollBar.getBoundingBox();
+    Box bounds = scrollBar.getBounds();
     if(scrollBar.isHorizontal())
       return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.y, DECREASING_BOX_LENGTH, bounds.height);
     else
@@ -97,7 +97,7 @@ public class ScrollBarPainter
 
   public Box getTrackBox(ScrollBarPanel scrollBar)
   {
-    Box bounds = scrollBar.getBoundingBox();
+    Box bounds = scrollBar.getBounds();
     if(scrollBar.isHorizontal())
       return new Box(bounds.x + CAP_LENGTH, bounds.y, bounds.width - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH, bounds.height);
     else

@@ -155,12 +155,12 @@ public class PropPanelLayout implements Layout
 
   public int horizontalInsets(PropPanel panel)
   {
-    return panel.getBoundingBox().width - panel.getBoxInsidePadding().width;
+    return panel.getBounds().width - panel.getPaddedBounds().width;
   }
 
   public int verticalInsets(PropPanel panel)
   {
-    return panel.getBoundingBox().height - panel.getBoxInsidePadding().height;
+    return panel.getBounds().height - panel.getPaddedBounds().height;
   }
 
   protected void doPreliminaryLayoutOnChildren(PropPanel panel)

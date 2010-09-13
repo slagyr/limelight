@@ -34,7 +34,7 @@ public class MockTextContainer extends MockPanel implements TextContainer
     return bounds.height;
   }
 
-  public Box getBoundingBox()
+  public Box getBounds()
   {
     return bounds;
   }

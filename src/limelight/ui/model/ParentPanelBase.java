@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;

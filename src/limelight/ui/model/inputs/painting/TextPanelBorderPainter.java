@@ -37,7 +37,7 @@ public class TextPanelBorderPainter implements Painter
     {
       try
       {
-        Box bounds = panel.getBoxInsideMargins();
+        Box bounds = panel.getMarginedBounds();
         normalBorder.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
         if(panel.hasFocus())
           focusedBorder.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);

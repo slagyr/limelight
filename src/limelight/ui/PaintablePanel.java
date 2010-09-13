@@ -14,9 +14,9 @@ public interface PaintablePanel extends Panel
 
   Border getBorderShaper();
 
-  Box getBoxInsideBorders();
+  Box getBorderedBounds();
 
-  Box getBoxInsideMargins();
+  Box getMarginedBounds();
 
   Prop getProp();
 }

@@ -50,8 +50,8 @@ public class TextInputPanelTest
 
     assertEquals(true, panel.hasFocus());
     assertEquals(true, panel.isCaretBlinking());
-    assertEquals(true, root.dirtyRegions.contains(panel.getBoundingBox()));
-    assertEquals(true, root.dirtyRegions.contains(parent.getBoundingBox()));
+    assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
+    assertEquals(true, root.dirtyRegions.contains(parent.getBounds()));
   }
 
   @Test
@@ -63,8 +63,8 @@ public class TextInputPanelTest
 
     assertEquals(false, panel.hasFocus());
     assertEquals(false, panel.isCaretBlinking());
-    assertEquals(true, root.dirtyRegions.contains(panel.getBoundingBox()));
-    assertEquals(true, root.dirtyRegions.contains(parent.getBoundingBox()));
+    assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
+    assertEquals(true, root.dirtyRegions.contains(parent.getBounds()));
   }
   
   @Test
@@ -119,7 +119,7 @@ public class TextInputPanelTest
     new CharTypedEvent(panel, 0, 'Z').dispatch(panel);
 
     assertEquals(1, root.dirtyRegions.size());
-    assertEquals(panel.getBoundingBox(), root.dirtyRegions.get(0));
+    assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
   }
   
   @Test

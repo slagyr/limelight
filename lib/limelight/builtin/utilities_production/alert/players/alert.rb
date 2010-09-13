@@ -4,7 +4,7 @@
 prop_reader :message
 
 on_scene_opened do
-  if message.area.height == message.style.max_height.to_i
+  if message.bounds.height >= message.style.max_height.to_i
     message.style.vertical_scrollbar = :on
   end
 end
