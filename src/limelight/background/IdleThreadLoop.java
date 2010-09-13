@@ -5,11 +5,13 @@ package limelight.background;
 
 public abstract class IdleThreadLoop
 {
+  public static boolean verbose = true;
+
   private boolean running;
   private boolean isIdle;
   private Thread thread;
-  private final Object lock = new Object();
 
+  private final Object lock = new Object();
   private long lastCheckTime;
   private int executions;
 
@@ -86,7 +88,8 @@ public abstract class IdleThreadLoop
         catch(Exception e)
         {
           //TODO What to do with execption here?
-          e.printStackTrace();
+          if(verbose)
+            e.printStackTrace();
         }
       }
     }
