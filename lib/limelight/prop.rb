@@ -219,23 +219,33 @@ module Limelight
 
     # Returns a Box representing the relative bounds of the Prop. Is useful with using the Pen.
     #
-    #   box = prop.bounds
-    #   box.x, box.y # represents the Prop's location within its parent Prop
-    #   box.width, box.height # represents the Prop's dimensions
+    #   bounds = prop.bounds
+    #   bounds.x, box.y # represents the Prop's location within its parent Prop
+    #   bounds.width, box.height # represents the Prop's dimensions
     #
     def bounds
       return panel.get_bounds.clone
     end
 
-    # Returns a Box representing the bounds inside the borders of the prop.  If the Prop's style has no margin or
-    # border_width, then this will be equivalent to area.
+    # Returns a Box representing the bounds inside the borders of the prop.
+    #
+    #   bounds = prop.bordered_bounds
+    #   bounds.x # the distance between the left edge of the Prop and the inside edge of its left border
+    #   bounds.y # the distance between the top edge of the Prop and the inside edge of its top border
+    #   bounds.width # the distance between the inside edges of the left and right border
+    #   bounds.height # the distance between the inside edges of the top and bottom borders
     #
     def bordered_bounds
       return panel.get_bordered_bounds.clone
     end
 
-    # Returns a Box representing the bounds inside the padding of the Prop.  This is the area where child Props may
-    # be located
+    # Returns a Box representing the bounds inside the padding of the prop.
+    #
+    #   bounds = prop.padded_bounds
+    #   bounds.x # the distance between the left edge of the Prop and the inside edge of its left padding
+    #   bounds.y # the distance between the top edge of the Prop and the inside edge of its top padding
+    #   bounds.width # the distance between the inside edges of the left and right padding
+    #   bounds.height # the distance between the inside edges of the top and bottom padding
     #
     def padded_bounds
       return panel.get_padded_bounds.clone

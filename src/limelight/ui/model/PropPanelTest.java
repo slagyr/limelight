@@ -49,7 +49,7 @@ public class PropPanelTest extends Assert
   }
   
   @Test
-  public void shouldCreatesItsStyleInsteadOfGettingItFromProp() throws Exception
+  public void createsItsStyleInsteadOfGettingItFromProp() throws Exception
   {
     panel = new PropPanel(null);
     
@@ -58,7 +58,7 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void shouldOnlyPaintWhenLaidOut() throws Exception
+  public void onlyPaintWhenLaidOut() throws Exception
   {
     MockAfterPaintAction paintAction = new MockAfterPaintAction();
     panel.setAfterPaintAction(paintAction);
@@ -72,10 +72,25 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void shouldConstructor() throws Exception
+  public void constructor() throws Exception
   {
     assertSame(prop, panel.getProp());
     assertEquals(TempTextAccessor.class, panel.getTextAccessor().getClass());
+  }
+
+  @Test
+  public void marginedBoundsIncludeMarginButIgnoreLocation() throws Exception
+  {
+    panel.setLocation(3, 3);
+    panel.setSize(50, 50);
+    panel.getStyle().setMargin(5);
+
+    final Box bounds = panel.getMarginedBounds();
+    
+    assertEquals(5, bounds.x);
+    assertEquals(5, bounds.y);
+    assertEquals(40, bounds.width);
+    assertEquals(40, bounds.height);
   }
 
   @Test

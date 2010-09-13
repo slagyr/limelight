@@ -98,8 +98,8 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   {
     if(marginedBounds == null)
     {
-      Box bounds = getBounds();
-      marginedBounds = (Box) bounds.clone();
+      Box bounds = new Box(0, 0, getWidth(), getHeight());
+      marginedBounds = bounds;
       Style style = getStyle();
       marginedBounds.shave(style.getCompiledTopMargin().pixelsFor(bounds.height),
           style.getCompiledRightMargin().pixelsFor(bounds.width),
