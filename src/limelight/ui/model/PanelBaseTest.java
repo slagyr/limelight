@@ -6,13 +6,14 @@ package limelight.ui.model;
 
 import limelight.ui.MockPanel;
 import limelight.ui.api.MockProp;
+import limelight.util.Box;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
 
-public class BasePanelTest extends Assert
+public class PanelBaseTest extends Assert
 {
   private TestablePanelBase panel;
   private MockParentPanel parent;
@@ -140,6 +141,16 @@ public class BasePanelTest extends Assert
     assertSame(root, sibling.getRoot());
     assertSame(root, child.getRoot());
     assertSame(root, grandChild.getRoot());
+  }
+
+  @Test
+  public void getBounds() throws Exception
+  {
+    Box bounds = panel.getBounds();
+    assertEquals(panel.getX(), bounds.x);
+    assertEquals(panel.getY(), bounds.y);
+    assertEquals(panel.getWidth(), bounds.width);
+    assertEquals(panel.getHeight(), bounds.height);
   }
 
 }
