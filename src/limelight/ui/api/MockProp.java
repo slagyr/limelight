@@ -8,6 +8,9 @@ import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MockProp implements Prop
 {
   public Style hoverStyle;
@@ -16,6 +19,7 @@ public class MockProp implements Prop
   public boolean hooverOn;
   public Scene scene;
   public ResourceLoader loader;
+  public Map<String, Object> illuminationOptions;
 
   public MockProp()
   {
@@ -60,6 +64,12 @@ public class MockProp implements Prop
   public ResourceLoader getLoader()
   {
     return loader;
+  }
+
+  public void illuminate(Map<String, Object> options)
+  {
+    illuminationOptions = new HashMap<String, Object>(options);
+    options.clear();
   }
 
   public void setText(String value)

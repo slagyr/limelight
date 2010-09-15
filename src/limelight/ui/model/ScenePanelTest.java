@@ -3,12 +3,14 @@
 
 package limelight.ui.model;
 
+import limelight.LimelightException;
 import limelight.styles.RichStyle;
 import limelight.ui.api.MockProp;
 import limelight.ui.Panel;
 import limelight.ui.api.MockScene;
 import limelight.Context;
 import limelight.MockResourceLoader;
+import limelight.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -295,5 +297,98 @@ public class ScenePanelTest extends Assert
     root.setFrame(null);
     
     assertEquals(false, root.isIlluminated());
+  }
+
+  @Test
+  public void propWithIdIsIndexWhenAddedToScene() throws Exception
+  {
+    setupIlluminatedScene();
+    PropPanel panel = new PropPanel(new MockProp(), Util.toMap("id", "some id"));
+
+    root.add(panel);
+
+    assertSame(panel, root.find("some id"));
+  }
+
+  private void setupIlluminatedScene()
+  {
+    root.setFrame(frame);
+    root.illuminate();
+  }
+
+  @Test
+  public void propConnectedToSceneIsIndexedWhenIdIsSet() throws Exception
+  {
+    setupIlluminatedScene();
+    PropPanel panel = new PropPanel(new MockProp(), Util.toMap("id", "some id"));
+    root.add(panel);
+
+    assertSame(panel, root.find("some id"));
+  }
+
+  @Test
+  public void duplicateIdsCausesAnError() throws Exception
+  {
+    setupIlluminatedScene();
+    PropPanel prop1 = new PropPanel(new MockProp(), Util.toMap("id", "some id"));
+    PropPanel prop2 = new PropPanel(new MockProp(), Util.toMap("id", "some id"));
+
+    root.add(prop1);
+    
+    try
+    {
+      root.add(prop2);
+      fail("Should have raised error");
+    }
+    catch(LimelightException e)
+    {
+      assertEquals("Duplicate id: some id", e.getMessage());
+    }
+  }
+
+  @Test
+  public void unindexingAProp() throws Exception
+  {
+    setupIlluminatedScene();
+    PropPanel prop = new PropPanel(new MockProp(), Util.toMap("id", "some id"));
+    root.add(prop);
+
+    root.removeFromIndex(prop);
+
+    assertEquals(null, root.find("some id"));
+  }
+
+  @Test
+  public void unindexingPropWithoutIdDoesntCrash() throws Exception
+  {
+    setupIlluminatedScene();
+    PropPanel prop = new PropPanel(new MockProp());
+    root.add(prop);
+
+    try
+    {
+      root.removeFromIndex(prop);
+    }
+    catch(Exception e)
+    {
+      fail("Should not throw error: " + e.toString());
+    }
+  }
+
+  @Test
+  public void propTreesAreIndexedWhenAddedAndUnindexedWhenRemoved() throws Exception
+  {
+    setupIlluminatedScene();
+    PropPanel parent = new PropPanel(new MockProp(), Util.toMap("id", "parent"));
+    PropPanel child = new PropPanel(new MockProp(), Util.toMap("id", "child"));
+    parent.add(child);
+    
+    root.add(parent);
+    assertSame(parent, root.find("parent"));
+    assertSame(child, root.find("child"));
+
+    root.remove(parent);
+    assertEquals(null, root.find("parent"));
+    assertEquals(null, root.find("child"));
   }
 }

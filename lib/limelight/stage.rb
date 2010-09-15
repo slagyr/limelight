@@ -188,7 +188,7 @@ module Limelight
     def open(scene)
       @current_scene.visible = false if @current_scene
       scene.stage = self
-      scene.illuminate
+#      scene.illuminate
       load_scene(scene)
       @frame.open unless @should_remain_hidden
       scene.visible = true
@@ -208,7 +208,10 @@ module Limelight
       #      @frame.setJMenuBar(scene.menu_bar)
       @frame.load(scene.panel)
       if (has_static_size?(scene.style))
-        @frame.set_size(scene.style.compiled_width.value + @frame.getHorizontalInsetWidth, scene.style.compiled_height.value + @frame.getVerticalInsetWidth)
+        insets = @frame.insets
+        horizontal_insets = inset.left + insets.right
+        vertical_insets = insets.top + insets.bottom
+        @frame.set_size(scene.style.compiled_width.value + horizontal_insets, scene.style.compiled_height.value + vertical_insets)
       end
       @current_scene = scene
     end

@@ -3,6 +3,9 @@
 
 package limelight.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Util
 {
   public static boolean equal(Object o1, Object o2)
@@ -13,5 +16,19 @@ public class Util
       return o2.equals(o1);
     else
       return true;
+  }
+  
+  public static Map<String, Object> toMap(String... args)
+  {
+    if(args.length % 2 == 1)
+      throw new RuntimeException("toMap must be called with an even number of parameters");
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    for(int i = 0; i < args.length; i += 2)
+    {
+      String key = args[i];
+      String value = args[i + 1];
+      map.put(key, value);
+    }
+    return map;
   }
 }

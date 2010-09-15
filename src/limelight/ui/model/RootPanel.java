@@ -37,6 +37,10 @@ public interface RootPanel extends Panel, ParentPanel
   ImageCache getImageCache();
 
   RootKeyListener getKeyListener();
+
+  void addToIndex(PropPanel propPanel);
+
+  void removeFromIndex(PropPanel propPanel);
 }
 
 

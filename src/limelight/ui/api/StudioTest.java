@@ -5,6 +5,7 @@ package limelight.ui.api;
 
 import junit.framework.TestCase;
 import limelight.*;
+import limelight.ruby.MockRuntimeFactory;
 
 public class StudioTest extends TestCase
 {
@@ -127,7 +128,7 @@ public class StudioTest extends TestCase
 
   private void add(MockProduction production)
   {
-    studio.add(new Studio.ProductionWrapper(new RuntimeFactory.BirthCertificate(production)));
+    studio.add(production);
   }
 
   public void testHaveAUtilitiesProduction() throws Exception
@@ -138,13 +139,13 @@ public class StudioTest extends TestCase
     UtilitiesProduction utilities = studio.utilitiesProduction();
     assertSame(production, utilities.getProduction());
 
-    mockRuntimeFactory.spawnException = new Exception("blah");
+    mockRuntimeFactory.spawnException = new LimelightException("blah");
     assertSame(utilities, studio.utilitiesProduction()); // no exception thrown
   }
 
   public void testShouldSendAlertWhenErrorOccursWhileOpeningProduction() throws Exception
   {
-    mockRuntimeFactory.spawnException = new Exception("blah");
+    mockRuntimeFactory.spawnException = new LimelightException("blah");
     MockProduction production = new MockProduction("utilities");
     studio.stubUtilitiesProduction(production);
 
@@ -154,33 +155,33 @@ public class StudioTest extends TestCase
     assertEquals(true, production.lastMethodCallArgs[0].toString().contains("blah"));
   }
 
-  public void testPublishProductionsOnDRb() throws Exception
-  {
-    MockProduction prod1 = new MockProduction("one");
-    MockProduction prod2 = new MockProduction("two");
-    MockProduction prod3 = new MockProduction("three");
-    
-    studio.publishProductionsOnDRb(1234);
-    mockRuntimeFactory.spawnedProduction = prod1;
-    studio.open("one");
-    mockRuntimeFactory.spawnedProduction = prod2;
-    studio.open("two");
-    mockRuntimeFactory.spawnedProduction = prod3;
-    studio.open("three");
-
-    assertEquals(1234, prod1.drbPort);
-    assertEquals(1235, prod2.drbPort);
-    assertEquals(1236, prod3.drbPort);
-  }
-  
-  public void testUtilitiedProductionDoesNotGetPublishedOnDRb() throws Exception
-  {
-    MockProduction production = new MockProduction("utilities");
-    mockRuntimeFactory.spawnedProduction = production;
-
-    studio.publishProductionsOnDRb(1234);
-    studio.utilitiesProduction();
-
-    assertEquals(0, production.drbPort);
-  }
+//  public void testPublishProductionsOnDRb() throws Exception
+//  {
+//    MockProduction prod1 = new MockProduction("one");
+//    MockProduction prod2 = new MockProduction("two");
+//    MockProduction prod3 = new MockProduction("three");
+//
+//    studio.publishProductionsOnDRb(1234);
+//    mockRuntimeFactory.spawnedProduction = prod1;
+//    studio.open("one");
+//    mockRuntimeFactory.spawnedProduction = prod2;
+//    studio.open("two");
+//    mockRuntimeFactory.spawnedProduction = prod3;
+//    studio.open("three");
+//
+//    assertEquals(1234, prod1.drbPort);
+//    assertEquals(1235, prod2.drbPort);
+//    assertEquals(1236, prod3.drbPort);
+//  }
+//
+//  public void testUtilitiedProductionDoesNotGetPublishedOnDRb() throws Exception
+//  {
+//    MockProduction production = new MockProduction("utilities");
+//    mockRuntimeFactory.spawnedProduction = production;
+//
+//    studio.publishProductionsOnDRb(1234);
+//    studio.utilitiesProduction();
+//
+//    assertEquals(0, production.drbPort);
+//  }
 }

@@ -3,9 +3,8 @@
 
 package limelight;
 
-import limelight.Context;
-import limelight.RuntimeFactory;
-import limelight.LimelightException;
+import limelight.ruby.RubyProduction;
+import limelight.ruby.RuntimeFactory;
 import limelight.ui.api.Production;
 import limelight.ui.api.UtilitiesProduction;
 import limelight.io.FileUtil;
@@ -16,17 +15,14 @@ import java.util.LinkedList;
 import java.io.PrintWriter;
 import java.io.ByteArrayOutputStream;
 
-
 public class Studio
 {
   private static Studio instance;
-  private List<ProductionWrapper> index;
+  private final List<Production> index;
   public Thread shutdownThread;
   private boolean isShutdown;
   private boolean isShuttingDown;
   private RuntimeFactory.BirthCertificate utilitiesCertificate;
-  private boolean publishingOnDRb;
-  private int nextDRbPort;
 
   public static Studio install()
   {
@@ -48,23 +44,17 @@ public class Studio
 
   public Studio()
   {
-    index = new LinkedList<ProductionWrapper>();
+    index = new LinkedList<Production>();
   }
 
   public Production open(String productionPath)
   {
     try
     {
-      String src = RuntimeFactory.openProductionSrc(productionPath);
-      RuntimeFactory.BirthCertificate certificate = Context.instance().runtimeFactory.spawn(src);
-      if(certificate != null)
-      {
-        ProductionWrapper wrapper = wrapIt(certificate);
-        add(wrapper);
-        return certificate.production;
-      }
-      else
-        return null;
+      RubyProduction production = new RubyProduction(productionPath);
+      production.open();
+      add(production);
+      return production;
     }
     catch(Exception e)
     {
@@ -82,8 +72,8 @@ public class Studio
 
     isShuttingDown = true;
 
-    for(ProductionWrapper wrappers : wrappers())
-      wrappers.production.close();
+    for(Production production: index)
+      production.close();
 
     if(utilitiesCertificate != null)
     {
@@ -103,30 +93,30 @@ public class Studio
     shutdownThread.start();
   }
 
-  public void add(ProductionWrapper wrapper)
+  public void add(Production production)
   {
-    adjustNameIfNeeded(wrapper.production);
+    adjustNameIfNeeded(production);
     synchronized(index)
     {
-      index.add(wrapper);
+      index.add(production);
     }
   }
 
   public Production get(String name)
   {
-    for(ProductionWrapper wrapper : wrappers())
+    for(Production production: index)
     {
-      if(name.equals(wrapper.production.getName()))
-        return wrapper.production;
+      if(name.equals(production.getName()))
+        return production;
     }
     return null;
   }
 
   public boolean shouldAllowShutdown()
   {
-    for(ProductionWrapper wrapper : wrappers())
+    for(Production production: index)
     {
-      if(!wrapper.production.allowClose())
+      if(!production.allowClose())
         return false;
     }
     return true;
@@ -134,27 +124,19 @@ public class Studio
 
   public void productionClosed(Production production)
   {
-    ProductionWrapper wrapper = wrapperFor(production);
-    if(wrapper == null)
-      return;
-
     synchronized(index)
     {
-      index.remove(wrapper);
+      index.remove(production);
     }
 
-    wrapper.production = null;
-    Context.instance().runtimeFactory.terminate(wrapper.certificate);
+    production.close();
     if(index.isEmpty())
       Context.instance().shutdown();
   }
 
   public List<Production> getProductions()
   {
-    ArrayList<Production> result = new ArrayList<Production>();
-    for(ProductionWrapper certificate : index)
-      result.add(certificate.production);
-    return result;
+    return new ArrayList<Production>(index);
   }
 
   public boolean isShutdown()
@@ -218,53 +200,6 @@ public class Studio
     catch(Exception e)
     {
       e.printStackTrace();
-    }
-  }
-
-  private ArrayList<ProductionWrapper> wrappers()
-  {
-    ArrayList<ProductionWrapper> wrappers = new ArrayList<ProductionWrapper>();
-    synchronized(index)
-    {
-      wrappers.addAll(index);
-    }
-    return wrappers;
-  }
-
-  private ProductionWrapper wrapperFor(Production production)
-  {
-    for(ProductionWrapper wrapper : wrappers())
-    {
-      if(production == wrapper.production)
-        return wrapper;
-    }
-    return null;
-  }
-
-  private ProductionWrapper wrapIt(RuntimeFactory.BirthCertificate certificate)
-  {
-    ProductionWrapper wrapper = new ProductionWrapper(certificate);
-    if(publishingOnDRb)
-      wrapper.production.publish_on_drb(nextDRbPort++);
-    return wrapper;
-  }
-
-  public void publishProductionsOnDRb(int drbPort)
-  {
-    publishingOnDRb = true;
-    nextDRbPort = drbPort;
-  }
-
-  public static class ProductionWrapper
-  {
-    public Production production;
-    public RuntimeFactory.BirthCertificate certificate;
-    public int drbPort;
-
-    public ProductionWrapper(RuntimeFactory.BirthCertificate certificate)
-    {
-      this.certificate = certificate;
-      production = certificate.production;
     }
   }
 }

@@ -1,8 +1,10 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight;
+package limelight.ruby;
 
+import limelight.Context;
+import limelight.LimelightException;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaSupport;
 import org.jruby.javasupport.JavaClass;
@@ -25,15 +27,15 @@ public class RuntimeFactory
   private static int runtimeId = 0;
   private HashMap<Object, Ruby> index = new HashMap<Object, Ruby>();
 
-  public BirthCertificate spawn(String src) throws Exception
+  public BirthCertificate spawn(String src)
   {
     Runtime runtime = new Runtime(src, nextId());
     runtime.start();
 
-    runtime.join();
 
     try
     {
+      runtime.join();
       if(runtime.getError() != null)
         throw runtime.getError();
       else if(runtime.getHandle() != null)
@@ -49,6 +51,10 @@ public class RuntimeFactory
         gc();
         return null;
       }
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException("Failed to start JRuby Runtime", e);
     }
     finally
     {
@@ -187,12 +193,12 @@ public class RuntimeFactory
       try
       {
         List<String> loadPaths = new ArrayList<String>();
-        loadPaths.add(new File(Context.instance.limelightHome + "/lib").getAbsolutePath());
+        loadPaths.add(new File(Context.instance().limelightHome + "/lib").getAbsolutePath());
         RubyInstanceConfig config = new RubyInstanceConfig();
         config.setObjectSpaceEnabled(true);
         ruby = JavaEmbedUtils.initialize(loadPaths, config);
         InputStream input = new ByteArrayInputStream(src.getBytes());
-        ruby.runFromMain(input, Context.instance.limelightHome + "/" + getName());
+        ruby.runFromMain(input, Context.instance().limelightHome + "/" + getName());
       }
       catch(Exception e)
       {

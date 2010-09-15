@@ -33,7 +33,6 @@ public interface Panel extends Iterable<Panel>
   boolean isDescendantOf(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);
 
-  void repaint();     
   Graphics2D getGraphics();
   void paintOn(Graphics2D graphics);
   boolean canBeBuffered();

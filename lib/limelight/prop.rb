@@ -25,10 +25,10 @@ module Limelight
 
     include UI::Api::Prop
 
-    attr_accessor :style, :hover_style
-    attr_reader :panel #:nodoc:
-    attr_reader :children, :parent, :name, :id, :players
-    getters :panel, :style, :hover_style, :name, :scene, :loader #:nodoc:
+#    attr_accessor :style, :hover_style
+    attr_reader :panel, :players #:nodoc:
+#    attr_reader :children, :parent, :name, :id, :players
+    getters :loader #:nodoc:
 
 
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.
@@ -38,17 +38,33 @@ module Limelight
     #
     def initialize(hash = {})
       @panel = self.class.panel_class.new(self)
-      @style = @panel.style
-      @children = []
-      @options = {}
-      add_options(hash)
+#      @style = @panel.style
+#      @children = []
+#      @options = {}
+      @panel.add_options(hash.stringify_keys!)
+    end
+
+    def id
+      return @panel.getId
+    end
+
+    def name
+      return @panel.name
+    end
+
+    def style
+      return @panel.style
+    end
+
+    def hover_style
+      return @panel.hover_style
     end
 
     # Add a Prop as a child of this Prop.
     #
     def add(child)
-      child.set_parent(self)
-      @children << child
+#      child.set_parent(self)
+#      @children << child
       @panel.add(child.panel)
     end
 
@@ -81,18 +97,18 @@ module Limelight
     # Removes a child Prop.  The child Prop will be parentless after removal.
     #
     def remove(child)
-      if children.delete(child)
-        scene.unindex_prop(child) if scene
+#      if children.delete(child)
+#        scene.unindex_prop(child) if scene
         @panel.remove(child.panel)
-      end
+#      end
     end
 
     # Removes all child Props.
     #
     def remove_all
       @panel.remove_all
-      @children.each { |child| scene.unindex_prop(child) } if scene
-      @children = []
+#      @children.each { |child| scene.unindex_prop(child) } if scene
+#      @children = []
     end
 
     # Injects the behavior of the specified Player into the Prop.  The Player must be a Module.
@@ -102,18 +118,6 @@ module Limelight
         extend player_module
         self.casted if player_module.instance_methods.include?("casted")
       end
-    end
-
-    def update #:nodoc:
-      return if (scene.nil? || !scene.visible)
-      @panel.doLayout
-      @panel.repaint
-    end
-
-    def update_now #:nodoc:
-      return if (scene.nil? || !scene.visible)
-      @panel.doLayout()
-      @panel.paintImmediately(0, 0, @panel.width, @panel.height)
     end
 
     # A hook to invoke behavior after a Prop is painted.
@@ -130,9 +134,10 @@ module Limelight
     # Returns an Array of matching Props. Returns an empty Array if none are found.
     #
     def find_by_name(name, results = [])
-      results << self if @name == name
-      @children.each { |child| child.find_by_name(name, results) }
-      return results
+#      results << self if @name == name
+#      @children.each { |child| child.find_by_name(name, results) }
+#      return results
+      return []
     end
 
     # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
@@ -145,15 +150,23 @@ module Limelight
     # Returns the text of the Prop.
     #
     def text
-      return panel.text
+      return @panel.text
+    end
+
+    def parent
+      return @panel.parent.prop if @panel.parent
+    end
+
+    def children
+      return @panel.children.map { |child| child.prop }
     end
 
     # Returns the scene to which this prop belongs to.
     #
     def scene
-      return nil if @parent.nil?
-      @scene = @parent.scene if @scene.nil?
-      return @scene
+#      return nil if @parent.nil?
+#      @scene = @parent.scene if @scene.nil?
+      return @panel.root.prop
     end
 
     # TODO get rid of me.... The Java Prop interface declares this method.
@@ -175,27 +188,27 @@ module Limelight
       return self.to_s
     end
 
-    # unusual name because it's not part of public api
-    def set_parent(parent) #:nodoc:
-      @parent = parent
-      if @parent.illuminated?
-        illuminate
-      end
-    end
+#    # unusual name because it's not part of public api
+#    def set_parent(parent) #:nodoc:
+#      @parent = parent
+#      if @parent.illuminated?
+#        illuminate
+#      end
+#    end
 
-    # Allows the addition of extra initialization options.  Will raise an exception if the Prop has already been
-    # illuminated (added to a scene).
-    #
-    def add_options(more_options)
-      return unless more_options
-      raise "Too late to add options" if illuminated?
-
-      @name = more_options.delete(:name) if more_options.has_key?(:name)
-      @additional_styles = more_options.delete(:styles) if more_options.has_key?(:styles)
-      panel.setStyles("#{@name}, #{@additional_styles}")
-
-      @options.merge!(more_options)
-    end
+#    # Allows the addition of extra initialization options.  Will raise an exception if the Prop has already been
+#    # illuminated (added to a scene).
+#    #
+#    def add_options(more_options)
+#      return unless more_options
+#      raise "Too late to add options" if illuminated?
+#
+#      @name = more_options.delete(:name) if more_options.has_key?(:name)
+#      @additional_styles = more_options.delete(:styles) if more_options.has_key?(:styles)
+#      panel.setStyles("#{@name}, #{@additional_styles}")
+#
+#      @options.merge!(more_options)
+#    end
 
     # Returns a Point representing the location of the Prop's top-left corner within its parent.
     #
@@ -357,27 +370,27 @@ module Limelight
 
     # TODO Try to get me out of public scope
     #
-    def illuminate #:nodoc:
-      if illuminated?
-        scene.index_prop(self) if @id
-      else
-        set_id(@options.delete(:id))
-        @players = @options.delete(:players)
+    def illuminate(options) #:nodoc:
+#      if illuminated?
+#        scene.index_prop(self) if @id
+#      else
+#        set_id(@options.delete(:id))
+        @players = options.remove("players")
 
         scene.casting_director.fill_cast(self)
-        apply_options
+        apply_options(options)
 
-        @options = nil
-      end
-
-      children.each do |child|
-        child.illuminate
-      end
+#        @options = nil
+#      end
+#
+#      children.each do |child|
+#        child.illuminate
+#      end
     end
 
-    def illuminated? #:nodoc:
-      return @options.nil?
-    end
+#    def illuminated? #:nodoc:
+#      return @options.nil?
+#    end
 
     private ###############################################
 
@@ -387,15 +400,18 @@ module Limelight
       scene.index_prop(self)
     end
 
-    def apply_options
-      @options.each_pair do |key, value|
+    def apply_options(options)
+      keys = []
+      options.key_set.each { |key| keys << key}
+
+      keys.each do |key|
         setter_sym = "#{key.to_s}=".to_sym
         if self.respond_to?(setter_sym)
-          self.send(setter_sym, value)
+          self.send(setter_sym, options.remove(key))
         elsif self.style.respond_to?(setter_sym)
-          self.style.send(setter_sym, value.to_s)
+          self.style.send(setter_sym, options.remove(key).to_s)
         elsif is_event_setter(key)
-          define_event(key, value)
+          define_event(key, options.remove(key))
         end
       end
     end
@@ -406,7 +422,7 @@ module Limelight
     end
 
     def define_event(symbol, value)
-      event_name = symbol.to_s[3..-1]
+#      event_name = symbol.to_s[3..-1]
       self.send(symbol) { eval(value) };
     end
 

@@ -189,11 +189,6 @@ public abstract class PanelBase implements Panel
     return eventHandler;
   }
 
-  public void repaint()
-  {
-    getParent().repaint();
-  }
-
   public Panel getOwnerOfPoint(Point point)
   {
     return this;

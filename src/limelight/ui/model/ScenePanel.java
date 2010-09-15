@@ -21,6 +21,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   private ImageCache imageCache;
   private PropFrame frame;
   private final Map<String, RichStyle> styles;
+  private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
 
   public ScenePanel(Prop prop)
   {
@@ -245,6 +246,24 @@ public class ScenePanel extends PropPanel implements RootPanel
   public RootKeyListener getKeyListener()
   {
     return keyListener;
+  }
+
+  public void addToIndex(PropPanel propPanel)
+  {
+    PropPanel value = index.get(propPanel.getId());
+    if(value != null && value != propPanel)
+      throw new LimelightException("Duplicate id: " + propPanel.getId());
+    index.put(propPanel.getId(), propPanel);
+  }
+
+  public void removeFromIndex(PropPanel prop)
+  {
+    index.remove(prop.getId());
+  }
+
+  public PropPanel find(String id)
+  {
+    return index.get(id);
   }
 
   private static class SceneLayout implements Layout

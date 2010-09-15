@@ -187,9 +187,9 @@ public abstract class ParentPanelBase extends PanelBase implements ParentPanel
 
   public void delluminate()
   {
-    super.delluminate();
     for(Panel child : children)
       child.delluminate();
+    super.delluminate();
   }
 
   public abstract Box getChildConsumableBounds();

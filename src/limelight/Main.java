@@ -9,6 +9,7 @@ import limelight.background.CacheCleanerLoop;
 import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
 import limelight.io.TempDirectory;
+import limelight.ruby.RuntimeFactory;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.ui.model.InertFrameManager;

@@ -3,9 +3,6 @@
 
 package limelight.ui.api;
 
-import limelight.styles.Style;
-import java.util.Map;
-
 public interface Scene extends Prop
 {
 }

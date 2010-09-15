@@ -69,6 +69,14 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
     return keyListener;
   }
 
+  public void addToIndex(PropPanel propPanel)
+  {
+  }
+
+  public void removeFromIndex(PropPanel propPanel)
+  {
+  }
+
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)
   {
   }
