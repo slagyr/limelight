@@ -15,7 +15,7 @@ module Limelight
   def self.build_props(root, options={}, &block)
     loader = options.delete(:build_loader)
     instance_variables = options.delete(:instance_variables)
-    root.add_options(options)
+    root.panel.add_options(options)
     builder = DSL::PropBuilder.new(root)
     builder.__install_instance_variables(instance_variables)
     builder.__loader__ = loader
@@ -92,7 +92,7 @@ module Limelight
       # The two 'branch' child props are identical.
       #
       def __(options)
-        @__prop__.add_options(options)
+        @__prop__.panel.add_options(options.stringify_keys!)
       end
 
       # Installs props from another file using the prop DSL.  The path will be relative to the

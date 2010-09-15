@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.LimelightException;
 import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.api.MockProp;
@@ -15,13 +16,16 @@ import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
 import limelight.audio.MockAudioPlayer;
+import limelight.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
+import java.util.List;
 
 public class PropPanelTest extends Assert
 {
@@ -47,12 +51,12 @@ public class PropPanelTest extends Assert
 
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
-  
+
   @Test
   public void createsItsStyleInsteadOfGettingItFromProp() throws Exception
   {
     panel = new PropPanel(null);
-    
+
     assertNotNull(panel.getStyle());
     assertEquals(ScreenableStyle.class, panel.getStyle().getClass());
   }
@@ -86,7 +90,7 @@ public class PropPanelTest extends Assert
     panel.getStyle().setMargin(5);
 
     final Box bounds = panel.getMarginedBounds();
-    
+
     assertEquals(5, bounds.x);
     assertEquals(5, bounds.y);
     assertEquals(40, bounds.width);
@@ -397,18 +401,10 @@ public class PropPanelTest extends Assert
     panel.add(new PropPanel(new MockProp()));
 
     panel.removeAll();
-    
+
     assertEquals(2, panel.children.size());
     assertEquals(panel.getVerticalScrollbar(), panel.children.get(0));
     assertEquals(panel.getHorizontalScrollbar(), panel.children.get(1));
-  }
-
-  @Test
-  public void shouldHaveListOfStyles() throws Exception
-  {
-    panel.setStyles("one, two, three");
-
-    assertEquals("one, two, three", panel.getStyles());
   }
 
   private void buildStyles()
@@ -429,8 +425,9 @@ public class PropPanelTest extends Assert
   public void shouldExtendStylesUponIllumination() throws Exception
   {
     buildStyles();
+    root.delluminate();
 
-    panel.setStyles("one, two, three");
+    panel.addOptions(Util.toMap("styles", "one, two, three"));
     panel.illuminate();
 
     assertEquals(true, panel.getStyle().hasExtension(style1));
@@ -442,13 +439,14 @@ public class PropPanelTest extends Assert
   public void shouldExtendHoverStylesUponIllumination() throws Exception
   {
     buildStyles();
+    root.delluminate();
 
-    panel.setStyles("one, two");
+    panel.addOptions(Util.toMap("styles", "one, two"));
     panel.illuminate();
 
     assertEquals(true, panel.getStyle().hasExtension(style1));
     assertEquals(true, panel.getStyle().hasExtension(style2));
-    assertEquals(false, panel.getStyle().hasExtension(style3));    
+    assertEquals(false, panel.getStyle().hasExtension(style3));
     assertEquals(true, panel.getHoverStyle().hasExtension(style4));
     assertEquals(true, panel.getHoverStyle().hasExtension(style5));
   }
@@ -457,7 +455,8 @@ public class PropPanelTest extends Assert
   public void shouldClearExtensionUponDellumination() throws Exception
   {
     buildStyles();
-    panel.setStyles("one, two, three");
+    root.delluminate();
+    panel.addOptions(Util.toMap("styles", "one, two, three"));
     panel.illuminate();
     panel.delluminate();
 
@@ -472,9 +471,106 @@ public class PropPanelTest extends Assert
   public void shouldHaveHandCursorWhenHoverStyleIsSpecified() throws Exception
   {
     buildStyles();
-    panel.setStyles("one");
+    root.delluminate();
+    panel.addOptions(Util.toMap("styles", "one"));
     panel.illuminate();
 
     assertEquals("hand", panel.getStyle().getCursor());
+  }
+
+  @Test
+  public void cantSetIdToEmptyString() throws Exception
+  {
+    panel.delluminate();
+    panel.addOptions(Util.toMap("id", ""));
+    panel.illuminate();
+    assertEquals(null, panel.getId());
+  }
+  
+  @Test
+  public void settingIdViaOptions() throws Exception
+  {
+    root.delluminate();
+
+    panel.addOptions(Util.toMap("id", "007"));
+    panel.illuminate();
+
+    assertEquals("007", panel.getId());
+  }
+
+  @Test
+  public void namingViaOptions() throws Exception
+  {
+    root.delluminate();
+
+    panel.addOptions(Util.toMap("name", "Bill"));
+    panel.illuminate();
+
+    assertEquals("Bill", panel.getName());
+  }
+
+  @Test
+  public void stylesAreAddedInOrderAfterTheName() throws Exception
+  {
+    root.delluminate();
+    final RichStyle billStyle = new RichStyle();
+    final RichStyle oneStyle = new RichStyle();
+    final RichStyle twoStyle = new RichStyle();
+    root.getStylesStore().put("bill", billStyle);
+    root.getStylesStore().put("one", oneStyle);
+    root.getStylesStore().put("two", twoStyle);
+    panel.addOptions(Util.toMap("name", "bill", "styles", "one, two"));
+
+    panel.illuminate();
+
+    final List<RichStyle> styleExtensions = panel.getStyle().getExtentions();
+    assertEquals(3, styleExtensions.size());
+    assertEquals(billStyle, styleExtensions.get(0));
+    assertEquals(oneStyle, styleExtensions.get(1));
+    assertEquals(twoStyle, styleExtensions.get(2));
+  }
+
+  @Test
+  public void styleForNameIsAddedEvenIfThereAreNoSylesInOptions() throws Exception
+  {
+    root.delluminate();
+    final RichStyle billStyle = new RichStyle();
+    root.getStylesStore().put("bill", billStyle);
+    panel.addOptions(Util.toMap("name", "bill"));
+
+    panel.illuminate();
+
+    final List<RichStyle> styleExtensions = panel.getStyle().getExtentions();
+    assertEquals(1, styleExtensions.size());
+    assertEquals(billStyle, styleExtensions.get(0));
+  }
+
+  @Test
+  public void cantAddOptionsAfterIllumination() throws Exception
+  {
+    panel.illuminate();
+
+    try
+    {
+      panel.addOptions(Util.toMap("name", "bill"));
+      fail("should have thrown exception");
+    }
+    catch(LimelightException e)
+    {
+      assertEquals("Cannot add options to an illuminated Prop", e.getMessage());
+    }
+  }
+
+  @Test
+  public void leftOverOptionsArePassedToPropOnIllumination() throws Exception
+  {
+    root.delluminate();
+    panel.addOptions(Util.toMap("name", "bill", "foo", "bar"));
+    panel.addOptions(Util.toMap("fizz", "bang"));
+    panel.illuminate();
+
+    assertEquals(2, prop.illuminationOptions.size());
+    assertEquals("bar", prop.illuminationOptions.get("foo"));
+    assertEquals("bang", prop.illuminationOptions.get("fizz"));
   }
 }

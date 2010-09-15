@@ -7,11 +7,11 @@ import limelight.ui.Panel;
 import limelight.ResourceLoader;
 
 import java.awt.event.*;
+import java.util.Map;
 
 public interface Prop
-{ 
-  Panel getPanel();
-  String getName();
-  Scene getScene();
+{
   ResourceLoader getLoader();
+
+  void illuminate(Map<String, Object> options);
 }

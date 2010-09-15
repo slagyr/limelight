@@ -18,7 +18,6 @@ public class MockPropablePanel extends MockParentPanel implements PropablePanel,
   private int prepForSnapWidth;
   private int prepForSnapHeight;
   public boolean wasLaidOut;
-  public boolean wasRepainted;
   public boolean wasFloatLaidOut;
   public Box boxInsideMargins = new Box(0, 0, 100, 100);
   public Box boxInsideBorders = new Box(0, 0, 100, 100);
@@ -43,21 +42,12 @@ public class MockPropablePanel extends MockParentPanel implements PropablePanel,
       return getBounds();
   }
 
-  public void paintImmediately(int x, int y, int width, int height)
-  {
-  }
-
   public void setAfterPaintAction(PaintAction action)
   {
   }
 
   public void setText(String text)
   {
-  }
-
-  public void repaint()
-  {
-    wasRepainted = true;
   }
 
   public String getText()

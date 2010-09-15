@@ -14,4 +14,9 @@ public class LimelightException extends RuntimeException
   {
     super(message, cause);
   }
+
+  public LimelightException(Exception cause)
+  {
+    super(cause);
+  }
 }

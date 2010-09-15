@@ -119,20 +119,20 @@ public class ComboBoxPanelTest
 
     assertEquals(2, root.getChildren().size());
     PropPanel curtains = (PropPanel) root.getChildren().get(1);
-    assertEquals("limelight_builtin_curtains", curtains.getProp().getName());
+    assertEquals("limelight_builtin_curtains", curtains.getName());
 
     PropPanel list = (PropPanel) curtains.getChildren().get(0);
-    assertEquals("limelight_builtin_combo_box_popup_list", list.getProp().getName());
+    assertEquals("limelight_builtin_combo_box_popup_list", list.getName());
 
     assertEquals(3, list.getChildren().size());
     final PropPanel item1 = (PropPanel) list.getChildren().get(0);
-    assertEquals("limelight_builtin_combo_box_popup_list_item", item1.getProp().getName());
+    assertEquals("limelight_builtin_combo_box_popup_list_item", item1.getName());
     assertEquals("1", item1.getText());
     final PropPanel item2 = (PropPanel) list.getChildren().get(1);
-    assertEquals("limelight_builtin_combo_box_popup_list_item", item2.getProp().getName());
+    assertEquals("limelight_builtin_combo_box_popup_list_item", item2.getName());
     assertEquals("2", item2.getText());
     final PropPanel item3 = (PropPanel) list.getChildren().get(2);
-    assertEquals("limelight_builtin_combo_box_popup_list_item", item3.getProp().getName());
+    assertEquals("limelight_builtin_combo_box_popup_list_item", item3.getName());
     assertEquals("3", item3.getText());
   }
 

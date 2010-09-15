@@ -54,7 +54,7 @@ public class Debug
     {
       PropPanel propPanel = (PropPanel) panel;
       Prop prop = propPanel.getProp();
-      if(prop != null && "sandbox".equals(prop.getName()))
+      if(prop != null && "sandbox".equals(propPanel.getName()))
         System.err.println(message);
     }
   }

@@ -150,14 +150,16 @@ module Limelight
     # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene. 
     #
     def find(id)
-      return @prop_index[id.to_s]
+#      return @prop_index[id.to_s]
+      find = @panel.find(id.to_s)
+      return find.nil? ? nil : find.prop
     end
         
-    def illuminate #:nodoc:
-      @styles = @options.delete(:styles_hash) || @styles || {}
-      @casting_director = @options.delete(:casting_director) if @options.has_key?(:casting_director)
-      @path = @options.delete(:path) if @options.has_key?(:path)
-      @production = @options.delete(:production) if @options.has_key?(:production)
+    def illuminate(options) #:nodoc:
+#      @styles = options.remove(:styles_hash) || @styles || {}
+      @casting_director = options.remove("casting_director") if options.contains_key("casting_director")
+      @path = options.remove("path") if options.contains_key("path")
+      @production = options.remove("production") if options.contains_key("production")
       super
     end
 

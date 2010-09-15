@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.LimelightError;
+import limelight.LimelightException;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.*;
@@ -15,17 +16,22 @@ import limelight.ui.events.Event;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.*;
 import limelight.util.Box;
+import limelight.util.EmptyMap;
 import limelight.util.Util;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class PropPanel extends ParentPanelBase implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
 {
+  private static final Map<String, Object> EMPTY_OPTIONS = new EmptyMap<String, Object>();
+
   private final Prop prop;
+  private String id;
+  private String name;
   private final ScreenableStyle style;
   private final RichStyle hoverStyle;
-  private String styles;
   private Border borderShaper;
   private TextAccessor textAccessor;
   private Box marginedBounds;
@@ -36,11 +42,11 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   private ScrollBarPanel verticalScrollbar;
   private ScrollBarPanel horizontalScrollbar;
   private boolean sizeChangePending = true;
-  public boolean borderChanged = true;
-  public Dimension greediness = new Dimension(0, 0);
   private Painter painter = DefaultPainter.instance;
-
   private Cursor preHoverCursor;
+  private Map<String, Object> options;
+  public Dimension greediness = new Dimension(0, 0);
+  public boolean borderChanged = true;
 
   public PropPanel(Prop prop)
   {
@@ -52,6 +58,12 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     getEventHandler().add(MouseWheelEvent.class, MouseWheelAction.instance);
     getEventHandler().add(MouseEnteredEvent.class, HoverOnAction.instance);
     getEventHandler().add(MouseExitedEvent.class, HoverOffAction.instance);
+  }
+
+  public PropPanel(Prop prop, Map<String, Object> options)
+  {
+    this(prop);
+    addOptions(options);
   }
 
   public String getText()
@@ -88,8 +100,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   {
     if(verticalScrollbar != null && verticalScrollbar.getAbsoluteBounds().contains(point))
       return verticalScrollbar;
-    else if(horizontalScrollbar != null && horizontalScrollbar.getAbsoluteBounds().contains(point))
-      return horizontalScrollbar;
+    else
+      if(horizontalScrollbar != null && horizontalScrollbar.getAbsoluteBounds().contains(point))
+        return horizontalScrollbar;
 
     return super.getOwnerOfPoint(point);
   }
@@ -102,9 +115,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
       marginedBounds = bounds;
       Style style = getStyle();
       marginedBounds.shave(style.getCompiledTopMargin().pixelsFor(bounds.height),
-          style.getCompiledRightMargin().pixelsFor(bounds.width),
-          style.getCompiledBottomMargin().pixelsFor(bounds.height),
-          style.getCompiledLeftMargin().pixelsFor(bounds.width));
+        style.getCompiledRightMargin().pixelsFor(bounds.width),
+        style.getCompiledBottomMargin().pixelsFor(bounds.height),
+        style.getCompiledLeftMargin().pixelsFor(bounds.width));
     }
     return marginedBounds;
   }
@@ -117,9 +130,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
       borderedBounds = (Box) bounds.clone();
       Style style = getStyle();
       borderedBounds.shave(style.getCompiledTopBorderWidth().pixelsFor(bounds.height),
-          style.getCompiledRightBorderWidth().pixelsFor(bounds.width),
-          style.getCompiledBottomBorderWidth().pixelsFor(bounds.height),
-          style.getCompiledLeftBorderWidth().pixelsFor(bounds.width));
+        style.getCompiledRightBorderWidth().pixelsFor(bounds.width),
+        style.getCompiledBottomBorderWidth().pixelsFor(bounds.height),
+        style.getCompiledLeftBorderWidth().pixelsFor(bounds.width));
     }
     return borderedBounds;
   }
@@ -132,9 +145,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
       paddedBounds = (Box) bounds.clone();
       Style style = getStyle();
       paddedBounds.shave(style.getCompiledTopPadding().pixelsFor(bounds.height),
-          style.getCompiledRightPadding().pixelsFor(bounds.width),
-          style.getCompiledBottomPadding().pixelsFor(bounds.height),
-          style.getCompiledLeftPadding().pixelsFor(bounds.width));
+        style.getCompiledRightPadding().pixelsFor(bounds.width),
+        style.getCompiledBottomPadding().pixelsFor(bounds.height),
+        style.getCompiledLeftPadding().pixelsFor(bounds.width));
     }
     return paddedBounds;
   }
@@ -200,16 +213,6 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     return hoverStyle;
   }
 
-  public void setStyles(String styles)
-  {
-    this.styles = styles;
-  }
-
-  public String getStyles()
-  {
-    return styles;
-  }
-
   public Border getBorderShaper()
   {
     if(borderShaper == null)
@@ -222,34 +225,10 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     getRoot().setCursor(cursor);
   }
 
-  //TODO I don't think this is needed any longer.
-  @Override
-  public void repaint()
-  {
-//System.err.println("repaint: " + this + ": " + (getParent() != null) + ", " + (getStyle().changed(Style.WIDTH) || getStyle().changed(Style.WIDTH)));
-    //TODO Handle the case when the parent needs to repaint.
-//    if(getParent() != null && (getStyle().changed(Style.WIDTH) || getStyle().changed(Style.WIDTH)))
-//      getParent().repaint();
-//    else
-//    {
-    doLayout();
-    PaintJob job = new PaintJob(getAbsoluteBounds(), getRoot().getGraphics().getBackground());
-    //TODO Why are we painting the root panel here?  So wastful! Maybe. Transparency?
-    job.paint(getRoot());
-    job.applyTo(getRoot().getGraphics());
-//    }
-  }
-
-  //TODO I don't think this is needed any longer.
-  public void paintImmediately(int a, int b, int c, int d)
-  {
-    repaint();
-  }
-
   @Override
   public String toString()
   {
-    return getClass().getSimpleName() + " - " + getProp().getName();
+    return getClass().getSimpleName() + " - " + getName();
   }
 
   public void setAfterPaintAction(PaintAction action)
@@ -375,38 +354,6 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     return child != verticalScrollbar && child != horizontalScrollbar;
   }
 
-  @Override
-  public void illuminate()
-  {
-    if(styles != null)
-    {
-      Map<String, RichStyle> store = getRoot().getStylesStore();
-      String[] styleNames = styles.split("[ ,]+");
-      for(String styleName : styleNames)
-      {
-        RichStyle style = store.get(styleName);
-        if(style != null)
-          getStyle().addExtension(style);
-
-        RichStyle hoverStyle = store.get(styleName + ".hover");
-        if(hoverStyle != null)
-        {
-          getHoverStyle().addExtension(hoverStyle);
-          getStyle().setDefault(Style.CURSOR, "hand");
-        }
-      }
-    }
-    super.illuminate();
-  }
-
-  @Override
-  public void delluminate()
-  {
-    style.tearDown();
-    hoverStyle.tearDown();
-    super.delluminate();
-  }
-
   public void setPainter(Painter instance)
   {
     painter = instance;
@@ -423,6 +370,102 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     return textAccessor.hasFocus();
   }
 
+  @Override
+  public void illuminate()
+  {
+    Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
+
+    Object idObject = illuminateOptions.remove("id");
+    if(idObject != null && !idObject.toString().isEmpty())
+      id = idObject.toString();
+
+    Object nameObject = illuminateOptions.remove("name");
+    if(nameObject != null)
+      name = nameObject.toString();
+
+    illuminateStyles(illuminateOptions.remove("styles"));
+
+    if(id != null)
+      getRoot().addToIndex(this);
+
+    prop.illuminate(illuminateOptions);
+
+    for(Map.Entry<String, Object> entry : illuminateOptions.entrySet())
+      System.err.println("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue()); // TODO MDM - This should get logged
+
+    options = null;
+
+    super.illuminate();
+  }
+
+  @Override
+  public void delluminate()
+  {
+    getRoot().removeFromIndex(this);
+    style.tearDown();
+    hoverStyle.tearDown();
+    super.delluminate();
+  }
+
+  public void addOptions(Map<String, Object> newOptions)
+  {
+    if(isIlluminated())
+      throw new LimelightException("Cannot add options to an illuminated Prop");
+
+    if(options == null)
+      options = new HashMap<String, Object>(newOptions);
+    else
+    {
+      for(Map.Entry<String, Object> entry : newOptions.entrySet())
+        options.put(entry.getKey(), entry.getValue());
+    }
+  }
+
+  public String getId()
+  {
+    return id;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  // PRIVATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  private void illuminateStyles(Object stylesObject)
+  {
+    String allStyles = stylesObject == null ? "" : stylesObject.toString();
+
+    if(name != null)
+      allStyles = name + "," + allStyles;
+
+    Map<String, RichStyle> store = getRoot().getStylesStore();
+    String[] styleNames = allStyles.split("[ ,]+");
+    for(String styleName : styleNames)
+      addStyleNamed(styleName, store);
+  }
+
+  private void addStyleNamed(String styleName, Map<String, RichStyle> store)
+  {
+    if(styleName != null && !styleName.isEmpty())
+    {
+      RichStyle style = store.get(styleName);
+      if(style != null)
+        getStyle().addExtension(style);
+      else
+        if(!styleName.equals(name))
+          System.err.println("Prop named '" + name + "' attempting to use missing style '" + styleName + "'"); //TODO - MDM - This should get logged
+
+      RichStyle hoverStyle = store.get(styleName + ".hover");
+      if(hoverStyle != null)
+      {
+        getHoverStyle().addExtension(hoverStyle);
+        getStyle().setDefault(Style.CURSOR, "hand");
+      }
+    }
+  }
+
   private static class MouseWheelAction implements EventAction
   {
     public static MouseWheelAction instance = new MouseWheelAction();
@@ -431,14 +474,15 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     {
       if(!(event.getRecipient() instanceof PropPanel))
         return;
-      
+
       MouseWheelEvent wheelEvent = (MouseWheelEvent) event;
       PropPanel panel = (PropPanel) event.getRecipient();
       ScrollBarPanel scrollBar = wheelEvent.isVertical() ? panel.getVerticalScrollbar() : panel.getHorizontalScrollbar();
       if(scrollBar != null)
         scrollBar.setValue(scrollBar.getValue() + wheelEvent.getUnitsToScroll());
-      else if(panel.getParent() != null)
-        event.dispatch(panel.getParent());
+      else
+        if(panel.getParent() != null)
+          event.dispatch(panel.getParent());
     }
   }
 
@@ -447,7 +491,7 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     public static HoverOnAction instance = new HoverOnAction();
 
     public void invoke(Event event)
-    {                     
+    {
       final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getRoot() == null)
         return;
