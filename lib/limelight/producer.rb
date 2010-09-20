@@ -12,6 +12,7 @@ require 'limelight/theater'
 require 'limelight/production'
 require 'limelight/gems'
 require 'limelight/util/downloader'
+require 'limelight/util/string_hash'
 require 'limelight/version'
 require 'drb'
 
@@ -122,9 +123,11 @@ module Limelight
     # Opens the specified Scene onto the Spcified Stage.
     #
     def open_scene(name, stage, options={})
+      options = Util::StringHash.stringify(options)
       path = @production.scene_directory(name)
       scene_name = File.basename(path)
-      scene = load_props(options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name))
+      options_merge = options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name)
+      scene = load_props(options_merge)
       load_styles(scene.styles_file, scene.styles_store)
       stage.open(scene)
       return scene
@@ -148,11 +151,12 @@ module Limelight
     # Loads of the 'props.rb' file for a particular Scene and creates all the Prop objects and Scene.
     #
     def load_props(options = {})
+      instance_variables = options.delete(:instance_variables)
       scene = Scene.new(options)
       if File.exists?(scene.props_file)
         content = IO.read(scene.props_file)
         options[:build_loader] = @production.root
-        return Limelight.build_props(scene, options) do
+        return Limelight.build_props(scene, options.merge(:instance_variables => instance_variables)) do
           begin
             eval content
           rescue Exception => e

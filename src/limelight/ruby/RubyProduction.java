@@ -30,7 +30,7 @@ public class RubyProduction implements Production
 
   public boolean allowClose()
   {
-    return false;
+    return true;
   }
 
   public void close()

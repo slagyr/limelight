@@ -573,4 +573,25 @@ public class PropPanelTest extends Assert
     assertEquals("bar", prop.illuminationOptions.get("foo"));
     assertEquals("bang", prop.illuminationOptions.get("fizz"));
   }
+
+  @Test
+  public void findByName() throws Exception
+  {
+    PropPanel foo1 = new PropPanel(new MockProp(), Util.toMap("name", "foo"));
+    PropPanel foo2 = new PropPanel(new MockProp(), Util.toMap("name", "foo"));
+    PropPanel bar = new PropPanel(new MockProp(), Util.toMap("name", "bar"));
+    panel.add(foo1);
+    panel.add(foo2);
+    panel.add(bar);
+    panel.illuminate();
+
+    List<PropPanel> foos = panel.findByName("foo");
+    assertEquals(2, foos.size());
+    assertEquals(true, foos.contains(foo1));
+    assertEquals(true, foos.contains(foo2));
+
+    List<PropPanel> bars = panel.findByName("bar");
+    assertEquals(1, bars.size());
+    assertEquals(true, bars.contains(bar));
+  }
 }

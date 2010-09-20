@@ -28,9 +28,7 @@ end
 def print(value)
   log = scene.find("text_box_log")
   log.text += value + "\n"
-  log.update
 
   results = scene.find("text_box_results")
   results.text = self.text
-  results.update
 end

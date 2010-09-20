@@ -29,10 +29,8 @@ def print(value)
   log = scene.find("combo_box_log")
   return if log.nil?
   log.text += value + "\n"
-  log.update
 
   results = scene.find("combo_box_results")
   results.text = "Selected value: #{self.value}"
-  results.update
 end
   

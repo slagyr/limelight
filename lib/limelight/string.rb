@@ -36,18 +36,3 @@ class String
     return value[0..0].upcase + value[1..-1]
   end
 end
-
-class Hash
-
-  def stringify_keys!
-    keys.each do |key|
-      if key.is_a?(Symbol)
-        value = self[key]
-        delete(key)
-        self[key.to_s] = value
-      end
-    end
-    return self
-  end
-
-end

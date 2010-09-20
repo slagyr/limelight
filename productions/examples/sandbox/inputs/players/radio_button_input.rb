@@ -28,12 +28,10 @@ end
 def print(value)
   log = scene.find("radio_button_log")
   log.text += "#{id}:#{value}\n"
-  log.update
 
   results = scene.find("radio_button_results")
   radio1 = scene.find("radio_1")
   radio2 = scene.find("radio_2")
   radio3 = scene.find("radio_3")
   results.text = "One: #{radio1.selected?}\nTwo: #{radio2.selected?}\nThree: #{radio3.selected?}"
-  results.update
 end

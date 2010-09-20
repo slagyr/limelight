@@ -5,6 +5,7 @@ require 'limelight/prop'
 require 'limelight/scene'
 require 'limelight/dsl/build_exception'
 require 'limelight/util'
+require 'limelight/util/string_hash'
 
 module Limelight
 
@@ -92,7 +93,7 @@ module Limelight
       # The two 'branch' child props are identical.
       #
       def __(options)
-        @__prop__.panel.add_options(options.stringify_keys!)
+        @__prop__.panel.add_options(Util::StringHash.stringify(options))
       end
 
       # Installs props from another file using the prop DSL.  The path will be relative to the

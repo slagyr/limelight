@@ -34,9 +34,7 @@ end
 def print(value)
   log = scene.find("button_log")
   log.text += value + "\n"
-  log.update
 
   results = scene.find("button_results")
   results.text = "Pressed #{@presses} time(s)."
-  results.update
 end
