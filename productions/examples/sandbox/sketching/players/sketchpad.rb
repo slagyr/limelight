@@ -6,8 +6,7 @@ def activate(mode)
 end
 
 def clear
-  puts "Clearing"
-  update
+  panel.mark_as_dirty
 end
 
 on_mouse_pressed do |e|

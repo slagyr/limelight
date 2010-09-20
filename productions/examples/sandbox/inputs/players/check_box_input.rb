@@ -28,9 +28,7 @@ end
 def print(value)
   log = scene.find("check_box_log")
   log.text += value + "\n"
-  log.update
 
   results = scene.find("check_box_results")
   results.text = self.checked? ? "checked" : "unchecked"
-  results.update
 end

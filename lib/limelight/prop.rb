@@ -5,6 +5,7 @@ require 'limelight/java_util'
 require 'limelight/pen'
 require 'limelight/paint_action'
 require 'limelight/animation'
+require 'limelight/util/string_hash'
 
 module Limelight
 
@@ -36,12 +37,12 @@ module Limelight
     # set properties on the Prop, it Style, or included Player properties. These properties are not set
     # until the prop is added to a Prop tree with a Scene.
     #
-    def initialize(hash = {})
+    def initialize(hash = Util::StringHash.new)
       @panel = self.class.panel_class.new(self)
 #      @style = @panel.style
 #      @children = []
 #      @options = {}
-      @panel.add_options(hash.stringify_keys!)
+      @panel.add_options(Util::StringHash.stringify(hash))
     end
 
     def id
@@ -133,11 +134,8 @@ module Limelight
     # Searches all descendant of the Prop (including itself) for Props with the specified name.
     # Returns an Array of matching Props. Returns an empty Array if none are found.
     #
-    def find_by_name(name, results = [])
-#      results << self if @name == name
-#      @children.each { |child| child.find_by_name(name, results) }
-#      return results
-      return []
+    def find_by_name(name)
+      return @panel.find_by_name(name).map { |descendant| descendant.prop } 
     end
 
     # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
@@ -158,7 +156,7 @@ module Limelight
     end
 
     def children
-      return @panel.children.map { |child| child.prop }
+      @panel.child_prop_panels.map { |child| child.prop } 
     end
 
     # Returns the scene to which this prop belongs to.

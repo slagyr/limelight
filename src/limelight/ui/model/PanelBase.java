@@ -266,9 +266,7 @@ public abstract class PanelBase implements Panel
   {
     RootPanel rootPanel = getRoot();
     if(rootPanel != null)
-    {
       rootPanel.addDirtyRegion(getAbsoluteBounds());
-    }
   }
 
   public boolean isLaidOut()

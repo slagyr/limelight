@@ -20,8 +20,8 @@ import limelight.util.EmptyMap;
 import limelight.util.Util;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 public class PropPanel extends ParentPanelBase implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
 {
@@ -429,6 +429,30 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   public String getName()
   {
     return name;
+  }
+
+  public List<PropPanel> getChildPropPanels()
+  {
+    List<PropPanel> childProps = new LinkedList<PropPanel>();
+    for(Panel child : getChildren())
+    {
+      if(child instanceof PropPanel)
+        childProps.add((PropPanel)child);
+    }
+    return childProps;
+  }
+
+  public List<PropPanel> findByName(String name)
+  {
+    List<PropPanel> results = new LinkedList<PropPanel>();
+    if(name == null)
+      return results;
+    for(PropPanel panel : getChildPropPanels())
+    {
+      if(name.equals(panel.getName()))
+        results.add(panel);
+    }
+    return results;
   }
 
   // PRIVATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////
