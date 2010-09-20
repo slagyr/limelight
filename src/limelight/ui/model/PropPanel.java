@@ -409,15 +409,22 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
 
   public void addOptions(Map<String, Object> newOptions)
   {
-    if(isIlluminated())
-      throw new LimelightException("Cannot add options to an illuminated Prop");
-
-    if(options == null)
-      options = new HashMap<String, Object>(newOptions);
-    else
+    try
     {
-      for(Map.Entry<String, Object> entry : newOptions.entrySet())
-        options.put(entry.getKey(), entry.getValue());
+      if(isIlluminated())
+        throw new LimelightException("Cannot add options to an illuminated Prop");
+
+      if(options == null)
+        options = new HashMap<String, Object>(newOptions);
+      else
+      {
+        for(Map.Entry<String, Object> entry : newOptions.entrySet())
+          options.put(entry.getKey(), entry.getValue());
+      }
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
     }
   }
 

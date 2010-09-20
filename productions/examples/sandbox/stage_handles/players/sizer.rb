@@ -23,12 +23,12 @@ end
 
 def float_x
   return 0 if @float_x == :left
-  return (parent.child_area.width - area.width) / 2 if @float_x == :center
-  return parent.child_area.width - area.width
+  return (parent.padded_bounds.width - bounds.width) / 2 if @float_x == :center
+  return parent.padded_bounds.width - bounds.width
 end
 
 def float_y
   return 0 if @float_y == :top
-  return (parent.child_area.height - area.height) / 2 if @float_y == :center
-  return parent.child_area.height - area.height
+  return (parent.padded_bounds.height - bounds.height) / 2 if @float_y == :center
+  return parent.padded_bounds.height - bounds.height
 end

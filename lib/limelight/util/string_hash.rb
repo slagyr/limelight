@@ -3,14 +3,6 @@ module Limelight
 
     class StringHash < Hash
 
-      def self.stringify(hash)
-        if hash.is_a?(StringHash)
-          return hash
-        else
-          return StringHash.new.merge!(hash)
-        end
-      end
-
       alias_method :put, :[]=
       alias_method :get, :[]
 

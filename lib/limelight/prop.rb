@@ -5,7 +5,7 @@ require 'limelight/java_util'
 require 'limelight/pen'
 require 'limelight/paint_action'
 require 'limelight/animation'
-require 'limelight/util/string_hash'
+require 'limelight/util/hashes'
 
 module Limelight
 
@@ -42,7 +42,7 @@ module Limelight
 #      @style = @panel.style
 #      @children = []
 #      @options = {}
-      @panel.add_options(Util::StringHash.stringify(hash))
+      @panel.add_options(Util::Hashes.select(hash))
     end
 
     def id
@@ -368,12 +368,13 @@ module Limelight
 
     # TODO Try to get me out of public scope
     #
-    def illuminate(options) #:nodoc:
+    def illuminate(options={}) #:nodoc:
+      options = Util::Hashes.select(options)
 #      if illuminated?
 #        scene.index_prop(self) if @id
 #      else
 #        set_id(@options.delete(:id))
-        @players = options.remove("players")
+        @players = options.delete(:players)
 
         scene.casting_director.fill_cast(self)
         apply_options(options)
@@ -392,24 +393,21 @@ module Limelight
 
     private ###############################################
 
-    def set_id(id)
-      return if id.nil? || id.to_s.empty?
-      @id = id.to_s
-      scene.index_prop(self)
-    end
+#    def set_id(id)
+#      return if id.nil? || id.to_s.empty?
+#      @id = id.to_s
+#      scene.index_prop(self)
+#    end
 
     def apply_options(options)
-      keys = []
-      options.key_set.each { |key| keys << key}
-
-      keys.each do |key|
+      options.keys.each do |key|
         setter_sym = "#{key.to_s}=".to_sym
         if self.respond_to?(setter_sym)
-          self.send(setter_sym, options.remove(key))
+          self.send(setter_sym, options.delete(key))
         elsif self.style.respond_to?(setter_sym)
-          self.style.send(setter_sym, options.remove(key).to_s)
+          self.style.send(setter_sym, options.delete(key).to_s)
         elsif is_event_setter(key)
-          define_event(key, options.remove(key))
+          define_event(key, options.delete(key))
         end
       end
     end

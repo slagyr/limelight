@@ -12,7 +12,7 @@ require 'limelight/theater'
 require 'limelight/production'
 require 'limelight/gems'
 require 'limelight/util/downloader'
-require 'limelight/util/string_hash'
+require 'limelight/util/hashes'
 require 'limelight/version'
 require 'drb'
 
@@ -123,7 +123,7 @@ module Limelight
     # Opens the specified Scene onto the Spcified Stage.
     #
     def open_scene(name, stage, options={})
-      options = Util::StringHash.stringify(options)
+      options = Util::Hashes.select(options)
       path = @production.scene_directory(name)
       scene_name = File.basename(path)
       options_merge = options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name)
