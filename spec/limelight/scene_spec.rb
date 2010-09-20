@@ -13,7 +13,7 @@ describe Limelight::Scene do
   end
 
   it "should have a styles hash" do
-    @scene.illuminate
+    @scene.illuminate(:casting_director => @casting_director)
     @scene.styles_store.should_not == nil
     @scene.styles_store.size.should == 0
   end
@@ -24,8 +24,8 @@ describe Limelight::Scene do
   end
 
   it "should pullout casting_director from options" do
-    scene = Limelight::Scene.new(:casting_director => @casting_director)
-    scene.illuminate
+    scene = Limelight::Scene.new
+    scene.illuminate(:casting_director => @casting_director)
 
     scene.casting_director.should == @casting_director
   end

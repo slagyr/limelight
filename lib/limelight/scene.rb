@@ -7,18 +7,7 @@ require 'limelight/button_group_cache'
 require 'limelight/limelight_exception'
 require 'limelight/file_loader'
 
-
 module Limelight
-
-
-  # TODO MDM - Find the JRuby way to make a Java Map behave like a Ruby Hash
-  module Hashiness #:nodoc:
-
-    def merge!(other)
-      other.each { |key, value| self[key] = value }
-    end
-
-  end
 
   # A Scene is a root Prop.  Scenes may be loaded onto a Stage.  In addition to being a Prop object, Scenes have a
   # few extra attributes and behaviors.
@@ -35,8 +24,6 @@ module Limelight
 
     attr_reader :button_groups, :casting_director, :cast
     attr_accessor :stage, :visible, :production
-    getters :stage, :loader, :styles
-    setters :stage
 
     alias :visible? :visible
 
@@ -45,11 +32,7 @@ module Limelight
       @root = FileLoader.for_root(path)
       super(options)    
       @button_groups = ButtonGroupCache.new
-      @prop_index = {}
       @cast = Module.new
-
-      styles_store.extend(Hashiness)
-#      illuminate
     end
 
 
@@ -60,7 +43,9 @@ module Limelight
     # Returns a hash of all the styles belonging to this scene
     #
     def styles_store
-      @styles_store = @panel.styles_store if @styles_store == nil #cache the java object so we don't loose the Hashiness
+      if @styles_store == nil #cache the java object so we don't loose the Hashiness
+        @styles_store = Util::Hashes.select(@panel.styles_store)
+      end
       return @styles_store
     end
 
@@ -127,25 +112,25 @@ module Limelight
     def load(scene_name)
       @production.producer.open_scene(scene_name, @stage)
     end
-
-    # Add the Prop to the index.  Provides fast lookup by id.
-    #
-    def index_prop(prop)
-      return if prop.id.nil? || prop.id.empty?
-      indexee = @prop_index[prop.id]
-      if indexee.nil?
-        @prop_index[prop.id] = prop
-      else
-        raise LimelightException.new("Duplicate id: #{prop.id}") if indexee != prop
-      end
-    end
-
-    # Removed the Prop from the index.
-    #
-    def unindex_prop(prop)      
-      unindex_child_props(prop)
-      @prop_index.delete(prop.id) if prop.id
-    end
+#
+#    # Add the Prop to the index.  Provides fast lookup by id.
+#    #
+#    def index_prop(prop)
+#      return if prop.id.nil? || prop.id.empty?
+#      indexee = @prop_index[prop.id]
+#      if indexee.nil?
+#        @prop_index[prop.id] = prop
+#      else
+#        raise LimelightException.new("Duplicate id: #{prop.id}") if indexee != prop
+#      end
+#    end
+#
+#    # Removed the Prop from the index.
+#    #
+#    def unindex_prop(prop)
+#      unindex_child_props(prop)
+#      @prop_index.delete(prop.id) if prop.id
+#    end
 
     # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene. 
     #
@@ -155,29 +140,29 @@ module Limelight
       return find.nil? ? nil : find.prop
     end
         
-    def illuminate(options) #:nodoc:
+    def illuminate(options={}) #:nodoc:
+      options = Util::Hashes.select(options)
 #      @styles = options.remove(:styles_hash) || @styles || {}
-      @casting_director = options.remove("casting_director") if options.contains_key("casting_director")
-      @path = options.remove("path") if options.contains_key("path")
-      @production = options.remove("production") if options.contains_key("production")
+      @casting_director = options.delete(:casting_director) if options.key?(:casting_director)
+      @production = options.delete(:production) if options.key?(:production)
       super
     end
 
     private ###############################################
-    
-    def unindex_child_props(prop)
-      prop.children.each do |child|
-        if child.children.empty? 
-          @prop_index.delete(child.id)
-        else
-          unindex_prop(child)
-        end
-      end
-    end
-    
-    def reload
-      load(File.basename(path))
-    end
+#
+#    def unindex_child_props(prop)
+#      prop.children.each do |child|
+#        if child.children.empty?
+#          @prop_index.delete(child.id)
+#        else
+#          unindex_prop(child)
+#        end
+#      end
+#    end
+#
+#    def reload
+#      load(File.basename(path))
+#    end
 
   end
 end

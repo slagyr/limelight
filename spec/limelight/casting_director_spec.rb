@@ -12,8 +12,8 @@ describe Limelight::CastingDirector do
   before(:each) do
     TestDir.clean
     $casted_props = []
-    @scene = Limelight::Scene.new(:casting_director => mock("casting_director", :fill_cast => nil), :path => TestDir.path("scene_path"))
-    @scene.illuminate
+    @scene = Limelight::Scene.new(:path => TestDir.path("scene_path"))
+    @scene.illuminate(:casting_director => mock("casting_director", :fill_cast => nil))
     @loader = Limelight::FileLoader.for_root(TestDir.root)
     @casting_director = Limelight::CastingDirector.new(@loader)
   end
