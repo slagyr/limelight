@@ -15,9 +15,9 @@ public class FileUtil
   }
 
   public static String buildPath(String... parts)
-	{
+  {
     return removeDuplicateSeprators(StringUtil.join(seperator(), parts));
-	}
+  }
 
   private static String removeDuplicateSeprators(String path)
   {
@@ -39,121 +39,149 @@ public class FileUtil
     return new File("").getAbsolutePath();
   }
 
-  	public static File createFile(String path, String content)
-	{
-		return createFile(new File(path), content);
-	}
+  public static File establishDirectory(String path)
+  {
+    return establishDirectory(new File(path));
+  }
 
-	public static File createFile(File file, String content)
-	{
-		try
-		{
-			FileOutputStream fileOutput = new FileOutputStream(file);
-			fileOutput.write(content.getBytes());
-			fileOutput.close();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		return file;
-	}
+  public static File establishDirectory(File dir)
+  {
+    if(!dir.exists())
+    {
+      establishDirectory(dir.getParentFile());
+      dir.mkdir();
+    }
+    return dir;
+  }
+
+  public static File establishFile(String path, String content)
+  {
+    return establishFile(new File(path), content);
+  }
+
+  private static File establishFile(File file, String content)
+  {
+    final File parentDir = file.getParentFile();
+    if(!parentDir.exists())
+      establishDirectory(parentDir);
+    return createFile(file, content);
+  }
+
+  public static File createFile(String path, String content)
+  {
+    return createFile(new File(path), content);
+  }
+
+  public static File createFile(File file, String content)
+  {
+    try
+    {
+      FileOutputStream fileOutput = new FileOutputStream(file);
+      fileOutput.write(content.getBytes());
+      fileOutput.close();
+    }
+    catch(IOException e)
+    {
+      e.printStackTrace();
+    }
+    return file;
+  }
 
   public static void appendToFile(String filename, String content)
   {
-   	try
-		{
-			FileOutputStream fileOutput = new FileOutputStream(filename, true);
-			fileOutput.write(content.getBytes());
-			fileOutput.close();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+    try
+    {
+      FileOutputStream fileOutput = new FileOutputStream(filename, true);
+      fileOutput.write(content.getBytes());
+      fileOutput.close();
+    }
+    catch(IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 
   public static File makeDir(String path)
-	{
+  {
     File dir = new File(path);
     dir.mkdir();
     return dir;
   }
 
   public static void deleteFileSystemDirectory(String dirPath)
-	{
-		deleteFileSystemDirectory(new File(dirPath));
-	}
+  {
+    deleteFileSystemDirectory(new File(dirPath));
+  }
 
-	public static void deleteFileSystemDirectory(File current)
-	{
-		File[] files = current.listFiles();
+  public static void deleteFileSystemDirectory(File current)
+  {
+    File[] files = current.listFiles();
 
-		for(int i = 0; files != null && i < files.length; i++)
-		{
-			File file = files[i];
-			if(file.isDirectory())
-				deleteFileSystemDirectory(file);
-			else
-				deleteFile(file);
-		}
-		deleteFile(current);
-	}
+    for(int i = 0; files != null && i < files.length; i++)
+    {
+      File file = files[i];
+      if(file.isDirectory())
+        deleteFileSystemDirectory(file);
+      else
+        deleteFile(file);
+    }
+    deleteFile(current);
+  }
 
-	public static void deleteFile(String filename)
-	{
-		deleteFile(new File(filename));
-	}
+  public static void deleteFile(String filename)
+  {
+    deleteFile(new File(filename));
+  }
 
-	public static void deleteFile(File file)
-	{
-		if(!file.exists())
-			return;
-		if(!file.delete())
-			throw new RuntimeException("Could not delete '" + file.getAbsoluteFile() + "'");
-		waitUntilFileIsDeleted(file);
-	}
+  public static void deleteFile(File file)
+  {
+    if(!file.exists())
+      return;
+    if(!file.delete())
+      throw new RuntimeException("Could not delete '" + file.getAbsoluteFile() + "'");
+    waitUntilFileIsDeleted(file);
+  }
 
   private static void waitUntilFileIsDeleted(File file)
-	{
-		int checks = 25;
-		while(file.exists())
-		{
-			if(--checks <= 0)
-			{
-				System.out.println("Breaking out of delete wait");
-				break;
-			}
-			try
-			{
-				Thread.sleep(200);
-			}
-			catch(InterruptedException e)
-			{
+  {
+    int checks = 25;
+    while(file.exists())
+    {
+      if(--checks <= 0)
+      {
+        System.out.println("Breaking out of delete wait");
+        break;
+      }
+      try
+      {
+        Thread.sleep(200);
+      }
+      catch(InterruptedException e)
+      {
         //okay
       }
-		}
-	}
+    }
+  }
 
   public static String getFileContent(String path) throws Exception
-	{
-		File input = new File(path);
-		return getFileContent(input);
-	}
+  {
+    File input = new File(path);
+    return getFileContent(input);
+  }
 
-	public static String getFileContent(File input) throws Exception
-	{
-		return new String(getFileBytes(input));
-	}
+  public static String getFileContent(File input) throws Exception
+  {
+    return new String(getFileBytes(input));
+  }
 
-	public static byte[] getFileBytes(File input) throws Exception
-	{
-		long size = input.length();
-		FileInputStream stream = new FileInputStream(input);
-		byte[] bytes = new StreamReader(stream).readBytes((int)size);
-		stream.close();
-		return bytes;
-	}
+  public static byte[] getFileBytes(File input) throws Exception
+  {
+    long size = input.length();
+    FileInputStream stream = new FileInputStream(input);
+    byte[] bytes = new StreamReader(stream).readBytes((int) size);
+    stream.close();
+    return bytes;
+  }
 
   public static void copyBytes(InputStream input, OutputStream output) throws Exception
   {
@@ -163,5 +191,16 @@ public class FileUtil
     while(!reader.isEof())
       bufferedOutput.write(reader.readBytes(1000));
     bufferedOutput.flush();
+  }
+
+  public static String baseName(String path)
+  {
+    final File file = new File(path);
+    String name = file.getName();
+    final int extensionIndex = name.lastIndexOf(".");
+    if(extensionIndex == -1)
+      return name;
+    else
+      return name.substring(0, extensionIndex);
   }
 }

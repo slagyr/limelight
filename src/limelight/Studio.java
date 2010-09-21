@@ -5,7 +5,6 @@ package limelight;
 
 import limelight.ruby.RubyProduction;
 import limelight.ruby.RuntimeFactory;
-import limelight.ui.api.Production;
 import limelight.ui.api.UtilitiesProduction;
 import limelight.io.FileUtil;
 

@@ -5,9 +5,9 @@ package limelight.ui.model;
 
 import junit.framework.TestCase;
 import limelight.ui.api.MockProp;
+import limelight.util.MockResourceLoader;
 import limelight.util.TestUtil;
 import limelight.util.Box;
-import limelight.MockResourceLoader;
 
 import java.awt.geom.AffineTransform;
 

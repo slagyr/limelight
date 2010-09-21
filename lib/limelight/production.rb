@@ -2,8 +2,8 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/limelight_exception'
-require 'limelight/file_loader'
 require 'limelight/dsl/styles_builder'
+require 'limelight/producer'
 require 'drb'
 
 
@@ -16,26 +16,25 @@ module Limelight
   #
   class Production
 
-    include UI::Api::Production
-
-    class << self
-
-      def [](name) #:nodoc:
-        return Studio[name]
-      end
-
-    end
-
-    attr_reader :name, :root
-    attr_accessor :producer, :theater
+    attr_reader :producer
+    attr_accessor :theater
     attr_accessor :closed #:nodoc:
-
 
     # Users typically need not create Production objects.
     #
-    def initialize(path)
-      @root = FileLoader.for_root(path)
-      @name = File.basename(path)
+    def initialize(production)
+      @base = production
+    end
+
+    def open()
+      @producer = Producer.new(path, nil, self)
+      @producer.open
+    end
+
+    # Returns the name of the Production
+    #
+    def name
+      return @base.name
     end
 
     # Sets the name of the Production.  The name must be unique amongst all Productions in memory.
@@ -45,53 +44,59 @@ module Limelight
       @name = value
     end
 
+    # Returns the resource loader for the Production
+    #
+    def root
+      return @base.resource_loader
+    end
+
     # Return the path to the root directory of the production
     #
     def path
-      return @root.root
+      return @base.resource_loader.root
     end
 
     # Returns the path to the production's init file
     #
     def init_file
-      return @root.path_to("init.rb")
+      return root.path_to("init.rb")
     end
 
     # Returns the path to the production's production.rb file
     #
     def production_file
-      return @root.path_to("production.rb")
+      return root.path_to("production.rb")
     end
 
     # Returns the path to the production's stages file
     #
     def stages_file
-      return @root.path_to("stages.rb")
+      return root.path_to("stages.rb")
     end
 
     # Returns the path to the production's styles file
     #
     def styles_file
-      return @root.path_to("styles.rb")
+      return root.path_to("styles.rb")
     end
 
     # Returns the path to the production's gems directory
     #
     def gems_directory
-      return @root.path_to("__resources/gems/gems")
+      return root.path_to("__resources/gems/gems")
     end
 
     # Returns the path to the productions gems root
     #
     def gems_root
-      return @root.path_to("__resources/gems")
+      return root.path_to("__resources/gems")
     end
 
     # Returns the path to the named Scene's directory within the Production
     #
     def scene_directory(name)
-      return @root.root if name == :root
-      return @root.path_to(name)
+      return root.root if name == :root
+      return root.path_to(name)
     end
 
     # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"

@@ -3,6 +3,8 @@
 
 package limelight.io;
 
+import limelight.LimelightException;
+
 import java.io.*;
 
 public class StreamReader
@@ -30,28 +32,40 @@ public class StreamReader
 		this.input = input;
 	}
 
-	public void close() throws Exception
+	public void close()
 	{
-		input.close();
-	}
+    try
+    {
+      input.close();
+    }
+    catch(IOException e)
+    {
+      throw new LimelightException(e);
+    }
+  }
 
-	public String readLine() throws Exception
+	public String readLine()
 	{
 		return bytesToString(readLineBytes());
 	}
 
-	public byte[] readLineBytes() throws Exception
+	public byte[] readLineBytes()
 	{
 		state = READLINE_STATE;
 		return preformRead();
 	}
 
-	public String read(int count) throws Exception
+	public String read(int count)
 	{
 		return bytesToString(readBytes(count));
 	}
 
-	public byte[] readBytes(int count) throws Exception
+  public String readAll()
+  {
+    return bytesToString(readAllBytes());
+  }
+
+	public byte[] readBytes(int count)
 	{
 		readGoal = count;
 		readStatus = 0;
@@ -59,19 +73,25 @@ public class StreamReader
 		return preformRead();
 	}
 
-	public void copyBytes(int count, OutputStream output) throws Exception
+	public byte[] readAllBytes()
+	{
+		state = READALL_STATE;
+		return preformRead();
+	}
+
+	public void copyBytes(int count, OutputStream output)
 	{
 		readGoal = count;
 		state = READCOUNT_STATE;
 		performCopy(output);
 	}
 
-	public String readUpTo(String boundary) throws Exception
+	public String readUpTo(String boundary)
 	{
 		return bytesToString(readBytesUpTo(boundary));
 	}
 
-	public byte[] readBytesUpTo(String boundary) throws Exception
+	public byte[] readBytesUpTo(String boundary)
 	{
 		prepareForReadUpTo(boundary);
 		return preformRead();
@@ -86,7 +106,7 @@ public class StreamReader
 		state = READUPTO_STATE;
 	}
 
-	public void copyBytesUpTo(String boundary, OutputStream outputStream) throws Exception
+	public void copyBytesUpTo(String boundary, OutputStream outputStream)
 	{
 		prepareForReadUpTo(boundary);
 		performCopy(outputStream);
@@ -102,7 +122,7 @@ public class StreamReader
 		return byteBuffer.toByteArray();
 	}
 
-	private byte[] preformRead() throws Exception
+	private byte[] preformRead()
 	{
 		setReadMode();
 		clearBuffer();
@@ -110,13 +130,13 @@ public class StreamReader
 		return getBufferedBytes();
 	}
 
-	private void performCopy(OutputStream output) throws Exception
+	private void performCopy(OutputStream output)
 	{
 		setCopyMode(output);
 		readUntilFinished();
 	}
 
-	private void readUntilFinished() throws Exception
+	private void readUntilFinished()
 	{
 		while(!state.finished())
 			state.read(input);
@@ -137,10 +157,17 @@ public class StreamReader
 		output = byteBuffer;
 	}
 
-	private String bytesToString(byte[] bytes) throws Exception
+	private String bytesToString(byte[] bytes)
 	{
-		return new String(bytes, "UTF-8");
-	}
+    try
+    {
+      return new String(bytes, "UTF-8");
+    }
+    catch(UnsupportedEncodingException e)
+    {
+      throw new LimelightException(e);
+    }
+  }
 
 	private void changeState(State state)
 	{
@@ -164,7 +191,7 @@ public class StreamReader
 
 	private static abstract class State
 	{
-		public void read(InputStream input) throws Exception
+		public void read(InputStream input)
 		{
 		}
 
@@ -176,44 +203,58 @@ public class StreamReader
 
 	private final State READLINE_STATE = new State()
 	{
-		public void read(InputStream input) throws Exception
+		public void read(InputStream input)
 		{
-			int b = input.read();
-			if(b == -1)
-			{
-				changeState(FINAL_STATE);
-				eof = true;
-			}
-			else
-			{
-				bytesConsumed++;
-				if(b == '\n')
-					changeState(FINAL_STATE);
-				else if(b != '\r')
-					output.write((byte) b);
-			}
-		}
+      try
+      {
+        int b = input.read();
+        if(b == -1)
+        {
+          changeState(FINAL_STATE);
+          eof = true;
+        }
+        else
+        {
+          bytesConsumed++;
+          if(b == '\n')
+            changeState(FINAL_STATE);
+          else if(b != '\r')
+            output.write((byte) b);
+        }
+      }
+      catch(IOException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
 	};
 
 	private final State READCOUNT_STATE = new State()
 	{
-		public void read(InputStream input) throws Exception
+		public void read(InputStream input)
 		{
-			byte[] bytes = new byte[readGoal - readStatus];
-			int bytesRead = input.read(bytes);
+      try
+      {
+        byte[] bytes = new byte[readGoal - readStatus];
+        int bytesRead = input.read(bytes);
 
-			if(bytesRead < 0)
-			{
-				changeState(FINAL_STATE);
-				eof = true;
-			}
-			else
-			{
-				bytesConsumed += bytesRead;
-				readStatus += bytesRead;
-				output.write(bytes, 0, bytesRead);
-			}
-		}
+        if(bytesRead < 0)
+        {
+          changeState(FINAL_STATE);
+          eof = true;
+        }
+        else
+        {
+          bytesConsumed += bytesRead;
+          readStatus += bytesRead;
+          output.write(bytes, 0, bytesRead);
+        }
+      }
+      catch(IOException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
 
 		public boolean finished()
 		{
@@ -221,38 +262,77 @@ public class StreamReader
 		}
 	};
 
+	private final State READALL_STATE = new State()
+	{
+		public void read(InputStream input)
+		{
+      try
+      {
+        byte[] bytes = new byte[1000];
+        int bytesRead = input.read(bytes);
+
+        if(bytesRead == -1)
+        {
+          changeState(FINAL_STATE);
+          eof = true;
+        }
+        else
+        {
+          bytesConsumed += bytesRead;
+          output.write(bytes, 0, bytesRead);
+        }
+      }
+      catch(IOException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
+
+		public boolean finished()
+		{
+			return eof;
+		}
+	};
+
 	private final State READUPTO_STATE = new State()
 	{
-		public void read(InputStream input) throws Exception
+		public void read(InputStream input)
 		{
-			int b = input.read();
-			if(b == -1)
-			{
-				changeState(FINAL_STATE);
-				eof = true;
-			}
-			else
-			{
-				bytesConsumed++;
-				if(b == boundary[matchingBoundaryIndex])
-				{
-					matchedBoundaryBytes[matchingBoundaryIndex++] = (byte)b;
-					if(matchingBoundaryIndex >= boundaryLength)
-						changeState(FINAL_STATE);
-				}
-				else if(matchingBoundaryIndex == 0)
-					output.write((byte)b);
-				else
-				{
-					output.write(matchedBoundaryBytes, 0, matchingBoundaryIndex);
-					matchingBoundaryIndex = 0;
-					if(b == boundary[matchingBoundaryIndex])
-						matchedBoundaryBytes[matchingBoundaryIndex++] = (byte)b;
-					else
-						output.write((byte)b);
-				}
-			}
-		}
+      try
+      {
+        int b = input.read();
+        if(b == -1)
+        {
+          changeState(FINAL_STATE);
+          eof = true;
+        }
+        else
+        {
+          bytesConsumed++;
+          if(b == boundary[matchingBoundaryIndex])
+          {
+            matchedBoundaryBytes[matchingBoundaryIndex++] = (byte)b;
+            if(matchingBoundaryIndex >= boundaryLength)
+              changeState(FINAL_STATE);
+          }
+          else if(matchingBoundaryIndex == 0)
+            output.write((byte)b);
+          else
+          {
+            output.write(matchedBoundaryBytes, 0, matchingBoundaryIndex);
+            matchingBoundaryIndex = 0;
+            if(b == boundary[matchingBoundaryIndex])
+              matchedBoundaryBytes[matchingBoundaryIndex++] = (byte)b;
+            else
+              output.write((byte)b);
+          }
+        }
+      }
+      catch(IOException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
 	};
 
 	private final State FINAL_STATE = new State()

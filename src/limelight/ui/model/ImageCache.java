@@ -3,9 +3,7 @@
 
 package limelight.ui.model;
 
-import limelight.ResourceLoader;
-import limelight.util.NanoTimer;
-import limelight.util.Debug;
+import limelight.util.ResourceLoader;
 import limelight.caching.SimpleCache;
 
 import javax.imageio.ImageIO;

@@ -1,11 +1,10 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight.ui.api;
+package limelight;
 
-public class MockProduction implements Production
+public class MockProduction extends Production
 {
-  private String name;
   public boolean allowShutdown;
   public boolean wasAskedIfAllowedToShutdown;
   public boolean wasClosed;
@@ -15,23 +14,13 @@ public class MockProduction implements Production
 
   public MockProduction(String name)
   {
-    this.name = name;
-  }
-
-  public String getName()
-  {
-    return name;
-  }
-
-  public void setName(String name)
-  {
-    this.name = name;
+    super(name);
   }
 
   public boolean allowClose()
   {
     wasAskedIfAllowedToShutdown = true;
-    return allowShutdown;
+    return super.allowClose();
   }
 
   public void close()

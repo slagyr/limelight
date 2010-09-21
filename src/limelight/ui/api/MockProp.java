@@ -3,7 +3,7 @@
 
 package limelight.ui.api;
 
-import limelight.ResourceLoader;
+import limelight.util.ResourceLoader;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;

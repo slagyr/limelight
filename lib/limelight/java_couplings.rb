@@ -4,7 +4,6 @@
 module Limelight
 
   Main = Java::limelight.Main
-  ResourceLoader = Java::limelight.ResourceLoader
   Context = Java::limelight.Context
   Studio = Java::limelight.Studio
 
@@ -56,7 +55,7 @@ module Limelight
       Prop = Java::limelight.ui.api.Prop
       Stage = Java::limelight.ui.api.Stage
       Theater = Java::limelight.ui.api.Theater
-      Production = Java::limelight.ui.api.Production
+#      Production = Java::limelight.ui.api.Production
     end
 
     module Painting #:nodoc:

@@ -3,12 +3,15 @@
 
 package limelight.ui.api;
 
-public class UtilitiesProduction implements Production
+import limelight.Production;
+
+public class UtilitiesProduction extends Production
 {
   private Production production;
 
   public UtilitiesProduction(Production production)
   {
+    super("utilities");
     this.production = production;
   }
 
@@ -34,22 +37,25 @@ public class UtilitiesProduction implements Production
 
   public Object callMethod(String name, Object... args)
   {
-    return production.callMethod(name, args);
+//    return production.callMethod(name, args);
+    return null;
   }
 
   public void publish_on_drb(int port)
   {
-    production.publish_on_drb(port);
+//    production.publish_on_drb(port);
   }
 
   public Object alert(Object message)
   {   
-    return production.callMethod("alert", message);
+//    return production.callMethod("alert", message);
+    return null;
   }
 
   public Object shouldProceedWithIncompatibleVersion(String name, String version)
   {
-    return production.callMethod("proceed_with_incompatible_version?", name, version);
+//    return production.callMethod("proceed_with_incompatible_version?", name, version);
+    return null;
   }
 
   public Production getProduction()
