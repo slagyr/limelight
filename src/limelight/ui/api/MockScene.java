@@ -3,10 +3,7 @@
 
 package limelight.ui.api;
 
-import limelight.ResourceLoader;
-import limelight.styles.Style;
-import java.util.Map;
-import java.util.HashMap;
+import limelight.util.ResourceLoader;
 
 public class MockScene extends MockProp implements Scene
 {

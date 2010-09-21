@@ -102,7 +102,7 @@ module Limelight
       def __install(file, instance_variables = {})
         raise "Cannot install external props because no loader was provided" if @__loader__.nil?
         raise "External prop file: '#{file}' doesn't exist" if !@__loader__.exists?(file)
-        content = @__loader__.load(file)
+        content = @__loader__.read_text(file)
         begin
           self.__install_instance_variables(instance_variables)
           self.instance_eval(content)

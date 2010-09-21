@@ -5,6 +5,7 @@ package limelight.ruby;
 
 import limelight.Context;
 import limelight.LimelightException;
+import limelight.Production;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaSupport;
 import org.jruby.javasupport.JavaClass;
@@ -20,8 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.lang.reflect.Field;
 
-import limelight.ui.api.Production;
-
 public class RuntimeFactory
 {
   private static int runtimeId = 0;
@@ -31,7 +30,6 @@ public class RuntimeFactory
   {
     Runtime runtime = new Runtime(src, nextId());
     runtime.start();
-
 
     try
     {

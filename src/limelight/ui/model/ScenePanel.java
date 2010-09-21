@@ -8,6 +8,7 @@ import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
+import limelight.util.ResourceLoader;
 
 import java.awt.*;
 import java.util.*;

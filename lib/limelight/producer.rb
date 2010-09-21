@@ -1,7 +1,6 @@
 #- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-require 'limelight/file_loader'
 require 'limelight/dsl/prop_builder'
 require 'limelight/dsl/styles_builder'
 require 'limelight/dsl/stage_builder'
@@ -211,7 +210,7 @@ module Limelight
     end
 
     def establish_production #:nodoc:
-      @production.producer = self
+#      @production.producer = self
       @production.theater = @theater
 
       production_file = @production.production_file

@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.MockResourceLoader;
+import limelight.util.MockResourceLoader;
 import limelight.io.StreamReader;
 import limelight.ui.api.MockProp;
 import limelight.util.TestUtil;

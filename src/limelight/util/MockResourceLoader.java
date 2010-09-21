@@ -1,10 +1,13 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight;
+package limelight.util;
 
-//TODO - MDM - Convert the implementation of me into java.
-public interface ResourceLoader
+public class MockResourceLoader extends ResourceLoader
 {
-  String pathTo(String relativePath);
+
+  public String pathTo(String path)
+  {
+    return path;
+  }
 }

@@ -3,10 +3,8 @@
 
 package limelight.ui.api;
 
-import limelight.ui.Panel;
-import limelight.ResourceLoader;
+import limelight.util.ResourceLoader;
 
-import java.awt.event.*;
 import java.util.Map;
 
 public interface Prop

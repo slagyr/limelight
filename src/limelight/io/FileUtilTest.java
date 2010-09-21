@@ -3,30 +3,36 @@
 
 package limelight.io;
 
-import junit.framework.TestCase;
 import limelight.util.TestUtil;
+import org.junit.Test;
 
 import java.io.File;
 
-public class FileUtilTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class FileUtilTest
 {
-  public void testBuildPathEmpty() throws Exception
+  @Test
+  public void buildPathEmpty() throws Exception
 	{
 		assertEquals("", FileUtil.buildPath());
 	}
 
-	public void testBuildPathOneElement() throws Exception
+  @Test
+	public void buildPathOneElement() throws Exception
 	{
 		assertEquals("a", FileUtil.buildPath("a"));
 	}
 
-	public void testBuildPathThreeElements() throws Exception
+  @Test
+	public void buildPathThreeElements() throws Exception
 	{
 		String separator = System.getProperty("file.separator");
 		assertEquals("a" + separator + "b" + separator + "c", FileUtil.buildPath("a", "b", "c"));
 	}
 
-  public void testCurrentPath() throws Exception
+  @Test
+  public void currentPath() throws Exception
   {
     String currentPath = FileUtil.currentPath();
     File currentPathFile = new File(FileUtil.buildPath(currentPath, "."));
@@ -34,7 +40,8 @@ public class FileUtilTest extends TestCase
     assertEquals(dotFile.getAbsolutePath(), currentPathFile.getAbsolutePath());
   }
 
-  public void testCreateDir() throws Exception
+  @Test
+  public void createDir() throws Exception
 	{
 		File dir = FileUtil.makeDir(FileUtil.pathTo(TestUtil.TMP_DIR, "temp"));
 		assertEquals(true, dir.exists());
@@ -42,7 +49,8 @@ public class FileUtilTest extends TestCase
 		FileUtil.deleteFileSystemDirectory(dir);
 	}
 
-  public void testCreateFile() throws Exception
+  @Test
+  public void createFile() throws Exception
   {
     String filePath = FileUtil.pathTo(TestUtil.TMP_DIR, "test.txt");
 
@@ -52,5 +60,13 @@ public class FileUtilTest extends TestCase
 
     FileUtil.deleteFile(filePath);
     assertEquals(false, new File(filePath).exists());
+  }
+
+  @Test
+  public void baseName() throws Exception
+  {
+    assertEquals("foo", FileUtil.baseName("foo"));
+    assertEquals("foo", FileUtil.baseName("bar/foo"));
+    assertEquals("foo", FileUtil.baseName("bar/foo.txt"));  
   }
 }

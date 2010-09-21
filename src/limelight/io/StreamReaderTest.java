@@ -4,11 +4,17 @@
 package limelight.io;
 
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-public class StreamReaderTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class StreamReaderTest
 {
 	private PipedOutputStream output;
 	private StreamReader reader;
@@ -16,12 +22,14 @@ public class StreamReaderTest extends TestCase
 	private byte[] byteResult;
 	private Thread thread;
 
+  @Before
   public void setUp() throws Exception
 	{
 		output = new PipedOutputStream();
 		reader = new StreamReader(new PipedInputStream(output));
 	}
 
+  @After
 	public void tearDown() throws Exception
 	{
 		output.close();
@@ -34,7 +42,8 @@ public class StreamReaderTest extends TestCase
 		output.write(bytes);
 	}
 
-	public void testReadLine() throws Exception
+  @Test
+	public void readLine() throws Exception
 	{
 		startReading(new ReadLine());
 		writeToPipe("a line\r\n");
@@ -42,7 +51,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals("a line", readResult);
 	}
 
-	public void testReadLineBytes() throws Exception
+  @Test
+  public void readLineBytes() throws Exception
 	{
 		startReading(new ReadLineBytes());
 		writeToPipe("a line\r\n");
@@ -50,7 +60,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals("a line", new String(byteResult));
 	}
 
-	public void testBufferCanGrow() throws Exception
+  @Test
+	public void bufferCanGrow() throws Exception
 	{
 		startReading(new ReadLine());
 		for(int i = 0; i < 1001; i++)
@@ -61,7 +72,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals(true, readResult.indexOf("1000") > 0);
 	}
 
-	public void testReadNumberOfBytesAsString() throws Exception
+  @Test
+	public void readNumberOfBytesAsString() throws Exception
 	{
 		startReading(new ReadCount(100));
 		StringBuffer buffer = new StringBuffer();
@@ -75,7 +87,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals(buffer.toString(), readResult);
 	}
 
-	public void testReadNumberOfBytes() throws Exception
+  @Test
+	public void readNumberOfBytes() throws Exception
 	{
 		startReading(new ReadCountBytes(100));
 		StringBuffer buffer = new StringBuffer();
@@ -89,7 +102,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals(buffer.toString(), new String(byteResult));
 	}
 
-	public void testReadNumberOfBytesWithClosedInput() throws Exception
+  @Test
+	public void readNumberOfBytesWithClosedInput() throws Exception
 	{
 		startReading(new ReadCountBytes(100));
 
@@ -102,24 +116,28 @@ public class StreamReaderTest extends TestCase
 		assertEquals("bytes returned", 50, byteResult.length);
 	}
 
-	public void testReadingZeroBytes() throws Exception
+  @Test
+	public void readingZeroBytes() throws Exception
 	{
 		startReading(new ReadCount(0));
 		finishReading();
 		assertEquals("", readResult);
 	}
 
-	public void testReadUpTo() throws Exception
+  @Test
+	public void readUpTo() throws Exception
 	{
 		checkReadUoTo("--boundary", "some bytes--boundary", "some bytes");
 	}
 
-	public void testReadUpToNonEnd() throws Exception
+  @Test
+	public void readUpToNonEnd() throws Exception
 	{
 		checkReadUoTo("--bound", "some bytes--boundary", "some bytes");
 	}
 
-	public void testReadBytesUpTo() throws Exception
+  @Test
+	public void readBytesUpTo() throws Exception
 	{
 		startReading(new ReadUpToBytes("--boundary"));
 		writeToPipe("some bytes--boundary");
@@ -128,12 +146,14 @@ public class StreamReaderTest extends TestCase
 		assertEquals("some bytes", new String(byteResult));
 	}
 
-	public void testReadUpTo2() throws Exception
+  @Test
+	public void readUpTo2() throws Exception
 	{
 		checkReadUoTo("--bob", "----bob\r\n", "--");
 	}
 
-	public void testReadUpTo3() throws Exception
+  @Test
+	public void readUpTo3() throws Exception
 	{
 		checkReadUoTo("12345", "112123123412345", "1121231234");
 	}
@@ -147,7 +167,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals(expected, readResult);
 	}
 
-	public void testCopyBytesUpTo() throws Exception
+  @Test
+	public void copyBytesUpTo() throws Exception
 	{
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		writeToPipe("some bytes--boundary");
@@ -155,7 +176,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals("some bytes", outputStream.toString());
 	}
 
-	public void testEofReadCount() throws Exception
+  @Test
+	public void eofReadCount() throws Exception
 	{
 		writeToPipe("abcdefghijklmnopqrstuvwxyz");
 		output.close();
@@ -168,7 +190,33 @@ public class StreamReaderTest extends TestCase
 		assertEquals(true, reader.isEof());
 	}
 
-	public void testEofReadLine() throws Exception
+  @Test
+  public void readAll() throws Exception
+  {
+    final String value = "This is one complete message";
+    writeToPipe(value);
+    output.close();
+
+    assertEquals(value, reader.readAll());
+  }
+
+  @Test
+  public void readAllWithBigContent() throws Exception
+  {
+    StringBuffer buffer = new StringBuffer();
+    for(int i = 0; i < 1000; i++)
+      buffer.append("This is a piece of a much bigger message.\n");
+
+		startReading(new ReadAll());
+    writeToPipe(buffer.toString());
+    output.close();
+		finishReading();
+
+    assertEquals(buffer.toString(), readResult);
+  }
+
+  @Test
+	public void eofReadLine() throws Exception
 	{
 		writeToPipe("one line\ntwo lines\nthree lines");
 		output.close();
@@ -181,7 +229,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals(true, reader.isEof());
 	}
 
-	public void testEofReadUpTo() throws Exception
+  @Test
+	public void eofReadUpTo() throws Exception
 	{
 		writeToPipe("mark one, mark two, the end");
 		output.close();
@@ -195,7 +244,8 @@ public class StreamReaderTest extends TestCase
 	}
 
 
-	public void testBytesConsumed() throws Exception
+  @Test
+	public void bytesConsumed() throws Exception
 	{
 		writeToPipe("One line\r\n12345abc-boundary");
 		assertEquals(0, reader.numberOfBytesConsumed());
@@ -210,7 +260,8 @@ public class StreamReaderTest extends TestCase
 		assertEquals(27, reader.numberOfBytesConsumed());
 	}
 
-	public void testEarlyClosingStream() throws Exception
+  @Test
+	public void earlyClosingStream() throws Exception
 	{
 		startReading(new ReadCount(10));
 		output.close();
@@ -266,6 +317,14 @@ public class StreamReaderTest extends TestCase
 		public void doRead() throws Exception
 		{
 			readResult = reader.read(amount);
+		}
+	}
+
+	class ReadAll extends ReadThread
+	{
+		public void doRead() throws Exception
+		{
+			readResult = reader.readAll();
 		}
 	}
 

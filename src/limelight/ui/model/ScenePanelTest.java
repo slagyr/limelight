@@ -9,7 +9,7 @@ import limelight.ui.api.MockProp;
 import limelight.ui.Panel;
 import limelight.ui.api.MockScene;
 import limelight.Context;
-import limelight.MockResourceLoader;
+import limelight.util.MockResourceLoader;
 import limelight.util.Util;
 import org.junit.Assert;
 import org.junit.Before;

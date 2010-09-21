@@ -5,7 +5,6 @@ require 'limelight/java_util'
 require 'limelight/prop'
 require 'limelight/button_group_cache'
 require 'limelight/limelight_exception'
-require 'limelight/file_loader'
 
 module Limelight
 
@@ -29,7 +28,7 @@ module Limelight
 
     def initialize(options={})      
       path = options.delete(:path) || ""
-      @root = FileLoader.for_root(path)
+      @root = Java::limelight.util.ResourceLoader.for_root(path)
       super(options)    
       @button_groups = ButtonGroupCache.new
       @cast = Module.new
