@@ -1,14 +1,13 @@
 //- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
-package limelight;
+package limelight.ui;
 
 import junit.framework.TestCase;
 
 
 import limelight.styles.Style;
 import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.PropablePanel;
 import limelight.ui.model.inputs.InputPanel;
 
 import java.awt.*;
@@ -16,12 +15,12 @@ import java.awt.*;
 // TODO MDM Delete me!
 public class KeyboardFocusManagerTest extends TestCase
 {
-  private KeyboardFocusManager manager;
+  private limelight.ui.KeyboardFocusManager manager;
   private MockInputPanel panel;
 
   public void setUp() throws Exception
   {
-    manager = new KeyboardFocusManager();
+    manager = new limelight.ui.KeyboardFocusManager();
     manager.install();
     panel = new MockInputPanel();
 
