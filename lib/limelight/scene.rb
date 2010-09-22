@@ -22,7 +22,7 @@ module Limelight
     include UI::Api::Scene
 
     attr_reader :button_groups, :casting_director, :cast
-    attr_accessor :stage, :visible, :production
+    attr_accessor :stage, :visible
 
     alias :visible? :visible
 
@@ -34,6 +34,13 @@ module Limelight
       @cast = Module.new
     end
 
+    def production=(value)
+      @panel.production = value.production
+    end
+
+    def production
+      return @panel.production.proxy
+    end
 
     def on_scene_opened(& action)
       @panel.event_handler.add(Limelight::UI::Events::SceneOpenedEvent, action)
@@ -139,13 +146,13 @@ module Limelight
       return find.nil? ? nil : find.prop
     end
         
-    def illuminate(options={}) #:nodoc:
-      options = Util::Hashes.select(options)
-#      @styles = options.remove(:styles_hash) || @styles || {}
-      @casting_director = options.delete(:casting_director) if options.key?(:casting_director)
-      @production = options.delete(:production) if options.key?(:production)
-      super
-    end
+#    def illuminate(options={}) #:nodoc:
+#      options = Util::Hashes.select(options)
+##      @styles = options.remove(:styles_hash) || @styles || {}
+#      @casting_director = options.delete(:casting_director) if options.key?(:casting_director)
+#      @production = options.delete(:production) if options.key?(:production)
+#      super
+#    end
 
     private ###############################################
 #

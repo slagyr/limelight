@@ -11,5 +11,5 @@ public interface Prop
 {
   ResourceLoader getLoader();
 
-  void illuminate(Map<String, Object> options);
+  void applyOptions(Map<String, Object> options);
 }

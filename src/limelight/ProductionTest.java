@@ -1,5 +1,7 @@
 package limelight;
 
+import limelight.ui.api.CastingDirector;
+import limelight.ui.api.MockCastingDirector;
 import limelight.ui.api.MockProductionProxy;
 import limelight.ui.api.ProductionProxy;
 import limelight.util.ResourceLoader;
@@ -71,5 +73,16 @@ public class ProductionTest
     production.setProxy(proxy);
 
     assertEquals(proxy, production.getProxy());
+  }
+
+  @Test
+  public void accessingTheCastingDirector() throws Exception
+  {
+    CastingDirector director = new MockCastingDirector();
+    assertEquals(null, production.getCastingDirector());
+
+    production.setCastingDirector(director);
+
+    assertEquals(director, production.getCastingDirector());
   }
 }

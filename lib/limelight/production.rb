@@ -17,13 +17,15 @@ module Limelight
   class Production
 
     attr_reader :producer
+    attr_reader :production
     attr_accessor :theater
     attr_accessor :closed #:nodoc:
 
     # Users typically need not create Production objects.
     #
     def initialize(production)
-      @base = production
+      @production = production
+      @production.casting_director = CastingDirector.new(@production.resource_loader)
     end
 
     def open()
@@ -34,7 +36,7 @@ module Limelight
     # Returns the name of the Production
     #
     def name
-      return @base.name
+      return @production.name
     end
 
     # Sets the name of the Production.  The name must be unique amongst all Productions in memory.
@@ -47,13 +49,13 @@ module Limelight
     # Returns the resource loader for the Production
     #
     def root
-      return @base.resource_loader
+      return @production.resource_loader
     end
 
     # Return the path to the root directory of the production
     #
     def path
-      return @base.resource_loader.root
+      return @production.resource_loader.root
     end
 
     # Returns the path to the production's init file
@@ -191,6 +193,10 @@ module Limelight
         end
       end
       return @root_styles
+    end
+
+    def casting_director
+      return @production.casting_director
     end
 
     alias :getName :name #:nodoc:

@@ -388,7 +388,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     if(id != null)
       getRoot().addToIndex(this);
 
-    prop.illuminate(illuminateOptions);
+    illuminatePlayers(illuminateOptions.remove("players"));
+
+    prop.applyOptions(illuminateOptions);
 
     for(Map.Entry<String, Object> entry : illuminateOptions.entrySet())
       System.err.println("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue()); // TODO MDM - This should get logged
@@ -409,22 +411,15 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
 
   public void addOptions(Map<String, Object> newOptions)
   {
-    try
-    {
-      if(isIlluminated())
-        throw new LimelightException("Cannot add options to an illuminated Prop");
+    if(isIlluminated())
+      throw new LimelightException("Cannot add options to an illuminated Prop");
 
-      if(options == null)
-        options = new HashMap<String, Object>(newOptions);
-      else
-      {
-        for(Map.Entry<String, Object> entry : newOptions.entrySet())
-          options.put(entry.getKey(), entry.getValue());
-      }
-    }
-    catch(Exception e)
+    if(options == null)
+      options = new HashMap<String, Object>(newOptions);
+    else
     {
-      e.printStackTrace();
+      for(Map.Entry<String, Object> entry : newOptions.entrySet())
+        options.put(entry.getKey(), entry.getValue());
     }
   }
 
@@ -444,7 +439,7 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     for(Panel child : getChildren())
     {
       if(child instanceof PropPanel)
-        childProps.add((PropPanel)child);
+        childProps.add((PropPanel) child);
     }
     return childProps;
   }
@@ -494,6 +489,21 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
         getHoverStyle().addExtension(hoverStyle);
         getStyle().setDefault(Style.CURSOR, "hand");
       }
+    }
+  }
+
+  private void illuminatePlayers(Object playersObject)
+  {
+    String allPlayers = playersObject == null ? "" : playersObject.toString();
+
+    if(name != null)
+      allPlayers = name + "," + allPlayers;
+
+    String[] playerNames = allPlayers.split("[ ,]+");
+    for(String playerName : playerNames)
+    {
+      if(!playerName.isEmpty())
+        getRoot().getProduction().getCastingDirector().castPlayer(getProp(), playerName);
     }
   }
 

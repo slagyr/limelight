@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Production;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;
@@ -41,6 +42,8 @@ public interface RootPanel extends Panel, ParentPanel
   void addToIndex(PropPanel propPanel);
 
   void removeFromIndex(PropPanel propPanel);
+
+  Production getProduction();
 }
 
 

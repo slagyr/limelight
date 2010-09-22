@@ -24,6 +24,12 @@ module Limelight
       cast_additional_players(prop)
     end
 
+    def cast_player(prop, player_name)
+      recruiter = Recruiter.new(prop, player_name, @loader)
+      Limelight::Player.cast(recruiter.player, prop) if recruiter.player_exists?
+    end
+    alias :castPlayer :cast_player
+
     private ###############################################
 
     def cast_default_player(prop)
@@ -37,11 +43,6 @@ module Limelight
       player_names.each do |player_name|
         cast_player(prop, player_name)
       end
-    end
-
-    def cast_player(prop, player_name)
-      recruiter = Recruiter.new(prop, player_name, @loader)
-      Limelight::Player.cast(recruiter.player, prop) if recruiter.player_exists?
     end
   end
 

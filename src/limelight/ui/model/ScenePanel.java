@@ -23,6 +23,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   private PropFrame frame;
   private final Map<String, RichStyle> styles;
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
+  private Production production;
 
   public ScenePanel(Prop prop)
   {
@@ -265,6 +266,16 @@ public class ScenePanel extends PropPanel implements RootPanel
   public PropPanel find(String id)
   {
     return index.get(id);
+  }
+
+  public void setProduction(Production production)
+  {
+    this.production = production;
+  }
+
+  public Production getProduction()
+  {
+    return production;
   }
 
   private static class SceneLayout implements Layout
