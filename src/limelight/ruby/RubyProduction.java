@@ -3,6 +3,7 @@ package limelight.ruby;
 import limelight.Context;
 import limelight.LimelightException;
 import limelight.Production;
+import limelight.ui.api.CastingDirector;
 import limelight.ui.api.ProductionProxy;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;

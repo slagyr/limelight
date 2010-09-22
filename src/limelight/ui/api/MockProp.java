@@ -19,7 +19,7 @@ public class MockProp implements Prop
   public boolean hooverOn;
   public Scene scene;
   public ResourceLoader loader;
-  public Map<String, Object> illuminationOptions;
+  public Map<String, Object> appliedOptions;
 
   public MockProp()
   {
@@ -66,9 +66,9 @@ public class MockProp implements Prop
     return loader;
   }
 
-  public void illuminate(Map<String, Object> options)
+  public void applyOptions(Map<String, Object> options)
   {
-    illuminationOptions = new HashMap<String, Object>(options);
+    appliedOptions = new HashMap<String, Object>(options);
     options.clear();
   }
 

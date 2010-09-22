@@ -81,8 +81,7 @@ module Limelight
     # Returns the CastingDirector for this Production.
     #
     def casting_director
-      @casting_director = CastingDirector.new(@production.root) if not @casting_director
-      return @casting_director
+      return production.casting_director
     end
 
     # Loads the Production without opening it.  The Production will be created into memory with all it's stages
@@ -152,6 +151,7 @@ module Limelight
     def load_props(options = {})
       instance_variables = options.delete(:instance_variables)
       scene = Scene.new(options)
+      scene.production = production
       if File.exists?(scene.props_file)
         content = IO.read(scene.props_file)
         options[:build_loader] = @production.root

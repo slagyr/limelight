@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Production;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;
@@ -75,6 +76,11 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
 
   public void removeFromIndex(PropPanel propPanel)
   {
+  }
+
+  public Production getProduction()
+  {
+    return null;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

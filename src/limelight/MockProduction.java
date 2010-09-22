@@ -3,6 +3,8 @@
 
 package limelight;
 
+import limelight.ui.api.CastingDirector;
+
 public class MockProduction extends Production
 {
   public boolean allowShutdown;
@@ -15,6 +17,11 @@ public class MockProduction extends Production
   public MockProduction(String name)
   {
     super(name);
+  }
+
+  public MockProduction()
+  {
+    super("test");
   }
 
   public boolean allowClose()

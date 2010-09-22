@@ -4,6 +4,7 @@
 package limelight;
 
 import limelight.io.FileUtil;
+import limelight.ui.api.CastingDirector;
 import limelight.ui.api.ProductionProxy;
 import limelight.util.ResourceLoader;
 
@@ -13,18 +14,13 @@ public abstract class Production
   private boolean allowClose = true;
   private ResourceLoader resourceLoader;
   private ProductionProxy proxy;
+  private CastingDirector castingDirector;
 
   public Production(String path)
   {
     name = FileUtil.baseName(path);
     resourceLoader = ResourceLoader.forRoot(path);
   }
-//  String getName();
-//  void setName(String name);
-//  boolean allowClose();
-//  void close();
-//  Object callMethod(String name, Object... args);
-//  void publish_on_drb(int port);
 
   public abstract void close();
 
@@ -61,5 +57,16 @@ public abstract class Production
   public void setProxy(ProductionProxy proxy)
   {
     this.proxy = proxy;
+  }
+
+
+  public CastingDirector getCastingDirector()
+  {
+    return castingDirector;
+  }
+
+  public void setCastingDirector(CastingDirector director)
+  {
+    castingDirector = director;
   }
 }

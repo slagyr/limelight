@@ -366,40 +366,8 @@ module Limelight
       @panel.event_handler.add(Limelight::UI::Events::ValueChangedEvent, action)
     end
 
-    # TODO Try to get me out of public scope
-    #
-    def illuminate(options={}) #:nodoc:
-      options = Util::Hashes.select(options)
-#      if illuminated?
-#        scene.index_prop(self) if @id
-#      else
-#        set_id(@options.delete(:id))
-        @players = options.delete(:players)
-
-        scene.casting_director.fill_cast(self)
-        apply_options(options)
-
-#        @options = nil
-#      end
-#
-#      children.each do |child|
-#        child.illuminate
-#      end
-    end
-
-#    def illuminated? #:nodoc:
-#      return @options.nil?
-#    end
-
-    private ###############################################
-
-#    def set_id(id)
-#      return if id.nil? || id.to_s.empty?
-#      @id = id.to_s
-#      scene.index_prop(self)
-#    end
-
     def apply_options(options)
+      options = Util::Hashes.select(options)
       options.keys.each do |key|
         setter_sym = "#{key.to_s}=".to_sym
         if self.respond_to?(setter_sym)
@@ -411,6 +379,9 @@ module Limelight
         end
       end
     end
+    alias :applyOptions :apply_options
+
+    private ###############################################
 
     def is_event_setter(symbol)
       string_value = symbol.to_s
@@ -418,7 +389,6 @@ module Limelight
     end
 
     def define_event(symbol, value)
-#      event_name = symbol.to_s[3..-1]
       self.send(symbol) { eval(value) };
     end
 

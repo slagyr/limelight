@@ -4,8 +4,10 @@
 package limelight.ui.model;
 
 import limelight.LimelightException;
+import limelight.MockProduction;
 import limelight.styles.*;
 import limelight.ui.Panel;
+import limelight.ui.api.MockCastingDirector;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
 import limelight.ui.events.MouseEnteredEvent;
@@ -38,16 +40,23 @@ public class PropPanelTest extends Assert
   private RichStyle style3;
   private RichStyle style4;
   private RichStyle style5;
+  private MockProduction production;
+  private MockCastingDirector castingDirector;
 
   @Before
   public void setUp() throws Exception
   {
     root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
     prop = new MockProp();
     panel = new PropPanel(prop);
-    style = panel.getStyle();
     root.add(panel);
+                                          
+    production = new MockProduction();
+    castingDirector = new MockCastingDirector();
+    production.setCastingDirector(castingDirector);
+    root.setProduction(production);
+    root.setFrame(new MockPropFrame());
+    style = panel.getStyle();
 
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
@@ -481,12 +490,12 @@ public class PropPanelTest extends Assert
   @Test
   public void cantSetIdToEmptyString() throws Exception
   {
-    panel.delluminate();
+    root.delluminate();
     panel.addOptions(Util.toMap("id", ""));
     panel.illuminate();
     assertEquals(null, panel.getId());
   }
-  
+
   @Test
   public void settingIdViaOptions() throws Exception
   {
@@ -548,6 +557,7 @@ public class PropPanelTest extends Assert
   @Test
   public void cantAddOptionsAfterIllumination() throws Exception
   {
+    root.delluminate();
     panel.illuminate();
 
     try
@@ -562,6 +572,34 @@ public class PropPanelTest extends Assert
   }
 
   @Test
+  public void propHasPlayerCastedBasedOnName() throws Exception
+  {
+    root.delluminate();
+    panel.addOptions(Util.toMap("name", "jumpy"));
+
+    panel.illuminate();
+
+    List<String> panelCastings = castingDirector.castings.get(panel.getProp());
+    assertEquals(1, panelCastings.size());
+    assertEquals("jumpy", panelCastings.get(0));
+  }
+
+  @Test
+  public void propHasPlayerCastedBasedPlayersOption() throws Exception
+  {
+    root.delluminate();
+    panel.addOptions(Util.toMap("name", "jumpy", "players", "itchy, scratchy"));
+
+    panel.illuminate();
+
+    List<String> panelCastings = castingDirector.castings.get(panel.getProp());
+    assertEquals(3, panelCastings.size());
+    assertEquals("jumpy", panelCastings.get(0));
+    assertEquals("itchy", panelCastings.get(1));
+    assertEquals("scratchy", panelCastings.get(2));
+  }
+
+  @Test
   public void leftOverOptionsArePassedToPropOnIllumination() throws Exception
   {
     root.delluminate();
@@ -569,14 +607,15 @@ public class PropPanelTest extends Assert
     panel.addOptions(Util.toMap("fizz", "bang"));
     panel.illuminate();
 
-    assertEquals(2, prop.illuminationOptions.size());
-    assertEquals("bar", prop.illuminationOptions.get("foo"));
-    assertEquals("bang", prop.illuminationOptions.get("fizz"));
+    assertEquals(2, prop.appliedOptions.size());
+    assertEquals("bar", prop.appliedOptions.get("foo"));
+    assertEquals("bang", prop.appliedOptions.get("fizz"));
   }
 
   @Test
   public void findByName() throws Exception
   {
+    root.delluminate();
     PropPanel foo1 = new PropPanel(new MockProp(), Util.toMap("name", "foo"));
     PropPanel foo2 = new PropPanel(new MockProp(), Util.toMap("name", "foo"));
     PropPanel bar = new PropPanel(new MockProp(), Util.toMap("name", "bar"));
