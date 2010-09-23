@@ -3,9 +3,9 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.events.ButtonPushedEvent;
-import limelight.ui.events.MouseClickedEvent;
-import limelight.ui.events.ValueChangedEvent;
+import limelight.ui.events.panel.ButtonPushedEvent;
+import limelight.ui.events.panel.MouseClickedEvent;
+import limelight.ui.events.panel.ValueChangedEvent;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;

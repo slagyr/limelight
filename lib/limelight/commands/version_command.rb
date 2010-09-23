@@ -20,7 +20,7 @@ module Limelight
 
       def process #:nodoc:
         require 'limelight/version'
-        puts "Limelight, version #{VERSION::STRING}"
+        puts "Limelight, version #{Limelight::About.version.to_s}"
       end
 
     end

@@ -4,18 +4,18 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.ui.events.stage.*;
 
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
-import java.awt.*;
 import java.util.HashSet;
 import java.util.ArrayList;
 
 public class AlertFrameManager implements WindowFocusListener, WindowListener, WindowStateListener, FrameManager
 {
-  private PropFrame focusedFrame;
+  private PropFrame activeFrame;
   private final HashSet<PropFrame> frames;
   private PropFrame lastFrameAdded;
 
@@ -24,48 +24,51 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
     frames = new HashSet<PropFrame>();
   }
 
-  public void windowGainedFocus(WindowEvent e)
-  {
-  }
-
-  public void windowLostFocus(WindowEvent e)
-  {
-  }
-
   public synchronized void watch(PropFrame frame)
   {
     if(!frames.contains(frame))
     {
-      frame.getWindow().addWindowStateListener(this);
-      frame.getWindow().addWindowFocusListener(this);
-      frame.getWindow().addWindowListener(this);
+      frame.addWindowStateListener(this);
+      frame.addWindowFocusListener(this);
+      frame.addWindowListener(this);
       frames.add(frame);
       lastFrameAdded = frame;
     }
   }
 
+  public void windowGainedFocus(WindowEvent e)
+  {
+    if(e.getSource() instanceof PropFrame)
+      new StageGainedFocusEvent().dispatch((PropFrame)e.getSource());
+  }
+
+  public void windowLostFocus(WindowEvent e)
+  {
+    if(e.getSource() instanceof PropFrame)
+      new StageLostFocusEvent().dispatch((PropFrame)e.getSource());
+  }
+
   public void windowOpened(WindowEvent e)
   {
+    if(e.getSource() instanceof PropFrame)
+      new StageOpenedEvent().dispatch((PropFrame)e.getSource());
   }
 
   public void windowClosing(WindowEvent e)
   {
-    PropFrame frame = ((PropFrameWindow) e.getWindow()).getPropFrame();
+    PropFrame frame = ((PropFrame) e.getSource());
     if(frame.shouldAllowClose())
-      frame.close(e);
+      frame.close();
   }
 
   public synchronized void windowClosed(WindowEvent e)
   {
-    PropFrame frame = ((PropFrameWindow) e.getWindow()).getPropFrame();
+    PropFrame frame = ((PropFrame) e.getSource());
     if(lastFrameAdded == frame)
       lastFrameAdded = null;
-    if(focusedFrame == frame)
-      focusedFrame = null;
-//    if(Context.instance().keyboardFocusManager != null)
-//      Context.instance().keyboardFocusManager.releaseFrame(frame.getWindow());
+    if(activeFrame == frame)
+      activeFrame = null;
     frames.remove(frame);
-    frame.closed(e);
     if(frame.isVital() && !hasVisibleVitalFrame())
       Context.instance().attemptShutdown();
   }
@@ -82,43 +85,50 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
 
   public void windowIconified(WindowEvent e)
   {
-    ((PropFrameWindow)e.getWindow()).getPropFrame().iconified(e);
+    if(e.getSource() instanceof PropFrame)
+      new StageIconifiedEvent().dispatch((PropFrame)e.getSource());
   }
 
   public void windowDeiconified(WindowEvent e)
   {
-    ((PropFrameWindow)e.getWindow()).getPropFrame().deiconified(e);
+    if(e.getSource() instanceof PropFrame)
+      new StageDeiconifiedEvent().dispatch((PropFrame)e.getSource());
   }
 
   public void windowActivated(WindowEvent e)
   {
-    Window window = e.getWindow();
-    if(window instanceof PropFrameWindow)
-    {
-      activateFrame(e);
-    }
+    if(e.getSource() instanceof PropFrame)
+      activateFrame((PropFrame)e.getSource());
   }
 
   public void windowDeactivated(WindowEvent e)
   {
-    ((PropFrameWindow)e.getWindow()).getPropFrame().deactivated(e);
+    if(e.getSource() instanceof PropFrame)
+    {
+      PropFrame propFrame = (PropFrame)e.getSource();
+      if(propFrame == activeFrame)
+      {
+        activeFrame = null;
+        new StageDeactivatedEvent().dispatch(propFrame);
+      }
+    }
   }
 
   public void windowStateChanged(WindowEvent e)
   {
   }
 
-  public PropFrame getFocusedFrame()
+  public PropFrame getActiveFrame()
   {
-    if(focusedFrame == null && lastFrameAdded != null && lastFrameAdded.isVisible())
-      activateFrame(new WindowEvent(lastFrameAdded.getWindow(), WindowEvent.WINDOW_ACTIVATED));
-    return focusedFrame;
+    if(activeFrame == null && lastFrameAdded != null && lastFrameAdded.isVisible())
+      activateFrame(lastFrameAdded);
+    return activeFrame;
   }
 
   public boolean isWatching(PropFrame frame)
   {
     boolean found = false;
-    for(WindowFocusListener listener : frame.getWindow().getWindowFocusListeners())
+    for(WindowFocusListener listener : frame.getWindowFocusListeners())
     {
       if(listener == this)
         found = true;
@@ -134,19 +144,22 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
   public synchronized void closeAllFrames()
   {
     for(PropFrame frame : frames)
-      frame.close(new WindowEvent(frame.getWindow(), WindowEvent.WINDOW_CLOSING));
+      frame.close();
   }
 
   // private //////////////////////////////////////////////
 
-  private void activateFrame(WindowEvent e)
+  private void activateFrame(PropFrame propFrame)
   {
-    focusedFrame = ((PropFrameWindow) e.getWindow()).getPropFrame();
+    if(activeFrame == propFrame || !propFrame.isVisible())
+      return;
 
-//    if(Context.instance().keyboardFocusManager != null)
-//      Context.instance().keyboardFocusManager.focusFrame(focusedFrame.getWindow());
+    PropFrame previouslyActiveFrame = activeFrame;
+    activeFrame = propFrame;
+    if(previouslyActiveFrame != null)
+      new StageDeactivatedEvent().dispatch(previouslyActiveFrame);
 
-    focusedFrame.activated(e);
+    new StageActivatedEvent().dispatch(propFrame);
   }
 
   public void getVisibleFrames(ArrayList<PropFrame> result)

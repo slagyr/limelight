@@ -1,8 +1,9 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.EventAction;
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.ui.Panel;
-import limelight.ui.events.Event;
+import limelight.ui.events.panel.PanelEvent;
 
 public class PropogateToParentAction implements EventAction
 {
@@ -10,8 +11,9 @@ public class PropogateToParentAction implements EventAction
 
   public void invoke(Event event)
   {
-    final Panel parent = event.getRecipient().getParent();
+    PanelEvent panelEvent = (PanelEvent)event;
+    final Panel parent = panelEvent.getRecipient().getParent();
     if(parent != null)
-      event.dispatch(parent);
+      panelEvent.dispatch(parent);
   }
 }

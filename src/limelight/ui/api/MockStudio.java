@@ -3,8 +3,8 @@
 
 package limelight.ui.api;
 
-import limelight.Production;
-import limelight.Studio;
+import limelight.model.Production;
+import limelight.model.Studio;
 
 public class MockStudio extends Studio
 {

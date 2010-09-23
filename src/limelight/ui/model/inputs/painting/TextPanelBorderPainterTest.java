@@ -1,7 +1,5 @@
 package limelight.ui.model.inputs.painting;
 
-import limelight.Context;
-import limelight.KeyboardFocusManager;
 import limelight.ui.MockGraphics;
 import limelight.ui.Painter;
 import limelight.ui.api.MockProp;

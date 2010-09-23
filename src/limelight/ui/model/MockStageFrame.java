@@ -4,9 +4,7 @@
 package limelight.ui.model;
 
 import limelight.ui.api.MockStage;
-import limelight.ui.MockGraphics;
 
-import java.awt.*;
 import java.awt.event.WindowEvent;
 
 public class MockStageFrame extends StageFrame
@@ -34,7 +32,7 @@ public class MockStageFrame extends StageFrame
     wasRefreshed = true;
   }
 
-  public void close(WindowEvent e)
+  public void close()
   {
     closed = true;
   }
@@ -48,31 +46,4 @@ public class MockStageFrame extends StageFrame
   {
     return visible;
   }
-
-  public void closed(WindowEvent e)
-  {
-    wasClosed = true;
-  }
-  
-  public void iconified(WindowEvent e)
-  {
-    iconified = true;
-  }
-
-  public void deiconified(WindowEvent e)
-  {
-    iconified = false;
-  }
-
-  public void activated(WindowEvent e)
-  {
-    activated = true;
-  }
-
-  public void deactivated(WindowEvent e)
-  {
-    activated = false;
-  }
-
-  
 }

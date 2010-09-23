@@ -3,7 +3,7 @@
 
 package limelight.ui.api;
 
-import limelight.Production;
+import limelight.model.Production;
 
 public class UtilitiesProduction extends Production
 {

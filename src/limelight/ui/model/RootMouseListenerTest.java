@@ -3,14 +3,14 @@
 
 package limelight.ui.model;
 
+import limelight.events.Event;
 import limelight.ui.MockPanel;
 import limelight.ui.api.MockProp;
-import limelight.ui.events.Event;
-import limelight.ui.events.MousePressedEvent;
+import limelight.ui.events.panel.MousePressedEvent;
+import limelight.ui.events.panel.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import limelight.ui.events.*;
 
 import java.awt.*;
 

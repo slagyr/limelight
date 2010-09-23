@@ -4,9 +4,9 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.events.MouseDraggedEvent;
-import limelight.ui.events.MousePressedEvent;
-import limelight.ui.events.MouseReleasedEvent;
+import limelight.ui.events.panel.MouseDraggedEvent;
+import limelight.ui.events.panel.MousePressedEvent;
+import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.text.TextLocation;
 import org.junit.Before;

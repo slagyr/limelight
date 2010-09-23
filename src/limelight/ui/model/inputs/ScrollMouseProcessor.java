@@ -1,11 +1,15 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.EventAction;
-import limelight.ui.events.*;
-import limelight.ui.events.Event;
+import limelight.events.Event;
+import limelight.events.EventAction;
+import limelight.ui.events.panel.MouseDraggedEvent;
+import limelight.ui.events.panel.MouseExitedEvent;
+import limelight.ui.events.panel.MousePressedEvent;
+import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.util.Box;
 
 import java.awt.*;
+
 
 public class ScrollMouseProcessor implements EventAction
 {

@@ -73,7 +73,7 @@ module Limelight
     # Returns true if the production's minimum_limelight_version is compatible with the current version.
     #
     def version_compatible?
-      current_version = Limelight::Util::Version.new(Limelight::VERSION::STRING)
+      current_version = Limelight::About.version
       required_version = Limelight::Util::Version.new(@production.minimum_limelight_version)
       return required_version.is_less_than_or_equal(current_version)
     end

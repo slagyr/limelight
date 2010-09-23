@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface FrameManager
 {
   void watch(PropFrame frame);
-  PropFrame getFocusedFrame();
+  PropFrame getActiveFrame();
   void getVisibleFrames(ArrayList<PropFrame> result);
   boolean isWatching(PropFrame frame);
   int getFrameCount();

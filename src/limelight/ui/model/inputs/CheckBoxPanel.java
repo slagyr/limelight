@@ -3,13 +3,15 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.events.Event;
 import limelight.styles.Style;
-import limelight.ui.EventAction;
-import limelight.ui.events.*;
+import limelight.events.EventAction;
+import limelight.ui.events.panel.ButtonPushedEvent;
+import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;
 
-import java.awt.image.BufferedImage;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class CheckBoxPanel extends AbstractButtonPanel
 {
@@ -88,8 +90,9 @@ public class CheckBoxPanel extends AbstractButtonPanel
   {
     private static SelectAction instance = new SelectAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       if(event.isConsumed())
         return;
 

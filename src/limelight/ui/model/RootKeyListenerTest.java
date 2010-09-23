@@ -1,8 +1,11 @@
 package limelight.ui.model;
 
 import limelight.ui.MockPanel;
-import limelight.ui.events.FocusGainedEvent;
-import limelight.ui.events.FocusLostEvent;
+import limelight.ui.events.panel.FocusGainedEvent;
+import limelight.ui.events.panel.FocusLostEvent;
+import limelight.ui.events.panel.CharTypedEvent;
+import limelight.ui.events.panel.KeyPressedEvent;
+import limelight.ui.events.panel.KeyReleasedEvent;
 import limelight.ui.model.inputs.TestableInputPanel;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,7 +83,7 @@ public class RootKeyListenerTest
 
     final KeyEvent typedEvent = new KeyEvent(component, 1, 2, 3, 4, 'a');
     listener.keyTyped(typedEvent);
-    limelight.ui.events.CharTypedEvent charEvent = (limelight.ui.events.CharTypedEvent) panelEvents.last();
+    CharTypedEvent charEvent = (CharTypedEvent) panelEvents.last();
     assertEquals(panel, charEvent.getSource());
     assertEquals('a', charEvent.getChar());
   }
@@ -92,9 +95,9 @@ public class RootKeyListenerTest
 
     final KeyEvent pressedEvent = new KeyEvent(component, 1, 2, 3, KeyEvent.VK_A, 'b');
     listener.keyPressed(pressedEvent);
-    limelight.ui.events.KeyPressedEvent keyEvent = (limelight.ui.events.KeyPressedEvent) panelEvents.last();
+    KeyPressedEvent keyEvent = (KeyPressedEvent) panelEvents.last();
     assertSame(panel, keyEvent.getSource());
-    assertEquals(limelight.ui.events.KeyEvent.KEY_A, keyEvent.getKeyCode());
+    assertEquals(limelight.ui.events.panel.KeyEvent.KEY_A, keyEvent.getKeyCode());
   }
   
   @Test
@@ -104,9 +107,9 @@ public class RootKeyListenerTest
 
     final KeyEvent releasedEvent = new KeyEvent(component, 1, 2, 3, KeyEvent.VK_B, 'c');
     listener.keyReleased(releasedEvent);
-    limelight.ui.events.KeyReleasedEvent keyEvent1 = (limelight.ui.events.KeyReleasedEvent) panelEvents.last();
+    KeyReleasedEvent keyEvent1 = (KeyReleasedEvent) panelEvents.last();
     assertSame(panel, keyEvent1.getSource());
-    assertEquals(limelight.ui.events.KeyEvent.KEY_B, keyEvent1.getKeyCode());
+    assertEquals(limelight.ui.events.panel.KeyEvent.KEY_B, keyEvent1.getKeyCode());
   }
 
   private void buildInputTree()

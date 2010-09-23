@@ -4,21 +4,16 @@
 package limelight.ui.model.inputs;
 
 import com.android.ninepatch.NinePatch;
-import limelight.styles.HorizontalAlignment;
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.styles.Style;
-import limelight.styles.VerticalAlignment;
-import limelight.styles.values.SimpleHorizontalAlignmentValue;
-import limelight.styles.values.SimpleVerticalAlignmentValue;
 import limelight.ui.*;
-import limelight.ui.events.*;
-import limelight.ui.events.Event;
+import limelight.ui.events.panel.*;
 import limelight.ui.images.Images;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.TextPanel;
 import limelight.ui.painting.BackgroundPainter;
 
 import java.awt.*;
-import java.awt.font.TextLayout;
 import java.util.*;
 import java.util.List;
 
@@ -139,8 +134,9 @@ public class ComboBoxPanel extends AbstractButtonPanel
   {
     private static LoadPopupListAction instance = new LoadPopupListAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       if(event.isConsumed())
         return;
 
@@ -161,8 +157,9 @@ public class ComboBoxPanel extends AbstractButtonPanel
   {
     private static PopupKeyControlAction instance = new PopupKeyControlAction();
 
-    public void invoke(Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       if(event.isConsumed())
         return;
 
@@ -192,8 +189,9 @@ public class ComboBoxPanel extends AbstractButtonPanel
   private static class ClosePopupOnFocusLostAction implements EventAction
   {
     private static ClosePopupOnFocusLostAction instance = new ClosePopupOnFocusLostAction();
-    public void invoke(Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       if(event.isConsumed())
         return;
 

@@ -5,7 +5,10 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.background.PanelPainterLoop;
+import limelight.events.*;
 import limelight.styles.abstrstyling.*;
+import limelight.ui.events.stage.StageClosedEvent;
+import limelight.ui.events.stage.StageClosingEvent;
 import limelight.ui.images.Images;
 import limelight.util.Colors;
 import limelight.ui.api.Stage;
@@ -13,7 +16,7 @@ import limelight.ui.api.Stage;
 import java.awt.*;
 import java.awt.event.*;
 
-public class StageFrame extends Frame implements PropFrame, PropFrameWindow
+public class StageFrame extends Frame implements PropFrame
 {
   private static final StyleCompiler widthCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage width");
   private static final StyleCompiler heightCompiler = Context.instance().styleAttributeCompilerFactory.compiler("dimension", "stage height");
@@ -37,8 +40,7 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
   private Dimension previousSize;
   private boolean opened;
   private boolean closing;
-  private boolean closed;
-  private boolean previouslyActivated;
+  private EventHandler eventHandler = new EventHandler();
 
   protected StageFrame()
   {
@@ -50,8 +52,8 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
     this();
     this.stage = stage;
     setBackground(Color.WHITE);
-
     Context.instance().frameManager.watch(this);
+
     setIconImage(Images.load("icon_48.gif"));
   }
 
@@ -59,7 +61,7 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
   {
     if(root != null)
     {
-      if(isWindowResizing())
+      if(isWindowResizing() && Context.instance().bufferedImagePool != null) // MDM - Check the bufferedImagePool because errors get printed during test runs.
       {
         PanelPainterLoop.doPaintJob(root, root.getAbsoluteBounds(), (Graphics2D) g);
       }
@@ -94,42 +96,24 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
 
   public void close()
   {
-    close(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-  }
-
-  public void close(WindowEvent e)
-  {
     if(closing)
       return;
     closing = true;
-    stage.closing(e);
+    new StageClosingEvent().dispatch(this);
     setVisible(false);
     exitKioskOrFullscreenIfNeeded();
     dispose();
-  }
-
-  public Frame getWindow()
-  {
-    return this;
-  }
-
-
-  public PropFrame getPropFrame()
-  {
-    return this;
-  }
-
-  public void closed(WindowEvent e)
-  {
-    if(closed)
-      return;
-    closed = true;
-    stage.closed(e);
+    opened = false;
   }
 
   public boolean isClosed()
   {
-    return closed;
+    return !opened;
+  }
+
+  public boolean isOpen()
+  {
+    return opened;
   }
 
   public void open()
@@ -306,7 +290,10 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
 
   public boolean shouldAllowClose()
   {
-    return stage.should_allow_close();
+    if(root == null)
+      return true;
+    else
+      return root.shouldAllowClose();
   }
 
   public boolean isVital()
@@ -318,37 +305,7 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
   {
     vital = value;
   }
-
-  public void iconified(WindowEvent e)
-  {
-    stage.iconified(e);
-  }
-
-  public void deiconified(WindowEvent e)
-  {
-    stage.deiconified(e);
-  }
-
-  public void activated(WindowEvent e)
-  {
-    if(isVisible())
-    {
-      // MDM - It happens that the frame is activated and deactivated before it's ever visible.  This causes problems.
-      // Only propogate the event if the frame is visible
-      previouslyActivated = true;
-      stage.activated(e);
-    }
-  }
-
-  public void deactivated(WindowEvent e)
-  {
-    if(previouslyActivated)
-    {
-      previouslyActivated = false;
-      stage.deactivated(e);
-    }
-  }
-
+  
   // Protected ////////////////////////////////////////////
 
   protected void setStage(Stage stage)
@@ -441,6 +398,11 @@ public class StageFrame extends Frame implements PropFrame, PropFrameWindow
       size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getHeight() + heightInsets, NONE, NONE);
 
     setSize(size);
+  }
+
+  public EventHandler getEventHandler()
+  {
+    return eventHandler;
   }
 }
 

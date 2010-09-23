@@ -4,9 +4,11 @@
 package limelight.ui.model.inputs;
 
 import limelight.background.Animation;
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.styles.Style;
 import limelight.ui.*;
-import limelight.ui.events.*;
+import limelight.ui.events.panel.*;
 import limelight.ui.model.*;
 import limelight.ui.model.inputs.painting.*;
 import limelight.ui.painting.BackgroundPainter;
@@ -170,11 +172,12 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   {
     private static FocusGainedAction instance = new FocusGainedAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
-      if(event.isConsumed())
+      if(e.isConsumed())
         return;
 
+      PanelEvent event = (PanelEvent)e;
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       panel.startCaret();
       panel.getModel().resetChangeFlag();
@@ -185,11 +188,12 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   {
     private static FocusLostAction instance = new FocusLostAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
-      if(event.isConsumed())
+      if(e.isConsumed())
         return;
-      
+
+      PanelEvent event = (PanelEvent)e;
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       panel.stopCaret();
       if(panel.getModel().hasChanged())
@@ -201,11 +205,12 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   {
     private static DelegateToMouseProcessorAction instance = new DelegateToMouseProcessorAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
-      if(event.isConsumed())
+      if(e.isConsumed())
         return;
 
+      PanelEvent event = (PanelEvent)e;
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       if(event instanceof MousePressedEvent)
         panel.mouseProcessor.processMousePressed((MousePressedEvent) event);
@@ -218,11 +223,12 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   {
     private static KeyPressedAction instance = new KeyPressedAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
-      if(event.isConsumed())
+      if(e.isConsumed())
         return;
 
+      PanelEvent event = (PanelEvent)e;
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       KeyPressedEvent press = (KeyPressedEvent) event;
       TextInputKeyProcessor.instance.processKey(press, panel.model);
@@ -235,11 +241,12 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   {
     private static CharTypedAction instance = new CharTypedAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
-      if(event.isConsumed())
+      if(e.isConsumed())
         return;
 
+      PanelEvent event = (PanelEvent)e;
       final TextInputPanel panel = (TextInputPanel) event.getRecipient();
       CharTypedEvent typeEvent = (CharTypedEvent) event;
       if(!(typeEvent.isCommandDown() || typeEvent.isControlDown()))

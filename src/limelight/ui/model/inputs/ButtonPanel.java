@@ -4,11 +4,14 @@
 package limelight.ui.model.inputs;
 
 import com.android.ninepatch.NinePatch;
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.styles.Style;
-import limelight.ui.EventAction;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
-import limelight.ui.events.*;
+import limelight.ui.events.panel.MousePressedEvent;
+import limelight.ui.events.panel.MouseReleasedEvent;
+import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;
 import limelight.ui.model.*;
 import limelight.util.Box;
@@ -66,8 +69,9 @@ public class ButtonPanel extends AbstractButtonPanel
   {
     public static MousePressedAction instance = new MousePressedAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       ButtonPanel panel = (ButtonPanel) event.getRecipient();
       panel.isBeingPressed = true;
       panel.markAsDirty();
@@ -78,8 +82,9 @@ public class ButtonPanel extends AbstractButtonPanel
   {
     public static MouseReleasedAction instance = new MouseReleasedAction();
 
-    public void invoke(limelight.ui.events.Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       ButtonPanel panel = (ButtonPanel) event.getRecipient();
       panel.isBeingPressed = false;
       panel.markAsDirty();

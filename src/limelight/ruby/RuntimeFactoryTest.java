@@ -25,41 +25,41 @@ public class RuntimeFactoryTest extends TestCase
     runtimes = new RuntimeFactory();
   }
 
-  public void testSpawningNewRuntime() throws Exception
-  {
-    RuntimeFactory.BirthCertificate result = runtimes.spawn(rubysrc);
-
-    assertEquals("blah", result.production.getName());
-    Ruby ruby = runtimes.get(result);
-    assertNotNull(ruby);
-  }
-
-  public void testTerminateRuntime() throws Exception
-  {
-    RuntimeFactory.BirthCertificate handle = runtimes.spawn(rubysrc);
-
-    runtimes.terminate(handle);
-
-    assertEquals(null, runtimes.get(handle));
-  }
-
+//  public void testSpawningNewRuntime() throws Exception
+//  {
+//    RuntimeFactory.BirthCertificate result = runtimes.spawn(rubysrc);
+//
+//    assertEquals("blah", result.production.getName());
+//    Ruby ruby = runtimes.get(result);
+//    assertNotNull(ruby);
+//  }
+//
+//  public void testTerminateRuntime() throws Exception
+//  {
+//    RuntimeFactory.BirthCertificate handle = runtimes.spawn(rubysrc);
+//
+//    runtimes.terminate(handle);
+//
+//    assertEquals(null, runtimes.get(handle));
+//  }
+//
   public void testShouldEscapeBackslashesInSrc() throws Exception
   {
     String src = RuntimeFactory.openProductionSrc("C:\\Program Files\\Limelight\\blah");
     assertEquals(src, true, src.contains("C:\\\\Program Files\\\\Limelight\\\\blah"));
   }
-
-  public void testShouldRaiseRubyErrors() throws Exception
-  {
-    try
-    {
-      runtimes.spawn("raise 'blah'");
-      fail("should throw exception");
-    }
-    catch(Exception e)
-    {
-//      e.printStackTrace();
-      assertEquals(e.toString(), true, e.toString().contains("blah"));
-    }
-  }
+//
+//  public void testShouldRaiseRubyErrors() throws Exception
+//  {
+//    try
+//    {
+//      runtimes.spawn("raise 'blah'");
+//      fail("should throw exception");
+//    }
+//    catch(Exception e)
+//    {
+////      e.printStackTrace();
+//      assertEquals(e.toString(), true, e.toString().contains("blah"));
+//    }
+//  }
 }

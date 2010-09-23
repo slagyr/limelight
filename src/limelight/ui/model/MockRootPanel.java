@@ -3,7 +3,7 @@
 
 package limelight.ui.model;
 
-import limelight.Production;
+import limelight.model.Production;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;
@@ -16,6 +16,8 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public LinkedList<Rectangle> dirtyRegions = new LinkedList<Rectangle>();
   private RootKeyListener keyListener;
   public Map<String, RichStyle> styleStore;
+  public Production production;
+  public boolean shouldAllowClose;
 
   public MockRootPanel()
   {
@@ -80,7 +82,17 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
 
   public Production getProduction()
   {
-    return null;
+    return production;
+  }
+
+  public void setProduction(Production production)
+  {
+    this.production = production;
+  }
+
+  public boolean shouldAllowClose()
+  {
+    return shouldAllowClose;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

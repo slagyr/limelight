@@ -1,7 +1,7 @@
 package limelight.ui.model;
 
 import limelight.ui.Panel;
-import limelight.ui.events.*;
+import limelight.ui.events.panel.*;
 import limelight.ui.model.inputs.InputPanel;
 
 import java.awt.event.KeyEvent;

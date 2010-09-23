@@ -8,7 +8,6 @@ import limelight.ui.api.MockStage;
 import limelight.Context;
 
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 
 public class FrameManagerTest extends TestCase
@@ -40,6 +39,6 @@ public class FrameManagerTest extends TestCase
     for (WindowListener listener : frame.getWindowListeners())
       listener.windowActivated(event);
 
-    assertSame(frame, manager.getFocusedFrame());
+    assertSame(frame, manager.getActiveFrame());
   }
 }

@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.events.EventHandler;
 import limelight.ui.MockGraphics;
 
 import java.awt.*;
@@ -14,20 +15,21 @@ public class MockPropFrame implements PropFrame
 {
   private RootPanel root;
   public boolean visible;
-  private MockPropFrameWindow window;
   public boolean closed;
-  public boolean activated;
   public boolean shouldAllowClose;
   public boolean wasClosed;
-  public boolean iconified;
   public boolean vital = true;
   public KeyListener keyListener;
   private LinkedList<KeyListener> keyListeners = new LinkedList<KeyListener>();
   private LinkedList<MouseListener> mouseListeners = new LinkedList<MouseListener>();
   private LinkedList<MouseMotionListener> mouseMotionListeners = new LinkedList<MouseMotionListener>();
   private LinkedList<MouseWheelListener> mouseWheelListeners = new LinkedList<MouseWheelListener>();
+  private LinkedList<WindowStateListener> windowStateListners = new LinkedList<WindowStateListener>();
+  private LinkedList<WindowFocusListener> windowFocusListners = new LinkedList<WindowFocusListener>();
+  private LinkedList<WindowListener> windowListeners = new LinkedList<WindowListener>();
   private Cursor cursor = Cursor.getDefaultCursor();
   private Dimension size = new Dimension(0, 0);
+  private EventHandler eventHandler = new EventHandler();
 
   public Point getLocationOnScreen()
   {
@@ -39,18 +41,11 @@ public class MockPropFrame implements PropFrame
     return root;
   }
 
-  public void close(WindowEvent e)
+  public void close()
   {
     closed = true;
   }
-
-  public Frame getWindow()
-  {
-    if(window == null)
-      window = new MockPropFrameWindow(this);
-    return window;
-  }
-
+  
   public boolean isVisible()
   {
     return visible;
@@ -61,34 +56,9 @@ public class MockPropFrame implements PropFrame
     return vital;
   }
 
-  public void activated(WindowEvent e)
-  {
-    activated = true;
-  }
-
   public boolean shouldAllowClose()
   {
     return shouldAllowClose;
-  }
-
-  public void closed(WindowEvent e)
-  {
-    wasClosed = true;
-  }
-
-  public void iconified(WindowEvent e)
-  {
-    iconified = true;
-  }
-
-  public void deiconified(WindowEvent e)
-  {
-    iconified = false;
-  }
-
-  public void deactivated(WindowEvent e)
-  {
-    activated = false;
   }
 
   public void addKeyListener(KeyListener listener)
@@ -112,6 +82,21 @@ public class MockPropFrame implements PropFrame
     mouseWheelListeners.add(listener);
   }
 
+  public void addWindowStateListener(WindowStateListener windowStateListener)
+  {
+    windowStateListners.add(windowStateListener);
+  }
+
+  public void addWindowFocusListener(WindowFocusListener windowFocusListener)
+  {
+    windowFocusListners.add(windowFocusListener);
+  }
+
+  public void addWindowListener(WindowListener windowListener)
+  {
+    windowListeners.add(windowListener);
+  }
+
   public void removeKeyListener(KeyListener listener)
   {
     keyListeners.remove(listener);
@@ -132,9 +117,29 @@ public class MockPropFrame implements PropFrame
     mouseWheelListeners.remove(listener);
   }
 
+  public MouseListener[] getMouseListeners()
+  {
+    return mouseListeners.toArray(new MouseListener[mouseListeners.size()]);
+  }
+
+  public MouseMotionListener[] getMouseMotionListeners()
+  {
+    return mouseMotionListeners.toArray(new MouseMotionListener[mouseMotionListeners.size()]);
+  }
+
+  public MouseWheelListener[] getMouseWheelListeners()
+  {
+    return mouseWheelListeners.toArray(new MouseWheelListener[mouseWheelListeners.size()]);
+  }
+
   public KeyListener[] getKeyListeners()
   {
     return keyListeners.toArray(new KeyListener[keyListeners.size()]);
+  }
+
+  public WindowFocusListener[] getWindowFocusListeners()
+  {
+    return windowFocusListners.toArray(new WindowFocusListener[windowFocusListners.size()]);
   }
 
   public int getWidth()
@@ -167,21 +172,6 @@ public class MockPropFrame implements PropFrame
     return new Insets(0, 0, 0, 0);
   }
 
-  public MouseListener[] getMouseListeners()
-  {
-    return mouseListeners.toArray(new MouseListener[mouseListeners.size()]);
-  }
-
-  public MouseMotionListener[] getMouseMotionListeners()
-  {
-    return mouseMotionListeners.toArray(new MouseMotionListener[mouseMotionListeners.size()]);
-  }
-
-  public MouseWheelListener[] getMouseWheelListeners()
-  {
-    return mouseWheelListeners.toArray(new MouseWheelListener[mouseWheelListeners.size()]);
-  }
-
   public void setRoot(RootPanel root)
   {
     this.root = root;
@@ -197,18 +187,8 @@ public class MockPropFrame implements PropFrame
     size = new Dimension(width, height);
   }
 
-  private static class MockPropFrameWindow extends Frame implements PropFrameWindow
+  public EventHandler getEventHandler()
   {
-    private PropFrame frame;
-
-    public MockPropFrameWindow(PropFrame frame) throws HeadlessException
-    {
-      this.frame = frame;
-    }
-
-    public PropFrame getPropFrame()
-    {
-      return frame;
-    }
+    return eventHandler;
   }
 }

@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import limelight.ui.Panel;
-import limelight.ui.events.*;
+import limelight.ui.events.panel.*;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -80,7 +80,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
   public void mouseWheelMoved(MouseWheelEvent e)
   {
     final Panel panel = panelFor(e.getPoint());  
-    new limelight.ui.events.MouseWheelEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()).dispatch(panel);
+    new limelight.ui.events.panel.MouseWheelEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()).dispatch(panel);
   }
 
   private void transition(Panel panel, MouseEvent e)

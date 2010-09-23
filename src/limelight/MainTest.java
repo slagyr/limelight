@@ -6,6 +6,7 @@ package limelight;
 import junit.framework.TestCase;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
+import limelight.model.Studio;
 import limelight.ui.Panel;
 import limelight.audio.RealAudioPlayer;
 import limelight.os.MockOS;

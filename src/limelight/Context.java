@@ -4,7 +4,9 @@
 package limelight;
 
 import limelight.io.TempDirectory;
+import limelight.model.Studio;
 import limelight.ruby.RuntimeFactory;
+import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
 import limelight.ui.model.PropFrame;
@@ -63,7 +65,7 @@ public class Context
   public static PropFrame getActiveFrame()
   {
     if(instance().frameManager != null)
-      return instance().frameManager.getFocusedFrame();
+      return instance().frameManager.getActiveFrame();
     else
       return null;
   }

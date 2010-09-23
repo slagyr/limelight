@@ -3,12 +3,11 @@
 
 package limelight.ui.model;
 
+import limelight.ui.KeyboardFocusManager;
 import limelight.ui.api.MockProp;
 import limelight.ui.api.MockStage;
 import limelight.ui.*;
 import limelight.Context;
-import limelight.KeyboardFocusManager;
-import limelight.MockContext;
 import limelight.styles.values.*;
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.os.MockOS;
@@ -19,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 public class StageFrameTest extends Assert
 {
@@ -55,7 +53,7 @@ public class StageFrameTest extends Assert
   {
     try
     {
-      frame.close(null);
+      frame.close();
     }
     catch(Exception e)
     {
@@ -178,7 +176,7 @@ public class StageFrameTest extends Assert
   {
     frame.setKiosk(true);
     frame.open();
-    frame.close(null);
+    frame.close();
 
     assertEquals(null, graphicsDevice.getFullScreenWindow());
     assertEquals(false, os.isInKioskMode());
@@ -316,11 +314,15 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldShouldAllowClose() throws Exception
   {
-    stage.shouldAllowClose = false;
-    assertEquals(false, frame.shouldAllowClose());
-
-    stage.shouldAllowClose = true;
     assertEquals(true, frame.shouldAllowClose());
+
+    ScenePanel scene = new ScenePanel(new MockProp());
+    frame.load(scene);
+    scene.setShouldAllowClose(true);             
+    assertEquals(true, frame.shouldAllowClose());
+
+    scene.setShouldAllowClose(false);
+    assertEquals(false, frame.shouldAllowClose());
   }
 
   @Test
@@ -415,79 +417,16 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldClosedIsCalledwhenClosed() throws Exception
+  public void isClosed() throws Exception
   {
-    MockContext.stub();
-    AlertFrameManager manager = new AlertFrameManager();
-    manager.watch(frame);
-    frame.close(null);
-    Thread.sleep(10);
-
-    assertEquals(true, stage.wasClosed);
-  }
-  
-  @Test
-  public void shouldIconificationDelegatedToStage() throws Exception
-  {
-    frame.iconified(new WindowEvent(frame, 1));
-    assertEquals(true, stage.iconified);
-    frame.deiconified(new WindowEvent(frame, 1));
-    assertEquals(false, stage.iconified);
-  }
-
-  @Test
-  public void shouldActivationDelegatedToStage() throws Exception
-  {
-    frame.setVisible(true);
-    frame.activated(new WindowEvent(frame, 1));
-    assertEquals(true, stage.activated);
-    frame.deactivated(new WindowEvent(frame, 1));
-    assertEquals(false, stage.activated);
-  }
-  
-  @Test
-  public void shouldStageShouldBeNotifiedWhenClosing() throws Exception
-  {
-    frame.close(null);
-
-    assertEquals(true, stage.notifiedOfClosing);
-  }
-
-  @Test
-  public void shouldClosingAndClosedNotCalledMoreThanOnce() throws Exception
-  {
-    frame.close(null);
-    frame.closed(null);
-    stage.notifiedOfClosing = false;
-    stage.wasClosed = false;
-
-    frame.close(null);
-    frame.closed(null);
-
-    assertEquals(false, stage.notifiedOfClosing);
-    assertEquals(false, stage.wasClosed);
-  }
-
-  @Test
-  public void shouldIsClosed() throws Exception
-  {
+    frame.open();
     assertEquals(false, frame.isClosed());
+    assertEquals(true, frame.isOpen());
 
-    frame.closed(null);
+    frame.close();
 
     assertEquals(true, frame.isClosed());
+    assertEquals(false, frame.isOpen());
   }
 
-  @Test
-  public void shouldDeactivatedWhenNotPreviouslyActivatedDoesNotPropogate() throws Exception
-  {
-    stage.activated = true;
-    frame.deactivated(null);
-    assertEquals(true, stage.activated);
-
-    frame.setVisible(true);
-    frame.activated(null);
-    frame.deactivated(null);
-    assertEquals(false, stage.activated);
-  }
 }

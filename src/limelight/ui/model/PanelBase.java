@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.ui.Panel;
+import limelight.ui.events.panel.PanelEventHandler;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -23,13 +24,13 @@ public abstract class PanelBase implements Panel
   protected Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
   private boolean illuminated;
-  protected EventHandler eventHandler;
+  protected PanelEventHandler eventHandler;
 
   protected PanelBase()
   {
     width = 50;
     height = 50;
-    eventHandler = new EventHandler(this);
+    eventHandler = new PanelEventHandler(this);
   }
 
   public int getHeight()
@@ -184,7 +185,7 @@ public abstract class PanelBase implements Panel
     return BasePanelLayout.instance;
   }
 
-  public EventHandler getEventHandler()
+  public PanelEventHandler getEventHandler()
   {
     return eventHandler;
   }

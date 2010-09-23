@@ -1,15 +1,13 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
-import limelight.ui.events.*;
+import limelight.ui.events.panel.ButtonPushedEvent;
+import limelight.ui.events.panel.CharTypedEvent;
+import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.PropablePanel;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
 

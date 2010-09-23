@@ -14,7 +14,7 @@ public class MockFrameManager implements FrameManager
   {
   }
 
-  public PropFrame getFocusedFrame()
+  public PropFrame getActiveFrame()
   {
     return focusedFrame;
   }

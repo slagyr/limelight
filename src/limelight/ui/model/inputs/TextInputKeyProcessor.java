@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.events.KeyEvent;
+import limelight.ui.events.panel.KeyEvent;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 

@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.*;
+import limelight.model.Production;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
@@ -24,6 +25,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   private final Map<String, RichStyle> styles;
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
+  private boolean shouldAllowClose;
 
   public ScenePanel(Prop prop)
   {
@@ -276,6 +278,16 @@ public class ScenePanel extends PropPanel implements RootPanel
   public Production getProduction()
   {
     return production;
+  }
+
+  public void setShouldAllowClose(boolean value)
+  {
+    shouldAllowClose = value;
+  }
+
+  public boolean shouldAllowClose()
+  {
+    return shouldAllowClose;
   }
 
   private static class SceneLayout implements Layout

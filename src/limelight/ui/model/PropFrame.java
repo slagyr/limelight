@@ -3,6 +3,8 @@
 
 package limelight.ui.model;
 
+import limelight.events.EventHandler;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -12,30 +14,21 @@ public interface PropFrame
 
   RootPanel getRoot();
   
-  void close(WindowEvent e);
-
-  Frame getWindow();
+  void close();
 
   boolean isVisible();
 
   boolean isVital();
 
-  void activated(WindowEvent e);
-
   boolean shouldAllowClose();
-
-  void closed(WindowEvent e);
-
-  void iconified(WindowEvent e);
-
-  void deiconified(WindowEvent e);
-
-  void deactivated(WindowEvent e);
 
   void addKeyListener(KeyListener listener);
   void addMouseListener(MouseListener listener);
   void addMouseMotionListener(MouseMotionListener listener);
   void addMouseWheelListener(MouseWheelListener listener);
+  void addWindowStateListener(WindowStateListener alertFrameManager);
+  void addWindowFocusListener(WindowFocusListener alertFrameManager);
+  void addWindowListener(WindowListener alertFrameManager);
   void removeKeyListener(KeyListener listener);
   void removeMouseListener(MouseListener listener);
   void removeMouseMotionListener(MouseMotionListener listener);
@@ -44,6 +37,7 @@ public interface PropFrame
   MouseMotionListener[] getMouseMotionListeners();
   MouseWheelListener[] getMouseWheelListeners();
   KeyListener[] getKeyListeners();
+  WindowFocusListener[] getWindowFocusListeners();
 
   int getWidth();
 
@@ -56,4 +50,6 @@ public interface PropFrame
   void setCursor(Cursor cursor);
 
   Insets getInsets();
+
+  EventHandler getEventHandler();
 }

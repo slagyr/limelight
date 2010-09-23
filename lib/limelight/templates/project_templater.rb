@@ -42,7 +42,7 @@ module Limelight
         @tokens[:SCENE_TITLE] = @scene_path.titleized
         @tokens[:PRODUCTION_NAME] = File.basename(options[:production_path]).titleized
         @tokens[:LLP_NAME] = File.basename(options[:production_path])
-        @tokens[:CURRENT_VERSION] = Limelight::VERSION::STRING
+        @tokens[:CURRENT_VERSION] = Limelight::About.version.to_s
         @project_path = File.basename(options[:production_path])
       end
       

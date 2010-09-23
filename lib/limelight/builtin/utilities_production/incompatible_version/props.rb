@@ -7,7 +7,7 @@ bold_label :id => "production_name_label", :text => @production_name
 label :text => "Minimum Required Version:"
 bold_label :id => "required_version_label", :text => @required_version
 label :text => "Current Limelight Version:"
-bold_label :id => "current_version_label", :text => Limelight::VERSION::STRING
+bold_label :id => "current_version_label", :text => Limelight::About.version.to_s
 advise_text = <<END
 To open this production, it is recommended that you install a newer version of Limelight. Proceeding to open this production with the current version may lead to unpredictable results.
 

@@ -1,8 +1,9 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.EventAction;
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.ui.Panel;
-import limelight.ui.events.Event;
+import limelight.ui.events.panel.PanelEvent;
 
 public class MockEventAction implements EventAction
 {
@@ -14,6 +15,7 @@ public class MockEventAction implements EventAction
   {
     invoked = true;
     this.event = event;
-    recipient = event.getRecipient();
+    if(event instanceof PanelEvent)
+      recipient = ((PanelEvent)event).getRecipient();
   }
 }

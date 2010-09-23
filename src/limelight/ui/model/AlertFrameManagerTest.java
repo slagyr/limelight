@@ -3,14 +3,15 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
 import limelight.ui.api.MockStudio;
 import limelight.Context;
 import limelight.MockContext;
-import limelight.KeyboardFocusManager;
+import limelight.ui.events.stage.*;
+import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
@@ -18,6 +19,19 @@ import static junit.framework.Assert.assertEquals;
 
 public class AlertFrameManagerTest
 {
+
+  private static Frame hackFrame = new Frame();
+  private MockEventAction action;
+
+  private static class HackedWindowEvent extends WindowEvent
+  {
+    public HackedWindowEvent(PropFrame frame)
+    {
+      super(hackFrame, 1, 0, 1);
+      source = frame;
+    }
+  }
+
   private AlertFrameManager manager;
   private MockPropFrame frame;
   private MockStudio studio;
@@ -31,6 +45,7 @@ public class AlertFrameManagerTest
     Context.instance().studio = studio;
     Context.instance().environment = "test";
     frame = new MockPropFrame();
+    action = new MockEventAction();
   }
 
   @Test
@@ -44,22 +59,14 @@ public class AlertFrameManagerTest
   }
 
   @Test
-  public void theaterIsNotifiedOfActivatedStage() throws Exception
-  {
-    manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
-
-    assertEquals(true, frame.activated);
-  }
-
-  @Test
   public void shouldAskStageFrameIfItCanClose() throws Exception
   {
     frame.shouldAllowClose = false;
-    manager.windowClosing(new WindowEvent(frame.getWindow(), 1));
+    manager.windowClosing(new HackedWindowEvent(frame));
     assertEquals(false, frame.closed);
 
     frame.shouldAllowClose = true;
-    manager.windowClosing(new WindowEvent(frame.getWindow(), 1));
+    manager.windowClosing(new HackedWindowEvent(frame));
     assertEquals(true, frame.closed);
   }
 
@@ -68,7 +75,7 @@ public class AlertFrameManagerTest
   {
     MockContext context = MockContext.stub();
     manager.watch(frame);
-    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
+    manager.windowClosed(new HackedWindowEvent(frame));
     assertEquals(true, context.shutdownAttempted);
   }
 
@@ -78,7 +85,7 @@ public class AlertFrameManagerTest
     MockContext context = MockContext.stub();
     frame.setVital(false);
     manager.watch(frame);
-    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
+    manager.windowClosed(new HackedWindowEvent(frame));
     assertEquals(false, context.shutdownAttempted);
   }
   
@@ -91,7 +98,7 @@ public class AlertFrameManagerTest
     manager.watch(frame);
     manager.watch(frame2);
 
-    manager.windowClosed(new WindowEvent(frame2.getWindow(), 1));
+    manager.windowClosed(new HackedWindowEvent(frame2));
     assertEquals(true, context.shutdownAttempted);
   }
 
@@ -99,10 +106,10 @@ public class AlertFrameManagerTest
   public void getActiveFrameWhenNoneHasGainedFocus() throws Exception
   {
     manager.watch(frame);
-    assertEquals(null, manager.getFocusedFrame());
+    assertEquals(null, manager.getActiveFrame());
 
     frame.visible = true;
-    assertEquals(frame, manager.getFocusedFrame());
+    assertEquals(frame, manager.getActiveFrame());
   }
 
   @Test
@@ -134,14 +141,22 @@ public class AlertFrameManagerTest
   }
 
   @Test
-  public void frameIsNotifiedOfClose() throws Exception
+  public void frameIsNotifiedWhenOpened() throws Exception
   {
-    MockContext.stub();
-    frame.setVital(false);
-    manager.watch(frame);
-    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
+    frame.getEventHandler().add(StageOpenedEvent.class, action);
 
-    assertEquals(true, frame.wasClosed);
+    manager.windowOpened(new HackedWindowEvent(frame));
+
+    assertEquals(true, action.invoked);
+  }
+
+  @Test
+  public void frameIsClosedWhenClosingEventIsReceived() throws Exception
+  {
+    frame.shouldAllowClose = true;
+    manager.windowClosing(new HackedWindowEvent(frame));
+
+    assertEquals(true, frame.closed);
   }
 
 //  @Test
@@ -151,44 +166,100 @@ public class AlertFrameManagerTest
 //    Context.instance().keyboardFocusManager = keyboard;
 //    keyboard.focusFrame(frame.getWindow());
 //
-//    manager.windowClosed(new WindowEvent(frame.getWindow(), 1));
+//    manager.windowClosed(new HackedWindowEvent(frame));
 //
 //    assertEquals(null, keyboard.getFocusedWindow());
 //    assertEquals(null, keyboard.getFocusedFrame());
 //  }
 
   @Test
-  public void stageNotifiedWhenActivationLost() throws Exception
+  public void stageNotifiedWhenActivated() throws Exception
   {
-    frame.activated = true;
-    manager.windowDeactivated(new WindowEvent(frame.getWindow(), 1));
-    assertEquals(false, frame.activated);
+    frame.visible = true;
+    frame.getEventHandler().add(StageActivatedEvent.class, action);
+
+    manager.windowActivated(new HackedWindowEvent(frame));
+
+    assertEquals(true, action.invoked);
+  }
+
+  @Test
+  public void cantActivateFramesThatAreNotVisible() throws Exception
+  {
+    frame.visible = false;
+    frame.getEventHandler().add(StageActivatedEvent.class, action);
+
+    manager.windowActivated(new HackedWindowEvent(frame));
+    assertEquals(false, action.invoked);
+    assertEquals(null, manager.getActiveFrame());
+
+    frame.visible = true;
+    manager.windowActivated(new HackedWindowEvent(frame));
+    assertEquals(true, action.invoked);
+    assertEquals(frame, manager.getActiveFrame());
+  }
+
+  @Test
+  public void stageNotifiedWhenDeactivated() throws Exception
+  {
+    frame.visible = true;
+    manager.windowActivated(new HackedWindowEvent(frame));
+    assertEquals(frame, manager.getActiveFrame());
+    frame.getEventHandler().add(StageDeactivatedEvent.class, action);
+
+    manager.windowDeactivated(new HackedWindowEvent(frame));
+
+    assertEquals(true, action.invoked);
   }
   
   @Test
-  public void activatingFrame() throws Exception
+  public void cantDeactivateFramesThatAreNotActive() throws Exception
   {
-    frame.activated = false;
-    manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
+    assertEquals(null, manager.getActiveFrame());
+    frame.getEventHandler().add(StageDeactivatedEvent.class, action);
 
-    assertEquals(true, frame.activated);
+    manager.windowDeactivated(new HackedWindowEvent(frame));
+
+    assertEquals(false, action.invoked);
   }
 
   @Test
-  public void frameNotifiedWhenIconifiedAndDeiconified() throws Exception
+  public void stageNotifiedWhenIconified() throws Exception
   {
-    manager.windowIconified(new WindowEvent(frame.getWindow(), 1));
-    assertEquals(true, frame.iconified);                
-    manager.windowDeiconified(new WindowEvent(frame.getWindow(), 1));
-    assertEquals(false, frame.iconified);
+    frame.getEventHandler().add(StageIconifiedEvent.class, action);
+
+    manager.windowIconified(new HackedWindowEvent(frame));
+
+    assertEquals(true, action.invoked);
   }
 
   @Test
-  public void frameNotifiedWhenActivatedAndDeactivated() throws Exception
+  public void stageNotifiedWhenDeiconified() throws Exception
   {
-    manager.windowActivated(new WindowEvent(frame.getWindow(), 1));
-    assertEquals(true, frame.activated);                
-    manager.windowDeactivated(new WindowEvent(frame.getWindow(), 1));
-    assertEquals(false, frame.activated);
+    frame.getEventHandler().add(StageDeiconifiedEvent.class, action);
+
+    manager.windowDeiconified(new HackedWindowEvent(frame));
+
+    assertEquals(true, action.invoked);
+  }
+
+  @Test
+  public void stageNotifiedWhenFocusGained() throws Exception
+  {
+    frame.getEventHandler().add(StageGainedFocusEvent.class, action);
+
+    manager.windowGainedFocus(new HackedWindowEvent(frame));
+
+    assertEquals(true, action.invoked);
+  }
+  
+  @Test
+  public void stageNotifiedWhenFocusLost() throws Exception
+  {
+    frame.getEventHandler().add(StageLostFocusEvent.class, action);
+
+    manager.windowLostFocus(new HackedWindowEvent(frame));
+
+    assertEquals(true, action.invoked);
   }
 }

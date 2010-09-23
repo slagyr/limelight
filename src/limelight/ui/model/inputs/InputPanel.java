@@ -3,11 +3,12 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.*;
-import limelight.ui.events.*;
-import limelight.ui.events.Event;
+import limelight.ui.events.panel.*;
 import limelight.ui.model.*;
 import limelight.ui.painting.DefaultPainter;
 
@@ -17,7 +18,7 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
 {
   protected InputPanel()
   {
-    final EventHandler handler = getEventHandler();
+    final PanelEventHandler handler = getEventHandler();
     handler.add(FocusGainedEvent.class, MakeDirtyAction.instance);
     handler.add(FocusLostEvent.class, MakeDirtyAction.instance);
 
@@ -87,7 +88,7 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
 
     public void invoke(Event event)
     {
-      final Panel panel = event.getRecipient();
+      final Panel panel = ((PanelEvent)event).getRecipient();
       panel.markAsDirty();
       if(panel.getParent() != null)
         panel.getParent().markAsDirty();

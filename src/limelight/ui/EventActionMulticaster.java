@@ -1,6 +1,7 @@
 package limelight.ui;
 
-import limelight.ui.events.Event;
+import limelight.events.Event;
+import limelight.events.EventAction;
 
 import java.util.ArrayList;
 import java.util.List;

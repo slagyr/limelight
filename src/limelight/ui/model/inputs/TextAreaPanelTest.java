@@ -5,10 +5,9 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
-import limelight.ui.events.*;
+import limelight.ui.events.panel.*;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
-import limelight.ui.text.TextLocation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

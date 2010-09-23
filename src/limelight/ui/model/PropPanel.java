@@ -6,13 +6,17 @@ package limelight.ui.model;
 import limelight.Context;
 import limelight.LimelightError;
 import limelight.LimelightException;
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.ui.api.Prop;
-import limelight.ui.events.*;
-import limelight.ui.events.Event;
+import limelight.ui.events.panel.MouseEnteredEvent;
+import limelight.ui.events.panel.MouseExitedEvent;
+import limelight.ui.events.panel.MouseWheelEvent;
+import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.*;
 import limelight.util.Box;
@@ -511,8 +515,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   {
     public static MouseWheelAction instance = new MouseWheelAction();
 
-    public void invoke(Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       if(!(event.getRecipient() instanceof PropPanel))
         return;
 
@@ -531,8 +536,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   {
     public static HoverOnAction instance = new HoverOnAction();
 
-    public void invoke(Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getRoot() == null)
         return;
@@ -554,8 +560,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   {
     public static HoverOffAction instance = new HoverOffAction();
 
-    public void invoke(Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getStyle().hasScreen())
         panel.getStyle().removeScreen();
