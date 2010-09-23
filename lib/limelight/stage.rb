@@ -260,12 +260,6 @@ module Limelight
       return @frame.closed?
     end
 
-    # Invoked when the stage is being closed.
-    # System hook that should NOT be called by you.
-    #
-    def closing(e)
-    end
-
     # Invoked when the stage has been closed.
     # System hook that should NOT be called by you.
     # It's not garunteed that this hook will be called when Limelight is shutting down.  
@@ -274,33 +268,6 @@ module Limelight
       @current_scene.visible = false if @current_scene
       @current_scene = nil
       @theater.stage_closed(self)
-    end
-
-    # Invoked when the stage has gained focus on the desktop.  Only 1 stage my have focus at a time.
-    # System hook that should NOT be called by you.
-    #
-    def focus_gained(e)
-      @theater.stage_activated(self)
-    end
-
-    # Invoked when the stage has lost focus on the desktop.  Only 1 stage my have focus at a time.
-    # System hook that should NOT be called by you.
-    #
-    def focus_lost(e)
-    end
-
-    # Invoked when the stage has been iconified.  This occurs when the stage is no longer visible on the desktop
-    # and an icon for the stage has been added to the OS's taskbar or dock.
-    # System hook that should NOT be called by you.
-    #
-    def iconified(e)
-    end
-
-    # Invoked when the stage has been deiconified.  This occurs when the icon for the stage has been removed from the
-    # taskbar or dock, and the stage is again visible on the desktop.  
-    # System hook that should NOT be called by you.
-    #
-    def deiconified(e)
     end
 
     # Invoked when the stage has become the active stage on the desktop.  Only 1 stage my be active at a time.
