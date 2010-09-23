@@ -88,6 +88,7 @@ public class RubyProduction extends Production
     }
     catch(Exception e)
     {
+e.printStackTrace();
       throw new LimelightException("Failed to start JRuby Runtime", e);
     }
     finally

@@ -6,7 +6,7 @@ module Limelight
   About = Java::limelight.About
   Main = Java::limelight.Main
   Context = Java::limelight.Context
-  Studio = Java::limelight..model.Studio
+  Studio = Java::limelight.model.Studio
 
   module BuiltIn
     Styles = Java::limelight.builtin.BuiltInStyles
@@ -33,7 +33,7 @@ module Limelight
 
     ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
 
-    Events = Java::limelight.ui.events 
+    PanelEvents = Java::limelight.ui.events.panel 
 
     module Model #:nodoc:
       Frame = Java::limelight.ui.model.StageFrame

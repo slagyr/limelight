@@ -22,7 +22,7 @@ public class Studio
   public Thread shutdownThread;
   private boolean isShutdown;
   private boolean isShuttingDown;
-  private RuntimeFactory.BirthCertificate utilitiesCertificate;
+  private UtilitiesProduction utilitiesProduction;
 
   public static Studio install()
   {
@@ -75,12 +75,9 @@ public class Studio
     for(Production production: index)
       production.close();
 
-    if(utilitiesCertificate != null)
-    {
-      utilitiesCertificate.production.close();
-      if(Context.instance().runtimeFactory != null)
-        Context.instance().runtimeFactory.terminate(utilitiesCertificate);
-    }
+    if(utilitiesProduction != null)
+      utilitiesProduction.close();
+    
     isShutdown = true;
 
     shutdownThread = new Thread()
@@ -146,19 +143,19 @@ public class Studio
 
   public UtilitiesProduction utilitiesProduction() throws Exception
   {
-    if(utilitiesCertificate == null)
+    if(utilitiesProduction == null)
     {
       String path = FileUtil.pathTo(Context.instance().limelightHome, "lib", "limelight", "builtin", "utilities_production");
-      String src = RuntimeFactory.openProductionSrc(path);
-      utilitiesCertificate = Context.instance().runtimeFactory.spawn(src);
-      utilitiesCertificate.production = new UtilitiesProduction(utilitiesCertificate.production);
+//      String src = RuntimeFactory.openProductionSrc(path);
+//      utilitiesCertificate = Context.instance().runtimeFactory.spawn(src);
+      utilitiesProduction = new UtilitiesProduction(open(path));
     }
-    return (UtilitiesProduction) utilitiesCertificate.production;
+    return utilitiesProduction;
   }
 
   public void stubUtilitiesProduction(Production stub)
   {
-    utilitiesCertificate = new RuntimeFactory.BirthCertificate(new UtilitiesProduction(stub));
+    utilitiesProduction = new UtilitiesProduction(stub);
   }
 
   private void adjustNameIfNeeded(Production production)

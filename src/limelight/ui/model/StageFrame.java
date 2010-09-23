@@ -7,14 +7,12 @@ import limelight.Context;
 import limelight.background.PanelPainterLoop;
 import limelight.events.*;
 import limelight.styles.abstrstyling.*;
-import limelight.ui.events.stage.StageClosedEvent;
 import limelight.ui.events.stage.StageClosingEvent;
 import limelight.ui.images.Images;
 import limelight.util.Colors;
 import limelight.ui.api.Stage;
 
 import java.awt.*;
-import java.awt.event.*;
 
 public class StageFrame extends Frame implements PropFrame
 {
