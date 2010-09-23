@@ -4,7 +4,7 @@
 package limelight.ruby;
 
 import limelight.LimelightException;
-import limelight.Production;
+import limelight.model.Production;
 
 public class MockRuntimeFactory extends RuntimeFactory
 {

@@ -3,9 +3,10 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.model.MockProduction;
 import limelight.builtin.BuiltInStyles;
 import limelight.ui.Panel;
-import limelight.ui.events.*;
+import limelight.ui.events.panel.*;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
@@ -31,6 +32,8 @@ public class ComboBoxPanelTest
     root = new MockRootPanel();
     root.add(parent);
     root.styleStore = BuiltInStyles.all();
+
+    root.setProduction(new MockProduction());
   }
 
   @Test
@@ -113,6 +116,7 @@ public class ComboBoxPanelTest
   @Test
   public void pressingButtonOpensList() throws Exception
   {
+    root.illuminate();
     panel.setOptions(1, 2, 3);
 
     new ButtonPushedEvent(panel).dispatch(panel);

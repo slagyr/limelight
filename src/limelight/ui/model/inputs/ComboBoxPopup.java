@@ -1,13 +1,15 @@
 package limelight.ui.model.inputs;
 
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.styles.RichStyle;
-import limelight.ui.EventAction;
 import limelight.ui.Panel;
-import limelight.ui.api.MockProp;
-import limelight.ui.events.Event;
-import limelight.ui.events.MouseClickedEvent;
-import limelight.ui.events.MouseEnteredEvent;
+import limelight.ui.SimpleProp;
+import limelight.ui.events.panel.MouseClickedEvent;
+import limelight.ui.events.panel.MouseEnteredEvent;
+import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.model.PropPanel;
+import limelight.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,23 +41,25 @@ class ComboBoxPopup
   {
     EventAction itemChosenAction = new EventAction()
     {
-      public void invoke(Event event)
+      public void invoke(Event e)
       {
+        PanelEvent event = (PanelEvent)e;
         choose((PropPanel) event.getRecipient());
       }
     };
 
     EventAction itemSelectedAction = new EventAction()
     {
-      public void invoke(Event event)
+      public void invoke(Event e)
       {
+        PanelEvent event = (PanelEvent)e;
         select((PropPanel) event.getRecipient());
       }
     };
 
     for(Object option : comboBox.getOptions())
     {
-      PropPanel listItem = new PropPanel(new MockProp("limelight_builtin_combo_box_popup_list_item"));
+      PropPanel listItem = new PropPanel(new SimpleProp(), Util.toMap("name", "limelight_builtin_combo_box_popup_list_item"));
       listItem.getStyle().addExtension(stylesStore.get("limelight_builtin_combo_box_popup_list_item"));
       listItem.getEventHandler().add(MouseClickedEvent.class, itemChosenAction);
       listItem.getEventHandler().add(MouseEnteredEvent.class, itemSelectedAction);
@@ -85,7 +89,7 @@ class ComboBoxPopup
 
   private void createList()
   {
-    popupList = new PropPanel(new MockProp("limelight_builtin_combo_box_popup_list"));
+    popupList = new PropPanel(new SimpleProp(), Util.toMap("name", "limelight_builtin_combo_box_popup_list"));
     popupList.getStyle().addExtension(stylesStore.get("limelight_builtin_combo_box_popup_list"));
     popupList.getStyle().setX(comboBox.getParent().getAbsoluteLocation().x - comboBox.getRoot().getX());
     popupList.getStyle().setY(comboBox.getParent().getAbsoluteLocation().y - comboBox.getRoot().getY());
@@ -101,7 +105,7 @@ class ComboBoxPopup
 
   private void createCurtains()
   {
-    curtains = new PropPanel(new MockProp("limelight_builtin_curtains"));
+    curtains = new PropPanel(new SimpleProp(), Util.toMap("name", "limelight_builtin_curtains"));
     curtains.getStyle().addExtension(stylesStore.get("limelight_builtin_curtains"));
     curtains.getEventHandler().add(MouseClickedEvent.class, new EventAction()
     {

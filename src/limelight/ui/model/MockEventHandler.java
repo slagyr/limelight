@@ -1,10 +1,11 @@
 package limelight.ui.model;
 
-import limelight.ui.events.Event;
+import limelight.events.Event;
+import limelight.ui.events.panel.PanelEventHandler;
 
 import java.util.LinkedList;
 
-public class MockEventHandler extends EventHandler
+public class MockEventHandler extends PanelEventHandler
 {
   public LinkedList<Event> events = new LinkedList<Event>();
 

@@ -3,9 +3,10 @@
 
 module Limelight
 
+  About = Java::limelight.About
   Main = Java::limelight.Main
   Context = Java::limelight.Context
-  Studio = Java::limelight.Studio
+  Studio = Java::limelight..model.Studio
 
   module BuiltIn
     Styles = Java::limelight.builtin.BuiltInStyles

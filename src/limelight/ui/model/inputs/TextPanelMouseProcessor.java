@@ -3,10 +3,9 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.*;
 import limelight.ui.Panel;
-import limelight.ui.events.*;
-import limelight.ui.events.Event;
+import limelight.ui.events.panel.MouseDraggedEvent;
+import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
 import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
 import limelight.ui.text.TextLocation;

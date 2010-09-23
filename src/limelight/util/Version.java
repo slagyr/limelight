@@ -26,6 +26,13 @@ public class Version
     }
   }
 
+  public Version(int major, int minor, int patch)
+  {
+    this.major = major;
+    this.minor = minor;
+    this.patch = patch;
+  }
+
   public int getMajor()
   {
     return major;
@@ -82,5 +89,11 @@ public class Version
   public boolean isGreaterThanOrEqual(Version that)
   {
     return this.isGreaterThan(that) || this.equals(that);
+  }
+
+  @Override
+  public String toString()
+  {
+    return major + "." + minor + "." + patch;
   }
 }

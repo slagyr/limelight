@@ -1,7 +1,6 @@
 package limelight.ui.model.inputs;
 
-import limelight.ui.events.*;
-import limelight.ui.model.EventHandler;
+import limelight.ui.events.panel.*;
 import limelight.ui.model.MockRootPanel;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +47,7 @@ public class InputPanelTest
   @Test
   public void delegatesEventsToParent() throws Exception
   {
-    final EventHandler handler = panel.getEventHandler();
+    final PanelEventHandler handler = panel.getEventHandler();
     assertEquals(true, handler.getActions(MousePressedEvent.class).contains(PropogateToParentAction.instance));
     assertEquals(true, handler.getActions(MouseReleasedEvent.class).contains(PropogateToParentAction.instance));
     assertEquals(true, handler.getActions(MouseClickedEvent.class).contains(PropogateToParentAction.instance));

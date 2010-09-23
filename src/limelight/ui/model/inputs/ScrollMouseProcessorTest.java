@@ -2,10 +2,10 @@ package limelight.ui.model.inputs;
 
 import limelight.Context;
 import limelight.background.AnimationLoop;
-import limelight.ui.events.MouseDraggedEvent;
-import limelight.ui.events.MouseExitedEvent;
-import limelight.ui.events.MousePressedEvent;
-import limelight.ui.events.MouseReleasedEvent;
+import limelight.ui.events.panel.MouseDraggedEvent;
+import limelight.ui.events.panel.MouseExitedEvent;
+import limelight.ui.events.panel.MousePressedEvent;
+import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.util.Box;
 import org.junit.AfterClass;
 import org.junit.Before;

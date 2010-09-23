@@ -5,8 +5,8 @@ package limelight.ui.model;
 
 import limelight.LimelightException;
 import limelight.styles.RichStyle;
-import limelight.ui.api.MockProp;
 import limelight.ui.Panel;
+import limelight.ui.api.MockProp;
 import limelight.ui.api.MockScene;
 import limelight.Context;
 import limelight.util.MockResourceLoader;
@@ -32,7 +32,7 @@ public class ScenePanelTest extends Assert
     frame = new MockPropFrame();
     root = new ScenePanel(new MockProp());
     child = new MockPropablePanel("child");
-    Context.instance().keyboardFocusManager = new limelight.KeyboardFocusManager().installed();
+    Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager().installed();
   }
 
   @Test

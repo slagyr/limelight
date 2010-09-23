@@ -5,7 +5,7 @@ package limelight.ruby;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.Production;
+import limelight.model.Production;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaSupport;
 import org.jruby.javasupport.JavaClass;

@@ -4,8 +4,13 @@
 package limelight.util;
 
 import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-public class VersionTest extends TestCase
+import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
+import static junit.framework.Assert.assertEquals;
+
+public class VersionTest
 {
   private Version version1_2_3;
   private Version copy1_2_3;
@@ -14,6 +19,7 @@ public class VersionTest extends TestCase
   private Version version1_3_3;
   private Version vertion2_2_3;
 
+  @Before
   public void setUp() throws Exception
   {
     version1_2_3 = new Version("1.2.3");
@@ -23,8 +29,19 @@ public class VersionTest extends TestCase
     version1_3_3 = new Version("1.3.3");
     vertion2_2_3 = new Version("2.2.3");
   }
+  
+  @Test
+  public void creationWithParts() throws Exception
+  {
+    Version version = new Version(4, 3, 2);
 
-  public void testValidParsing() throws Exception
+    assertEquals(4, version.getMajor());
+    assertEquals(3, version.getMinor());
+    assertEquals(2, version.getPatch());
+  }
+
+  @Test
+  public void validParsing() throws Exception
   {
     checkParsedVersion("1.2.3", 1, 2, 3);
     checkParsedVersion("0.0.1", 0, 0, 1);
@@ -40,7 +57,8 @@ public class VersionTest extends TestCase
     assertEquals(patch, version.getPatch());
   }
 
-  public void testInvlidVersionFormats() throws Exception
+  @Test
+  public void invlidVersionFormats() throws Exception
   {
     checkInvalidVersion(null, "Could not parse version number: null");
     checkInvalidVersion("", "Could not parse version number: ");
@@ -64,7 +82,8 @@ public class VersionTest extends TestCase
     }
   }
 
-  public void testEquals() throws Exception
+  @Test
+  public void equality() throws Exception
   {
     assertEquals(version1_2_3, copy1_2_3);
     assertEquals(copy1_2_3, version1_2_3);
@@ -72,7 +91,8 @@ public class VersionTest extends TestCase
     assertEquals(false, version3_2_1.equals(version1_2_3));
   }
 
-  public void testLessThan() throws Exception
+  @Test
+  public void lessThan() throws Exception
   {
     assertEquals(false, version1_2_3.isLessThan(copy1_2_3));
     assertEquals(true, version1_2_3.isLessThan(version1_2_4));
@@ -82,8 +102,9 @@ public class VersionTest extends TestCase
     assertEquals(false, version1_3_3.isLessThan(version1_2_4));
     assertEquals(false, version1_2_4.isLessThan(copy1_2_3));
   }
-  
-  public void testGreaterThan() throws Exception
+
+  @Test
+  public void greaterThan() throws Exception
   {
     assertEquals(false, version1_2_3.isGreaterThan(copy1_2_3));
     assertEquals(false, version1_2_3.isGreaterThan(version1_2_4));
@@ -93,18 +114,27 @@ public class VersionTest extends TestCase
     assertEquals(true, version1_3_3.isGreaterThan(version1_2_4));
     assertEquals(true, version1_2_4.isGreaterThan(copy1_2_3));
   }
-  
-  public void testGreaterThanOrEqual() throws Exception
+
+  @Test
+  public void greaterThanOrEqual() throws Exception
   {
     assertEquals(true, version1_2_3.isGreaterThanOrEqual(copy1_2_3));
     assertEquals(false, version1_2_3.isGreaterThanOrEqual(version1_2_4));
     assertEquals(true, version1_2_4.isGreaterThanOrEqual(copy1_2_3));
   }
 
-  public void testLessThanOrEquals() throws Exception
+  @Test
+  public void lessThanOrEquals() throws Exception
   {
     assertEquals(true, version1_2_3.isLessThanOrEqual(copy1_2_3));
     assertEquals(true, version1_2_3.isLessThanOrEqual(version1_2_4));
     assertEquals(false, version1_2_4.isLessThanOrEqual(copy1_2_3));
+  }
+
+  @Test
+  public void toStringValue() throws Exception
+  {
+    assertEquals("4.3.2", new Version(4, 3, 2).toString());
+    assertEquals("7.8.99", new Version(7, 8, 99).toString());      
   }
 }

@@ -2,8 +2,8 @@ package limelight.ui.model.inputs;
 
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.events.KeyEvent;
-import limelight.ui.events.KeyPressedEvent;
+import limelight.ui.events.panel.KeyEvent;
+import limelight.ui.events.panel.KeyPressedEvent;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import org.junit.Before;

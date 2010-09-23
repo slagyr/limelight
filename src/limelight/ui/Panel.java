@@ -4,7 +4,7 @@
 package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
-import limelight.ui.model.EventHandler;
+import limelight.ui.events.panel.PanelEventHandler;
 import limelight.ui.model.ParentPanelBase;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
@@ -56,5 +56,5 @@ public interface Panel extends Iterable<Panel>
 
   boolean hasFocus();
 
-  EventHandler getEventHandler();
+  PanelEventHandler getEventHandler();
 }

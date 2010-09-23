@@ -83,7 +83,6 @@ module Limelight
     #
     #   stage.fullscreen = true
     #
-
     def fullscreen=(on)
       @frame.setFullScreen(on)
     end

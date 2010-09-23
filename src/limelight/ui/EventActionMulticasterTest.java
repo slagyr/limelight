@@ -1,6 +1,7 @@
 package limelight.ui;
 
-import limelight.ui.events.*;
+import limelight.events.Event;
+import limelight.events.EventAction;
 import org.junit.Before;
 import org.junit.Test;
 

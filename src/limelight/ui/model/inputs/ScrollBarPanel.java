@@ -4,10 +4,10 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.ScreenableStyle;
-import limelight.ui.events.MouseDraggedEvent;
-import limelight.ui.events.MouseExitedEvent;
-import limelight.ui.events.MousePressedEvent;
-import limelight.ui.events.MouseReleasedEvent;
+import limelight.ui.events.panel.MouseDraggedEvent;
+import limelight.ui.events.panel.MouseExitedEvent;
+import limelight.ui.events.panel.MousePressedEvent;
+import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.model.PanelBase;
 import limelight.ui.model.inputs.painting.ScrollBarPainter;
 import limelight.util.Box;

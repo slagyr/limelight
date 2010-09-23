@@ -4,15 +4,15 @@
 package limelight.ui.model;
 
 import limelight.LimelightException;
-import limelight.MockProduction;
+import limelight.model.MockProduction;
 import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.api.MockCastingDirector;
 import limelight.ui.api.MockProp;
 import limelight.ui.*;
-import limelight.ui.events.MouseEnteredEvent;
-import limelight.ui.events.MouseExitedEvent;
-import limelight.ui.events.MouseWheelEvent;
+import limelight.ui.events.panel.MouseEnteredEvent;
+import limelight.ui.events.panel.MouseExitedEvent;
+import limelight.ui.events.panel.MouseWheelEvent;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
 import limelight.Context;

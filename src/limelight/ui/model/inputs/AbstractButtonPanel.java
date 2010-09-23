@@ -1,13 +1,14 @@
 package limelight.ui.model.inputs;
 
+import limelight.events.Event;
+import limelight.events.EventAction;
 import limelight.styles.ScreenableStyle;
-import limelight.ui.EventAction;
 import limelight.ui.Fonts;
 import limelight.ui.Panel;
-import limelight.ui.events.ButtonPushedEvent;
-import limelight.ui.events.CharTypedEvent;
-import limelight.ui.events.Event;
-import limelight.ui.events.MouseClickedEvent;
+import limelight.ui.events.panel.ButtonPushedEvent;
+import limelight.ui.events.panel.CharTypedEvent;
+import limelight.ui.events.panel.MouseClickedEvent;
+import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.model.TextPanel;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ public abstract class AbstractButtonPanel extends InputPanel
     ButtonTextPainter.paintOn(graphics, this);
   }
 
-  private static boolean isPushEvent(Event event)
+  private static boolean isPushEvent(PanelEvent event)
   {
     return event instanceof MouseClickedEvent || ((event instanceof CharTypedEvent) && ((CharTypedEvent) event).getChar() == ' ');
   }
@@ -36,8 +37,9 @@ public abstract class AbstractButtonPanel extends InputPanel
   {
     public static PushAction instance = new PushAction();
 
-    public void invoke(Event event)
+    public void invoke(Event e)
     {
+      PanelEvent event = (PanelEvent)e;
       if(event.isConsumed())
         return;
 
