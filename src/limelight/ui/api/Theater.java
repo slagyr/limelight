@@ -3,7 +3,7 @@
 
 package limelight.ui.api;
 
-public interface Theater
+public class Theater
 {
-  void stage_activated(Stage stage);
 }
+
