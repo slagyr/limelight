@@ -5,13 +5,12 @@ package limelight.ui.api;
 
 import limelight.model.Production;
 
-public class UtilitiesProduction extends Production
+public class UtilitiesProduction
 {
   private Production production;
 
   public UtilitiesProduction(Production production)
   {
-    super("utilities");
     this.production = production;
   }
 
@@ -37,25 +36,22 @@ public class UtilitiesProduction extends Production
 
   public Object callMethod(String name, Object... args)
   {
-//    return production.callMethod(name, args);
-    return null;
+    return production.getProxy().callMethod(name, args);
   }
 
   public void publish_on_drb(int port)
   {
-//    production.publish_on_drb(port);
+    production.getProxy().publish_on_drb(port);
   }
 
   public Object alert(Object message)
   {   
-//    return production.callMethod("alert", message);
-    return null;
+    return production.getProxy().callMethod("alert", message);
   }
 
   public Object shouldProceedWithIncompatibleVersion(String name, String version)
   {
-//    return production.callMethod("proceed_with_incompatible_version?", name, version);
-    return null;
+    return production.getProxy().callMethod("proceed_with_incompatible_version?", name, version);
   }
 
   public Production getProduction()

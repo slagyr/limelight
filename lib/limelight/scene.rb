@@ -116,7 +116,7 @@ module Limelight
     # TODO It doesn't quite make sense that a scene loads other scene.  It has to replace itself?
     #
     def load(scene_name)
-      @production.producer.open_scene(scene_name, @stage)
+      production.producer.open_scene(scene_name, @stage)
     end
 #
 #    # Add the Prop to the index.  Provides fast lookup by id.

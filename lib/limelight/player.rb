@@ -41,67 +41,67 @@ module Limelight
     end
 
     def on_mouse_pressed(& action)
-      __add_action(Limelight::UI::Events::MousePressedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MousePressedEvent, action)
     end
 
     def on_mouse_released(& action)
-      __add_action(Limelight::UI::Events::MouseReleasedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MouseReleasedEvent, action)
     end
 
     def on_mouse_clicked(& action)
-      __add_action(Limelight::UI::Events::MouseClickedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MouseClickedEvent, action)
     end
 
     def on_mouse_entered(& action)
-      __add_action(Limelight::UI::Events::MouseEnteredEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MouseEnteredEvent, action)
     end
 
     def on_mouse_exited(& action)
-      __add_action(Limelight::UI::Events::MouseExitedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MouseExitedEvent, action)
     end
 
     def on_mouse_moved(& action)
-      __add_action(Limelight::UI::Events::MouseMovedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MouseMovedEvent, action)
     end
 
     def on_mouse_wheel(& action)
-      __add_action(Limelight::UI::Events::MouseWheelEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MouseWheelEvent, action)
     end
 
     def on_mouse_dragged(& action)
-      __add_action(Limelight::UI::Events::MouseDraggedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::MouseDraggedEvent, action)
     end
 
     def on_key_pressed(& action)
-      __add_action(Limelight::UI::Events::KeyPressedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::KeyPressedEvent, action)
     end
 
     def on_key_released(& action)
-      __add_action(Limelight::UI::Events::KeyReleasedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::KeyReleasedEvent, action)
     end
 
     def on_char_typed(& action)
-      __add_action(Limelight::UI::Events::CharTypedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::CharTypedEvent, action)
     end
 
     def on_focus_gained(& action)
-      __add_action(Limelight::UI::Events::FocusGainedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::FocusGainedEvent, action)
     end
 
     def on_focus_lost(& action)
-      __add_action(Limelight::UI::Events::FocusLostEvent, action)
+      __add_action(Limelight::UI::PanelEvents::FocusLostEvent, action)
     end
 
     def on_button_pushed(& action)
-      __add_action(Limelight::UI::Events::ButtonPushedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::ButtonPushedEvent, action)
     end
 
     def on_value_changed(& action)
-      __add_action(Limelight::UI::Events::ValueChangedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::ValueChangedEvent, action)
     end
 
     def on_scene_opened(& action)
-      __add_action(Limelight::UI::Events::SceneOpenedEvent, action)
+      __add_action(Limelight::UI::PanelEvents::SceneOpenedEvent, action)
     end
 
     def prop_reader(*symbols)

@@ -25,7 +25,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   private final Map<String, RichStyle> styles;
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
-  private boolean shouldAllowClose;
+  private boolean shouldAllowClose = true;
 
   public ScenePanel(Prop prop)
   {

@@ -307,63 +307,63 @@ module Limelight
     # GUI Events ##########################################
 
     def on_mouse_pressed(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MousePressedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MousePressedEvent, action)
     end
 
     def on_mouse_released(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MouseReleasedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseReleasedEvent, action)
     end
 
     def on_mouse_clicked(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MouseClickedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseClickedEvent, action)
     end
 
     def on_mouse_moved(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MouseMovedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseMovedEvent, action)
     end
 
     def on_mouse_dragged(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MouseDraggedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseDraggedEvent, action)
     end
 
     def on_mouse_entered(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MouseEnteredEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseEnteredEvent, action)
     end
 
     def on_mouse_exited(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MouseExitedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseExitedEvent, action)
     end
 
     def on_mouse_wheel(& action)
-      @panel.event_handler.add(Limelight::UI::Events::MouseWheelEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseWheelEvent, action)
     end
 
     def on_key_pressed(& action)
-      @panel.event_handler.add(Limelight::UI::Events::KeyPressedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::KeyPressedEvent, action)
     end
 
     def on_key_released(& action)
-      @panel.event_handler.add(Limelight::UI::Events::KeyReleasedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::KeyReleasedEvent, action)
     end
 
     def on_char_typed(& action)
-      @panel.event_handler.add(Limelight::UI::Events::CharTypedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::CharTypedEvent, action)
     end
 
     def on_focus_gained(& action)
-      @panel.event_handler.add(Limelight::UI::Events::FocusGainedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::FocusGainedEvent, action)
     end
 
     def on_focus_lost(& action)
-      @panel.event_handler.add(Limelight::UI::Events::FocusLostEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::FocusLostEvent, action)
     end
 
     def on_button_pushed(& action)
-      @panel.event_handler.add(Limelight::UI::Events::ButtonPushedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::ButtonPushedEvent, action)
     end
 
     def on_value_changed(& action)
-      @panel.event_handler.add(Limelight::UI::Events::ValueChangedEvent, action)
+      @panel.event_handler.add(Limelight::UI::PanelEvents::ValueChangedEvent, action)
     end
 
     def apply_options(options)

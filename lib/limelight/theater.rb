@@ -9,8 +9,6 @@ module Limelight
   # A Theater represents a group of Stages.  Productions require a Theater in which to open.
   #
   class Theater
-    
-    include UI::Api::Theater
 
     # Returns the theater's active stage.  i.e. the stage most recently used.
     #
