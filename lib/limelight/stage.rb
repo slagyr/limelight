@@ -18,7 +18,7 @@ module Limelight
 
     attr_accessor :should_remain_hidden #:nodoc:
 
-    include Java::limelight.ui.api.StageProxy
+    include Java::limelight.model.api.StageProxy
 
     # To create a new Stage, it be given a Theater to which it belongs, and the name is optional.  If no name is provided
     # it will default to 'default'.  A stage name must be unique, so it is recommended you provide a name.
