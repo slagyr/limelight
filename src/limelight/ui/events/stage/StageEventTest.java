@@ -2,8 +2,8 @@ package limelight.ui.events.stage;
 
 import limelight.Context;
 import limelight.ui.api.MockStageProxy;
+import limelight.ui.model.FramedStage;
 import limelight.ui.model.MockFrameManager;
-import limelight.ui.model.Stage;
 import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class StageEventTest
 {
-  private Stage stage;
+  private FramedStage stage;
 
   private static class TestableStageEvent extends StageEvent
   {
@@ -22,7 +22,7 @@ public class StageEventTest
   public void setUp() throws Exception
   {
     Context.instance().frameManager = new MockFrameManager();
-    stage = new Stage(new MockStageProxy());
+    stage = new FramedStage(new MockStageProxy());
   }
   
   @Test

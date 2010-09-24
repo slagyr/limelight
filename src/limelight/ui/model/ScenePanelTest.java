@@ -23,12 +23,12 @@ public class ScenePanelTest extends Assert
 { 
   private ScenePanel root;
   private MockPropablePanel child;
-  private MockPropFrame frame;
+  private MockStage frame;
 
   @Before
   public void setUp() throws Exception
   {
-    frame = new MockPropFrame();
+    frame = new MockStage();
     root = new ScenePanel(new MockProp());
     child = new MockPropablePanel("child");
     Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager().installed();

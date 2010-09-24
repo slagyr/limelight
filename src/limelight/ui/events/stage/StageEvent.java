@@ -1,24 +1,24 @@
 package limelight.ui.events.stage;
 
 import limelight.events.Event;
-import limelight.ui.model.PropFrame;
+import limelight.ui.model.Stage;
 
 public abstract class StageEvent extends Event
 {
-  private PropFrame stage;
+  private Stage stage;
 
-  public PropFrame getStage()
+  public Stage getStage()
   {
     return stage;
   }
 
-  public void setStage(PropFrame stage)
+  public void setStage(Stage stage)
   {
     subject = stage;
     this.stage = stage;
   }
 
-  public void dispatch(PropFrame stage)
+  public void dispatch(Stage stage)
   {
     setStage(stage);
     stage.getEventHandler().dispatch(this);

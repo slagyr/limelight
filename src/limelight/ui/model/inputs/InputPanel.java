@@ -53,7 +53,7 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
   @Override
   public boolean hasFocus()
   {
-    final PropFrame stage = getStage();
+    final Stage stage = getStage();
     return stage != null && stage.getKeyListener().getFocusedPanel() == this;
   }
 

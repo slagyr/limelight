@@ -5,7 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.api.MockProp;
 import limelight.ui.events.panel.*;
-import limelight.ui.model.MockPropFrame;
+import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
@@ -23,7 +23,7 @@ public class TextInputPanelTest
   private MockRootPanel root;
   private PropPanel parent;
   private TextModel model;
-  private MockPropFrame stage;
+  private MockStage stage;
 
   @Before
   public void setUp()
@@ -33,7 +33,7 @@ public class TextInputPanelTest
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     root.add(parent);
-    stage = new MockPropFrame();
+    stage = new MockStage();
     root.setStage(stage);
     model = panel.getModel();
     model.setText("Some Text");

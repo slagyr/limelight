@@ -4,7 +4,7 @@ import limelight.ui.MockGraphics;
 import limelight.ui.Painter;
 import limelight.ui.api.MockProp;
 import limelight.ui.model.MockDrawable;
-import limelight.ui.model.MockPropFrame;
+import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.TextBoxPanel;
@@ -17,7 +17,7 @@ import java.awt.*;
 public class TextPanelBorderPainterTest extends Assert
 {
   private static Painter realBorderPainter;
-  private MockPropFrame stage;
+  private MockStage stage;
 
   @BeforeClass
   public static void recordPainters()
@@ -45,7 +45,7 @@ public class TextPanelBorderPainterTest extends Assert
     MockRootPanel root = new MockRootPanel();
     parent = new PropPanel(new MockProp());
     root.add(parent);
-    stage = new MockPropFrame();
+    stage = new MockStage();
     root.setStage(stage);
     panel = new TextBoxPanel();
     parent.add(panel);

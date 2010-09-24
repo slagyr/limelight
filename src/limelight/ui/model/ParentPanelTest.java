@@ -28,7 +28,7 @@ public class ParentPanelTest
   public void setUp() throws Exception
   {
     root = new ScenePanel(new MockProp());
-    root.setStage(new MockPropFrame());
+    root.setStage(new MockStage());
     panel = new TestableParentPanel();
     root.add(panel);
   }
@@ -45,7 +45,7 @@ public class ParentPanelTest
     sibling = new MockPanel();
     parent.add(sibling);
 
-    root.setStage(new MockPropFrame());
+    root.setStage(new MockStage());
   }
 
   @Test

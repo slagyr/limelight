@@ -9,14 +9,14 @@ import java.awt.event.KeyEvent;
 public class RootKeyListener implements java.awt.event.KeyListener
 {
   private Panel focusedPanel;
-  private PropFrame stage;
+  private Stage stage;
 
   public RootKeyListener(RootPanel rootPanel)
   {
     focusedPanel = rootPanel;
   }
 
-  public RootKeyListener(PropFrame stage)
+  public RootKeyListener(Stage stage)
   {
     this.stage = stage;
   }

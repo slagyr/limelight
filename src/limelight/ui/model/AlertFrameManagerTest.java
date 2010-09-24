@@ -30,7 +30,7 @@ public class AlertFrameManagerTest
   private AlertFrameManager manager;
   private StageFrame frame;
   private MockEventAction action;
-  private MockPropFrame stage;
+  private MockStage stage;
 
   @Before
   public void setUp() throws Exception
@@ -39,7 +39,7 @@ public class AlertFrameManagerTest
     Context.instance().frameManager = manager;
     Context.instance().studio = new MockStudio();
     Context.instance().environment = "test";
-    stage = new MockPropFrame();
+    stage = new MockStage();
     frame = new StageFrame(stage);
     action = new MockEventAction();
   }
@@ -90,7 +90,7 @@ public class AlertFrameManagerTest
   {
     MockContext context = MockContext.stub();
     stage.setVital(false);
-    StageFrame frame2 = new StageFrame(new MockPropFrame());
+    StageFrame frame2 = new StageFrame(new MockStage());
     manager.watch(frame);
     manager.watch(frame2);
 
@@ -113,7 +113,7 @@ public class AlertFrameManagerTest
   {
     ArrayList<StageFrame> result = new ArrayList<StageFrame>();
     stage.visible = true;
-    final MockPropFrame stage2 = new MockPropFrame();
+    final MockStage stage2 = new MockStage();
     StageFrame frame2 = new StageFrame(stage2);
 
     manager.getVisibleFrames(result);
