@@ -3,12 +3,12 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
 import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.PropPanel;
-import limelight.ui.api.MockProp;
+import limelight.ui.model.Prop;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,14 +18,14 @@ import static junit.framework.Assert.assertSame;
 public class ButtonPanelTest
 {
   private ButtonPanel panel;
-  private PropPanel parent;
+  private Prop parent;
   private MockRootPanel root;
 
   @Before
   public void setUp() throws Exception
   {
     panel = new ButtonPanel();
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     parent.add(panel);
     root = new MockRootPanel();
     root.add(parent);

@@ -2,7 +2,7 @@ package limelight.ui.model;
 
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.util.Box;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,12 +22,12 @@ public class ParentPanelTest
   private MockParentPanel child;
   private MockParentPanel grandChild;
   private MockPanel sibling;
-  private ScenePanel root;
+  private Scene root;
 
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockProp());
+    root = new Scene(new MockPropProxy());
     root.setStage(new MockStage());
     panel = new TestableParentPanel();
     root.add(panel);
@@ -35,7 +35,7 @@ public class ParentPanelTest
 
   private void createFamilyTree()
   {
-    root = new ScenePanel(new MockProp());
+    root = new Scene(new MockPropProxy());
     parent = new MockParentPanel();
     root.add(parent);
     child = new MockParentPanel();
@@ -242,8 +242,8 @@ public class ParentPanelTest
 
   void addPropPanel()
   {
-    MockProp prop = new MockProp();
-    PropPanel propPanel = new PropPanel(prop);
+    MockPropProxy prop = new MockPropProxy();
+    Prop propPanel = new Prop(prop);
     propPanel.add(panel);
   }
 
@@ -455,7 +455,7 @@ public class ParentPanelTest
     child.resetLayout();
     grandChild.resetLayout();
 
-    PropPanel newPanel = new PropPanel(new MockProp());
+    Prop newPanel = new Prop(new MockPropProxy());
     grandChild.add(newPanel);
 
     assertEquals(true, grandChild.needsLayout());

@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.util.MockResourceLoader;
 import limelight.util.TestUtil;
 import limelight.util.Box;
@@ -15,13 +15,13 @@ public class ImagePanelLayoutTest extends TestCase
 {
   private ImagePanel panel;
   private MockPropablePanel parent;
-  private ScenePanel root;
+  private Scene root;
   private MockResourceLoader loader;
 
   public void setUp() throws Exception
   {
-    MockProp scene = new MockProp();
-    root = new ScenePanel(scene);
+    MockPropProxy scene = new MockPropProxy();
+    root = new Scene(scene);
     root.setStage(new MockStage());
     parent = new MockPropablePanel();
     loader = new MockResourceLoader();

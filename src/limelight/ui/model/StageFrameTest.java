@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import limelight.ui.KeyboardFocusManager;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.api.MockStageProxy;
 import limelight.ui.*;
 import limelight.Context;
@@ -79,7 +79,7 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldLoad() throws Exception
   {
-    ScenePanel panel = new ScenePanel(new MockProp());
+    Scene panel = new Scene(new MockPropProxy());
     stage.setRoot(panel);
 
     RootPanel root = stage.getRoot();
@@ -91,7 +91,7 @@ public class StageFrameTest extends Assert
   public void shouldLoadSetsDefaultCursor() throws Exception
   {
     stage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    ScenePanel panel = new ScenePanel(new MockProp());
+    Scene panel = new Scene(new MockPropProxy());
     stage.setRoot(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, stage.getCursor().getType());
@@ -100,13 +100,13 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldLoadWillDestroyPreviousRoots() throws Exception
   {
-    ScenePanel panel = new ScenePanel(new MockProp());
+    Scene panel = new Scene(new MockPropProxy());
     stage.setRoot(panel);
 
     RootPanel firstRoot = stage.getRoot();
     assertEquals(true, firstRoot.isIlluminated());
 
-    ScenePanel panel2 = new ScenePanel(new MockProp());
+    Scene panel2 = new Scene(new MockPropProxy());
     stage.setRoot(panel2);
 
     assertEquals(false, firstRoot.isIlluminated());
@@ -319,7 +319,7 @@ public class StageFrameTest extends Assert
   {
     assertEquals(true, stage.shouldAllowClose());
 
-    ScenePanel scene = new ScenePanel(new MockProp());
+    Scene scene = new Scene(new MockPropProxy());
     stage.setRoot(scene);
     scene.setShouldAllowClose(true);             
     assertEquals(true, stage.shouldAllowClose());

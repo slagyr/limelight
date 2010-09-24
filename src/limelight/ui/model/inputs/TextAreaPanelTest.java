@@ -4,11 +4,11 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.PropPanel;
+import limelight.ui.model.Prop;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import static junit.framework.Assert.assertEquals;
 public class TextAreaPanelTest extends Assert
 {
   TextAreaPanel panel;
-  PropPanel parent;
+  Prop parent;
   MockGraphics graphics;
   TextModel model;
   private MockRootPanel root;
@@ -29,7 +29,7 @@ public class TextAreaPanelTest extends Assert
   public void setUp()
   {
     panel = new TextAreaPanel();
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     parent.add(panel);
 
     root = new MockRootPanel();

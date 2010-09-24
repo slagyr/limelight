@@ -61,17 +61,17 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
   public void setParent(ParentPanelBase panel)
   {
     super.setParent(panel);
-    if(panel instanceof PropPanel)
+    if(panel instanceof Prop)
     {
-      PropPanel propPanel = (PropPanel) panel;
-      propPanel.sterilize();
-      propPanel.setTextAccessor(this);      
-      setDefaultStyles(propPanel.getStyle());
-      propPanel.setPainter(getPropPainter(propPanel));
+      Prop prop = (Prop) panel;
+      prop.sterilize();
+      prop.setTextAccessor(this);
+      setDefaultStyles(prop.getStyle());
+      prop.setPainter(getPropPainter(prop));
     }
   }
 
-  protected Painter getPropPainter(PropPanel propPanel)
+  protected Painter getPropPainter(Prop prop)
   {
     return DefaultPainter.instance;
   }

@@ -69,11 +69,11 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
     return null;
   }
 
-  public void addToIndex(PropPanel propPanel)
+  public void addToIndex(Prop prop)
   {
   }
 
-  public void removeFromIndex(PropPanel propPanel)
+  public void removeFromIndex(Prop prop)
   {
   }
 

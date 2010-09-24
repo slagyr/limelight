@@ -3,11 +3,11 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.PropPanel;
+import limelight.ui.model.Prop;
 import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class TextInputPanelTest
 {
   private TextInputPanel panel;
   private MockRootPanel root;
-  private PropPanel parent;
+  private Prop parent;
   private TextModel model;
   private MockStage stage;
 
@@ -30,7 +30,7 @@ public class TextInputPanelTest
   {
     root = new MockRootPanel();
     panel = new MockTextInputPanel();
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     parent.add(panel);
     root.add(parent);
     stage = new MockStage();

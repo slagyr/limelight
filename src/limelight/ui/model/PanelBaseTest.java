@@ -5,7 +5,7 @@
 package limelight.ui.model;
 
 import limelight.ui.MockPanel;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.util.Box;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,12 +20,12 @@ public class PanelBaseTest extends Assert
   private MockParentPanel child;
   private MockPanel grandChild;
   private MockPanel sibling;
-  private ScenePanel root;
+  private Scene root;
 
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockProp());
+    root = new Scene(new MockPropProxy());
     root.setStage(new MockStage());
     panel = new TestablePanelBase();
     root.add(panel);
@@ -83,7 +83,7 @@ public class PanelBaseTest extends Assert
 
   private void createFamilyTree()
   {
-    root = new ScenePanel(new MockProp());
+    root = new Scene(new MockPropProxy());
     parent = new MockParentPanel();
     root.add(parent);
     child = new MockParentPanel();

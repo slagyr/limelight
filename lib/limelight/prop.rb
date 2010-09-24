@@ -20,11 +20,11 @@ module Limelight
 
     class << self
       def panel_class #:nodoc:
-        return UI::Model::PropPanel
+        return Java::limelight.ui.model.Prop
       end
     end
 
-    include UI::Api::Prop
+    include Java::limelight.ui.api.PropProxy
 
 #    attr_accessor :style, :hover_style
     attr_reader :panel, :players #:nodoc:

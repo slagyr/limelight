@@ -45,7 +45,7 @@ public class ButtonPanel extends AbstractButtonPanel
   }
 
   @Override
-  protected Painter getPropPainter(PropPanel propPanel)
+  protected Painter getPropPainter(Prop prop)
   {
     return BottonPropPainter.instance;
   }
@@ -117,7 +117,7 @@ public class ButtonPanel extends AbstractButtonPanel
         if(panel.hasFocus())
           focusPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
 
-        final ButtonPanel button = (ButtonPanel) ((PropPanel) panel).getTextAccessor(); // TODO MDM Yuk!
+        final ButtonPanel button = (ButtonPanel) ((Prop) panel).getTextAccessor(); // TODO MDM Yuk!
         if(button.isBeingPressed)
           selectedPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
         else

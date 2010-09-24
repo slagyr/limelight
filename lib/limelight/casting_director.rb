@@ -25,6 +25,7 @@ module Limelight
     end
 
     def cast_player(prop, player_name)
+      return if !prop.is_a?(Limelight::Prop)
       recruiter = Recruiter.new(prop, player_name, @loader)
       Limelight::Player.cast(recruiter.player, prop) if recruiter.player_exists?
     end

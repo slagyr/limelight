@@ -24,7 +24,7 @@ public class PropPanelLayout implements Layout
   // TODO MDM This gets called ALOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
   public void doLayout(Panel thePanel, boolean topLevel)
   {
-    PropPanel panel = (PropPanel) thePanel;
+    Prop panel = (Prop) thePanel;
     panel.resetLayout();
     FloaterLayout.instance.doLayout(panel);
     Style style = panel.getStyle();
@@ -53,14 +53,14 @@ public class PropPanelLayout implements Layout
     panel.wasLaidOut();
   }
 
-  private void distributeGreediness(PropPanel panel, LinkedList<Row> rows)
+  private void distributeGreediness(Prop panel, LinkedList<Row> rows)
   {
     for(Row row : rows)
       row.distributeGreeyWidth();
     distributeGreedyHeight(panel, rows);
   }
 
-  private void distributeGreedyHeight(PropPanel panel, LinkedList<Row> rows)
+  private void distributeGreedyHeight(Prop panel, LinkedList<Row> rows)
   {
     int consumedHeight = 0;
     int greedyRows = 0;
@@ -111,7 +111,7 @@ public class PropPanelLayout implements Layout
     doLayout(child, true);
   }
 
-  private boolean hasNonScrollBarChildren(PropPanel panel)
+  private boolean hasNonScrollBarChildren(Prop panel)
   {
     List<Panel> children = panel.getChildren();
     if(children.size() == 0)
@@ -124,7 +124,7 @@ public class PropPanelLayout implements Layout
       return true;
   }
 
-  private void layoutScrollBars(PropPanel panel, Dimension consumedDimensions)
+  private void layoutScrollBars(Prop panel, Dimension consumedDimensions)
   {
     ScrollBarPanel vertical = panel.getVerticalScrollbar();
     ScrollBarPanel horizontal = panel.getHorizontalScrollbar();
@@ -143,7 +143,7 @@ public class PropPanelLayout implements Layout
     }
   }
 
-  private void collapseAutoDimensions(PropPanel panel, Dimension consumedDimensions)
+  private void collapseAutoDimensions(Prop panel, Dimension consumedDimensions)
   {
     Style style = panel.getStyle();
 
@@ -153,36 +153,36 @@ public class PropPanelLayout implements Layout
     panel.setSize(width, height);
   }
 
-  public int horizontalInsets(PropPanel panel)
+  public int horizontalInsets(Prop panel)
   {
     return panel.getBounds().width - panel.getPaddedBounds().width;
   }
 
-  public int verticalInsets(PropPanel panel)
+  public int verticalInsets(Prop panel)
   {
     return panel.getBounds().height - panel.getPaddedBounds().height;
   }
 
-  protected void doPreliminaryLayoutOnChildren(PropPanel panel)
+  protected void doPreliminaryLayoutOnChildren(Prop panel)
   {
     for(Panel child : panel.getChildren())
     {
       if(child.needsLayout())
       {
-        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth().isAuto())
+        if(!(child instanceof Prop) || child.getStyle().getCompiledWidth().isAuto())
         {
           child.getDefaultLayout().doLayout(child, true);
         }
         else
         {
-          ((PropPanel)child).greediness.setSize(0, 0);
-          snapToSize((PropPanel) child, false);
+          ((Prop)child).greediness.setSize(0, 0);
+          snapToSize((Prop) child, false);
         }
       }
     }
   }
 
-  protected void doPostLayoutOnChildren(PropPanel panel)
+  protected void doPostLayoutOnChildren(Prop panel)
   {
     for(Panel child : panel.getChildren())
     {
@@ -193,7 +193,7 @@ public class PropPanelLayout implements Layout
     }
   }
 
-  public void layoutRows(PropPanel panel, Dimension consumedDimension, LinkedList<Row> rows)
+  public void layoutRows(Prop panel, Dimension consumedDimension, LinkedList<Row> rows)
   {
     Style style = panel.getStyle();
     int y = style.getCompiledVerticalAlignment().getY(consumedDimension.height, panel.getChildConsumableBounds());
@@ -215,7 +215,7 @@ public class PropPanelLayout implements Layout
     }
   }
 
-  protected LinkedList<Row> buildRows(PropPanel panel)
+  protected LinkedList<Row> buildRows(Prop panel)
   {
     LinkedList<Row> rows = new LinkedList<Row>();
     Row currentRow = newRow(panel, rows);
@@ -234,7 +234,7 @@ public class PropPanelLayout implements Layout
     return rows;
   }
 
-  private Row newRow(PropPanel panel, LinkedList<Row> rows)
+  private Row newRow(Prop panel, LinkedList<Row> rows)
   {
     Row currentRow = new Row(panel.getChildConsumableBounds().width);
     rows.add(currentRow);
@@ -252,7 +252,7 @@ public class PropPanelLayout implements Layout
     }
   }
 
-  public void establishScrollBars(PropPanel panel)
+  public void establishScrollBars(Prop panel)
   {
     Style style = panel.getStyle();
     if(panel.getVerticalScrollbar() == null && style.getCompiledVerticalScrollbar().isOn())
@@ -266,7 +266,7 @@ public class PropPanelLayout implements Layout
       panel.removeHorizontalScrollBar();
   }
 
-  public void snapToSize(PropPanel panel, boolean topLevel)
+  public void snapToSize(Prop panel, boolean topLevel)
   {
     if(panel.getParent() == null) // can happen if removed from tree
       return;
@@ -354,7 +354,7 @@ public class PropPanelLayout implements Layout
         {
           if(hasGreedyWidth(item))
           {
-            PropPanel panel = (PropPanel) item;
+            Prop panel = (Prop) item;
             int greedyWidth = splits[splitIndex++];
             panel.greediness.width = greedyWidth;
             item.setSize(item.getWidth() + greedyWidth, item.getHeight());
@@ -365,12 +365,12 @@ public class PropPanelLayout implements Layout
 
     private boolean hasGreedyWidth(Panel item)
     {
-      return item instanceof PropPanel && item.getStyle().getCompiledWidth() instanceof GreedyDimensionValue;
+      return item instanceof Prop && item.getStyle().getCompiledWidth() instanceof GreedyDimensionValue;
     }
 
     private boolean hasGreedyHeight(Panel item)
     {
-      return item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionValue;
+      return item instanceof Prop && item.getStyle().getCompiledHeight() instanceof GreedyDimensionValue;
     }
 
     public boolean isGreedy()
@@ -383,9 +383,9 @@ public class PropPanelLayout implements Layout
       height += extraHeight;
       for(Panel item : items)
       {
-        if(item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionValue)
+        if(item instanceof Prop && item.getStyle().getCompiledHeight() instanceof GreedyDimensionValue)
         {
-          PropPanel panel = (PropPanel)item;
+          Prop panel = (Prop)item;
           panel.greediness.height = extraHeight;
           item.setSize(item.getWidth(), height);
         }

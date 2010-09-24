@@ -1,11 +1,11 @@
 package limelight.ui;
 
-import limelight.ui.api.Prop;
+import limelight.ui.api.PropProxy;
 import limelight.util.ResourceLoader;
 
 import java.util.Map;
 
-public class SimpleProp implements Prop
+public class SimplePropProxy implements PropProxy
 {
   public ResourceLoader getLoader()
   {

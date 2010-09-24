@@ -4,7 +4,7 @@
 package limelight.background;
 
 import limelight.BufferedImagePool;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.model.*;
 import limelight.ui.MockPanel;
 import limelight.Context;
@@ -20,7 +20,7 @@ public class PanelPainterLoopTest extends Assert
   private PanelPainterLoop loop;
   private MockFrameManager frameManager;
   private StageFrame activeFrame;
-  private ScenePanel activeRoot;
+  private Scene activeRoot;
 
   @Before
   public void setUp() throws Exception
@@ -30,7 +30,7 @@ public class PanelPainterLoopTest extends Assert
     Context.instance().frameManager = frameManager;
     MockStage activeStage = new MockStage();
     activeFrame = new StageFrame(activeStage);
-    activeRoot = new ScenePanel(new MockProp());
+    activeRoot = new Scene(new MockPropProxy());
     activeRoot.setStage(activeStage);
     activeStage.setRoot(activeRoot);
   }

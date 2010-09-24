@@ -60,6 +60,7 @@ public class Studio
     }
     catch(Exception e)
     {
+e.printStackTrace();      
       alert(e);
       if(index.isEmpty())
         shutdown();
@@ -148,9 +149,15 @@ public class Studio
     if(utilitiesProduction == null)
     {
       String path = FileUtil.pathTo(Context.instance().limelightHome, "lib", "limelight", "builtin", "utilities_production");
-//      String src = RuntimeFactory.openProductionSrc(path);
-//      utilitiesCertificate = Context.instance().runtimeFactory.spawn(src);
-      utilitiesProduction = new UtilitiesProduction(open(path));
+      try
+      {
+        utilitiesProduction = new UtilitiesProduction(open(path));
+      }
+      catch(Exception e)
+      {
+        e.printStackTrace();
+        shutdown();
+      }
     }
     return utilitiesProduction;
   }

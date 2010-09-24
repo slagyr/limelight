@@ -58,7 +58,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   }
 
   @Override
-  protected Painter getPropPainter(PropPanel propPanel)
+  protected Painter getPropPainter(Prop prop)
   {
     return TextInputPropPainter.instance;
   }

@@ -5,15 +5,15 @@ package limelight.ui.model;
 
 import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.painting.PaintAction;
 import limelight.ui.painting.Border;
-import limelight.ui.api.MockProp;
-import limelight.ui.api.Prop;
+import limelight.ui.api.PropProxy;
 import limelight.util.Box;
 
 public class MockPropablePanel extends MockParentPanel implements PropablePanel, PaintablePanel
 {
-  public final MockProp prop;
+  public final MockPropProxy prop;
   public Box childConsumableBounds;
   private int prepForSnapWidth;
   private int prepForSnapHeight;
@@ -25,7 +25,7 @@ public class MockPropablePanel extends MockParentPanel implements PropablePanel,
 
   public MockPropablePanel()
   {
-    prop = new MockProp();
+    prop = new MockPropProxy();
   }
 
   public MockPropablePanel(String name)
@@ -80,7 +80,7 @@ public class MockPropablePanel extends MockParentPanel implements PropablePanel,
     return new Border(getStyle(), boxInsideMargins);
   }
 
-  public Prop getProp()
+  public PropProxy getProp()
   {
     return prop;
   }

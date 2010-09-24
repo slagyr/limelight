@@ -2,11 +2,11 @@ package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.Painter;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.model.MockDrawable;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.PropPanel;
+import limelight.ui.model.Prop;
 import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.ui.painting.BorderPainter;
 import limelight.ui.painting.MockPainter;
@@ -34,7 +34,7 @@ public class TextPanelBorderPainterTest extends Assert
   private MockDrawable normalDrawable;
   private MockDrawable focusDrawable;
 
-  private PropPanel parent;
+  private Prop parent;
   private Painter painter;
   private MockGraphics graphics;
   private TextBoxPanel panel;
@@ -43,7 +43,7 @@ public class TextPanelBorderPainterTest extends Assert
   public void setUp() throws Exception
   {
     MockRootPanel root = new MockRootPanel();
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     root.add(parent);
     stage = new MockStage();
     root.setStage(stage);

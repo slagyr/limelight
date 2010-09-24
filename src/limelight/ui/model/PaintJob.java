@@ -117,7 +117,7 @@ public class PaintJob
   {
     if(panel.hasChildren())
     {
-      Box innards = panel instanceof PropPanel ? ((PropPanel)panel).getPaddedBounds() :  panel.getChildConsumableBounds() ;
+      Box innards = panel instanceof Prop ? ((Prop)panel).getPaddedBounds() :  panel.getChildConsumableBounds() ;
       graphics.clipRect(innards.x, innards.y, innards.width, innards.height);
       for(Panel child : panel.getChildren())
         if(!child.isFloater())

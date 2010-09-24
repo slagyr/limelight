@@ -12,7 +12,7 @@ import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.*;
 import limelight.ui.Panel;
-import limelight.ui.api.Prop;
+import limelight.ui.api.PropProxy;
 import limelight.ui.events.panel.MouseEnteredEvent;
 import limelight.ui.events.panel.MouseExitedEvent;
 import limelight.ui.events.panel.MouseWheelEvent;
@@ -27,11 +27,11 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class PropPanel extends ParentPanelBase implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
+public class Prop extends ParentPanelBase implements PropablePanel, PaintablePanel, ChangeablePanel, StyleObserver
 {
   private static final Map<String, Object> EMPTY_OPTIONS = new EmptyMap<String, Object>();
 
-  private final Prop prop;
+  private final PropProxy propProxy;
   private String id;
   private String name;
   private final ScreenableStyle style;
@@ -52,9 +52,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
   public Dimension greediness = new Dimension(0, 0);
   public boolean borderChanged = true;
 
-  public PropPanel(Prop prop)
+  public Prop(PropProxy propProxy)
   {
-    this.prop = prop;
+    this.propProxy = propProxy;
     textAccessor = TempTextAccessor.instance();
     style = new ScreenableStyle();
     hoverStyle = new RichStyle();
@@ -64,9 +64,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     getEventHandler().add(MouseExitedEvent.class, HoverOffAction.instance);
   }
 
-  public PropPanel(Prop prop, Map<String, Object> options)
+  public Prop(PropProxy propProxy, Map<String, Object> options)
   {
-    this(prop);
+    this(propProxy);
     addOptions(options);
   }
 
@@ -94,9 +94,9 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     this.textAccessor = textAccessor;
   }
 
-  public Prop getProp()
+  public PropProxy getProp()
   {
-    return prop;
+    return propProxy;
   }
 
   @Override
@@ -394,7 +394,7 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
 
     illuminatePlayers(illuminateOptions.remove("players"));
 
-    prop.applyOptions(illuminateOptions);
+    propProxy.applyOptions(illuminateOptions);
 
     for(Map.Entry<String, Object> entry : illuminateOptions.entrySet())
       System.err.println("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue()); // TODO MDM - This should get logged
@@ -437,23 +437,23 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     return name;
   }
 
-  public List<PropPanel> getChildPropPanels()
+  public List<Prop> getChildPropPanels()
   {
-    List<PropPanel> childProps = new LinkedList<PropPanel>();
+    List<Prop> childProps = new LinkedList<Prop>();
     for(Panel child : getChildren())
     {
-      if(child instanceof PropPanel)
-        childProps.add((PropPanel) child);
+      if(child instanceof Prop)
+        childProps.add((Prop) child);
     }
     return childProps;
   }
 
-  public List<PropPanel> findByName(String name)
+  public List<Prop> findByName(String name)
   {
-    List<PropPanel> results = new LinkedList<PropPanel>();
+    List<Prop> results = new LinkedList<Prop>();
     if(name == null)
       return results;
-    for(PropPanel panel : getChildPropPanels())
+    for(Prop panel : getChildPropPanels())
     {
       if(name.equals(panel.getName()))
         results.add(panel);
@@ -518,11 +518,11 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     public void invoke(Event e)
     {
       PanelEvent event = (PanelEvent)e;
-      if(!(event.getRecipient() instanceof PropPanel))
+      if(!(event.getRecipient() instanceof Prop))
         return;
 
       MouseWheelEvent wheelEvent = (MouseWheelEvent) event;
-      PropPanel panel = (PropPanel) event.getRecipient();
+      Prop panel = (Prop) event.getRecipient();
       ScrollBarPanel scrollBar = wheelEvent.isVertical() ? panel.getVerticalScrollbar() : panel.getHorizontalScrollbar();
       if(scrollBar != null)
         scrollBar.setValue(scrollBar.getValue() + wheelEvent.getUnitsToScroll());
@@ -539,7 +539,7 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     public void invoke(Event e)
     {
       PanelEvent event = (PanelEvent)e;
-      final PropPanel panel = (PropPanel) event.getRecipient();
+      final Prop panel = (Prop) event.getRecipient();
       if(panel.getRoot() == null)
         return;
       //TODO MDM - If the prop has no suface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
@@ -563,7 +563,7 @@ public class PropPanel extends ParentPanelBase implements PropablePanel, Paintab
     public void invoke(Event e)
     {
       PanelEvent event = (PanelEvent)e;
-      final PropPanel panel = (PropPanel) event.getRecipient();
+      final Prop panel = (Prop) event.getRecipient();
       if(panel.getStyle().hasScreen())
         panel.getStyle().removeScreen();
 

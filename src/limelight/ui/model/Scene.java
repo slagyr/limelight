@@ -8,26 +8,26 @@ import limelight.model.Production;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.ui.api.Prop;
+import limelight.ui.api.PropProxy;
 import limelight.util.ResourceLoader;
 
 import java.awt.*;
 import java.util.*;
 
-public class ScenePanel extends PropPanel implements RootPanel
+public class Scene extends Prop implements RootPanel
 {
   private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
   private Stage stage;
   private final Map<String, RichStyle> styles;
-  private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
+  private HashMap<String, Prop> index = new HashMap<String, Prop>();
   private Production production;
   private boolean shouldAllowClose = true;
 
-  public ScenePanel(Prop prop)
+  public Scene(PropProxy propProxy)
   {
-    super(prop);
+    super(propProxy);
     styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
   }
 
@@ -196,8 +196,8 @@ public class ScenePanel extends PropPanel implements RootPanel
   {
     if(imageCache == null)
     {
-      Prop prop = getProp();
-      ResourceLoader loader = prop.getLoader();
+      PropProxy propProxy = getProp();
+      ResourceLoader loader = propProxy.getLoader();
       imageCache = new ImageCache(loader);
     }
     return imageCache;
@@ -214,20 +214,20 @@ public class ScenePanel extends PropPanel implements RootPanel
     return styles;
   }
 
-  public void addToIndex(PropPanel propPanel)
+  public void addToIndex(Prop prop)
   {
-    PropPanel value = index.get(propPanel.getId());
-    if(value != null && value != propPanel)
-      throw new LimelightException("Duplicate id: " + propPanel.getId());
-    index.put(propPanel.getId(), propPanel);
+    Prop value = index.get(prop.getId());
+    if(value != null && value != prop)
+      throw new LimelightException("Duplicate id: " + prop.getId());
+    index.put(prop.getId(), prop);
   }
 
-  public void removeFromIndex(PropPanel prop)
+  public void removeFromIndex(Prop prop)
   {
     index.remove(prop.getId());
   }
 
-  public PropPanel find(String id)
+  public Prop find(String id)
   {
     return index.get(id);
   }
@@ -258,7 +258,7 @@ public class ScenePanel extends PropPanel implements RootPanel
 
     public void doLayout(Panel panel)
     {
-      ScenePanel scene = (ScenePanel)panel;
+      Scene scene = (Scene)panel;
       Style style = scene.getStyle();
       final Stage stage = scene.stage;
       Insets insets = stage.getInsets();

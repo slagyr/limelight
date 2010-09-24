@@ -6,8 +6,8 @@ package limelight.ui.model.inputs;
 import limelight.ui.RadioButtonGroup;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
-import limelight.ui.model.PropPanel;
-import limelight.ui.api.MockProp;
+import limelight.ui.model.Prop;
+import limelight.ui.api.MockPropProxy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,13 +16,13 @@ import static junit.framework.Assert.assertEquals;
 public class RadioButtonPanelTest
 {
   private RadioButtonPanel panel;
-  private PropPanel parent;
+  private Prop parent;
 
   @Before
   public void setUp() throws Exception
   {
     panel = new RadioButtonPanel();
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     parent.add(panel);
 
     RadioButtonGroup group = new RadioButtonGroup();

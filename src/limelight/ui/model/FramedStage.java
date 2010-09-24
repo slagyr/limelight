@@ -28,16 +28,12 @@ public class FramedStage extends Stage
   private boolean opened;
   private boolean closing;
   private StageFrame frame;
-
-  protected FramedStage()
+  
+  public FramedStage(StageProxy stage)
   {
     frame = new StageFrame(this);
     addListeners();
-  }
-
-  public FramedStage(StageProxy stage)
-  {
-    this();
+    
     this.stage = stage;
 
     Context.instance().frameManager.watch(frame);

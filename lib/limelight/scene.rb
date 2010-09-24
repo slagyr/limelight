@@ -15,11 +15,11 @@ module Limelight
 
     class << self
       def panel_class #:nodoc:
-        return UI::Model::ScenePanel
+        return Java::limelight.ui.model.Scene
       end
     end
 
-    include UI::Api::Scene
+    include Java::limelight.ui.api.SceneProxy
 
     attr_reader :button_groups, :casting_director, :cast
     attr_accessor :stage, :visible

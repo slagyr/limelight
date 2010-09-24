@@ -4,8 +4,8 @@
 package limelight.util;
 
 import limelight.ui.Panel;
-import limelight.ui.api.Prop;
-import limelight.ui.model.PropPanel;
+import limelight.ui.api.PropProxy;
+import limelight.ui.model.Prop;
 
 import javax.imageio.ImageIO;
 import java.text.DecimalFormat;
@@ -50,11 +50,11 @@ public class Debug
 
   public void log(Panel panel, String message)
   {
-    if(panel instanceof PropPanel)
+    if(panel instanceof Prop)
     {
-      PropPanel propPanel = (PropPanel) panel;
-      Prop prop = propPanel.getProp();
-      if(prop != null && "sandbox".equals(propPanel.getName()))
+      Prop prop = (Prop) panel;
+      PropProxy propProxy = prop.getProp();
+      if(propProxy != null && "sandbox".equals(prop.getName()))
         System.err.println(message);
     }
   }

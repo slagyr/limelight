@@ -149,7 +149,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
 
   private void exit(Panel descendant, Panel ancestor, MouseEvent e)
   {
-    while(descendant != ancestor && !(descendant instanceof ScenePanel))
+    while(descendant != ancestor && !(descendant instanceof Scene))
     {
       if(descendant != null)
       {

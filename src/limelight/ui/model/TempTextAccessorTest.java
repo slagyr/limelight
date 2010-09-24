@@ -1,6 +1,6 @@
 package limelight.ui.model;
 
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,7 +9,7 @@ public class TempTextAccessorTest extends Assert
   @Test
   public void shouldReplaceItselfWithTextPanel() throws Exception
   {
-    PropPanel panel = new PropPanel(new MockProp());
+    Prop panel = new Prop(new MockPropProxy());
     assertEquals(TempTextAccessor.instance(), panel.getTextAccessor());
 
     TempTextAccessor.instance().setText("Howdy", panel);
