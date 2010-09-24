@@ -49,7 +49,7 @@ module Limelight
   class Recruiter
 
     def initialize(prop, player_name, loader)
-      @prop = prop
+      @prop = prop 
       @cast = prop.scene.cast
       @player_name = player_name
       @module_name = player_name.camalized

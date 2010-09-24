@@ -60,7 +60,7 @@ public class ScrollBarPanelTest
   public void changesCausesLayout() throws Exception
   {
     ScenePanel root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
+    root.setStage(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
     root.add(parent);
     parent.add(verticalScrollBar);
@@ -74,7 +74,7 @@ public class ScrollBarPanelTest
   public void shouldParentIsMarkedAsChanged() throws Exception
   {
     ScenePanel root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
+    root.setStage(new MockPropFrame());
     PropPanel parent = new PropPanel(new MockProp());
     root.add(parent);
     parent.add(verticalScrollBar);

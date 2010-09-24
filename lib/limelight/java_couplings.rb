@@ -36,7 +36,7 @@ module Limelight
     PanelEvents = Java::limelight.ui.events.panel 
 
     module Model #:nodoc:
-      Frame = Java::limelight.ui.model.StageFrame
+      Frame = Java::limelight.ui.model.Stage
       PropPanel = Java::limelight.ui.model.PropPanel
       ScenePanel = Java::limelight.ui.model.ScenePanel
       ImagePanel = Java::limelight.ui.model.ImagePanel
@@ -54,8 +54,8 @@ module Limelight
     module Api #:nodoc:
       Scene = Java::limelight.ui.api.Scene
       Prop = Java::limelight.ui.api.Prop
-      Stage = Java::limelight.ui.api.Stage
-      Theater = Java::limelight.ui.api.Theater
+      Stage = Java::limelight.ui.api.StageProxy
+#      Theater = Java::limelight.ui.api.Theater
 #      Production = Java::limelight.ui.api.Production
     end
 

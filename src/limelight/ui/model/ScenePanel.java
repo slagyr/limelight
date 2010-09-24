@@ -16,12 +16,10 @@ import java.util.*;
 
 public class ScenePanel extends PropPanel implements RootPanel
 {
-  private RootMouseListener mouseListener;
-  private RootKeyListener keyListener;
   private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
-  private PropFrame frame;
+  private PropFrame stage;
   private final Map<String, RichStyle> styles;
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
@@ -33,45 +31,18 @@ public class ScenePanel extends PropPanel implements RootPanel
     styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
   }
 
-  public void setFrame(PropFrame newFrame)
-  {
-    if(frame != null && newFrame != frame)
+  public void setStage(PropFrame newFrame)
+  {   
+    if(stage != null && newFrame != stage)
       delluminate();
 
-    frame = newFrame;
+    stage = newFrame;
 
-    if(frame != null)
+    if(stage != null)
     {
       illuminate();
       addPanelNeedingLayout(this);
     }
-  }
-
-  @Override
-  public void illuminate()
-  {
-    mouseListener = new RootMouseListener(this);
-    frame.addMouseListener(mouseListener);
-    frame.addMouseMotionListener(mouseListener);
-    frame.addMouseWheelListener(mouseListener);
-
-    keyListener = new RootKeyListener(this);
-
-    frame.addKeyListener(keyListener);
-
-    super.illuminate();
-  }
-
-  @Override
-  public void delluminate()
-  {
-//    removeKeyboardFocus();
-    frame.removeMouseListener(mouseListener);
-    frame.removeMouseMotionListener(mouseListener);
-    frame.removeMouseWheelListener(mouseListener);
-    frame.removeKeyListener(keyListener);
-    mouseListener = null;
-    super.delluminate();
   }
 
   @Override
@@ -89,7 +60,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   @Override
   public Graphics2D getGraphics()
   {
-    return (Graphics2D)frame.getGraphics();
+    return (Graphics2D) stage.getGraphics();
   }
 
   @Override
@@ -107,18 +78,13 @@ public class ScenePanel extends PropPanel implements RootPanel
   @Override
   public void setCursor(Cursor cursor)
   {
-    if(frame.getCursor() != cursor)
-      frame.setCursor(cursor);
+    if(stage.getCursor() != cursor)
+      stage.setCursor(cursor);
   }
 
   public Cursor getCursor()
   {
-    return frame.getCursor();
-  }
-
-  public RootMouseListener getMouseListener()
-  {
-    return mouseListener;
+    return stage.getCursor();
   }
 
   public void addPanelNeedingLayout(Panel child)
@@ -237,19 +203,15 @@ public class ScenePanel extends PropPanel implements RootPanel
     return imageCache;
   }
 
-  public PropFrame getFrame()
+  @Override
+  public PropFrame getStage()
   {
-    return frame;
+    return stage;
   }
 
   public Map<String, RichStyle> getStylesStore()
   {
     return styles;
-  }
-
-  public RootKeyListener getKeyListener()
-  {
-    return keyListener;
   }
 
   public void addToIndex(PropPanel propPanel)
@@ -298,13 +260,13 @@ public class ScenePanel extends PropPanel implements RootPanel
     {
       ScenePanel scene = (ScenePanel)panel;
       Style style = scene.getStyle();
-      final PropFrame fame = scene.frame;
-      Insets insets = fame.getInsets();
+      final PropFrame stage = scene.stage;
+      Insets insets = stage.getInsets();
 
       panel.setLocation(insets.left, insets.top);
 
-      final int consumableWidth = fame.getWidth() - insets.left - insets.right;
-      final int consumableHeight = fame.getHeight() - insets.top - insets.bottom;
+      final int consumableWidth = stage.getWidth() - insets.left - insets.right;
+      final int consumableHeight = stage.getHeight() - insets.top - insets.bottom;
       final int width = style.getCompiledWidth().calculateDimension(consumableWidth, style.getCompiledMinWidth(), style.getCompiledMaxWidth(), 0);
       final int height = style.getCompiledHeight().calculateDimension(consumableHeight, style.getCompiledMinHeight(), style.getCompiledMaxHeight(), 0);
       scene.setSize(width, height);

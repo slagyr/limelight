@@ -17,6 +17,8 @@ import java.io.ByteArrayOutputStream;
 
 public class Studio
 {
+  Production productionStub; // Used for testing
+
   private static Studio instance;
   private final List<Production> index;
   public Thread shutdownThread;
@@ -51,7 +53,7 @@ public class Studio
   {
     try
     {
-      RubyProduction production = new RubyProduction(productionPath);
+      Production production = productionStub == null ? new RubyProduction(productionPath) : productionStub;
       production.open();
       add(production);
       return production;

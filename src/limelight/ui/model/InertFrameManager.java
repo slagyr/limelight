@@ -8,23 +8,23 @@ import java.util.ArrayList;
 
 public class InertFrameManager implements FrameManager
 {
-  private List<PropFrame> frames = new ArrayList<PropFrame>();
+  private List<StageFrame> frames = new ArrayList<StageFrame>();
 
-  public void watch(PropFrame stageFrame)
+  public void watch(StageFrame stageFrame)
   {
     frames.add(stageFrame);
   }
 
-  public PropFrame getActiveFrame()
+  public StageFrame getActiveFrame()
   {
     return null;
   }
 
-  public void getVisibleFrames(ArrayList<PropFrame> result)
+  public void getVisibleFrames(ArrayList<StageFrame> result)
   {
   }
 
-  public boolean isWatching(PropFrame frame)
+  public boolean isWatching(StageFrame frame)
   {
     return frames.contains(frame);
   }

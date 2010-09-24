@@ -12,8 +12,6 @@ import limelight.ui.events.panel.*;
 import limelight.ui.model.*;
 import limelight.ui.painting.DefaultPainter;
 
-import static junit.framework.Assert.assertEquals;
-
 public abstract class InputPanel extends PanelBase implements TextAccessor
 {
   protected InputPanel()
@@ -55,7 +53,8 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
   @Override
   public boolean hasFocus()
   {
-    return getRoot().getKeyListener().getFocusedPanel() == this;
+    final PropFrame stage = getStage();
+    return stage != null && stage.getKeyListener().getFocusedPanel() == this;
   }
 
   @Override

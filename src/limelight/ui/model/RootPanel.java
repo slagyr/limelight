@@ -13,7 +13,7 @@ import java.util.Map;
 public interface RootPanel extends Panel, ParentPanel
 {
 
-  void setFrame(PropFrame frame);
+  void setStage(PropFrame frame);
 
   boolean hasPanelsNeedingLayout();
 
@@ -29,15 +29,13 @@ public interface RootPanel extends Panel, ParentPanel
 
   void addPanelNeedingLayout(Panel panel);
 
-  PropFrame getFrame();
+  PropFrame getStage();
 
   void setCursor(Cursor cursor);
 
   Cursor getCursor();
 
   ImageCache getImageCache();
-
-  RootKeyListener getKeyListener();
 
   void addToIndex(PropPanel propPanel);
 

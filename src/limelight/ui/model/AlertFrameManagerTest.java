@@ -11,7 +11,6 @@ import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
@@ -19,32 +18,29 @@ import static junit.framework.Assert.assertEquals;
 
 public class AlertFrameManagerTest
 {
-
-  private static Frame hackFrame = new Frame();
-  private MockEventAction action;
-
   private static class HackedWindowEvent extends WindowEvent
   {
-    public HackedWindowEvent(PropFrame frame)
+    public HackedWindowEvent(StageFrame frame)
     {
-      super(hackFrame, 1, 0, 1);
+      super(frame, 1, 0, 1);
       source = frame;
     }
   }
 
   private AlertFrameManager manager;
-  private MockPropFrame frame;
-  private MockStudio studio;
+  private StageFrame frame;
+  private MockEventAction action;
+  private MockPropFrame stage;
 
   @Before
   public void setUp() throws Exception
   {
     manager = new AlertFrameManager();
-    studio = new MockStudio();
     Context.instance().frameManager = manager;
-    Context.instance().studio = studio;
+    Context.instance().studio = new MockStudio();
     Context.instance().environment = "test";
-    frame = new MockPropFrame();
+    stage = new MockPropFrame();
+    frame = new StageFrame(stage);
     action = new MockEventAction();
   }
 
@@ -55,19 +51,19 @@ public class AlertFrameManagerTest
 
     manager.closeAllFrames();
 
-    assertEquals(true, frame.closed);
+    assertEquals(true, stage.closed);
   }
 
   @Test
   public void shouldAskStageFrameIfItCanClose() throws Exception
   {
-    frame.shouldAllowClose = false;
+    stage.shouldAllowClose = false;
     manager.windowClosing(new HackedWindowEvent(frame));
-    assertEquals(false, frame.closed);
+    assertEquals(false, stage.closed);
 
-    frame.shouldAllowClose = true;
+    stage.shouldAllowClose = true;
     manager.windowClosing(new HackedWindowEvent(frame));
-    assertEquals(true, frame.closed);
+    assertEquals(true, stage.closed);
   }
 
   @Test
@@ -83,7 +79,7 @@ public class AlertFrameManagerTest
   public void shouldNotInvokeShutdownForNonVitalFrames() throws Exception
   {
     MockContext context = MockContext.stub();
-    frame.setVital(false);
+    stage.setVital(false);
     manager.watch(frame);
     manager.windowClosed(new HackedWindowEvent(frame));
     assertEquals(false, context.shutdownAttempted);
@@ -93,8 +89,8 @@ public class AlertFrameManagerTest
   public void shouldInvokeShutdownWhenOnlyNonVitalFramesRemain() throws Exception
   {
     MockContext context = MockContext.stub();
-    frame.setVital(false);
-    MockPropFrame frame2 = new MockPropFrame();
+    stage.setVital(false);
+    StageFrame frame2 = new StageFrame(new MockPropFrame());
     manager.watch(frame);
     manager.watch(frame2);
 
@@ -108,16 +104,17 @@ public class AlertFrameManagerTest
     manager.watch(frame);
     assertEquals(null, manager.getActiveFrame());
 
-    frame.visible = true;
+    stage.visible = true;
     assertEquals(frame, manager.getActiveFrame());
   }
 
   @Test
   public void getVisibleFrames() throws Exception
   {
-    ArrayList<PropFrame> result = new ArrayList<PropFrame>();
-    frame.visible = true;
-    MockPropFrame frame2 = new MockPropFrame();
+    ArrayList<StageFrame> result = new ArrayList<StageFrame>();
+    stage.visible = true;
+    final MockPropFrame stage2 = new MockPropFrame();
+    StageFrame frame2 = new StageFrame(stage2);
 
     manager.getVisibleFrames(result);
     assertEquals(0, result.size());
@@ -128,13 +125,13 @@ public class AlertFrameManagerTest
     assertEquals(1, result.size());
     result.clear();
 
-    frame2.visible = false;
+    stage2.visible = false;
     manager.watch(frame2);
     manager.getVisibleFrames(result);
     assertEquals(1, result.size());
     result.clear();
 
-    frame2.visible = true;
+    stage2.visible = true;
     manager.getVisibleFrames(result);
     assertEquals(2, result.size());
     result.clear();
@@ -143,7 +140,7 @@ public class AlertFrameManagerTest
   @Test
   public void frameIsNotifiedWhenOpened() throws Exception
   {
-    frame.getEventHandler().add(StageOpenedEvent.class, action);
+    stage.getEventHandler().add(StageOpenedEvent.class, action);
 
     manager.windowOpened(new HackedWindowEvent(frame));
 
@@ -153,10 +150,10 @@ public class AlertFrameManagerTest
   @Test
   public void frameIsClosedWhenClosingEventIsReceived() throws Exception
   {
-    frame.shouldAllowClose = true;
+    stage.shouldAllowClose = true;
     manager.windowClosing(new HackedWindowEvent(frame));
 
-    assertEquals(true, frame.closed);
+    assertEquals(true, stage.closed);
   }
 
 //  @Test
@@ -175,8 +172,8 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenActivated() throws Exception
   {
-    frame.visible = true;
-    frame.getEventHandler().add(StageActivatedEvent.class, action);
+    stage.visible = true;
+    stage.getEventHandler().add(StageActivatedEvent.class, action);
 
     manager.windowActivated(new HackedWindowEvent(frame));
 
@@ -186,14 +183,14 @@ public class AlertFrameManagerTest
   @Test
   public void cantActivateFramesThatAreNotVisible() throws Exception
   {
-    frame.visible = false;
-    frame.getEventHandler().add(StageActivatedEvent.class, action);
+    stage.visible = false;
+    stage.getEventHandler().add(StageActivatedEvent.class, action);
 
     manager.windowActivated(new HackedWindowEvent(frame));
     assertEquals(false, action.invoked);
     assertEquals(null, manager.getActiveFrame());
 
-    frame.visible = true;
+    stage.visible = true;
     manager.windowActivated(new HackedWindowEvent(frame));
     assertEquals(true, action.invoked);
     assertEquals(frame, manager.getActiveFrame());
@@ -202,10 +199,10 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenDeactivated() throws Exception
   {
-    frame.visible = true;
+    stage.visible = true;
     manager.windowActivated(new HackedWindowEvent(frame));
     assertEquals(frame, manager.getActiveFrame());
-    frame.getEventHandler().add(StageDeactivatedEvent.class, action);
+    stage.getEventHandler().add(StageDeactivatedEvent.class, action);
 
     manager.windowDeactivated(new HackedWindowEvent(frame));
 
@@ -216,7 +213,7 @@ public class AlertFrameManagerTest
   public void cantDeactivateFramesThatAreNotActive() throws Exception
   {
     assertEquals(null, manager.getActiveFrame());
-    frame.getEventHandler().add(StageDeactivatedEvent.class, action);
+    stage.getEventHandler().add(StageDeactivatedEvent.class, action);
 
     manager.windowDeactivated(new HackedWindowEvent(frame));
 
@@ -226,7 +223,7 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenIconified() throws Exception
   {
-    frame.getEventHandler().add(StageIconifiedEvent.class, action);
+    stage.getEventHandler().add(StageIconifiedEvent.class, action);
 
     manager.windowIconified(new HackedWindowEvent(frame));
 
@@ -236,7 +233,7 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenDeiconified() throws Exception
   {
-    frame.getEventHandler().add(StageDeiconifiedEvent.class, action);
+    stage.getEventHandler().add(StageDeiconifiedEvent.class, action);
 
     manager.windowDeiconified(new HackedWindowEvent(frame));
 
@@ -246,7 +243,7 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenFocusGained() throws Exception
   {
-    frame.getEventHandler().add(StageGainedFocusEvent.class, action);
+    stage.getEventHandler().add(StageGainedFocusEvent.class, action);
 
     manager.windowGainedFocus(new HackedWindowEvent(frame));
 
@@ -256,7 +253,7 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenFocusLost() throws Exception
   {
-    frame.getEventHandler().add(StageLostFocusEvent.class, action);
+    stage.getEventHandler().add(StageLostFocusEvent.class, action);
 
     manager.windowLostFocus(new HackedWindowEvent(frame));
 

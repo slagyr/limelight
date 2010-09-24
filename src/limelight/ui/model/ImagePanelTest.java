@@ -22,7 +22,7 @@ public class ImagePanelTest extends TestCase
   {
     MockProp scene = new MockProp();
     root = new ScenePanel(scene);
-    root.setFrame(new MockPropFrame());
+    root.setStage(new MockPropFrame());
     parent = new MockPropablePanel();
     loader = new MockResourceLoader();
     scene.loader = loader;

@@ -6,6 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockGraphics;
 import limelight.ui.api.MockProp;
 import limelight.ui.events.panel.*;
+import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import org.junit.Assert;
@@ -33,6 +34,7 @@ public class TextAreaPanelTest extends Assert
 
     root = new MockRootPanel();
     root.add(parent);
+    root.setStage(new MockPropFrame());
 
     graphics = new MockGraphics();
     model = panel.getModel();

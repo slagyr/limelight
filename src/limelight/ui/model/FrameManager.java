@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public interface FrameManager
 {
-  void watch(PropFrame frame);
-  PropFrame getActiveFrame();
-  void getVisibleFrames(ArrayList<PropFrame> result);
-  boolean isWatching(PropFrame frame);
+  void watch(StageFrame frame);
+  StageFrame getActiveFrame();
+  void getVisibleFrames(ArrayList<StageFrame> result);
+  boolean isWatching(StageFrame frame);
   int getFrameCount();
   void closeAllFrames();
 }

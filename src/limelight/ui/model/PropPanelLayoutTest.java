@@ -23,7 +23,7 @@ public class PropPanelLayoutTest extends TestCase
   {
     root = new ScenePanel(new MockProp());
     frame = new MockPropFrame();
-    root.setFrame(frame);
+    root.setStage(frame);
     parent = new PropPanel(new MockProp());
     root.add(parent);
     parent.getStyle().setWidth("100");

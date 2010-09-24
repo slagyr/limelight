@@ -141,9 +141,9 @@ public class ComboBoxPanel extends AbstractButtonPanel
         return;
 
       final ComboBoxPanel comboBox = (ComboBoxPanel) event.getRecipient();
-      if(!comboBox.hasFocus() && comboBox.getRoot() != null)
+      if(!comboBox.hasFocus() && comboBox.getStage() != null)
       {
-        comboBox.getRoot().getKeyListener().focusOn(comboBox);
+        comboBox.getStage().getKeyListener().focusOn(comboBox);
       }
       if(comboBox.getPopup() == null)
       {

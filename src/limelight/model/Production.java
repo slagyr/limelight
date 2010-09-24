@@ -28,6 +28,7 @@ public abstract class Production
     resourceLoader = ResourceLoader.forRoot(path);
   }
 
+  public abstract void open();
   public abstract void close();
 
   public String getName()

@@ -19,7 +19,7 @@ public class PanelPainterLoopTest extends Assert
 {
   private PanelPainterLoop loop;
   private MockFrameManager frameManager;
-  private MockPropFrame activeFrame;
+  private StageFrame activeFrame;
   private ScenePanel activeRoot;
 
   @Before
@@ -28,20 +28,15 @@ public class PanelPainterLoopTest extends Assert
     loop = new PanelPainterLoop();
     frameManager = new MockFrameManager();
     Context.instance().frameManager = frameManager;
-    activeFrame = new MockPropFrame();
+    MockPropFrame activeStage = new MockPropFrame();
+    activeFrame = new StageFrame(activeStage);
     activeRoot = new ScenePanel(new MockProp());
-    activeRoot.setFrame(activeFrame);
-    activeFrame.setRoot(activeRoot);
-  }
-  
-  @Test
-  public void shouldIsAnIdleThreadLoop() throws Exception
-  {
-    assertEquals(true, loop instanceof IdleThreadLoop);
+    activeRoot.setStage(activeStage);
+    activeStage.setRoot(activeRoot);
   }
 
   @Test
-  public void shouldGettingRootWhenNoFrameIsActive() throws Exception
+  public void gettingRootWhenNoFrameIsActive() throws Exception
   {
     assertEquals(null, loop.getActiveRoot());
   }
@@ -51,7 +46,7 @@ public class PanelPainterLoopTest extends Assert
   {
     frameManager.focusedFrame = activeFrame;
 
-    assertEquals(activeFrame.getRoot(), loop.getActiveRoot());
+    assertEquals(activeRoot, loop.getActiveRoot());
   }
   
   @Test
@@ -68,8 +63,8 @@ public class PanelPainterLoopTest extends Assert
     
     frameManager.focusedFrame = activeFrame;
 
-    assertEquals(false, activeFrame.getRoot().hasPanelsNeedingLayout());
-    assertEquals(false, activeFrame.getRoot().hasDirtyRegions());
+    assertEquals(false, activeRoot.hasPanelsNeedingLayout());
+    assertEquals(false, activeRoot.hasDirtyRegions());
     assertEquals(true, loop.shouldBeIdle());
   }
 

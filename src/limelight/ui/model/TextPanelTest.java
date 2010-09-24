@@ -43,7 +43,7 @@ public class TextPanelTest
     panel = new TextPanel(parent, "Some Text");
     parent.add(panel);
     root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
+    root.setStage(new MockPropFrame());
     root.add(parent);
     style.setTextColor("green");
     parent.prop.scene = new MockScene();

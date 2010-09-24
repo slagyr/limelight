@@ -14,7 +14,7 @@ public class ScrollLayoutTest extends TestCase
   public void setUp() throws Exception
   {
     ScenePanel root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
+    root.setStage(new MockPropFrame());
     parent = new PropPanel(new MockProp());
     root.add(parent);
     parent.getStyle().setWidth("100");

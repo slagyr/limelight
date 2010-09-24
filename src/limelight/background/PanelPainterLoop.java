@@ -6,7 +6,7 @@ package limelight.background;
 import limelight.ui.Panel;
 import limelight.ui.model.RootPanel;
 import limelight.ui.model.PaintJob;
-import limelight.ui.model.PropFrame;
+import limelight.ui.model.StageFrame;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
 import limelight.Context;
@@ -18,7 +18,7 @@ public class PanelPainterLoop extends IdleThreadLoop
 {
   private final ArrayList<Panel> panelBuffer = new ArrayList<Panel>(50);
   private final ArrayList<Rectangle> regionBuffer = new ArrayList<Rectangle>(50);
-  private final ArrayList<PropFrame> frameBuffer = new ArrayList<PropFrame>(5);
+  private final ArrayList<StageFrame> frameBuffer = new ArrayList<StageFrame>(5);
   private int updatesPerSecond;
   private int optimalDelayTimeNanos;
   private final NanoTimer timer;
@@ -62,9 +62,9 @@ public class PanelPainterLoop extends IdleThreadLoop
   private boolean nothingToDo()
   {
     boolean somethingToDo = false;
-    for(PropFrame stageFrame : frameBuffer)
+    for(StageFrame stageFrame : frameBuffer)
     {
-      RootPanel root = stageFrame.getRoot();
+      RootPanel root = stageFrame.getStage().getRoot();
       if(root != null && (root.hasPanelsNeedingLayout() || root.hasDirtyRegions()))
       {
         somethingToDo = true;
@@ -76,9 +76,9 @@ public class PanelPainterLoop extends IdleThreadLoop
 
   protected void execute()
   {
-    for(PropFrame stageFrame : frameBuffer)
+    for(StageFrame stageFrame : frameBuffer)
     {
-      RootPanel root = stageFrame.getRoot();
+      RootPanel root = stageFrame.getStage().getRoot();
       if(root != null)
       {
         doAllLayouts(root);
@@ -95,9 +95,9 @@ public class PanelPainterLoop extends IdleThreadLoop
 
   public RootPanel getActiveRoot()
   {
-    PropFrame frame = Context.getActiveFrame();
+    StageFrame frame = Context.getActiveFrame();
     if(frame != null)
-      return frame.getRoot();
+      return frame.getStage().getRoot();
     else
       return null;
   }

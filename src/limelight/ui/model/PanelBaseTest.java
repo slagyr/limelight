@@ -26,7 +26,7 @@ public class PanelBaseTest extends Assert
   public void setUp() throws Exception
   {
     root = new ScenePanel(new MockProp());
-    root.setFrame(new MockPropFrame());
+    root.setStage(new MockPropFrame());
     panel = new TestablePanelBase();
     root.add(panel);
   }
@@ -93,7 +93,7 @@ public class PanelBaseTest extends Assert
     sibling = new MockPanel();
     parent.add(sibling);
 
-    root.setFrame(new MockPropFrame());
+    root.setStage(new MockPropFrame());
   }
 
   @Test

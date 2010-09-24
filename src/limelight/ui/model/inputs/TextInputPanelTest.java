@@ -5,6 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.ui.api.MockProp;
 import limelight.ui.events.panel.*;
+import limelight.ui.model.MockPropFrame;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
@@ -22,6 +23,7 @@ public class TextInputPanelTest
   private MockRootPanel root;
   private PropPanel parent;
   private TextModel model;
+  private MockPropFrame stage;
 
   @Before
   public void setUp()
@@ -31,6 +33,8 @@ public class TextInputPanelTest
     parent = new PropPanel(new MockProp());
     parent.add(panel);
     root.add(parent);
+    stage = new MockPropFrame();
+    root.setStage(stage);
     model = panel.getModel();
     model.setText("Some Text");
   }
@@ -46,7 +50,7 @@ public class TextInputPanelTest
   {
     assertEquals(0, root.dirtyRegions.size());
 
-    root.getKeyListener().focusOn(panel);
+    stage.getKeyListener().focusOn(panel);
 
     assertEquals(true, panel.hasFocus());
     assertEquals(true, panel.isCaretBlinking());
@@ -57,9 +61,9 @@ public class TextInputPanelTest
   @Test
   public void canLoseFocus()
   {
-    root.getKeyListener().focusOn(panel);
+    stage.getKeyListener().focusOn(panel);
     root.dirtyRegions.clear();
-    root.getKeyListener().focusOn(root);
+    stage.getKeyListener().focusOn(root);
 
     assertEquals(false, panel.hasFocus());
     assertEquals(false, panel.isCaretBlinking());
@@ -229,7 +233,7 @@ public class TextInputPanelTest
   @Test
   public void caretAnimationIsStoppedWhenPanelIsDisowned() throws Exception
   {
-    root.getKeyListener().focusOn(panel);
+    stage.getKeyListener().focusOn(panel);
     assertEquals(true, panel.isCaretBlinking());
 
     panel.setParent(null);
