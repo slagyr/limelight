@@ -7,18 +7,18 @@ import junit.framework.TestCase;
 
 import java.awt.*;
 import java.util.ArrayList;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 
 public class FloaterLayoutTest extends TestCase
 {
-  private PropPanel panel;
-  private ScenePanel root;
+  private Prop panel;
+  private Scene root;
 
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockProp());
+    root = new Scene(new MockPropProxy());
     root.setStage(new MockStage());
-    panel = new PropPanel(new MockProp());
+    panel = new Prop(new MockPropProxy());
     root.add(panel);
   }
 

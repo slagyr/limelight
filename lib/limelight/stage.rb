@@ -18,7 +18,7 @@ module Limelight
 
     attr_accessor :should_remain_hidden #:nodoc:
 
-    include UI::Api::Stage
+    include Java::limelight.ui.api.StageProxy
 
     # To create a new Stage, it be given a Theater to which it belongs, and the name is optional.  If no name is provided
     # it will default to 'default'.  A stage name must be unique, so it is recommended you provide a name.
@@ -26,7 +26,7 @@ module Limelight
     def initialize(theater, name, options = {})
       @theater = theater
       @name = name
-      build_frame
+      @frame = Java::limelight.ui.model.FramedStage.new(self)
       self.title = @name
       apply_options(options)
     end
@@ -205,7 +205,7 @@ module Limelight
     #
     def load_scene(scene)      
       #      @frame.setJMenuBar(scene.menu_bar)
-      @frame.load(scene.panel)
+      @frame.root = scene.panel
       if (has_static_size?(scene.style))
         insets = @frame.insets
         horizontal_insets = inset.left + insets.right
@@ -284,18 +284,7 @@ module Limelight
       @theater.stage_deactivated(self)  
     end
 
-    protected #############################################
-
-    def new_frame
-      return UI::Model::Frame.new(self)
-    end
-
     private ###############################################
-
-    def build_frame
-      @frame = new_frame
-      @frame.title = title
-    end
 
     def has_static_size?(style)
       return is_static?(style.get_width) && is_static?(style.get_height)

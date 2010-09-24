@@ -4,8 +4,7 @@
 package limelight.ui.model;
 
 import limelight.styles.ScreenableStyle;
-import limelight.ui.Panel;
-import limelight.ui.api.Prop;
+import limelight.ui.api.PropProxy;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
 
@@ -28,5 +27,5 @@ public interface PropablePanel extends ParentPanel
   Box getBorderedBounds();
   Graphics2D getGraphics();
   ScreenableStyle getStyle();
-  Prop getProp();
+  PropProxy getProp();
 }

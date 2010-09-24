@@ -3,13 +3,8 @@
 
 package limelight.ui.api;
 
-import limelight.util.ResourceLoader;
-
-import java.util.Map;
-
-public interface Prop
+public interface SceneProxy extends PropProxy
 {
-  ResourceLoader getLoader();
-
-  void applyOptions(Map<String, Object> options);
 }
+
+

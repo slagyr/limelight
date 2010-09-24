@@ -7,13 +7,13 @@ import java.util.Map;
 
 public class MockCastingDirector implements CastingDirector
 {
-  public Map<Prop, List<String>> castings = new HashMap<Prop, List<String>>();
+  public Map<PropProxy, List<String>> castings = new HashMap<PropProxy, List<String>>();
 
-  public void castPlayer(Prop prop, String playerName)
+  public void castPlayer(PropProxy propProxy, String playerName)
   {
-    if(!castings.containsKey(prop))
-      castings.put(prop, new LinkedList<String>());
+    if(!castings.containsKey(propProxy))
+      castings.put(propProxy, new LinkedList<String>());
     
-    castings.get(prop).add(playerName);
+    castings.get(propProxy).add(playerName);
   }
 }

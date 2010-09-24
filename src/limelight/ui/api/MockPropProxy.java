@@ -11,21 +11,21 @@ import limelight.ui.Panel;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MockProp implements Prop
+public class MockPropProxy implements PropProxy
 {
   public Style hoverStyle;
   public String text;
   public String name;
   public boolean hooverOn;
-  public Scene scene;
+  public SceneProxy sceneProxy;
   public ResourceLoader loader;
   public Map<String, Object> appliedOptions;
 
-  public MockProp()
+  public MockPropProxy()
   {
   }
 
-  public MockProp(String name)
+  public MockPropProxy(String name)
   {
     this();
     this.name = name;
@@ -56,9 +56,9 @@ public class MockProp implements Prop
     return text;
   }
 
-  public Scene getScene()
+  public SceneProxy getScene()
   {
-    return scene;
+    return sceneProxy;
   }
 
   public ResourceLoader getLoader()

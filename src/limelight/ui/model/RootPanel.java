@@ -37,9 +37,9 @@ public interface RootPanel extends Panel, ParentPanel
 
   ImageCache getImageCache();
 
-  void addToIndex(PropPanel propPanel);
+  void addToIndex(Prop prop);
 
-  void removeFromIndex(PropPanel propPanel);
+  void removeFromIndex(Prop prop);
 
   Production getProduction();
 

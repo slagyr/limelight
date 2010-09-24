@@ -4,8 +4,8 @@
 package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
+import limelight.ui.api.PropProxy;
 import limelight.ui.painting.Border;
-import limelight.ui.api.Prop;
 import limelight.util.Box;
 
 public interface PaintablePanel extends Panel
@@ -18,5 +18,5 @@ public interface PaintablePanel extends Panel
 
   Box getMarginedBounds();
 
-  Prop getProp();
+  PropProxy getProp();
 }

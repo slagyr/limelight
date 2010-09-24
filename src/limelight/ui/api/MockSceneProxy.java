@@ -5,7 +5,7 @@ package limelight.ui.api;
 
 import limelight.util.ResourceLoader;
 
-public class MockScene extends MockProp implements Scene
+public class MockSceneProxy extends MockPropProxy implements SceneProxy
 {
   public ResourceLoader loader;
 

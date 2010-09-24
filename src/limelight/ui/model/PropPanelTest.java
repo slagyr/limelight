@@ -8,7 +8,7 @@ import limelight.model.MockProduction;
 import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.api.MockCastingDirector;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.*;
 import limelight.ui.events.panel.MouseEnteredEvent;
 import limelight.ui.events.panel.MouseExitedEvent;
@@ -31,10 +31,10 @@ import java.util.List;
 
 public class PropPanelTest extends Assert
 {
-  private MockProp prop;
-  private PropPanel panel;
+  private MockPropProxy prop;
+  private Prop panel;
   private ScreenableStyle style;
-  private ScenePanel root;
+  private Scene root;
   private RichStyle style1;
   private RichStyle style2;
   private RichStyle style3;
@@ -46,9 +46,9 @@ public class PropPanelTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockProp());
-    prop = new MockProp();
-    panel = new PropPanel(prop);
+    root = new Scene(new MockPropProxy());
+    prop = new MockPropProxy();
+    panel = new Prop(prop);
     root.add(panel);
                                           
     production = new MockProduction();
@@ -64,7 +64,7 @@ public class PropPanelTest extends Assert
   @Test
   public void createsItsStyleInsteadOfGettingItFromProp() throws Exception
   {
-    panel = new PropPanel(null);
+    panel = new Prop(null);
 
     assertNotNull(panel.getStyle());
     assertEquals(ScreenableStyle.class, panel.getStyle().getClass());
@@ -302,7 +302,7 @@ public class PropPanelTest extends Assert
   @Test
   public void wheelEventsArePassedToParentIfTheresNoScrollbar() throws Exception
   {
-    PropPanel child = new PropPanel(new MockProp());
+    Prop child = new Prop(new MockPropProxy());
     panel.add(child);
 
     panel.addVerticalScrollBar();
@@ -383,7 +383,7 @@ public class PropPanelTest extends Assert
   public void shouldRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
   {
     for(int i = 0; i < 100; i++)
-      panel.add(new PropPanel(new MockProp()));
+      panel.add(new Prop(new MockPropProxy()));
     panel.markAsNeedingLayout();
     Thread thread = new Thread(new Runnable()
     {
@@ -407,7 +407,7 @@ public class PropPanelTest extends Assert
   {
     panel.addVerticalScrollBar();
     panel.addHorizontalScrollBar();
-    panel.add(new PropPanel(new MockProp()));
+    panel.add(new Prop(new MockPropProxy()));
 
     panel.removeAll();
 
@@ -616,20 +616,20 @@ public class PropPanelTest extends Assert
   public void findByName() throws Exception
   {
     root.delluminate();
-    PropPanel foo1 = new PropPanel(new MockProp(), Util.toMap("name", "foo"));
-    PropPanel foo2 = new PropPanel(new MockProp(), Util.toMap("name", "foo"));
-    PropPanel bar = new PropPanel(new MockProp(), Util.toMap("name", "bar"));
+    Prop foo1 = new Prop(new MockPropProxy(), Util.toMap("name", "foo"));
+    Prop foo2 = new Prop(new MockPropProxy(), Util.toMap("name", "foo"));
+    Prop bar = new Prop(new MockPropProxy(), Util.toMap("name", "bar"));
     panel.add(foo1);
     panel.add(foo2);
     panel.add(bar);
     panel.illuminate();
 
-    List<PropPanel> foos = panel.findByName("foo");
+    List<Prop> foos = panel.findByName("foo");
     assertEquals(2, foos.size());
     assertEquals(true, foos.contains(foo1));
     assertEquals(true, foos.contains(foo2));
 
-    List<PropPanel> bars = panel.findByName("bar");
+    List<Prop> bars = panel.findByName("bar");
     assertEquals(1, bars.size());
     assertEquals(true, bars.contains(bar));
   }

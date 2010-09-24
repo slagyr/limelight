@@ -5,17 +5,16 @@ package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
 import limelight.ui.KeyboardFocusManager;
-import limelight.ui.model.MockParentPanel;
-import limelight.ui.model.MockStage;
-import limelight.ui.model.ScenePanel;
-import limelight.ui.model.PropPanel;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
+import limelight.ui.model.*;
+import limelight.ui.model.Scene;
+import limelight.ui.model.Prop;
 import limelight.Context;
 
 public class InputPanelUtilTest extends TestCase
 {
   private TestableInputPanel input;
-  private PropPanel parent;
+  private Prop parent;
   private MockParentPanel rootPanel;
   private TestableInputPanel input2;
   private TestableInputPanel input3;
@@ -23,14 +22,14 @@ public class InputPanelUtilTest extends TestCase
   public void setUp() throws Exception
   {
     input = new TestableInputPanel();
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     parent.add(input);
     Context.instance().keyboardFocusManager = new KeyboardFocusManager().installed();
   }
 
   private void attatchRoot()
   {
-    ScenePanel root = new ScenePanel(new MockProp());
+    Scene root = new Scene(new MockPropProxy());
     root.setStage(new MockStage());
     rootPanel = new MockParentPanel();
     root.add(rootPanel);

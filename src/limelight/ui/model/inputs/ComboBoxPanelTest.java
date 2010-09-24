@@ -9,8 +9,8 @@ import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.PropPanel;
-import limelight.ui.api.MockProp;
+import limelight.ui.model.Prop;
+import limelight.ui.api.MockPropProxy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,14 +20,14 @@ import static junit.framework.Assert.assertSame;
 public class ComboBoxPanelTest
 {
   private ComboBoxPanel panel;
-  private PropPanel parent;
+  private Prop parent;
   private MockRootPanel root;
 
   @Before
   public void setUp() throws Exception
   {
     panel = new ComboBoxPanel();
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     parent.add(panel);
 
     root = new MockRootPanel();
@@ -123,20 +123,20 @@ public class ComboBoxPanelTest
     new ButtonPushedEvent(panel).dispatch(panel);
 
     assertEquals(2, root.getChildren().size());
-    PropPanel curtains = (PropPanel) root.getChildren().get(1);
+    Prop curtains = (Prop) root.getChildren().get(1);
     assertEquals("limelight_builtin_curtains", curtains.getName());
 
-    PropPanel list = (PropPanel) curtains.getChildren().get(0);
+    Prop list = (Prop) curtains.getChildren().get(0);
     assertEquals("limelight_builtin_combo_box_popup_list", list.getName());
 
     assertEquals(3, list.getChildren().size());
-    final PropPanel item1 = (PropPanel) list.getChildren().get(0);
+    final Prop item1 = (Prop) list.getChildren().get(0);
     assertEquals("limelight_builtin_combo_box_popup_list_item", item1.getName());
     assertEquals("1", item1.getText());
-    final PropPanel item2 = (PropPanel) list.getChildren().get(1);
+    final Prop item2 = (Prop) list.getChildren().get(1);
     assertEquals("limelight_builtin_combo_box_popup_list_item", item2.getName());
     assertEquals("2", item2.getText());
-    final PropPanel item3 = (PropPanel) list.getChildren().get(2);
+    final Prop item3 = (Prop) list.getChildren().get(2);
     assertEquals("limelight_builtin_combo_box_popup_list_item", item3.getName());
     assertEquals("3", item3.getText());
   }
@@ -178,7 +178,7 @@ public class ComboBoxPanelTest
     panel.setSelectedOption(3);
     new ButtonPushedEvent(panel).dispatch(panel);
 
-    final PropPanel selected = panel.getPopup().getSelectedItem();
+    final Prop selected = panel.getPopup().getSelectedItem();
     assertEquals("3", selected.getText());
     assertEquals(root.getStylesStore().get("limelight_builtin_combo_box_popup_list_item_selected"), selected.getStyle().getScreen());
   }
@@ -269,7 +269,7 @@ public class ComboBoxPanelTest
     panel.setOptions(1, 2, 3);
     new ButtonPushedEvent(panel).dispatch(panel);
 
-    final PropPanel popupList = panel.getPopup().getPopupList();
+    final Prop popupList = panel.getPopup().getPopupList();
     new MouseClickedEvent(popupList, 0, null, 0).dispatch(panel);
 
     assertEquals(true, isPopupOpen());

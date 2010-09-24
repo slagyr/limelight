@@ -10,7 +10,7 @@ import limelight.styles.Style;
 import limelight.ui.*;
 import limelight.ui.events.panel.*;
 import limelight.ui.images.Images;
-import limelight.ui.model.PropPanel;
+import limelight.ui.model.Prop;
 import limelight.ui.painting.BackgroundPainter;
 
 import java.awt.*;
@@ -46,7 +46,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
   }
 
   @Override
-  protected Painter getPropPainter(PropPanel propPanel)
+  protected Painter getPropPainter(Prop prop)
   {
     return ComboBoxPropPainter.instance;
   }

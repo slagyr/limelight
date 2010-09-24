@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.ui.api.MockProp;
+import limelight.ui.api.MockPropProxy;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
 
@@ -13,18 +13,18 @@ import java.util.ArrayList;
 
 public class PropPanelLayoutTest extends TestCase
 {
-  private PropPanel parent;
+  private Prop parent;
   private PropPanelLayout layout;
   private int scrollGirth = ScrollBarPanel.GIRTH;
-  private ScenePanel root;
+  private Scene root;
   private MockStage frame;
 
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockProp());
+    root = new Scene(new MockPropProxy());
     frame = new MockStage();
     root.setStage(frame);
-    parent = new PropPanel(new MockProp());
+    parent = new Prop(new MockPropProxy());
     root.add(parent);
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("100");
@@ -36,7 +36,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testLayoutWithOneFullSizedChild() throws Exception
   {
-    PropPanel child = addChildWithSize(parent, "100", "100");
+    Prop child = addChildWithSize(parent, "100", "100");
 
     layout.doLayout(parent);
 
@@ -46,8 +46,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testLayoutWithTwoChildrenSameRow() throws Exception
   {
-    PropPanel child1 = addChildWithSize(parent, "50", "50");
-    PropPanel child2 = addChildWithSize(parent, "50", "50");
+    Prop child1 = addChildWithSize(parent, "50", "50");
+    Prop child2 = addChildWithSize(parent, "50", "50");
 
     layout.doLayout(parent);
 
@@ -59,9 +59,9 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testLayoutWrappingToNewRow() throws Exception
   {
-    PropPanel child1 = addChildWithSize(parent, "50", "50");
-    PropPanel child2 = addChildWithSize(parent, "50", "50");
-    PropPanel child3 = addChildWithSize(parent, "50", "50");
+    Prop child1 = addChildWithSize(parent, "50", "50");
+    Prop child2 = addChildWithSize(parent, "50", "50");
+    Prop child3 = addChildWithSize(parent, "50", "50");
 
     layout.doLayout(parent);
 
@@ -74,7 +74,7 @@ public class PropPanelLayoutTest extends TestCase
   {
     parent.getStyle().setVerticalAlignment("bottom");
     parent.getStyle().setHorizontalAlignment("right");
-    PropPanel child = addChildWithSize(parent, "50", "50");
+    Prop child = addChildWithSize(parent, "50", "50");
 
     layout.doLayout(parent);
 
@@ -86,8 +86,8 @@ public class PropPanelLayoutTest extends TestCase
   {
     parent.getStyle().setVerticalAlignment("center");
     parent.getStyle().setHorizontalAlignment("center");
-    PropPanel child1 = addChildWithSize(parent, "25", "50");
-    PropPanel child2 = addChildWithSize(parent, "25", "50");
+    Prop child1 = addChildWithSize(parent, "25", "50");
+    Prop child2 = addChildWithSize(parent, "25", "50");
 
     layout.doLayout(parent);
 
@@ -97,7 +97,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoSize() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
     addChildWithSize(panel, "50", "50");
 
     layout.doLayout(parent);
@@ -108,7 +108,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoWidthOnly() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "100");
+    Prop panel = addChildWithSize(parent, "auto", "100");
     addChildWithSize(panel, "50", "50");
 
     layout.doLayout(parent);
@@ -119,7 +119,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoHeightOnly() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "70%", "auto");
+    Prop panel = addChildWithSize(parent, "70%", "auto");
     addChildWithSize(panel, "50", "50");
 
     layout.doLayout(parent);
@@ -130,7 +130,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoSizeIncludesMarginPaddingAndBorder() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
     panel.getStyle().setTopMargin("1");
     panel.getStyle().setTopBorderWidth("2");
     panel.getStyle().setTopPadding("3");
@@ -155,7 +155,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoSizeWithChildrenCentered() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
     panel.getStyle().setHorizontalAlignment("center");
     panel.getStyle().setVerticalAlignment("center");
     panel.getStyle().setMargin("10");
@@ -173,7 +173,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoSizingWithNoChildren() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
 
     layout.doLayout(parent);
 
@@ -183,7 +183,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoSizeWithMinDimensions() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
     panel.getStyle().setMinWidth("20");
     panel.getStyle().setMinHeight("15");
     addChildWithSize(panel, "5", "5");
@@ -196,7 +196,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoDimensionsWithMaxHeightAndWidth() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
     panel.getStyle().setMaxWidth("75");
     panel.getStyle().setMaxHeight("86");
     addChildWithSize(panel, "90", "90");
@@ -209,8 +209,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testFloatersAreNoConsideredInDeterminingScrollMode() throws Exception
   {
-    PropPanel child = addChildWithSize(parent, "50", "50");
-    PropPanel floater = addChildWithSize(parent, "500", "500");
+    Prop child = addChildWithSize(parent, "50", "50");
+    Prop floater = addChildWithSize(parent, "500", "500");
     floater.getStyle().setFloat("on");
 
     layout.doLayout(parent);
@@ -223,9 +223,9 @@ public class PropPanelLayoutTest extends TestCase
   public void testFloatersDoNotInfluenceAutoSize() throws Exception
   {
 
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
     addChildWithSize(panel, "50", "50");
-    PropPanel floater = addChildWithSize(panel, "500", "500");
+    Prop floater = addChildWithSize(panel, "500", "500");
     floater.getStyle().setFloat("on");
 
     layout.doLayout(parent);
@@ -236,9 +236,9 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testFloatersAreLaidOut() throws Exception
   {
-    PropPanel floater = addChildWithSize(parent, "50", "50");
+    Prop floater = addChildWithSize(parent, "50", "50");
     floater.getStyle().setFloat(true);
-    PropPanel child = addChildWithSize(parent, "50", "50");
+    Prop child = addChildWithSize(parent, "50", "50");
 
     layout.doLayout(parent);
 
@@ -293,7 +293,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoSizingWithNoChildrenAndScrollBars() throws Exception
   {
-    PropPanel panel = new PropPanel(new MockProp());
+    Prop panel = new Prop(new MockPropProxy());
     parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
@@ -310,7 +310,7 @@ public class PropPanelLayoutTest extends TestCase
     parent.getStyle().setScrollbars("on");
     layout.doLayout(parent);
 
-    PropPanel panel = addChildWithSize(parent, "100%", "100%");
+    Prop panel = addChildWithSize(parent, "100%", "100%");
     layout.doLayout(parent);
 
     assertEquals(0, panel.getX());
@@ -332,7 +332,7 @@ public class PropPanelLayoutTest extends TestCase
   public void testLayoutRowsWithScrollOffsets() throws Exception
   {
     parent.getStyle().setScrollbars("on");
-    PropPanel panel = addChildWithSize(parent, "200", "300");
+    Prop panel = addChildWithSize(parent, "200", "300");
     layout.doLayout(parent);
 
     parent.getVerticalScrollbar().setValue(100);
@@ -388,7 +388,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testShouldLayoutChildrenWithPercentageDimensionsWhenSizeChanges() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "100%", "100%");
+    Prop panel = addChildWithSize(parent, "100%", "100%");
     layout.doLayout(parent);
 
     parent.getStyle().setWidth(200);
@@ -401,8 +401,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testShouldLayoutChildrenWithAutoDimensionsWhenSizeChanges() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "auto", "auto");
-    PropPanel child = addChildWithSize(panel, "100%", "100%");
+    Prop panel = addChildWithSize(parent, "auto", "auto");
+    Prop child = addChildWithSize(panel, "100%", "100%");
     layout.doLayout(parent);
 
     parent.getStyle().setWidth(200);
@@ -415,9 +415,9 @@ public class PropPanelLayoutTest extends TestCase
     assertEquals(300, child.getHeight());
   }
 
-  private PropPanel addChildWithSize(ParentPanelBase parent, String width, String height)
+  private Prop addChildWithSize(ParentPanelBase parent, String width, String height)
   {
-    PropPanel panel = new PropPanel(new MockProp());
+    Prop panel = new Prop(new MockPropProxy());
     panel.getStyle().setWidth(width);
     panel.getStyle().setHeight(height);
     parent.add(panel);
@@ -427,8 +427,8 @@ public class PropPanelLayoutTest extends TestCase
   public void testShouldVerticallyAlignChildrenWithinARow() throws Exception
   {
     parent.getStyle().setVerticalAlignment("bottom");
-    PropPanel panel1 = addChildWithSize(parent, "50%", "100%");
-    PropPanel panel2 = addChildWithSize(parent, "50%", "50%");
+    Prop panel1 = addChildWithSize(parent, "50%", "100%");
+    Prop panel2 = addChildWithSize(parent, "50%", "50%");
 
     layout.doLayout(parent);
 
@@ -438,8 +438,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testRowWithOneGreedyProp() throws Exception
   {
-    PropPanel panel1 = addChildWithSize(parent, "20", "100");
-    PropPanel panel2 = addChildWithSize(parent, "greedy", "100");
+    Prop panel1 = addChildWithSize(parent, "20", "100");
+    Prop panel2 = addChildWithSize(parent, "greedy", "100");
 
     layout.doLayout(parent);
 
@@ -449,9 +449,9 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testRowWithTwoGreedyProp() throws Exception
   {
-    PropPanel inert = addChildWithSize(parent, "20", "100");
-    PropPanel greedy1 = addChildWithSize(parent, "greedy", "100");
-    PropPanel greedy2 = addChildWithSize(parent, "greedy", "100");
+    Prop inert = addChildWithSize(parent, "20", "100");
+    Prop greedy1 = addChildWithSize(parent, "greedy", "100");
+    Prop greedy2 = addChildWithSize(parent, "greedy", "100");
 
     layout.doLayout(parent);
 
@@ -462,8 +462,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testOnePropWithGreedyHeight() throws Exception
   {
-    PropPanel panel1 = addChildWithSize(parent, "100", "20");
-    PropPanel panel2 = addChildWithSize(parent, "100", "greedy");
+    Prop panel1 = addChildWithSize(parent, "100", "20");
+    Prop panel2 = addChildWithSize(parent, "100", "greedy");
 
     layout.doLayout(parent);
 
@@ -473,9 +473,9 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testTwoPropsWithGreedyHeightInDifferentRows() throws Exception
   {
-    PropPanel panel1 = addChildWithSize(parent, "100", "20");
-    PropPanel greedy1 = addChildWithSize(parent, "100", "greedy");
-    PropPanel greedy2 = addChildWithSize(parent, "100", "greedy");
+    Prop panel1 = addChildWithSize(parent, "100", "20");
+    Prop greedy1 = addChildWithSize(parent, "100", "greedy");
+    Prop greedy2 = addChildWithSize(parent, "100", "greedy");
 
     layout.doLayout(parent);
 
@@ -486,8 +486,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testGreedyWidthWithAutoHeight() throws Exception
   {
-    PropPanel greedy1 = addChildWithSize(parent, "greedy", "auto");
-    PropPanel child = addChildWithSize(greedy1, "100%", "100%");
+    Prop greedy1 = addChildWithSize(parent, "greedy", "auto");
+    Prop child = addChildWithSize(greedy1, "100%", "100%");
 
     layout.doLayout(parent);
 
@@ -512,8 +512,8 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoHeightIsCollapsedWhenContainingChildren() throws Exception
   {
-    PropPanel panel = addChildWithSize(parent, "100%", "auto");
-    PropPanel child = addChildWithSize(panel, "100%", "auto");
+    Prop panel = addChildWithSize(parent, "100%", "auto");
+    Prop child = addChildWithSize(panel, "100%", "auto");
     addChildWithSize(child, "100%", "14");
 
     layout.doLayout(parent);
@@ -601,7 +601,7 @@ public class PropPanelLayoutTest extends TestCase
   {
     parent.getStyle().setScrollbars("on");
     parent.getStyle().setAlignment("center");
-    PropPanel panel = addChildWithSize(parent, "200", "200");
+    Prop panel = addChildWithSize(parent, "200", "200");
 
     layout.doLayout(parent);
 
