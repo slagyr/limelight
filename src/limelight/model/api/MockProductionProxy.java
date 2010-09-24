@@ -1,4 +1,4 @@
-package limelight.ui.api;
+package limelight.model.api;
 
 public class MockProductionProxy implements ProductionProxy
 {

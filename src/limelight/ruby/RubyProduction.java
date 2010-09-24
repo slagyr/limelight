@@ -3,10 +3,9 @@ package limelight.ruby;
 import limelight.Context;
 import limelight.LimelightException;
 import limelight.model.Production;
-import limelight.ui.api.ProductionProxy;
+import limelight.model.api.ProductionProxy;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
-import org.jruby.javasupport.JavaClass;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaSupport;
 

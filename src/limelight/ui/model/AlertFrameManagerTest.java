@@ -3,7 +3,7 @@
 
 package limelight.ui.model;
 
-import limelight.ui.api.MockStudio;
+import limelight.model.api.MockStudio;
 import limelight.Context;
 import limelight.MockContext;
 import limelight.ui.events.stage.*;

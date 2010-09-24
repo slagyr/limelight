@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import limelight.Context;
 import limelight.util.StringUtil;
 import limelight.os.MockRuntimeExecution;
-import limelight.ui.api.MockStudio;
+import limelight.model.api.MockStudio;
 
 public class DarwinOSTest extends TestCase
 {

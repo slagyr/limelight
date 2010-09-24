@@ -7,7 +7,7 @@ import limelight.ui.RadioButtonGroup;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
 import limelight.ui.model.Prop;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import org.junit.Before;
 import org.junit.Test;
 

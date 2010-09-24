@@ -1,6 +1,6 @@
 package limelight.ui;
 
-import limelight.ui.api.PropProxy;
+import limelight.model.api.PropProxy;
 import limelight.util.ResourceLoader;
 
 import java.util.Map;

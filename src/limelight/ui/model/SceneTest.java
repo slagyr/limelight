@@ -6,8 +6,8 @@ package limelight.ui.model;
 import limelight.LimelightException;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.ui.api.MockPropProxy;
-import limelight.ui.api.MockSceneProxy;
+import limelight.model.api.MockPropProxy;
+import limelight.model.api.MockSceneProxy;
 import limelight.Context;
 import limelight.util.MockResourceLoader;
 import limelight.util.Util;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.util.Map;
 
-public class ScenePanelTest extends Assert
+public class SceneTest extends Assert
 { 
   private Scene root;
   private MockPropablePanel child;

@@ -2,6 +2,8 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.background.PanelPainterLoop;
+import limelight.model.Stage;
+
 import java.awt.*;
 
 public class StageFrame extends Frame

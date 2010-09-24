@@ -2,7 +2,7 @@ package limelight.ui.model.inputs.painting;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.Painter;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.model.MockDrawable;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;

@@ -5,7 +5,7 @@ package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
 import limelight.ui.KeyboardFocusManager;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.model.*;
 import limelight.ui.model.Scene;
 import limelight.ui.model.Prop;

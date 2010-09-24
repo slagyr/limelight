@@ -1,5 +1,6 @@
 package limelight.ui.model;
 
+import limelight.model.Stage;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.inputs.InputPanel;

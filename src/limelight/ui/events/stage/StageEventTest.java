@@ -1,7 +1,7 @@
 package limelight.ui.events.stage;
 
 import limelight.Context;
-import limelight.ui.api.MockStageProxy;
+import limelight.model.api.MockStageProxy;
 import limelight.ui.model.FramedStage;
 import limelight.ui.model.MockFrameManager;
 import limelight.ui.model.inputs.MockEventAction;

@@ -4,7 +4,7 @@
 package limelight.background;
 
 import limelight.BufferedImagePool;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.model.*;
 import limelight.ui.MockPanel;
 import limelight.Context;

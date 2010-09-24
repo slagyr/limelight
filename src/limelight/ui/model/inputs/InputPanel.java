@@ -5,6 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.events.Event;
 import limelight.events.EventAction;
+import limelight.model.Stage;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.*;

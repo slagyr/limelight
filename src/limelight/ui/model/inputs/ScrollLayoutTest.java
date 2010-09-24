@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.model.*;
 
 public class ScrollLayoutTest extends TestCase

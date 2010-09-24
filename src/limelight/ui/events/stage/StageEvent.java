@@ -1,7 +1,7 @@
 package limelight.ui.events.stage;
 
 import limelight.events.Event;
-import limelight.ui.model.Stage;
+import limelight.model.Stage;
 
 public abstract class StageEvent extends Event
 {

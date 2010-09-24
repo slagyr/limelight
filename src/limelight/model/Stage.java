@@ -1,6 +1,9 @@
-package limelight.ui.model;
+package limelight.model;
 
 import limelight.events.EventHandler;
+import limelight.ui.model.RootKeyListener;
+import limelight.ui.model.RootMouseListener;
+import limelight.ui.model.RootPanel;
 
 import java.awt.*;
 

@@ -1,4 +1,4 @@
-package limelight.ui.api;
+package limelight.model.api;
 
 import java.util.HashMap;
 import java.util.LinkedList;

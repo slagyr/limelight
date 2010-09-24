@@ -4,7 +4,7 @@
 package limelight.os.win32;
 
 import junit.framework.TestCase;
-import limelight.ui.api.MockStudio;
+import limelight.model.api.MockStudio;
 import limelight.Context;
 import limelight.util.StringUtil;
 import limelight.os.MockRuntimeExecution;

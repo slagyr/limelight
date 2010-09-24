@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.model.Production;
+import limelight.model.Stage;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;

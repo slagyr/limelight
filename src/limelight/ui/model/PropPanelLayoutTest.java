@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
 

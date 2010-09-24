@@ -3,7 +3,7 @@
 
 package limelight.model;
 
-import limelight.ui.api.MockCastingDirector;
+import limelight.model.api.MockCastingDirector;
 
 public class MockProduction extends Production
 {

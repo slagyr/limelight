@@ -7,8 +7,8 @@ import limelight.LimelightException;
 import limelight.model.MockProduction;
 import limelight.styles.*;
 import limelight.ui.Panel;
-import limelight.ui.api.MockCastingDirector;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockCastingDirector;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.*;
 import limelight.ui.events.panel.MouseEnteredEvent;
 import limelight.ui.events.panel.MouseExitedEvent;
@@ -29,7 +29,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
 import java.util.List;
 
-public class PropPanelTest extends Assert
+public class PropTest extends Assert
 {
   private MockPropProxy prop;
   private Prop panel;

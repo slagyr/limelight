@@ -1,6 +1,6 @@
 package limelight.ui.model;
 
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import org.junit.Assert;
 import org.junit.Test;
 

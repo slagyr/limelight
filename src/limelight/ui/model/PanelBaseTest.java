@@ -5,7 +5,7 @@
 package limelight.ui.model;
 
 import limelight.ui.MockPanel;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.util.Box;
 import org.junit.Assert;
 import org.junit.Before;
