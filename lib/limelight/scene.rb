@@ -19,7 +19,7 @@ module Limelight
       end
     end
 
-    include Java::limelight.ui.api.SceneProxy
+    include Java::limelight.model.api.SceneProxy
 
     attr_reader :button_groups, :casting_director, :cast
     attr_accessor :stage, :visible

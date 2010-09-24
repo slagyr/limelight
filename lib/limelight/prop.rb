@@ -24,7 +24,7 @@ module Limelight
       end
     end
 
-    include Java::limelight.ui.api.PropProxy
+    include Java::limelight.model.api.PropProxy
 
 #    attr_accessor :style, :hover_style
     attr_reader :panel, :players #:nodoc:
