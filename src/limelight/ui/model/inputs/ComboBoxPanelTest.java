@@ -7,7 +7,7 @@ import limelight.model.MockProduction;
 import limelight.builtin.BuiltInStyles;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
-import limelight.ui.model.MockPropFrame;
+import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.PropPanel;
 import limelight.ui.api.MockProp;
@@ -278,7 +278,7 @@ public class ComboBoxPanelTest
   @Test
   public void acquiresFocusWhenPressed() throws Exception
   {
-    final MockPropFrame stage = new MockPropFrame();
+    final MockStage stage = new MockStage();
     root.setStage(stage);
     
     panel.setOptions(1, 2, 3);

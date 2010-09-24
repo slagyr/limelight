@@ -18,7 +18,7 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public Map<String, RichStyle> styleStore;
   public Production production;
   public boolean shouldAllowClose;
-  private PropFrame stage;
+  private Stage stage;
 
   public MockRootPanel()
   {
@@ -31,7 +31,7 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
     return this;
   }
 
-  public void setStage(PropFrame stage)
+  public void setStage(Stage stage)
   {
     this.stage = stage;
   }
@@ -50,7 +50,7 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   {
   }
 
-  public PropFrame getStage()
+  public Stage getStage()
   {
     return stage;
   }

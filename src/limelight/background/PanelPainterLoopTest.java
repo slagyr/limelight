@@ -28,7 +28,7 @@ public class PanelPainterLoopTest extends Assert
     loop = new PanelPainterLoop();
     frameManager = new MockFrameManager();
     Context.instance().frameManager = frameManager;
-    MockPropFrame activeStage = new MockPropFrame();
+    MockStage activeStage = new MockStage();
     activeFrame = new StageFrame(activeStage);
     activeRoot = new ScenePanel(new MockProp());
     activeRoot.setStage(activeStage);

@@ -9,7 +9,6 @@ import limelight.ruby.RuntimeFactory;
 import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
-import limelight.ui.model.PropFrame;
 import limelight.caching.Cache;
 import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
 import limelight.background.AnimationLoop;

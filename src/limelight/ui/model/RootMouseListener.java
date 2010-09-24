@@ -14,7 +14,7 @@ import java.awt.event.MouseWheelEvent;
 public class RootMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener
 {
   private RootPanel panel; // TODO MDM remove this member
-  private PropFrame stage;
+  private Stage stage;
   public Panel pressedPanel;
   public Panel hooveredPanel;
 
@@ -23,7 +23,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
     this.panel = panel;
   }
 
-  public RootMouseListener(PropFrame stage)
+  public RootMouseListener(Stage stage)
   {
     this.stage = stage;
   }

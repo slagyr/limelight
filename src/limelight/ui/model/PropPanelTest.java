@@ -55,7 +55,7 @@ public class PropPanelTest extends Assert
     castingDirector = new MockCastingDirector();
     production.setCastingDirector(castingDirector);
     root.setProduction(production);
-    root.setStage(new MockPropFrame());
+    root.setStage(new MockStage());
     style = panel.getStyle();
 
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();

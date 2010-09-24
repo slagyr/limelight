@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class StageFrameTest extends Assert
 {
   private MockStageProxy stageProxy;
-  private Stage stage;
+  private FramedStage stage;
   private FrameManager frameManager;
   public MockGraphicsDevice graphicsDevice;
   private MockOS os;
@@ -39,7 +39,7 @@ public class StageFrameTest extends Assert
     Context.instance().keyboardFocusManager = new KeyboardFocusManager();
 
     stageProxy = new MockStageProxy();
-    stage = new Stage(stageProxy);
+    stage = new FramedStage(stageProxy);
     frame = stage.getFrame();
 
     graphicsDevice = new MockGraphicsDevice();
@@ -80,7 +80,7 @@ public class StageFrameTest extends Assert
   public void shouldLoad() throws Exception
   {
     ScenePanel panel = new ScenePanel(new MockProp());
-    stage.load(panel);
+    stage.setRoot(panel);
 
     RootPanel root = stage.getRoot();
 
@@ -92,7 +92,7 @@ public class StageFrameTest extends Assert
   {
     stage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     ScenePanel panel = new ScenePanel(new MockProp());
-    stage.load(panel);
+    stage.setRoot(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, stage.getCursor().getType());
   }
@@ -101,13 +101,13 @@ public class StageFrameTest extends Assert
   public void shouldLoadWillDestroyPreviousRoots() throws Exception
   {
     ScenePanel panel = new ScenePanel(new MockProp());
-    stage.load(panel);
+    stage.setRoot(panel);
 
     RootPanel firstRoot = stage.getRoot();
     assertEquals(true, firstRoot.isIlluminated());
 
     ScenePanel panel2 = new ScenePanel(new MockProp());
-    stage.load(panel2);
+    stage.setRoot(panel2);
 
     assertEquals(false, firstRoot.isIlluminated());
   }
@@ -320,7 +320,7 @@ public class StageFrameTest extends Assert
     assertEquals(true, stage.shouldAllowClose());
 
     ScenePanel scene = new ScenePanel(new MockProp());
-    stage.load(scene);
+    stage.setRoot(scene);
     scene.setShouldAllowClose(true);             
     assertEquals(true, stage.shouldAllowClose());
 
@@ -392,7 +392,7 @@ public class StageFrameTest extends Assert
   public void shouldSizeChangesPropogateDown() throws Exception
   {
     MockRootPanel panel = new MockRootPanel();
-    stage.load(panel);
+    stage.setRoot(panel);
 
     frame.doLayout(); // Called when the stage is resized
     assertEquals(true, panel.consumableAreaChangedCalled);
@@ -409,7 +409,7 @@ public class StageFrameTest extends Assert
     stage.setSizeStyles("auto", "auto");
     MockRootPanel child = new MockRootPanel();
     child.prepForSnap(300, 200);
-    stage.load(child);
+    stage.setRoot(child);
 
     stage.open();
     Insets insets = stage.getInsets();

@@ -19,7 +19,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
-  private PropFrame stage;
+  private Stage stage;
   private final Map<String, RichStyle> styles;
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
@@ -31,7 +31,7 @@ public class ScenePanel extends PropPanel implements RootPanel
     styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
   }
 
-  public void setStage(PropFrame newFrame)
+  public void setStage(Stage newFrame)
   {   
     if(stage != null && newFrame != stage)
       delluminate();
@@ -204,7 +204,7 @@ public class ScenePanel extends PropPanel implements RootPanel
   }
 
   @Override
-  public PropFrame getStage()
+  public Stage getStage()
   {
     return stage;
   }
@@ -260,7 +260,7 @@ public class ScenePanel extends PropPanel implements RootPanel
     {
       ScenePanel scene = (ScenePanel)panel;
       Style style = scene.getStyle();
-      final PropFrame stage = scene.stage;
+      final Stage stage = scene.stage;
       Insets insets = stage.getInsets();
 
       panel.setLocation(insets.left, insets.top);

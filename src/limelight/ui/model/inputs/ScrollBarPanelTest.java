@@ -6,7 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.MockPropFrame;
+import limelight.ui.model.MockStage;
 import limelight.ui.api.MockProp;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,7 @@ public class ScrollBarPanelTest
   public void changesCausesLayout() throws Exception
   {
     ScenePanel root = new ScenePanel(new MockProp());
-    root.setStage(new MockPropFrame());
+    root.setStage(new MockStage());
     PropPanel parent = new PropPanel(new MockProp());
     root.add(parent);
     parent.add(verticalScrollBar);
@@ -74,7 +74,7 @@ public class ScrollBarPanelTest
   public void shouldParentIsMarkedAsChanged() throws Exception
   {
     ScenePanel root = new ScenePanel(new MockProp());
-    root.setStage(new MockPropFrame());
+    root.setStage(new MockStage());
     PropPanel parent = new PropPanel(new MockProp());
     root.add(parent);
     parent.add(verticalScrollBar);

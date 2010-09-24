@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class StageFrame extends Frame
 {
-  private PropFrame stage;
+  private Stage stage;
   private boolean fullscreen;
   private GraphicsDevice graphicsDevice; //used for testing
   private Insets screenInsets; //used for testing
@@ -15,12 +15,12 @@ public class StageFrame extends Frame
   private Point locationBeforeFullScreen;
   private Dimension previousSize;
 
-  public StageFrame(PropFrame stage)
+  public StageFrame(Stage stage)
   {
     this.stage = stage;
   }
 
-  public PropFrame getStage()
+  public Stage getStage()
   {
     return stage;
   }
