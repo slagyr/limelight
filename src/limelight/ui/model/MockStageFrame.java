@@ -3,11 +3,9 @@
 
 package limelight.ui.model;
 
-import limelight.ui.api.MockStage;
+import limelight.ui.api.MockStageProxy;
 
-import java.awt.event.WindowEvent;
-
-public class MockStageFrame extends StageFrame
+public class MockStageFrame extends Stage
 {
   public boolean wasRefreshed;
   public boolean closed;
@@ -19,7 +17,7 @@ public class MockStageFrame extends StageFrame
 
   public MockStageFrame()
   {
-    setStage(new MockStage());
+    setStage(new MockStageProxy());
   }
 
   public void setRoot(RootPanel root)

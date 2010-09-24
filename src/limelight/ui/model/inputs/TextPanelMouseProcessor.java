@@ -38,7 +38,7 @@ public class TextPanelMouseProcessor
     handleMultipleClicks(e);
 
     panel.markAsDirty();
-    panel.getRoot().getKeyListener().focusOn(panel);
+    panel.getStage().getKeyListener().focusOn(panel);
 
     lastClickTime = System.currentTimeMillis();
   }

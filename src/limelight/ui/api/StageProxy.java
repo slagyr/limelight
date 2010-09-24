@@ -3,6 +3,6 @@
 
 package limelight.ui.api;
 
-public interface Stage
+public interface StageProxy
 {
 }

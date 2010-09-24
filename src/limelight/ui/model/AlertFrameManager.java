@@ -15,16 +15,16 @@ import java.util.ArrayList;
 
 public class AlertFrameManager implements WindowFocusListener, WindowListener, WindowStateListener, FrameManager
 {
-  private PropFrame activeFrame;
-  private final HashSet<PropFrame> frames;
-  private PropFrame lastFrameAdded;
+  private StageFrame activeFrame;
+  private final HashSet<StageFrame> frames;
+  private StageFrame lastFrameAdded;
 
   public AlertFrameManager()
   {
-    frames = new HashSet<PropFrame>();
+    frames = new HashSet<StageFrame>();
   }
 
-  public synchronized void watch(PropFrame frame)
+  public synchronized void watch(StageFrame frame)
   {
     if(!frames.contains(frame))
     {
@@ -38,46 +38,46 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
 
   public void windowGainedFocus(WindowEvent e)
   {
-    if(e.getSource() instanceof PropFrame)
-      new StageGainedFocusEvent().dispatch((PropFrame)e.getSource());
+    if(e.getSource() instanceof StageFrame)
+      new StageGainedFocusEvent().dispatch(((StageFrame)e.getSource()).getStage());
   }
 
   public void windowLostFocus(WindowEvent e)
   {
-    if(e.getSource() instanceof PropFrame)
-      new StageLostFocusEvent().dispatch((PropFrame)e.getSource());
+    if(e.getSource() instanceof StageFrame)
+      new StageLostFocusEvent().dispatch(((StageFrame)e.getSource()).getStage());
   }
 
   public void windowOpened(WindowEvent e)
   {
-    if(e.getSource() instanceof PropFrame)
-      new StageOpenedEvent().dispatch((PropFrame)e.getSource());
+    if(e.getSource() instanceof StageFrame)
+      new StageOpenedEvent().dispatch(((StageFrame)e.getSource()).getStage());
   }
 
   public void windowClosing(WindowEvent e)
   {
-    PropFrame frame = ((PropFrame) e.getSource());
-    if(frame.shouldAllowClose())
-      frame.close();
+    StageFrame frame = ((StageFrame) e.getSource());
+    if(frame.getStage().shouldAllowClose())
+      frame.getStage().close();
   }
 
   public synchronized void windowClosed(WindowEvent e)
   {
-    PropFrame frame = ((PropFrame) e.getSource());
+    StageFrame frame = ((StageFrame) e.getSource());
     if(lastFrameAdded == frame)
       lastFrameAdded = null;
     if(activeFrame == frame)
       activeFrame = null;
     frames.remove(frame);
-    if(frame.isVital() && !hasVisibleVitalFrame())
+    if(frame.getStage().isVital() && !hasVisibleVitalFrame())
       Context.instance().attemptShutdown();
   }
 
   private synchronized boolean hasVisibleVitalFrame()
   {
-    for(PropFrame frame : frames)
+    for(StageFrame frame : frames)
     {
-      if(frame.isVital() && frame.isVisible())
+      if(frame.getStage().isVital() && frame.isVisible())
         return true;
     }
     return false;
@@ -85,31 +85,31 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
 
   public void windowIconified(WindowEvent e)
   {
-    if(e.getSource() instanceof PropFrame)
-      new StageIconifiedEvent().dispatch((PropFrame)e.getSource());
+    if(e.getSource() instanceof StageFrame)
+      new StageIconifiedEvent().dispatch(((StageFrame)e.getSource()).getStage());
   }
 
   public void windowDeiconified(WindowEvent e)
   {
-    if(e.getSource() instanceof PropFrame)
-      new StageDeiconifiedEvent().dispatch((PropFrame)e.getSource());
+    if(e.getSource() instanceof StageFrame)
+      new StageDeiconifiedEvent().dispatch(((StageFrame)e.getSource()).getStage());
   }
 
   public void windowActivated(WindowEvent e)
   {
-    if(e.getSource() instanceof PropFrame)
-      activateFrame((PropFrame)e.getSource());
+    if(e.getSource() instanceof StageFrame)
+      activateFrame((StageFrame)e.getSource());
   }
 
   public void windowDeactivated(WindowEvent e)
   {
-    if(e.getSource() instanceof PropFrame)
+    if(e.getSource() instanceof StageFrame)
     {
-      PropFrame propFrame = (PropFrame)e.getSource();
-      if(propFrame == activeFrame)
+      StageFrame frame = (StageFrame)e.getSource();
+      if(frame == activeFrame)
       {
         activeFrame = null;
-        new StageDeactivatedEvent().dispatch(propFrame);
+        new StageDeactivatedEvent().dispatch(frame.getStage());
       }
     }
   }
@@ -118,14 +118,14 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
   {
   }
 
-  public PropFrame getActiveFrame()
+  public StageFrame getActiveFrame()
   {
-    if(activeFrame == null && lastFrameAdded != null && lastFrameAdded.isVisible())
+    if(activeFrame == null && lastFrameAdded != null && lastFrameAdded.getStage().isVisible())
       activateFrame(lastFrameAdded);
     return activeFrame;
   }
 
-  public boolean isWatching(PropFrame frame)
+  public boolean isWatching(StageFrame frame)
   {
     boolean found = false;
     for(WindowFocusListener listener : frame.getWindowFocusListeners())
@@ -143,30 +143,30 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
 
   public synchronized void closeAllFrames()
   {
-    for(PropFrame frame : frames)
-      frame.close();
+    for(StageFrame frame : frames)
+      frame.getStage().close();
   }
 
   // private //////////////////////////////////////////////
 
-  private void activateFrame(PropFrame propFrame)
+  private void activateFrame(StageFrame stageFrame)
   {
-    if(activeFrame == propFrame || !propFrame.isVisible())
+    if(activeFrame == stageFrame || !stageFrame.getStage().isVisible())
       return;
 
-    PropFrame previouslyActiveFrame = activeFrame;
-    activeFrame = propFrame;
+    StageFrame previouslyActiveFrame = activeFrame;
+    activeFrame = stageFrame;
     if(previouslyActiveFrame != null)
-      new StageDeactivatedEvent().dispatch(previouslyActiveFrame);
+      new StageDeactivatedEvent().dispatch(previouslyActiveFrame.getStage());
 
-    new StageActivatedEvent().dispatch(propFrame);
+    new StageActivatedEvent().dispatch(stageFrame.getStage());
   }
 
-  public void getVisibleFrames(ArrayList<PropFrame> result)
+  public void getVisibleFrames(ArrayList<StageFrame> result)
   {
-    for(PropFrame frame : frames)
+    for(StageFrame frame : frames)
     {
-      if(frame.isVisible())
+      if(frame.getStage().isVisible())
         result.add(frame);
     }
   }

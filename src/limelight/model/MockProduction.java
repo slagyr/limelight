@@ -19,6 +19,11 @@ public class MockProduction extends Production
     setCastingDirector(new MockCastingDirector());
   }
 
+  @Override
+  public void open()
+  { 
+  }
+
   public MockProduction()
   {
     this("test");

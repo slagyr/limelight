@@ -4,13 +4,11 @@
 package limelight.ui;
 
 import limelight.ui.model.StageFrame;
+
 import java.awt.*;
 
 public class KeyboardFocusManager extends DefaultKeyboardFocusManager
 {
-  private limelight.ui.Panel focusedPanel;
-  public Frame frame;
-
   public void install()
   {
     java.awt.KeyboardFocusManager.setCurrentKeyboardFocusManager(this);
@@ -29,7 +27,7 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     if(window instanceof StageFrame)
     {
       StageFrame frame = (StageFrame)window;
-      frame.getRoot().getKeyListener().focusOnNextInput();
+      frame.getStage().getKeyListener().focusOnNextInput();
     }
   }
 
@@ -40,7 +38,7 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
     if(window instanceof StageFrame)
     {
       StageFrame frame = (StageFrame)window;
-      frame.getRoot().getKeyListener().focusOnPreviousInput();
+      frame.getStage().getKeyListener().focusOnPreviousInput();
     }
   }
 

@@ -15,7 +15,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.awt.*;
 import java.util.Map;
@@ -41,61 +40,6 @@ public class ScenePanelTest extends Assert
     root.add(child);
     assertSame(root, child.getParent());
   }
-
-  @Test
-  public void shouldAddMouseListenersUponSettingTheFrame() throws Exception
-  {
-    assertEquals(null, root.getMouseListener());
-
-    root.setFrame(frame);
-    RootMouseListener listener = root.getMouseListener();
-    assertNotNull(listener);
-
-    assertEquals(true, Arrays.asList(frame.getMouseListeners()).contains(listener));
-    assertEquals(true, Arrays.asList(frame.getMouseMotionListeners()).contains(listener));
-    assertEquals(true, Arrays.asList(frame.getMouseWheelListeners()).contains(listener));
-  }
-
-  @Test
-  public void addsKeyListener() throws Exception
-  {
-    assertEquals(null, root.getKeyListener());
-
-    root.setFrame(frame);
-    RootKeyListener listener = root.getKeyListener();
-    assertNotNull(listener);
-
-    assertEquals(listener, frame.keyListener);
-  }
-
-  @Test
-  public void shouldDestroyRemovesListeners() throws Exception
-  {
-    root.setFrame(frame);
-    RootMouseListener listener = root.getMouseListener();
-    root.setFrame(null);
-
-    assertEquals(false, Arrays.asList(frame.getMouseListeners()).contains(listener));
-    assertEquals(false, Arrays.asList(frame.getMouseMotionListeners()).contains(listener));
-    assertEquals(false, Arrays.asList(frame.getMouseWheelListeners()).contains(listener));
-    assertEquals(false, Arrays.asList(frame.getKeyListeners()).contains(listener));
-    assertNull(root.getMouseListener());
-  }
-
-    // TODO MDM - make siure this works
-//  @Test
-//  public void keyboardFocusDoesNotRemainOnChildWhenDestroyed() throws Exception
-//  {
-//    TextBoxPanel inputPanel = new TextBoxPanel();
-//    root.setFrame(frame);
-//    child.add(inputPanel);
-//    root.add(child);
-//
-//    Context.instance().keyboardFocusManager.focusPanel(inputPanel);
-//    root.setFrame(null);
-//
-//    assertNotSame(inputPanel, Context.instance().keyboardFocusManager.getFocusedPanel());
-//  }
 
   @Test
   public void shouldAddPanelNeedingLayout() throws Exception
@@ -286,15 +230,15 @@ public class ScenePanelTest extends Assert
   @Test
   public void shouldIlluminateWhenSettingFrame() throws Exception
   {
-    root.setFrame(frame);
+    root.setStage(frame);
     assertEquals(true, root.isIlluminated());
   }
 
   @Test
   public void shouldDelluminateWhenSettingFrameToNull() throws Exception
   {
-    root.setFrame(frame);
-    root.setFrame(null);
+    root.setStage(frame);
+    root.setStage(null);
     
     assertEquals(false, root.isIlluminated());
   }
@@ -312,7 +256,7 @@ public class ScenePanelTest extends Assert
 
   private void setupIlluminatedScene()
   {
-    root.setFrame(frame);
+    root.setStage(frame);
     root.illuminate();
   }
 

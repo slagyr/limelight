@@ -18,6 +18,7 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public Map<String, RichStyle> styleStore;
   public Production production;
   public boolean shouldAllowClose;
+  private PropFrame stage;
 
   public MockRootPanel()
   {
@@ -30,8 +31,9 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
     return this;
   }
 
-  public void setFrame(PropFrame frame)
+  public void setStage(PropFrame stage)
   {
+    this.stage = stage;
   }
 
   public boolean hasPanelsNeedingLayout()
@@ -48,9 +50,9 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   {
   }
 
-  public PropFrame getFrame()
+  public PropFrame getStage()
   {
-    return null;
+    return stage;
   }
 
   public void setCursor(Cursor cursor)
@@ -65,11 +67,6 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public ImageCache getImageCache()
   {
     return null;
-  }
-
-  public RootKeyListener getKeyListener()
-  {
-    return keyListener;
   }
 
   public void addToIndex(PropPanel propPanel)

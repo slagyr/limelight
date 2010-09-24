@@ -9,30 +9,52 @@ import java.awt.event.KeyEvent;
 public class RootKeyListener implements java.awt.event.KeyListener
 {
   private Panel focusedPanel;
+  private PropFrame stage;
 
   public RootKeyListener(RootPanel rootPanel)
   {
     focusedPanel = rootPanel;
   }
 
+  public RootKeyListener(PropFrame stage)
+  {
+    this.stage = stage;
+  }
+
+  public void reset(RootPanel root)
+  {
+    focusedPanel = root;
+  }
+
+  public Panel getFocusedPanel()
+  {
+    if(focusedPanel == null)
+      focusedPanel = stage.getRoot();
+    return focusedPanel;
+  }
+
   public void keyTyped(KeyEvent e)
   {
+    if(getFocusedPanel() == null)
+      return;
+
     new CharTypedEvent(focusedPanel, e.getModifiers(), e.getKeyChar()).dispatch(focusedPanel);
   }
 
   public void keyPressed(KeyEvent e)
-  {    
+  {
+    if(getFocusedPanel() == null)
+      return;
+
     new KeyPressedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
   }
 
   public void keyReleased(KeyEvent e)
   {
-    new KeyReleasedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
-  }
+    if(getFocusedPanel() == null)
+      return;
 
-  public Panel getFocusedPanel()
-  {
-    return focusedPanel;
+    new KeyReleasedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
   }
 
   public void focusOn(Panel panel)
@@ -51,11 +73,17 @@ public class RootKeyListener implements java.awt.event.KeyListener
 
   public void focusOnNextInput()
   {
+    if(getFocusedPanel() == null)
+      return;
+
     focusOn(nextInputPanel(focusedPanel));
   }
 
   public void focusOnPreviousInput()
   {
+    if(getFocusedPanel() == null)
+      return;
+    
     focusOn(previousInputPanel(focusedPanel));
   }
 

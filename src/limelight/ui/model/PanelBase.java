@@ -145,6 +145,14 @@ public abstract class PanelBase implements Panel
     return parent.getRoot();
   }
 
+  public PropFrame getStage()
+  {
+    RootPanel root = getRoot();
+    if(root == null)
+      return null;
+    return root.getStage();
+  }
+
   public boolean isDescendantOf(Panel panel)
   {
     return parent != null && (parent == panel || parent.isDescendantOf(panel));

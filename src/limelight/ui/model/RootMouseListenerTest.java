@@ -46,7 +46,7 @@ public class RootMouseListenerTest
 
     ScenePanel scenePanel = new ScenePanel(new MockProp());
     scenePanel.add(parent);
-    scenePanel.setFrame(new MockPropFrame());
+    scenePanel.setStage(new MockPropFrame());
 
     parent.setSize(1000, 1000);
     child.setLocation(250, 250);

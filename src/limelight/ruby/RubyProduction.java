@@ -73,22 +73,22 @@ public class RubyProduction extends Production
       spawnThread.join();
       if(spawnThread.error != null)
         throw spawnThread.error;
-      else if(spawnThread.proxy != null)
-      {
-        rubyRuntime = spawnThread.ruby;
-        rubies.put(id, rubyRuntime);
-        setProxy(spawnThread.proxy);
-      }
       else
-      {
-        spawnThread.ruby.tearDown();
-        spawnThread = null;
-        gc();
-      }
+        if(spawnThread.proxy != null)
+        {
+          rubyRuntime = spawnThread.ruby;
+          rubies.put(id, rubyRuntime);
+          setProxy(spawnThread.proxy);
+        }
+        else
+        {
+          spawnThread.ruby.tearDown();
+          spawnThread = null;
+          gc();
+        }
     }
     catch(Exception e)
     {
-e.printStackTrace();
       throw new LimelightException("Failed to start JRuby Runtime", e);
     }
     finally
@@ -184,11 +184,16 @@ e.printStackTrace();
           JavaSupport javaSupport = otherRuby.getJavaSupport();
           Field field = javaSupport.getClass().getDeclaredField("javaClassCache");
           field.setAccessible(true);
-          ConcurrentHashMap<Class, JavaClass> classCache = (ConcurrentHashMap<Class, JavaClass>) field.get(javaSupport);
-          for(Class aClass : classCache.keySet())
+          final Object object = field.get(javaSupport);
+          if(object instanceof ConcurrentHashMap)
           {
-            if(aClass.toString().startsWith("class $Proxy"))
-              classCache.remove(aClass);
+            ConcurrentHashMap classCache = (ConcurrentHashMap) object;
+            for(Object classObject : classCache.keySet())
+            {
+              Class aClass = (Class)classObject;
+              if(aClass.toString().startsWith("class $Proxy"))
+                classCache.remove(aClass);
+            }
           }
         }
       }

@@ -3,6 +3,6 @@
 
 package limelight.ui.api;
 
-public class MockStage implements Stage
+public class MockStageProxy implements StageProxy
 {
 }

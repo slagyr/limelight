@@ -137,12 +137,11 @@ public class StudioTest extends TestCase
   public void testHaveAUtilitiesProduction() throws Exception
   {
     MockProduction production = new MockProduction("utilities");
-    mockRuntimeFactory.spawnedProduction = production;
+    studio.productionStub = production;
 
     UtilitiesProduction utilities = studio.utilitiesProduction();
     assertSame(production, utilities.getProduction());
 
-    mockRuntimeFactory.spawnException = new LimelightException("blah");
     assertSame(utilities, studio.utilitiesProduction()); // no exception thrown
   }
 // TODO MDM - This needs to be fixed

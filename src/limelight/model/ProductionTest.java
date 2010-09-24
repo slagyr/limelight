@@ -22,6 +22,11 @@ public class ProductionTest
     }
 
     @Override
+    public void open()
+    {
+    }
+
+    @Override
     public void close()
     {
     }

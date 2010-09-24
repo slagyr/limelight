@@ -16,6 +16,7 @@ import limelight.background.AnimationLoop;
 import limelight.background.IdleThreadLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.os.OS;
+import limelight.ui.model.StageFrame;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
@@ -62,7 +63,7 @@ public class Context
     instance = null;
   }
 
-  public static PropFrame getActiveFrame()
+  public static StageFrame getActiveFrame()
   {
     if(instance().frameManager != null)
       return instance().frameManager.getActiveFrame();

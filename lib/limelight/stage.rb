@@ -294,8 +294,6 @@ module Limelight
 
     def build_frame
       @frame = new_frame
-      @frame.set_size(800, 800)
-      @frame.set_location(200, 25)
       @frame.title = title
     end
 

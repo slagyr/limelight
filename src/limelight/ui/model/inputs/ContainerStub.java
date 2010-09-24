@@ -19,8 +19,8 @@ public class ContainerStub extends Container
   public Container getParent()
   {
     Container parent = null;
-    if(panel != null && panel.getRoot() != null && panel.getRoot().getFrame() != null)
-      parent = (Container)panel.getRoot().getFrame();
+    if(panel != null && panel.getRoot() != null && panel.getRoot().getStage() != null)
+      parent = (Container)panel.getRoot().getStage();
     return parent;
   }
 

@@ -13,7 +13,8 @@ import java.awt.event.MouseWheelEvent;
 
 public class RootMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener
 {
-  private final RootPanel panel;
+  private RootPanel panel; // TODO MDM remove this member
+  private PropFrame stage;
   public Panel pressedPanel;
   public Panel hooveredPanel;
 
@@ -22,9 +23,29 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
     this.panel = panel;
   }
 
+  public RootMouseListener(PropFrame stage)
+  {
+    this.stage = stage;
+  }
+
+  public RootPanel getRoot()
+  {
+    if(panel == null)
+      return stage.getRoot();
+    else
+      return panel;
+  }
+
+  public void reset()
+  {
+    panel = null;
+    pressedPanel = null;
+    hooveredPanel = null;
+  }
+
   private Panel panelFor(Point point)
   {
-    return panel.getOwnerOfPoint(point);
+    return getRoot().getOwnerOfPoint(point);
   }
 
   public void mouseClicked(MouseEvent e)
@@ -34,12 +55,18 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
 
   public void mousePressed(MouseEvent e)
   {
+    if(getRoot() == null)
+      return;
+
     pressedPanel = panelFor(e.getPoint());
     new MousePressedEvent(pressedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(pressedPanel);
   }
 
   public void mouseReleased(MouseEvent e)
   {
+    if(getRoot() == null)
+      return;
+
     Panel releasedPanel = panelFor(e.getPoint());
     new MouseReleasedEvent(releasedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(releasedPanel);
     if(releasedPanel == pressedPanel)
@@ -60,6 +87,9 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
 
   public void mouseDragged(MouseEvent e)
   {
+    if(getRoot() == null)
+      return;
+
     Panel panel = panelFor(e.getPoint());
     if(panel != hooveredPanel)
       transition(panel, e);
@@ -70,7 +100,10 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
   }
 
   public void mouseMoved(MouseEvent e)
-  { 
+  {
+    if(getRoot() == null)
+      return;
+
     Panel panel = panelFor(e.getPoint());
     if(panel != hooveredPanel)
       transition(panel, e);
@@ -79,6 +112,9 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
 
   public void mouseWheelMoved(MouseWheelEvent e)
   {
+    if(getRoot() == null)
+      return;
+    
     final Panel panel = panelFor(e.getPoint());  
     new limelight.ui.events.panel.MouseWheelEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()).dispatch(panel);
   }
