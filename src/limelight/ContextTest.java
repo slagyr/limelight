@@ -9,7 +9,7 @@ import limelight.background.PanelPainterLoop;
 import limelight.background.AnimationLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.ui.model.MockFrameManager;
-import limelight.ui.api.MockStudio;
+import limelight.model.api.MockStudio;
 import limelight.os.MockOS;
 
 public class ContextTest extends TestCase

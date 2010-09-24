@@ -4,7 +4,7 @@
 package limelight.util;
 
 import limelight.ui.Panel;
-import limelight.ui.api.PropProxy;
+import limelight.model.api.PropProxy;
 import limelight.ui.model.Prop;
 
 import javax.imageio.ImageIO;

@@ -5,10 +5,11 @@ package limelight.ui.model;
 
 import limelight.*;
 import limelight.model.Production;
+import limelight.model.Stage;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.ui.api.PropProxy;
+import limelight.model.api.PropProxy;
 import limelight.util.ResourceLoader;
 
 import java.awt.*;

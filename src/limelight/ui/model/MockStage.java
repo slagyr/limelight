@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.model.Stage;
 import limelight.ui.MockGraphics;
 
 import java.awt.*;

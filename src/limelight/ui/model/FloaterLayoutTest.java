@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 import java.awt.*;
 import java.util.ArrayList;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 
 public class FloaterLayoutTest extends TestCase
 {

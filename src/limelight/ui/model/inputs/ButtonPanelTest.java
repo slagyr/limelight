@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;

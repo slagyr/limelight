@@ -4,8 +4,8 @@
 package limelight.model;
 
 import limelight.io.FileUtil;
-import limelight.ui.api.CastingDirector;
-import limelight.ui.api.ProductionProxy;
+import limelight.model.api.CastingDirector;
+import limelight.model.api.ProductionProxy;
 import limelight.util.ResourceLoader;
 
 public abstract class Production

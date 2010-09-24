@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.model.Prop;
 import org.junit.Assert;
 import org.junit.Before;

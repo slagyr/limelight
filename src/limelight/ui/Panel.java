@@ -6,7 +6,7 @@ package limelight.ui;
 import limelight.styles.ScreenableStyle;
 import limelight.ui.events.panel.PanelEventHandler;
 import limelight.ui.model.ParentPanelBase;
-import limelight.ui.model.Stage;
+import limelight.model.Stage;
 import limelight.ui.model.RootPanel;
 import limelight.util.Box;
 import limelight.ui.model.Layout;

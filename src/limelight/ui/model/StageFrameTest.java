@@ -3,28 +3,18 @@
 
 package limelight.ui.model;
 
-import limelight.ui.KeyboardFocusManager;
-import limelight.ui.api.MockPropProxy;
-import limelight.ui.api.MockStageProxy;
 import limelight.ui.*;
 import limelight.Context;
-import limelight.styles.values.*;
-import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.os.MockOS;
-import limelight.util.Colors;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.awt.*;
-import java.util.Arrays;
 
 public class StageFrameTest extends Assert
 {
-  private MockStageProxy stageProxy;
-  private FramedStage stage;
-  private FrameManager frameManager;
+  private MockStage stage;
   public MockGraphicsDevice graphicsDevice;
   private MockOS os;
   private Insets insets;
@@ -33,19 +23,11 @@ public class StageFrameTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    RealStyleAttributeCompilerFactory.install();
-    frameManager = new InertFrameManager();
-    Context.instance().frameManager = frameManager;
-    Context.instance().keyboardFocusManager = new KeyboardFocusManager();
-
-    stageProxy = new MockStageProxy();
-    stage = new FramedStage(stageProxy);
-    frame = stage.getFrame();
+    stage = new MockStage();
+    frame = new StageFrame(stage);
 
     graphicsDevice = new MockGraphicsDevice();
     frame.setGraphicsDevice(graphicsDevice);
-    insets = new Insets(0, 0, 0, 0);
-    frame.setScreenInsets(insets);
 
     os = new MockOS();
     Context.instance().os = os;
@@ -63,112 +45,57 @@ public class StageFrameTest extends Assert
       //ok
     }
   }
-  
-  @Test
-  public void shouldIcon() throws Exception
-  {
-    assertNotNull(frame.getIconImage());
-  }
 
   @Test
-  public void shouldStage() throws Exception
+  public void getsStage() throws Exception
   {
-    assertSame(stageProxy, stage.getStage());
+    assertSame(stage, frame.getStage());
   }
-
-  @Test
-  public void shouldLoad() throws Exception
-  {
-    Scene panel = new Scene(new MockPropProxy());
-    stage.setRoot(panel);
-
-    RootPanel root = stage.getRoot();
-
-    assertSame(panel, root);
-  }
-
-  @Test
-  public void shouldLoadSetsDefaultCursor() throws Exception
-  {
-    stage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    Scene panel = new Scene(new MockPropProxy());
-    stage.setRoot(panel);
-
-    assertEquals(Cursor.DEFAULT_CURSOR, stage.getCursor().getType());
-  }
-
-  @Test
-  public void shouldLoadWillDestroyPreviousRoots() throws Exception
-  {
-    Scene panel = new Scene(new MockPropProxy());
-    stage.setRoot(panel);
-
-    RootPanel firstRoot = stage.getRoot();
-    assertEquals(true, firstRoot.isIlluminated());
-
-    Scene panel2 = new Scene(new MockPropProxy());
-    stage.setRoot(panel2);
-
-    assertEquals(false, firstRoot.isIlluminated());
-  }
-
-  @Test
-  public void shouldAddsSelfToFrameManager() throws Exception
-  {
-    assertEquals(1, frameManager.getFrameCount());
-    assertEquals(true, frameManager.isWatching(frame));
-  }
-
-//  @Test
-//  public void shouldDefaultCloseOperations() throws Exception
-//  {
-//    assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame.getDefaultCloseOperation());
-//  }
 
   @Test
   public void shouldSetFullScreenWhenNotVisible() throws Exception
   {
-    stage.setFullScreen(true);
+    frame.setFullScreen(true);
 
-    assertEquals(true, stage.isFullScreen());
-    stage.open();
+    assertEquals(true, frame.isFullScreen());
+    frame.setVisible(true);
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
   }
 
   @Test
   public void shouldSetFullScreenWhenVisible() throws Exception
   {
-    stage.open();
-    stage.setFullScreen(true);
+    frame.setVisible(true);
+    frame.setFullScreen(true);
 
-    assertEquals(true, stage.isFullScreen());
+    assertEquals(true, frame.isFullScreen());
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
   }
 
   @Test
   public void shouldTurnOffFullScreenWhiledisplayed() throws Exception
   {
-    stage.setFullScreen(true);
-    stage.open();
-    stage.setFullScreen(false);
+    frame.setFullScreen(true);
+    frame.setVisible(true);
+    frame.setFullScreen(false);
 
-    assertEquals(false, stage.isFullScreen());
+    assertEquals(false, frame.isFullScreen());
     assertEquals(null, graphicsDevice.getFullScreenWindow());
   }
 
   @Test
   public void shouldSetKioskMode() throws Exception
   {
-    stage.setKiosk(true);
+    frame.setKiosk(true);
 
-    assertEquals(true, stage.isKiosk());
+    assertEquals(true, frame.isKiosk());
   }
 
   @Test
   public void shouldKioskWillGoFullscreenAndFramelessWhenOpened() throws Exception
   {
-    stage.setKiosk(true);
-    stage.open();
+    frame.setKiosk(true);
+    frame.setVisible(true);
 
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
     assertEquals(true, os.isInKioskMode());
@@ -177,9 +104,9 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldKioskWillGoFullscreenAndFramelessWhenClosed() throws Exception
   {
-    stage.setKiosk(true);
-    stage.open();
-    stage.close();
+    frame.setKiosk(true);
+    frame.setVisible(true);
+    frame.setVisible(false);
 
     assertEquals(null, graphicsDevice.getFullScreenWindow());
     assertEquals(false, os.isInKioskMode());
@@ -188,10 +115,10 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldKioskModePreservesScreenSetting() throws Exception
   {
-    stage.setFullScreen(false);
-    stage.setKiosk(true);
-    stage.open();
-    stage.setKiosk(false);
+    frame.setFullScreen(false);
+    frame.setKiosk(true);
+    frame.setVisible(true);
+    frame.setKiosk(false);
 
     assertEquals(null, graphicsDevice.getFullScreenWindow());
     assertEquals(false, os.isInKioskMode());
@@ -200,10 +127,10 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldKioskModePreservesScreenSettingWithFullscreenOn() throws Exception
   {
-    stage.setFullScreen(true);
-    stage.setKiosk(true);
-    stage.open();
-    stage.setKiosk(false);
+    frame.setFullScreen(true);
+    frame.setKiosk(true);
+    frame.setVisible(true);
+    frame.setKiosk(false);
 
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
     assertEquals(false, os.isInKioskMode());
@@ -212,9 +139,9 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldEnterKioskModeWhileOpen() throws Exception
   {
-    stage.setKiosk(false);
-    stage.open();
-    stage.setKiosk(true);
+    frame.setKiosk(false);
+    frame.setVisible(true);
+    frame.setKiosk(true);
 
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
     assertEquals(true, os.isInKioskMode());
@@ -223,9 +150,9 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldHidingWhileInKioskMode() throws Exception
   {
-    stage.setKiosk(true);
-    stage.open();
-    stage.setVisible(false);
+    frame.setKiosk(true);
+    frame.setVisible(true);
+    frame.setVisible(false);
 
     assertEquals(null, graphicsDevice.getFullScreenWindow());
     assertEquals(false, os.isInKioskMode());
@@ -234,10 +161,10 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldShowingAfterHidingWhileInKioskMode() throws Exception
   {
-    stage.setKiosk(true);
-    stage.open();
-    stage.setVisible(false);
-    stage.setVisible(true);
+    frame.setKiosk(true);
+    frame.setVisible(true);
+    frame.setVisible(false);
+    frame.setVisible(true);
 
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
     assertEquals(true, os.isInKioskMode());
@@ -246,239 +173,32 @@ public class StageFrameTest extends Assert
   @Test
   public void shouldFullscreenOffWhenInKioskMode() throws Exception
   {
-    stage.setKiosk(true);
-    stage.setFullScreen(true);
-    stage.open();
+    frame.setKiosk(true);
+    frame.setFullScreen(true);
+    frame.setVisible(true);
 
-    stage.setFullScreen(false);
+    frame.setFullScreen(false);
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
-  }
-
-  @Test
-  public void shouldHideAndShow() throws Exception
-  {
-    stage.open();
-    assertEquals(true, stage.isVisible());
-
-    stage.setVisible(false);
-    assertEquals(false, stage.isVisible());
-
-    stage.setVisible(true);
-    assertEquals(true, stage.isVisible());
   }
 
   @Test
   public void shouldHideAndShowWithFullScreen() throws Exception
   {
-    stage.setFullScreen(true);
-    stage.open();
-    stage.setVisible(false);
+    frame.setFullScreen(true);
+    frame.setVisible(true);
+    frame.setVisible(false);
     assertEquals(null, graphicsDevice.getFullScreenWindow());
 
-    stage.setVisible(true);
+    frame.setVisible(true);
     assertEquals(frame, graphicsDevice.getFullScreenWindow());
   }
 
   @Test
   public void shouldSettingFullScreenWhileHidden() throws Exception
   {
-    stage.open();
-    stage.setVisible(false);
-    stage.setFullScreen(true);
+    frame.setVisible(true);
+    frame.setVisible(false);
+    frame.setFullScreen(true);
     assertEquals(null, graphicsDevice.getFullScreenWindow());
   }
-
-  @Test
-  public void shouldSetBackgroundColor() throws Exception
-  {
-    stage.setBackgroundColor("blue");
-    assertEquals(Colors.resolve("blue"), frame.getBackground());
-    assertEquals("#0000ffff", stage.getBackgroundColor());
-
-    stage.setBackgroundColor("#abc");
-    assertEquals(Colors.resolve("#abc"), frame.getBackground());
-    assertEquals("#aabbccff", stage.getBackgroundColor());
-  }
-
-  @Test
-  public void shouldShouldRetainSizeAndLocationWhenComingOutOfFullscreen() throws Exception
-  {
-    stage.setSizeStyles(128, 456);
-    stage.setLocationStyles(12, 34);
-    stage.open();
-
-    stage.setFullScreen(true);
-    stage.setFullScreen(false);
-
-    assertEquals(new Dimension(128, 456), stage.getSize());
-    assertEquals(new Point(12, 34), stage.getLocation());
-  }
-
-  @Test
-  public void shouldShouldAllowClose() throws Exception
-  {
-    assertEquals(true, stage.shouldAllowClose());
-
-    Scene scene = new Scene(new MockPropProxy());
-    stage.setRoot(scene);
-    scene.setShouldAllowClose(true);             
-    assertEquals(true, stage.shouldAllowClose());
-
-    scene.setShouldAllowClose(false);
-    assertEquals(false, stage.shouldAllowClose());
-  }
-
-  @Test
-  public void shouldSettingDimensionStyles() throws Exception
-  {
-    graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
-    insets.set(10, 20, 30, 40);
-
-    stage.setSizeStyles(50, 100);
-    assertEquals(new StaticPixelsValue(50), stage.getWidthStyle());
-    assertEquals(new StaticPixelsValue(100), stage.getHeightStyle());
-    assertEquals(new Dimension(50, 100), stage.getSize());
-
-    stage.setSizeStyles("50%", "100%");
-    assertEquals(new PercentagePixelsValue(50.0), stage.getWidthStyle());
-    assertEquals(new PercentagePixelsValue(100.0), stage.getHeightStyle());
-    assertEquals(new Dimension(470, 960), stage.getSize());
-  }
-
-  @Test
-  public void shouldSettingLocationStyles() throws Exception
-  {
-    graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
-    insets.set(10, 20, 30, 40);
-
-    frame.setSize(100, 100);
-
-    stage.setLocationStyles(50, 100);
-    assertEquals(new StaticXCoordinateValue(50), stage.getXLocationStyle());
-    assertEquals(new StaticYCoordinateValue(100), stage.getYLocationStyle());
-    assertEquals(new Point(insets.left + 50, insets.top + 100), stage.getLocation());
-
-    stage.setLocationStyles("50%", "75%");
-    assertEquals(new PercentageXCoordinateValue(50.0), stage.getXLocationStyle());
-    assertEquals(new PercentageYCoordinateValue(75.0), stage.getYLocationStyle());
-    assertEquals(new Point(490, 730), stage.getLocation());
-  }
-
-  @Test
-  public void shouldApplyingLocationBeforeSizeWillAdjustBeforeOpening() throws Exception
-  {
-    graphicsDevice.defaultConfiguration.bounds = new Rectangle(0, 0, 1000, 1000);
-    insets.set(10, 20, 30, 40);
-    
-    stage.setLocationStyles("center", "center");
-    stage.setSizeStyles(200, 100);
-    stage.open();
-
-    assertEquals(new Dimension(200, 100), stage.getSize());
-    assertEquals(new Point(390, 440), stage.getLocation());
-  }
-
-  @Test
-  public void shouldVitality() throws Exception
-  {
-    assertEquals(true, stage.isVital());
-
-    stage.setVital(false);
-
-    assertEquals(false, stage.isVital());
-  }
-
-  @Test
-  public void shouldSizeChangesPropogateDown() throws Exception
-  {
-    MockRootPanel panel = new MockRootPanel();
-    stage.setRoot(panel);
-
-    frame.doLayout(); // Called when the stage is resized
-    assertEquals(true, panel.consumableAreaChangedCalled);
-
-    panel.consumableAreaChangedCalled = false;
-    frame.setSize(123, 456);
-    frame.doLayout();
-    assertEquals(true, panel.consumableAreaChangedCalled);
-  }
-
-  @Test
-  public void shouldShouldCollapseAutoDimensions() throws Exception
-  {
-    stage.setSizeStyles("auto", "auto");
-    MockRootPanel child = new MockRootPanel();
-    child.prepForSnap(300, 200);
-    stage.setRoot(child);
-
-    stage.open();
-    Insets insets = stage.getInsets();
-
-    int width = 300 + insets.left + insets.right;
-    int height = 200 + insets.top + insets.bottom;
-    assertEquals(new Dimension(width, height), stage.getSize());
-  }
-
-  @Test
-  public void isClosed() throws Exception
-  {
-    stage.open();
-    assertEquals(false, stage.isClosed());
-    assertEquals(true, stage.isOpen());
-
-    stage.close();
-
-    assertEquals(true, stage.isClosed());
-    assertEquals(false, stage.isOpen());
-  }
-
-  @Test
-  public void shouldAddMouseListenersUponSettingTheFrame() throws Exception
-  {
-    final RootMouseListener listener = stage.getMouseListener();
-    assertNotNull(listener);
-
-    assertEquals(true, Arrays.asList(frame.getMouseListeners()).contains(listener));
-    assertEquals(true, Arrays.asList(frame.getMouseMotionListeners()).contains(listener));
-    assertEquals(true, Arrays.asList(frame.getMouseWheelListeners()).contains(listener));
-  }
-
-  @Test
-  public void addsKeyListener() throws Exception
-  {
-    RootKeyListener listener = stage.getKeyListener();
-    assertNotNull(listener);
-
-    assertEquals(true, Arrays.asList(frame.getKeyListeners()).contains(listener));
-  }
-
-  @Test
-  public void shouldDestroyRemovesListeners() throws Exception
-  {
-    RootMouseListener mouseListener = stage.getMouseListener();
-    RootKeyListener keyListener = stage.getKeyListener();
-    stage.close();
-
-    assertEquals(false, Arrays.asList(frame.getMouseListeners()).contains(mouseListener));
-    assertEquals(false, Arrays.asList(frame.getMouseMotionListeners()).contains(mouseListener));
-    assertEquals(false, Arrays.asList(frame.getMouseWheelListeners()).contains(mouseListener));
-    assertEquals(false, Arrays.asList(frame.getKeyListeners()).contains(keyListener));
-
-    assertNull(stage.getMouseListener());
-    assertNull(stage.getKeyListener());
-  }
-    // TODO MDM - make sure this works
-//  @Test
-//  public void keyboardFocusDoesNotRemainOnChildWhenDestroyed() throws Exception
-//  {
-//    TextBoxPanel inputPanel = new TextBoxPanel();
-//    root.setFrame(frame);
-//    child.add(inputPanel);
-//    root.add(child);
-//
-//    Context.instance().keyboardFocusManager.focusPanel(inputPanel);
-//    root.setFrame(null);
-//
-//    assertNotSame(inputPanel, Context.instance().keyboardFocusManager.getFocusedPanel());
-//  }
 }

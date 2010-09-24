@@ -5,8 +5,7 @@ package limelight.model;
 
 import limelight.Context;
 import limelight.ruby.RubyProduction;
-import limelight.ruby.RuntimeFactory;
-import limelight.ui.api.UtilitiesProduction;
+import limelight.model.api.UtilitiesProduction;
 import limelight.io.FileUtil;
 
 import java.util.List;

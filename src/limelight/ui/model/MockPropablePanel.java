@@ -5,10 +5,10 @@ package limelight.ui.model;
 
 import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.painting.PaintAction;
 import limelight.ui.painting.Border;
-import limelight.ui.api.PropProxy;
+import limelight.model.api.PropProxy;
 import limelight.util.Box;
 
 public class MockPropablePanel extends MockParentPanel implements PropablePanel, PaintablePanel

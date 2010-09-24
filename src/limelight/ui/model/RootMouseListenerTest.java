@@ -5,7 +5,7 @@ package limelight.ui.model;
 
 import limelight.events.Event;
 import limelight.ui.MockPanel;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.*;
 import org.junit.Before;

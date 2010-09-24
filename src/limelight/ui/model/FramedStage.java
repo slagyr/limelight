@@ -4,8 +4,9 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.model.Stage;
 import limelight.styles.abstrstyling.*;
-import limelight.ui.api.StageProxy;
+import limelight.model.api.StageProxy;
 import limelight.ui.events.stage.StageClosingEvent;
 import limelight.ui.images.Images;
 import limelight.util.Colors;
@@ -46,6 +47,22 @@ public class FramedStage extends Stage
     return frame;
   }
 
+  public void open()
+  {
+    if(opened)
+      return;
+
+    frame.addNotify(); // MDM - Force the loading of the native peer to calculate insets.
+
+    applySizeStyles();
+    collapseAutoDimensions();
+    applyLocationStyles();
+
+    frame.setVisible(true);
+
+    opened = true;
+  }
+
   public void close()
   {
     if(closing)
@@ -72,22 +89,6 @@ public class FramedStage extends Stage
   public boolean isOpen()
   {
     return opened;
-  }
-
-  public void open()
-  {
-    if(opened)
-      return;
-
-    frame.addNotify(); // MDM - Force the loading of the native peer to calculate insets.
-
-    applySizeStyles();
-    collapseAutoDimensions();
-    applyLocationStyles();
-
-    frame.setVisible(true);
-
-    opened = true;
   }
 
   public void setSizeStyles(Object widthValue, Object heightValue)

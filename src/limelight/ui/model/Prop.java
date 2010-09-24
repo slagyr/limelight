@@ -12,7 +12,7 @@ import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.*;
 import limelight.ui.Panel;
-import limelight.ui.api.PropProxy;
+import limelight.model.api.PropProxy;
 import limelight.ui.events.panel.MouseEnteredEvent;
 import limelight.ui.events.panel.MouseExitedEvent;
 import limelight.ui.events.panel.MouseWheelEvent;

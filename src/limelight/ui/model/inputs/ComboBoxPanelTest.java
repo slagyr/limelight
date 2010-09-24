@@ -10,7 +10,7 @@ import limelight.ui.events.panel.*;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;
 import limelight.ui.model.Prop;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import org.junit.Before;
 import org.junit.Test;
 

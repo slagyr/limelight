@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockGraphics;
-import limelight.ui.api.MockPropProxy;
+import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.MockRootPanel;

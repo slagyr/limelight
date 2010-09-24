@@ -1,9 +1,9 @@
 package limelight.model;
 
-import limelight.ui.api.CastingDirector;
-import limelight.ui.api.MockCastingDirector;
-import limelight.ui.api.MockProductionProxy;
-import limelight.ui.api.ProductionProxy;
+import limelight.model.api.CastingDirector;
+import limelight.model.api.MockCastingDirector;
+import limelight.model.api.MockProductionProxy;
+import limelight.model.api.ProductionProxy;
 import limelight.util.ResourceLoader;
 import org.junit.Before;
 import org.junit.Test;

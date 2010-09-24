@@ -5,10 +5,8 @@ package limelight.model;
 
 import junit.framework.TestCase;
 import limelight.*;
-import limelight.model.MockProduction;
-import limelight.model.Studio;
 import limelight.ruby.MockRuntimeFactory;
-import limelight.ui.api.UtilitiesProduction;
+import limelight.model.api.UtilitiesProduction;
 
 public class StudioTest extends TestCase
 {
