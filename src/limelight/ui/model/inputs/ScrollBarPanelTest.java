@@ -4,9 +4,9 @@
 package limelight.ui.model.inputs;
 
 import limelight.model.api.MockPropProxy;
-import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.Prop;
-import limelight.ui.model.Scene;
+import limelight.ui.model.MockScene;
+import limelight.ui.model.PropPanel;
+import limelight.ui.model.ScenePanel;
 import limelight.ui.model.MockStage;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,9 +59,9 @@ public class ScrollBarPanelTest
   @Test
   public void changesCausesLayout() throws Exception
   {
-    Scene root = new Scene(new MockPropProxy());
+    ScenePanel root = new ScenePanel(new MockPropProxy());
     root.setStage(new MockStage());
-    Prop parent = new Prop(new MockPropProxy());
+    PropPanel parent = new PropPanel(new MockPropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
     parent.doLayout();
@@ -73,9 +73,9 @@ public class ScrollBarPanelTest
   @Test
   public void shouldParentIsMarkedAsChanged() throws Exception
   {
-    Scene root = new Scene(new MockPropProxy());
+    ScenePanel root = new ScenePanel(new MockPropProxy());
     root.setStage(new MockStage());
-    Prop parent = new Prop(new MockPropProxy());
+    PropPanel parent = new PropPanel(new MockPropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
     parent.doLayout();
@@ -195,7 +195,7 @@ public class ScrollBarPanelTest
   @Test
   public void isDirtyAfterSettingValue() throws Exception
   {
-    MockRootPanel root = new MockRootPanel();
+    MockScene root = new MockScene();
     root.add(verticalScrollBar);
     verticalScrollBar.configure(10, 100);
 
@@ -207,7 +207,7 @@ public class ScrollBarPanelTest
   @Test
   public void pressingButtonsWillMakeDirty() throws Exception
   {
-    MockRootPanel root = new MockRootPanel();
+    MockScene root = new MockScene();
     root.add(verticalScrollBar);
 
     verticalScrollBar.setIncreasingButtonActive(true);

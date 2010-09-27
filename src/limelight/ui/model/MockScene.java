@@ -12,22 +12,17 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class MockRootPanel extends MockPropablePanel implements RootPanel
+public class MockScene extends MockProp implements Scene
 {
   public LinkedList<Rectangle> dirtyRegions = new LinkedList<Rectangle>();
-  private RootKeyListener keyListener;
   public Map<String, RichStyle> styleStore;
   public Production production;
   public boolean shouldAllowClose;
   private Stage stage;
-
-  public MockRootPanel()
-  {
-    keyListener = new RootKeyListener(this);
-  }
+  public boolean visible;
 
   @Override
-  public RootPanel getRoot()
+  public Scene getRoot()
   {
     return this;
   }
@@ -70,11 +65,11 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
     return null;
   }
 
-  public void addToIndex(Prop prop)
+  public void addToIndex(PropPanel prop)
   {
   }
 
-  public void removeFromIndex(Prop prop)
+  public void removeFromIndex(PropPanel prop)
   {
   }
 
@@ -91,6 +86,11 @@ public class MockRootPanel extends MockPropablePanel implements RootPanel
   public boolean shouldAllowClose()
   {
     return shouldAllowClose;
+  }
+
+  public boolean isVisible()
+  {
+    return stage != null && stage.isVisible();
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

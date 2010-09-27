@@ -40,7 +40,7 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
   protected abstract void setDefaultStyles(Style style);
   public abstract void setText(String text);
 
-  public void setText(String text, PropablePanel panel)
+  public void setText(String text, Prop panel)
   {
     setText(text);
   }
@@ -62,9 +62,9 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
   public void setParent(ParentPanelBase panel)
   {
     super.setParent(panel);
-    if(panel instanceof Prop)
+    if(panel instanceof PropPanel)
     {
-      Prop prop = (Prop) panel;
+      PropPanel prop = (PropPanel) panel;
       prop.sterilize();
       prop.setTextAccessor(this);
       setDefaultStyles(prop.getStyle());
@@ -72,14 +72,14 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
     }
   }
 
-  protected Painter getPropPainter(Prop prop)
+  protected Painter getPropPainter(PropPanel prop)
   {
     return DefaultPainter.instance;
   }
 
   protected void valueChanged()
   {
-    new ValueChangedEvent(this).dispatch(this);
+    new ValueChangedEvent().dispatch(this);
   }
 
   private static class MakeDirtyAction implements EventAction

@@ -2,6 +2,9 @@ package limelight.model.api;
 
 public class MockProductionProxy implements ProductionProxy
 {
+  public CastingDirector castingDirector;
+  public TheaterProxy theater;
+
   public String getName()
   {
     return null;
@@ -31,5 +34,15 @@ public class MockProductionProxy implements ProductionProxy
 
   public void open()
   {
+  }
+
+  public CastingDirector getCastingDirector()
+  {
+    return castingDirector;
+  }
+
+  public TheaterProxy getTheater()
+  {
+    return theater;
   }
 }

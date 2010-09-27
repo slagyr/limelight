@@ -15,42 +15,39 @@ module Limelight
 
     class << self
       def panel_class #:nodoc:
-        return Java::limelight.ui.model.Scene
+        return Java::limelight.ui.model.ScenePanel
       end
     end
 
     include Java::limelight.model.api.SceneProxy
 
-    attr_reader :button_groups, :casting_director, :cast
-    attr_accessor :stage, :visible
-
-    alias :visible? :visible
+    attr_reader :button_groups, :cast
 
     def initialize(options={})      
       path = options.delete(:path) || ""
-      @root = Java::limelight.util.ResourceLoader.for_root(path)
+      @loader = Java::limelight.util.ResourceLoader.for_root(path)
       super(options)    
       @button_groups = ButtonGroupCache.new
       @cast = Module.new
     end
 
     def production=(value)
-      @panel.production = value.production
+      @peer.production = value.production
     end
 
     def production
-      return @panel.production.proxy
+      return @peer.production.proxy
     end
 
     def on_scene_opened(& action)
-      @panel.event_handler.add(Limelight::UI::Events::SceneOpenedEvent, action)
+      @peer.event_handler.add(Limelight::UI::Events::SceneOpenedEvent, action)
     end
 
     # Returns a hash of all the styles belonging to this scene
     #
     def styles_store
-      if @styles_store == nil #cache the java object so we don't loose the Hashiness
-        @styles_store = Util::Hashes.select(@panel.styles_store)
+      if @styles_store == nil
+        @styles_store = Util::Hashes.select(@peer.styles_store)
       end
       return @styles_store
     end
@@ -61,22 +58,28 @@ module Limelight
       return self
     end
 
+    # Returns the stage that contains the scene
+    #
+    def stage
+      return @peer.stage.proxy
+    end
+
     # Returns the path to the root directory of the Scene
     #
     def path
-      return @root.root
+      return @loader.root
     end
 
     # Returns the path to the Scene's props file
     #
     def props_file
-      return @root.path_to("props.rb")
+      return @loader.path_to("props.rb")
     end
 
     # Returns the path to the Scene's props file
     #
     def styles_file
-      return @root.path_to("styles.rb")
+      return @loader.path_to("styles.rb")
     end
 
     #    def add_options(options) #:nodoc:
@@ -95,17 +98,6 @@ module Limelight
       end
     end
 
-    # Opens a FileChooser for a new Production.  Loads the chosen Production.
-    #
-    def open_chosen_production
-      options = { :title => "Open New Limelight Production", :description => "Limelight Production", :directory => @directory }
-      chosen_file = stage.choose_file(options) { |file| Util.is_limelight_scene?(file) || Util.is_limelight_production?(file) }
-      if chosen_file
-        @directory = File.dirname(chosen_file)
-        open_production(chosen_file)
-      end
-    end
-
     # Creates a new Producer to open the specified Production.
     #
     def open_production(production_path)
@@ -116,7 +108,7 @@ module Limelight
     # TODO It doesn't quite make sense that a scene loads other scene.  It has to replace itself?
     #
     def load(scene_name)
-      production.producer.open_scene(scene_name, @stage)
+      production.producer.open_scene(scene_name, stage)
     end
 #
 #    # Add the Prop to the index.  Provides fast lookup by id.
@@ -142,8 +134,12 @@ module Limelight
     #
     def find(id)
 #      return @prop_index[id.to_s]
-      find = @panel.find(id.to_s)
+      find = @peer.find(id.to_s)
       return find.nil? ? nil : find.prop
+    end
+
+    def visible?
+      return @peer.visible?
     end
         
 #    def illuminate(options={}) #:nodoc:

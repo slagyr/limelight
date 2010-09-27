@@ -7,22 +7,22 @@ import limelight.ui.model.inputs.InputPanel;
 
 import java.awt.event.KeyEvent;
 
-public class RootKeyListener implements java.awt.event.KeyListener
+public class StageKeyListener implements java.awt.event.KeyListener
 {
   private Panel focusedPanel;
   private Stage stage;
 
-  public RootKeyListener(RootPanel rootPanel)
+  public StageKeyListener(Scene rootPanel)
   {
     focusedPanel = rootPanel;
   }
 
-  public RootKeyListener(Stage stage)
+  public StageKeyListener(Stage stage)
   {
     this.stage = stage;
   }
 
-  public void reset(RootPanel root)
+  public void reset(Scene root)
   {
     focusedPanel = root;
   }
@@ -30,7 +30,7 @@ public class RootKeyListener implements java.awt.event.KeyListener
   public Panel getFocusedPanel()
   {
     if(focusedPanel == null)
-      focusedPanel = stage.getRoot();
+      focusedPanel = stage.getScene();
     return focusedPanel;
   }
 
@@ -39,7 +39,7 @@ public class RootKeyListener implements java.awt.event.KeyListener
     if(getFocusedPanel() == null)
       return;
 
-    new CharTypedEvent(focusedPanel, e.getModifiers(), e.getKeyChar()).dispatch(focusedPanel);
+    new CharTypedEvent(e.getModifiers(), e.getKeyChar()).dispatch(focusedPanel);
   }
 
   public void keyPressed(KeyEvent e)
@@ -47,7 +47,7 @@ public class RootKeyListener implements java.awt.event.KeyListener
     if(getFocusedPanel() == null)
       return;
 
-    new KeyPressedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
+    new KeyPressedEvent(e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
   }
 
   public void keyReleased(KeyEvent e)
@@ -55,7 +55,7 @@ public class RootKeyListener implements java.awt.event.KeyListener
     if(getFocusedPanel() == null)
       return;
 
-    new KeyReleasedEvent(focusedPanel, e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
+    new KeyReleasedEvent(e.getModifiers(), e.getKeyCode(), e.getKeyLocation()).dispatch(focusedPanel);
   }
 
   public void focusOn(Panel panel)
@@ -67,9 +67,9 @@ public class RootKeyListener implements java.awt.event.KeyListener
     focusedPanel = panel;
 
     if(previouslyFocusPanel != null)
-      new FocusLostEvent(previouslyFocusPanel).dispatch(previouslyFocusPanel);
+      new FocusLostEvent().dispatch(previouslyFocusPanel);
 
-    new FocusGainedEvent(panel).dispatch(panel);
+    new FocusGainedEvent().dispatch(panel);
   }
 
   public void focusOnNextInput()

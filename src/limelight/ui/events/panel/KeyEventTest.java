@@ -16,7 +16,7 @@ public class KeyEventTest
   {
     public TestableKeyEvent(Panel panel, int modifiers, int keyCode, int location)
     {
-      super(panel, modifiers, keyCode, location);
+      super(modifiers, keyCode, location);
     }
   }
 

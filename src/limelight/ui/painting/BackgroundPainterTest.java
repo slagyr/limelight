@@ -5,9 +5,9 @@ package limelight.ui.painting;
 
 import junit.framework.TestCase;
 import limelight.ui.Painter;
+import limelight.ui.model.MockProp;
 import limelight.util.Colors;
 import limelight.ui.MockGraphics;
-import limelight.ui.model.MockPropablePanel;
 import limelight.styles.Style;
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 
@@ -23,11 +23,11 @@ public class BackgroundPainterTest extends TestCase
   private Style style;
   private Painter painter;
   private MockGraphics graphics;
-  private MockPropablePanel panel;
+  private MockProp panel;
 
   public void setUp() throws Exception
   {
-    panel = new MockPropablePanel();
+    panel = new MockProp();
     style = panel.getStyle();
     painter = BackgroundPainter.instance;
     graphics = new MockGraphics();

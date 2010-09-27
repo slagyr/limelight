@@ -1,7 +1,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.events.panel.*;
-import limelight.ui.model.MockRootPanel;
+import limelight.ui.model.MockScene;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,14 +9,14 @@ import static junit.framework.Assert.assertEquals;
 
 public class InputPanelTest
 {
-  private MockRootPanel root;
+  private MockScene root;
   private InputPanel panel;
 
   @Before
   public void setUp() throws Exception
   {
     panel = new TestableInputPanel();
-    root = new MockRootPanel();
+    root = new MockScene();
     root.add(panel);
   }
   
@@ -25,7 +25,7 @@ public class InputPanelTest
   {
     assertEquals(0, root.dirtyRegions.size());
 
-    new FocusGainedEvent(panel).dispatch(panel);
+    new FocusGainedEvent().dispatch(panel);
 
     assertEquals(2, root.dirtyRegions.size());
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
@@ -35,9 +35,9 @@ public class InputPanelTest
   @Test
   public void canBeUnfocused() throws Exception
   {
-    new FocusGainedEvent(panel).dispatch(panel);
+    new FocusGainedEvent().dispatch(panel);
     root.dirtyRegions.clear();
-    new FocusLostEvent(panel).dispatch(panel);
+    new FocusLostEvent().dispatch(panel);
 
     assertEquals(2, root.dirtyRegions.size());
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));

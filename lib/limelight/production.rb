@@ -25,8 +25,13 @@ module Limelight
     #
     def initialize(production)
       @production = production
-      @production.casting_director = CastingDirector.new(@production.resource_loader)
+      @casting_director = CastingDirector.new(@production.resource_loader)
+      @theater = Theater.new(self, @production.theater)
+
+      @production.proxy = self
     end
+
+    alias :getTheater :theater
 
     def open()
       @producer = Producer.new(path, nil, self)
@@ -97,7 +102,7 @@ module Limelight
     # Returns the path to the named Scene's directory within the Production
     #
     def scene_directory(name)
-      return root.root if name == :root
+      return root.root if name == nil
       return root.path_to(name)
     end
 
@@ -174,13 +179,6 @@ module Limelight
       close if allow_close? && !closed?
     end
 
-    # Returned the name of the default scene.  This is only used when there are not stages defined in the production.
-    # Defaults to :root, the production's root directory is the default scene.  Return nil if there are not defaults.
-    #
-    def default_scene
-      return :root
-    end
-
     # A production with multiple Scenes may have a 'styles.rb' file in the root directory.  This is called the
     # root_styles.  This method loads the root_styles, if they haven't already been loaded, and returns them.
     #
@@ -196,8 +194,9 @@ module Limelight
     end
 
     def casting_director
-      return @production.casting_director
+      return @casting_director
     end
+    alias :getCastingDirector :casting_director
 
     alias :getName :name #:nodoc:
     alias :setName :name= #:nodoc:

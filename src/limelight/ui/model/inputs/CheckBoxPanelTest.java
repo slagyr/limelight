@@ -7,8 +7,8 @@ import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
-import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.Prop;
+import limelight.ui.model.MockScene;
+import limelight.ui.model.PropPanel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,16 +17,16 @@ import static junit.framework.Assert.assertEquals;
 public class CheckBoxPanelTest
 {
   private CheckBoxPanel panel;
-  private Prop parent;
-  private MockRootPanel root;
+  private PropPanel parent;
+  private MockScene root;
 
   @Before
   public void setUp() throws Exception
   {
     panel = new CheckBoxPanel();
-    parent = new Prop(new MockPropProxy());
+    parent = new PropPanel(new MockPropProxy());
     parent.add(panel);
-    root = new MockRootPanel();
+    root = new MockScene();
     root.add(parent);
   }
   
@@ -67,7 +67,7 @@ public class CheckBoxPanelTest
   {
     assertEquals(false, panel.isSelected());
 
-    new MouseClickedEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseClickedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(true, panel.isSelected());
   }
@@ -77,7 +77,7 @@ public class CheckBoxPanelTest
   {
     assertEquals(false, panel.isSelected());
 
-    new ButtonPushedEvent(panel).consumed().dispatch(panel);
+    new ButtonPushedEvent().consumed().dispatch(panel);
 
     assertEquals(false, panel.isSelected());
   }

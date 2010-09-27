@@ -3,7 +3,7 @@
 
 on_cast do
   text_area = Limelight::UI::Model::Inputs::TextAreaPanel.new
-  panel.add(text_area)
+  peer.add(text_area)
   @text_area = text_area
 end
 

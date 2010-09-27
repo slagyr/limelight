@@ -4,7 +4,7 @@
 on_cast do
   combo_box = Limelight::UI::Model::Inputs::ComboBoxPanel.new
   @combo_box = combo_box
-  panel.add(combo_box)
+  peer.add(combo_box)
   clear
 end
 

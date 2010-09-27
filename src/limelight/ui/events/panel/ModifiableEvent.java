@@ -1,7 +1,5 @@
 package limelight.ui.events.panel;
 
-import limelight.ui.Panel;
-
 public class ModifiableEvent extends PanelEvent
 {
   public static final int SHIFT_MASK = 1;
@@ -11,9 +9,9 @@ public class ModifiableEvent extends PanelEvent
 
   private int modifiers;
 
-  public ModifiableEvent(Panel panel, int modifiers)
+  public ModifiableEvent(int modifiers)
   {
-    super(panel);
+    super();
     this.modifiers = modifiers;
   }
 

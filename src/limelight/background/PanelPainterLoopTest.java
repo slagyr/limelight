@@ -20,7 +20,7 @@ public class PanelPainterLoopTest extends Assert
   private PanelPainterLoop loop;
   private MockFrameManager frameManager;
   private StageFrame activeFrame;
-  private Scene activeRoot;
+  private ScenePanel activeRoot;
 
   @Before
   public void setUp() throws Exception
@@ -30,9 +30,9 @@ public class PanelPainterLoopTest extends Assert
     Context.instance().frameManager = frameManager;
     MockStage activeStage = new MockStage();
     activeFrame = new StageFrame(activeStage);
-    activeRoot = new Scene(new MockPropProxy());
+    activeRoot = new ScenePanel(new MockPropProxy());
     activeRoot.setStage(activeStage);
-    activeStage.setRoot(activeRoot);
+    activeStage.setScene(activeRoot);
   }
 
   @Test

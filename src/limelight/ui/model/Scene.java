@@ -3,286 +3,52 @@
 
 package limelight.ui.model;
 
-import limelight.*;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.styles.RichStyle;
-import limelight.styles.Style;
 import limelight.ui.Panel;
-import limelight.model.api.PropProxy;
-import limelight.util.ResourceLoader;
-
 import java.awt.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
 
-public class Scene extends Prop implements RootPanel
+public interface Scene extends Panel, ParentPanel
 {
-  private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
-  private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
-  private ImageCache imageCache;
-  private Stage stage;
-  private final Map<String, RichStyle> styles;
-  private HashMap<String, Prop> index = new HashMap<String, Prop>();
-  private Production production;
-  private boolean shouldAllowClose = true;
 
-  public Scene(PropProxy propProxy)
-  {
-    super(propProxy);
-    styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
-  }
+  void setStage(Stage frame);
 
-  public void setStage(Stage newFrame)
-  {   
-    if(stage != null && newFrame != stage)
-      delluminate();
+  boolean hasPanelsNeedingLayout();
 
-    stage = newFrame;
+  boolean hasDirtyRegions();
 
-    if(stage != null)
-    {
-      illuminate();
-      addPanelNeedingLayout(this);
-    }
-  }
+  void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer);
 
-  @Override
-  public Layout getDefaultLayout()
-  {
-    return SceneLayout.instance;
-  }
+  void getAndClearDirtyRegions(Collection<Rectangle> regionBuffer);
 
-  @Override
-  public RootPanel getRoot()
-  {
-    return this;
-  }
+  void addDirtyRegion(Rectangle bounds);
 
-  @Override
-  public Graphics2D getGraphics()
-  {
-    return (Graphics2D) stage.getGraphics();
-  }
+  public Map<String, RichStyle> getStylesStore();
 
-  @Override
-  public boolean isDescendantOf(Panel panel)
-  {
-    return panel == this;
-  }
+  void addPanelNeedingLayout(Panel panel);
 
-  @Override
-  public Panel getClosestCommonAncestor(Panel panel)
-  {
-    return this;
-  }
+  Stage getStage();
 
-  @Override
-  public void setCursor(Cursor cursor)
-  {
-    if(stage.getCursor() != cursor)
-      stage.setCursor(cursor);
-  }
+  void setCursor(Cursor cursor);
 
-  public Cursor getCursor()
-  {
-    return stage.getCursor();
-  }
+  Cursor getCursor();
 
-  public void addPanelNeedingLayout(Panel child)
-  {
-    synchronized(panelsNeedingLayout)
-    {
-      boolean shouldAdd = true;
-      for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext();)
-      {
-        Panel panel = iterator.next();
-        if(child == panel)
-        {
-          shouldAdd = false;
-          break;
-        }
-        else if(child.isDescendantOf(panel) && child.getParent().needsLayout())
-        {
-          shouldAdd = false;
-          break;
-        }
-        else if(panel.isDescendantOf(child) && panel.getParent().needsLayout())
-        {
-          iterator.remove();
-        }
-      }
-      if(shouldAdd)
-      {
-        panelsNeedingLayout.add(child);
-      }
-    }
-    Context.kickPainter();
-  }
+  ImageCache getImageCache();
 
-  public boolean hasPanelsNeedingLayout()
-  {
-    synchronized(panelsNeedingLayout)
-    {
-      return panelsNeedingLayout.size() > 0;
-    }
-  }
+  void addToIndex(PropPanel prop);
 
-  public void getAndClearPanelsNeedingLayout(Collection<Panel> buffer)
-  {
-    synchronized(panelsNeedingLayout)
-    {
-      buffer.addAll(panelsNeedingLayout);
-      panelsNeedingLayout.clear();
-    }
-  }
+  void removeFromIndex(PropPanel prop);
 
-  public void addDirtyRegion(Rectangle region)
-  {
-    synchronized(dirtyRegions)
-    {
-      boolean shouldAdd = true;
-      if(region.width <= 0 || region.height <= 0)
-        shouldAdd = false;
-      else
-      {
-        for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext();)
-        {
-          Rectangle dirtyRegion = iterator.next();
-          if(dirtyRegion.contains(region))
-          {
-            shouldAdd = false;
-            break;
-          }
-          else if(region.intersects(dirtyRegion))
-          {
-            iterator.remove();
-            region = region.union(dirtyRegion);
-          }
-        }
-      }
-      if(shouldAdd)
-      {
-        dirtyRegions.add(region);
-      }
-    }
-    Context.kickPainter();
-  }
+  Production getProduction();
 
-  public boolean hasDirtyRegions()
-  {
-    synchronized(dirtyRegions)
-    {
-      return dirtyRegions.size() > 0;
-    }
-  }
+  void setProduction(Production production);
 
-  public void getAndClearDirtyRegions(Collection<Rectangle> buffer)
-  {
-    synchronized(dirtyRegions)
-    {
-      buffer.addAll(dirtyRegions);
-      dirtyRegions.clear();
-    }
-  }
+  boolean shouldAllowClose();
 
-  public boolean dirtyRegionsContains(Rectangle region)
-  {
-    synchronized(dirtyRegions)
-    {
-      return dirtyRegions.contains(region);
-    }
-  }
-
-  public ImageCache getImageCache()
-  {
-    if(imageCache == null)
-    {
-      PropProxy propProxy = getProp();
-      ResourceLoader loader = propProxy.getLoader();
-      imageCache = new ImageCache(loader);
-    }
-    return imageCache;
-  }
-
-  @Override
-  public Stage getStage()
-  {
-    return stage;
-  }
-
-  public Map<String, RichStyle> getStylesStore()
-  {
-    return styles;
-  }
-
-  public void addToIndex(Prop prop)
-  {
-    Prop value = index.get(prop.getId());
-    if(value != null && value != prop)
-      throw new LimelightException("Duplicate id: " + prop.getId());
-    index.put(prop.getId(), prop);
-  }
-
-  public void removeFromIndex(Prop prop)
-  {
-    index.remove(prop.getId());
-  }
-
-  public Prop find(String id)
-  {
-    return index.get(id);
-  }
-
-  public void setProduction(Production production)
-  {
-    this.production = production;
-  }
-
-  public Production getProduction()
-  {
-    return production;
-  }
-
-  public void setShouldAllowClose(boolean value)
-  {
-    shouldAllowClose = value;
-  }
-
-  public boolean shouldAllowClose()
-  {
-    return shouldAllowClose;
-  }
-
-  private static class SceneLayout implements Layout
-  {
-    public static Layout instance = new SceneLayout();
-
-    public void doLayout(Panel panel)
-    {
-      Scene scene = (Scene)panel;
-      Style style = scene.getStyle();
-      final Stage stage = scene.stage;
-      Insets insets = stage.getInsets();
-
-      panel.setLocation(insets.left, insets.top);
-
-      final int consumableWidth = stage.getWidth() - insets.left - insets.right;
-      final int consumableHeight = stage.getHeight() - insets.top - insets.bottom;
-      final int width = style.getCompiledWidth().calculateDimension(consumableWidth, style.getCompiledMinWidth(), style.getCompiledMaxWidth(), 0);
-      final int height = style.getCompiledHeight().calculateDimension(consumableHeight, style.getCompiledMinHeight(), style.getCompiledMaxHeight(), 0);
-      scene.setSize(width, height);
-
-      PropPanelLayout.instance.doLayout(scene);
-    }
-
-    public boolean overides(Layout other)
-    {
-      return true;
-    }
-
-    public void doLayout(Panel panel, boolean topLevel)
-    {
-      doLayout(panel);
-    }
-  }
+  boolean isVisible();
 }
+
+

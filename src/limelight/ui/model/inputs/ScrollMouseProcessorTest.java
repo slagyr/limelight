@@ -59,17 +59,17 @@ public class ScrollMouseProcessorTest
 
   private void press(ScrollBarPanel scrollBar, int x, int y)
   {
-    new MousePressedEvent(scrollBar, 0, new Point(x, y), 0).dispatch(scrollBar);
+    new MousePressedEvent(0, new Point(x, y), 0).dispatch(scrollBar);
   }
 
   private void release(ScrollBarPanel scrollBar, int x, int y)
   {
-    new MouseReleasedEvent(scrollBar, 0, new Point(x, y), 0).dispatch(scrollBar);
+    new MouseReleasedEvent(0, new Point(x, y), 0).dispatch(scrollBar);
   }
 
   private void drag(ScrollBarPanel scrollBar, int x, int y)
   {
-    new MouseDraggedEvent(scrollBar, 0, new Point(x, y), 0).dispatch(scrollBar);
+    new MouseDraggedEvent(0, new Point(x, y), 0).dispatch(scrollBar);
   }
 
   private void exit(ScrollBarPanel scrollBar, int x, int y)

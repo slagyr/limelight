@@ -18,7 +18,7 @@ public class MouseWheelEventTest
   public void setUp() throws Exception
   {
     panel = new MockPanel();
-    event = new MouseWheelEvent(panel, 123, new Point(1, 2), 0, MouseWheelEvent.UNIT_SCROLL, 3, 4);
+    event = new MouseWheelEvent(123, new Point(1, 2), 0, MouseWheelEvent.UNIT_SCROLL, 3, 4);
   }
   
   @Test

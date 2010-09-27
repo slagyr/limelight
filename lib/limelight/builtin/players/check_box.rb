@@ -3,7 +3,7 @@
 
 on_cast do
   check_box = Limelight::UI::Model::Inputs::CheckBoxPanel.new
-  panel.add(check_box)
+  peer.add(check_box)
   @check_box = check_box
 end
 

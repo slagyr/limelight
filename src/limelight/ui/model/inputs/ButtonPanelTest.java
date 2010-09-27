@@ -7,8 +7,8 @@ import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
-import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.Prop;
+import limelight.ui.model.MockScene;
+import limelight.ui.model.PropPanel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,16 +18,16 @@ import static junit.framework.Assert.assertSame;
 public class ButtonPanelTest
 {
   private ButtonPanel panel;
-  private Prop parent;
-  private MockRootPanel root;
+  private PropPanel parent;
+  private MockScene root;
 
   @Before
   public void setUp() throws Exception
   {
     panel = new ButtonPanel();
-    parent = new Prop(new MockPropProxy());
+    parent = new PropPanel(new MockPropProxy());
     parent.add(panel);
-    root = new MockRootPanel();
+    root = new MockScene();
     root.add(parent);
   }
 
@@ -74,7 +74,7 @@ public class ButtonPanelTest
   {
     assertEquals(0, root.dirtyRegions.size());
 
-    new MousePressedEvent(panel, 0, null, 0).dispatch(panel);
+    new MousePressedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
@@ -85,7 +85,7 @@ public class ButtonPanelTest
   {
     assertEquals(0, root.dirtyRegions.size());
 
-    new MouseReleasedEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseReleasedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));

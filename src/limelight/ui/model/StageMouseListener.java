@@ -12,27 +12,27 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class RootMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener
+public class StageMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener
 {
-  private RootPanel panel; // TODO MDM remove this member
+  private Scene panel; // TODO MDM remove this member
   private Stage stage;
   public Panel pressedPanel;
   public Panel hooveredPanel;
 
-  public RootMouseListener(RootPanel panel)
+  public StageMouseListener(Scene panel)
   {
     this.panel = panel;
   }
 
-  public RootMouseListener(Stage stage)
+  public StageMouseListener(Stage stage)
   {
     this.stage = stage;
   }
 
-  public RootPanel getRoot()
+  public Scene getRoot()
   {
     if(panel == null)
-      return stage.getRoot();
+      return stage.getScene();
     else
       return panel;
   }
@@ -60,7 +60,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
       return;
 
     pressedPanel = panelFor(e.getPoint());
-    new MousePressedEvent(pressedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(pressedPanel);
+    new MousePressedEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(pressedPanel);
   }
 
   public void mouseReleased(MouseEvent e)
@@ -69,10 +69,10 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
       return;
 
     Panel releasedPanel = panelFor(e.getPoint());
-    new MouseReleasedEvent(releasedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(releasedPanel);
+    new MouseReleasedEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(releasedPanel);
     if(releasedPanel == pressedPanel)
     {
-      new MouseClickedEvent(releasedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(releasedPanel);
+      new MouseClickedEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(releasedPanel);
     }
   }
 
@@ -96,7 +96,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
       transition(panel, e);
     if(pressedPanel != null)
     {
-      new MouseDraggedEvent(pressedPanel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(pressedPanel);
+      new MouseDraggedEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(pressedPanel);
     }
   }
 
@@ -108,7 +108,7 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
     Panel panel = panelFor(e.getPoint());
     if(panel != hooveredPanel)
       transition(panel, e);
-    new MouseMovedEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(panel);
+    new MouseMovedEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(panel);
   }
 
   public void mouseWheelMoved(MouseWheelEvent e)
@@ -117,14 +117,14 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
       return;
     
     final Panel panel = panelFor(e.getPoint());  
-    new limelight.ui.events.panel.MouseWheelEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()).dispatch(panel);
+    new limelight.ui.events.panel.MouseWheelEvent(e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()).dispatch(panel);
   }
 
   private void transition(Panel panel, MouseEvent e)
   {
     if(hooveredPanel == null)
     {
-      new MouseEnteredEvent(panel, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(panel);
+      new MouseEnteredEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(panel);
       enter(panel, panel, e);
     }
     else if(hooveredPanel.isDescendantOf(panel))
@@ -145,12 +145,12 @@ public class RootMouseListener implements MouseListener, MouseMotionListener, Mo
     if(descendant == ancestor || descendant == null)
       return;
     enter(descendant.getParent(), ancestor, e);
-    new MouseEnteredEvent(descendant, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(descendant);
+    new MouseEnteredEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(descendant);
   }
 
   private void exit(Panel descendant, Panel ancestor, MouseEvent e)
   {
-    while(descendant != ancestor && !(descendant instanceof Scene))
+    while(descendant != ancestor && !(descendant instanceof ScenePanel))
     {
       if(descendant != null)
       {

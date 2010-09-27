@@ -2,6 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 #require 'limelight/dsl/menu_bar'
+require 'limelight/optionable'
 require 'limelight/file_chooser'
 require 'limelight/util'
 
@@ -13,34 +14,49 @@ module Limelight
   # scene loaded at a time.
   #
   class Stage
-    attr_accessor :default_scene
-    attr_reader :frame, :current_scene, :name, :theater
-
-    attr_accessor :should_remain_hidden #:nodoc:
 
     include Java::limelight.model.api.StageProxy
+    include Optionable
+
+    attr_reader :peer
 
     # To create a new Stage, it be given a Theater to which it belongs, and the name is optional.  If no name is provided
     # it will default to 'default'.  A stage name must be unique, so it is recommended you provide a name.
     #
     def initialize(theater, name, options = {})
       @theater = theater
-      @name = name
-      @frame = Java::limelight.ui.model.FramedStage.new(self)
-      self.title = @name
-      apply_options(options)
+      @peer = Java::limelight.ui.model.FramedStage.new(name, self)
+      @peer.apply_options(options)
+    end
+
+    # Returns the name of the scene that will be loaded on this stage by default
+    #
+    def default_scene_name
+      return @peer.default_scene_name
+    end
+
+    # Specifies the name of the scene that will be loaded on this stage by default
+    #
+    def default_scene_name=(value)
+      @peer.default_scene_name = value
+    end
+
+    # Returns the name of the stage
+    #
+    def name
+      return @peer.name
     end
 
     # Returns the title that is displayed at the top of the window that this stage represents.
     #
     def title
-      return @frame.title
+      return @peer.title
     end
 
     # Sets the title that is displayed at the top of the window that this stage represents. 
     #
     def title=(value)
-      @frame.title = value
+      @peer.title = value
     end
 
     # Returns the width and height styles of the Stage.
@@ -48,7 +64,7 @@ module Limelight
     #   width, height = stage.size
     #
     def size
-      return @frame.width_style.to_s, @frame.height_style.to_s
+      return @peer.width_style.to_s, @peer.height_style.to_s
     end
 
     # Sets the width and height styles of the Stage.
@@ -58,7 +74,7 @@ module Limelight
     #
     def size=(*values)
       values = values[0] if values.size == 1 && values[0].is_a?(Array)
-      @frame.set_size_styles(values[0], values[1])
+      @peer.set_size_styles(values[0], values[1])
     end
 
     # The location styles of the Stage.
@@ -66,7 +82,7 @@ module Limelight
     #   x, y = stage.location
     #
     def location
-      return @frame.getXLocationStyle.to_s, @frame.getYLocationStyle.to_s
+      return @peer.getXLocationStyle.to_s, @peer.getYLocationStyle.to_s
     end
 
     # Sets the location styles of the Stage.
@@ -75,7 +91,7 @@ module Limelight
     #
     def location=(*values)
       values = values[0] if values.size == 1 && values[0].is_a?(Array)
-      @frame.set_location_styles(values[0], values[1])
+      @peer.set_location_styles(values[0], values[1])
     end
 
     # Turns fullscreen mode on and off.  In fullscreen mode, the stage will fill the entire screen and appear on top
@@ -84,13 +100,13 @@ module Limelight
     #   stage.fullscreen = true
     #
     def fullscreen=(on)
-      @frame.setFullScreen(on)
+      @peer.setFullScreen(on)
     end
 
     # Returns true if the stage is in fullscreen mode.
     #
     def fullscreen?
-      return @frame.isFullScreen()
+      return @peer.isFullScreen()
     end
 
     # Turns kiosk mode for this stage on and off.  When on, the stage will:
@@ -103,129 +119,113 @@ module Limelight
     #   stage.kiosk = true
     #
     def kiosk=(on)
-      @frame.setKiosk(on)
+      @peer.setKiosk(on)
     end
 
     # Return true if the stage is in kiosk mode.
     #
     def kiosk?
-      return @frame.isKiosk()
+      return @peer.isKiosk()
     end
 
 
     # Hides the stage so that it is not visible on the screen without destroying it.
     #
     def hide
-      @frame.visible = false
+      @peer.hide
     end
 
     # Shows the stage after having hiding it.
     #
     def show
-      @frame.visible = true unless @should_remain_hidden
+      @peer.show
     end
 
     # Returns true if the stage is visible on the screen.
     #
     def visible?
-      return @frame.visible
+      return @peer.visible
     end
 
     # Sets the background color of the stage
     #
     def background_color=(value)
-      @frame.background_color = value.to_s
+      @peer.background_color = value.to_s
     end
 
     # Returns the background color of the stage in the format #RRGGBB(AA)
     #
     def background_color
-      return @frame.background_color
+      return @peer.background_color
     end
 
     # When true, the stage will be frame with the operating system's standard window frame including close, minimize,
     # and maximize buttons
     #
     def framed=(value)
-      @frame.setUndecorated(!value)
+      @peer.framed = value
     end
 
     # Return true if the stage is framed.
     #
     def framed?
-      return !@frame.isUndecorated()
+      return @peer.framed?
     end
 
     # When true, the stage will remain on top of all other windows.
     #
     def always_on_top=(value)                                                                              
-      @frame.always_on_top = value
+      @peer.always_on_top = value
     end
 
     # Return true if the stage has been set to always be on top.
     #
     def always_on_top?
-      return @frame.always_on_top
+      return @peer.always_on_top
     end
 
     # Sets the vitality of the stage.  Limelight will not exit while vital frames remain visible.
     #
     def vital=(value)
-      @frame.vital = value
+      @peer.vital = value
     end
 
     # Returns true if this is a vital stage.  Limelight will not exit while vital frames remain visible.
     #
     def vital?
-      return @frame.vital?
+      return @peer.vital?
     end
 
-    # Opens the Stage and loads the provided Scene.
+    # Loads the provided Scene.
     #
     # See load_scene
     #
-    def open(scene)
-      @current_scene.visible = false if @current_scene
-      scene.stage = self
-#      scene.illuminate
-      load_scene(scene)
-      @frame.open unless @should_remain_hidden
-      scene.visible = true
-      scene.panel.event_handler.dispatch(Limelight::UI::PanelEvents::SceneOpenedEvent.new(scene.panel))
+    def scene=(scene)
+      @peer.scene = scene.peer
+    end
+
+    # Returns the scene currently open on the stage
+    #
+    def scene
+      return @peer.scene.proxy if @peer.scene
+    end
+
+    # Returns the theater that the stage belongs to.
+    #
+    def theater
+      return @peer.theater.proxy
+    end
+    
+    # Opens the stage. Opened stages are visible on the screen.
+    #
+    def open
+      @peer.open
     end
 
     # Closes the Stage. It's window will no longer be displayed on the screen.
     #
     def close
-      @frame.close
-    end
-
-    # Loads a scene on the Stage.  If the Stage is currently hosting a Scene, the original Scene will be removed and
-    # the new Scene will replace it.
-    #
-    def load_scene(scene)      
-      #      @frame.setJMenuBar(scene.menu_bar)
-      @frame.root = scene.panel
-      if (has_static_size?(scene.style))
-        insets = @frame.insets
-        horizontal_insets = inset.left + insets.right
-        vertical_insets = insets.top + insets.bottom
-        @frame.set_size(scene.style.compiled_width.value + horizontal_insets, scene.style.compiled_height.value + vertical_insets)
-      end
-      @current_scene = scene
-    end
-
-    # Opens a file chooser window to select a file on the file system. Options may include:
-    # * :description => a string describing the desired file
-    # * :directory => starting directory
-    # * :title => title of the window
-    # * :directories_only => boolean, true if the user must select a directory
-    # * :files_only => boolean, true if the user must select a file
-    #
-    def choose_file(options={}, &block)
-      options[:parent] = @frame
-      chooser = FileChooser.new(options, &block)
-      return chooser.choose_file
+      @peer.close
     end
 
     # Pops up a simple modal dialog with the provided message.
@@ -245,63 +245,23 @@ module Limelight
     # current_scene.  
     #
     def should_allow_close
-      return true if @current_scene.nil?
-      return true if !@current_scene.respond_to?(:allow_close?)
-      return @current_scene.allow_close?
-    end
-
-    def stub_current_scene(scene) #:nodoc:
-      @current_scene = scene
+      return @peer.should_all_close
     end
 
     # returns true if the stage has been closed.  Closed stages may not be reopened.
     #
     def closed?
-      return @frame.closed?
+      return @peer.closed?
     end
 
-    # Invoked when the stage has been closed.
-    # System hook that should NOT be called by you.
-    # It's not garunteed that this hook will be called when Limelight is shutting down.  
-    #
-    def closed(e)
-      @current_scene.visible = false if @current_scene
-      @current_scene = nil
-      @theater.stage_closed(self)
+    def should_remain_hidden #:nodoc:
+      return @peer.should_remain_hidden
     end
 
-    # Invoked when the stage has become the active stage on the desktop.  Only 1 stage my be active at a time.
-    # System hook that should NOT be called by you.
-    #
-    def activated(e)
-      @theater.stage_activated(self)
+    def should_remain_hidden=(value) #:nodoc:
+      @peer.should_remain_hidden = value
     end
 
-    # Invoked when the stage has lost status as the active stage.  Only 1 stage my have focus at a time.
-    # System hook that should NOT be called by you.
-    #
-    def deactivated(e)    
-      @theater.stage_deactivated(self)  
-    end
-
-    private ###############################################
-
-    def has_static_size?(style)
-      return is_static?(style.get_width) && is_static?(style.get_height)
-    end
-
-    def is_static?(value)
-      return !(value.to_s.include?("%")) && !(value.to_s == "auto")
-    end
-
-    def apply_options(options)
-      options.each_pair do |key, value|
-        setter_sym = "#{key.to_s}=".to_sym
-        if self.respond_to?(setter_sym)
-          self.send(setter_sym, value)    
-        end
-      end
-    end
 
   end
 

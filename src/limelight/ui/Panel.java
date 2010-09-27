@@ -7,7 +7,7 @@ import limelight.styles.ScreenableStyle;
 import limelight.ui.events.panel.PanelEventHandler;
 import limelight.ui.model.ParentPanelBase;
 import limelight.model.Stage;
-import limelight.ui.model.RootPanel;
+import limelight.ui.model.Scene;
 import limelight.util.Box;
 import limelight.ui.model.Layout;
 
@@ -30,7 +30,7 @@ public interface Panel extends Iterable<Panel>
 
   ParentPanelBase getParent();
   void setParent(ParentPanelBase panel);
-  RootPanel getRoot();
+  Scene getRoot();
   Stage getStage();
   boolean isDescendantOf(Panel ancestor);
   Panel getClosestCommonAncestor(Panel panel);

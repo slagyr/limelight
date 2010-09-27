@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 
 import limelight.styles.Style;
-import limelight.ui.model.MockRootPanel;
+import limelight.ui.model.MockScene;
 import limelight.ui.model.inputs.InputPanel;
 
 import java.awt.*;
@@ -24,7 +24,7 @@ public class KeyboardFocusManagerTest extends TestCase
     manager.install();
     panel = new MockInputPanel();
 
-    MockRootPanel root = new MockRootPanel();
+    MockScene root = new MockScene();
     root.add(panel);
   }
 

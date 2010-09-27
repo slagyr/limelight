@@ -9,7 +9,7 @@ public class TempTextAccessorTest extends Assert
   @Test
   public void shouldReplaceItselfWithTextPanel() throws Exception
   {
-    Prop panel = new Prop(new MockPropProxy());
+    PropPanel panel = new PropPanel(new MockPropProxy());
     assertEquals(TempTextAccessor.instance(), panel.getTextAccessor());
 
     TempTextAccessor.instance().setText("Howdy", panel);

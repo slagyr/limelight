@@ -8,6 +8,7 @@ import limelight.ui.*;
 import limelight.model.api.MockPropProxy;
 import limelight.model.api.MockStageProxy;
 import limelight.util.Colors;
+import limelight.util.Util;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,6 @@ public class FramedStageTest
   private FramedStage stage;
   private FrameManager frameManager;
   public MockGraphicsDevice graphicsDevice;
-  private MockOS os;
   private Insets insets;
   private StageFrame frame;
 
@@ -36,7 +36,7 @@ public class FramedStageTest
     Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager();
 
     stageProxy = new MockStageProxy();
-    stage = new FramedStage(stageProxy);
+    stage = new FramedStage("default", stageProxy);
     frame = stage.getFrame();
 
     graphicsDevice = new MockGraphicsDevice();
@@ -44,8 +44,7 @@ public class FramedStageTest
     insets = new Insets(0, 0, 0, 0);
     frame.setScreenInsets(insets);
 
-    os = new MockOS();
-    Context.instance().os = os;
+    Context.instance().os = new MockOS();
   }
 
   @After
@@ -62,6 +61,12 @@ public class FramedStageTest
   }
 
   @Test
+  public void titleShouldDefaultToName() throws Exception
+  {
+    assertEquals("default", stage.getTitle());
+  }
+
+  @Test
   public void shouldIcon() throws Exception
   {
     assertNotNull(frame.getIconImage());
@@ -70,16 +75,16 @@ public class FramedStageTest
   @Test
   public void shouldStage() throws Exception
   {
-    assertSame(stageProxy, stage.getStage());
+    assertSame(stageProxy, stage.getProxy());
   }
 
   @Test
   public void shouldLoad() throws Exception
   {
-    Scene panel = new Scene(new MockPropProxy());
-    stage.setRoot(panel);
+    ScenePanel panel = new ScenePanel(new MockPropProxy());
+    stage.setScene(panel);
 
-    RootPanel root = stage.getRoot();
+    Scene root = stage.getScene();
 
     assertSame(panel, root);
   }
@@ -88,8 +93,8 @@ public class FramedStageTest
   public void shouldLoadSetsDefaultCursor() throws Exception
   {
     stage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    Scene panel = new Scene(new MockPropProxy());
-    stage.setRoot(panel);
+    ScenePanel panel = new ScenePanel(new MockPropProxy());
+    stage.setScene(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, stage.getCursor().getType());
   }
@@ -97,14 +102,14 @@ public class FramedStageTest
   @Test
   public void shouldLoadWillDestroyPreviousRoots() throws Exception
   {
-    Scene panel = new Scene(new MockPropProxy());
-    stage.setRoot(panel);
+    ScenePanel panel = new ScenePanel(new MockPropProxy());
+    stage.setScene(panel);
 
-    RootPanel firstRoot = stage.getRoot();
+    Scene firstRoot = stage.getScene();
     assertEquals(true, firstRoot.isIlluminated());
 
-    Scene panel2 = new Scene(new MockPropProxy());
-    stage.setRoot(panel2);
+    ScenePanel panel2 = new ScenePanel(new MockPropProxy());
+    stage.setScene(panel2);
 
     assertEquals(false, firstRoot.isIlluminated());
   }
@@ -208,8 +213,8 @@ public class FramedStageTest
   @Test
   public void shouldSizeChangesPropogateDown() throws Exception
   {
-    MockRootPanel panel = new MockRootPanel();
-    stage.setRoot(panel);
+    MockScene panel = new MockScene();
+    stage.setScene(panel);
 
     frame.doLayout(); // Called when the stage is resized
     assertEquals(true, panel.consumableAreaChangedCalled);
@@ -224,9 +229,9 @@ public class FramedStageTest
   public void shouldShouldCollapseAutoDimensions() throws Exception
   {
     stage.setSizeStyles("auto", "auto");
-    MockRootPanel child = new MockRootPanel();
+    MockScene child = new MockScene();
     child.prepForSnap(300, 200);
-    stage.setRoot(child);
+    stage.setScene(child);
 
     stage.open();
     Insets insets = stage.getInsets();
@@ -252,7 +257,7 @@ public class FramedStageTest
   @Test
   public void shouldAddMouseListenersUponSettingTheFrame() throws Exception
   {
-    final RootMouseListener listener = stage.getMouseListener();
+    final StageMouseListener listener = stage.getMouseListener();
     assertNotNull(listener);
 
     assertEquals(true, Arrays.asList(frame.getMouseListeners()).contains(listener));
@@ -263,7 +268,7 @@ public class FramedStageTest
   @Test
   public void addsKeyListener() throws Exception
   {
-    RootKeyListener listener = stage.getKeyListener();
+    StageKeyListener listener = stage.getKeyListener();
     assertNotNull(listener);
 
     assertEquals(true, Arrays.asList(frame.getKeyListeners()).contains(listener));
@@ -272,8 +277,8 @@ public class FramedStageTest
   @Test
   public void shouldDestroyRemovesListeners() throws Exception
   {
-    RootMouseListener mouseListener = stage.getMouseListener();
-    RootKeyListener keyListener = stage.getKeyListener();
+    StageMouseListener mouseListener = stage.getMouseListener();
+    StageKeyListener keyListener = stage.getKeyListener();
     stage.close();
 
     assertEquals(false, Arrays.asList(frame.getMouseListeners()).contains(mouseListener));
@@ -284,6 +289,40 @@ public class FramedStageTest
     assertNull(stage.getMouseListener());
     assertNull(stage.getKeyListener());
   }
+  
+  @Test
+  public void applyOptions() throws Exception
+  {
+    stage = new FramedStage("default", stageProxy);
+    stage.applyOptions(Util.toMap("foo", "bar"));
+
+    assertEquals("bar", stageProxy.appliedOptions.get("foo"));
+  }
+
+  @Test
+  public void framedSettings() throws Exception
+  {
+    stage.setFramed(true);
+    assertEquals(true, stage.isFramed());
+    assertEquals(false, frame.isUndecorated());
+    
+    stage.setFramed(false);
+    assertEquals(false, stage.isFramed());
+    assertEquals(true, frame.isUndecorated());
+  }
+  
+  @Test
+  public void alwaysOnTop() throws Exception
+  {
+    stage.setAlwaysOnTop(true);
+    assertEquals(true, stage.isAlwaysOnTop());
+    assertEquals(true, frame.isAlwaysOnTop());
+
+    stage.setAlwaysOnTop(false);
+    assertEquals(false, stage.isAlwaysOnTop());
+    assertEquals(false, frame.isAlwaysOnTop());
+  }
+  
   // TODO MDM - make sure this works
 //  @Test
 //  public void keyboardFocusDoesNotRemainOnChildWhenDestroyed() throws Exception

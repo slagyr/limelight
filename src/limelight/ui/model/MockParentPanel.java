@@ -15,12 +15,10 @@ public class MockParentPanel extends ParentPanelBase
   public boolean floater;
   public int paintIndex;
   public boolean consumableAreaChangedCalled;
-  public MockEventHandler mockEventHandler;
 
   public MockParentPanel()
   {
     style = new ScreenableStyle();
-    eventHandler = mockEventHandler = new MockEventHandler(this);
   }
 
   @Override

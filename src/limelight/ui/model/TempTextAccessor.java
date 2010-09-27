@@ -23,7 +23,7 @@ public class TempTextAccessor implements TextAccessor
   {
   }
 
-  public void setText(String text, PropablePanel panel) throws LimelightError
+  public void setText(String text, Prop panel) throws LimelightError
   {
     if(text == null || text.length() == 0)
       return;

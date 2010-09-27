@@ -8,7 +8,7 @@ import limelight.ui.SimplePropProxy;
 import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.events.panel.MouseEnteredEvent;
 import limelight.ui.events.panel.PanelEvent;
-import limelight.ui.model.Prop;
+import limelight.ui.model.PropPanel;
 import limelight.util.Util;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import java.util.Map;
 class ComboBoxPopup
 {
   private final ComboBoxPanel comboBox;
-  private Prop curtains;
-  private Prop popupList;
-  private Prop selectedItem;
+  private PropPanel curtains;
+  private PropPanel popupList;
+  private PropPanel selectedItem;
   private Map<String, RichStyle> stylesStore;
 
   public ComboBoxPopup(final ComboBoxPanel comboBoxPanel)
@@ -44,7 +44,7 @@ class ComboBoxPopup
       public void invoke(Event e)
       {
         PanelEvent event = (PanelEvent)e;
-        choose((Prop) event.getRecipient());
+        choose((PropPanel) event.getRecipient());
       }
     };
 
@@ -53,13 +53,13 @@ class ComboBoxPopup
       public void invoke(Event e)
       {
         PanelEvent event = (PanelEvent)e;
-        select((Prop) event.getRecipient());
+        select((PropPanel) event.getRecipient());
       }
     };
 
     for(Object option : comboBox.getOptions())
     {
-      Prop listItem = new Prop(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_combo_box_popup_list_item"));
+      PropPanel listItem = new PropPanel(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_combo_box_popup_list_item"));
       listItem.getStyle().addExtension(stylesStore.get("limelight_builtin_combo_box_popup_list_item"));
       listItem.getEventHandler().add(MouseClickedEvent.class, itemChosenAction);
       listItem.getEventHandler().add(MouseEnteredEvent.class, itemSelectedAction);
@@ -72,7 +72,7 @@ class ComboBoxPopup
     }
   }
 
-  private void select(Prop listItem)
+  private void select(PropPanel listItem)
   {
     if(selectedItem == listItem)
       return;
@@ -89,7 +89,7 @@ class ComboBoxPopup
 
   private void createList()
   {
-    popupList = new Prop(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_combo_box_popup_list"));
+    popupList = new PropPanel(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_combo_box_popup_list"));
     popupList.getStyle().addExtension(stylesStore.get("limelight_builtin_combo_box_popup_list"));
     popupList.getStyle().setX(comboBox.getParent().getAbsoluteLocation().x - comboBox.getRoot().getX());
     popupList.getStyle().setY(comboBox.getParent().getAbsoluteLocation().y - comboBox.getRoot().getY());
@@ -105,7 +105,7 @@ class ComboBoxPopup
 
   private void createCurtains()
   {
-    curtains = new Prop(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_curtains"));
+    curtains = new PropPanel(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_curtains"));
     curtains.getStyle().addExtension(stylesStore.get("limelight_builtin_curtains"));
     curtains.getEventHandler().add(MouseClickedEvent.class, new EventAction()
     {
@@ -127,46 +127,46 @@ class ComboBoxPopup
     comboBox.setPopup(null);
   }
 
-  public void choose(Prop item)
+  public void choose(PropPanel item)
   {
     if(item != null)
       comboBox.setText(item.getText());
     close();
   }
 
-  public Prop getSelectedItem()
+  public PropPanel getSelectedItem()
   {
     return selectedItem;
   }
 
   public void selectNext()
   {
-    final List<Prop> items = getListItems();
+    final List<PropPanel> items = getListItems();
     int selectedIndex = selectedItem == null ? -1 : selectedIndex(items);
     if(selectedIndex < (items.size() - 1))
       select(items.get(selectedIndex + 1));
   }
 
-  private List<Prop> getListItems()
+  private List<PropPanel> getListItems()
   {
-    List<Prop> items = new ArrayList<Prop>();
+    List<PropPanel> items = new ArrayList<PropPanel>();
     for(Panel panel : popupList.getChildren())
     {
-      if(panel instanceof Prop)
-        items.add((Prop)panel);
+      if(panel instanceof PropPanel)
+        items.add((PropPanel)panel);
     }
     return items;
   }
 
   public void selectPrevious()
   {
-    final List<Prop> items = getListItems();
+    final List<PropPanel> items = getListItems();
     int selectedIndex = selectedItem == null ? items.size() : selectedIndex(items);
     if(selectedIndex > 0)
       select(items.get(selectedIndex - 1));
   }
 
-  private int selectedIndex(List<Prop> items)
+  private int selectedIndex(List<PropPanel> items)
   {
     int selectedIndex = 0;
     for(int i = 0; i < items.size(); i++)
@@ -180,7 +180,7 @@ class ComboBoxPopup
     return selectedIndex;
   }
 
-  public Prop getPopupList()
+  public PropPanel getPopupList()
   {
     return popupList;
   }

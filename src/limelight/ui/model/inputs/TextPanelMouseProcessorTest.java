@@ -7,8 +7,8 @@ import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.events.panel.MouseDraggedEvent;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
+import limelight.ui.model.MockScene;
 import limelight.ui.model.MockStage;
-import limelight.ui.model.MockRootPanel;
 import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class TextPanelMouseProcessorTest
 {
   private TextModel model;
   private TextInputPanel panel;
-  private MockRootPanel root;
+  private MockScene root;
   private MockStage stage;
 
   @Before
@@ -43,7 +43,7 @@ public class TextPanelMouseProcessorTest
       panel = new TextBoxPanel();
 
     panel.setSize(150, 75);
-    root = new MockRootPanel();
+    root = new MockScene();
     root.add(panel);
     stage = new MockStage();
     root.setStage(stage);
@@ -62,17 +62,17 @@ public class TextPanelMouseProcessorTest
 
   private void releaseAt(int x, int y)
   {
-    new MouseReleasedEvent(panel, 0, new Point(x, y), 0).dispatch(panel);
+    new MouseReleasedEvent(0, new Point(x, y), 0).dispatch(panel);
   }
 
   private void multiplePressAt(int x, int y, int count)
   {
-    new MousePressedEvent(panel, 0, new Point(x, y), count).dispatch(panel);
+    new MousePressedEvent(0, new Point(x, y), count).dispatch(panel);
   }
 
   private void dragAt(int x, int y)
   {
-    new MouseDraggedEvent(panel, 0, new Point(x, y), 0).dispatch(panel);
+    new MouseDraggedEvent(0, new Point(x, y), 0).dispatch(panel);
   }
 
   @Test

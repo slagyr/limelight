@@ -6,8 +6,8 @@ import java.awt.*;
 
 public class MouseMovedEvent extends MouseEvent
 {
-  public MouseMovedEvent(Panel source, int modifiers, Point location, int clickCount)
+  public MouseMovedEvent(int modifiers, Point location, int clickCount)
   {
-    super(source, modifiers, location, clickCount);
+    super(modifiers, location, clickCount);
   }
 }

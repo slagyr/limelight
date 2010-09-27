@@ -11,7 +11,7 @@ import limelight.ui.painting.Border;
 import limelight.model.api.PropProxy;
 import limelight.util.Box;
 
-public class MockPropablePanel extends MockParentPanel implements PropablePanel, PaintablePanel
+public class MockProp extends MockParentPanel implements Prop, PaintablePanel
 {
   public final MockPropProxy prop;
   public Box childConsumableBounds;
@@ -23,12 +23,12 @@ public class MockPropablePanel extends MockParentPanel implements PropablePanel,
   public Box boxInsideBorders = new Box(0, 0, 100, 100);
   public String name;
 
-  public MockPropablePanel()
+  public MockProp()
   {
     prop = new MockPropProxy();
   }
 
-  public MockPropablePanel(String name)
+  public MockProp(String name)
   {
     this();
     this.name = name;

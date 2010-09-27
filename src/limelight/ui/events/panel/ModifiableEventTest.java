@@ -16,7 +16,7 @@ public class ModifiableEventTest
   {
     public TestableModifiableEvent(Panel panel, int modifiers)
     {
-      super(panel, modifiers);
+      super(modifiers);
     }
   }
 

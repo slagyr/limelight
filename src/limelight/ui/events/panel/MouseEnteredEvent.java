@@ -6,9 +6,9 @@ import java.awt.*;
 
 public class MouseEnteredEvent extends MouseEvent
 {
-  public MouseEnteredEvent(Panel source, int modifiers, Point location, int clickCount)
+  public MouseEnteredEvent(int modifiers, Point location, int clickCount)
   {
-    super(source, modifiers, location, clickCount);
+    super(modifiers, location, clickCount);
   }
 
   @Override
