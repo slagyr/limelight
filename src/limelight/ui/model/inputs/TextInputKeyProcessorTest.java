@@ -69,7 +69,7 @@ public class TextInputKeyProcessorTest
   public void backSpace()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_BACK_SPACE, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_BACK_SPACE, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals("ere are four words", model.getText());
@@ -80,7 +80,7 @@ public class TextInputKeyProcessorTest
   public void delete()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DELETE, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DELETE, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("Hre are four words", model.getText());
@@ -91,7 +91,7 @@ public class TextInputKeyProcessorTest
   public void rightArrow()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -101,7 +101,7 @@ public class TextInputKeyProcessorTest
   public void leftArrow()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -112,7 +112,7 @@ public class TextInputKeyProcessorTest
   public void backSpaceWithMultipleLines()
   {
     setupMultiLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_BACK_SPACE, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_BACK_SPACE, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals("ere are four words", model.getText());
@@ -122,7 +122,7 @@ public class TextInputKeyProcessorTest
   public void rightArrowWithMultipleLines()
   {
     setupMultiLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -133,7 +133,7 @@ public class TextInputKeyProcessorTest
   public void leftArrowWithMultipleLines()
   {
     setupMultiLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -145,7 +145,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(0, 3);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -157,7 +157,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(1, 3);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -169,7 +169,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(1, 3);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -181,7 +181,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(1, 3);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -193,7 +193,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is a longer\nMulti lined.").withCaretAt(0, 15);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -206,7 +206,7 @@ public class TextInputKeyProcessorTest
     setupMultiLine("Some more text\nand some more");
     model.setCaretLocation(model.getEndLocation());
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.at(0, 13), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -218,7 +218,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("blah\nasdf\nasdf").withCaretAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(TextLocation.at(1, 4), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -229,7 +229,7 @@ public class TextInputKeyProcessorTest
   public void backSpaceDeleteSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_BACK_SPACE, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_BACK_SPACE, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("H are four words", model.getText());
@@ -240,7 +240,7 @@ public class TextInputKeyProcessorTest
   public void deleteDeletesSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DELETE, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DELETE, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("H are four words", model.getText());
@@ -251,7 +251,7 @@ public class TextInputKeyProcessorTest
   public void clearDeletesSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_CLEAR, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_CLEAR, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals("H are four words", model.getText());
@@ -262,7 +262,7 @@ public class TextInputKeyProcessorTest
   public void rightArrowWithSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 4), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -272,7 +272,7 @@ public class TextInputKeyProcessorTest
   public void downArrowWithSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -282,7 +282,7 @@ public class TextInputKeyProcessorTest
   public void leftArrowWithSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -292,7 +292,7 @@ public class TextInputKeyProcessorTest
   public void upArrowWithSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -303,7 +303,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(1, 3).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -315,7 +315,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(0, 3).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(NO_MODIFIERS, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -326,7 +326,7 @@ public class TextInputKeyProcessorTest
   public void shiftRightArrowBeginsSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -337,7 +337,7 @@ public class TextInputKeyProcessorTest
   public void shiftRightArrowWithSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -348,7 +348,7 @@ public class TextInputKeyProcessorTest
   public void shiftLeftArrowBeginsSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.at(0, 0), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -359,7 +359,7 @@ public class TextInputKeyProcessorTest
   public void shiftLeftArrowWithSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -370,7 +370,7 @@ public class TextInputKeyProcessorTest
   public void shiftUpArrowBeginsSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -381,7 +381,7 @@ public class TextInputKeyProcessorTest
   public void shiftDownArrowBeginsSelection()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -392,7 +392,7 @@ public class TextInputKeyProcessorTest
   public void shiftRightArrowBeingsSelectionWithMultipleLines()
   {
     setupMultiLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 2), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -403,7 +403,7 @@ public class TextInputKeyProcessorTest
   public void shiftLeftArrowBeginsSelectionWithMultipleLines()
   {
     setupMultiLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -415,7 +415,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(1, 3);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(TextLocation.at(1, 3), model.getSelectionLocation());
@@ -427,7 +427,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(0, 3);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 3), model.getSelectionLocation());
@@ -439,7 +439,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(1, 3).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -451,7 +451,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(0, 3).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(TextLocation.at(1, 3), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -462,7 +462,7 @@ public class TextInputKeyProcessorTest
   public void altRightArrowJumpsToTheNextWord()
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
   }
@@ -472,7 +472,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 9);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
   }
@@ -482,7 +482,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
   }
@@ -492,7 +492,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
   }
@@ -502,7 +502,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(0, 3);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(TextLocation.at(0, 7), model.getCaretLocation());
   }
@@ -512,7 +512,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("This is\nMulti lined.").withCaretAt(1, 3);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.at(1, 0), model.getCaretLocation());
   }
@@ -522,7 +522,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -533,7 +533,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 9).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -544,7 +544,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -555,7 +555,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 9).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -566,7 +566,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + CMD, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + CMD, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -577,7 +577,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + CMD, KeyEvent.KEY_A, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + CMD, KeyEvent.KEY_A, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -588,7 +588,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + CMD, KeyEvent.KEY_A, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + CMD, KeyEvent.KEY_A, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -600,7 +600,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + SHIFT + CMD, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + SHIFT + CMD, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -611,7 +611,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + SHIFT + CMD, KeyEvent.KEY_A, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + SHIFT + CMD, KeyEvent.KEY_A, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -622,7 +622,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + SHIFT + CMD, KeyEvent.KEY_A, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + SHIFT + CMD, KeyEvent.KEY_A, 0), model);
 
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -634,7 +634,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + SHIFT, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + SHIFT, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -648,7 +648,7 @@ public class TextInputKeyProcessorTest
 
     model.setCaretLocation(TextLocation.at(0, 9));
 
-    processor.processKey(new KeyPressedEvent(container, ALT + SHIFT, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + SHIFT, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 9), model.getSelectionLocation());
@@ -660,7 +660,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + SHIFT, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + SHIFT, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -672,7 +672,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 9).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, ALT + SHIFT, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(ALT + SHIFT, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.at(0, 5), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -684,7 +684,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Bob");
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_A, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_A, 0), model);
 
     assertEquals(TextLocation.at(0, 3), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -697,7 +697,7 @@ public class TextInputKeyProcessorTest
     setupSingleLine("Bob");
     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(" Dole"), model);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_V, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_V, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals("Bob Dole", model.getText());
@@ -708,7 +708,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -719,7 +719,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(TextLocation.at(0, 8), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -730,7 +730,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 5);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -741,7 +741,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(1, 5);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.at(1, 0), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -752,7 +752,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 5);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -763,7 +763,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -774,7 +774,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(1, 5);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -785,7 +785,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(1, 3);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(false, model.isSelectionActivated());
@@ -796,7 +796,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_A, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_A, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.origin, model.getSelectionLocation());
@@ -809,7 +809,7 @@ public class TextInputKeyProcessorTest
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("oot"), model);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_V, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_V, 0), model);
 
     assertEquals("Hoot are four words", model.getText());
     assertEquals(TextLocation.at(0, 4), model.getCaretLocation());
@@ -822,7 +822,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_C, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_C, 0), model);
 
     assertEquals("Here are four words", model.getText());
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
@@ -836,7 +836,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_X, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_X, 0), model);
 
     assertEquals("H are four words", model.getText());
     assertEquals(TextLocation.at(0, 1), model.getCaretLocation());
@@ -850,7 +850,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -862,7 +862,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -874,7 +874,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -886,7 +886,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, CMD, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(CMD, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -898,7 +898,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -910,7 +910,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -922,7 +922,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -934,7 +934,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -946,7 +946,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(1, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(1, 4), model.getSelectionLocation());
@@ -958,7 +958,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(0, 1);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 1), model.getSelectionLocation());
@@ -970,7 +970,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_RIGHT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_RIGHT, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -982,7 +982,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_LEFT, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_LEFT, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -994,7 +994,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -1006,7 +1006,7 @@ public class TextInputKeyProcessorTest
   {
     setupSingleLine("Here are four words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -1018,7 +1018,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(1, 4).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_UP, 0), model);
 
     assertEquals(TextLocation.origin, model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());
@@ -1030,7 +1030,7 @@ public class TextInputKeyProcessorTest
   {
     setupMultiLine("Here are\nfour words").withCaretAt(0, 1).andSelectionAt(0, 4);
 
-    processor.processKey(new KeyPressedEvent(container, SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
+    processor.processKey(new KeyPressedEvent(SHIFT + CMD, KeyEvent.KEY_DOWN, 0), model);
 
     assertEquals(model.getEndLocation(), model.getCaretLocation());
     assertEquals(TextLocation.at(0, 4), model.getSelectionLocation());

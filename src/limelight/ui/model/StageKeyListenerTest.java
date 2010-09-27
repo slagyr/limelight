@@ -6,6 +6,7 @@ import limelight.ui.events.panel.FocusLostEvent;
 import limelight.ui.events.panel.CharTypedEvent;
 import limelight.ui.events.panel.KeyPressedEvent;
 import limelight.ui.events.panel.KeyReleasedEvent;
+import limelight.ui.model.inputs.MockEventAction;
 import limelight.ui.model.inputs.TestableInputPanel;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,26 +17,28 @@ import java.awt.event.KeyEvent;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 
-public class RootKeyListenerTest
+public class StageKeyListenerTest
 {
-  private RootKeyListener listener;
-  private MockRootPanel root;
+  private StageKeyListener listener;
+  private MockScene root;
   private MockParentPanel panel;
   private Component component;
   private TestableInputPanel input;
   private TestableInputPanel input2;
   private TestableInputPanel input3;
-  private MockEventHandler panelEvents;
+  private MockEventAction action;
+  private MockEventAction action2;
 
   @Before
   public void setUp() throws Exception
   {
-    root = new MockRootPanel();
-    listener = new RootKeyListener(root);
+    root = new MockScene();
+    listener = new StageKeyListener(root);
     panel = new MockParentPanel();
-    panelEvents = panel.mockEventHandler;
     root.add(panel);
     component = new Panel();
+    action = new MockEventAction();
+    action2 = new MockEventAction();
   }
 
   @Test
@@ -47,55 +50,61 @@ public class RootKeyListenerTest
   @Test
   public void changeFocus() throws Exception
   {
+    panel.getEventHandler().add(FocusGainedEvent.class, action);
+
     listener.focusOn(panel);
 
     assertEquals(panel, listener.getFocusedPanel());
-    assertEquals(FocusGainedEvent.class, panelEvents.last().getClass());
+    assertEquals(true, action.invoked);
   }
   
   @Test
   public void focusIsLostWhenChangingFocus() throws Exception
   {
+    panel.getEventHandler().add(FocusLostEvent.class, action);
     MockPanel panel2 = new MockPanel();
+    panel2.getEventHandler().add(FocusGainedEvent.class, action2);
 
     listener.focusOn(panel);
     listener.focusOn(panel2);
 
     assertEquals(panel2, listener.getFocusedPanel());
-    assertEquals(FocusLostEvent.class, panelEvents.last().getClass());
-    assertEquals(FocusGainedEvent.class, panel2.mockEventHandler.last().getClass());
+    assertEquals(true, action.invoked);
+    assertEquals(true, action2.invoked);
   }
   
   @Test
   public void focusingOnNullDoesntChangeFocus() throws Exception
   {
     listener.focusOn(panel);
+    panel.getEventHandler().add(FocusLostEvent.class, action);
     listener.focusOn(null);
 
     assertEquals(panel, listener.getFocusedPanel());
-    assertEquals(FocusGainedEvent.class, panelEvents.last().getClass());
+    assertEquals(false, action.invoked);
   }
   
   @Test
   public void focuedPanelReceivesTypedKeyEvents() throws Exception
   {
+    panel.getEventHandler().add(CharTypedEvent.class, action);
     listener.focusOn(panel);
 
     final KeyEvent typedEvent = new KeyEvent(component, 1, 2, 3, 4, 'a');
     listener.keyTyped(typedEvent);
-    CharTypedEvent charEvent = (CharTypedEvent) panelEvents.last();
-    assertEquals(panel, charEvent.getSource());
-    assertEquals('a', charEvent.getChar());
+    assertEquals(panel, action.recipient);
+    assertEquals('a', ((CharTypedEvent)action.event).getChar());
   }
 
   @Test
   public void focuedPanelReceivesPressKeyEvents() throws Exception
   {
+    panel.getEventHandler().add(KeyPressedEvent.class, action);
     listener.focusOn(panel);
 
     final KeyEvent pressedEvent = new KeyEvent(component, 1, 2, 3, KeyEvent.VK_A, 'b');
     listener.keyPressed(pressedEvent);
-    KeyPressedEvent keyEvent = (KeyPressedEvent) panelEvents.last();
+    KeyPressedEvent keyEvent = (KeyPressedEvent) action.event;
     assertSame(panel, keyEvent.getSource());
     assertEquals(limelight.ui.events.panel.KeyEvent.KEY_A, keyEvent.getKeyCode());
   }
@@ -103,11 +112,12 @@ public class RootKeyListenerTest
   @Test
   public void focuedPanelReceivesReleaseKeyEvents() throws Exception
   {
+    panel.getEventHandler().add(KeyReleasedEvent.class, action);
     listener.focusOn(panel);
 
     final KeyEvent releasedEvent = new KeyEvent(component, 1, 2, 3, KeyEvent.VK_B, 'c');
     listener.keyReleased(releasedEvent);
-    KeyReleasedEvent keyEvent1 = (KeyReleasedEvent) panelEvents.last();
+    KeyReleasedEvent keyEvent1 = (KeyReleasedEvent) action.event;
     assertSame(panel, keyEvent1.getSource());
     assertEquals(limelight.ui.events.panel.KeyEvent.KEY_B, keyEvent1.getKeyCode());
   }
@@ -128,18 +138,18 @@ public class RootKeyListenerTest
   public void findNextInput() throws Exception
   {
     buildInputTree();
-    assertSame(input2, RootKeyListener.nextInputPanel(input));
-    assertSame(input3, RootKeyListener.nextInputPanel(input2));
-    assertSame(input, RootKeyListener.nextInputPanel(input3));
+    assertSame(input2, StageKeyListener.nextInputPanel(input));
+    assertSame(input3, StageKeyListener.nextInputPanel(input2));
+    assertSame(input, StageKeyListener.nextInputPanel(input3));
   }
 
   @Test
   public void findPreviousInput() throws Exception
   {
     buildInputTree();
-    assertSame(input, RootKeyListener.previousInputPanel(input2));
-    assertSame(input2, RootKeyListener.previousInputPanel(input3));
-    assertSame(input3, RootKeyListener.previousInputPanel(input));
+    assertSame(input, StageKeyListener.previousInputPanel(input2));
+    assertSame(input2, StageKeyListener.previousInputPanel(input3));
+    assertSame(input3, StageKeyListener.previousInputPanel(input));
   }
 
   @Test

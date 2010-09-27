@@ -5,7 +5,6 @@ package limelight.ui.model;
 
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.ui.Panel;
 import limelight.ui.text.StyledText;
 import limelight.ui.text.StyledTextParser;
 import limelight.util.Box;
@@ -25,7 +24,7 @@ import java.util.List;
 public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
 {
   private String text;
-  private PropablePanel panel;
+  private Prop panel;
   private double consumedHeight;
   private double consumedWidth;
   private Graphics2D graphics;
@@ -37,7 +36,7 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
   private List<StyledText> textChunks;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
-  public TextPanel(PropablePanel panel, String text)
+  public TextPanel(Prop panel, String text)
   {
     this.panel = panel;
     this.text = text;
@@ -49,7 +48,7 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
     return text;
   }
 
-  public void setText(String text, PropablePanel panel)
+  public void setText(String text, Prop panel)
   {
     boolean differentText = !Util.equal(text, this.text);
     if(!needsLayout() && differentText)

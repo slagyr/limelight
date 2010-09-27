@@ -12,6 +12,7 @@ public class MockProduction extends Production
   public String lastMethodCalled;
   public Object[] lastMethodCallArgs;
   public int drbPort;
+  public boolean closeAttempted;
 
   public MockProduction(String name)
   {
@@ -50,5 +51,11 @@ public class MockProduction extends Production
   public void publish_on_drb(int port)
   {
     drbPort = port;
+  }
+
+  @Override
+  public void attemptClose()
+  {
+    closeAttempted = true;
   }
 }

@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 public class PaintJobTest extends TestCase
 {
   private PaintJob job;
-  private MockPropablePanel panel;
+  private MockProp panel;
   private Style style;
   private MockGraphics graphics;
   private SimpleCache<Panel,BufferedImage> bufferedImageCache;
@@ -33,7 +33,7 @@ public class PaintJobTest extends TestCase
     Context.instance().bufferedImagePool = pool;
 
     job = new PaintJob(new Box(100, 200, 300, 400), Colors.TRANSPARENT);
-    panel = new MockPropablePanel();
+    panel = new MockProp();
     style = panel.style;
     graphics = new MockGraphics();
   }
@@ -155,7 +155,7 @@ public class PaintJobTest extends TestCase
 
   public void testPaintingChildren() throws Exception
   {
-    MockPropablePanel child = new MockPropablePanel();
+    MockProp child = new MockProp();
     panel.add(child);
     panel.childConsumableBounds = new Box(12, 34, 56, 78);
     child.setLocation(123, 456);
@@ -170,11 +170,11 @@ public class PaintJobTest extends TestCase
 
   public void testFloatersArePutAtTheBackOfTheLine() throws Exception
   {
-    MockPropablePanel child1 = new MockPropablePanel();
-    MockPropablePanel child2 = new MockPropablePanel();
-    MockPropablePanel child3 = new MockPropablePanel();
-    MockPropablePanel child4 = new MockPropablePanel();
-    MockPropablePanel child5 = new MockPropablePanel();
+    MockProp child1 = new MockProp();
+    MockProp child2 = new MockProp();
+    MockProp child3 = new MockProp();
+    MockProp child4 = new MockProp();
+    MockProp child5 = new MockProp();
 
     panel.add(child1);
     panel.add(child2);

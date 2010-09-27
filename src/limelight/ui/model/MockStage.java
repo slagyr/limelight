@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.model.Stage;
+import limelight.model.api.MockStageProxy;
 import limelight.ui.MockGraphics;
 
 import java.awt.*;
@@ -14,14 +15,46 @@ public class MockStage extends Stage
   public boolean closed;
   public boolean shouldAllowClose;
   public boolean wasClosed;
-  private Cursor cursor = Cursor.getDefaultCursor();
-  private Dimension size = new Dimension(0, 0);
+  public Cursor cursor = Cursor.getDefaultCursor();
+  public Dimension size = new Dimension(0, 0);
+  public boolean opened;
+  public boolean framed;
+  public boolean alwaysOnTop;
 
-  public void close()
+  public MockStage(String name)
+  {
+    super(name);
+  }
+
+  public MockStage()
+  {
+    super("MockStage");
+  }
+
+  public MockStage(String name, MockStageProxy stageProxy)
+  {
+    this(name);
+    setProxy(stageProxy);
+  }
+
+  @Override
+  protected void doOpen()
+  {
+    opened = true;
+  }
+
+  @Override
+  protected void doClose()
   {
     closed = true;
   }
-  
+
+  @Override
+  public boolean isOpen()
+  {
+    return opened;
+  }
+
   public boolean isVisible()
   {
     return visible;
@@ -61,6 +94,36 @@ public class MockStage extends Stage
   public Insets getInsets()
   {
     return new Insets(0, 0, 0, 0);
+  }
+
+  @Override
+  public void setFramed(boolean framed)
+  {
+    this.framed = framed;
+  }
+
+  @Override
+  public boolean isFramed()
+  {
+    return framed;
+  }
+
+  @Override
+  public void setAlwaysOnTop(boolean value)
+  {
+    alwaysOnTop = value;
+  }
+
+  @Override
+  public boolean isAlwaysOnTop()
+  {
+    return alwaysOnTop;
+  }
+
+  @Override
+  protected void setVisible(boolean value)
+  {
+    visible = value;
   }
 
   public void setSize(int width, int height)

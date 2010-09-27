@@ -26,8 +26,8 @@ public class TextPanelTest
   private TextPanel panel;
   private Style style;
   private Frame frame;
-  private MockPropablePanel parent;
-  private Scene root;
+  private MockProp parent;
+  private ScenePanel root;
   private String defaultFontFace;
   private String defaultFontSize;
   private String defaultFontStyle;
@@ -36,13 +36,13 @@ public class TextPanelTest
   @Before
   public void setUp() throws Exception
   {
-    parent = new MockPropablePanel();
+    parent = new MockProp();
     parent.setLocation(0, 0);
     parent.setSize(100, 100);
     style = parent.getStyle();
     panel = new TextPanel(parent, "Some Text");
     parent.add(panel);
-    root = new Scene(new MockPropProxy());
+    root = new ScenePanel(new MockPropProxy());
     root.setStage(new MockStage());
     root.add(parent);
     style.setTextColor("green");

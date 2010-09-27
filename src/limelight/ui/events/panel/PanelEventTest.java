@@ -5,6 +5,7 @@ import limelight.events.EventAction;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.ui.model.TestablePanelBase;
+import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,17 +19,20 @@ public class PanelEventTest
 
   private static class TestableEvent extends PanelEvent
   {
-    public TestableEvent(Panel source)
-    {
-      super(source);
-    }
   }
 
   @Before
   public void setUp() throws Exception
   {
     source = new MockPanel();
-    event = new TestableEvent(source);
+    event = new TestableEvent();
+    event.setSource(source);
+  }
+  
+  @Test
+  public void subjectIsTheSource() throws Exception
+  {
+    assertEquals(event.getSubject(), event.getSource());
   }
   
   @Test
@@ -50,13 +54,26 @@ public class PanelEventTest
   }
   
   @Test
+  public void dispatchingSetsTheSource() throws Exception
+  {
+    event = new TestableEvent();
+
+    event.dispatch(source);
+
+    assertEquals(source, event.getSource());
+    assertEquals(source, event.getRecipient());
+  }
+  
+  @Test
   public void dispatching() throws Exception
   {
     MockPanel recipient = new MockPanel();
+    MockEventAction action = new MockEventAction();
+    recipient.getEventHandler().add(event.getClass(), action);
 
     event.dispatch(recipient);
 
-    assertEquals(event, recipient.mockEventHandler.events.get(0));
+    assertEquals(event, action.event);
     assertEquals(source, event.getSource());
     assertEquals(source, event.getRecipient());
   }

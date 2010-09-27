@@ -14,16 +14,16 @@ import java.io.FileInputStream;
 public class ImagePanelTest extends TestCase
 {
   private ImagePanel panel;
-  private MockPropablePanel parent;
-  private Scene root;
+  private MockProp parent;
+  private ScenePanel root;
   private MockResourceLoader loader;
 
   public void setUp() throws Exception
   {
     MockPropProxy scene = new MockPropProxy();
-    root = new Scene(scene);
+    root = new ScenePanel(scene);
     root.setStage(new MockStage());
-    parent = new MockPropablePanel();
+    parent = new MockProp();
     loader = new MockResourceLoader();
     scene.loader = loader;
     root.add(parent);

@@ -139,7 +139,7 @@ public abstract class PanelBase implements Panel
       illuminate();
   }
 
-  public RootPanel getRoot()
+  public Scene getRoot()
   {
     if(parent == null)
       return null;
@@ -148,7 +148,7 @@ public abstract class PanelBase implements Panel
 
   public Stage getStage()
   {
-    RootPanel root = getRoot();
+    Scene root = getRoot();
     if(root == null)
       return null;
     return root.getStage();
@@ -274,7 +274,7 @@ public abstract class PanelBase implements Panel
 
   public void markAsDirty()
   {
-    RootPanel rootPanel = getRoot();
+    Scene rootPanel = getRoot();
     if(rootPanel != null)
       rootPanel.addDirtyRegion(getAbsoluteBounds());
   }

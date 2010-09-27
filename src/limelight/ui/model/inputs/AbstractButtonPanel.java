@@ -46,7 +46,7 @@ public abstract class AbstractButtonPanel extends InputPanel
       if(isPushEvent(event))
       {
         final Panel panel = event.getRecipient();
-        new ButtonPushedEvent(panel).dispatch(panel);
+        new ButtonPushedEvent().dispatch(panel);
       }
     }
   }

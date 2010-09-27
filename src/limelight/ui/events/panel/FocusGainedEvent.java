@@ -4,8 +4,8 @@ import limelight.ui.Panel;
 
 public class FocusGainedEvent extends PanelEvent
 {
-  public FocusGainedEvent(Panel source)
+  public FocusGainedEvent()
   {
-    super(source);
+    super();
   }
 }

@@ -17,9 +17,9 @@ public class MouseEventTest
 
   private static class TestableMouseEvent extends MouseEvent
   {
-    public TestableMouseEvent(Panel panel, int modifiers, Point location, int clickCount)
+    public TestableMouseEvent(int modifiers, Point location, int clickCount)
     {
-      super(panel, modifiers, location, clickCount);
+      super(modifiers, location, clickCount);
     }
   }
 
@@ -28,7 +28,8 @@ public class MouseEventTest
   {
     panel = new MockPanel();
     location = new Point(123, 456);
-    event = new TestableMouseEvent(panel, 321, location, 1);
+    event = new TestableMouseEvent(321, location, 1);
+    event.setSource(panel);
   }
   
   @Test

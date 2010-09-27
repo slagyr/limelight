@@ -3,6 +3,15 @@
 
 package limelight.model.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MockStageProxy implements StageProxy
 {
+  public Map<String, Object> appliedOptions;
+
+  public void applyOptions(Map<String, Object> options)
+  {
+    appliedOptions = new HashMap<String, Object>(options);
+  }
 }

@@ -1,14 +1,12 @@
 package limelight.ui.events.panel;
 
-import limelight.ui.Panel;
-
 public class CharTypedEvent extends ModifiableEvent
 {
   private char c;
 
-  public CharTypedEvent(Panel panel, int modifiers, char c)
+  public CharTypedEvent(int modifiers, char c)
   {
-    super(panel, modifiers);
+    super(modifiers);
     this.c = c;
   }
 

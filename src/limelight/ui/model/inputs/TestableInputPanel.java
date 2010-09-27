@@ -1,7 +1,6 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
-import limelight.ui.model.PropablePanel;
 
 import java.awt.*;
 

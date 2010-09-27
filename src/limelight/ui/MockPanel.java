@@ -5,7 +5,6 @@ package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
 import limelight.ui.model.PanelBase;
-import limelight.ui.model.MockEventHandler;
 
 import java.awt.*;
 
@@ -20,20 +19,17 @@ public class MockPanel extends PanelBase
   public boolean floater;
   public boolean consumableAreaChangedCalled;
   public boolean markedAsDirty;
-  public MockEventHandler mockEventHandler;
 
   public MockPanel()
   {
     style = new ScreenableStyle();
     canBeBuffered = true;
-    eventHandler = mockEventHandler = new MockEventHandler(this);
   }
 
   public ScreenableStyle getStyle()
   {
     return style;
   }
-
 
   public void paintOn(Graphics2D graphics)
   {

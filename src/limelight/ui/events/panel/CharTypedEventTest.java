@@ -16,7 +16,7 @@ public class CharTypedEventTest
   public void setUp() throws Exception
   {
     panel = new MockPanel();
-    event = new CharTypedEvent(panel, 123, 'a');
+    event = new CharTypedEvent(123, 'a');
   }
   
   @Test

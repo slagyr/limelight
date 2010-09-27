@@ -29,12 +29,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
 import java.util.List;
 
-public class PropTest extends Assert
+public class PropPanelTest extends Assert
 {
   private MockPropProxy prop;
-  private Prop panel;
+  private PropPanel panel;
   private ScreenableStyle style;
-  private Scene root;
+  private ScenePanel root;
   private RichStyle style1;
   private RichStyle style2;
   private RichStyle style3;
@@ -46,9 +46,9 @@ public class PropTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    root = new Scene(new MockPropProxy());
+    root = new ScenePanel(new MockPropProxy());
     prop = new MockPropProxy();
-    panel = new Prop(prop);
+    panel = new PropPanel(prop);
     root.add(panel);
                                           
     production = new MockProduction();
@@ -64,7 +64,7 @@ public class PropTest extends Assert
   @Test
   public void createsItsStyleInsteadOfGettingItFromProp() throws Exception
   {
-    panel = new Prop(null);
+    panel = new PropPanel(null);
 
     assertNotNull(panel.getStyle());
     assertEquals(ScreenableStyle.class, panel.getStyle().getClass());
@@ -254,7 +254,7 @@ public class PropTest extends Assert
     child.setLocation(0, 0);
     panel.add(child);
 
-    MockPropablePanel floater = new MockPropablePanel();
+    MockProp floater = new MockProp();
     floater.setSize(50, 50);
     floater.setLocation(25, 25);
     floater.floater = true;
@@ -276,7 +276,7 @@ public class PropTest extends Assert
     int scrollAmount = 8;
     int wheelRotation = 2;
 
-    new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
+    new MouseWheelEvent(modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
 
     assertEquals(16, panel.getVerticalScrollbar().getValue());
     assertEquals(0, panel.getHorizontalScrollbar().getValue());
@@ -293,7 +293,7 @@ public class PropTest extends Assert
     int modifer = 1;
     int scrollAmount = 8;
     int wheelRotation = 2;
-    new MouseWheelEvent(panel, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
+    new MouseWheelEvent(modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
 
     assertEquals(0, panel.getVerticalScrollbar().getValue());
     assertEquals(16, panel.getHorizontalScrollbar().getValue());
@@ -302,7 +302,7 @@ public class PropTest extends Assert
   @Test
   public void wheelEventsArePassedToParentIfTheresNoScrollbar() throws Exception
   {
-    Prop child = new Prop(new MockPropProxy());
+    PropPanel child = new PropPanel(new MockPropProxy());
     panel.add(child);
 
     panel.addVerticalScrollBar();
@@ -314,7 +314,7 @@ public class PropTest extends Assert
     int scrollAmount = 8;
     int wheelRotation = 2;
 
-    new MouseWheelEvent(child, modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
+    new MouseWheelEvent(modifer, null, 0, MouseWheelEvent.UNIT_SCROLL, scrollAmount, wheelRotation).dispatch(panel);
 
     assertEquals(16, panel.getVerticalScrollbar().getValue());
     assertEquals(0, panel.getHorizontalScrollbar().getValue());
@@ -336,7 +336,7 @@ public class PropTest extends Assert
   {
     panel.getHoverStyle().setCuror("hand");
 
-    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseEnteredEvent(0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.HAND_CURSOR, root.getCursor().getType());
     assertSame(panel.getHoverStyle(), style.getScreen());
@@ -347,7 +347,7 @@ public class PropTest extends Assert
   {
     prop.hoverStyle = new FlatStyle();
 
-    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseEnteredEvent(0, null, 0).dispatch(panel);
     new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
@@ -359,7 +359,7 @@ public class PropTest extends Assert
   {
     prop.hoverStyle = null;
 
-    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseEnteredEvent(0, null, 0).dispatch(panel);
     new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
@@ -371,7 +371,7 @@ public class PropTest extends Assert
   {
     prop.hoverStyle = new FlatStyle();
 
-    new MouseEnteredEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseEnteredEvent(0, null, 0).dispatch(panel);
     prop.hoverStyle = null;
     new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
 
@@ -383,7 +383,7 @@ public class PropTest extends Assert
   public void shouldRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
   {
     for(int i = 0; i < 100; i++)
-      panel.add(new Prop(new MockPropProxy()));
+      panel.add(new PropPanel(new MockPropProxy()));
     panel.markAsNeedingLayout();
     Thread thread = new Thread(new Runnable()
     {
@@ -407,7 +407,7 @@ public class PropTest extends Assert
   {
     panel.addVerticalScrollBar();
     panel.addHorizontalScrollBar();
-    panel.add(new Prop(new MockPropProxy()));
+    panel.add(new PropPanel(new MockPropProxy()));
 
     panel.removeAll();
 
@@ -616,20 +616,20 @@ public class PropTest extends Assert
   public void findByName() throws Exception
   {
     root.delluminate();
-    Prop foo1 = new Prop(new MockPropProxy(), Util.toMap("name", "foo"));
-    Prop foo2 = new Prop(new MockPropProxy(), Util.toMap("name", "foo"));
-    Prop bar = new Prop(new MockPropProxy(), Util.toMap("name", "bar"));
+    PropPanel foo1 = new PropPanel(new MockPropProxy(), Util.toMap("name", "foo"));
+    PropPanel foo2 = new PropPanel(new MockPropProxy(), Util.toMap("name", "foo"));
+    PropPanel bar = new PropPanel(new MockPropProxy(), Util.toMap("name", "bar"));
     panel.add(foo1);
     panel.add(foo2);
     panel.add(bar);
     panel.illuminate();
 
-    List<Prop> foos = panel.findByName("foo");
+    List<PropPanel> foos = panel.findByName("foo");
     assertEquals(2, foos.size());
     assertEquals(true, foos.contains(foo1));
     assertEquals(true, foos.contains(foo2));
 
-    List<Prop> bars = panel.findByName("bar");
+    List<PropPanel> bars = panel.findByName("bar");
     assertEquals(1, bars.size());
     assertEquals(true, bars.contains(bar));
   }

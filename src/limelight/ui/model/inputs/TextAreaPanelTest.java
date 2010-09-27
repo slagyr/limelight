@@ -6,9 +6,9 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockGraphics;
 import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.*;
+import limelight.ui.model.MockScene;
 import limelight.ui.model.MockStage;
-import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.Prop;
+import limelight.ui.model.PropPanel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,19 +20,19 @@ import static junit.framework.Assert.assertEquals;
 public class TextAreaPanelTest extends Assert
 {
   TextAreaPanel panel;
-  Prop parent;
+  PropPanel parent;
   MockGraphics graphics;
   TextModel model;
-  private MockRootPanel root;
+  private MockScene root;
 
   @Before
   public void setUp()
   {
     panel = new TextAreaPanel();
-    parent = new Prop(new MockPropProxy());
+    parent = new PropPanel(new MockPropProxy());
     parent.add(panel);
 
-    root = new MockRootPanel();
+    root = new MockScene();
     root.add(parent);
     root.setStage(new MockStage());
 
@@ -97,16 +97,16 @@ public class TextAreaPanelTest extends Assert
 //dispatching: KeyReleasedEvent: source=limelight.ui.model.inputs.TextAreaPanel@584b62a7 recipient=limelight.ui.model.inputs.TextAreaPanel@584b62a7 modifiers=0 keyCode=65/41 location=1
 //dispatching: KeyPressedEvent: source=limelight.ui.model.inputs.TextAreaPanel@584b62a7 recipient=limelight.ui.model.inputs.TextAreaPanel@584b62a7 modifiers=4 keyCode=157/9d location=2
 
-    new MousePressedEvent(panel, 16, new Point(5, 5), 1).dispatch(panel);
-    new FocusGainedEvent(panel).dispatch(panel);
-    new MouseReleasedEvent(panel, 16, new Point(5, 5), 1).dispatch(panel);
-    new MouseClickedEvent(panel, 16, new Point(5, 5), 1).dispatch(panel);
-    new MousePressedEvent(panel, 16, new Point(5, 5), 2).dispatch(panel);
-    new MouseReleasedEvent(panel, 16, new Point(5, 5), 2).dispatch(panel);
-    new MouseClickedEvent(panel, 16, new Point(5, 5), 2).dispatch(panel);
-    new KeyPressedEvent(panel, 0, KeyEvent.KEY_A, KeyEvent.LOCATION_STANDARD);
-    new CharTypedEvent(panel, 0, 'a').dispatch(panel);
-    new KeyReleasedEvent(panel, 0, KeyEvent.KEY_A, KeyEvent.LOCATION_STANDARD);
+    new MousePressedEvent(16, new Point(5, 5), 1).dispatch(panel);
+    new FocusGainedEvent().dispatch(panel);
+    new MouseReleasedEvent(16, new Point(5, 5), 1).dispatch(panel);
+    new MouseClickedEvent(16, new Point(5, 5), 1).dispatch(panel);
+    new MousePressedEvent(16, new Point(5, 5), 2).dispatch(panel);
+    new MouseReleasedEvent(16, new Point(5, 5), 2).dispatch(panel);
+    new MouseClickedEvent(16, new Point(5, 5), 2).dispatch(panel);
+    new KeyPressedEvent(0, KeyEvent.KEY_A, KeyEvent.LOCATION_STANDARD);
+    new CharTypedEvent(0, 'a').dispatch(panel);
+    new KeyReleasedEvent(0, KeyEvent.KEY_A, KeyEvent.LOCATION_STANDARD);
 
     assertEquals("a", panel.getText());
   }

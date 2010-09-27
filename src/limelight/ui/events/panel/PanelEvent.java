@@ -8,16 +8,17 @@ public abstract class PanelEvent extends Event
   private Panel source;
   private Panel recipient;
 
-  public PanelEvent(Panel source)
-  {
-    this.source = source;
-    recipient = source;
-  }
-
   @Override
   public String toString()
   {
     return super.toString() + ": source=" + getSource() + " recipient=" + getRecipient();
+  }
+
+  public void setSource(Panel source)
+  {
+    subject = source;
+    this.source = source;
+    recipient = source;
   }
 
   public Panel getSource()
@@ -48,6 +49,9 @@ public abstract class PanelEvent extends Event
 
   public void dispatch(Panel panel)
   {
+    if(source == null)
+      setSource(panel);
+    
     Panel previousRecipient = recipient;
     setRecipient(panel);
     final PanelEventHandler eventHandler = recipient.getEventHandler();

@@ -5,9 +5,9 @@ package limelight.ui.model.inputs;
 
 import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.*;
+import limelight.ui.model.MockScene;
 import limelight.ui.model.MockStage;
-import limelight.ui.model.MockRootPanel;
-import limelight.ui.model.Prop;
+import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,17 +20,17 @@ import static junit.framework.Assert.assertSame;
 public class TextInputPanelTest
 {
   private TextInputPanel panel;
-  private MockRootPanel root;
-  private Prop parent;
+  private MockScene root;
+  private PropPanel parent;
   private TextModel model;
   private MockStage stage;
 
   @Before
   public void setUp()
   {
-    root = new MockRootPanel();
+    root = new MockScene();
     panel = new MockTextInputPanel();
-    parent = new Prop(new MockPropProxy());
+    parent = new PropPanel(new MockPropProxy());
     parent.add(panel);
     root.add(parent);
     stage = new MockStage();
@@ -74,7 +74,7 @@ public class TextInputPanelTest
   @Test
   public void shouldRequireLayoutAfterConsumableSizeChanges() throws Exception
   {
-    MockRootPanel root = new MockRootPanel();
+    MockScene root = new MockScene();
     root.add(panel);
     panel.getRoot();
     panel.resetLayout();
@@ -89,7 +89,7 @@ public class TextInputPanelTest
   {
     model.setCaretLocation(TextLocation.origin);
 
-    new CharTypedEvent(panel, 0, 'Z').dispatch(panel);
+    new CharTypedEvent(0, 'Z').dispatch(panel);
 
     assertEquals("ZSome Text", model.getText());
   }
@@ -99,7 +99,7 @@ public class TextInputPanelTest
   {
     model.setCaretLocation(TextLocation.origin);
 
-    new CharTypedEvent(panel, KeyEvent.COMMAND_MASK, 'A').dispatch(panel);
+    new CharTypedEvent(KeyEvent.COMMAND_MASK, 'A').dispatch(panel);
 
     assertEquals("Some Text", model.getText());
   }
@@ -109,7 +109,7 @@ public class TextInputPanelTest
   {
     model.setCaretLocation(TextLocation.origin);
 
-    new CharTypedEvent(panel, KeyEvent.CONTROL_MASK, 'A').dispatch(panel);
+    new CharTypedEvent(KeyEvent.CONTROL_MASK, 'A').dispatch(panel);
 
     assertEquals("Some Text", model.getText());
   }
@@ -120,7 +120,7 @@ public class TextInputPanelTest
     assertEquals(0, root.dirtyRegions.size());
 
     model.setCaretLocation(TextLocation.origin);
-    new CharTypedEvent(panel, 0, 'Z').dispatch(panel);
+    new CharTypedEvent(0, 'Z').dispatch(panel);
 
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
@@ -130,7 +130,7 @@ public class TextInputPanelTest
   public void backspaceIsNotTyped() throws Exception
   {
     model.setCaretLocation(TextLocation.origin);
-    new CharTypedEvent(panel, 0, '\b').dispatch(panel);
+    new CharTypedEvent(0, '\b').dispatch(panel);
 
     assertEquals("Some Text", model.getText());
   }
@@ -139,7 +139,7 @@ public class TextInputPanelTest
   public void newlineIsTyped() throws Exception
   {
     model.setCaretLocation(TextLocation.origin);
-    new CharTypedEvent(panel, 0, '\n').dispatch(panel);
+    new CharTypedEvent(0, '\n').dispatch(panel);
 
     assertEquals("\nSome Text", model.getText());
   }
@@ -147,7 +147,7 @@ public class TextInputPanelTest
   @Test
   public void consumedMousePressEventsDoNothing() throws Exception
   {
-    new MousePressedEvent(panel, 0, new Point(0, 0), 3).consumed().dispatch(panel);
+    new MousePressedEvent(0, new Point(0, 0), 3).consumed().dispatch(panel);
     
     assertEquals(false, model.hasSelection());
   }
@@ -155,8 +155,8 @@ public class TextInputPanelTest
   @Test
   public void consumedMouseDragEventsDoNothing() throws Exception
   {
-    new MousePressedEvent(panel, 0, new Point(0, 0), 1).dispatch(panel);
-    new MouseDraggedEvent(panel, 0, new Point(25, 5), 1).consumed().dispatch(panel);
+    new MousePressedEvent(0, new Point(0, 0), 1).dispatch(panel);
+    new MouseDraggedEvent(0, new Point(25, 5), 1).consumed().dispatch(panel);
 
     assertEquals(false, model.hasSelection());
   }
@@ -166,7 +166,7 @@ public class TextInputPanelTest
   {
     assertEquals(false, panel.isCaretBlinking());
     
-    new FocusGainedEvent(panel).consumed().dispatch(panel);
+    new FocusGainedEvent().consumed().dispatch(panel);
 
     assertEquals(false, panel.isCaretBlinking());
   }
@@ -174,8 +174,8 @@ public class TextInputPanelTest
   @Test
   public void consumedFocusLostEventsShouldNotStopTheCaret() throws Exception
   {
-    new FocusGainedEvent(panel).dispatch(panel);
-    new FocusLostEvent(panel).consumed().dispatch(panel);
+    new FocusGainedEvent().dispatch(panel);
+    new FocusLostEvent().consumed().dispatch(panel);
 
     assertEquals(true, panel.isCaretBlinking());
   }
@@ -186,7 +186,7 @@ public class TextInputPanelTest
     panel = new TextBoxPanel();
     root.add(panel);
     panel.getModel().setText("Some Text");
-    new KeyPressedEvent(panel, 0, KeyEvent.KEY_BACK_SPACE, 0).consumed().dispatch(panel);
+    new KeyPressedEvent(0, KeyEvent.KEY_BACK_SPACE, 0).consumed().dispatch(panel);
 
     assertEquals("Some Text", panel.getText());
   }
@@ -197,7 +197,7 @@ public class TextInputPanelTest
     panel = new TextBoxPanel();
     root.add(panel);
     panel.getModel().setText("Some Text");
-    new CharTypedEvent(panel, 0, 'A').consumed().dispatch(panel);
+    new CharTypedEvent(0, 'A').consumed().dispatch(panel);
 
     assertEquals("Some Text", panel.getText());
   }
@@ -222,10 +222,10 @@ public class TextInputPanelTest
     final MockEventAction action = new MockEventAction();
     panel.getEventHandler().add(ValueChangedEvent.class, action);
 
-    new FocusGainedEvent(panel).dispatch(panel);
+    new FocusGainedEvent().dispatch(panel);
     model.insertChar('a');
     assertEquals(true, model.hasChanged());
-    new FocusLostEvent(panel).dispatch(panel);
+    new FocusLostEvent().dispatch(panel);
 
     assertEquals(true, action.invoked);
   }

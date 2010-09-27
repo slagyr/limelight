@@ -4,8 +4,8 @@ import limelight.ui.Panel;
 
 public class FocusLostEvent extends PanelEvent
 {
-  public FocusLostEvent(Panel source)
+  public FocusLostEvent()
   {
-    super(source);
+    super();
   }
 }

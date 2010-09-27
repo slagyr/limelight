@@ -2,7 +2,7 @@ package limelight.ui.painting;
 
 import limelight.ui.MockGraphics;
 import limelight.ui.Painter;
-import limelight.ui.model.MockPropablePanel;
+import limelight.ui.model.MockProp;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -34,7 +34,7 @@ public class DefaultPainterTest extends Assert
     BackgroundPainter.instance = mockBackgroundPainter;
     MockPainter mockBorderPainter = new MockPainter();
     BorderPainter.instance = mockBorderPainter;
-    MockPropablePanel panel = new MockPropablePanel();
+    MockProp panel = new MockProp();
     MockGraphics graphics = new MockGraphics();
 
     DefaultPainter.instance.paint(graphics, panel);

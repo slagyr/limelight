@@ -19,18 +19,18 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.util.Map;
 
-public class SceneTest extends Assert
+public class ScenePanelTest extends Assert
 { 
-  private Scene root;
-  private MockPropablePanel child;
+  private ScenePanel root;
+  private MockProp child;
   private MockStage frame;
 
   @Before
   public void setUp() throws Exception
   {
     frame = new MockStage();
-    root = new Scene(new MockPropProxy());
-    child = new MockPropablePanel("child");
+    root = new ScenePanel(new MockPropProxy());
+    child = new MockProp("child");
     Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager().installed();
   }
 
@@ -77,7 +77,7 @@ public class SceneTest extends Assert
   @Test
   public void shouldAddPanelNeedingLayoutWontAddWhenAncestorIsAlreadyInTheList() throws Exception
   {
-    MockPropablePanel grandChild = new MockPropablePanel();
+    MockProp grandChild = new MockProp();
     child.add(grandChild);
 
     root.addPanelNeedingLayout(child);
@@ -93,8 +93,8 @@ public class SceneTest extends Assert
   @Test
   public void shouldAddPanelNeedingLayoutWillAddWhenAncestorIsAlreadyInTheListButTheParentDoesntNeedLayout() throws Exception
   {
-    MockPropablePanel grandChild = new MockPropablePanel("grandChild");
-    MockPropablePanel greatGrandChild = new MockPropablePanel("greatGrandChild");
+    MockProp grandChild = new MockProp("grandChild");
+    MockProp greatGrandChild = new MockProp("greatGrandChild");
     child.add(grandChild);
     grandChild.add(greatGrandChild);
     child.doLayout();
@@ -113,7 +113,7 @@ public class SceneTest extends Assert
   @Test
   public void shouldAddPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
   {
-    MockPropablePanel grandChild = new MockPropablePanel();
+    MockProp grandChild = new MockProp();
     child.add(grandChild);
 
     root.addPanelNeedingLayout(grandChild);
@@ -129,8 +129,8 @@ public class SceneTest extends Assert
   @Test
   public void shouldAddPanelNeedingLayoutWillNotRemoveChildWhenAncestorIsAddedYetChildsParentDoesntNeedLayout() throws Exception
   {
-    MockPropablePanel grandChild = new MockPropablePanel();
-    MockPropablePanel greatGrandChild = new MockPropablePanel("greatGrandChild");
+    MockProp grandChild = new MockProp();
+    MockProp greatGrandChild = new MockProp("greatGrandChild");
     child.add(grandChild);
     grandChild.add(greatGrandChild);
     child.doLayout();
@@ -247,7 +247,7 @@ public class SceneTest extends Assert
   public void propWithIdIsIndexWhenAddedToScene() throws Exception
   {
     setupIlluminatedScene();
-    Prop panel = new Prop(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel panel = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
 
     root.add(panel);
 
@@ -264,7 +264,7 @@ public class SceneTest extends Assert
   public void propConnectedToSceneIsIndexedWhenIdIsSet() throws Exception
   {
     setupIlluminatedScene();
-    Prop panel = new Prop(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel panel = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
     root.add(panel);
 
     assertSame(panel, root.find("some id"));
@@ -274,8 +274,8 @@ public class SceneTest extends Assert
   public void duplicateIdsCausesAnError() throws Exception
   {
     setupIlluminatedScene();
-    Prop prop1 = new Prop(new MockPropProxy(), Util.toMap("id", "some id"));
-    Prop prop2 = new Prop(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel prop1 = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel prop2 = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
 
     root.add(prop1);
     
@@ -294,7 +294,7 @@ public class SceneTest extends Assert
   public void unindexingAProp() throws Exception
   {
     setupIlluminatedScene();
-    Prop prop = new Prop(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel prop = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
     root.add(prop);
 
     root.removeFromIndex(prop);
@@ -306,7 +306,7 @@ public class SceneTest extends Assert
   public void unindexingPropWithoutIdDoesntCrash() throws Exception
   {
     setupIlluminatedScene();
-    Prop prop = new Prop(new MockPropProxy());
+    PropPanel prop = new PropPanel(new MockPropProxy());
     root.add(prop);
 
     try
@@ -323,8 +323,8 @@ public class SceneTest extends Assert
   public void propTreesAreIndexedWhenAddedAndUnindexedWhenRemoved() throws Exception
   {
     setupIlluminatedScene();
-    Prop parent = new Prop(new MockPropProxy(), Util.toMap("id", "parent"));
-    Prop child = new Prop(new MockPropProxy(), Util.toMap("id", "child"));
+    PropPanel parent = new PropPanel(new MockPropProxy(), Util.toMap("id", "parent"));
+    PropPanel child = new PropPanel(new MockPropProxy(), Util.toMap("id", "child"));
     parent.add(child);
     
     root.add(parent);

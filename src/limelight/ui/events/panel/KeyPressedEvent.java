@@ -4,8 +4,8 @@ import limelight.ui.Panel;
 
 public class KeyPressedEvent extends KeyEvent
 {
-  public KeyPressedEvent(Panel panel, int modifiers, int keyCode, int keyLocation)
+  public KeyPressedEvent(int modifiers, int keyCode, int keyLocation)
   {
-    super(panel, modifiers, keyCode, keyLocation);
+    super(modifiers, keyCode, keyLocation);
   }
 }

@@ -18,4 +18,11 @@ public class MockEventAction implements EventAction
     if(event instanceof PanelEvent)
       recipient = ((PanelEvent)event).getRecipient();
   }
+
+  public void reset()
+  {
+    invoked = false;
+    event = null;
+    recipient = null;
+  }
 }

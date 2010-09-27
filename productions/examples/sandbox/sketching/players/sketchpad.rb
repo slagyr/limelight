@@ -6,7 +6,7 @@ def activate(mode)
 end
 
 def clear
-  panel.mark_as_dirty
+  peer.mark_as_dirty
 end
 
 on_mouse_pressed do |e|

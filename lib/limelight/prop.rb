@@ -2,6 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'limelight/java_util'
+require 'limelight/optionable'
 require 'limelight/pen'
 require 'limelight/paint_action'
 require 'limelight/animation'
@@ -18,16 +19,18 @@ module Limelight
   #
   class Prop
 
+    include Optionable
+
     class << self
       def panel_class #:nodoc:
-        return Java::limelight.ui.model.Prop
+        return Java::limelight.ui.model.PropPanel
       end
     end
 
     include Java::limelight.model.api.PropProxy
 
 #    attr_accessor :style, :hover_style
-    attr_reader :panel, :players #:nodoc:
+    attr_reader :peer #:nodoc:
 #    attr_reader :children, :parent, :name, :id, :players
     getters :loader #:nodoc:
 
@@ -38,27 +41,27 @@ module Limelight
     # until the prop is added to a Prop tree with a Scene.
     #
     def initialize(hash = Util::StringHash.new)
-      @panel = self.class.panel_class.new(self)
-#      @style = @panel.style
+      @peer = self.class.panel_class.new(self)
+#      @style = @peer.style
 #      @children = []
 #      @options = {}
-      @panel.add_options(Util::Hashes.select(hash))
+      @peer.add_options(Util::Hashes.select(hash))
     end
 
     def id
-      return @panel.getId
+      return @peer.getId
     end
 
     def name
-      return @panel.name
+      return @peer.name
     end
 
     def style
-      return @panel.style
+      return @peer.style
     end
 
     def hover_style
-      return @panel.hover_style
+      return @peer.hover_style
     end
 
     # Add a Prop as a child of this Prop.
@@ -66,7 +69,7 @@ module Limelight
     def add(child)
 #      child.set_parent(self)
 #      @children << child
-      @panel.add(child.panel)
+      @peer.add(child.peer)
     end
 
     # Same as add.  Returns self so adding may be chained.
@@ -100,14 +103,14 @@ module Limelight
     def remove(child)
 #      if children.delete(child)
 #        scene.unindex_prop(child) if scene
-        @panel.remove(child.panel)
+        @peer.remove(child.peer)
 #      end
     end
 
     # Removes all child Props.
     #
     def remove_all
-      @panel.remove_all
+      @peer.remove_all
 #      @children.each { |child| scene.unindex_prop(child) } if scene
 #      @children = []
     end
@@ -125,9 +128,9 @@ module Limelight
     #
     def after_painting(flag = true, & block)
       if flag
-        @panel.after_paint_action = PaintAction.new(& block)
+        @peer.after_paint_action = PaintAction.new(& block)
       else
-        @panel.after_paint_action = nil
+        @peer.after_paint_action = nil
       end
     end
 
@@ -135,28 +138,28 @@ module Limelight
     # Returns an Array of matching Props. Returns an empty Array if none are found.
     #
     def find_by_name(name)
-      return @panel.find_by_name(name).map { |descendant| descendant.prop } 
+      return @peer.find_by_name(name).map { |descendant| descendant.prop } 
     end
 
     # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
     # Some Players such as text_box, will cause the text to appear in the text_box.
     #
     def text=(value)
-      @panel.text = value.to_s
+      @peer.text = value.to_s
     end
 
     # Returns the text of the Prop.
     #
     def text
-      return @panel.text
+      return @peer.text
     end
 
     def parent
-      return @panel.parent.prop if @panel.parent
+      return @peer.parent.prop if @peer.parent
     end
 
     def children
-      @panel.child_prop_panels.map { |child| child.prop } 
+      @peer.child_prop_panels.map { |child| child.prop } 
     end
 
     # Returns the scene to which this prop belongs to.
@@ -164,7 +167,7 @@ module Limelight
     def scene
 #      return nil if @parent.nil?
 #      @scene = @parent.scene if @scene.nil?
-      return @panel.root.prop
+      return @peer.root.prop
     end
 
     # TODO get rid of me.... The Java Prop interface declares this method.
@@ -225,7 +228,7 @@ module Limelight
     #   location.y # the Prop's distance from the top edge of the stage
     #
     def absolute_location
-      return panel.get_absolute_location.clone
+      return peer.get_absolute_location.clone
     end
 
     # Returns a Box representing the relative bounds of the Prop. Is useful with using the Pen.
@@ -235,7 +238,7 @@ module Limelight
     #   bounds.width, box.height # represents the Prop's dimensions
     #
     def bounds
-      return panel.get_bounds.clone
+      return peer.get_bounds.clone
     end
 
     # Returns a Box representing the bounds inside the borders of the prop.
@@ -247,7 +250,7 @@ module Limelight
     #   bounds.height # the distance between the inside edges of the top and bottom borders
     #
     def bordered_bounds
-      return panel.get_bordered_bounds.clone
+      return peer.get_bordered_bounds.clone
     end
 
     # Returns a Box representing the bounds inside the padding of the prop.
@@ -259,13 +262,13 @@ module Limelight
     #   bounds.height # the distance between the inside edges of the top and bottom padding
     #
     def padded_bounds
-      return panel.get_padded_bounds.clone
+      return peer.get_padded_bounds.clone
     end
 
     # Returns a Pen object. Pen objects allow to you to draw directly on the screen, withing to bounds of this Prop.
     #
     def pen
-      return Pen.new(panel.getGraphics)
+      return Pen.new(peer.getGraphics)
     end
 
     # Initiate an animation loop.  Options may include :name (string), :updates_per_second (int: defaults to 60)
@@ -289,7 +292,7 @@ module Limelight
     # This filename should relative to the root directory of the current Production, or an absolute path.
     #
     def play_sound(filename)
-      @panel.play_sound(scene.loader.path_to(filename))
+      @peer.play_sound(scene.loader.path_to(filename))
     end
 
     # Luanches the spcified URL using the OS's default handlers. For example, opening a URL in a browser:
@@ -307,89 +310,63 @@ module Limelight
     # GUI Events ##########################################
 
     def on_mouse_pressed(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MousePressedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MousePressedEvent, action)
     end
 
     def on_mouse_released(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseReleasedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseReleasedEvent, action)
     end
 
     def on_mouse_clicked(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseClickedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseClickedEvent, action)
     end
 
     def on_mouse_moved(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseMovedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseMovedEvent, action)
     end
 
     def on_mouse_dragged(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseDraggedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseDraggedEvent, action)
     end
 
     def on_mouse_entered(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseEnteredEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseEnteredEvent, action)
     end
 
     def on_mouse_exited(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseExitedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseExitedEvent, action)
     end
 
     def on_mouse_wheel(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::MouseWheelEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseWheelEvent, action)
     end
 
     def on_key_pressed(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::KeyPressedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::KeyPressedEvent, action)
     end
 
     def on_key_released(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::KeyReleasedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::KeyReleasedEvent, action)
     end
 
     def on_char_typed(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::CharTypedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::CharTypedEvent, action)
     end
 
     def on_focus_gained(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::FocusGainedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::FocusGainedEvent, action)
     end
 
     def on_focus_lost(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::FocusLostEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::FocusLostEvent, action)
     end
 
     def on_button_pushed(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::ButtonPushedEvent, action)
+      @peer.event_handler.add(Limelight::UI::PanelEvents::ButtonPushedEvent, action)
     end
 
     def on_value_changed(& action)
-      @panel.event_handler.add(Limelight::UI::PanelEvents::ValueChangedEvent, action)
-    end
-
-    def apply_options(options)
-      options = Util::Hashes.select(options)
-      options.keys.each do |key|
-        setter_sym = "#{key.to_s}=".to_sym
-        if self.respond_to?(setter_sym)
-          self.send(setter_sym, options.delete(key))
-        elsif self.style.respond_to?(setter_sym)
-          self.style.send(setter_sym, options.delete(key).to_s)
-        elsif is_event_setter(key)
-          define_event(key, options.delete(key))
-        end
-      end
-    end
-    alias :applyOptions :apply_options
-
-    private ###############################################
-
-    def is_event_setter(symbol)
-      string_value = symbol.to_s
-      return string_value[0..2] == "on_" && self.respond_to?(symbol)
-    end
-
-    def define_event(symbol, value)
-      self.send(symbol) { eval(value) };
+      @peer.event_handler.add(Limelight::UI::PanelEvents::ValueChangedEvent, action)
     end
 
   end

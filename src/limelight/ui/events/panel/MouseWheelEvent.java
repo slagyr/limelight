@@ -1,7 +1,5 @@
 package limelight.ui.events.panel;
 
-import limelight.ui.Panel;
-
 import java.awt.*;
 
 public class MouseWheelEvent extends MouseEvent
@@ -13,9 +11,9 @@ public class MouseWheelEvent extends MouseEvent
   private int scrollAmount;
   private int wheelRotation;
 
-  public MouseWheelEvent(Panel source, int modifiers, Point location, int clickCount, int scrollType, int scrollAmount, int wheelRotation)
+  public MouseWheelEvent(int modifiers, Point location, int clickCount, int scrollType, int scrollAmount, int wheelRotation)
   {
-    super(source, modifiers, location, clickCount);
+    super(modifiers, location, clickCount);
     this.scrollType = scrollType;
     this.scrollAmount = scrollAmount;
     this.wheelRotation = wheelRotation;

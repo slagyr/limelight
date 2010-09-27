@@ -22,12 +22,12 @@ public class ParentPanelTest
   private MockParentPanel child;
   private MockParentPanel grandChild;
   private MockPanel sibling;
-  private Scene root;
+  private ScenePanel root;
 
   @Before
   public void setUp() throws Exception
   {
-    root = new Scene(new MockPropProxy());
+    root = new ScenePanel(new MockPropProxy());
     root.setStage(new MockStage());
     panel = new TestableParentPanel();
     root.add(panel);
@@ -35,7 +35,7 @@ public class ParentPanelTest
 
   private void createFamilyTree()
   {
-    root = new Scene(new MockPropProxy());
+    root = new ScenePanel(new MockPropProxy());
     parent = new MockParentPanel();
     root.add(parent);
     child = new MockParentPanel();
@@ -243,7 +243,7 @@ public class ParentPanelTest
   void addPropPanel()
   {
     MockPropProxy prop = new MockPropProxy();
-    Prop propPanel = new Prop(prop);
+    PropPanel propPanel = new PropPanel(prop);
     propPanel.add(panel);
   }
 
@@ -455,7 +455,7 @@ public class ParentPanelTest
     child.resetLayout();
     grandChild.resetLayout();
 
-    Prop newPanel = new Prop(new MockPropProxy());
+    PropPanel newPanel = new PropPanel(new MockPropProxy());
     grandChild.add(newPanel);
 
     assertEquals(true, grandChild.needsLayout());

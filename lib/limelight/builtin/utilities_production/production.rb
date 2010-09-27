@@ -15,10 +15,6 @@ module Production #:nodoc:
     return false
   end
 
-  def default_scene
-    nil
-  end
-
   def process_incompatible_version_response(response)
     @incompatible_version_response = response
     @monitor.synchronize { @incompatible_version_monitor.signal }

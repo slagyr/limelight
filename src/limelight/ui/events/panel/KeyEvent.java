@@ -202,9 +202,9 @@ public class KeyEvent extends ModifiableEvent
   private int keyCode;
   private int keyLocation;
 
-  public KeyEvent(Panel panel, int modifiers, int keyCode, int keyLocation)
+  public KeyEvent(int modifiers, int keyCode, int keyLocation)
   {
-    super(panel, modifiers);
+    super(modifiers);
     this.keyCode = keyCode;
     this.keyLocation = keyLocation;
   }

@@ -83,7 +83,7 @@ module Limelight
       # Specifies the scene that will be displayed on the stage upon opening of the production.
       #
       def default_scene(scene_name)
-        @__stage__.default_scene = scene_name
+        @__stage__.default_scene_name = scene_name
       end
 
       def method_missing(sym, *values)  #:nodoc:     

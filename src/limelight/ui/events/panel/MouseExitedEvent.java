@@ -8,7 +8,7 @@ public class MouseExitedEvent extends MouseEvent
 {
   public MouseExitedEvent(Panel source, int modifiers, Point location, int clickCount)
   {
-    super(source, modifiers, location, clickCount);
+    super(modifiers, location, clickCount);
   }
 
   @Override

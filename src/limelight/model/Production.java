@@ -15,6 +15,7 @@ public abstract class Production
   private ResourceLoader resourceLoader;
   private ProductionProxy proxy;
   private CastingDirector castingDirector;
+  private Theater theater;
 
   public Production(String path)
   {
@@ -26,6 +27,7 @@ public abstract class Production
     {
     }
     resourceLoader = ResourceLoader.forRoot(path);
+    theater = new Theater(this);
   }
 
   public abstract void open();
@@ -64,8 +66,9 @@ public abstract class Production
   public void setProxy(ProductionProxy proxy)
   {
     this.proxy = proxy;
+    castingDirector = proxy.getCastingDirector();    
+    theater.setProxy(proxy.getTheater());
   }
-
 
   public CastingDirector getCastingDirector()
   {
@@ -75,5 +78,21 @@ public abstract class Production
   public void setCastingDirector(CastingDirector director)
   {
     castingDirector = director;
+  }
+
+  public void attemptClose()
+  {
+    if(allowClose())
+      close();
+  }
+
+  public Theater getTheater()
+  {
+    return theater;
+  }
+
+  public void setTheater(Theater theater)
+  {
+    this.theater = theater;
   }
 }

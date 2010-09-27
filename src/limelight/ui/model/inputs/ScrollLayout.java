@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.model.Layout;
-import limelight.ui.model.Prop;
+import limelight.ui.model.PropPanel;
 import limelight.ui.model.PropPanelLayout;
 import limelight.ui.Panel;
 import limelight.styles.Style;
@@ -23,7 +23,7 @@ public class ScrollLayout extends PropPanelLayout
 
   public void doLayout(Panel aPanel)
   {
-    Prop panel = (Prop) aPanel;
+    PropPanel panel = (PropPanel) aPanel;
     panel.resetLayout();
     int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
     int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
@@ -37,7 +37,7 @@ public class ScrollLayout extends PropPanelLayout
     panel.wasLaidOut();
   }
 
-  public void layoutRows(Prop panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)
+  public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)
   {
     Style style = panel.getStyle();
     int y = style.getCompiledVerticalAlignment().getY(consumeDimension.height, panel.getChildConsumableBounds());

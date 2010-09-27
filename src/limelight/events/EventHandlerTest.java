@@ -31,4 +31,26 @@ public class EventHandlerTest
 
     assertEquals(true, action.invoked);
   }
+
+  @Test
+  public void removingTheLastAction() throws Exception
+  {
+    handler.add(SimpleEvent.class, action);
+    handler.remove(SimpleEvent.class, action);
+
+    assertEquals(0, handler.getActions(SimpleEvent.class).size());
+  }
+  
+  @Test
+  public void dispatchingEmptyEvent() throws Exception
+  {
+    handler.dispatch(new SimpleEvent());
+
+    handler.add(SimpleEvent.class, action);
+    handler.remove(SimpleEvent.class, action);
+
+    handler.dispatch(new SimpleEvent());
+    assertEquals(false, action.invoked);
+  }
+
 }

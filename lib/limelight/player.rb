@@ -30,7 +30,7 @@ module Limelight
       @__event_cache.each do |event, actions|
         if actions && event != :on_cast
           actions.each do |action|
-            prop.panel.event_handler.add(event, Proc.new { |e| prop.instance_exec(e, & action) })
+            prop.peer.event_handler.add(event, Proc.new { |e| prop.instance_exec(e, & action) })
           end
         end
       end

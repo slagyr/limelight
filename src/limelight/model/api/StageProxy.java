@@ -3,6 +3,9 @@
 
 package limelight.model.api;
 
+import java.util.Map;
+
 public interface StageProxy
 {
+  void applyOptions(Map<String, Object> options);
 }

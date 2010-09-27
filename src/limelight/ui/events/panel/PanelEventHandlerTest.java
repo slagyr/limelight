@@ -32,7 +32,7 @@ public class PanelEventHandlerTest
   {
     parent.getEventHandler().add(MousePressedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new MousePressedEvent(panel, 0, new Point(0, 0), 0));
+    panel.getEventHandler().dispatch(new MousePressedEvent(0, new Point(0, 0), 0));
 
     assertEquals(true, action.invoked);
     assertEquals(parent, action.recipient);
@@ -43,7 +43,7 @@ public class PanelEventHandlerTest
   {
     parent.getEventHandler().add(KeyPressedEvent.class, action);
 
-    panel.getEventHandler().dispatch(new KeyPressedEvent(panel, 0, KeyEvent.KEY_ENTER, KeyEvent.LOCATION_LEFT));
+    panel.getEventHandler().dispatch(new KeyPressedEvent(0, KeyEvent.KEY_ENTER, KeyEvent.LOCATION_LEFT));
 
     assertEquals(false, action.invoked);
   }

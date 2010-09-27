@@ -51,7 +51,7 @@ module Limelight
       end
     end
 
-    attr_reader :theater, :production, :drb_service
+    attr_reader :production, :drb_service
     attr_writer :builtin_styles
 
     # A Production name, or root directory, must be provided. If not Theater is provided, one will be created.
@@ -66,8 +66,12 @@ module Limelight
         root_path = unpack_production(root_path)
       end
       @production = production || Production.new(root_path)
-      @theater = theater.nil? ? Theater.new(@production) : theater
+#      theater = theater.nil? ? Theater.new(@production) : theater
       establish_production
+    end
+
+    def theater
+      return @production.theater
     end
 
     # Returns true if the production's minimum_limelight_version is compatible with the current version.
@@ -107,12 +111,12 @@ module Limelight
       @production.production_opening
       load
       @production.production_loaded
-      if @theater.has_stages?
-        @theater.stages.each do |stage|
-          open_scene(stage.default_scene.to_s, stage) if stage.default_scene
+      if theater.has_stages?
+        theater.stages.each do |stage|
+          open_scene(stage.default_scene_name.to_s, stage) if stage.default_scene_name
         end
-      elsif @production.default_scene
-        open_scene(@production.default_scene, @theater.default_stage)
+#      elsif @production.default_scene
+#        open_scene(nil, theater.default_stage)
       end
       @casting_director = nil
       @production.production_opened
@@ -127,7 +131,8 @@ module Limelight
       options_merge = options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name)
       scene = load_props(options_merge)
       load_styles(scene.styles_file, scene.styles_store)
-      stage.open(scene)
+      stage.scene = scene
+      stage.open
       return scene
     end
 
@@ -136,7 +141,7 @@ module Limelight
     def load_stages
       stages_file = @production.stages_file
       content = IO.read(stages_file)
-      stages = Limelight.build_stages(@theater) do
+      stages = Limelight.build_stages(theater) do
         begin
           eval content
         rescue Exception => e
@@ -211,7 +216,7 @@ module Limelight
 
     def establish_production #:nodoc:
 #      @production.producer = self
-      @production.theater = @theater
+#      @production.theater = @theater
 
       production_file = @production.production_file
       if File.exists?(production_file)

@@ -18,7 +18,7 @@ public class MouseEnteredEventTest
   public void setUp() throws Exception
   {
     panel = new MockPanel();
-    event = new MouseEnteredEvent(panel, 0, new Point(0, 0), 0);
+    event = new MouseEnteredEvent(0, new Point(0, 0), 0);
   }
   
   @Test

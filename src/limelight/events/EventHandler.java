@@ -1,7 +1,6 @@
 package limelight.events;
 
 import limelight.ui.EventActionMulticaster;
-import limelight.ui.events.panel.PanelEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +41,15 @@ public class EventHandler
       dispatcher.action = EventActionMulticaster.add(dispatcher.action, action);
   }
 
-  public void remove(Class<? extends PanelEvent> eventClass, EventAction action)
+  public synchronized void remove(Class<? extends Event> eventClass, EventAction action)
   {
     final EventDispatcher dispatcher = get(eventClass);
     if(dispatcher != null)
+    {
       dispatcher.action = EventActionMulticaster.remove(dispatcher.action, action);
+      if(dispatcher.action == null)
+        dispatchers.remove(dispatcher);
+    }
   }
 
   private EventDispatcher get(Class<? extends Event> eventClass)
@@ -62,7 +65,7 @@ public class EventHandler
     return null;
   }
 
-  public List<EventAction> getActions(Class<? extends PanelEvent> eventClass)
+  public List<EventAction> getActions(Class<? extends Event> eventClass)
   {
     final EventDispatcher dispatcher = get(eventClass);
     if(dispatcher != null)

@@ -10,7 +10,7 @@ public class ButtonPushedEventTest
   @Test
   public void isNotInheritable() throws Exception
   {
-    final ButtonPushedEvent event = new ButtonPushedEvent(new MockPanel());
+    final ButtonPushedEvent event = new ButtonPushedEvent();
     assertEquals(false, event.isInheritable());
   }
 }

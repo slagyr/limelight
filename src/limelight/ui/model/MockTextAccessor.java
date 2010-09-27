@@ -5,7 +5,7 @@ public class MockTextAccessor implements TextAccessor
   public boolean markAsDirtyCalled;
   public boolean markAsNeedingLayoutCalled;
 
-  public void setText(String text, PropablePanel panel)
+  public void setText(String text, Prop panel)
   {
   }
 

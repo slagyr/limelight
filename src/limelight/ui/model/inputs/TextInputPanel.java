@@ -41,7 +41,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
 
   protected void markCursorRegionAsDirty()
   {
-    RootPanel rootPanel = getRoot();
+    Scene rootPanel = getRoot();
     if(rootPanel != null)
     {
       Box caret = model.getCaretShape().translated(getAbsoluteLocation());
@@ -58,7 +58,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   }
 
   @Override
-  protected Painter getPropPainter(Prop prop)
+  protected Painter getPropPainter(PropPanel prop)
   {
     return TextInputPropPainter.instance;
   }

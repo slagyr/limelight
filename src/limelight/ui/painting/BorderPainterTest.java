@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import limelight.styles.Style;
 import limelight.ui.MockGraphics;
 import limelight.ui.Painter;
-import limelight.ui.model.MockPropablePanel;
+import limelight.ui.model.MockProp;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.awt.geom.Line2D;
 
 public class BorderPainterTest extends TestCase
 {
-  private MockPropablePanel panel;
+  private MockProp panel;
   private Style style;
   private Painter painter;
   private Box border;
@@ -24,7 +24,7 @@ public class BorderPainterTest extends TestCase
 
   public void setUp() throws Exception
   {
-    panel = new MockPropablePanel();
+    panel = new MockProp();
     style = panel.getStyle();
     border = new Box(5, 5, 100, 100);
     panel.boxInsideMargins = border;

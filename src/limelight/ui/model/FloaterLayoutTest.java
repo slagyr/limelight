@@ -11,14 +11,14 @@ import limelight.model.api.MockPropProxy;
 
 public class FloaterLayoutTest extends TestCase
 {
-  private Prop panel;
-  private Scene root;
+  private PropPanel panel;
+  private ScenePanel root;
 
   public void setUp() throws Exception
   {
-    root = new Scene(new MockPropProxy());
+    root = new ScenePanel(new MockPropProxy());
     root.setStage(new MockStage());
-    panel = new Prop(new MockPropProxy());
+    panel = new PropPanel(new MockPropProxy());
     root.add(panel);
   }
 

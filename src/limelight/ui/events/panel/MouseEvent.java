@@ -14,9 +14,9 @@ public abstract class MouseEvent extends ModifiableEvent
   private Point location;
   private int clickCount;
 
-  public MouseEvent(Panel source, int modifiers, Point location, int clickCount)
+  public MouseEvent(int modifiers, Point location, int clickCount)
   {
-    super(source, modifiers);
+    super(modifiers);
     this.absoluteLocation = location;
     this.clickCount = clickCount;
   }

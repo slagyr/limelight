@@ -90,8 +90,8 @@ end
 def find_bounds
   @min_x = width/2
   @min_y = width/2
-  parent_width = parent.panel.width
-  parent_height = parent.panel.height
+  parent_width = parent.peer.width
+  parent_height = parent.peer.height
   @max_x = parent_width - width/2
   @max_y = parent_height - width/2
 end

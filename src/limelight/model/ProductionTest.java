@@ -1,14 +1,12 @@
 package limelight.model;
 
-import limelight.model.api.CastingDirector;
-import limelight.model.api.MockCastingDirector;
-import limelight.model.api.MockProductionProxy;
-import limelight.model.api.ProductionProxy;
+import limelight.model.api.*;
 import limelight.util.ResourceLoader;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
 
 public class ProductionTest
 {
@@ -89,5 +87,19 @@ public class ProductionTest
     production.setCastingDirector(director);
 
     assertEquals(director, production.getCastingDirector());
+  }
+  
+  @Test
+  public void settingProxySetsAllProxies() throws Exception
+  {
+    MockProductionProxy proxy = new MockProductionProxy();
+    proxy.castingDirector = new MockCastingDirector();
+    proxy.theater = new MockTheaterProxy();
+
+    production.setProxy(proxy);
+
+    assertSame(proxy, production.getProxy());
+    assertSame(proxy.castingDirector, production.getCastingDirector());
+    assertSame(proxy.theater, production.getTheater().getProxy());
   }
 }

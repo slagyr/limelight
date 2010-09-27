@@ -20,12 +20,12 @@ public class PanelBaseTest extends Assert
   private MockParentPanel child;
   private MockPanel grandChild;
   private MockPanel sibling;
-  private Scene root;
+  private ScenePanel root;
 
   @Before
   public void setUp() throws Exception
   {
-    root = new Scene(new MockPropProxy());
+    root = new ScenePanel(new MockPropProxy());
     root.setStage(new MockStage());
     panel = new TestablePanelBase();
     root.add(panel);
@@ -83,7 +83,7 @@ public class PanelBaseTest extends Assert
 
   private void createFamilyTree()
   {
-    root = new Scene(new MockPropProxy());
+    root = new ScenePanel(new MockPropProxy());
     parent = new MockParentPanel();
     root.add(parent);
     child = new MockParentPanel();

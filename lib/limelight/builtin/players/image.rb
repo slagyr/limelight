@@ -3,7 +3,7 @@
 
 on_cast do
   image_panel = Limelight::UI::Model::ImagePanel.new
-  panel.add(image_panel)
+  peer.add(image_panel)
   @image_panel = image_panel
 end
 

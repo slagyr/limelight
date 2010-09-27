@@ -129,7 +129,7 @@ public class ImagePanel extends PanelBase
     {
       try
       {
-        RootPanel rootPanel = getRoot();
+        Scene rootPanel = getRoot();
         if(rootPanel != null && imageFile != null)
         {
           ImageCache imageCache = rootPanel.getImageCache();

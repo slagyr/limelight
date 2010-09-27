@@ -7,11 +7,11 @@ import limelight.Context;
 import limelight.model.Stage;
 import limelight.styles.abstrstyling.*;
 import limelight.model.api.StageProxy;
-import limelight.ui.events.stage.StageClosingEvent;
 import limelight.ui.images.Images;
 import limelight.util.Colors;
 
 import java.awt.*;
+import java.util.Map;
 
 public class FramedStage extends Stage
 {
@@ -21,25 +21,34 @@ public class FramedStage extends Stage
   private static final StyleCompiler yCompiler = Context.instance().styleAttributeCompilerFactory.compiler("y-coordinate", "stage y-coordinate");
   private static final NoneableValue<DimensionValue> NONE = new NoneableValue<DimensionValue>(null);
 
-  private StageProxy stage;
   private DimensionValue widthStyle = (DimensionValue) widthCompiler.compile(500);
   private DimensionValue heightStyle = (DimensionValue) heightCompiler.compile(500);
   private XCoordinateValue xLocationStyle = (XCoordinateValue) xCompiler.compile("center");
   private YCoordinateValue yLocationStyle = (YCoordinateValue) yCompiler.compile("center");
   private boolean opened;
-  private boolean closing;
   private StageFrame frame;
-  
-  public FramedStage(StageProxy stage)
+
+  public FramedStage(String name)
   {
+    super(name);
     frame = new StageFrame(this);
+    frame.setTitle(name);
     addListeners();
-    
-    this.stage = stage;
 
     Context.instance().frameManager.watch(frame);
     frame.setBackground(Color.WHITE);
     frame.setIconImage(Images.load("icon_48.gif"));
+  }
+
+  public FramedStage(String name, StageProxy proxy)
+  {
+    this(name);
+    setProxy(proxy);
+  }
+
+  public void applyOptions(Map<String, Object> options)
+  {
+    getProxy().applyOptions(options);
   }
 
   public StageFrame getFrame()
@@ -47,28 +56,19 @@ public class FramedStage extends Stage
     return frame;
   }
 
-  public void open()
+  @Override
+  protected void doOpen()
   {
-    if(opened)
-      return;
-
     frame.addNotify(); // MDM - Force the loading of the native peer to calculate insets.
-
     applySizeStyles();
     collapseAutoDimensions();
     applyLocationStyles();
-
-    frame.setVisible(true);
-
     opened = true;
   }
 
-  public void close()
+  @Override
+  protected void doClose()
   {
-    if(closing)
-      return;
-    closing = true;
-    new StageClosingEvent().dispatch(this);
     frame.setVisible(false);
     frame.exitKioskOrFullscreenIfNeeded();
     clearListeners();
@@ -128,22 +128,17 @@ public class FramedStage extends Stage
   }
 
   @Override
-  public void setRoot(RootPanel child)
+  public void setScene(Scene newScene)
   {
-    if(root != null)
-      root.setStage(null);
+    if(scene != null)
+      scene.setStage(null);
 
     mouseListener.reset();
-    keyListener.reset(child);
+    keyListener.reset(newScene);
 
-    setCursor(child.getStyle().getCompiledCursor().getCursor());
-    root = child;
-    root.setStage(this);
-  }
-
-  public StageProxy getStage()
-  {
-    return stage;
+    setCursor(newScene.getStyle().getCompiledCursor().getCursor());
+    scene = newScene;
+    scene.setStage(this);
   }
 
   public void setFullScreen(boolean setting)
@@ -206,7 +201,31 @@ public class FramedStage extends Stage
     return frame.getInsets();
   }
 
-  public void setVisible(boolean visible)
+  @Override
+  public void setFramed(boolean framed)
+  {
+    frame.setUndecorated(!framed);
+  }
+
+  @Override
+  public boolean isFramed()
+  {
+    return !frame.isUndecorated();
+  }
+
+  @Override
+  public void setAlwaysOnTop(boolean value)
+  {
+    frame.setAlwaysOnTop(value);
+  }
+
+  @Override
+  public boolean isAlwaysOnTop()
+  {
+    return frame.isAlwaysOnTop();
+  }
+
+  protected void setVisible(boolean visible)
   {
     frame.setVisible(visible);
   }
@@ -231,15 +250,7 @@ public class FramedStage extends Stage
     return frame.getTitle();
   }
 
-  // Protected ////////////////////////////////////////////
-
-  protected void setStage(StageProxy stage)
-  {
-    this.stage = stage;
-  }
-
   // Private //////////////////////////////////////////////
-
 
   private void applySizeStyles()
   {
@@ -263,11 +274,11 @@ public class FramedStage extends Stage
 
   private void collapseAutoDimensions()
   {
-    if(root == null)
+    if(scene == null)
       return;
 
     frame.superDoLayout();
-    root.doLayout();
+    scene.doLayout();
 
     Insets insets = frame.getInsets();
     int widthInsets = insets.left + insets.right;
@@ -275,9 +286,9 @@ public class FramedStage extends Stage
 
     Dimension size = frame.getSize();
     if(widthStyle.isAuto())
-      size.width = widthStyle.collapseExcess(size.width + widthInsets, root.getWidth() + widthInsets, NONE, NONE);
+      size.width = widthStyle.collapseExcess(size.width + widthInsets, scene.getWidth() + widthInsets, NONE, NONE);
     if(heightStyle.isAuto())
-      size.height = heightStyle.collapseExcess(size.height + heightInsets, root.getHeight() + heightInsets, NONE, NONE);
+      size.height = heightStyle.collapseExcess(size.height + heightInsets, scene.getHeight() + heightInsets, NONE, NONE);
 
     frame.setSize(size);
   }

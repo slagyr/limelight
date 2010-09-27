@@ -5,7 +5,7 @@ import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.CharTypedEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
-import limelight.ui.model.Prop;
+import limelight.ui.model.PropPanel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +45,7 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    new MouseClickedEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseClickedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(true, action.invoked);
   }
@@ -55,7 +55,7 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    new MouseClickedEvent(panel, 0, null, 0).consumed().dispatch(panel);
+    new MouseClickedEvent(0, null, 0).consumed().dispatch(panel);
 
     assertEquals(false, action.invoked);
   }
@@ -63,11 +63,11 @@ public class AbstractButtonPanelTest
   @Test
   public void aButtonParentWillAlsoGetThePushEvent() throws Exception
   {
-    Prop parent = new Prop(new MockPropProxy());
+    PropPanel parent = new PropPanel(new MockPropProxy());
     parent.add(panel);
     parent.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    new MouseClickedEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseClickedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(true, action.invoked);
     assertEquals(parent, action.recipient);
@@ -78,7 +78,7 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    new CharTypedEvent(panel, 0, ' ').dispatch(panel);
+    new CharTypedEvent(0, ' ').dispatch(panel);
 
     assertEquals(true, action.invoked);
   }
@@ -88,7 +88,7 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    new CharTypedEvent(panel, 0, ' ').consumed().dispatch(panel);
+    new CharTypedEvent(0, ' ').consumed().dispatch(panel);
 
     assertEquals(false, action.invoked);
   }
@@ -98,7 +98,7 @@ public class AbstractButtonPanelTest
   {
     panel.getEventHandler().add(ButtonPushedEvent.class, action);
 
-    new CharTypedEvent(panel, 0, 'a').dispatch(panel);
+    new CharTypedEvent(0, 'a').dispatch(panel);
 
     assertEquals(false, action.invoked);
   }

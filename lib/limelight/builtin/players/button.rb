@@ -3,5 +3,5 @@
 
 on_cast do
   button = Limelight::UI::Model::Inputs::ButtonPanel.new
-  panel.add(button)
+  peer.add(button)
 end

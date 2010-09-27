@@ -4,7 +4,7 @@
 package limelight.background;
 
 import limelight.ui.Panel;
-import limelight.ui.model.RootPanel;
+import limelight.ui.model.Scene;
 import limelight.ui.model.PaintJob;
 import limelight.ui.model.StageFrame;
 import limelight.util.Box;
@@ -64,7 +64,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     boolean somethingToDo = false;
     for(StageFrame stageFrame : frameBuffer)
     {
-      RootPanel root = stageFrame.getStage().getRoot();
+      Scene root = stageFrame.getStage().getScene();
       if(root != null && (root.hasPanelsNeedingLayout() || root.hasDirtyRegions()))
       {
         somethingToDo = true;
@@ -78,7 +78,7 @@ public class PanelPainterLoop extends IdleThreadLoop
   {
     for(StageFrame stageFrame : frameBuffer)
     {
-      RootPanel root = stageFrame.getStage().getRoot();
+      Scene root = stageFrame.getStage().getScene();
       if(root != null)
       {
         doAllLayouts(root);
@@ -93,16 +93,16 @@ public class PanelPainterLoop extends IdleThreadLoop
     timer.sleep(optimalDelayTimeNanos - lastExecutionDuration);
   }
 
-  public RootPanel getActiveRoot()
+  public Scene getActiveRoot()
   {
     StageFrame frame = Context.getActiveFrame();
     if(frame != null)
-      return frame.getStage().getRoot();
+      return frame.getStage().getScene();
     else
       return null;
   }
 
-  public void paintDirtyRegions(RootPanel root)
+  public void paintDirtyRegions(Scene root)
   {
     regionBuffer.clear();
     root.getAndClearDirtyRegions(regionBuffer);
@@ -126,7 +126,7 @@ public class PanelPainterLoop extends IdleThreadLoop
     job.dispose();
   }
 
-  public void doAllLayouts(RootPanel root)
+  public void doAllLayouts(Scene root)
   {
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);

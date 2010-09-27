@@ -3,7 +3,7 @@
 
 on_cast do
   radio_button = Limelight::UI::Model::Inputs::RadioButtonPanel.new
-  panel.add(radio_button)
+  peer.add(radio_button)
   @radio_button = radio_button
 end
 

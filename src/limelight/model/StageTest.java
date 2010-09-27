@@ -3,9 +3,10 @@ package limelight.model;
 import limelight.Context;
 import limelight.model.api.MockPropProxy;
 import limelight.model.api.MockStageProxy;
-import limelight.ui.model.FramedStage;
-import limelight.ui.model.InertFrameManager;
-import limelight.ui.model.Scene;
+import limelight.ui.events.panel.SceneOpenedEvent;
+import limelight.ui.events.stage.StageClosingEvent;
+import limelight.ui.model.*;
+import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,14 +14,14 @@ import static junit.framework.Assert.assertEquals;
 
 public class StageTest
 {
-  private FramedStage stage;
+  private Stage stage;
 
   @Before
   public void setUp() throws Exception
   {
     Context.instance().frameManager = new InertFrameManager();
     Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager();
-    stage = new FramedStage(new MockStageProxy());
+    stage = new TestableStage("default", new MockStageProxy());
   }
 
   @Test
@@ -38,12 +39,112 @@ public class StageTest
   {
     assertEquals(true, stage.shouldAllowClose());
 
-    Scene scene = new Scene(new MockPropProxy());
-    stage.setRoot(scene);
+    ScenePanel scene = new ScenePanel(new MockPropProxy());
+    stage.setScene(scene);
     scene.setShouldAllowClose(true);
     assertEquals(true, stage.shouldAllowClose());
 
     scene.setShouldAllowClose(false);
     assertEquals(false, stage.shouldAllowClose());
+  }
+  
+  @Test
+  public void defaultSceneName() throws Exception
+  {
+    assertEquals(null, stage.getDefaultSceneName());
+
+    stage.setDefaultSceneName("blah");
+
+    assertEquals("blah", stage.getDefaultSceneName());
+  }
+
+  @Test
+  public void shouldRemainHidden() throws Exception
+  {
+    assertEquals(false, stage.shouldRemainHidden());
+    stage.setShouldRemainHidden(true);
+    assertEquals(true, stage.shouldRemainHidden());
+
+    stage.open();
+    assertEquals(false, stage.isVisible());
+
+    stage.hide();
+    stage.show();
+    assertEquals(false, stage.isVisible());
+  }
+  
+  @Test
+  public void shouldNotRemainHidden() throws Exception
+  {
+    stage.setShouldRemainHidden(false);
+
+    stage.open();
+
+    assertEquals(true, stage.isVisible());
+  }
+  
+  @Test
+  public void closing() throws Exception
+  {
+    MockEventAction action = new MockEventAction();
+    stage.getEventHandler().add(StageClosingEvent.class, action);
+
+    stage.close();
+
+    assertEquals(true, action.invoked);
+    assertEquals(false, stage.isVisible());
+    assertEquals(false, stage.isOpen());
+  }
+
+  @Test
+  public void settingTheScene() throws Exception
+  {
+    MockScene scene = new MockScene();
+
+    stage.setScene(scene);
+
+    assertEquals(stage, scene.getStage());
+  }
+
+  @Test
+  public void whatHappensToPreviousSceneWhenSettingTheScene() throws Exception
+  {
+    MockScene originalScene = new MockScene();
+    stage.setScene(originalScene);
+
+    MockScene newScene = new MockScene();
+    stage.setScene(newScene);
+
+    assertEquals(null, originalScene.getStage());
+  }
+
+  @Test
+  public void settingTheSceneOnAnOpenedStage() throws Exception
+  {
+    stage.open();
+    MockScene scene = new MockScene();
+    MockEventAction action = new MockEventAction();
+    scene.getEventHandler().add(SceneOpenedEvent.class, action);
+
+    stage.setScene(scene);
+
+    assertEquals(stage, scene.getStage());
+    assertEquals(true, action.invoked);
+  }
+  
+  @Test
+  public void openingAStageWithAScene() throws Exception
+  {
+    MockScene scene = new MockScene();
+    MockEventAction action = new MockEventAction();
+    scene.getEventHandler().add(SceneOpenedEvent.class, action);
+
+    stage.setScene(scene);
+
+    assertEquals(false, action.invoked);
+
+    stage.open();
+
+    assertEquals(true, action.invoked);
   }
 }

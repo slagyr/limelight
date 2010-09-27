@@ -30,7 +30,7 @@ public class StageFrame extends Frame
   @Override
   public void doLayout()
   {
-    final RootPanel root = stage.getRoot();
+    final Scene root = stage.getScene();
     if(root != null && isWindowResizing())
       root.doLayout();
     else
@@ -47,7 +47,7 @@ public class StageFrame extends Frame
   @Override
   public void paint(Graphics g)
   {
-    final RootPanel root = stage.getRoot();
+    final Scene root = stage.getScene();
     if(root != null)
     {
       if(isWindowResizing() && Context.instance().bufferedImagePool != null) // MDM - Check the bufferedImagePool because errors get printed during test runs.
@@ -159,7 +159,7 @@ public class StageFrame extends Frame
 
   public void refresh()
   {
-    final RootPanel root = stage.getRoot();
+    final Scene root = stage.getScene();
     if(root != null)
     {
       if(previousSize == null || !previousSize.equals(getSize()))
