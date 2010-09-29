@@ -16,51 +16,60 @@ module Limelight
   #
   class Production
 
-    attr_reader :producer
-    attr_reader :production
+    include Java::limelight.ruby.RubyProductionProxy
+
+#    attr_reader :producer
+    attr_reader :peer
     attr_accessor :theater
-    attr_accessor :closed #:nodoc:
+
+    alias :getTheater :theater
+    alias :getPeer :peer
 
     # Users typically need not create Production objects.
     #
     def initialize(production)
-      @production = production
-      @casting_director = CastingDirector.new(@production.resource_loader)
-      @theater = Theater.new(self, @production.theater)
+      @peer = production
+      @casting_director = CastingDirector.new(@peer.resource_loader)
+      @theater = Theater.new(self, @peer.theater)
+#      @producer = Producer.new(path, nil, self)
 
-      @production.proxy = self
+      @peer.proxy = self
     end
+    
+#    alias :getProducer :producer
+#
+#    def open()
+#      @producer.open
+#    end
 
-    alias :getTheater :theater
-
-    def open()
-      @producer = Producer.new(path, nil, self)
-      @producer.open
+    # returns true if the production has been opened, and not yet closed.
+    #
+    def open?
+      return @peer.open?
     end
 
     # Returns the name of the Production
     #
     def name
-      return @production.name
+      return @peer.name
     end
 
     # Sets the name of the Production.  The name must be unique amongst all Productions in memory.
     #
     def name=(value)
-      Context.instance.studio.error_if_duplicate_name(value)
-      @name = value
+      @peer.name = value
     end
 
     # Returns the resource loader for the Production
     #
     def root
-      return @production.resource_loader
+      return @peer.resource_loader
     end
 
     # Return the path to the root directory of the production
     #
     def path
-      return @production.resource_loader.root
+      return @peer.resource_loader.root
     end
 
     # Returns the path to the production's init file
@@ -106,63 +115,19 @@ module Limelight
       return root.path_to(name)
     end
 
-    # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"
-    # If the version of limelight used to open this production is less than the minimum,
-    # an error will be displayed (starting with version 0.4.0).
-    #
-    def minimum_limelight_version
-      return "0.0.0"
-    end
-
     # Returns true if the production allows itself to be closed.  The system will call this methods when
     # it wishes to close the production, perhaps when the user quits the application.  By default the production
     # will always return true.
     #
     def allow_close?
-      return true
-    end
-
-    # Called when the production is about to be opened.  The default implementation does nothing but you may re-implement
-    # it in the production.rb file.
-    #
-    def production_opening
-    end
-
-    # Called when the production has been loaded.  That is, when all the gems have been loaded stages have been
-    # instantiated.
-    #
-    def production_loaded
-    end
-
-    # Called when the production is fully opened.  The default implementation does nothing but you may re-implement
-    # it in the production.rb file.
-    #
-    def production_opened
-    end
-
-    # Called when the production is about to be closed.  The default implementation does nothing but you may re-implement
-    # it in the production.rb file.
-    #
-    def production_closing
-    end
-
-    # Called when the production is fully closed.  The default implementation does nothing but you may re-implement
-    # it in the production.rb file.
-    #
-    def production_closed
-    end
-
-    # returns true if the production has been closed.
-    #
-    def closed?
-      return @closed
+      return @peer.allow_close?
     end
 
     # Closes the production. If there are no more productions open, the Limelight runtime will shutdown.
     # The production will actually delegate to it's producer and the producer will close the production down.
     #
     def close
-      @producer.close
+      @peer.close
     end
 
     # Publish this production using DRb on the specified port.  The production will delegate to its producer to
@@ -170,13 +135,6 @@ module Limelight
     #
     def publish_on_drb(port)
       @producer.publish_production_on_drb(port)
-    end
-
-    # Called when the last stage in this production's theater is closed.  If the allow_close? returns true
-    # this production will be closed.
-    #
-    def theater_empty!
-      close if allow_close? && !closed?
     end
 
     # A production with multiple Scenes may have a 'styles.rb' file in the root directory.  This is called the
@@ -196,17 +154,76 @@ module Limelight
     def casting_director
       return @casting_director
     end
-    alias :getCastingDirector :casting_director
 
-    alias :getName :name #:nodoc:
-    alias :setName :name= #:nodoc:
-    alias :allowClose :allow_close? #:nodoc: 
+    alias :getCastingDirector :casting_director
 
     def callMethod(name, java_obj_array) #:nodoc:
       args = []
       java_obj_array.length.times { |i| args << java_obj_array[i] }
-      send(name.to_sym, *args)
+      send(name.to_sym, * args)
     end
+
+    def open_scene(scene_path, stage, options={})
+      @peer.open_scene(scene_path, stage.peer, Util::Hashes.for_java(options))
+    end
+
+    def illuminate
+      return unless File.exists?(production_file)
+      content = IO.read(production_file)
+      self.instance_eval(content, production_file)
+    end
+
+    def load_libraries
+      # use bundler here
+    end
+
+    alias :loadLibraries :load_libraries
+
+    def load_stages
+      return unless File.exists?(stages_file)
+      content = IO.read(stages_file)
+      Limelight.build_stages(theater) do
+        begin
+          eval content
+        rescue Exception => e
+          raise DSL::BuildException.new(stages_file, content, e)
+        end
+      end
+    end
+
+    alias :loadStages :load_stages
+
+    def load_scene(scene_path, options={})
+      options = Util::Hashes.for_ruby(options)
+      instance_variables = options.delete(:instance_variables)
+      full_scene_path = scene_directory(scene_path)
+      scene = Scene.new(options.merge(:path => full_scene_path, :name => File.basename(full_scene_path)))
+      scene.production = self
+      if File.exists?(scene.props_file)
+        content = IO.read(scene.props_file)
+        options[:build_loader] = self.root
+        Limelight.build_props(scene, options.merge(:instance_variables => instance_variables)) do
+          begin
+            eval content
+          rescue Exception => e
+            raise DSL::BuildException.new(scene.props_file, content, e)
+          end
+        end
+      end
+      return scene
+    end
+
+    alias :loadScene :load_scene
+
+    def load_styles(scene)
+      builtin_styles = Util::Hashes.for_ruby(BuiltIn::Styles.all)
+      extendable_styles = builtin_styles.merge(root_styles)      
+      scene.styles_store.merge!(extendable_styles)
+      return if not File.exists?(scene.styles_file)
+      Limelight.build_styles_from_file(scene.styles_file, :styles => scene.styles_store, :extendable_styles => extendable_styles)
+    end
+
+    alias :loadStyles :load_styles
 
   end
 

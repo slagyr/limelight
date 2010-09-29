@@ -17,6 +17,4 @@ public interface PaintablePanel extends Panel
   Box getBorderedBounds();
 
   Box getMarginedBounds();
-
-  PropProxy getProp();
 }

@@ -53,7 +53,7 @@ public class Debug
     if(panel instanceof PropPanel)
     {
       PropPanel prop = (PropPanel) panel;
-      PropProxy propProxy = prop.getProp();
+      PropProxy propProxy = prop.getProxy();
       if(propProxy != null && "sandbox".equals(prop.getName()))
         System.err.println(message);
     }

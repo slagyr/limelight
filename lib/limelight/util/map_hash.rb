@@ -6,6 +6,7 @@ module Limelight
       include Enumerable
 
       attr_accessor :default
+      attr_reader :map
 
       def initialize(map)
         @map = map

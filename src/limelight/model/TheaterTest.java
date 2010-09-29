@@ -163,6 +163,7 @@ public class TheaterTest
 
     assertEquals(0, theater.getStages().size());
     assertEquals(null, theater.getActiveStage());
+    assertEquals(false, theater.isOpen());
   }
 
   @Test

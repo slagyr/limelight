@@ -11,6 +11,7 @@ public class MockStudio extends Studio
   public String openedProduction;
   public boolean allowShutdown;
   public boolean isShutdown;
+  public boolean shouldProceedWithIncompatibleVersion;
 
   public Production open(String production)
   {
@@ -35,5 +36,11 @@ public class MockStudio extends Studio
 
   public void production_closed(Object production)
   {
+  }
+
+  @Override
+  public boolean canProceedWithIncompatibleVersion(String name, String minimumLimelightVersion)
+  {
+    return shouldProceedWithIncompatibleVersion;
   }
 }

@@ -118,18 +118,15 @@ module Limelight
 #      elsif @production.default_scene
 #        open_scene(nil, theater.default_stage)
       end
-      @casting_director = nil
       @production.production_opened
     end
 
     # Opens the specified Scene onto the Spcified Stage.
     #
     def open_scene(name, stage, options={})
-      options = Util::Hashes.select(options)
+      options = Util::Hashes.for_ruby(options)
       path = @production.scene_directory(name)
-      scene_name = File.basename(path)
-      options_merge = options.merge(:production => @production, :casting_director => casting_director, :path => path, :name => scene_name)
-      scene = load_props(options_merge)
+      scene = load_props(options.merge(:production => @production, :path => path, :name => File.basename(path)))
       load_styles(scene.styles_file, scene.styles_store)
       stage.scene = scene
       stage.open
@@ -181,9 +178,9 @@ module Limelight
       Limelight.build_styles_from_file(styles_file, :styles => styles, :extendable_styles => extendable_styles)
     end
 
-    # Closes the specified production.  The producer will trigger the hook, production_closing and production_closed,
+    # Closes the specified production.  The producer will trigger the hooks, production_closing and production_closed,
     # to keep the production aware of it's status.  The Studio will also be informed of the closure.  If no
-    # production remain opened, then the Limelight runtine will exit.
+    # productions remain opened, then the Limelight runtime will exit.
     #
     def close
       return if @production.closed?

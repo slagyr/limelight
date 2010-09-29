@@ -32,7 +32,7 @@ module Limelight
     end
 
     def production=(value)
-      @peer.production = value.production
+      @peer.production = value.peer
     end
 
     def production
@@ -47,7 +47,10 @@ module Limelight
     #
     def styles_store
       if @styles_store == nil
-        @styles_store = Util::Hashes.select(@peer.styles_store)
+        styles_store = @peer.styles_store
+        puts "styles_store: #{styles_store}"
+        @styles_store = Util::Hashes.for_ruby(styles_store)
+        puts "@styles_store: #{@styles_store}"
       end
       return @styles_store
     end
@@ -108,7 +111,7 @@ module Limelight
     # TODO It doesn't quite make sense that a scene loads other scene.  It has to replace itself?
     #
     def load(scene_name)
-      production.producer.open_scene(scene_name, stage)
+      production.open_scene(scene_name, stage)
     end
 #
 #    # Add the Prop to the index.  Provides fast lookup by id.
@@ -134,8 +137,8 @@ module Limelight
     #
     def find(id)
 #      return @prop_index[id.to_s]
-      find = @peer.find(id.to_s)
-      return find.nil? ? nil : find.prop
+      peer_result = @peer.find(id.to_s)
+      return peer_result.nil? ? nil : peer_result.proxy
     end
 
     def visible?
@@ -143,7 +146,7 @@ module Limelight
     end
         
 #    def illuminate(options={}) #:nodoc:
-#      options = Util::Hashes.select(options)
+#      options = Util::Hashes.for_ruby(options)
 ##      @styles = options.remove(:styles_hash) || @styles || {}
 #      @casting_director = options.delete(:casting_director) if options.key?(:casting_director)
 #      @production = options.delete(:production) if options.key?(:production)

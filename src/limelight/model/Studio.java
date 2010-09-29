@@ -4,6 +4,10 @@
 package limelight.model;
 
 import limelight.Context;
+import limelight.events.Event;
+import limelight.events.EventAction;
+import limelight.model.events.ProductionClosedEvent;
+import limelight.model.events.ProductionEvent;
 import limelight.ruby.RubyProduction;
 import limelight.model.api.UtilitiesProduction;
 import limelight.io.FileUtil;
@@ -75,7 +79,7 @@ e.printStackTrace();
     isShuttingDown = true;
 
     for(Production production: index)
-      production.close();
+      production.finalizeClose();
 
     if(utilitiesProduction != null)
       utilitiesProduction.close();
@@ -99,6 +103,7 @@ e.printStackTrace();
     {
       index.add(production);
     }
+    production.getEventHandler().add(ProductionClosedEvent.class, ProductionClosedHandler.instance);
   }
 
   public Production get(String name)
@@ -121,14 +126,13 @@ e.printStackTrace();
     return true;
   }
 
-  public void productionClosed(Production production)
+  private void productionClosed(Production production)
   {
     synchronized(index)
     {
       index.remove(production);
     }
 
-    production.close();
     if(index.isEmpty())
       Context.instance().shutdown();
   }
@@ -199,6 +203,20 @@ e.printStackTrace();
     catch(Exception e)
     {
       e.printStackTrace();
+    }
+  }
+
+  public boolean canProceedWithIncompatibleVersion(String name, String minimumLimelightVersion)
+  {
+    return false;
+  }
+  
+  private static class ProductionClosedHandler implements EventAction
+  {
+    private static ProductionClosedHandler instance = new ProductionClosedHandler();
+    public void invoke(Event event)
+    {
+      Studio.instance().productionClosed(((ProductionEvent)event).getProduction());
     }
   }
 }

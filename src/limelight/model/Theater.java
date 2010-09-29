@@ -21,6 +21,7 @@ public class Theater
   private Queue<Stage> stages = new ConcurrentLinkedQueue<Stage>();
   private Stage activeStage;
   private TheaterProxy proxy;
+  private boolean open = true;
 
   public Theater(Production production)
   {
@@ -100,10 +101,16 @@ public class Theater
     return get("Limelight");
   }
 
+  public boolean isOpen()
+  {
+    return open;
+  }
+
   public void close()
   {
     for(Stage stage : getStages())
       remove(stage);
+    open = false;
   }
 
   private void checkForEmptyTheater()

@@ -80,7 +80,7 @@ public class MockProp extends MockParentPanel implements Prop, PaintablePanel
     return new Border(getStyle(), boxInsideMargins);
   }
 
-  public PropProxy getProp()
+  public PropProxy getProxy()
   {
     return prop;
   }

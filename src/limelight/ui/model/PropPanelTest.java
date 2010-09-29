@@ -87,7 +87,7 @@ public class PropPanelTest extends Assert
   @Test
   public void constructor() throws Exception
   {
-    assertSame(prop, panel.getProp());
+    assertSame(prop, panel.getProxy());
     assertEquals(TempTextAccessor.class, panel.getTextAccessor().getClass());
   }
 
@@ -579,7 +579,7 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = castingDirector.castings.get(panel.getProp());
+    List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, panelCastings.size());
     assertEquals("jumpy", panelCastings.get(0));
   }
@@ -592,7 +592,7 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = castingDirector.castings.get(panel.getProp());
+    List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(3, panelCastings.size());
     assertEquals("jumpy", panelCastings.get(0));
     assertEquals("itchy", panelCastings.get(1));

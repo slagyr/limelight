@@ -4,15 +4,25 @@
 package limelight.model;
 
 import limelight.model.api.MockCastingDirector;
+import limelight.ui.model.Scene;
+
+import java.util.Map;
 
 public class MockProduction extends Production
 {
   public boolean wasAskedIfAllowedToShutdown;
-  public boolean wasClosed;
+  public boolean closeFinalized;
   public String lastMethodCalled;
   public Object[] lastMethodCallArgs;
   public int drbPort;
   public boolean closeAttempted;
+  public boolean openPrepared;
+  public boolean librariesLoaded;
+  public boolean stagesLoaded;
+  public boolean illuminated;
+  public Scene stubbedScene;
+  public String openedScenePath;
+  public Scene loadStylesScene;
 
   public MockProduction(String name)
   {
@@ -21,8 +31,15 @@ public class MockProduction extends Production
   }
 
   @Override
-  public void open()
-  { 
+  public void illuminate()
+  {
+    illuminated = true;
+  }
+
+  @Override
+  public void prepareToOpen()
+  {
+    openPrepared = true;
   }
 
   public MockProduction()
@@ -36,9 +53,34 @@ public class MockProduction extends Production
     return super.allowClose();
   }
 
-  public void close()
+  public void finalizeClose()
   {
-    wasClosed = true;
+    closeFinalized = true;
+  }
+
+  @Override
+  public void loadLibraries()
+  {
+    librariesLoaded = true;
+  }
+
+  @Override
+  public void loadStages()
+  {
+    stagesLoaded = true;
+  }
+
+  @Override
+  public Scene loadScene(String scenePath, Map<String, Object> options)
+  {
+    openedScenePath = scenePath;
+    return stubbedScene;
+  }
+
+  @Override
+  public void loadStyles(Scene scene)
+  {
+    loadStylesScene = scene;
   }
 
   public Object callMethod(String name, Object... args)

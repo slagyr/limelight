@@ -34,18 +34,20 @@ module Limelight
 #    attr_reader :children, :parent, :name, :id, :players
     getters :loader #:nodoc:
 
+    alias :getPeer :peer
+
 
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.
     # The key/value pairs in the initialiaztion options will be used to
     # set properties on the Prop, it Style, or included Player properties. These properties are not set
     # until the prop is added to a Prop tree with a Scene.
     #
-    def initialize(hash = Util::StringHash.new)
+    def initialize(options={})
       @peer = self.class.panel_class.new(self)
 #      @style = @peer.style
 #      @children = []
 #      @options = {}
-      @peer.add_options(Util::Hashes.select(hash))
+      @peer.add_options(Util::Hashes.for_java(options))
     end
 
     def id
@@ -138,7 +140,7 @@ module Limelight
     # Returns an Array of matching Props. Returns an empty Array if none are found.
     #
     def find_by_name(name)
-      return @peer.find_by_name(name).map { |descendant| descendant.prop } 
+      return @peer.find_by_name(name).map { |descendant| descendant.proxy }
     end
 
     # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
@@ -155,11 +157,11 @@ module Limelight
     end
 
     def parent
-      return @peer.parent.prop if @peer.parent
+      return @peer.parent.proxy if @peer.parent
     end
 
     def children
-      @peer.child_prop_panels.map { |child| child.prop } 
+      @peer.child_prop_panels.map { |child| child.proxy } 
     end
 
     # Returns the scene to which this prop belongs to.
@@ -167,7 +169,7 @@ module Limelight
     def scene
 #      return nil if @parent.nil?
 #      @scene = @parent.scene if @scene.nil?
-      return @peer.root.prop
+      return @peer.root.proxy
     end
 
     # TODO get rid of me.... The Java Prop interface declares this method.
@@ -188,28 +190,6 @@ module Limelight
     def inspect #:nodoc:
       return self.to_s
     end
-
-#    # unusual name because it's not part of public api
-#    def set_parent(parent) #:nodoc:
-#      @parent = parent
-#      if @parent.illuminated?
-#        illuminate
-#      end
-#    end
-
-#    # Allows the addition of extra initialization options.  Will raise an exception if the Prop has already been
-#    # illuminated (added to a scene).
-#    #
-#    def add_options(more_options)
-#      return unless more_options
-#      raise "Too late to add options" if illuminated?
-#
-#      @name = more_options.delete(:name) if more_options.has_key?(:name)
-#      @additional_styles = more_options.delete(:styles) if more_options.has_key?(:styles)
-#      panel.setStyles("#{@name}, #{@additional_styles}")
-#
-#      @options.merge!(more_options)
-#    end
 
     # Returns a Point representing the location of the Prop's top-left corner within its parent.
     #
