@@ -4,6 +4,7 @@ import limelight.Context;
 import limelight.model.api.MockPropProxy;
 import limelight.model.api.MockStageProxy;
 import limelight.ui.events.panel.SceneOpenedEvent;
+import limelight.ui.events.stage.StageClosedEvent;
 import limelight.ui.events.stage.StageClosingEvent;
 import limelight.ui.model.*;
 import limelight.ui.model.inputs.MockEventAction;
@@ -86,14 +87,30 @@ public class StageTest
   @Test
   public void closing() throws Exception
   {
-    MockEventAction action = new MockEventAction();
-    stage.getEventHandler().add(StageClosingEvent.class, action);
+    MockEventAction closingAction = new MockEventAction();
+    MockEventAction closedAction = new MockEventAction();
+    stage.getEventHandler().add(StageClosingEvent.class, closingAction);
+    stage.getEventHandler().add(StageClosedEvent.class, closedAction);
 
     stage.close();
 
-    assertEquals(true, action.invoked);
+    assertEquals(true, closingAction.invoked);
     assertEquals(false, stage.isVisible());
     assertEquals(false, stage.isOpen());
+    assertEquals(true, closedAction.invoked);
+  }
+  
+  @Test
+  public void scenesOnClosingStageGetStageSetToNull() throws Exception
+  {
+    MockScene scene = new MockScene();
+    stage.setScene(scene);
+    stage.open();
+
+    stage.close();
+
+    assertEquals(null, stage.getScene());
+    assertEquals(null, scene.getStage());
   }
 
   @Test

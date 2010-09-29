@@ -3,6 +3,7 @@ package limelight.model;
 import limelight.events.EventHandler;
 import limelight.model.api.StageProxy;
 import limelight.ui.events.panel.SceneOpenedEvent;
+import limelight.ui.events.stage.StageClosedEvent;
 import limelight.ui.events.stage.StageClosingEvent;
 import limelight.ui.model.StageKeyListener;
 import limelight.ui.model.StageMouseListener;
@@ -82,7 +83,9 @@ public abstract class Stage
     closing = true;
     new StageClosingEvent().dispatch(this);
     hide();
+    setScene(null);
     doClose();
+    new StageClosedEvent().dispatch(this);
   }
 
 
@@ -113,16 +116,17 @@ public abstract class Stage
 
   public void setScene(Scene newScene)
   {
-    if(newScene == null)
-      return;
-    
     if(scene != null && scene.getStage() == this)
       scene.setStage(null);
-    
+
     scene = newScene;
-    newScene.setStage(this);
-    if(isOpen())
-      new SceneOpenedEvent().dispatch(newScene);
+
+    if(scene != null)
+    {
+      newScene.setStage(this);
+      if(isOpen())
+        new SceneOpenedEvent().dispatch(newScene);
+    }
   }
 
   public boolean shouldAllowClose()

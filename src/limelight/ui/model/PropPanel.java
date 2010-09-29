@@ -33,7 +33,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 {
   private static final Map<String, Object> EMPTY_OPTIONS = new EmptyMap<String, Object>();
 
-  private final PropProxy propProxy;
+  private final PropProxy proxy;
   private String id;
   private String name;
   private final ScreenableStyle style;
@@ -54,9 +54,9 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   public Dimension greediness = new Dimension(0, 0);
   public boolean borderChanged = true;
 
-  public PropPanel(PropProxy propProxy)
+  public PropPanel(PropProxy proxy)
   {
-    this.propProxy = propProxy;
+    this.proxy = proxy;
     textAccessor = TempTextAccessor.instance();
     style = new ScreenableStyle();
     hoverStyle = new RichStyle();
@@ -66,9 +66,9 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     getEventHandler().add(MouseExitedEvent.class, HoverOffAction.instance);
   }
 
-  public PropPanel(PropProxy propProxy, Map<String, Object> options)
+  public PropPanel(PropProxy proxy, Map<String, Object> options)
   {
-    this(propProxy);
+    this(proxy);
     addOptions(options);
   }
 
@@ -96,9 +96,9 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     this.textAccessor = textAccessor;
   }
 
-  public PropProxy getProp()
+  public PropProxy getProxy()
   {
-    return propProxy;
+    return proxy;
   }
 
   @Override
@@ -396,7 +396,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
     illuminatePlayers(illuminateOptions.remove("players"));
 
-    propProxy.applyOptions(illuminateOptions);
+    proxy.applyOptions(illuminateOptions);
 
     for(Map.Entry<String, Object> entry : illuminateOptions.entrySet())
       System.err.println("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue()); // TODO MDM - This should get logged
@@ -501,7 +501,6 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   private void illuminatePlayers(Object playersObject)
   {
     String allPlayers = playersObject == null ? "" : playersObject.toString();
-
     if(name != null)
       allPlayers = name + "," + allPlayers;
 
@@ -513,7 +512,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
         final Scene root = getRoot();
         final Production production = root.getProduction();
         final CastingDirector director = production.getCastingDirector();
-        director.castPlayer(getProp(), playerName);
+        director.castPlayer(getProxy(), playerName);
       }
     }
   }

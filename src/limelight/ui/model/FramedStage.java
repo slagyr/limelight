@@ -136,9 +136,12 @@ public class FramedStage extends Stage
     mouseListener.reset();
     keyListener.reset(newScene);
 
-    setCursor(newScene.getStyle().getCompiledCursor().getCursor());
     scene = newScene;
-    scene.setStage(this);
+    if(scene != null)
+    {
+      setCursor(scene.getStyle().getCompiledCursor().getCursor());
+      scene.setStage(this);
+    }
   }
 
   public void setFullScreen(boolean setting)
@@ -234,7 +237,7 @@ public class FramedStage extends Stage
   {
     return frame.getSize();
   }
-  
+
   public Point getLocation()
   {
     return frame.getLocation();
@@ -292,7 +295,7 @@ public class FramedStage extends Stage
 
     frame.setSize(size);
   }
-  
+
   private void addListeners()
   {
     frame.addMouseListener(mouseListener);

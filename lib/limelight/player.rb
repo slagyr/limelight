@@ -23,14 +23,14 @@ module Limelight
       on_cast_actions = @__event_cache[:on_cast]
       if on_cast_actions
         on_cast_actions.each do |action|
-          prop.instance_exec(& action) 
+          prop.instance_exec(&action)
         end
       end
 
       @__event_cache.each do |event, actions|
         if actions && event != :on_cast
           actions.each do |action|
-            prop.peer.event_handler.add(event, Proc.new { |e| prop.instance_exec(e, & action) })
+            prop.peer.event_handler.add(event, Proc.new { |e| prop.instance_exec(e, &action) })
           end
         end
       end

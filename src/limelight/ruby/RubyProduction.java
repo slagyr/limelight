@@ -4,11 +4,12 @@ import limelight.Context;
 import limelight.LimelightException;
 import limelight.model.Production;
 import limelight.model.api.ProductionProxy;
+import limelight.model.api.SceneProxy;
+import limelight.ui.model.Scene;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaSupport;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -29,6 +30,7 @@ public class RubyProduction extends Production
 
   private Ruby rubyRuntime;
   private int id;
+  private RubyProductionProxy rubyProxy;
 
   public RubyProduction(String path)
   {
@@ -36,14 +38,54 @@ public class RubyProduction extends Production
     id = ++productionIds;
   }
 
-  public void open()
+  @Override
+  public void setProxy(ProductionProxy proxy)
   {
-    spawnRubyRuntime();
-    getProxy().open();
+    super.setProxy(proxy);
+    rubyProxy = (RubyProductionProxy)proxy;
   }
 
   @Override
-  public void close()
+  public void illuminate()
+  {
+    rubyProxy.illuminate();
+  }
+
+  @Override
+  public void loadLibraries()
+  {
+    rubyProxy.loadLibraries();
+  }
+
+  @Override
+  public void loadStages()
+  {
+    rubyProxy.loadStages();
+  }
+
+  @Override
+  public Scene loadScene(String scenePath, Map<String, Object> options)
+  {
+    final SceneProxy proxy = rubyProxy.loadScene(scenePath, options);
+System.err.println("about to call getPeer()");
+    final Scene peer = proxy.getPeer();
+System.err.println("done calling getPeer()");    
+    return peer;
+  }
+
+  @Override
+  public void loadStyles(Scene scene)
+  {
+    rubyProxy.loadStyles((SceneProxy)scene.getProxy());
+  }
+
+  public void prepareToOpen()
+  {
+    spawnRubyRuntime();
+  }
+
+  @Override
+  public void finalizeClose()
   {
     rubies.remove(id);
     if(rubyRuntime != null)

@@ -27,5 +27,5 @@ public interface Prop extends ParentPanel
   Box getBorderedBounds();
   Graphics2D getGraphics();
   ScreenableStyle getStyle();
-  PropProxy getProp();
+  PropProxy getProxy();
 }

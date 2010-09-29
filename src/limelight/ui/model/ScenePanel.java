@@ -25,7 +25,6 @@ public class ScenePanel extends PropPanel implements Scene
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
   private boolean shouldAllowClose = true;
-  private boolean visible;
 
   public ScenePanel(PropProxy propProxy)
   {
@@ -184,7 +183,7 @@ public class ScenePanel extends PropPanel implements Scene
   {
     if(imageCache == null)
     {
-      PropProxy propProxy = getProp();
+      PropProxy propProxy = getProxy();
       ResourceLoader loader = propProxy.getLoader();
       imageCache = new ImageCache(loader);
     }

@@ -3,17 +3,23 @@
 
 package limelight.model;
 
-import junit.framework.TestCase;
 import limelight.*;
+import limelight.model.events.ProductionClosedEvent;
 import limelight.ruby.MockRuntimeFactory;
 import limelight.model.api.UtilitiesProduction;
+import org.junit.Before;
+import org.junit.Test;
 
-public class StudioTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
+
+public class StudioTest
 {
   private Studio studio;
   private MockContext context;
   private MockRuntimeFactory mockRuntimeFactory;
 
+  @Before
   public void setUp() throws Exception
   {
     Studio.uninstall();
@@ -25,25 +31,29 @@ public class StudioTest extends TestCase
     context.runtimeFactory = mockRuntimeFactory;
   }
 
-  public void testInstalling() throws Exception
+  @Test
+  public void installing() throws Exception
   {
     assertSame(Studio.instance(), Context.instance().studio);
   }
 
-  public void testIndexingProductions() throws Exception
+  @Test
+  public void indexingProductions() throws Exception
   {
     MockProduction production = new MockProduction("Max");
     add(production);
 
     assertSame(production, studio.get("Max"));
   }
-  
-  public void testGetProductionWithNull() throws Exception
+
+  @Test
+  public void getProductionWithNull() throws Exception
   {
     assertEquals(null, studio.get(null));
   }
 
-  public void testItShouldNotAllowShutdownIfProuctionsDecline() throws Exception
+  @Test
+  public void itShouldNotAllowShutdownIfProuctionsDecline() throws Exception
   {
     MockProduction production = new MockProduction("Max");
     add(production);
@@ -52,7 +62,8 @@ public class StudioTest extends TestCase
     assertEquals(false, studio.shouldAllowShutdown());
   }
 
-  public void testItShouldAllowShutdownIfProuctionsAllow() throws Exception
+  @Test
+  public void itShouldAllowShutdownIfProuctionsAllow() throws Exception
   {
     MockProduction production = new MockProduction("Max");
     add(production);
@@ -61,30 +72,33 @@ public class StudioTest extends TestCase
     assertEquals(true, studio.shouldAllowShutdown());
   }
 
-  public void testRemovedClosedProductions() throws Exception
+  @Test
+  public void removedClosedProductions() throws Exception
   {
     MockProduction production1 = new MockProduction("One");
     MockProduction production2 = new MockProduction("Two");
     add(production1);
     add(production2);
 
-    studio.productionClosed(production1);
+    new ProductionClosedEvent().dispatch(production1);
 
     assertEquals(null, studio.get("One"));
     assertEquals(1, studio.getProductions().size());
   }
 
-  public void testShouldShutdownWhenLastProductionIsClosed() throws Exception
+  @Test
+  public void shouldShutdownWhenLastProductionIsClosed() throws Exception
   {
     MockProduction production = new MockProduction("Max");
     add(production);
 
-    studio.productionClosed(production);
+    new ProductionClosedEvent().dispatch(production);
 
     assertEquals(true, context.wasShutdown);    
   }
 
-  public void testShouldGiveProductionsaNameIfItDoesntHaveOne() throws Exception
+  @Test
+  public void shouldGiveProductionsaNameIfItDoesntHaveOne() throws Exception
   {
     MockProduction production1 = new MockProduction(null);
     MockProduction production2 = new MockProduction("");
@@ -98,7 +112,8 @@ public class StudioTest extends TestCase
     assertEquals("anonymous_3", production3.getName());
   }
 
-  public void testShouldGiveProductionsNewNamesWhenDuplicated() throws Exception
+  @Test
+  public void shouldGiveProductionsNewNamesWhenDuplicated() throws Exception
   {
     MockProduction production1 = new MockProduction("Fido");
     MockProduction production2 = new MockProduction("Fido");
@@ -112,7 +127,8 @@ public class StudioTest extends TestCase
     assertEquals("Fido_3", production3.getName());
   }
 
-  public void testShouldShutdown() throws Exception
+  @Test
+  public void shouldShutdown() throws Exception
   {
     MockProduction production = new MockProduction("Max");
     add(production);
@@ -122,7 +138,7 @@ public class StudioTest extends TestCase
     studio.shutdownThread.join();
     
     assertEquals(true, production.wasAskedIfAllowedToShutdown);
-    assertEquals(true, production.wasClosed);
+    assertEquals(true, production.closeFinalized);
     assertEquals(true, context.wasShutdown);
     assertEquals(true, studio.isShutdown());
   }
@@ -132,7 +148,8 @@ public class StudioTest extends TestCase
     studio.add(production);
   }
 
-  public void testHaveAUtilitiesProduction() throws Exception
+  @Test
+  public void haveAUtilitiesProduction() throws Exception
   {
     MockProduction production = new MockProduction("utilities");
     studio.productionStub = production;
@@ -142,6 +159,7 @@ public class StudioTest extends TestCase
 
     assertSame(utilities, studio.utilitiesProduction()); // no exception thrown
   }
+
 // TODO MDM - This needs to be fixed
 //  public void testShouldSendAlertWhenErrorOccursWhileOpeningProduction() throws Exception
 //  {

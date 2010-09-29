@@ -10,7 +10,7 @@ on_mouse_dragged do |e|
   dx = e.x - @drag_reference_x
   dy = e.y - @drag_reference_y
 
-  frame = scene.stage.frame
+  frame = scene.stage.peer.frame
   location = frame.location
 
   location.x += dx

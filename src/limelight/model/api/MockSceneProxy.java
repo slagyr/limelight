@@ -3,6 +3,7 @@
 
 package limelight.model.api;
 
+import limelight.ui.model.Scene;
 import limelight.util.ResourceLoader;
 
 public class MockSceneProxy extends MockPropProxy implements SceneProxy
@@ -12,5 +13,10 @@ public class MockSceneProxy extends MockPropProxy implements SceneProxy
   public ResourceLoader getLoader()
   {
     return loader;
+  }
+
+  public Scene getPeer()
+  {
+    return null;
   }
 }

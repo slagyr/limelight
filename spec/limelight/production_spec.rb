@@ -7,24 +7,9 @@ require 'limelight/production'
 describe Limelight::Production, "Instance methods" do
 
   before(:each) do
-    @producer = mock("producer")
-    @theater = mock("theater")
     @studio = Limelight::Studio.install
-    @production = Limelight::Production.new("/tmp")
-    @production.producer = @producer
-    @production.theater = @theater
-  end
-
-  it "should know it path, producer, and theater" do
-    @production.producer.should == @producer
-    @production.theater.should == @theater
-    @production.path.should == "/tmp"
-  end
-
-  it "should get it's name from the file" do
-    Limelight::Production.new("/tmp").name.should == "tmp"
-    Limelight::Production.new("/Somewhere/over/the/rainbow").name.should == "rainbow"
-    Limelight::Production.new("my_name/is/kid").name.should == "kid"
+    @peer = Java::limelight.ruby.RubyProduction.new("/tmp")
+    @production = Limelight::Production.new(@peer)
   end
 
   it "should know its init file" do
@@ -42,7 +27,7 @@ describe Limelight::Production, "Instance methods" do
   it "should know its gems directory" do
     @production.gems_directory.should == "/tmp/__resources/gems/gems"
   end
-  
+
   it "should know its gems root" do
     @production.gems_root.should == "/tmp/__resources/gems"
   end
@@ -50,7 +35,6 @@ describe Limelight::Production, "Instance methods" do
   it "should provide paths to it's scenes" do
     @production.scene_directory("one").should == "/tmp/one"
     @production.scene_directory("two").should == "/tmp/two"
-    @production.scene_directory(:root).should == "/tmp"
   end
 
   it "should allow close by default" do
@@ -58,37 +42,68 @@ describe Limelight::Production, "Instance methods" do
   end
 
   it "should tell producer to do the closing" do
-    @producer.should_receive(:close)
+    @peer.should_receive(:close)
 
     @production.close
   end
 
-  it "should publish on drb" do
-    @producer.should_receive(:publish_production_on_drb).with(9000)
-    @production.publish_on_drb(9000)
-  end
-
-  it "should handle empty theater" do
-    @production.should_receive(:allow_close?).at_least(1).and_return(true)
-    @production.should_receive(:close)
-
-    @production.theater_empty!
-  end
-
   describe "with files" do
+
+    before do
+      @peer = Java::limelight.ruby.RubyProduction.new(TestDir.path("test_prod"))
+      @production = Limelight::Production.new(@peer)
+    end
 
     after(:each) do
       TestDir.clean
     end
-    
-    it "should load it's root styles" do
+
+    it "loads it's root styles" do
       TestDir.create_file("test_prod/styles.rb", "a_style { width 100; height 200 }")
-      @production = Limelight::Production.new( TestDir.path("test_prod"))
 
       styles = @production.root_styles
       styles["a_style"].width.should == "100"
       styles["a_style"].height.should == "200"
       @production.root_styles.should be(styles)
+    end
+
+    it "extends the production if production.rb is present" do
+      TestDir.create_file("test_prod/production.rb", "self.name = \"Fido\"; def foo; end;")
+
+      @production.illuminate
+
+      @production.name.should == "Fido"
+      @production.respond_to?(:foo).should == true
+    end
+
+    it "loads stages" do
+      TestDir.create_file("test_prod/stages.rb", "stage 'FrontStage' do; end;")
+
+      @production.load_stages
+
+      @production.theater["FrontStage"].should_not == nil
+    end
+
+    it "loads a scene from props.rb" do
+      TestDir.create_file("test_prod/scene/props.rb", "parent do; child; end;")
+
+      scene = @production.load_scene("scene")
+
+      scene.should_not == nil
+      scene.children.size.should == 1
+      scene.children[0].children.size.should == 1
+    end
+
+    it "loads styles" do
+      TestDir.create_file("test_prod/scene/props.rb", "")
+      TestDir.create_file("test_prod/scene/styles.rb", "cool { width 100; x 42 }")
+      scene = @production.load_scene("scene")
+
+      @production.load_styles(scene)
+
+      scene.styles_store["cool"].should_not == nil
+      scene.styles_store["cool"].width.should == "100"
+      scene.styles_store["cool"].x.should == "42"
     end
   end
 

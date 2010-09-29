@@ -6,7 +6,7 @@ module Limelight
 
     module Hashes
 
-      def self.select(hash)
+      def self.for_ruby(hash)
         if hash.is_a?(StringHash) || hash.is_a?(MapHash)
           return hash
         elsif hash.is_a?(Java::java.util.Map)
@@ -14,7 +14,16 @@ module Limelight
         else
           return StringHash.new.merge!(hash)
         end
+      end
 
+      def self.for_java(hash)
+        if hash.is_a?(StringHash) || hash.is_a?(Java::java.util.Map)
+          return hash
+        elsif hash.is_a?(MapHash)
+          return hash.map
+        else
+          return StringHash.new.merge!(hash)
+        end
       end
 
     end
