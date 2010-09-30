@@ -6,6 +6,7 @@ package limelight.os;
 public class MockOS extends OS
 {
   public boolean systemPropertiesConfigured;
+  public String dataRoot;
 
   protected void turnOnKioskMode()
   {
@@ -22,5 +23,14 @@ public class MockOS extends OS
   public void configureSystemProperties()
   {
     systemPropertiesConfigured = true;
+  }
+
+  @Override
+  public String dataRoot()
+  {
+    if(dataRoot != null)
+      return dataRoot;
+    else
+      return super.dataRoot();
   }
 }

@@ -4,14 +4,16 @@
 package limelight.model;
 
 import limelight.Context;
+import limelight.LimelightException;
 import limelight.events.Event;
 import limelight.events.EventAction;
+import limelight.io.*;
 import limelight.model.events.ProductionClosedEvent;
 import limelight.model.events.ProductionEvent;
 import limelight.ruby.RubyProduction;
 import limelight.model.api.UtilitiesProduction;
-import limelight.io.FileUtil;
 
+import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,6 +30,7 @@ public class Studio
   private boolean isShutdown;
   private boolean isShuttingDown;
   private UtilitiesProduction utilitiesProduction;
+  private Packer packer = new Packer();
 
   public static Studio install()
   {
@@ -56,6 +59,7 @@ public class Studio
   {
     try
     {
+      productionPath = processProductionPath(productionPath);
       Production production = productionStub == null ? new RubyProduction(productionPath) : productionStub;
       production.open();
       add(production);
@@ -63,10 +67,9 @@ public class Studio
     }
     catch(Exception e)
     {
-e.printStackTrace();      
+e.printStackTrace();
       alert(e);
-      if(index.isEmpty())
-        shutdown();
+      shutdownIfEmpty();
       return null;
     }
   }
@@ -83,7 +86,7 @@ e.printStackTrace();
 
     if(utilitiesProduction != null)
       utilitiesProduction.close();
-    
+
     isShutdown = true;
 
     shutdownThread = new Thread()
@@ -124,17 +127,6 @@ e.printStackTrace();
         return false;
     }
     return true;
-  }
-
-  private void productionClosed(Production production)
-  {
-    synchronized(index)
-    {
-      index.remove(production);
-    }
-
-    if(index.isEmpty())
-      Context.instance().shutdown();
   }
 
   public List<Production> getProductions()
@@ -184,9 +176,15 @@ e.printStackTrace();
     production.setName(name);
   }
 
-  private boolean nameTaken(String name)
+  private void productionClosed(Production production)
   {
-    return get(name) != null;
+    synchronized(index)
+    {
+      index.remove(production);
+    }
+
+    if(index.isEmpty())
+      Context.instance().shutdown();
   }
 
   private void alert(Exception error)
@@ -210,7 +208,49 @@ e.printStackTrace();
   {
     return false;
   }
-  
+
+  private boolean nameTaken(String name)
+  {
+    return get(name) != null;
+  }
+
+  public void setPacker(Packer packer)
+  {
+    this.packer = packer;
+  }
+
+  public String processProductionPath(String productionPath)
+  {
+    if(new File(productionPath).isDirectory())
+      return productionPath;
+    else if(".llp".equals(FileUtil.fileExtension(productionPath)))
+      return unpackLlp(productionPath);
+    else if(".lll".equals(FileUtil.fileExtension(productionPath)))
+      return downloadLll(productionPath);
+    else
+      throw new LimelightException("I don't know how to open this production: " + productionPath);
+  }
+
+  private String downloadLll(String productionPath)
+  {
+    try
+    {
+      String url = FileUtil.getFileContent(productionPath).trim();
+      File result = Downloader.get(url);
+      return unpackLlp(result.getAbsolutePath());
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException("Failed to download or unpack .lll: " + productionPath, e);
+    }
+  }
+
+  private String unpackLlp(String productionPath)
+  {
+    File destinationDir = new File(Data.productionsDir(), "" + System.currentTimeMillis());
+    return packer.unpack(productionPath, destinationDir.getAbsolutePath());
+  }
+
   private static class ProductionClosedHandler implements EventAction
   {
     private static ProductionClosedHandler instance = new ProductionClosedHandler();
@@ -218,5 +258,11 @@ e.printStackTrace();
     {
       Studio.instance().productionClosed(((ProductionEvent)event).getProduction());
     }
+  }
+
+  private void shutdownIfEmpty()
+  {
+    if(index.isEmpty())
+      shutdown();
   }
 }

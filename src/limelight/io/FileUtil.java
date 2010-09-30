@@ -41,7 +41,7 @@ public class FileUtil
 
   public static String currentPath()
   {
-    return absolutePath(".");
+    return absolutePath("");
   }
 
   public static File establishDirectory(String path)
@@ -51,11 +51,7 @@ public class FileUtil
 
   public static File establishDirectory(File dir)
   {
-    if(!dir.exists())
-    {
-      establishDirectory(dir.getParentFile());
-      dir.mkdir();
-    }
+    dir.mkdirs();
     return dir;
   }
 

@@ -4,11 +4,18 @@
 package limelight.model;
 
 import limelight.*;
+import limelight.io.Data;
+import limelight.io.Downloader;
+import limelight.io.FileUtil;
+import limelight.io.MockPacker;
 import limelight.model.events.ProductionClosedEvent;
-import limelight.ruby.MockRuntimeFactory;
+import limelight.os.MockOS;
 import limelight.model.api.UtilitiesProduction;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
@@ -17,7 +24,7 @@ public class StudioTest
 {
   private Studio studio;
   private MockContext context;
-  private MockRuntimeFactory mockRuntimeFactory;
+  private MockPacker mockPacker;
 
   @Before
   public void setUp() throws Exception
@@ -26,9 +33,6 @@ public class StudioTest
     System.setProperty("limelight.home", "."); // For the RuntimeFactory to spawn productions properly
     context = MockContext.stub();
     studio = Studio.install();
-
-    mockRuntimeFactory = new MockRuntimeFactory();
-    context.runtimeFactory = mockRuntimeFactory;
   }
 
   @Test
@@ -158,6 +162,53 @@ public class StudioTest
     assertSame(production, utilities.getProduction());
 
     assertSame(utilities, studio.utilitiesProduction()); // no exception thrown
+  }
+
+  public void setupWithFilesystem()
+  {
+    mockPacker = new MockPacker();
+    studio.setPacker(mockPacker);
+    Context.instance().os = new MockOS();
+  }
+
+  @Test
+  public void processProductionPath_llp() throws Exception
+  {
+    setupWithFilesystem();
+    mockPacker.unpackResult = "blah";
+
+    String result = studio.processProductionPath("/dir/production.llp");
+    
+    assertEquals("blah", result);
+    assertEquals("/dir/production.llp", mockPacker.unpackPackagePath);
+    assertEquals(Data.productionsDir().getPath(), new File(mockPacker.unpackDestination).getParent());
+  }
+
+  @Test
+  public void processProductionPath_directory() throws Exception
+  {
+    setupWithFilesystem();
+    String directory = TestUtil.tmpDirPath();
+
+    String result = studio.processProductionPath(directory);
+
+    assertEquals(directory, result);
+  }
+
+  @Test
+  public void processProductionPath_lll() throws Exception
+  {
+    setupWithFilesystem();
+    mockPacker.unpackResult = "blah";
+    String path = TestUtil.tmpDirPath("production.lll");
+    FileUtil.createFile(path, "http://somewhere.com/production.llp");
+    Downloader.stubbedGetResult = new File(Data.downloadsDir(), "production.llp");
+
+    String result = studio.processProductionPath(path);
+
+    assertEquals("blah", result);
+    assertEquals(Downloader.stubbedGetResult.getAbsolutePath(), new File(mockPacker.unpackPackagePath).getAbsolutePath());
+    assertEquals(Data.productionsDir().getPath(), new File(mockPacker.unpackDestination).getParent());
   }
 
 // TODO MDM - This needs to be fixed

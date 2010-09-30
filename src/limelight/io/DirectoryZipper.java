@@ -30,17 +30,6 @@ public class DirectoryZipper
     return zipper;
   }
 
-  private void setInput(InputStream input)
-  {
-    zipInput = new ZipInputStream(input);
-  }
-
-  private void setDirectoryPath(String path)
-  {
-    directoryPath = new File(path).getAbsolutePath();
-    locationPath = new File(directoryPath).getParentFile().getAbsolutePath();
-  }
-
   public String getDirectoryPath()
   {
     return directoryPath;
@@ -60,6 +49,31 @@ public class DirectoryZipper
     zipOutput.close();
   }
 
+  public void unzip(String location) throws Exception
+  {
+    String absoluteLocation = new File(location).getAbsolutePath();
+    for(ZipEntry entry = zipInput.getNextEntry(); entry != null; entry = zipInput.getNextEntry())
+    {
+      String absolutePath = FileUtil.pathTo(absoluteLocation, entry.getName());
+      if(entry.isDirectory())
+        unzipDirectory(absolutePath);
+      else
+        unzipFile(absolutePath);
+
+    }
+  }
+
+  private void setInput(InputStream input)
+  {
+    zipInput = new ZipInputStream(input);
+  }
+
+  private void setDirectoryPath(String path)
+  {
+    directoryPath = new File(path).getAbsolutePath();
+    locationPath = new File(directoryPath).getParentFile().getAbsolutePath();
+  }
+
   private void zipDirectory(File directory) throws Exception
   {
     zipOutput.putNextEntry(makeEntryFrom(directory));
@@ -67,6 +81,11 @@ public class DirectoryZipper
     File[] children = directory.listFiles();
     for(File child : children)
       zipFile(child);
+  }
+
+  public String getProductionName()
+  {
+    return new File(directoryPath).getName();
   }
 
   private void zipFile(File file) throws Exception
@@ -94,7 +113,7 @@ public class DirectoryZipper
   {
     StreamReader reader = new StreamReader(new FileInputStream(file));
     while(!reader.isEof())
-        zipOutput.write(reader.readBytes(1000));
+      zipOutput.write(reader.readBytes(1000));
   }
 
   private String entryName(File file)
@@ -103,20 +122,6 @@ public class DirectoryZipper
     if(file.isDirectory())
       name = name + FileUtil.seperator();
     return name;
-  }
-
-  public void unzip(String location) throws Exception
-  {
-    String absoluteLocation = new File(location).getAbsolutePath();
-    for(ZipEntry entry = zipInput.getNextEntry(); entry != null; entry = zipInput.getNextEntry())
-    {
-      String absolutePath = FileUtil.pathTo(absoluteLocation, entry.getName());
-      if(entry.isDirectory())
-        unzipDirectory(absolutePath);
-      else
-        unzipFile(absolutePath);
-
-    }
   }
 
   private void unzipFile(String absolutePath) throws Exception
@@ -134,10 +139,5 @@ public class DirectoryZipper
       directoryPath = absolutePath;
       isRootDirectoryUnzipped = true;
     }
-  }
-
-  public String getProductionName()
-  {
-    return new File(directoryPath).getName();
   }
 }
