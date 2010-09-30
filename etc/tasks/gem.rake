@@ -1,8 +1,8 @@
 require 'rake/gempackagetask'
+require 'lib/limelight.jar'
 
 PKG_NAME = "limelight"
-PKG_VERSION   = Limelight::VERSION::STRING
-PKG_TAG = Limelight::VERSION::TAG
+PKG_VERSION   = Java::limelight.About.version.to_s
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 PKG_FILES = FileList[
   'lib/init.rb',
@@ -16,7 +16,7 @@ PKG_FILES = FileList[
 spec = Gem::Specification.new do |s|
   s.name = PKG_NAME
   s.version = PKG_VERSION
-  s.summary = Limelight::VERSION::DESCRIPTION
+  s.summary = "Limelight"
   s.description = "Limelight: A dynamic rich client framework and application platform."
   s.files = PKG_FILES.to_a
   s.require_path = 'lib'

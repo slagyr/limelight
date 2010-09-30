@@ -1,9 +1,8 @@
+require 'java'
 PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
 TASK_DIR = File.expand_path(File.dirname(__FILE__) + "/etc/tasks")
 Gem.clear_paths
 ENV["GEM_PATH"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
-
-require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/version")
 
 def run_command(command)
   output = `#{command}`
@@ -29,7 +28,6 @@ end
 
 task :spec do
   begin
-    require 'java'
     gem 'rspec'
     require 'spec/rake/spectask'
     Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
