@@ -1,9 +1,9 @@
-package limelight.util;
+package limelight.io;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.io.FileUtil;
 import limelight.os.MockOS;
+import limelight.util.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,22 +29,22 @@ public class DownloaderTest
   @After
   public void tearDown() throws Exception
   {
-//    FileUtil.deleteFileSystemDirectory(root);
+    FileUtil.deleteFileSystemDirectory(root);
   }
   
   @Test
   public void directories() throws Exception
   {
-    assertEquals(root, downloader.getRoot().getPath());
-    assertEquals(FileUtil.absolutePath(TestUtil.tmpDirPath("downloader", "Downloads")), downloader.downloadDir().getAbsolutePath());
+    assertEquals(root, downloader.getDestinationRoot().getPath());
   }
 
   @Test
   public void defaultRootPath() throws Exception
   {
-    final MockOS os = new MockOS();
+    MockOS os = new MockOS();
+    os.dataRoot = root;
     Context.instance().os = os;
-    assertEquals(os.dataRoot(), new Downloader().getRoot().getAbsolutePath());
+    assertEquals(Data.downloadsDir().getAbsolutePath(), new Downloader().getDestinationRoot().getAbsolutePath());
   }
 
   @Test
@@ -56,7 +56,7 @@ public class DownloaderTest
     File result = downloader.download("file://" + testFilePath);
 
     assertEquals("testFile.txt", result.getName());
-    assertEquals(downloader.downloadDir(), result.getParentFile());
+    assertEquals(root, result.getParentFile().getAbsolutePath());
     assertEquals(true, result.exists());
     assertEquals("some text", FileUtil.getFileContent(result));
   }
@@ -70,7 +70,7 @@ public class DownloaderTest
     File result = downloader.download(testFilePath);
 
     assertEquals("testFile.txt", result.getName());
-    assertEquals(downloader.downloadDir(), result.getParentFile());
+    assertEquals(root, result.getParentFile().getAbsolutePath());
     assertEquals(true, result.exists());
     assertEquals("some text", FileUtil.getFileContent(result));
   }
@@ -128,7 +128,7 @@ public class DownloaderTest
 //    File result = downloader.download("http://limelight.8thlight.com/images/logo.png");
 //
 //    assertEquals("logo.png", result.getName());
-//    assertEquals(downloader.downloadDir(), result.getParentFile());
+//    assertEquals(root, result.getParentFile().getAbsolutePath());
 //    assertEquals(true, result.exists());
 //  }
 //
@@ -152,7 +152,7 @@ public class DownloaderTest
 //    File result = downloader.download("https://www.google.com/images/logos/ssl_logo_lg.gif");
 //
 //    assertEquals("ssl_logo_lg.gif", result.getName());
-//    assertEquals(downloader.downloadDir(), result.getParentFile());
+//    assertEquals(root, result.getParentFile().getAbsolutePath());
 //    assertEquals(true, result.exists());
 //  }
 //

@@ -1,8 +1,6 @@
-package limelight.util;
+package limelight.io;
 
-import limelight.Context;
 import limelight.LimelightException;
-import limelight.io.FileUtil;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -14,34 +12,30 @@ import java.util.regex.Pattern;
 public class Downloader
 {
   public static Pattern filenameRegex = Pattern.compile("filename=\"?(.*)\"?");
+  private File destinationRoot;
+  public static File stubbedGetResult;
 
-  private File root;
-  private File downloadDir;
-
-  public Downloader(String root)
+  public static File get(String resource)
   {
-    this.root = new File(root);
+    if(stubbedGetResult != null)
+      return stubbedGetResult;
+    return new Downloader().download(resource);    
   }
 
   public Downloader()
   {
-    root = new File(Context.instance().os.dataRoot());
+    Data.establishDirs();
+    destinationRoot = Data.downloadsDir();
   }
 
-  public File getRoot()
+  public Downloader(String root)
   {
-    return root;
+    destinationRoot = new File(root);
   }
 
-  public File downloadDir()
+  public File getDestinationRoot()
   {
-    if(downloadDir == null)
-    {
-      downloadDir = new File(FileUtil.buildPath(root.getPath(), "Downloads"));
-      if(!downloadDir.exists() && !downloadDir.mkdirs())
-        throw new LimelightException("The Downloads directory (" + downloadDir.getAbsolutePath() + ") does not exist and cannot be created.");
-    }
-    return downloadDir;
+    return destinationRoot;
   }
 
   public File download(String resource)
@@ -93,18 +87,17 @@ public class Downloader
   {
     String urlFilename = url.getFile();
     File urlFile = new File(urlFilename);
-    String filename = urlFile.getName();
-    return filename;
+    return urlFile.getName();
   }
 
   private File findUniqueDownloadDestination(String filename)
   {
-    File attempt = new File(FileUtil.buildPath(downloadDir().getAbsolutePath(), filename));
+    File attempt = new File(destinationRoot, filename);
     String baseName = FileUtil.baseName(attempt.getName());
     String extension = FileUtil.fileExtension(attempt.getName());
     int suffix = 2;
     while(attempt.exists())
-      attempt = new File(FileUtil.buildPath(downloadDir().getAbsolutePath(), baseName + "_" + suffix++ + extension));
+      attempt = new File(destinationRoot, baseName + "_" + suffix++ + extension);
     return attempt;
   }
 

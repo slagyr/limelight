@@ -4,6 +4,7 @@
 package limelight.io;
 
 import limelight.Context;
+import limelight.LimelightException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,35 +12,45 @@ import java.io.FileOutputStream;
 
 public class Packer
 {
-  public String unpack(String packagePath) throws Exception
+  public String unpack(String packagePath)
   {
-    FileInputStream input = new FileInputStream(packagePath);
-    DirectoryZipper zipper = DirectoryZipper.fromZip(input);
     File destination = Context.instance().tempDirectory.createNewDirectory();
-    zipper.unzip(destination.getAbsolutePath());
-    return zipper.getDirectoryPath();
+    return unpack(packagePath, destination.getPath());
   }
 
-  public String unpack(String packagePath, String destination) throws Exception
+  public String unpack(String packagePath, String destination)
   {
-    FileInputStream input = new FileInputStream(packagePath);
-    DirectoryZipper zipper = DirectoryZipper.fromZip(input);
-    zipper.unzip(destination);
-    return zipper.getDirectoryPath();
+    try
+    {
+      FileInputStream input = new FileInputStream(packagePath);
+      DirectoryZipper zipper = DirectoryZipper.fromZip(input);
+      zipper.unzip(destination);
+      return zipper.getDirectoryPath();
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException("Failed to unpack production: " + packagePath, e);
+    }
   }
 
-  public void pack(String productionPath) throws Exception
+  public void pack(String productionPath)
   {
-    DirectoryZipper zipper = DirectoryZipper.fromDir(productionPath);
-    String productionName = zipper.getProductionName();
-    FileOutputStream output = new FileOutputStream(productionName + ".llp");
-    zipper.zipTo(output);
+    pack(productionPath, null);
   }
 
-  public void pack(String productionPath, String llpName) throws Exception
+  public void pack(String productionPath, String llpName)
   {
-    DirectoryZipper zipper = DirectoryZipper.fromDir(productionPath);
-    FileOutputStream output = new FileOutputStream(llpName + ".llp");
-    zipper.zipTo(output);
+    try
+    {
+      DirectoryZipper zipper = DirectoryZipper.fromDir(productionPath);
+      if(llpName == null)
+        llpName = zipper.getProductionName();
+      FileOutputStream output = new FileOutputStream(llpName + ".llp");
+      zipper.zipTo(output);
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException("Failed to pack production: " + productionPath, e);
+    }
   }
 }

@@ -18,7 +18,6 @@ module Limelight
 
     include Java::limelight.ruby.RubyProductionProxy
 
-#    attr_reader :producer
     attr_reader :peer
     attr_accessor :theater
 
@@ -31,16 +30,9 @@ module Limelight
       @peer = production
       @casting_director = CastingDirector.new(@peer.resource_loader)
       @theater = Theater.new(self, @peer.theater)
-#      @producer = Producer.new(path, nil, self)
 
       @peer.proxy = self
     end
-    
-#    alias :getProducer :producer
-#
-#    def open()
-#      @producer.open
-#    end
 
     # returns true if the production has been opened, and not yet closed.
     #
