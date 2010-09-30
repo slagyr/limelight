@@ -85,11 +85,6 @@ module Limelight
       return @loader.path_to("styles.rb")
     end
 
-    #    def add_options(options) #:nodoc:
-    #      @options = options
-    #      illuminate
-    #    end
-
     # Creates the menu bar for the Scene 
     #
     def menu_bar
@@ -113,30 +108,10 @@ module Limelight
     def load(scene_name)
       production.open_scene(scene_name, stage)
     end
-#
-#    # Add the Prop to the index.  Provides fast lookup by id.
-#    #
-#    def index_prop(prop)
-#      return if prop.id.nil? || prop.id.empty?
-#      indexee = @prop_index[prop.id]
-#      if indexee.nil?
-#        @prop_index[prop.id] = prop
-#      else
-#        raise LimelightException.new("Duplicate id: #{prop.id}") if indexee != prop
-#      end
-#    end
-#
-#    # Removed the Prop from the index.
-#    #
-#    def unindex_prop(prop)
-#      unindex_child_props(prop)
-#      @prop_index.delete(prop.id) if prop.id
-#    end
 
     # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene. 
     #
     def find(id)
-#      return @prop_index[id.to_s]
       peer_result = @peer.find(id.to_s)
       return peer_result.nil? ? nil : peer_result.proxy
     end
@@ -144,30 +119,6 @@ module Limelight
     def visible?
       return @peer.visible?
     end
-        
-#    def illuminate(options={}) #:nodoc:
-#      options = Util::Hashes.for_ruby(options)
-##      @styles = options.remove(:styles_hash) || @styles || {}
-#      @casting_director = options.delete(:casting_director) if options.key?(:casting_director)
-#      @production = options.delete(:production) if options.key?(:production)
-#      super
-#    end
-
-    private ###############################################
-#
-#    def unindex_child_props(prop)
-#      prop.children.each do |child|
-#        if child.children.empty?
-#          @prop_index.delete(child.id)
-#        else
-#          unindex_prop(child)
-#        end
-#      end
-#    end
-#
-#    def reload
-#      load(File.basename(path))
-#    end
 
   end
 end

@@ -34,9 +34,14 @@ public class FileUtil
     return buildPath(parts);
   }
 
+  public static String absolutePath(String path)
+  {
+    return new File(path).getAbsolutePath();
+  }
+
   public static String currentPath()
   {
-    return new File("").getAbsolutePath();
+    return absolutePath(".");
   }
 
   public static File establishDirectory(String path)
@@ -202,5 +207,16 @@ public class FileUtil
       return name;
     else
       return name.substring(0, extensionIndex);
+  }
+
+  public static String fileExtension(String path)
+  {
+    final File file = new File(path);
+    String name = file.getName();
+    final int extensionIndex = name.lastIndexOf(".");
+    if(extensionIndex == -1)
+      return "";
+    else
+      return name.substring(extensionIndex);
   }
 }
