@@ -67,10 +67,7 @@ public class RubyProduction extends Production
   public Scene loadScene(String scenePath, Map<String, Object> options)
   {
     final SceneProxy proxy = rubyProxy.loadScene(scenePath, options);
-System.err.println("about to call getPeer()");
-    final Scene peer = proxy.getPeer();
-System.err.println("done calling getPeer()");    
-    return peer;
+    return proxy.getPeer();
   }
 
   @Override

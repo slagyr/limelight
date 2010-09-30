@@ -6,6 +6,7 @@ package limelight;
 import limelight.io.TempDirectory;
 import limelight.model.Studio;
 import limelight.ruby.RuntimeFactory;
+import limelight.ui.BufferedImagePool;
 import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;

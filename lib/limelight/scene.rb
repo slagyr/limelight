@@ -48,9 +48,7 @@ module Limelight
     def styles_store
       if @styles_store == nil
         styles_store = @peer.styles_store
-        puts "styles_store: #{styles_store}"
         @styles_store = Util::Hashes.for_ruby(styles_store)
-        puts "@styles_store: #{@styles_store}"
       end
       return @styles_store
     end
