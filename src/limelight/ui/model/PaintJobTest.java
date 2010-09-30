@@ -11,7 +11,7 @@ import limelight.ui.*;
 import limelight.ui.Panel;
 import limelight.styles.Style;
 import limelight.Context;
-import limelight.BufferedImagePool;
+import limelight.ui.BufferedImagePool;
 import limelight.caching.SimpleCache;
 import java.awt.*;
 import java.awt.image.BufferedImage;
