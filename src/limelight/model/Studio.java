@@ -248,7 +248,10 @@ e.printStackTrace();
   private String unpackLlp(String productionPath)
   {
     File destinationDir = new File(Data.productionsDir(), "" + System.currentTimeMillis());
-    return packer.unpack(productionPath, destinationDir.getAbsolutePath());
+    if(destinationDir.mkdirs())
+      return packer.unpack(productionPath, destinationDir.getAbsolutePath());
+    else
+      throw new LimelightException("Failed to create unpack directory: " + destinationDir.getAbsolutePath());
   }
 
   private static class ProductionClosedHandler implements EventAction

@@ -29,7 +29,7 @@ public class DarwinOS extends OS
 
   public String dataRoot()
   {
-    return System.getProperty("user.home") + "/Library/Application Support/Limelight";
+    return System.getProperty("user.home") + "/Library/Application\\ Support/Limelight";
   }
 
   protected void turnOnKioskMode()

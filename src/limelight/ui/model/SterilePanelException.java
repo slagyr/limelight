@@ -3,9 +3,7 @@
 
 package limelight.ui.model;
 
-import limelight.LimelightError;
-
-public class SterilePanelException extends LimelightError
+public class SterilePanelException extends Error
 {
   SterilePanelException(String name)
   {

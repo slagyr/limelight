@@ -3,8 +3,9 @@
 
 package limelight.ui.model;
 
+import limelight.LimelightException;
 import limelight.ui.Panel;
-import limelight.LimelightError;
+
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -62,6 +63,6 @@ public class PanelIterator implements Iterator<Panel>
 
   public void remove()
   {
-    throw new LimelightError("Iterator.remove is not allowed");
+    throw new LimelightException("Iterator.remove is not allowed");
   }
 }

@@ -3,7 +3,7 @@
 
 package limelight.ui.model;
 
-import limelight.LimelightError;
+import limelight.LimelightException;
 
 public class TempTextAccessor implements TextAccessor
 {
@@ -23,12 +23,12 @@ public class TempTextAccessor implements TextAccessor
   {
   }
 
-  public void setText(String text, Prop panel) throws LimelightError
+  public void setText(String text, Prop panel) throws LimelightException
   {
     if(text == null || text.length() == 0)
       return;
     if(panel.getTextAccessor() != this)
-      throw new LimelightError("You may only set text on empty props.");
+      throw new LimelightException("You may only set text on empty props.");
     TextPanel textPanel = new TextPanel(panel, text);
     panel.add(textPanel);
     panel.sterilize();

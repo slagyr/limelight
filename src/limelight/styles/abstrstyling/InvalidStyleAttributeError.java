@@ -3,9 +3,7 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.LimelightError;
-
-public class InvalidStyleAttributeError extends LimelightError
+public class InvalidStyleAttributeError extends Error
 {
   public InvalidStyleAttributeError(String s)
   {

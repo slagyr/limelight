@@ -6,9 +6,8 @@ package limelight.os.darwin;
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
 import com.apple.eawt.Application;
+import limelight.AppMain;
 import limelight.Context;
-import limelight.Main;
-import limelight.util.Debug;
 
 public class LimelightApplicationAdapter extends ApplicationAdapter
 {
@@ -45,11 +44,11 @@ public class LimelightApplicationAdapter extends ApplicationAdapter
       if(Context.instance().studio != null)
         Context.instance().studio.open(productionPath);
       else
-        Main.setStartupPath(productionPath);
+        AppMain.setStartupPath(productionPath);
     }
     catch(Throwable e)
     {
-      Main.handleError(e);
+      AppMain.handleError(e);
     }
   }
 

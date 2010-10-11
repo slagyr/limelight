@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import limelight.Context;
-import limelight.LimelightError;
 import limelight.LimelightException;
 import limelight.events.Event;
 import limelight.events.EventAction;
@@ -77,7 +76,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     return textAccessor.getText();
   }
 
-  public void setText(String text) throws LimelightError
+  public void setText(String text) throws LimelightException
   {
     if(!Util.equal(text, getText()))
     {

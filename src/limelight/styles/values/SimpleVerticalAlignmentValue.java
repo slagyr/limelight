@@ -3,7 +3,7 @@
 
 package limelight.styles.values;
 
-import limelight.LimelightError;
+import limelight.LimelightException;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.styles.VerticalAlignment;
 
@@ -32,7 +32,7 @@ public class SimpleVerticalAlignmentValue implements VerticalAlignmentValue
     else if(alignment == VerticalAlignment.BOTTOM)
       return "bottom";
     else
-      throw new LimelightError("Unknown Vertical Alignment: " + alignment);
+      throw new LimelightException("Unknown Vertical Alignment: " + alignment);
   }
 
   public boolean equals(Object obj)

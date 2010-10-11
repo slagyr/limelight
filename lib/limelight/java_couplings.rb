@@ -4,7 +4,6 @@
 module Limelight
 
   About = Java::limelight.About
-  Main = Java::limelight.Main
   Context = Java::limelight.Context
   Studio = Java::limelight.model.Studio
 
