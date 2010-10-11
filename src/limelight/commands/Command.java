@@ -72,16 +72,15 @@ public abstract class Command
     say("");
     say(name() + ":  " + description());
     say("");
-    say(CmdLineMain.mainCmd + " " + name() + " " + getArguments().argString());
+    say("Usage: " + CmdLineMain.mainCmd + " " + name() + " " + getArguments().argString());
+    say("");
     if(getArguments().hasParameters())
     {
-      say("");
       say("parameters:");
       say(getArguments().parametersString());
     }
     if(getArguments().hasOptions())
     {
-      say("");
       say("options:");
       say(getArguments().optionsString());
     }

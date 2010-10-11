@@ -1,5 +1,6 @@
 package limelight.commands;
 
+import limelight.Boot;
 import limelight.Context;
 import limelight.io.FileUtil;
 
@@ -8,6 +9,8 @@ import java.util.Map;
 public class OpenCommand extends Command
 {
   private static Arguments arguments;
+  private boolean shouldBoot = true;
+
   public static Arguments arguments()
   {
     if(arguments == null)
@@ -25,6 +28,8 @@ public class OpenCommand extends Command
     if(production == null)
       production = defaultProduction();
 
+    if(shouldBoot)
+      Boot.boot();
     Context.instance().studio.open(production);
   }
 
@@ -49,5 +54,10 @@ public class OpenCommand extends Command
   public String defaultProduction()
   {
     return FileUtil.pathTo(Context.instance().limelightHome, "productions", "playbills.lll");
+  }
+
+  public void setShouldBoot(boolean value)
+  {
+    shouldBoot = value;
   }
 }
