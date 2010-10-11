@@ -3,9 +3,7 @@ package limelight.commands;
 import limelight.CmdLineMain;
 import limelight.util.Util;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HelpCommand extends Command
 {
@@ -116,6 +114,13 @@ public class HelpCommand extends Command
     commands = new LinkedList<Command>();
     for(Class<? extends Command> commandClass : CmdLineMain.commands.values())
       commands.add(Command.instance(commandClass));
+
+    Collections.sort(commands, new Comparator<Command>(){
+      public int compare(Command first, Command second)
+      {
+        return first.name().compareTo(second.name());
+      }
+    });
   }
 
   public String description()

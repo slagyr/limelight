@@ -16,6 +16,7 @@ public class OpenCommandTest
   public void setUp() throws Exception
   {
     command = new OpenCommand();
+    command.setShouldBoot(false);
     studio = new MockStudio();
     Context.instance().studio = studio;
   }
@@ -26,5 +27,13 @@ public class OpenCommandTest
     command.execute();
 
     assertEquals(command.defaultProduction(), studio.openedProduction);    
+  }
+  
+  @Test
+  public void openSpecifiedProduction() throws Exception
+  {
+    command.execute("/path/to/blah");
+
+    assertEquals("/path/to/blah", studio.openedProduction);
   }
 }

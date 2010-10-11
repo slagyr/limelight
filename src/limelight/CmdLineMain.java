@@ -14,13 +14,14 @@ public class CmdLineMain
   {
     commands.put("help", HelpCommand.class);
     commands.put("open", OpenCommand.class);
+    commands.put("pack", PackCommand.class);
+    commands.put("unpack", UnpackCommand.class);
   }
 
   private Command command;
 
   public static void main(String[] args)
   {
-    Boot.boot();
     new CmdLineMain().run(args);
   }
 
