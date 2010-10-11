@@ -3,7 +3,7 @@
 
 package limelight.ui.model;
 
-import limelight.LimelightError;
+import limelight.LimelightException;
 import limelight.styles.ScreenableStyle;
 
 import javax.imageio.stream.ImageInputStream;
@@ -138,7 +138,7 @@ public class ImagePanel extends PanelBase
       }
       catch(Exception e)
       {
-        throw new LimelightError("Could not load image: " + imageFile);
+        throw new LimelightException("Could not load image: " + imageFile);
       }
     }
     return image;

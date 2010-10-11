@@ -33,7 +33,7 @@ module Limelight
       end
 
       def process #:nodoc:
-        Main.initialize_temp_directory
+        Java::limelight.Boot.initialize_temp_directory
         packer = Limelight::Util::Packer.new
         location = packer.unpack(@production_path)
         puts "Production was unpacked to: #{location}"

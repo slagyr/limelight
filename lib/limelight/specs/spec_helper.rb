@@ -106,11 +106,11 @@ module Spec #:nodoc:
                                                                              
       def producer
         if Limelight::Specs.producer.nil?
-          if $with_ui
-            Limelight::Main.initializeContext
-          else
-            Limelight::Main.initializeTestContext
-          end
+#          if $with_ui
+            Java::limelight.Boot.boot
+#          else
+#            Limelight::Main.initializeTestContext
+#          end
           raise "$PRODUCTION_PATH undefined.  Make sure you specify the location of the production in $PRODUCTION_PATH." unless defined?($PRODUCTION_PATH)
           raise "Could not find production: '#{$PRODUCTION_PATH}'. Check $PRODUCTION_PATH." unless File.exists?($PRODUCTION_PATH)
           Limelight::Specs.producer = Limelight::Producer.new($PRODUCTION_PATH)

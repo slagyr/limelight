@@ -115,6 +115,13 @@ module Limelight
       return @peer.allow_close?
     end
 
+    # Specifies whether this production will allow itself to be closed.  It should be noted that permanently setting
+    # this to false could keep the entire Limelight runtime from shutting down.
+    #
+    def allow_close=(value)
+      @peer.allow_close = value
+    end
+
     # Closes the production. If there are no more productions open, the Limelight runtime will shutdown.
     # The production will actually delegate to it's producer and the producer will close the production down.
     #
@@ -141,6 +148,26 @@ module Limelight
         end
       end
       return @root_styles
+    end
+
+    def on_production_created(&action)
+      @peer.event_handler.add(Java::limelight.model.events.ProductionCreatedEvent, action)
+    end
+
+    def on_production_loaded(&action)
+      @peer.event_handler.add(Java::limelight.model.events.ProductionLoadedEvent, action)
+    end
+
+    def on_production_opened(&action)
+      @peer.event_handler.add(Java::limelight.model.events.ProductionOpenedEvent, action)
+    end
+
+    def on_production_closing(&action)
+      @peer.event_handler.add(Java::limelight.model.events.ProductionClosingEvent, action)
+    end
+
+    def on_production_closed(&action)
+      @peer.event_handler.add(Java::limelight.model.events.ProductionClosedEvent, action)
     end
 
     def casting_director

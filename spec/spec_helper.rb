@@ -5,7 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../lib/init")
 require 'spec'
 require 'limelight/mouse'
 
-Limelight::Main.new.configureTestContext
+Java::limelight.Boot.boot
 context = Limelight::Context.instance
 context.frameManager = Java::limelight.ui.model.InertFrameManager.new
 

@@ -13,7 +13,7 @@ Dir.glob(File.join("__resources", "gems", "gems", "**", "lib")).each do |dir|
 end
 
 Before do
-  Limelight::Main.initializeTestContext
+  Java::limelight.Boot.boot
   Limelight::Specs.producer = Limelight::Producer.new($PRODUCTION_PATH)
   Limelight::Specs.producer.production.extend(MockProduction)
   Limelight::Specs.producer.open

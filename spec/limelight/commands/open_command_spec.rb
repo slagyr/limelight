@@ -18,14 +18,14 @@ describe Limelight::Commands::OpenCommand do
   end
 
   it "should open a production" do
-    Limelight::Main.should_receive(:initialize_context)
+    Java::limelight.Boot.should_receive(:boot)
     @studio.should_receive(:open).with("production_name")
 
     @command.run(["production_name"])
   end
 
   it "should open the default production" do
-    Limelight::Main.should_receive(:initialize_context)
+    Java::limelight.Boot.should_receive(:boot)
     @studio.should_receive(:open).with(@command_class::DEFAULT_PRODUCTION)
 
     @command.run([])
@@ -43,7 +43,7 @@ describe Limelight::Commands::OpenCommand do
   end
 
   it "should start the studio on drb" do
-    Limelight::Main.should_receive(:initialize_context)
+    Java::limelight.Boot.should_receive(:boot)
     @studio.should_receive(:publish_productions_on_drb).with(1234)
     @studio.should_receive(:open).with("some_prod")
 

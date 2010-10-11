@@ -1,0 +1,30 @@
+package limelight.commands;
+
+import limelight.Context;
+import limelight.model.api.MockStudio;
+import org.junit.Before;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertEquals;
+
+public class OpenCommandTest
+{
+  private OpenCommand command;
+  private MockStudio studio;
+
+  @Before
+  public void setUp() throws Exception
+  {
+    command = new OpenCommand();
+    studio = new MockStudio();
+    Context.instance().studio = studio;
+  }
+
+  @Test
+  public void defaultProduction() throws Exception
+  {
+    command.execute();
+
+    assertEquals(command.defaultProduction(), studio.openedProduction);    
+  }
+}

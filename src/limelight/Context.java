@@ -3,6 +3,7 @@
 
 package limelight;
 
+import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.model.Studio;
 import limelight.ruby.RuntimeFactory;
@@ -47,7 +48,7 @@ public class Context
 
   protected Context()
   {
-    limelightHome = System.getProperty("limelight.home");
+    limelightHome = System.getProperty("limelight.home") == null ? FileUtil.currentPath() : System.getProperty("limelight.home");
     installStyleAttributeCompilerFactory();
   }
 

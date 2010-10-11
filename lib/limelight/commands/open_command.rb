@@ -37,7 +37,7 @@ module Limelight
       end
 
       def do_requires       
-        Main.initialize_context
+        Java::limelight.Boot.boot()
         require 'limelight/producer'
       end
 

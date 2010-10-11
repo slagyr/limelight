@@ -19,7 +19,7 @@ describe Limelight::Commands::UnpackCommand do
     Limelight::Util::Packer.stub!(:new).and_return(@mock_unpacker)
     @mock_unpacker.stub!(:unpack).and_return "unpacked location"
 
-    Limelight::Main.stub!(:initialize_temp_directory)
+    Java::limelight.Boot.stub!(:initialize_temp_directory)
   end
 
   it "should be listed" do
@@ -27,7 +27,7 @@ describe Limelight::Commands::UnpackCommand do
   end
 
   it "set the context temp dir" do
-    Limelight::Main.should_receive(:initialize_temp_directory)
+    Java::limelight.Boot.should_receive(:initialize_temp_directory)
 
     @command.run(["production_to_pack"])
   end

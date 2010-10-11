@@ -3,9 +3,9 @@
 
 package limelight.styles.compiling;
 
+import limelight.LimelightException;
 import limelight.styles.abstrstyling.*;
 import limelight.styles.values.*;
-import limelight.LimelightError;
 import limelight.Context;
 
 public class RealStyleAttributeCompilerFactory implements StyleAttributeCompilerFactory
@@ -57,7 +57,7 @@ public class RealStyleAttributeCompilerFactory implements StyleAttributeCompiler
     else if("cursor".equals(type))
       result = new CursorAttributeCompiler();
     else
-      throw new LimelightError("Unknown StyleAttributeCompiler named " + type);
+      throw new LimelightException("Unknown StyleAttributeCompiler named " + type);
 
     result.setName(name);
     result.type = type;

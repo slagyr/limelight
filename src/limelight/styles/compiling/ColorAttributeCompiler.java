@@ -3,11 +3,11 @@
 
 package limelight.styles.compiling;
 
+import limelight.LimelightException;
 import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.values.SimpleColorValue;
 import limelight.util.Colors;
-import limelight.LimelightError;
 
 import java.awt.*;
 
@@ -21,7 +21,7 @@ public class ColorAttributeCompiler extends StyleCompiler
       Color color = Colors.resolve(value);
       return new SimpleColorValue(color);
     }
-    catch(LimelightError e)
+    catch(LimelightException e)
     {
       throw makeError(value);
     }

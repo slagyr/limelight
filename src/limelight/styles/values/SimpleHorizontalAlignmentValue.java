@@ -3,9 +3,9 @@
 
 package limelight.styles.values;
 
+import limelight.LimelightException;
 import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.styles.HorizontalAlignment;
-import limelight.LimelightError;
 
 import java.awt.*;
 
@@ -32,7 +32,7 @@ public class SimpleHorizontalAlignmentValue implements HorizontalAlignmentValue
     else if(alignment == HorizontalAlignment.RIGHT)
       return "right";
     else
-      throw new LimelightError("Unknown Horizontal Alignment: " + alignment);
+      throw new LimelightException("Unknown Horizontal Alignment: " + alignment);
   }
 
   public boolean equals(Object obj)

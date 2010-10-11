@@ -3,7 +3,7 @@
 
 package limelight.util;
 
-import limelight.LimelightError;
+import limelight.LimelightException;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -186,7 +186,7 @@ public class Colors
     if(result == null)
       result = convertNamedColor(value);
     if(result == null)
-      throw new LimelightError("Invalid color: " + value);
+      throw new LimelightException("Invalid color: " + value);
 
     return result;
   }

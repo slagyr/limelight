@@ -1,107 +1,117 @@
-//- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
-
 package limelight;
 
-import junit.framework.TestCase;
+import limelight.audio.RealAudioPlayer;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
 import limelight.model.Studio;
-import limelight.ui.Panel;
-import limelight.audio.RealAudioPlayer;
 import limelight.os.MockOS;
 import limelight.os.OS;
 import limelight.os.UnsupportedOS;
+import limelight.ui.Panel;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 
-public class MainTest extends TestCase
-{
-  private Main main;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+public class BootTest
+{
+  @Before
   public void setUp() throws Exception
   {
-    main = new Main();
+    Boot.reset();
     Context.removeInstance();
   }
 
+  @After
   public void tearDown() throws Exception
   {
-    System.setProperty("os.name", "blah"); 
+    System.setProperty("os.name", "blah");
   }
   
-  public void testTempFileIsAddedToContext() throws Exception
+  @Test
+  public void tempFileIsAddedToContext() throws Exception
   {
-    main.configureContext();
+    Boot.configureContext();
 
     assertNotNull(Context.instance().tempDirectory);
   }
 
-  public void testBufferedImageCacheIsAddedToContext() throws Exception
+  @Test
+  public void bufferedImageCacheIsAddedToContext() throws Exception
   {
-    main.configureContext();
+    Boot.configureContext();
 
     Cache<Panel, BufferedImage> cache = Context.instance().bufferedImageCache;
     assertEquals(TimedCache.class, cache.getClass());
     assertEquals(1, ((TimedCache)cache).getTimeoutSeconds(), 0.01);
   }
-  
-  public void testFrameManagerIsAddedToContext() throws Exception
+
+  @Test
+  public void frameManagerIsAddedToContext() throws Exception
   {
-    main.configureContext();
+    Boot.configureContext();
 
     assertNotNull(Context.instance().frameManager);
   }
 
-  public void testAudioPlayerIsAdded() throws Exception
+  @Test
+  public void audioPlayerIsAdded() throws Exception
   {
-    main.configureContext();
+    Boot.configureContext();
 
     assertEquals(RealAudioPlayer.class, Context.instance().audioPlayer.getClass());
   }
-  
+
 //  public void testKeyboardFocusListenerIsInstalled() throws Exception
 //  {
-//    main.configureContext();
+//    Boot.configureContext();
 //
 //    assertSame(Context.instance().keyboardFocusManager, java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager());
 //  }
 
-  public void testBufferedImagePoolIsInstalled() throws Exception
+  @Test
+  public void bufferedImagePoolIsInstalled() throws Exception
   {
-    main.configureContext();
+    Boot.configureContext();
 
     assertNotNull(Context.instance().bufferedImagePool);
   }
 
-  public void testRuntimeFactoryIsInstalled() throws Exception
+  @Test
+  public void runtimeFactoryIsInstalled() throws Exception
   {
-    main.configureContext();
+    Boot.configureContext();
 
     assertNotNull(Context.instance().runtimeFactory);
   }
-  
-  public void testStudioIsInstalled() throws Exception
+
+  @Test
+  public void studioIsInstalled() throws Exception
   {
-    main.configureContext();
+    Boot.configureContext();
 
     assertEquals(Studio.class, Context.instance().studio.getClass());
   }
 
-  public void testSettingSystemCofiguration() throws Exception
+  @Test
+  public void settingSystemCofiguration() throws Exception
   {
     System.setProperty("limelight.home", "/limelighthome");
     MockOS os = new MockOS();
     Context.instance().os = os;
-    main.setContext(Context.instance());
 
-    main.configureSystemProperties();
+    Boot.configureSystemProperties();
 
     assertEquals(true, os.systemPropertiesConfigured);
     assertEquals("true", System.getProperty("jruby.interfaces.useProxy"));
   }
 
-  public void testDarwinOS() throws Exception
+  @Test
+  public void darwinOS() throws Exception
   {
     try
     {
@@ -112,32 +122,35 @@ public class MainTest extends TestCase
       return;
     }
     System.setProperty("os.name", "Mac OS X");
-    main.configureOS();
+    Boot.configureOS();
 
     OS os = Context.instance().os;
     assertEquals("limelight.os.darwin.DarwinOS", os.getClass().getName());
   }
 
-  public void testWindowsXPOS() throws Exception
+  @Test
+  public void windowsXPOS() throws Exception
   {
     System.setProperty("os.name", "Windows XP");
-    main.configureOS();
+    Boot.configureOS();
     OS os = Context.instance().os;
     assertEquals("limelight.os.win32.Win32OS", os.getClass().getName());
   }
 
-  public void testWindowsVistaOS() throws Exception
+  @Test
+  public void windowsVistaOS() throws Exception
   {
     System.setProperty("os.name", "Windows Vista");
-    main.configureOS();
+    Boot.configureOS();
     OS os = Context.instance().os;
     assertEquals("limelight.os.win32.Win32OS", os.getClass().getName());
   }
 
-  public void testUnsupportedOS() throws Exception
+  @Test
+  public void unsupportedOS() throws Exception
   {
     System.setProperty("os.name", "Something Unsupported");
-    main.configureOS();
+    Boot.configureOS();
 
     OS os = Context.instance().os;
     assertEquals(UnsupportedOS.class, os.getClass());
