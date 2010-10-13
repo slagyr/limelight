@@ -120,7 +120,7 @@ public class DirectoryZipper
   {
     String name = file.getAbsolutePath().substring(locationPath.length() + 1);
     if(file.isDirectory())
-      name = name + FileUtil.seperator();
+      name = name + FileUtil.separator();
     return name;
   }
 

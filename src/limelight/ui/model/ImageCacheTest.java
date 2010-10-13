@@ -21,13 +21,13 @@ public class ImageCacheTest extends TestCase
 
   public void testLoadingAnImage() throws Exception
   {
-    Image image = cache.getImage(FileUtil.buildPath(TestUtil.DATA_DIR, "star.gif"));
+    Image image = cache.getImage(FileUtil.join(TestUtil.DATA_DIR, "star.gif"));
     assertNotNull(image);
   }
 
   public void testLoadingAnImageTwiceGivesTheSameImage() throws Exception
   {
-    String imagePath = FileUtil.buildPath(TestUtil.DATA_DIR, "star.gif");
+    String imagePath = FileUtil.join(TestUtil.DATA_DIR, "star.gif");
     Image image = cache.getImage(imagePath);
     Image image2 = cache.getImage(imagePath);
 
