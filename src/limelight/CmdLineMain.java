@@ -16,6 +16,7 @@ public class CmdLineMain
     commands.put("open", OpenCommand.class);
     commands.put("pack", PackCommand.class);
     commands.put("unpack", UnpackCommand.class);
+    commands.put("create", CreateCommand.class);
   }
 
   private Command command;

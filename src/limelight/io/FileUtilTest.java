@@ -15,27 +15,27 @@ public class FileUtilTest
   @Test
   public void buildPathEmpty() throws Exception
 	{
-		assertEquals("", FileUtil.buildPath());
+		assertEquals("", FileUtil.join());
 	}
 
   @Test
 	public void buildPathOneElement() throws Exception
 	{
-		assertEquals("a", FileUtil.buildPath("a"));
+		assertEquals("a", FileUtil.join("a"));
 	}
 
   @Test
 	public void buildPathThreeElements() throws Exception
 	{
 		String separator = System.getProperty("file.separator");
-		assertEquals("a" + separator + "b" + separator + "c", FileUtil.buildPath("a", "b", "c"));
+		assertEquals("a" + separator + "b" + separator + "c", FileUtil.join("a", "b", "c"));
 	}
 
   @Test
   public void currentPath() throws Exception
   {
     String currentPath = FileUtil.currentPath();
-    File currentPathFile = new File(FileUtil.buildPath(currentPath, "."));
+    File currentPathFile = new File(FileUtil.join(currentPath, "."));
     File dotFile = new File(".");
     assertEquals(dotFile.getAbsolutePath(), currentPathFile.getAbsolutePath());
   }

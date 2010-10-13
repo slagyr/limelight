@@ -3,35 +3,36 @@
 
 package limelight.io;
 
+import limelight.LimelightException;
 import limelight.util.StringUtil;
 
 import java.io.*;
 
 public class FileUtil
 {
-  public static String seperator()
+  public static String separator()
   {
     return System.getProperty("file.separator");
   }
 
-  public static String buildPath(String... parts)
+  public static String join(String... parts)
   {
-    return removeDuplicateSeprators(StringUtil.join(seperator(), parts));
+    return removeDuplicateSeprators(StringUtil.join(separator(), parts));
   }
 
   private static String removeDuplicateSeprators(String path)
   {
-    return path.replace(seperator() + seperator(), seperator());
+    return path.replace(separator() + separator(), separator());
   }
 
   public static String buildOnPath(String base, String... parts)
   {
-    return removeDuplicateSeprators(base + seperator() + buildPath(parts));
+    return removeDuplicateSeprators(base + separator() + join(parts));
   }
 
   public static String pathTo(String... parts)
   {
-    return buildPath(parts);
+    return join(parts);
   }
 
   public static String absolutePath(String path)
@@ -164,34 +165,48 @@ public class FileUtil
     }
   }
 
-  public static String getFileContent(String path) throws Exception
+  public static String getFileContent(String path)
   {
     File input = new File(path);
     return getFileContent(input);
   }
 
-  public static String getFileContent(File input) throws Exception
+  public static String getFileContent(File input)
   {
     return new String(getFileBytes(input));
   }
 
-  public static byte[] getFileBytes(File input) throws Exception
+  public static byte[] getFileBytes(File input)
   {
-    long size = input.length();
-    FileInputStream stream = new FileInputStream(input);
-    byte[] bytes = new StreamReader(stream).readBytes((int) size);
-    stream.close();
-    return bytes;
+    try
+    {
+      long size = input.length();
+      FileInputStream stream = new FileInputStream(input);
+      byte[] bytes = new StreamReader(stream).readBytes((int) size);
+      stream.close();
+      return bytes;
+    }
+    catch(IOException e)
+    {
+      throw new LimelightException(e);
+    }
   }
 
-  public static void copyBytes(InputStream input, OutputStream output) throws Exception
+  public static void copyBytes(InputStream input, OutputStream output)
   {
-    BufferedInputStream bufferedInput = new BufferedInputStream(input);
-    StreamReader reader = new StreamReader(bufferedInput);
-    BufferedOutputStream bufferedOutput = new BufferedOutputStream(output);
-    while(!reader.isEof())
-      bufferedOutput.write(reader.readBytes(1000));
-    bufferedOutput.flush();
+    try
+    {
+      BufferedInputStream bufferedInput = new BufferedInputStream(input);
+      StreamReader reader = new StreamReader(bufferedInput);
+      BufferedOutputStream bufferedOutput = new BufferedOutputStream(output);
+      while(!reader.isEof())
+        bufferedOutput.write(reader.readBytes(1000));
+      bufferedOutput.flush();
+    }
+    catch(IOException e)
+    {
+      throw new LimelightException(e);
+    }
   }
 
   public static String baseName(String path)
@@ -214,5 +229,21 @@ public class FileUtil
       return "";
     else
       return name.substring(extensionIndex);
+  }
+
+  public static String parentPath(String path)
+  {
+    final int lastSeparator = path.lastIndexOf(separator());
+    if(lastSeparator == -1)
+      return "";
+    return path.substring(0, lastSeparator);
+  }
+
+  public static String filename(String path)
+  {
+    final int lastSeparator = path.lastIndexOf(separator());
+    if(lastSeparator == -1)
+      return path;
+    return path.substring(lastSeparator + 1);
   }
 }

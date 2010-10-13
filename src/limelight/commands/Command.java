@@ -85,4 +85,12 @@ public abstract class Command
       say(getArguments().optionsString());
     }
   }
+
+  protected String getArgOrDefault(Map<String, String> args, String argName, String defaultValue)
+  {
+    String value = args.get(argName);
+    if(value == null)
+      value = defaultValue;
+    return value;
+  }
 }
