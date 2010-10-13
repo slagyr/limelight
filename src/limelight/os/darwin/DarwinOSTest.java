@@ -20,7 +20,7 @@ public class DarwinOSTest extends TestCase
 
   public void testDataRootDir() throws Exception
   {
-    assertEquals(System.getProperty("user.home") + "/Library/Application Support/Limelight", os.dataRoot());
+    assertEquals(System.getProperty("user.home") + "/Library/Application\\ Support/Limelight", os.dataRoot());
   }
 
   public void testConfigureSystemProperties() throws Exception

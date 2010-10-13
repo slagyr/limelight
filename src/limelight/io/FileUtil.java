@@ -235,7 +235,7 @@ public class FileUtil
   {
     final int lastSeparator = path.lastIndexOf(separator());
     if(lastSeparator == -1)
-      return "";
+      return ".";
     return path.substring(0, lastSeparator);
   }
 
