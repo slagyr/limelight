@@ -1,5 +1,6 @@
 package limelight.io;
 
+import limelight.LimelightException;
 import limelight.util.StringUtil;
 
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class Templater
   private String destinationRoot;
   private String sourceRoot;
   private Map<String, String> tokens = new HashMap<String, String>();
+  private boolean destinationRootVerified;
 
   public Templater(String destination, String source)
   {
@@ -42,8 +44,24 @@ public class Templater
 
   public void directory(String dir)
   {
+    verifyDestinationRoot();
+    final String fullPath = FileUtil.join(destinationRoot, dir);
+    if(fileSystem.exists(fullPath))
+      return;
+
+    directory(FileUtil.parentPath(dir));
     creatingDirectory(dir);
-    fileSystem.createDirectory(FileUtil.join(destinationRoot, dir));
+    fileSystem.createDirectory(fullPath);
+  }
+
+  private void verifyDestinationRoot()
+  {
+    if(!destinationRootVerified)
+    {
+      if(!fileSystem.exists(destinationRoot))
+        throw new LimelightException("Templater destination root doesn't exist: " + destinationRoot);
+      destinationRootVerified = true;
+    }
   }
 
   public String getSourceRoot()
@@ -53,6 +71,7 @@ public class Templater
 
   public void file(String filePath, String template)
   {
+    directory(FileUtil.parentPath(filePath));
     final String templateContent = fileSystem.readTextFile(FileUtil.join(sourceRoot, template));
 
     final String destination = FileUtil.join(destinationRoot, filePath);

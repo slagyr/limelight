@@ -20,6 +20,7 @@ public class TemplaterTest
     templater.setLogger(log);
     fileSystem = new FakeFileSystem();
     templater.setFileSystem(fileSystem);
+    fileSystem.createDirectory("destination");
   }
 
   public static class FakeTemplaterLogger extends Templater.TemplaterLogger

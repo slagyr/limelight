@@ -16,7 +16,7 @@ public class FakeCommand extends Command
   @Override
   public String description()
   {
-    return null;
+    return "fake description";
   }
 
   @Override
