@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.LimelightException;
+import limelight.model.MockProduction;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import limelight.model.api.MockPropProxy;
@@ -211,10 +212,8 @@ public class ScenePanelTest extends Assert
   @Test
   public void shouldHasAnImageCache() throws Exception
   {
-    MockSceneProxy scene = new MockSceneProxy();
-    child.prop.sceneProxy = scene;
-    scene.loader = new MockResourceLoader();
-    root.add(child);
+    MockProduction production = new MockProduction();
+    root.setProduction(production);
     assertNotNull(root.getImageCache());
   }
 

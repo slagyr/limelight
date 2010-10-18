@@ -3,7 +3,13 @@
 
 require 'limelight/limelight_exception'
 require 'limelight/dsl/styles_builder'
-require 'limelight/producer'
+require 'limelight/casting_director'
+require 'limelight/theater'
+require 'limelight/dsl/stage_builder'
+require 'limelight/dsl/prop_builder'
+require 'limelight/dsl/styles_builder'
+require 'limelight/util/hashes'
+require 'limelight/scene'
 require 'drb'
 
 
