@@ -38,11 +38,11 @@ public class UtilitiesProduction
   {
     return production.getProxy().callMethod(name, args);
   }
-
-  public void publish_on_drb(int port)
-  {
-    production.getProxy().publish_on_drb(port);
-  }
+//
+//  public void publish_on_drb(int port)
+//  {
+//    production.getProxy().publish_on_drb(port);
+//  }
 
   public Object alert(Object message)
   {   
