@@ -18,7 +18,6 @@ public class MockPropProxy implements PropProxy
   public String name;
   public boolean hooverOn;
   public SceneProxy sceneProxy;
-  public ResourceLoader loader;
   public Map<String, Object> appliedOptions;
 
   public MockPropProxy()
@@ -59,11 +58,6 @@ public class MockPropProxy implements PropProxy
   public SceneProxy getScene()
   {
     return sceneProxy;
-  }
-
-  public ResourceLoader getLoader()
-  {
-    return loader;
   }
 
   public void applyOptions(Map<String, Object> options)

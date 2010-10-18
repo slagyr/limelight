@@ -5,6 +5,8 @@ package limelight.model;
 
 import limelight.model.api.MockCastingDirector;
 import limelight.ui.model.Scene;
+import limelight.util.MockResourceLoader;
+import limelight.util.ResourceLoader;
 
 import java.util.Map;
 
@@ -28,6 +30,12 @@ public class MockProduction extends Production
   {
     super(name);
     setCastingDirector(new MockCastingDirector());
+  }
+
+  public MockProduction(String name, ResourceLoader loader)
+  {
+    this(name);
+    resourceLoader = loader;
   }
 
   @Override

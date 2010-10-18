@@ -5,3 +5,4 @@ classes
 pkg
 out
 *.DS_Store
+.rakeTasks

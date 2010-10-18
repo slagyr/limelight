@@ -8,13 +8,6 @@ import limelight.util.ResourceLoader;
 
 public class MockSceneProxy extends MockPropProxy implements SceneProxy
 {
-  public ResourceLoader loader;
-
-  public ResourceLoader getLoader()
-  {
-    return loader;
-  }
-
   public Scene getPeer()
   {
     return null;

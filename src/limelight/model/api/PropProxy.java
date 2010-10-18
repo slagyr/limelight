@@ -3,13 +3,9 @@
 
 package limelight.model.api;
 
-import limelight.util.ResourceLoader;
-
 import java.util.Map;
 
 public interface PropProxy
 {
-  ResourceLoader getLoader();
-
   void applyOptions(Map<String, Object> options);
 }

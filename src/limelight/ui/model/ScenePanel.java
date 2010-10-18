@@ -183,8 +183,7 @@ public class ScenePanel extends PropPanel implements Scene
   {
     if(imageCache == null)
     {
-      PropProxy propProxy = getProxy();
-      ResourceLoader loader = propProxy.getLoader();
+      ResourceLoader loader = getProduction().getResourceLoader();
       imageCache = new ImageCache(loader);
     }
     return imageCache;

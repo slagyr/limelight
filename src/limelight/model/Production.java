@@ -20,7 +20,7 @@ public abstract class Production
 {
   private String name;
   private boolean allowClose = true;
-  private ResourceLoader resourceLoader;
+  protected ResourceLoader resourceLoader;
   private ProductionProxy proxy;
   private CastingDirector castingDirector;
   private Theater theater;
