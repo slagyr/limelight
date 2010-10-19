@@ -29,9 +29,7 @@ module Limelight
 
     include Java::limelight.model.api.PropProxy
 
-#    attr_accessor :style, :hover_style
     attr_reader :peer #:nodoc:
-#    attr_reader :children, :parent, :name, :id, :players
     getters :loader #:nodoc:
 
     alias :getPeer :peer
@@ -44,9 +42,6 @@ module Limelight
     #
     def initialize(options={})
       @peer = self.class.panel_class.new(self)
-#      @style = @peer.style
-#      @children = []
-#      @options = {}
       @peer.add_options(Util::Hashes.for_java(options))
     end
 

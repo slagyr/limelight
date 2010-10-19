@@ -4,10 +4,12 @@
 package limelight.ui.model;
 
 import limelight.*;
+import limelight.io.TemplaterTest;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
+import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
 import limelight.model.api.PropProxy;
 import limelight.util.ResourceLoader;
@@ -25,6 +27,8 @@ public class ScenePanel extends PropPanel implements Scene
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
   private boolean shouldAllowClose = true;
+  private ButtonGroupCache buttonGroups = new ButtonGroupCache();
+  private ResourceLoader resourceLoader;
 
   public ScenePanel(PropProxy propProxy)
   {
@@ -255,6 +259,26 @@ public class ScenePanel extends PropPanel implements Scene
   public boolean isVisible()
   {
     return stage != null && stage.isVisible();
+  }
+
+  public ButtonGroupCache getButtonGroups()
+  {
+    return buttonGroups;
+  }
+
+  public ResourceLoader getResourceLoader()
+  {
+    if(resourceLoader == null)
+      resourceLoader = ResourceLoader.forRoot("");
+    return resourceLoader;
+  }
+
+  @Override
+  public void addOptions(Map<String, Object> newOptions)
+  {
+    if(newOptions.containsKey("path"))
+      resourceLoader = ResourceLoader.forRoot("" + newOptions.remove("path"));
+    super.addOptions(newOptions);
   }
 
   private static class SceneLayout implements Layout

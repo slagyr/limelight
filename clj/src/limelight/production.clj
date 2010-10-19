@@ -12,5 +12,7 @@
   (loadStyles [this scene] nil))
 
 (defn new-production [peer]
-  (Production. peer (limelight.theater.Theater.) (limelight.casting-director.CastingDirector.)))
+  (let [production (Production. peer (atom nil) (limelight.casting-director.CastingDirector. (.getResourceLoader peer)))]
+    (swap! (.theater production) (fn [old] (limelight.theater.Theater. (.getTheater peer) production)))
+    production))
 
