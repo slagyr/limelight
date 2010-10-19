@@ -35,7 +35,8 @@ public class FramedStage extends Stage
     frame.setTitle(name);
     addListeners();
 
-    Context.instance().frameManager.watch(frame);
+    if(Context.instance().frameManager != null)
+      Context.instance().frameManager.watch(frame);
     frame.setBackground(Color.WHITE);
     frame.setIconImage(Images.load("icon_48.gif"));
   }
