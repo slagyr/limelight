@@ -1,39 +1,15 @@
 package limelight.model.api;
 
+import java.util.Map;
+
 public class MockProductionProxy implements ProductionProxy
 {
   public CastingDirector castingDirector;
   public TheaterProxy theater;
 
-  public String getName()
-  {
-    return null;
-  }
-
-  public void setName(String name)
-  {
-  }
-
-  public boolean allowClose()
-  {
-    return false;
-  }
-
-  public void close()
-  {
-  }
-
   public Object callMethod(String name, Object... args)
   {
     return null;
-  }
-
-  public void publish_on_drb(int port)
-  {
-  }
-
-  public void open()
-  {
   }
 
   public CastingDirector getCastingDirector()
@@ -44,5 +20,26 @@ public class MockProductionProxy implements ProductionProxy
   public TheaterProxy getTheater()
   {
     return theater;
+  }
+
+  public void illuminate()
+  {
+  }
+
+  public void loadLibraries()
+  {
+  }
+
+  public void loadStages()
+  {
+  }
+
+  public SceneProxy loadScene(String scenePath, Map<String, Object> options)
+  {
+    return null;
+  }
+
+  public void loadStyles(SceneProxy scene)
+  {
   }
 }
