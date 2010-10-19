@@ -14,8 +14,23 @@
       (it "has casting director" (= :casting-director (.casting-director production)))
       (it "has theater" (= :theater (.theater production))))))
 
+(defprotocol RealProduction
+  "For testing only"
+  (getResourceLoader [this])
+  (getTheater [this]))
+
+(deftype FakeProduction [loader theater]
+  RealProduction
+  (getResourceLoader [this] loader)
+  (getTheater [this] theater))
+
 (describe "Building a new production"
-  (given [production (new-production :peer)]
-    (it "have the peer" (= :peer (.peer production)))
-    (it "has a real theater" (= limelight.theater.Theater (type (.theater production))))
-    (it "has a real casting director" (= limelight.casting-director.CastingDirector (type (.casting-director production))))))
+  (given [peer-production (FakeProduction. :loader :theater) production (new-production peer-production)]
+    (it "have the peer" (= peer-production (.peer production)))
+    (testing "creates a theater"
+      (it "implementing the Theater API" (= limelight.theater.Theater (type @(.theater production))))
+      (it "with the peer theater" (= :theater (.peer @(.theater production))))
+      (it "with the production" (= production (.production @(.theater production)))))
+    (testing "creates a casting director"
+      (it "implementing the CastingDirector API" (= limelight.casting-director.CastingDirector (type (.casting-director production))))
+      (it "with the loader" (= :loader (.loader (.casting-director production)))))))

@@ -1,5 +1,5 @@
 (ns limelight.theater)
 
-(deftype Theater []
+(deftype Theater [peer production]
   limelight.model.api.TheaterProxy
   (buildStage [this name options] nil))

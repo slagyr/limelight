@@ -21,13 +21,10 @@ module Limelight
 
     include Java::limelight.model.api.SceneProxy
 
-    attr_reader :button_groups, :cast
+    attr_reader :cast
 
-    def initialize(options={})      
-      path = options.delete(:path) || ""
-      @loader = Java::limelight.util.ResourceLoader.for_root(path)
+    def initialize(options={})
       super(options)    
-      @button_groups = ButtonGroupCache.new
       @cast = Module.new
     end
 
@@ -39,8 +36,12 @@ module Limelight
       return @peer.production.proxy
     end
 
+    def button_groups
+      return @peer.button_groups
+    end
+
     def on_scene_opened(& action)
-      @peer.event_handler.add(Limelight::UI::Events::SceneOpenedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.SceneOpenedEvent, action)
     end
 
     # Returns a hash of all the styles belonging to this scene
@@ -68,19 +69,19 @@ module Limelight
     # Returns the path to the root directory of the Scene
     #
     def path
-      return @loader.root
+      return @peer.resource_loader.root
     end
 
     # Returns the path to the Scene's props file
     #
     def props_file
-      return @loader.path_to("props.rb")
+      return @peer.resource_loader.path_to("props.rb")
     end
 
     # Returns the path to the Scene's props file
     #
     def styles_file
-      return @loader.path_to("styles.rb")
+      return @peer.resource_loader.path_to("styles.rb")
     end
 
     # Creates the menu bar for the Scene 

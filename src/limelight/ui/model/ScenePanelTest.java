@@ -34,6 +34,12 @@ public class ScenePanelTest extends Assert
     child = new MockProp("child");
     Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager().installed();
   }
+  
+  @Test
+  public void hasButtonGroups() throws Exception
+  {
+    assertNotNull(root.getButtonGroups());
+  }
 
   @Test
   public void shouldSetPanelSetsParentOnePanel() throws Exception
@@ -333,5 +339,15 @@ public class ScenePanelTest extends Assert
     root.remove(parent);
     assertEquals(null, root.find("parent"));
     assertEquals(null, root.find("child"));
+  }
+  
+  @Test
+  public void sceneGetLoaderFromOptions() throws Exception
+  {
+    assertEquals("", root.getResourceLoader().getRoot());
+
+    root = new ScenePanel(new MockPropProxy());
+    root.addOptions(Util.toMap("path", "/some/path"));
+    assertEquals("/some/path", root.getResourceLoader().getRoot());
   }
 }

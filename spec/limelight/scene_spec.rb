@@ -8,33 +8,25 @@ require 'limelight/dsl/styles_builder'
 describe Limelight::Scene do
 
   before(:each) do
-    @casting_director = mock("casting_director", :fill_cast => nil)
-    @scene = Limelight::Scene.new(:casting_director => @casting_director)
+#    @casting_director = mock("casting_director", :fill_cast => nil)
+    @scene = Limelight::Scene.new()
   end
 
   it "should have a styles hash" do
-    @scene.illuminate(:casting_director => @casting_director)
     @scene.styles_store.should_not == nil
     @scene.styles_store.size.should == 0
   end
 
   it "should have a button group cache" do
     @scene.button_groups.should_not == nil
-    @scene.button_groups.class.should == Limelight::UI::ButtonGroupCache
-  end
-
-  it "should pullout casting_director from options" do
-    scene = Limelight::Scene.new
-    scene.illuminate(:casting_director => @casting_director)
-
-    scene.casting_director.should == @casting_director
+    @scene.button_groups.class.should == Java::limelight.ui.ButtonGroupCache
   end
 
   it "adds on_scene_opened actions" do
     action = Proc.new { puts "I should never get printed" }
     @scene.on_scene_opened &action
 
-    actions = @scene.panel.event_handler.get_actions(Limelight::UI::Events::SceneOpenedEvent)
+    actions = @scene.peer.event_handler.get_actions(Java::limelight.ui.events.panel.SceneOpenedEvent)
     actions.contains(action).should == true
   end
 
@@ -49,23 +41,8 @@ describe Limelight::Scene do
   end
 
   it "should have an acceptible path when none is provided" do
-    Limelight::Scene.new().path.should == File.expand_path("")
+    Limelight::Scene.new().path.should == ""
   end
-
-  it "should get styles from the Java model" do
-    java_model = @scene.panel
-    @scene.styles_store.should be(java_model.styles_store)
-  end
-
-#  it "should set the production during illumination before casting" do
-#    production = mock("production")
-#    scene = Limelight::Scene.new(:styles_hash => "styles", :casting_director => @casting_director, :production => production)
-#    @casting_director.should_receive(:fill_cast).with(scene) do |scene|
-#      scene.production.should_not == nil
-#    end
-#
-#    scene.illuminate
-#  end
 
   describe Limelight::Scene, "paths" do
 
@@ -86,7 +63,7 @@ describe Limelight::Scene do
   describe Limelight::Scene, "Prop Indexing" do
 
     before(:each) do
-      @scene.illuminate
+      @scene.peer.illuminate
     end
 
     it "should index props" do
@@ -101,13 +78,17 @@ describe Limelight::Scene do
       prop2 = Limelight::Prop.new(:id => "some_id")
       @scene << prop1
 
-      lambda { @scene << prop2 }.should raise_error(Limelight::LimelightException, "Duplicate id: some_id")
+      begin
+        @scene << prop2
+      rescue Exception => e
+        e.message.should == "limelight.LimelightException: Duplicate id: some_id"
+      end
     end
 
     it "should unindex prop" do
       prop = Limelight::Prop.new(:id => "some_id")
       @scene << prop
-      @scene.unindex_prop(prop)
+      @scene.remove(prop)
 
       @scene.find("some_id").should == nil
     end
@@ -115,12 +96,11 @@ describe Limelight::Scene do
     it "should unindex child's prop" do
       prop = Limelight::Prop.new(:id => "some_id")
       child = Limelight::Prop.new(:id => "child_id")
-      prop.children << child
+      prop << child
 
-      @scene << child
       @scene << prop
 
-      @scene.unindex_prop(prop)
+      @scene.remove(prop)
 
       @scene.find("some_id").should == nil
       @scene.find("child_id").should == nil
@@ -129,12 +109,11 @@ describe Limelight::Scene do
     it "should not blow up if child has no id" do
       prop = Limelight::Prop.new(:id => "some_id")
       child = Limelight::Prop.new(:id => nil)
-      prop.children << child
+      prop << child
 
-      @scene << child
       @scene << prop
 
-      @scene.unindex_prop(prop)
+      @scene.remove(prop)
 
       @scene.find("some_id").should == nil
     end
@@ -143,14 +122,12 @@ describe Limelight::Scene do
       prop = Limelight::Prop.new(:id => "some_id")
       child = Limelight::Prop.new(:id => "child_id")
       grandchild = Limelight::Prop.new(:id => "grandchild_id")
-      child.children << grandchild
-      prop.children << child
+      child << grandchild
+      prop << child
 
-      @scene << grandchild
-      @scene << child
       @scene << prop
 
-      @scene.unindex_prop(prop)
+      @scene.remove(prop)
 
       @scene.find("grandchild_id").should == nil
     end
