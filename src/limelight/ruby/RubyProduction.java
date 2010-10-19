@@ -30,7 +30,7 @@ public class RubyProduction extends Production
 
   private Ruby rubyRuntime;
   private int id;
-  private RubyProductionProxy rubyProxy;
+  private ProductionProxy rubyProxy;
 
   public RubyProduction(String path)
   {
@@ -42,7 +42,7 @@ public class RubyProduction extends Production
   public void setProxy(ProductionProxy proxy)
   {
     super.setProxy(proxy);
-    rubyProxy = (RubyProductionProxy)proxy;
+    rubyProxy = proxy;
   }
 
   @Override
@@ -90,15 +90,6 @@ public class RubyProduction extends Production
       new TearDownRubyThread(rubyRuntime, rubies.values()).start();
     }
   }
-
-//  public Object callMethod(String name, Object... args)
-//  {
-//    return null;
-//  }
-//
-//  public void publish_on_drb(int port)
-//  {
-//  }
 
   private void spawnRubyRuntime()
   {

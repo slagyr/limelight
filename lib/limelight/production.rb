@@ -22,7 +22,7 @@ module Limelight
   #
   class Production
 
-    include Java::limelight.ruby.RubyProductionProxy
+    include Java::limelight.model.api.ProductionProxy
 
     attr_reader :peer
     attr_accessor :theater
