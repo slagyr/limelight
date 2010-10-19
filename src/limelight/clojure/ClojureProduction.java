@@ -2,6 +2,7 @@ package limelight.clojure;
 
 import clojure.lang.*;
 import clojure.lang.Compiler;
+import limelight.Boot;
 import limelight.LimelightException;
 import limelight.model.Production;
 import limelight.model.api.ProductionProxy;
@@ -102,6 +103,11 @@ public class ClojureProduction extends Production
   // Example
   public static void main(String[] args) throws Exception
   {
-    new ClojureProduction("clj/sample").prepareToOpen();
+    Boot.boot();
+    final ClojureProduction production = new ClojureProduction("clj/sample");
+    production.prepareToOpen();
+    System.err.println("production.proxy = " + production.proxy);
+    production.open();
+    System.err.println("opened");
   }
 }
