@@ -35,20 +35,26 @@ public class StringUtilTest
     assertEquals("Some Title", StringUtil.titleize("SomeTitle"));
   }
 
+  @Test
+  public void camalizeStrings() throws Exception
+  {
+    assertEquals("className", StringUtil.camalize("class_name"));
+    assertEquals("onceUponATime", StringUtil.camalize("once_upon_a_time"));
+    assertEquals("abcEfgHij", StringUtil.camalize("AbC_eFg_hiJ"));
+    assertEquals("withSpaces", StringUtil.camalize("with spaces"));
+    assertEquals("withDash", StringUtil.camalize("with-dash"));
+  }
 
-//    it "should convert into camel case" do
-//    "class_name".camalized.should == "ClassName"
-//    "once_upon_a_time".camalized.should == "OnceUponATime"
-//    "AbC_eFg_hiJ".camalized.should == "AbcEfgHij"
-//    "with spaces".camalized.should == "WithSpaces"
-//  end
-//
-//  it "should convert into camel case" do
-//    "class_name".camalized(:lower).should == "className"
-//    "once_upon_a_time".camalized(:lower).should == "onceUponATime"
-//    "AbC_eFg_hiJ".camalized(:lower).should == "abcEfgHij"
-//    "with spaces".camalized(:lower).should == "withSpaces"
-//  end
+  @Test
+  public void capitalCamalizeStrings() throws Exception
+  {
+    assertEquals("ClassName", StringUtil.capitalCamalize("class_name"));
+    assertEquals("OnceUponATime", StringUtil.capitalCamalize("once_upon_a_time"));
+    assertEquals("AbcEfgHij", StringUtil.capitalCamalize("AbC_eFg_hiJ"));
+    assertEquals("WithSpaces", StringUtil.capitalCamalize("with spaces"));
+    assertEquals("WithDash", StringUtil.capitalCamalize("with-dash"));
+  }
+  
 //
 //  it "should underscore a name" do
 //    "ClassName".underscored.should == "class_name"

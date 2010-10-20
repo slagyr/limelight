@@ -60,6 +60,7 @@ module Limelight
       @peer.close
     end
 
+    #TODO MDM - This ia bug waiting to happen.  Need to return the Java peer from this method.
     def build_stage(name, options) #:nodoc:
       return Limelight::Stage.new(self, name, options)
     end

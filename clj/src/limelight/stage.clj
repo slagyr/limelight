@@ -7,6 +7,6 @@
 (defn new-stage [theater name options]
   (let [stage (Stage. (atom nil) theater) peer (limelight.ui.model.FramedStage. name stage)]
     (swap! (.peer stage) (fn [_] peer))
-    ; apply-option
+    ; apply-options
     stage))
 

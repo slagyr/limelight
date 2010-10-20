@@ -8,15 +8,15 @@ import java.util.regex.Pattern;
 
 public class StringUtil
 {
-  public static String join(String delimiter, String... tokens)
+  public static String join(String delimiter, Object... tokens)
   {
-    if (tokens.length == 0)
+    if(tokens.length == 0)
       return "";
 
     StringBuffer joined = new StringBuffer();
 
     boolean first = true;
-    for (String token : tokens)
+    for(Object token : tokens)
     {
       if(!first)
         joined.append(delimiter);
@@ -61,9 +61,11 @@ public class StringUtil
 
   private static Pattern mergeRegex = Pattern.compile("[a-z0-9][A-Z]");
   private static Pattern separatorRegex = Pattern.compile("[_| ][a-z]");
+
   public static String titleize(String value)
   {
-    value = gsub(value, mergeRegex, new Gsuber(){
+    value = gsub(value, mergeRegex, new Gsuber()
+    {
       public String replacementFor(Matcher matcher)
       {
         final String match = matcher.group();
@@ -71,7 +73,8 @@ public class StringUtil
       }
     });
 
-    value = gsub(value, separatorRegex, new Gsuber(){
+    value = gsub(value, separatorRegex, new Gsuber()
+    {
       public String replacementFor(Matcher matcher)
       {
         final String match = matcher.group();
@@ -80,6 +83,25 @@ public class StringUtil
     });
 
     return value.substring(0, 1).toUpperCase() + value.substring(1);
+  }
+
+  private static Pattern camalizeSpaceRegex = Pattern.compile("[_| |\\-][a-z]");
+
+  public static String camalize(String value)
+  {
+    return gsub(value.toLowerCase(), camalizeSpaceRegex, new Gsuber()
+    {
+      public String replacementFor(Matcher matcher)
+      {
+        return matcher.group().substring(1).toUpperCase();
+      }
+    });
+  }
+
+  public static String capitalCamalize(String value)
+  {
+    String result = camalize(value);
+    return result.substring(0, 1).toUpperCase() + result.substring(1);
   }
 
 //    # Converts Ruby style names to Java style camal case.
