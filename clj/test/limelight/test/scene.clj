@@ -6,7 +6,7 @@
 
 (describe "Scene"
   (testing "lineage"
-    (it "implements the API" (some #{limelight.model.api.SceneProxy} (supers limelight.scene.Scene))))
+    (it "implements the API" (isa? limelight.scene.Scene limelight.model.api.SceneProxy)))
 
   (testing "creation"
     (given [scene (new-scene (hash-map :name "Bill"))]

@@ -6,7 +6,7 @@
 
 (describe "Theater"
   (testing "lineage"
-    (it (some #{limelight.model.api.TheaterProxy} (supers limelight.theater.Theater))))
+    (it (isa? limelight.theater.Theater limelight.model.api.TheaterProxy)))
   (testing "construction"
     (given [theater (limelight.theater.Theater. :peer :production)]
       (it "sets the peer" (= :peer (.peer theater)))

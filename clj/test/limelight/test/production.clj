@@ -6,7 +6,7 @@
 
 (describe "Production"
   (testing "lineage"
-    (it (some #{limelight.model.api.ProductionProxy} (supers limelight.production.Production))))
+    (it (isa? limelight.production.Production limelight.model.api.ProductionProxy)))
 
   (testing "attributes"
     (given [production (limelight.production.Production. :peer :theater :casting-director)]

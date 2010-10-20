@@ -6,7 +6,7 @@
 
 (describe "Prop"
   (testing "lineage"
-    (it "implements the API" (some #{limelight.model.api.PropProxy} (supers limelight.prop.Prop))))
+    (it "implements the API" (isa? limelight.prop.Prop limelight.model.api.PropProxy)))
 
   (testing "creation"
     (given [prop (new-prop (hash-map :name "Bill"))]
