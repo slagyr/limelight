@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import static junit.framework.Assert.*;
 
@@ -291,7 +292,7 @@ public class FramedStageTest
   }
   
   @Test
-  public void applyOptions() throws Exception
+  public void applyOptionsArePassedToProxy() throws Exception
   {
     stage = new FramedStage("default", stageProxy);
     stage.applyOptions(Util.toMap("foo", "bar"));
@@ -300,17 +301,27 @@ public class FramedStageTest
   }
 
   @Test
+  public void applyOptionsAreAppliedToFramedStage() throws Exception
+  {
+    stage.applyOptions(Util.toMap("title", "My Title", "kiosk", true, "framed", false));
+
+    assertEquals("My Title", stage.getTitle());
+    assertEquals(true, stage.isKiosk());
+    assertEquals(false, stage.isFramed());
+  }
+
+  @Test
   public void framedSettings() throws Exception
   {
     stage.setFramed(true);
     assertEquals(true, stage.isFramed());
     assertEquals(false, frame.isUndecorated());
-    
+
     stage.setFramed(false);
     assertEquals(false, stage.isFramed());
     assertEquals(true, frame.isUndecorated());
   }
-  
+
   @Test
   public void alwaysOnTop() throws Exception
   {
@@ -323,6 +334,32 @@ public class FramedStageTest
     assertEquals(false, frame.isAlwaysOnTop());
   }
   
+  @Test
+  public void setSizeWithCollection() throws Exception
+  {
+    LinkedList<Object> sizes = new LinkedList<Object>();
+    sizes.add(123);
+    sizes.add(456);
+
+    stage.setSize(sizes);
+
+    assertEquals("123", stage.getWidthStyle().toString());
+    assertEquals("456", stage.getHeightStyle().toString());
+  }
+
+  @Test
+  public void setLocationWithCollection() throws Exception
+  {
+    LinkedList<Object> locations = new LinkedList<Object>();
+    locations.add(123);
+    locations.add(456);
+
+    stage.setLocation(locations);
+
+    assertEquals("123", stage.getXLocationStyle().toString());
+    assertEquals("456", stage.getYLocationStyle().toString());
+  }
+
   // TODO MDM - make sure this works
 //  @Test
 //  public void keyboardFocusDoesNotRemainOnChildWhenDestroyed() throws Exception

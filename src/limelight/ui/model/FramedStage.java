@@ -9,8 +9,11 @@ import limelight.styles.abstrstyling.*;
 import limelight.model.api.StageProxy;
 import limelight.ui.images.Images;
 import limelight.util.Colors;
+import limelight.util.Options;
 
 import java.awt.*;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 public class FramedStage extends Stage
@@ -49,6 +52,7 @@ public class FramedStage extends Stage
 
   public void applyOptions(Map<String, Object> options)
   {
+    Options.apply(this, options);
     getProxy().applyOptions(options);
   }
 
@@ -100,6 +104,14 @@ public class FramedStage extends Stage
     applySizeStyles();
   }
 
+  public void setSize(Collection<Object> sizes)
+  {
+    final Iterator<Object> iterator = sizes.iterator();
+    Object width = iterator.next();
+    Object height = iterator.next();
+    setSizeStyles(width, height);
+  }
+
   public DimensionValue getWidthStyle()
   {
     return widthStyle;
@@ -116,6 +128,14 @@ public class FramedStage extends Stage
     yLocationStyle = (YCoordinateValue) yCompiler.compile(yValue);
 
     applyLocationStyles();
+  }
+
+  public void setLocation(Collection<Object> locations)
+  {
+    final Iterator<Object> iterator = locations.iterator();
+    Object x = iterator.next();
+    Object y = iterator.next();
+    setLocationStyles(x, y);
   }
 
   public XCoordinateValue getXLocationStyle()
