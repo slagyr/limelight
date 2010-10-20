@@ -63,7 +63,7 @@ public class ClojureProduction extends Production
     {
       Map<String, Object> bindings = new HashMap<String, Object>();
       bindings.put("peerProduction", this);
-      proxy = (ProductionProxy)runClosureScript(bindings, newProductionSrc);
+      proxy = (ProductionProxy)runClojureScript(bindings, newProductionSrc);
     }
     catch(Exception e)
     {
@@ -76,7 +76,7 @@ public class ClojureProduction extends Production
   {
   }
 
-  public static Object runClosureScript(Map<String, ? extends Object> bindings, String script) throws Exception
+  public static Object runClojureScript(Map<String, ? extends Object> bindings, String script) throws Exception
   {
     try
     {
