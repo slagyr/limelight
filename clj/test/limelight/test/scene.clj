@@ -2,11 +2,12 @@
   (:use
     [limelight.scene]
     [lazytest.describe :only (describe testing it with given)]
-    [lazytest.context :only (fn-context)]))
+    [lazytest.context :only (fn-context)])
+  (:import [limelight.scene Scene]))
 
 (describe "Scene"
   (testing "lineage"
-    (it "implements the API" (isa? limelight.scene.Scene limelight.model.api.SceneProxy)))
+    (it "implements the API" (isa? Scene limelight.model.api.SceneProxy)))
 
   (testing "creation"
     (given [scene (new-scene (hash-map :name "Bill"))]
