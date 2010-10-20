@@ -1,4 +1,6 @@
-(ns limelight.production)
+(ns limelight.production
+  (:import [limelight.casting-director CastingDirector]
+           [limelight.theater Theater]))
 
 (deftype Production [peer theater casting-director]
   limelight.model.api.ProductionProxy
@@ -12,7 +14,8 @@
   (loadStyles [this scene] nil))
 
 (defn new-production [peer]
-  (let [production (Production. peer (atom nil) (limelight.casting-director.CastingDirector. (.getResourceLoader peer)))]
-    (swap! (.theater production) (fn [old] (limelight.theater.Theater. (.getTheater peer) production)))
+  (let [casting-director (CastingDirector. (.getResourceLoader peer))
+        production (Production. peer (atom nil) casting-director)]
+    (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
     production))
 

@@ -2,14 +2,16 @@
   (:use
     [limelight.production]
     [lazytest.describe :only (describe testing it with given)]
-    [lazytest.context :only (fn-context)]))
+    [lazytest.context :only (fn-context)])
+  (:import [limelight.production Production]
+           [limelight.casting-director CastingDirector]))
 
 (describe "Production"
   (testing "lineage"
-    (it (isa? limelight.production.Production limelight.model.api.ProductionProxy)))
+    (it (isa? Production limelight.model.api.ProductionProxy)))
 
   (testing "attributes"
-    (given [production (limelight.production.Production. :peer :theater :casting-director)]
+    (given [production (Production. :peer :theater :casting-director)]
       (it "has peer" (= :peer (.peer production)))
       (it "has casting director" (= :casting-director (.casting-director production)))
       (it "has theater" (= :theater (.theater production))))))
@@ -32,5 +34,5 @@
       (it "with the peer theater" (= :theater (.peer @(.theater production))))
       (it "with the production" (= production (.production @(.theater production)))))
     (testing "creates a casting director"
-      (it "implementing the CastingDirector API" (= limelight.casting-director.CastingDirector (type (.casting-director production))))
+      (it "implementing the CastingDirector API" (= CastingDirector (type (.casting-director production))))
       (it "with the loader" (= :loader (.loader (.casting-director production)))))))
