@@ -6,7 +6,7 @@
 
 (describe "CastingDirector"
   (testing "lineage"
-    (it "inherits from API" (some #{limelight.model.api.CastingDirector} (supers limelight.casting-director.CastingDirector))))
+    (it "inherits from API" (isa? limelight.casting-director.CastingDirector limelight.model.api.CastingDirector)))
   (testing "construction"
     (given [director (limelight.casting-director.CastingDirector. :loader)]
       (it "set the loader" (= :loader (.loader director))))))

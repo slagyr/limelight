@@ -6,7 +6,7 @@
 
 (describe "Stage"
   (testing "lineage"
-    (it "implements the API" (some #{limelight.model.api.StageProxy} (supers limelight.stage.Stage))))
+    (it "implements the API" (isa? limelight.stage.Stage limelight.model.api.StageProxy)))
   (testing "creation"
     (given [stage (new-stage :theater "Bill" (hash-map :options nil))]
       (it "makes a peer" (= limelight.ui.model.FramedStage (type @(.peer stage))))
