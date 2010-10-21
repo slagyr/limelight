@@ -106,8 +106,6 @@ public class ClojureProduction extends Production
     Boot.boot();
     final ClojureProduction production = new ClojureProduction("clj/sample");
     production.prepareToOpen();
-    System.err.println("production.proxy = " + production.proxy);
     production.open();
-    System.err.println("opened");
   }
 }

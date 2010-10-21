@@ -1,7 +1,9 @@
 (ns limelight.production
   (:use [limelight.casting-director]
         [limelight.theater]
-        [limelight.building :only (build-stages)]
+        [limelight.stage-building :only (build-stages)]
+        [limelight.prop-building :only (build-props)]
+        [limelight.style-building :only (build-styles)]
         [limelight.scene :only (new-scene)])
   (:import [limelight.casting-director CastingDirector]
            [limelight.theater Theater]))
@@ -25,9 +27,15 @@
           _ (.put options "name" scene-name)
           scene (new-scene options)]
       (.setProduction @(.peer scene) peer)
+      (build-props scene (.readText (.getResourceLoader @(.peer scene)) "props.clj"))
       scene))
   
-  (loadStyles [this scene] nil))
+  (loadStyles [this scene]
+    (let [new-styles (build-styles {} (.readText (.getResourceLoader @(.peer scene)) "styles.clj"))
+          scene-styles (.getStylesStore @(.peer scene))]
+      (doall
+        (map (fn [[name value]] (.put scene-styles name value))
+             new-styles)))))
 
 (defn new-production [peer]
   (let [casting-director (CastingDirector. (.getResourceLoader peer))

@@ -396,6 +396,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
     illuminatePlayers(illuminateOptions.remove("players"));
 
+    Options.apply(this, illuminateOptions);
     Options.apply(getStyle(), illuminateOptions);
 
     proxy.applyOptions(illuminateOptions);
