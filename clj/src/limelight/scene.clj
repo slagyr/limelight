@@ -2,7 +2,8 @@
 
 (deftype Scene [peer]
   limelight.model.api.SceneProxy
-  (getPeer [this] @peer))
+  (getPeer [this] @peer)
+  (applyOptions [this options] nil))
 
 (defn new-scene [options]
   (let [scene (Scene. (atom nil)) peer (limelight.ui.model.ScenePanel. scene)]

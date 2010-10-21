@@ -34,6 +34,8 @@ public class ScenePanel extends PropPanel implements Scene
   {
     super(propProxy);
     styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
+    getStyle().setDefault(Style.WIDTH, "100%");
+    getStyle().setDefault(Style.HEIGHT, "100%");
   }
 
   @Override

@@ -600,6 +600,19 @@ public class PropPanelTest extends Assert
   }
 
   @Test
+  public void stylesAreConfiguredViaOptions() throws Exception
+  {
+    root.delluminate();
+    panel.addOptions(Util.toMap("width", 12, "height", 34, "background_color", "red"));
+
+    panel.illuminate();
+
+    assertEquals("12", panel.getStyle().getWidth());
+    assertEquals("34", panel.getStyle().getHeight());
+    assertEquals("#ff0000ff", panel.getStyle().getBackgroundColor());
+  }
+
+  @Test
   public void leftOverOptionsArePassedToPropOnIllumination() throws Exception
   {
     root.delluminate();

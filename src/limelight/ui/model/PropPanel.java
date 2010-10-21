@@ -22,6 +22,7 @@ import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.*;
 import limelight.util.Box;
 import limelight.util.EmptyMap;
+import limelight.util.Options;
 import limelight.util.Util;
 
 import java.awt.*;
@@ -394,6 +395,8 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       getRoot().addToIndex(this);
 
     illuminatePlayers(illuminateOptions.remove("players"));
+
+    Options.apply(getStyle(), illuminateOptions);
 
     proxy.applyOptions(illuminateOptions);
 
