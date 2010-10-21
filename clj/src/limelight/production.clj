@@ -9,8 +9,8 @@
 (deftype Production [peer theater casting-director]
   limelight.model.api.ProductionProxy
   (callMethod [this name args] nil)
-  (getCastingDirector [this] nil)
-  (getTheater [this] nil)
+  (getCastingDirector [this] casting-director)
+  (getTheater [this] @theater)
   (illuminate [this] nil)
   (loadLibraries [this] nil)
 
@@ -33,4 +33,5 @@
   (let [casting-director (CastingDirector. (.getResourceLoader peer))
         production (Production. peer (atom nil) casting-director)]
     (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
+    (.setProxy peer production)
     production))

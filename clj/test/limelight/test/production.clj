@@ -16,27 +16,19 @@
       (it "has casting director" (= :casting-director (.casting-director production)))
       (it "has theater" (= :theater (.theater production))))))
 
-(defprotocol RealProduction
-  "For testing only"
-  (getResourceLoader [this])
-  (getTheater [this]))
-
-(deftype FakeProduction [loader theater]
-  RealProduction
-  (getResourceLoader [this] loader)
-  (getTheater [this] theater))
-
 (describe "Building a new production"
-  (given [peer-production (FakeProduction. :loader :theater)
+  (given [peer-production (limelight.model.MockProduction. "Mock")
           production (new-production peer-production)]
-    (it "have the peer" (= peer-production (.peer production)))
+    (testing "the peer"
+      (it "is connected" (= peer-production (.peer production)))
+      (it "has reverse connection" (= production (.getProxy (.peer production)))))
     (testing "creates a theater"
       (it "implementing the Theater API" (= limelight.theater.Theater (type @(.theater production))))
-      (it "with the peer theater" (= :theater (.peer @(.theater production))))
+      (it "with the peer theater" (= (.getTheater peer-production) (.peer @(.theater production))))
       (it "with the production" (= production (.production @(.theater production)))))
     (testing "creates a casting director"
       (it "implementing the CastingDirector API" (= CastingDirector (type (.casting-director production))))
-      (it "with the loader" (= :loader (.loader (.casting-director production)))))))
+      (it "with the loader" (= (.getResourceLoader peer-production) (.loader (.casting-director production)))))))
 
 (describe "Loading stages"
   (given [loader (limelight.util.MockResourceLoader.)
