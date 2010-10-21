@@ -27,7 +27,8 @@
   (getTheater [this] theater))
 
 (describe "Building a new production"
-  (given [peer-production (FakeProduction. :loader :theater) production (new-production peer-production)]
+  (given [peer-production (FakeProduction. :loader :theater)
+          production (new-production peer-production)]
     (it "have the peer" (= peer-production (.peer production)))
     (testing "creates a theater"
       (it "implementing the Theater API" (= limelight.theater.Theater (type @(.theater production))))
@@ -36,3 +37,15 @@
     (testing "creates a casting director"
       (it "implementing the CastingDirector API" (= CastingDirector (type (.casting-director production))))
       (it "with the loader" (= :loader (.loader (.casting-director production)))))))
+
+(describe "Loading stages"
+  (given [loader (limelight.util.MockResourceLoader.)
+          _ (set! (.readTextResult loader) "(stage \"One\" {})")
+          peer-production (limelight.model.MockProduction. "Mock" loader)
+          theater (.getTheater peer-production)
+          production (new-production peer-production)
+          _ (.loadStages production)]
+    (it "adds stages"
+      (= 1 (count (.getStages theater))))
+    (it "uses stages.clj as the path to read"
+      (= "stages.clj" (.pathToReadText loader)))))

@@ -199,7 +199,7 @@ public abstract class Production
   public void loadProduction()
   {
     loadLibraries();
-    loadStages();
+    loadStages();    
     new ProductionLoadedEvent().dispatch(this);
   }
 

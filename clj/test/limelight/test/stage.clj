@@ -13,6 +13,7 @@
       (it "makes a peer" (= limelight.ui.model.FramedStage (type @(.peer stage))))
       (it "peer has stage" (= stage (.getProxy @(.peer stage))))
       (it "peer is named" (= "Bill" (.getName @(.peer stage))))
-      (it "has theater" (= :theater (.theater stage))))))
-
-
+      (it "has theater" (= :theater (.theater stage))))
+    (given [stage (new-stage :theater "George" (hash-map :title "Dr. Mario"))]
+      (it "peer is named" (= "George" (.getName @(.peer stage))))
+      (it "applies options" (= "Dr. Mario" (.getTitle @(.peer stage)))))))
