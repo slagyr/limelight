@@ -613,6 +613,17 @@ public class PropPanelTest extends Assert
   }
 
   @Test
+  public void canSetTestViaOptions() throws Exception
+  {
+    root.delluminate();
+    panel.addOptions(Util.toMap("text", "Hello there"));
+
+    panel.illuminate();
+    
+    assertEquals("Hello there", panel.getText());
+  }
+
+  @Test
   public void leftOverOptionsArePassedToPropOnIllumination() throws Exception
   {
     root.delluminate();

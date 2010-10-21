@@ -1,2 +1,2 @@
-[frame
- [body :text "Hello, World!"]]
+(! 'frame
+  (! 'body {:text "Hello, World!"}))
