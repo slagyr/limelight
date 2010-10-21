@@ -5,9 +5,18 @@ package limelight.util;
 
 public class MockResourceLoader extends ResourceLoader
 {
+  public String readTextResult;
+  public String pathToReadText;
 
   public String pathTo(String path)
   {
     return path;
+  }
+
+  @Override
+  public String readText(String path)
+  {
+    pathToReadText = path;
+    return readTextResult;
   }
 }

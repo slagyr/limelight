@@ -54,7 +54,7 @@ public class ClojureProduction extends Production
 
   public static String newProductionSrc = "" +
     "(load \"/limelight/production\")\n" +
-    "(limelight.production.Production. peerProduction)";
+    "(limelight.production/new-production peerProduction)";
 
   @Override
   protected void prepareToOpen()
