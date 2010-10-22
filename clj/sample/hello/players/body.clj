@@ -1,0 +1,1 @@
+(on-mouse-clicked (fn [e] (println "I was clicked" e)))

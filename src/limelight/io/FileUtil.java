@@ -246,4 +246,9 @@ public class FileUtil
       return path;
     return path.substring(lastSeparator + 1);
   }
+
+  public static boolean exists(String path)
+  {
+    return new File(path).exists();
+  }
 }
