@@ -11,7 +11,7 @@ public class OnOffAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object value)
   {
-    String lowerCaseValue = value.toString().toLowerCase();
+    String lowerCaseValue = stringify(value).toLowerCase();
     if("on".equals(lowerCaseValue) || "true".equals(lowerCaseValue))
       return new SimpleOnOffValue(true);
     else if("off".equals(lowerCaseValue) || "false".equals(lowerCaseValue))

@@ -11,7 +11,7 @@ public class FillStrategyAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object value)
   {
-    String name = value.toString().toLowerCase();
+    String name = stringify(value).toLowerCase();
     if("static".equals(name))
       return new StaticFillStrategyValue();
     else if("repeat".equals(name))

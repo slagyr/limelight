@@ -9,7 +9,7 @@ public class CursorAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object value)
   {
-    String name = value.toString().toLowerCase();
+    String name = stringify(value).toLowerCase();
     if("default".equals(name))
       return SimpleCursorValue.DEFAULT;
     else if("hand".equals(name))

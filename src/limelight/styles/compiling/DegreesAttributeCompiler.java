@@ -11,7 +11,7 @@ public class DegreesAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object objValue)
   {
-    String value = objValue.toString();
+    String value = stringify(objValue);
     try
     {
       int intValue = Integer.parseInt(value);

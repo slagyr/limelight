@@ -11,7 +11,7 @@ public class FontStyleAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object value)
   {
-    String lowerCase = value.toString().toLowerCase().trim();
+    String lowerCase = stringify(value).toLowerCase().trim();
 
     if("plain".equals(lowerCase))
       return new SimpleFontStyleValue("plain");

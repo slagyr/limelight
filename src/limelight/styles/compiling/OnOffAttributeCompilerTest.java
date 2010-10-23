@@ -5,22 +5,26 @@ package limelight.styles.compiling;
 
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.SimpleOnOffValue;
-import junit.framework.TestCase;
-import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class OnOffAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class OnOffAttributeCompilerTest
 {
   private OnOffAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new OnOffAttributeCompiler();
     compiler.setName("on/off");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
-    Assert.assertEquals(true, ((SimpleOnOffValue) compiler.compile("on")).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile("on")).isOn());
     assertEquals(true, ((SimpleOnOffValue) compiler.compile("ON")).isOn());
     assertEquals(true, ((SimpleOnOffValue) compiler.compile("oN")).isOn());
     assertEquals(true, ((SimpleOnOffValue) compiler.compile("On")).isOn());
@@ -29,7 +33,8 @@ public class OnOffAttributeCompilerTest extends TestCase
     assertEquals(false, ((SimpleOnOffValue) compiler.compile("Off")).isOn());
   }
 
-  public void testBooleanValue() throws Exception
+  @Test
+  public void booleanValue() throws Exception
   {
     assertEquals(true, ((SimpleOnOffValue) compiler.compile(true)).isOn());
     assertEquals(true, ((SimpleOnOffValue) compiler.compile("true")).isOn());
@@ -38,8 +43,18 @@ public class OnOffAttributeCompilerTest extends TestCase
     assertEquals(false, ((SimpleOnOffValue) compiler.compile("false")).isOn());
     assertEquals(false, ((SimpleOnOffValue) compiler.compile("FALSE")).isOn());
   }
+  
+  @Test
+  public void validValuesWithColons() throws Exception
+  {
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile(":on")).isOn());
+    assertEquals(true, ((SimpleOnOffValue) compiler.compile(":true")).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile(":off")).isOn());
+    assertEquals(false, ((SimpleOnOffValue) compiler.compile(":false")).isOn());
+  }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void invalidValue() throws Exception
   {
     try
     {

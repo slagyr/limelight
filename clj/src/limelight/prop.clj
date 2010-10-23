@@ -8,7 +8,9 @@
   {:children (fn [this]
                (map (fn [child] (.getProxy child)) (.getChildPropPanels @(.peer this))))
    :add-children (fn [this children]
-                    (doall (map (fn [child] (.add @(.peer this) @(.peer child)))
+                    (doall (map (fn [child] (if (seq? child)
+                                                 (add-children this child)
+                                                 (.add @(.peer this) @(.peer child))))
                                 children)))
    })
 

@@ -3,11 +3,12 @@
 
 package limelight.styles.abstrstyling;
 
-import junit.framework.TestCase;
-import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.abstrstyling.InvalidStyleAttributeError;
+import org.junit.Before;
+import org.junit.Test;
 
-public class StyleAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class StyleAttributeCompilerTest
 {
   private TestableStyleAttributeCompilerTest compiler;
 
@@ -19,18 +20,21 @@ public class StyleAttributeCompilerTest extends TestCase
     }
   }
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new TestableStyleAttributeCompilerTest();
   }
-  
-  public void testName() throws Exception
+
+  @Test
+  public void name() throws Exception
   {
     compiler.setName("My Attribute");
     assertEquals("My Attribute", compiler.getName());
   }
 
-  public void testError() throws Exception
+  @Test
+  public void error() throws Exception
   {
     compiler.setName("My Attribute");
     InvalidStyleAttributeError error = compiler.makeError("blah");

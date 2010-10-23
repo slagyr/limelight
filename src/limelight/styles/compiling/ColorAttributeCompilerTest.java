@@ -3,31 +3,45 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.SimpleColorValue;
+import limelight.util.FakeKeyword;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.awt.*;
 
-public class ColorAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class ColorAttributeCompilerTest
 {
   private ColorAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new ColorAttributeCompiler();
     compiler.setName("color");
   }
 
+  @Test
   public void testValidValue() throws Exception
   {
     StyleValue attr = compiler.compile("red");
 
-    Assert.assertEquals(Color.red, ((SimpleColorValue)attr).getColor());
+    assertEquals(Color.red, ((SimpleColorValue)attr).getColor());
+  }
+  
+  @Test
+  public void usingClojureStyleKeyword() throws Exception
+  {
+    StyleValue attr = compiler.compile(new FakeKeyword("blue"));
+
+    assertEquals(Color.blue, ((SimpleColorValue)attr).getColor());
   }
 
+  @Test
   public void testInvalidValue() throws Exception
   {
     try

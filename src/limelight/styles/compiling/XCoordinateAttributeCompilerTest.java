@@ -3,24 +3,29 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.values.StaticXCoordinateValue;
 import limelight.styles.values.PercentageXCoordinateValue;
 import limelight.styles.values.AlignedXCoordinateValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class XCoordinateAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class XCoordinateAttributeCompilerTest
 {
   private XCoordinateAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new XCoordinateAttributeCompiler();
     compiler.setName("x-coordinate");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     assertEquals(StaticXCoordinateValue.class, compiler.compile("123").getClass());
     assertEquals(StaticXCoordinateValue.class, compiler.compile("-123").getClass());
@@ -41,7 +46,20 @@ public class XCoordinateAttributeCompilerTest extends TestCase
     assertEquals(HorizontalAlignment.RIGHT, ((AlignedXCoordinateValue)compiler.compile("right")).getAlignment());
   }
 
-  public void testInvalidValues() throws Exception
+  @Test
+  public void validValueWithColon() throws Exception
+  {
+    assertEquals(123, ((StaticXCoordinateValue) compiler.compile(":123")).getValue());
+    assertEquals(-123, ((StaticXCoordinateValue) compiler.compile(":-123")).getValue());
+    assertEquals(0, ((StaticXCoordinateValue) compiler.compile(":0")).getValue());
+    assertEquals(50.0, ((PercentageXCoordinateValue) compiler.compile(":50%")).getPercentage(), 0.01);
+    assertEquals(HorizontalAlignment.LEFT, ((AlignedXCoordinateValue)compiler.compile(":left")).getAlignment());
+    assertEquals(HorizontalAlignment.CENTER, ((AlignedXCoordinateValue)compiler.compile(":center")).getAlignment());
+    assertEquals(HorizontalAlignment.RIGHT, ((AlignedXCoordinateValue)compiler.compile(":right")).getAlignment());
+  }
+
+  @Test
+  public void invalidValues() throws Exception
   {
     checkForError("200%");
     checkForError("blah");

@@ -3,31 +3,45 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.HorizontalAlignment;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class HorizontalAlignmentAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class HorizontalAlignmentAttributeCompilerTest
 {
-    private HorizontalAlignmentAttributeCompiler compiler;
+  private HorizontalAlignmentAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new HorizontalAlignmentAttributeCompiler();
     compiler.setName("horizontal alignment");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
-    Assert.assertEquals(HorizontalAlignment.LEFT, ((SimpleHorizontalAlignmentValue) compiler.compile("left")).getAlignment());
+    assertEquals(HorizontalAlignment.LEFT, ((SimpleHorizontalAlignmentValue) compiler.compile("left")).getAlignment());
     assertEquals(HorizontalAlignment.RIGHT, ((SimpleHorizontalAlignmentValue) compiler.compile("right")).getAlignment());
     assertEquals(HorizontalAlignment.CENTER, ((SimpleHorizontalAlignmentValue) compiler.compile("center")).getAlignment());
     assertEquals(HorizontalAlignment.CENTER, ((SimpleHorizontalAlignmentValue) compiler.compile("middle")).getAlignment());
   }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void validValuesWithColon() throws Exception
+  {
+    assertEquals(HorizontalAlignment.LEFT, ((SimpleHorizontalAlignmentValue) compiler.compile(":left")).getAlignment());
+    assertEquals(HorizontalAlignment.RIGHT, ((SimpleHorizontalAlignmentValue) compiler.compile(":right")).getAlignment());
+    assertEquals(HorizontalAlignment.CENTER, ((SimpleHorizontalAlignmentValue) compiler.compile(":center")).getAlignment());
+    assertEquals(HorizontalAlignment.CENTER, ((SimpleHorizontalAlignmentValue) compiler.compile(":middle")).getAlignment());
+  }
+
+  @Test
+  public void invalidValue() throws Exception
   {
     checkForError("blah");
   }

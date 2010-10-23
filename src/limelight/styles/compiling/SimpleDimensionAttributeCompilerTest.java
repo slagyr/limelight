@@ -3,22 +3,27 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
 import limelight.styles.values.PercentageDimensionValue;
 import limelight.styles.values.StaticDimensionValue;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
+import org.junit.Before;
+import org.junit.Test;
 
-public class SimpleDimensionAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class SimpleDimensionAttributeCompilerTest
 {
   private SimpleDimensionAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new SimpleDimensionAttributeCompiler();
     compiler.setName("dimension");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     assertEquals(StaticDimensionValue.class, compiler.compile("123").getClass());
     assertEquals(StaticDimensionValue.class, compiler.compile("123.567").getClass());
@@ -31,7 +36,16 @@ public class SimpleDimensionAttributeCompilerTest extends TestCase
     assertEquals(3.14, ((PercentageDimensionValue) compiler.compile("3.14%")).getPercentage(), 0.01);
   }
 
-  public void testInvalidValues() throws Exception
+  @Test
+  public void validValueWithColons() throws Exception
+  {
+    assertEquals(123, ((StaticDimensionValue) compiler.compile(":123")).getPixels());
+    assertEquals(0, ((StaticDimensionValue) compiler.compile(":0")).getPixels());
+    assertEquals(50.0, ((PercentageDimensionValue) compiler.compile(":50%")).getPercentage(), 0.01);
+  }
+
+  @Test
+  public void invalidValues() throws Exception
   {
     checkForError("-1");
     checkForError("200%");

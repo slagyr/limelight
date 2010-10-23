@@ -104,7 +104,9 @@ public class ClojureProduction extends Production
   public static void main(String[] args) throws Exception
   {
     Boot.boot();
-    final ClojureProduction production = new ClojureProduction("clj/sample");
+//    final String path = "clj/productions/hello-world";
+    final String path = "clj/productions/calc";
+    final ClojureProduction production = new ClojureProduction(path);
     production.prepareToOpen();
     production.open();
   }

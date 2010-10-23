@@ -3,31 +3,45 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class VerticalAlignmentAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class VerticalAlignmentAttributeCompilerTest
 {
   private VerticalAlignmentAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new VerticalAlignmentAttributeCompiler();
     compiler.setName("Vertical alignment");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
-    Assert.assertEquals(VerticalAlignment.TOP, ((SimpleVerticalAlignmentValue) compiler.compile("top")).getAlignment());
+    assertEquals(VerticalAlignment.TOP, ((SimpleVerticalAlignmentValue) compiler.compile("top")).getAlignment());
     assertEquals(VerticalAlignment.BOTTOM, ((SimpleVerticalAlignmentValue) compiler.compile("bottom")).getAlignment());
     assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentValue) compiler.compile("center")).getAlignment());
     assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentValue) compiler.compile("middle")).getAlignment());
   }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void validValuesWithColon() throws Exception
+  {
+    assertEquals(VerticalAlignment.TOP, ((SimpleVerticalAlignmentValue) compiler.compile(":top")).getAlignment());
+    assertEquals(VerticalAlignment.BOTTOM, ((SimpleVerticalAlignmentValue) compiler.compile(":bottom")).getAlignment());
+    assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentValue) compiler.compile(":center")).getAlignment());
+    assertEquals(VerticalAlignment.CENTER, ((SimpleVerticalAlignmentValue) compiler.compile(":middle")).getAlignment());
+  }
+
+  @Test
+  public void invalidValue() throws Exception
   {
     checkForError("blah");
   }

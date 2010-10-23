@@ -3,21 +3,26 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.*;
+import org.junit.Before;
+import org.junit.Test;
 
-public class FillStrategyAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class FillStrategyAttributeCompilerTest
 {
   private FillStrategyAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new FillStrategyAttributeCompiler();
     compiler.setName("fill strategy");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     assertEquals(StaticFillStrategyValue.class, compiler.compile("static").getClass());
     assertEquals(RepeatFillStrategyValue.class, compiler.compile("repeat").getClass());
@@ -32,7 +37,15 @@ public class FillStrategyAttributeCompilerTest extends TestCase
     assertEquals(ScaleYFillStrategyValue.class, compiler.compile("scale-y").getClass());
   }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void keywordValues() throws Exception
+  {
+    assertEquals(StaticFillStrategyValue.class, compiler.compile(":static").getClass());
+    assertEquals(RepeatFillStrategyValue.class, compiler.compile(":repeat").getClass());
+  }
+
+  @Test
+  public void invalidValue() throws Exception
   {
     checkForError("blah");
   }

@@ -3,23 +3,28 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.*;
 import limelight.styles.values.StaticDimensionValue;
 import limelight.styles.values.AutoDimensionValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DimensionAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class DimensionAttributeCompilerTest
 {
   private DimensionAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new DimensionAttributeCompiler();
     compiler.setName("dimension");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     assertEquals(StaticDimensionValue.class, compiler.compile("123").getClass());
     assertEquals(StaticDimensionValue.class, compiler.compile("123.567").getClass());
@@ -33,8 +38,15 @@ public class DimensionAttributeCompilerTest extends TestCase
     assertEquals(50.0, ((PercentageDimensionValue)compiler.compile("50%")).getPercentage(), 0.01);
     assertEquals(3.14, ((PercentageDimensionValue)compiler.compile("3.14%")).getPercentage(), 0.01);
   }
+  
+  @Test
+  public void clojureKeywordValues() throws Exception
+  {
+    assertEquals(StaticDimensionValue.class, compiler.compile(":123").getClass());
+  }
 
-  public void testInvalidValues() throws Exception
+  @Test
+  public void invalidValues() throws Exception
   {
     checkForError("-1");
     checkForError("200%");

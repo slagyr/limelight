@@ -3,9 +3,6 @@
 
 package limelight.styles.abstrstyling;
 
-import limelight.styles.abstrstyling.StyleCompiler;
-import limelight.styles.abstrstyling.StyleValue;
-
 public class NoneableAttributeCompiler<A extends StyleValue> extends StyleCompiler
 {
   private final StyleCompiler target;
@@ -23,7 +20,7 @@ public class NoneableAttributeCompiler<A extends StyleValue> extends StyleCompil
 
   public StyleValue compile(Object objValue)
   {
-    String value = objValue.toString();
+    String value = stringify(objValue);
     if("none".equals(value.toLowerCase()))
       return new NoneableValue<A>(null);
     else

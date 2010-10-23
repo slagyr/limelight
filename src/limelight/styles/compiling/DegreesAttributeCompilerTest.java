@@ -3,30 +3,37 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.SimpleDegreesValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DegreesAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class DegreesAttributeCompilerTest
 {
   private DegreesAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new DegreesAttributeCompiler();
     compiler.setName("degrees");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     StyleValue attr = compiler.compile("123");
+    assertEquals(123, ((SimpleDegreesValue)attr).getDegrees());
 
-    Assert.assertEquals(123, ((SimpleDegreesValue)attr).getDegrees());
+    attr = compiler.compile(":123");
+    assertEquals(123, ((SimpleDegreesValue)attr).getDegrees());
   }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void invalidValue() throws Exception
   {
     checkForError("blah");
     checkForError("-1");

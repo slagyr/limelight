@@ -24,7 +24,7 @@ public class PercentageAttributeCompiler extends StyleCompiler
         return new SimplePercentageValue(doubleValue);
       }
       else
-        return compileString(value.toString());
+        return compileString(stringify(value));
     }
     catch(Exception e)
     {

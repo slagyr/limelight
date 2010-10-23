@@ -10,11 +10,11 @@
       (it "has no styles" (= 0 (count styles)))))
 
   (testing "with a new style"
-    (given [styles (build-styles {} "(style 'hello {:background-color :black})")]
+    (given [styles (build-styles {} "(style 'hello {:background-color \"black\"})")]
       (it "has the right name"
         (= "hello" (first (keys styles))))
       (it "has the right attributes"
-        (= "#00000000" (.getBackgroundColor (first (vals styles)))))))
+        (= "#000000ff" (.getBackgroundColor (first (vals styles)))))))
 
   (testing "with two styles"
     (given [styles (build-styles {} "(style 'one {:x 1 :y 2})(style 'two {:x 3 :y 4})")]
@@ -27,6 +27,9 @@
       (it "last one wins"
         (= "0" (.getX (styles "one"))))
       (it "keeps other attributes"
-        (= "2" (.getY (styles "one")))))))
+        (= "2" (.getY (styles "one"))))))
 
+  (testing "with symbols as values"
+    (given [styles (build-styles {} "(style 'one {:text-color :blue})")]
+      (it "has text-color" (= "#0000ffff" (.getTextColor (styles "one")))))))
 
