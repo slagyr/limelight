@@ -100,22 +100,6 @@ public class OptionsMapTest
     assertEquals(0, map.size());
   }
 
-  private static class FakeKeyword
-  {
-    private String value;
-
-    private FakeKeyword(String value)
-    {
-      this.value = value;
-    }
-
-    @Override
-    public String toString()
-    {
-      return ":" + value;
-    }
-  }
-  
   @Test
   public void handledClojureKeywords() throws Exception
   {

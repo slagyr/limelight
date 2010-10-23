@@ -3,30 +3,35 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.SimpleIntegerValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class IntegerAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class IntegerAttributeCompilerTest
 {
   private IntegerAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new IntegerAttributeCompiler();
     compiler.setName("width");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     StyleValue attr = compiler.compile("123");
 
-    Assert.assertEquals(123, ((SimpleIntegerValue)attr).getValue());
+    assertEquals(123, ((SimpleIntegerValue)attr).getValue());
   }
 
-  public void testFloatValues() throws Exception
+  @Test
+  public void floatValues() throws Exception
   {
     assertEquals(123, ((SimpleIntegerValue) compiler.compile("123")).getValue());
     assertEquals(123, ((SimpleIntegerValue) compiler.compile("123.0")).getValue());
@@ -35,16 +40,24 @@ public class IntegerAttributeCompilerTest extends TestCase
     assertEquals(0, ((SimpleIntegerValue) compiler.compile("0.0")).getValue());
     assertEquals(1, ((SimpleIntegerValue) compiler.compile("0.5")).getValue());
   }
-  
-  public void testObjectValues() throws Exception
+
+  @Test
+  public void objectValues() throws Exception
   {
     assertEquals(123, ((SimpleIntegerValue) compiler.compile(123)).getValue());
     assertEquals(123, ((SimpleIntegerValue) compiler.compile(new Integer(123))).getValue());
     assertEquals(123, ((SimpleIntegerValue) compiler.compile(new Float(123.0))).getValue());
     assertEquals(123, ((SimpleIntegerValue) compiler.compile(new Double(123.0))).getValue());
   }
+  
+  @Test
+  public void withColons() throws Exception
+  {
+    assertEquals(123, ((SimpleIntegerValue) compiler.compile(":123")).getValue());
+  }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void invalidValue() throws Exception
   {
     try
     {

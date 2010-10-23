@@ -18,7 +18,7 @@ public class XCoordinateAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object objValue)
   {
-    String value = objValue.toString();
+    String value = stringify(objValue);
     try
     {
       XCoordinateValue attribute;
@@ -42,11 +42,7 @@ public class XCoordinateAttributeCompiler extends StyleCompiler
   private XCoordinateValue attemptStaticAttribute(String value)
   {
     int intValue = IntegerAttributeCompiler.convertToInt(value);
-
-//    if(intValue >= 0)
-      return new StaticXCoordinateValue(intValue);
-//    else
-//      return null;
+    return new StaticXCoordinateValue(intValue);
   }
 
   private XCoordinateValue attemptAlignedAttribute(String value)

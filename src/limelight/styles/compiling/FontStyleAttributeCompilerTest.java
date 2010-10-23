@@ -3,27 +3,38 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.SimpleFontStyleValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class FontStyleAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class FontStyleAttributeCompilerTest
 {
   private FontStyleAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new FontStyleAttributeCompiler();
     compiler.setName("font style");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
-    Assert.assertEquals(true, ((SimpleFontStyleValue) compiler.compile("bold")).isBold());
+    assertEquals(true, ((SimpleFontStyleValue) compiler.compile("bold")).isBold());
+  }
+  
+  @Test
+  public void valuesWithColon() throws Exception
+  {
+    assertEquals(true, ((SimpleFontStyleValue) compiler.compile(":bold")).isBold());
   }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void invalidValue() throws Exception
   {
     checkForError("blah");
     checkForError("bold and italic");

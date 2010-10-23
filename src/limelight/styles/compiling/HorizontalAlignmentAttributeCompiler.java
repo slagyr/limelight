@@ -21,7 +21,7 @@ public class HorizontalAlignmentAttributeCompiler extends StyleCompiler
 
   public static HorizontalAlignment parse(Object value)
   {
-    String lowerCase = value.toString().toLowerCase().trim();
+    String lowerCase = stringify(value).toLowerCase().trim();
     if("left".equals(lowerCase))
       return HorizontalAlignment.LEFT;
     else if("center".equals(lowerCase) || "middle".equals(lowerCase))

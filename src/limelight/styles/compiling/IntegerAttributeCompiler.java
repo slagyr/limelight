@@ -17,7 +17,7 @@ public class IntegerAttributeCompiler extends StyleCompiler
       if(value instanceof Number)
         intValue = ((Number)value).intValue();
       else
-        intValue = convertToInt(value.toString());
+        intValue = convertToInt(stringify(value));
       
       return new SimpleIntegerValue(intValue);
     }

@@ -29,4 +29,12 @@ public abstract class StyleCompiler
   {
 
   }
+
+  public static String stringify(Object value)
+  {
+    String result = value.toString();
+    if(result.charAt(0) == ':')
+      return result.substring(1);
+    return result;
+  }
 }

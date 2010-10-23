@@ -3,6 +3,7 @@ package limelight.styles.compiling;
 import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.SimpleCursorValue;
+import limelight.util.FakeKeyword;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +28,15 @@ public class CursorAttributeCompilerTest
     assertEquals(SimpleCursorValue.TEXT, compiler.compile("text"));
     assertEquals(SimpleCursorValue.HAND, compiler.compile("hand"));
     assertEquals(SimpleCursorValue.CROSSHAIR, compiler.compile("crosshair"));
+  }
+  
+  @Test
+  public void testValidValuesWithClojureStyleKeywords() throws Exception
+  {
+    assertEquals(SimpleCursorValue.DEFAULT, compiler.compile(new FakeKeyword("default")));
+    assertEquals(SimpleCursorValue.TEXT, compiler.compile(new FakeKeyword("text")));
+    assertEquals(SimpleCursorValue.HAND, compiler.compile(new FakeKeyword("hand")));
+    assertEquals(SimpleCursorValue.CROSSHAIR, compiler.compile(new FakeKeyword("crosshair")));
   }
 
   @Test

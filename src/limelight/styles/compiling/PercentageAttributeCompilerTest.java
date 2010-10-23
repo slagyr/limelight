@@ -3,24 +3,28 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.SimplePercentageValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class PercentageAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class PercentageAttributeCompilerTest
 {
   private PercentageAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new PercentageAttributeCompiler();
     compiler.setName("percentage");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
-    Assert.assertEquals(0.0, ((SimplePercentageValue) compiler.compile("0")).getPercentage(), 0.01);
+    assertEquals(0.0, ((SimplePercentageValue) compiler.compile("0")).getPercentage(), 0.01);
     assertEquals(50.0, ((SimplePercentageValue) compiler.compile("50")).getPercentage(), 0.01);
     assertEquals(100.0, ((SimplePercentageValue) compiler.compile("100")).getPercentage(), 0.01);
     assertEquals(100.0, ((SimplePercentageValue) compiler.compile("100%")).getPercentage(), 0.01);
@@ -29,7 +33,16 @@ public class PercentageAttributeCompilerTest extends TestCase
     assertEquals(3.14, ((SimplePercentageValue) compiler.compile("3.14%")).getPercentage(), 0.01);
   }
 
-  public void testInvalidValue() throws Exception
+  @Test
+  public void validValueWithColon() throws Exception
+  {
+    assertEquals(0.0, ((SimplePercentageValue) compiler.compile(":0")).getPercentage(), 0.01);
+    assertEquals(50.0, ((SimplePercentageValue) compiler.compile(":50")).getPercentage(), 0.01);
+    assertEquals(100.0, ((SimplePercentageValue) compiler.compile(":100%")).getPercentage(), 0.01);
+  }
+
+  @Test
+  public void invalidValue() throws Exception
   {
     try
     {
@@ -41,8 +54,9 @@ public class PercentageAttributeCompilerTest extends TestCase
       assertEquals("Invalid value 'blah' for percentage style attribute.", e.getMessage());
     }
   }
-  
-  public void testCompilingFloatValues() throws Exception
+
+  @Test
+  public void compilingFloatValues() throws Exception
   {
     assertEquals(99.0, ((SimplePercentageValue) compiler.compile(99)).getPercentage(), 0.01);
     assertEquals(3.14, ((SimplePercentageValue) compiler.compile(3.14)).getPercentage(), 0.01);

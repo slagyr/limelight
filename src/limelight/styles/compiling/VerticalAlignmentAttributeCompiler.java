@@ -21,7 +21,7 @@ public class VerticalAlignmentAttributeCompiler extends StyleCompiler
 
   public static VerticalAlignment parse(Object value)
   {
-    String lowerCase = value.toString().toLowerCase().trim();
+    String lowerCase = stringify(value).toLowerCase().trim();
     if("top".equals(lowerCase))
       return VerticalAlignment.TOP;
     else if("center".equals(lowerCase) || "middle".equals(lowerCase))

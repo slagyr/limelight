@@ -3,22 +3,27 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.values.StaticPixelsValue;
 import limelight.styles.values.PercentagePixelsValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class PixelsAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class PixelsAttributeCompilerTest
 {
   private PixelsAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new PixelsAttributeCompiler();
     compiler.setName("pixels");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     assertEquals(StaticPixelsValue.class, compiler.compile("123").getClass());
     assertEquals(StaticPixelsValue.class, compiler.compile("123.567").getClass());
@@ -32,7 +37,16 @@ public class PixelsAttributeCompilerTest extends TestCase
     assertEquals(0.0, ((PercentagePixelsValue) compiler.compile("0%")).getPercentage(), 0.01);
   }
 
-  public void testInvalidValues() throws Exception
+  @Test
+  public void validValueWithColons() throws Exception
+  {
+    assertEquals(123, ((StaticPixelsValue) compiler.compile(":123")).getPixels());
+    assertEquals(50.0, ((PercentagePixelsValue) compiler.compile(":50%")).getPercentage(), 0.01);
+    assertEquals(3.14, ((PercentagePixelsValue) compiler.compile(":3.14%")).getPercentage(), 0.01);
+  }
+
+  @Test
+  public void invalidValues() throws Exception
   {
     checkForError("-1");
     checkForError("200%");

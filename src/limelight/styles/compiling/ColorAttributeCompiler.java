@@ -15,7 +15,7 @@ public class ColorAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object objValue)
   {
-    String value = objValue.toString();
+    String value = stringify(objValue);
     try
     {
       Color color = Colors.resolve(value);

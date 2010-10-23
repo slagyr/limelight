@@ -15,7 +15,7 @@ public class PixelsAttributeCompiler extends StyleCompiler
 {
   public StyleValue compile(Object objValue)
   {
-    String value = objValue.toString();
+    String value = stringify(objValue);
     try
     {
       PixelsValue attribute = attemptPercentageAttribute(value);

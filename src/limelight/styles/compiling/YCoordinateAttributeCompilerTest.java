@@ -3,24 +3,29 @@
 
 package limelight.styles.compiling;
 
-import junit.framework.TestCase;
 import limelight.styles.abstrstyling.InvalidStyleAttributeError;
 import limelight.styles.VerticalAlignment;
 import limelight.styles.values.StaticYCoordinateValue;
 import limelight.styles.values.PercentageYCoordinateValue;
 import limelight.styles.values.AlignedYCoordinateValue;
+import org.junit.Before;
+import org.junit.Test;
 
-public class YCoordinateAttributeCompilerTest extends TestCase
+import static org.junit.Assert.*;
+
+public class YCoordinateAttributeCompilerTest
 {
   private YCoordinateAttributeCompiler compiler;
 
+  @Before
   public void setUp() throws Exception
   {
     compiler = new YCoordinateAttributeCompiler();
     compiler.setName("y-coordinate");
   }
 
-  public void testValidValue() throws Exception
+  @Test
+  public void validValue() throws Exception
   {
     assertEquals(StaticYCoordinateValue.class, compiler.compile("123").getClass());
     assertEquals(StaticYCoordinateValue.class, compiler.compile("-123").getClass());
@@ -40,8 +45,22 @@ public class YCoordinateAttributeCompilerTest extends TestCase
     assertEquals(VerticalAlignment.CENTER, ((AlignedYCoordinateValue)compiler.compile("center")).getAlignment());
     assertEquals(VerticalAlignment.BOTTOM, ((AlignedYCoordinateValue)compiler.compile("bottom")).getAlignment());
   }
+  
+  @Test
+  public void validValueWithColons() throws Exception
+  {
+    assertEquals(123, ((StaticYCoordinateValue) compiler.compile(":123")).getValue());
+    assertEquals(-123, ((StaticYCoordinateValue) compiler.compile(":-123")).getValue());
+    assertEquals(0, ((StaticYCoordinateValue) compiler.compile(":0")).getValue());
+    assertEquals(50.0, ((PercentageYCoordinateValue) compiler.compile(":50%")).getPercentage(), 0.01);
+    assertEquals(3.14, ((PercentageYCoordinateValue) compiler.compile(":3.14%")).getPercentage(), 0.01);
+    assertEquals(VerticalAlignment.TOP, ((AlignedYCoordinateValue)compiler.compile(":top")).getAlignment());
+    assertEquals(VerticalAlignment.CENTER, ((AlignedYCoordinateValue)compiler.compile(":center")).getAlignment());
+    assertEquals(VerticalAlignment.BOTTOM, ((AlignedYCoordinateValue)compiler.compile(":bottom")).getAlignment());
+  }
 
-  public void testInvalidValues() throws Exception
+  @Test
+  public void invalidValues() throws Exception
   {
     checkForError("200%");
     checkForError("blah");
