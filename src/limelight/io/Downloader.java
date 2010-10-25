@@ -1,5 +1,6 @@
 package limelight.io;
 
+import limelight.Context;
 import limelight.LimelightException;
 
 import java.io.*;
@@ -12,10 +13,12 @@ import java.util.regex.Pattern;
 public class Downloader
 {
   public static Pattern filenameRegex = Pattern.compile("filename=\"?(.*)\"?");
-  private File destinationRoot;
-  public static File stubbedGetResult;
+  public static String stubbedGetResult;
 
-  public static File get(String resource)
+  private String destinationRoot;
+  private FileSystem fs = Context.fs();
+
+  public static String get(String resource)
   {
     if(stubbedGetResult != null)
       return stubbedGetResult;
@@ -30,21 +33,21 @@ public class Downloader
 
   public Downloader(String root)
   {
-    destinationRoot = new File(root);
+    destinationRoot = root;
   }
 
-  public File getDestinationRoot()
+  public String getDestinationRoot()
   {
     return destinationRoot;
   }
 
-  public File download(String resource)
+  public String download(String resource)
   {
     try
     {
       URL url = parseURL(resource);
       URLConnection urlConnection = url.openConnection();
-      File destination = calculateDesintationFile(url, urlConnection);
+      String destination = calculateDesintationFile(url, urlConnection);
 
       downloadData(urlConnection, destination);
 
@@ -56,18 +59,23 @@ public class Downloader
     }
   }
 
-  private void downloadData(URLConnection urlConnection, File destination) throws Exception
+  private void downloadData(URLConnection urlConnection, String destination) throws Exception
   {
-    InputStream input = urlConnection.getInputStream();
-    FileOutputStream output = new FileOutputStream(destination);
+    InputStream input;
+    if("file".equals(urlConnection.getURL().getProtocol()))
+      input = fs.inputStream(urlConnection.getURL().getFile());
+    else
+      input = urlConnection.getInputStream();
 
-    FileUtil.copyBytes(input, output);
+    OutputStream output = new BufferedOutputStream(fs.outputStream(destination));
+
+    IoUtil.copyBytes(input, output);
 
     input.close();
     output.close();
   }
 
-  private File calculateDesintationFile(URL url, URLConnection urlConnection)
+  private String calculateDesintationFile(URL url, URLConnection urlConnection)
   {
     final String contentDisposition = urlConnection.getHeaderField("Content-Disposition");
     String filename = contentDisposition == null ? getFilenameFromUrl(url) : getFilenameFromContentDisposition(contentDisposition);
@@ -90,22 +98,21 @@ public class Downloader
     return urlFile.getName();
   }
 
-  private File findUniqueDownloadDestination(String filename)
+  private String findUniqueDownloadDestination(String filename)
   {
-    File attempt = new File(destinationRoot, filename);
-    String baseName = FileUtil.baseName(attempt.getName());
-    String extension = FileUtil.fileExtension(attempt.getName());
+    String attempt = FileUtil.join(destinationRoot, filename);
+    String baseName = FileUtil.baseName(attempt);
+    String extension = FileUtil.fileExtension(attempt);
     int suffix = 2;
-    while(attempt.exists())
-      attempt = new File(destinationRoot, baseName + "_" + suffix++ + extension);
+    while(fs.exists(attempt))
+      attempt = FileUtil.join(destinationRoot, baseName + "_" + suffix++ + extension);
     return attempt;
   }
 
   private URL parseURL(String resource) throws MalformedURLException
   {
-    final File file = new File(resource);
-    if(file.exists())
-      resource = "file://" + file.getAbsolutePath();
+    if(fs.exists(resource))
+      resource = "file://" + resource;
     return new URL(resource);
   }
 

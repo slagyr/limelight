@@ -9,7 +9,6 @@ import limelight.io.TempDirectory;
 import limelight.model.Studio;
 import limelight.os.OS;
 import limelight.os.UnsupportedOS;
-import limelight.ruby.RuntimeFactory;
 import limelight.ui.BufferedImagePool;
 import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
@@ -101,7 +100,6 @@ public class Boot
     context().audioPlayer = new RealAudioPlayer();
     context().bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
     context().bufferedImagePool = new BufferedImagePool(1);
-    context().runtimeFactory = new RuntimeFactory();
     context().studio = new Studio();
   }
 

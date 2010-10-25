@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 public class DataTest
 {
   private MockOS os;
+  private FakeFileSystem fs;
 
   @Before
   public void setUp()
@@ -17,43 +18,38 @@ public class DataTest
     Data.reset();
     os = new MockOS();
     Context.instance().os = os;
-  }
-
-  @After
-  public void tearDown() throws Exception
-  {
-    FileUtil.deleteFileSystemDirectory(Data.downloadsDir());
-    FileUtil.deleteFileSystemDirectory(Data.productionsDir());
+    fs = new FakeFileSystem();
+    Context.instance().fs = fs;
   }
 
   @Test
   public void rootPath() throws Exception
   {
-    assertEquals(os.dataRoot(), Data.getRoot().getPath());
+    assertEquals(os.dataRoot(), Data.getRoot());
   }
   
   @Test
   public void downloadsDir() throws Exception
   {
-    final String expectedPath = FileUtil.absolutePath(FileUtil.pathTo(Data.getRoot().getAbsolutePath(), "Downloads"));
-    assertEquals(expectedPath, Data.downloadsDir().getAbsolutePath());
+    final String expectedPath = fs.absolutePath(FileUtil.pathTo(Data.getRoot(), "Downloads"));
+    assertEquals(expectedPath, Data.downloadsDir());
   }
 
   @Test
   public void productionsDir() throws Exception
   {
-    final String expectedPath = FileUtil.absolutePath(FileUtil.pathTo(Data.getRoot().getAbsolutePath(), "Productions"));
-    assertEquals(expectedPath, Data.productionsDir().getAbsolutePath());
+    final String expectedPath = fs.absolutePath(FileUtil.pathTo(Data.getRoot(), "Productions"));
+    assertEquals(expectedPath, Data.productionsDir());
   }
 
   @Test
   public void establishDirs() throws Exception
   {
-    assertEquals(false, Data.downloadsDir().exists());
-    assertEquals(false, Data.productionsDir().exists());
+    assertEquals(false, fs.exists(Data.downloadsDir()));
+    assertEquals(false, fs.exists(Data.productionsDir()));
 
     Data.establishDirs();
-    assertEquals(true, Data.downloadsDir().exists());
-    assertEquals(true, Data.productionsDir().exists());
+    assertEquals(true, fs.exists(Data.downloadsDir()));
+    assertEquals(true, fs.exists(Data.productionsDir()));
   }
 }

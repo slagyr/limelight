@@ -3,72 +3,65 @@
 
 package limelight.io;
 
-import junit.framework.TestCase;
+import limelight.Context;
 import limelight.util.TestUtil;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
-public class DirectoryZipperTest extends TestCase
+import static org.junit.Assert.*;
+
+public class DirectoryZipperTest
 {
-  private static final String ROOT_DIR = FileUtil.join(TestUtil.TMP_DIR, "test_rootdir");
+  private static final String ROOT_DIR = "/limelight/zipper/test/rootdir";
+  private FakeFileSystem fs;
 
+  @Before
   public void setUp() throws Exception
   {
-    deleteRoot();
-    FileUtil.makeDir(TestUtil.TMP_DIR);
-    assertEquals(true, new File(TestUtil.TMP_DIR).exists());
-  }
-
-  public void tearDown() throws Exception
-  {
-    deleteRoot();
-  }
-
-  private void deleteRoot()
-  {
-    if(new File(ROOT_DIR).exists())
-      FileUtil.deleteFileSystemDirectory(ROOT_DIR);
+    fs = new FakeFileSystem();
+    Context.instance().fs = fs;
   }
 
   public void makeTestRoot()
   {
-    FileUtil.makeDir(ROOT_DIR);
-    FileUtil.makeDir(FileUtil.pathTo(ROOT_DIR, "childdir"));
-    FileUtil.makeDir(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir"));
-    FileUtil.createFile(FileUtil.pathTo(ROOT_DIR, "root.txt"), "root");
-    FileUtil.createFile(FileUtil.pathTo(ROOT_DIR, "childdir", "child.txt"), "child");
-    FileUtil.createFile(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt"), "grand child" );
+    fs.createTextFile(FileUtil.pathTo(ROOT_DIR, "root.txt"), "root");
+    fs.createTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "child.txt"), "child");
+    fs.createTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt"), "grand child" );
   }
-  
-  public void testShouldCreateFromDirectoryPath() throws Exception
+
+  @Test
+  public void shouldCreateFromDirectoryPath() throws Exception
   {
     makeTestRoot();
 
     DirectoryZipper zipper = DirectoryZipper.fromDir(ROOT_DIR);
-    assertEquals(new File(ROOT_DIR).getAbsolutePath(), zipper.getDirectoryPath());
-    assertEquals("test_rootdir", zipper.getProductionName());
+    assertEquals(ROOT_DIR, zipper.getDirectoryPath());
+    assertEquals("rootdir", zipper.getProductionName());
   }
 
-  public void testShouldInstantiateFromZipcontent() throws Exception
+  @Test
+  public void shouldInstantiateFromZipContent() throws Exception
   {
     makeTestRoot();
     DirectoryZipper zipper = DirectoryZipper.fromDir(ROOT_DIR);
 
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     zipper.zipTo(output);
-    deleteRoot();
 
     ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
     DirectoryZipper newZipper = DirectoryZipper.fromZip(input);
-    newZipper.unzip(TestUtil.TMP_DIR);
+    final String outputDir = "/limelight/zipper/test/outdir";
+    fs.createDirectory(outputDir);
+    newZipper.unzip(outputDir);
 
-    assertEquals(new File(ROOT_DIR).getAbsolutePath() + "/", newZipper.getDirectoryPath());
-    assertEquals("test_rootdir", newZipper.getProductionName());
-    assertEquals("root", FileUtil.getFileContent(FileUtil.pathTo(ROOT_DIR, "root.txt")));
-    assertEquals("child", FileUtil.getFileContent(FileUtil.pathTo(ROOT_DIR, "childdir", "child.txt")));
-    assertEquals("grand child", FileUtil.getFileContent(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt")));
+    assertEquals(FileUtil.join(outputDir, "rootdir") + "/", newZipper.getDirectoryPath());
+    assertEquals("rootdir", newZipper.getProductionName());
+    assertEquals("root", fs.readTextFile(FileUtil.pathTo(ROOT_DIR, "root.txt")));
+    assertEquals("child", fs.readTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "child.txt")));
+    assertEquals("grand child", fs.readTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt")));
   }
 
 //  public void testZipIty() throws Exception

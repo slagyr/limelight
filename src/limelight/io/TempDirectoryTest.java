@@ -4,15 +4,19 @@
 package limelight.io;
 
 import junit.framework.TestCase;
+import limelight.Context;
 
 import java.io.File;
 
 public class TempDirectoryTest extends TestCase
 {
   private TempDirectory tempDirectory;
+  private FakeFileSystem fs;
 
   public void setUp() throws Exception
   {
+    fs = new FakeFileSystem();
+    Context.instance().fs = fs;
     tempDirectory = new TempDirectory();
   }
 
@@ -25,51 +29,51 @@ public class TempDirectoryTest extends TestCase
   {
     String systemTempDir = System.getProperty("java.io.tmpdir");
     String limelightTempDir = FileUtil.pathTo(systemTempDir, "limelight");
-    assertEquals(limelightTempDir, tempDirectory.getRoot().getAbsolutePath());
-    assertEquals(true, tempDirectory.getRoot().exists());
+    assertEquals(limelightTempDir, tempDirectory.getRoot());
+    assertEquals(true, fs.exists(tempDirectory.getRoot()));
   }
   
   public void testCleanup() throws Exception
   {
-    FileUtil.makeDir(FileUtil.pathTo(tempDirectory.getRoot().getPath(), "blah"));
-    FileUtil.makeDir(FileUtil.pathTo(tempDirectory.getRoot().getPath(), "foo"));
-    FileUtil.makeDir(FileUtil.pathTo(tempDirectory.getRoot().getPath(), "bar"));
+    fs.createDirectory(FileUtil.pathTo(tempDirectory.getRoot(), "blah"));
+    fs.createDirectory(FileUtil.pathTo(tempDirectory.getRoot(), "foo"));
+    fs.createDirectory(FileUtil.pathTo(tempDirectory.getRoot(), "bar"));
 
     tempDirectory.cleanup();
 
-    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot().getPath(), "blah")).exists());
-    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot().getPath(), "foo")).exists());
-    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot().getPath(), "bar")).exists());
-    assertEquals(false, tempDirectory.getRoot().exists());
+    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot(), "blah")).exists());
+    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot(), "foo")).exists());
+    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot(), "bar")).exists());
+    assertEquals(false, fs.exists(tempDirectory.getRoot()));
   }
 
   public void testNewTempDir() throws Exception
   {
-    File newDirectory = tempDirectory.createNewDirectory();
+    String newDirectory = tempDirectory.createNewDirectory();
 
     assertNotNull(newDirectory);
-    assertEquals(true, newDirectory.exists());
-    assertEquals(tempDirectory.getRoot(), newDirectory.getParentFile());
+    assertEquals(true, fs.exists(newDirectory));
+    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(newDirectory));
   }
   
   public void testMultipleNewTempDirs() throws Exception
   {
-    File temp1 = tempDirectory.createNewDirectory();
-    File temp2 = tempDirectory.createNewDirectory();
+    String temp1 = tempDirectory.createNewDirectory();
+    String temp2 = tempDirectory.createNewDirectory();
 
-    assertEquals(true, temp1.exists());
-    assertEquals(tempDirectory.getRoot(), temp1.getParentFile());
-    assertEquals(true, temp2.exists());
-    assertEquals(tempDirectory.getRoot(), temp2.getParentFile());
-    assertEquals(false, temp1.getPath().equals(temp2.getPath()));
+    assertEquals(true, fs.exists(temp1));
+    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(temp1));
+    assertEquals(true, fs.exists(temp2));
+    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(temp2));
+    assertEquals(false, temp1.equals(temp2));
   }
 
   public void testDownloadsDirectory() throws Exception
   {
-    File downloadsDirectory = tempDirectory.getDownloadsDirectory();
+    String downloadsDirectory = tempDirectory.getDownloadsDirectory();
 
-    assertEquals(true, downloadsDirectory.exists());
-    assertEquals(true, downloadsDirectory.isDirectory());
-    assertEquals(tempDirectory.getRoot(), downloadsDirectory.getParentFile());
+    assertEquals(true, fs.exists(downloadsDirectory));
+    assertEquals(true, fs.isDirectory(downloadsDirectory));
+    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(downloadsDirectory));
   }
 }

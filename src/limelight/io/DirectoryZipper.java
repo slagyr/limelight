@@ -3,7 +3,11 @@
 
 package limelight.io;
 
-import java.io.*;
+import limelight.Context;
+import limelight.LimelightException;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -15,6 +19,7 @@ public class DirectoryZipper
   private ZipOutputStream zipOutput;
   private String locationPath;
   private boolean isRootDirectoryUnzipped;
+  private FileSystem fs = Context.fs();
 
   public static DirectoryZipper fromDir(String rootDir)
   {
@@ -35,26 +40,35 @@ public class DirectoryZipper
     return directoryPath;
   }
 
-  public void zipTo(OutputStream output) throws Exception
+  public void zipTo(OutputStream output)
   {
-    File directory = new File(directoryPath);
-    if(!directory.exists() || !directory.isDirectory())
-      throw new IOException(directoryPath + " is not a valid directory");
+    try
+    {
+      if(!fs.exists(directoryPath) && !fs.isDirectory(directoryPath))
+        throw new LimelightException(directoryPath + " is not a valid directory");
 
-    zipOutput = new ZipOutputStream(output);
+      zipOutput = new ZipOutputStream(output);
 
-    zipDirectory(directory);
+      zipDirectory(directoryPath);
 
-    zipOutput.finish();
-    zipOutput.close();
+      zipOutput.finish();
+      zipOutput.close();
+    }
+    catch(LimelightException e)
+    {
+      throw e;
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException(e);
+    }
   }
 
   public void unzip(String location) throws Exception
   {
-    String absoluteLocation = new File(location).getAbsolutePath();
     for(ZipEntry entry = zipInput.getNextEntry(); entry != null; entry = zipInput.getNextEntry())
     {
-      String absolutePath = FileUtil.pathTo(absoluteLocation, entry.getName());
+      String absolutePath = fs.absolutePath(FileUtil.pathTo(location, entry.getName()));
       if(entry.isDirectory())
         unzipDirectory(absolutePath);
       else
@@ -70,27 +84,27 @@ public class DirectoryZipper
 
   private void setDirectoryPath(String path)
   {
-    directoryPath = new File(path).getAbsolutePath();
-    locationPath = new File(directoryPath).getParentFile().getAbsolutePath();
+    directoryPath = fs.absolutePath(path);
+    locationPath = FileUtil.parentPath(directoryPath);
   }
 
-  private void zipDirectory(File directory) throws Exception
+  private void zipDirectory(String directory) throws Exception
   {
     zipOutput.putNextEntry(makeEntryFrom(directory));
     zipOutput.closeEntry();
-    File[] children = directory.listFiles();
-    for(File child : children)
-      zipFile(child);
+    String[] children = fs.fileListing(directory);
+    for(String child : children)
+      zipFile(FileUtil.join(directory, child));
   }
 
   public String getProductionName()
   {
-    return new File(directoryPath).getName();
+    return FileUtil.filename(directoryPath);
   }
 
-  private void zipFile(File file) throws Exception
+  private void zipFile(String file) throws Exception
   {
-    if(file.isDirectory())
+    if(fs.isDirectory(file))
       zipDirectory(file);
     else
     {
@@ -100,40 +114,40 @@ public class DirectoryZipper
     }
   }
 
-  private ZipEntry makeEntryFrom(File file)
+  private ZipEntry makeEntryFrom(String file)
   {
     ZipEntry entry = new ZipEntry(entryName(file));
-    entry.setTime(file.lastModified());
-    if(file.isDirectory())
+    entry.setTime(fs.modificationTime(file));
+    if(fs.isDirectory(file))
       entry.setSize(0);
     return entry;
   }
 
-  private void copyFileToZip(File file) throws Exception
+  private void copyFileToZip(String file) throws Exception
   {
-    StreamReader reader = new StreamReader(new FileInputStream(file));
+    StreamReader reader = new StreamReader(fs.inputStream(file));
     while(!reader.isEof())
       zipOutput.write(reader.readBytes(1000));
   }
 
-  private String entryName(File file)
+  private String entryName(String file)
   {
-    String name = file.getAbsolutePath().substring(locationPath.length() + 1);
-    if(file.isDirectory())
+    String name = fs.absolutePath(file).substring(locationPath.length() + 1);
+    if(fs.isDirectory(file))
       name = name + FileUtil.separator();
     return name;
   }
 
   private void unzipFile(String absolutePath) throws Exception
   {
-    FileOutputStream fileOutput = new FileOutputStream(absolutePath);
-    FileUtil.copyBytes(zipInput, fileOutput);
+    OutputStream fileOutput = fs.outputStream(absolutePath);
+    IoUtil.copyBytes(zipInput, fileOutput);
     fileOutput.close();
   }
 
   private void unzipDirectory(String absolutePath)
   {
-    FileUtil.makeDir(absolutePath);
+    fs.createDirectory(absolutePath);
     if(!isRootDirectoryUnzipped)
     {
       directoryPath = absolutePath;

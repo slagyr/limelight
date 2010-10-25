@@ -3,6 +3,7 @@ package limelight.io;
 import limelight.LimelightException;
 import limelight.util.Util;
 
+import java.io.*;
 import java.util.*;
 
 public class FakeFileSystem extends FileSystem
@@ -33,11 +34,12 @@ public class FakeFileSystem extends FileSystem
   @Override
   public boolean isDirectory(String path)
   {
-    return resolve(path).isDirectory;
+    final FakeFile file = resolve(path);
+    return file != null && file.isDirectory;
   }
 
   @Override
-  public void createFile(String path, String content)
+  public void createTextFile(String path, String content)
   {
     FakeFile file = establishFile(path);
     file.content = content.getBytes();
@@ -48,6 +50,74 @@ public class FakeFileSystem extends FileSystem
   {
     FakeFile file = checkedResolve(path);
     return new String(file.content);
+  }
+
+  @Override
+  public String absolutePath(String path)
+  {
+    if(path.startsWith(separator))
+      return path;
+    return pathOf(workingDirectory) + "/" + path;
+  }
+
+  @Override
+  public OutputStream outputStream(String path)
+  {
+    if(!exists(parentPath(path)))
+      throw fileNotFound(path);
+    FakeFile file = establishFile(path);
+    return new FakeFileOutputSteam(file);
+  }
+
+  @Override
+  public InputStream inputStream(String path)
+  {
+    FakeFile file = checkedResolve(path);
+    return new ByteArrayInputStream(file.content);
+  }
+
+  @Override
+  public String[] fileListing(String path)
+  {
+    FakeFile dir = checkedResolve(path);
+    if(!dir.isDirectory)
+      throw new LimelightException("Not a directory: " + path);
+    final Set<String> childNames = dir.children.keySet();
+    String[] files = new String[childNames.size()];
+    int i = 0;
+    for(String childName : childNames)
+      files[i++] = childName;  
+    return files;
+  }
+
+  @Override
+  public long modificationTime(String path)
+  {
+    return checkedResolve(path).modificationTime;
+  }
+
+  @Override
+  public void deleteDirectory(String dirPath)
+  {
+    deleteFile(dirPath);      
+  }
+
+  @Override
+  public void deleteFile(String path)
+  {
+    FakeFile parent = checkedResolve(parentPath(path));
+    parent.children.remove(FileUtil.filename(path));
+  }
+
+  @Override
+  public String workingDir()
+  {
+    return pathOf(workingDirectory);
+  }
+
+  public void setWorkingDirectory(String path)
+  {
+    workingDirectory = resolve(path);
   }
 
   public String inspect()
@@ -87,8 +157,13 @@ public class FakeFileSystem extends FileSystem
   {
     FakeFile file = resolve(path);
     if(file == null)
-      throw new LimelightException("[FakeFileSystem] File not found: " + path);
+      throw fileNotFound(path);
     return file;
+  }
+
+  private LimelightException fileNotFound(String path)
+  {
+    return new LimelightException("[FakeFileSystem] File not found: " + path);
   }
 
   private FakeFile establishFile(String path)
@@ -152,6 +227,14 @@ public class FakeFileSystem extends FileSystem
     return path.substring(0, lastSeparator);
   }
 
+  private String pathOf(FakeFile file)
+  {
+    String path = "";
+    for(FakeFile f = file; f != null; f = f.parent)
+      path = f.name + (path.isEmpty() ? "" : separator + path);
+    return path;
+  }
+
   private static class FakeFile
   {
     private FakeFile parent;
@@ -159,10 +242,12 @@ public class FakeFileSystem extends FileSystem
     private byte[] content;
     private boolean isDirectory;
     private Map<String, FakeFile> children;
+    private long modificationTime;
 
     public FakeFile(String name)
     {
       this.name = name;
+      modified();
     }
 
     public static FakeFile directory(String name)
@@ -190,15 +275,40 @@ public class FakeFileSystem extends FileSystem
     {
       if(".".equals(name))
         return this;
-      else if("..".equals(name))
-        return parent == null ? this : parent;
       else
-        return children.get(name);
+        if("..".equals(name))
+          return parent == null ? this : parent;
+        else
+          return children.get(name);
     }
 
     public int depth()
     {
       return parent == null ? 0 : parent.depth() + 1;
+    }
+
+    public void modified()
+    {
+      modificationTime = System.currentTimeMillis();
+    }
+  }
+
+  private class FakeFileOutputSteam extends ByteArrayOutputStream
+  {
+    private FakeFile file;
+
+    public FakeFileOutputSteam(FakeFile file)
+    {
+      super();
+      this.file = file;
+    }
+
+    @Override
+    public void close() throws IOException
+    {
+      super.close();
+      file.content = this.toByteArray();
+      file.modified();
     }
   }
 }

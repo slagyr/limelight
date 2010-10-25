@@ -4,10 +4,7 @@
 package limelight.model;
 
 import limelight.*;
-import limelight.io.Data;
-import limelight.io.Downloader;
-import limelight.io.FileUtil;
-import limelight.io.MockPacker;
+import limelight.io.*;
 import limelight.model.events.ProductionClosedEvent;
 import limelight.os.MockOS;
 import limelight.model.api.UtilitiesProduction;
@@ -25,6 +22,7 @@ public class StudioTest
   private Studio studio;
   private MockContext context;
   private MockPacker mockPacker;
+  private FakeFileSystem fs;
 
   @Before
   public void setUp() throws Exception
@@ -33,6 +31,8 @@ public class StudioTest
     System.setProperty("limelight.home", "."); // For the RuntimeFactory to spawn productions properly
     context = MockContext.stub();
     studio = Studio.install();
+    fs = new FakeFileSystem();
+    Context.instance().fs = fs;
   }
 
   @Test
@@ -169,6 +169,9 @@ public class StudioTest
     mockPacker = new MockPacker();
     studio.setPacker(mockPacker);
     Context.instance().os = new MockOS();
+
+    fs = new FakeFileSystem();
+    Context.instance().fs = fs;
   }
 
   @Test
@@ -181,14 +184,15 @@ public class StudioTest
     
     assertEquals("blah", result);
     assertEquals("/dir/production.llp", mockPacker.unpackPackagePath);
-    assertEquals(Data.productionsDir().getPath(), new File(mockPacker.unpackDestination).getParent());
+    assertEquals(Data.productionsDir(), new File(mockPacker.unpackDestination).getParent());
   }
 
   @Test
   public void processProductionPath_directory() throws Exception
   {
     setupWithFilesystem();
-    String directory = TestUtil.tmpDirPath();
+    String directory = "/limelight/studio/test";
+    fs.createDirectory(directory);
 
     String result = studio.processProductionPath(directory);
 
@@ -200,15 +204,15 @@ public class StudioTest
   {
     setupWithFilesystem();
     mockPacker.unpackResult = "blah";
-    String path = TestUtil.tmpDirPath("production.lll");
-    FileUtil.createFile(path, "http://somewhere.com/production.llp");
-    Downloader.stubbedGetResult = new File(Data.downloadsDir(), "production.llp");
+    String path = "/limelight/studio/test/production.lll";
+    fs.createTextFile(path, "http://somewhere.com/production.llp");
+    Downloader.stubbedGetResult = FileUtil.join(Data.downloadsDir(), "production.llp");
 
     String result = studio.processProductionPath(path);
 
     assertEquals("blah", result);
-    assertEquals(Downloader.stubbedGetResult.getAbsolutePath(), new File(mockPacker.unpackPackagePath).getAbsolutePath());
-    assertEquals(Data.productionsDir().getPath(), new File(mockPacker.unpackDestination).getParent());
+    assertEquals(Downloader.stubbedGetResult, new File(mockPacker.unpackPackagePath).getAbsolutePath());
+    assertEquals(Data.productionsDir(), new File(mockPacker.unpackDestination).getParent());
   }
 
 // TODO MDM - This needs to be fixed

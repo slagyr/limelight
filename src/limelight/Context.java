@@ -3,10 +3,10 @@
 
 package limelight;
 
+import limelight.io.FileSystem;
 import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.model.Studio;
-import limelight.ruby.RuntimeFactory;
 import limelight.ui.BufferedImagePool;
 import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
@@ -18,6 +18,7 @@ import limelight.background.IdleThreadLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.os.OS;
 import limelight.ui.model.StageFrame;
+import sun.misc.FileURLMapper;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
@@ -29,6 +30,7 @@ public class Context
   public final String limelightHome;
 
   public String environment = "production";
+  public FileSystem fs = new FileSystem();
   public TempDirectory tempDirectory;
   public IdleThreadLoop panelPanter;
   public AnimationLoop animationLoop;
@@ -41,14 +43,13 @@ public class Context
   public Studio studio;
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
   public OS os;
-  public RuntimeFactory runtimeFactory;
   public boolean isShutdown;
   private boolean isShuttingDown;
   
 
   protected Context()
   {
-    limelightHome = System.getProperty("limelight.home") == null ? FileUtil.currentPath() : System.getProperty("limelight.home");
+    limelightHome = System.getProperty("limelight.home") == null ? System.getProperty("user.dir") : System.getProperty("limelight.home");
     installStyleAttributeCompilerFactory();
   }
 
@@ -133,5 +134,10 @@ public class Context
     {
       e.printStackTrace();
     }
+  }
+
+  public static FileSystem fs()
+  {
+    return instance().fs;
   }
 }

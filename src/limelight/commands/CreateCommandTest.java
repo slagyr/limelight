@@ -43,25 +43,25 @@ public class CreateCommandTest
 
   private void setupSceneTemplates()
   {
-    fileSystem.createFile("home/lib/limelight/templates/sources/scene/props.rb.template", "props content !-SCENE_TITLE-!");
-    fileSystem.createFile("home/lib/limelight/templates/sources/scene/styles.rb.template", "styles content !-SCENE_NAME-!");
-    fileSystem.createFile("home/lib/limelight/templates/sources/scene_spec/scene_spec.rb.template", "scene_spec content");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/scene/props.rb.template", "props content !-SCENE_TITLE-!");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/scene/styles.rb.template", "styles content !-SCENE_NAME-!");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/scene_spec/scene_spec.rb.template", "scene_spec content");
   }
 
   private void setupProductionTemplates()
   {
-    fileSystem.createFile("home/lib/limelight/templates/sources/production/production.rb.template", "production content !-PRODUCTION_NAME-! !-CURRENT_VERSION-!");
-    fileSystem.createFile("home/lib/limelight/templates/sources/production/stages.rb.template", "stages content !-DEFAULT_SCENE_NAME-!");
-    fileSystem.createFile("home/lib/limelight/templates/sources/production/styles.rb.template", "styles content");
-    fileSystem.createFile("home/lib/limelight/templates/sources/production/spec/spec_helper.rb.template", "spec_helper content");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/production.rb.template", "production content !-PRODUCTION_NAME-! !-CURRENT_VERSION-!");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/stages.rb.template", "stages content !-DEFAULT_SCENE_NAME-!");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/styles.rb.template", "styles content");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/spec/spec_helper.rb.template", "spec_helper content");
   }
 
   private void setupProjectTemplates()
   {
-    fileSystem.createFile("home/lib/limelight/templates/sources/features/step_definitions/limelight_steps.rb.template", "limelight_steps content");
-    fileSystem.createFile("home/lib/limelight/templates/sources/features/support/env.rb.template", "env content");
-    fileSystem.createFile("home/lib/limelight/templates/sources/project/Rakefile.template", "Rakefile content !-LLP_NAME-!");
-    fileSystem.createFile("home/lib/limelight/templates/sources/project/spec_helper.template", "project spec_helper content");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/features/step_definitions/limelight_steps.rb.template", "limelight_steps content");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/features/support/env.rb.template", "env content");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/project/Rakefile.template", "Rakefile content !-LLP_NAME-!");
+    fileSystem.createTextFile("home/lib/limelight/templates/sources/project/spec_helper.template", "project spec_helper content");
   }
 
   @Test

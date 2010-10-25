@@ -13,7 +13,6 @@ import limelight.model.events.ProductionEvent;
 import limelight.ruby.RubyProduction;
 import limelight.model.api.UtilitiesProduction;
 
-import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -146,7 +145,10 @@ e.printStackTrace();
       String path = FileUtil.pathTo(Context.instance().limelightHome, "lib", "limelight", "builtin", "utilities_production");
       try
       {
-        utilitiesProduction = new UtilitiesProduction(open(path));
+        Production production = productionStub == null ? new RubyProduction(path) : productionStub;
+        production.open();
+        add(production);
+        utilitiesProduction = new UtilitiesProduction(production);
       }
       catch(Exception e)
       {
@@ -221,7 +223,7 @@ e.printStackTrace();
 
   public String processProductionPath(String productionPath)
   {
-    if(new File(productionPath).isDirectory())
+    if(Context.fs().isDirectory(productionPath))
       return productionPath;
     else if(".llp".equals(FileUtil.fileExtension(productionPath)))
       return unpackLlp(productionPath);
@@ -235,9 +237,9 @@ e.printStackTrace();
   {
     try
     {
-      String url = FileUtil.getFileContent(productionPath).trim();
-      File result = Downloader.get(url);
-      return unpackLlp(result.getAbsolutePath());
+      String url = Context.fs().readTextFile(productionPath).trim();
+      String result = Downloader.get(url);
+      return unpackLlp(result);
     }
     catch(Exception e)
     {
@@ -247,11 +249,9 @@ e.printStackTrace();
 
   private String unpackLlp(String productionPath)
   {
-    File destinationDir = new File(Data.productionsDir(), "" + System.currentTimeMillis());
-    if(destinationDir.mkdirs())
-      return packer.unpack(productionPath, destinationDir.getAbsolutePath());
-    else
-      throw new LimelightException("Failed to create unpack directory: " + destinationDir.getAbsolutePath());
+    String destinationDir = FileUtil.join(Data.productionsDir(), "" + System.currentTimeMillis());
+    Context.fs().createDirectory(destinationDir);
+    return packer.unpack(productionPath, destinationDir);
   }
 
   private static class ProductionClosedHandler implements EventAction

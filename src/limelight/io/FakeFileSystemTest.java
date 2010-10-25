@@ -37,7 +37,7 @@ public class FakeFileSystemTest
   @Test
   public void creatingFileWithString() throws Exception
   {
-    fs.createFile("foo/bar.txt", "some content");
+    fs.createTextFile("foo/bar.txt", "some content");
 
     assertEquals(true, fs.exists("foo/bar.txt"));
     assertEquals(false, fs.isDirectory("foo/bar.txt"));
@@ -63,5 +63,16 @@ public class FakeFileSystemTest
     assertEquals(true, fs.exists("/foo/../foo"));
 
     assertEquals(false, fs.exists("/foo/bar/../foo"));
+  }
+
+  @Test
+  public void absolutePath() throws Exception
+  {
+    assertEquals("/path", fs.absolutePath("path"));
+    assertEquals("/foo", fs.absolutePath("/foo"));
+
+    fs.createDirectory("/work/dir");
+    fs.setWorkingDirectory("/work/dir");
+    assertEquals("/work/dir/path", fs.absolutePath("path"));
   }
 }
