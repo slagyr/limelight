@@ -6,23 +6,22 @@ package limelight.io;
 import limelight.Context;
 import limelight.LimelightException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class Packer
 {
   public String unpack(String packagePath)
   {
-    File destination = Context.instance().tempDirectory.createNewDirectory();
-    return unpack(packagePath, destination.getPath());
+    String destination = Context.instance().tempDirectory.createNewDirectory();
+    return unpack(packagePath, destination);
   }
 
   public String unpack(String packagePath, String destination)
   {
     try
     {
-      FileInputStream input = new FileInputStream(packagePath);
+      InputStream input = Context.fs().inputStream(packagePath);
       DirectoryZipper zipper = DirectoryZipper.fromZip(input);
       zipper.unzip(destination);
       return zipper.getDirectoryPath();
@@ -45,7 +44,7 @@ public class Packer
       DirectoryZipper zipper = DirectoryZipper.fromDir(productionPath);
       if(llpName == null)
         llpName = zipper.getProductionName();
-      FileOutputStream output = new FileOutputStream(llpName + ".llp");
+      OutputStream output = Context.fs().outputStream(llpName + ".llp");
       zipper.zipTo(output);
     }
     catch(Exception e)

@@ -32,41 +32,22 @@ public class FileUtilTest
 	}
 
   @Test
-  public void currentPath() throws Exception
-  {
-    String currentPath = FileUtil.currentPath();
-    File currentPathFile = new File(FileUtil.join(currentPath, "."));
-    File dotFile = new File(".");
-    assertEquals(dotFile.getAbsolutePath(), currentPathFile.getAbsolutePath());
-  }
-
-  @Test
-  public void createDir() throws Exception
-	{
-		File dir = FileUtil.makeDir(FileUtil.pathTo(TestUtil.TMP_DIR, "temp"));
-		assertEquals(true, dir.exists());
-		assertEquals(true, dir.isDirectory());
-		FileUtil.deleteFileSystemDirectory(dir);
-	}
-
-  @Test
-  public void createFile() throws Exception
-  {
-    String filePath = FileUtil.pathTo(TestUtil.TMP_DIR, "test.txt");
-
-    FileUtil.createFile(filePath, "blah");
-    assertEquals(true, new File(filePath).exists());
-    assertEquals("blah", FileUtil.getFileContent(filePath));
-
-    FileUtil.deleteFile(filePath);
-    assertEquals(false, new File(filePath).exists());
-  }
-
-  @Test
   public void baseName() throws Exception
   {
     assertEquals("foo", FileUtil.baseName("foo"));
     assertEquals("foo", FileUtil.baseName("bar/foo"));
     assertEquals("foo", FileUtil.baseName("bar/foo.txt"));  
+  }
+
+  @Test
+  public void filename() throws Exception
+  {
+    assertEquals("/", FileUtil.filename("/"));
+    assertEquals("C:\\", FileUtil.filename("C:\\"));
+    assertEquals("one", FileUtil.filename("/one"));
+    assertEquals("two", FileUtil.filename("/one/two"));
+    assertEquals("two", FileUtil.filename("one/two"));
+    assertEquals("two.txt", FileUtil.filename("one/two.txt"));
+    assertEquals("two", FileUtil.filename("one/two/"));
   }
 }

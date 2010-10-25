@@ -82,14 +82,6 @@ public class BootTest
   }
 
   @Test
-  public void runtimeFactoryIsInstalled() throws Exception
-  {
-    Boot.configureContext();
-
-    assertNotNull(Context.instance().runtimeFactory);
-  }
-
-  @Test
   public void studioIsInstalled() throws Exception
   {
     Boot.configureContext();

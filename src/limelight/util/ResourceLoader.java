@@ -3,25 +3,14 @@
 
 package limelight.util;
 
-import limelight.LimelightException;
-import limelight.io.StreamReader;
-import sun.management.FileSystem;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import limelight.Context;
+import limelight.io.FileSystem;
+import limelight.io.FileUtil;
 
 public class ResourceLoader
 {
   private String root;
-
-//    def load(path)
-//      file_to_load = path_to(path)
-//      raise LimelightException.new("File not found: #{file_to_load}") if not File.exists?(file_to_load)
-//      return IO.read(file_to_load)
-//    end
-//
-//    alias :read :load
+  private FileSystem fs;
 
   public static ResourceLoader forRoot(String rootPath)
   {
@@ -32,6 +21,7 @@ public class ResourceLoader
 
   protected ResourceLoader()
   {
+    fs = Context.fs();
   }
 
   public void resetOnRoot(String rootPath)
@@ -46,40 +36,24 @@ public class ResourceLoader
 
   public String pathTo(String path)
   {
-    return fileFor(path).getAbsolutePath();
+    return fs.absolutePath(pathFor(path));
   }
 
-  private File fileFor(String path)
+  private String pathFor(String path)
   {
-    final File file = new File(path);
-    if(file.isAbsolute())
-      return file;
+    if(path.equals(fs.absolutePath(path)))
+      return path;
     else
-      return new File(root, path);
+      return FileUtil.join(root, path);
   }
 
   public boolean exists(String path)
   {
-    return fileFor(path).exists();
+    return fs.exists(pathFor(path));
   }
 
   public String readText(String path)
   {
-    File file = fileFor(path);
-    StreamReader reader = null;
-    try
-    {
-      reader = new StreamReader(new FileInputStream(file));
-      return reader.readAll();
-    }
-    catch(FileNotFoundException e)
-    {
-      throw new LimelightException("Failed to read file", e);
-    }
-    finally
-    {
-      if(reader != null)
-        reader.close();
-    }
+    return fs.readTextFile(pathFor(path));
   }
 }

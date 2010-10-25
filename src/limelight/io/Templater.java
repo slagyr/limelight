@@ -80,7 +80,7 @@ public class Templater
     else
     {
       creatingFile(filePath);
-      fileSystem.createFile(destination, replaceTokens(templateContent));
+      fileSystem.createTextFile(destination, replaceTokens(templateContent));
     }
   }
 

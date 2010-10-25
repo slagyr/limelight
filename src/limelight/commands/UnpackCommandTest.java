@@ -1,5 +1,6 @@
 package limelight.commands;
 
+import limelight.Context;
 import limelight.io.FileUtil;
 import limelight.io.MockPacker;
 import org.junit.Before;
@@ -31,7 +32,7 @@ public class UnpackCommandTest
     command.execute("/path/to/blah.llp");
 
     assertEquals("/path/to/blah.llp", packer.unpackPackagePath);
-    assertEquals(FileUtil.currentPath(), packer.unpackDestination);
+    assertEquals(Context.fs().workingDir(), packer.unpackDestination);
   }
 
   @Test

@@ -1,5 +1,7 @@
 package limelight.util;
 
+import limelight.Context;
+import limelight.io.FakeFileSystem;
 import limelight.io.FileUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -11,23 +13,17 @@ import static junit.framework.Assert.assertEquals;
 
 public class ResourceLoaderTest
 {
-  private String rootPath;
+  private static String rootPath = "/limelight/resource_loader/test";
   private ResourceLoader loader;
-  private String absoluteRootPath;
+  private FakeFileSystem fs;
 
   @Before
   public void setUp() throws Exception
   {
-    rootPath = TestUtil.tmpDirPath("resourceLoader");
-    absoluteRootPath = new File(rootPath).getAbsolutePath();
-    FileUtil.deleteFileSystemDirectory(rootPath);
-    loader = ResourceLoader.forRoot(rootPath);
-  }
+    fs = new FakeFileSystem();
+    Context.instance().fs = fs;
 
-  @After
-  public void tearDown() throws Exception
-  {
-    FileUtil.deleteFileSystemDirectory(rootPath);
+    loader = ResourceLoader.forRoot(rootPath);
   }
 
   @Test
@@ -46,14 +42,14 @@ public class ResourceLoaderTest
   @Test
   public void pathToRelativePath() throws Exception
   {
-    assertEquals(absoluteRootPath + "/foo", loader.pathTo("foo"));
-    assertEquals(absoluteRootPath + "/foo/bar.gif", loader.pathTo("foo/bar.gif"));
+    assertEquals(rootPath + "/foo", loader.pathTo("foo"));
+    assertEquals(rootPath + "/foo/bar.gif", loader.pathTo("foo/bar.gif"));
   }
 
   @Test
   public void knowsIfTheFileExists() throws Exception
   {
-    FileUtil.establishFile(TestUtil.tmpDirPath("resourceLoader/foo.txt"), "blah");
+    fs.createTextFile(FileUtil.join(rootPath, "foo.txt"), "blah");
 
     assertEquals(true, loader.exists("foo.txt"));
     assertEquals(false, loader.exists("bar.txt"));
@@ -62,7 +58,7 @@ public class ResourceLoaderTest
   @Test
   public void readsText() throws Exception
   {
-    FileUtil.establishFile(TestUtil.tmpDirPath("resourceLoader/foo.txt"), "blah");
+    fs.createTextFile(FileUtil.join(rootPath, "foo.txt"), "blah");
 
     assertEquals("blah", loader.readText("foo.txt"));
   }

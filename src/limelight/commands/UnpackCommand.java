@@ -1,6 +1,7 @@
 package limelight.commands;
 
 import limelight.Boot;
+import limelight.Context;
 import limelight.io.FileUtil;
 import limelight.io.Packer;
 
@@ -42,7 +43,7 @@ public class UnpackCommand extends Command
     if(destination != null)
       getPacker().unpack(llpFile, destination);
     else
-      getPacker().unpack(llpFile, FileUtil.currentPath());
+      getPacker().unpack(llpFile, Context.fs().workingDir());
   }
 
   @Override

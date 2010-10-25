@@ -20,7 +20,7 @@ public abstract class OS
 
   public String dataRoot()
   {
-    return new TempDirectory().getRoot().getAbsolutePath();
+    return Context.fs().absolutePath(new TempDirectory().getRoot());
   }
 
   public void enterKioskMode()

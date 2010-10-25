@@ -3,30 +3,34 @@
 
 package limelight.io;
 
-import java.io.File;
+import limelight.Context;
 
 public class TempDirectory
 {
-  private final File root;
+  private final String root;
 
   public TempDirectory()
   {
-    String path = FileUtil.pathTo(System.getProperty("java.io.tmpdir"), "limelight");
-    root = new File(path);
-    if(!root.exists())
-      root.mkdirs();
+    root = FileUtil.pathTo(System.getProperty("java.io.tmpdir"), "limelight");
+    if(!fs().exists(root))
+      fs().createDirectory(root);
   }
 
-  public File getRoot()
+  private FileSystem fs()
+  {
+    return Context.fs();
+  }
+
+  public String getRoot()
   {
     return root;
   }
 
-  public File createNewDirectory()
+  public String createNewDirectory()
   {
-    File directory = new File(root, uniqueFilename());  
-    directory.mkdir();
-    return directory;
+    String path = FileUtil.join(root, uniqueFilename());
+    fs().createDirectory(path);
+    return path;
   }
 
   private String uniqueFilename()
@@ -40,19 +44,19 @@ public class TempDirectory
 
   private boolean nameTaken(String name)
   {
-    return new File(root, name).exists();
+    return fs().exists(FileUtil.join(root, name));
   }
 
   public void cleanup()
   {
-    FileUtil.deleteFileSystemDirectory(root);
+    fs().deleteDirectory(root);
   }
 
-  public File getDownloadsDirectory()
+  public String getDownloadsDirectory()
   {
-    File downloadsDirectory = new File(root, "downloads");
-    if(!downloadsDirectory.exists())
-      downloadsDirectory.mkdir();
+    String downloadsDirectory = FileUtil.join(root, "downloads");
+    if(!fs().exists(downloadsDirectory))
+      fs().createDirectory(downloadsDirectory);
     return downloadsDirectory;
   }
 }

@@ -54,7 +54,7 @@ public class TemplaterTest
   @Test
   public void creatingFile() throws Exception
   {
-    fileSystem.createFile("source/1.template", "template content");
+    fileSystem.createTextFile("source/1.template", "template content");
 
     templater.file("file.txt", "1.template");
 
@@ -65,8 +65,8 @@ public class TemplaterTest
   @Test
   public void existingFilesAreSkipped() throws Exception
   {
-    fileSystem.createFile("source/1.template", "template content");
-    fileSystem.createFile("destination/file.txt", "original content");
+    fileSystem.createTextFile("source/1.template", "template content");
+    fileSystem.createTextFile("destination/file.txt", "original content");
 
     templater.file("file.txt", "1.template");
 
@@ -77,7 +77,7 @@ public class TemplaterTest
   @Test
   public void creatingFileWithTag() throws Exception
   {
-    fileSystem.createFile("source/1.template", "!-MY_TAG-! content");
+    fileSystem.createTextFile("source/1.template", "!-MY_TAG-! content");
     templater.addToken("MY_TAG", "wicked");
 
     templater.file("file.txt", "1.template");
@@ -88,7 +88,7 @@ public class TemplaterTest
   @Test
   public void creatingFileWithMultipleTokens() throws Exception
   {
-    fileSystem.createFile("source/1.template", "!-TOKEN0-! !-TOKEN1-! !-TOKEN2-!");
+    fileSystem.createTextFile("source/1.template", "!-TOKEN0-! !-TOKEN1-! !-TOKEN2-!");
     templater.addToken("TOKEN0", "0");
     templater.addToken("TOKEN1", "1");
     templater.addToken("TOKEN2", "2");
