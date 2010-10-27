@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.model.MockProduction;
+import limelight.model.FakeProduction;
 import limelight.builtin.BuiltInStyles;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
@@ -34,7 +34,7 @@ public class ComboBoxPanelTest
     root.add(parent);
     root.styleStore = BuiltInStyles.all();
 
-    root.setProduction(new MockProduction());
+    root.setProduction(new FakeProduction());
   }
 
   @Test

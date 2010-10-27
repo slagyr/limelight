@@ -4,10 +4,10 @@
 package limelight.ui.model;
 
 import limelight.LimelightException;
-import limelight.model.MockProduction;
+import limelight.model.FakeProduction;
+import limelight.model.api.FakeCastingDirector;
 import limelight.styles.*;
 import limelight.ui.Panel;
-import limelight.model.api.MockCastingDirector;
 import limelight.model.api.MockPropProxy;
 import limelight.ui.*;
 import limelight.ui.events.panel.MouseEnteredEvent;
@@ -40,8 +40,8 @@ public class PropPanelTest extends Assert
   private RichStyle style3;
   private RichStyle style4;
   private RichStyle style5;
-  private MockProduction production;
-  private MockCastingDirector castingDirector;
+  private FakeProduction production;
+  private FakeCastingDirector castingDirector;
 
   @Before
   public void setUp() throws Exception
@@ -51,8 +51,8 @@ public class PropPanelTest extends Assert
     panel = new PropPanel(prop);
     root.add(panel);
                                           
-    production = new MockProduction();
-    castingDirector = new MockCastingDirector();
+    production = new FakeProduction();
+    castingDirector = new FakeCastingDirector();
     production.setCastingDirector(castingDirector);
     root.setProduction(production);
     root.setStage(new MockStage());

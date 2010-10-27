@@ -2,7 +2,7 @@ package limelight.model.api;
 
 import java.util.Map;
 
-public class MockProductionProxy implements ProductionProxy
+public class FakeProductionProxy implements ProductionProxy
 {
   public CastingDirector castingDirector;
   public TheaterProxy theater;

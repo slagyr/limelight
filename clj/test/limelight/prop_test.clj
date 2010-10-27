@@ -1,4 +1,4 @@
-(ns limelight.test.prop
+(ns limelight.prop-test
   (:use
     [limelight.prop]
     [lazytest.describe :only (describe testing it with given)]

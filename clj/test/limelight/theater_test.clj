@@ -1,4 +1,4 @@
-(ns limelight.test.theater
+(ns limelight.theater-test
   (:use
     [limelight.theater]
     [lazytest.describe :only (describe testing it with given)]

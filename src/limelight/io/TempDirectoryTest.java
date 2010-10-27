@@ -15,8 +15,7 @@ public class TempDirectoryTest extends TestCase
 
   public void setUp() throws Exception
   {
-    fs = new FakeFileSystem();
-    Context.instance().fs = fs;
+    fs = FakeFileSystem.installed();
     tempDirectory = new TempDirectory();
   }
 

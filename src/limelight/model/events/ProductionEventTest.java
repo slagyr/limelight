@@ -1,6 +1,6 @@
 package limelight.model.events;
 
-import limelight.model.MockProduction;
+import limelight.model.FakeProduction;
 import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class ProductionEventTest
 {
-  private MockProduction production;
+  private FakeProduction production;
   private TestableProductionEvent event;
   private MockEventAction action;
 
@@ -20,7 +20,7 @@ public class ProductionEventTest
   @Before
   public void setUp() throws Exception
   {
-    production = new MockProduction();
+    production = new FakeProduction();
     event = new TestableProductionEvent();
     action = new MockEventAction();
   }

@@ -1,4 +1,4 @@
-(ns limelight.test.stage-building
+(ns limelight.stage-building-test
   (:use
     [limelight.stage-building]
     [limelight.production :only (new-production)]
@@ -7,7 +7,7 @@
     [lazytest.context.stateful :only (stateful-fn-context)]))
 
 (defn new-theater []
-  (let [peer-production (limelight.model.MockProduction. "Mock Production")
+  (let [peer-production (limelight.model.FakeProduction. "Mock Production")
         production (new-production peer-production)
         theater @(.theater production)]
     theater))

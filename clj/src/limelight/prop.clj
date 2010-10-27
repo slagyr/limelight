@@ -2,7 +2,8 @@
 
 (defprotocol PropHelp
   (children [this])
-  (add-children [this children]))
+  (add-children [this children])
+  (add [this child]))
 
 (def prop-fns
   {:children (fn [this]
@@ -10,8 +11,11 @@
    :add-children (fn [this children]
                     (doall (map (fn [child] (if (seq? child)
                                                  (add-children this child)
-                                                 (.add @(.peer this) @(.peer child))))
+                                                 (add this child)))
                                 children)))
+   :add (fn [this child]
+          (.add @(.peer this) @(.peer child))
+          child)
    })
 
 (deftype Prop [peer]

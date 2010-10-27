@@ -13,14 +13,14 @@ import static junit.framework.Assert.*;
 
 public class TheaterTest
 {
-  private MockProduction production;
+  private FakeProduction production;
   private Theater theater;
   private MockStage defaultStage;
 
   @Before
   public void setUp() throws Exception
   {
-    production = new MockProduction();
+    production = new FakeProduction();
     theater = new Theater(production);
     defaultStage = new MockStage("default");
   }

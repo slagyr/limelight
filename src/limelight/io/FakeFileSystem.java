@@ -1,5 +1,6 @@
 package limelight.io;
 
+import limelight.Context;
 import limelight.LimelightException;
 import limelight.util.Util;
 
@@ -12,6 +13,12 @@ public class FakeFileSystem extends FileSystem
   private FakeFile root;
   private FakeFile workingDirectory;
 
+  public static FakeFileSystem installed()
+  {
+    FakeFileSystem fs = new FakeFileSystem();
+    Context.instance().fs = fs;
+    return fs;
+  }
 
   public FakeFileSystem()
   {

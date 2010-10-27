@@ -8,7 +8,6 @@ import limelight.io.*;
 import limelight.model.events.ProductionClosedEvent;
 import limelight.os.MockOS;
 import limelight.model.api.UtilitiesProduction;
-import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +30,7 @@ public class StudioTest
     System.setProperty("limelight.home", "."); // For the RuntimeFactory to spawn productions properly
     context = MockContext.stub();
     studio = Studio.install();
-    fs = new FakeFileSystem();
-    Context.instance().fs = fs;
+    fs = FakeFileSystem.installed();
   }
 
   @Test
@@ -44,7 +42,7 @@ public class StudioTest
   @Test
   public void indexingProductions() throws Exception
   {
-    MockProduction production = new MockProduction("Max");
+    FakeProduction production = new FakeProduction("Max");
     add(production);
 
     assertSame(production, studio.get("Max"));
@@ -59,7 +57,7 @@ public class StudioTest
   @Test
   public void itShouldNotAllowShutdownIfProuctionsDecline() throws Exception
   {
-    MockProduction production = new MockProduction("Max");
+    FakeProduction production = new FakeProduction("Max");
     add(production);
     production.setAllowClose(false);
 
@@ -69,7 +67,7 @@ public class StudioTest
   @Test
   public void itShouldAllowShutdownIfProuctionsAllow() throws Exception
   {
-    MockProduction production = new MockProduction("Max");
+    FakeProduction production = new FakeProduction("Max");
     add(production);
     production.setAllowClose(true);
 
@@ -79,8 +77,8 @@ public class StudioTest
   @Test
   public void removedClosedProductions() throws Exception
   {
-    MockProduction production1 = new MockProduction("One");
-    MockProduction production2 = new MockProduction("Two");
+    FakeProduction production1 = new FakeProduction("One");
+    FakeProduction production2 = new FakeProduction("Two");
     add(production1);
     add(production2);
 
@@ -93,7 +91,7 @@ public class StudioTest
   @Test
   public void shouldShutdownWhenLastProductionIsClosed() throws Exception
   {
-    MockProduction production = new MockProduction("Max");
+    FakeProduction production = new FakeProduction("Max");
     add(production);
 
     new ProductionClosedEvent().dispatch(production);
@@ -104,9 +102,9 @@ public class StudioTest
   @Test
   public void shouldGiveProductionsaNameIfItDoesntHaveOne() throws Exception
   {
-    MockProduction production1 = new MockProduction(null);
-    MockProduction production2 = new MockProduction("");
-    MockProduction production3 = new MockProduction(" \t\n");
+    FakeProduction production1 = new FakeProduction(null);
+    FakeProduction production2 = new FakeProduction("");
+    FakeProduction production3 = new FakeProduction(" \t\n");
     add(production1);
     add(production2);
     add(production3);
@@ -119,9 +117,9 @@ public class StudioTest
   @Test
   public void shouldGiveProductionsNewNamesWhenDuplicated() throws Exception
   {
-    MockProduction production1 = new MockProduction("Fido");
-    MockProduction production2 = new MockProduction("Fido");
-    MockProduction production3 = new MockProduction("Fido");
+    FakeProduction production1 = new FakeProduction("Fido");
+    FakeProduction production2 = new FakeProduction("Fido");
+    FakeProduction production3 = new FakeProduction("Fido");
     add(production1);
     add(production2);
     add(production3);
@@ -134,7 +132,7 @@ public class StudioTest
   @Test
   public void shouldShutdown() throws Exception
   {
-    MockProduction production = new MockProduction("Max");
+    FakeProduction production = new FakeProduction("Max");
     add(production);
     production.setAllowClose(true);
 
@@ -147,7 +145,7 @@ public class StudioTest
     assertEquals(true, studio.isShutdown());
   }
 
-  private void add(MockProduction production)
+  private void add(FakeProduction production)
   {
     studio.add(production);
   }
@@ -155,7 +153,7 @@ public class StudioTest
   @Test
   public void haveAUtilitiesProduction() throws Exception
   {
-    MockProduction production = new MockProduction("utilities");
+    FakeProduction production = new FakeProduction("utilities");
     studio.productionStub = production;
 
     UtilitiesProduction utilities = studio.utilitiesProduction();
@@ -170,8 +168,7 @@ public class StudioTest
     studio.setPacker(mockPacker);
     Context.instance().os = new MockOS();
 
-    fs = new FakeFileSystem();
-    Context.instance().fs = fs;
+    fs = FakeFileSystem.installed();
   }
 
   @Test

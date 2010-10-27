@@ -2,7 +2,6 @@ package limelight.io;
 
 import limelight.Context;
 import limelight.os.MockOS;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -18,8 +17,7 @@ public class DataTest
     Data.reset();
     os = new MockOS();
     Context.instance().os = os;
-    fs = new FakeFileSystem();
-    Context.instance().fs = fs;
+    fs = FakeFileSystem.installed();
   }
 
   @Test

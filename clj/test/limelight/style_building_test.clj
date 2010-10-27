@@ -1,4 +1,4 @@
-(ns limelight.test.style-building
+(ns limelight.style-building-test
   (:use
     [limelight.style-building]
     [lazytest.describe :only (describe testing it with given before using)]

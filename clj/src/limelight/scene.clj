@@ -13,5 +13,5 @@
 (defn new-scene [options]
   (let [scene (Scene. (atom nil)) peer (limelight.ui.model.ScenePanel. scene)]
     (swap! (.peer scene) (fn [_] peer))
-    (.addOptions peer options)
+    (.addOptions peer (limelight.util.OptionsMap. options))
     scene))

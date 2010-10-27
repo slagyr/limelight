@@ -3,8 +3,6 @@
 
 package limelight.io;
 
-import limelight.Context;
-import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,8 +19,7 @@ public class DirectoryZipperTest
   @Before
   public void setUp() throws Exception
   {
-    fs = new FakeFileSystem();
-    Context.instance().fs = fs;
+    fs = FakeFileSystem.installed();
   }
 
   public void makeTestRoot()

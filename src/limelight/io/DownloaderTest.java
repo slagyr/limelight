@@ -27,8 +27,7 @@ public class DownloaderTest
     os.dataRoot = dataRoot;
     Context.instance().os = os;
 
-    fs = new FakeFileSystem();
-    Context.instance().fs = fs;
+    fs = FakeFileSystem.installed();
     downloader = new Downloader();
   }
   

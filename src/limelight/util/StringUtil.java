@@ -60,7 +60,7 @@ public class StringUtil
   }
 
   private static Pattern mergeRegex = Pattern.compile("[a-z0-9][A-Z]");
-  private static Pattern separatorRegex = Pattern.compile("[_| ][a-z]");
+  private static Pattern titleizeSeparatorRegex = Pattern.compile("[_| ][a-z]");
 
   public static String titleize(String value)
   {
@@ -73,7 +73,7 @@ public class StringUtil
       }
     });
 
-    value = gsub(value, separatorRegex, new Gsuber()
+    value = gsub(value, titleizeSeparatorRegex, new Gsuber()
     {
       public String replacementFor(Matcher matcher)
       {
@@ -104,16 +104,26 @@ public class StringUtil
     return result.substring(0, 1).toUpperCase() + result.substring(1);
   }
 
-//    # Converts Ruby style names to Java style camal case.
-//  #
-//  #   "four_score".camalized # => "FourScore"
-//  #   "and_seven_years".camalized(:lower) # => "andSevenYears"
-//  #
-//  def camalized(starting_case = :upper)
-//    value = self.downcase.gsub(/[_| |\-][a-z]/) { |match| match[-1..-1].upcase }
-//    value = value[0..0].upcase + value[1..-1] if starting_case == :upper
-//    return value
-//  end
+  private static Pattern underscoreSeparatorRegex = Pattern.compile("[ |\\-][A-Za-z]");
+  public static String underscore(String value)
+  {
+    value = gsub(value, mergeRegex, new Gsuber()
+    {
+      public String replacementFor(Matcher matcher)
+      {
+        final String match = matcher.group();
+        return match.substring(0, 1) + "_" + match.substring(1);
+      }
+    });
+
+    value = gsub(value, underscoreSeparatorRegex, new Gsuber(){
+      public String replacementFor(Matcher matcher)
+      {        
+        return "_" + matcher.group().substring(1).toLowerCase();
+      }
+    });
+    return value.toLowerCase();
+  }
 //
 //  # Converts Java camel case names to ruby style underscored names.
 //  #

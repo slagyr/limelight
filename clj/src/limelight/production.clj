@@ -38,7 +38,7 @@
              new-styles)))))
 
 (defn new-production [peer]
-  (let [casting-director (CastingDirector. (.getResourceLoader peer))
+  (let [casting-director (CastingDirector.)
         production (Production. peer (atom nil) casting-director)]
     (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
     (.setProxy peer production)
