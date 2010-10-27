@@ -7,16 +7,10 @@ import limelight.io.FileUtil;
 
 public class TestUtil
 {
-  public static final String TMP_DIR = FileUtil.join("etc", "tmp");
   public static final String DATA_DIR = FileUtil.join("etc", "test_data");
 
   public static String dataDirPath(String... args)
   {
     return FileUtil.buildOnPath(DATA_DIR, args);
-  }
-
-  public static String tmpDirPath(String... args)
-  {
-    return FileUtil.buildOnPath(TMP_DIR, args);
   }
 }

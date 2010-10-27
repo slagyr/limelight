@@ -1,4 +1,4 @@
-(ns limelight.test.prop-building
+(ns limelight.prop-building-test
   (:use
     [limelight.prop-building]
     [limelight.scene :only (new-scene)]
@@ -8,7 +8,7 @@
 
 (describe "Illuminated prop-building"
   (given [scene (build-props (new-scene {}) "(! 'one {:text \"Number ONE!\"} (! 'two))")
-          _ (.setProduction @(.peer scene) (limelight.model.MockProduction. "Mock Production"))
+          _ (.setProduction @(.peer scene) (limelight.model.FakeProduction. "Mock Production"))
           _ (.illuminate @(.peer scene))]
     (it "has a name"
       (= "one" (.getName @(.peer (first (children scene))))))

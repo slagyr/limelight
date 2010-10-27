@@ -19,14 +19,14 @@ import static junit.framework.Assert.assertEquals;
 
 public class ProductionTest
 {
-  private MockProduction production;
+  private FakeProduction production;
   private MockStudio studio;
   private MockEventAction action;
 
   @Before
   public void setUp() throws Exception
   {
-    production = new MockProduction("/foo/bar");
+    production = new FakeProduction("/foo/bar");
     studio = new MockStudio();
     Context.instance().studio = studio;
     action = new MockEventAction();
@@ -67,7 +67,7 @@ public class ProductionTest
   @Test
   public void accessingTheProxy() throws Exception
   {
-    ProductionProxy proxy = new MockProductionProxy();
+    ProductionProxy proxy = new FakeProductionProxy();
     assertEquals(null, production.getProxy());
     production.setProxy(proxy);
 
@@ -77,7 +77,7 @@ public class ProductionTest
   @Test
   public void accessingTheCastingDirector() throws Exception
   {
-    CastingDirector director = new MockCastingDirector();
+    CastingDirector director = new FakeCastingDirector();
 
     production.setCastingDirector(director);
 
@@ -87,8 +87,8 @@ public class ProductionTest
   @Test
   public void settingProxySetsAllProxies() throws Exception
   {
-    MockProductionProxy proxy = new MockProductionProxy();
-    proxy.castingDirector = new MockCastingDirector();
+    FakeProductionProxy proxy = new FakeProductionProxy();
+    proxy.castingDirector = new FakeCastingDirector();
     proxy.theater = new MockTheaterProxy();
 
     production.setProxy(proxy);

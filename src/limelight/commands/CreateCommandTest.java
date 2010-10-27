@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class CreateCommandTest
 {
   private CreateCommand command;
-  private FakeFileSystem fileSystem;
+  private FakeFileSystem fs;
   private ByteArrayOutputStream output;
 
   private static class NullTemplaterLogger extends Templater.TemplaterLogger
@@ -34,34 +34,34 @@ public class CreateCommandTest
 
     output = new ByteArrayOutputStream();
     Command.setOutput(new PrintStream(output));
-    fileSystem = new FakeFileSystem();
+    fs = new FakeFileSystem();
 
     command = new CreateCommand();
     command.setTemplaterLoger(new NullTemplaterLogger());
-    command.setFileSystem(fileSystem);
+    command.setFileSystem(fs);
   }
 
   private void setupSceneTemplates()
   {
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/scene/props.rb.template", "props content !-SCENE_TITLE-!");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/scene/styles.rb.template", "styles content !-SCENE_NAME-!");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/scene_spec/scene_spec.rb.template", "scene_spec content");
+    fs.createTextFile("home/lib/limelight/templates/sources/scene/props.rb.template", "props content !-SCENE_TITLE-!");
+    fs.createTextFile("home/lib/limelight/templates/sources/scene/styles.rb.template", "styles content !-SCENE_NAME-!");
+    fs.createTextFile("home/lib/limelight/templates/sources/scene_spec/scene_spec.rb.template", "scene_spec content");
   }
 
   private void setupProductionTemplates()
   {
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/production.rb.template", "production content !-PRODUCTION_NAME-! !-CURRENT_VERSION-!");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/stages.rb.template", "stages content !-DEFAULT_SCENE_NAME-!");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/styles.rb.template", "styles content");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/production/spec/spec_helper.rb.template", "spec_helper content");
+    fs.createTextFile("home/lib/limelight/templates/sources/production/production.rb.template", "production content !-PRODUCTION_NAME-! !-CURRENT_VERSION-!");
+    fs.createTextFile("home/lib/limelight/templates/sources/production/stages.rb.template", "stages content !-DEFAULT_SCENE_NAME-!");
+    fs.createTextFile("home/lib/limelight/templates/sources/production/styles.rb.template", "styles content");
+    fs.createTextFile("home/lib/limelight/templates/sources/production/spec/spec_helper.rb.template", "spec_helper content");
   }
 
   private void setupProjectTemplates()
   {
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/features/step_definitions/limelight_steps.rb.template", "limelight_steps content");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/features/support/env.rb.template", "env content");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/project/Rakefile.template", "Rakefile content !-LLP_NAME-!");
-    fileSystem.createTextFile("home/lib/limelight/templates/sources/project/spec_helper.template", "project spec_helper content");
+    fs.createTextFile("home/lib/limelight/templates/sources/features/step_definitions/limelight_steps.rb.template", "limelight_steps content");
+    fs.createTextFile("home/lib/limelight/templates/sources/features/support/env.rb.template", "env content");
+    fs.createTextFile("home/lib/limelight/templates/sources/project/Rakefile.template", "Rakefile content !-LLP_NAME-!");
+    fs.createTextFile("home/lib/limelight/templates/sources/project/spec_helper.template", "project spec_helper content");
   }
 
   @Test
@@ -85,10 +85,10 @@ public class CreateCommandTest
 
     command.execute("scene", "howdy");
 
-    assertEquals("props content Howdy", fileSystem.readTextFile("howdy/props.rb"));
-    assertEquals("styles content howdy", fileSystem.readTextFile("howdy/styles.rb"));
-    assertEquals(true, fileSystem.exists("howdy/players"));
-    assertEquals("scene_spec content", fileSystem.readTextFile("spec/howdy/howdy_spec.rb"));
+    assertEquals("props content Howdy", fs.readTextFile("howdy/props.rb"));
+    assertEquals("styles content howdy", fs.readTextFile("howdy/styles.rb"));
+    assertEquals(true, fs.exists("howdy/players"));
+    assertEquals("scene_spec content", fs.readTextFile("spec/howdy/howdy_spec.rb"));
   }
 
   @Test
@@ -99,14 +99,14 @@ public class CreateCommandTest
 
     command.execute("production", "hello");
 
-    assertEquals("production content Hello " + About.version.toString(), fileSystem.readTextFile("hello/production.rb"));
-    assertEquals("stages content default_scene", fileSystem.readTextFile("hello/stages.rb"));
-    assertEquals("styles content", fileSystem.readTextFile("hello/styles.rb"));
-    assertEquals("spec_helper content", fileSystem.readTextFile("hello/spec/spec_helper.rb"));
-    assertEquals("props content Default Scene", fileSystem.readTextFile("hello/default_scene/props.rb"));
-    assertEquals("styles content default_scene", fileSystem.readTextFile("hello/default_scene/styles.rb"));
-    assertEquals(true, fileSystem.exists("hello/default_scene/players"));
-    assertEquals("scene_spec content", fileSystem.readTextFile("hello/spec/default_scene/default_scene_spec.rb"));
+    assertEquals("production content Hello " + About.version.toString(), fs.readTextFile("hello/production.rb"));
+    assertEquals("stages content default_scene", fs.readTextFile("hello/stages.rb"));
+    assertEquals("styles content", fs.readTextFile("hello/styles.rb"));
+    assertEquals("spec_helper content", fs.readTextFile("hello/spec/spec_helper.rb"));
+    assertEquals("props content Default Scene", fs.readTextFile("hello/default_scene/props.rb"));
+    assertEquals("styles content default_scene", fs.readTextFile("hello/default_scene/styles.rb"));
+    assertEquals(true, fs.exists("hello/default_scene/players"));
+    assertEquals("scene_spec content", fs.readTextFile("hello/spec/default_scene/default_scene_spec.rb"));
   }
 
   @Test
@@ -117,24 +117,24 @@ public class CreateCommandTest
 
     command.execute("production", "hello", "--scene-name=baby");
 
-    assertEquals("props content Baby", fileSystem.readTextFile("hello/baby/props.rb"));
-    assertEquals("styles content baby", fileSystem.readTextFile("hello/baby/styles.rb"));
-    assertEquals(true, fileSystem.exists("hello/baby/players"));
-    assertEquals("scene_spec content", fileSystem.readTextFile("hello/spec/baby/baby_spec.rb"));
+    assertEquals("props content Baby", fs.readTextFile("hello/baby/props.rb"));
+    assertEquals("styles content baby", fs.readTextFile("hello/baby/styles.rb"));
+    assertEquals(true, fs.exists("hello/baby/players"));
+    assertEquals("scene_spec content", fs.readTextFile("hello/spec/baby/baby_spec.rb"));
   }
 
   @Test
   public void creatingSceneWithCustomProductionPath() throws Exception
   {
-    fileSystem.createDirectory("myProd");
+    fs.createDirectory("myProd");
     setupSceneTemplates();
 
     command.execute("scene", "howdy", "--production-path=myProd");
 
-    assertEquals("props content Howdy", fileSystem.readTextFile("myProd/howdy/props.rb"));
-    assertEquals("styles content howdy", fileSystem.readTextFile("myProd/howdy/styles.rb"));
-    assertEquals(true, fileSystem.exists("myProd/howdy/players"));
-    assertEquals("scene_spec content", fileSystem.readTextFile("myProd/spec/howdy/howdy_spec.rb"));
+    assertEquals("props content Howdy", fs.readTextFile("myProd/howdy/props.rb"));
+    assertEquals("styles content howdy", fs.readTextFile("myProd/howdy/styles.rb"));
+    assertEquals(true, fs.exists("myProd/howdy/players"));
+    assertEquals("scene_spec content", fs.readTextFile("myProd/spec/howdy/howdy_spec.rb"));
   }
 
   @Test
@@ -145,8 +145,8 @@ public class CreateCommandTest
 
     command.execute("production", "hello", "--test-path=tests");
 
-    assertEquals("scene_spec content", fileSystem.readTextFile("hello/tests/default_scene/default_scene_spec.rb"));
-    assertEquals("spec_helper content", fileSystem.readTextFile("hello/tests/spec_helper.rb"));
+    assertEquals("scene_spec content", fs.readTextFile("hello/tests/default_scene/default_scene_spec.rb"));
+    assertEquals("spec_helper content", fs.readTextFile("hello/tests/spec_helper.rb"));
   }
 
   @Test
@@ -158,16 +158,16 @@ public class CreateCommandTest
 
     command.execute("project", "hello");
 
-    assertEquals("limelight_steps content", fileSystem.readTextFile("hello/features/step_definitions/limelight_steps.rb"));
-    assertEquals("env content", fileSystem.readTextFile("hello/features/support/env.rb"));
-    assertEquals("Rakefile content hello", fileSystem.readTextFile("hello/Rakefile"));
-    assertEquals("spec_helper content", fileSystem.readTextFile("hello/spec/spec_helper.rb"));
-    assertEquals("scene_spec content", fileSystem.readTextFile("hello/spec/default_scene/default_scene_spec.rb"));
-    assertEquals("production content Hello " + About.version.toString(), fileSystem.readTextFile("hello/production/production.rb"));
-    assertEquals("stages content default_scene", fileSystem.readTextFile("hello/production/stages.rb"));
-    assertEquals("styles content", fileSystem.readTextFile("hello/production/styles.rb"));
-    assertEquals("props content Default Scene", fileSystem.readTextFile("hello/production/default_scene/props.rb"));
-    assertEquals("styles content default_scene", fileSystem.readTextFile("hello/production/default_scene/styles.rb"));
-    assertEquals(true, fileSystem.exists("hello/production/default_scene/players"));
+    assertEquals("limelight_steps content", fs.readTextFile("hello/features/step_definitions/limelight_steps.rb"));
+    assertEquals("env content", fs.readTextFile("hello/features/support/env.rb"));
+    assertEquals("Rakefile content hello", fs.readTextFile("hello/Rakefile"));
+    assertEquals("spec_helper content", fs.readTextFile("hello/spec/spec_helper.rb"));
+    assertEquals("scene_spec content", fs.readTextFile("hello/spec/default_scene/default_scene_spec.rb"));
+    assertEquals("production content Hello " + About.version.toString(), fs.readTextFile("hello/production/production.rb"));
+    assertEquals("stages content default_scene", fs.readTextFile("hello/production/stages.rb"));
+    assertEquals("styles content", fs.readTextFile("hello/production/styles.rb"));
+    assertEquals("props content Default Scene", fs.readTextFile("hello/production/default_scene/props.rb"));
+    assertEquals("styles content default_scene", fs.readTextFile("hello/production/default_scene/styles.rb"));
+    assertEquals(true, fs.exists("hello/production/default_scene/players"));
   }
 }

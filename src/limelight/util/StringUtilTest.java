@@ -54,13 +54,14 @@ public class StringUtilTest
     assertEquals("WithSpaces", StringUtil.capitalCamalize("with spaces"));
     assertEquals("WithDash", StringUtil.capitalCamalize("with-dash"));
   }
-  
-//
-//  it "should underscore a name" do
-//    "ClassName".underscored.should == "class_name"
-//    "OneTwoThree".underscored.should == "one_two_three"
-//    "One".underscored.should == "one"
-//  end
 
-  
+  @Test
+  public void underscore() throws Exception
+  {
+    assertEquals("class_name", StringUtil.underscore("ClassName"));
+    assertEquals("one_two_three", StringUtil.underscore("OneTwoThree"));
+    assertEquals("one", StringUtil.underscore("One"));
+    assertEquals("one_two_three", StringUtil.underscore("one-two-three"));
+    assertEquals("one_two_three", StringUtil.underscore("one two three"));
+  }
 }

@@ -1,4 +1,4 @@
-(ns limelight.test.core
+(ns limelight.core-test
   (:use [lazytest.describe :only (describe testing it with)]
     [lazytest.context :only (fn-context)]))
 

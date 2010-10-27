@@ -15,7 +15,7 @@ end
 Before do
   Java::limelight.Boot.boot
   Limelight::Specs.producer = Limelight::Producer.new($PRODUCTION_PATH)
-  Limelight::Specs.producer.production.extend(MockProduction)
+  Limelight::Specs.producer.production.extend(FakeProduction)
   Limelight::Specs.producer.open
 end
 

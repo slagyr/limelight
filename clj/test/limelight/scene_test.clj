@@ -1,4 +1,4 @@
-(ns limelight.test.scene
+(ns limelight.scene-test
   (:use
     [limelight.scene]
     [lazytest.describe :only (describe testing it with given)]

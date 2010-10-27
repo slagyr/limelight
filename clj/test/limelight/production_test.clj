@@ -1,4 +1,4 @@
-(ns limelight.test.production
+(ns limelight.production-test
   (:use
     [limelight.production]
     [lazytest.describe :only (describe testing it with given)]
@@ -17,7 +17,7 @@
       (it "has theater" (= :theater (.theater production))))))
 
 (describe "Building a new production"
-  (given [peer-production (limelight.model.MockProduction. "Mock")
+  (given [peer-production (limelight.model.FakeProduction. "Mock")
           production (new-production peer-production)]
     (testing "the peer"
       (it "is connected" (= peer-production (.peer production)))
@@ -27,13 +27,12 @@
       (it "with the peer theater" (= (.getTheater peer-production) (.peer @(.theater production))))
       (it "with the production" (= production (.production @(.theater production)))))
     (testing "creates a casting director"
-      (it "implementing the CastingDirector API" (= CastingDirector (type (.casting-director production))))
-      (it "with the loader" (= (.getResourceLoader peer-production) (.loader (.casting-director production)))))))
+      (it "implementing the CastingDirector API" (= CastingDirector (type (.casting-director production)))))))
 
 (describe "Loading stages"
   (given [loader (limelight.util.MockResourceLoader.)
           _ (set! (.readTextResult loader) "(stage \"One\" {})")
-          peer-production (limelight.model.MockProduction. "Mock" loader)
+          peer-production (limelight.model.FakeProduction. "Mock" loader)
           theater (.getTheater peer-production)
           production (new-production peer-production)
           _ (.loadStages production)]

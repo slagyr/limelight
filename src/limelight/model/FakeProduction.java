@@ -3,14 +3,13 @@
 
 package limelight.model;
 
-import limelight.model.api.MockCastingDirector;
+import limelight.model.api.FakeCastingDirector;
 import limelight.ui.model.Scene;
-import limelight.util.MockResourceLoader;
 import limelight.util.ResourceLoader;
 
 import java.util.Map;
 
-public class MockProduction extends Production
+public class FakeProduction extends Production
 {
   public boolean wasAskedIfAllowedToShutdown;
   public boolean closeFinalized;
@@ -26,13 +25,13 @@ public class MockProduction extends Production
   public String openedScenePath;
   public Scene loadStylesScene;
 
-  public MockProduction(String name)
+  public FakeProduction(String name)
   {
     super(name);
-    setCastingDirector(new MockCastingDirector());
+    setCastingDirector(new FakeCastingDirector());
   }
 
-  public MockProduction(String name, ResourceLoader loader)
+  public FakeProduction(String name, ResourceLoader loader)
   {
     this(name);
     resourceLoader = loader;
@@ -50,7 +49,7 @@ public class MockProduction extends Production
     openPrepared = true;
   }
 
-  public MockProduction()
+  public FakeProduction()
   {
     this("test");
   }

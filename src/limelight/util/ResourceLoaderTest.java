@@ -1,13 +1,9 @@
 package limelight.util;
 
-import limelight.Context;
 import limelight.io.FakeFileSystem;
 import limelight.io.FileUtil;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.File;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -20,9 +16,7 @@ public class ResourceLoaderTest
   @Before
   public void setUp() throws Exception
   {
-    fs = new FakeFileSystem();
-    Context.instance().fs = fs;
-
+    fs = FakeFileSystem.installed();
     loader = ResourceLoader.forRoot(rootPath);
   }
 
