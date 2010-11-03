@@ -1,17 +1,15 @@
 (ns limelight.production
-  (:use [limelight.casting-director]
+  (:use [limelight.common]
         [limelight.theater]
         [limelight.stage-building :only (build-stages)]
         [limelight.prop-building :only (build-props)]
         [limelight.style-building :only (build-styles)]
         [limelight.scene :only (new-scene)])
-  (:import [limelight.casting-director CastingDirector]
-           [limelight.theater Theater]))
+  (:import [limelight.theater Theater]))
 
-(deftype Production [peer theater casting-director]
+(deftype Production [peer theater]
   limelight.model.api.ProductionProxy
   (callMethod [this name args] nil)
-  (getCastingDirector [this] casting-director)
   (getTheater [this] @theater)
   (illuminate [this] nil)
   (loadLibraries [this] nil)
@@ -38,8 +36,10 @@
              new-styles)))))
 
 (defn new-production [peer]
-  (let [casting-director (CastingDirector.)
-        production (Production. peer (atom nil) casting-director)]
+  (let [production (Production. peer (atom nil))]
     (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
     (.setProxy peer production)
     production))
+
+(defmethod path-to Production [production path]
+  (.pathTo (.getResourceLoader (.peer production)) path))

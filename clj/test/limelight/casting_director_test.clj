@@ -11,26 +11,31 @@
 
 (defn setup-prop [options]
   (let [production (new-production (limelight.model.FakeProduction. "MockProduction"))
-        _ (.setCastingDirector (.peer production) (limelight.model.api.FakeCastingDirector.))
         scene (new-scene {:path "root"})
+        _ (.setCastingDirector @(.peer scene) (limelight.model.api.FakeCastingDirector.))
         _ (.setProduction @(.peer scene) (.peer production))
         prop (add scene (new-prop {}))]
-    prop))
+    [prop scene]))
 
 (defn setup-fs [options]
   (let [fs (limelight.io.FakeFileSystem/installed)]
-    (doall (map (fn [[filename content]] (println filename ": " content) (.createTextFile fs filename content)) options))
+    (doall (map (fn [[filename content]] (.createTextFile fs filename content)) options))
     fs))
 
 (describe "CastingDirector"
+
+  (testing "creation"
+    (given [scene (new-scene {}) 
+            casting-director (new-casting-director scene)]
+      (it "has en empty cast" (= {} @(.cast casting-director)))))
 
   (testing "lineage"
     (it "inherits from API" (isa? CastingDirector limelight.model.api.CastingDirector)))
 
   (testing "includes one player from scene"
     (given [fs (setup-fs {"/root/players/test_player.clj" "(on-mouse-clicked (fn [_]))"})
-            prop (setup-prop {})
-            casting-director (CastingDirector.)
+            [prop scene] (setup-prop {})
+            casting-director (new-casting-director scene)
             _ (.castPlayer casting-director prop "test-player")]
       (it (= 1 (-> prop
         (.peer)
@@ -41,8 +46,8 @@
 
   (testing "includes one player from production"
     (given [fs (setup-fs {"/MockProduction/players/test_player.clj" "(on-mouse-clicked (fn [_]))"})
-            prop (setup-prop {})
-            casting-director (CastingDirector.)
+            [prop scene] (setup-prop {})
+            casting-director (new-casting-director scene)
             _ (.castPlayer casting-director prop "test-player")]
       (it (= 1 (-> prop
         (.peer)
@@ -51,5 +56,3 @@
         (.getActions limelight.ui.events.panel.MouseClickedEvent)
         (count))))))
   )
-
-

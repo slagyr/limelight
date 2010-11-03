@@ -11,9 +11,8 @@
     (it (isa? Production limelight.model.api.ProductionProxy)))
 
   (testing "attributes"
-    (given [production (Production. :peer :theater :casting-director)]
+    (given [production (Production. :peer :theater)]
       (it "has peer" (= :peer (.peer production)))
-      (it "has casting director" (= :casting-director (.casting-director production)))
       (it "has theater" (= :theater (.theater production))))))
 
 (describe "Building a new production"
@@ -25,9 +24,7 @@
     (testing "creates a theater"
       (it "implementing the Theater API" (= limelight.theater.Theater (type @(.theater production))))
       (it "with the peer theater" (= (.getTheater peer-production) (.peer @(.theater production))))
-      (it "with the production" (= production (.production @(.theater production)))))
-    (testing "creates a casting director"
-      (it "implementing the CastingDirector API" (= CastingDirector (type (.casting-director production)))))))
+      (it "with the production" (= production (.production @(.theater production)))))))
 
 (describe "Loading stages"
   (given [loader (limelight.util.MockResourceLoader.)

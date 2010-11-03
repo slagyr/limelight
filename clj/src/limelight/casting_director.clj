@@ -1,46 +1,45 @@
 (ns limelight.casting-director
-  (:use [limelight.player]))
+  (:use
+    [limelight.common]
+    [limelight.player]))
 
-(declare *prop*)
+(defn load-player-from [casting-director player-path player-name]
+  (if-not (.exists (limelight.Context/fs) player-path)
+    nil
+    (let [player-content (.readTextFile (limelight.Context/fs) player-path)
+          player-ns (create-ns (gensym (str "limelight.dynamic-player." player-name "-")))]
+      (binding [*ns* player-ns]
+        (use 'clojure.core)
+        (use 'limelight.player)
+        (load-string "(def *event-actions* (atom {}))")        
+        (binding [limelight.player/*action-cache* @(ns-resolve player-ns '*event-actions*)]
+          (load-string player-content)))
+      (swap! (.cast casting-director) #(assoc % player-name player-ns))
+      player-ns)))
 
-;(defn install-player [prop player-path]
-;  (let [player-content (.readTextFile (limelight.Context/fs) player-path)]
-;    (binding [*ns* (the-ns 'limelight.casting-director)
-;              *prop* prop]
-;      (load-string player-content)
-;      prop)))
+(defn player-path [context relative-player-path]
+  (path-to context relative-player-path))
 
-(defn install-player [prop player-path]
-  (let [player-content (.readTextFile (limelight.Context/fs) player-path)]
-    (binding [*ns* (create-ns (symbol "foo"))
-              *prop* prop]
-      ;      (require [limelight.player])
-      (use 'clojure.core)
-      (use '[limelight.player])
-      (def event-actions (atom {}))
-      (binding [limelight.player/*action-cache* event-actions]
-        (load-string player-content))
-      prop)))
+(defn load-player [casting-director player-name]
+  (if-let [player (@(.cast casting-director) player-name)]
+    player
+    (let [relative-player-path (str "players/" (limelight.util.StringUtil/underscore player-name) ".clj")]
+      (if-let [player (load-player-from casting-director (player-path (.scene casting-director) relative-player-path) player-name)]
+        player
+        (load-player-from casting-director (player-path (production (.scene casting-director)) relative-player-path) player-name)))))
 
-(defn install-player-from [prop player-path resource-loader]
-  (if (.exists (limelight.Context/fs) (.pathTo resource-loader player-path))
-    (install-player prop (.pathTo resource-loader player-path))
-    nil))
+(defn cast-player [player-ns prop]
+  (let [event-actions @(ns-resolve player-ns '*event-actions*)
+        event-handler (.getEventHandler @(.peer prop))]
+    (doseq [[event-class actions] @event-actions]
+      (doseq [action actions]
+        (.add event-handler event-class action)))))
 
-(deftype CastingDirector []
+(deftype CastingDirector [scene cast]
   limelight.model.api.CastingDirector
   (castPlayer [this prop player-name]
-    (let [player-path (str "players/" (limelight.util.StringUtil/underscore player-name) ".clj")]
-      (if (install-player-from prop player-path (.getResourceLoader (.getRoot @(.peer prop))))
-        true
-        (install-player-from prop player-path (.getResourceLoader (.getProduction (.getRoot @(.peer prop)))))))))
+    (if-let [player (load-player this player-name)]
+      (cast-player player prop))))
 
-;(defn on-mouse-clicked [action]
-;  (.add (.getEventHandler @(.peer *prop*))
-;    limelight.ui.events.panel.MouseClickedEvent
-;    (reify limelight.events.EventAction
-;      (invoke [this e] (action e)))))
-
-
-
-
+(defn new-casting-director [scene]
+  (CastingDirector. scene (atom {})))

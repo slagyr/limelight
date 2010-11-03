@@ -3,12 +3,13 @@
     [limelight.prop-building]
     [limelight.scene :only (new-scene)]
     [limelight.prop :only (children)]
+    [limelight.production :only (new-production)]
     [lazytest.describe :only (describe testing it with given before using)]
     [lazytest.context :only (fn-context)]))
 
 (describe "Illuminated prop-building"
   (given [scene (build-props (new-scene {}) "(! 'one {:text \"Number ONE!\"} (! 'two))")
-          _ (.setProduction @(.peer scene) (limelight.model.FakeProduction. "Mock Production"))
+          _ (.setProduction @(.peer scene) (.peer (new-production (limelight.model.FakeProduction. "Mock Production"))))
           _ (.illuminate @(.peer scene))]
     (it "has a name"
       (= "one" (.getName @(.peer (first (children scene))))))
