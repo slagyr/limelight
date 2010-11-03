@@ -60,7 +60,7 @@ describe Limelight::Templates::ProductionTemplater do
 
     templater.tokens[:PRODUCTION_NAME].should == "Some Production"
     templater.tokens[:DEFAULT_SCENE_NAME].should == "default_scene"
-    templater.tokens[:CURRENT_VERSION].should == Limelight::VERSION::STRING
+    templater.tokens[:CURRENT_VERSION].should == Java::limelight.About.version.to_s
   end
 
 end

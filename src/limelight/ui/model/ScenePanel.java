@@ -4,9 +4,9 @@
 package limelight.ui.model;
 
 import limelight.*;
-import limelight.io.TemplaterTest;
 import limelight.model.Production;
 import limelight.model.Stage;
+import limelight.model.api.CastingDirector;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
@@ -29,6 +29,7 @@ public class ScenePanel extends PropPanel implements Scene
   private boolean shouldAllowClose = true;
   private ButtonGroupCache buttonGroups = new ButtonGroupCache();
   private ResourceLoader resourceLoader;
+  private CastingDirector castingDirector;
 
   public ScenePanel(PropProxy propProxy)
   {
@@ -281,6 +282,16 @@ public class ScenePanel extends PropPanel implements Scene
     if(newOptions.containsKey("path"))
       resourceLoader = ResourceLoader.forRoot("" + newOptions.remove("path"));
     super.addOptions(newOptions);
+  }
+
+  public void setCastingDirector(CastingDirector castingDirector)
+  {
+    this.castingDirector = castingDirector;
+  }
+
+  public CastingDirector getCastingDirector()
+  {
+    return castingDirector;
   }
 
   private static class SceneLayout implements Layout

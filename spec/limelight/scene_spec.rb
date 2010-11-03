@@ -8,7 +8,6 @@ require 'limelight/dsl/styles_builder'
 describe Limelight::Scene do
 
   before(:each) do
-#    @casting_director = mock("casting_director", :fill_cast => nil)
     @scene = Limelight::Scene.new()
   end
 
@@ -22,22 +21,16 @@ describe Limelight::Scene do
     @scene.button_groups.class.should == Java::limelight.ui.ButtonGroupCache
   end
 
+  it "has a casting diretor" do
+    @scene.casting_director.should_not == nil
+  end
+
   it "adds on_scene_opened actions" do
     action = Proc.new { puts "I should never get printed" }
     @scene.on_scene_opened &action
 
     actions = @scene.peer.event_handler.get_actions(Java::limelight.ui.events.panel.SceneOpenedEvent)
     actions.contains(action).should == true
-  end
-
-  it "should have a cast" do
-    @scene.cast.should_not == nil
-    @scene.cast.is_a?(Module).should == true
-  end
-
-  it "should have a cast" do
-    @scene.cast.should_not == nil
-    @scene.cast.is_a?(Module).should == true
   end
 
   it "should have an acceptible path when none is provided" do

@@ -41,67 +41,67 @@ module Limelight
     end
 
     def on_mouse_pressed(& action)
-      __add_action(Limelight::UI::PanelEvents::MousePressedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MousePressedEvent, action)
     end
 
     def on_mouse_released(& action)
-      __add_action(Limelight::UI::PanelEvents::MouseReleasedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MouseReleasedEvent, action)
     end
 
     def on_mouse_clicked(& action)
-      __add_action(Limelight::UI::PanelEvents::MouseClickedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MouseClickedEvent, action)
     end
 
     def on_mouse_entered(& action)
-      __add_action(Limelight::UI::PanelEvents::MouseEnteredEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MouseEnteredEvent, action)
     end
 
     def on_mouse_exited(& action)
-      __add_action(Limelight::UI::PanelEvents::MouseExitedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MouseExitedEvent, action)
     end
 
     def on_mouse_moved(& action)
-      __add_action(Limelight::UI::PanelEvents::MouseMovedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MouseMovedEvent, action)
     end
 
     def on_mouse_wheel(& action)
-      __add_action(Limelight::UI::PanelEvents::MouseWheelEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MouseWheelEvent, action)
     end
 
     def on_mouse_dragged(& action)
-      __add_action(Limelight::UI::PanelEvents::MouseDraggedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.MouseDraggedEvent, action)
     end
 
     def on_key_pressed(& action)
-      __add_action(Limelight::UI::PanelEvents::KeyPressedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.KeyPressedEvent, action)
     end
 
     def on_key_released(& action)
-      __add_action(Limelight::UI::PanelEvents::KeyReleasedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.KeyReleasedEvent, action)
     end
 
     def on_char_typed(& action)
-      __add_action(Limelight::UI::PanelEvents::CharTypedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.CharTypedEvent, action)
     end
 
     def on_focus_gained(& action)
-      __add_action(Limelight::UI::PanelEvents::FocusGainedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.FocusGainedEvent, action)
     end
 
     def on_focus_lost(& action)
-      __add_action(Limelight::UI::PanelEvents::FocusLostEvent, action)
+      __add_action(Java::limelight.ui.events.panel.FocusLostEvent, action)
     end
 
     def on_button_pushed(& action)
-      __add_action(Limelight::UI::PanelEvents::ButtonPushedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.ButtonPushedEvent, action)
     end
 
     def on_value_changed(& action)
-      __add_action(Limelight::UI::PanelEvents::ValueChangedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.ValueChangedEvent, action)
     end
 
     def on_scene_opened(& action)
-      __add_action(Limelight::UI::PanelEvents::SceneOpenedEvent, action)
+      __add_action(Java::limelight.ui.events.panel.SceneOpenedEvent, action)
     end
 
     def prop_reader(*symbols)

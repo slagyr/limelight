@@ -3,7 +3,6 @@
 
 require 'limelight/limelight_exception'
 require 'limelight/dsl/styles_builder'
-require 'limelight/casting_director'
 require 'limelight/theater'
 require 'limelight/dsl/stage_builder'
 require 'limelight/dsl/prop_builder'
@@ -34,7 +33,6 @@ module Limelight
     #
     def initialize(production)
       @peer = production
-      @casting_director = CastingDirector.new(@peer.resource_loader)
       @theater = Theater.new(self, @peer.theater)
 
       @peer.proxy = self
@@ -175,12 +173,6 @@ module Limelight
     def on_production_closed(&action)
       @peer.event_handler.add(Java::limelight.model.events.ProductionClosedEvent, action)
     end
-
-    def casting_director
-      return @casting_director
-    end
-
-    alias :getCastingDirector :casting_director
 
     def callMethod(name, java_obj_array) #:nodoc:
       args = []

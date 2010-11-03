@@ -25,7 +25,7 @@ describe Limelight::Main do
   it "should handle --version option" do
     Limelight::Main.run(["--version"])
 
-    @mock_output.string.should == "Limelight, version #{Limelight::VERSION::STRING}\n"
+    @mock_output.string.should == "Limelight, version #{Java::limelight.About.version.to_s}\n"
   end
 
   it "should print usage" do

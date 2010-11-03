@@ -9,7 +9,7 @@ describe "Utilitites Production" do
 
   before(:each) do
     @result = nil
-    production.production_opening
+    production.init
   end
 
   after(:each) do
@@ -18,7 +18,7 @@ describe "Utilitites Production" do
   end
 
   after(:all) do
-    Java::java.awt.Frame.getFrames.each { |frame| frame.close; frame.dispose; }
+    Java::java.awt.Frame.getFrames.each { |frame| frame.stage.close; frame.dispose; }
 #    Java::limelight.util.Threads.showAll
     Limelight::Context.instance.killThreads();
   end
@@ -55,7 +55,7 @@ describe "Utilitites Production" do
 
   def scene_open?(stage_name)
     stage = production.theater[stage_name]
-    return stage != nil && stage.current_scene != nil
+    return stage != nil && stage.scene != nil
   end
 
   def wait_for_stage(stage_name)
@@ -91,11 +91,11 @@ describe "Utilitites Production" do
     production.load_incompatible_version_scene("Some Production", "1.2.3")
     stage = wait_for_stage("Incompatible Version")
 
-    stage.current_scene.should_not == nil
-    scene = stage.current_scene
+    stage.scene.should_not == nil
+    scene = stage.scene
     scene.find("production_name_label").text.should == "Some Production"
     scene.find("required_version_label").text.should == "1.2.3"
-    scene.find("current_version_label").text.should == Limelight::VERSION::STRING
+    scene.find("current_version_label").text.should == Java::limelight.About.version.to_s
   end
 
   it "should return true when clicking proceed" do
@@ -104,7 +104,7 @@ describe "Utilitites Production" do
     wait_for { scene_open?("Incompatible Version") }
 
     stage = wait_for_stage("Incompatible Version")
-    scene = stage.current_scene
+    scene = stage.scene
     mouse.click(scene.find("proceed_button"))
     wait_for { !@thread.alive? }
 
@@ -117,7 +117,7 @@ describe "Utilitites Production" do
     wait_for { scene_open?("Incompatible Version") }
 
     stage = wait_for_stage("Incompatible Version")
-    scene = stage.current_scene
+    scene = stage.scene
     mouse.click(scene.find("cancel_button"))
     wait_for { !@thread.alive? }
 
@@ -141,8 +141,8 @@ describe "Utilitites Production" do
     stage = wait_for_stage("Alert")
     stage.should_not == nil
 
-    stage.current_scene.should_not == nil
-    scene = stage.current_scene
+    stage.scene.should_not == nil
+    scene = stage.scene
     scene.find("title").text.should == "Limelight Alert"
     scene.find("message").text.should == "Some Message"
   end
@@ -152,7 +152,7 @@ describe "Utilitites Production" do
     wait_for { scene_open?("Alert") }
 
     stage = wait_for_stage("Alert")
-    scene = stage.current_scene
+    scene = stage.scene
     mouse.click(scene.find("ok_button"))
 
     wait_for { !@thread.alive? }

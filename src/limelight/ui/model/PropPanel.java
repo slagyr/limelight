@@ -458,12 +458,19 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     List<PropPanel> results = new LinkedList<PropPanel>();
     if(name == null)
       return results;
-    for(PropPanel panel : getChildPropPanels())
-    {
-      if(name.equals(panel.getName()))
-        results.add(panel);
-    }
+    findByName(name, results);
     return results;
+  }
+
+  private void findByName(String name, List<PropPanel> results)
+  {
+    if(name.equals(getName()))
+      results.add(this);
+    for(Panel panel : getChildren())
+    {
+      if(panel instanceof PropPanel)
+        ((PropPanel)panel).findByName(name, results);
+    }
   }
 
   // PRIVATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -513,8 +520,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       if(!playerName.isEmpty())
       {
         final Scene root = getRoot();
-        final Production production = root.getProduction();
-        final CastingDirector director = production.getCastingDirector();
+        final CastingDirector director = root.getCastingDirector();
         director.castPlayer(getProxy(), playerName);
       }
     }

@@ -12,28 +12,28 @@ describe Limelight::Builtin::Players::StageSizer do
   before(:each) do
     @stage = Limelight::Stage.new(nil, "stage name")
     @scene = Limelight::Scene.new
-    @scene.stage = @stage
+    @scene.peer.stage = @stage.peer
     @prop = Limelight::Prop.new()
     @scene.add(@prop)
     Limelight::Player.cast(Limelight::Builtin::Players::StageSizer, @prop)
   end
 
   it "should respond to the right mouse events" do
-    @prop.panel.event_handler.get_actions(Limelight::UI::Events::MousePressedEvent).size.should == 1
-    @prop.panel.event_handler.get_actions(Limelight::UI::Events::MouseDraggedEvent).size.should == 1
+    @prop.peer.event_handler.get_actions(Java::limelight.ui.events.panel.MousePressedEvent).size.should == 1
+    @prop.peer.event_handler.get_actions(Java::limelight.ui.events.panel.MouseDraggedEvent).size.should == 1
   end
 
   it "should change the stage dimension when dragged" do
-    @stage.frame.setSize(500, 500)
+    @stage.peer.frame.setSize(500, 500)
     mouse.press(@prop, 100, 100)
     mouse.drag(@prop, 125, 150)
 
-    @stage.frame.size.width.should == 525
-    @stage.frame.size.height.should == 550
+    @stage.peer.size.width.should == 525
+    @stage.peer.size.height.should == 550
                             
     mouse.drag(@prop, 150, 175)
-    @stage.frame.size.width.should == 550
-    @stage.frame.size.height.should == 575
+    @stage.peer.size.width.should == 550
+    @stage.peer.size.height.should == 575
   end
 
 end

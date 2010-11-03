@@ -18,7 +18,7 @@ public class MouseExitedEventTest
   public void setUp() throws Exception
   {
     panel = new MockPanel();
-    event = new MouseExitedEvent(panel, 0, new Point(0, 0), 0);
+    event = new MouseExitedEvent(0, new Point(0, 0), 0);
   }
   
   @Test

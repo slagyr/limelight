@@ -74,7 +74,7 @@ public class ScrollMouseProcessorTest
 
   private void exit(ScrollBarPanel scrollBar, int x, int y)
   {
-    new MouseExitedEvent(scrollBar, 0, new Point(x, y), 0).dispatch(scrollBar);
+    new MouseExitedEvent(0, new Point(x, y), 0).dispatch(scrollBar);
   }
 
   @Test

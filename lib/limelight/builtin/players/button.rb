@@ -2,6 +2,6 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 on_cast do
-  button = Limelight::UI::Model::Inputs::ButtonPanel.new
+  button = Java::limelight.ui.model.inputs.ButtonPanel.new
   peer.add(button)
 end

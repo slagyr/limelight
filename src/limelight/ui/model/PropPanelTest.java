@@ -27,6 +27,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
+import java.util.Arrays;
 import java.util.List;
 
 public class PropPanelTest extends Assert
@@ -40,7 +41,6 @@ public class PropPanelTest extends Assert
   private RichStyle style3;
   private RichStyle style4;
   private RichStyle style5;
-  private FakeProduction production;
   private FakeCastingDirector castingDirector;
 
   @Before
@@ -50,11 +50,10 @@ public class PropPanelTest extends Assert
     prop = new MockPropProxy();
     panel = new PropPanel(prop);
     root.add(panel);
-                                          
-    production = new FakeProduction();
+
     castingDirector = new FakeCastingDirector();
-    production.setCastingDirector(castingDirector);
-    root.setProduction(production);
+    root.setCastingDirector(castingDirector);
+    root.setProduction(new FakeProduction());
     root.setStage(new MockStage());
     style = panel.getStyle();
 
@@ -348,7 +347,7 @@ public class PropPanelTest extends Assert
     prop.hoverStyle = new FlatStyle();
 
     new MouseEnteredEvent(0, null, 0).dispatch(panel);
-    new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseExitedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
@@ -360,7 +359,7 @@ public class PropPanelTest extends Assert
     prop.hoverStyle = null;
 
     new MouseEnteredEvent(0, null, 0).dispatch(panel);
-    new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseExitedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
@@ -373,7 +372,7 @@ public class PropPanelTest extends Assert
 
     new MouseEnteredEvent(0, null, 0).dispatch(panel);
     prop.hoverStyle = null;
-    new MouseExitedEvent(panel, 0, null, 0).dispatch(panel);
+    new MouseExitedEvent(0, null, 0).dispatch(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
@@ -656,5 +655,26 @@ public class PropPanelTest extends Assert
     List<PropPanel> bars = panel.findByName("bar");
     assertEquals(1, bars.size());
     assertEquals(true, bars.contains(bar));
+  }
+
+  @Test
+  public void findByNameWithNestedStruture() throws Exception
+  {
+    PropPanel fee = new PropPanel(new MockPropProxy(), Util.toMap("name", "fee"));
+    PropPanel fie = new PropPanel(new MockPropProxy(), Util.toMap("name", "fie"));
+    PropPanel foe = new PropPanel(new MockPropProxy(), Util.toMap("name", "foe"));
+    PropPanel fum = new PropPanel(new MockPropProxy(), Util.toMap("name", "fum"));
+    PropPanel fum2 = new PropPanel(new MockPropProxy(), Util.toMap("name", "fum"));
+
+    root.add(fee);
+    fee.add(fie);
+    fie.add(foe);
+    foe.add(fum);
+    foe.add(fum2);
+
+    assertEquals(Arrays.asList(fee), fee.findByName("fee"));
+    assertEquals(Arrays.asList(fie), fee.findByName("fie"));
+    assertEquals(Arrays.asList(foe), fee.findByName("foe"));
+    assertEquals(Arrays.asList(fum, fum2), fee.findByName("fum"));
   }
 }

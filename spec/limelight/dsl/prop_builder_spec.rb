@@ -7,17 +7,17 @@ require 'limelight/dsl/prop_builder'
 describe Limelight::DSL::PropBuilder do
 
   before(:each) do
-    @caster = mock("caster", :fill_cast => nil)
+    @caster = mock("caster", :castPlayer => nil)
     @scene = Limelight::Scene.new(:name => "root", :casting_director => @caster)
   end
 
   it "should build root" do
     root = Limelight.build_props(@scene)
-    root.illuminate
+    root.peer.illuminate
 
     root.class.should == Limelight::Scene
     root.name.should == "root"
-    root.panel.should_not == nil
+    root.peer.should_not == nil
     root.children.size.should == 0
   end
 
@@ -25,13 +25,13 @@ describe Limelight::DSL::PropBuilder do
     root = Limelight::build_props(@scene) do
       child
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.children.size.should == 1
     child = root.children[0]
     child.class.should == Limelight::Prop
     child.name.should == "child"
-    child.panel.should_not == nil
+    child.peer.should_not == nil
     child.children.size.should == 0
   end
 
@@ -40,7 +40,7 @@ describe Limelight::DSL::PropBuilder do
       child1
       child2
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.children.size.should == 2
     root.children[0].name.should == "child1"
@@ -53,7 +53,7 @@ describe Limelight::DSL::PropBuilder do
         grandchild
       end
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.children.size.should == 1
     root.children[0].name.should == "child"
@@ -65,18 +65,17 @@ describe Limelight::DSL::PropBuilder do
     root = Limelight::build_props(@scene) do
       child :id => "child_1", :players => "x, y, z"
     end
-    root.illuminate
+    root.peer.illuminate
 
     child = root.children[0]
     child.id.should == "child_1"
-    child.players.should == "x, y, z"
   end
 
   it "should allow setting styles" do
     root = Limelight::build_props(@scene) do
       child :width => "100", :font_size => "10", :top_border_color => "blue"
     end
-    root.illuminate
+    root.peer.illuminate
 
     child = root.children[0]
     child.style.width.should == "100"
@@ -88,7 +87,7 @@ describe Limelight::DSL::PropBuilder do
     root = Limelight::build_props(@scene) do
       child :on_mouse_clicked => "$RECIPIENT = self"
     end
-    root.illuminate
+    root.peer.illuminate
 
     child = root.children[0]
     mouse.click(child)
@@ -99,7 +98,7 @@ describe Limelight::DSL::PropBuilder do
     root = Limelight::build_props(@scene) do
       __ :name => "root", :id => "123"
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.children.size.should == 0
     root.name.should == "root"
@@ -120,12 +119,12 @@ describe Limelight::DSL::PropBuilder do
 
   it "should install external props" do
     loader = mock("loader", :exists? => true)
-    loader.should_receive(:load).with("external.rb").and_return("child :id => 123")
+    loader.should_receive(:read_text).with("external.rb").and_return("child :id => 123")
 
     root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
       __install "external.rb"
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.id.should == "321"
     root.children.size.should == 1
@@ -160,7 +159,7 @@ describe Limelight::DSL::PropBuilder do
 
   it "should fail with PropException when there's problem in the external file" do
     loader = mock("loader", :exists? => true)
-    loader.should_receive(:load).with("external.rb").and_return("+")
+    loader.should_receive(:read_text).with("external.rb").and_return("+")
 
     begin
       root = Limelight::build_props(@scene, :id => 321, :build_loader => loader) do
@@ -175,12 +174,12 @@ describe Limelight::DSL::PropBuilder do
 
   it "should build onto an existing block" do
     prop = Limelight::Prop.new
-    scene = Limelight::Scene.new(:casting_director => mock(:casting_director, :fill_cast => nil))
+    scene = Limelight::Scene.new(:casting_director => mock(:casting_director, :castPlayer => nil))
     scene << prop
     builder = Limelight::DSL::PropBuilder.new(prop)
     block = Proc.new { one; two { three } }
     builder.instance_eval(& block)
-    scene.illuminate
+    scene.peer.illuminate
 
     prop.children.length.should == 2
     prop.children[0].name.should == "one"
@@ -193,7 +192,7 @@ describe Limelight::DSL::PropBuilder do
     root = Limelight::build_props(@scene) do
       display :id => "display"
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.children.size.should == 1
     display = root.children[0]
@@ -206,7 +205,7 @@ describe Limelight::DSL::PropBuilder do
       __ :id => @id1
       child :id => @id2
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.id.should == "abc"
     child = root.children[0]
@@ -223,7 +222,7 @@ describe Limelight::DSL::PropBuilder do
         end
       end
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.find("child").name.should == "blah"
     root.find("grand_child").name.should == "blah"
@@ -233,12 +232,12 @@ describe Limelight::DSL::PropBuilder do
 
   it "should allow instance_variable when installing an external props file" do
     loader = mock("loader", :exists? => true)
-    loader.should_receive(:load).with("external.rb").and_return("child :id => @desired_id")
+    loader.should_receive(:read_text).with("external.rb").and_return("child :id => @desired_id")
 
     root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
       __install "external.rb", :desired_id => "123"
     end
-    root.illuminate
+    root.peer.illuminate
 
     child = root.children[0]
     child.name.should == "child"
@@ -259,7 +258,7 @@ describe Limelight::DSL::PropBuilder do
       end
       foo("second")
     end
-    root.illuminate
+    root.peer.illuminate
 
     root.children[0].name.should == "foo_prop"
     root.children[0].children[0].name.should == "foo_prop"

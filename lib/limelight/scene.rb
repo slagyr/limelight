@@ -5,6 +5,7 @@ require 'limelight/java_util'
 require 'limelight/prop'
 require 'limelight/button_group_cache'
 require 'limelight/limelight_exception'
+require 'limelight/casting_director'
 
 module Limelight
 
@@ -21,11 +22,12 @@ module Limelight
 
     include Java::limelight.model.api.SceneProxy
 
-    attr_reader :cast
+    attr_reader :casting_director
 
     def initialize(options={})
-      super(options)    
-      @cast = Module.new
+      @casting_director = options.delete(:casting_director) || CastingDirector.new
+      super(options)
+      @peer.casting_director = @casting_director
     end
 
     def production=(value)

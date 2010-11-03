@@ -5,6 +5,7 @@
 require 'limelight/optionable'
 require 'limelight/file_chooser'
 require 'limelight/util'
+require 'limelight/util/hashes'
 
 module Limelight
 
@@ -26,7 +27,7 @@ module Limelight
     def initialize(theater, name, options = {})
       @theater = theater
       @peer = Java::limelight.ui.model.FramedStage.new(name, self)
-      @peer.apply_options(options)
+      @peer.apply_options(Util::Hashes.for_java(options))
     end
 
     # Returns the name of the scene that will be loaded on this stage by default

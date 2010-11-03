@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.model.Production;
 import limelight.model.Stage;
+import limelight.model.api.CastingDirector;
 import limelight.model.api.PropProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
@@ -52,6 +53,8 @@ public interface Scene extends Panel, ParentPanel
   boolean isVisible();
 
   PropProxy getProxy();
+  
+  CastingDirector getCastingDirector();
 }
 
 

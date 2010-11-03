@@ -5,6 +5,8 @@ package limelight.ui.model;
 
 import limelight.model.Production;
 import limelight.model.Stage;
+import limelight.model.api.CastingDirector;
+import limelight.model.api.FakeCastingDirector;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 import java.awt.*;
@@ -20,6 +22,7 @@ public class MockScene extends MockProp implements Scene
   public boolean shouldAllowClose;
   private Stage stage;
   public boolean visible;
+  public CastingDirector castingDirector = new FakeCastingDirector();
 
   @Override
   public Scene getRoot()
@@ -91,6 +94,11 @@ public class MockScene extends MockProp implements Scene
   public boolean isVisible()
   {
     return stage != null && stage.isVisible();
+  }
+
+  public CastingDirector getCastingDirector()
+  {
+    return castingDirector;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

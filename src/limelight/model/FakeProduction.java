@@ -3,7 +3,6 @@
 
 package limelight.model;
 
-import limelight.model.api.FakeCastingDirector;
 import limelight.ui.model.Scene;
 import limelight.util.ResourceLoader;
 
@@ -28,7 +27,6 @@ public class FakeProduction extends Production
   public FakeProduction(String name)
   {
     super(name);
-    setCastingDirector(new FakeCastingDirector());
   }
 
   public FakeProduction(String name, ResourceLoader loader)

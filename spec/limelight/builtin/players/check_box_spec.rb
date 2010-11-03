@@ -13,7 +13,7 @@ describe Limelight::Builtin::Players::CheckBox do
   end
   
   it "should have a TextField" do
-    @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::CheckBoxPanel
+    @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.CheckBoxPanel
   end
   
   it "should handled checked state" do

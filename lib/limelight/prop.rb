@@ -179,7 +179,7 @@ module Limelight
     end
 
     def to_s #:nodoc:
-      return "#{self.class.name}[id: #{@id}, name: #{@name}]"
+      return "#{self.class.name}[id: #{id}, name: #{name}]"
     end
 
     def inspect #:nodoc:
@@ -193,7 +193,7 @@ module Limelight
     #   location.y # the Prop's distance from the top of its parent's bounds
     #
     def location
-      return panel.get_location
+      return peer.get_location
     end
 
     # Returns a Point representing the location of the Prop's top-left corner within its Stage (Window).
@@ -285,63 +285,63 @@ module Limelight
     # GUI Events ##########################################
 
     def on_mouse_pressed(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MousePressedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MousePressedEvent, action)
     end
 
     def on_mouse_released(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseReleasedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MouseReleasedEvent, action)
     end
 
-    def on_mouse_clicked(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseClickedEvent, action)
+    def on_mouse_clicked(& action)  
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MouseClickedEvent, action)
     end
 
     def on_mouse_moved(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseMovedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MouseMovedEvent, action)
     end
 
     def on_mouse_dragged(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseDraggedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MouseDraggedEvent, action)
     end
 
     def on_mouse_entered(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseEnteredEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MouseEnteredEvent, action)
     end
 
     def on_mouse_exited(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseExitedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MouseExitedEvent, action)
     end
 
     def on_mouse_wheel(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::MouseWheelEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.MouseWheelEvent, action)
     end
 
     def on_key_pressed(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::KeyPressedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.KeyPressedEvent, action)
     end
 
     def on_key_released(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::KeyReleasedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.KeyReleasedEvent, action)
     end
 
     def on_char_typed(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::CharTypedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.CharTypedEvent, action)
     end
 
     def on_focus_gained(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::FocusGainedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.FocusGainedEvent, action)
     end
 
     def on_focus_lost(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::FocusLostEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.FocusLostEvent, action)
     end
 
     def on_button_pushed(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::ButtonPushedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.ButtonPushedEvent, action)
     end
 
     def on_value_changed(& action)
-      @peer.event_handler.add(Limelight::UI::PanelEvents::ValueChangedEvent, action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.ValueChangedEvent, action)
     end
 
   end

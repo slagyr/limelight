@@ -8,8 +8,9 @@ require 'limelight/stage'
 describe Limelight::Theater do
 
   before(:each) do
+    @peer_production = Java::limelight.model.FakeProduction.new("Fake Production")
     @production = mock("production", :theater_empty! => nil)
-    @theater = Limelight::Theater.new(@production)
+    @theater = Limelight::Theater.new(@production, @peer_production.theater)
     @stage = @theater.add_stage("default")
   end
   
@@ -25,16 +26,6 @@ describe Limelight::Theater do
     @theater.stages.should_not be(@theater.stages)
   end
   
-  it "should know it's active stage" do
-    stage2 = @theater.add_stage("two")
-    
-    @theater.active_stage.should == nil
-    @theater.stage_activated(stage2)
-    @theater.active_stage.should == stage2
-    @theater.stage_activated(@stage)
-    @theater.active_stage.should == @stage
-  end
-  
   it "should allow recalling stage by name" do
     stage2 = @theater.add_stage("two")
     stage3 = @theater.add_stage("three")
@@ -45,7 +36,12 @@ describe Limelight::Theater do
   end
   
   it "should not allow duplicate theater names" do
-    lambda {  @theater.add_stage("default") }.should raise_error(Limelight::LimelightException, "Duplicate stage name: 'default'")
+    begin
+      @theater.add_stage("default")
+      false.should == true
+    rescue Exception => e
+      e.message.include?("Duplicate stage name: 'default'").should == true
+    end
   end
   
   it "should have a default stage" do
@@ -59,62 +55,6 @@ describe Limelight::Theater do
     @theater.add_stage("Joe", :title => "Blowey")
 
     @theater["Joe"].title.should == "Blowey"
-  end
-
-  it "should remove closed stages" do
-    @theater.stage_activated(@stage)
-
-    @theater.stage_closed(@stage)
-
-    @theater["default"].should == nil
-    @theater.active_stage.should == nil
-  end
-
-  it "should notify the production when all the stages are closed" do
-    @production.should_receive(:theater_empty!)
-    
-    @theater.stage_closed(@stage)
-  end
-
-  it "should close" do
-    stage2 = @theater.add_stage("two")
-    stage3 = @theater.add_stage("three")
-    @theater.stage_activated(stage3)
-    stage2.should_receive(:close)
-    stage3.should_receive(:close)
-
-    @theater.close
-
-    @theater.stages.length.should == 0
-    @theater.active_stage.should == nil
-  end
-
-  it "should deactivate stages" do
-    stage2 = @theater.add_stage("two")
-    @theater.stage_activated(@stage)
-    @theater.stage_deactivated(@stage)
-    @theater.active_stage.should == nil
-
-    @theater.stage_activated(stage2)
-    @theater.stage_deactivated(@stage) # this is not the active stage
-    @theater.active_stage.should == nil  # clear active stage since this implies that stage2 was not really active.   
-  end
-
-  it "should notify the production that all the stages are hidden when a stage is closed" do    
-    stage2 = @theater.add_stage("two")
-    stage2.hide
-
-    @production.should_receive(:theater_empty!)
-    @theater.stage_closed(@stage)
-  end
-  
-  it "should notify the production that all the stages are hidden when a stage is deactivated" do
-    stage2 = @theater.add_stage("two")
-    stage2.hide
-    @stage.hide
-
-    @production.should_receive(:theater_empty!)
-    @theater.stage_deactivated(@stage)
   end
 
 end

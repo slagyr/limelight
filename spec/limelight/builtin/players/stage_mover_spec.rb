@@ -12,24 +12,24 @@ describe Limelight::Builtin::Players::StageMover do
   before(:each) do
     @stage = Limelight::Stage.new(nil, "stage name")
     @scene = Limelight::Scene.new
-    @scene.stage = @stage
+    @scene.peer.stage = @stage.peer
     @prop = Limelight::Prop.new()
     @scene.add(@prop)
     Limelight::Player.cast(Limelight::Builtin::Players::StageMover, @prop)
   end
 
   it "should respond to the right mouse events" do
-    @prop.panel.event_handler.get_actions(Limelight::UI::Events::MousePressedEvent).size.should == 1
-    @prop.panel.event_handler.get_actions(Limelight::UI::Events::MouseDraggedEvent).size.should == 1
+    @prop.peer.event_handler.get_actions(Java::limelight.ui.events.panel.MousePressedEvent).size.should == 1
+    @prop.peer.event_handler.get_actions(Java::limelight.ui.events.panel.MouseDraggedEvent).size.should == 1
   end
 
   it "should change the stage location when dragged" do
-    @stage.frame.setLocation(0, 0)
+    @stage.peer.frame.setLocation(0, 0)
     mouse.press(@prop, 100, 100)
     mouse.drag(@prop, 125, 150)
 
-    @stage.frame.location.x.should == 25
-    @stage.frame.location.y.should == 50
+    @stage.peer.location.x.should == 25
+    @stage.peer.location.y.should == 50 
   end
 
 end

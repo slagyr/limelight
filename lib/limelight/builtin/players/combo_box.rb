@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 on_cast do
-  combo_box = Limelight::UI::Model::Inputs::ComboBoxPanel.new
+  combo_box = Java::limelight.ui.model.inputs.ComboBoxPanel.new
   @combo_box = combo_box
   peer.add(combo_box)
   clear

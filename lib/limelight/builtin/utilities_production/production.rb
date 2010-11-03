@@ -3,11 +3,15 @@
 
 require 'monitor'
 
-on_production_created do
+def init
   @monitor = Monitor.new
   @alert_monitor = @monitor.new_cond
   @incompatible_version_monitor = @monitor.new_cond
-  self.allow_close = false 
+  self.allow_close = false
+end
+
+on_production_created do
+  init() 
 end
 
 def process_incompatible_version_response(response)
