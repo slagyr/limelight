@@ -16,7 +16,7 @@ module Limelight
   module Specs
 
     class << self
-      attr_accessor :producer
+      attr_accessor :production
     end
 
     # Limelight comes with builtin assistance for testing your productions with rspec. To get started, add the following
@@ -95,8 +95,8 @@ module Spec #:nodoc:
       end
 
       after(:suite) do
-        unless Limelight::Specs.producer.nil?
-          Limelight::Specs.producer.theater.stages.each do |stage|
+        unless Limelight::Specs.production.nil?
+          Limelight::Specs.production.theater.stages.each do |stage|
             # MDM - We do this in a round-about way to reduce the chance of using stubbed or mocked methods.
             frame = stage.instance_variable_get("@frame")
             frame.close if frame
@@ -104,8 +104,8 @@ module Spec #:nodoc:
         end
       end
                                                                              
-      def producer
-        if Limelight::Specs.producer.nil?
+      def production
+        if Limelight::Specs.production.nil?
 #          if $with_ui
             Java::limelight.Boot.boot
 #          else
@@ -113,14 +113,11 @@ module Spec #:nodoc:
 #          end
           raise "$PRODUCTION_PATH undefined.  Make sure you specify the location of the production in $PRODUCTION_PATH." unless defined?($PRODUCTION_PATH)
           raise "Could not find production: '#{$PRODUCTION_PATH}'. Check $PRODUCTION_PATH." unless File.exists?($PRODUCTION_PATH)
-          Limelight::Specs.producer = Limelight::Producer.new($PRODUCTION_PATH)
-          Limelight::Specs.producer.load
+          Limelight::Specs.production = Limelight::Production.new(Java::limelight.ruby.RubyProduction.new($PRODUCTION_PATH))
+          Limelight::Specs.production.peer.illuminateProduction
+          Limelight::Specs.production.peer.loadProduction
         end
-        return Limelight::Specs.producer
-      end
-
-      def production
-        return producer.production
+        return Limelight::Specs.production
       end
       
       def create_accessor_for(player_name)

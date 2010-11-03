@@ -32,8 +32,6 @@ module Limelight
 
     ButtonGroupCache = Java::limelight.ui.ButtonGroupCache
 
-    PanelEvents = Java::limelight.ui.events.panel 
-
     module Model #:nodoc:
 #      Frame = Java::limelight.ui.model.Stage
 #      PropPanel = Java::limelight.ui.model.PropPanel

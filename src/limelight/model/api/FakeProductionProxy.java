@@ -4,17 +4,11 @@ import java.util.Map;
 
 public class FakeProductionProxy implements ProductionProxy
 {
-  public CastingDirector castingDirector;
   public TheaterProxy theater;
 
   public Object callMethod(String name, Object... args)
   {
     return null;
-  }
-
-  public CastingDirector getCastingDirector()
-  {
-    return castingDirector;
   }
 
   public TheaterProxy getTheater()

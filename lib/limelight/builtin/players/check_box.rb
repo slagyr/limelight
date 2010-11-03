@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 on_cast do
-  check_box = Limelight::UI::Model::Inputs::CheckBoxPanel.new
+  check_box = Java::limelight.ui.model.inputs.CheckBoxPanel.new
   peer.add(check_box)
   @check_box = check_box
 end

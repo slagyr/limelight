@@ -14,7 +14,7 @@ describe Limelight::Builtin::Players::Button do
   end
   
   it "should have a Button" do
-    @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::ButtonPanel
+    @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.ButtonPanel
   end
 
 end

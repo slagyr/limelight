@@ -68,7 +68,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="[gem] rspec (v1.3.0, /Users/micahmartin/Programming/jruby-1.5.0.RC1/lib/ruby/gems/1.8/gems/rspec-1.3.0)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] rspec (v1.3.0, /Users/micahmartin/.rvm/gems/jruby-1.5.1/gems/rspec-1.3.0)" level="application" />
   </component>
   <component name="RModuleSettingsStorage">
     <RMODULE_SETTINGS_STORAGE_ID NAME="NUMBER" VALUE="0" />

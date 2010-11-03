@@ -16,7 +16,7 @@ public class FileUtil
 
   public static String join(String... parts)
   {
-    return removeDuplicateSeprators(StringUtil.join(separator(), parts));
+    return removeDuplicateSeprators(StringUtil.join(separator(), (String[])parts));
   }
 
   private static String removeDuplicateSeprators(String path)

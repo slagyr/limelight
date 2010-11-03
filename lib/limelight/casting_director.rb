@@ -13,48 +13,29 @@ module Limelight
   #
   class CastingDirector
 
-    def initialize(loader)
-      @loader = loader
-      @known_players = {}
-    end
+    attr_reader :cast
 
-    def fill_cast(prop)
-      raise LimelightException.new("Cannot cast a Prop without a Scene.") if prop.scene.nil?
-      cast_default_player(prop)
-      cast_additional_players(prop)
+    def initialize()
+      @cast = Module.new
     end
 
     def cast_player(prop, player_name)
       return if !prop.is_a?(Limelight::Prop)
-      recruiter = Recruiter.new(prop, player_name, @loader)
+      recruiter = Recruiter.new(prop, player_name, @cast)
       Limelight::Player.cast(recruiter.player, prop) if recruiter.player_exists?
     end
     alias :castPlayer :cast_player
 
-    private ###############################################
-
-    def cast_default_player(prop)
-      return if prop.name.nil? || prop.name.empty?
-      cast_player(prop, prop.name)
-    end
-
-    def cast_additional_players(prop)
-      return if prop.players.nil? || prop.players.empty?
-      player_names = prop.players.split(/[ ,]/)
-      player_names.each do |player_name|
-        cast_player(prop, player_name)
-      end
-    end
   end
 
   class Recruiter
 
-    def initialize(prop, player_name, loader)
+    def initialize(prop, player_name, cast)
       @prop = prop 
-      @cast = prop.scene.cast
+      @cast = cast
       @player_name = player_name
       @module_name = player_name.camalized
-      @loader = loader
+      @fs = Java::limelight.Context.fs
     end
 
     def player
@@ -93,10 +74,10 @@ module Limelight
 
     def locate_player
       player_filename = File.join(@prop.scene.path.to_s, "players", "#{@player_name}.rb")
-      if !@loader.exists?(player_filename)
+      if !@fs.exists?(player_filename)
         if @prop.scene.production && @prop.scene.path != @prop.scene.production.path
           player_filename = File.join(@prop.scene.production.path.to_s, "players", "#{@player_name}.rb")
-          return nil if !@loader.exists?(player_filename)
+          return nil if !@fs.exists?(player_filename)
         else
           return nil
         end
@@ -106,7 +87,7 @@ module Limelight
     end
 
     def load_player(player_filename)
-      src = IO.read(@loader.path_to(player_filename))
+      src = @fs.read_text_file(player_filename)
 
       player = Player.new
       player.module_eval(src, player_filename)

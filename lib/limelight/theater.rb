@@ -17,6 +17,7 @@ module Limelight
     def initialize(production, real_theater)
       @production = production
       @peer = real_theater
+      @peer.proxy = self
     end
 
     # Returns the theater's active stage.  i.e. the stage most recently used.
@@ -49,7 +50,7 @@ module Limelight
     # Adds a Stage to the Theater.  Raises an exception is the name of the Stage is duplicated.
     #
     def add_stage(name, options = {})
-      stage = build_stage(name, options)
+      stage = build_stage(name, options).proxy      
       @peer.add(stage.peer)
       return stage
     end
@@ -62,9 +63,13 @@ module Limelight
 
     #TODO MDM - This ia bug waiting to happen.  Need to return the Java peer from this method.
     def build_stage(name, options) #:nodoc:
-      return Limelight::Stage.new(self, name, options)
+      return Limelight::Stage.new(self, name, options).peer
     end
     alias :buildStage :build_stage
+
+    def default_stage
+      @peer.default_stage.proxy
+    end
     
   end
   

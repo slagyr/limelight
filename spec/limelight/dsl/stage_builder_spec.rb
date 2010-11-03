@@ -8,7 +8,8 @@ require 'limelight/theater'
 describe Limelight::DSL::StageBuilder do
   
   before(:each) do
-    @theater = Limelight::Theater.new(nil)
+    @peer_production = Java::limelight.model.FakeProduction.new("Fake Production")
+    @theater = Limelight::Theater.new(nil, @peer_production.theater)
   end
 
   it "should give no stages if empty" do

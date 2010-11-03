@@ -9,13 +9,13 @@ require 'limelight/builtin/players'
 describe Limelight::Builtin::Players::ComboBox do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:casting_director => mock("caster", :fill_cast => nil))
+    @scene = Limelight::Scene.new(:casting_director => mock("caster"))
     @prop = Limelight::Prop.new(:scene => @scene)
     Limelight::Player.cast(Limelight::Builtin::Players::ComboBox, @prop)
   end
   
   it "should have a ComboBox" do
-    @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::ComboBoxPanel
+    @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.ComboBoxPanel
   end
   
   it "should have settable value" do

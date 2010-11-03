@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 on_cast do
-  text_box = Limelight::UI::Model::Inputs::TextBoxPanel.new
+  text_box = Java::limelight.ui.model.inputs.TextBoxPanel.new
   peer.add(text_box)
   @text_box = text_box
 end

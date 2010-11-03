@@ -4,7 +4,7 @@
 on_mouse_pressed do |e|
   @sizer_reference_x = e.x
   @sizer_reference_y = e.y
-  @sizer_frame = scene.stage.frame
+  @sizer_frame = scene.stage.peer.frame
   @sizer_reference_size = @sizer_frame.size
 end
 

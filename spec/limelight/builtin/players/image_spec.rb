@@ -13,14 +13,14 @@ describe Limelight::Builtin::Players::Image do
   end
 
   it "should have a ImagePanel" do
-    image_panel = @prop.panel.children[0]
-    image_panel.class.should == Limelight::UI::Model::ImagePanel
+    image_panel = @prop.peer.children[0]
+    image_panel.class.should == Java::limelight.ui.model.ImagePanel
     @prop.image_panel.should be(image_panel)
   end
 
   it "should have an image" do
     @prop.image = "some/path_to/image.png"
-    @prop.panel.children[0].imageFile.should == "some/path_to/image.png";
+    @prop.peer.children[0].imageFile.should == "some/path_to/image.png";
     @prop.image.should == "some/path_to/image.png";
   end
 

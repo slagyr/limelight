@@ -154,7 +154,7 @@ public class StageMouseListener implements MouseListener, MouseMotionListener, M
     {
       if(descendant != null)
       {
-        new MouseExitedEvent(descendant, e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(descendant);
+        new MouseExitedEvent(e.getModifiers(), e.getPoint(), e.getClickCount()).dispatch(descendant);
         descendant = descendant.getParent();
       }
     }

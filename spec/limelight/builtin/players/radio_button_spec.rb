@@ -9,14 +9,14 @@ require 'limelight/builtin/players'
 describe Limelight::Builtin::Players::RadioButton do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:casting_director => mock("caster", :fill_cast => nil))
+    @scene = Limelight::Scene.new(:casting_director => mock("caster"))
     @prop = Limelight::Prop.new
     @scene << @prop
     Limelight::Player.cast(Limelight::Builtin::Players::RadioButton, @prop)
   end
   
   it "should have a RadioButton" do
-    @prop.panel.children[0].class.should == Limelight::UI::Model::Inputs::RadioButtonPanel
+    @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.RadioButtonPanel
   end
          
   it "should handled checked state" do

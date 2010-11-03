@@ -73,28 +73,16 @@ public class ProductionTest
 
     assertEquals(proxy, production.getProxy());
   }
-
-  @Test
-  public void accessingTheCastingDirector() throws Exception
-  {
-    CastingDirector director = new FakeCastingDirector();
-
-    production.setCastingDirector(director);
-
-    assertEquals(director, production.getCastingDirector());
-  }
   
   @Test
   public void settingProxySetsAllProxies() throws Exception
   {
     FakeProductionProxy proxy = new FakeProductionProxy();
-    proxy.castingDirector = new FakeCastingDirector();
     proxy.theater = new MockTheaterProxy();
 
     production.setProxy(proxy);
 
     assertSame(proxy, production.getProxy());
-    assertSame(proxy.castingDirector, production.getCastingDirector());
     assertSame(proxy.theater, production.getTheater().getProxy());
   }
   

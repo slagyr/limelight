@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 on_cast do
-  radio_button = Limelight::UI::Model::Inputs::RadioButtonPanel.new
+  radio_button = Java::limelight.ui.model.inputs.RadioButtonPanel.new
   peer.add(radio_button)
   @radio_button = radio_button
 end

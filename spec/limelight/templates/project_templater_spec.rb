@@ -12,7 +12,7 @@ describe Limelight::Templates::ProjectTemplater do
     templater.source_root.should == Limelight::Templates::Templater.source_dir
     templater.tokens[:PRODUCTION_NAME].should == "Hamlet"
     templater.tokens[:DEFAULT_SCENE_NAME].should == "default_scene"
-    templater.tokens[:CURRENT_VERSION].should == Limelight::VERSION::STRING
+    templater.tokens[:CURRENT_VERSION].should == Java::limelight.About.version.to_s
     templater.tokens[:LLP_NAME].should == "hamlet"
   end
   
