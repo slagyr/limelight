@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.model.api.MockPropProxy;
+import limelight.model.api.FakePropProxy;
 import limelight.ui.model.MockScene;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.ScenePanel;
@@ -59,9 +59,9 @@ public class ScrollBarPanelTest
   @Test
   public void changesCausesLayout() throws Exception
   {
-    ScenePanel root = new ScenePanel(new MockPropProxy());
+    ScenePanel root = new ScenePanel(new FakePropProxy());
     root.setStage(new MockStage());
-    PropPanel parent = new PropPanel(new MockPropProxy());
+    PropPanel parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
     parent.doLayout();
@@ -73,9 +73,9 @@ public class ScrollBarPanelTest
   @Test
   public void shouldParentIsMarkedAsChanged() throws Exception
   {
-    ScenePanel root = new ScenePanel(new MockPropProxy());
+    ScenePanel root = new ScenePanel(new FakePropProxy());
     root.setStage(new MockStage());
-    PropPanel parent = new PropPanel(new MockPropProxy());
+    PropPanel parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
     parent.doLayout();

@@ -3,8 +3,8 @@
 
 package limelight.ui.model;
 
+import limelight.model.api.FakePropProxy;
 import limelight.ui.MockPanel;
-import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.inputs.MockEventAction;
@@ -41,7 +41,7 @@ public class StageMouseListenerTest
     root.add(parent);
     parent.add(child);
 
-    ScenePanel scenePanel = new ScenePanel(new MockPropProxy());
+    ScenePanel scenePanel = new ScenePanel(new FakePropProxy());
     scenePanel.add(parent);
     scenePanel.setStage(new MockStage());
 

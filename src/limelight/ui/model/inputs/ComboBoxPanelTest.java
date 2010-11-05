@@ -5,12 +5,12 @@ package limelight.ui.model.inputs;
 
 import limelight.model.FakeProduction;
 import limelight.builtin.BuiltInStyles;
+import limelight.model.api.FakePropProxy;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.MockScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
-import limelight.model.api.MockPropProxy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class ComboBoxPanelTest
   public void setUp() throws Exception
   {
     panel = new ComboBoxPanel();
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
 
     root = new MockScene();

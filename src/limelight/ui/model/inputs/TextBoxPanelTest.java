@@ -3,8 +3,8 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.model.api.FakePropProxy;
 import limelight.ui.MockGraphics;
-import limelight.model.api.MockPropProxy;
 import limelight.ui.model.PropPanel;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,7 +21,7 @@ public class TextBoxPanelTest extends Assert
   public void setUp()
   {
     panel = new TextBoxPanel();
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
     graphics = new MockGraphics();
     model = panel.getModel();
@@ -79,7 +79,7 @@ public class TextBoxPanelTest extends Assert
   @Test
   public void shouldSetPainterOnParent() throws Exception
   {
-    PropPanel newParent = new PropPanel(new MockPropProxy());
+    PropPanel newParent = new PropPanel(new FakePropProxy());
     
     panel.setParent(newParent);
 

@@ -1,7 +1,7 @@
 package limelight.model;
 
 import limelight.Context;
-import limelight.model.api.MockPropProxy;
+import limelight.model.api.FakePropProxy;
 import limelight.model.api.MockStageProxy;
 import limelight.ui.events.panel.SceneOpenedEvent;
 import limelight.ui.events.stage.StageClosedEvent;
@@ -40,7 +40,7 @@ public class StageTest
   {
     assertEquals(true, stage.shouldAllowClose());
 
-    ScenePanel scene = new ScenePanel(new MockPropProxy());
+    ScenePanel scene = new ScenePanel(new FakePropProxy());
     stage.setScene(scene);
     scene.setShouldAllowClose(true);
     assertEquals(true, stage.shouldAllowClose());

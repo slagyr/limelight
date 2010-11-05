@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import junit.framework.TestCase;
-import limelight.model.api.MockPropProxy;
+import limelight.model.api.FakePropProxy;
 import limelight.ui.model.*;
 
 public class ScrollLayoutTest extends TestCase
@@ -13,9 +13,9 @@ public class ScrollLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    ScenePanel root = new ScenePanel(new MockPropProxy());
+    ScenePanel root = new ScenePanel(new FakePropProxy());
     root.setStage(new MockStage());
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("100");
@@ -41,7 +41,7 @@ public class ScrollLayoutTest extends TestCase
 
   private PropPanel addChildWithSize(ParentPanelBase parent, String width, String height)
   {
-    PropPanel panel = new PropPanel(new MockPropProxy());
+    PropPanel panel = new PropPanel(new FakePropProxy());
     panel.getStyle().setWidth(width);
     panel.getStyle().setHeight(height);
     parent.add(panel);

@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.model.api.MockPropProxy;
+import limelight.model.api.FakePropProxy;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
@@ -24,7 +24,7 @@ public class CheckBoxPanelTest
   public void setUp() throws Exception
   {
     panel = new CheckBoxPanel();
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
     root = new MockScene();
     root.add(parent);

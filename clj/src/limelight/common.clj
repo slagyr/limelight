@@ -6,8 +6,11 @@
 (defn production [scene]
   (.getProxy (.getProduction @(.peer scene))))
 
+(defn- as-proxies [peer-props]
+  (map (fn [child] (.getProxy child)) peer-props))
+
 (defn child-props [parent]
-  (map (fn [child] (.getProxy child)) (.getChildPropPanels @(.peer parent))))
+  (as-proxies (.getChildPropPanels @(.peer parent))))
 
 (defn add-props [parent & children]
   (let [peer-prop @(.peer parent)
@@ -16,4 +19,30 @@
       (if child
         (.add peer-prop @(.peer child))))
     children))
+
+(defn parent-prop [prop]
+  (.getProxy (.getParent @(.peer prop))))
+
+(defn scene-prop [prop]
+  (.getProxy (.getRoot @(.peer prop))))
+
+(defn find-prop [prop id]
+  (if-let [peer-result (.find @(.peer (scene-prop prop)) id)]
+    (.getProxy peer-result)
+    nil))
+
+(defn find-props-named [root name]
+  (as-proxies (.findByName @(.peer root) name)))
+
+(defn prop-id [prop]
+  (.getId @(.peer prop)))
+
+(defn prop-name [prop]
+  (.getName @(.peer prop)))
+
+(defn prop-text [prop]
+  (.getText @(.peer prop)))
+
+(defn prop-text= [prop value]
+  (.setText @(.peer prop) value))
 

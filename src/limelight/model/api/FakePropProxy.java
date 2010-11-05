@@ -3,7 +3,6 @@
 
 package limelight.model.api;
 
-import limelight.util.ResourceLoader;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
@@ -11,7 +10,7 @@ import limelight.ui.Panel;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MockPropProxy implements PropProxy
+public class FakePropProxy implements PropProxy
 {
   public Style hoverStyle;
   public String text;
@@ -20,11 +19,11 @@ public class MockPropProxy implements PropProxy
   public SceneProxy sceneProxy;
   public Map<String, Object> appliedOptions;
 
-  public MockPropProxy()
+  public FakePropProxy()
   {
   }
 
-  public MockPropProxy(String name)
+  public FakePropProxy(String name)
   {
     this();
     this.name = name;

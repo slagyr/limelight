@@ -1,7 +1,9 @@
 package limelight.ui.events.panel;
 
 import limelight.events.Event;
+import limelight.model.api.PropProxy;
 import limelight.ui.Panel;
+import limelight.ui.model.Prop;
 
 public abstract class PanelEvent extends Event
 {
@@ -57,5 +59,14 @@ public abstract class PanelEvent extends Event
     final PanelEventHandler eventHandler = recipient.getEventHandler();
     eventHandler.dispatch(this);
     setRecipient(previousRecipient);
+  }
+
+
+  public PropProxy getProp()
+  {
+    if(recipient instanceof Prop)
+      return ((Prop)recipient).getProxy();
+    else
+      return null;
   }
 }

@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.model.api.MockPropProxy;
+import limelight.model.api.FakePropProxy;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
@@ -25,7 +25,7 @@ public class ButtonPanelTest
   public void setUp() throws Exception
   {
     panel = new ButtonPanel();
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
     root = new MockScene();
     root.add(parent);

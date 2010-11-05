@@ -3,8 +3,8 @@
 
 package limelight.background;
 
+import limelight.model.api.FakePropProxy;
 import limelight.ui.BufferedImagePool;
-import limelight.model.api.MockPropProxy;
 import limelight.ui.model.*;
 import limelight.ui.MockPanel;
 import limelight.Context;
@@ -30,7 +30,7 @@ public class PanelPainterLoopTest extends Assert
     Context.instance().frameManager = frameManager;
     MockStage activeStage = new MockStage();
     activeFrame = new StageFrame(activeStage);
-    activeRoot = new ScenePanel(new MockPropProxy());
+    activeRoot = new ScenePanel(new FakePropProxy());
     activeRoot.setStage(activeStage);
     activeStage.setScene(activeRoot);
   }

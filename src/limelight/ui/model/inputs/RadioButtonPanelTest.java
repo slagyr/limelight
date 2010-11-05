@@ -7,7 +7,7 @@ import limelight.ui.RadioButtonGroup;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
 import limelight.ui.model.PropPanel;
-import limelight.model.api.MockPropProxy;
+import limelight.model.api.FakePropProxy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class RadioButtonPanelTest
   public void setUp() throws Exception
   {
     panel = new RadioButtonPanel();
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
 
     RadioButtonGroup group = new RadioButtonGroup();
