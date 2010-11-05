@@ -8,6 +8,7 @@
   (:import [limelight.theater Theater]))
 
 (deftype Production [peer theater]
+
   limelight.model.api.ProductionProxy
   (callMethod [this name args] nil)
   (getTheater [this] @theater)
@@ -33,13 +34,14 @@
           scene-styles (.getStylesStore @(.peer scene))]
       (doall
         (map (fn [[name value]] (.put scene-styles name value))
-             new-styles)))))
+             new-styles))))
+
+  ResourceRoot
+  (resource-path [this resource]
+    (.pathTo (.getResourceLoader (.peer this)) resource)))
 
 (defn new-production [peer]
   (let [production (Production. peer (atom nil))]
     (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
     (.setProxy peer production)
     production))
-
-(defmethod path-to Production [production path]
-  (.pathTo (.getResourceLoader (.peer production)) path))
