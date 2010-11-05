@@ -1,20 +1,20 @@
 (defn enter [lcd]
-  (.setText lcd (str (load-string (str (.getText lcd))))))
+  (prop-text= lcd (str (load-string (str (prop-text lcd))))))
 
 (defn press [prop lcd]
-  (let [current-text (.getText lcd)
+  (let [current-text (prop-text lcd)
         middle-text (.substring current-text
                       1 (- (.length current-text) 1))]
-    (.setText lcd (str "(" middle-text (.getText prop) ")"))))
+    (prop-text= lcd (str "(" middle-text (prop-text prop) ")"))))
 
 (defn clear [lcd]
-  (.setText lcd "()"))
+  (prop-text= lcd "()"))
 
 (on-mouse-clicked
   (fn [e]
-    (let [prop (.getRecipient e)
-          lcd (.find (.getRoot prop) "lcd")
-          button-text (.getText prop)]
+    (let [prop (.getProp e)
+          lcd (find-prop prop "lcd")
+          button-text (prop-text prop)]
       (cond
         (= "c" button-text)
           (clear lcd)

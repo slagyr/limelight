@@ -1,7 +1,7 @@
 package limelight.ui.model.inputs;
 
+import limelight.model.api.FakePropProxy;
 import limelight.styles.Style;
-import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.CharTypedEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
@@ -63,7 +63,7 @@ public class AbstractButtonPanelTest
   @Test
   public void aButtonParentWillAlsoGetThePushEvent() throws Exception
   {
-    PropPanel parent = new PropPanel(new MockPropProxy());
+    PropPanel parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
     parent.getEventHandler().add(ButtonPushedEvent.class, action);
 

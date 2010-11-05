@@ -6,8 +6,8 @@ package limelight.ui.model;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.styles.StyleObserver;
-import limelight.model.api.MockPropProxy;
-import limelight.model.api.MockSceneProxy;
+import limelight.model.api.FakePropProxy;
+import limelight.model.api.FakeSceneProxy;
 import limelight.ui.text.StyledText;
 import org.junit.After;
 import org.junit.Before;
@@ -42,11 +42,11 @@ public class TextPanelTest
     style = parent.getStyle();
     panel = new TextPanel(parent, "Some Text");
     parent.add(panel);
-    root = new ScenePanel(new MockPropProxy());
+    root = new ScenePanel(new FakePropProxy());
     root.setStage(new MockStage());
     root.add(parent);
     style.setTextColor("green");
-    parent.prop.sceneProxy = new MockSceneProxy();
+    parent.prop.sceneProxy = new FakeSceneProxy();
 
     defaultFontFace = style.getFontFace();
     defaultFontSize = style.getFontSize();

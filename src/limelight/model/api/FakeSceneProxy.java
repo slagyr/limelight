@@ -4,9 +4,8 @@
 package limelight.model.api;
 
 import limelight.ui.model.Scene;
-import limelight.util.ResourceLoader;
 
-public class MockSceneProxy extends MockPropProxy implements SceneProxy
+public class FakeSceneProxy extends FakePropProxy implements SceneProxy
 {
   public Scene getPeer()
   {

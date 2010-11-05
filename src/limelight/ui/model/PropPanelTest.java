@@ -6,9 +6,9 @@ package limelight.ui.model;
 import limelight.LimelightException;
 import limelight.model.FakeProduction;
 import limelight.model.api.FakeCastingDirector;
+import limelight.model.api.FakePropProxy;
 import limelight.styles.*;
 import limelight.ui.Panel;
-import limelight.model.api.MockPropProxy;
 import limelight.ui.*;
 import limelight.ui.events.panel.MouseEnteredEvent;
 import limelight.ui.events.panel.MouseExitedEvent;
@@ -32,7 +32,7 @@ import java.util.List;
 
 public class PropPanelTest extends Assert
 {
-  private MockPropProxy prop;
+  private FakePropProxy prop;
   private PropPanel panel;
   private ScreenableStyle style;
   private ScenePanel root;
@@ -46,8 +46,8 @@ public class PropPanelTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockPropProxy());
-    prop = new MockPropProxy();
+    root = new ScenePanel(new FakePropProxy());
+    prop = new FakePropProxy();
     panel = new PropPanel(prop);
     root.add(panel);
 
@@ -301,7 +301,7 @@ public class PropPanelTest extends Assert
   @Test
   public void wheelEventsArePassedToParentIfTheresNoScrollbar() throws Exception
   {
-    PropPanel child = new PropPanel(new MockPropProxy());
+    PropPanel child = new PropPanel(new FakePropProxy());
     panel.add(child);
 
     panel.addVerticalScrollBar();
@@ -382,7 +382,7 @@ public class PropPanelTest extends Assert
   public void shouldRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
   {
     for(int i = 0; i < 100; i++)
-      panel.add(new PropPanel(new MockPropProxy()));
+      panel.add(new PropPanel(new FakePropProxy()));
     panel.markAsNeedingLayout();
     Thread thread = new Thread(new Runnable()
     {
@@ -406,7 +406,7 @@ public class PropPanelTest extends Assert
   {
     panel.addVerticalScrollBar();
     panel.addHorizontalScrollBar();
-    panel.add(new PropPanel(new MockPropProxy()));
+    panel.add(new PropPanel(new FakePropProxy()));
 
     panel.removeAll();
 
@@ -639,9 +639,9 @@ public class PropPanelTest extends Assert
   public void findByName() throws Exception
   {
     root.delluminate();
-    PropPanel foo1 = new PropPanel(new MockPropProxy(), Util.toMap("name", "foo"));
-    PropPanel foo2 = new PropPanel(new MockPropProxy(), Util.toMap("name", "foo"));
-    PropPanel bar = new PropPanel(new MockPropProxy(), Util.toMap("name", "bar"));
+    PropPanel foo1 = new PropPanel(new FakePropProxy(), Util.toMap("name", "foo"));
+    PropPanel foo2 = new PropPanel(new FakePropProxy(), Util.toMap("name", "foo"));
+    PropPanel bar = new PropPanel(new FakePropProxy(), Util.toMap("name", "bar"));
     panel.add(foo1);
     panel.add(foo2);
     panel.add(bar);
@@ -660,11 +660,11 @@ public class PropPanelTest extends Assert
   @Test
   public void findByNameWithNestedStruture() throws Exception
   {
-    PropPanel fee = new PropPanel(new MockPropProxy(), Util.toMap("name", "fee"));
-    PropPanel fie = new PropPanel(new MockPropProxy(), Util.toMap("name", "fie"));
-    PropPanel foe = new PropPanel(new MockPropProxy(), Util.toMap("name", "foe"));
-    PropPanel fum = new PropPanel(new MockPropProxy(), Util.toMap("name", "fum"));
-    PropPanel fum2 = new PropPanel(new MockPropProxy(), Util.toMap("name", "fum"));
+    PropPanel fee = new PropPanel(new FakePropProxy(), Util.toMap("name", "fee"));
+    PropPanel fie = new PropPanel(new FakePropProxy(), Util.toMap("name", "fie"));
+    PropPanel foe = new PropPanel(new FakePropProxy(), Util.toMap("name", "foe"));
+    PropPanel fum = new PropPanel(new FakePropProxy(), Util.toMap("name", "fum"));
+    PropPanel fum2 = new PropPanel(new FakePropProxy(), Util.toMap("name", "fum"));
 
     root.add(fee);
     fee.add(fie);

@@ -2,8 +2,10 @@ package limelight.ui.events.panel;
 
 import limelight.events.Event;
 import limelight.events.EventAction;
+import limelight.model.api.FakePropProxy;
 import limelight.ui.MockPanel;
 import limelight.ui.Panel;
+import limelight.ui.model.PropPanel;
 import limelight.ui.model.TestablePanelBase;
 import limelight.ui.model.inputs.MockEventAction;
 import org.junit.Before;
@@ -94,6 +96,17 @@ public class PanelEventTest
 
     assertEquals(recipient, dispatchedRecipient);
     assertEquals(source, event.getRecipient());
+  }
 
+  @Test
+  public void getProp() throws Exception
+  {
+    assertEquals(null, event.getProp());
+
+    final FakePropProxy propProxy = new FakePropProxy();
+    PropPanel propPanel = new PropPanel(propProxy);
+    event.setRecipient(propPanel);
+
+    assertEquals(propProxy, event.getProp());
   }
 }

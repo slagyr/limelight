@@ -5,9 +5,9 @@ package limelight.ui.model;
 
 import limelight.LimelightException;
 import limelight.model.FakeProduction;
+import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.model.api.MockPropProxy;
 import limelight.Context;
 import limelight.util.Util;
 import org.junit.Assert;
@@ -28,7 +28,7 @@ public class ScenePanelTest extends Assert
   public void setUp() throws Exception
   {
     frame = new MockStage();
-    root = new ScenePanel(new MockPropProxy());
+    root = new ScenePanel(new FakePropProxy());
     child = new MockProp("child");
     Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager().installed();
   }
@@ -250,7 +250,7 @@ public class ScenePanelTest extends Assert
   public void propWithIdIsIndexWhenAddedToScene() throws Exception
   {
     setupIlluminatedScene();
-    PropPanel panel = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel panel = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
 
     root.add(panel);
 
@@ -267,7 +267,7 @@ public class ScenePanelTest extends Assert
   public void propConnectedToSceneIsIndexedWhenIdIsSet() throws Exception
   {
     setupIlluminatedScene();
-    PropPanel panel = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel panel = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
     root.add(panel);
 
     assertSame(panel, root.find("some id"));
@@ -277,8 +277,8 @@ public class ScenePanelTest extends Assert
   public void duplicateIdsCausesAnError() throws Exception
   {
     setupIlluminatedScene();
-    PropPanel prop1 = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
-    PropPanel prop2 = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel prop1 = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
+    PropPanel prop2 = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
 
     root.add(prop1);
     
@@ -297,7 +297,7 @@ public class ScenePanelTest extends Assert
   public void unindexingAProp() throws Exception
   {
     setupIlluminatedScene();
-    PropPanel prop = new PropPanel(new MockPropProxy(), Util.toMap("id", "some id"));
+    PropPanel prop = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
     root.add(prop);
 
     root.removeFromIndex(prop);
@@ -309,7 +309,7 @@ public class ScenePanelTest extends Assert
   public void unindexingPropWithoutIdDoesntCrash() throws Exception
   {
     setupIlluminatedScene();
-    PropPanel prop = new PropPanel(new MockPropProxy());
+    PropPanel prop = new PropPanel(new FakePropProxy());
     root.add(prop);
 
     try
@@ -326,8 +326,8 @@ public class ScenePanelTest extends Assert
   public void propTreesAreIndexedWhenAddedAndUnindexedWhenRemoved() throws Exception
   {
     setupIlluminatedScene();
-    PropPanel parent = new PropPanel(new MockPropProxy(), Util.toMap("id", "parent"));
-    PropPanel child = new PropPanel(new MockPropProxy(), Util.toMap("id", "child"));
+    PropPanel parent = new PropPanel(new FakePropProxy(), Util.toMap("id", "parent"));
+    PropPanel child = new PropPanel(new FakePropProxy(), Util.toMap("id", "child"));
     parent.add(child);
     
     root.add(parent);
@@ -344,7 +344,7 @@ public class ScenePanelTest extends Assert
   {
     assertEquals("", root.getResourceLoader().getRoot());
 
-    root = new ScenePanel(new MockPropProxy());
+    root = new ScenePanel(new FakePropProxy());
     root.addOptions(Util.toMap("path", "/some/path"));
     assertEquals("/some/path", root.getResourceLoader().getRoot());
   }

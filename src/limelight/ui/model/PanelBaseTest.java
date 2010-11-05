@@ -4,8 +4,8 @@
 //    assertEquals(true, panel.canBeBuffered());
 package limelight.ui.model;
 
+import limelight.model.api.FakePropProxy;
 import limelight.ui.MockPanel;
-import limelight.model.api.MockPropProxy;
 import limelight.util.Box;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,7 +25,7 @@ public class PanelBaseTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockPropProxy());
+    root = new ScenePanel(new FakePropProxy());
     root.setStage(new MockStage());
     panel = new TestablePanelBase();
     root.add(panel);
@@ -83,7 +83,7 @@ public class PanelBaseTest extends Assert
 
   private void createFamilyTree()
   {
-    root = new ScenePanel(new MockPropProxy());
+    root = new ScenePanel(new FakePropProxy());
     parent = new MockParentPanel();
     root.add(parent);
     child = new MockParentPanel();

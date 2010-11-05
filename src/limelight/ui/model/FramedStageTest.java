@@ -1,11 +1,11 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.model.api.FakePropProxy;
 import limelight.os.MockOS;
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.styles.values.*;
 import limelight.ui.*;
-import limelight.model.api.MockPropProxy;
 import limelight.model.api.MockStageProxy;
 import limelight.util.Colors;
 import limelight.util.Util;
@@ -82,7 +82,7 @@ public class FramedStageTest
   @Test
   public void shouldLoad() throws Exception
   {
-    ScenePanel panel = new ScenePanel(new MockPropProxy());
+    ScenePanel panel = new ScenePanel(new FakePropProxy());
     stage.setScene(panel);
 
     Scene root = stage.getScene();
@@ -94,7 +94,7 @@ public class FramedStageTest
   public void shouldLoadSetsDefaultCursor() throws Exception
   {
     stage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    ScenePanel panel = new ScenePanel(new MockPropProxy());
+    ScenePanel panel = new ScenePanel(new FakePropProxy());
     stage.setScene(panel);
 
     assertEquals(Cursor.DEFAULT_CURSOR, stage.getCursor().getType());
@@ -103,13 +103,13 @@ public class FramedStageTest
   @Test
   public void shouldLoadWillDestroyPreviousRoots() throws Exception
   {
-    ScenePanel panel = new ScenePanel(new MockPropProxy());
+    ScenePanel panel = new ScenePanel(new FakePropProxy());
     stage.setScene(panel);
 
     Scene firstRoot = stage.getScene();
     assertEquals(true, firstRoot.isIlluminated());
 
-    ScenePanel panel2 = new ScenePanel(new MockPropProxy());
+    ScenePanel panel2 = new ScenePanel(new FakePropProxy());
     stage.setScene(panel2);
 
     assertEquals(false, firstRoot.isIlluminated());

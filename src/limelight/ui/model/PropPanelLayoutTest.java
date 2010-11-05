@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.model.api.MockPropProxy;
+import limelight.model.api.FakePropProxy;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
 
@@ -21,10 +21,10 @@ public class PropPanelLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockPropProxy());
+    root = new ScenePanel(new FakePropProxy());
     frame = new MockStage();
     root.setStage(frame);
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("100");
@@ -293,7 +293,7 @@ public class PropPanelLayoutTest extends TestCase
 
   public void testAutoSizingWithNoChildrenAndScrollBars() throws Exception
   {
-    PropPanel panel = new PropPanel(new MockPropProxy());
+    PropPanel panel = new PropPanel(new FakePropProxy());
     parent.add(panel);
     panel.getStyle().setWidth("auto");
     panel.getStyle().setHeight("auto");
@@ -417,7 +417,7 @@ public class PropPanelLayoutTest extends TestCase
 
   private PropPanel addChildWithSize(ParentPanelBase parent, String width, String height)
   {
-    PropPanel panel = new PropPanel(new MockPropProxy());
+    PropPanel panel = new PropPanel(new FakePropProxy());
     panel.getStyle().setWidth(width);
     panel.getStyle().setHeight(height);
     parent.add(panel);

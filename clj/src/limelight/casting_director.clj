@@ -12,6 +12,7 @@
       (binding [*ns* player-ns]
         (use 'clojure.core)
         (use 'limelight.player)
+        (use 'limelight.common)
         (binding [limelight.player/*action-cache* @event-actions]
           (load-string player-content)))
       (swap! (.cast casting-director) #(assoc % player-name player-ns))

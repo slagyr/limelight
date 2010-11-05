@@ -7,7 +7,8 @@ import junit.framework.TestCase;
 
 import java.awt.*;
 import java.util.ArrayList;
-import limelight.model.api.MockPropProxy;
+
+import limelight.model.api.FakePropProxy;
 
 public class FloaterLayoutTest extends TestCase
 {
@@ -16,9 +17,9 @@ public class FloaterLayoutTest extends TestCase
 
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new MockPropProxy());
+    root = new ScenePanel(new FakePropProxy());
     root.setStage(new MockStage());
-    panel = new PropPanel(new MockPropProxy());
+    panel = new PropPanel(new FakePropProxy());
     root.add(panel);
   }
 

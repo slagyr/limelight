@@ -3,8 +3,8 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.model.api.FakePropProxy;
 import limelight.ui.MockGraphics;
-import limelight.model.api.MockPropProxy;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.MockScene;
 import limelight.ui.model.MockStage;
@@ -29,7 +29,7 @@ public class TextAreaPanelTest extends Assert
   public void setUp()
   {
     panel = new TextAreaPanel();
-    parent = new PropPanel(new MockPropProxy());
+    parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
 
     root = new MockScene();
