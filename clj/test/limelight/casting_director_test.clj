@@ -1,8 +1,9 @@
 (ns limelight.casting-director-test
   (:use
+    [limelight.common]
     [limelight.casting-director]
     [limelight.scene :only (new-scene)]
-    [limelight.prop :only (new-prop add)]
+    [limelight.prop :only (new-prop)]
     [limelight.production :only (new-production)]
     [limelight.test-help :only (fake-fs *fs*)]
     [lazytest.describe :only (describe testing it with given)]
@@ -14,7 +15,7 @@
         scene (new-scene {:path "root"})
         _ (.setCastingDirector @(.peer scene) (limelight.model.api.FakeCastingDirector.))
         _ (.setProduction @(.peer scene) (.peer production))
-        prop (add scene (new-prop {}))]
+        [prop] (add-props scene (new-prop {}))]
     [prop scene]))
 
 (defn setup-fs [options]

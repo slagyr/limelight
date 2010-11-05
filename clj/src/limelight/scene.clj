@@ -1,17 +1,19 @@
 (ns limelight.scene
-  (:use [limelight.prop :only (prop-fns PropHelp)]
-        [limelight.casting-director :only (new-casting-director)]
-        [limelight.common])
-  (:import [limelight.casting-director CastingDirector]))
+  (:use
+    [limelight.casting-director :only (new-casting-director)]
+    [limelight.common])
+  (:import
+    [limelight.casting-director CastingDirector]))
 
 (deftype Scene [peer casting-director]
+
   limelight.model.api.SceneProxy
   (getPeer [this] @peer)
-  (applyOptions [this options] nil))
+  (applyOptions [this options] nil)
 
-(extend Scene
-  PropHelp
-  prop-fns)
+  ResourceRoot
+  (resource-path [this resource]
+    (.pathTo (.getResourceLoader @(.peer this)) resource)))
 
 
 (defn new-scene [options]
@@ -24,8 +26,3 @@
     (.setCastingDirector peer casting-director)
     scene))
 
-;(defn production [scene]
-;  (.getProxy (.getProduction @(.peer scene))))
-
-(defmethod path-to Scene [scene path]
-  (.pathTo (.getResourceLoader @(.peer scene)) path))
