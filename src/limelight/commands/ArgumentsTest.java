@@ -1,3 +1,6 @@
+//- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
+//- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 package limelight.commands;
 
 import org.junit.Before;
@@ -207,6 +210,17 @@ public class ArgumentsTest
     assertEquals("bar", results.get("param"));
 
     results = args.parse("--a-option=foo", "bar");
+    assertEquals("foo", results.get("a-option"));
+    assertEquals("bar", results.get("param"));
+  }
+
+  @Test
+  public void parameterOptionsAreParsableInLongFormWithoutEqualsSign() throws Exception
+  {
+    args.addParameter("param", "Some Description");
+    args.addValueOption("a", "a-option", "value", "Option A");
+
+    results = args.parse("--a-option", "foo", "bar");
     assertEquals("foo", results.get("a-option"));
     assertEquals("bar", results.get("param"));
   }
