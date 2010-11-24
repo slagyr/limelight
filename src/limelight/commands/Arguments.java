@@ -1,3 +1,6 @@
+//- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
+//- Limelight and all included source files are distributed under terms of the GNU LGPL.
+
 package limelight.commands;
 
 import limelight.util.Util;
@@ -219,7 +222,7 @@ public class Arguments
 
     if(option.requiresValue())
     {
-      if(parser.usingFullName)
+      if(parser.usingEquals)
       {
         if(parser.argValue == null)
           throw new ArgumentException("Missing value for option: " + parser.argName);
@@ -364,6 +367,7 @@ public class Arguments
     private String argName;
     private String argValue;
     private boolean usingFullName;
+    private boolean usingEquals;
 
     public OptionParser(String arg)
     {
@@ -372,8 +376,9 @@ public class Arguments
       if(usingFullName)
       {
         int valueIndex = argName.indexOf("=");
-        if(valueIndex != -1)
+        if(valueIndex > 0)
         {
+          usingEquals = true;
           argValue = argName.substring(valueIndex + 1);
           argName = argName.substring(0, valueIndex);
         }
