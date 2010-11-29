@@ -20,6 +20,4 @@
       (should= "Limelight" (.getName stage))))
   )
 
-(conclude-single-file-run)
-
 
