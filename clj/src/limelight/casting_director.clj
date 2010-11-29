@@ -32,15 +32,19 @@
 (defn- cast-player [player-ns prop]
   (let [event-actions @(ns-resolve player-ns '*event-actions*)
         event-handler (.getEventHandler @(.peer prop))]
+    (if-let [on-cast-actions (:on-cast @event-actions)]
+      (doseq [action on-cast-actions]
+        (.invoke action nil)))
     (doseq [[event-class actions] @event-actions]
-      (doseq [action actions]
-        (.add event-handler event-class action)))))
+      (when (not (= :on-cast event-class))
+        (doseq [action actions]
+          (.add event-handler event-class action))))))
 
-(deftype CastingDirector [scene cast]
-  limelight.model.api.CastingDirector
-  (castPlayer [this prop player-name]
-    (if-let [player (load-player this player-name)]
-      (cast-player player prop))))
+  (deftype CastingDirector [scene cast]
+    limelight.model.api.CastingDirector
+    (castPlayer [this prop player-name]
+      (if-let [player (load-player this player-name)]
+        (cast-player player prop))))
 
-(defn new-casting-director [scene]
-  (CastingDirector. scene (atom {})))
+  (defn new-casting-director [scene]
+    (CastingDirector. scene (atom {})))
