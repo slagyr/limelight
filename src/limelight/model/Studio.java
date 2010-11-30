@@ -10,9 +10,9 @@ import limelight.events.EventAction;
 import limelight.io.*;
 import limelight.model.events.ProductionClosedEvent;
 import limelight.model.events.ProductionEvent;
-import limelight.ruby.RubyProduction;
 import limelight.model.api.UtilitiesProduction;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -59,7 +59,7 @@ public class Studio
     try
     {
       productionPath = processProductionPath(productionPath);
-      Production production = productionStub == null ? new RubyProduction(productionPath) : productionStub;
+      Production production = productionStub == null ? instantiateProduction(productionPath) : productionStub;
       production.open();
       add(production);
       return production;
@@ -70,6 +70,21 @@ e.printStackTrace();
       alert(e);
       shutdownIfEmpty();
       return null;
+    }
+  }
+
+  private Production instantiateProduction(String productionPath)
+  {
+    try
+    {
+      Class productionClass = Class.forName("limelight.ruby.RubyProduction");
+      final Constructor constructor = productionClass.getConstructor(String.class);
+      return (Production)constructor.newInstance(productionPath);
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException();
     }
   }
 
@@ -145,7 +160,7 @@ e.printStackTrace();
       String path = FileUtil.pathTo(Context.instance().limelightHome, "lib", "limelight", "builtin", "utilities_production");
       try
       {
-        Production production = productionStub == null ? new RubyProduction(path) : productionStub;
+        Production production = productionStub == null ? instantiateProduction(path) : productionStub;
         production.open();
         add(production);
         utilitiesProduction = new UtilitiesProduction(production);

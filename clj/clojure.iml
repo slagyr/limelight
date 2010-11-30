@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module relativePaths="true" type="JAVA_MODULE" version="4">
-  <component name="GemRequirementsHolder" version="3">
-    <requirement>
-      <requirement>
-        <dependency name="rspec" version="0" bound="GREATER_OR_EQUAL" />
-      </requirement>
-      <source manual="true" />
-    </requirement>
+<module version="4">
+  <component name="FacetManager">
+    <facet type="Clojure" name="Clojure">
+      <configuration />
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    <content url="file://$MODULE_DIR$/../clojure">
+      <sourceFolder url="file://$MODULE_DIR$/../clojure/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../clojure/spec" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="1.5 (1)" jdkType="JavaSDK" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../out/production/Limelight" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/junit-4.4.jar!/" />
+          <root url="file://$MODULE_DIR$/../clojure/src" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -27,7 +34,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/src" />
+          <root url="file://$MODULE_DIR$/../clojure/spec" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -36,7 +43,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/ruby/lib/jruby-complete-1.4.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../clojure/lib/clojure-1.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -45,7 +52,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/ruby/classes" />
+          <root url="jar://$MODULE_DIR$/../clojure/lib/dev/speclj-1.0.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

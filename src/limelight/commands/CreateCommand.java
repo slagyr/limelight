@@ -135,7 +135,7 @@ public class CreateCommand extends Command
 
   private Templater createTemplater(String path)
   {
-    Templater templater = new Templater(path, FileUtil.join(Context.instance().limelightHome, "lib", "limelight", "templates", "sources"));
+    Templater templater = new Templater(path, FileUtil.join(Context.instance().limelightHome, "ruby", "lib", "limelight", "templates", "sources"));
     if(logger != null)
       templater.setLogger(logger);
     if(fileSystem != null)

@@ -1,0 +1,15 @@
+require 'java'
+require File.expand_path(File.dirname(__FILE__) + "/lib/limelight.jar")
+require File.expand_path(File.dirname(__FILE__) + "/lib/ruby-limelight-java.jar")
+require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/limelight_init")
+
+task :spec do
+  begin
+    gem 'rspec'
+    require 'spec/rake/spectask'
+    Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
+    Rake::Task[:lib_specs].invoke
+  rescue LoadError
+    run_command "java -jar lib/jruby-complete-1.4.0.jar -S spec spec"
+  end
+end

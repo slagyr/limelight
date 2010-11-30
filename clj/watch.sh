@@ -1,1 +1,0 @@
-java -cp "src:test:classes:lib/*:lib/dev/*:../out/production/Limelight/" lazytest.watch src test
