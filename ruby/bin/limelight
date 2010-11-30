@@ -1,0 +1,5 @@
+#!/usr/bin/env jruby
+
+require File.expand_path(File.dirname(__FILE__) + "/../lib/limelight/limelight_init")
+Java::limelight.CmdLineMain.mainCmd = "limelight"
+Java::limelight.CmdLineMain.main(ARGV)
