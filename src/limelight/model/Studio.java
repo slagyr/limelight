@@ -75,9 +75,10 @@ e.printStackTrace();
 
   private Production instantiateProduction(String productionPath)
   {
+    String className = calculateProductionClassName(productionPath);
     try
     {
-      Class productionClass = Class.forName("limelight.ruby.RubyProduction");
+      Class productionClass = Class.forName(className);
       final Constructor constructor = productionClass.getConstructor(String.class);
       return (Production)constructor.newInstance(productionPath);
     }
@@ -86,6 +87,17 @@ e.printStackTrace();
       e.printStackTrace();
       throw new RuntimeException();
     }
+  }
+
+  public String calculateProductionClassName(String path)
+  {
+    final FileSystem fs = Context.fs();
+    if(fs.exists(FileUtil.join(path, "production.rb")))
+      return "limelight.ruby.RubyProduction";
+    else if(fs.exists(FileUtil.join(path, "production.clj")))
+      return "limelight.clojure.ClojureProduction";
+    else
+      throw new LimelightException("Can determine what language to use to load production: " + path);
   }
 
   public void shutdown()
@@ -157,7 +169,7 @@ e.printStackTrace();
   {
     if(utilitiesProduction == null)
     {
-      String path = FileUtil.pathTo(Context.instance().limelightHome, "lib", "limelight", "builtin", "utilities_production");
+      String path = FileUtil.pathTo(Context.instance().limelightHome, "ruby", "lib", "limelight", "builtin", "utilities_production");
       try
       {
         Production production = productionStub == null ? instantiateProduction(path) : productionStub;

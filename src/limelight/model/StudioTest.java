@@ -212,6 +212,18 @@ public class StudioTest
     assertEquals(Data.productionsDir(), new File(mockPacker.unpackDestination).getParent());
   }
 
+  @Test
+  public void calculatingProductionClassName() throws Exception
+  {
+    setupWithFilesystem();
+
+    fs.createTextFile("/test_production/production.rb", "");
+    assertEquals("limelight.ruby.RubyProduction", studio.calculateProductionClassName("/test_production"));
+
+    fs.createTextFile("/test_production2/production.clj", "");
+    assertEquals("limelight.clojure.ClojureProduction", studio.calculateProductionClassName("/test_production2"));
+  }
+
 // TODO MDM - This needs to be fixed
 //  public void testShouldSendAlertWhenErrorOccursWhileOpeningProduction() throws Exception
 //  {

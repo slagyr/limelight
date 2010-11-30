@@ -5,7 +5,9 @@
       <configuration />
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="true">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../clojure/classes" />
+    <output-test url="file://$MODULE_DIR$/../clojure/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../clojure">
       <sourceFolder url="file://$MODULE_DIR$/../clojure/src" isTestSource="false" />
@@ -52,7 +54,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../clojure/lib/dev/speclj-1.0.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../clojure/lib/dev/speclj-1.0.3.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

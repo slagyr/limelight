@@ -3,6 +3,12 @@
     [limelight.common]
     [limelight.player]))
 
+(defn- read-player [player-path player-content]
+  (let [rdr (-> (java.io.StringReader. player-content) (clojure.lang.LineNumberingPushbackReader.))
+        srcPath (limelight.io.FileUtil/parentPath player-path)
+        srcName (limelight.io.FileUtil/filename player-path)]
+    (clojure.lang.Compiler/load rdr srcPath srcName)))
+
 (defn- load-player-from [casting-director player-path player-name]
   (if-not (.exists (limelight.Context/fs) player-path)
     nil
@@ -14,7 +20,7 @@
         (use 'limelight.player)
         (use 'limelight.common)
         (binding [limelight.player/*action-cache* @event-actions]
-          (load-string player-content)))
+          (read-player player-path player-content)))
       (swap! (.cast casting-director) #(assoc % player-name player-ns))
       player-ns)))
 
