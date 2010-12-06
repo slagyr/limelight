@@ -43,7 +43,7 @@
     (should (isa? CastingDirector limelight.model.api.CastingDirector)))
 
   (it "includes one player from scene"
-    (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"}) 
+    (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
     (.castPlayer @casting-director @prop "test-player")
     (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent))))
 
@@ -71,7 +71,7 @@
                       }]
     (it (str "handles " name " events")
       (let [actions-before (actions-for @prop (class event))]
-        (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-" name " [_] (def *message* \"" name "\"))")})
+        (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-" name " (def *message* \"" name "\"))")})
         (.castPlayer @casting-director @prop "test-player")
         (let [actions-after (actions-for @prop (class event))]
           (should= 1 (- (count actions-after) (count actions-before)))

@@ -1,13 +1,8 @@
 (ns limelight.casting-director
   (:use
     [limelight.common]
-    [limelight.player]))
-
-(defn- read-player [player-path player-content]
-  (let [rdr (-> (java.io.StringReader. player-content) (clojure.lang.LineNumberingPushbackReader.))
-        srcPath (limelight.io.FileUtil/parentPath player-path)
-        srcName (limelight.io.FileUtil/filename player-path)]
-    (clojure.lang.Compiler/load rdr srcPath srcName)))
+    [limelight.player]
+    [limelight.util :only (read-src)]))
 
 (defn- load-player-from [casting-director player-path player-name]
   (if-not (.exists (limelight.Context/fs) player-path)
@@ -20,7 +15,7 @@
         (use 'limelight.player)
         (use 'limelight.common)
         (binding [limelight.player/*action-cache* @event-actions]
-          (read-player player-path player-content)))
+          (read-src player-path player-content)))
       (swap! (.cast casting-director) #(assoc % player-name player-ns))
       player-ns)))
 
@@ -46,11 +41,11 @@
         (doseq [action actions]
           (.add event-handler event-class action))))))
 
-  (deftype CastingDirector [scene cast]
-    limelight.model.api.CastingDirector
-    (castPlayer [this prop player-name]
-      (if-let [player (load-player this player-name)]
-        (cast-player player prop))))
+(deftype CastingDirector [scene cast]
+  limelight.model.api.CastingDirector
+  (castPlayer [this prop player-name]
+    (if-let [player (load-player this player-name)]
+      (cast-player player prop))))
 
-  (defn new-casting-director [scene]
-    (CastingDirector. scene (atom {})))
+(defn new-casting-director [scene]
+  (CastingDirector. scene (atom {})))
