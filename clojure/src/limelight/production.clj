@@ -38,13 +38,15 @@
         (build-stages @theater stages-src stages-path))))
 
   (loadScene [this scene-path options]
-    (let [full-scene-path (.pathTo (.getResourceLoader peer) scene-path)
-          scene-name (limelight.io.FileUtil/filename scene-path)
-          _ (.put options "path" full-scene-path)
-          _ (.put options "name" scene-name)
-          scene (new-scene options)]
-      (.setProduction @(.peer scene) peer)
-      (build-props scene (.readText (.getResourceLoader @(.peer scene)) "props.clj"))
+    (.put options "path" (resource-path this scene-path))
+    (.put options "name" (limelight.io.FileUtil/filename scene-path))
+    (let [scene (new-scene options)
+          _ (.setProduction @(.peer scene) peer)
+          props-path (resource-path scene "props.clj")
+          fs (limelight.Context/fs)
+          props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
+      (when props-src
+        (build-props scene props-src props-path))
       scene))
 
   (loadStyles [this scene]
@@ -67,3 +69,4 @@
     (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
     (.setProxy peer production)
     production))
+           You're looking at it.

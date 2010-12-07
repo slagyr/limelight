@@ -1,19 +1,31 @@
 (ns limelight.prop-building
   (:use
     [limelight.common]
-    [limelight.prop :only (new-prop)]))
+    [limelight.prop :only (new-prop)]
+    [limelight.util :only (read-src)]))
 
-(defn ! [name & args]
-  (let [root (new-prop {})]
-    (if (map? (first args))
-      (do (.addOptions @(.peer root) (limelight.util.OptionsMap. (assoc (first args) :name name)))
-        (add-props root (rest args)))
-      (do (.addOptions @(.peer root) (limelight.util.OptionsMap. (hash-map :name name)))
-        (add-props root args)))
-    root))
+(declare to-prop)
 
-(defn build-props [root input]
+(defn- to-props [coll]
+  (cond
+    (or (not (coll? coll)) (empty? coll)) ()
+    (keyword? (first coll)) (list (to-prop coll))
+    (coll? (first coll)) (reduce #(into %1 (to-props %2)) [] coll)
+    :else (throw (Exception. (str "Don't know how to create props from:" coll)))))
+
+(defn- to-prop [data]
+  (let [name (name (first data))
+        options (if (map? (second data)) (second data) nil)
+        child-data (if options (rest (rest data)) (rest data))
+        options (assoc options :name name)
+        prop (new-prop (limelight.util.OptionsMap. options))]
+    (when (seq child-data)
+      (add-props prop (to-props child-data)))
+    prop))
+
+(defn build-props [root src path]
   (binding [*ns* (the-ns 'limelight.prop-building)]
-    (let [props (load-string (str "[" input "]"))]
+    (let [prop-data (read-src path (str "[" src "]"))
+          props (to-props prop-data)]
       (add-props root props)
       root)))
