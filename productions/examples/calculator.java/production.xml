@@ -1,0 +1,7 @@
+<production classpath="classes" class="calculator.Production">
+    <onProductionCreated>printEvent</onProductionCreated>
+    <onProductionLoaded>printEvent</onProductionLoaded>
+    <onProductionOpened>printEvent</onProductionOpened>
+    <onProductionClosing>printEvent</onProductionClosing>
+    <onProductionClosed>printEvent</onProductionClosed>
+</production>

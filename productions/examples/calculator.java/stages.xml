@@ -1,0 +1,13 @@
+<stages>
+    <default defaultSceneName="main"
+             title="Calculator"
+             location="center, center"
+             size="700, 700"/>
+
+    <devtool defaultSceneName="devtool"
+             title="devtool"
+             location="0, 0"
+             size="100, 100"
+             backgroundColor="transparent"
+             framed="false"/>
+</stages>

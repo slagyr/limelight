@@ -1,0 +1,3 @@
+<player class="devtool.Devtool">
+    <onMouseClicked>refresh</onMouseClicked>
+</player>

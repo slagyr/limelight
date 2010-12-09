@@ -55,4 +55,20 @@ public class OptionsMap extends HashMap<String, Object>
         return value;
     }
   }
+
+  public String inspect()
+  {
+    StringBuffer buffer = new StringBuffer("{ ");
+    boolean first = true;
+    for(Map.Entry<String, Object> entry : entrySet())
+    {
+      if(first)
+        first = false;
+      else
+        buffer.append(", ");
+      buffer.append(entry.getKey()).append(" => ").append(entry.getValue());
+    }
+    buffer.append(" }");
+    return buffer.toString();
+  }
 }

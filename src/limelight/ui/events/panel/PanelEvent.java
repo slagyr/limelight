@@ -64,7 +64,6 @@ public abstract class PanelEvent extends Event
     setRecipient(previousRecipient);
   }
 
-
   public PropProxy getProp()
   {
     if(recipient instanceof Prop)

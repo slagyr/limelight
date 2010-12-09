@@ -811,6 +811,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/productions/examples/calculator.java/calculator.java.iml" filepath="$PROJECT_DIR$/productions/examples/calculator.java/calculator.java.iml" />
       <module fileurl="file://$PROJECT_DIR$/clj/clojure.iml" filepath="$PROJECT_DIR$/clj/clojure.iml" />
       <module fileurl="file://$PROJECT_DIR$/limelight.iml" filepath="$PROJECT_DIR$/limelight.iml" />
       <module fileurl="file://$PROJECT_DIR$/ruby/ruby.iml" filepath="$PROJECT_DIR$/ruby/ruby.iml" />

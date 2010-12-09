@@ -89,7 +89,7 @@ public class StringUtil
 
   public static String camalize(String value)
   {
-    return gsub(value.toLowerCase(), camalizeSpaceRegex, new Gsuber()
+    return gsub(value, camalizeSpaceRegex, new Gsuber()
     {
       public String replacementFor(Matcher matcher)
       {

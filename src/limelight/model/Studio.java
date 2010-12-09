@@ -96,8 +96,10 @@ e.printStackTrace();
       return "limelight.ruby.RubyProduction";
     else if(fs.exists(FileUtil.join(path, "production.clj")))
       return "limelight.clojure.ClojureProduction";
+    else if(fs.exists(FileUtil.join(path, "production.xml")))
+      return "limelight.java.JavaProduction";
     else
-      throw new LimelightException("Can determine what language to use to load production: " + path);
+      throw new LimelightException("Can't determine what language to use to load production: " + path);
   }
 
   public void shutdown()

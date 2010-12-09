@@ -213,15 +213,27 @@ public class StudioTest
   }
 
   @Test
-  public void calculatingProductionClassName() throws Exception
+  public void recognizedRubyProductions() throws Exception
   {
     setupWithFilesystem();
-
     fs.createTextFile("/test_production/production.rb", "");
     assertEquals("limelight.ruby.RubyProduction", studio.calculateProductionClassName("/test_production"));
+  }
 
+  @Test
+  public void recognizedClojureProductions() throws Exception
+  {
+    setupWithFilesystem();
     fs.createTextFile("/test_production2/production.clj", "");
     assertEquals("limelight.clojure.ClojureProduction", studio.calculateProductionClassName("/test_production2"));
+  }
+
+  @Test
+  public void recognizedJavaProductions() throws Exception
+  {
+    setupWithFilesystem();
+    fs.createTextFile("/test_production/production.xml", "");
+    assertEquals("limelight.java.JavaProduction", studio.calculateProductionClassName("/test_production"));
   }
 
 // TODO MDM - This needs to be fixed
