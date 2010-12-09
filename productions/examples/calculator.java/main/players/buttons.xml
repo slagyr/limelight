@@ -1,0 +1,3 @@
+<player class="calculator.Button">
+    <onCast>createButtons</onCast>
+</player>

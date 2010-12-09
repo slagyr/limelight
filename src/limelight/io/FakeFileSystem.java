@@ -73,8 +73,6 @@ public class FakeFileSystem extends FileSystem
   @Override
   public OutputStream outputStream(String path)
   {
-    if(!exists(parentPath(path)))
-      throw fileNotFound(path);
     FakeFile file = establishFile(path);
     return new FakeFileOutputSteam(file);
   }

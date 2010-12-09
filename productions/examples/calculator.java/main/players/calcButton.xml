@@ -1,0 +1,3 @@
+<player class="calculator.Button">
+    <onMouseClicked>press</onMouseClicked>
+</player>

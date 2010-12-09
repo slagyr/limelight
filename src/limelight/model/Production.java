@@ -125,11 +125,13 @@ public abstract class Production
     return resourceLoader;
   }
 
+  //TODO MDM Git rid of me
   public ProductionProxy getProxy()
   {
     return proxy;
   }
-
+  
+  //TODO MDM Git rid of me
   public void setProxy(ProductionProxy proxy)
   {
     this.proxy = proxy;

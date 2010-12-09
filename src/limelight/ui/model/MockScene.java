@@ -9,6 +9,8 @@ import limelight.model.api.CastingDirector;
 import limelight.model.api.FakeCastingDirector;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
+import limelight.util.ResourceLoader;
+
 import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -99,6 +101,11 @@ public class MockScene extends MockProp implements Scene
   public CastingDirector getCastingDirector()
   {
     return castingDirector;
+  }
+
+  public ResourceLoader getResourceLoader()
+  {
+    throw new RuntimeException("MockScene.getResourceLoader()");
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

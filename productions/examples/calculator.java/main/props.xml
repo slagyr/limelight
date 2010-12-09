@@ -1,0 +1,4 @@
+<props>
+    <lcd text="0" id="lcd"/>
+    <buttons id="buttons"/>
+</props>

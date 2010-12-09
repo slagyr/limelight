@@ -7,7 +7,9 @@ import java.util.Map;
 
 public interface ProductionProxy
 {
+  //TODO MDM get rid of me
   Object callMethod(String name, Object... args);
+
   TheaterProxy getTheater();
   void illuminate();
   void loadLibraries();
