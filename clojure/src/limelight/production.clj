@@ -69,4 +69,3 @@
     (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
     (.setProxy peer production)
     production))
-           You're looking at it.

@@ -22,14 +22,6 @@
 (defn- player-path [resource-root relative-player-path]
   (resource-path resource-root relative-player-path))
 
-(defn- load-player [casting-director player-name]
-  (if-let [player (@(.cast casting-director) player-name)]
-    player
-    (let [relative-player-path (str "players/" (limelight.util.StringUtil/underscore player-name) ".clj")]
-      (if-let [player (load-player-from casting-director (player-path (.scene casting-director) relative-player-path) player-name)]
-        player
-        (load-player-from casting-director (player-path (production (.scene casting-director)) relative-player-path) player-name)))))
-
 (defn- cast-player [player-ns prop]
   (let [event-actions @(ns-resolve player-ns '*event-actions*)
         event-handler (.getEventHandler @(.peer prop))]
@@ -43,9 +35,14 @@
 
 (deftype CastingDirector [scene cast]
   limelight.model.api.CastingDirector
-  (castPlayer [this prop player-name]
-    (if-let [player (load-player this player-name)]
-      (cast-player player prop))))
+  (hasPlayer [this player-name players-path]
+    false)
+  (castPlayer [this prop player-name players-path]
+    (let [player-path (str players-path "/" (limelight.util.StringUtil/underscore player-name) ".clj")]
+      (if-let [player (@(.cast this) player-name)]
+       player
+       (if-let [player (load-player-from this player-path player-name)]
+          (cast-player player prop))))))
 
 (defn new-casting-director [scene]
   (CastingDirector. scene (atom {})))
