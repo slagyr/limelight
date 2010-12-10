@@ -46,25 +46,25 @@ public class CreateCommandTest
 
   private void setupSceneTemplates()
   {
-    fs.createTextFile("home/lib/limelight/templates/sources/scene/props.rb.template", "props content !-SCENE_TITLE-!");
-    fs.createTextFile("home/lib/limelight/templates/sources/scene/styles.rb.template", "styles content !-SCENE_NAME-!");
-    fs.createTextFile("home/lib/limelight/templates/sources/scene_spec/scene_spec.rb.template", "scene_spec content");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/scene/props.rb.template", "props content !-SCENE_TITLE-!");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/scene/styles.rb.template", "styles content !-SCENE_NAME-!");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/scene_spec/scene_spec.rb.template", "scene_spec content");
   }
 
   private void setupProductionTemplates()
   {
-    fs.createTextFile("home/lib/limelight/templates/sources/production/production.rb.template", "production content !-PRODUCTION_NAME-! !-CURRENT_VERSION-!");
-    fs.createTextFile("home/lib/limelight/templates/sources/production/stages.rb.template", "stages content !-DEFAULT_SCENE_NAME-!");
-    fs.createTextFile("home/lib/limelight/templates/sources/production/styles.rb.template", "styles content");
-    fs.createTextFile("home/lib/limelight/templates/sources/production/spec/spec_helper.rb.template", "spec_helper content");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/production/production.rb.template", "production content !-PRODUCTION_NAME-! !-CURRENT_VERSION-!");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/production/stages.rb.template", "stages content !-DEFAULT_SCENE_NAME-!");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/production/styles.rb.template", "styles content");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/production/spec/spec_helper.rb.template", "spec_helper content");
   }
 
   private void setupProjectTemplates()
   {
-    fs.createTextFile("home/lib/limelight/templates/sources/features/step_definitions/limelight_steps.rb.template", "limelight_steps content");
-    fs.createTextFile("home/lib/limelight/templates/sources/features/support/env.rb.template", "env content");
-    fs.createTextFile("home/lib/limelight/templates/sources/project/Rakefile.template", "Rakefile content !-LLP_NAME-!");
-    fs.createTextFile("home/lib/limelight/templates/sources/project/spec_helper.template", "project spec_helper content");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/features/step_definitions/limelight_steps.rb.template", "limelight_steps content");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/features/support/env.rb.template", "env content");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/project/Rakefile.template", "Rakefile content !-LLP_NAME-!");
+    fs.createTextFile("home/ruby/lib/limelight/templates/sources/project/spec_helper.template", "project spec_helper content");
   }
 
   @Test

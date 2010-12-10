@@ -49,7 +49,7 @@ public class TempDirectory
 
   public void cleanup()
   {
-    fs().deleteDirectory(root);
+    fs().delete(root);
   }
 
   public String getDownloadsDirectory()

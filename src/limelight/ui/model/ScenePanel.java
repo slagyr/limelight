@@ -7,6 +7,7 @@ import limelight.*;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.model.api.CastingDirector;
+import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
@@ -37,6 +38,12 @@ public class ScenePanel extends PropPanel implements Scene
     styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
     getStyle().setDefault(Style.WIDTH, "100%");
     getStyle().setDefault(Style.HEIGHT, "100%");
+  }
+
+  public ScenePanel(PropProxy propProxy, Map<String, Object> options)
+  {
+    this(propProxy);
+    addOptions(options);
   }
 
   @Override

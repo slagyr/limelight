@@ -7,7 +7,7 @@ import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.events.panel.MouseDraggedEvent;
 import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
-import limelight.ui.model.MockScene;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.text.TextLocation;
 import org.junit.Before;
@@ -21,7 +21,7 @@ public class TextPanelMouseProcessorTest
 {
   private TextModel model;
   private TextInputPanel panel;
-  private MockScene root;
+  private FakeScene root;
   private MockStage stage;
 
   @Before
@@ -43,7 +43,7 @@ public class TextPanelMouseProcessorTest
       panel = new TextBoxPanel();
 
     panel.setSize(150, 75);
-    root = new MockScene();
+    root = new FakeScene();
     root.add(panel);
     stage = new MockStage();
     root.setStage(stage);

@@ -6,17 +6,18 @@ import limelight.events.EventHandler;
 import limelight.util.StringUtil;
 import org.w3c.dom.Element;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 public class JavaPlayers
 {
-  public static Object toPlayer(Element element, PlayerLoader playerLoader, String eventsPrefix, EventHandler eventHandler)
+  public static Object toPlayer(Element element, ClassLoader classLoader, String eventsPrefix, EventHandler eventHandler)
   {
     String className = element.getAttribute("class");
     Object player = null;
     if(className != null && className.length() > 0)
     {
-      player = playerLoader.loadPlayer(className);
+      player = loadPlayer(classLoader, className);    
       for(Element eventElement : Xml.loadChildElements(element))
       {
         String name = eventElement.getNodeName();
@@ -66,5 +67,19 @@ public class JavaPlayers
     if(eventMethod == null)
       throw new NoSuchMethodError(methodName + " for " + player.getClass());
     return eventMethod;
+  }
+
+  public static Object loadPlayer(ClassLoader loader, String name)
+  {
+    try
+    {
+      Class playerClass = loader.loadClass(name);
+      final Constructor constructor = playerClass.getConstructor();
+      return constructor.newInstance();
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException(e);
+    }
   }
 }

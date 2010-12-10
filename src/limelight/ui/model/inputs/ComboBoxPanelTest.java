@@ -8,7 +8,7 @@ import limelight.builtin.BuiltInStyles;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
-import limelight.ui.model.MockScene;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
 import org.junit.Before;
@@ -21,7 +21,7 @@ public class ComboBoxPanelTest
 {
   private ComboBoxPanel panel;
   private PropPanel parent;
-  private MockScene root;
+  private FakeScene root;
 
   @Before
   public void setUp() throws Exception
@@ -30,7 +30,7 @@ public class ComboBoxPanelTest
     parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
 
-    root = new MockScene();
+    root = new FakeScene();
     root.add(parent);
     root.styleStore = BuiltInStyles.all();
 

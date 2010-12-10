@@ -81,8 +81,6 @@ public class Win32OS extends OS
 
             shouldEatKeys = (alt && tab) || (alt && esc) || (alt && space) || (ctrl && esc) || windowsKey || (ctrl && alt && del);
 
-//System.err.println("alt:" + alt + " ctrl:" + ctrl + " space:" + space + " tab:" + tab + " del:" + del + " windowsKey:" + windowsKey);
-
             break;
         }
       }

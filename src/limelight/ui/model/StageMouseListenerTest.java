@@ -32,7 +32,7 @@ public class StageMouseListenerTest
   {
     component = new java.awt.Panel();
 
-    MockScene root = new MockScene();
+    FakeScene root = new FakeScene();
     listener = new StageMouseListener(root);
 
     parent = new MockParentPanel();

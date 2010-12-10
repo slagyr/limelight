@@ -11,11 +11,12 @@ public class JavaScene extends JavaProp implements SceneProxy
 {
   private JavaCastingDirector castingDirector;
 
-  public JavaScene(Map<String, Object> options)
+  public JavaScene(JavaProduction production, Map<String, Object> options)
   {
     super(options);
-    castingDirector = new JavaCastingDirector(this);
+    castingDirector = new JavaCastingDirector(production.getPlayerLoader());
     getPeer().setCastingDirector(castingDirector);
+    getPeer().setProduction(production);
   }
 
   @Override

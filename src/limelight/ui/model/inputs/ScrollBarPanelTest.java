@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.model.api.FakePropProxy;
-import limelight.ui.model.MockScene;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.ui.model.MockStage;
@@ -195,7 +195,7 @@ public class ScrollBarPanelTest
   @Test
   public void isDirtyAfterSettingValue() throws Exception
   {
-    MockScene root = new MockScene();
+    FakeScene root = new FakeScene();
     root.add(verticalScrollBar);
     verticalScrollBar.configure(10, 100);
 
@@ -207,7 +207,7 @@ public class ScrollBarPanelTest
   @Test
   public void pressingButtonsWillMakeDirty() throws Exception
   {
-    MockScene root = new MockScene();
+    FakeScene root = new FakeScene();
     root.add(verticalScrollBar);
 
     verticalScrollBar.setIncreasingButtonActive(true);

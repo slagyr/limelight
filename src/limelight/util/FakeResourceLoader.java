@@ -3,7 +3,7 @@
 
 package limelight.util;
 
-public class MockResourceLoader extends ResourceLoader
+public class FakeResourceLoader extends ResourceLoader
 {
   public String readTextResult;
   public String pathToReadText;

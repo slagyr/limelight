@@ -10,13 +10,13 @@ import java.util.Map;
 
 public class JavaProduction extends Production
 {
-  private PlayerLoader playerLoader;
+  private PlayerClassLoader playerLoader;
   private Object player;
 
   public JavaProduction(String path)
   {
     super(path);
-    playerLoader = new PlayerLoader();
+    playerLoader = new PlayerClassLoader(getResourceLoader().pathTo("classes"));
   }
 
   public Object getPlayer()
@@ -32,9 +32,8 @@ public class JavaProduction extends Production
     Element productionElement = document.getDocumentElement();
 
     String classpath = productionElement.getAttribute("classpath");
-    if(classpath == null || classpath.length() == 0)
-      classpath = "classes";
-    playerLoader.setClasspath(getResourceLoader().pathTo(classpath));
+    if(classpath != null && classpath.length() > 0)
+      playerLoader.setClasspath(getResourceLoader().pathTo(classpath));
 
     player = JavaPlayers.toPlayer(productionElement, this.playerLoader, "limelight.model.events.", getEventHandler());
   }
@@ -58,8 +57,7 @@ public class JavaProduction extends Production
   {
     options.put("path", getResourceLoader().pathTo(scenePath));
     options.put("name", FileUtil.filename(scenePath));
-    JavaScene scene = new JavaScene(options);
-    scene.getPeer().setProduction(this);
+    JavaScene scene = new JavaScene(this, options);
 
     final String propsPath = scene.getPeer().getResourceLoader().pathTo("props.xml");
     for(Element propElement : Xml.loadRootElements(propsPath))
@@ -87,7 +85,7 @@ public class JavaProduction extends Production
   {
   }
 
-  public PlayerLoader getPlayerLoader()
+  public PlayerClassLoader getPlayerLoader()
   {
     return playerLoader;
   }

@@ -4,7 +4,6 @@ import limelight.Context;
 import limelight.model.api.CastingDirector;
 import limelight.model.api.PropProxy;
 import limelight.ui.events.panel.CastEvent;
-import limelight.util.ResourceLoader;
 import limelight.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,27 +12,33 @@ import java.lang.reflect.Method;
 
 public class JavaCastingDirector implements CastingDirector
 {
-  private JavaScene scene;
-  private ResourceLoader resourceLoader;
+  private ClassLoader classLoader;
 
-  public JavaCastingDirector(JavaScene scene)
+  public JavaCastingDirector(ClassLoader classLoader)
   {
-    this.scene = scene;
-    resourceLoader = scene.getPeer().getResourceLoader();
+    this.classLoader = classLoader;
   }
 
-  public void castPlayer(PropProxy propProxy, String playerName)
+  public boolean hasPlayer(String playerName, String playersPath)
   {
-    String playerPath = resourceLoader.pathTo("players/" + StringUtil.camalize(playerName) + ".xml");
-    if(Context.fs().exists(playerPath))
-    {
-      JavaProp prop = (JavaProp)propProxy;
-      final Document document = Xml.loadDocumentFrom(playerPath);
-      final Element playerElement = document.getDocumentElement();
-      final Object player = JavaPlayers.toPlayer(playerElement, scene.getProduction().getPlayerLoader(), "limelight.ui.events.panel.", prop.getPeer().getEventHandler());
-      prop.addPlayer(player);
-      invokeCastEvents(prop, playerElement, player);
-    }
+    return Context.fs().exists(playerFilePath(playerName, playersPath));
+  }
+
+  private String playerFilePath(String playerName, String playersPath)
+  {
+    final String path = playersPath + "/" + StringUtil.camalize(playerName) + ".xml";
+    return path;
+  }
+
+  public void castPlayer(PropProxy propProxy, String playerName, String playersPath)
+  {
+    String playerPath = playerFilePath(playerName, playersPath);
+    JavaProp prop = (JavaProp) propProxy;
+    final Document document = Xml.loadDocumentFrom(playerPath);
+    final Element playerElement = document.getDocumentElement();
+    final Object player = JavaPlayers.toPlayer(playerElement, classLoader, "limelight.ui.events.panel.", prop.getPeer().getEventHandler());
+    prop.addPlayer(player);
+    invokeCastEvents(prop, playerElement, player);
   }
 
   private void invokeCastEvents(JavaProp prop, Element playerElement, Object player)
@@ -48,5 +53,10 @@ public class JavaCastingDirector implements CastingDirector
         new JavaEventAction(player, method).invoke(castEvent);
       }
     }
+  }
+
+  public ClassLoader getClassLoader()
+  {
+    return classLoader;
   }
 }

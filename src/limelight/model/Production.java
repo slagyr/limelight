@@ -7,7 +7,6 @@ import limelight.About;
 import limelight.Context;
 import limelight.events.EventHandler;
 import limelight.io.FileUtil;
-import limelight.model.api.CastingDirector;
 import limelight.model.api.ProductionProxy;
 import limelight.model.events.*;
 import limelight.ui.model.Scene;
@@ -36,6 +35,7 @@ public abstract class Production
     }
     catch(Exception e)
     {
+      // Is this really needed?
     }
     resourceLoader = ResourceLoader.forRoot(path);
     theater = new Theater(this);

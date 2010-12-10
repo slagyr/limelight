@@ -1,22 +1,15 @@
 package limelight.java;
 
 import limelight.Context;
-import limelight.LimelightException;
 import limelight.io.StreamReader;
 
-import java.lang.reflect.Constructor;
-
-public class PlayerLoader extends ClassLoader
+public class PlayerClassLoader extends ClassLoader
 {
   private String classpath;
 
-  public PlayerLoader()
+  public PlayerClassLoader(String classpath)
   {
     super();
-  }
-
-  public void setClasspath(String classpath)
-  {
     this.classpath = classpath;
   }
 
@@ -40,17 +33,8 @@ public class PlayerLoader extends ClassLoader
     return classpath;
   }
 
-  public Object loadPlayer(String name)
+  public void setClasspath(String classpath)
   {
-    try
-    {
-      Class playerClass = loadClass(name);
-      final Constructor constructor = playerClass.getConstructor();
-      return constructor.newInstance();
-    }
-    catch(Exception e)
-    {
-      throw new LimelightException(e);
-    }
+    this.classpath = classpath;
   }
 }
