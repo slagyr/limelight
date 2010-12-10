@@ -29,7 +29,7 @@ public class PlayerRecruiter
       }
     }
   }
-
+      
   private boolean recruitFrom(PropPanel panel, String playerName, CastingDirector castingDirector, String playersPath)
   {
     if(castingDirector.hasPlayer(playerName, playersPath))

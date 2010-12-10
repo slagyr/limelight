@@ -3,11 +3,8 @@
 
 package limelight.model.api;
 
-import limelight.ui.model.Scene;
-
 public interface SceneProxy extends PropProxy
 {
-  Scene getPeer();
 }
 
 

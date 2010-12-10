@@ -70,7 +70,7 @@ public class RubyProduction extends Production
   public Scene loadScene(String scenePath, Map<String, Object> options)
   {
     final SceneProxy proxy = rubyProxy.loadScene(scenePath, options);
-    return proxy.getPeer();
+    return (Scene)proxy.getPeer();
   }
 
   @Override

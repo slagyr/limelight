@@ -3,12 +3,6 @@
 
 package limelight.model.api;
 
-import limelight.ui.model.Scene;
-
 public class FakeSceneProxy extends FakePropProxy implements SceneProxy
 {
-  public Scene getPeer()
-  {
-    return null;
-  }
 }

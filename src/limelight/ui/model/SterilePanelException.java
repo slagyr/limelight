@@ -7,6 +7,6 @@ public class SterilePanelException extends Error
 {
   SterilePanelException(String name)
   {
-    super("The panel for prop named '" + name + "' has been sterilized. Child components may not be added.");
+    super("The panel for prop '" + name + "' has been sterilized. Child components may not be added.");
   }
 }

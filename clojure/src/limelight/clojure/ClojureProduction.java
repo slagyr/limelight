@@ -46,7 +46,7 @@ public class ClojureProduction extends Production
   @Override
   protected Scene loadScene(String scenePath, Map<String, Object> options)
   {
-    return proxy.loadScene(scenePath, options).getPeer();
+    return (Scene)proxy.loadScene(scenePath, options).getPeer();
   }
 
   @Override
