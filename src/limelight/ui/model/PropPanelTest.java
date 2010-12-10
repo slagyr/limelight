@@ -599,6 +599,19 @@ public class PropPanelTest extends Assert
   }
 
   @Test
+  public void duplicatePlayersAreIgnores() throws Exception
+  {
+    root.delluminate();
+    panel.addOptions(Util.toMap("name", "jumpy", "players", "jumpy"));
+
+    panel.illuminate();
+
+    List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
+    assertEquals(1, panelCastings.size());
+    assertEquals("/players/jumpy", panelCastings.get(0));
+  }
+
+  @Test
   public void stylesAreConfiguredViaOptions() throws Exception
   {
     root.delluminate();
@@ -618,7 +631,7 @@ public class PropPanelTest extends Assert
     panel.addOptions(Util.toMap("text", "Hello there"));
 
     panel.illuminate();
-    
+
     assertEquals("Hello there", panel.getText());
   }
 

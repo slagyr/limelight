@@ -510,11 +510,17 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
   private void illuminatePlayers(Object playersObject)
   {
+    ArrayList<String> playerNames = new ArrayList<String>();
     String allPlayers = playersObject == null ? "" : playersObject.toString();
     if(name != null)
-      allPlayers = name + "," + allPlayers;
+      playerNames.add(name);
 
-    String[] playerNames = allPlayers.split("[ ,]+");
+    for(String playerName : allPlayers.split("[ ,]+"))
+    {
+      if(!playerNames.contains(playerName))
+        playerNames.add(playerName);
+    }
+
     for(String playerName : playerNames)
     {
       if(!playerName.isEmpty())
