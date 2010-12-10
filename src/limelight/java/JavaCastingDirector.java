@@ -3,7 +3,10 @@ package limelight.java;
 import limelight.Context;
 import limelight.model.api.CastingDirector;
 import limelight.model.api.PropProxy;
+import limelight.ui.Panel;
 import limelight.ui.events.panel.CastEvent;
+import limelight.ui.model.Prop;
+import limelight.ui.model.PropPanel;
 import limelight.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,17 +36,18 @@ public class JavaCastingDirector implements CastingDirector
   public void castPlayer(PropProxy propProxy, String playerName, String playersPath)
   {
     String playerPath = playerFilePath(playerName, playersPath);
-    JavaProp prop = (JavaProp) propProxy;
     final Document document = Xml.loadDocumentFrom(playerPath);
     final Element playerElement = document.getDocumentElement();
-    final Object player = JavaPlayers.toPlayer(playerElement, classLoader, "limelight.ui.events.panel.", prop.getPeer().getEventHandler());
-    prop.addPlayer(player);
+    final PropPanel prop = (PropPanel)propProxy.getPeer();
+    final Object player = JavaPlayers.toPlayer(playerElement, classLoader, "limelight.ui.events.panel.", prop.getEventHandler());
+    if(propProxy instanceof JavaProp)
+      ((JavaProp)propProxy).addPlayer(player);
     invokeCastEvents(prop, playerElement, player);
   }
 
-  private void invokeCastEvents(JavaProp prop, Element playerElement, Object player)
+  private void invokeCastEvents(PropPanel prop, Element playerElement, Object player)
   {
-    final CastEvent castEvent = new CastEvent(prop.getPeer());
+    final CastEvent castEvent = new CastEvent(prop);
     for(Element child : Xml.loadChildElements(playerElement))
     {
       if("onCast".equals(child.getNodeName()))

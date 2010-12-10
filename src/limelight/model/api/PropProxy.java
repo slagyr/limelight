@@ -3,9 +3,12 @@
 
 package limelight.model.api;
 
+import limelight.ui.model.Prop;
 import java.util.Map;
 
 public interface PropProxy
 {
   void applyOptions(Map<String, Object> options);
+
+  Prop getPeer();
 }

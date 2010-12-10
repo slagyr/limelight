@@ -6,6 +6,7 @@ package limelight.model.api;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
+import limelight.ui.model.Prop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +64,11 @@ public class FakePropProxy implements PropProxy
   {
     appliedOptions = new HashMap<String, Object>(options);
     options.clear();
+  }
+
+  public Prop getPeer()
+  {
+    return null;
   }
 
   public void setText(String value)

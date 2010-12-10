@@ -13,15 +13,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../clojure/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../clojure/spec" isTestSource="false" />
     </content>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../out/production/Limelight" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
@@ -60,6 +51,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="limelight" />
   </component>
 </module>
 

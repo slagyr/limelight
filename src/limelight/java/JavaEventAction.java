@@ -29,6 +29,7 @@ public class JavaEventAction implements EventAction
     }
     catch(Exception e)
     {
+e.printStackTrace();
       throw new LimelightException(e);
     }
   }

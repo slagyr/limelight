@@ -72,7 +72,7 @@ public abstract class ParentPanelBase extends PanelBase implements ParentPanel
   public void add(int index, limelight.ui.Panel child)
   {
     if(sterilized && !(child instanceof ScrollBarPanel))
-      throw new SterilePanelException("Unknown name");
+      throw new SterilePanelException(this.toString());
 
     synchronized(children)
     {

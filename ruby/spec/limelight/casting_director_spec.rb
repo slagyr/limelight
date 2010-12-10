@@ -29,93 +29,57 @@ describe Limelight::CastingDirector do
     @fs.create_text_file("#{location}/players/#{name}.rb", src)
   end
   
-  it "should include default players" do
+  it "includes one player" do
     prepare_player("scene_path", "root")
     make_root(:name => "root")
     
-    @casting_director.cast_player(@root, "root")
+    @casting_director.has_player("root", "scene_path/players").should == true
+    
+    @casting_director.cast_player(@root, "root", "scene_path/players")
 
     $casted_props.length.should == 1
     $casted_props[0].should == @root
     @root.is_a?(@casting_director.cast::Root).should == true
   end
 
-  it "should not create the player in the scene's cast and not currupt the global namespace" do
+  it "creates the player in the scene's cast and doesn't currupt the global namespace" do
     prepare_player("scene_path", "root")
     make_root(:name => "root")
 
-    @casting_director.cast_player(@root, "root")
+    @casting_director.cast_player(@root, "root", "scene_path/players")
 
     Object.const_defined?("Root").should == false
     @casting_director.cast.const_defined?("Root").should == true
   end
   
-  it "should not load any default players if they don't exist" do
+  it "doesn't load any players if they don't exist" do
     make_root(:name => "root")
-    @root.should_not_receive(:include_player)
     
-    @casting_director.cast_player(@root, "root")
-
-    $casted_props.length.should == 0
+    @casting_director.has_player("root", "scene_path/players").should == false
   end
-
-  it "should load builtin players" do
-    make_root(:name => "root", :players => "button")
-
-    @casting_director.cast_player(@root, "button")
-
-    @root.is_a?(Limelight::Builtin::Players::Button).should == true
-  end
-
-  it "should load custom players" do
-    prepare_player("scene_path", "custom_player")
-    make_root(:name => "root", :players => "custom_player")
-
-    @casting_director.cast_player(@root, "custom_player")
-
-    $casted_props[0].should == @root
-    @root.is_a?(@casting_director.cast::CustomPlayer).should == true
-  end       
 
   it "should handle multiple players" do
     prepare_player("scene_path", "root")
     prepare_player("scene_path", "custom_player")
 
-    make_root(:name => "root", :players => "custom_player button")
-
-    @casting_director.cast_player(@root, "root")
-    @casting_director.cast_player(@root, "custom_player")
-    @casting_director.cast_player(@root, "button")
+    @casting_director.cast_player(@root, "root", "scene_path/players")
+    @casting_director.cast_player(@root, "custom_player", "scene_path/players")
 
     $casted_props[0].should == @root
     @root.is_a?(@casting_director.cast::Root).should == true
-    @root.is_a?(Limelight::Builtin::Players::Button).should == true
     @root.is_a?(@casting_director.cast::CustomPlayer).should == true
-  end
-
-  it "should load shared custom players" do
-    prepare_player("scene_path", "root")
-    prepare_player("production_path", "shared_player")
-    make_root(:name => "root", :players => "shared_player")
-
-    @casting_director.cast_player(@root, "root")
-    @casting_director.cast_player(@root, "shared_player")
-
-    $casted_props[0].should == @root
-    @root.is_a?(@casting_director.cast::Root).should == true
-    @root.is_a?(@casting_director.cast::SharedPlayer).should == true
   end
 
   it "should not reload known players in a scene" do
     prepare_player("scene_path", "root")
 
     make_root(:name => "root")
-    @casting_director.cast_player(@root, "root")
+    @casting_director.cast_player(@root, "root", "scene_path/players")
     first_root_player = @casting_director.cast::Root
 
     prepare_player("scene_path", "root", "def foo; end;")
     make_root(:name => "root")
-    @casting_director.cast_player(@root, "root")
+    @casting_director.cast_player(@root, "root", "scene_path/players")
 
     @root.should_not respond_to(:foo)
     @root.is_a?(first_root_player).should == true
