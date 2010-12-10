@@ -44,12 +44,12 @@
 
   (it "includes one player from scene"
     (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
-    (.castPlayer @casting-director @prop "test-player")
+    (.castPlayer @casting-director @prop "test-player" "/root/players")
     (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent))))
 
   (it "includes one player from production"
     (setup-files @fs {"/MockProduction/players/test_player.clj" "(on-mouse-clicked [_])"})
-    (.castPlayer @casting-director @prop "test-player")
+    (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
     (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent))))
 
   (for [[event name] {(limelight.ui.events.panel.MouseClickedEvent. 0 nil 0) "mouse-clicked"
@@ -72,7 +72,7 @@
     (it (str "handles " name " events")
       (let [actions-before (actions-for @prop (class event))]
         (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-" name " (def *message* \"" name "\"))")})
-        (.castPlayer @casting-director @prop "test-player")
+        (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
         (let [actions-after (actions-for @prop (class event))]
           (should= 1 (- (count actions-after) (count actions-before)))
           (should-not-throw (.dispatch event @(.peer @prop)))
@@ -80,12 +80,12 @@
 
   (it "handles on-cast events"
     (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast [_] (def *message* \"casted\"))")})
-    (.castPlayer @casting-director @prop "test-player")
+    (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
     (should= "casted" @(ns-resolve (@(.cast @casting-director) "test-player") '*message*)))
 
   (it "the bindings are optional"
     (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))")})
-    (.castPlayer @casting-director @prop "test-player")
+    (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
     (should= "casted" @(ns-resolve (@(.cast @casting-director) "test-player") '*message*)))
 
 )
