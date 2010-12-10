@@ -217,7 +217,7 @@ public class FramedStageTest
   @Test
   public void shouldSizeChangesPropogateDown() throws Exception
   {
-    MockScene panel = new MockScene();
+    FakeScene panel = new FakeScene();
     stage.setScene(panel);
 
     frame.doLayout(); // Called when the stage is resized
@@ -233,7 +233,7 @@ public class FramedStageTest
   public void shouldShouldCollapseAutoDimensions() throws Exception
   {
     stage.setSizeStyles("auto", "auto");
-    MockScene child = new MockScene();
+    FakeScene child = new FakeScene();
     child.prepForSnap(300, 200);
     stage.setScene(child);
 

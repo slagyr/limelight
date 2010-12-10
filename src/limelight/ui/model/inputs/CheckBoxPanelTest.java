@@ -7,7 +7,7 @@ import limelight.model.api.FakePropProxy;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
-import limelight.ui.model.MockScene;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class CheckBoxPanelTest
 {
   private CheckBoxPanel panel;
   private PropPanel parent;
-  private MockScene root;
+  private FakeScene root;
 
   @Before
   public void setUp() throws Exception
@@ -26,7 +26,7 @@ public class CheckBoxPanelTest
     panel = new CheckBoxPanel();
     parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
-    root = new MockScene();
+    root = new FakeScene();
     root.add(parent);
   }
   

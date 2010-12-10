@@ -7,7 +7,6 @@ import limelight.Context;
 import limelight.LimelightException;
 import limelight.events.Event;
 import limelight.events.EventAction;
-import limelight.model.Production;
 import limelight.model.api.CastingDirector;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
@@ -32,6 +31,7 @@ import java.util.List;
 public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, ChangeablePanel, StyleObserver
 {
   private static final Map<String, Object> EMPTY_OPTIONS = new EmptyMap<String, Object>();
+  public static final PlayerRecruiter playerRecruiter = new PlayerRecruiter(); 
 
   private final PropProxy proxy;
   private String id;
@@ -519,9 +519,9 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     {
       if(!playerName.isEmpty())
       {
-        final Scene root = getRoot();
-        final CastingDirector director = root.getCastingDirector();
-        director.castPlayer(getProxy(), playerName);
+        final Scene scene = getRoot();
+        final CastingDirector director = scene.getCastingDirector();
+        playerRecruiter.recruit(this, playerName, director);
       }
     }
   }

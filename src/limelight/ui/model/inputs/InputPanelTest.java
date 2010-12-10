@@ -4,7 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.events.panel.*;
-import limelight.ui.model.MockScene;
+import limelight.ui.model.FakeScene;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,14 +12,14 @@ import static junit.framework.Assert.assertEquals;
 
 public class InputPanelTest
 {
-  private MockScene root;
+  private FakeScene root;
   private InputPanel panel;
 
   @Before
   public void setUp() throws Exception
   {
     panel = new TestableInputPanel();
-    root = new MockScene();
+    root = new FakeScene();
     root.add(panel);
   }
   

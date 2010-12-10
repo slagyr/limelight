@@ -1,29 +1,26 @@
 package calculator;
 
-import limelight.events.Event;
 import limelight.java.JavaProp;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.util.Util;
 
 public class Button
 {
-  public void press(Event e)
+  public void press(PanelEvent event)
   {
-    final PanelEvent event = (PanelEvent) e;
     JavaProp prop = (JavaProp)event.getProp();
     JavaProp screen = prop.getScene().findProp("lcd");
     String text = prop.getText();
     if("c".equals(text))
       screen.setText("");
     else if("=".equals(text))
-      screen.setText("Screw this! Java can't eval stuff!");
+      screen.setText("Screw this!");
     else
       screen.setText(screen.getText() + text);
   }
 
-  public void createButtons(Event e)
+  public void createButtons(PanelEvent event)
   {
-    final PanelEvent event = (PanelEvent) e;
     JavaProp buttons = (JavaProp)event.getProp();
 
     String labels = "1 2 3 + 4 5 6 - 7 8 9 * c 0 = /";

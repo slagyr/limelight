@@ -11,12 +11,18 @@ import java.util.Map;
 public class FakeCastingDirector implements CastingDirector
 {
   public Map<PropProxy, List<String>> castings = new HashMap<PropProxy, List<String>>();
+  public String recruitablePath;
 
-  public void castPlayer(PropProxy propProxy, String playerName)
+  public boolean hasPlayer(String playerName, String playersPath)
+  {
+    return recruitablePath == null || playersPath.equals(recruitablePath);
+  }
+
+  public void castPlayer(PropProxy propProxy, String playerName, String playersPath)
   {
     if(!castings.containsKey(propProxy))
       castings.put(propProxy, new LinkedList<String>());
     
-    castings.get(propProxy).add(playerName);
+    castings.get(propProxy).add(playersPath + "/" + playerName);
   }
 }

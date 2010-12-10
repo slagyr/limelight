@@ -5,5 +5,6 @@ package limelight.model.api;
 
 public interface CastingDirector
 {
-  void castPlayer(PropProxy propProxy, String playerName);
+  boolean hasPlayer(String playerName, String playersPath);
+  void castPlayer(PropProxy propProxy, String playerName, String playersPath);
 }

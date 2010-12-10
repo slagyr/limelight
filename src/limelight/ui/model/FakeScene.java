@@ -9,6 +9,7 @@ import limelight.model.api.CastingDirector;
 import limelight.model.api.FakeCastingDirector;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
+import limelight.util.FakeResourceLoader;
 import limelight.util.ResourceLoader;
 
 import java.awt.*;
@@ -16,7 +17,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class MockScene extends MockProp implements Scene
+public class FakeScene extends MockProp implements Scene
 {
   public LinkedList<Rectangle> dirtyRegions = new LinkedList<Rectangle>();
   public Map<String, RichStyle> styleStore;
@@ -25,6 +26,7 @@ public class MockScene extends MockProp implements Scene
   private Stage stage;
   public boolean visible;
   public CastingDirector castingDirector = new FakeCastingDirector();
+  public ResourceLoader resourceLoader = new FakeResourceLoader();
 
   @Override
   public Scene getRoot()
@@ -105,7 +107,7 @@ public class MockScene extends MockProp implements Scene
 
   public ResourceLoader getResourceLoader()
   {
-    throw new RuntimeException("MockScene.getResourceLoader()");
+    return resourceLoader;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

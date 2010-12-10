@@ -106,7 +106,7 @@ public class StageTest
   @Test
   public void scenesOnClosingStageGetStageSetToNull() throws Exception
   {
-    MockScene scene = new MockScene();
+    FakeScene scene = new FakeScene();
     stage.setScene(scene);
     stage.open();
 
@@ -119,7 +119,7 @@ public class StageTest
   @Test
   public void settingTheScene() throws Exception
   {
-    MockScene scene = new MockScene();
+    FakeScene scene = new FakeScene();
 
     stage.setScene(scene);
 
@@ -129,10 +129,10 @@ public class StageTest
   @Test
   public void whatHappensToPreviousSceneWhenSettingTheScene() throws Exception
   {
-    MockScene originalScene = new MockScene();
+    FakeScene originalScene = new FakeScene();
     stage.setScene(originalScene);
 
-    MockScene newScene = new MockScene();
+    FakeScene newScene = new FakeScene();
     stage.setScene(newScene);
 
     assertEquals(null, originalScene.getStage());
@@ -142,7 +142,7 @@ public class StageTest
   public void settingTheSceneOnAnOpenedStage() throws Exception
   {
     stage.open();
-    MockScene scene = new MockScene();
+    FakeScene scene = new FakeScene();
     MockEventAction action = new MockEventAction();
     scene.getEventHandler().add(SceneOpenedEvent.class, action);
 
@@ -155,7 +155,7 @@ public class StageTest
   @Test
   public void openingAStageWithAScene() throws Exception
   {
-    MockScene scene = new MockScene();
+    FakeScene scene = new FakeScene();
     MockEventAction action = new MockEventAction();
     scene.getEventHandler().add(SceneOpenedEvent.class, action);
 

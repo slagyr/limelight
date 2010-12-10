@@ -161,7 +161,6 @@ public class RubyProduction extends Production
       {
         List<String> loadPaths = new ArrayList<String>();
         final String rubyLibDir = new File(Context.instance().limelightHome + "/ruby/lib").getCanonicalPath();
-        System.err.println("rubyLibDir = " + rubyLibDir);
         loadPaths.add(rubyLibDir);
         RubyInstanceConfig config = new RubyInstanceConfig();
         config.setObjectSpaceEnabled(true);

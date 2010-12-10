@@ -7,7 +7,7 @@ import limelight.About;
 import limelight.Context;
 import limelight.model.api.*;
 import limelight.model.events.*;
-import limelight.ui.model.MockScene;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.Scene;
 import limelight.ui.model.inputs.MockEventAction;
@@ -171,7 +171,7 @@ public class ProductionTest
   public void openScene() throws Exception
   {
     MockStage stage = new MockStage();
-    Scene scene = new MockScene();
+    Scene scene = new FakeScene();
     production.stubbedScene = scene;
 
     production.openScene("scenePath", stage, Util.toMap());
@@ -206,7 +206,7 @@ public class ProductionTest
     MockStage stage = new MockStage();
     production.getTheater().add(stage);
     stage.setDefaultSceneName("defaultScene");
-    Scene scene = new MockScene();
+    Scene scene = new FakeScene();
     production.stubbedScene = scene;
 
     production.openDefaultScenes(Util.toMap());

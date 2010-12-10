@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertSame;
 public class StageKeyListenerTest
 {
   private StageKeyListener listener;
-  private MockScene root;
+  private FakeScene root;
   private MockParentPanel panel;
   private Component component;
   private TestableInputPanel input;
@@ -35,7 +35,7 @@ public class StageKeyListenerTest
   @Before
   public void setUp() throws Exception
   {
-    root = new MockScene();
+    root = new FakeScene();
     listener = new StageKeyListener(root);
     panel = new MockParentPanel();
     root.add(panel);

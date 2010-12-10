@@ -12,7 +12,6 @@ import java.util.*;
 
 public class FakeFileSystem extends FileSystem
 {
-  private static String separator = System.getProperty("file.separator");
   private FakeFile root;
   private FakeFile workingDirectory;
 
@@ -30,94 +29,6 @@ public class FakeFileSystem extends FileSystem
   }
 
   @Override
-  public void createDirectory(String path)
-  {
-    establishDirectory(path);
-  }
-
-  @Override
-  public boolean exists(String path)
-  {
-    return resolve(path) != null;
-  }
-
-  @Override
-  public boolean isDirectory(String path)
-  {
-    final FakeFile file = resolve(path);
-    return file != null && file.isDirectory;
-  }
-
-  @Override
-  public void createTextFile(String path, String content)
-  {
-    FakeFile file = establishFile(path);
-    file.content = content.getBytes();
-  }
-
-  @Override
-  public String readTextFile(String path)
-  {
-    FakeFile file = checkedResolve(path);
-    return new String(file.content);
-  }
-
-  @Override
-  public String absolutePath(String path)
-  {
-    if(path.startsWith(separator))
-      return path;
-    return pathOf(workingDirectory) + "/" + path;
-  }
-
-  @Override
-  public OutputStream outputStream(String path)
-  {
-    FakeFile file = establishFile(path);
-    return new FakeFileOutputSteam(file);
-  }
-
-  @Override
-  public InputStream inputStream(String path)
-  {
-    FakeFile file = checkedResolve(path);
-    return new ByteArrayInputStream(file.content);
-  }
-
-  @Override
-  public String[] fileListing(String path)
-  {
-    FakeFile dir = checkedResolve(path);
-    if(!dir.isDirectory)
-      throw new LimelightException("Not a directory: " + path);
-    final Set<String> childNames = dir.children.keySet();
-    String[] files = new String[childNames.size()];
-    int i = 0;
-    for(String childName : childNames)
-      files[i++] = childName;  
-    return files;
-  }
-
-  @Override
-  public long modificationTime(String path)
-  {
-    return checkedResolve(path).modificationTime;
-  }
-
-  @Override
-  public void deleteDirectory(String dirPath)
-  {
-    deleteFile(dirPath);      
-  }
-
-  @Override
-  public void deleteFile(String path)
-  {
-    FakeFile parent = checkedResolve(parentPath(path));
-    parent.children.remove(FileUtil.filename(path));
-  }
-
-  @Override
   public String workingDir()
   {
     return pathOf(workingDirectory);
@@ -125,7 +36,9 @@ public class FakeFileSystem extends FileSystem
 
   public void setWorkingDirectory(String path)
   {
-    workingDirectory = resolve(path);
+    final FakeFilePath filePath = (FakeFilePath) resolve(path);
+    filePath.mkdirs();
+    workingDirectory = filePath.file();
   }
 
   public String inspect()
@@ -161,86 +74,18 @@ public class FakeFileSystem extends FileSystem
     }
   }
 
-  private FakeFile checkedResolve(String path)
-  {
-    FakeFile file = resolve(path);
-    if(file == null)
-      throw fileNotFound(path);
-    return file;
-  }
-
-  private LimelightException fileNotFound(String path)
-  {
-    return new LimelightException("[FakeFileSystem] File not found: " + path);
-  }
-
-  private FakeFile establishFile(String path)
-  {
-    FakeFile parent = establishDirectory(parentPath(path));
-    FakeFile file = FakeFile.file(filenameOf(path));
-    parent.add(file);
-    return file;
-  }
-
-  private FakeFile establishDirectory(String path)
-  {
-    if(exists(path))
-      return resolve(path);
-
-    String parentPath = parentPath(path);
-    FakeFile parent = resolveParent(parentPath);
-    if(parent == null)
-      parent = establishDirectory(parentPath);
-
-    final FakeFile newDir = FakeFile.directory(filenameOf(path));
-    parent.add(newDir);
-    return newDir;
-  }
-
-  private FakeFile resolve(String path)
-  {
-    if(isRoot(path))
-      return root;
-
-    String parentPath = parentPath(path);
-    FakeFile parent = resolveParent(parentPath);
-    if(parent != null)
-      return parent.get(filenameOf(path));
-    return null;
-  }
-
-  private FakeFile resolveParent(String parentPath)
-  {
-    return parentPath == null ? workingDirectory : resolve(parentPath);
-  }
-
-  private boolean isRoot(String path)
-  {
-    return "".equals(path) || "/".equals(path);
-  }
-
-  private String filenameOf(String path)
-  {
-    final int lastSeparator = path.lastIndexOf(separator);
-    if(lastSeparator == -1)
-      return path;
-    return path.substring(lastSeparator + 1);
-  }
-
-  private String parentPath(String path)
-  {
-    final int lastSeparator = path.lastIndexOf(separator);
-    if(lastSeparator == -1)
-      return null;
-    return path.substring(0, lastSeparator);
-  }
-
   private String pathOf(FakeFile file)
   {
     String path = "";
     for(FakeFile f = file; f != null; f = f.parent)
       path = f.name + (path.isEmpty() ? "" : separator + path);
     return path;
+  }
+
+  @Override
+  protected Path resolve(String path)
+  {
+    return new FakeFilePath(this, path);
   }
 
   private static class FakeFile
@@ -283,11 +128,10 @@ public class FakeFileSystem extends FileSystem
     {
       if(".".equals(name))
         return this;
+      else if("..".equals(name))
+        return parent == null ? this : parent;
       else
-        if("..".equals(name))
-          return parent == null ? this : parent;
-        else
-          return children.get(name);
+        return children.get(name);
     }
 
     public int depth()
@@ -301,11 +145,11 @@ public class FakeFileSystem extends FileSystem
     }
   }
 
-  private class FakeFileOutputSteam extends ByteArrayOutputStream
+  private static class FakeFileOutputStream extends ByteArrayOutputStream
   {
     private FakeFile file;
 
-    public FakeFileOutputSteam(FakeFile file)
+    public FakeFileOutputStream(FakeFile file)
     {
       super();
       this.file = file;
@@ -317,6 +161,130 @@ public class FakeFileSystem extends FileSystem
       super.close();
       file.content = this.toByteArray();
       file.modified();
+    }
+  }
+
+  private static class FakeFilePath implements Path
+  {
+    private FakeFileSystem fs;
+    private String path;
+    private FakeFile file;
+
+    public FakeFilePath(FakeFileSystem fs, String path)
+    {
+      this.fs = fs;
+      this.path = path;
+    }
+
+    private FakeFile resolvePath(String path)
+    {
+      if(".".equals(path))
+        return fs.workingDirectory;
+      else if(isRoot(path))
+        return fs.root;
+
+      String parentPath = fs.parentPath(path);
+      FakeFile parent = resolveParent(parentPath);
+      if(parent != null)
+        return parent.get(fs.filename(path));
+      return null;
+    }
+
+    private boolean isRoot(String path)
+    {
+      return "".equals(path) || "/".equals(path);
+    }
+
+    private FakeFile resolveParent(String parentPath)
+    {
+      return parentPath == null ? fs.workingDirectory : resolvePath(parentPath);
+    }
+
+    private FakeFile file()
+    {
+      if(file == null)
+        file = resolvePath(path);
+      return file;
+    }
+
+    private void ensureExistence()
+    {
+      if(!exists())
+        throw new LimelightException("[FakeFileSystem] File not found: " + path);
+    }
+
+    public boolean exists()
+    {
+      return file() != null;
+    }
+
+    public void mkdirs()
+    {
+      if(exists())
+        return;
+
+      final FakeFilePath parentPath = new FakeFilePath(fs, fs.parentPath(path));
+      parentPath.mkdirs();
+
+      final FakeFile newDir = FakeFile.directory(fs.filename(path));
+      parentPath.file().add(newDir);
+    }
+
+    public boolean isDirectory()
+    {
+      if(!exists())
+        return false;
+      return file().isDirectory;
+    }
+
+    public OutputStream outputStream()
+    {
+      final FakeFilePath parentPath = new FakeFilePath(fs, fs.parentPath(path));
+      parentPath.mkdirs();
+      final FakeFile file = FakeFile.file(fs.filename(path));
+      parentPath.file().add(file);
+
+      return new FakeFileOutputStream(file());
+    }
+
+    public InputStream inputStream()
+    {
+      ensureExistence();
+      return new ByteArrayInputStream(file().content);
+    }
+
+    public String getAbsolutePath()
+    {
+      if(path.startsWith(fs.separator))
+        return path;
+      return fs.pathOf(fs.workingDirectory) + "/" + path;
+    }
+
+    public void delete()
+    {
+      if(!exists())
+        return;
+      FakeFile parent = new FakeFilePath(fs, fs.parentPath(path)).file();
+      parent.children.remove(file().name);
+    }
+
+    public String[] listing()
+    {
+      ensureExistence();
+      if(!file().isDirectory)
+        throw new LimelightException("Not a directory: " + path);
+      final Set<String> childNames = file().children.keySet();
+      String[] files = new String[childNames.size()];
+      int i = 0;
+      for(String childName : childNames)
+        files[i++] = childName;
+      return files;
+    }
+
+    public long lastModified()
+    {
+      ensureExistence();
+      return file().modificationTime;
     }
   }
 }

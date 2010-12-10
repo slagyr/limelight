@@ -5,7 +5,7 @@ package limelight.ui.model.inputs;
 
 import limelight.model.api.FakePropProxy;
 import limelight.ui.events.panel.*;
-import limelight.ui.model.MockScene;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
@@ -20,7 +20,7 @@ import static junit.framework.Assert.assertSame;
 public class TextInputPanelTest
 {
   private TextInputPanel panel;
-  private MockScene root;
+  private FakeScene root;
   private PropPanel parent;
   private TextModel model;
   private MockStage stage;
@@ -28,7 +28,7 @@ public class TextInputPanelTest
   @Before
   public void setUp()
   {
-    root = new MockScene();
+    root = new FakeScene();
     panel = new MockTextInputPanel();
     parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
@@ -74,7 +74,7 @@ public class TextInputPanelTest
   @Test
   public void shouldRequireLayoutAfterConsumableSizeChanges() throws Exception
   {
-    MockScene root = new MockScene();
+    FakeScene root = new FakeScene();
     root.add(panel);
     panel.getRoot();
     panel.resetLayout();

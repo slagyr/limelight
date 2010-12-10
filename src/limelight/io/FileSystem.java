@@ -4,31 +4,67 @@
 package limelight.io;
 
 import limelight.LimelightException;
+import limelight.util.StringUtil;
 
 import java.io.*;
 
 public class FileSystem
 {
+  protected String separator;
+
+  public FileSystem()
+  {
+    separator = System.getProperty("file.separator");
+  }
+
   public void createDirectory(String path)
   {
-    File dir = new File(path);
-    if(!dir.exists() && !dir.mkdirs())
-      throw new LimelightException("Can't establish directory: " + path);
+    resolve(path).mkdirs();
   }
 
   public boolean exists(String path)
   {
-    return new File(path).exists();
+    return resolve(path).exists();
   }
 
   public boolean isDirectory(String path)
   {
-    return new File(path).isDirectory();
+    return resolve(path).isDirectory();
   }
 
+  public String absolutePath(String path)
+  {
+    return resolve(path).getAbsolutePath();
+  }
+
+  public OutputStream outputStream(String path)
+  {
+    return resolve(path).outputStream();
+  }
+
+  public InputStream inputStream(String path)
+  {
+    return resolve(path).inputStream();
+  }
+
+  public String[] fileListing(String path)
+  {
+    return resolve(path).listing();
+  }
+
+  public long modificationTime(String path)
+  {
+    return resolve(path).lastModified();
+  }
+
+  public void delete(String path)
+  {
+    resolve(path).delete();
+  }
+  
   public void createTextFile(String path, String content)
   {
-    createDirectory(FileUtil.parentPath(path));
+    createDirectory(parentPath(path));
     try
     {
       final OutputStream output = outputStream(path);
@@ -49,10 +85,7 @@ public class FileSystem
     return result;
   }
 
-  public String absolutePath(String path)
-  {
-    return new File(path).getAbsolutePath();
-  }
+  // UTILITY  METHODS --------------------------------------------------------------------------------------------------
 
   public String homeDir()
   {
@@ -64,49 +97,54 @@ public class FileSystem
     return System.getProperty("user.dir");
   }
 
-  public OutputStream outputStream(String path)
+  public String join(String... parts)
   {
-    try
-    {
-      return new FileOutputStream(path);
-    }
-    catch(FileNotFoundException e)
-    {
-      throw new LimelightException(e);
-    }
+    return removeDuplicateSeprators(StringUtil.join(separator, (String[]) parts));
   }
 
-  public InputStream inputStream(String path)
+  public String baseName(String path)
   {
-    try
-    {
-      return new FileInputStream(path);
-    }
-    catch(FileNotFoundException e)
-    {
-      throw new LimelightException(e);
-    }
+    final File file = new File(path);
+    String name = file.getName();
+    final int extensionIndex = name.lastIndexOf(".");
+    if(extensionIndex == -1)
+      return name;
+    else
+      return name.substring(0, extensionIndex);
   }
 
-  public String[] fileListing(String directory)
+  public String fileExtension(String path)
   {
-    return new File(directory).list();
+    final File file = new File(path);
+    String name = file.getName();
+    final int extensionIndex = name.lastIndexOf(".");
+    if(extensionIndex == -1)
+      return "";
+    else
+      return name.substring(extensionIndex);
   }
 
-  public long modificationTime(String path)
+  public String parentPath(String path)
   {
-    return new File(path).lastModified();
+    final int lastSeparator = path.lastIndexOf(separator);
+    if(lastSeparator == -1)
+      return ".";
+    return path.substring(0, lastSeparator);
   }
 
-  public void deleteDirectory(String dirPath)
+  public String filename(String path)
   {
-    deleteDirectory(new File(dirPath));
+    if("/".equals(path))
+      return path;
+    if(path.endsWith(separator))
+      path = path.substring(0, path.length() - separator.length());
+    final int lastSeparator = path.lastIndexOf(separator);
+    if(lastSeparator == -1)
+      return path;
+    return path.substring(lastSeparator + 1);
   }
 
-  public void deleteFile(String filename)
-  {
-    deleteFile(new File(filename));
-  }
+  // HELPER METHODS ----------------------------------------------------------------------------------------------------
 
   private static void deleteDirectory(File current)
   {
@@ -134,7 +172,7 @@ public class FileSystem
 
   private static void waitUntilFileIsDeleted(File file)
   {
-    int checks = 25;
+    int checks = 10;
     while(file.exists())
     {
       if(--checks <= 0)
@@ -144,12 +182,136 @@ public class FileSystem
       }
       try
       {
-        Thread.sleep(200);
+        Thread.sleep(100);
       }
       catch(InterruptedException e)
       {
         //okay
       }
+    }
+  }
+
+  private String removeDuplicateSeprators(String path)
+  {
+    return path.replace(separator + separator, separator);
+  }
+
+  // WHERE THE MAGIC HAPPENS -------------------------------------------------------------------------------------------
+
+  protected Path resolve(String path)
+  {
+    if(path.startsWith("file:"))
+      return new FilePath(path.substring(5));
+    else
+      return new FilePath(path);
+  }
+
+  protected static interface Path
+  {
+    boolean exists();
+
+    void mkdirs();
+
+    boolean isDirectory();
+
+    OutputStream outputStream();
+
+    InputStream inputStream();
+
+    String getAbsolutePath();
+
+    void delete();
+
+    String[] listing();
+
+    long lastModified();
+  }
+
+  private static class FilePath implements Path
+  {
+    private String path;
+    private File file;
+
+    public FilePath(String path)
+    {
+      this.path = path;
+    }
+
+    private File file()
+    {
+      if(file == null)
+        file = new File(path);
+      return file;
+    }
+
+    public boolean exists()
+    {
+      return file().exists();
+    }
+
+    public void mkdirs()
+    {
+      if(!file().exists() && !file().mkdirs())
+        throw new LimelightException("Can't establish directory: " + path);
+    }
+
+    public boolean isDirectory()
+    {
+      return file().isDirectory();
+    }
+
+    public OutputStream outputStream()
+    {
+      try
+      {
+        return new FileOutputStream(path);
+      }
+      catch(FileNotFoundException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
+
+    public InputStream inputStream()
+    {
+      try
+      {
+        return new FileInputStream(path);
+      }
+      catch(FileNotFoundException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
+
+    public String getAbsolutePath()
+    {
+      try
+      {
+        return file().getCanonicalPath();
+      }
+      catch(IOException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
+
+    public void delete()
+    {
+      if(file().isDirectory())
+        deleteDirectory(file());
+      else
+        deleteFile(file());
+    }
+
+    public String[] listing()
+    {
+      return file().list();
+    }
+
+    public long lastModified()
+    {
+      return file().lastModified();
     }
   }
 }

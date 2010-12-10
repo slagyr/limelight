@@ -4,7 +4,7 @@
 package limelight.ui.model;
 
 import junit.framework.TestCase;
-import limelight.util.MockResourceLoader;
+import limelight.util.FakeResourceLoader;
 import limelight.io.FileUtil;
 import limelight.util.TestUtil;
 
@@ -16,7 +16,7 @@ public class ImageCacheTest extends TestCase
 
   public void setUp() throws Exception
   {
-    cache = new ImageCache(new MockResourceLoader());
+    cache = new ImageCache(new FakeResourceLoader());
   }
 
   public void testLoadingAnImage() throws Exception
