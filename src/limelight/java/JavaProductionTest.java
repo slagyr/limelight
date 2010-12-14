@@ -19,6 +19,7 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,27 +106,27 @@ public class JavaProductionTest
   @Test
   public void loadEmptyStylesForScene() throws Exception
   {
-    final Scene scene = production.loadScene("aScene", new OptionsMap());
+    production.loadScene("aScene", new OptionsMap());
 
-    production.loadStyles(scene);
+    final Map<String, RichStyle> styles = production.loadStyles("testProduction/aScene", new HashMap<String, RichStyle>());
 
-    assertEquals(0, scene.getStylesStore().size());
+    assertEquals(0, styles.size());
   }
   
   @Test
   public void loadRealsStylesForScene() throws Exception
   {
     fs.createTextFile("/testProduction/aScene/styles.xml", "<styles><high x='0' y='99' float='on'/><far x='99' y='0' float='off'/></styles>");
-    final Scene scene = production.loadScene("aScene", new OptionsMap());
+    production.loadScene("aScene", new OptionsMap());
 
-    production.loadStyles(scene);
+    final Map<String, RichStyle> styles = production.loadStyles("/testProduction/aScene", new HashMap<String, RichStyle>());
 
-    assertEquals(2, scene.getStylesStore().size());
-    final RichStyle high = scene.getStylesStore().get("high");
+    assertEquals(2, styles.size());
+    final RichStyle high = styles.get("high");
     assertEquals("0", high.getX());
     assertEquals("99", high.getY());
     assertEquals("on", high.getFloat());
-    final RichStyle far = scene.getStylesStore().get("far");
+    final RichStyle far = styles.get("far");
     assertEquals("99", far.getX());
     assertEquals("0", far.getY());
     assertEquals("off", far.getFloat());

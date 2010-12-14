@@ -133,23 +133,6 @@ describe Limelight::DSL::StylesBuilder do
     one.x.should == "300"
   end
 
-  it "should be able to start with an existing styles hash" do
-    styles1 = Limelight.build_styles do
-      one { width 100 }
-    end
-    styles2 = Limelight.build_styles(:extendable_styles => styles1) do
-      one { height 200 }
-      two { width 123 }
-    end
-
-    styles2.size.should == 2
-    one = styles2["one"]
-    two = styles2["two"]
-    one.width.should == "100"
-    one.height.should == "200"
-    two.width.should == "123"
-  end
-
   it "should be able to modify style within same build" do
     styles = Limelight.build_styles do
       one { width 100 }
@@ -162,18 +145,18 @@ describe Limelight::DSL::StylesBuilder do
 
   it "should beable to extend existing styles but not modify them" do
     styles1 = Limelight.build_styles do
-      one { width 100; height 200 }
+      orig { width 100; height 200 }
     end
     styles2 = Limelight.build_styles(:extendable_styles => styles1) do
-      one { width 300 }
+      one { extends "orig"; width 300 }
     end
 
-    styles1["one"].width.should == "100"
-    styles1["one"].height.should == "200"
+    styles1["orig"].width.should == "100"
+    styles1["orig"].height.should == "200"
     styles2["one"].width.should == "300"
     styles2["one"].height.should == "200"
 
-    styles1["one"].height = "400"
+    styles1["orig"].height = "400"
     styles2["one"].height.should == "400"
   end
 

@@ -227,21 +227,21 @@ public class TextPanelTest
   private void createStyles()
   {
     RichStyle myStyle = new RichStyle();
-    root.getStylesStore().put("my_style", myStyle);
+    root.getStyles().put("my_style", myStyle);
     myStyle.setFontFace("Helvetica");
     myStyle.setFontStyle("bold");
     myStyle.setFontSize("20");
     myStyle.setTextColor("red");
 
     RichStyle myOtherStyle = new RichStyle();
-    root.getStylesStore().put("my_other_style", myOtherStyle);
+    root.getStyles().put("my_other_style", myOtherStyle);
     myOtherStyle.setFontFace("Cuneiform");
     myOtherStyle.setFontStyle("italic");
     myOtherStyle.setFontSize("19");
     myOtherStyle.setTextColor("blue");
 
     RichStyle sizeOnlyStyle = new RichStyle();
-    root.getStylesStore().put("size_only_style", sizeOnlyStyle);
+    root.getStyles().put("size_only_style", sizeOnlyStyle);
     sizeOnlyStyle.setFontSize("25");
   }
 

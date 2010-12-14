@@ -1,22 +1,28 @@
 package limelight.java;
 
+import limelight.Context;
+import limelight.LimelightException;
 import limelight.io.FileUtil;
 import limelight.model.Production;
-import limelight.model.Theater;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 import org.w3c.dom.*;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JavaProduction extends Production
 {
   private PlayerClassLoader playerLoader;
   private Object player;
+  private JavaTheater javaTheater;
 
   public JavaProduction(String path)
   {
     super(path);
     playerLoader = new PlayerClassLoader(getResourceLoader().pathTo("classes"));
+    javaTheater = new JavaTheater(getTheater());
   }
 
   public Object getPlayer()
@@ -47,9 +53,8 @@ public class JavaProduction extends Production
   protected void loadStages()
   {
     final String stagesPath = getResourceLoader().pathTo("stages.xml");
-    final Theater theater = getTheater();
     for(Element stageElement : Xml.loadRootElements(stagesPath))
-      Xml.toStage(theater, stageElement);
+      Xml.toStage(javaTheater, stageElement);
   }
 
   @Override
@@ -67,12 +72,13 @@ public class JavaProduction extends Production
   }
 
   @Override
-  protected void loadStyles(Scene scene)
+  protected Map<String, RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
   {
-    final String stylesPath = scene.getResourceLoader().pathTo("styles.xml");
-    final Map<String, RichStyle> map = scene.getStylesStore();
+    final String stylesPath = Context.fs().join(path, "styles.xml");
+    final Map<String, RichStyle> map = new HashMap<String, RichStyle>();
     for(Element styleElement : Xml.loadRootElements(stylesPath))
       Xml.toStyle(styleElement, map);
+    return map;
   }
 
   @Override
@@ -83,6 +89,25 @@ public class JavaProduction extends Production
   @Override
   protected void finalizeClose()
   {
+  }
+
+  @Override
+  public Object send(String name, Object... args)
+  {
+    try
+    {
+      for(Method method : player.getClass().getMethods())
+      {
+        if(method.getName().equals(name))
+          return method.invoke(player, args);
+      }
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+      throw new LimelightException("Failed to send call to Production player: " + name, e);
+    }
+    throw new LimelightException("No method found on Production player: " + name);
   }
 
   public PlayerClassLoader getPlayerLoader()

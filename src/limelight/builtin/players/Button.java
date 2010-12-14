@@ -8,7 +8,6 @@ public class Button
 {
   public void install(PanelEvent event)
   {
-System.err.println("BUTTON PLAYER YAHOO!!!");    
     ButtonPanel button = new ButtonPanel();
     final PropPanel panel = (PropPanel)event.getRecipient();
     panel.add(button);

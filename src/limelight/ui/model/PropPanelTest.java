@@ -422,11 +422,11 @@ public class PropPanelTest extends Assert
     style3 = new RichStyle();
     style4 = new RichStyle();
     style5 = new RichStyle();
-    root.getStylesStore().put("one", style1);
-    root.getStylesStore().put("two", style2);
-    root.getStylesStore().put("three", style3);
-    root.getStylesStore().put("one.hover", style4);
-    root.getStylesStore().put("two.hover", style5);
+    root.getStyles().put("one", style1);
+    root.getStyles().put("two", style2);
+    root.getStyles().put("three", style3);
+    root.getStyles().put("one.hover", style4);
+    root.getStyles().put("two.hover", style5);
   }
 
   @Test
@@ -524,9 +524,9 @@ public class PropPanelTest extends Assert
     final RichStyle billStyle = new RichStyle();
     final RichStyle oneStyle = new RichStyle();
     final RichStyle twoStyle = new RichStyle();
-    root.getStylesStore().put("bill", billStyle);
-    root.getStylesStore().put("one", oneStyle);
-    root.getStylesStore().put("two", twoStyle);
+    root.getStyles().put("bill", billStyle);
+    root.getStyles().put("one", oneStyle);
+    root.getStyles().put("two", twoStyle);
     panel.addOptions(Util.toMap("name", "bill", "styles", "one, two"));
 
     panel.illuminate();
@@ -543,7 +543,7 @@ public class PropPanelTest extends Assert
   {
     root.delluminate();
     final RichStyle billStyle = new RichStyle();
-    root.getStylesStore().put("bill", billStyle);
+    root.getStyles().put("bill", billStyle);
     panel.addOptions(Util.toMap("name", "bill"));
 
     panel.illuminate();

@@ -25,8 +25,8 @@ public abstract class Stage
   private Theater theater;
   private StageProxy proxy;
   private String defaultSceneName;
-  private boolean shouldRemainHidden;
   private boolean closing;
+  private boolean visible;
 
   protected Stage(String name)
   {
@@ -41,9 +41,7 @@ public abstract class Stage
 
   public abstract boolean isOpen();
 
-  protected abstract void setVisible(boolean value);
-
-  public abstract boolean isVisible();
+  protected abstract void doSetVisible(boolean value);
 
   public abstract int getWidth();
 
@@ -75,8 +73,7 @@ public abstract class Stage
     if(scene != null)
       new SceneOpenedEvent().dispatch(scene);
 
-    if(!shouldRemainHidden())
-      show();
+    show();
   }
 
   public void close()
@@ -177,24 +174,24 @@ public abstract class Stage
     this.defaultSceneName = defaultSceneName;
   }
 
-  public boolean shouldRemainHidden()
-  {
-    return shouldRemainHidden;
-  }
-
-  public void setShouldRemainHidden(boolean value)
-  {
-    shouldRemainHidden = value;
-  }
-
   public void show()
   {
-    if(!shouldRemainHidden())
-      setVisible(true);
+    setVisible(true);
   }
 
   public void hide()
   {
     setVisible(false);
+  }
+
+  public boolean isVisible()
+  {
+    return visible;
+  }
+
+  public void setVisible(boolean visible)
+  {
+    doSetVisible(visible);
+    this.visible = visible;
   }
 }

@@ -105,11 +105,10 @@ public class Xml
     map.put(name, style);
   }
 
-  public static void toStage(Theater theater, Element stageElement)
+  public static void toStage(JavaTheater theater, Element stageElement)
   {
     final String name = stageElement.getNodeName();
     OptionsMap options = loadOptions(stageElement);
-    final JavaStage stage = new JavaStage(name, options);
-    theater.add(stage.getPeer());
+    theater.add(theater.buildStage(name, options));
   }
 }

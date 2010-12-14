@@ -1,0 +1,3 @@
+<player class="utilities.Alert">
+    <onSceneOpened>checkMessageHeight</onSceneOpened>
+</player>

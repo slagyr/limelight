@@ -123,8 +123,13 @@ public class FakeScene extends MockProp implements Scene
     dirtyRegions.add(bounds);
   }
 
-  public Map<String, RichStyle> getStylesStore()
+  public Map<String, RichStyle> getStyles()
   {
     return styleStore;
+  }
+
+  public void setStyles(Map<String, RichStyle> styles)
+  {
+    styleStore = styles;
   }
 }

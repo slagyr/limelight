@@ -61,31 +61,6 @@ public class StageTest
 
     assertEquals("blah", stage.getDefaultSceneName());
   }
-
-  @Test
-  public void shouldRemainHidden() throws Exception
-  {
-    assertEquals(false, stage.shouldRemainHidden());
-    stage.setShouldRemainHidden(true);
-    assertEquals(true, stage.shouldRemainHidden());
-
-    stage.open();
-    assertEquals(false, stage.isVisible());
-
-    stage.hide();
-    stage.show();
-    assertEquals(false, stage.isVisible());
-  }
-  
-  @Test
-  public void shouldNotRemainHidden() throws Exception
-  {
-    stage.setShouldRemainHidden(false);
-
-    stage.open();
-
-    assertEquals(true, stage.isVisible());
-  }
   
   @Test
   public void closing() throws Exception

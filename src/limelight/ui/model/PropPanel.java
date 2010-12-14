@@ -482,7 +482,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     if(name != null)
       allStyles = name + "," + allStyles;
 
-    Map<String, RichStyle> store = getRoot().getStylesStore();
+    Map<String, RichStyle> store = getRoot().getStyles();
     String[] styleNames = allStyles.split("[ ,]+");
     for(String styleName : styleNames)
       addStyleNamed(styleName, store);

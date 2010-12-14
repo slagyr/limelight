@@ -5,14 +5,19 @@ package limelight.model;
 
 import limelight.About;
 import limelight.Context;
+import limelight.builtin.BuiltInStyles;
 import limelight.events.EventHandler;
 import limelight.io.FileUtil;
 import limelight.model.api.ProductionProxy;
 import limelight.model.events.*;
+import limelight.styles.RichStyle;
+import limelight.styles.Styles;
 import limelight.ui.model.Scene;
 import limelight.util.ResourceLoader;
 import limelight.util.Util;
 import limelight.util.Version;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Production
@@ -26,6 +31,7 @@ public abstract class Production
   private EventHandler eventHandler = new EventHandler();
   private boolean open;
   private Thread closingThread;
+  private HashMap<String,RichStyle> styles;
 
   public Production(String path)
   {
@@ -45,7 +51,7 @@ public abstract class Production
   protected abstract void loadLibraries();
   protected abstract void loadStages();
   protected abstract Scene loadScene(String scenePath, Map<String, Object> options);
-  protected abstract void loadStyles(Scene scene);
+  protected abstract Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles);
   protected abstract void prepareToOpen();
   protected abstract void finalizeClose();
 
@@ -189,14 +195,17 @@ public abstract class Production
   public void loadProduction()
   {
     loadLibraries();
-    loadStages();    
+    loadStages();
+    final Map<String, RichStyle> productionStyles = loadStyles(getResourceLoader().getRoot(), styles);
+    styles = Styles.merge(productionStyles, BuiltInStyles.all());
     new ProductionLoadedEvent().dispatch(this);
   }
 
   public void openScene(String scenePath, Stage stage, Map<String, Object> options)
   {
     Scene scene = loadScene(scenePath, options);
-    loadStyles(scene);
+    final Map<String, RichStyle> sceneStyles = loadStyles(scene.getResourceLoader().getRoot(), styles);
+    scene.setStyles(Styles.merge(sceneStyles, styles));
     stage.setScene(scene);
     stage.open();
   }
@@ -209,5 +218,12 @@ public abstract class Production
         openScene(stage.getDefaultSceneName(), stage, options);
     }
     new ProductionOpenedEvent().dispatch(this);
+  }
+
+  public abstract Object send(String name, Object... args);
+
+  public Map<String, RichStyle> getStyles()
+  {
+    return styles;
   }
 }

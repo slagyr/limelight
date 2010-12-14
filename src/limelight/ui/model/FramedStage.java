@@ -81,11 +81,6 @@ public class FramedStage extends Stage
     opened = false;
   }
 
-  public boolean isVisible()
-  {
-    return frame.isVisible();
-  }
-
   public boolean isClosed()
   {
     return !opened;
@@ -249,7 +244,7 @@ public class FramedStage extends Stage
     return frame.isAlwaysOnTop();
   }
 
-  protected void setVisible(boolean visible)
+  protected void doSetVisible(boolean visible)
   {
     frame.setVisible(visible);
   }

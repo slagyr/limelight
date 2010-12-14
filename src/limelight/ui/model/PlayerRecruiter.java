@@ -12,21 +12,25 @@ public class PlayerRecruiter
   {
     builtinCastingDirector = new JavaCastingDirector(ClassLoader.getSystemClassLoader());
   }
+
   public void recruit(PropPanel panel, String playerName, CastingDirector castingDirector)
   {
     final Scene scene = panel.getRoot();
     final String scenePlayersPath = scene.getResourceLoader().pathTo("players");
-    final String productionPlayersPath = scene.getProduction().getResourceLoader().pathTo("players");
 
-    if (recruitFrom(panel, playerName, castingDirector, scenePlayersPath))
+    if(recruitFrom(panel, playerName, castingDirector, scenePlayersPath))
       return;
 
-    if (recruitFrom(panel, playerName, castingDirector, productionPlayersPath))
-      return;
+    if(scene.getProduction() != null)
+    {
+      final String productionPlayersPath = scene.getProduction().getResourceLoader().pathTo("players");
+      if(recruitFrom(panel, playerName, castingDirector, productionPlayersPath))
+        return;
+    }
 
     recruitFrom(panel, playerName, builtinCastingDirector, BuiltinBeacon.getBuiltinPlayersPath());
   }
-      
+
   private boolean recruitFrom(PropPanel panel, String playerName, CastingDirector castingDirector, String playersPath)
   {
     if(castingDirector.hasPlayer(playerName, playersPath))

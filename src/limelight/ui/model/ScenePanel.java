@@ -7,7 +7,6 @@ import limelight.*;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.model.api.CastingDirector;
-import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
@@ -24,7 +23,7 @@ public class ScenePanel extends PropPanel implements Scene
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
   private Stage stage;
-  private final Map<String, RichStyle> styles;
+  private Map<String, RichStyle> styles;
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
   private boolean shouldAllowClose = true;
@@ -35,7 +34,6 @@ public class ScenePanel extends PropPanel implements Scene
   public ScenePanel(PropProxy propProxy)
   {
     super(propProxy);
-    styles = Collections.synchronizedMap(new HashMap<String, RichStyle>());
     getStyle().setDefault(Style.WIDTH, "100%");
     getStyle().setDefault(Style.HEIGHT, "100%");
   }
@@ -59,8 +57,10 @@ public class ScenePanel extends PropPanel implements Scene
   }
 
   @Override
-  public Graphics2D getGraphics()
+  public synchronized Graphics2D getGraphics()
   {
+    if(stage == null)
+      return null;
     return (Graphics2D) stage.getGraphics();
   }
 
@@ -223,9 +223,14 @@ public class ScenePanel extends PropPanel implements Scene
     return stage;
   }
 
-  public Map<String, RichStyle> getStylesStore()
+  public Map<String, RichStyle> getStyles()
   {
     return styles;
+  }
+
+  public void setStyles(Map<String, RichStyle> styles)
+  {
+    this.styles = styles;
   }
 
   public void addToIndex(PropPanel prop)

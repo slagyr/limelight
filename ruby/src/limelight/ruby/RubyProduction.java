@@ -8,6 +8,7 @@ import limelight.LimelightException;
 import limelight.model.Production;
 import limelight.model.api.ProductionProxy;
 import limelight.model.api.SceneProxy;
+import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
@@ -49,6 +50,12 @@ public class RubyProduction extends Production
   }
 
   @Override
+  public Object send(String name, Object... args)
+  {
+    return rubyProxy.send(name, args);
+  }
+
+  @Override
   public void illuminate()
   {
     rubyProxy.illuminate();
@@ -74,9 +81,9 @@ public class RubyProduction extends Production
   }
 
   @Override
-  public void loadStyles(Scene scene)
+  public Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
   {
-    rubyProxy.loadStyles((SceneProxy)scene.getProxy());
+    return rubyProxy.loadStyles(path, extendableStyles);
   }
 
   public void prepareToOpen()

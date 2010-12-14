@@ -30,7 +30,7 @@ class ComboBoxPopup
   {
     comboBox = comboBoxPanel;
 
-    stylesStore = comboBox.getRoot().getStylesStore();
+    stylesStore = comboBox.getRoot().getStyles();
     createCurtains();
     createList();
     createListItems();

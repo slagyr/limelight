@@ -55,11 +55,6 @@ public class MockStage extends Stage
     return opened;
   }
 
-  public boolean isVisible()
-  {
-    return visible;
-  }
-
   @Override
   public boolean shouldAllowClose()
   {
@@ -121,7 +116,7 @@ public class MockStage extends Stage
   }
 
   @Override
-  protected void setVisible(boolean value)
+  protected void doSetVisible(boolean value)
   {
     visible = value;
   }

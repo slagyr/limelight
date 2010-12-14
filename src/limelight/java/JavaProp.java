@@ -1,8 +1,13 @@
 package limelight.java;
 
 import limelight.model.api.PropProxy;
+import limelight.styles.Style;
+import limelight.ui.Panel;
 import limelight.ui.model.PropPanel;
+import limelight.util.Box;
 
+import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +41,11 @@ public class JavaProp implements PropProxy
     peer.add(prop.getPeer());
   }
 
+  public String getId()
+  {
+    return peer.getId();
+  }
+
   public String getName()
   {
     return peer.getName();
@@ -64,5 +74,34 @@ public class JavaProp implements PropProxy
   public void setText(String text)
   {
     peer.setText(text);
+  }
+
+  public List<JavaProp> getChildren()
+  {
+    ArrayList<JavaProp> children = new ArrayList<JavaProp>();
+    for(PropPanel propPanel : peer.getChildPropPanels())
+      children.add((JavaProp)propPanel.getProxy());
+    return children;
+  }
+
+  @Override
+  public String toString()
+  {
+    String value = "JavaProp[" + getName() + "]";
+    if(getId() != null)
+      value += " id=" + getId();
+    if(getText() != null && getText().length() > 0)
+      value += " text='" + getText() + "'";
+    return value;
+  }
+
+  public Box getBounds()
+  {
+    return peer.getBounds();
+  }
+
+  public Style getStyle()
+  {
+    return peer.getStyle();
   }
 }

@@ -9,7 +9,6 @@ import java.awt.*;
 
 public class TestableStage extends Stage
 {
-  private boolean visible;
   private boolean opened;
   private boolean framed;
   private boolean alwaysOnTop;
@@ -42,9 +41,8 @@ public class TestableStage extends Stage
   }
 
   @Override
-  public boolean isVisible()
+  protected void doSetVisible(boolean value)
   {
-    return visible;
   }
 
   @Override
@@ -105,11 +103,5 @@ public class TestableStage extends Stage
   public boolean isAlwaysOnTop()
   {
     return alwaysOnTop;
-  }
-
-  @Override
-  protected void setVisible(boolean value)
-  {
-    visible = value;
   }
 }
