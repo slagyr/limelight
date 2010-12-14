@@ -12,7 +12,7 @@ public class StringUtilTest
   @Test
   public void join() throws Exception
   {
-    String result = StringUtil.join(",", new String[]{"one", "two", "three"});
+    String result = StringUtil.join(",", new Object[]{"one", "two", "three"});
     assertEquals("one,two,three", result);
     result = StringUtil.join(",", "one", "two", "three");
     assertEquals("one,two,three", result);

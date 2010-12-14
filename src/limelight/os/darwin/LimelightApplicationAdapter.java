@@ -9,6 +9,10 @@ import com.apple.eawt.Application;
 import limelight.AppMain;
 import limelight.Context;
 
+// DEPRACATED in Java 6
+//
+// replaced by AboutHandler, PreferencesHandler, AppReOpenedListener, OpenFilesHandler, PrintFilesHandler, QuitHandler, QuitResponse.
+
 public class LimelightApplicationAdapter extends ApplicationAdapter
 {
   private boolean registered;
