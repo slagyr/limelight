@@ -10,6 +10,8 @@
 * Configurable Test infrastructure for each language
 * rewrite 9-patch
 * Test send method on productions
+* Update JRuby
+* Resolve JNA issue
 
 
 Build styles from code

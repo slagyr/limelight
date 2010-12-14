@@ -1,8 +1,14 @@
 package limelight.io;
 
+import limelight.LimelightException;
+import limelight.util.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
 
@@ -10,11 +16,13 @@ public class FileSystemTest
 {
   private FileSystem fs;
   private String tmpDir;
+  private String jarPath;
 
   @Before
   public void setUp() throws Exception
   {
     fs = new FileSystem();
+    jarPath = "jar:file:" + TestUtil.dataDirPath("calc.jar!");
   }
 
   @After
@@ -90,6 +98,14 @@ public class FileSystemTest
 
     assertEquals(true, fs.exists("file:" + tmpDir + "/file.txt"));
   }
+
+  @Test
+  public void canTellFileExistsUsingJarProtocol() throws Exception
+  {
+    assertEquals(false, fs.exists(jarPath + "/blah.txt"));
+
+    assertEquals(true, fs.exists(jarPath + "/calculator.java/stages.xml"));
+  }
   
   @Test
   public void createDirectory() throws Exception
@@ -112,6 +128,26 @@ public class FileSystemTest
   }
 
   @Test
+  public void createDirectoryWithJarProtocol() throws Exception
+  {
+    try
+    {
+      fs.createDirectory(jarPath + "/newDir");
+      fail("should have thrown an exception");
+    }
+    catch(LimelightException e)
+    {
+    }
+  }
+
+  @Test
+  public void isDirectoryWithJarProtocol() throws Exception
+  {
+    assertEquals(true, fs.isDirectory(jarPath + "/calculator.java/main"));
+    assertEquals(false, fs.isDirectory(jarPath + "/calculator.java/stages.xml"));
+  }
+
+  @Test
   public void canReadAndWriteUsingFileProtocol() throws Exception
   {
     withTmpDir();
@@ -120,6 +156,12 @@ public class FileSystemTest
     fs.createTextFile(path, "I'm looking for a safe house.");
 
     assertEquals("I'm looking for a safe house.", fs.readTextFile(path));
+  }
+
+  @Test
+  public void canReadUsingJarProtocol() throws Exception
+  {
+    assertEquals("<stages>", fs.readTextFile(jarPath + "/calculator.java/stages.xml").substring(0, 8));
   }
   
   @Test
@@ -139,7 +181,13 @@ public class FileSystemTest
     fs.createTextFile(fs.join("file:" + tmpDir, "file.txt"), "blah");
     assertArrayEquals(new String[]{"file.txt"}, fs.fileListing("file:" + tmpDir));
   }
-  
+
+  @Test
+  public void fileListingWithJarProtocol() throws Exception
+  {
+    assertArrayEquals(new String[]{"players", "props.xml", "styles.xml"}, fs.fileListing(jarPath + "/calculator.java/main"));
+  }
+
   @Test
   public void modificationTime() throws Exception
   {
@@ -160,5 +208,14 @@ public class FileSystemTest
 
     final long millisSinceModified = System.currentTimeMillis() - fs.modificationTime(path);
     assertEquals(millisSinceModified + " millis ago", true, millisSinceModified < 1000);
+  }
+
+  @Test
+  public void modificationTimeWithJarProtocol() throws Exception
+  {
+    long modTime = fs.modificationTime(jarPath + "/calculator.java/stages.xml");
+    GregorianCalendar date = new GregorianCalendar();
+    date.setTime(new Date(modTime));
+    assertEquals(2010, date.get(Calendar.YEAR));
   }
 }

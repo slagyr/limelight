@@ -1,0 +1,3 @@
+<production class="utilities.Utilities">
+    <onProductionCreated>init</onProductionCreated>
+</production>

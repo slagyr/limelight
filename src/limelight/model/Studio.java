@@ -175,6 +175,7 @@ e.printStackTrace();
 //      String path = FileUtil.pathTo(Context.instance().limelightHome, "ruby", "lib", "limelight", "builtin", "utilities_production");
       final FileSystem fs = Context.fs();
       String path = fs.join(BuiltinBeacon.getBuiltinProductionsPath(), "utilities");
+System.err.println("utilities path = " + path);
       try
       {
         Production production = productionStub == null ? instantiateProduction(path) : productionStub;
