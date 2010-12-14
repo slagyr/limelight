@@ -43,10 +43,12 @@
             <fileset dir="${classes}" includes="**/"/>
         </delete>
     </target>
-    
+
     <target name="compile" depends="init" description="compile the source (make)">
-        <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off"/>
-        <mkdir dir="${classes}/limelight/ui/images" />
+        <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off">
+            <exclude name="**/limelight/builtin/productions/**/*.java"/>
+        </javac>
+        <mkdir dir="${classes}/limelight/ui/images"/>
         <copy todir="${classes}/limelight">
             <fileset dir="${src}/limelight" includes="**/*" excludes="**/*.java"/>
         </copy>

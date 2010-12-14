@@ -6,7 +6,7 @@
 
 (declare to-prop)
 
-(defn- to-props [coll]
+(defn to-props [coll]
   (cond
     (or (not (coll? coll)) (empty? coll)) ()
     (keyword? (first coll)) (list (to-prop coll))

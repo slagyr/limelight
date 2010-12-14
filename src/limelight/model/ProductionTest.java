@@ -7,6 +7,7 @@ import limelight.About;
 import limelight.Context;
 import limelight.model.api.*;
 import limelight.model.events.*;
+import limelight.styles.RichStyle;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.Scene;
@@ -16,6 +17,8 @@ import limelight.util.Util;
 import limelight.util.Version;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
@@ -164,12 +167,25 @@ public class ProductionTest
 
     assertEquals(true, production.librariesLoaded);
     assertEquals(true, production.stagesLoaded);
+    assertEquals("/foo/bar", production.loadStylesPath);
     assertEquals(true, action.invoked);
+  }
+
+  @Test
+  public void stylesLoadedForProductionContainBuiltinStyles() throws Exception
+  {
+    assertEquals(null, production.getStyles());
+
+    production.loadProduction();
+
+    assertEquals(HashMap.class, production.getStyles().getClass());
+    assertEquals(true, production.getStyles().containsKey("limelight_builtin_curtains"));
   }
   
   @Test
   public void openScene() throws Exception
   {
+    production.loadProduction();
     MockStage stage = new MockStage();
     Scene scene = new FakeScene();
     production.stubbedScene = scene;
@@ -177,9 +193,24 @@ public class ProductionTest
     production.openScene("scenePath", stage, Util.toMap());
 
     assertEquals("scenePath", production.openedScenePath);
-    assertEquals(scene, production.loadStylesScene);
     assertEquals(scene, stage.getScene());
     assertEquals(true, stage.opened);
+  }
+
+  @Test
+  public void openSceneLoadesStylesExtendingProductionStyles() throws Exception
+  {
+    production.loadProduction();
+    production.getStyles().put("newStyle", new RichStyle());
+    MockStage stage = new MockStage();
+    Scene scene = new FakeScene();
+    production.stubbedScene = scene;
+
+    production.openScene("scenePath", stage, Util.toMap());
+
+    assertEquals(HashMap.class, scene.getStyles().getClass());
+    assertEquals(true, scene.getStyles().containsKey("limelight_builtin_curtains"));
+    assertEquals(true, scene.getStyles().containsKey("newStyle"));
   }
            
   @Test
@@ -202,6 +233,7 @@ public class ProductionTest
   @Test
   public void openDefaultScenes() throws Exception
   {
+    production.loadProduction();
     production.getEventHandler().add(ProductionOpenedEvent.class, action);
     MockStage stage = new MockStage();
     production.getTheater().add(stage);

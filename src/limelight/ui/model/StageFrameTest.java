@@ -38,7 +38,8 @@ public class StageFrameTest extends Assert
   {
     try
     {
-      stage.close();
+      frame.setVisible(false);
+      frame.dispose();
     }
     catch(Exception e)
     {
@@ -200,5 +201,14 @@ public class StageFrameTest extends Assert
     frame.setVisible(false);
     frame.setFullScreen(true);
     assertEquals(null, graphicsDevice.getFullScreenWindow());
+  }
+
+  @Test
+  public void doesNotgetVisibleWhenInHiddenMode() throws Exception
+  {
+    StageFrame.hiddenMode = true;
+
+    frame.setVisible(true);
+    assertEquals(false, frame.isVisible());
   }
 }

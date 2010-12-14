@@ -14,7 +14,7 @@
 (deftype Production [peer theater ns]
 
   limelight.model.api.ProductionProxy
-  (callMethod [this name args] nil)
+  (send [this name args] nil)
   (getTheater [this] @theater)
 
   (illuminate [this]
@@ -49,15 +49,13 @@
         (build-props scene props-src props-path))
       scene))
 
-  (loadStyles [this scene]
-    (let [styles-path (resource-path scene "styles.clj")
+  (loadStyles [this path extendable-styles]
+    (let [styles-path (str path "/styles.clj")
           fs (limelight.Context/fs)
-          styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)
-          new-styles (if styles-src (build-styles {} styles-src styles-path) {})
-          scene-styles (.getStylesStore @(.peer scene))]
-      (doall
-        (map (fn [[name value]] (.put scene-styles name value))
-          new-styles))))
+          styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)]
+          (if styles-src
+            (build-styles {} styles-src styles-path)
+            {})))
 
   ResourceRoot
   (resource-path [this resource]

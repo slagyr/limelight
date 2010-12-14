@@ -2,7 +2,8 @@
 
 (deftype Prop [peer]
   limelight.model.api.PropProxy
-  (applyOptions [this options] nil))
+  (applyOptions [this options] nil)
+  (getPeer [this] @peer))
 
 (defn new-prop [options]
   (let [prop (Prop. (atom nil))

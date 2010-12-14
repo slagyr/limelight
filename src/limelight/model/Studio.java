@@ -5,6 +5,7 @@ package limelight.model;
 
 import limelight.Context;
 import limelight.LimelightException;
+import limelight.builtin.BuiltinBeacon;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.io.*;
@@ -167,11 +168,13 @@ e.printStackTrace();
     return isShutdown;
   }
 
-  public UtilitiesProduction utilitiesProduction() throws Exception
+  public UtilitiesProduction utilitiesProduction()
   {
     if(utilitiesProduction == null)
     {
-      String path = FileUtil.pathTo(Context.instance().limelightHome, "ruby", "lib", "limelight", "builtin", "utilities_production");
+//      String path = FileUtil.pathTo(Context.instance().limelightHome, "ruby", "lib", "limelight", "builtin", "utilities_production");
+      final FileSystem fs = Context.fs();
+      String path = fs.join(BuiltinBeacon.getBuiltinProductionsPath(), "utilities");
       try
       {
         Production production = productionStub == null ? instantiateProduction(path) : productionStub;
@@ -227,7 +230,7 @@ e.printStackTrace();
       error.printStackTrace(writer);
       writer.flush();
       String message = new String(output.toByteArray());
-      utilitiesProduction().callMethod("alert", message);
+      utilitiesProduction().alert(message);
     }
     catch(Exception e)
     {
@@ -237,7 +240,7 @@ e.printStackTrace();
 
   public boolean canProceedWithIncompatibleVersion(String name, String minimumLimelightVersion)
   {
-    return false;
+    return utilitiesProduction().shouldProceedWithIncompatibleVersion(name, minimumLimelightVersion);
   }
 
   private boolean nameTaken(String name)

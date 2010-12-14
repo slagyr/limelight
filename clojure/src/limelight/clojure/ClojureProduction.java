@@ -9,7 +9,7 @@ import limelight.Boot;
 import limelight.LimelightException;
 import limelight.model.Production;
 import limelight.model.api.ProductionProxy;
-import limelight.model.api.SceneProxy;
+import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 
 import java.io.StringReader;
@@ -50,9 +50,9 @@ public class ClojureProduction extends Production
   }
 
   @Override
-  protected void loadStyles(Scene scene)
+  protected Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
   {
-    proxy.loadStyles((SceneProxy) scene.getProxy());
+    return proxy.loadStyles(path, extendableStyles);
   }
 
   public static String newProductionSrc = "" +
@@ -77,6 +77,12 @@ public class ClojureProduction extends Production
   @Override
   protected void finalizeClose()
   {
+  }
+
+  @Override
+  public Object send(String name, Object... args)
+  {
+    return proxy.send(name, args);
   }
 
   public static Object runClojureScript(Map<String, ? extends Object> bindings, String script) throws Exception

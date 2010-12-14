@@ -126,6 +126,13 @@ module Limelight
       @peer.allow_close = value
     end
 
+    # Specifies the minimum required version of Limelight that should be used to open this production.
+    # Defaults to zero, meaning any version of Limelight may open the production.
+    #
+    def minimum_limelight_version=(value)
+      @peer.minimum_limelight_version = value
+    end
+
     # Closes the production. If there are no more productions open, the Limelight runtime will shutdown.
     # The production will actually delegate to it's producer and the producer will close the production down.
     #
@@ -232,12 +239,16 @@ module Limelight
 
     alias :loadScene :load_scene
 
-    def load_styles(scene)
-      builtin_styles = Util::Hashes.for_ruby(BuiltIn::Styles.all)
-      extendable_styles = builtin_styles.merge(root_styles)      
-      scene.styles_store.merge!(extendable_styles)
-      return if not File.exists?(scene.styles_file)
-      Limelight.build_styles_from_file(scene.styles_file, :styles => scene.styles_store, :extendable_styles => extendable_styles)
+    def load_styles(path, extendable_styles)
+#      builtin_styles = Util::Hashes.for_ruby(BuiltIn::Styles.all)
+#      extendable_styles = builtin_styles.merge(root_styles)
+#      scene.styles.merge!(extendable_styles)
+      result = {}
+      styles_path = "#{path}/styles.rb"
+      if File.exists?(styles_path)
+        Limelight.build_styles_from_file(styles_path, :styles => result, :extendable_styles => extendable_styles)
+      end
+      return result
     end
 
     alias :loadStyles :load_styles

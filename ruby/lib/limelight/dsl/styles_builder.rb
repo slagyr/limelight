@@ -75,11 +75,7 @@ module Limelight
 
       def __add_style(name, &block) #:nodoc:
         style = @__styles[name]
-        if style == nil
-          style = Styles::RichStyle.new
-          extension = @__extendable_styles[name]
-          style.add_extension(extension) if extension
-        end
+        style = Styles::RichStyle.new if style == nil
         builder = StyleBuilder.new(name, style, self)
         builder.instance_eval(&block) if block
         @__styles[name] = style
@@ -92,9 +88,9 @@ module Limelight
 
       Limelight::Util.lobotomize(self)
 
-      attr_reader :__style  #:nodoc:
+      attr_reader :__style #:nodoc:
 
-      def initialize(name, style, styles_builder, options = {})  #:nodoc:
+      def initialize(name, style, styles_builder, options = {}) #:nodoc:
         @__name = name
         @__style = style
         @__styles_builder = styles_builder

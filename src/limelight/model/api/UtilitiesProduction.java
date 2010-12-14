@@ -33,25 +33,22 @@ public class UtilitiesProduction
   {
     production.close();
   }
-
-  public Object callMethod(String name, Object... args)
-  {
-    return production.getProxy().callMethod(name, args);
-  }
 //
 //  public void publish_on_drb(int port)
 //  {
 //    production.getProxy().publish_on_drb(port);
 //  }
 
-  public Object alert(Object message)
-  {   
-    return production.getProxy().callMethod("alert", message);
+  public boolean alert(Object message)
+  {
+    final Object response = production.send("alert", message);
+    return Boolean.parseBoolean(response.toString());
   }
 
-  public Object shouldProceedWithIncompatibleVersion(String name, String version)
+  public boolean shouldProceedWithIncompatibleVersion(String name, String version)
   {
-    return production.getProxy().callMethod("proceed_with_incompatible_version?", name, version);
+    final Object response = production.send("canProceedWithIncompatibleVersion", name, version);
+    return Boolean.parseBoolean(response.toString());
   }
 
   public Production getProduction()

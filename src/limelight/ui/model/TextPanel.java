@@ -131,7 +131,7 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
       StyledTextParser parser = new StyledTextParser();
       textChunks = parser.parse(text);
 
-      Map<String, RichStyle> styleMap = getRoot().getStylesStore();
+      Map<String, RichStyle> styleMap = getRoot().getStyles();
       for(StyledText styledText : textChunks)
         styledText.setupStyles(styleMap, getStyle(), this);
       // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?

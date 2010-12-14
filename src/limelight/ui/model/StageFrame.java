@@ -11,6 +11,8 @@ import java.awt.*;
 
 public class StageFrame extends Frame
 {
+  public static boolean hiddenMode = false;
+
   private Stage stage;
   private boolean fullscreen;
   private GraphicsDevice graphicsDevice; //used for testing
@@ -67,7 +69,7 @@ public class StageFrame extends Frame
   @Override
   public void setVisible(boolean visible)
   {
-    if(visible == isVisible())
+    if(hiddenMode || visible == isVisible())
       return;
     super.setVisible(visible);
 

@@ -11,7 +11,7 @@ public class JavaStage implements StageProxy
 {
   private FramedStage peer;
 
-  JavaStage(String name, OptionsMap options)
+  JavaStage(String name, Map<String, Object> options)
   {
     peer = new FramedStage(name, this);
     peer.applyOptions(options);

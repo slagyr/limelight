@@ -13,6 +13,7 @@ import limelight.util.ResourceLoader;
 
 import java.awt.*;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public interface Scene extends Panel, ParentPanel
@@ -30,7 +31,9 @@ public interface Scene extends Panel, ParentPanel
 
   void addDirtyRegion(Rectangle bounds);
 
-  public Map<String, RichStyle> getStylesStore();
+  public Map<String, RichStyle> getStyles();
+
+  void setStyles(Map<String,RichStyle> styles);
 
   void addPanelNeedingLayout(Panel panel);
 

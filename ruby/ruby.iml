@@ -2,18 +2,10 @@
 <module type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="JRUBY" name="JRuby">
-      <configuration number="0">
+      <configuration number="1" string0="$MODULE_DIR$/lib">
         <JRUBY_FACET_CONFIG_ID NAME="JRUBY_SDK_NAME" VALUE="JRuby SDK 1.5.1" />
       </configuration>
     </facet>
-  </component>
-  <component name="GemRequirementsHolder" version="3">
-    <requirement>
-      <requirement>
-        <dependency name="rspec" version="0" bound="GREATER_OR_EQUAL" />
-      </requirement>
-      <source manual="true" />
-    </requirement>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/classes" />
@@ -36,6 +28,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="[gem] rake (v0.8.7, /Users/micahmartin/.rvm/gems/jruby-1.5.1@global/gems/rake-0.8.7)" level="application" />
   </component>
 </module>
 

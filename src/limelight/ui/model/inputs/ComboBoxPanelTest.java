@@ -180,7 +180,7 @@ public class ComboBoxPanelTest
 
     final PropPanel selected = panel.getPopup().getSelectedItem();
     assertEquals("3", selected.getText());
-    assertEquals(root.getStylesStore().get("limelight_builtin_combo_box_popup_list_item_selected"), selected.getStyle().getScreen());
+    assertEquals(root.getStyles().get("limelight_builtin_combo_box_popup_list_item_selected"), selected.getStyle().getScreen());
   }
 
   @Test

@@ -224,7 +224,7 @@ public class ScenePanelTest extends Assert
   @Test
   public void shouldHaveStylesMap() throws Exception
   {
-    Map<String, RichStyle> styleMap = root.getStylesStore();
+    Map<String, RichStyle> styleMap = root.getStyles();
     
     assertNotNull(styleMap);
     assertEquals(0, styleMap.size());

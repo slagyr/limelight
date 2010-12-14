@@ -3,17 +3,19 @@
 
 package limelight.model.api;
 
+import limelight.styles.RichStyle;
+
 import java.util.Map;
 
 public interface ProductionProxy
 {
   //TODO MDM get rid of me
-  Object callMethod(String name, Object... args);
+  Object send(String name, Object... args);
 
   TheaterProxy getTheater();
   void illuminate();
   void loadLibraries();
   void loadStages();
   SceneProxy loadScene(String scenePath, Map<String, Object> options);
-  void loadStyles(SceneProxy scene);
+  Map<String, RichStyle> loadStyles(String scene, Map<String, RichStyle> extendableStyles);
 }

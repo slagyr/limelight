@@ -1,7 +1,0 @@
-Build styles from code
-Build style from props.rb
-Make text selectable
-Drop shadows
-Allow production styles and stages to be built in production.rb
-Figure out and implement solution for productions to use gems.
-

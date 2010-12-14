@@ -2,20 +2,20 @@
   (:use
     [speclj.core]
     [limelight.common]
-    [limelight.prop-building :only (!)]
+    [limelight.prop-building :only (to-props)]
     [limelight.scene :only (new-scene)]))
 
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root"})]
-    (add-props scene
-      (! 'child {:id "child1"}
-        (! 'grand-child {:id "grand-child1"}
-          (! 'great-grand-child {:id "great-grand-child1"})
-          (! 'great-grand-child {:id "great-grand-child2"}))
-        (! 'grand-child {:id "grand-child2"}
-          (! 'great-grand-child {:id "great-grand-child3"})))
-      (! 'child {:id "child2"}
-        (! 'grand-child {:id "grand-child3"})))
+    (add-props scene (to-props
+      [[:child {:id "child1"}
+        [:grand-child {:id "grand-child1"}
+         [:great-grand-child {:id "great-grand-child1"}]
+         [:great-grand-child {:id "great-grand-child2"}]]
+        [:grand-child {:id "grand-child2"}
+         [:great-grand-child {:id "great-grand-child3"}]]]
+       [:child {:id "child2"}
+        [:grand-child {:id "grand-child3"}]]]))
     (.setCastingDirector @(.peer scene) (limelight.model.api.FakeCastingDirector.))
     (.illuminate @(.peer scene))
     scene))
@@ -58,3 +58,5 @@
       (should= "grand-child2" (prop-id (parent-prop result)))
       (should= "child1" (prop-id (parent-prop (parent-prop result))))))
   )
+
+(run-specs)

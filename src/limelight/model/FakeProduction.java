@@ -3,9 +3,11 @@
 
 package limelight.model;
 
+import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 import limelight.util.ResourceLoader;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class FakeProduction extends Production
@@ -22,7 +24,7 @@ public class FakeProduction extends Production
   public boolean illuminated;
   public Scene stubbedScene;
   public String openedScenePath;
-  public Scene loadStylesScene;
+  public String loadStylesPath;
 
   public FakeProduction(String name)
   {
@@ -83,16 +85,10 @@ public class FakeProduction extends Production
   }
 
   @Override
-  public void loadStyles(Scene scene)
+  public Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
   {
-    loadStylesScene = scene;
-  }
-
-  public Object callMethod(String name, Object... args)
-  {
-    lastMethodCalled = name;
-    lastMethodCallArgs = args;
-    return null;
+    loadStylesPath = path;
+    return new HashMap<String, RichStyle>();
   }
 
   public void publish_on_drb(int port)
@@ -104,5 +100,13 @@ public class FakeProduction extends Production
   public void attemptClose()
   {
     closeAttempted = true;
+  }
+
+  @Override
+  public Object send(String name, Object... args)
+  {
+    lastMethodCalled = name;
+    lastMethodCallArgs = args;
+    return null;
   }
 }

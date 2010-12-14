@@ -24,4 +24,9 @@ public class BuiltinBeacon
   {
     return getBuiltinPath() + "/players";
   }
+
+  public static String getBuiltinProductionsPath()
+  {
+    return getBuiltinPath() + "/productions";
+  }
 }
