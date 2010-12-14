@@ -3,9 +3,7 @@
 
 package limelight.commands;
 
-import limelight.Boot;
 import limelight.Context;
-import limelight.io.FileUtil;
 import limelight.io.Packer;
 
 import java.util.Map;

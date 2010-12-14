@@ -68,7 +68,7 @@ public class DirectoryZipper
   {
     for(ZipEntry entry = zipInput.getNextEntry(); entry != null; entry = zipInput.getNextEntry())
     {
-      String absolutePath = fs.absolutePath(FileUtil.pathTo(location, entry.getName()));
+      String absolutePath = fs.absolutePath(fs.join(location, entry.getName()));
       if(entry.isDirectory())
         unzipDirectory(absolutePath);
       else
@@ -85,7 +85,7 @@ public class DirectoryZipper
   private void setDirectoryPath(String path)
   {
     directoryPath = fs.absolutePath(path);
-    locationPath = FileUtil.parentPath(directoryPath);
+    locationPath = fs.parentPath(directoryPath);
   }
 
   private void zipDirectory(String directory) throws Exception
@@ -94,12 +94,12 @@ public class DirectoryZipper
     zipOutput.closeEntry();
     String[] children = fs.fileListing(directory);
     for(String child : children)
-      zipFile(FileUtil.join(directory, child));
+      zipFile(fs.join(directory, child));
   }
 
   public String getProductionName()
   {
-    return FileUtil.filename(directoryPath);
+    return fs.filename(directoryPath);
   }
 
   private void zipFile(String file) throws Exception
@@ -134,7 +134,7 @@ public class DirectoryZipper
   {
     String name = fs.absolutePath(file).substring(locationPath.length() + 1);
     if(fs.isDirectory(file))
-      name = name + FileUtil.separator();
+      name = name + fs.separator();
     return name;
   }
 

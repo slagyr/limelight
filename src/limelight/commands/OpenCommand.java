@@ -5,7 +5,6 @@ package limelight.commands;
 
 import limelight.Boot;
 import limelight.Context;
-import limelight.io.FileUtil;
 
 import java.util.Map;
 
@@ -56,7 +55,7 @@ public class OpenCommand extends Command
 
   public String defaultProduction()
   {
-    return FileUtil.pathTo(Context.instance().limelightHome, "productions", "playbills.lll");
+    return Context.fs().join(Context.instance().limelightHome, "productions", "playbills.lll");
   }
 
   public void setShouldBoot(boolean value)

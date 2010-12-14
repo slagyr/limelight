@@ -22,7 +22,7 @@ public class TemplaterTest
     log = new FakeTemplaterLogger();
     templater.setLogger(log);
     fileSystem = new FakeFileSystem();
-    templater.setFileSystem(fileSystem);
+    templater.setFs(fileSystem);
     fileSystem.createDirectory("destination");
   }
 

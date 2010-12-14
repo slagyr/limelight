@@ -29,8 +29,8 @@ public class StudioTest
     Studio.uninstall();
     System.setProperty("limelight.home", "."); // For the RuntimeFactory to spawn productions properly
     context = MockContext.stub();
-    studio = Studio.install();
     fs = FakeFileSystem.installed();
+    studio = Studio.install();
   }
 
   @Test
@@ -167,8 +167,6 @@ public class StudioTest
     mockPacker = new MockPacker();
     studio.setPacker(mockPacker);
     Context.instance().os = new MockOS();
-
-    fs = FakeFileSystem.installed();
   }
 
   @Test
@@ -203,7 +201,7 @@ public class StudioTest
     mockPacker.unpackResult = "blah";
     String path = "/limelight/studio/test/production.lll";
     fs.createTextFile(path, "http://somewhere.com/production.llp");
-    Downloader.stubbedGetResult = FileUtil.join(Data.downloadsDir(), "production.llp");
+    Downloader.stubbedGetResult = fs.join(Data.downloadsDir(), "production.llp");
 
     String result = studio.processProductionPath(path);
 

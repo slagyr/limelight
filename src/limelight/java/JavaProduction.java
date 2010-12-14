@@ -2,7 +2,6 @@ package limelight.java;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.io.FileUtil;
 import limelight.model.Production;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
@@ -61,7 +60,7 @@ public class JavaProduction extends Production
   protected Scene loadScene(String scenePath, Map<String, Object> options)
   {
     options.put("path", getResourceLoader().pathTo(scenePath));
-    options.put("name", FileUtil.filename(scenePath));
+    options.put("name", Context.fs().filename(scenePath));
     JavaScene scene = new JavaScene(this, options);
 
     final String propsPath = scene.getPeer().getResourceLoader().pathTo("props.xml");

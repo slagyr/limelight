@@ -4,12 +4,6 @@
 package limelight.audio;
 
 import junit.framework.TestCase;
-import limelight.caching.SimpleCache;
-import limelight.Context;
-import limelight.io.FileUtil;
-
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.AudioSystem;
 
 public class RealAudioPlayerTest extends TestCase
 {

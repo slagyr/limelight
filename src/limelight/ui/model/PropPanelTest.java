@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.font.FontRenderContext;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class PropPanelTest extends Assert
@@ -422,11 +423,13 @@ public class PropPanelTest extends Assert
     style3 = new RichStyle();
     style4 = new RichStyle();
     style5 = new RichStyle();
-    root.getStyles().put("one", style1);
-    root.getStyles().put("two", style2);
-    root.getStyles().put("three", style3);
-    root.getStyles().put("one.hover", style4);
-    root.getStyles().put("two.hover", style5);
+    final HashMap<String, RichStyle> styles = new HashMap<String, RichStyle>();
+    styles.put("one", style1);
+    styles.put("two", style2);
+    styles.put("three", style3);
+    styles.put("one.hover", style4);
+    styles.put("two.hover", style5);
+    root.setStyles(styles);
   }
 
   @Test
@@ -524,6 +527,7 @@ public class PropPanelTest extends Assert
     final RichStyle billStyle = new RichStyle();
     final RichStyle oneStyle = new RichStyle();
     final RichStyle twoStyle = new RichStyle();
+    root.setStyles(new HashMap<String, RichStyle>());
     root.getStyles().put("bill", billStyle);
     root.getStyles().put("one", oneStyle);
     root.getStyles().put("two", twoStyle);
@@ -543,6 +547,7 @@ public class PropPanelTest extends Assert
   {
     root.delluminate();
     final RichStyle billStyle = new RichStyle();
+    root.setStyles(new HashMap<String, RichStyle>());
     root.getStyles().put("bill", billStyle);
     panel.addOptions(Util.toMap("name", "bill"));
 

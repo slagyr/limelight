@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.awt.*;
 import java.awt.font.TextLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -226,6 +227,7 @@ public class TextPanelTest
 
   private void createStyles()
   {
+    root.setStyles(new HashMap<String, RichStyle>());
     RichStyle myStyle = new RichStyle();
     root.getStyles().put("my_style", myStyle);
     myStyle.setFontFace("Helvetica");

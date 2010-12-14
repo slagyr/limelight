@@ -19,11 +19,13 @@ import java.util.*;
 
 public class ScenePanel extends PropPanel implements Scene
 {
+  private static final Map<String,RichStyle> EMPTY_STYLES = Collections.unmodifiableMap(new HashMap<String, RichStyle>());
+
   private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
   private Stage stage;
-  private Map<String, RichStyle> styles;
+  private Map<String, RichStyle> styles = EMPTY_STYLES;
   private HashMap<String, PropPanel> index = new HashMap<String, PropPanel>();
   private Production production;
   private boolean shouldAllowClose = true;

@@ -11,7 +11,7 @@ public class TempDirectory
 
   public TempDirectory()
   {
-    root = FileUtil.pathTo(System.getProperty("java.io.tmpdir"), "limelight");
+    root = fs().join(System.getProperty("java.io.tmpdir"), "limelight");
     if(!fs().exists(root))
       fs().createDirectory(root);
   }
@@ -28,7 +28,7 @@ public class TempDirectory
 
   public String createNewDirectory()
   {
-    String path = FileUtil.join(root, uniqueFilename());
+    String path = fs().join(root, uniqueFilename());
     fs().createDirectory(path);
     return path;
   }
@@ -44,7 +44,7 @@ public class TempDirectory
 
   private boolean nameTaken(String name)
   {
-    return fs().exists(FileUtil.join(root, name));
+    return fs().exists(fs().join(root, name));
   }
 
   public void cleanup()
@@ -54,7 +54,7 @@ public class TempDirectory
 
   public String getDownloadsDirectory()
   {
-    String downloadsDirectory = FileUtil.join(root, "downloads");
+    String downloadsDirectory = fs().join(root, "downloads");
     if(!fs().exists(downloadsDirectory))
       fs().createDirectory(downloadsDirectory);
     return downloadsDirectory;

@@ -4,7 +4,6 @@
 package limelight;
 
 import limelight.io.FileSystem;
-import limelight.io.FileUtil;
 import limelight.io.TempDirectory;
 import limelight.model.Studio;
 import limelight.ui.BufferedImagePool;

@@ -31,6 +31,7 @@ public class Studio
   private boolean isShuttingDown;
   private UtilitiesProduction utilitiesProduction;
   private Packer packer = new Packer();
+  private FileSystem fs;
 
   public static Studio install()
   {
@@ -53,6 +54,7 @@ public class Studio
   public Studio()
   {
     index = new LinkedList<Production>();
+    fs = Context.fs();
   }
 
   public Production open(String productionPath)
@@ -92,12 +94,11 @@ e.printStackTrace();
 
   public String calculateProductionClassName(String path)
   {
-    final FileSystem fs = Context.fs();
-    if(fs.exists(FileUtil.join(path, "production.rb")))
+    if(fs.exists(fs.join(path, "production.rb")))
       return "limelight.ruby.RubyProduction";
-    else if(fs.exists(FileUtil.join(path, "production.clj")))
+    else if(fs.exists(fs.join(path, "production.clj")))
       return "limelight.clojure.ClojureProduction";
-    else if(fs.exists(FileUtil.join(path, "production.xml")))
+    else if(fs.exists(fs.join(path, "production.xml")))
       return "limelight.java.JavaProduction";
     else
       throw new LimelightException("Can't determine what language to use to load production: " + path);
@@ -173,7 +174,6 @@ e.printStackTrace();
     if(utilitiesProduction == null)
     {
 //      String path = FileUtil.pathTo(Context.instance().limelightHome, "ruby", "lib", "limelight", "builtin", "utilities_production");
-      final FileSystem fs = Context.fs();
       String path = fs.join(BuiltinBeacon.getBuiltinProductionsPath(), "utilities");
 System.err.println("utilities path = " + path);
       try
@@ -256,11 +256,11 @@ System.err.println("utilities path = " + path);
 
   public String processProductionPath(String productionPath)
   {
-    if(Context.fs().isDirectory(productionPath))
+    if(fs.isDirectory(productionPath))
       return productionPath;
-    else if(".llp".equals(FileUtil.fileExtension(productionPath)))
+    else if(".llp".equals(fs.fileExtension(productionPath)))
       return unpackLlp(productionPath);
-    else if(".lll".equals(FileUtil.fileExtension(productionPath)))
+    else if(".lll".equals(fs.fileExtension(productionPath)))
       return downloadLll(productionPath);
     else
       throw new LimelightException("I don't know how to open this production: " + productionPath);
@@ -270,7 +270,7 @@ System.err.println("utilities path = " + path);
   {
     try
     {
-      String url = Context.fs().readTextFile(productionPath).trim();
+      String url = fs.readTextFile(productionPath).trim();
       String result = Downloader.get(url);
       return unpackLlp(result);
     }
@@ -282,8 +282,8 @@ System.err.println("utilities path = " + path);
 
   private String unpackLlp(String productionPath)
   {
-    String destinationDir = FileUtil.join(Data.productionsDir(), "" + System.currentTimeMillis());
-    Context.fs().createDirectory(destinationDir);
+    String destinationDir = fs.join(Data.productionsDir(), "" + System.currentTimeMillis());
+    fs.createDirectory(destinationDir);
     return packer.unpack(productionPath, destinationDir);
   }
 

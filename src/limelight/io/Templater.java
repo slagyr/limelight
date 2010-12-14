@@ -16,7 +16,7 @@ public class Templater
   private static final Pattern TOKEN_PATTERN = Pattern.compile("!-(\\w+)-!");
 
   private TemplaterLogger logger;
-  private FileSystem fileSystem;
+  private FileSystem fs;
   private String destinationRoot;
   private String sourceRoot;
   private Map<String, String> tokens = new HashMap<String, String>();
@@ -25,7 +25,7 @@ public class Templater
   public Templater(String destination, String source)
   {
     logger = new TemplaterLogger();
-    fileSystem = new FileSystem();
+    fs = new FileSystem();
     destinationRoot = destination;
     sourceRoot = source;
   }
@@ -40,28 +40,28 @@ public class Templater
     return destinationRoot;
   }
 
-  public void setFileSystem(FileSystem fileSystem)
+  public void setFs(FileSystem fs)
   {
-    this.fileSystem = fileSystem;
+    this.fs = fs;
   }
 
   public void directory(String dir)
   {
     verifyDestinationRoot();
-    final String fullPath = FileUtil.join(destinationRoot, dir);
-    if(fileSystem.exists(fullPath))
+    final String fullPath = fs.join(destinationRoot, dir);
+    if(fs.exists(fullPath))
       return;
 
-    directory(FileUtil.parentPath(dir));
+    directory(fs.parentPath(dir));
     creatingDirectory(dir);
-    fileSystem.createDirectory(fullPath);
+    fs.createDirectory(fullPath);
   }
 
   private void verifyDestinationRoot()
   {
     if(!destinationRootVerified)
     {
-      if(!fileSystem.exists(destinationRoot))
+      if(!fs.exists(destinationRoot))
         throw new LimelightException("Templater destination root doesn't exist: " + destinationRoot);
       destinationRootVerified = true;
     }
@@ -74,16 +74,16 @@ public class Templater
 
   public void file(String filePath, String template)
   {
-    directory(FileUtil.parentPath(filePath));
-    final String templateContent = fileSystem.readTextFile(FileUtil.join(sourceRoot, template));
+    directory(fs.parentPath(filePath));
+    final String templateContent = fs.readTextFile(fs.join(sourceRoot, template));
 
-    final String destination = FileUtil.join(destinationRoot, filePath);
-    if(fileSystem.exists(destination))
+    final String destination = fs.join(destinationRoot, filePath);
+    if(fs.exists(destination))
       fileExists(filePath);
     else
     {
       creatingFile(filePath);
-      fileSystem.createTextFile(destination, replaceTokens(templateContent));
+      fs.createTextFile(destination, replaceTokens(templateContent));
     }
   }
 

@@ -190,8 +190,8 @@ public class TheaterTest
     theater.add(defaultStage);
     theater.add(stage2);
 
-    defaultStage.visible = false;
-    stage2.visible = false;
+    defaultStage.setVisible(false);
+    stage2.setVisible(false);
     new StageDeactivatedEvent().dispatch(defaultStage);
     new StageDeactivatedEvent().dispatch(stage2);
 
@@ -207,8 +207,8 @@ public class TheaterTest
     theater.add(defaultStage);
     theater.add(stage2);
 
-    defaultStage.visible = false;
-    stage2.visible = false;
+    defaultStage.setVisible(false);
+    stage2.setVisible(false);
     new StageDeactivatedEvent().dispatch(defaultStage);
     new StageDeactivatedEvent().dispatch(stage2);
 

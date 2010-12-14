@@ -11,7 +11,6 @@ import java.awt.*;
 
 public class MockStage extends Stage
 {
-  public boolean visible;
   public boolean closed;
   public boolean shouldAllowClose;
   public boolean wasClosed;
@@ -118,7 +117,7 @@ public class MockStage extends Stage
   @Override
   protected void doSetVisible(boolean value)
   {
-    visible = value;
+//    visible = value;
   }
 
   public void setSize(int width, int height)

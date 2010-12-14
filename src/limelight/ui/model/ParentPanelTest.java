@@ -158,7 +158,7 @@ public class ParentPanelTest
     }
     catch(SterilePanelException e)
     {
-      assertEquals("The panel for prop named 'Unknown name' has been sterilized. Child components may not be added.", e.getMessage());
+      assertEquals("The panel for prop 'TestableParentPanel' has been sterilized. Child components may not be added.", e.getMessage());
     }
 
     assertEquals(0, panel.getChildren().size());

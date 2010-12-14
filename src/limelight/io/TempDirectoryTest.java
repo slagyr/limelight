@@ -27,22 +27,22 @@ public class TempDirectoryTest extends TestCase
   public void testLocations() throws Exception
   {
     String systemTempDir = System.getProperty("java.io.tmpdir");
-    String limelightTempDir = FileUtil.pathTo(systemTempDir, "limelight");
+    String limelightTempDir = fs.join(systemTempDir, "limelight");
     assertEquals(limelightTempDir, tempDirectory.getRoot());
     assertEquals(true, fs.exists(tempDirectory.getRoot()));
   }
   
   public void testCleanup() throws Exception
   {
-    fs.createDirectory(FileUtil.pathTo(tempDirectory.getRoot(), "blah"));
-    fs.createDirectory(FileUtil.pathTo(tempDirectory.getRoot(), "foo"));
-    fs.createDirectory(FileUtil.pathTo(tempDirectory.getRoot(), "bar"));
+    fs.createDirectory(fs.join(tempDirectory.getRoot(), "blah"));
+    fs.createDirectory(fs.join(tempDirectory.getRoot(), "foo"));
+    fs.createDirectory(fs.join(tempDirectory.getRoot(), "bar"));
 
     tempDirectory.cleanup();
 
-    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot(), "blah")).exists());
-    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot(), "foo")).exists());
-    assertEquals(false, new File(FileUtil.pathTo(tempDirectory.getRoot(), "bar")).exists());
+    assertEquals(false, new File(fs.join(tempDirectory.getRoot(), "blah")).exists());
+    assertEquals(false, new File(fs.join(tempDirectory.getRoot(), "foo")).exists());
+    assertEquals(false, new File(fs.join(tempDirectory.getRoot(), "bar")).exists());
     assertEquals(false, fs.exists(tempDirectory.getRoot()));
   }
 
@@ -52,7 +52,7 @@ public class TempDirectoryTest extends TestCase
 
     assertNotNull(newDirectory);
     assertEquals(true, fs.exists(newDirectory));
-    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(newDirectory));
+    assertEquals(tempDirectory.getRoot(), fs.parentPath(newDirectory));
   }
   
   public void testMultipleNewTempDirs() throws Exception
@@ -61,9 +61,9 @@ public class TempDirectoryTest extends TestCase
     String temp2 = tempDirectory.createNewDirectory();
 
     assertEquals(true, fs.exists(temp1));
-    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(temp1));
+    assertEquals(tempDirectory.getRoot(), fs.parentPath(temp1));
     assertEquals(true, fs.exists(temp2));
-    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(temp2));
+    assertEquals(tempDirectory.getRoot(), fs.parentPath(temp2));
     assertEquals(false, temp1.equals(temp2));
   }
 
@@ -73,6 +73,6 @@ public class TempDirectoryTest extends TestCase
 
     assertEquals(true, fs.exists(downloadsDirectory));
     assertEquals(true, fs.isDirectory(downloadsDirectory));
-    assertEquals(tempDirectory.getRoot(), FileUtil.parentPath(downloadsDirectory));
+    assertEquals(tempDirectory.getRoot(), fs.parentPath(downloadsDirectory));
   }
 }

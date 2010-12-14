@@ -15,7 +15,7 @@ import static junit.framework.Assert.fail;
 public class DownloaderTest
 {
   private static final String dataRoot = "/limelight/data";
-  private static final String downloadRoot = FileUtil.join(dataRoot, "Downloads");
+  private static final String downloadRoot = Context.fs().join(dataRoot, "Downloads");
 
   private Downloader downloader;
   private FakeFileSystem fs;
@@ -49,13 +49,13 @@ public class DownloaderTest
   @Test
   public void downloadingFileOnTheLocalFilesystem() throws Exception
   {
-    final String testFilePath = FileUtil.pathTo(dataRoot, "alt", "testFile.txt");
+    final String testFilePath = fs.join(dataRoot, "alt", "testFile.txt");
     fs.createTextFile(testFilePath, "some text");
 
     String result = downloader.download("file://" + testFilePath);
 
-    assertEquals("testFile.txt", FileUtil.filename(result));
-    assertEquals(downloadRoot, FileUtil.parentPath(result));
+    assertEquals("testFile.txt", fs.filename(result));
+    assertEquals(downloadRoot, fs.parentPath(result));
     assertEquals(true, fs.exists(result));
     assertEquals("some text", fs.readTextFile(result));
   }
@@ -63,13 +63,13 @@ public class DownloaderTest
   @Test
   public void downloadingFileWithoutURLSyntax() throws Exception
   {
-    final String testFilePath = FileUtil.pathTo(dataRoot, "alt", "testFile.txt");
+    final String testFilePath = fs.join(dataRoot, "alt", "testFile.txt");
     fs.createTextFile(testFilePath, "some text");
 
     String result = downloader.download(testFilePath);
 
-    assertEquals("testFile.txt", FileUtil.filename(result));
-    assertEquals(downloadRoot, FileUtil.parentPath(result));
+    assertEquals("testFile.txt", fs.filename(result));
+    assertEquals(downloadRoot, fs.parentPath(result));
     assertEquals(true, fs.exists(result));
     assertEquals("some text", fs.readTextFile(result));
   }
@@ -77,22 +77,22 @@ public class DownloaderTest
   @Test
   public void uniqueFilenamesAreUsedForDownloading() throws Exception
   {
-    final String testFilePath = FileUtil.pathTo(dataRoot, "alt", "testFile.txt");
+    final String testFilePath = fs.join(dataRoot, "alt", "testFile.txt");
     fs.createTextFile(testFilePath, "some text");
 
     String result1 = downloader.download(testFilePath);
     String result2 = downloader.download(testFilePath);
     String result3 = downloader.download(testFilePath);
 
-    assertEquals("testFile.txt", FileUtil.filename(result1));
-    assertEquals("testFile_2.txt", FileUtil.filename(result2));
-    assertEquals("testFile_3.txt", FileUtil.filename(result3));
+    assertEquals("testFile.txt", fs.filename(result1));
+    assertEquals("testFile_2.txt", fs.filename(result2));
+    assertEquals("testFile_3.txt", fs.filename(result3));
   }
 
   @Test
   public void throwsExceptionWithBadPath() throws Exception
   {
-    final String resource = FileUtil.pathTo("blah", "blah", "blah");
+    final String resource = fs.join("blah", "blah", "blah");
     try
     {
       downloader.download(resource);
@@ -126,8 +126,8 @@ public class DownloaderTest
 //  {
 //    String result = downloader.download("http://limelight.8thlight.com/images/logo.png");
 //
-//    assertEquals("logo.png", FileUtil.filename(result));
-//    assertEquals(downloadRoot, FileUtil.parentPath(result));
+//    assertEquals("logo.png", fs.filename(result));
+//    assertEquals(downloadRoot, fs.parentPath(result));
 //    assertEquals(true, fs.exists(result));
 //  }
 //
@@ -150,8 +150,8 @@ public class DownloaderTest
 //  {
 //    String result = downloader.download("https://www.google.com/images/logos/ssl_logo_lg.gif");
 //
-//    assertEquals("ssl_logo_lg.gif", FileUtil.filename(result));
-//    assertEquals(downloadRoot,  FileUtil.parentPath(result));
+//    assertEquals("ssl_logo_lg.gif", fs.filename(result));
+//    assertEquals(downloadRoot,  fs.parentPath(result));
 //    assertEquals(true, fs.exists(result));
 //  }
 //
@@ -160,7 +160,7 @@ public class DownloaderTest
 //  {
 //    String result = downloader.download("http://www.jtricks.com/download-text");
 //
-//    assertEquals("content.txt", FileUtil.filename(result));
+//    assertEquals("content.txt", fs.filename(result));
 //  }
 //
 //  @Test
@@ -168,6 +168,6 @@ public class DownloaderTest
 //  {
 //    String result = downloader.download("http://rubyforge.org/frs/download.php/37521/limelight-0.0.1-java.gem");
 //
-//    assertEquals("limelight-0.0.1-java.gem", FileUtil.filename(result));
+//    assertEquals("limelight-0.0.1-java.gem", fs.filename(result));
 //  }
 }
