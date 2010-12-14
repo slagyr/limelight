@@ -103,7 +103,7 @@ public class FileSystem
 
   public String join(String... parts)
   {
-    return removeDuplicateSeprators(StringUtil.join(separator, (String[]) parts));
+    return removeDuplicateSeprators(StringUtil.join(separator, new Object[]{parts}));
   }
 
   public String baseName(String path)

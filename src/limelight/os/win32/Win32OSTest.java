@@ -51,6 +51,6 @@ public class Win32OSTest extends TestCase
 
     os.launch("http://www.google.com");
 
-    assertEquals("cmd.exe /C start http://www.google.com", StringUtil.join(" ", mockSystemExecution.command));
+    assertEquals("cmd.exe /C start http://www.google.com", StringUtil.join(" ", new Object[]{mockSystemExecution.command}));
   }
 }
