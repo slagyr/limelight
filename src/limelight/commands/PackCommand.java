@@ -3,7 +3,7 @@
 
 package limelight.commands;
 
-import limelight.io.FileUtil;
+import limelight.Context;
 import limelight.io.Packer;
 
 import java.util.Map;
@@ -32,7 +32,7 @@ public class PackCommand extends Command
     if(llpName != null)
       getPacker().pack(productionDir, llpName);
     else
-      getPacker().pack(productionDir, FileUtil.baseName(productionDir));
+      getPacker().pack(productionDir, Context.fs().baseName(productionDir));
   }
 
   private Packer getPacker()

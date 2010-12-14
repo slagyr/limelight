@@ -3,14 +3,14 @@
 
 package limelight.util;
 
-import limelight.io.FileUtil;
+import limelight.Context;
 
 public class TestUtil
 {
-  public static final String DATA_DIR = FileUtil.join("etc", "test_data");
+  public static final String DATA_DIR = Context.fs().join("etc", "test_data");
 
   public static String dataDirPath(String... args)
   {
-    return FileUtil.buildOnPath(DATA_DIR, args);
+    return Context.fs().join(DATA_DIR, Context.fs().join(args));
   }
 }

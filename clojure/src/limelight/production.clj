@@ -38,8 +38,6 @@
         (build-stages @theater stages-src stages-path))))
 
   (loadScene [this scene-path options]
-    (.put options "path" (resource-path this scene-path))
-    (.put options "name" (limelight.io.FileUtil/filename scene-path))
     (let [scene (new-scene options)
           _ (.setProduction @(.peer scene) peer)
           props-path (resource-path scene "props.clj")

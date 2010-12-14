@@ -32,14 +32,14 @@ public class DataTest
   @Test
   public void downloadsDir() throws Exception
   {
-    final String expectedPath = fs.absolutePath(FileUtil.pathTo(Data.getRoot(), "Downloads"));
+    final String expectedPath = fs.absolutePath(fs.join(Data.getRoot(), "Downloads"));
     assertEquals(expectedPath, Data.downloadsDir());
   }
 
   @Test
   public void productionsDir() throws Exception
   {
-    final String expectedPath = fs.absolutePath(FileUtil.pathTo(Data.getRoot(), "Productions"));
+    final String expectedPath = fs.absolutePath(fs.join(Data.getRoot(), "Productions"));
     assertEquals(expectedPath, Data.productionsDir());
   }
 

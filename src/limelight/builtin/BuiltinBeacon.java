@@ -1,6 +1,6 @@
 package limelight.builtin;
 
-import limelight.io.FileUtil;
+import limelight.Context;
 
 import java.net.URL;
 
@@ -15,7 +15,7 @@ public class BuiltinBeacon
       final Class<BuiltinBeacon> klass = BuiltinBeacon.class;
       final String resourcePath = klass.getName().replace(".", "/") + ".class";
       final URL resource = klass.getClassLoader().getResource(resourcePath);
-      builtinPath = FileUtil.parentPath(resource.toString());
+      builtinPath = Context.fs().parentPath(resource.toString());
     }
     return builtinPath;
   }

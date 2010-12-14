@@ -4,7 +4,6 @@
 package limelight.util;
 
 import limelight.io.FakeFileSystem;
-import limelight.io.FileUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +45,7 @@ public class ResourceLoaderTest
   @Test
   public void knowsIfTheFileExists() throws Exception
   {
-    fs.createTextFile(FileUtil.join(rootPath, "foo.txt"), "blah");
+    fs.createTextFile(fs.join(rootPath, "foo.txt"), "blah");
 
     assertEquals(true, loader.exists("foo.txt"));
     assertEquals(false, loader.exists("bar.txt"));
@@ -55,7 +54,7 @@ public class ResourceLoaderTest
   @Test
   public void readsText() throws Exception
   {
-    fs.createTextFile(FileUtil.join(rootPath, "foo.txt"), "blah");
+    fs.createTextFile(fs.join(rootPath, "foo.txt"), "blah");
 
     assertEquals("blah", loader.readText("foo.txt"));
   }

@@ -91,6 +91,11 @@ public class FileSystem
 
   // UTILITY  METHODS --------------------------------------------------------------------------------------------------
 
+  public String separator()
+  {
+    return separator;
+  }
+
   public String homeDir()
   {
     return System.getProperty("user.home");
@@ -103,7 +108,7 @@ public class FileSystem
 
   public String join(String... parts)
   {
-    return removeDuplicateSeprators(StringUtil.join(separator, new Object[]{parts}));
+    return removeDuplicateSeprators(StringUtil.join(separator, (Object[])parts));
   }
 
   public String baseName(String path)

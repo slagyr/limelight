@@ -5,7 +5,6 @@ package limelight.util;
 
 import limelight.Context;
 import limelight.io.FileSystem;
-import limelight.io.FileUtil;
 
 public class ResourceLoader
 {
@@ -44,7 +43,7 @@ public class ResourceLoader
     if(path.equals(fs.absolutePath(path)))
       return path;
     else
-      return FileUtil.join(root, path);
+      return fs.join(root, path);
   }
 
   public boolean exists(String path)

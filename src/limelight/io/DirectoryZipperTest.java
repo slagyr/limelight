@@ -24,9 +24,9 @@ public class DirectoryZipperTest
 
   public void makeTestRoot()
   {
-    fs.createTextFile(FileUtil.pathTo(ROOT_DIR, "root.txt"), "root");
-    fs.createTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "child.txt"), "child");
-    fs.createTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt"), "grand child" );
+    fs.createTextFile(fs.join(ROOT_DIR, "root.txt"), "root");
+    fs.createTextFile(fs.join(ROOT_DIR, "childdir", "child.txt"), "child");
+    fs.createTextFile(fs.join(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt"), "grand child" );
   }
 
   @Test
@@ -54,11 +54,11 @@ public class DirectoryZipperTest
     fs.createDirectory(outputDir);
     newZipper.unzip(outputDir);
 
-    assertEquals(FileUtil.join(outputDir, "rootdir") + "/", newZipper.getDirectoryPath());
+    assertEquals(fs.join(outputDir, "rootdir") + "/", newZipper.getDirectoryPath());
     assertEquals("rootdir", newZipper.getProductionName());
-    assertEquals("root", fs.readTextFile(FileUtil.pathTo(ROOT_DIR, "root.txt")));
-    assertEquals("child", fs.readTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "child.txt")));
-    assertEquals("grand child", fs.readTextFile(FileUtil.pathTo(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt")));
+    assertEquals("root", fs.readTextFile(fs.join(ROOT_DIR, "root.txt")));
+    assertEquals("child", fs.readTextFile(fs.join(ROOT_DIR, "childdir", "child.txt")));
+    assertEquals("grand child", fs.readTextFile(fs.join(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt")));
   }
 
 //  public void testZipIty() throws Exception

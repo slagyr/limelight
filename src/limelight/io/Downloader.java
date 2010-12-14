@@ -103,12 +103,12 @@ public class Downloader
 
   private String findUniqueDownloadDestination(String filename)
   {
-    String attempt = FileUtil.join(destinationRoot, filename);
-    String baseName = FileUtil.baseName(attempt);
-    String extension = FileUtil.fileExtension(attempt);
+    String attempt = fs.join(destinationRoot, filename);
+    String baseName = fs.baseName(attempt);
+    String extension = fs.fileExtension(attempt);
     int suffix = 2;
     while(fs.exists(attempt))
-      attempt = FileUtil.join(destinationRoot, baseName + "_" + suffix++ + extension);
+      attempt = fs.join(destinationRoot, baseName + "_" + suffix++ + extension);
     return attempt;
   }
 

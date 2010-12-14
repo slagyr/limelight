@@ -35,6 +35,7 @@ public class AlertFrameManagerTest
   @Before
   public void setUp() throws Exception
   {
+    StageFrame.hiddenMode = false;
     manager = new AlertFrameManager();
     Context.instance().frameManager = manager;
     Context.instance().studio = new MockStudio();
@@ -104,7 +105,7 @@ public class AlertFrameManagerTest
     manager.watch(frame);
     assertEquals(null, manager.getActiveFrame());
 
-    stage.visible = true;
+    stage.setVisible(true);
     assertEquals(frame, manager.getActiveFrame());
   }
 
@@ -112,7 +113,7 @@ public class AlertFrameManagerTest
   public void getVisibleFrames() throws Exception
   {
     ArrayList<StageFrame> result = new ArrayList<StageFrame>();
-    stage.visible = true;
+    stage.setVisible(true);
     final MockStage stage2 = new MockStage();
     StageFrame frame2 = new StageFrame(stage2);
 
@@ -125,13 +126,13 @@ public class AlertFrameManagerTest
     assertEquals(1, result.size());
     result.clear();
 
-    stage2.visible = false;
+    stage2.setVisible(false);
     manager.watch(frame2);
     manager.getVisibleFrames(result);
     assertEquals(1, result.size());
     result.clear();
 
-    stage2.visible = true;
+    stage2.setVisible(true);
     manager.getVisibleFrames(result);
     assertEquals(2, result.size());
     result.clear();
@@ -172,7 +173,7 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenActivated() throws Exception
   {
-    stage.visible = true;
+    stage.setVisible(true);
     stage.getEventHandler().add(StageActivatedEvent.class, action);
 
     manager.windowActivated(new HackedWindowEvent(frame));
@@ -183,14 +184,14 @@ public class AlertFrameManagerTest
   @Test
   public void cantActivateFramesThatAreNotVisible() throws Exception
   {
-    stage.visible = false;
+    stage.setVisible(false);
     stage.getEventHandler().add(StageActivatedEvent.class, action);
 
     manager.windowActivated(new HackedWindowEvent(frame));
     assertEquals(false, action.invoked);
     assertEquals(null, manager.getActiveFrame());
 
-    stage.visible = true;
+    stage.setVisible(true);
     manager.windowActivated(new HackedWindowEvent(frame));
     assertEquals(true, action.invoked);
     assertEquals(frame, manager.getActiveFrame());
@@ -199,7 +200,7 @@ public class AlertFrameManagerTest
   @Test
   public void stageNotifiedWhenDeactivated() throws Exception
   {
-    stage.visible = true;
+    stage.setVisible(true);
     manager.windowActivated(new HackedWindowEvent(frame));
     assertEquals(frame, manager.getActiveFrame());
     stage.getEventHandler().add(StageDeactivatedEvent.class, action);

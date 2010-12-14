@@ -24,4 +24,10 @@ public class TestableParentPanel extends ParentPanelBase
   {
     return null;
   }
+
+  @Override
+  public String toString()
+  {
+    return "TestableParentPanel";
+  }
 }

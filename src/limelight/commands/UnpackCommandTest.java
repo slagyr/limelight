@@ -4,7 +4,6 @@
 package limelight.commands;
 
 import limelight.Context;
-import limelight.io.FileUtil;
 import limelight.io.MockPacker;
 import org.junit.Before;
 import org.junit.Test;

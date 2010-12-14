@@ -7,7 +7,6 @@ import limelight.About;
 import limelight.Context;
 import limelight.builtin.BuiltInStyles;
 import limelight.events.EventHandler;
-import limelight.io.FileUtil;
 import limelight.model.api.ProductionProxy;
 import limelight.model.events.*;
 import limelight.styles.RichStyle;
@@ -37,7 +36,7 @@ public abstract class Production
   {
     try
     {
-      name = FileUtil.baseName(path);
+      name = Context.fs().baseName(path);
     }
     catch(Exception e)
     {

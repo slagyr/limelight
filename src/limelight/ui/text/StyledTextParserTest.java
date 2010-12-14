@@ -30,8 +30,8 @@ public class StyledTextParserTest extends Assert
   {
     assertEquals(text, styledText.getText());
 
-    String expectedStylesString = StringUtil.join(", ", new Object[]{styles});
-    String actualStylesString = StringUtil.join(", ", new Object[]{styledText.getStyleNames().toArray(new String[styledText.getStyleNames().size()])});
+    String expectedStylesString = StringUtil.join(", ", styles);
+    String actualStylesString = StringUtil.join(", ", styledText.getStyleNames().toArray(new String[styledText.getStyleNames().size()]));
     assertEquals(expectedStylesString, actualStylesString);
   }
 
