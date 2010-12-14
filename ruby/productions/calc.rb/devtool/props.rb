@@ -1,0 +1,1 @@
+refresh :players => "button", :text => "Refresh", :width => "100%", :height => "100%"

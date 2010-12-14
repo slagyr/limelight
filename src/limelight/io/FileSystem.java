@@ -7,6 +7,10 @@ import limelight.LimelightException;
 import limelight.util.StringUtil;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class FileSystem
 {
@@ -61,7 +65,7 @@ public class FileSystem
   {
     resolve(path).delete();
   }
-  
+
   public void createTextFile(String path, String content)
   {
     createDirectory(parentPath(path));
@@ -201,7 +205,9 @@ public class FileSystem
   protected Path resolve(String path)
   {
     if(path.startsWith("file:"))
-      return new FilePath(path.substring(5));
+      return new FilePath(path);
+    else if(path.startsWith("jar:"))
+      return new ZipPath(path, this);
     else
       return new FilePath(path);
   }
@@ -235,6 +241,8 @@ public class FileSystem
     public FilePath(String path)
     {
       this.path = path;
+      if(path.startsWith("file:"))
+        this.path = path.substring(5);
     }
 
     private File file()
@@ -312,6 +320,125 @@ public class FileSystem
     public long lastModified()
     {
       return file().lastModified();
+    }
+  }
+
+  private static class ZipPath implements Path
+  {
+    private Path pathToZip;
+    private String pathToFile;
+    private ZipFile zip;
+    private FileSystem fs;
+
+    private ZipPath(String path, FileSystem fs)
+    {
+      this.fs = fs;
+      final int bangIndex = path.indexOf("!");
+      if(bangIndex == -1)
+        throw new LimelightException("Invalid Jar file path: " + path);
+
+      pathToZip = fs.resolve(path.substring(4, bangIndex));
+      pathToFile = path.substring(bangIndex + 2);
+    }
+
+    private ZipFile zip()
+    {
+      if(zip == null)
+      {
+        try
+        {
+          zip = new ZipFile(pathToZip.getAbsolutePath());
+        }
+        catch(IOException e)
+        {
+          throw new LimelightException(e);
+        }
+      }
+      return zip;
+    }
+
+    private ZipEntry zipEntry()
+    {
+      return zip().getEntry(pathToFile);
+    }
+
+    public boolean exists()
+    {
+      return pathToZip.exists() && (zipEntry() != null);
+    }
+
+    public void mkdirs()
+    {
+      throw new LimelightException("JarPath.mkdirs() is not supported");
+    }
+
+    public boolean isDirectory()
+    {
+      if(pathToFile.endsWith("/"))
+        return zipEntry().isDirectory();
+      else
+      {
+        final ZipEntry entry = zip().getEntry(pathToFile + "/");
+        return entry != null && entry.isDirectory();
+      }
+    }
+
+    public OutputStream outputStream()
+    {
+      throw new LimelightException("JarPath.outputStream() is not supported");
+    }
+
+    public InputStream inputStream()
+    {
+      try
+      {
+        return zip().getInputStream(zipEntry());
+      }
+      catch(IOException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
+
+    public String getAbsolutePath()
+    {
+      return null;
+    }
+
+    public void delete()
+    {
+      throw new LimelightException("JarPath.delete() is not supported");
+    }
+
+    public String[] listing()
+    {
+      if(!isDirectory())
+        return new String[0];
+      else
+      {
+        pathToFile = pathToFile.endsWith("/") ? pathToFile : pathToFile + "/";
+        ArrayList<String> list = new ArrayList<String>();
+        final Enumeration<? extends ZipEntry> entries = zip().entries();
+        while(entries.hasMoreElements())
+        {
+          ZipEntry entry = entries.nextElement();
+          final String entryName = entry.getName();
+          if(entryName.startsWith(pathToFile))
+          {
+            String name = entryName.substring(pathToFile.length());
+            if(name.endsWith("/"))
+              name = name.substring(0, name.length() - 2);
+            if(name.length() > 0 && name.indexOf("/") == -1)
+              list.add(fs.filename(entryName));
+          }
+        }
+        return list.toArray(new String[list.size()]);
+      }
+    }
+
+    public long lastModified()
+    {
+      return zipEntry().getTime();
     }
   }
 }
