@@ -236,6 +236,8 @@ public class FileSystem
     String[] listing();
 
     long lastModified();
+
+    File file();
   }
 
   private static class FilePath implements Path
@@ -250,7 +252,7 @@ public class FileSystem
         this.path = path.substring(5);
     }
 
-    private File file()
+    public File file()
     {
       if(file == null)
         file = new File(path);
@@ -301,7 +303,7 @@ public class FileSystem
     {
       try
       {
-        return file().getCanonicalPath();
+        return "file:" + file().getCanonicalPath();
       }
       catch(IOException e)
       {
@@ -352,7 +354,7 @@ public class FileSystem
       {
         try
         {
-          zip = new ZipFile(pathToZip.getAbsolutePath());
+          zip = new ZipFile(pathToZip.file());
         }
         catch(IOException e)
         {
@@ -407,7 +409,7 @@ public class FileSystem
 
     public String getAbsolutePath()
     {
-      return null;
+      return "jar:" + pathToZip.getAbsolutePath() + "!/" + pathToFile;
     }
 
     public void delete()
@@ -444,6 +446,11 @@ public class FileSystem
     public long lastModified()
     {
       return zipEntry().getTime();
+    }
+
+    public File file()
+    {
+      throw new LimelightException("JarPath.file() is not supported");
     }
   }
 }

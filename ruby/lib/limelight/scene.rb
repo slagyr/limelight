@@ -47,12 +47,12 @@ module Limelight
 
     # Returns a hash of all the styles belonging to this scene
     #
-    def styles_store
-      if @styles_store == nil
-        styles_store = @peer.styles_store
-        @styles_store = Util::Hashes.for_ruby(styles_store)
+    def styles
+      if @styles == nil
+        styles = @peer.styles
+        @styles = Util::Hashes.for_ruby(styles)
       end
-      return @styles_store
+      return @styles
     end
 
     # Returns self.  A Scene is it's own scene.

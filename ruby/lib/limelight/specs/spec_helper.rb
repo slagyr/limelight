@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require 'spec'
-require File.expand_path(File.dirname(__FILE__) + "/../../init")
+require File.expand_path(File.dirname(__FILE__) + "/../limelight_init")
 require 'limelight/scene'
 require 'limelight/string'
 require 'limelight/specs/test_scene_opener'

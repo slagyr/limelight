@@ -9,11 +9,11 @@ require 'limelight/theater'
 describe Limelight::Stage do
 
   before(:each) do
+    Java::limelight.ui.model.StageFrame.hiddenMode = true
     @peer_production = Java::limelight.model.FakeProduction.new("Fake Production")
     @production = mock("production")
     @theater = Limelight::Theater.new(@production, @peer_production.theater)
     @stage = @theater.add_stage("George")
-    @stage.should_remain_hidden = true
     Limelight::Context.instance.frameManager = Java::limelight.ui.model.InertFrameManager.new
   end
 

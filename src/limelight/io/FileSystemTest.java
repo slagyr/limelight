@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -217,5 +218,22 @@ public class FileSystemTest
     GregorianCalendar date = new GregorianCalendar();
     date.setTime(new Date(modTime));
     assertEquals(2010, date.get(Calendar.YEAR));
+  }
+
+  @Test
+  public void absolutePathWithFileProtocol() throws Exception
+  {
+    withTmpDir();
+    final String expected = "file:" + new File(tmpDir).getCanonicalPath();
+    assertEquals(expected, fs.absolutePath(tmpDir));
+  }
+
+  @Test
+  public void absolutePathWithJarProtocol() throws Exception
+  {
+    String result = fs.absolutePath(jarPath + "/calculator.java/stages.xml");
+    String expected = "jar:" + fs.absolutePath(TestUtil.dataDirPath("calc.jar")) + "!/calculator.java/stages.xml";
+
+    assertEquals(expected, result);
   }
 }

@@ -44,11 +44,11 @@
 
     <target name="compile.utilities">
         <mkdir dir="${classes}/${utilities.path}/classes"/>
-        <javac srcdir="${src}/${utilities.path}/src" destdir="${classes}/${utilities.path}/classes" classpathref="classpath" debug="off" includeantruntime="false"/>
+        <javac srcdir="${src}/${utilities.path}/src" destdir="${classes}/${utilities.path}/classes" classpathref="classpath" debug="on" includeantruntime="false"/>
     </target>
 
     <target name="compile.java">
-        <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="off" includeantruntime="false">
+        <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" debug="on" includeantruntime="false">
             <exclude name="${utilities.path}/**/*.java"/>
         </javac>
     </target>

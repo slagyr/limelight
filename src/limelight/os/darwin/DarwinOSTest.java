@@ -91,7 +91,7 @@ public class DarwinOSTest extends TestCase
 
     os.launch("http://www.google.com");
 
-    assertEquals("open http://www.google.com", StringUtil.join(" ", mockSystemExecution.command));
+    assertEquals("open http://www.google.com", StringUtil.join(mockSystemExecution.command, " "));
   }
 
 }

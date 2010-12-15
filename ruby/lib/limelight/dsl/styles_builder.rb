@@ -16,7 +16,7 @@ module Limelight
   end
 
   def self.build_styles_from_file(filename, options = {})
-    content = IO.read(filename)
+    content = Java::limelight.Context.fs.read_text_file(filename)
     styles = Limelight.build_styles(options) do
       begin
         eval content

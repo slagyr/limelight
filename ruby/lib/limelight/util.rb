@@ -21,11 +21,9 @@ module Limelight
     # Returns true of the file is a directory containing an entry named file_name.
     #
     def self.directory_contains_file(file, file_name)
-      if file.is_a? String
-        return File.directory?(file) && File.exists?(File.join(file, file_name))
-      else
-        return file.isDirectory() && File.exists?(File.join(file.absolute_path, file_name))
-      end
+      fs = Java::limelight.Context.fs
+      dir_path = file.is_a? String ? file : file.path
+      return fs.directory?(dir_path) && fs.exists?(fs.join(dir_path, file_name))
     end
 
     # Removed all methods from a class except instance_eval and methods starting with __.

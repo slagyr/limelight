@@ -10,6 +10,6 @@ task :spec do
     Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
     Rake::Task[:lib_specs].invoke
   rescue LoadError
-    run_command "java -jar lib/jruby-complete-1.4.0.jar -S spec spec"
+    run_command "java -jar lib/jruby-complete-1.5.6.jar -S spec spec"
   end
 end
