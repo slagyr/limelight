@@ -36,6 +36,7 @@ module Limelight
       @theater = Theater.new(self, @peer.theater)
 
       @peer.proxy = self
+      @fs = Java::limelight.Context.fs
     end
 
     # returns true if the production has been opened, and not yet closed.
@@ -66,12 +67,6 @@ module Limelight
     #
     def path
       return @peer.resource_loader.root
-    end
-
-    # Returns the path to the production's init file
-    #
-    def init_file
-      return root.path_to("init.rb")
     end
 
     # Returns the path to the production's production.rb file
@@ -147,20 +142,6 @@ module Limelight
       @producer.publish_production_on_drb(port)
     end
 
-    # A production with multiple Scenes may have a 'styles.rb' file in the root directory.  This is called the
-    # root_styles.  This method loads the root_styles, if they haven't already been loaded, and returns them.
-    #
-    def root_styles
-      unless @root_styles
-        if File.exists?(styles_file)
-          @root_styles = Limelight.build_styles_from_file(styles_file)
-        else
-          @root_styles = {}
-        end
-      end
-      return @root_styles
-    end
-
     def on_production_created(&action)
       @peer.event_handler.add(Java::limelight.model.events.ProductionCreatedEvent, action)
     end
@@ -192,8 +173,8 @@ module Limelight
     end
 
     def illuminate
-      return unless File.exists?(production_file)
-      content = IO.read(production_file)
+      return unless @fs.exists?(production_file)
+      content = @fs.read_text_file(production_file)
       self.instance_eval(content, production_file)
     end
 
@@ -204,8 +185,8 @@ module Limelight
     alias :loadLibraries :load_libraries
 
     def load_stages
-      return unless File.exists?(stages_file)
-      content = IO.read(stages_file)
+      return unless @fs.exists?(stages_file)
+      content = @fs.read_text_file(stages_file)
       Limelight.build_stages(theater) do
         begin
           eval content
@@ -221,10 +202,10 @@ module Limelight
       options = Util::Hashes.for_ruby(options)
       instance_variables = options.delete(:instance_variables)
       full_scene_path = scene_directory(scene_path)
-      scene = Scene.new(options.merge(:path => full_scene_path, :name => File.basename(full_scene_path)))
+      scene = Scene.new(options.merge(:path => full_scene_path, :name => @fs.filename(full_scene_path)))
       scene.production = self
-      if File.exists?(scene.props_file)
-        content = IO.read(scene.props_file)
+      if @fs.exists?(scene.props_file)
+        content = @fs.read_text_file(scene.props_file)
         options[:build_loader] = self.root
         Limelight.build_props(scene, options.merge(:instance_variables => instance_variables)) do
           begin
@@ -240,12 +221,9 @@ module Limelight
     alias :loadScene :load_scene
 
     def load_styles(path, extendable_styles)
-#      builtin_styles = Util::Hashes.for_ruby(BuiltIn::Styles.all)
-#      extendable_styles = builtin_styles.merge(root_styles)
-#      scene.styles.merge!(extendable_styles)
       result = {}
-      styles_path = "#{path}/styles.rb"
-      if File.exists?(styles_path)
+      styles_path = @fs.join(path, "styles.rb")
+      if @fs.exists?(styles_path)
         Limelight.build_styles_from_file(styles_path, :styles => result, :extendable_styles => extendable_styles)
       end
       return result

@@ -21,7 +21,7 @@ module Limelight
     end
 
     def has_player(player_name, players_path)
-      return @cast.const_defined?(player_name.camalized) || @fs.exists("#{File.join(players_path, player_name)}.rb")
+      return @cast.const_defined?(player_name.camalized) || @fs.exists("#{@fs.join(players_path, player_name)}.rb")
     end
 
     alias :hasPlayer :has_player
@@ -40,7 +40,7 @@ module Limelight
       if @cast.const_defined?(module_name)
         return @cast.const_get(module_name)
       else
-        player_filename = "#{File.join(players_path, player_name)}.rb"
+        player_filename = "#{@fs.join(players_path, player_name)}.rb"
         src = @fs.read_text_file(player_filename)
 
         player = Player.new

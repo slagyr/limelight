@@ -12,8 +12,8 @@ describe Limelight::Scene do
   end
 
   it "should have a styles hash" do
-    @scene.styles_store.should_not == nil
-    @scene.styles_store.size.should == 0
+    @scene.styles.should_not == nil
+    @scene.styles.size.should == 0
   end
 
   it "should have a button group cache" do

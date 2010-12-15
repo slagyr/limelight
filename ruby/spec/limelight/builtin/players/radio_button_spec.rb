@@ -46,12 +46,12 @@ describe Limelight::Builtin::Players::RadioButton do
     prop3.include_player(Limelight::Builtin::Players::RadioButton)
     prop3.group = "group 2"
     
-    group1 = @scene.button_groups["group 1"]
+    group1 = @scene.button_groups.get("group 1")
     group1.buttons.include?(@prop.radio_button).should == true
     group1.buttons.include?(prop2.radio_button).should == true
     group1.buttons.include?(prop3.radio_button).should == false
     
-    group2 = @scene.button_groups["group 2"]
+    group2 = @scene.button_groups.get("group 2")
     group2.buttons.include?(@prop.radio_button).should == false
     group2.buttons.include?(prop2.radio_button).should == false
     group2.buttons.include?(prop3.radio_button).should == true

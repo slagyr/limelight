@@ -38,7 +38,7 @@ public class FakeFileSystem extends FileSystem
   {
     final FakeFilePath filePath = (FakeFilePath) resolve(path);
     filePath.mkdirs();
-    workingDirectory = filePath.file();
+    workingDirectory = filePath.fake();
   }
 
   public String inspect()
@@ -200,7 +200,7 @@ public class FakeFileSystem extends FileSystem
       return parentPath == null ? fs.workingDirectory : resolvePath(parentPath);
     }
 
-    private FakeFile file()
+    private FakeFile fake()
     {
       if(file == null)
         file = resolvePath(path);
@@ -215,7 +215,7 @@ public class FakeFileSystem extends FileSystem
 
     public boolean exists()
     {
-      return file() != null;
+      return fake() != null;
     }
 
     public void mkdirs()
@@ -227,14 +227,14 @@ public class FakeFileSystem extends FileSystem
       parentPath.mkdirs();
 
       final FakeFile newDir = FakeFile.directory(fs.filename(path));
-      parentPath.file().add(newDir);
+      parentPath.fake().add(newDir);
     }
 
     public boolean isDirectory()
     {
       if(!exists())
         return false;
-      return file().isDirectory;
+      return fake().isDirectory;
     }
 
     public OutputStream outputStream()
@@ -242,15 +242,15 @@ public class FakeFileSystem extends FileSystem
       final FakeFilePath parentPath = new FakeFilePath(fs, fs.parentPath(path));
       parentPath.mkdirs();
       final FakeFile file = FakeFile.file(fs.filename(path));
-      parentPath.file().add(file);
+      parentPath.fake().add(file);
 
-      return new FakeFileOutputStream(file());
+      return new FakeFileOutputStream(fake());
     }
 
     public InputStream inputStream()
     {
       ensureExistence();
-      return new ByteArrayInputStream(file().content);
+      return new ByteArrayInputStream(fake().content);
     }
 
     public String getAbsolutePath()
@@ -264,16 +264,16 @@ public class FakeFileSystem extends FileSystem
     {
       if(!exists())
         return;
-      FakeFile parent = new FakeFilePath(fs, fs.parentPath(path)).file();
-      parent.children.remove(file().name);
+      FakeFile parent = new FakeFilePath(fs, fs.parentPath(path)).fake();
+      parent.children.remove(fake().name);
     }
 
     public String[] listing()
     {
       ensureExistence();
-      if(!file().isDirectory)
+      if(!fake().isDirectory)
         throw new LimelightException("Not a directory: " + path);
-      final Set<String> childNames = file().children.keySet();
+      final Set<String> childNames = fake().children.keySet();
       String[] files = new String[childNames.size()];
       int i = 0;
       for(String childName : childNames)
@@ -284,7 +284,12 @@ public class FakeFileSystem extends FileSystem
     public long lastModified()
     {
       ensureExistence();
-      return file().modificationTime;
+      return fake().modificationTime;
+    }
+
+    public File file()
+    {
+      throw new LimelightException("FakeFilePath.file() not supported");
     }
   }
 }

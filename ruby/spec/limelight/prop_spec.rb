@@ -1,4 +1,4 @@
-#- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
+''#- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
@@ -10,7 +10,7 @@ require 'limelight/production'
 describe Limelight::Prop do
 
   before(:each) do
-    @casting_director = mock("casting_director", :castPlayer => nil)
+    @casting_director = mock("casting_director", :castPlayer => nil, :hasPlayer => false)
     @scene = Limelight::Scene.new(:casting_director => @casting_director)
     @prop = Limelight::Prop.new(:id => "root", :name => "root_class")
     @scene.peer.illuminate

@@ -7,7 +7,7 @@ require 'limelight/dsl/prop_builder'
 describe Limelight::DSL::PropBuilder do
 
   before(:each) do
-    @caster = mock("caster", :castPlayer => nil)
+    @caster = mock("caster", :castPlayer => nil, :hasPlayer => false)
     @scene = Limelight::Scene.new(:name => "root", :casting_director => @caster)
   end
 
@@ -174,7 +174,7 @@ describe Limelight::DSL::PropBuilder do
 
   it "should build onto an existing block" do
     prop = Limelight::Prop.new
-    scene = Limelight::Scene.new(:casting_director => mock(:casting_director, :castPlayer => nil))
+    scene = Limelight::Scene.new(:casting_director => mock(:casting_director, :castPlayer => nil, :hasPlayer => false))
     scene << prop
     builder = Limelight::DSL::PropBuilder.new(prop)
     block = Proc.new { one; two { three } }

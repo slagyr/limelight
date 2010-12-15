@@ -8,7 +8,9 @@ import java.util.regex.Pattern;
 
 public class StringUtil
 {
-  public static String join(String delimiter, Object... tokens)
+
+
+  public static String join(Object[] tokens, String delimiter)
   {
     if(tokens.length == 0)
       return "";
@@ -26,6 +28,11 @@ public class StringUtil
     }
 
     return joined.toString();
+  }
+
+  public static String join(String delimiter, Object... tokens)
+  {
+    return join(tokens, delimiter);
   }
 
   public static boolean endsWithNewline(String value)
