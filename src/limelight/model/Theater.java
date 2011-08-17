@@ -4,6 +4,7 @@
 package limelight.model;
 
 import limelight.LimelightException;
+import limelight.Log;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.model.api.TheaterProxy;
@@ -46,6 +47,7 @@ public class Theater
 
   public void add(Stage stage)
   {
+    Log.info("Theater - adding stage: " + stage.getName());
     if(get(stage.getName()) != null)
       throw new LimelightException("Duplicate stage name: '" + stage.getName() + "'");
     stages.add(stage);

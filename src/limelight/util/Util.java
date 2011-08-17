@@ -3,8 +3,7 @@
 
 package limelight.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Util
 {
@@ -32,5 +31,14 @@ public class Util
       map.put(key, value);
     }
     return map;
+  }
+
+  public static String mapToString(Map<String, Object> map)
+  {
+    LinkedList<String> pairs = new LinkedList<String>();
+    for(String s : map.keySet())
+      pairs.add(s + ": " + map.get(s));
+
+    return "{" + StringUtil.join(", ", pairs.toArray()) + "}";
   }
 }

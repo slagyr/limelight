@@ -1,5 +1,10 @@
 (ns limelight.common)
 
+(def *log* (java.util.logging.Logger/getLogger  "clojure"))
+
+(defn log [& messages]
+  (.info *log* (apply str messages)))
+
 (defprotocol ResourceRoot
   (resource-path [this resource]))
 

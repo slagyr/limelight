@@ -3,6 +3,8 @@
 
 package limelight.ui.model;
 
+import limelight.Context;
+import limelight.Log;
 import limelight.util.ResourceLoader;
 import limelight.caching.SimpleCache;
 
@@ -25,14 +27,17 @@ public class ImageCache extends SimpleCache<String, Image>
   {
     Image image = retrieve(imagePath);
     if(image == null)
+    {
+      Log.info("ImageCache - loading image: " + imagePath);
       image = loadImage(imagePath);
+    }
     return image;
   }
 
   private BufferedImage loadImage(String imagePath) throws IOException
   {
-    String imageFilename = loader.pathTo(imagePath); 
-    BufferedImage image = ImageIO.read(new File(imageFilename));
+    String imageFilename = loader.pathTo(imagePath);
+    BufferedImage image = ImageIO.read(Context.fs().inputStream(imageFilename));
 
     if(!image.getColorModel().hasAlpha())
       image = imageWithAlpha(image);
