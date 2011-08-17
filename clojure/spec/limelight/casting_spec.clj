@@ -1,13 +1,13 @@
-(ns limelight.casting-director-spec
+(ns limelight.casting-spec
   (:use
     [speclj.core]
     [limelight.common :only (add-props)]
-    [limelight.casting-director]
+    [limelight.casting]
     [limelight.scene :only (new-scene)]
     [limelight.prop :only (new-prop)]
     [limelight.production :only (new-production)])
   (:import
-    [limelight.casting-director CastingDirector]))
+    [limelight.casting CastingDirector]))
 
 (defn setup-files [fs options]
   (doall (map (fn [[filename content]] (.createTextFile fs filename content)) options)))

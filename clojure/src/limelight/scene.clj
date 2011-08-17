@@ -1,9 +1,7 @@
 (ns limelight.scene
   (:use
-    [limelight.casting-director :only (new-casting-director)]
-    [limelight.common])
-  (:import
-    [limelight.casting-director CastingDirector]))
+    [limelight.casting :only (new-casting-director)]
+    [limelight.common]))
 
 (deftype Scene [peer casting-director]
 
@@ -13,6 +11,7 @@
 
   ResourceRoot
   (resource-path [this resource]
+    (log "(.getResourceLoader @(.peer this)): " (.getRoot (.getResourceLoader @(.peer this))))
     (.pathTo (.getResourceLoader @(.peer this)) resource)))
 
 
@@ -20,8 +19,8 @@
   (let [scene (Scene. (atom nil) (atom nil))
         casting-director (new-casting-director scene)
         peer (limelight.ui.model.ScenePanel. scene)]
-    (swap! (.peer scene) (fn [_] peer))
-    (swap! (.casting-director scene) (fn [_] casting-director))
+    (reset! (.peer scene) peer)
+    (reset! (.casting-director scene) casting-director)
     (.addOptions peer (limelight.util.OptionsMap. options))
     (.setCastingDirector peer casting-director)
     scene))

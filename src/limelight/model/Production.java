@@ -5,6 +5,7 @@ package limelight.model;
 
 import limelight.About;
 import limelight.Context;
+import limelight.Log;
 import limelight.builtin.BuiltInStyles;
 import limelight.events.EventHandler;
 import limelight.model.api.ProductionProxy;
@@ -202,15 +203,19 @@ public abstract class Production
 
   public void openScene(String scenePath, Stage stage, Map<String, Object> options)
   {
+    Log.info("Production - opening scene: " + scenePath + " on stage: " + stage.getName());
     Scene scene = loadScene(scenePath, options);
+    Log.info("Production - scene loaded: " + scene + " with options: " + Util.mapToString(options));
     final Map<String, RichStyle> sceneStyles = loadStyles(scene.getResourceLoader().getRoot(), styles);
     scene.setStyles(Styles.merge(sceneStyles, styles));
     stage.setScene(scene);
     stage.open();
+    Log.info("Production - scene opened");
   }
 
   public void openDefaultScenes(Map<String, Object> options)
   {
+    Log.info("Util.mapToString(options) = " + Util.mapToString(options));
     for(Stage stage : theater.getStages())
     {
       if(stage.getDefaultSceneName() != null)

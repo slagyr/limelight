@@ -4,7 +4,7 @@
     [limelight.scene])
   (:import
     [limelight.scene Scene]
-    [limelight.casting-director CastingDirector]))
+    [limelight.casting CastingDirector]))
 
 (describe "Scene"
 

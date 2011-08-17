@@ -17,8 +17,6 @@ import limelight.background.IdleThreadLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.os.OS;
 import limelight.ui.model.StageFrame;
-import sun.misc.FileURLMapper;
-
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 
@@ -44,7 +42,6 @@ public class Context
   public OS os;
   public boolean isShutdown;
   private boolean isShuttingDown;
-  
 
   protected Context()
   {

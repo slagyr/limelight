@@ -1,4 +1,4 @@
-(ns limelight.casting-director
+(ns limelight.casting
   (:use
     [limelight.common]
     [limelight.player]
@@ -46,3 +46,4 @@
 
 (defn new-casting-director [scene]
   (CastingDirector. scene (atom {})))
+

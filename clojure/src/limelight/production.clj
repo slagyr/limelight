@@ -8,7 +8,8 @@
     [limelight.scene :only (new-scene)]
     [limelight.util :only (read-src)])
   (:require
-    [limelight.production-player])
+    [limelight.production-player]
+    [limelight.core])
   (:import [limelight.theater Theater]))
 
 (deftype Production [peer theater ns]
@@ -38,10 +39,13 @@
         (build-stages @theater stages-src stages-path))))
 
   (loadScene [this scene-path options]
-    (let [scene (new-scene options)
+    (let [fs (limelight.Context/fs)
+          full-scene-path (resource-path this scene-path)
+          options (zipmap (.keySet options) (.values options))
+          options (assoc options :path full-scene-path :name (.filename fs full-scene-path))
+          scene (new-scene options)
           _ (.setProduction @(.peer scene) peer)
           props-path (resource-path scene "props.clj")
-          fs (limelight.Context/fs)
           props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
       (when props-src
         (build-props scene props-src props-path))

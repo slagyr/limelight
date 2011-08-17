@@ -89,6 +89,19 @@
   </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
+      <facet-type id="Clojure">
+        <modules>
+          <module name="limelight">
+            <files>
+              <file url="file://$PROJECT_DIR$/clj/project.clj" />
+              <file url="file://$PROJECT_DIR$/clj/src/clj/core.clj" />
+              <file url="file://$PROJECT_DIR$/clj/test/clj/test/core.clj" />
+              <file url="file://$PROJECT_DIR$/src/limelight/clj/prop.clj" />
+              <file url="file://$PROJECT_DIR$/src/limelight/clj/prop_test.clj" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
       <facet-type id="JRUBY">
         <modules>
           <module name="Limelight">
@@ -619,19 +632,6 @@
               <file url="file://$PROJECT_DIR$/spec/theater_spec.rb" />
               <file url="file://$PROJECT_DIR$/spec/util/downloader_spec.rb" />
               <file url="file://$PROJECT_DIR$/style_gen.rb" />
-            </files>
-          </module>
-        </modules>
-      </facet-type>
-      <facet-type id="Clojure">
-        <modules>
-          <module name="limelight">
-            <files>
-              <file url="file://$PROJECT_DIR$/clj/project.clj" />
-              <file url="file://$PROJECT_DIR$/clj/src/clj/core.clj" />
-              <file url="file://$PROJECT_DIR$/clj/test/clj/test/core.clj" />
-              <file url="file://$PROJECT_DIR$/src/limelight/clj/prop.clj" />
-              <file url="file://$PROJECT_DIR$/src/limelight/clj/prop_test.clj" />
             </files>
           </module>
         </modules>

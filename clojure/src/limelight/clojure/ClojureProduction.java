@@ -4,16 +4,12 @@
 package limelight.clojure;
 
 import clojure.lang.*;
-import clojure.lang.Compiler;
 import limelight.Boot;
 import limelight.LimelightException;
 import limelight.model.Production;
 import limelight.model.api.ProductionProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
-
-import java.io.StringReader;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ClojureProduction extends Production
@@ -46,27 +42,22 @@ public class ClojureProduction extends Production
   @Override
   protected Scene loadScene(String scenePath, Map<String, Object> options)
   {
-    return (Scene)proxy.loadScene(scenePath, options).getPeer();
+    return (Scene) proxy.loadScene(scenePath, options).getPeer();
   }
 
   @Override
-  protected Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
+  protected Map<String, RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
   {
     return proxy.loadStyles(path, extendableStyles);
   }
-
-  public static String newProductionSrc = "" +
-    "(load \"/limelight/production\")\n" +
-    "(limelight.production/new-production peerProduction)";
 
   @Override
   protected void prepareToOpen()
   {
     try
     {
-      Map<String, Object> bindings = new HashMap<String, Object>();
-      bindings.put("peerProduction", this);
-      proxy = (ProductionProxy)runClojureScript(bindings, newProductionSrc);
+      Var newProduction = loadVar("limelight.production", "new-production");
+      proxy = (ProductionProxy)newProduction.invoke(this);
     }
     catch(Exception e)
     {
@@ -85,28 +76,49 @@ public class ClojureProduction extends Production
     return proxy.send(name, args);
   }
 
-  public static Object runClojureScript(Map<String, ? extends Object> bindings, String script) throws Exception
+  protected static Var loadVar(String namespace, String varName)
   {
     try
     {
-      new Binding<String>(script);
-      Namespace ns = (Namespace) RT.CURRENT_NS.get();
-      Associative mappings = PersistentHashMap.EMPTY;
-      mappings = mappings.assoc(RT.CURRENT_NS, RT.CURRENT_NS.get());
-      for(Map.Entry<String, ? extends Object> e : bindings.entrySet())
-      {
-        String varName = e.getKey();
-        Symbol sym = Symbol.intern(varName);
-        Var var = Var.intern(ns, sym);
-        mappings = mappings.assoc(var, e.getValue());
-      }
-      Var.pushThreadBindings(mappings);
-      return Compiler.load(new StringReader(script));
+      Symbol namespaceSymbol = Symbol.intern(namespace);
+      Namespace ns = Namespace.find(namespaceSymbol);
+      if(ns != null)
+        return (Var) ns.getMapping(Symbol.create(varName));
+
+      RT.load(namespace, false);
+
+      ns = Namespace.find(namespaceSymbol);
+      if(ns != null)
+        return (Var) ns.getMapping(Symbol.create(varName));
+
+      final String coreFilename = nsToFilename(namespace);
+      RT.loadResourceScript(coreFilename);
+      ns = Namespace.find(namespaceSymbol);
+      if(ns != null)
+        return (Var) ns.getMapping(Symbol.create(varName));
+
+      throw new RuntimeException("var still not found after load attempts: " + namespace + "/" + varName);
     }
-    finally
+    catch(Exception e)
     {
-      Var.popThreadBindings();
+      e.printStackTrace();
+      throw new RuntimeException("Failed to load var:" + namespace + "/" + varName, e);
     }
+  }
+
+  public static String nsToFilename(Symbol symbol)
+  {
+    return nsToFilename(symbol.getName());
+  }
+
+  public static String nsToFilename(String name)
+  {
+    return name.replace('.', '/').replace('-', '_') + ".clj";
+  }
+
+  public static String nsToFilename(Namespace ns)
+  {
+    return nsToFilename(ns.getName());
   }
 
   // Example
@@ -114,9 +126,8 @@ public class ClojureProduction extends Production
   {
     Boot.boot();
 //    final String path = "clj/productions/hello-world";
-    final String path = "clj/productions/calc";
+    final String path = "clojure/productions/calc";
     final ClojureProduction production = new ClojureProduction(path);
-    production.prepareToOpen();
     production.open();
   }
 }
