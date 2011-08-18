@@ -4,16 +4,16 @@ import java.util.logging.*;
 
 public class Log
 {
-  public static Level level = Level.INFO;
+  public static Level defaultLevel = Level.WARNING;
   public static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).getParent();
 
   static {
     for(Handler h : logger.getHandlers())
       logger.removeHandler(h);
 
-    logger.setLevel(level);
+    logger.setLevel(defaultLevel);
     ConsoleHandler handler = new ConsoleHandler();
-    handler.setLevel(level);
+    handler.setLevel(defaultLevel);
     handler.setFormatter(new LimelightFormatter());
     logger.addHandler(handler);
   }
@@ -29,6 +29,26 @@ public class Log
         logRecord.getLoggerName(),
         logRecord.getMessage());
     }
+  }
+
+  public static void setLevel(Level defaultLevel)
+  {
+    logger.setLevel(defaultLevel);
+  }
+
+  public static void off()
+  {
+    setLevel(Level.OFF);
+  }
+
+  public static void infoOn()
+  {
+    setLevel(Level.INFO);
+  }
+
+  public static void warnOn()
+  {
+    setLevel(Level.WARNING);
   }
 
   public static void severe(String message)

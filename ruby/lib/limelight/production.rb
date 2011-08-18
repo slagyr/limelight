@@ -201,8 +201,7 @@ module Limelight
     def load_scene(scene_path, options={})
       options = Util::Hashes.for_ruby(options)
       instance_variables = options.delete(:instance_variables)
-      full_scene_path = scene_directory(scene_path)
-      scene = Scene.new(options.merge(:path => full_scene_path, :name => @fs.filename(full_scene_path)))
+      scene = Scene.new(options)
       scene.production = self
       if @fs.exists?(scene.props_file)
         content = @fs.read_text_file(scene.props_file)

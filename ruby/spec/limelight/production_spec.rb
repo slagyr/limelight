@@ -64,7 +64,7 @@ describe Limelight::Production, "Instance methods" do
   it "loads a scene from props.rb" do
     @fs.create_text_file("/test_prod/scene/props.rb", "parent do; child; end;")
 
-    scene = @production.load_scene("scene")
+    scene = @production.load_scene("scene", :name => "scene", :path => "/test_prod/scene")
 
     scene.should_not == nil
     scene.children.size.should == 1
