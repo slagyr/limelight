@@ -40,9 +40,6 @@
 
   (loadScene [this scene-path options]
     (let [fs (limelight.Context/fs)
-          full-scene-path (resource-path this scene-path)
-          options (zipmap (.keySet options) (.values options))
-          options (assoc options :path full-scene-path :name (.filename fs full-scene-path))
           scene (new-scene options)
           _ (.setProduction @(.peer scene) peer)
           props-path (resource-path scene "props.clj")

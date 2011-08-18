@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 require File.expand_path(File.dirname(__FILE__) + "/../lib/limelight/limelight_init")
-require 'spec'
+require 'rspec'
 require 'limelight/mouse'
 
 Java::limelight.Boot.boot
@@ -14,7 +14,6 @@ class Object
     stubs.each_pair { |key, value| self.stub!(key).and_return(value) }
   end
 end
-
 
 require 'fileutils'
 class TestDir

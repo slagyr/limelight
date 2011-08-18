@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
@@ -192,9 +193,23 @@ public class ProductionTest
 
     production.openScene("scenePath", stage, Util.toMap());
 
-    assertEquals("scenePath", production.openedScenePath);
+    assertEquals("scenePath", production.loadedScenePath);
     assertEquals(scene, stage.getScene());
     assertEquals(true, stage.opened);
+  }
+
+  @Test
+  public void openSceneUpdatesOptionsWithNameAndPath() throws Exception
+  {
+    production.loadProduction();
+    production.stubbedScene = new FakeScene();
+    final Map<String,Object> options = Util.toMap();
+
+    production.openScene("scenePath", new MockStage(), options);
+
+    assertNotSame(options, production.loadedSceneOptions);
+    assertEquals("scenePath", production.loadedSceneOptions.get("name"));
+    assertEquals("file:/foo/bar/scenePath", production.loadedSceneOptions.get("path"));
   }
 
   @Test

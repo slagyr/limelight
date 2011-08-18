@@ -23,8 +23,9 @@ public class FakeProduction extends Production
   public boolean stagesLoaded;
   public boolean illuminated;
   public Scene stubbedScene;
-  public String openedScenePath;
+  public String loadedScenePath;
   public String loadStylesPath;
+  public Map<String,Object> loadedSceneOptions;
 
   public FakeProduction(String name)
   {
@@ -80,7 +81,8 @@ public class FakeProduction extends Production
   @Override
   public Scene loadScene(String scenePath, Map<String, Object> options)
   {
-    openedScenePath = scenePath;
+    loadedScenePath = scenePath;
+    loadedSceneOptions = options;
     return stubbedScene;
   }
 

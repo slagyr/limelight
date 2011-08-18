@@ -204,8 +204,13 @@ public abstract class Production
   public void openScene(String scenePath, Stage stage, Map<String, Object> options)
   {
     Log.info("Production - opening scene: " + scenePath + " on stage: " + stage.getName());
-    Scene scene = loadScene(scenePath, options);
-    Log.info("Production - scene loaded: " + scene + " with options: " + Util.mapToString(options));
+    String sceneDir = resourceLoader.pathTo(scenePath);
+    Map<String, Object> sceneOptions = new HashMap<String, Object>(options);
+    sceneOptions.put("path", sceneDir);
+    sceneOptions.put("name", Context.fs().filename(sceneDir));
+
+    Scene scene = loadScene(scenePath, sceneOptions);
+    Log.info("Production - scene loaded: " + scene + " with options: " + Util.mapToString(sceneOptions));
     final Map<String, RichStyle> sceneStyles = loadStyles(scene.getResourceLoader().getRoot(), styles);
     scene.setStyles(Styles.merge(sceneStyles, styles));
     stage.setScene(scene);
