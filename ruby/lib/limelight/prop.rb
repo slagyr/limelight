@@ -14,7 +14,7 @@ module Limelight
   # It may have borders, backgrounds, margin, padding, and it may contain other props or text.  However it is the props'
   # Styles that determine their size and appearance.
   #
-  # A Prop may have one parent and many children.  Hense, when put together, they form a tree structure.  The Scene is
+  # A Prop may have one parent and many children.  Hence, when put together, they form a tree structure.  The Scene is
   # the root Prop of a tree.
   #
   class Prop
@@ -36,7 +36,7 @@ module Limelight
 
 
     # When creating a Prop, an optional Hash is accepted. These are called initialization options.
-    # The key/value pairs in the initialiaztion options will be used to
+    # The key/value pairs in the initialization options will be used to
     # set properties on the Prop, it Style, or included Player properties. These properties are not set
     # until the prop is added to a Prop tree with a Scene.
     #
@@ -95,7 +95,7 @@ module Limelight
       builder.instance_eval(& block)
     end
 
-    # Removes a child Prop.  The child Prop will be parentless after removal.
+    # Removes a child Prop.  The child Prop will be parent-less after removal.
     #
     def remove(child)
 #      if children.delete(child)
@@ -169,7 +169,7 @@ module Limelight
 
     # TODO get rid of me.... The Java Prop interface declares this method.
     def loader
-      return scene.production.root;
+      return scene.production.root
     end
 
     # Returns the current Production this Prop lives in.

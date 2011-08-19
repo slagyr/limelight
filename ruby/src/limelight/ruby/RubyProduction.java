@@ -11,7 +11,9 @@ import limelight.model.api.SceneProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 import org.jruby.Ruby;
+import org.jruby.RubyHash;
 import org.jruby.RubyInstanceConfig;
+import org.jruby.RubySymbol;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaSupport;
 import java.io.ByteArrayInputStream;
@@ -76,6 +78,8 @@ public class RubyProduction extends Production
   @Override
   public Scene loadScene(String scenePath, Map<String, Object> options)
   {
+//    final RubyHash rubyHash = new RubyHash(rubyRuntime);
+//    RubySymbol.newSymbol()
     final SceneProxy proxy = rubyProxy.loadScene(scenePath, options);
     return (Scene)proxy.getPeer();
   }

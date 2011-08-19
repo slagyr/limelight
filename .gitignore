@@ -5,5 +5,7 @@ pkg
 out
 *.DS_Store
 .rakeTasks
-ruby/lib/*.jar
+/ruby/lib/*.jar
+/ruby/.bundle
+/ruby/Gemfile.lock
 

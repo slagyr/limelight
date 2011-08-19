@@ -11,10 +11,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="limelight" />
-    <orderEntry type="module-library" scope="TEST">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.7.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../../lib/dev/junit-4.8.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
