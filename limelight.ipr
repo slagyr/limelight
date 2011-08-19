@@ -645,6 +645,16 @@
         <option name="myName" value="Project Default" />
         <option name="myLocal" value="false" />
         <inspection_tool class="NativeMethods" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NullableProblems" enabled="false" level="WARNING" enabled_by_default="false">
+          <option name="REPORT_NULLABLE_METHOD_OVERRIDES_NOTNULL" value="true" />
+          <option name="REPORT_NOT_ANNOTATED_METHOD_OVERRIDES_NOTNULL" value="true" />
+          <option name="REPORT_NOTNULL_PARAMETER_OVERRIDES_NULLABLE" value="true" />
+          <option name="REPORT_NOT_ANNOTATED_PARAMETER_OVERRIDES_NOTNULL" value="true" />
+          <option name="REPORT_NOT_ANNOTATED_GETTER" value="true" />
+          <option name="REPORT_NOT_ANNOTATED_SETTER_PARAMETER" value="true" />
+          <option name="REPORT_ANNOTATION_NOT_PROPAGATED_TO_OVERRIDERS" value="true" />
+          <option name="REPORT_NULLS_PASSED_TO_NON_ANNOTATED_METHOD" value="true" />
+        </inspection_tool>
         <inspection_tool class="RuntimeExec" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SuspiciousSystemArraycopy" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="SystemExit" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -680,24 +690,6 @@
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
-  </component>
-  <component name="NullableNotNullManager">
-    <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
-    <option name="myDefaultNotNull" value="org.jetbrains.annotations.NotNull" />
-    <option name="myNullables">
-      <value>
-        <list size="0" />
-      </value>
-    </option>
-    <option name="myNotNulls">
-      <value>
-        <list size="3">
-          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
-          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
-          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
-        </list>
-      </value>
-    </option>
   </component>
   <component name="Palette2">
     <group name="Swing">
