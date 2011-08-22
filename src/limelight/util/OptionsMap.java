@@ -29,6 +29,14 @@ public class OptionsMap extends HashMap<String, Object>
   }
 
   @Override
+  public Object put(String key, Object value)
+  {
+    if(key == null)
+      return null;
+    return super.put(toKey(key), value);
+  }
+
+  @Override
   public boolean containsKey(Object key)
   {
     return key != null && super.containsKey(toKey(key));
@@ -42,9 +50,11 @@ public class OptionsMap extends HashMap<String, Object>
     return super.remove(toKey(key));
   }
   
-  private String toKey(Object key)
+  public static String toKey(Object key)
   {
-    if(key instanceof String)
+    if(key == null)
+      return null;
+    else if(key instanceof String)
       return (String)key;
     else
     {
@@ -58,7 +68,7 @@ public class OptionsMap extends HashMap<String, Object>
 
   public String inspect()
   {
-    StringBuffer buffer = new StringBuffer("{ ");
+    StringBuilder buffer = new StringBuilder("{ ");
     boolean first = true;
     for(Map.Entry<String, Object> entry : entrySet())
     {

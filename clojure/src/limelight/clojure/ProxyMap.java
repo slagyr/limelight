@@ -1,7 +1,7 @@
 package limelight.clojure;
 
 import clojure.lang.*;
-
+import limelight.util.OptionsMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -12,11 +12,21 @@ import java.util.Map;
  */
 public class ProxyMap extends APersistentMap
 {
-  private Map<String, Object> map;
+  private OptionsMap map;
 
-  public ProxyMap(Map<String, Object> map)
+  public ProxyMap()
+  {
+    map = new OptionsMap();
+  }
+
+  public ProxyMap(OptionsMap map)
   {
     this.map = map;
+  }
+
+  public Map<String, Object> getMap()
+  {
+    return map;
   }
 
   public boolean containsKey(Object key)
@@ -69,7 +79,7 @@ public class ProxyMap extends APersistentMap
 
   private String stringify(Object keyObj)
   {
-    return keyObj instanceof Keyword ? ((Keyword) keyObj).getName() : keyObj.toString();
+    return OptionsMap.toKey(keyObj);
   }
 
   public int count()
