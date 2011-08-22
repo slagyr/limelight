@@ -6,7 +6,7 @@
     [limelight.prop-building :only (build-props)]
     [limelight.style-building :only (build-styles)]
     [limelight.scene :only (new-scene)]
-    [limelight.util :only (read-src)])
+    [limelight.util :only (read-src map-for-clojure)])
   (:require
     [limelight.production-player]
     [limelight.core])
@@ -40,6 +40,7 @@
 
   (loadScene [this scene-path options]
     (let [fs (limelight.Context/fs)
+          options (map-for-clojure options)
           scene (new-scene options)
           _ (.setProduction @(.peer scene) peer)
           props-path (resource-path scene "props.clj")
@@ -52,9 +53,9 @@
     (let [styles-path (str path "/styles.clj")
           fs (limelight.Context/fs)
           styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)]
-          (if styles-src
-            (build-styles {} styles-src styles-path)
-            {})))
+      (if styles-src
+        (build-styles {} styles-src styles-path)
+        {})))
 
   ResourceRoot
   (resource-path [this resource]

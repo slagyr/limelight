@@ -6,7 +6,7 @@
 
 (describe "PersistentJavaMap"
 
-  (with java-map (java.util.HashMap.))
+  (with java-map (limelight.util.OptionsMap.))
   (with proxy-map (ProxyMap. @java-map))
 
   (it "can retrieve values"

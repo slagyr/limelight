@@ -1,6 +1,7 @@
 (ns limelight.scene
   (:use
     [limelight.casting :only (new-casting-director)]
+    [limelight.util :only (map-for-java)]
     [limelight.common]))
 
 (deftype Scene [peer casting-director]
@@ -21,7 +22,7 @@
         peer (limelight.ui.model.ScenePanel. scene)]
     (reset! (.peer scene) peer)
     (reset! (.casting-director scene) casting-director)
-    (.addOptions peer (limelight.util.OptionsMap. options))
+    (.addOptions peer (map-for-java options))
     (.setCastingDirector peer casting-director)
     scene))
 
