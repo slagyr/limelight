@@ -3,10 +3,15 @@
     [limelight.clojure ProxyMap]))
 
 (defn read-src [src-path src-content]
-  (let [rdr (-> (java.io.StringReader. src-content) (clojure.lang.LineNumberingPushbackReader.))
+  (let [rdr (java.io.StringReader. src-content)
         parent-path (.parentPath (limelight.Context/fs) src-path)
         src-filename (.filename (limelight.Context/fs) src-path)]
-    (clojure.lang.Compiler/load rdr parent-path src-filename)))
+    (try
+      (clojure.lang.Compiler/load rdr parent-path src-filename)
+      (catch clojure.lang.Compiler$CompilerException e
+        (if-let [cause (.getCause e)]
+          (throw cause))
+          (throw e)))))
 
 (defn map-for-clojure [the-map]
   (cond
