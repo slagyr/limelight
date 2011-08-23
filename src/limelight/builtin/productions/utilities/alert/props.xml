@@ -1,9 +1,7 @@
 <props>
     <title id="title" text="Limelight Alert"/>
     <advice id="advice"/>
-    <!--text=@message-->
     <buttons>
         <okButton id="okButton" text="OK" players="button"/>
-        <!--on_button_pushed => "production.process_alert_response(true)"-->
     </buttons>
 </props>

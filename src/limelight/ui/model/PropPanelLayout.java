@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.styles.Style;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.GreedyDimensionValue;

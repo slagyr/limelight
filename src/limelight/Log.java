@@ -51,6 +51,11 @@ public class Log
     setLevel(Level.WARNING);
   }
 
+  public static void debugOn()
+  {
+    setLevel(Level.CONFIG);
+  }
+
   public static void severe(String message)
   {
     logger.severe(message);
@@ -67,6 +72,11 @@ public class Log
   }
 
   public static void config(String message)
+  {
+    logger.config(message);
+  }
+
+  public static void debug(String message)
   {
     logger.config(message);
   }

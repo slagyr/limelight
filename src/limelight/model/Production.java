@@ -220,7 +220,6 @@ public abstract class Production
 
   public void openDefaultScenes(Map<String, Object> options)
   {
-    Log.info("Util.mapToString(options) = " + Util.mapToString(options));
     for(Stage stage : theater.getStages())
     {
       if(stage.getDefaultSceneName() != null)

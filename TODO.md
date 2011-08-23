@@ -1,7 +1,4 @@
-* extending styles for Java
-* extending styles for Clojure
 * remote API to replace DRb
-* Fix Alert window size
 * Unified build...
     * Limelight
     * Utilities Production
@@ -10,7 +7,6 @@
 * Configurable Test infrastructure for each language
 * rewrite 9-patch
 * Test send method on productions
-* Update JRuby
 * Resolve JNA issue
 
 

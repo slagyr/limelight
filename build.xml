@@ -13,7 +13,7 @@
     <path id="classpath">
         <pathelement path="${classes}"/>
         <fileset dir="${lib}">
-            <include name="*.jar"/>
+            <include name="**/*.jar"/>
             <exclude name="limelight.jar"/>
         </fileset>
     </path>
