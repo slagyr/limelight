@@ -68,6 +68,7 @@
                 <fileset dir="${src}">
                     <include name="**/*Test.java"/>
                     <exclude name="**/Abstract*Test.java"/>
+                    <exclude name="**/builtin/utilities/**/*.java"/>
                     <include name="**/*Suite.java"/>
                 </fileset>
             </batchtest>
