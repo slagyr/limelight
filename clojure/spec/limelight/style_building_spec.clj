@@ -53,7 +53,28 @@
       limelight.LimelightException
       "Can't extend missing style: 'missing'"
       (build-styles {} "(style :two (extends :missing) :height 200)" "styles.clj")))
+
+  (it "allows styles to extend multiple styles"
+    (let [src "(style :one :width 100) (style :two :height 200) (style :three (extends :one :two))"
+          styles (build-styles {} src "styles.clj")
+          one (styles "one")
+          two (styles "two")
+          three (styles "three")]
+      (should= 3 (count styles))
+      (should= true (.hasExtension three one))
+      (should= true (.hasExtension three two))
+      (should= "200" (.getHeight three))
+      (should= "100" (.getWidth three))))
+
+  (it "extends styles form the extensable-styles map"
+    (let [extendable (build-styles {} "(style :one :width 100)", "extensions.clj")
+          styles (build-styles {} "(style :two (extends :one) :height 200)" "styles.clj" extendable)
+          one (extendable "one")
+          two (styles "two")]
+      (should= 1 (count styles))
+      (should= true (.hasExtension two one))
+      (should= "200" (.getHeight two))
+      (should= "100" (.getWidth two))))
   )
 
 (run-specs)
-

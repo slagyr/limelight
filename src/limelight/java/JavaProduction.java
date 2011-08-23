@@ -74,10 +74,7 @@ public class JavaProduction extends Production
   protected Map<String, RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
   {
     final String stylesPath = Context.fs().join(path, "styles.xml");
-    final Map<String, RichStyle> map = new HashMap<String, RichStyle>();
-    for(Element styleElement : Xml.loadRootElements(stylesPath))
-      Xml.toStyle(styleElement, map);
-    return map;
+    return Xml.toStyles(stylesPath, new HashMap<String, RichStyle>(), extendableStyles);
   }
 
   @Override
