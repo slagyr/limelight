@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.Log;
 import limelight.model.Stage;
 import limelight.styles.abstrstyling.*;
 import limelight.model.api.StageProxy;

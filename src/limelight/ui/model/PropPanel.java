@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.LimelightException;
+import limelight.Log;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.model.api.CastingDirector;
@@ -402,7 +403,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     proxy.applyOptions(illuminateOptions);
 
     for(Map.Entry<String, Object> entry : illuminateOptions.entrySet())
-      System.err.println("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue()); // TODO MDM - This should get logged
+      Log.warn("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue());
 
     options = null;
 

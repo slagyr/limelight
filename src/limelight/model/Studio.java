@@ -5,6 +5,7 @@ package limelight.model;
 
 import limelight.Context;
 import limelight.LimelightException;
+import limelight.Log;
 import limelight.builtin.BuiltinBeacon;
 import limelight.events.Event;
 import limelight.events.EventAction;
@@ -173,9 +174,8 @@ e.printStackTrace();
   {
     if(utilitiesProduction == null)
     {
-//      String path = FileUtil.pathTo(Context.instance().limelightHome, "ruby", "lib", "limelight", "builtin", "utilities_production");
       String path = fs.join(BuiltinBeacon.getBuiltinProductionsPath(), "utilities");
-System.err.println("utilities path = " + path);
+      Log.info("Studio - Utilities production is located at: " + path);
       try
       {
         Production production = productionStub == null ? instantiateProduction(path) : productionStub;
