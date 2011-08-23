@@ -3,6 +3,7 @@
     [limelight.util :only (read-src)]))
 
 (declare *styles*)
+(declare *extendable-styles*)
 
 (defn find-or-create [name]
   (or (@*styles* name)
@@ -24,12 +25,13 @@
       (map? (first body)) (recur (merge attrs (first body)) (rest body))
       :else (merge attrs (apply hash-map body)))))
 
-(defn extends [style ext-name]
-  (let [ext-name (name ext-name)
-        extension (@*styles* ext-name)]
-    (if extension
-      (.addExtension style extension)
-      (throw (limelight.LimelightException. (format "Can't extend missing style: '%s'" (name ext-name))))))
+(defn extends [style & ext-names]
+  (doseq [ext-name ext-names]
+    (let [ext-name (name ext-name)
+          extension (or (@*styles* ext-name) (*extendable-styles* ext-name))]
+      (if extension
+        (.addExtension style extension)
+        (throw (limelight.LimelightException. (format "Can't extend missing style: '%s'" (name ext-name)))))))
   style)
 
 (defmacro style [name & body]
@@ -42,8 +44,11 @@
          (limelight.util.Options/apply style# (limelight.util.OptionsMap. ~attributes))
          (write-to-map name# style#)))))
 
-(defn build-styles [styles src path]
-  (binding [*ns* (the-ns 'limelight.style-building)
-            *styles* (atom styles)]
-    (read-src path src)
-    @*styles*))
+(defn build-styles
+  ([styles src path] (build-styles styles src path {}))
+  ([styles src path extendable-styles]
+    (binding [*ns* (the-ns 'limelight.style-building)
+              *styles* (atom styles)
+              *extendable-styles* extendable-styles]
+      (read-src path src)
+      @*styles*)))

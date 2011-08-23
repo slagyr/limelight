@@ -96,13 +96,39 @@ public class Xml
     return prop;
   }
 
-  public static void toStyle(Element styleElement, Map<String, RichStyle> map)
+  public static Map<String, RichStyle> toStyles(String stylesPath, Map<String, RichStyle> map, Map<String, RichStyle> extensions)
+  {
+    for(Element styleElement : Xml.loadRootElements(stylesPath))
+      Xml.toStyle(styleElement, map, extensions);
+    return map;
+  }
+
+  public static void toStyle(Element styleElement, Map<String, RichStyle> map, Map<String, RichStyle> extensions)
   {
     String name = styleElement.getNodeName();
     final OptionsMap options = loadOptions(styleElement);
+    Object extensionNames = options.remove("extends");
     RichStyle style = new RichStyle();
     Options.apply(style, options);
+    applyExtensions(extensionNames, style, map, extensions);
     map.put(name, style);
+  }
+
+  private static void applyExtensions(Object extensionNames, RichStyle style, Map<String, RichStyle> map, Map<String, RichStyle> extensions)
+  {
+    if(extensionNames == null)
+      return;
+    String[] names = extensionNames.toString().split("[ ,]+");
+    for(String name : names)
+    {
+      RichStyle extension = map.get(name);
+      if(extension == null)
+        extension = extensions.get(name);
+
+      if(extension == null)
+        throw new LimelightException("Can't extend missing style: '" + name + "'");
+      style.addExtension(extension);
+    }
   }
 
   public static void toStage(JavaTheater theater, Element stageElement)

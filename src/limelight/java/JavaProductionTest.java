@@ -114,10 +114,9 @@ public class JavaProductionTest
   }
   
   @Test
-  public void loadRealsStylesForScene() throws Exception
+  public void loadRealStylesForScene() throws Exception
   {
     fs.createTextFile("/testProduction/aScene/styles.xml", "<styles><high x='0' y='99' float='on'/><far x='99' y='0' float='off'/></styles>");
-    production.loadScene("aScene", new OptionsMap());
 
     final Map<String, RichStyle> styles = production.loadStyles("/testProduction/aScene", new HashMap<String, RichStyle>());
 

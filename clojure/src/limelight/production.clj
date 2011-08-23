@@ -54,7 +54,7 @@
           fs (limelight.Context/fs)
           styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)]
       (if styles-src
-        (build-styles {} styles-src styles-path)
+        (build-styles {} styles-src styles-path extendable-styles)
         {})))
 
   ResourceRoot
