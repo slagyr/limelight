@@ -43,10 +43,10 @@ namespace "utilities" do
   end
 
   desc "Compile the java source code"
-  task "compile" => ["compile:src", "compile:test"]
+  task "compile" => %w{compile:src compile:test}
 
   desc "Deployes the Utilities production into compiled Limelight code"
-  task "deploy" do
+  task "deploy" => %w{clean compile:src} do
     deploy_root = File.join(LIMELIGHT_ROOT, "classes/limelight/builtin/productions")
     FileUtils.mkdir_p(deploy_root)
     FileUtils.cp_r(UTILITIES_ROOT, deploy_root)
@@ -60,6 +60,6 @@ namespace "utilities" do
   end
 
   desc "Compiles, deployes, and tests the Utilities production"
-  task "build" => ["clean", "compile", "deploy", "test"]
+  task "build" => %w{deploy compile:test test}
 
 end
