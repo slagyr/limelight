@@ -32,9 +32,20 @@ end
 def javac(dir, glob, classpath)
   in_dir(dir) do
     src_files = Dir.glob(glob)
+    puts "compiling #{src_files.size} files in #{dir}..."
     with_tmp_file(".javaFiles", src_files) do
       run_command "javac -cp #{classpath} -d classes @.javaFiles"
     end
+  end
+end
+
+def junit(dir, classpath)
+  test_files = in_dir(File.join(dir, "test")) { Dir.glob("**/*Test.java") }
+  test_class_names = test_files.map { |name| name.gsub("/", ".").gsub(/.java\Z/, "") }
+
+  puts "running #{test_files.size} test files in #{dir}..."
+  with_tmp_file(".testClasses", test_class_names) do
+    run_command "java -cp #{classpath} limelight.TestRunner"
   end
 end
 

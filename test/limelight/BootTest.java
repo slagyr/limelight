@@ -3,6 +3,8 @@
 
 package limelight;
 
+import limelight.Boot;
+import limelight.Context;
 import limelight.audio.RealAudioPlayer;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
