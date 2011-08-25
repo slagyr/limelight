@@ -832,7 +832,7 @@
       <module fileurl="file://$PROJECT_DIR$/clj/clojure.iml" filepath="$PROJECT_DIR$/clj/clojure.iml" />
       <module fileurl="file://$PROJECT_DIR$/limelight.iml" filepath="$PROJECT_DIR$/limelight.iml" />
       <module fileurl="file://$PROJECT_DIR$/ruby/ruby.iml" filepath="$PROJECT_DIR$/ruby/ruby.iml" />
-      <module fileurl="file://$PROJECT_DIR$/src/limelight/builtin/productions/utilities/utilities.iml" filepath="$PROJECT_DIR$/src/limelight/builtin/productions/utilities/utilities.iml" />
+      <module fileurl="file://$PROJECT_DIR$/productions/utilities/utilities.iml" filepath="$PROJECT_DIR$/productions/utilities/utilities.iml" />
     </modules>
   </component>
   <component name="ProjectResources">

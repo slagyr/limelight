@@ -7,7 +7,7 @@ import limelight.ui.model.MockTextAccessor;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TextColorAttributeTest extends AbstractStyleAttributeTest
+public class TextColorAttributeTest extends AbstractStyleAttributeTestBase
 {
   @Before
   public void setUp() throws Exception

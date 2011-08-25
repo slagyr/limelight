@@ -209,7 +209,7 @@ public class ProductionTest
 
     assertNotSame(options, production.loadedSceneOptions);
     assertEquals("scenePath", production.loadedSceneOptions.get("name"));
-    assertEquals("file:/foo/bar/scenePath", production.loadedSceneOptions.get("path"));
+    assertEquals("/foo/bar/scenePath", production.loadedSceneOptions.get("path"));
   }
 
   @Test

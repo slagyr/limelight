@@ -6,7 +6,7 @@ package limelight.styles.attributes;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LeftBorderWidthAttributeTest extends AbstractStyleAttributeTest
+public class LeftBorderWidthAttributeTest extends AbstractStyleAttributeTestBase
 {
   @Before
   public void setUp() throws Exception

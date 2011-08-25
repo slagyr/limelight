@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 
 public class StyleAttributeCompilerTest
 {
-  private TestableStyleAttributeCompilerTest compiler;
+  private TestableStyleAttributeCompiler compiler;
 
-  private static class TestableStyleAttributeCompilerTest extends StyleCompiler
+  private static class TestableStyleAttributeCompiler extends StyleCompiler
   {
     public StyleValue compile(Object value)
     {
@@ -23,7 +23,7 @@ public class StyleAttributeCompilerTest
   @Before
   public void setUp() throws Exception
   {
-    compiler = new TestableStyleAttributeCompilerTest();
+    compiler = new TestableStyleAttributeCompiler();
   }
 
   @Test

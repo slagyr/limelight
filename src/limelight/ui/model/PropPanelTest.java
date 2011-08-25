@@ -585,7 +585,7 @@ public class PropPanelTest extends Assert
 
     List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, panelCastings.size());
-    assertEquals("/players/jumpy", panelCastings.get(0));
+    assertEquals("file:/players/jumpy", panelCastings.get(0));
   }
 
   @Test
@@ -598,9 +598,9 @@ public class PropPanelTest extends Assert
 
     List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(3, panelCastings.size());
-    assertEquals("/players/jumpy", panelCastings.get(0));
-    assertEquals("/players/itchy", panelCastings.get(1));
-    assertEquals("/players/scratchy", panelCastings.get(2));
+    assertEquals("file:/players/jumpy", panelCastings.get(0));
+    assertEquals("file:/players/itchy", panelCastings.get(1));
+    assertEquals("file:/players/scratchy", panelCastings.get(2));
   }
 
   @Test
@@ -613,7 +613,7 @@ public class PropPanelTest extends Assert
 
     List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, panelCastings.size());
-    assertEquals("/players/jumpy", panelCastings.get(0));
+    assertEquals("file:/players/jumpy", panelCastings.get(0));
   }
 
   @Test

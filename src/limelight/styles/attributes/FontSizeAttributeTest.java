@@ -6,7 +6,7 @@ package limelight.styles.attributes;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FontSizeAttributeTest extends AbstractStyleAttributeTest
+public class FontSizeAttributeTest extends AbstractStyleAttributeTestBase
 {
   @Before
   public void setUp() throws Exception

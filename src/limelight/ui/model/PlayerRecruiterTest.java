@@ -40,27 +40,27 @@ public class PlayerRecruiterTest
   @Test
   public void recruitingFromTheScene() throws Exception
   {
-    castingDirector.recruitablePath = "/path/to/testProduction/theScene/players";
+    castingDirector.recruitablePath = "file:/path/to/testProduction/theScene/players";
 
     recruiter.recruit(panel, "blah", castingDirector);
 
     assertEquals(1, castingDirector.castings.size());
     final List<String> casts = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, casts.size());
-    assertEquals("/path/to/testProduction/theScene/players/blah", casts.get(0));
+    assertEquals("file:/path/to/testProduction/theScene/players/blah", casts.get(0));
   }
 
   @Test
   public void recruitingFromTheProduction() throws Exception
   {
-    castingDirector.recruitablePath = "/path/to/testProduction/players";
+    castingDirector.recruitablePath = "file:/path/to/testProduction/players";
 
     recruiter.recruit(panel, "blah", castingDirector);
 
     assertEquals(1, castingDirector.castings.size());
     final List<String> casts = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, casts.size());
-    assertEquals("/path/to/testProduction/players/blah", casts.get(0));
+    assertEquals("file:/path/to/testProduction/players/blah", casts.get(0));
   }
 
   @Test

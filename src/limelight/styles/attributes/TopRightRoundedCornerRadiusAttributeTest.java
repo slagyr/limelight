@@ -6,7 +6,7 @@ package limelight.styles.attributes;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TopRightRoundedCornerRadiusAttributeTest extends AbstractStyleAttributeTest
+public class TopRightRoundedCornerRadiusAttributeTest extends AbstractStyleAttributeTestBase
 {
   @Before
   public void setUp() throws Exception

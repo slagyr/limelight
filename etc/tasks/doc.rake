@@ -1,4 +1,4 @@
-require 'rake/rdoctask'
+require 'rdoc/task'
 
 WEB_ROOT = File.expand_path('~/Projects/slagyr.github.com/limelight/')
 

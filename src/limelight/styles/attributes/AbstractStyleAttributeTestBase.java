@@ -14,7 +14,7 @@ import org.junit.Assert;
 
 import java.awt.image.BufferedImage;
 
-public class AbstractStyleAttributeTest extends Assert
+public class AbstractStyleAttributeTestBase extends Assert
 {
   protected StyleAttribute attribute;
   protected MockChangeablePanel panel;
