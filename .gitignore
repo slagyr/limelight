@@ -9,4 +9,5 @@ out
 /ruby/.bundle
 /ruby/Gemfile.lock
 .testClasses
+limelight.jar
 
