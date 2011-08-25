@@ -74,7 +74,7 @@ public class TextPanelTest
   {
     useFrame();
     panel.doLayout();
-    assertEquals(59, panel.getWidth());
+    assertEquals(58, panel.getWidth());
     assertEquals(14, panel.getHeight());
   }
 
@@ -84,7 +84,7 @@ public class TextPanelTest
     useFrame();
     panel.setText("Once upon a time, there was a developer working on a tool called Limelight.", parent);
     panel.doLayout();
-    assertEquals(true, panel.getWidth() >= 98 && panel.getWidth() <= 99);
+    assertEquals(true, panel.getWidth() >= 97 && panel.getWidth() <= 99);
     assertEquals(69, panel.getHeight());
   }
 

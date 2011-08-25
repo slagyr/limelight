@@ -8,4 +8,5 @@ out
 /ruby/lib/*.jar
 /ruby/.bundle
 /ruby/Gemfile.lock
+.testClasses
 

@@ -1,15 +1,14 @@
-require 'java'
+#require 'java'
 PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
 TASK_DIR = File.expand_path(File.dirname(__FILE__) + "/etc/tasks")
 Gem.clear_paths
 ENV["GEM_PATH"] = File.expand_path(File.dirname(__FILE__) + "/etc/gems")
 
 def run_command(command)
-  output = `#{command}`
+  system command
   exit_code = $?.exitstatus
   if exit_code != 0
     puts "Command failed with code #{exit_code}: #{command}"
-    raise output
   else
     puts "Command executed successfully: #{command}"
   end
