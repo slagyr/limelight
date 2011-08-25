@@ -56,15 +56,10 @@ namespace "utilities" do
 
   desc "Run Utilities JUnit tests"
   task "test" do
-    test_files = in_dir(File.join(UTILITIES_ROOT, "test")) { Dir.glob("**/*Test.java") }
-    test_class_names = test_files.map { |name| name.gsub("/", ".").gsub(".java", "") }
-
-    with_tmp_file(".testClasses", test_class_names) do
-      run_command "java -cp #{classpath} limelight.TestRunner"
-    end
+    junit(UTILITIES_ROOT, classpath)
   end
 
   desc "Compiles, deployes, and tests the Utilities production"
-  task "build" => ["compile", "deploy", "test"]
+  task "build" => ["clean", "compile", "deploy", "test"]
 
 end

@@ -36,6 +36,7 @@ public class NanoTimerTest extends TestCase
 
   public void testSleeping()
   {
+    System.gc();
     long before = System.nanoTime();
     timer.sleep(TEN_MILLION);
     long after = System.nanoTime();

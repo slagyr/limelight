@@ -1,8 +1,8 @@
 namespace "java" do
 
   def classpath
-    elems = Dir.glob("lib/**/*.jar")
-    elems.unshift "classes"
+    elems = Dir.glob("#{LIMELIGHT_ROOT}/lib/**/*.jar")
+    elems.unshift "#{LIMELIGHT_ROOT}/classes"
     elems.join(":")
   end
 
@@ -11,31 +11,43 @@ namespace "java" do
     puts classpath
   end
 
+  desc "Cleans classes and generated build files"
+  task "clean" do
+    in_dir(LIMELIGHT_ROOT) do
+      FileUtils.rm_rf "classes"
+    end
+  end
+
+  desc "Creates required files"
+  task "init" do
+    in_dir(LIMELIGHT_ROOT) do
+      FileUtils.mkdir("classes") if !File.exists?("classes")
+    end
+  end
+
+  namespace "compile" do
+
+    desc "Compile limelight production source"
+    task "src" => ["init"] do
+      javac(LIMELIGHT_ROOT, "src/**/*.java", classpath)
+    end
+
+    desc "Compile limelight test source"
+    task "test" => ["init"] do
+      javac(LIMELIGHT_ROOT, "test/**/*.java", classpath)
+    end
+
+  end
+
   desc "Compile the java source code"
-  task "compile" do
-    run_command 'ant compile'
-  end
+  task "compile" => ["compile:src", "compile:test"]
 
-  desc "Run all JUnit tests"
+  desc "Run limelight JUnit tests"
   task "test" do
-    pwd = Dir.getwd
-    Dir.chdir File.join(pwd, "classes")
-    test_class_paths = Dir.glob("**/*Test.class")
-    Dir.chdir pwd
-
-    test_class_names = test_class_paths.map {|name| name.gsub("/", ".").gsub(".class", "")}
-
-    test_class_names = test_class_names.delete_if do |name|
-      name =~ /limelight.builtin.productions.utilitieses/
-    end
-
-    File.open(".testClasses", "w") do |f|
-      test_class_names.each { |name| f.puts name }
-    end
-
-    run_command "java -cp #{classpath} limelight.TestRunner"
-
-    File.delete(".textClasses")
+    junit(LIMELIGHT_ROOT, classpath)
   end
+
+  desc "Compiles, and tests the limelight java code"
+  task "build" => ["clean", "compile", "test"]
 
 end
