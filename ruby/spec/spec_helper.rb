@@ -5,6 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../lib/limelight/limelight_i
 require 'rspec'
 require 'limelight/mouse'
 
+Java::limelight.Boot.startBackgroundThreads = false
 Java::limelight.Boot.boot
 context = Limelight::Context.instance
 context.frameManager = Java::limelight.ui.model.InertFrameManager.new
@@ -27,7 +28,7 @@ class TestDir
 
     def path(path)
       return File.join(root, path)
-    end  
+    end
 
     def clean
       Dir.entries(root).each do |file|
@@ -36,7 +37,7 @@ class TestDir
     end
 
     def create_file(path, content)
-      filename =  self.path(path)
+      filename = self.path(path)
       establish_dir(File.dirname(filename))
       File.open(filename, 'w') { |file| file.write content }
       return filename
@@ -51,22 +52,14 @@ class TestDir
   end
 end
 
-module Spec #:nodoc:
-  module Example
-    class ExampleGroup
-
-      def mouse
-        if @mouse.nil?
-          @mouse = Limelight::Mouse.new
-        end
-        return @mouse
-      end
-
+RSpec.configure do |config|
+  def mouse
+    if @mouse.nil?
+      @mouse = Limelight::Mouse.new
     end
+    return @mouse
   end
 end
-
-
 
 # TODO Delete me
 class MouseEvent

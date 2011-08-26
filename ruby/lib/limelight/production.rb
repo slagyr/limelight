@@ -191,6 +191,7 @@ module Limelight
         begin
           eval content
         rescue Exception => e
+          puts e.backtrace
           raise DSL::BuildException.new(stages_file, content, e)
         end
       end
