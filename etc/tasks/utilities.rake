@@ -28,6 +28,9 @@ namespace "utilities" do
     end
   end
 
+  desc "Install dependencies"
+  task "deps"
+
   namespace "compile" do
 
     desc "Compile Utilities production source"

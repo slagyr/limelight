@@ -6,6 +6,14 @@ namespace "java" do
     elems.join(":")
   end
 
+  def prod_deps
+    ["http://download.java.net/maven/2/net/java/dev/jna/jna/3.0.9/jna-3.0.9.jar"]
+  end
+
+  def dev_deps
+    ["https://github.com/downloads/KentBeck/junit/junit-4.8.2.jar"]
+  end
+
   desc "Prints the calculated classpath"
   task "classpath" do
     puts classpath
@@ -22,7 +30,14 @@ namespace "java" do
   task "init" do
     in_dir(LIMELIGHT_ROOT) do
       FileUtils.mkdir("classes") if !File.exists?("classes")
+      FileUtils.mkdir("lib") if !File.exists?("lib")
+      FileUtils.mkdir("lib/dev") if !File.exists?("lib/dev")
     end
+  end
+
+  desc "Install dependencies"
+  task "deps" => %w{init} do
+    deps(LIMELIGHT_ROOT, prod_deps, dev_deps)
   end
 
   namespace "compile" do
