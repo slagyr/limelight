@@ -1,15 +1,66 @@
-require 'java'
-require File.expand_path(File.dirname(__FILE__) + "/lib/limelight.jar")
-require File.expand_path(File.dirname(__FILE__) + "/lib/ruby-limelight-java.jar")
-require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/limelight_init")
+load File.expand_path(File.dirname(__FILE__) + "/../etc/tasks/_common.rake")
 
-task :spec do
-  begin
-    gem 'rspec'
-    require 'spec/rake/spectask'
-    Spec::Rake::SpecTask.new(:lib_specs){|t| t.spec_files = FileList['spec/**/*.rb']}
-    Rake::Task[:lib_specs].invoke
-  rescue LoadError
-    run_command "java -jar lib/jruby-complete-1.5.6.jar -S spec spec"
+#require File.expand_path(File.dirname(__FILE__) + "/lib/limelight.jar")
+#require File.expand_path(File.dirname(__FILE__) + "/lib/ruby-limelight-java.jar")
+#require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/limelight_init")
+
+RUBY_ROOT = File.expand_path(File.dirname(__FILE__))
+
+def classpath
+  elems = Dir.glob("#{RUBY_ROOT}/lib/**/*.jar")
+  elems.unshift "#{RUBY_ROOT}/classes"
+  elems.join(":")
+end
+
+def prod_deps
+  ["http://jruby.org.s3.amazonaws.com/downloads/1.6.4/jruby-complete-1.6.4.jar",
+   "file:/#{LIMELIGHT_ROOT}/limelight.jar"]
+end
+
+desc "Creates required files"
+task "init" do
+  in_dir(RUBY_ROOT) do
+    FileUtils.mkdir("classes") if !File.exists?("classes")
+    FileUtils.mkdir("lib/dev") if !File.exists?("lib/dev")
+  end
+end
+
+desc "Install dependencies"
+task "deps" => %{init} do
+  FileUtils.rm "lib/limelight.jar" if File.exists?("lib/limelight.jar")
+  deps(RUBY_ROOT, prod_deps, [])
+end
+
+desc "Prints the calculated classpath"
+task "classpath" do
+  puts classpath
+end
+
+desc "Cleans classes and generated build files"
+task "clean" do
+  in_dir(RUBY_ROOT) do
+    FileUtils.rm_rf "classes"
+  end
+end
+
+desc "Compile the java source code"
+task "compile" => %w{init} do
+  javac(RUBY_ROOT, "src/**/*.java", classpath)
+end
+
+desc "Run ruby specs"
+task "spec" do
+  run_command "java -cp #{classpath} -jar lib/jruby-complete-1.6.4.jar -S rspec spec"
+end
+
+desc "Compiles, and tests the limelight java code"
+task "build" => ["clean", "compile", "test"]
+
+desc "Build a jar file with the limelight src"
+task "jar" do #=> %w{clean compile:src utilities:deploy} do
+  in_dir("classes") do
+    with_tmp_file("../.manifest", ["Built-By: Micah Martin", "Main-Class: limelight.CmdLineMain", ""]) do
+      run_command "jar -cfm #{LIMELIGHT_ROOT}/limelight.jar ../.manifest *"
+    end
   end
 end

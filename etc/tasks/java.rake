@@ -51,10 +51,11 @@ namespace "java" do
   task "build" => ["clean", "compile", "test"]
 
   desc "Build a jar file with the limelight src"
-  task "jar" do #=> %w{clean compile:src utilities:deploy} do
+  task "jar" => %w{compile utilities:deploy} do
+    FileUtils.cp_r "resources/.", "classes"
     in_dir("classes") do
       with_tmp_file("../.manifest", ["Built-By: Micah Martin", "Main-Class: limelight.CmdLineMain", ""]) do
-        run_command "jar -cfm #{LIMELIGHT_ROOT}/limelight.jar ../.manifest *"
+        run_command "jar cfm #{LIMELIGHT_ROOT}/limelight.jar ../.manifest *"
       end
     end
   end

@@ -3,8 +3,6 @@
 
 package limelight;
 
-import limelight.Boot;
-import limelight.Context;
 import limelight.audio.RealAudioPlayer;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
@@ -28,12 +26,14 @@ public class BootTest
   public void setUp() throws Exception
   {
     Boot.reset();
+    Boot.startBackgroundThreads = false;
     Context.removeInstance();
   }
 
   @After
   public void tearDown() throws Exception
   {
+    Context.instance().killThreads();
     System.setProperty("os.name", "blah");
   }
   
@@ -92,6 +92,29 @@ public class BootTest
     Boot.configureContext();
 
     assertEquals(Studio.class, Context.instance().studio.getClass());
+  }
+
+  @Test
+  public void threadsDontStartInDevelopment() throws Exception
+  {
+    Boot.configureContext();
+
+    final Context context = Context.instance();
+    assertEquals(false, context.panelPanter.isRunning());
+    assertEquals(false, context.animationLoop.isRunning());
+    assertEquals(false, context.cacheCleaner.isRunning());
+  }
+
+  @Test
+  public void threadsDOStartNormally() throws Exception
+  {
+    Boot.startBackgroundThreads = true;
+    Boot.configureContext();
+
+    final Context context = Context.instance();
+    assertEquals(true, context.panelPanter.isRunning());
+    assertEquals(true, context.animationLoop.isRunning());
+    assertEquals(true, context.cacheCleaner.isRunning());
   }
 
   @Test

@@ -23,6 +23,7 @@ import java.lang.reflect.Constructor;
 
 public class Boot
 {
+  public static boolean startBackgroundThreads = true;
   private static boolean booted;
 
   public static void reset()
@@ -31,6 +32,11 @@ public class Boot
   }
 
   public static void boot()
+  {
+    boot("production");
+  }
+
+  public static void boot(String environment)
   {
     if(booted)
       return;
@@ -91,9 +97,16 @@ public class Boot
 
     installCommonConfigComponents();
 
-    context().panelPanter = new PanelPainterLoop().started();
-    context().animationLoop = new AnimationLoop().started();
-    context().cacheCleaner = new CacheCleanerLoop().started();
+    context().panelPanter = new PanelPainterLoop();
+    context().animationLoop = new AnimationLoop();
+    context().cacheCleaner = new CacheCleanerLoop();
+
+    if(startBackgroundThreads)
+    {
+      context().panelPanter.start();
+      context().animationLoop.start();
+      context().cacheCleaner.start();
+    }
   }
 
   private static void installCommonConfigComponents()

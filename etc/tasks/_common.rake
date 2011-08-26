@@ -49,3 +49,31 @@ def junit(dir, classpath)
   end
 end
 
+def fetch_dep(dep)
+  case dep
+    when /file\:\//
+      FileUtils.cp dep[6..-1], "."
+    when /http\:\/\//
+      run_command "wget #{dep}"
+    else
+      raise "Don't know how to install dependency: #{dep}"
+  end
+end
+
+def install_deps(deps)
+  deps.each do |dep|
+    filename = File.basename(dep)
+    if File.exists?(filename)
+      puts "installed - #{filename}"
+    else
+      puts "fetching  - #{dep}"
+      fetch_dep(dep)
+    end
+  end
+end
+
+def deps(dir, prod_deps, dev_deps)
+  in_dir(File.join(dir, "lib")) { install_deps(prod_deps) }
+  in_dir(File.join(dir, "lib", "dev")) { install_deps(dev_deps) }
+end
+
