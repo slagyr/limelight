@@ -52,15 +52,16 @@ desc "Run ruby specs"
 task "spec" do
   run_command "java -cp #{classpath} -jar lib/jruby-complete-1.6.4.jar -S rspec spec"
 end
-
-desc "Compiles, and tests the limelight java code"
-task "build" => ["clean", "compile", "test"]
+task "test" => %w{spec}
 
 desc "Build a jar file with the limelight src"
-task "jar" do #=> %w{clean compile:src utilities:deploy} do
+task "jar" => %w{clean compile} do
   in_dir("classes") do
-    with_tmp_file("../.manifest", ["Built-By: Micah Martin", "Main-Class: limelight.CmdLineMain", ""]) do
-      run_command "jar -cfm #{LIMELIGHT_ROOT}/limelight.jar ../.manifest *"
+    with_tmp_file("../.manifest", ["Built-By: Micah Martin", ""]) do
+      run_command "jar -cfm #{RUBY_ROOT}/lib/ruby-limelight-java.jar ../.manifest *"
     end
   end
 end
+
+desc "Compiles, and tests the limelight java code"
+task "build" => %w{jar spec}
