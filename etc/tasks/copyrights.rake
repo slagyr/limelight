@@ -8,9 +8,8 @@ namespace "copyright" do
   desc "add copyright headers to ruby source files"
   task "ruby" do
     copyright_text = load_copyrights()
-    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'lib'), "rb", "#-", copyright_text)
-    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'etc', 'plugins'), "rb", "#-", copyright_text)
-    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'spec'), "rb", "#-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/lib'), "rb", "#-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/spec'), "rb", "#-", copyright_text)
   end
 
   desc "Add copyright headers to java source files"
