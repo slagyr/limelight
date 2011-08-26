@@ -10,12 +10,14 @@ namespace "copyright" do
     copyright_text = load_copyrights()
     MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/lib'), "rb", "#-", copyright_text)
     MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/spec'), "rb", "#-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/src'), "java", "//-", copyright_text)
   end
 
   desc "Add copyright headers to java source files"
   task "java" do
     copyright_text = load_copyrights()
     MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'src'), "java", "//-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'test'), "java", "//-", copyright_text)
   end
 
   desc "Add copyright headers for all modules"
