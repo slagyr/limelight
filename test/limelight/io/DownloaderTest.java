@@ -103,24 +103,25 @@ public class DownloaderTest
       assertEquals("Failed to download resource: java.net.MalformedURLException: no protocol: " + resource, e.getMessage()); 
     }
   }
-  
-  @Test
-  public void throwsExceptionWithBadHttpURL() throws Exception
-  {
-    final String resource = "http://blah.blah/blah.blah";
-    try
-    {
-      downloader.download(resource);
-      fail("should throw exception");
-    }
-    catch(LimelightException e)
-    {
-      assertEquals("Failed to download resource: java.net.UnknownHostException: blah.blah", e.getMessage());
-    }
-  }
+
 
 //  The following tests should not run as part of the normal suite.  They are expensive and require the net.
-
+//
+//  @Test
+//  public void throwsExceptionWithBadHttpURL() throws Exception
+//  {
+//    final String resource = "http://blah.blah/blah.blah";
+//    try
+//    {
+//      final String download = downloader.download(resource);
+//      fail("should throw exception but got: " + download);
+//    }
+//    catch(LimelightException e)
+//    {
+//      assertEquals("Failed to download resource: java.net.UnknownHostException: blah.blah", e.getMessage());
+//    }
+//  }
+//
 //  @Test
 //  public void downloadViaHTTP() throws Exception
 //  {
