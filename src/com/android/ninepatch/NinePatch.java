@@ -1,5 +1,5 @@
-//- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
-//- Limelight and all included source files are distributed under terms of the GNU LGPL.
+//- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
+//- Limelight and all included source files are distributed under terms of the MIT License.
 
 /*
  * Copyright (C) 2008 The Android Open Source Project
