@@ -1,5 +1,5 @@
-#- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
-#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+#- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
+#- Limelight and all included source files are distributed under terms of the MIT License.
 
 $LIMELIGHT_LIB = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 $:.unshift $LIMELIGHT_LIB unless $:.include?($LIMELIGHT_LIB)
