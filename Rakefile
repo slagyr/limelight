@@ -1,5 +1,4 @@
 #require 'java'
-PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
 TASK_DIR = File.expand_path(File.dirname(__FILE__) + "/etc/tasks")
 MODULES = %w{java utilities ruby clojure}
 

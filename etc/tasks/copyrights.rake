@@ -1,20 +1,25 @@
-def load_copyrights()
-  require 'mmcopyrights'
-  copyright_text = IO.read(File.join(PROJECT_ROOT, 'etc', 'copyright.txt'))
-  return copyright_text
-end
+namespace "copyright" do
 
-task :copyrights_ruby do
-  copyright_text = load_copyrights()
-  MM::Copyrights.process(File.join(PROJECT_ROOT, 'lib'), "rb", "#-", copyright_text)
-  MM::Copyrights.process(File.join(PROJECT_ROOT, 'etc', 'plugins'), "rb", "#-", copyright_text)
-  MM::Copyrights.process(File.join(PROJECT_ROOT, 'spec'), "rb", "#-", copyright_text)
-end
+  def load_copyrights()
+    require 'mmcopyrights'
+    IO.read(File.join(LIMELIGHT_ROOT, 'etc', 'copyright.txt'))
+  end
 
-task :copyrights_java do
-  copyright_text = load_copyrights()
-  MM::Copyrights.process(File.join(PROJECT_ROOT, 'src'), "java", "//-", copyright_text)
-end
+  desc "add copyright headers to ruby source files"
+  task "ruby" do
+    copyright_text = load_copyrights()
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'lib'), "rb", "#-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'etc', 'plugins'), "rb", "#-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'spec'), "rb", "#-", copyright_text)
+  end
 
-task :copyrights => [:copyrights_ruby, :copyrights_java] do
+  desc "Add copyright headers to java source files"
+  task "java" do
+    copyright_text = load_copyrights()
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'src'), "java", "//-", copyright_text)
+  end
+
+  desc "Add copyright headers for all modules"
+  task "all" => %w{ruby java}
+
 end
