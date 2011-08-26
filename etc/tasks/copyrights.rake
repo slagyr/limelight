@@ -12,7 +12,7 @@ namespace "copyright" do
     MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'test'), "java", "//-", copyright_text)
   end
 
-  desc "Add copyright headers to Utility source files"
+  desc "Add copyright headers to utilities source files"
   task "utilities" do
     copyright_text = load_copyrights()
     MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'productions', "utilities", "src"), "java", "//-", copyright_text)
@@ -22,9 +22,17 @@ namespace "copyright" do
   desc "add copyright headers to ruby source files"
   task "ruby" do
     copyright_text = load_copyrights()
-    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/lib'), "rb", "#-", copyright_text)
-    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/spec'), "rb", "#-", copyright_text)
-    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby/src'), "java", "//-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby', 'lib'), "rb", "#-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby', 'spec'), "rb", "#-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'ruby', 'src'), "java", "//-", copyright_text)
+  end
+
+  desc "add copyright headers to clojure source files"
+  task "clojure" do
+    copyright_text = load_copyrights()
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'clojure', 'src'), "clj", ";-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'clojure', 'spec'), "clj", ";-", copyright_text)
+    MM::Copyrights.process(File.join(LIMELIGHT_ROOT, 'clojure', 'src'), "java", "//-", copyright_text)
   end
 
   desc "Add copyright headers for all modules"
