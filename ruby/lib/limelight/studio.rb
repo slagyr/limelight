@@ -1,5 +1,5 @@
-#- Copyright © 2008-2010 8th Light, Inc. All Rights Reserved.
-#- Limelight and all included source files are distributed under terms of the GNU LGPL.
+#- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
+#- Limelight and all included source files are distributed under terms of the MIT License.
 
 raise "studio.rb is present solely to document it's Java counterpart limelight.Studio.  This file should NOT be loaded in the Ruby runtime."
 
