@@ -55,6 +55,8 @@ def fetch_dep(dep)
       FileUtils.cp dep[6..-1], "."
     when /http\:\/\//
       run_command "wget #{dep}"
+    when /https\:\/\//
+      run_command "wget #{dep}"
     else
       raise "Don't know how to install dependency: #{dep}"
   end
