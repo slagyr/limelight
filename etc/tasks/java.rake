@@ -45,6 +45,7 @@ namespace "java" do
     desc "Compile limelight production source"
     task "src" => ["init"] do
       javac(LIMELIGHT_ROOT, "src/**/*.java", classpath)
+      FileUtils.cp_r "resources/.", "classes"
     end
 
     desc "Compile limelight test source"
@@ -67,7 +68,6 @@ namespace "java" do
 
   desc "Build a jar file with the limelight src"
   task "jar" => %w{compile utilities:deploy} do
-    FileUtils.cp_r "resources/.", "classes"
     in_dir("classes") do
       with_tmp_file("../.manifest", ["Built-By: Micah Martin", "Main-Class: limelight.CmdLineMain", ""]) do
         run_command "jar cfm #{LIMELIGHT_ROOT}/limelight.jar ../.manifest *"

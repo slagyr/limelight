@@ -12,10 +12,7 @@ import limelight.ui.model.FramedStage;
 import limelight.ui.model.InertFrameManager;
 import limelight.ui.model.StageFrame;
 import limelight.util.Mouse;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import static org.junit.Assert.*;
 
@@ -29,8 +26,6 @@ public class UtilitiesTest
   @BeforeClass
   public static void suiteSetUp()
   {
-//    Context.instance().frameManager = new InertFrameManager();
-//    Boot.boot();
     StageFrame.hiddenMode = true;
   }
 

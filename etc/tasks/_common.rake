@@ -6,7 +6,7 @@ def run_command(command)
   system command
   exit_code = $?.exitstatus
   if exit_code != 0
-    puts "Command failed with code #{exit_code}: #{command}"
+    raise "Command failed with code #{exit_code}: #{command}"
   else
     puts "Command executed successfully: #{command}"
   end

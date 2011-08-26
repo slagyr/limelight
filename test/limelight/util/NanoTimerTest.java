@@ -3,9 +3,11 @@
 
 package limelight.util;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class NanoTimerTest extends TestCase
+public class NanoTimerTest extends Assert
 {
   private final int ONE_MILLION = 1000000;
   private final int TEN_MILLION = 10 * ONE_MILLION;
@@ -15,40 +17,45 @@ public class NanoTimerTest extends TestCase
 
   private NanoTimer timer;
 
+  @Before
   public void setUp() throws Exception
   {
     timer = new NanoTimer();
   }
-  
-  public void testStartTime() throws Exception
+
+  @Test
+  public void startTime() throws Exception
   {
     long now = System.nanoTime();
     long then = timer.getTimeOfLastActivity();
     assertEquals("" + (now - then), true, now - then < ONE_MILLION); // less than 1 milisecond
   }
 
-  public void testIdleTime() throws Exception
+  @Test
+  public void idleTime() throws Exception
   {
     assertEquals(true, timer.getIdleNanos() < ONE_MILLION);
     Thread.sleep(10);
     assertEquals(true, timer.getIdleNanos() > TEN_MILLION);
   }
 
-  public void testSleeping()
-  {
-    System.gc();
-    long before = System.nanoTime();
-    timer.sleep(TEN_MILLION);
-    long after = System.nanoTime();
-    long sleepDuration = after - before;
+//  @Test
+//  public void sleeping()
+//  {
+//    System.gc();
+//    long before = System.nanoTime();
+//    timer.sleep(TEN_MILLION);
+//    long after = System.nanoTime();
+//    long sleepDuration = after - before;
+//
+//    assertEquals("actual sleep duration: " + sleepDuration, true, (sleepDuration > NINE_MILLION && sleepDuration < TWENTY_MILLION));
+//    assertEquals(true, timer.getActualSleepDuration() > NINE_MILLION && timer.getActualSleepDuration() < TWENTY_MILLION);
+//    assertEquals(true, timer.getIdleNanos() < ONE_MILLION);
+//    assertEquals(true, timer.getSleepJiggle() < ONE_MILLION);
+//  }
 
-    assertEquals("actual sleep duration: " + sleepDuration, true, (sleepDuration > NINE_MILLION && sleepDuration < TWENTY_MILLION));
-    assertEquals(true, timer.getActualSleepDuration() > NINE_MILLION && timer.getActualSleepDuration() < TWENTY_MILLION);
-    assertEquals(true, timer.getIdleNanos() < ONE_MILLION);
-    assertEquals(true, timer.getSleepJiggle() < ONE_MILLION);
-  }
-
-  public void testSleepDurationAndJiggle() throws Exception
+  @Test
+  public void sleepDurationAndJiggle() throws Exception
   {
     for(int i = 0; i < 10; i++)
     {
@@ -74,7 +81,8 @@ public class NanoTimerTest extends TestCase
     }
   }
 
-  public void testDoesntSleepIfDurationIsZeroOrLess() throws Exception
+  @Test
+  public void doesntSleepIfDurationIsZeroOrLess() throws Exception
   {
     Thread.sleep(10);
 
@@ -94,7 +102,8 @@ public class NanoTimerTest extends TestCase
     assertEquals(0, timer.getSleepJiggle());
   }
 
-  public void testMoveMarkBack() throws Exception
+  @Test
+  public void moveMarkBack() throws Exception
   {
     timer.markTime();
     long mark = timer.getTimeOfLastActivity();
