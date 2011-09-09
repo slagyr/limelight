@@ -5,7 +5,9 @@ package limelight.model;
 
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
+import limelight.util.OptionsMap;
 import limelight.util.ResourceLoader;
+import sun.org.mozilla.javascript.internal.ObjToIntMap;
 
 import java.util.HashMap;
 import java.util.Map;

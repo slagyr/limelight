@@ -39,6 +39,16 @@ module Limelight
       @fs = Java::limelight.Context.fs
     end
 
+    # returns the productions "backstage" storage. (A map of map to store stuff)
+    #
+    def backstage
+      if @backstage == nil
+        value = @peer.backstage
+        @backstage = Util::Hashes.for_ruby(value)
+      end
+      @backstage
+    end
+
     # returns true if the production has been opened, and not yet closed.
     #
     def open?
@@ -162,6 +172,11 @@ module Limelight
       @peer.event_handler.add(Java::limelight.model.events.ProductionClosedEvent, action)
     end
 
+    def backstage_pass(name)
+      instance_eval "def #{name}=(value); backstage[:#{name}] = value; end;"
+      instance_eval "def #{name}; backstage[:#{name}]; end;"
+    end
+
     def callMethod(name, java_obj_array) #:nodoc:
       args = []
       java_obj_array.length.times { |i| args << java_obj_array[i] }
@@ -169,13 +184,16 @@ module Limelight
     end
 
     def open_scene(scene_path, stage, options={})
-      @peer.open_scene(scene_path, stage.peer, Util::Hashes.for_java(options))
+      scene_peer = @peer.open_scene(scene_path, stage.peer, Util::Hashes.for_java(options))
+      scene_peer.proxy
     end
 
     def illuminate
-      return unless @fs.exists?(production_file)
-      content = @fs.read_text_file(production_file)
-      self.instance_eval(content, production_file)
+      path = production_file
+      return unless @fs.exists?(path)
+      content = @fs.read_text_file(path)
+      path = path[5..-1] if path[0...5] == "file:"
+      self.instance_eval(content, path)
     end
 
     def load_libraries
@@ -215,7 +233,7 @@ module Limelight
           end
         end
       end
-      return scene
+      scene
     end
 
     alias :loadScene :load_scene

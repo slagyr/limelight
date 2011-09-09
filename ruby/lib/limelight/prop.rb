@@ -53,6 +53,10 @@ module Limelight
       return @peer.name
     end
 
+    def players
+      return @peer.players
+    end
+
     def style
       return @peer.style
     end

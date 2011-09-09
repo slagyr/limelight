@@ -262,8 +262,6 @@ module Limelight
     def should_remain_hidden=(value) #:nodoc:
       @peer.should_remain_hidden = value
     end
-
-
   end
 
 end

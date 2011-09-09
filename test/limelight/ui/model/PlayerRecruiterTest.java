@@ -6,6 +6,7 @@ package limelight.ui.model;
 import limelight.builtin.BuiltinBeacon;
 import limelight.java.JavaCastingDirector;
 import limelight.model.FakeProduction;
+import limelight.model.PlayerRecruiter;
 import limelight.model.api.CastingDirector;
 import limelight.model.api.FakeCastingDirector;
 import limelight.model.api.FakePropProxy;
@@ -45,8 +46,9 @@ public class PlayerRecruiterTest
   {
     castingDirector.recruitablePath = "file:/path/to/testProduction/theScene/players";
 
-    recruiter.recruit(panel, "blah", castingDirector);
+    String player = recruiter.recruit(panel, "blah", castingDirector);
 
+    assertEquals("theScene/blah", player);
     assertEquals(1, castingDirector.castings.size());
     final List<String> casts = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, casts.size());

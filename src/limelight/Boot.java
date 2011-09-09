@@ -9,6 +9,7 @@ import limelight.background.CacheCleanerLoop;
 import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
 import limelight.io.TempDirectory;
+import limelight.model.PlayerRecruiter;
 import limelight.model.Studio;
 import limelight.os.OS;
 import limelight.os.UnsupportedOS;
@@ -28,6 +29,7 @@ public class Boot
 
   public static void reset()
   {
+    Context.removeInstance();
     booted = false;
   }
 
@@ -68,6 +70,9 @@ public class Boot
 
   static void configureOS() throws Exception
   {
+    if(context().os != null)
+      return;
+
     String className = "limelight.os.UnsupportedOS";
     if(System.getProperty("os.name").indexOf("Windows") != -1)
       className = "limelight.os.win32.Win32OS";
@@ -93,13 +98,19 @@ public class Boot
   public static void configureContext() throws Exception
   {
 //VerboseRepaintManager.install();
-    context().frameManager = new AlertFrameManager();
+    if(context().frameManager == null)
+      context().frameManager = new AlertFrameManager();
 
     installCommonConfigComponents();
 
-    context().panelPanter = new PanelPainterLoop();
-    context().animationLoop = new AnimationLoop();
-    context().cacheCleaner = new CacheCleanerLoop();
+    if(context().panelPanter == null)
+      context().panelPanter = new PanelPainterLoop();if(startBackgroundThreads);
+
+    if(context().animationLoop == null)
+      context().animationLoop = new AnimationLoop();
+
+    if(context().cacheCleaner == null)
+      context().cacheCleaner = new CacheCleanerLoop();
 
     if(startBackgroundThreads)
     {
@@ -111,16 +122,26 @@ public class Boot
 
   private static void installCommonConfigComponents()
   {
-    context().keyboardFocusManager = new KeyboardFocusManager().installed();
-    initializeTempDirectory();
-    context().audioPlayer = new RealAudioPlayer();
-    context().bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
-    context().bufferedImagePool = new BufferedImagePool(1);
-    context().studio = new Studio();
+    if(context().keyboardFocusManager == null)
+      context().keyboardFocusManager = new KeyboardFocusManager().installed();
+
+    if(context().tempDirectory == null)
+      context().tempDirectory = new TempDirectory();
+
+    if(context().audioPlayer == null)
+      context().audioPlayer = new RealAudioPlayer();
+
+    if(context().bufferedImageCache == null)
+      context().bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
+
+    if(context().bufferedImagePool == null)
+      context().bufferedImagePool = new BufferedImagePool(1);
+
+    if(context().studio == null)
+      context().studio = new Studio();
+
+    if(context().playerRecruiter == null)
+      context().playerRecruiter = new PlayerRecruiter();
   }
 
-  public static void initializeTempDirectory()
-  {
-    context().tempDirectory = new TempDirectory();
-  }
 }

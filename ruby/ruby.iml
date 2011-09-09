@@ -12,7 +12,6 @@
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/classes" />
     <output-test url="file://$MODULE_DIR$/classes" />
-    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
@@ -32,8 +31,8 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="diff-lcs (v1.1.2, JRuby SDK 1.6.2-p330) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.0.18, JRuby SDK 1.6.2-p330) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v2.6.0, JRuby SDK 1.6.2-p330) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.1.pre.9, JRuby SDK 1.6.2-p330) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-core (v2.6.4, JRuby SDK 1.6.2-p330) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-expectations (v2.6.0, JRuby SDK 1.6.2-p330) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec (v2.6.0, JRuby SDK 1.6.2-p330) [gem]" level="application" />

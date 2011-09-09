@@ -262,4 +262,13 @@ public class ProductionTest
     assertEquals(true, stage.isOpen());
     assertEquals(scene, stage.getScene());
   }
+
+  @Test
+  public void backstage() throws Exception
+  {
+    assertEquals(0, production.getBackstage().size());
+
+    production.getBackstage().put("foo", "BAR");
+    assertEquals("BAR", production.getBackstage().get("foo"));
+  }
 }

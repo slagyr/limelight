@@ -81,6 +81,20 @@ describe Limelight::Production, "Instance methods" do
     styles["cool"].x.should == "42"
   end
 
+  it "gets the backstage" do
+    @production.backstage.should be(@production.backstage)
+    @production.backstage[:foo] = 123
+    @production.backstage[:foo].should == 123
+    @production.backstage["foo"].should == 123
+  end
+
+  it "provides shortcut for backstage" do
+    @production.backstage_pass :bar
+    @production.bar.should == nil
+    @production.bar = "some value"
+    @production.bar.should == "some value"
+  end
+
 end
 
 

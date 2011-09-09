@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.LimelightException;
 import limelight.model.FakeProduction;
+import limelight.model.PlayerRecruiter;
 import limelight.model.api.FakeCastingDirector;
 import limelight.model.api.FakePropProxy;
 import limelight.styles.*;
@@ -58,6 +59,7 @@ public class PropPanelTest extends Assert
     root.setStage(new MockStage());
     style = panel.getStyle();
 
+    PlayerRecruiter.installed();
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
 

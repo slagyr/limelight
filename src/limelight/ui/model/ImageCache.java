@@ -34,16 +34,24 @@ public class ImageCache extends SimpleCache<String, Image>
     return image;
   }
 
-  private BufferedImage loadImage(String imagePath) throws IOException
+  private BufferedImage loadImage(String imagePath)
   {
-    String imageFilename = loader.pathTo(imagePath);
-    BufferedImage image = ImageIO.read(Context.fs().inputStream(imageFilename));
+    try
+    {
+      String imageFilename = loader.pathTo(imagePath);
+      BufferedImage image = ImageIO.read(Context.fs().inputStream(imageFilename));
 
-    if(!image.getColorModel().hasAlpha())
-      image = imageWithAlpha(image);
+      if(!image.getColorModel().hasAlpha())
+        image = imageWithAlpha(image);
 
-    cache(imagePath, image);
-    return image;
+      cache(imagePath, image);
+      return image;
+    }
+    catch(java.io.IOException e)
+    {
+      Log.warn("ImageCache - Failed to load image: " + imagePath + ", " + e.toString());
+      return null;
+    }
   }
 
   private BufferedImage imageWithAlpha(BufferedImage image)
