@@ -290,6 +290,11 @@ public class ScenePanel extends PropPanel implements Scene
     return resourceLoader;
   }
 
+  public String getAbsoluteName()
+  {
+    return null;
+  }
+
   @Override
   public void addOptions(Map<String, Object> newOptions)
   {
@@ -317,6 +322,13 @@ public class ScenePanel extends PropPanel implements Scene
       ScenePanel scene = (ScenePanel)panel;
       Style style = scene.getStyle();
       final Stage stage = scene.stage;
+
+      if(stage == null)
+      {
+        Log.warn("ScenePanel - doLayout called on un-staged scene.");
+        return;
+      }
+
       Insets insets = stage.getInsets();
 
       panel.setLocation(insets.left, insets.top);

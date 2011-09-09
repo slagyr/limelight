@@ -3,6 +3,7 @@
 
 package limelight.java;
 
+import limelight.model.PlayerRecruiter;
 import limelight.model.api.FakeCastingDirector;
 import limelight.io.FakeFileSystem;
 import limelight.ui.events.panel.CastEvent;
@@ -27,6 +28,7 @@ public class JavaCastingDirectorTest
   @Before
   public void setUp() throws Exception
   {
+    PlayerRecruiter.installed();
     fs = FakeFileSystem.installed();
     fs.createTextFile("/testProduction/production.xml", "<production/>");
     production = new JavaProduction("/testProduction");

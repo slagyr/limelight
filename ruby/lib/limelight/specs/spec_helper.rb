@@ -1,11 +1,12 @@
 #- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the MIT License.
 
-require 'spec'
+require 'rspec'
 require File.expand_path(File.dirname(__FILE__) + "/../limelight_init")
+require 'limelight/production'
 require 'limelight/scene'
 require 'limelight/string'
-require 'limelight/specs/test_scene_opener'
+require 'limelight/mouse'
 
 module Limelight
 
@@ -18,7 +19,7 @@ module Limelight
       attr_accessor :production
     end
 
-    # Limelight comes with builtin assistance for testing your productions with rspec. To get started, add the following
+    # Limelight comes with builtin assistance for testing your productions using RSpec. To get started, add the following
     # to your describe block...
     #
     #   uses_limelight :scene => "my_scene"
@@ -27,7 +28,7 @@ module Limelight
     # It also provides some accessors to common objects like the scene and production.  Afterwards, you can
     # write tests that look like this.
     #
-    #   it "should do something with the scene" do
+    #   it "does something with the scene" do
     #     scene.name.should == "my_scene"
     #     scene.find("title").text.should == "This is the Title"
     #     production.theater["default_stage"].current_scene.should be(scene)
@@ -62,51 +63,11 @@ module Limelight
     #   end
     #
     module SpecHelper
-      def scene
-        if !@scene
-          @scene = TestSceneOpener.new(producer, @ll_spec_options, @prop_block).open_scene 
-        end
-        return @scene
-      end
-    end
-  end
-end
 
-module Spec #:nodoc:
-  module Example
-    class ExampleGroup
-
-      # Deprecated
-      #
-      def self.uses_scene(scene_name, options = {})
-        uses_limelight({:scene => scene_name}.merge(options))
-      end
-      
-      def self.uses_limelight(options = {}, &prop_block)
-        include Limelight::Specs::SpecHelper
-        
-        before(:each) do
-          @ll_spec_options = options
-          @prop_block = prop_block
-          @player = @scene = nil
-          create_accessor_for(@ll_spec_options[:with_player]) if @ll_spec_options[:with_player]
-        end
-      end
-
-      after(:suite) do
-        unless Limelight::Specs.production.nil?
-          Limelight::Specs.production.theater.stages.each do |stage|
-            # MDM - We do this in a round-about way to reduce the chance of using stubbed or mocked methods.
-            frame = stage.instance_variable_get("@frame")
-            frame.close if frame
-          end
-        end
-      end
-                                                                             
       def production
         if Limelight::Specs.production.nil?
 #          if $with_ui
-            Java::limelight.Boot.boot
+          Java::limelight.Boot.boot
 #          else
 #            Limelight::Main.initializeTestContext
 #          end
@@ -116,17 +77,115 @@ module Spec #:nodoc:
           Limelight::Specs.production.peer.illuminateProduction
           Limelight::Specs.production.peer.loadProduction
         end
-        return Limelight::Specs.production
+        Limelight::Specs.production
       end
-      
-      def create_accessor_for(player_name)
-        accessor = <<-EOF
-          def #{player_name}
-            return scene.find('#{player_name}')
+
+      def mouse
+        @mouse ||= Limelight::Mouse.new
+        @mouse
+      end
+
+      def scene
+        if @scene.nil?
+          _setup_stage
+          if @ll_scene_id
+            @scene = production.open_scene(@ll_scene_id.to_s, @stage)
+          elsif @ll_scene_path
+            _setup_scene
           end
-EOF
-        eval(accessor)
+        end
+        @scene
       end
+
+      private #############################################
+
+      def _init_ll_options(options)
+        @ll_scene_id = options[:scene]
+        @ll_scene_name = options[:scene_name]
+        @ll_scene_path = options[:scene_path]
+        @ll_stage_id = options[:stage]
+        @ll_hidden = options[:hidden]
+        @ll_player_names = options[:with_players]
+        _configure_player_helpers()
+      end
+
+      def _configure_player_helpers
+        if @ll_player_names
+          @ll_player_names = @ll_player_names.is_a?(Array) ? @ll_player_names : [@ll_player_names]
+          @ll_player_names = @ll_player_names.map { |n| n.to_s }
+          @ll_player_names.each do |player_name|
+            eval "def #{player_name}; scene.find('#{player_name}'); end;"
+          end
+        end
+      end
+
+      def _create_player_helpers
+        player_names = @ll_player_names
+        Limelight.build_props(@scene, :build_loader => production.root) do
+          player_names.each do |player_name|
+            __test_prop :name =>player_name, :players => "#{player_name}", :id => "#{player_name}"
+          end
+        end
+      end
+
+      def _setup_scene
+        path = production.scene_directory(@ll_scene_path)
+        @scene = Scene.new(:production => production, :path => path, :name => @ll_scene_name)
+        _create_player_helpers
+        Limelight.build_props(@scene, :build_loader => production.root, &@prop_block) if @prop_block
+
+        production.load_styles(@scene.styles_file, @scene.styles)
+        @stage.scene = @scene
+        @stage.open
+      end
+
+      def _setup_stage
+        if @ll_stage_id
+          @stage = production.theater[@ll_stage_id]
+          raise "No such stage: '#{@ll_stage_id}'" unless @stage
+        else
+          @stage = production.theater.default_stage
+        end
+
+        Java::limelight.ui.model.StageFrame.hiddenMode = @ll_hidden || true
+      end
+    end
+  end
+end
+
+RSpec.configure do |config|
+  config.after(:suite) do
+    Java::limelight.Context.instance.killThreads
+    #if Limelight::Specs.production
+    #  Limelight::Specs.production.theater.stages.each do |stage|
+    #    # MDM - We do this in a round-about way to reduce the chance of using stubbed or mocked methods.
+    #    frame = stage.instance_variable_get("@frame")
+    #    frame.close if frame
+    #  end
+    #end
+    Java::java.awt.Window.getWindows.each do |window|
+      window.dispose
+    end
+  end
+end
+
+module RSpec
+  module Core
+    class ExampleGroup
+
+      def self.uses_limelight(options = {}, &prop_block)
+        include Limelight::Specs::SpecHelper
+
+        before(:all) do
+          _init_ll_options(options)
+          @prop_block = prop_block
+        end
+
+        before(:each) do
+          @player = @scene = nil
+        end
+      end
+
     end
   end
 end

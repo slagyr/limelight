@@ -13,6 +13,7 @@ import limelight.model.events.*;
 import limelight.styles.RichStyle;
 import limelight.styles.Styles;
 import limelight.ui.model.Scene;
+import limelight.util.OptionsMap;
 import limelight.util.ResourceLoader;
 import limelight.util.Util;
 import limelight.util.Version;
@@ -32,6 +33,7 @@ public abstract class Production
   private boolean open;
   private Thread closingThread;
   private HashMap<String,RichStyle> styles;
+  private OptionsMap backstage = new OptionsMap();
 
   public Production(String path)
   {
@@ -201,7 +203,7 @@ public abstract class Production
     new ProductionLoadedEvent().dispatch(this);
   }
 
-  public void openScene(String scenePath, Stage stage, Map<String, Object> options)
+  public Scene openScene(String scenePath, Stage stage, Map<String, Object> options)
   {
     Log.info("Production - opening scene: " + scenePath + " on stage: " + stage.getName());
     String sceneDir = resourceLoader.pathTo(scenePath);
@@ -216,6 +218,7 @@ public abstract class Production
     stage.setScene(scene);
     stage.open();
     Log.info("Production - scene opened");
+    return scene;
   }
 
   public void openDefaultScenes(Map<String, Object> options)
@@ -233,5 +236,10 @@ public abstract class Production
   public Map<String, RichStyle> getStyles()
   {
     return styles;
+  }
+
+  public OptionsMap getBackstage()
+  {
+    return backstage;
   }
 }

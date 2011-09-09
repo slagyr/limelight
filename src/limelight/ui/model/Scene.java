@@ -18,7 +18,6 @@ import java.util.Map;
 
 public interface Scene extends Panel, ParentPanel
 {
-
   void setStage(Stage frame);
 
   boolean hasPanelsNeedingLayout();
@@ -62,6 +61,8 @@ public interface Scene extends Panel, ParentPanel
   CastingDirector getCastingDirector();
 
   ResourceLoader getResourceLoader();
+
+  String getAbsoluteName();
 }
 
 

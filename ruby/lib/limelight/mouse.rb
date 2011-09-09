@@ -53,6 +53,10 @@ module Limelight
       Java::limelight.ui.events.panel.MouseWheelEvent.new(modifiers, location, click_count, scroll_type, scroll_amount, wheel_rotation).dispatch(owner)
     end
 
+    def push(prop)
+      Java::limelight.ui.events.panel.ButtonPushedEvent.new().dispatch(prop.peer)
+    end
+
     private
 
     def point_for(prop, x, y)
