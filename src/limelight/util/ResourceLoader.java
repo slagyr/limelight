@@ -6,6 +6,7 @@ package limelight.util;
 import limelight.Context;
 import limelight.io.FileSystem;
 
+//TODO Delete ME
 public class ResourceLoader
 {
   private String root;
@@ -13,9 +14,11 @@ public class ResourceLoader
 
   public static ResourceLoader forRoot(String rootPath)
   {
+    new Exception("ResourceLoader.forRoot").printStackTrace();
     ResourceLoader loader = new ResourceLoader();
     loader.resetOnRoot(rootPath);
     return loader;
+
   }
 
   protected ResourceLoader()

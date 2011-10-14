@@ -239,4 +239,50 @@ public class FileSystemTest
 
     assertEquals(expected, result);
   }
+
+  @Test
+  public void isAbsolute() throws Exception
+  {
+    assertEquals(true, fs.isAbsolute("file:/"));
+    assertEquals(true, fs.isAbsolute("file:/foo"));
+    assertEquals(true, fs.isAbsolute("jar:file:/foo.jar!/bar"));
+    assertEquals(false, fs.isAbsolute("/foo"));
+    assertEquals(false, fs.isAbsolute("foo"));
+    assertEquals(false, fs.isAbsolute("../foo"));
+  }
+
+  @Test
+  public void isRoot() throws Exception
+  {
+    assertEquals(true, fs.isRoot("/"));
+    assertEquals(true, fs.isRoot("jar:file:/foo!/"));
+    assertEquals(false, fs.isRoot("."));
+    assertEquals(false, fs.isRoot("foo"));
+    assertEquals(false, fs.isRoot("/foo"));
+    assertEquals(false, fs.isRoot("jar:file:/foo!/bar"));
+  }
+
+  @Test
+  public void parentPath() throws Exception
+  {
+    assertEquals(null, fs.parentPath("/"));
+    assertEquals("/", fs.parentPath("/foo"));
+    assertEquals("/", fs.parentPath("/foo"));
+    assertEquals("/foo", fs.parentPath("/foo/bar"));
+    assertEquals("file:/foo", fs.parentPath("file:/foo/bar"));
+    assertEquals("file:/", fs.parentPath("file:/foo"));
+    assertEquals("jar:file:/foo!/", fs.parentPath("jar:file:/foo!/bar"));
+  }
+
+  @Test
+  public void relativePathTo() throws Exception
+  {
+    assertEquals(".", fs.relativePathBetween("file:/", "file:/"));
+    assertEquals(".", fs.relativePathBetween("file:/origin", "file:/origin"));
+    assertEquals("target", fs.relativePathBetween("file:/", "file:/target"));
+    assertEquals("target", fs.relativePathBetween("file:/origin", "target"));
+    assertEquals("../target", fs.relativePathBetween("file:/origin", "file:/target"));
+    assertEquals("../../target", fs.relativePathBetween("file:/origin/child", "file:/target"));
+    assertEquals("child/target", fs.relativePathBetween("file:/origin", "file:/origin/child/target"));
+  }
 }

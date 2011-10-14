@@ -6,6 +6,7 @@ package limelight.io;
 import limelight.Context;
 import limelight.LimelightException;
 import limelight.util.Util;
+import org.jruby.util.io.SelectorFactory;
 
 import java.io.*;
 import java.util.*;
@@ -24,6 +25,7 @@ public class FakeFileSystem extends FileSystem
 
   public FakeFileSystem()
   {
+    separator = "/";
     root = FakeFile.directory("");
     workingDirectory = root;
   }
@@ -178,7 +180,7 @@ public class FakeFileSystem extends FileSystem
 
     private FakeFile resolvePath(String path)
     {
-      if(".".equals(path))
+      if(".".equals(path) || path == null)
         return fs.workingDirectory;
       else if(isRoot(path))
         return fs.root;
@@ -232,9 +234,7 @@ public class FakeFileSystem extends FileSystem
 
     public boolean isDirectory()
     {
-      if(!exists())
-        return false;
-      return fake().isDirectory;
+      return exists() && fake().isDirectory;
     }
 
     public OutputStream outputStream()
@@ -255,9 +255,12 @@ public class FakeFileSystem extends FileSystem
 
     public String getAbsolutePath()
     {
-      if(path.startsWith(fs.separator))
+      if(path == null || ".".equals(path))
+        return fs.pathOf(fs.workingDirectory);
+      else if(path.startsWith(fs.separator()))
         return path;
-      return fs.pathOf(fs.workingDirectory) + "/" + path;
+      else
+        return fs.pathOf(fs.workingDirectory) + fs.separator() + path;
     }
 
     public void delete()
@@ -290,6 +293,22 @@ public class FakeFileSystem extends FileSystem
     public File file()
     {
       throw new LimelightException("FakeFilePath.file() not supported");
+    }
+
+    public boolean isRoot()
+    {
+       return fake() == fs.root;
+    }
+
+    public String parentPath()
+    {
+      if(path == null)
+        return null;
+      int lastSeparatorIndex = path.lastIndexOf(fs.separator);
+      if(lastSeparatorIndex == -1)
+        return null;
+      else
+        return path.substring(0, lastSeparatorIndex);
     }
   }
 }

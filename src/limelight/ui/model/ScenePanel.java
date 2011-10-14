@@ -12,7 +12,6 @@ import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
 import limelight.model.api.PropProxy;
-import limelight.util.ResourceLoader;
 
 import java.awt.*;
 import java.util.*;
@@ -30,7 +29,7 @@ public class ScenePanel extends PropPanel implements Scene
   private Production production;
   private boolean shouldAllowClose = true;
   private ButtonGroupCache buttonGroups = new ButtonGroupCache();
-  private ResourceLoader resourceLoader;
+  private String pathRelativeToProduction;
   private CastingDirector castingDirector;
 
   public ScenePanel(PropProxy propProxy)
@@ -199,8 +198,7 @@ public class ScenePanel extends PropPanel implements Scene
   {
     if(imageCache == null)
     {
-      ResourceLoader loader = getProduction().getResourceLoader();
-      imageCache = new ImageCache(loader);
+      imageCache = new ImageCache(production.getPath());
     }
     return imageCache;
   }
@@ -283,23 +281,21 @@ public class ScenePanel extends PropPanel implements Scene
     return buttonGroups;
   }
 
-  public ResourceLoader getResourceLoader()
-  {
-    if(resourceLoader == null)
-      resourceLoader = ResourceLoader.forRoot("");
-    return resourceLoader;
-  }
-
   public String getAbsoluteName()
   {
-    return null;
+    return pathRelativeToProduction;
+  }
+
+  public String getPath()
+  {
+    return Context.fs().pathTo(production.getPath(), pathRelativeToProduction);
   }
 
   @Override
   public void addOptions(Map<String, Object> newOptions)
   {
     if(newOptions.containsKey("path"))
-      resourceLoader = ResourceLoader.forRoot("" + newOptions.remove("path"));
+      pathRelativeToProduction = (String)newOptions.remove("path");
     super.addOptions(newOptions);
   }
 

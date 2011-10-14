@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import junit.framework.TestCase;
 import limelight.Context;
+import limelight.io.FakeFileSystem;
 import limelight.util.FakeResourceLoader;
 import limelight.util.TestUtil;
 
@@ -16,20 +17,19 @@ public class ImageCacheTest extends TestCase
 
   public void setUp() throws Exception
   {
-    cache = new ImageCache(new FakeResourceLoader());
+    cache = new ImageCache(TestUtil.DATA_DIR);
   }
 
   public void testLoadingAnImage() throws Exception
   {
-    Image image = cache.getImage(Context.fs().join(TestUtil.DATA_DIR, "star.gif"));
+    Image image = cache.getImage("star.gif");
     assertNotNull(image);
   }
 
   public void testLoadingAnImageTwiceGivesTheSameImage() throws Exception
   {
-    String imagePath = Context.fs().join(TestUtil.DATA_DIR, "star.gif");
-    Image image = cache.getImage(imagePath);
-    Image image2 = cache.getImage(imagePath);
+    Image image = cache.getImage("star.gif");
+    Image image2 = cache.getImage("star.gif");
 
     assertSame(image, image2);
   }

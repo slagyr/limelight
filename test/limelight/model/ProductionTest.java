@@ -64,14 +64,6 @@ public class ProductionTest
   }
 
   @Test
-  public void hasLoaderWithRoot() throws Exception
-  {
-    ResourceLoader loader = production.getResourceLoader();
-
-    assertEquals("/foo/bar", loader.getRoot());
-  }
-
-  @Test
   public void accessingTheProxy() throws Exception
   {
     ProductionProxy proxy = new FakeProductionProxy();

@@ -16,11 +16,11 @@ import java.io.IOException;
 
 public class ImageCache extends SimpleCache<String, Image>
 {
-  private final ResourceLoader loader;
+  private final String root;
 
-  public ImageCache(ResourceLoader loader)
+  public ImageCache(String root)
   {
-    this.loader = loader;
+    this.root = root;
   }
 
   public Image getImage(String imagePath) throws IOException
@@ -38,7 +38,7 @@ public class ImageCache extends SimpleCache<String, Image>
   {
     try
     {
-      String imageFilename = loader.pathTo(imagePath);
+      String imageFilename = Context.fs().pathTo(root, imagePath);
       BufferedImage image = ImageIO.read(Context.fs().inputStream(imageFilename));
 
       if(!image.getColorModel().hasAlpha())

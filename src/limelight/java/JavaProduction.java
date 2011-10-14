@@ -5,6 +5,7 @@ package limelight.java;
 
 import limelight.Context;
 import limelight.LimelightException;
+import limelight.io.FileSystem;
 import limelight.model.Production;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
@@ -23,7 +24,8 @@ public class JavaProduction extends Production
   public JavaProduction(String path)
   {
     super(path);
-    playerLoader = new PlayerClassLoader(getResourceLoader().pathTo("classes"));
+    String classes = Context.fs().pathTo(getPath(), "classes");
+    playerLoader = new PlayerClassLoader(classes);
     javaTheater = new JavaTheater(getTheater());
   }
 
@@ -35,13 +37,13 @@ public class JavaProduction extends Production
   @Override
   protected void illuminate()
   {
-    final String productionPlayerPath = getResourceLoader().pathTo("production.xml");
+    final String productionPlayerPath = Context.fs().pathTo(getPath(), "production.xml");
     final Document document = Xml.loadDocumentFrom(productionPlayerPath);
     Element productionElement = document.getDocumentElement();
 
     String classpath = productionElement.getAttribute("classpath");
     if(classpath != null && classpath.length() > 0)
-      playerLoader.setClasspath(getResourceLoader().pathTo(classpath));
+      playerLoader.setClasspath(Context.fs().pathTo(getPath(), classpath));
 
     player = JavaPlayers.toPlayer(productionElement, this.playerLoader, "limelight.model.events.", getEventHandler());
   }
@@ -54,7 +56,7 @@ public class JavaProduction extends Production
   @Override
   protected void loadStages()
   {
-    final String stagesPath = getResourceLoader().pathTo("stages.xml");
+    final String stagesPath = Context.fs().pathTo(getPath(), "stages.xml");
     for(Element stageElement : Xml.loadRootElements(stagesPath))
       Xml.toStage(javaTheater, stageElement);
   }
@@ -62,11 +64,11 @@ public class JavaProduction extends Production
   @Override
   protected Scene loadScene(String scenePath, Map<String, Object> options)
   {
-    options.put("path", getResourceLoader().pathTo(scenePath));
+    options.put("path", scenePath);
     options.put("name", Context.fs().filename(scenePath));
     JavaScene scene = new JavaScene(this, options);
 
-    final String propsPath = scene.getPeer().getResourceLoader().pathTo("props.xml");
+    final String propsPath = Context.fs().pathTo(scene.getPeer().getPath(), "props.xml");
     for(Element propElement : Xml.loadRootElements(propsPath))
       scene.add(Xml.toProp(propElement));
 

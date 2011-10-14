@@ -14,7 +14,6 @@ import limelight.styles.RichStyle;
 import limelight.styles.Styles;
 import limelight.ui.model.Scene;
 import limelight.util.OptionsMap;
-import limelight.util.ResourceLoader;
 import limelight.util.Util;
 import limelight.util.Version;
 
@@ -25,7 +24,7 @@ public abstract class Production
 {
   private String name;
   private boolean allowClose = true;
-  protected ResourceLoader resourceLoader;
+  private String path;
   private ProductionProxy proxy;
   private Theater theater;
   private Version minumumLimelightVersion = Version.ZERO;
@@ -45,7 +44,7 @@ public abstract class Production
     {
       // Is this really needed?
     }
-    resourceLoader = ResourceLoader.forRoot(path);
+    this.path = path;
     theater = new Theater(this);
   }
 
@@ -128,11 +127,6 @@ public abstract class Production
     allowClose = value;
   }
 
-  public ResourceLoader getResourceLoader()
-  {
-    return resourceLoader;
-  }
-
   //TODO MDM Git rid of me
   public ProductionProxy getProxy()
   {
@@ -198,7 +192,7 @@ public abstract class Production
   {
     loadLibraries();
     loadStages();
-    final Map<String, RichStyle> productionStyles = loadStyles(getResourceLoader().getRoot(), styles);
+    final Map<String, RichStyle> productionStyles = loadStyles(path, styles);
     styles = Styles.merge(productionStyles, BuiltInStyles.all());
     new ProductionLoadedEvent().dispatch(this);
   }
@@ -206,14 +200,14 @@ public abstract class Production
   public Scene openScene(String scenePath, Stage stage, Map<String, Object> options)
   {
     Log.info("Production - opening scene: " + scenePath + " on stage: " + stage.getName());
-    String sceneDir = resourceLoader.pathTo(scenePath);
+    String sceneDir = Context.fs().pathTo(path, scenePath);
     Map<String, Object> sceneOptions = new HashMap<String, Object>(options);
     sceneOptions.put("path", sceneDir);
     sceneOptions.put("name", Context.fs().filename(sceneDir));
 
     Scene scene = loadScene(scenePath, sceneOptions);
     Log.info("Production - scene loaded: " + scene + " with options: " + Util.mapToString(sceneOptions));
-    final Map<String, RichStyle> sceneStyles = loadStyles(scene.getResourceLoader().getRoot(), styles);
+    final Map<String, RichStyle> sceneStyles = loadStyles(scene.getPath(), styles);
     scene.setStyles(Styles.merge(sceneStyles, styles));
     stage.setScene(scene);
     stage.open();
@@ -241,5 +235,10 @@ public abstract class Production
   public OptionsMap getBackstage()
   {
     return backstage;
+  }
+
+  public String getPath()
+  {
+    return path;
   }
 }

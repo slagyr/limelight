@@ -31,6 +31,11 @@ public class FileSystem
     return resolve(path).exists();
   }
 
+  public boolean isRoot(String path)
+  {
+    return resolve(path).isRoot();
+  }
+
   public boolean isDirectory(String path)
   {
     return resolve(path).isDirectory();
@@ -89,6 +94,46 @@ public class FileSystem
     return result;
   }
 
+  public String parentPath(String path)
+  {
+    final String parent = resolve(path).parentPath();
+    if(isAbsolute(path))
+      return absolutePath(parent);
+    else
+      return parent;
+  }
+
+  public boolean isAbsolute(String path)
+  {
+    return absolutePath(path).equals(path);
+  }
+
+  public String relativePathBetween(String origin, String target)
+  {
+    if(origin.equals(target))
+      return ".";
+
+    final String absoluteOrigin = absolutePath(origin);
+    final String absoluteTarget = absolutePath(target);
+    if(absoluteOrigin.equals(absoluteTarget))
+      return ".";
+
+    if(!isAbsolute(target))
+      return target;
+
+    String path = "";
+    String commonParent = absoluteOrigin;
+    while(!absoluteTarget.startsWith(commonParent))
+    {
+      path += ".." + separator();
+      commonParent = parentPath(commonParent);
+      if(isRoot(commonParent))
+        break;
+    }
+    final String result = path + absoluteTarget.substring(commonParent.length());
+    return result.startsWith("/") ? result.substring(1) : result;
+  }
+
   // UTILITY  METHODS --------------------------------------------------------------------------------------------------
 
   public String separator()
@@ -133,14 +178,6 @@ public class FileSystem
       return name.substring(extensionIndex);
   }
 
-  public String parentPath(String path)
-  {
-    final int lastSeparator = path.lastIndexOf(separator);
-    if(lastSeparator == -1)
-      return ".";
-    return path.substring(0, lastSeparator);
-  }
-
   public String filename(String path)
   {
     if("/".equals(path))
@@ -151,6 +188,11 @@ public class FileSystem
     if(lastSeparator == -1)
       return path;
     return path.substring(lastSeparator + 1);
+  }
+
+  public String pathTo(String parent, String target)
+  {
+    return join(absolutePath(parent), target);
   }
 
   // HELPER METHODS ----------------------------------------------------------------------------------------------------
@@ -238,6 +280,10 @@ public class FileSystem
     long lastModified();
 
     File file();
+
+    boolean isRoot();
+
+    String parentPath();
   }
 
   private static class FilePath implements Path
@@ -257,6 +303,23 @@ public class FileSystem
       if(file == null)
         file = new File(path);
       return file;
+    }
+
+    public boolean isRoot()
+    {
+      try
+      {
+        return file().getCanonicalFile().getParent() == null;
+      }
+      catch(IOException e)
+      {
+        return false;
+      }
+    }
+
+    public String parentPath()
+    {
+      return file().getParent();
     }
 
     public boolean exists()
@@ -435,7 +498,7 @@ public class FileSystem
             String name = entryName.substring(pathToFile.length());
             if(name.endsWith("/"))
               name = name.substring(0, name.length() - 2);
-            if(name.length() > 0 && name.indexOf("/") == -1)
+            if(name.length() > 0 && !name.contains("/"))
               list.add(fs.filename(entryName));
           }
         }
@@ -451,6 +514,16 @@ public class FileSystem
     public File file()
     {
       throw new LimelightException("JarPath.file() is not supported");
+    }
+
+    public boolean isRoot()
+    {
+      return pathToFile.isEmpty();
+    }
+
+    public String parentPath()
+    {
+      return "jar:" + pathToZip.getAbsolutePath() + "!" + fs.parentPath("/" + pathToFile);
     }
   }
 }

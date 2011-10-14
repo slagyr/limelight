@@ -342,10 +342,10 @@ public class ScenePanelTest extends Assert
   @Test
   public void sceneGetLoaderFromOptions() throws Exception
   {
-    assertEquals("", root.getResourceLoader().getRoot());
+    assertEquals("", root.getPath());
 
     root = new ScenePanel(new FakePropProxy());
     root.addOptions(Util.toMap("path", "/some/path"));
-    assertEquals("/some/path", root.getResourceLoader().getRoot());
+    assertEquals("/some/path", root.getPath());
   }
 }

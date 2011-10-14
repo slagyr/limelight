@@ -29,14 +29,14 @@ public class PlayerRecruiter
   public String recruit(PropPanel panel, String playerName, CastingDirector castingDirector)
   {
     final Scene scene = panel.getRoot();
-    final String scenePlayersPath = scene.getResourceLoader().pathTo("players");
+    final String scenePlayersPath = Context.fs().pathTo(scene.getPath(), "players");
 
     if(recruitFrom(panel, playerName, castingDirector, scenePlayersPath))
       return scene.getAbsoluteName() + "/" + playerName;
 
     if(scene.getProduction() != null)
     {
-      final String productionPlayersPath = scene.getProduction().getResourceLoader().pathTo("players");
+      final String productionPlayersPath = Context.fs().pathTo(scene.getProduction().getPath(), "players");
       if(recruitFrom(panel, playerName, castingDirector, productionPlayersPath))
         return productionPlayersPath;
     }

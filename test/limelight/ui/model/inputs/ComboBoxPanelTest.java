@@ -3,8 +3,10 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.Context;
 import limelight.model.FakeProduction;
 import limelight.builtin.BuiltInStyles;
+import limelight.model.PlayerRecruiter;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
@@ -117,6 +119,7 @@ public class ComboBoxPanelTest
   @Test
   public void pressingButtonOpensList() throws Exception
   {
+    PlayerRecruiter.installed();
     root.illuminate();
     panel.setOptions(1, 2, 3);
 
