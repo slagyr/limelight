@@ -48,6 +48,12 @@ public class FakeFileSystemTest
   }
 
   @Test
+  public void nullPathIsSameAsDot() throws Exception
+  {
+    assertEquals(fs.absolutePath(null), fs.absolutePath("."));
+  }
+
+  @Test
   public void usingDotsInPaths() throws Exception
   {
     assertEquals(true, fs.exists("."));

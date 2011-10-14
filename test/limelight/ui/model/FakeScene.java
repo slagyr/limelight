@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Context;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.model.api.CastingDirector;
@@ -108,6 +109,16 @@ public class FakeScene extends MockProp implements Scene
   public ResourceLoader getResourceLoader()
   {
     return resourceLoader;
+  }
+
+  public String getAbsoluteName()
+  {
+    return "FakeScene.absoluteName";
+  }
+
+  public String getPath()
+  {
+    return "fake_scene/path";
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

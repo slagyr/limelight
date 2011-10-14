@@ -37,7 +37,6 @@ public class FakeProduction extends Production
   public FakeProduction(String name, ResourceLoader loader)
   {
     this(name);
-    resourceLoader = loader;
   }
 
   @Override

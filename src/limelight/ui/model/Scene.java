@@ -60,9 +60,9 @@ public interface Scene extends Panel, ParentPanel
   
   CastingDirector getCastingDirector();
 
-  ResourceLoader getResourceLoader();
-
   String getAbsoluteName();
+
+  String getPath();
 }
 
 
