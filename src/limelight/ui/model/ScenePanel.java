@@ -288,7 +288,8 @@ public class ScenePanel extends PropPanel implements Scene
 
   public String getPath()
   {
-    return Context.fs().pathTo(production.getPath(), pathRelativeToProduction);
+    String productionPath = production == null ? null : production.getPath();
+    return Context.fs().pathTo(productionPath, pathRelativeToProduction);
   }
 
   @Override

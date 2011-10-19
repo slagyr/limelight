@@ -23,5 +23,5 @@
       (should= @(.casting-director scene) (.getCastingDirector @(.peer scene)))))
   )
 
-
+(run-specs)
 

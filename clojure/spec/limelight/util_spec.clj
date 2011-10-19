@@ -7,7 +7,7 @@
     [limelight.util])
   (:import
     [limelight.clojure ProxyMap]
-    [limelight.util OptionsMap]))
+    [limelight.util Opts]))
 
 (describe "Limelight Util"
 
@@ -19,24 +19,24 @@
       (should= :foo (map-for-clojure :foo)))
 
     (it "creates a map for Clojure from java Map"
-      (let [jmap (OptionsMap.)
+      (let [jmap (Opts.)
             result (map-for-clojure jmap)]
         (should= ProxyMap (class result))
         (should= jmap (.getMap result))))
 
     (it "creates a map for Java"
-      (should= OptionsMap (class (map-for-java nil)))
-      (should= OptionsMap (class (map-for-java (OptionsMap.)))))
+      (should= Opts (class (map-for-java nil)))
+      (should= Opts (class (map-for-java (Opts.)))))
 
     (it "uses the wrapped map from ProxyMap for Java"
-      (let [jmap (OptionsMap.)
+      (let [jmap (Opts.)
             pmap (ProxyMap. jmap)]
         (should-be-same jmap (map-for-java pmap))))
 
     (it "convers a clojure map to Java"
       (let [cmap (hash-map :foo "bar" "fizz" "bang")
             result (map-for-java cmap)]
-        (should= OptionsMap (class result))
+        (should= Opts (class result))
         (should= "bar" (.get result "foo"))
         (should= "bang" (.get result "fizz"))))
     )

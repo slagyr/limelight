@@ -62,7 +62,7 @@
 
   ResourceRoot
   (resource-path [this resource]
-    (.pathTo (.getResourceLoader (.peer this)) resource)))
+    (.pathTo (limelight.Context/fs) (.getPath peer) resource)))
 
 (defn new-production [peer]
   (let [ns (create-ns (gensym "limelight.dynamic-player.production-"))

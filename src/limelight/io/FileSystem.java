@@ -191,7 +191,7 @@ public class FileSystem
   {
     if(target == null)
       return parent;
-    else if(isAbsolute(target))
+    else if(parent == null || isAbsolute(target))
       return target;
     else
       return join(parent, target);

@@ -118,7 +118,7 @@ public class OptsTest
   }
 
   @Test
-  public void creatingNewOptionsMap() throws Exception
+  public void creatingNewOpts() throws Exception
   {
     Opts map = Opts.with();
     assertEquals(0, map.size());
@@ -143,7 +143,7 @@ public class OptsTest
     }
     catch(RuntimeException e)
     {
-      assertEquals("OptionsMap.with must be called with an even number of parameters", e.getMessage());
+      assertEquals("Opts.with must be called with an even number of parameters", e.getMessage());
     }
   }
 

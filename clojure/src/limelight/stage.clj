@@ -11,7 +11,7 @@
   (let [stage (Stage. (atom nil) theater)
         peer (limelight.ui.model.FramedStage. name stage)]
     (swap! (.peer stage) (fn [_] peer))
-    (.applyOptions peer (limelight.util.OptionsMap. options))
+    (.applyOptions peer (limelight.util.Opts. options))
     stage))
 
 

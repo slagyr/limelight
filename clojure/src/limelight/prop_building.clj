@@ -21,7 +21,7 @@
         options (if (map? (second data)) (second data) nil)
         child-data (if options (rest (rest data)) (rest data))
         options (assoc options :name name)
-        prop (new-prop (limelight.util.OptionsMap. options))]
+        prop (new-prop (limelight.util.Opts. options))]
     (when (seq child-data)
       (add-props prop (to-props child-data)))
     prop))

@@ -4,6 +4,7 @@
 (ns limelight.prop-building-spec
   (:use
     [speclj.core]
+    [limelight.spec-helper]
     [limelight.common]
     [limelight.prop-building]
     [limelight.scene :only (new-scene)]
@@ -14,6 +15,8 @@
   (.illuminate @(.peer scene)))
 
 (describe "prop-building"
+
+  (before-all (boot-limelight))
 
   (it "builds with no props"
     (let [scene (build-props (new-scene {}) "" "props.rb")]

@@ -4,12 +4,13 @@
 (ns limelight.common-spec
   (:use
     [speclj.core]
+    [limelight.spec-helper]
     [limelight.common]
     [limelight.prop-building :only (to-props)]
     [limelight.scene :only (new-scene)]))
 
 (defn build-tree []
-  (let [scene (new-scene {:id "root-id" :name "root"})]
+  (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
     (add-props scene (to-props
       [[:child {:id "child1"}
         [:grand-child {:id "grand-child1"}
@@ -24,6 +25,9 @@
     scene))
 
 (describe "Common: Finding Props"
+
+  (before-all (boot-limelight))
+
   (with scene (build-tree))
 
   (it "finds root by name"
