@@ -118,9 +118,6 @@ public class FileSystem
     if(absoluteOrigin.equals(absoluteTarget))
       return ".";
 
-    if(!isAbsolute(target))
-      return target;
-
     String path = "";
     String commonParent = absoluteOrigin;
     while(!absoluteTarget.startsWith(commonParent))
@@ -131,7 +128,7 @@ public class FileSystem
         break;
     }
     final String result = path + absoluteTarget.substring(commonParent.length());
-    return result.startsWith("/") ? result.substring(1) : result;
+    return result.startsWith(separator()) ? result.substring(1) : result;
   }
 
   // UTILITY  METHODS --------------------------------------------------------------------------------------------------
@@ -192,7 +189,12 @@ public class FileSystem
 
   public String pathTo(String parent, String target)
   {
-    return join(absolutePath(parent), target);
+    if(target == null)
+      return parent;
+    else if(isAbsolute(target))
+      return target;
+    else
+      return join(parent, target);
   }
 
   // HELPER METHODS ----------------------------------------------------------------------------------------------------
@@ -244,7 +246,11 @@ public class FileSystem
 
   private String removeDuplicateSeprators(String path)
   {
-    return path.replace(separator + separator, separator);
+    final String duplicate = separator + separator;
+    if(path.contains(duplicate))
+      return removeDuplicateSeprators(path.replace(duplicate, separator));
+    else
+      return path;
   }
 
   // WHERE THE MAGIC HAPPENS -------------------------------------------------------------------------------------------
@@ -278,8 +284,6 @@ public class FileSystem
     String[] listing();
 
     long lastModified();
-
-    File file();
 
     boolean isRoot();
 
@@ -319,7 +323,16 @@ public class FileSystem
 
     public String parentPath()
     {
-      return file().getParent();
+      final String parentPath = file().getParent();
+      if(parentPath == null)
+      {
+        final String absoluteParentPath = file().getAbsoluteFile().getParent();
+        if(absoluteParentPath == null)
+          return path;
+        else
+          return absoluteParentPath;
+      }
+      return parentPath;
     }
 
     public boolean exists()
@@ -395,7 +408,7 @@ public class FileSystem
 
   private static class ZipPath implements Path
   {
-    private Path pathToZip;
+    private FilePath pathToZip;
     private String pathToFile;
     private ZipFile zip;
     private FileSystem fs;
@@ -407,7 +420,7 @@ public class FileSystem
       if(bangIndex == -1)
         throw new LimelightException("Invalid Jar file path: " + path);
 
-      pathToZip = fs.resolve(path.substring(4, bangIndex));
+      pathToZip = (FilePath)fs.resolve(path.substring(4, bangIndex));
       pathToFile = path.substring(bangIndex + 2);
     }
 

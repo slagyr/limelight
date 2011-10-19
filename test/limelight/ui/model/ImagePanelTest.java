@@ -3,31 +3,32 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
 import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
 import limelight.util.FakeResourceLoader;
 import limelight.io.StreamReader;
 import limelight.util.TestUtil;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.FileInputStream;
 
-public class ImagePanelTest extends TestCase
+import static org.junit.Assert.assertEquals;
+
+public class ImagePanelTest
 {
   private ImagePanel panel;
   private MockProp parent;
-  private ScenePanel root;
-  private FakeResourceLoader loader;
-  private FakeProduction production;
 
+  @Before
   public void setUp() throws Exception
   {
     FakePropProxy scene = new FakePropProxy();
-    root = new ScenePanel(scene);
+    ScenePanel root = new ScenePanel(scene);
     root.setStage(new MockStage());
     parent = new MockProp();
-    loader = new FakeResourceLoader();
-    production = new FakeProduction("Mock", loader);
+    FakeResourceLoader loader = new FakeResourceLoader();
+    FakeProduction production = new FakeProduction("Mock", loader);
     root.setProduction(production);
     root.add(parent);
 
@@ -35,24 +36,28 @@ public class ImagePanelTest extends TestCase
     parent.add(panel);
   }
 
-  public void testSetImageFile() throws Exception
+  @Test
+  public void setImageFile() throws Exception
   {
     panel.setImageFile("blah/blah.png");
     assertEquals("blah/blah.png", panel.getImageFile());
   }
 
-  public void testRotationAngle() throws Exception
+  @Test
+  public void rotationAngle() throws Exception
   {
     panel.setRotation(0);
     assertEquals(0, panel.getRotation(), 0.1);
   }
 
-  public void testParentIsSterilized() throws Exception
+  @Test
+  public void parentIsSterilized() throws Exception
   {
     assertEquals(true, parent.isSterilized());
   }
 
-  public void testScaled() throws Exception
+  @Test
+  public void scaled() throws Exception
   {
     assertEquals(true, panel.isScaled());
 
@@ -61,7 +66,8 @@ public class ImagePanelTest extends TestCase
     assertEquals(false, panel.isScaled());
   }
   
-  public void testParentSizeChangesAlwaysRequiresLayout() throws Exception
+  @Test
+  public void parentSizeChangesAlwaysRequiresLayout() throws Exception
   {
     panel.resetLayout();
     assertEquals(false, panel.needsLayout());
@@ -71,7 +77,8 @@ public class ImagePanelTest extends TestCase
     assertEquals(true, panel.needsLayout());
   }
 
-  public void testSettingImageData() throws Exception
+  @Test
+  public void settingImageData() throws Exception
   {
     checkSettingImageDataWith("star.gif");
     checkSettingImageDataWith("star.jpg");
@@ -86,7 +93,7 @@ public class ImagePanelTest extends TestCase
 
   private void checkSettingImageDataWith(String imageFile) throws Exception
   {
-    StreamReader reader = new StreamReader(new FileInputStream(TestUtil.dataDirPath(imageFile)));
+    StreamReader reader = new StreamReader(TestUtil.fs.inputStream(TestUtil.dataDirPath(imageFile)));
     byte[] bytes = reader.readBytes(100000);
 
     panel.setImageData(bytes);
@@ -95,7 +102,8 @@ public class ImagePanelTest extends TestCase
     assertEquals(200, panel.getImage().getWidth(null));
   }
 
-  public void testSettingImageDataUpdatesInfo() throws Exception
+  @Test
+  public void settingImageDataUpdatesInfo() throws Exception
   {
     panel.setImageFile(TestUtil.dataDirPath("small_star.gif"));
     panel.getImage();
@@ -111,7 +119,8 @@ public class ImagePanelTest extends TestCase
     assertEquals(true, parent.needsLayout());
   }
 
-  public void testDoesntCrashWhenNoImageFileProvided() throws Exception
+  @Test
+  public void doesntCrashWhenNoImageFileProvided() throws Exception
   {
     panel.setImageFile(null);
     assertEquals(null, panel.getImage());

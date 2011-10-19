@@ -3,31 +3,32 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
 import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
 import limelight.util.FakeResourceLoader;
 import limelight.util.TestUtil;
 import limelight.util.Box;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.awt.geom.AffineTransform;
 
-public class ImagePanelLayoutTest extends TestCase
+import static org.junit.Assert.assertEquals;
+
+public class ImagePanelLayoutTest
 {
   private ImagePanel panel;
   private MockProp parent;
-  private ScenePanel root;
-  private FakeResourceLoader loader;
-  private FakeProduction production;
 
+  @Before
   public void setUp() throws Exception
   {
     FakePropProxy scene = new FakePropProxy();
-    root = new ScenePanel(scene);
+    ScenePanel root = new ScenePanel(scene);
     root.setStage(new MockStage());
     parent = new MockProp();
-    loader = new FakeResourceLoader();
-    production = new FakeProduction("Mock", loader);
+    FakeResourceLoader loader = new FakeResourceLoader();
+    FakeProduction production = new FakeProduction("Mock", loader);
     root.setProduction(production);
     root.add(parent);
 
@@ -35,12 +36,14 @@ public class ImagePanelLayoutTest extends TestCase
     parent.add(panel);
   }
 
-  public void testOverride() throws Exception
+  @Test
+  public void override() throws Exception
   {
     assertEquals(true, ImagePanelLayout.instance.overides(null));
   }
 
-  public void testGetDimensionsWhenAuto() throws Exception
+  @Test
+  public void getDimensionsWhenAuto() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     panel.doLayout();
@@ -49,7 +52,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(200, panel.getWidth());
   }
 
-  public void testGetDimensionsWhenNotAuto() throws Exception
+  @Test
+  public void getDimensionsWhenNotAuto() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
@@ -61,7 +65,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(150, panel.getHeight());
   }
 
-  public void testGetScaleTransformWhenDimensionsAreAuto() throws Exception
+  @Test
+  public void getScaleTransformWhenDimensionsAreAuto() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     panel.doLayout();
@@ -71,7 +76,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(1.0, tranform.getScaleY(), 0.001);
   }
 
-  public void testGetScaleTransformWhenDimensionsAreNotAuto() throws Exception
+  @Test
+  public void getScaleTransformWhenDimensionsAreNotAuto() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
@@ -84,7 +90,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(0.75, tranform.getScaleY(), 0.001);
   }
 
-  public void testGetRotationTransformWhenDimensionsAreAuto() throws Exception
+  @Test
+  public void getRotationTransformWhenDimensionsAreAuto() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     panel.setRotation(45);
@@ -97,7 +104,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(0.0, tranform.getTranslateY(), 0.5);
   }
 
-  public void testGetScalleTransformWhenDimensionsAreNotAutoAndScalingIsOff() throws Exception
+  @Test
+  public void getScalleTransformWhenDimensionsAreNotAutoAndScalingIsOff() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     panel.setScaled(false);
@@ -111,7 +119,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(1.0, tranform.getScaleY(), 0.001);
   }
 
-  public void testHasConstrainedProportionsWhenWidthIsNotAuto() throws Exception
+  @Test
+  public void hasConstrainedProportionsWhenWidthIsNotAuto() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
@@ -123,7 +132,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(0.5, tranform.getScaleY(), 0.001);
   }
 
-  public void testHasConstrainedProportionsWhenHeightIsNotAuto() throws Exception
+  @Test
+  public void hasConstrainedProportionsWhenHeightIsNotAuto() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setHeight("100");
@@ -135,7 +145,8 @@ public class ImagePanelLayoutTest extends TestCase
     assertEquals(0.5, tranform.getScaleY(), 0.001);
   }
 
-  public void testSizeRemainsWhenStaticAndNotScaled() throws Exception
+  @Test
+  public void sizeRemainsWhenStaticAndNotScaled() throws Exception
   {
     panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
     panel.setScaled(false);

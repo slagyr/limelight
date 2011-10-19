@@ -14,7 +14,7 @@ import java.util.*;
 public class FakeFileSystem extends FileSystem
 {
   private FakeFile root;
-  private FakeFile workingDirectory;
+  private FakeFilePath workingDirectory;
 
   public static FakeFileSystem installed()
   {
@@ -27,20 +27,20 @@ public class FakeFileSystem extends FileSystem
   {
     separator = "/";
     root = FakeFile.directory("");
-    workingDirectory = root;
+    workingDirectory = (FakeFilePath)resolve("/");
   }
 
   @Override
   public String workingDir()
   {
-    return pathOf(workingDirectory);
+    return workingDirectory.getAbsolutePath();
   }
 
   public void setWorkingDirectory(String path)
   {
-    final FakeFilePath filePath = (FakeFilePath) resolve(path);
+    final FakeFilePath filePath = (FakeFilePath)resolve(path);
     filePath.mkdirs();
-    workingDirectory = filePath.fake();
+    workingDirectory = filePath;
   }
 
   public String inspect()
@@ -74,14 +74,6 @@ public class FakeFileSystem extends FileSystem
       for(String childName : childNames)
         inspect(file.children.get(childName), buffer);
     }
-  }
-
-  private String pathOf(FakeFile file)
-  {
-    String path = "";
-    for(FakeFile f = file; f != null; f = f.parent)
-      path = f.name + (path.isEmpty() ? "" : separator + path);
-    return path;
   }
 
   @Override
@@ -181,7 +173,7 @@ public class FakeFileSystem extends FileSystem
     private FakeFile resolvePath(String path)
     {
       if(".".equals(path) || path == null)
-        return fs.workingDirectory;
+        return fs.workingDirectory.fake();
       else if(isRoot(path))
         return fs.root;
 
@@ -199,7 +191,7 @@ public class FakeFileSystem extends FileSystem
 
     private FakeFile resolveParent(String parentPath)
     {
-      return parentPath == null ? fs.workingDirectory : resolvePath(parentPath);
+      return parentPath == null ? fs.workingDirectory.fake() : resolvePath(parentPath);
     }
 
     private FakeFile fake()
@@ -256,11 +248,13 @@ public class FakeFileSystem extends FileSystem
     public String getAbsolutePath()
     {
       if(path == null || ".".equals(path))
-        return fs.pathOf(fs.workingDirectory);
+        return fs.workingDirectory.getAbsolutePath();
+      else if(isRoot(path))
+        return "/";
       else if(path.startsWith(fs.separator()))
         return path;
       else
-        return fs.pathOf(fs.workingDirectory) + fs.separator() + path;
+        return fs.join(fs.workingDirectory.getAbsolutePath(), path);
     }
 
     public void delete()
@@ -302,13 +296,13 @@ public class FakeFileSystem extends FileSystem
 
     public String parentPath()
     {
-      if(path == null)
-        return null;
+      if(isRoot(path))
+        return "/";
       int lastSeparatorIndex = path.lastIndexOf(fs.separator);
-      if(lastSeparatorIndex == -1)
-        return null;
-      else
+      if(lastSeparatorIndex != -1)
         return path.substring(0, lastSeparatorIndex);
+      else
+        return fs.workingDir();
     }
   }
 }

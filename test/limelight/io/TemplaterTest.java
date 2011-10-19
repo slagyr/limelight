@@ -3,9 +3,13 @@
 
 package limelight.io;
 
+import limelight.util.StringUtil;
+import limelight.util.Util;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import java.util.Collections;
 import java.util.LinkedList;
 
 
@@ -34,6 +38,12 @@ public class TemplaterTest
     public void say(String message)
     {
       messages.add(message);
+    }
+
+    @Override
+    public String toString()
+    {
+      return StringUtil.join(Util.ENDL, messages.toArray());
     }
   }
 

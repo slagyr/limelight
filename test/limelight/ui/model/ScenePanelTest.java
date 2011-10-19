@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.LimelightException;
+import limelight.io.FakeFileSystem;
 import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
@@ -30,7 +31,8 @@ public class ScenePanelTest extends Assert
     frame = new MockStage();
     root = new ScenePanel(new FakePropProxy());
     child = new MockProp("child");
-    Context.instance().keyboardFocusManager = new limelight.ui.KeyboardFocusManager().installed();
+    limelight.ui.KeyboardFocusManager.installed();
+    FakeFileSystem.installed();
   }
   
   @Test
@@ -342,10 +344,12 @@ public class ScenePanelTest extends Assert
   @Test
   public void sceneGetLoaderFromOptions() throws Exception
   {
-    assertEquals("", root.getPath());
+    root.setProduction(new FakeProduction("test_prod"));
+    assertEquals("test_prod", root.getPath());
 
     root = new ScenePanel(new FakePropProxy());
-    root.addOptions(Util.toMap("path", "/some/path"));
-    assertEquals("/some/path", root.getPath());
+    root.setProduction(new FakeProduction("/test_prod"));
+    root.addOptions(Util.toMap("path", "some/path"));
+    assertEquals("/test_prod/some/path", root.getPath());
   }
 }

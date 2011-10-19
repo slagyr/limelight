@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.builtin.BuiltinBeacon;
+import limelight.io.FakeFileSystem;
 import limelight.java.JavaCastingDirector;
 import limelight.model.FakeProduction;
 import limelight.model.PlayerRecruiter;
@@ -23,15 +24,13 @@ public class PlayerRecruiterTest
   private PropPanel panel;
   private PlayerRecruiter recruiter;
   private FakeCastingDirector castingDirector;
-  private ScenePanel scene;
-  private FakeProduction production;
   private FakeCastingDirector buildingCastingDirector;
 
   @Before
   public void setUp() throws Exception
   {
-    production = new FakeProduction("/path/to/testProduction");
-    scene = new ScenePanel(new FakePropProxy(), Util.toMap("name", "theScene", "path", "/path/to/testProduction/theScene"));
+    FakeProduction production = new FakeProduction("/path/to/testProduction");
+    ScenePanel scene = new ScenePanel(new FakePropProxy(), Util.toMap("name", "theScene", "path", "theScene"));
     scene.setProduction(production);
     panel = new PropPanel(new FakePropProxy());
     scene.add(panel);
@@ -39,12 +38,13 @@ public class PlayerRecruiterTest
     recruiter = new PlayerRecruiter();
     buildingCastingDirector = new FakeCastingDirector();
     recruiter.setBuiltinCastingDirector(buildingCastingDirector);
+    FakeFileSystem.installed();
   }
 
   @Test
   public void recruitingFromTheScene() throws Exception
   {
-    castingDirector.recruitablePath = "file:/path/to/testProduction/theScene/players";
+    castingDirector.recruitablePath = "/path/to/testProduction/theScene/players";
 
     String player = recruiter.recruit(panel, "blah", castingDirector);
 
@@ -52,20 +52,20 @@ public class PlayerRecruiterTest
     assertEquals(1, castingDirector.castings.size());
     final List<String> casts = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, casts.size());
-    assertEquals("file:/path/to/testProduction/theScene/players/blah", casts.get(0));
+    assertEquals("/path/to/testProduction/theScene/players/blah", casts.get(0));
   }
 
   @Test
   public void recruitingFromTheProduction() throws Exception
   {
-    castingDirector.recruitablePath = "file:/path/to/testProduction/players";
+    castingDirector.recruitablePath = "/path/to/testProduction/players";
 
     recruiter.recruit(panel, "blah", castingDirector);
 
     assertEquals(1, castingDirector.castings.size());
     final List<String> casts = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, casts.size());
-    assertEquals("file:/path/to/testProduction/players/blah", casts.get(0));
+    assertEquals("/path/to/testProduction/players/blah", casts.get(0));
   }
 
   @Test

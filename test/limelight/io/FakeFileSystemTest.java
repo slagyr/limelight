@@ -17,6 +17,12 @@ public class FakeFileSystemTest
   {
     fs = new FakeFileSystem();
   }
+
+  @Test
+  public void join() throws Exception
+  {
+    assertEquals("/", fs.join("/", "/"));
+  }
   
   @Test
   public void onlyRootExistsByDefault() throws Exception
@@ -45,12 +51,6 @@ public class FakeFileSystemTest
     assertEquals(true, fs.exists("foo/bar.txt"));
     assertEquals(false, fs.isDirectory("foo/bar.txt"));
     assertEquals("some content", fs.readTextFile("foo/bar.txt"));
-  }
-
-  @Test
-  public void nullPathIsSameAsDot() throws Exception
-  {
-    assertEquals(fs.absolutePath(null), fs.absolutePath("."));
   }
 
   @Test
@@ -83,5 +83,16 @@ public class FakeFileSystemTest
     fs.createDirectory("/work/dir");
     fs.setWorkingDirectory("/work/dir");
     assertEquals("/work/dir/path", fs.absolutePath("path"));
+  }
+
+  @Test
+  public void parentPath() throws Exception
+  {
+    assertEquals("/", fs.parentPath("/"));
+    assertEquals("/foo", fs.parentPath("/foo/bar"));
+    assertEquals("/foo", fs.parentPath("/foo/."));
+    assertEquals("/", fs.parentPath("foo"));
+    fs.setWorkingDirectory("/bar");
+    assertEquals("/bar", fs.parentPath("foo"));
   }
 }
