@@ -60,8 +60,9 @@ public class PlayerRecruiterTest
   {
     castingDirector.recruitablePath = "/path/to/testProduction/players";
 
-    recruiter.recruit(panel, "blah", castingDirector);
+    String player = recruiter.recruit(panel, "blah", castingDirector);
 
+    assertEquals("blah", player);
     assertEquals(1, castingDirector.castings.size());
     final List<String> casts = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, casts.size());
@@ -84,8 +85,9 @@ public class PlayerRecruiterTest
     castingDirector.recruitablePath = "none";
     buildingCastingDirector.recruitablePath = BuiltinBeacon.getBuiltinPlayersPath();
 
-    recruiter.recruit(panel, "blah", castingDirector);
+    String player = recruiter.recruit(panel, "blah", castingDirector);
 
+    assertEquals("limelight:blah", player);
     assertEquals(1, buildingCastingDirector.castings.size());
     final List<String> casts = buildingCastingDirector.castings.get(panel.getProxy());
     assertEquals(1, casts.size());

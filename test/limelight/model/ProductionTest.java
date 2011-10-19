@@ -12,7 +12,6 @@ import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.Scene;
 import limelight.ui.model.inputs.MockEventAction;
-import limelight.util.ResourceLoader;
 import limelight.util.Util;
 import limelight.util.Version;
 import org.junit.Before;

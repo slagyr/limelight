@@ -5,7 +5,6 @@ package limelight.ui;
 
 import limelight.model.api.PropProxy;
 import limelight.ui.model.Prop;
-import limelight.util.ResourceLoader;
 
 import java.util.Map;
 

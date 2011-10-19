@@ -5,13 +5,11 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.Log;
-import limelight.util.ResourceLoader;
 import limelight.caching.SimpleCache;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class ImageCache extends SimpleCache<String, Image>
