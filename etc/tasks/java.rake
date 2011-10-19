@@ -6,11 +6,11 @@ namespace "java" do
     elems.join(":")
   end
 
-  def prod_deps
+  def java_prod_deps
     ["http://download.java.net/maven/2/net/java/dev/jna/jna/3.0.9/jna-3.0.9.jar"]
   end
 
-  def dev_deps
+  def java_dev_deps
     ["https://github.com/downloads/KentBeck/junit/junit-4.8.2.jar"]
   end
 
@@ -37,19 +37,19 @@ namespace "java" do
 
   desc "Install dependencies"
   task "deps" => %w{init} do
-    deps(LIMELIGHT_ROOT, prod_deps, dev_deps)
+    deps(LIMELIGHT_ROOT, java_prod_deps, java_dev_deps)
   end
 
   namespace "compile" do
 
     desc "Compile limelight production source"
-    task "src" => ["init"] do
+    task "src" => %w{init} do
       javac(LIMELIGHT_ROOT, "src/**/*.java", classpath)
       FileUtils.cp_r "resources/.", "classes"
     end
 
     desc "Compile limelight test source"
-    task "test" => ["init"] do
+    task "test" => %w{init} do
       javac(LIMELIGHT_ROOT, "test/**/*.java", classpath)
     end
 
@@ -63,9 +63,6 @@ namespace "java" do
     junit(LIMELIGHT_ROOT, classpath)
   end
 
-  desc "Compiles, and tests the limelight java code"
-  task "build" => ["clean", "compile", "test"]
-
   desc "Build a jar file with the limelight src"
   task "jar" => %w{compile utilities:deploy} do
     in_dir("classes") do
@@ -75,5 +72,7 @@ namespace "java" do
     end
   end
 
+  desc "Compiles, and tests the limelight java code"
+  task "build" => %w{clean deps jar test}
 
 end

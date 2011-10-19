@@ -44,7 +44,7 @@
        (let [name# (clojure.core/name ~name)
              style# (find-or-create name#)]
          (-> style# ~@calls)
-         (limelight.util.Options/apply style# (limelight.util.OptionsMap. ~attributes))
+         (limelight.util.Options/apply style# (limelight.util.Opts. ~attributes))
          (write-to-map name# style#)))))
 
 (defn build-styles

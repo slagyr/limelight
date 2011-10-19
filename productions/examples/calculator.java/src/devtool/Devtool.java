@@ -4,7 +4,7 @@ import limelight.events.Event;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.ui.events.panel.PanelEvent;
-import limelight.util.OptionsMap;
+import limelight.util.Opts;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class Devtool
     final List<Stage> stages = production.getTheater().getStages();
     for(Stage stage : stages)
     {
-      production.openScene(stage.getScene().getResourceLoader().getRoot(), stage, new OptionsMap());      
+      production.openScene(stage.getScene().getResourceLoader().getRoot(), stage, new Opts());
     }
 
 //      (let [scene (.getRoot (.getRecipient e))
@@ -29,7 +29,7 @@ public class Devtool
 //    (doall (map
 //      (fn [stage]
 //        (println "stage: " stage)
-//        (.openScene production (.getName (.getScene stage)) stage (limelight.util.OptionsMap. {})))
+//        (.openScene production (.getName (.getScene stage)) stage (limelight.util.Opts. {})))
 //      stages))
   }
 }

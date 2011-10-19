@@ -66,4 +66,4 @@ task "jar" => %w{clean compile} do
 end
 
 desc "Compiles, and tests the limelight java code"
-task "build" => %w{jar spec}
+task "build" => %w{deps jar spec}

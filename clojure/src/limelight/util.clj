@@ -35,5 +35,5 @@
   (cond
     (nil? the-map) (.getMap (ProxyMap.))
     (= ProxyMap (class the-map)) (.getMap the-map)
-    (isa? (class the-map) clojure.lang.IPersistentMap) (limelight.util.OptionsMap. the-map)
+    (isa? (class the-map) clojure.lang.IPersistentMap) (limelight.util.Opts. the-map)
     :else the-map))

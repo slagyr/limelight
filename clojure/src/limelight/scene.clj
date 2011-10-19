@@ -15,8 +15,7 @@
 
   ResourceRoot
   (resource-path [this resource]
-    (log "(.getResourceLoader @(.peer this)): " (.getRoot (.getResourceLoader @(.peer this))))
-    (.pathTo (.getResourceLoader @(.peer this)) resource)))
+    (.pathTo (limelight.Context/fs) (.getPath peer) resource)))
 
 
 (defn new-scene [options]

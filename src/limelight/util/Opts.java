@@ -23,7 +23,7 @@ public class Opts extends HashMap<String, Object>
   public static Opts with(Object... args)
   {
     if(args.length % 2 == 1)
-      throw new RuntimeException("OptionsMap.with must be called with an even number of parameters");
+      throw new RuntimeException("Opts.with must be called with an even number of parameters");
     Opts map = new Opts();
     for(int i = 0; i < args.length; i += 2)
     {

@@ -7,6 +7,6 @@
     (doall (map
       (fn [stage]
         (println "stage: " stage)
-        (.openScene production (.getName (.getScene stage)) stage (limelight.util.OptionsMap. {})))
+        (.openScene production (.getName (.getScene stage)) stage (limelight.util.Opts. {})))
       stages))
     ))
