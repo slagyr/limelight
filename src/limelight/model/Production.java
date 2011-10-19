@@ -13,7 +13,7 @@ import limelight.model.events.*;
 import limelight.styles.RichStyle;
 import limelight.styles.Styles;
 import limelight.ui.model.Scene;
-import limelight.util.OptionsMap;
+import limelight.util.Opts;
 import limelight.util.Util;
 import limelight.util.Version;
 
@@ -32,7 +32,7 @@ public abstract class Production
   private boolean open;
   private Thread closingThread;
   private HashMap<String,RichStyle> styles;
-  private OptionsMap backstage = new OptionsMap();
+  private Opts backstage = new Opts();
 
   public Production(String path)
   {
@@ -232,7 +232,7 @@ public abstract class Production
     return styles;
   }
 
-  public OptionsMap getBackstage()
+  public Opts getBackstage()
   {
     return backstage;
   }

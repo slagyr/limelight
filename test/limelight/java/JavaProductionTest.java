@@ -3,7 +3,6 @@
 
 package limelight.java;
 
-import limelight.Context;
 import limelight.events.EventAction;
 import limelight.io.FakeFileSystem;
 import limelight.io.StreamReader;
@@ -15,13 +14,12 @@ import limelight.ui.model.FramedStage;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.Scene;
 import limelight.ui.model.ScenePanel;
-import limelight.util.OptionsMap;
+import limelight.util.Opts;
 import limelight.util.TestUtil;
 import limelight.util.Util;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -69,7 +67,7 @@ public class JavaProductionTest
   @Test
   public void loadsScene() throws Exception
   {
-    final Scene result = production.loadScene("aScene", new OptionsMap());
+    final Scene result = production.loadScene("aScene", new Opts());
 
     assertEquals(ScenePanel.class, result.getClass());
     ScenePanel scene = (ScenePanel)result;
@@ -112,7 +110,7 @@ public class JavaProductionTest
   @Test
   public void loadEmptyStylesForScene() throws Exception
   {
-    production.loadScene("aScene", new OptionsMap());
+    production.loadScene("aScene", new Opts());
 
     final Map<String, RichStyle> styles = production.loadStyles("testProduction/aScene", new HashMap<String, RichStyle>());
 

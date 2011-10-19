@@ -5,14 +5,12 @@ package utilities;
 
 import limelight.About;
 import limelight.Boot;
-import limelight.Context;
 import limelight.builtin.BuiltinBeacon;
 import limelight.java.JavaProduction;
 import limelight.java.JavaProp;
 import limelight.java.JavaScene;
 import limelight.model.Stage;
 import limelight.ui.model.FramedStage;
-import limelight.ui.model.InertFrameManager;
 import limelight.ui.model.StageFrame;
 import limelight.util.Mouse;
 import org.junit.*;
@@ -35,6 +33,7 @@ public class UtilitiesTest
   @Before
   public void setUp() throws Exception
   {
+    Boot.boot("startBackgroundThreads", false);
     production = new JavaProduction(BuiltinBeacon.getBuiltinProductionsPath() + "/utilities");
     production.open();
     utilities = (Utilities) production.getPlayer();

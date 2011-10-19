@@ -6,7 +6,6 @@ package limelight.java;
 import limelight.model.Stage;
 import limelight.model.api.StageProxy;
 import limelight.ui.model.FramedStage;
-import limelight.util.OptionsMap;
 
 import java.util.Map;
 
