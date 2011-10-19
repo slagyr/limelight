@@ -14,12 +14,13 @@ module Limelight
   # See Limelight::PropBuilder
   #
   def self.build_props(root, options={}, &block)
-    loader = options.delete(:build_loader)
+    options = options.dup
+    root_path = options.delete(:root_path)
     instance_variables = options.delete(:instance_variables)
     root.peer.add_options(Util::Hashes.for_java(options))
     builder = DSL::PropBuilder.new(root)
     builder.__install_instance_variables(instance_variables)
-    builder.__loader__ = loader
+    builder.__root_path__ = root_path
     builder.instance_eval(&block) if block  
     return root
   end
@@ -66,7 +67,13 @@ module Limelight
       # Returns the root prop either passed in or created by this builder.
       #
       attr_reader :__prop__
-      attr_accessor :__loader__
+      attr_accessor :__root_path__
+
+      # Returns the configured file system
+      #
+      def __fs__
+        Java::limelight.Context.fs
+      end
 
       # Creates a new builder.  If a prop is passed it, it will be the root on which props are created.
       # If the paramter is a Hash, the Hash will be used to construct a prop that will be used as the root.
@@ -100,9 +107,10 @@ module Limelight
       # root directory of the current production.
       #
       def __install(file, instance_variables = {})
-        raise "Cannot install external props because no loader was provided" if @__loader__.nil?
-        raise "External prop file: '#{file}' doesn't exist" if !@__loader__.exists?(file)
-        content = @__loader__.read_text(file)
+        raise "Cannot install external props because no root path was provided" if @__root_path__.nil?
+        path = __fs__.path_to(@__root_path__, file)
+        raise "External prop file: '#{file}' doesn't exist" if !__fs__.exists?(path)
+        content = __fs__.read_text_file(path)
         begin
           self.__install_instance_variables(instance_variables)
           self.instance_eval(content)
@@ -144,11 +152,6 @@ module Limelight
 
       def method_missing(sym, options={}, &block) # :nodoc:
         options[:name] ||= sym.to_s
-#        builder = PropBuilder.new(options)
-#        builder.__install_instance_variables_from_builder(self)
-#        builder.__loader__ = @__loader__
-#        builder.instance_eval(&block) if block
-#        @__prop__.add(builder.__prop__)
         current_prop = @__prop__
         @__prop__ = Prop.new(options)
         instance_eval(&block) if block

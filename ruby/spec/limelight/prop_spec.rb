@@ -237,11 +237,13 @@ describe Limelight::Prop do
   end
 
   it "should play sound" do
-    production = Limelight::Production.new(Java::limelight.model.FakeProduction.new("/blah"))
-    @scene.production = production
-    production.root.should_receive(:path_to).with("some.au").and_return("/full/path/to/some.au");
-    @prop.peer.should_receive(:play_sound).with("/full/path/to/some.au");
+    @fs = Java::limelight.io.FakeFileSystem.installed
+    @fs.create_text_file("/path/to/prod/some.au", "blah")
 
+    production = Limelight::Production.new(Java::limelight.model.FakeProduction.new("/path/to/prod"))
+    @scene.production = production
+
+    @prop.peer.should_receive(:play_sound).with("/path/to/prod/some.au")
     @prop.play_sound("some.au")
   end
 

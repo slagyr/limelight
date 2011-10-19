@@ -117,59 +117,76 @@ describe Limelight::DSL::PropBuilder do
     root.children[0].children[0].scene.should == root
   end
 
-  it "should install external props" do
-    loader = mock("loader", :exists? => true)
-    loader.should_receive(:read_text).with("external.rb").and_return("child :id => 123")
+  context "with fake fs" do
 
-    root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
-      __install "external.rb"
+    before do
+      @fs = Java::limelight.io.FakeFileSystem.installed
     end
-    root.peer.illuminate
 
-    root.id.should == "321"
-    root.children.size.should == 1
-    child = root.children[0]
-    child.name.should == "child"
-    child.id.should == "123"
-  end
+    it "should install external props" do
+      @fs.create_text_file("/root/external.rb", "child :id => 123")
 
-  it "should fail if no loader is provided" do
-    begin
-      root = Limelight::build_props(@scene, :id => 321, :build_loader => nil) do
+      root = Limelight::build_props(@scene, :id => 321, :root_path => "/root", :casting_director => @caster) do
         __install "external.rb"
       end
-      root.should == nil # should never get here
-    rescue Exception => e
-      e.message.should == "Cannot install external props because no loader was provided"
+      root.peer.illuminate
+
+      root.id.should == "321"
+      root.children.size.should == 1
+      child = root.children[0]
+      child.name.should == "child"
+      child.id.should == "123"
     end
-  end
 
-  it "should fail when the external file doesn't exist" do
-    loader = mock("loader")
-    loader.should_receive(:exists?).with("external.rb").and_return(false)
-
-    begin
-      root = Limelight::build_props(@scene, :id => 321, :build_loader => loader) do
-        __install "external.rb"
+    it "should fail if no loader is provided" do
+      begin
+        root = Limelight::build_props(@scene, :id => 321, :root_path => nil) do
+          __install "external.rb"
+        end
+        root.should == nil # should never get here
+      rescue Exception => e
+        e.message.should == "Cannot install external props because no root path was provided"
       end
-    rescue Exception => e
-      e.message.should == "External prop file: 'external.rb' doesn't exist"
     end
-  end
 
-  it "should fail with PropException when there's problem in the external file" do
-    loader = mock("loader", :exists? => true)
-    loader.should_receive(:read_text).with("external.rb").and_return("+")
-
-    begin
-      root = Limelight::build_props(@scene, :id => 321, :build_loader => loader) do
-        __install "external.rb"
+    it "should fail when the external file doesn't exist" do
+      begin
+        root = Limelight::build_props(@scene, :id => 321, :root_path => "/root") do
+          __install "external.rb"
+        end
+      rescue Exception => e
+        e.message.should == "External prop file: 'external.rb' doesn't exist"
       end
-      "exception should have been thrown".should == nil?
-    rescue Limelight::DSL::BuildException => e
-      e.message.include?("external.rb:1: (eval):1:").should == true
-      e.message.include?("unexpected end-of-file").should == true
     end
+
+    it "should fail with PropException when there's problem in the external file" do
+      @fs.create_text_file("/root/external.rb", "+")
+
+      begin
+        root = Limelight::build_props(@scene, :id => 321, :root_path => "/root") do
+          __install "external.rb"
+        end
+        "exception should have been thrown".should == nil?
+      rescue Limelight::DSL::BuildException => e
+        e.message.include?("external.rb:1: (eval):1:").should == true
+        e.message.include?("unexpected end-of-file").should == true
+      end
+    end
+
+
+    it "should allow instance_variable when installing an external props file" do
+      @fs.create_text_file("/root/external.rb", "child :id => @desired_id")
+
+      root = Limelight::build_props(@scene, :id => 321, :root_path => "/root", :casting_director => @caster) do
+        __install "external.rb", :desired_id => "123"
+      end
+      root.peer.illuminate
+
+      child = root.children[0]
+      child.name.should == "child"
+      child.id.should == "123"
+    end
+
   end
 
   it "should build onto an existing block" do
@@ -228,20 +245,6 @@ describe Limelight::DSL::PropBuilder do
     root.find("grand_child").name.should == "blah"
     root.find("great_grand_child").name.should == "blah"
     root.find("baby").name.should == "blah"
-  end
-
-  it "should allow instance_variable when installing an external props file" do
-    loader = mock("loader", :exists? => true)
-    loader.should_receive(:read_text).with("external.rb").and_return("child :id => @desired_id")
-
-    root = Limelight::build_props(@scene, :id => 321, :build_loader => loader, :casting_director => @caster) do
-      __install "external.rb", :desired_id => "123"
-    end
-    root.peer.illuminate
-
-    child = root.children[0]
-    child.name.should == "child"
-    child.id.should == "123"
   end
 
   it "should allow defining methods inside dsl" do

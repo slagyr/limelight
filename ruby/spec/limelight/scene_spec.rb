@@ -33,10 +33,6 @@ describe Limelight::Scene do
     actions.contains(action).should == true
   end
 
-  it "should have an acceptible path when none is provided" do
-    Limelight::Scene.new().path.should == ""
-  end
-
   describe Limelight::Scene, "paths" do
 
     before(:each) do

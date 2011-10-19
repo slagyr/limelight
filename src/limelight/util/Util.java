@@ -41,4 +41,9 @@ public class Util
 
     return "{" + StringUtil.join(", ", pairs.toArray()) + "}";
   }
+
+  public static String toString(Object o)
+  {
+    return o == null ? null : o.toString();
+  }
 }

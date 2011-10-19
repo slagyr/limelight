@@ -23,7 +23,7 @@ module Limelight
 
     class << self
       def panel_class #:nodoc:
-        return Java::limelight.ui.model.PropPanel
+        Java::limelight.ui.model.PropPanel
       end
     end
 
@@ -46,23 +46,23 @@ module Limelight
     end
 
     def id
-      return @peer.getId
+      @peer.getId
     end
 
     def name
-      return @peer.name
+      @peer.name
     end
 
     def players
-      return @peer.players
+      @peer.players
     end
 
     def style
-      return @peer.style
+      @peer.style
     end
 
     def hover_style
-      return @peer.hover_style
+      @peer.hover_style
     end
 
     # Add a Prop as a child of this Prop.
@@ -79,7 +79,7 @@ module Limelight
     #
     def <<(child)
       add(child)
-      return self
+      self
     end
 
     # Allows the adding of child Props using the PropBuilder DSL.
@@ -95,7 +95,7 @@ module Limelight
       require 'limelight/dsl/prop_builder'
       builder = Limelight::DSL::PropBuilder.new(self)
       builder.__install_instance_variables(options)
-      builder.__loader__ = scene.loader
+      builder.__root_path__ = scene.path
       builder.instance_eval(& block)
     end
 
@@ -139,7 +139,7 @@ module Limelight
     # Returns an Array of matching Props. Returns an empty Array if none are found.
     #
     def find_by_name(name)
-      return @peer.find_by_name(name).map { |descendant| descendant.proxy }
+      @peer.find_by_name(name).map { |descendant| descendant.proxy }
     end
 
     # Sets the text of this Prop.  If a prop is given text, it will become sterilized (it may not have any more children).
@@ -152,11 +152,11 @@ module Limelight
     # Returns the text of the Prop.
     #
     def text
-      return @peer.text
+      @peer.text
     end
 
     def parent
-      return @peer.parent.proxy if @peer.parent
+      @peer.parent.proxy if @peer.parent
     end
 
     def children
@@ -168,26 +168,21 @@ module Limelight
     def scene
 #      return nil if @parent.nil?
 #      @scene = @parent.scene if @scene.nil?
-      return @peer.root.proxy
-    end
-
-    # TODO get rid of me.... The Java Prop interface declares this method.
-    def loader
-      return scene.production.root
+      @peer.root.proxy
     end
 
     # Returns the current Production this Prop lives in.
     #
     def production
-      return scene.production
+      scene.production
     end
 
     def to_s #:nodoc:
-      return "#{self.class.name}[id: #{id}, name: #{name}]"
+      "#{self.class.name}[id: #{id}, name: #{name}]"
     end
 
     def inspect #:nodoc:
-      return self.to_s
+      self.to_s
     end
 
     # Returns a Point representing the location of the Prop's top-left corner within its parent.
@@ -197,7 +192,7 @@ module Limelight
     #   location.y # the Prop's distance from the top of its parent's bounds
     #
     def location
-      return peer.get_location
+      peer.get_location
     end
 
     # Returns a Point representing the location of the Prop's top-left corner within its Stage (Window).
@@ -207,7 +202,7 @@ module Limelight
     #   location.y # the Prop's distance from the top edge of the stage
     #
     def absolute_location
-      return peer.get_absolute_location.clone
+      peer.get_absolute_location.clone
     end
 
     # Returns a Box representing the relative bounds of the Prop. Is useful with using the Pen.
@@ -217,7 +212,7 @@ module Limelight
     #   bounds.width, box.height # represents the Prop's dimensions
     #
     def bounds
-      return peer.get_bounds.clone
+      peer.get_bounds.clone
     end
 
     # Returns a Box representing the bounds inside the borders of the prop.
@@ -229,7 +224,7 @@ module Limelight
     #   bounds.height # the distance between the inside edges of the top and bottom borders
     #
     def bordered_bounds
-      return peer.get_bordered_bounds.clone
+      peer.get_bordered_bounds.clone
     end
 
     # Returns a Box representing the bounds inside the padding of the prop.
@@ -241,13 +236,13 @@ module Limelight
     #   bounds.height # the distance between the inside edges of the top and bottom padding
     #
     def padded_bounds
-      return peer.get_padded_bounds.clone
+      peer.get_padded_bounds.clone
     end
 
     # Returns a Pen object. Pen objects allow to you to draw directly on the screen, withing to bounds of this Prop.
     #
     def pen
-      return Pen.new(peer.getGraphics)
+      Pen.new(peer.getGraphics)
     end
 
     # Initiate an animation loop.  Options may include :name (string), :updates_per_second (int: defaults to 60)
@@ -264,14 +259,15 @@ module Limelight
     def animate(options={}, & block)
       animation = Animation.new(self, block, options)
       animation.start
-      return animation
+      animation
     end
 
     # Plays a sound on the computers audio output.  The parameter is the filename of a .au sound file.
     # This filename should relative to the root directory of the current Production, or an absolute path.
     #
     def play_sound(filename)
-      @peer.play_sound(scene.loader.path_to(filename))
+      path = Java::limelight.Context.fs.path_to(scene.path, filename)
+      @peer.play_sound(path)
     end
 
     # Luanches the spcified URL using the OS's default handlers. For example, opening a URL in a browser:
