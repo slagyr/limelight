@@ -4,7 +4,7 @@
 package limelight.clojure;
 
 import clojure.lang.*;
-import limelight.util.OptionsMap;
+import limelight.util.Opts;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -15,14 +15,14 @@ import java.util.Map;
  */
 public class ProxyMap extends APersistentMap
 {
-  private OptionsMap map;
+  private Opts map;
 
   public ProxyMap()
   {
-    map = new OptionsMap();
+    map = new Opts();
   }
 
-  public ProxyMap(OptionsMap map)
+  public ProxyMap(Opts map)
   {
     this.map = map;
   }
@@ -82,7 +82,7 @@ public class ProxyMap extends APersistentMap
 
   private String stringify(Object keyObj)
   {
-    return OptionsMap.toKey(keyObj);
+    return Opts.toKey(keyObj);
   }
 
   public int count()

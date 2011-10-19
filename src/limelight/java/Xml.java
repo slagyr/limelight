@@ -5,10 +5,9 @@ package limelight.java;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.model.Theater;
 import limelight.styles.RichStyle;
 import limelight.util.Options;
-import limelight.util.OptionsMap;
+import limelight.util.Opts;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -71,9 +70,9 @@ public class Xml
     return elements;
   }
 
-  public static OptionsMap loadOptions(Element stageElement)
+  public static Opts loadOptions(Element stageElement)
   {
-    OptionsMap options = new OptionsMap();
+    Opts options = new Opts();
     final NamedNodeMap attributes = stageElement.getAttributes();
     for(int j = 0; j < attributes.getLength(); j++)
     {
@@ -89,7 +88,7 @@ public class Xml
   public static JavaProp toProp(Element propElement)
   {
     String name = propElement.getNodeName();
-    final OptionsMap options = loadOptions(propElement);
+    final Opts options = loadOptions(propElement);
     options.put("name", name);
     final JavaProp prop = new JavaProp(options);
 
@@ -109,7 +108,7 @@ public class Xml
   public static void toStyle(Element styleElement, Map<String, RichStyle> map, Map<String, RichStyle> extensions)
   {
     String name = styleElement.getNodeName();
-    final OptionsMap options = loadOptions(styleElement);
+    final Opts options = loadOptions(styleElement);
     Object extensionNames = options.remove("extends");
     RichStyle style = new RichStyle();
     Options.apply(style, options);
@@ -137,7 +136,7 @@ public class Xml
   public static void toStage(JavaTheater theater, Element stageElement)
   {
     final String name = stageElement.getNodeName();
-    OptionsMap options = loadOptions(stageElement);
+    Opts options = loadOptions(stageElement);
     theater.add(theater.buildStage(name, options));
   }
 }

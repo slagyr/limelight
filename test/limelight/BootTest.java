@@ -11,6 +11,7 @@ import limelight.os.MockOS;
 import limelight.os.OS;
 import limelight.os.UnsupportedOS;
 import limelight.ui.Panel;
+import limelight.util.Opts;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,12 +23,14 @@ import static org.junit.Assert.assertNotNull;
 
 public class BootTest
 {
+  private Opts options;
+
   @Before
   public void setUp() throws Exception
   {
     Boot.reset();
-    Boot.startBackgroundThreads = false;
     Context.removeInstance();
+    options = Boot.defaultOptions.merge("startBackgroundThreads", false);
   }
 
   @After
@@ -40,7 +43,7 @@ public class BootTest
   @Test
   public void tempFileIsAddedToContext() throws Exception
   {
-    Boot.configureContext();
+    Boot.configureContext(options);
 
     assertNotNull(Context.instance().tempDirectory);
   }
@@ -48,7 +51,7 @@ public class BootTest
   @Test
   public void bufferedImageCacheIsAddedToContext() throws Exception
   {
-    Boot.configureContext();
+    Boot.configureContext(options);
 
     Cache<Panel, BufferedImage> cache = Context.instance().bufferedImageCache;
     assertEquals(TimedCache.class, cache.getClass());
@@ -58,7 +61,7 @@ public class BootTest
   @Test
   public void frameManagerIsAddedToContext() throws Exception
   {
-    Boot.configureContext();
+    Boot.configureContext(options);
 
     assertNotNull(Context.instance().frameManager);
   }
@@ -66,7 +69,7 @@ public class BootTest
   @Test
   public void audioPlayerIsAdded() throws Exception
   {
-    Boot.configureContext();
+    Boot.configureContext(options);
 
     assertEquals(RealAudioPlayer.class, Context.instance().audioPlayer.getClass());
   }
@@ -81,7 +84,7 @@ public class BootTest
   @Test
   public void bufferedImagePoolIsInstalled() throws Exception
   {
-    Boot.configureContext();
+    Boot.configureContext(options);
 
     assertNotNull(Context.instance().bufferedImagePool);
   }
@@ -89,7 +92,7 @@ public class BootTest
   @Test
   public void studioIsInstalled() throws Exception
   {
-    Boot.configureContext();
+    Boot.configureContext(options);
 
     assertEquals(Studio.class, Context.instance().studio.getClass());
   }
@@ -97,7 +100,7 @@ public class BootTest
   @Test
   public void threadsDontStartInDevelopment() throws Exception
   {
-    Boot.configureContext();
+    Boot.configureContext(options);
 
     final Context context = Context.instance();
     assertEquals(false, context.panelPanter.isRunning());
@@ -106,10 +109,20 @@ public class BootTest
   }
 
   @Test
-  public void threadsDOStartNormally() throws Exception
+  public void canConfigureThreadsNotToStart() throws Exception
   {
-    Boot.startBackgroundThreads = true;
-    Boot.configureContext();
+    Boot.configureContext(Opts.with("startBackgroundThreads", false));
+
+    final Context context = Context.instance();
+    assertEquals(false, context.panelPanter.isRunning());
+    assertEquals(false, context.animationLoop.isRunning());
+    assertEquals(false, context.cacheCleaner.isRunning());
+  }
+
+  @Test
+  public void threadsDoStartNormally() throws Exception
+  {
+    Boot.configureContext(options.merge("startBackgroundThreads", true));
 
     final Context context = Context.instance();
     assertEquals(true, context.panelPanter.isRunning());

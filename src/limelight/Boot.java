@@ -17,15 +17,20 @@ import limelight.ui.BufferedImagePool;
 import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
+import limelight.util.Opts;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
+import java.util.Map;
 
 public class Boot
 {
-  public static boolean startBackgroundThreads = true;
   private static boolean booted;
+
+  public static final Opts defaultOptions = Opts.with(
+    "startBackgroundThreads", true
+  );
 
   public static void reset()
   {
@@ -35,18 +40,26 @@ public class Boot
 
   public static void boot()
   {
-    boot("production");
+    boot(new Opts());
   }
 
-  public static void boot(String environment)
+  public static void boot(Object... options)
   {
+    boot(Opts.with(options));
+  }
+
+  public static void boot(Map<String, Object> customizations)
+  {
+    Opts options = defaultOptions.merge(customizations);
+
     if(booted)
       return;
     booted = true;
+
     try
     {
       configureOS();
-      configureContext();
+      configureContext(options);
       configureSystemProperties();
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -74,10 +87,9 @@ public class Boot
       return;
 
     String className = "limelight.os.UnsupportedOS";
-    if(System.getProperty("os.name").indexOf("Windows") != -1)
+    if(System.getProperty("os.name").contains("Windows"))
       className = "limelight.os.win32.Win32OS";
-    else
-      if(System.getProperty("os.name").indexOf("Mac OS X") != -1)
+    else if(System.getProperty("os.name").contains("Mac OS X"))
         className = "limelight.os.darwin.DarwinOS";
 
     try
@@ -95,7 +107,7 @@ public class Boot
     context().os.appIsStarting();
   }
 
-  public static void configureContext() throws Exception
+  public static void configureContext(Map<String, Object> options) throws Exception
   {
 //VerboseRepaintManager.install();
     if(context().frameManager == null)
@@ -104,7 +116,7 @@ public class Boot
     installCommonConfigComponents();
 
     if(context().panelPanter == null)
-      context().panelPanter = new PanelPainterLoop();if(startBackgroundThreads);
+      context().panelPanter = new PanelPainterLoop();
 
     if(context().animationLoop == null)
       context().animationLoop = new AnimationLoop();
@@ -112,7 +124,7 @@ public class Boot
     if(context().cacheCleaner == null)
       context().cacheCleaner = new CacheCleanerLoop();
 
-    if(startBackgroundThreads)
+    if(isOn(options.get("startBackgroundThreads")))
     {
       context().panelPanter.start();
       context().animationLoop.start();
@@ -120,10 +132,15 @@ public class Boot
     }
   }
 
+  private static boolean isOn(Object option)
+  {
+    return option != null && option.equals(true);
+  }
+
   private static void installCommonConfigComponents()
   {
     if(context().keyboardFocusManager == null)
-      context().keyboardFocusManager = new KeyboardFocusManager().installed();
+      context().keyboardFocusManager = KeyboardFocusManager.installed();
 
     if(context().tempDirectory == null)
       context().tempDirectory = new TempDirectory();
