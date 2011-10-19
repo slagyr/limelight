@@ -52,13 +52,13 @@ module Limelight
     # returns true if the production has been opened, and not yet closed.
     #
     def open?
-      return @peer.open?
+      @peer.open?
     end
 
     # Returns the name of the Production
     #
     def name
-      return @peer.name
+      @peer.name
     end
 
     # Sets the name of the Production.  The name must be unique amongst all Productions in memory.
@@ -67,53 +67,46 @@ module Limelight
       @peer.name = value
     end
 
-    # Returns the resource loader for the Production
-    #
-    def root
-      return @peer.resource_loader
-    end
-
     # Return the path to the root directory of the production
     #
     def path
-      return @peer.resource_loader.root
+      @peer.path
     end
 
     # Returns the path to the production's production.rb file
     #
     def production_file
-      return root.path_to("production.rb")
+      @fs.path_to(path, "production.rb")
     end
 
     # Returns the path to the production's stages file
     #
     def stages_file
-      return root.path_to("stages.rb")
+      @fs.path_to(path, "stages.rb")
     end
 
     # Returns the path to the production's styles file
     #
     def styles_file
-      return root.path_to("styles.rb")
+      @fs.path_to(path, "styles.rb")
     end
 
     # Returns the path to the production's gems directory
     #
     def gems_directory
-      return root.path_to("__resources/gems/gems")
+      @fs.path_to(path, "__resources/gems/gems")
     end
 
     # Returns the path to the productions gems root
     #
     def gems_root
-      return root.path_to("__resources/gems")
+      @fs.path_to(path, "__resources/gems")
     end
 
     # Returns the path to the named Scene's directory within the Production
     #
     def scene_directory(name)
-      return root.root if name == nil
-      return root.path_to(name)
+      name == nil ? path : @fs.path_to(path, name)
     end
 
     # Returns true if the production allows itself to be closed.  The system will call this methods when
@@ -121,7 +114,7 @@ module Limelight
     # will always return true.
     #
     def allow_close?
-      return @peer.allow_close?
+      @peer.allow_close?
     end
 
     # Specifies whether this production will allow itself to be closed.  It should be noted that permanently setting
@@ -224,7 +217,7 @@ module Limelight
       scene.production = self
       if @fs.exists?(scene.props_file)
         content = @fs.read_text_file(scene.props_file)
-        options[:build_loader] = self.root
+        options[:root_path] = self.path
         Limelight.build_props(scene, options.merge(:instance_variables => instance_variables)) do
           begin
             eval content
@@ -244,7 +237,7 @@ module Limelight
       if @fs.exists?(styles_path)
         Limelight.build_styles_from_file(styles_path, :styles => result, :extendable_styles => extendable_styles)
       end
-      return result
+      result
     end
 
     alias :loadStyles :load_styles

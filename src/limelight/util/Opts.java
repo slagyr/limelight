@@ -27,7 +27,7 @@ public class Opts extends HashMap<String, Object>
     Opts map = new Opts();
     for(int i = 0; i < args.length; i += 2)
     {
-      String key = "" + args[i];
+      String key = Util.toString(args[i]);
       Object value = args[i + 1];
       map.put(key, value);
     }

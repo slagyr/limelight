@@ -4,9 +4,9 @@
 require File.expand_path(File.dirname(__FILE__) + "/../lib/limelight/limelight_init")
 require 'rspec'
 require 'limelight/mouse'
+require 'limelight/util/hashes'
 
-Java::limelight.Boot.startBackgroundThreads = false
-Java::limelight.Boot.boot
+Java::limelight.Boot.boot("startBackgroundThreads", false)
 context = Limelight::Context.instance
 context.frameManager = Java::limelight.ui.model.InertFrameManager.new
 

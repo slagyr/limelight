@@ -12,6 +12,7 @@ import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
 import limelight.model.api.PropProxy;
+import limelight.util.Util;
 
 import java.awt.*;
 import java.util.*;
@@ -296,7 +297,7 @@ public class ScenePanel extends PropPanel implements Scene
   public void addOptions(Map<String, Object> newOptions)
   {
     if(newOptions.containsKey("path"))
-      pathRelativeToProduction = (String)newOptions.remove("path");
+      pathRelativeToProduction = Util.toString(newOptions.remove("path"));
     super.addOptions(newOptions);
   }
 

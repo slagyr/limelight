@@ -15,7 +15,7 @@ module Limelight
 
     class << self
       def panel_class #:nodoc:
-        return Java::limelight.ui.model.ScenePanel
+        Java::limelight.ui.model.ScenePanel
       end
     end
 
@@ -27,6 +27,7 @@ module Limelight
       @casting_director = options.delete(:casting_director) || CastingDirector.new
       super(options)
       @peer.casting_director = @casting_director
+      @fs = Java::limelight.Context.fs
     end
 
     def production=(value)
@@ -34,11 +35,11 @@ module Limelight
     end
 
     def production
-      return @peer.production.proxy
+      @peer.production.proxy
     end
 
     def button_groups
-      return @peer.button_groups
+      @peer.button_groups
     end
 
     def on_scene_opened(& action)
@@ -52,43 +53,43 @@ module Limelight
         styles = @peer.styles
         @styles = Util::Hashes.for_ruby(styles)
       end
-      return @styles
+      @styles
     end
 
     # Returns self.  A Scene is it's own scene.
     #
     def scene 
-      return self
+      self
     end
 
     # Returns the stage that contains the scene
     #
     def stage
-      return @peer.stage.proxy
+      @peer.stage.proxy
     end
 
     # Returns the path to the root directory of the Scene
     #
     def path
-      return @peer.resource_loader.root
+      @peer.path
     end
 
     # Returns the path to the Scene's props file
     #
     def props_file
-      return @peer.resource_loader.path_to("props.rb")
+      @fs.path_to(path, "props.rb")
     end
 
     # Returns the path to the Scene's props file
     #
     def styles_file
-      return @peer.resource_loader.path_to("styles.rb")
+      @fs.path_to(path, "styles.rb")
     end
 
     # Creates the menu bar for the Scene 
     #
     def menu_bar
-      return DSL::MenuBar.build(self) do
+      DSL::MenuBar.build(self) do
         menu("File") do
           item("Open", :open_chosen_production)
           item("Refresh", :reload)
@@ -113,11 +114,11 @@ module Limelight
     #
     def find(id)
       peer_result = @peer.find(id.to_s)
-      return peer_result.nil? ? nil : peer_result.proxy
+      peer_result.nil? ? nil : peer_result.proxy
     end
 
     def visible?
-      return @peer.visible?
+      @peer.visible?
     end
 
   end
