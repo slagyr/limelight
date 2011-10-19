@@ -5,13 +5,10 @@ package limelight.ui.model;
 
 import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
-import limelight.util.FakeResourceLoader;
 import limelight.io.StreamReader;
 import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.FileInputStream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,8 +24,7 @@ public class ImagePanelTest
     ScenePanel root = new ScenePanel(scene);
     root.setStage(new MockStage());
     parent = new MockProp();
-    FakeResourceLoader loader = new FakeResourceLoader();
-    FakeProduction production = new FakeProduction("Mock", loader);
+    FakeProduction production = new FakeProduction("Mock");
     root.setProduction(production);
     root.add(parent);
 

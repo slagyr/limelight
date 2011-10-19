@@ -9,11 +9,9 @@ import limelight.model.api.CastingDirector;
 import limelight.model.api.PropProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.util.ResourceLoader;
 
 import java.awt.*;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public interface Scene extends Panel, ParentPanel

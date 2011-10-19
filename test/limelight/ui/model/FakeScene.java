@@ -3,15 +3,12 @@
 
 package limelight.ui.model;
 
-import limelight.Context;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.model.api.CastingDirector;
 import limelight.model.api.FakeCastingDirector;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.util.FakeResourceLoader;
-import limelight.util.ResourceLoader;
 
 import java.awt.*;
 import java.util.Collection;
@@ -27,7 +24,6 @@ public class FakeScene extends MockProp implements Scene
   private Stage stage;
   public boolean visible;
   public CastingDirector castingDirector = new FakeCastingDirector();
-  public ResourceLoader resourceLoader = new FakeResourceLoader();
 
   @Override
   public Scene getRoot()
@@ -104,11 +100,6 @@ public class FakeScene extends MockProp implements Scene
   public CastingDirector getCastingDirector()
   {
     return castingDirector;
-  }
-
-  public ResourceLoader getResourceLoader()
-  {
-    return resourceLoader;
   }
 
   public String getAbsoluteName()

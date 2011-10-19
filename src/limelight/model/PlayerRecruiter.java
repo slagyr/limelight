@@ -38,11 +38,11 @@ public class PlayerRecruiter
     {
       final String productionPlayersPath = Context.fs().pathTo(scene.getProduction().getPath(), "players");
       if(recruitFrom(panel, playerName, castingDirector, productionPlayersPath))
-        return productionPlayersPath;
+        return playerName;
     }
 
     if(recruitFrom(panel, playerName, builtinCastingDirector, BuiltinBeacon.getBuiltinPlayersPath()))
-      return BuiltinBeacon.getBuiltinPlayersPath();
+      return "limelight:" + playerName;
 
     return null;
   }

@@ -5,7 +5,6 @@ package limelight.ui.model;
 
 import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
-import limelight.util.FakeResourceLoader;
 import limelight.util.TestUtil;
 import limelight.util.Box;
 import org.junit.Before;
@@ -27,8 +26,7 @@ public class ImagePanelLayoutTest
     ScenePanel root = new ScenePanel(scene);
     root.setStage(new MockStage());
     parent = new MockProp();
-    FakeResourceLoader loader = new FakeResourceLoader();
-    FakeProduction production = new FakeProduction("Mock", loader);
+    FakeProduction production = new FakeProduction("Mock");
     root.setProduction(production);
     root.add(parent);
 
