@@ -48,12 +48,16 @@ public class Templater
   public void directory(String dir)
   {
     verifyDestinationRoot();
-    final String fullPath = fs.join(destinationRoot, dir);
+    fullDirectory(fs.join(destinationRoot, dir));
+  }
+
+  private void fullDirectory(String fullPath)
+  {
     if(fs.exists(fullPath))
       return;
 
-    directory(fs.parentPath(dir));
-    creatingDirectory(dir);
+    fullDirectory(fs.parentPath(fullPath));
+    creatingDirectory(fullPath);
     fs.createDirectory(fullPath);
   }
 
@@ -74,15 +78,15 @@ public class Templater
 
   public void file(String filePath, String template)
   {
-    directory(fs.parentPath(filePath));
+    final String destination = fs.join(destinationRoot, filePath);
+    fullDirectory(fs.parentPath(destination));
     final String templateContent = fs.readTextFile(fs.join(sourceRoot, template));
 
-    final String destination = fs.join(destinationRoot, filePath);
     if(fs.exists(destination))
-      fileExists(filePath);
+      fileExists(destination);
     else
     {
-      creatingFile(filePath);
+      creatingFile(destination);
       fs.createTextFile(destination, replaceTokens(templateContent));
     }
   }
@@ -109,17 +113,17 @@ public class Templater
 
   private void creatingFile(String filePath)
   {
-    logger.say("\tcreating file:       " + filePath);
+    logger.say("\tcreating file:       " + fs.relativePathBetween(destinationRoot, filePath));
   }
 
   private void fileExists(String filePath)
   {
-    logger.say("\tfile already exists: " + filePath);
+    logger.say("\tfile already exists: " + fs.relativePathBetween(destinationRoot, filePath));
   }
 
   private void creatingDirectory(String dir)
   {
-    logger.say("\tcreating directory:  " + dir);
+    logger.say("\tcreating directory:  " + fs.relativePathBetween(destinationRoot, dir));
   }
 
   public static class TemplaterLogger

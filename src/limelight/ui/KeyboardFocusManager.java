@@ -3,6 +3,7 @@
 
 package limelight.ui;
 
+import limelight.Context;
 import limelight.ui.model.StageFrame;
 
 import java.awt.*;
@@ -12,12 +13,14 @@ public class KeyboardFocusManager extends DefaultKeyboardFocusManager
   public void install()
   {
     java.awt.KeyboardFocusManager.setCurrentKeyboardFocusManager(this);
+    Context.instance().keyboardFocusManager = this;
   }
 
-  public KeyboardFocusManager installed()
+  public static KeyboardFocusManager installed()
   {
-    install();
-    return this;
+    KeyboardFocusManager manager = new KeyboardFocusManager();
+    manager.install();
+    return manager;
   }
 
   @Override

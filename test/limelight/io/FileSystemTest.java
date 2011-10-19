@@ -26,7 +26,7 @@ public class FileSystemTest
   public void setUp() throws Exception
   {
     fs = new FileSystem();
-    jarPath = "jar:file:" + TestUtil.dataDirPath("calc.jar!");
+    jarPath = "jar:" + TestUtil.dataDirPath("calc.jar!");
   }
 
   @After
@@ -265,7 +265,8 @@ public class FileSystemTest
   @Test
   public void parentPath() throws Exception
   {
-    assertEquals(null, fs.parentPath("/"));
+    assertEquals("/", fs.parentPath("/"));
+    assertEquals(fs.workingDir(), fs.parentPath("foo"));
     assertEquals("/", fs.parentPath("/foo"));
     assertEquals("/", fs.parentPath("/foo"));
     assertEquals("/foo", fs.parentPath("/foo/bar"));
@@ -275,14 +276,30 @@ public class FileSystemTest
   }
 
   @Test
+  public void pathTo() throws Exception
+  {
+    assertEquals("file:/source/destination", fs.pathTo("file:/source", "destination"));
+    assertEquals("file:/destination", fs.pathTo("file:/source", "file:/destination"));
+  }
+
+  @Test
   public void relativePathTo() throws Exception
   {
     assertEquals(".", fs.relativePathBetween("file:/", "file:/"));
     assertEquals(".", fs.relativePathBetween("file:/origin", "file:/origin"));
     assertEquals("target", fs.relativePathBetween("file:/", "file:/target"));
-    assertEquals("target", fs.relativePathBetween("file:/origin", "target"));
     assertEquals("../target", fs.relativePathBetween("file:/origin", "file:/target"));
     assertEquals("../../target", fs.relativePathBetween("file:/origin/child", "file:/target"));
     assertEquals("child/target", fs.relativePathBetween("file:/origin", "file:/origin/child/target"));
+  }
+
+  @Test
+  public void relativePathToWithFakeFileSystem() throws Exception
+  {
+    final FakeFileSystem fake = new FakeFileSystem();
+    fake.setWorkingDirectory("/working/dir");
+    fs = fake;
+    assertEquals("../working/dir/target", fs.relativePathBetween("/origin", "target"));
+    assertEquals("child", fs.relativePathBetween("origin", "origin/child"));
   }
 }

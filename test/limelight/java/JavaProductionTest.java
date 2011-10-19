@@ -180,7 +180,7 @@ public class JavaProductionTest
   public static void writeSamplePlayerTo(OutputStream outputStream) throws IOException
   {
     final String playerClassFile = TestUtil.dataDirPath("SamplePlayer.class");
-    StreamReader reader = new StreamReader(new FileInputStream(playerClassFile));
+    StreamReader reader = new StreamReader(TestUtil.fs.inputStream(playerClassFile));
     final byte[] classBytes = reader.readAllBytes();
     reader.close();
     outputStream.write(classBytes);

@@ -3,30 +3,33 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
-import limelight.Context;
-import limelight.io.FakeFileSystem;
-import limelight.util.FakeResourceLoader;
 import limelight.util.TestUtil;
-
 import java.awt.*;
 
-public class ImageCacheTest extends TestCase
+import org.junit.Before;
+import org.junit.Test;
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertNotNull;
+
+public class ImageCacheTest
 {
   private ImageCache cache;
 
+  @Before
   public void setUp() throws Exception
   {
     cache = new ImageCache(TestUtil.DATA_DIR);
   }
 
-  public void testLoadingAnImage() throws Exception
+  @Test
+  public void loadingAnImage() throws Exception
   {
     Image image = cache.getImage("star.gif");
     assertNotNull(image);
   }
 
-  public void testLoadingAnImageTwiceGivesTheSameImage() throws Exception
+  @Test
+  public void loadingAnImageTwiceGivesTheSameImage() throws Exception
   {
     Image image = cache.getImage("star.gif");
     Image image2 = cache.getImage("star.gif");

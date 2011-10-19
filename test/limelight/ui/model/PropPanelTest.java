@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.LimelightException;
+import limelight.io.FakeFileSystem;
 import limelight.model.FakeProduction;
 import limelight.model.PlayerRecruiter;
 import limelight.model.api.FakeCastingDirector;
@@ -60,6 +61,7 @@ public class PropPanelTest extends Assert
     style = panel.getStyle();
 
     PlayerRecruiter.installed();
+    FakeFileSystem.installed();
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
 
@@ -587,7 +589,7 @@ public class PropPanelTest extends Assert
 
     List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, panelCastings.size());
-    assertEquals("file:/players/jumpy", panelCastings.get(0));
+    assertEquals("test/players/jumpy", panelCastings.get(0));
   }
 
   @Test
@@ -600,9 +602,9 @@ public class PropPanelTest extends Assert
 
     List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(3, panelCastings.size());
-    assertEquals("file:/players/jumpy", panelCastings.get(0));
-    assertEquals("file:/players/itchy", panelCastings.get(1));
-    assertEquals("file:/players/scratchy", panelCastings.get(2));
+    assertEquals("test/players/jumpy", panelCastings.get(0));
+    assertEquals("test/players/itchy", panelCastings.get(1));
+    assertEquals("test/players/scratchy", panelCastings.get(2));
   }
 
   @Test
@@ -615,7 +617,7 @@ public class PropPanelTest extends Assert
 
     List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
     assertEquals(1, panelCastings.size());
-    assertEquals("file:/players/jumpy", panelCastings.get(0));
+    assertEquals("test/players/jumpy", panelCastings.get(0));
   }
 
   @Test
