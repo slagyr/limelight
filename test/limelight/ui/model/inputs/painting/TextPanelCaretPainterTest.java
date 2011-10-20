@@ -9,12 +9,14 @@ import limelight.ui.model.inputs.MockTextModel;
 import limelight.ui.model.inputs.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class TextPanelCaretPainterTest
 {
@@ -26,6 +28,7 @@ public class TextPanelCaretPainterTest
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     container = new MockTextContainer();
     container.bounds = new Box(0, 0, 150, 20);
 

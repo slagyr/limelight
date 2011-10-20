@@ -8,10 +8,12 @@ import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.MultiLineTextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class FittingYOffsetStrategyTest
 {
@@ -21,6 +23,7 @@ public class FittingYOffsetStrategyTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     textContainer = new MockTextContainer(new Box(0, 0, 100, 15));
     model = new MultiLineTextModel(textContainer);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);

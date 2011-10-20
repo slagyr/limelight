@@ -9,6 +9,7 @@ import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +17,7 @@ import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
+import static org.junit.Assume.assumeTrue;
 
 public class TextInputPanelTest
 {
@@ -28,6 +30,7 @@ public class TextInputPanelTest
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     root = new FakeScene();
     panel = new MockTextInputPanel();
     parent = new PropPanel(new FakePropProxy());

@@ -8,12 +8,15 @@ import limelight.ui.BufferedImagePool;
 import limelight.ui.model.*;
 import limelight.ui.MockPanel;
 import limelight.Context;
+import limelight.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
+
+import static org.junit.Assume.assumeTrue;
 
 public class PanelPainterLoopTest extends Assert
 {
@@ -25,6 +28,7 @@ public class PanelPainterLoopTest extends Assert
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     loop = new PanelPainterLoop();
     frameManager = new MockFrameManager();
     Context.instance().frameManager = frameManager;
@@ -42,7 +46,7 @@ public class PanelPainterLoopTest extends Assert
   }
   
   @Test
-  public void shouldGetRootWithActiveFrame() throws Exception
+  public void getRootWithActiveFrame() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
 
@@ -50,13 +54,13 @@ public class PanelPainterLoopTest extends Assert
   }
   
   @Test
-  public void shouldIdleWhenThereIsNoRoot() throws Exception
+  public void idleWhenThereIsNoRoot() throws Exception
   {
     assertEquals(true, loop.shouldBeIdle());
   }
   
   @Test
-  public void shouldBeIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
+  public void isIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
   {
     activeRoot.getAndClearDirtyRegions(new ArrayList<Rectangle>());
     activeRoot.getAndClearPanelsNeedingLayout(new ArrayList<limelight.ui.Panel>());
@@ -69,7 +73,7 @@ public class PanelPainterLoopTest extends Assert
   }
 
   @Test
-  public void shouldNotBeIdleWhenPanelsNeedLayout() throws Exception
+  public void isNotIdleWhenPanelsNeedLayout() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
     activeRoot.addPanelNeedingLayout(new MockPanel());
@@ -78,7 +82,7 @@ public class PanelPainterLoopTest extends Assert
   }
 
   @Test
-  public void shouldNotBeIdleWhenThereAreDirtyRegions() throws Exception
+  public void isNotIdleWhenThereAreDirtyRegions() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
     activeRoot.addDirtyRegion(new Rectangle(0, 0, 1, 1));
@@ -87,7 +91,7 @@ public class PanelPainterLoopTest extends Assert
   }
   
   @Test
-  public void shouldDoLayouts() throws Exception
+  public void doesLayouts() throws Exception
   {
     MockPanel panel1 = new MockPanel();
     MockPanel panel2 = new MockPanel();
@@ -102,7 +106,7 @@ public class PanelPainterLoopTest extends Assert
   }
 
   @Test
-  public void shouldPaintDirtyRegions() throws Exception
+  public void paintsDirtyRegions() throws Exception
   {
     Context.instance().bufferedImagePool = new BufferedImagePool(0.1);
     activeRoot.addDirtyRegion(new Rectangle(0, 0, 10, 10));
@@ -113,7 +117,7 @@ public class PanelPainterLoopTest extends Assert
   }
 
   @Test
-  public void shouldUpdatesPerSecond() throws Exception
+  public void updatesPerSecond() throws Exception
   {
     assertEquals(30, loop.getUpdatesPerSecond());
     assertEquals(1000000000 / 30, loop.getOptimalDelayTimeNanos());

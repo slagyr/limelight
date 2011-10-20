@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 public class JavaProductionTest
 {
@@ -44,6 +45,7 @@ public class JavaProductionTest
   @Test
   public void loadsStages() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     fs.createTextFile("/testProduction/stages.xml", "<stages><egats/></stages>");
     production.loadStages();
 
@@ -55,6 +57,7 @@ public class JavaProductionTest
   @Test
   public void loadsStagesWithOptions() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     fs.createTextFile("/testProduction/stages.xml", "<stages><egats title='Eureka!'/></stages>");
     production.loadStages();
 

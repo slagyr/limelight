@@ -3,10 +3,12 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.ui.MockPanel;
 import limelight.ui.model.MockParentPanel;
+import limelight.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assume.assumeTrue;
 
 public class TextInputPanelLayoutTest extends Assert
 {
@@ -19,6 +21,7 @@ public class TextInputPanelLayoutTest extends Assert
   @Test
   public void shouldClearTextLayout() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     MockTextInputPanel panel = new MockTextInputPanel();
     MockParentPanel parent = new MockParentPanel();
     parent.add(panel);

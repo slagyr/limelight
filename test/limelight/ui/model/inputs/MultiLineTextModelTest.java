@@ -7,6 +7,7 @@ import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class MultiLineTextModelTest
 {
@@ -23,6 +25,7 @@ public class MultiLineTextModelTest
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     container = new MockTextContainer();
     container.bounds = new Box(0, 0, 150, 75);
     model = new MultiLineTextModel(container);

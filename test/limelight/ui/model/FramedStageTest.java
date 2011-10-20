@@ -11,6 +11,7 @@ import limelight.styles.values.*;
 import limelight.ui.*;
 import limelight.model.api.MockStageProxy;
 import limelight.util.Colors;
+import limelight.util.TestUtil;
 import limelight.util.Util;
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import static junit.framework.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 public class FramedStageTest
 {
@@ -34,6 +36,7 @@ public class FramedStageTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     RealStyleAttributeCompilerFactory.install();
     frameManager = new InertFrameManager();
     Context.instance().frameManager = frameManager;

@@ -9,6 +9,7 @@ import limelight.ui.events.panel.KeyEvent;
 import limelight.ui.events.panel.KeyPressedEvent;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class TextInputKeyProcessorTest
 {
@@ -32,6 +34,7 @@ public class TextInputKeyProcessorTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     container = new MockTextContainer();
     processor = TextInputKeyProcessor.instance;
   }

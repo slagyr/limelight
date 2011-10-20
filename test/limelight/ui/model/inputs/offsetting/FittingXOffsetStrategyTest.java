@@ -8,10 +8,12 @@ import limelight.ui.model.inputs.MockTextContainer;
 import limelight.ui.model.inputs.SingleLineTextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class FittingXOffsetStrategyTest
 {
@@ -22,6 +24,7 @@ public class FittingXOffsetStrategyTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     strategy = XOffsetStrategy.FITTING;
     container = new MockTextContainer();
     container.bounds = new Box(0, 0, 100, 50);

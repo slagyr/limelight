@@ -5,13 +5,23 @@ package limelight.util;
 
 import limelight.io.FileSystem;
 
+import java.awt.*;
+
 public class TestUtil
 {
   public static final FileSystem fs = new FileSystem();
   public static final String DATA_DIR = fs.absolutePath(fs.join("etc", "test_data"));
+  public static Boolean headless;
 
   public static String dataDirPath(String... args)
   {
     return fs.join(DATA_DIR, fs.join(args));
+  }
+
+  public static boolean notHeadless()
+  {
+    if(headless == null)
+      headless = GraphicsEnvironment.isHeadless();
+    return !headless;
   }
 }

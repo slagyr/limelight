@@ -7,12 +7,14 @@ import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.model.MockParentPanel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class SingleLineTextModelTest
 {
@@ -22,6 +24,7 @@ public class SingleLineTextModelTest
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     panel = new TextBoxPanel();
     MockParentPanel parent = new MockParentPanel();
     parent.add(panel);

@@ -8,10 +8,12 @@ import limelight.model.api.MockStageProxy;
 import limelight.ui.model.FramedStage;
 import limelight.ui.model.MockFrameManager;
 import limelight.ui.model.inputs.MockEventAction;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class StageEventTest
 {
@@ -24,6 +26,7 @@ public class StageEventTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     Context.instance().frameManager = new MockFrameManager();
     stage = new FramedStage("default", new MockStageProxy());
   }

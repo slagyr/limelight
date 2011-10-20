@@ -6,23 +6,26 @@ package limelight.ui.model;
 import limelight.ui.*;
 import limelight.Context;
 import limelight.os.MockOS;
+import limelight.util.TestUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.awt.*;
 
+import static org.junit.Assume.assumeTrue;
+
 public class StageFrameTest extends Assert
 {
   private MockStage stage;
   public MockGraphicsDevice graphicsDevice;
   private MockOS os;
-  private Insets insets;
   private StageFrame frame;
 
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     stage = new MockStage();
     frame = new StageFrame(stage);
 
@@ -54,7 +57,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldSetFullScreenWhenNotVisible() throws Exception
+  public void setFullScreenWhenNotVisible() throws Exception
   {
     frame.setFullScreen(true);
 
@@ -64,7 +67,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldSetFullScreenWhenVisible() throws Exception
+  public void setFullScreenWhenVisible() throws Exception
   {
     frame.setVisible(true);
     frame.setFullScreen(true);
@@ -74,7 +77,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldTurnOffFullScreenWhiledisplayed() throws Exception
+  public void turnOffFullScreenWhiledisplayed() throws Exception
   {
     frame.setFullScreen(true);
     frame.setVisible(true);
@@ -85,7 +88,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldSetKioskMode() throws Exception
+  public void setKioskMode() throws Exception
   {
     frame.setKiosk(true);
 
@@ -93,7 +96,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldKioskWillGoFullscreenAndFramelessWhenOpened() throws Exception
+  public void kioskWillGoFullscreenAndFramelessWhenOpened() throws Exception
   {
     frame.setKiosk(true);
     frame.setVisible(true);
@@ -103,7 +106,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldKioskWillGoFullscreenAndFramelessWhenClosed() throws Exception
+  public void kioskWillGoFullscreenAndFramelessWhenClosed() throws Exception
   {
     frame.setKiosk(true);
     frame.setVisible(true);
@@ -114,7 +117,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldKioskModePreservesScreenSetting() throws Exception
+  public void kioskModePreservesScreenSetting() throws Exception
   {
     frame.setFullScreen(false);
     frame.setKiosk(true);
@@ -126,7 +129,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldKioskModePreservesScreenSettingWithFullscreenOn() throws Exception
+  public void kioskModePreservesScreenSettingWithFullscreenOn() throws Exception
   {
     frame.setFullScreen(true);
     frame.setKiosk(true);
@@ -138,7 +141,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldEnterKioskModeWhileOpen() throws Exception
+  public void enterKioskModeWhileOpen() throws Exception
   {
     frame.setKiosk(false);
     frame.setVisible(true);
@@ -149,7 +152,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldHidingWhileInKioskMode() throws Exception
+  public void hidingWhileInKioskMode() throws Exception
   {
     frame.setKiosk(true);
     frame.setVisible(true);
@@ -160,7 +163,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldShowingAfterHidingWhileInKioskMode() throws Exception
+  public void showingAfterHidingWhileInKioskMode() throws Exception
   {
     frame.setKiosk(true);
     frame.setVisible(true);
@@ -172,7 +175,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldFullscreenOffWhenInKioskMode() throws Exception
+  public void fullscreenOffWhenInKioskMode() throws Exception
   {
     frame.setKiosk(true);
     frame.setFullScreen(true);
@@ -183,7 +186,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldHideAndShowWithFullScreen() throws Exception
+  public void hideAndShowWithFullScreen() throws Exception
   {
     frame.setFullScreen(true);
     frame.setVisible(true);
@@ -195,7 +198,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void shouldSettingFullScreenWhileHidden() throws Exception
+  public void settingFullScreenWhileHidden() throws Exception
   {
     frame.setVisible(true);
     frame.setVisible(false);
@@ -204,7 +207,7 @@ public class StageFrameTest extends Assert
   }
 
   @Test
-  public void doesNotgetVisibleWhenInHiddenMode() throws Exception
+  public void notGetVisibleWhenInHiddenMode() throws Exception
   {
     StageFrame.hiddenMode = true;
 

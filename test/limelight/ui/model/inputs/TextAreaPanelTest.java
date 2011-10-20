@@ -9,6 +9,7 @@ import limelight.ui.events.panel.*;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
+import limelight.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class TextAreaPanelTest extends Assert
 {
@@ -28,6 +30,7 @@ public class TextAreaPanelTest extends Assert
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     panel = new TextAreaPanel();
     parent = new PropPanel(new FakePropProxy());
     parent.add(panel);

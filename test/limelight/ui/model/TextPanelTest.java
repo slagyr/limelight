@@ -9,7 +9,9 @@ import limelight.styles.StyleObserver;
 import limelight.model.api.FakePropProxy;
 import limelight.model.api.FakeSceneProxy;
 import limelight.ui.text.StyledText;
+import limelight.util.TestUtil;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +23,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assume.assumeTrue;
 
 public class TextPanelTest
 {
@@ -37,6 +40,7 @@ public class TextPanelTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     parent = new MockProp();
     parent.setLocation(0, 0);
     parent.setSize(100, 100);

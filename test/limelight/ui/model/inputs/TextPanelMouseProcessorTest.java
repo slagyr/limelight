@@ -10,12 +10,14 @@ import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.text.TextLocation;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class TextPanelMouseProcessorTest
 {
@@ -27,6 +29,7 @@ public class TextPanelMouseProcessorTest
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     setUpWithText("Some Text", true);
   }
 

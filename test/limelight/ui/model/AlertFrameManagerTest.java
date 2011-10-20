@@ -8,6 +8,7 @@ import limelight.Context;
 import limelight.MockContext;
 import limelight.ui.events.stage.*;
 import limelight.ui.model.inputs.MockEventAction;
+import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class AlertFrameManagerTest
 {
@@ -35,6 +37,7 @@ public class AlertFrameManagerTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     StageFrame.hiddenMode = false;
     manager = new AlertFrameManager();
     Context.instance().frameManager = manager;

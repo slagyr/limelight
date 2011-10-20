@@ -6,6 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
+import limelight.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class TextModelTest
 {
@@ -23,6 +25,7 @@ public class TextModelTest
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     container = new MockTextContainer();
     container.bounds = new Box(0, 0, 150, 20);
     model = new SingleLineTextModel(container);
@@ -44,6 +47,7 @@ public class TextModelTest
   @Test
   public void canMakeUseOfTheClipboard()
   {
+    assumeTrue(TestUtil.notHeadless());
     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("This Text"), model);
     String clipboard = model.getClipboardContents();
     assertEquals("This Text", clipboard);
@@ -52,6 +56,7 @@ public class TextModelTest
   @Test
   public void canCopyPasteAndCut()
   {
+    assumeTrue(TestUtil.notHeadless());
     model.setText("Some Text");
     model.setCaretLocation(TextLocation.origin);
     model.startSelection(TextLocation.at(0, 4));
@@ -167,6 +172,7 @@ public class TextModelTest
   @Test
   public void reportsChangeWhenTextIsPasted() throws Exception
   {
+    assumeTrue(TestUtil.notHeadless());
     model.setText("blah");
     model.resetChangeFlag();
     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("yum"), model);

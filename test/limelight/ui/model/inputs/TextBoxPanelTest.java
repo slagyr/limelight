@@ -6,9 +6,12 @@ package limelight.ui.model.inputs;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.MockGraphics;
 import limelight.ui.model.PropPanel;
+import limelight.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assume.assumeTrue;
 
 public class TextBoxPanelTest extends Assert
 {
@@ -20,6 +23,7 @@ public class TextBoxPanelTest extends Assert
   @Before
   public void setUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     panel = new TextBoxPanel();
     parent = new PropPanel(new FakePropProxy());
     parent.add(panel);

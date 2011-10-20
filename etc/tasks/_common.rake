@@ -67,7 +67,7 @@ def junit(dir, classpath, options)
 
   puts "running #{test_files.size} test files in #{dir}..."
   with_tmp_file(".testClasses", test_class_names) do
-    run_command "java -cp #{classpath} limelight.TestRunner"
+    run_command "java -Djava.awt.headless=true -cp #{classpath} limelight.TestRunner"
   end
 end
 
