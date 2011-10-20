@@ -3,11 +3,13 @@
 
 package limelight.ui.model;
 
+import limelight.io.FileSystem;
 import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
 import limelight.io.StreamReader;
 import limelight.util.TestUtil;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -16,6 +18,12 @@ public class ImagePanelTest
 {
   private ImagePanel panel;
   private MockProp parent;
+
+  @BeforeClass
+  public void classSetUp() throws Exception
+  {
+    FileSystem.installed();
+  }
 
   @Before
   public void setUp() throws Exception

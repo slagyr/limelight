@@ -99,7 +99,8 @@ public class StyledTextTest extends Assert
     
     Font font = styledText.getFont();
 
-    assertEquals("Courier", font.getFontName());
+    final String name = font.getFontName();
+    assertTrue("Expected 'Courier' or 'Monospace.plain' but got '" + name + "'", "Courier".equals(name) || "Monospaced.plain".equals(name));
     assertEquals(12, font.getSize());
     assertEquals(true, font.isPlain());
   }

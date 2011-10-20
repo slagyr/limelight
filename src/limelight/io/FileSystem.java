@@ -3,6 +3,8 @@
 
 package limelight.io;
 
+import limelight.Context;
+import limelight.ContextTest;
 import limelight.LimelightException;
 import limelight.util.StringUtil;
 
@@ -15,6 +17,13 @@ import java.util.zip.ZipFile;
 public class FileSystem
 {
   protected String separator;
+
+  public static FileSystem installed()
+  {
+    FileSystem fs = new FileSystem();
+    Context.instance().fs = fs;
+    return fs;
+  }
 
   public FileSystem()
   {

@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.io.FileSystem;
 import limelight.util.TestUtil;
 import java.awt.*;
 
@@ -18,6 +19,7 @@ public class ImageCacheTest
   @Before
   public void setUp() throws Exception
   {
+    FileSystem.installed();
     cache = new ImageCache(TestUtil.DATA_DIR);
   }
 

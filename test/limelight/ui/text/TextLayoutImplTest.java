@@ -4,6 +4,7 @@
 package limelight.ui.text;
 
 import limelight.ui.model.TextPanel;
+import limelight.util.TestUtil;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 public class TextLayoutImplTest
 {
@@ -20,6 +22,7 @@ public class TextLayoutImplTest
   @BeforeClass
   public static void suiteSetUp()
   {
+    assumeTrue(TestUtil.notHeadless());
     courier = new Font("courier", Font.PLAIN, 12);
     context = TextPanel.getRenderContext();
   }
