@@ -52,6 +52,7 @@ def javac(dir, glob, classpath, options={})
     src_files = Dir.glob(glob)
     src_files = _apply_includes_excludes(options, src_files)
     puts "compiling #{src_files.size} files in #{dir}..."
+    run_command("javac -version")
     with_tmp_file(".javaFiles", src_files) do
       run_command "javac -cp #{classpath} -d classes @.javaFiles"
     end

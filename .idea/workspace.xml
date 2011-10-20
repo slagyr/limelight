@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1c26bda-163a-448b-8301-970f8a5912de" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etc/tasks/_common.rake" afterPath="$PROJECT_DIR$/etc/tasks/_common.rake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etc/tasks/java.rake" afterPath="$PROJECT_DIR$/etc/tasks/java.rake" />
     </list>
     <ignored path="limelight.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -91,19 +89,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="java.rake" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="java.rake" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/etc/tasks/java.rake">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="51" selection-start="1420" selection-end="1420" vertical-scroll-proportion="0.7156767">
+            <state line="47" column="9" selection-start="1186" selection-end="1186" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_common.rake" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_common.rake" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/etc/tasks/_common.rake">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="57" selection-start="1046" selection-end="1046" vertical-scroll-proportion="0.0">
+            <state line="54" column="33" selection-start="1141" selection-end="1141" vertical-scroll-proportion="0.406037">
               <folding />
             </state>
           </provider>
@@ -137,8 +135,8 @@
         <option value="$PROJECT_DIR$/ruby/lib/limelight/prop.rb" />
         <option value="$PROJECT_DIR$/ruby/spec/limelight/scene_spec.rb" />
         <option value="$PROJECT_DIR$/Rakefile" />
-        <option value="$PROJECT_DIR$/etc/tasks/_common.rake" />
         <option value="$PROJECT_DIR$/etc/tasks/java.rake" />
+        <option value="$PROJECT_DIR$/etc/tasks/_common.rake" />
       </list>
     </option>
   </component>
@@ -766,16 +764,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/etc/tasks/_common.rake">
+    <entry file="file://$PROJECT_DIR$/etc/tasks/java.rake">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="57" selection-start="1046" selection-end="1046" vertical-scroll-proportion="0.0">
+        <state line="47" column="9" selection-start="1186" selection-end="1186" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/etc/tasks/java.rake">
+    <entry file="file://$PROJECT_DIR$/etc/tasks/_common.rake">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="51" selection-start="1420" selection-end="1420" vertical-scroll-proportion="0.7156767">
+        <state line="54" column="33" selection-start="1141" selection-end="1141" vertical-scroll-proportion="0.406037">
           <folding />
         </state>
       </provider>
