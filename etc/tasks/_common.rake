@@ -29,9 +29,28 @@ ensure
   File.delete(filename)
 end
 
-def javac(dir, glob, classpath)
+def darwin?
+  RUBY_PLATFORM =~ /darwin/
+end
+
+def _apply_includes_excludes(options, src_files)
+  if options[:excludes]
+    options[:excludes].each do |exclude|
+      src_files -= Dir.glob(exclude)
+    end
+  end
+  if options[:includes]
+    options[:includes].each do |include|
+      src_files += Dir.glob(include)
+    end
+  end
+  src_files
+end
+
+def javac(dir, glob, classpath, options={})
   in_dir(dir) do
     src_files = Dir.glob(glob)
+    src_files = _apply_includes_excludes(options, src_files)
     puts "compiling #{src_files.size} files in #{dir}..."
     with_tmp_file(".javaFiles", src_files) do
       run_command "javac -cp #{classpath} -d classes @.javaFiles"

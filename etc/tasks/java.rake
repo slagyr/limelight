@@ -44,13 +44,15 @@ namespace "java" do
 
     desc "Compile limelight production source"
     task "src" => %w{init} do
-      javac(LIMELIGHT_ROOT, "src/**/*.java", classpath)
+      options = darwin? ? {} : {:excludes => ["src/limelight/os/darwin/**/*"]}
+      javac(LIMELIGHT_ROOT, "src/**/*.java", classpath, options)
       FileUtils.cp_r "resources/.", "classes"
     end
 
     desc "Compile limelight test source"
     task "test" => %w{init} do
-      javac(LIMELIGHT_ROOT, "test/**/*.java", classpath)
+      options = darwin? ? {} : {:excludes => ["test/limelight/os/darwin/**/*"]}
+      javac(LIMELIGHT_ROOT, "test/**/*.java", classpath, options)
     end
 
   end

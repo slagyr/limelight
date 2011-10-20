@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1c26bda-163a-448b-8301-970f8a5912de" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruby/ruby.iml" afterPath="$PROJECT_DIR$/ruby/ruby.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etc/tasks/_common.rake" afterPath="$PROJECT_DIR$/etc/tasks/_common.rake" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etc/tasks/java.rake" afterPath="$PROJECT_DIR$/etc/tasks/java.rake" />
     </list>
     <ignored path="limelight.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -99,91 +91,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="scene.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ruby/lib/limelight/scene.rb">
+      <file leaf-file-name="java.rake" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/etc/tasks/java.rake">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="38" selection-start="879" selection-end="905" vertical-scroll-proportion="0.0">
+            <state line="53" column="51" selection-start="1420" selection-end="1420" vertical-scroll-proportion="0.7156767">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="prop.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ruby/lib/limelight/prop.rb">
+      <file leaf-file-name="_common.rake" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/etc/tasks/_common.rake">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="276" column="50" selection-start="8493" selection-end="8493" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="scene_spec.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ruby/spec/limelight/scene_spec.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="5" selection-start="1036" selection-end="1036" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Rakefile" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Rakefile">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="0" selection-start="409" selection-end="409" vertical-scroll-proportion="0.26290166">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScenePanel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/limelight/ui/model/ScenePanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="290" column="3" selection-start="6243" selection-end="6243" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="prop_spec.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ruby/spec/limelight/prop_spec.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="246" column="0" selection-start="7660" selection-end="7660" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="production.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ruby/lib/limelight/production.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="219" column="39" selection-start="6367" selection-end="6367" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="prop_builder.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ruby/lib/limelight/dsl/prop_builder.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="109" column="102" selection-start="3968" selection-end="3968" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="prop_builder_spec.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ruby/spec/limelight/dsl/prop_builder_spec.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="179" column="76" selection-start="5187" selection-end="5187" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileSystem.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/limelight/io/FileSystem.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="13" selection-start="402" selection-end="402" vertical-scroll-proportion="0.0">
+            <state line="52" column="57" selection-start="1046" selection-end="1046" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -203,8 +123,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/clojure/spec/limelight/spec_helper.clj" />
-        <option value="$PROJECT_DIR$/clojure/spec/limelight/prop_building_spec.clj" />
         <option value="$PROJECT_DIR$/clojure/spec/limelight/common_spec.clj" />
         <option value="$PROJECT_DIR$/ruby/Rakefile" />
         <option value="$PROJECT_DIR$/ruby/spec/spec_helper.rb" />
@@ -219,6 +137,8 @@
         <option value="$PROJECT_DIR$/ruby/lib/limelight/prop.rb" />
         <option value="$PROJECT_DIR$/ruby/spec/limelight/scene_spec.rb" />
         <option value="$PROJECT_DIR$/Rakefile" />
+        <option value="$PROJECT_DIR$/etc/tasks/_common.rake" />
+        <option value="$PROJECT_DIR$/etc/tasks/java.rake" />
       </list>
     </option>
   </component>
@@ -252,7 +172,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -271,6 +190,52 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="limelight" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="limelight" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="limelight" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="limelight" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="etc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="limelight" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="limelight" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="etc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tasks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane">
@@ -283,23 +248,24 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Favorites" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="131" />
-    <property name="OverrideImplement.combined" value="true" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="140" />
-    <property name="recentsLimit" value="5" />
-    <property name="MemberChooser.sorted" value="false" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="136" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="143" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="936" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="937" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="936" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="141" />
     <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="138" />
@@ -450,21 +416,6 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="true" type="ClojureScriptRunConfiguration" factoryName="Clojure Script">
-      <module name="" />
-      <setting name="path" value="" />
-      <setting name="vmparams" value="" />
-      <setting name="params" value="" />
-      <setting name="workDir" value="" />
-      <setting name="repl" value="false" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-        <option name="PhingTarget" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="RSpecRunConfigurationType" factoryName="RSpec">
       <predefined_log_file id="RUBY_RSPEC" enabled="true" />
       <module name="" />
@@ -491,6 +442,21 @@
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+        <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ClojureScriptRunConfiguration" factoryName="Clojure Script">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="" />
+      <setting name="repl" value="false" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -659,7 +625,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24532336" sideWeight="0.99715906" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24532336" sideWeight="0.93465906" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32539684" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -716,16 +682,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/limelight/util/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="43" selection-start="1252" selection-end="1252" vertical-scroll-proportion="0.8128898" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/limelight/util/Opts.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="42" selection-start="788" selection-end="788" vertical-scroll-proportion="0.55093557" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ruby/lib/limelight/studio.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="8" selection-start="485" selection-end="485" vertical-scroll-proportion="0.32051283" />
@@ -761,43 +717,65 @@
         <state line="33" column="5" selection-start="1036" selection-end="1036" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Rakefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="0" selection-start="409" selection-end="409" vertical-scroll-proportion="0.26290166">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/limelight/ui/model/ScenePanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="290" column="3" selection-start="6243" selection-end="6243" vertical-scroll-proportion="0.0">
+        <state line="290" column="3" selection-start="6243" selection-end="6243" vertical-scroll-proportion="0.014605648">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ruby/spec/limelight/prop_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="246" column="0" selection-start="7660" selection-end="7660" vertical-scroll-proportion="0.0" />
+        <state line="246" column="0" selection-start="7660" selection-end="7660" vertical-scroll-proportion="0.014605648">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ruby/lib/limelight/production.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="219" column="39" selection-start="6367" selection-end="6367" vertical-scroll-proportion="0.0" />
+        <state line="219" column="39" selection-start="6367" selection-end="6367" vertical-scroll-proportion="0.51801366">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ruby/lib/limelight/dsl/prop_builder.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="102" selection-start="3968" selection-end="3968" vertical-scroll-proportion="0.0">
+        <state line="109" column="102" selection-start="3968" selection-end="3968" vertical-scroll-proportion="0.123661146">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ruby/spec/limelight/dsl/prop_builder_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="179" column="76" selection-start="5187" selection-end="5187" vertical-scroll-proportion="0.0" />
+        <state line="179" column="76" selection-start="5187" selection-end="5187" vertical-scroll-proportion="0.014605648">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/limelight/io/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="13" selection-start="402" selection-end="402" vertical-scroll-proportion="0.0" />
+        <state line="14" column="13" selection-start="402" selection-end="402" vertical-scroll-proportion="0.014605648">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rakefile">
+    <entry file="file://$PROJECT_DIR$/etc/tasks/_common.rake">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="409" selection-end="409" vertical-scroll-proportion="0.26290166">
+        <state line="52" column="57" selection-start="1046" selection-end="1046" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/etc/tasks/java.rake">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="51" selection-start="1420" selection-end="1420" vertical-scroll-proportion="0.7156767">
           <folding />
         </state>
       </provider>
