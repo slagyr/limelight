@@ -62,7 +62,8 @@ namespace "java" do
 
   desc "Run limelight JUnit tests"
   task "test" do
-    junit(LIMELIGHT_ROOT, classpath)
+    options = darwin? ? {} : {:excludes => ["limelight/os/darwin/**/*"]}
+    junit(LIMELIGHT_ROOT, classpath, options)
   end
 
   desc "Build a jar file with the limelight src"
