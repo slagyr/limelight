@@ -13,10 +13,7 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.*;
 
-import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertSame;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.*;
 
 public class ParentPanelTest
 {

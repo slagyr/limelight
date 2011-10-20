@@ -25,14 +25,14 @@ public class NoneableAttributeCompilerTest
   public void validValue() throws Exception
   {
     assertEquals(true, ((NoneableValue) compiler.compile("none")).isNone());
-    assertEquals(50, ((NoneableValue<SimpleIntegerValue>) compiler.compile("50")).getAttribute().getValue());
+    assertEquals(50, ((NoneableValue<SimpleIntegerValue>)compiler.compile("50")).getAttribute().getValue());
   }
 
   @Test
   public void validValuesWithColon() throws Exception
   {
     assertEquals(true, ((NoneableValue) compiler.compile(":none")).isNone());
-    assertEquals(50, ((NoneableValue<SimpleIntegerValue>) compiler.compile(":50")).getAttribute().getValue());
+    assertEquals(50, ((NoneableValue<SimpleIntegerValue>)compiler.compile(":50")).getAttribute().getValue());
   }
 
   @Test

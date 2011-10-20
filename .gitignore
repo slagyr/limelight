@@ -1,6 +1,7 @@
 classes
 /lib
 *.iws
+/.idea/*
 pkg
 out
 *.DS_Store
@@ -10,4 +11,3 @@ out
 /ruby/Gemfile.lock
 .testClasses
 limelight.jar
-.idea/workspace.xml

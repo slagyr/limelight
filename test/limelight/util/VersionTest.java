@@ -3,12 +3,11 @@
 
 package limelight.util;
 
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class VersionTest
 {
