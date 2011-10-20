@@ -4,7 +4,6 @@
 package limelight.io;
 
 import limelight.Context;
-import limelight.ContextTest;
 import limelight.LimelightException;
 import limelight.util.StringUtil;
 
