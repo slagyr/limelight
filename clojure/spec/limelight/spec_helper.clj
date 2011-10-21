@@ -11,4 +11,13 @@
     (limelight.Boot/reset)
     (limelight.Boot/boot (merge default-boot-options options))))
 
+(defmacro unless-headless [& body]
+  (if (not (java.awt.GraphicsEnvironment/isHeadless))
+    `(list ~@body)
+    []))
+
+(when (get (System/getenv) "HEADLESS")
+  (System/setProperty "java.awt.headless" "true"))
+
 (boot-limelight)
+

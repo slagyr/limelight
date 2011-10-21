@@ -4,6 +4,7 @@
 (ns limelight.production-spec
   (:use
     [speclj.core]
+    [limelight.spec-helper]
     [limelight.production])
   (:import
     [limelight.production Production]
@@ -39,10 +40,13 @@
       (should= (.getTheater @peer-production) (.peer @(.theater @production)))
       (should= @production (.production @(.theater @production))))
 
-    (it "can load stages"
-      (.createTextFile @fs "/Mock/stages.clj" "(stage \"One\")")
-      (.loadStages @production)
-      (should= 1 (count (.getStages (.getTheater @peer-production)))))
+    (unless-headless
+
+      (it "can load stages"
+        (.createTextFile @fs "/Mock/stages.clj" "(stage \"One\")")
+        (.loadStages @production)
+        (should= 1 (count (.getStages (.getTheater @peer-production)))))
+      )
     )
 
   (context ", when illuminated,"

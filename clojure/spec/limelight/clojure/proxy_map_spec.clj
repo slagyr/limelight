@@ -3,7 +3,8 @@
 
 (ns limelight.clojure.proxy-map-spec
   (:use
-    [speclj.core])
+    [speclj.core]
+    [limelight.spec-helper])
   (:import
     [limelight.clojure ProxyMap]))
 

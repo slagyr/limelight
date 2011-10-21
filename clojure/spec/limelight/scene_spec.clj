@@ -4,6 +4,7 @@
 (ns limelight.scene-spec
   (:use
     [speclj.core]
+    [limelight.spec-helper]
     [limelight.scene])
   (:import
     [limelight.scene Scene]

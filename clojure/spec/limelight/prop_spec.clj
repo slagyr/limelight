@@ -4,6 +4,7 @@
 (ns limelight.prop-spec
   (:use
     [speclj.core]
+    [limelight.spec-helper]
     [limelight.prop])
   (:import
     [limelight.prop Prop]))

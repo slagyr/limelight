@@ -3,8 +3,9 @@
 
 (ns limelight.theater-spec
   (:use
-    [limelight.theater]
-    [speclj.core])
+    [speclj.core]
+    [limelight.spec-helper]
+    [limelight.theater])
   (:import [limelight.theater Theater]))
 
 (describe "Theater"
@@ -17,10 +18,13 @@
     (should= :peer (.peer @theater))
     (should= :production (.production @theater)))
 
-  (it "can build a stage"
-    (let [stage (.buildStage @theater "Limelight" {})]
-      (should (.isInstance limelight.model.Stage stage))
-      (should= "Limelight" (.getName stage))))
+  (unless-headless
+
+    (it "can build a stage"
+      (let [stage (.buildStage @theater "Limelight" {})]
+        (should (.isInstance limelight.model.Stage stage))
+        (should= "Limelight" (.getName stage))))
+    )
   )
 
 

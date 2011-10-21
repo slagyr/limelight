@@ -4,6 +4,7 @@
 (ns limelight.util-spec
   (:use
     [speclj.core]
+    [limelight.spec-helper]
     [limelight.util])
   (:import
     [limelight.clojure ProxyMap]

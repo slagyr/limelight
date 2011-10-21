@@ -4,6 +4,7 @@
 (ns limelight.style-building-spec
   (:use
     [speclj.core]
+    [limelight.spec-helper]
     [limelight.style-building]))
 
 (describe "Style building"
