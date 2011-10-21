@@ -58,7 +58,7 @@ def javac(dir, glob, classpath, options={})
   end
 end
 
-def junit(dir, classpath, options)
+def junit(dir, classpath, options={})
   test_files = in_dir(File.join(dir, "test")) do
     _apply_includes_excludes(options, Dir.glob("**/*Test.java"))
   end
