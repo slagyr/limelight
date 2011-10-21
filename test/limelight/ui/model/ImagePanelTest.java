@@ -20,7 +20,7 @@ public class ImagePanelTest
   private MockProp parent;
 
   @BeforeClass
-  public void classSetUp() throws Exception
+  public static void classSetUp() throws Exception
   {
     FileSystem.installed();
   }
