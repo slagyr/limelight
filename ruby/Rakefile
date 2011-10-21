@@ -31,6 +31,7 @@ desc "Install dependencies"
 task "deps" => %{init} do
   FileUtils.rm "lib/limelight.jar" if File.exists?("lib/limelight.jar")
   deps(RUBY_ROOT, prod_deps, [])
+  run_command("bundle install")
 end
 
 desc "Prints the calculated classpath"
