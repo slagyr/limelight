@@ -72,3 +72,9 @@ class MouseEvent
   end
 
 end
+
+def unless_headless
+  if !Java::java.awt.GraphicsEnvironment.isHeadless
+    yield
+  end
+end

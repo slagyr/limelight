@@ -15,7 +15,10 @@ import limelight.ui.model.StageFrame;
 import limelight.util.Mouse;
 import org.junit.*;
 
+import java.awt.*;
+
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 public class UtilitiesTest
 {
@@ -33,6 +36,7 @@ public class UtilitiesTest
   @Before
   public void setUp() throws Exception
   {
+    assumeTrue(!GraphicsEnvironment.isHeadless()); //TODO MDM - Need to see if we can get these tests viable without needing a graphics env
     Boot.boot("startBackgroundThreads", false);
     production = new JavaProduction(BuiltinBeacon.getBuiltinProductionsPath() + "/utilities");
     production.open();
@@ -44,8 +48,11 @@ public class UtilitiesTest
   {
     if(thread != null && thread.isAlive())
       thread.interrupt();
-    for(Stage stage : production.getTheater().getStages())
-      stage.close();
+    if(production != null)
+    {
+      for(Stage stage : production.getTheater().getStages())
+        stage.close();
+    }
   }
 
   private void startProceedWithIncompatibleVersion()
@@ -220,7 +227,7 @@ public class UtilitiesTest
   {
     startProceedWithIncompatibleVersion();
     FramedStage stage = waitForStage("Incompatible Version");
-    JavaScene scene = (JavaScene)stage.getScene().getProxy();
+    JavaScene scene = (JavaScene) stage.getScene().getProxy();
 
     assertEquals("Some Production", scene.findProp("productionNameLabel").getText());
     assertEquals("1.2.3", scene.findProp("requiredVersionLabel").getText());
@@ -232,7 +239,7 @@ public class UtilitiesTest
   {
     startProceedWithIncompatibleVersion();
     FramedStage stage = waitForStage("Incompatible Version");
-    JavaScene scene = (JavaScene)stage.getScene().getProxy();
+    JavaScene scene = (JavaScene) stage.getScene().getProxy();
 
     Mouse.click(scene.findProp("proceedButton"));
     waitForDialogResponse();
@@ -245,7 +252,7 @@ public class UtilitiesTest
   {
     startProceedWithIncompatibleVersion();
     FramedStage stage = waitForStage("Incompatible Version");
-    JavaScene scene = (JavaScene)stage.getScene().getProxy();
+    JavaScene scene = (JavaScene) stage.getScene().getProxy();
 
     Mouse.click(scene.findProp("cancelButton"));
     waitForDialogResponse();

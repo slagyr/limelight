@@ -15,13 +15,17 @@ describe Limelight::Builtin::Players::TextBox do
   it "should have a TextField" do
     @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.TextBoxPanel
   end
-  
-  it "should use the TextField for the text accessor" do
-    @prop.text = "blah"
-    @prop.peer.children[0].text.should == "blah"
-    
-    @prop.peer.text = "harumph"
-    @prop.text.should == "harumph"
+
+  unless_headless do
+
+    it "uses the TextField for the text accessor" do
+      @prop.text = "blah"
+      @prop.peer.children[0].text.should == "blah"
+
+      @prop.peer.text = "harumph"
+      @prop.text.should == "harumph"
+    end
+
   end
 
 end

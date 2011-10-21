@@ -11,17 +11,21 @@ describe Limelight::Builtin::Players::TextArea do
     @prop = Limelight::Prop.new
     Limelight::Player.cast(Limelight::Builtin::Players::TextArea, @prop)
   end
-  
+
   it "should have a JTextArea" do
     @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.TextAreaPanel
   end
-  
-  it "should use the TextArea for the text accessor" do
-    @prop.text = "blah"
-    @prop.peer.children[0].text.should == "blah"
-    
-    @prop.peer.text = "harumph"
-    @prop.text.should == "harumph"
+
+  unless_headless do
+
+    it "should use the TextArea for the text accessor" do
+      @prop.text = "blah"
+      @prop.peer.children[0].text.should == "blah"
+
+      @prop.peer.text = "harumph"
+      @prop.text.should == "harumph"
+    end
+
   end
 
 end

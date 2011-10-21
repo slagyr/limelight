@@ -52,7 +52,7 @@ end
 
 desc "Run ruby specs"
 task "spec" do
-  run_command "java -cp #{classpath} -jar lib/jruby-complete-1.6.4.jar -S rspec spec"
+  run_command "java #{jvm_opts} -cp #{classpath} -jar lib/jruby-complete-1.6.4.jar -S rspec spec"
 end
 task "test" => %w{spec}
 

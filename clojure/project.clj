@@ -5,4 +5,5 @@
                      [speclj-growl "1.0.0-SNAPSHOT"]]
   :repositories {"local" "file://m2"} 
   :test-path "spec/"
+;  :jvm-opts ["-Djava.awt.headless=true"]
   )

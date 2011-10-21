@@ -58,6 +58,12 @@ def javac(dir, glob, classpath, options={})
   end
 end
 
+def jvm_opts
+  opts = []
+  opts << "-Djava.awt.headless=true" if ENV["HEADLESS"]
+  opts.join(" ")
+end
+
 def junit(dir, classpath, options={})
   test_files = in_dir(File.join(dir, "test")) do
     _apply_includes_excludes(options, Dir.glob("**/*Test.java"))
@@ -67,7 +73,7 @@ def junit(dir, classpath, options={})
 
   puts "running #{test_files.size} test files in #{dir}..."
   with_tmp_file(".testClasses", test_class_names) do
-    run_command "java -cp #{classpath} limelight.TestRunner"
+    run_command "java #{jvm_opts} -cp #{classpath} limelight.TestRunner"
   end
 end
 

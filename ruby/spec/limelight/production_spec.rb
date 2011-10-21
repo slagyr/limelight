@@ -53,12 +53,17 @@ describe Limelight::Production, "Instance methods" do
     @production.respond_to?(:foo).should == true
   end
 
-  it "loads stages" do
-    @fs.create_text_file("/test_prod/stages.rb", "stage 'FrontStage' do; end;")
 
-    @production.load_stages
+  unless_headless do
 
-    @production.theater["FrontStage"].should_not == nil
+    it "loads stages" do
+      @fs.create_text_file("/test_prod/stages.rb", "stage 'FrontStage' do; end;")
+
+      @production.load_stages
+
+      @production.theater["FrontStage"].should_not == nil
+    end
+
   end
 
   it "loads a scene from props.rb" do
