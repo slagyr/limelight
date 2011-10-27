@@ -56,7 +56,7 @@ public class StyledText
   {
     if(style.hasObserver(observer))
       return;
-    
+
     for(String styleName : styleNames)
     {
       RichStyle extension = styleMap.get(styleName);

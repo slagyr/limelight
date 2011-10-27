@@ -12,7 +12,7 @@ public class MockGraphicsDevice extends GraphicsDevice
 
   public MockGraphicsDevice()
   {
-    defaultConfiguration = new MockGraphicsConfiguration(this); 
+    defaultConfiguration = new MockGraphicsConfiguration(this);
   }
 
   public int getType()

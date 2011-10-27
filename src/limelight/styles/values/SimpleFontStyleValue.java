@@ -67,7 +67,7 @@ public class SimpleFontStyleValue implements FontStyleValue
   public int toInt()
   {
     int value = 0;
-    
+
     if(bold)
       value |= Font.BOLD;
     if(italic)

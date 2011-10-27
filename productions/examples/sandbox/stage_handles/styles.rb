@@ -36,7 +36,7 @@ sizer_link {
   horizontal_alignment :center
   vertical_alignment :center
   hover {
-    background_color "#77f" 
+    background_color "#77f"
   }
 }
 

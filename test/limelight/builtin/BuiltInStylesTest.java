@@ -21,9 +21,9 @@ public class BuiltInStylesTest
   @Before
   public void setUp() throws Exception
   {
-    styles = BuiltInStyles.all(); 
+    styles = BuiltInStyles.all();
   }
-  
+
   @Test
   public void hasCurtains() throws Exception
   {
@@ -32,7 +32,7 @@ public class BuiltInStylesTest
     assertNotNull(curtains);
     assertEquals("on", curtains.getFloat());
   }
-  
+
   @Test
   public void hasComboBoxPopupList() throws Exception
   {
@@ -41,7 +41,7 @@ public class BuiltInStylesTest
     assertNotNull(popup);
     assertEquals("on", popup.getFloat());
   }
-  
+
   @Test
   public void hasComboBoxListItem() throws Exception
   {

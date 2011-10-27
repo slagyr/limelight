@@ -17,6 +17,6 @@ public class CursorAttribute extends StyleAttribute
   @Override
   public void applyChange(ChangeablePanel panel, StyleValue value)
   {
-    // MDM - we could update the cursor if it's hovering over an applicable prop 
+    // MDM - we could update the cursor if it's hovering over an applicable prop
   }
 }

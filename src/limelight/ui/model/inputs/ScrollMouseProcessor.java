@@ -30,7 +30,7 @@ public class ScrollMouseProcessor implements EventAction
     this.scrollBar = scrollBar;
     repeater = new ScrollRepeater(scrollBar);
   }
-  
+
   public void invoke(Event event)
   {
     if(event instanceof MousePressedEvent)

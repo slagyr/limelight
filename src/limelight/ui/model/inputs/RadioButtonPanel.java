@@ -40,7 +40,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
   {
     if(imagesLoaded)
       return;
-    
+
     normalImage = Images.load("radio_button.png");
     selectedImage = Images.load("radio_button_selected.png");
     focusImage = Images.load("radio_button_focus.png");

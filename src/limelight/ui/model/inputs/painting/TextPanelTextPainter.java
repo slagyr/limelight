@@ -32,7 +32,7 @@ public class TextPanelTextPainter extends TextPanelPainter
     graphics.setColor(style.getCompiledTextColor().getColor());
 
     for(TypedLayout line : model.getLines())
-    {      
+    {
       int x = model.getXOffset(line);
       y += line.getAscent();
       line.draw(graphics, x, y);

@@ -22,7 +22,7 @@ public class FakeCastingDirector implements CastingDirector
   {
     if(!castings.containsKey(propProxy))
       castings.put(propProxy, new LinkedList<String>());
-    
+
     castings.get(propProxy).add(playersPath + "/" + playerName);
   }
 }

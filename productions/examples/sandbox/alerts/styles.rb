@@ -38,7 +38,7 @@ action {
 
 label {
   text_color :white
-  right_padding 10  
+  right_padding 10
 }
 
 message_input {

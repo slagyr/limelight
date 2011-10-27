@@ -4,7 +4,7 @@
 module Limelight
   module Optionable
 
-    def apply_options(options)    
+    def apply_options(options)
       options = Util::Hashes.for_ruby(options)
       options.keys.each do |key|
         setter_sym = "#{key.to_s}=".to_sym
@@ -30,6 +30,6 @@ module Limelight
     def add_event_action(symbol, value)
       self.send(symbol) { eval(value) };
     end
-    
+
   end
 end

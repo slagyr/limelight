@@ -25,7 +25,7 @@ public class Downloader
   {
     if(stubbedGetResult != null)
       return stubbedGetResult;
-    return new Downloader().download(resource);    
+    return new Downloader().download(resource);
   }
 
   public Downloader()

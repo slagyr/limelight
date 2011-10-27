@@ -23,14 +23,14 @@ module Limelight
           if value && block_given?
             value = yield(key, my_value, value)
           end
-          self[key] = value          
+          self[key] = value
         end
         return self
       end
       alias_method :merge!, :update
 
       def merge(other, &block)
-        return dup.merge!(other, &block)  
+        return dup.merge!(other, &block)
       end
 
       def key?(key)

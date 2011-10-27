@@ -24,7 +24,7 @@ public class HelpCommandTest
     output = new ByteArrayOutputStream();
     Command.setOutput(new PrintStream(output));
   }
-  
+
   @Test
   public void outputContainsDescription() throws Exception
   {
@@ -72,7 +72,7 @@ public class HelpCommandTest
     final String content = output.toString();
     assertEquals(true, content.contains("Unrecognized command: blah"));
   }
-  
+
   @Test
   public void helpWithTheHelpCommand() throws Exception
   {

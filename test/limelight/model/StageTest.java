@@ -51,7 +51,7 @@ public class StageTest
     scene.setShouldAllowClose(false);
     assertEquals(false, stage.shouldAllowClose());
   }
-  
+
   @Test
   public void defaultSceneName() throws Exception
   {
@@ -61,7 +61,7 @@ public class StageTest
 
     assertEquals("blah", stage.getDefaultSceneName());
   }
-  
+
   @Test
   public void closing() throws Exception
   {
@@ -77,7 +77,7 @@ public class StageTest
     assertEquals(false, stage.isOpen());
     assertEquals(true, closedAction.invoked);
   }
-  
+
   @Test
   public void scenesOnClosingStageGetStageSetToNull() throws Exception
   {
@@ -126,7 +126,7 @@ public class StageTest
     assertEquals(stage, scene.getStage());
     assertEquals(true, action.invoked);
   }
-  
+
   @Test
   public void openingAStageWithAScene() throws Exception
   {

@@ -22,7 +22,7 @@ public class InputPanelTest
     root = new FakeScene();
     root.add(panel);
   }
-  
+
   @Test
   public void canBeFocused() throws Exception
   {
@@ -34,7 +34,7 @@ public class InputPanelTest
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
     assertEquals(root.getBounds(), root.dirtyRegions.get(0));
   }
-  
+
   @Test
   public void canBeUnfocused() throws Exception
   {

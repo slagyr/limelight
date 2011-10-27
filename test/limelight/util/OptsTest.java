@@ -31,7 +31,7 @@ public class OptsTest
     assertEquals("boolean", map.get("true"));
     assertEquals("double", map.get("3.14"));
   }
-  
+
   @Test
   public void canAccessValuesUsingNonStrings() throws Exception
   {
@@ -42,7 +42,7 @@ public class OptsTest
     assertEquals("boolean", map.get(true));
     assertEquals("double", map.get(3.14));
   }
-  
+
   @Test
   public void noCrashingWhenGettingNull() throws Exception
   {
@@ -50,7 +50,7 @@ public class OptsTest
 
     assertEquals(null, map.get(null));
   }
-  
+
   @Test
   public void hasKeysAsStrings() throws Exception
   {
@@ -73,7 +73,7 @@ public class OptsTest
     assertEquals(true, map.containsKey(3.14));
     assertEquals(false, map.containsKey(null));
   }
-  
+
   @Test
   public void removingAllKeysAsStrings() throws Exception
   {
@@ -87,7 +87,7 @@ public class OptsTest
 
     assertEquals(0, map.size());
   }
-    
+
   @Test
   public void removingAllKeysAsNonStrings() throws Exception
   {

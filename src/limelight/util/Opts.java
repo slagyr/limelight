@@ -63,7 +63,7 @@ public class Opts extends HashMap<String, Object>
       return null;
     return super.remove(toKey(key));
   }
-  
+
   public static String toKey(Object key)
   {
     if(key == null)

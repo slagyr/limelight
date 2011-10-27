@@ -27,7 +27,7 @@ public class ProductionEventTest
     event = new TestableProductionEvent();
     action = new MockEventAction();
   }
-  
+
   @Test
   public void dispatching() throws Exception
   {

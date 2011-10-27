@@ -158,7 +158,7 @@ public class FlatStyleTest
   @Test
   public void shouldHandleSetTopRoundedCornerRadius() throws Exception
   {
-    style.setTopRoundedCornerRadius("6");    
+    style.setTopRoundedCornerRadius("6");
 
     assertEquals("6", style.getTopRightRoundedCornerRadius());
     assertEquals("6", style.getTopLeftRoundedCornerRadius());
@@ -265,7 +265,7 @@ public class FlatStyleTest
     assertEquals("100", style.getMinWidth());
     assertEquals("200", style.getMinHeight());
   }
-  
+
   @Test
   public void shouldHandleMarginsReturnPixlesAttribute() throws Exception
   {
@@ -275,7 +275,7 @@ public class FlatStyleTest
     assertEquals(true, style.getCompiledBottomMargin() instanceof PixelsValue);
     assertEquals(true, style.getCompiledLeftMargin() instanceof PixelsValue);
   }
-  
+
   @Test
   public void shouldHandlePaddingsReturnPixlesAttribute() throws Exception
   {
@@ -325,7 +325,7 @@ public class FlatStyleTest
     assertEquals(expectedVerticalAlignment, style.getVerticalAlignment());
     assertEquals(expectedHorizontalAlignment, style.getHorizontalAlignment());
   }
-  
+
   @Test
   public void shouldHandleCursor() throws Exception
   {

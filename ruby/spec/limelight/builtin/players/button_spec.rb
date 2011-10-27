@@ -12,7 +12,7 @@ describe Limelight::Builtin::Players::Button do
     @prop = Limelight::Prop.new
     Limelight::Player.cast(Limelight::Builtin::Players::Button, @prop)
   end
-  
+
   it "should have a Button" do
     @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.ButtonPanel
   end

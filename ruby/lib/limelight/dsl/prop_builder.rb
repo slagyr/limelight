@@ -21,7 +21,7 @@ module Limelight
     builder = DSL::PropBuilder.new(root)
     builder.__install_instance_variables(instance_variables)
     builder.__root_path__ = root_path
-    builder.instance_eval(&block) if block  
+    builder.instance_eval(&block) if block
     return root
   end
 

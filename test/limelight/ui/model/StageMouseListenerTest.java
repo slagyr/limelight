@@ -48,7 +48,7 @@ public class StageMouseListenerTest
     parent.setSize(1000, 1000);
     child.setLocation(250, 250);
     child.setSize(500, 500);
-    
+
     parentAction = new MockEventAction();
     childAction = new MockEventAction();
   }
@@ -58,7 +58,7 @@ public class StageMouseListenerTest
   {
     parent.getEventHandler().add(MousePressedEvent.class, parentAction);
     child.getEventHandler().add(MousePressedEvent.class, childAction);
-    
+
     java.awt.event.MouseEvent e1 = event(0, 0);
     listener.mousePressed(e1);
     assertSame(parent, listener.pressedPanel);
@@ -72,10 +72,10 @@ public class StageMouseListenerTest
 
   @Test
   public void mouseReleased() throws Exception
-  {                           
+  {
     parent.getEventHandler().add(MouseReleasedEvent.class, parentAction);
     child.getEventHandler().add(MouseReleasedEvent.class, childAction);
-    
+
     java.awt.event.MouseEvent e1 = event(0, 0);
     listener.mouseReleased(e1);
     checkEvent(parentAction, MouseReleasedEvent.class, 0, 0);
@@ -146,7 +146,7 @@ public class StageMouseListenerTest
     listener.mouseDragged(event(0, 0));
     checkEvent(parentAction, MouseDraggedEvent.class, 0, 0);
   }
-  
+
   @Test
   public void mouseDraggedIsOnlyEffectiveOnPressedPanel() throws Exception
   {
@@ -229,7 +229,7 @@ public class StageMouseListenerTest
     assertSame(child2Panel, listener.hooveredPanel);
     checkEvent(parentDragAction, MouseDraggedEvent.class, 50, 50);
     checkEvent(child2EnteredAction, MouseEnteredEvent.class, 50, 50);
-                                        
+
     MockEventAction child2ExitedAction = new MockEventAction();
     child2Panel.getEventHandler().add(MouseExitedEvent.class, child2ExitedAction);
     MockEventAction childEnteredAction = new MockEventAction();

@@ -87,7 +87,7 @@ public class StageKeyListener implements java.awt.event.KeyListener
   {
     if(getFocusedPanel() == null)
       return;
-    
+
     focusOn(previousInputPanel(focusedPanel));
   }
 

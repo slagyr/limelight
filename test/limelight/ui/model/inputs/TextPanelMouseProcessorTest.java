@@ -286,7 +286,7 @@ public class TextPanelMouseProcessorTest
     assertEquals(TextLocation.at(0, 9), model.getCaretLocation());
     assertEquals(true, model.isSelectionActivated());
   }
-  
+
   @Test
   public void pressingTurnsCaretOn() throws Exception
   {
@@ -296,7 +296,7 @@ public class TextPanelMouseProcessorTest
 
     assertEquals(true, model.isCaretOn());
   }
-  
+
   @Test
   public void pressingMakesPanelDirty() throws Exception
   {
@@ -306,7 +306,7 @@ public class TextPanelMouseProcessorTest
 
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
   }
-  
+
   @Test
   public void pressingFocusesOnPanel() throws Exception
   {
@@ -314,7 +314,7 @@ public class TextPanelMouseProcessorTest
 
     assertEquals(panel, stage.getKeyListener().getFocusedPanel());
   }
-  
+
   @Test
   public void draggingMakePanelDirty() throws Exception
   {

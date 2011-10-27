@@ -99,7 +99,7 @@ public class TextLocationTest
 
     assertEquals(location(1, 0), TextLocation.fromIndex(lines, 5));
   }
-  
+
   @Test
   public void shouldRaiseWhenLocationNotFound() throws Exception
   {

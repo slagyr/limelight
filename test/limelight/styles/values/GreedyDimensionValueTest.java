@@ -33,7 +33,7 @@ public class GreedyDimensionValueTest extends TestCase
   {
     return new NoneableValue<DimensionValue>(new StaticDimensionValue(size));
   }
-  
+
   public void testCollapseExcess() throws Exception
   {
     assertEquals(25, attribute.collapseExcess(25, 10, size(0), size(100)));

@@ -39,7 +39,7 @@ public class PercentageDimensionValueTest extends TestCase
     assertEquals(false, fiftyPercent.equals(hundredPercent));
     assertEquals(false, fiftyPercent.equals(null));
   }
-  
+
   public void testIsDynamic() throws Exception
   {
     assertEquals(true, fiftyPercent.isDynamic());
@@ -47,7 +47,7 @@ public class PercentageDimensionValueTest extends TestCase
 
   public void testIsAuto() throws Exception
   {
-    assertEquals(false, fiftyPercent.isAuto());    
+    assertEquals(false, fiftyPercent.isAuto());
   }
 
   public void testCalculateDimensionWithNoMinOrMax() throws Exception
@@ -85,7 +85,7 @@ public class PercentageDimensionValueTest extends TestCase
     assertEquals(60, fiftyPercent.calculateDimension(100, min, max, 0));
     assertEquals(80, hundredPercent.calculateDimension(100, min, max, 0));
   }
-  
+
   public void testCollapseExcessDoesNothing() throws Exception
   {
     assertEquals(200, fiftyPercent.collapseExcess(200, 50, null, null));

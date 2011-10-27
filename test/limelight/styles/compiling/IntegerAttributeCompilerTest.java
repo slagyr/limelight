@@ -49,7 +49,7 @@ public class IntegerAttributeCompilerTest
     assertEquals(123, ((SimpleIntegerValue) compiler.compile(new Float(123.0))).getValue());
     assertEquals(123, ((SimpleIntegerValue) compiler.compile(new Double(123.0))).getValue());
   }
-  
+
   @Test
   public void withColons() throws Exception
   {

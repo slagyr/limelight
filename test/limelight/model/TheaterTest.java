@@ -72,12 +72,12 @@ public class TheaterTest
   public void removedStagesDoNotGetActivated() throws Exception
   {
     theater.add(defaultStage);
-    theater.remove(defaultStage);                    
+    theater.remove(defaultStage);
 
     new StageActivatedEvent().dispatch(defaultStage);
     assertEquals(null, theater.getActiveStage());
   }
-  
+
   @Test
   public void getStageByName() throws Exception
   {
@@ -91,7 +91,7 @@ public class TheaterTest
     assertEquals(stage2, theater.get("two"));
     assertEquals(stage3, theater.get("three"));
   }
-  
+
   @Test
   public void doesNotAllowDuplicateNames() throws Exception
   {

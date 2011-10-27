@@ -12,7 +12,7 @@ import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.PercentageDimensionValue;
 
 public class DimensionAttributeCompiler extends StyleCompiler
-{ 
+{
   public StyleValue compile(Object objValue)
   {
     String value = stringify(objValue);

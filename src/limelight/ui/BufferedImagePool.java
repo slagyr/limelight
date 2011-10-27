@@ -29,7 +29,7 @@ public class BufferedImagePool
   }
 
   public synchronized BufferedImage acquire(Dimension dimension)
-  {    
+  {
     TimedCacheEntry<BufferedImage> match = null;
     for(TimedCacheEntry<BufferedImage> entry : entries)
     {
@@ -63,7 +63,7 @@ public class BufferedImagePool
       if(attemtps > 1)
       {
         entries.clear();
-        System.gc(); 
+        System.gc();
         return allocateNewBufferedImage(dimension, attemtps - 1);
       }
       throw e;

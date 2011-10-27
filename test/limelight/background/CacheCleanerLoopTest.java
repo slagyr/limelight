@@ -11,7 +11,7 @@ public class CacheCleanerLoopTest extends TestCase
 
   public void setUp() throws Exception
   {
-    loop = new CacheCleanerLoop(); 
+    loop = new CacheCleanerLoop();
   }
 
   public void testShouldBeAnIdleLoopthread() throws Exception

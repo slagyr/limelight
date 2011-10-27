@@ -68,7 +68,7 @@ public class ComboBoxPanelTest
 
   @Test
   public void shouldDefaultStyles() throws Exception
-  {   
+  {
     assertEquals("128", panel.getStyle().getWidth());
     assertEquals("27", panel.getStyle().getHeight());
     assertEquals("8", panel.getStyle().getLeftPadding());
@@ -79,7 +79,7 @@ public class ComboBoxPanelTest
     assertEquals("12", panel.getStyle().getFontSize());
     assertEquals("#000000ff", panel.getStyle().getTextColor());
   }
-  
+
   @Test
   public void propPainterReset() throws Exception
   {
@@ -243,7 +243,7 @@ public class ComboBoxPanelTest
     assertEquals("2", panel.getText());
     assertEquals(false, isPopupOpen());
   }
-  
+
   @Test
   public void popupClosesWhenFocusIsLost() throws Exception
   {
@@ -265,7 +265,7 @@ public class ComboBoxPanelTest
 
     assertEquals(true, isPopupOpen());
   }
-  
+
   @Test
   public void clickingOnListDoesNotCloseThePopup() throws Exception
   {
@@ -283,7 +283,7 @@ public class ComboBoxPanelTest
   {
     final MockStage stage = new MockStage();
     root.setStage(stage);
-    
+
     panel.setOptions(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
@@ -294,7 +294,7 @@ public class ComboBoxPanelTest
   {
     return panel.getPopup() != null;
   }
-  
+
   @Test
   public void valueChangedEventInvokedWhenChangingText() throws Exception
   {

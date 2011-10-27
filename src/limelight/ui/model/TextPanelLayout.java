@@ -18,7 +18,7 @@ public class TextPanelLayout implements Layout
       panel.compile();
     }
     catch(Exception e)
-    {    
+    {
       // Can fail if the graphics are not ready.
       panel.markAsNeedingLayout();
       panel.getParent().markAsNeedingLayout();

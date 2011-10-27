@@ -9,7 +9,7 @@ module Limelight
   # will pop up and allow the user to select a file.
   #
   class FileChooser
-    
+
     attr_reader :chooser, :chosen_file
 
     # Creates a new FileChooser. Options may include:
@@ -31,18 +31,18 @@ module Limelight
     #
     def choose_file
       returnVal = @chooser.showOpenDialog(@parent);
-      
+
       if(returnVal == javax.swing.JFileChooser::APPROVE_OPTION)
         @chosen_file = @chooser.getSelectedFile().absolute_path
       else
         @chosen_file = nil
       end
-      
+
       return @chosen_file
     end
-    
+
     private ###############################################
-    
+
     def create_chooser
       if @options.has_key?(:directory)
         @chooser = javax.swing.JFileChooser.new(@options[:directory])
@@ -52,7 +52,7 @@ module Limelight
       configure_file_selection_mode
       @chooser.setDialogTitle(@options[:title]) if @options[:title]
     end
-    
+
     def configure_file_selection_mode
       if(@options[:directories_only])
         @chooser.setFileSelectionMode(javax.swing.JFileChooser::DIRECTORIES_ONLY)
@@ -62,7 +62,7 @@ module Limelight
         @chooser.setFileSelectionMode(javax.swing.JFileChooser::FILES_AND_DIRECTORIES)
       end
     end
-    
+
   end
-  
+
 end

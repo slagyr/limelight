@@ -30,7 +30,7 @@ public class StageEventTest
     Context.instance().frameManager = new MockFrameManager();
     stage = new FramedStage("default", new MockStageProxy());
   }
-  
+
   @Test
   public void hasStageFrame() throws Exception
   {

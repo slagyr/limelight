@@ -14,5 +14,5 @@ public class MockPen extends Pen
 		super(graphics);
 	}
 
-	
+
 }

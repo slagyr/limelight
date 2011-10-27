@@ -32,7 +32,7 @@ public class ColorAttributeCompilerTest
 
     assertEquals(Color.red, ((SimpleColorValue)attr).getColor());
   }
-  
+
   @Test
   public void usingClojureStyleKeyword() throws Exception
   {

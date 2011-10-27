@@ -20,14 +20,14 @@ public class AutoDimensionValueTest extends TestCase
   {
     assertEquals("auto", auto.toString());
   }
-  
+
   public void testEquals() throws Exception
   {
     assertEquals(true, auto.equals(auto));
     assertEquals(true, auto.equals(new AutoDimensionValue()));
     assertEquals(false, auto.equals(null));
   }
-  
+
   public void testIsDynamic() throws Exception
   {
     assertEquals(true, auto.isDynamic());
@@ -45,7 +45,7 @@ public class AutoDimensionValueTest extends TestCase
 
     assertEquals(100, auto.calculateDimension(100, min, max, 0));
   }
-  
+
   public void testCalculateDimensionWithMax() throws Exception
   {
     NoneableValue<DimensionValue> min = new NoneableValue<DimensionValue>(null);

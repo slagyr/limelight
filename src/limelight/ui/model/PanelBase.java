@@ -132,7 +132,7 @@ public abstract class PanelBase implements Panel
   {
     if(newParent != parent && isIlluminated())
       delluminate();
-    
+
     parent = newParent;
 
     if(parent != null && parent.isIlluminated())

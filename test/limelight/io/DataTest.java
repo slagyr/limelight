@@ -28,7 +28,7 @@ public class DataTest
   {
     assertEquals(os.dataRoot(), Data.getRoot());
   }
-  
+
   @Test
   public void downloadsDir() throws Exception
   {

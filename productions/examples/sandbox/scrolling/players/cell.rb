@@ -6,4 +6,3 @@ on_mouse_clicked do
   p = parent
   parent.remove(self)
 end
-  

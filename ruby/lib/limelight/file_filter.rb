@@ -7,7 +7,7 @@ module Limelight
   # desired type.
   #
   class FileFilter < javax.swing.filechooser::FileFilter
-    
+
     attr_reader :description, :filter
 
     # The filter parameter is a block that contains the logic to decide whether a given file is selectable or not.
@@ -23,11 +23,11 @@ module Limelight
     def accept(file)
       return @filter.call(file)
     end
-    
+
     def getDescription
       return @description
     end
-    
+
   end
-  
+
 end

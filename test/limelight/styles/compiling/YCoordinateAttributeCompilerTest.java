@@ -45,7 +45,7 @@ public class YCoordinateAttributeCompilerTest
     assertEquals(VerticalAlignment.CENTER, ((AlignedYCoordinateValue)compiler.compile("center")).getAlignment());
     assertEquals(VerticalAlignment.BOTTOM, ((AlignedYCoordinateValue)compiler.compile("bottom")).getAlignment());
   }
-  
+
   @Test
   public void validValueWithColons() throws Exception
   {

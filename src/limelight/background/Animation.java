@@ -102,7 +102,7 @@ public abstract class Animation
   {
     if(delayNanos == Long.MAX_VALUE)
       return;
-    
+
     running = true;
     AnimationLoop loop = Context.instance().animationLoop;
     if (loop == null)

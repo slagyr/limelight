@@ -43,5 +43,5 @@ teaser {
   background_color "#0000"
   secondary_background_color :black
   gradient_angle 45
-  gradient_penetration 100	
+  gradient_penetration 100
 }

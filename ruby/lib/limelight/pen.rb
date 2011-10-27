@@ -7,10 +7,10 @@ module Limelight
   # from which the Pen was acquired.
   #
   # All points used by the Pen are relative to the bounds of the Prop.  The top left corner of the Prop is represented
-  # by the point (0, 0).  If a Prop has margin, border, or padding, the point (0, 0) may appear to be outside the Prop.  
+  # by the point (0, 0).  If a Prop has margin, border, or padding, the point (0, 0) may appear to be outside the Prop.
   #
   class Pen
-    
+
     attr_accessor :context
 
     # It is constructed with a context which is essentially a java.awt.Graphic2D object.  Defaults are set:
@@ -72,12 +72,12 @@ module Limelight
       @context.drawOval(x, y, width, height)
     end
 
-    # Fills an oval specified by the bounding rectangle.  See draw_oval.  
+    # Fills an oval specified by the bounding rectangle.  See draw_oval.
     #
     def fill_oval(x, y, width, height)
       @context.fillOval(x, y, width, height)
     end
-    
+
   end
-  
+
 end

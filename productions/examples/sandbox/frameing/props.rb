@@ -30,6 +30,6 @@ arena :vertical_alignment => :center do
   image_area do
     box do
       subject :id => "subject", :text => hamlet
-    end 
+    end
   end
 end

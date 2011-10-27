@@ -171,13 +171,13 @@ public class MultiLineTextModelTest
   public void shouldGetCaretShape() throws Exception
   {
     model.setText("line 1\n line 2\n line 3");
-    
+
     model.setCaretLocation(TextLocation.at(0, 3));
     assertEquals(new Box(30, 0, 1, 10), model.getCaretShape());
 
     model.setCaretLocation(TextLocation.at(1, 3));
     assertEquals(new Box(30, 11, 1, 10), model.getCaretShape());
-    
+
     model.setCaretLocation(TextLocation.at(2, 3));
     assertEquals(new Box(30, 22, 1, 10), model.getCaretShape());
   }
@@ -187,7 +187,7 @@ public class MultiLineTextModelTest
   {
     model.setText("line 1\nline 2\nline 3");
     model.setCaretLocation(TextLocation.at(0, 2));
-    
+
     model.moveCaretDownALine();
     assertEquals(TextLocation.at(1, 2), model.getCaretLocation());
 
@@ -253,7 +253,7 @@ public class MultiLineTextModelTest
     model.moveCaret(1);
     assertEquals(TextLocation.at(2, 1), model.getCaretLocation());
   }
-  
+
   @Test
   public void shouldMoveCaretThroughNewlines() throws Exception
   {
@@ -291,7 +291,7 @@ public class MultiLineTextModelTest
     model.startSelection(TextLocation.origin);
 
     ArrayList<Box> regions = model.getSelectionRegions();
-  
+
     assertEquals(new Box(45, 0, 105, 10), regions.get(0));
     assertEquals(new Box(0, 11, 150, 10), regions.get(1));
     assertEquals(new Box(0, 22, 150, 10), regions.get(2));
@@ -303,7 +303,7 @@ public class MultiLineTextModelTest
   {
     container.getStyle().setHorizontalAlignment("center");
     model.setText("1 line\nand\nanother line\n.");
-                                                  
+
     model.setCaretLocation(TextLocation.at(0, 0));
     assertEquals(new Box(45, 0, 1, 10), model.getCaretShape());
 
@@ -322,7 +322,7 @@ public class MultiLineTextModelTest
   {
     container.getStyle().setHorizontalAlignment("center");
     model.setText("1 line\nand\nanother line\n.");
-    
+
     assertEquals(TextLocation.at(0, 0), model.getLocationAt(new Point(45, 0)));
     assertEquals(TextLocation.at(1, 0), model.getLocationAt(new Point(60, 11)));
     assertEquals(TextLocation.at(2, 0), model.getLocationAt(new Point(15, 22)));
@@ -337,7 +337,7 @@ public class MultiLineTextModelTest
     model.setCaretLocation(TextLocation.at(0, 1));
     model.sendCaretToEndOfLine();
     assertEquals(TextLocation.at(0, 6), model.getCaretLocation());
-    
+
     model.setCaretLocation(TextLocation.at(1, 1));
     model.sendCaretToEndOfLine();
     assertEquals(TextLocation.at(1, 7), model.getCaretLocation());

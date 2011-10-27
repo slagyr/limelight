@@ -59,7 +59,7 @@ module Limelight
       alias_method :reject!, :delete_if
 
       def dup
-        return MapHash.new(@map.clone)        
+        return MapHash.new(@map.clone)
       end
 
       def each(&block)

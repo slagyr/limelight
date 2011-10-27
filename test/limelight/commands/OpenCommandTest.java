@@ -29,9 +29,9 @@ public class OpenCommandTest
   {
     command.execute();
 
-    assertEquals(command.defaultProduction(), studio.openedProduction);    
+    assertEquals(command.defaultProduction(), studio.openedProduction);
   }
-  
+
   @Test
   public void openSpecifiedProduction() throws Exception
   {

@@ -57,7 +57,7 @@ public class RepeatFillStrategyValueTest extends FillStrategyValueTest
     checkImage(graphics.drawnImages.get(2), image, 20, 40);
     checkImage(graphics.drawnImages.get(3), image, 40, 40);
   }
-  
+
   public void testFillUneven() throws Exception
   {
     Image image = new MockImage(30, 30);
@@ -69,7 +69,7 @@ public class RepeatFillStrategyValueTest extends FillStrategyValueTest
     checkImage(graphics.drawnImages.get(2), image, 20, 50);
     checkImage(graphics.drawnImages.get(3), image, 50, 50);
   }
-  
+
   public void testFillAligned() throws Exception
   {
     Image image = new MockImage(35, 35);

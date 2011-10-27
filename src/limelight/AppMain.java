@@ -23,7 +23,7 @@ public class AppMain
 
       if(args.length > 0 && startupProductionPath == null)
         startupProductionPath = args[0];
-      
+
       Context.instance().os.openProduction(getStartupProductionPath());
     }
     catch(Throwable e)

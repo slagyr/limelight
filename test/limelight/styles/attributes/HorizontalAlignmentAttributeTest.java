@@ -21,7 +21,7 @@ public class HorizontalAlignmentAttributeTest extends AbstractStyleAttributeTest
     assertEquals("horizontal alignment", attribute.getCompiler().type);
     assertEquals("left", attribute.getDefaultValue().toString());
   }
-  
+
   @Test
   public void shouldStyleChanged() throws Exception
   {

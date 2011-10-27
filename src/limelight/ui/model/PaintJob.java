@@ -129,7 +129,7 @@ public class PaintJob
   }
 
   private void paintChild(Graphics2D graphics, Panel child)
-  {  
+  {
     if(panelIsInClip(child))
     {
       Graphics2D childGraphics = (Graphics2D) graphics.create(child.getX(), child.getY(), child.getWidth(), child.getHeight());
@@ -143,7 +143,7 @@ public class PaintJob
     if(graphics != null)
     {
       Graphics2D graphics2d = (Graphics2D) graphics;
-      graphics2d.setComposite(AlphaComposite.Src); // Removes the need to do graphics.clearRect(...).  
+      graphics2d.setComposite(AlphaComposite.Src); // Removes the need to do graphics.clearRect(...).
       graphics2d.drawImage(buffer, clip.x, clip.y, null);
       Toolkit.getDefaultToolkit().sync(); // required to sync display on some systems according "Killer Game Programming"
     }

@@ -69,7 +69,7 @@ public class ImagePanelTest
 
     assertEquals(false, panel.isScaled());
   }
-  
+
   @Test
   public void parentSizeChangesAlwaysRequiresLayout() throws Exception
   {

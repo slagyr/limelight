@@ -13,7 +13,7 @@ module Limelight
     include Java::limelight.model.api.TheaterProxy
 
     attr_reader :peer #:nodoc:
-    
+
     def initialize(production, real_theater)
       @production = production
       @peer = real_theater
@@ -50,7 +50,7 @@ module Limelight
     # Adds a Stage to the Theater.  Raises an exception is the name of the Stage is duplicated.
     #
     def add_stage(name, options = {})
-      stage = build_stage(name, options).proxy      
+      stage = build_stage(name, options).proxy
       @peer.add(stage.peer)
       return stage
     end
@@ -70,7 +70,7 @@ module Limelight
     def default_stage
       @peer.default_stage.proxy
     end
-    
+
   end
-  
+
 end

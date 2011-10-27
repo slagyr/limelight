@@ -39,7 +39,7 @@ public class BootTest
     Context.instance().killThreads();
     System.setProperty("os.name", "blah");
   }
-  
+
   @Test
   public void tempFileIsAddedToContext() throws Exception
   {

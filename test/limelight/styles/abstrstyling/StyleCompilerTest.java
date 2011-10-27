@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class StyleCompilerTest
 {
-  
+
   @Test
   public void stringifyingObjects() throws Exception
   {

@@ -122,7 +122,7 @@ describe Limelight::Prop do
   end
 
   it "should pass scene on to children" do
-    child = Limelight::Prop.new(:name => "child")                  
+    child = Limelight::Prop.new(:name => "child")
 
     @prop.parent.should == @scene
     @prop.scene.should == @scene
@@ -131,7 +131,7 @@ describe Limelight::Prop do
     child.parent.should == @prop
     child.scene.should == @scene
   end
-  
+
   it "should set styles upon illuminating, and convert them to strings" do
     prop = Limelight::Prop.new(:width => "100", :height => 200, :horizontal_alignment => :center)
 
@@ -165,7 +165,7 @@ describe Limelight::Prop do
     @prop.bordered_bounds.should == "area inside borders"
     @prop.padded_bounds.should == "area inside padding"
   end
-  
+
   it "provides location" do
     @prop.peer.should_receive(:get_location).and_return("location")
     @prop.peer.should_receive(:get_absolute_location).and_return("absolute location")

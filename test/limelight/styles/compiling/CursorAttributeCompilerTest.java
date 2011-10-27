@@ -32,7 +32,7 @@ public class CursorAttributeCompilerTest
     assertEquals(SimpleCursorValue.HAND, compiler.compile("hand"));
     assertEquals(SimpleCursorValue.CROSSHAIR, compiler.compile("crosshair"));
   }
-  
+
   @Test
   public void testValidValuesWithClojureStyleKeywords() throws Exception
   {

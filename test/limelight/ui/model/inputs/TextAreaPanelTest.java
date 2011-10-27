@@ -43,7 +43,7 @@ public class TextAreaPanelTest extends Assert
     model = panel.getModel();
     model.setText("Some Text");
   }
-  
+
   @Test
   public void shouldDefaultStyles() throws Exception
   {
@@ -69,14 +69,14 @@ public class TextAreaPanelTest extends Assert
     assertEquals("4", panel.getStyle().getBottomBorderWidth());
     assertEquals("4", panel.getStyle().getLeftBorderWidth());
   }
-  
+
   @Test
   public void shouldHaveDefaultAlignment() throws Exception
   {
     assertEquals("top", panel.getStyle().getVerticalAlignment());
     assertEquals("left", panel.getStyle().getHorizontalAlignment());
   }
-  
+
   @Test
   public void shouldHaveDefaultCursor() throws Exception
   {

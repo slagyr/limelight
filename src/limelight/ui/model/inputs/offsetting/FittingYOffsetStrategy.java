@@ -28,7 +28,7 @@ public class FittingYOffsetStrategy implements YOffsetStrategy
       yOffset = 0;
     else if(relativeCaretY < 0)
       yOffset = -absoluteCaretY;
-    
+
     return yOffset;
   }
 }

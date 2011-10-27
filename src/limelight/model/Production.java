@@ -132,7 +132,7 @@ public abstract class Production
   {
     return proxy;
   }
-  
+
   //TODO MDM Git rid of me
   public void setProxy(ProductionProxy proxy)
   {

@@ -20,7 +20,7 @@ import java.awt.*;
 import java.util.Map;
 
 public class ScenePanelTest extends Assert
-{ 
+{
   private ScenePanel root;
   private MockProp child;
   private MockStage frame;
@@ -34,7 +34,7 @@ public class ScenePanelTest extends Assert
     limelight.ui.KeyboardFocusManager.installed();
     FakeFileSystem.installed();
   }
-  
+
   @Test
   public void hasButtonGroups() throws Exception
   {
@@ -227,7 +227,7 @@ public class ScenePanelTest extends Assert
   public void shouldHaveStylesMap() throws Exception
   {
     Map<String, RichStyle> styleMap = root.getStyles();
-    
+
     assertNotNull(styleMap);
     assertEquals(0, styleMap.size());
   }
@@ -244,7 +244,7 @@ public class ScenePanelTest extends Assert
   {
     root.setStage(frame);
     root.setStage(null);
-    
+
     assertEquals(false, root.isIlluminated());
   }
 
@@ -283,7 +283,7 @@ public class ScenePanelTest extends Assert
     PropPanel prop2 = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
 
     root.add(prop1);
-    
+
     try
     {
       root.add(prop2);
@@ -331,7 +331,7 @@ public class ScenePanelTest extends Assert
     PropPanel parent = new PropPanel(new FakePropProxy(), Util.toMap("id", "parent"));
     PropPanel child = new PropPanel(new FakePropProxy(), Util.toMap("id", "child"));
     parent.add(child);
-    
+
     root.add(parent);
     assertSame(parent, root.find("parent"));
     assertSame(child, root.find("child"));
@@ -340,7 +340,7 @@ public class ScenePanelTest extends Assert
     assertEquals(null, root.find("parent"));
     assertEquals(null, root.find("child"));
   }
-  
+
   @Test
   public void sceneGetLoaderFromOptions() throws Exception
   {

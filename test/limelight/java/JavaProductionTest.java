@@ -41,7 +41,7 @@ public class JavaProductionTest
     production = new JavaProduction("/testProduction");
     PlayerRecruiter.installed();
   }
-  
+
   @Test
   public void loadsStages() throws Exception
   {
@@ -109,7 +109,7 @@ public class JavaProductionTest
     assertEquals("grandchild", grandChild.getName());
     assertEquals(0, child2.getChildren().size());
   }
-  
+
   @Test
   public void loadEmptyStylesForScene() throws Exception
   {
@@ -119,7 +119,7 @@ public class JavaProductionTest
 
     assertEquals(0, styles.size());
   }
-  
+
   @Test
   public void loadRealStylesForScene() throws Exception
   {

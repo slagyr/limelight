@@ -25,7 +25,7 @@ public class DownloaderTest
   public void setUp() throws Exception
   {
     Data.reset();
-    
+
     os = new MockOS();
     os.dataRoot = dataRoot;
     Context.instance().os = os;
@@ -33,7 +33,7 @@ public class DownloaderTest
     fs = FakeFileSystem.installed();
     downloader = new Downloader();
   }
-  
+
   @Test
   public void directories() throws Exception
   {
@@ -59,7 +59,7 @@ public class DownloaderTest
     assertEquals(true, fs.exists(result));
     assertEquals("some text", fs.readTextFile(result));
   }
-  
+
   @Test
   public void downloadingFileWithoutURLSyntax() throws Exception
   {
@@ -100,7 +100,7 @@ public class DownloaderTest
     }
     catch(LimelightException e)
     {
-      assertEquals("Failed to download resource: java.net.MalformedURLException: no protocol: " + resource, e.getMessage()); 
+      assertEquals("Failed to download resource: java.net.MalformedURLException: no protocol: " + resource, e.getMessage());
     }
   }
 

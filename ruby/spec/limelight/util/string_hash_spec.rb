@@ -9,7 +9,7 @@ describe Limelight::Util::StringHash do
   before do
     @hash = Limelight::Util::StringHash.new
   end
-  
+
   it "behaves like a hash" do
     @hash["one"] = 1
     @hash["two"] = 2
@@ -19,7 +19,7 @@ describe Limelight::Util::StringHash do
     @hash["two"].should == 2
     @hash["three"].should == 3
   end
-  
+
   it "store keys as strings" do
     @hash[:one] = 1
     @hash[:two] = 2
@@ -84,7 +84,7 @@ describe Limelight::Util::StringHash do
     @hash.key?("one").should == true
     @hash.key?("blah").should == false
   end
-  
+
   it "handles fetch" do
     @hash[:one] = 1
 

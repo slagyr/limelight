@@ -73,7 +73,7 @@ public class TextModelTest
     assertEquals("SomeSome", model.getClipboardContents());
     assertEquals(" Text", model.getText());
   }
-  
+
   @Test
   public void shouldGetAlignment() throws Exception
   {
@@ -111,7 +111,7 @@ public class TextModelTest
     assertEquals(true, model.isSelectionActivated());
     assertEquals("abc", model.getSelectedText());
   }
-  
+
   @Test
   public void deactivatingSelection() throws Exception
   {
@@ -124,7 +124,7 @@ public class TextModelTest
     assertEquals(false, model.isSelectionActivated());
     assertEquals("", model.getSelectedText());
   }
-  
+
   @Test
   public void selectionActivatedAtCaretLocation() throws Exception
   {
@@ -149,7 +149,7 @@ public class TextModelTest
     model.setText("yum");
     assertEquals(true, model.hasChanged());
   }
-  
+
   @Test
   public void modelReportsChangeWhenCharIsInserted() throws Exception
   {
@@ -158,7 +158,7 @@ public class TextModelTest
     model.insertChar('a');
     assertEquals(true, model.hasChanged());
   }
-  
+
   @Test
   public void reportsChangeWhenSelectionIsDeleted() throws Exception
   {
@@ -211,7 +211,7 @@ public class TextModelTest
     model.setCaretLocation(TextLocation.at(0, 9));
     Assert.assertEquals(TextLocation.at(0, 14), model.locateNearestWordToTheRight());
   }
-  
+
   @Test
   public void nearestWordToTheLeft()
   {

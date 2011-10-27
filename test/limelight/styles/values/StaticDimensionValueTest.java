@@ -41,7 +41,7 @@ public class StaticDimensionValueTest extends TestCase
     assertEquals(false, fifty.equals(hundred));
     assertEquals(false, fifty.equals(null));
   }
-  
+
   public void testIsDynamic() throws Exception
   {
     assertEquals(false, fifty.isDynamic());

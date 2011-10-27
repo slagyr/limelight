@@ -44,6 +44,6 @@ class Class
       self.class_eval "def set#{symbol.to_s.camalized}(value); self.#{symbol} = value; end"
     end
   end
-  
+
 end
-  
+

@@ -57,7 +57,7 @@ public class StyledTextTest extends Assert
     styles.put("bang", style2);
     defaultStyle = new RichStyle();
   }
-  
+
   @Test
   public void shouldTeardownStyles() throws Exception
   {
@@ -66,7 +66,7 @@ public class StyledTextTest extends Assert
     styledText.setupStyles(styles, defaultStyle, new MockStyleObserver());
 
     styledText.teardownStyles();
-    
+
     RichStyle style = styledText.getStyle();
     assertEquals(false, style1.hasObserver(style));
     assertEquals(false, style2.hasObserver(style));
@@ -96,7 +96,7 @@ public class StyledTextTest extends Assert
     styledText.getStyle().setFontFace("Courier");
     styledText.getStyle().setFontStyle("plain");
     styledText.getStyle().setFontSize(12);
-    
+
     Font font = styledText.getFont();
 
     final String name = font.getFontName();

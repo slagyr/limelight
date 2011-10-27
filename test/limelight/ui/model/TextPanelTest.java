@@ -137,7 +137,7 @@ public class TextPanelTest
     panel.resetLayout();
     assertEquals(false, panel.needsLayout());
   }
-  
+
   @Test
   public void layoutFlushedChangedText() throws Exception
   {
@@ -395,7 +395,7 @@ public class TextPanelTest
     panel.setText("New Text", parent);
 
     assertEquals(true, panel.needsLayout());
-    assertEquals(true, parent.needsLayout());        
+    assertEquals(true, parent.needsLayout());
   }
 
   @Test
@@ -408,7 +408,7 @@ public class TextPanelTest
     assertEquals(1, list.size());
     assertEquals(panel.getAbsoluteBounds(), list.get(0));
   }
-  
+
   @Test
   public void resizesTextWhenSizeChanges() throws Exception
   {
@@ -424,7 +424,7 @@ public class TextPanelTest
     assertEquals(true, 200 - panel.getWidth() < 100 );
     assertEquals(true, newHeight < originalHeight);
   }
-  
+
   @Test
   public void parentSizeChangesAlwaysRequiresLayout() throws Exception
   {
@@ -435,7 +435,7 @@ public class TextPanelTest
 
     assertEquals(true, panel.needsLayout());
   }
-  
+
   @Test
   public void teardownStyledTextBeforeDiscarding() throws Exception
   {

@@ -46,7 +46,7 @@ public class ScaleYFillStrategyValueTest extends FillStrategyValueTest
     assertEquals(1, graphics.drawnImages.size());
     checkScaledImage(image, graphics.drawnImages.get(0), new Rectangle(0, 0, 20, 20), new Rectangle(20, 20, 20, 60));
   }
-  
+
   public void testFillAligned() throws Exception
   {
     Image image = new MockImage(20, 20);

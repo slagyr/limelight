@@ -56,7 +56,7 @@ public class BorderTest extends TestCase
     assertEquals(false, border.hasBottomBorder());
     assertEquals(false, border.hasLeftBorder());
   }
-  
+
   public void testHasBordersForAnyBorderWhoseWidthIsNotZero() throws Exception
   {
     style.setBorderWidth("1");

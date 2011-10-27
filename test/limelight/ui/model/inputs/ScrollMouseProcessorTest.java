@@ -94,7 +94,7 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void pressingHorizontalDecreaseScrollButtonWillDecrement() throws Exception
-  {               
+  {
     setUpHorizontally();
     scrollBar.setValue(50);
     assertEquals(false, scrollBar.isDecreasingButtonActive());
@@ -132,7 +132,7 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void pressingHorizontalIncreaseScrollButtonWillStartRepeater() throws Exception
-  {             
+  {
     setUpHorizontally();
     assertEquals(false, repeater.isRunning());
 
@@ -144,7 +144,7 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void pressingHorizontalDecreaseScrollButtonWillStartRepeater() throws Exception
-  {        
+  {
     setUpHorizontally();
     assertEquals(false, repeater.isRunning());
 
@@ -177,7 +177,7 @@ public class ScrollMouseProcessorTest
     assertEquals(true, repeater.isRunning());
     assertEquals(-scrollBar.getUnitIncrement(), repeater.getScrollDelta());
   }
-  
+
   @Test
   public void releasingMouseWillStopRepeaterWhenIncreasing() throws Exception
   {
@@ -188,7 +188,7 @@ public class ScrollMouseProcessorTest
     assertEquals(false, processor.getRepeater().isRunning());
     assertEquals(false, scrollBar.isDecreasingButtonActive());
   }
-  
+
   @Test
   public void releasingMouseWillStopRepeaterWhenDecreasing() throws Exception
   {
@@ -221,16 +221,16 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void pressingTrackIncreasesByBlockHorizontally() throws Exception
-  {          
+  {
     setUpHorizontally();
     press(scrollBar, 60, 7);
 
     assertEquals(scrollBar.getBlockIncrement(), scrollBar.getValue());
   }
-  
+
   @Test
   public void pressingTrackDecreasesByBlockHorizontally() throws Exception
-  {               
+  {
     setUpHorizontally();
     scrollBar.setValue(scrollBar.getMaxValue());
     press(scrollBar, 10, 7);
@@ -240,7 +240,7 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void pressingHorizontalTrackToIncreaseWillStartRepeater() throws Exception
-  {        
+  {
     setUpHorizontally();
     assertEquals(false, repeater.isRunning());
 
@@ -253,7 +253,7 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void pressingHorizontalTrackToDecreaseWillStartRepeater() throws Exception
-  {              
+  {
     setUpHorizontally();
     scrollBar.setValue(scrollBar.getMaxValue());
     assertEquals(false, repeater.isRunning());
@@ -297,7 +297,7 @@ public class ScrollMouseProcessorTest
   {
     setUpVertically();
     press(scrollBar, 7, 60);
-    
+
     assertEquals(new Point(7, 60), processor.getMouseLocation());
   }
 
@@ -306,7 +306,7 @@ public class ScrollMouseProcessorTest
   {
     setUpVertically();
     scrollBar.setValue(10);
-    
+
     Box sliderBounds = scrollBar.getSliderBounds();
     final ScrollRepeater.ScrollCondition condition = processor.getNotInSliderScrollCondition();
 
@@ -322,10 +322,10 @@ public class ScrollMouseProcessorTest
     processor.setMouseLocation(7, sliderBounds.bottom() + 1);
     assertEquals(true, condition.canScroll());
   }
-  
+
   @Test
   public void mouseInSliderScrollConditionHorizontal() throws Exception
-  {            
+  {
     setUpHorizontally();
     scrollBar.setValue(10);
 
@@ -347,7 +347,7 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void startDraggingSlider() throws Exception
-  {              
+  {
     setUpHorizontally();
     press(scrollBar, 10, 7);
     assertEquals(true, processor.isSliderDragOn());
@@ -359,7 +359,7 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void stopsDraggingWhenNotNotPressedInSlider() throws Exception
-  {                
+  {
     setUpHorizontally();
     press(scrollBar, 10, 7);
     assertEquals(true, processor.isSliderDragOn());
@@ -370,19 +370,19 @@ public class ScrollMouseProcessorTest
 
   @Test
   public void repeaterStopsWhenIncreasingButtonIsPressedAndMouseExits() throws Exception
-  {            
+  {
     setUpHorizontally();
     press(scrollBar, 90, 7);
     assertEquals(true, processor.isUnitIncrementOn());
     exit(scrollBar, -1, -1);
-    
+
     assertEquals(false, scrollBar.isIncreasingButtonActive());
     assertEquals(false, repeater.isRunning());
   }
-  
+
   @Test
   public void repeaterStopsWhenDecreasingButtonIsPressedAndMouseExits() throws Exception
-  {               
+  {
     setUpHorizontally();
     press(scrollBar, 80, 7);
     exit(scrollBar, -1, -1);
@@ -390,7 +390,7 @@ public class ScrollMouseProcessorTest
     assertEquals(false, scrollBar.isDecreasingButtonActive());
     assertEquals(false, repeater.isRunning());
   }
-  
+
   @Test
   public void draggingFromDecreasingToIncreasingReversedRepeaterDelta() throws Exception
   {
@@ -427,7 +427,7 @@ public class ScrollMouseProcessorTest
     assertEquals(false, repeater.isRunning());
     assertEquals(false, scrollBar.isIncreasingButtonActive());
   }
-  
+
   @Test
   public void draggingMouseOutOfIncreasingButtonShouldStopRepeater() throws Exception
   {
@@ -444,13 +444,13 @@ public class ScrollMouseProcessorTest
   {
     setUpHorizontally();
     press(scrollBar, 80, 7);
-    drag(scrollBar, 50, 7); 
+    drag(scrollBar, 50, 7);
     drag(scrollBar, 90, 7);
 
     assertEquals(true, repeater.isRunning());
     assertEquals(true, scrollBar.isIncreasingButtonActive());
   }
-  
+
   @Test
   public void draggingMouseOutOfButtonsAndBackInSameDirectionWillResumeRepeater() throws Exception
   {
@@ -499,7 +499,7 @@ public class ScrollMouseProcessorTest
 
     assertEquals(false, repeater.isRunning());
   }
-  
+
   @Test
   public void draggingOutOfTheTrackThenBackInResumeRepeater() throws Exception
   {

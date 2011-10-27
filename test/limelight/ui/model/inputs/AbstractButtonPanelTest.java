@@ -42,7 +42,7 @@ public class AbstractButtonPanelTest
     panel = new TestableAbstractButtonPanel();
     action = new MockEventAction();
   }
-                                      
+
   @Test
   public void buttonPressedEventInvokedWhenClicking() throws Exception
   {
@@ -52,7 +52,7 @@ public class AbstractButtonPanelTest
 
     assertEquals(true, action.invoked);
   }
-                                      
+
   @Test
   public void buttonPressedEventNotInvokedWhenClickIsConsumed() throws Exception
   {
@@ -62,7 +62,7 @@ public class AbstractButtonPanelTest
 
     assertEquals(false, action.invoked);
   }
-  
+
   @Test
   public void aButtonParentWillAlsoGetThePushEvent() throws Exception
   {
@@ -95,7 +95,7 @@ public class AbstractButtonPanelTest
 
     assertEquals(false, action.invoked);
   }
-                                     
+
   @Test
   public void buttonPressedNotEventInvokedWhenOtherCharsTypes() throws Exception
   {

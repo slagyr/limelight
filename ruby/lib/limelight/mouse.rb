@@ -66,7 +66,7 @@ module Limelight
       return Java::java.awt.Point.new(local_x, local_y)
     end
 
-    def owner_of(location, prop)      
+    def owner_of(location, prop)
       owner = prop.peer.get_owner_of_point(location)
       return owner
     end

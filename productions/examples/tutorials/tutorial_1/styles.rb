@@ -21,5 +21,5 @@ sample {
 selection {
   width 300
   height 300
-  background_color "gray" 
+  background_color "gray"
 }

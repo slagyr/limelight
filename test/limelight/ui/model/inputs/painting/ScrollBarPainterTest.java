@@ -72,7 +72,7 @@ public class ScrollBarPainterTest
   public void shouldStartHorizontalSliderAtLeftEdgeForMinValue() throws Exception
   {
     setUpHorizontally();
-    
+
     painter.paintOn(graphics, scrollBar);
 
     MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
@@ -98,7 +98,7 @@ public class ScrollBarPainterTest
   {
     setUpHorizontally();
     scrollBar.configure(90, 100);
-    
+
 //    System.err.println("scrollBar.getSliderSize() = " + scrollBar.getSliderSize());
 //    scrollBar.getSliderSize() = 56
 
@@ -144,7 +144,7 @@ public class ScrollBarPainterTest
     scrollBar.setValue(50);
 
     painter.paintOn(graphics, scrollBar);
-    
+
     MockGraphics.DrawnImage outsideSliderCap = graphics.drawnImages.get(12);
     assertEquals(scrollBar.getSliderPosition(), outsideSliderCap.y);
   }
@@ -194,7 +194,7 @@ public class ScrollBarPainterTest
 
     assertEquals(images.buttonsOutsideSelected, graphics.drawnImages.get(11).image);
   }
-  
+
   @Test
   public void paintsActivatedDecreasingButtonHorizontally() throws Exception
   {
@@ -280,14 +280,14 @@ public class ScrollBarPainterTest
     scrollBar.configure(100, 50);
 
     painter.paintOn(graphics, scrollBar);
-    
+
     assertEquals(10, graphics.drawnImages.size());
     for(MockGraphics.DrawnImage drawnImage : graphics.drawnImages)
     {
       assertEquals(images.background, drawnImage.image);
     }
   }
-   
+
   @Test
   public void onlyTrackIsDrawnWhenGemIsSameSizeAsTrack() throws Exception
   {

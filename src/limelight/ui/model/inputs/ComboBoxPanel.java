@@ -33,7 +33,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
 
   @Override
   protected void setDefaultStyles(Style style)
-  {    
+  {
     style.setDefault(Style.WIDTH, 128);
     style.setDefault(Style.HEIGHT, 27);
     style.setDefault(Style.LEFT_PADDING, 8);

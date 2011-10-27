@@ -6,7 +6,7 @@ package limelight.caching;
 import junit.framework.TestCase;
 
 public class SimpleCacheEntryTest extends TestCase
-{ 
+{
   public void testNotExpiredIfValueNotNull() throws Exception
   {
     CacheEntry<String> entry = new SimpleCacheEntry<String>("blah");

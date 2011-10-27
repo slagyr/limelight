@@ -66,25 +66,25 @@ public class TextBoxPanelTest extends Assert
     assertEquals("#00000000", panel.getStyle().getBottomBorderColor());
     assertEquals("#00000000", panel.getStyle().getLeftBorderColor());
   }
-  
+
   @Test
   public void shouldHaveDefaultAlignment() throws Exception
   {
     assertEquals("center", panel.getStyle().getVerticalAlignment());
     assertEquals("left", panel.getStyle().getHorizontalAlignment());
   }
-  
+
   @Test
   public void shouldHaveDefaultCursor() throws Exception
   {
     assertEquals("text", panel.getStyle().getCursor());
   }
-          
+
   @Test
   public void shouldSetPainterOnParent() throws Exception
   {
     PropPanel newParent = new PropPanel(new FakePropProxy());
-    
+
     panel.setParent(newParent);
 
     assertEquals(TextInputPanel.TextInputPropPainter.instance, newParent.getPainter());

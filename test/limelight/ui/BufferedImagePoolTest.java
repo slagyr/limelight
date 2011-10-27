@@ -23,7 +23,7 @@ public class BufferedImagePoolTest extends TestCase
   {
     assertEquals(1, pool.getTimeoutSeconds(), 1);
   }
-  
+
   public void testAcquireWhenNoneExists() throws Exception
   {
     BufferedImage image = pool.acquire(dimension);
