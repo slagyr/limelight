@@ -29,7 +29,7 @@ public class CheckBoxPanelTest
     root = new FakeScene();
     root.add(parent);
   }
-  
+
   @Test
   public void isButton() throws Exception
   {

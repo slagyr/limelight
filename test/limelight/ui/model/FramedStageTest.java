@@ -296,7 +296,7 @@ public class FramedStageTest
     assertNull(stage.getMouseListener());
     assertNull(stage.getKeyListener());
   }
-  
+
   @Test
   public void applyOptionsArePassedToProxy() throws Exception
   {
@@ -339,7 +339,7 @@ public class FramedStageTest
     assertEquals(false, stage.isAlwaysOnTop());
     assertEquals(false, frame.isAlwaysOnTop());
   }
-  
+
   @Test
   public void setSizeWithCollection() throws Exception
   {

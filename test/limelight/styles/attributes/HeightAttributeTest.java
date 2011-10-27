@@ -21,7 +21,7 @@ public class HeightAttributeTest extends AbstractStyleAttributeTestBase
     assertEquals("dimension", attribute.getCompiler().type);
     assertEquals("auto", attribute.getDefaultValue().toString());
   }
-  
+
   @Test
   public void shouldStyleChanged() throws Exception
   {

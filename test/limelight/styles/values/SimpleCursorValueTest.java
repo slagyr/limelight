@@ -20,7 +20,7 @@ public class SimpleCursorValueTest
     assertSame(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR), SimpleCursorValue.TEXT.getCursor());
     assertSame(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR), SimpleCursorValue.CROSSHAIR.getCursor());
   }
-  
+
   @Test
   public void shouldHaveCorrectStringValues() throws Exception
   {

@@ -80,7 +80,7 @@ When /^I set value of "([^\"]*)" to "([^\"]*)"$/ do |id, value|
   begin
     prop.checked = true
   rescue
-  end 
+  end
   prop.text = value
   begin
     prop.focus_lost(nil)

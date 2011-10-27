@@ -135,7 +135,7 @@ public class ScrollBarPanelTest
   {
     horizontalScrollBar.setSize(100, 15);
     horizontalScrollBar.configure(50, 100);
-    
+
     horizontalScrollBar.setValue(0);
     assertEquals(5, horizontalScrollBar.getSliderPosition());
 
@@ -151,7 +151,7 @@ public class ScrollBarPanelTest
   {
     horizontalScrollBar.setSize(100, 15);
     horizontalScrollBar.configure(50, 100);
-    
+
     horizontalScrollBar.setSliderPosition(5);
     assertEquals(0, horizontalScrollBar.getValue());
 
@@ -161,7 +161,7 @@ public class ScrollBarPanelTest
     horizontalScrollBar.setSliderPosition(36);
     assertEquals(50, horizontalScrollBar.getValue());
   }
-  
+
   @Test
   public void slidePositionStaysWithinBounds() throws Exception
   {
@@ -174,7 +174,7 @@ public class ScrollBarPanelTest
     horizontalScrollBar.setSliderPosition(99999);
     assertEquals(horizontalScrollBar.getMaxSliderPosition(), horizontalScrollBar.getSliderPosition());
   }
-  
+
   @Test
   public void CannotSetValueLessThanMin() throws Exception
   {
@@ -182,7 +182,7 @@ public class ScrollBarPanelTest
 
     assertEquals(0, verticalScrollBar.getValue());
   }
-  
+
   @Test
   public void CannotSetValueHigherThanMax() throws Exception
   {
@@ -212,7 +212,7 @@ public class ScrollBarPanelTest
 
     verticalScrollBar.setIncreasingButtonActive(true);
     assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));
-    
+
     root.dirtyRegions.clear();
     verticalScrollBar.setDecreasingButtonActive(true);
     assertEquals(verticalScrollBar.getAbsoluteBounds(), root.dirtyRegions.get(0));

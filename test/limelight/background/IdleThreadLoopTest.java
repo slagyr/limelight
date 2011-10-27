@@ -78,7 +78,7 @@ public class IdleThreadLoopTest extends TestCase
   public void testStartsInGearWhenShouldIdleReturnsFalse() throws Exception
   {
     loop.shouldIdle = false;
-    
+
     loop.start();
 
     assertEquals(true, loop.isRunning());
@@ -100,7 +100,7 @@ public class IdleThreadLoopTest extends TestCase
     loop.start();
 
     Thread.sleep(10);
-    assertEquals(true, loop.executions > 0);  
+    assertEquals(true, loop.executions > 0);
   }
 
   public void testCanGoFromGearToIdle() throws Exception

@@ -26,7 +26,7 @@ public class SimpleColorValueTest extends TestCase
     assertEquals(true, blue instanceof StyleValue);
     assertEquals(Color.blue, blue.getColor());
   }
-  
+
   public void testToString() throws Exception
   {
     assertEquals("#0000ffff", blue.toString());

@@ -239,7 +239,7 @@ public class Border
     }
 
     public Line2D getTopLine()
-    { 
+    {
       return new Line2D.Double(left + border.topLeftRadius, top, right - border.topRightRadius, top);
     }
 
@@ -301,7 +301,7 @@ public class Border
       return new Arc2D.Double(x, y, bottomRightArcWidth, bottomRightArcWidth, 0, -90, Arc2D.OPEN);
     }
 
-    public Arc2D getBottomLeftArc()                                                                                
+    public Arc2D getBottomLeftArc()
     {
       int bottomLeftArcWidth = minZero(border.bottomLeftRadius * 2 - border.bottomLeftWidth / 2);
       int x = border.bounds.left() + shave(border.bottomLeftWidth);
@@ -475,8 +475,8 @@ public class Border
     private void addArc(AffineTransform at, ArrayList<PathSegment> segments, double[] coords, Arc2D arc)
     {
       PathIterator iterator;
-      iterator = arc.getPathIterator(at);     
-      iterator.currentSegment(coords); 
+      iterator = arc.getPathIterator(at);
+      iterator.currentSegment(coords);
       segments.add(new LinePathSegment(coords));
       iterator.next();
       iterator.currentSegment(coords);

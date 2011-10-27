@@ -115,8 +115,8 @@ public class StageMouseListener implements MouseListener, MouseMotionListener, M
   {
     if(getRoot() == null)
       return;
-    
-    final Panel panel = panelFor(e.getPoint());  
+
+    final Panel panel = panelFor(e.getPoint());
     new limelight.ui.events.panel.MouseWheelEvent(e.getModifiers(), e.getPoint(), e.getClickCount(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()).dispatch(panel);
   }
 

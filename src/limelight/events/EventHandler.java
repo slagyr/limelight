@@ -88,6 +88,6 @@ public class EventHandler
 
   protected void handleUndispatchedEvent(Event event)
   {
-    
+
   }
 }

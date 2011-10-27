@@ -74,7 +74,7 @@ public class StyleTest
     assertEquals("0", Style.BOTTOM_MARGIN.defaultValue.toString());
     assertEquals("0", Style.LEFT_MARGIN.defaultValue.toString());
   }
-  
+
   @Test
   public void shouldHandlePaddingDefaults() throws Exception
   {
@@ -177,7 +177,7 @@ public class StyleTest
     assertEquals(PixelsAttributeCompiler.class, Style.LEFT_BORDER_WIDTH.compiler.getClass());
     assertEquals(PixelsAttributeCompiler.class, Style.TOP_LEFT_BORDER_WIDTH.compiler.getClass());
   }
-  
+
   @Test
   public void shouldHandleXandY() throws Exception
   {
@@ -191,7 +191,7 @@ public class StyleTest
     assertEquals(XCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_X.compiler.getClass());
     assertEquals(YCoordinateAttributeCompiler.class, Style.BACKGROUND_IMAGE_Y.compiler.getClass());
   }
-  
+
   @Test
   public void shouldHandleMinMaxWidthAndMinHeightCompilers() throws Exception
   {
@@ -204,7 +204,7 @@ public class StyleTest
     assertEquals(NoneableAttributeCompiler.class, Style.MAX_HEIGHT.compiler.getClass());
     assertEquals(SimpleDimensionAttributeCompiler.class, ((NoneableAttributeCompiler)Style.MIN_HEIGHT.compiler).getTarget().getClass());
   }
-  
+
   @Test
   public void shouldHandleCursorStyle() throws Exception
   {

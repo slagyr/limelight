@@ -53,7 +53,7 @@ public class ScrollBarPanel extends PanelBase
       setSize(50, preferredGirth);
       sliderBounds = new Box(0, 0, 0, preferredGirth);
     }
-    
+
     getEventHandler().add(MousePressedEvent.class, mouseProcessor);
     getEventHandler().add(MouseReleasedEvent.class, mouseProcessor);
     getEventHandler().add(MouseDraggedEvent.class, mouseProcessor);
@@ -69,7 +69,7 @@ public class ScrollBarPanel extends PanelBase
   {
     return orientation == VERTICAL;
   }
-  
+
   public boolean isHorizontal()
   {
     return orientation == HORIZONTAL;
@@ -164,7 +164,7 @@ public class ScrollBarPanel extends PanelBase
   public void setSliderPosition(int position)
   {
     sliderPosition = Math.min(Math.max(position, getMinSliderPosition()), getMaxSliderPosition());
-    
+
     double positionRatio = (double)(position - getMinSliderPosition()) / getSliderPlay();
     int value = (int)(positionRatio * maxValue + 0.5);
     setValue(value);

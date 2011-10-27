@@ -55,7 +55,7 @@ public class SimpleFontStyleValueTest extends TestCase
     assertEquals(false, bold.equals(plain));
     assertEquals(false, bold.equals(null));
   }
-  
+
   public void testStyleAsInt() throws Exception
   {
     assertEquals(Font.BOLD | Font.ITALIC, boldItalic.toInt());

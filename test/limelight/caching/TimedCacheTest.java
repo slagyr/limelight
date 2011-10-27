@@ -13,7 +13,7 @@ public class TimedCacheTest extends TestCase
   {
     cache = new TimedCache<String, String>(1);
   }
-  
+
   public void testTimeout() throws Exception
   {
     assertEquals(1, cache.getTimeoutSeconds(), 0.01);

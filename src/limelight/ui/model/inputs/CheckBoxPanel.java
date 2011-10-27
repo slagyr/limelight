@@ -37,7 +37,7 @@ public class CheckBoxPanel extends AbstractButtonPanel
   {
     if(imagesLoaded)
       return;
-    
+
     normalImage = Images.load("checkbox.png");
     selectedImage = Images.load("checkbox_selected.png");
     focusImage = Images.load("checkbox_focus.png");

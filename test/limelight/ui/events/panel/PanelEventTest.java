@@ -33,19 +33,19 @@ public class PanelEventTest
     event = new TestableEvent();
     event.setSource(source);
   }
-  
+
   @Test
   public void subjectIsTheSource() throws Exception
   {
     assertEquals(event.getSubject(), event.getSource());
   }
-  
+
   @Test
   public void rememberThePanel() throws Exception
   {
     assertSame(source, event.getSource());
   }
-  
+
   @Test
   public void isNotInheritableByDefault() throws Exception
   {
@@ -57,7 +57,7 @@ public class PanelEventTest
   {
     assertEquals(source, event.getRecipient());
   }
-  
+
   @Test
   public void dispatchingSetsTheSource() throws Exception
   {
@@ -68,7 +68,7 @@ public class PanelEventTest
     assertEquals(source, event.getSource());
     assertEquals(source, event.getRecipient());
   }
-  
+
   @Test
   public void dispatching() throws Exception
   {
@@ -82,7 +82,7 @@ public class PanelEventTest
     assertEquals(source, event.getSource());
     assertEquals(source, event.getRecipient());
   }
-  
+
   private Panel dispatchedRecipient;
   @Test
   public void theRecipientIsSetOnlyDuringDispatchAndThenRestored() throws Exception

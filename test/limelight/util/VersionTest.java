@@ -28,7 +28,7 @@ public class VersionTest
     version1_3_3 = new Version("1.3.3");
     vertion2_2_3 = new Version("2.2.3");
   }
-  
+
   @Test
   public void creationWithParts() throws Exception
   {
@@ -134,6 +134,6 @@ public class VersionTest
   public void toStringValue() throws Exception
   {
     assertEquals("4.3.2", new Version(4, 3, 2).toString());
-    assertEquals("7.8.99", new Version(7, 8, 99).toString());      
+    assertEquals("7.8.99", new Version(7, 8, 99).toString());
   }
 }

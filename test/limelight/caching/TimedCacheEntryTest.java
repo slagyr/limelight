@@ -18,7 +18,7 @@ public class TimedCacheEntryTest extends TestCase
   {
     assertEquals(0.01, entry.getTimeoutSeconds());
   }
-  
+
   public void testIsExpired() throws Exception
   {
     assertEquals(false, entry.isExpired());
@@ -31,12 +31,12 @@ public class TimedCacheEntryTest extends TestCase
   public void testRenew() throws Exception
   {
     Thread.sleep(100);
-    
+
     entry.renew();
 
     assertEquals(false, entry.isExpired());
   }
-  
+
   public void testIsExpiredIfValueIsNull() throws Exception
   {
     entry = new TimedCacheEntry<String>(null, 1);

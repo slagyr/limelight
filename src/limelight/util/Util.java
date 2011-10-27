@@ -18,7 +18,7 @@ public class Util
     else
       return true;
   }
-  
+
   public static Map<String, Object> toMap(Object... args)
   {
     if(args.length % 2 == 1)

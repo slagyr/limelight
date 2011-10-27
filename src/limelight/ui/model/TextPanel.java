@@ -109,7 +109,7 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
   {
     if(textChunks == null)
       return;
-    
+
     for(StyledText chunk : textChunks)
       chunk.teardownStyles();
 

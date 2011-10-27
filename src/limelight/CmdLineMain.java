@@ -47,7 +47,7 @@ public class CmdLineMain
   {
     String commandName = options.get("command");
     if(commandName == null)
-      return new HelpCommand("Command missing");  
+      return new HelpCommand("Command missing");
 
     Class<? extends Command> commandClass = commands.get(commandName);
     if(commandClass == null)

@@ -174,7 +174,7 @@ public class ArgumentsTest
     checkParseError("Missing value for option: a", "-a", "-b");
     checkParseError("Missing value for option: a", "-a", "--b-option");
   }
-  
+
   @Test
   public void parameterWithSwitchOption() throws Exception
   {
@@ -188,12 +188,12 @@ public class ArgumentsTest
     results = args.parse("-a", "blah");
     assertEquals("on", results.get("a-option"));
     assertEquals("blah", results.get("param"));
-    
+
     results = args.parse("--a-option", "blah");
     assertEquals("on", results.get("a-option"));
     assertEquals("blah", results.get("param"));
   }
-  
+
   @Test
   public void parameterWithValueOption() throws Exception
   {
@@ -242,7 +242,7 @@ public class ArgumentsTest
     args.parse("-z", "foo", "bar");
     assertArrayEquals(new String[] {"-z", "foo", "bar"}, args.leftOverArgs());
   }
-  
+
   @Test
   public void remainingArgsWithValueOption() throws Exception
   {
@@ -305,7 +305,7 @@ public class ArgumentsTest
     args.addValueOption("b", "b-option", "value", "Option B");
     final String expected = "  -a, --a-option          Option A\n" +
                             "  -b, --b-option=<value>  Option B\n";
-                                    
+
     assertEquals(expected, args.optionsString());
   }
 

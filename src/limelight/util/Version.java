@@ -6,7 +6,7 @@ package limelight.util;
 public class Version
 {
   public static final Version ZERO = new Version(0, 0, 0);
-  
+
   private int major;
   private int minor;
   private int patch;

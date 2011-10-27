@@ -62,7 +62,7 @@ public class BackgroundPainterTest extends TestCase
   {
     style.setBackgroundColor("blue");
     style.setGradient("on");
-     
+
     painter.paint(graphics, panel);
 
     assertEquals(1, graphics.filledShapes.size());

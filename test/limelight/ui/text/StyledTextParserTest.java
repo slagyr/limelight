@@ -265,7 +265,7 @@ public class StyledTextParserTest extends Assert
   {
     texts = parser.parse("<a text_color=\"blue>I'm blue</a>");
     checkStyledText(texts.get(0), "<a text_color=\"blue>I'm blue</a>");
-    
+
     texts = parser.parse("<a text_color='blue>I'm blue</a>");
     checkStyledText(texts.get(0), "<a text_color='blue>I'm blue</a>");
   }

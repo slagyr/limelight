@@ -33,4 +33,3 @@ def print(value)
   results = scene.find("combo_box_results")
   results.text = "Selected value: #{self.value}"
 end
-  

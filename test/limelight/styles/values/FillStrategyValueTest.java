@@ -26,6 +26,6 @@ public class FillStrategyValueTest extends TestCase
 
   public void testToKeepAntHappy() throws Exception
   {
-    
+
   }
 }

@@ -86,7 +86,7 @@ public class TemplaterTest
     assertEquals("original content", fileSystem.readTextFile("destination/file.txt"));
     assertEquals("\tfile already exists: file.txt", log.messages.get(0));
   }
-  
+
   @Test
   public void creatingFileWithTag() throws Exception
   {

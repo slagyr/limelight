@@ -102,7 +102,7 @@ public class VerboseRepaintManager extends RepaintManager
     System.err.println("limelight.ui.painting.VerboseRepaintManager.getDoubleBufferMaximumSize");
     return super.getDoubleBufferMaximumSize();
   }
-         
+
   public void setDoubleBufferingEnabled(boolean aFlag)
   {
     System.err.println("limelight.ui.painting.VerboseRepaintManager.setDoubleBufferingEnabled");

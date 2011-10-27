@@ -23,7 +23,7 @@ public class MouseWheelEventTest
     panel = new MockPanel();
     event = new MouseWheelEvent(123, new Point(1, 2), 0, MouseWheelEvent.UNIT_SCROLL, 3, 4);
   }
-  
+
   @Test
   public void canGetAttributes() throws Exception
   {
@@ -48,7 +48,7 @@ public class MouseWheelEventTest
     assertEquals(false, event.isVertical());
     assertEquals(true, event.isHorizontal());
   }
-  
+
   @Test
   public void isInheritable() throws Exception
   {

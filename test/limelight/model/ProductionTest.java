@@ -71,7 +71,7 @@ public class ProductionTest
 
     assertEquals(proxy, production.getProxy());
   }
-  
+
   @Test
   public void settingProxySetsAllProxies() throws Exception
   {
@@ -83,7 +83,7 @@ public class ProductionTest
     assertSame(proxy, production.getProxy());
     assertSame(proxy.theater, production.getTheater().getProxy());
   }
-  
+
   @Test
   public void minimumLimelightVersion() throws Exception
   {
@@ -107,7 +107,7 @@ public class ProductionTest
     assertEquals(true, production.closeFinalized);
     assertEquals(false, production.isOpen());
   }
-  
+
     @Test
   public void isLimelightVersionCompatible() throws Exception
   {
@@ -125,7 +125,7 @@ public class ProductionTest
     production.setMinimumLimelightVersion(plusOne);
     assertEquals(false, production.isLimelightVersionCompatible());
   }
-  
+
   @Test
   public void canProceedWithCompatibility() throws Exception
   {
@@ -138,7 +138,7 @@ public class ProductionTest
     studio.shouldProceedWithIncompatibleVersion = true;
     assertEquals(true, production.canProceedWithCompatibility());
   }
-  
+
   @Test
   public void illuminateProduction() throws Exception
   {
@@ -173,7 +173,7 @@ public class ProductionTest
     assertEquals(HashMap.class, production.getStyles().getClass());
     assertEquals(true, production.getStyles().containsKey("limelight_builtin_curtains"));
   }
-  
+
   @Test
   public void openScene() throws Exception
   {
@@ -218,7 +218,7 @@ public class ProductionTest
     assertEquals(true, scene.getStyles().containsKey("limelight_builtin_curtains"));
     assertEquals(true, scene.getStyles().containsKey("newStyle"));
   }
-           
+
   @Test
   public void closeProduction() throws Exception
   {
@@ -233,9 +233,9 @@ public class ProductionTest
 
     assertEquals(true, closingAction.invoked);
     assertEquals(false, production.getTheater().isOpen());
-    assertEquals(true, closedAction.invoked);    
+    assertEquals(true, closedAction.invoked);
   }
-  
+
   @Test
   public void openDefaultScenes() throws Exception
   {

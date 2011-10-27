@@ -91,7 +91,7 @@ public class FileSystemTest
     fs.createTextFile(tmpDir + "/file.txt", "some text");
     assertEquals(true, fs.exists(tmpDir + "/file.txt"));
   }
-  
+
   @Test
   public void canTellFileExistsUsingFileProtocol() throws Exception
   {
@@ -110,7 +110,7 @@ public class FileSystemTest
 
     assertEquals(true, fs.exists(jarPath + "/calculator.java/stages.xml"));
   }
-  
+
   @Test
   public void createDirectory() throws Exception
   {
@@ -167,7 +167,7 @@ public class FileSystemTest
   {
     assertEquals("<stages>", fs.readTextFile(jarPath + "/calculator.java/stages.xml").substring(0, 8));
   }
-  
+
   @Test
   public void fileListing() throws Exception
   {

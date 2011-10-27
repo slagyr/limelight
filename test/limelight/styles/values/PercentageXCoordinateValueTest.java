@@ -16,7 +16,7 @@ public class PercentageXCoordinateValueTest extends TestCase
     dime = new PercentageXCoordinateValue(10.0);
     half = new PercentageXCoordinateValue(50.0);
   }
-  
+
   public void testGetX() throws Exception
   {
     assertEquals(10, dime.getX(0, new Box(0, 0, 100, 100)));
