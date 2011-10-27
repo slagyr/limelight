@@ -16,7 +16,7 @@ describe Limelight::CastingDirector do
     @scene.production = @production
     @casting_director = Limelight::CastingDirector.new()
   end
-  
+
   def make_root(options={})
     @root = Limelight::Prop.new(options)
     @scene << @root
@@ -28,13 +28,13 @@ describe Limelight::CastingDirector do
     end
     @fs.create_text_file("#{location}/players/#{name}.rb", src)
   end
-  
+
   it "includes one player" do
     prepare_player("scene_path", "root")
     make_root(:name => "root")
-    
+
     @casting_director.has_player("root", "scene_path/players").should == true
-    
+
     @casting_director.cast_player(@root, "root", "scene_path/players")
 
     $casted_props.length.should == 1
@@ -51,10 +51,10 @@ describe Limelight::CastingDirector do
     Object.const_defined?("Root").should == false
     @casting_director.cast.const_defined?("Root").should == true
   end
-  
+
   it "doesn't load any players if they don't exist" do
     make_root(:name => "root")
-    
+
     @casting_director.has_player("root", "scene_path/players").should == false
   end
 

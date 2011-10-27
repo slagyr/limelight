@@ -22,7 +22,7 @@ public interface Panel extends Iterable<Panel>
   int getY();
   int getWidth();
   int getHeight();
-  
+
   Point getAbsoluteLocation();
   Box getAbsoluteBounds();
   Panel getOwnerOfPoint(Point point);
@@ -43,7 +43,7 @@ public interface Panel extends Iterable<Panel>
   Layout getDefaultLayout();
 
   ScreenableStyle getStyle();
-  
+
   boolean isFloater();
   void doFloatLayout();
 

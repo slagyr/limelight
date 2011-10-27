@@ -41,7 +41,7 @@ public class SimpleVerticalAlignmentValueTest extends TestCase
     assertEquals(false, top.equals(bottom));
     assertEquals(false, top.equals(null));
   }
-  
+
   public void testStartingY() throws Exception
   {
     Box area = new Box(0, 0, 100, 100);

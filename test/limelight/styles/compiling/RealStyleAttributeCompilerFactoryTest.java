@@ -27,7 +27,7 @@ public class RealStyleAttributeCompilerFactoryTest
     RealStyleAttributeCompilerFactory.install();
     assertEquals(RealStyleAttributeCompilerFactory.class, Context.instance().styleAttributeCompilerFactory.getClass());
   }
-  
+
   @Test
   public void shouldString() throws Exception
   {
@@ -113,7 +113,7 @@ public class RealStyleAttributeCompilerFactoryTest
     assertEquals(NoneableAttributeCompiler.class, compiler.getClass());
     assertEquals(IntegerAttributeCompiler.class, ((NoneableAttributeCompiler)compiler).getTarget().getClass());
   }
-  
+
   @Test
   public void shouldNoneableString() throws Exception
   {
@@ -127,13 +127,13 @@ public class RealStyleAttributeCompilerFactoryTest
   {
     assertEquals(XCoordinateAttributeCompiler.class, factory.compiler("x-coordinate", "blah").getClass());
   }
-  
+
   @Test
   public void shouldYCoordinate() throws Exception
   {
     assertEquals(YCoordinateAttributeCompiler.class, factory.compiler("y-coordinate", "blah").getClass());
   }
-  
+
   @Test
   public void shouldSimpleDimensions() throws Exception
   {

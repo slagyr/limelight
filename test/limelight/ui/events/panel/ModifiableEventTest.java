@@ -38,7 +38,7 @@ public class ModifiableEventTest
     assertEquals(false, event.isCommandDown());
     assertEquals(false, event.isAltDown());
   }
-  
+
   @Test
   public void allModifiersOn() throws Exception
   {

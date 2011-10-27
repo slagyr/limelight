@@ -20,7 +20,7 @@ public class JavaPlayers
     Object player = null;
     if(className != null && className.length() > 0)
     {
-      player = loadPlayer(classLoader, className);    
+      player = loadPlayer(classLoader, className);
       for(Element eventElement : Xml.loadChildElements(element))
       {
         String name = eventElement.getNodeName();
@@ -34,7 +34,7 @@ public class JavaPlayers
   public static void addEventActionFor(String eventPrefix, String eventName, String methodName, Object player, EventHandler eventHandler)
   {
     String eventClassName = eventPrefix + StringUtil.capitalCamalize(eventName.substring(2)) + "Event";
-    
+
     if("limelight.ui.events.panel.CastEvent".equals(eventClassName))
       return;
 

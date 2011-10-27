@@ -113,11 +113,11 @@ public class SingleLineTextModelTest
   public void shouldLeaveRoomOnTheRightSideForTheCaret() throws Exception
   {
     model.setText("one two th");
-    
+
     assertEquals(TextLocation.at(0, 10), model.getCaretLocation());
     assertEquals(-1, model.getXOffset());
   }
-  
+
   @Test
   public void shouldAccountForRightHorizontalAllignment() throws Exception
   {
@@ -133,7 +133,7 @@ public class SingleLineTextModelTest
   {
     panel.getStyle().setVerticalAlignment("bottom");
     model.setText("123");
-    
+
     assertEquals(10, model.getYOffset());
   }
 

@@ -21,7 +21,7 @@ public class Debug
   public static Debug debug1 = new Debug();
   public static Debug debug2 = new Debug();
   private static SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss:SSS");
-  private static DecimalFormat numberFormat = new DecimalFormat("#,##0.000"); 
+  private static DecimalFormat numberFormat = new DecimalFormat("#,##0.000");
   private static long startTime = System.currentTimeMillis();
 
   private final NanoTimer interval;
@@ -100,7 +100,7 @@ public class Debug
   {
     if(image == null)
       return;
-    
+
     File file = new File("/tmp/" + prefix + System.nanoTime() + ".png");
     try
     {

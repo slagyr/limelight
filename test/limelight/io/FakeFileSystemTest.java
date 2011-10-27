@@ -23,7 +23,7 @@ public class FakeFileSystemTest
   {
     assertEquals("/", fs.join("/", "/"));
   }
-  
+
   @Test
   public void onlyRootExistsByDefault() throws Exception
   {
@@ -42,7 +42,7 @@ public class FakeFileSystemTest
     assertEquals(true, fs.exists("/etc/tmp/test"));
     assertEquals(true, fs.isDirectory("/etc/tmp/test"));
   }
-  
+
   @Test
   public void creatingFileWithString() throws Exception
   {

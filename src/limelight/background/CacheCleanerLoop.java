@@ -13,7 +13,7 @@ public class CacheCleanerLoop extends IdleThreadLoop
   }
 
   protected void execute()
-  {   
+  {
     if(Context.instance().bufferedImageCache != null)
       Context.instance().bufferedImageCache.clean();
     if(Context.instance().bufferedImagePool != null)

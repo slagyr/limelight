@@ -43,7 +43,7 @@ public class EventHandlerTest
 
     assertEquals(0, handler.getActions(SimpleEvent.class).size());
   }
-  
+
   @Test
   public void dispatchingEmptyEvent() throws Exception
   {

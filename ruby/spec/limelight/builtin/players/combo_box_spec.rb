@@ -13,15 +13,15 @@ describe Limelight::Builtin::Players::ComboBox do
     @prop = Limelight::Prop.new(:scene => @scene)
     Limelight::Player.cast(Limelight::Builtin::Players::ComboBox, @prop)
   end
-  
+
   it "should have a ComboBox" do
     @prop.peer.children[0].class.should == Java::limelight.ui.model.inputs.ComboBoxPanel
   end
-  
+
   it "should have settable value" do
     @prop.choices = ["1", "2", "3"]
     @prop.value.should == "1"
-    
+
     @prop.value = "3"
     @prop.value.should == "3"
   end

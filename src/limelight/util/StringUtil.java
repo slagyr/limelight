@@ -123,7 +123,7 @@ public class StringUtil
 
     value = gsub(value, underscoreSeparatorRegex, new Gsuber(){
       public String replacementFor(Matcher matcher)
-      {        
+      {
         return "_" + matcher.group().substring(1).toLowerCase();
       }
     });

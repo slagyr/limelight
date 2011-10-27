@@ -28,7 +28,7 @@ public class RadioButtonPanelTest
     RadioButtonGroup group = new RadioButtonGroup();
     group.add(panel);
   }
-  
+
   @Test
   public void isButton() throws Exception
   {

@@ -27,7 +27,7 @@ public class UnpackCommandTest
   {
     assertNotNull(command.getArguments());
   }
-  
+
   @Test
   public void unpacking() throws Exception
   {

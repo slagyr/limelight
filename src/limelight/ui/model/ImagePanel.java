@@ -124,7 +124,7 @@ public class ImagePanel extends PanelBase
   }
 
   public Image getImage()
-  {    
+  {
     if(image == null && imageFile != null && imageFile.trim().length() > 0)
     {
       try
@@ -192,7 +192,7 @@ public class ImagePanel extends PanelBase
     ImageInputStream imageInput = new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
     setImage(ImageIO.read(imageInput));
     imageFile = "<data>";
-    
+
     markAsNeedingLayout();
     getParent().markAsNeedingLayout();
   }

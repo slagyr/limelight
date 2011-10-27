@@ -186,7 +186,7 @@ public class OptionsTest
     Options.apply(subject, Util.toMap("primitiveBoolean", "ON"));
     assertEquals(true, subject.primitiveBoolean);
   }
-  
+
   @Test
   public void canCoerceStringToBooleanFalse() throws Exception
   {
@@ -229,7 +229,7 @@ public class OptionsTest
 
   @Test
   public void canCoerceStringToInts() throws Exception
-  { 
+  {
     Options.apply(subject, Util.toMap("primitiveInt", "42"));
     assertEquals(42, subject.primitiveInt);
 
@@ -256,7 +256,7 @@ public class OptionsTest
     Options.apply(subject, Util.toMap("boxedFloat", "3.14"));
     assertEquals(new Float(3.14), subject.boxedFloat, 0.01);
   }
-  
+
   @Test
   public void canCoerceStringToDouble() throws Exception
   {

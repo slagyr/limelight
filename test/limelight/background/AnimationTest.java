@@ -71,7 +71,7 @@ public class AnimationTest
 
     Thread.sleep(25);
     animation.update();
-    
+
     assertEquals(true, animation.updates >= 3);
   }
 
@@ -97,7 +97,7 @@ public class AnimationTest
     animation.stop();
     assertEquals(0, loop.getAnimations().size());
   }
-       
+
   @Test
   public void tolerance() throws Exception
   {
@@ -118,7 +118,7 @@ public class AnimationTest
     animation.getTimer().moveMarkBackInTime(oneSecond);
     assertEquals(false, animation.isReady());
     animation.getTimer().moveMarkBackInTime(oneSecond);
-    assertEquals(true, animation.isReady());          
+    assertEquals(true, animation.isReady());
   }
 
   @Test
@@ -127,12 +127,12 @@ public class AnimationTest
     animation.setUpdatesPerSecond(0);
     assertEquals(0, animation.getUpdatesPerSecond(), 0.0001);
     assertEquals(0, loop.getAnimations().size());
-    
+
     animation.start();
     assertEquals(false, animation.isRunning());
     assertEquals(0, loop.getAnimations().size());
   }
-  
+
   @Test
   public void settingUpdatesPerSecondToNegativeValue() throws Exception
   {
@@ -150,7 +150,7 @@ public class AnimationTest
       {
         throw new RuntimeException("blah");
       }
-    }; 
+    };
     animation.start();
     loop.start();
     Thread.sleep(50);

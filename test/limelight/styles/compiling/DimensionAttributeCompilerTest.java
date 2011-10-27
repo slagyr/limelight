@@ -38,7 +38,7 @@ public class DimensionAttributeCompilerTest
     assertEquals(50.0, ((PercentageDimensionValue)compiler.compile("50%")).getPercentage(), 0.01);
     assertEquals(3.14, ((PercentageDimensionValue)compiler.compile("3.14%")).getPercentage(), 0.01);
   }
-  
+
   @Test
   public void clojureKeywordValues() throws Exception
   {

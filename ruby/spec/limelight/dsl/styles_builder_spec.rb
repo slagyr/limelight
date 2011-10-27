@@ -178,7 +178,7 @@ describe Limelight::DSL::StylesBuilder do
     Limelight.build_styles(:styles => styles) do
       one { width 100; height 200 }
     end
-    
+
     styles["one"].width.should == "100"
     styles["one"].height.should == "200"
   end

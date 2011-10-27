@@ -26,7 +26,7 @@ public class FontStyleAttributeCompilerTest
   {
     assertEquals(true, ((SimpleFontStyleValue) compiler.compile("bold")).isBold());
   }
-  
+
   @Test
   public void valuesWithColon() throws Exception
   {

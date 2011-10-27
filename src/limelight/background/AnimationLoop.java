@@ -78,9 +78,9 @@ public class AnimationLoop extends IdleThreadLoop
     {
       buffer.addAll(animations);
     }
-    
+
     for(Animation animation : buffer)
-    {  
+    {
       if(animation.isReady())
         animation.update();
     }

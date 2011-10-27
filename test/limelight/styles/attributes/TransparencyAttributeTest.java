@@ -21,7 +21,7 @@ public class TransparencyAttributeTest extends AbstractStyleAttributeTestBase
     assertEquals("percentage", attribute.getCompiler().type);
     assertEquals("0%", attribute.getDefaultValue().toString());
   }
-  
+
   @Test
   public void shouldApplyChanges() throws Exception
   {

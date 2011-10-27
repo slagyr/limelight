@@ -13,7 +13,7 @@ public class RightBorderWidthAttribute extends StyleAttribute
   {
     super("Right Border Width", "pixels", "0");
   }
-  
+
   @Override
   public void applyChange(ChangeablePanel panel, StyleValue value)
   {

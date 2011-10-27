@@ -24,7 +24,7 @@ public class TextPanelSelectionPainterTest
   public TextModel model;
   public MockTextContainer container;
   public MockGraphics graphics;
-  
+
   @Before
   public void setUp()
   {

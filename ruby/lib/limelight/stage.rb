@@ -54,7 +54,7 @@ module Limelight
       return @peer.title
     end
 
-    # Sets the title that is displayed at the top of the window that this stage represents. 
+    # Sets the title that is displayed at the top of the window that this stage represents.
     #
     def title=(value)
       @peer.title = value
@@ -175,7 +175,7 @@ module Limelight
 
     # When true, the stage will remain on top of all other windows.
     #
-    def always_on_top=(value)                                                                              
+    def always_on_top=(value)
       @peer.always_on_top = value
     end
 
@@ -216,7 +216,7 @@ module Limelight
     def theater
       return @peer.theater.proxy
     end
-    
+
     # Opens the stage. Opened stages are visible on the screen.
     #
     def open
@@ -243,7 +243,7 @@ module Limelight
 
     # Called when the user or system would like to close the stage.  The stage will return true, allowing it to be
     # closed, unless the current_scene defines the allow_close? method in which case the decision it left up to the
-    # current_scene.  
+    # current_scene.
     #
     def should_allow_close
       return @peer.should_all_close

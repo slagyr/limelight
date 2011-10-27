@@ -96,7 +96,7 @@ public class StudioTest
 
     new ProductionClosedEvent().dispatch(production);
 
-    assertEquals(true, context.wasShutdown);    
+    assertEquals(true, context.wasShutdown);
   }
 
   @Test
@@ -138,7 +138,7 @@ public class StudioTest
 
     studio.shutdown();
     studio.shutdownThread.join();
-    
+
     assertEquals(true, production.wasAskedIfAllowedToShutdown);
     assertEquals(true, production.closeFinalized);
     assertEquals(true, context.wasShutdown);
@@ -176,7 +176,7 @@ public class StudioTest
     mockPacker.unpackResult = "blah";
 
     String result = studio.processProductionPath("/dir/production.llp");
-    
+
     assertEquals("blah", result);
     assertEquals("/dir/production.llp", mockPacker.unpackPackagePath);
     assertEquals(Data.productionsDir(), new File(mockPacker.unpackDestination).getParent());

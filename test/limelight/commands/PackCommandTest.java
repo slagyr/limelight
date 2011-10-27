@@ -36,7 +36,7 @@ public class PackCommandTest
     assertEquals("/path/to/blah", packer.packProductionPath);
     assertEquals("blah", packer.packLlpName);
   }
-  
+
   @Test
   public void packWithOptionalName() throws Exception
   {

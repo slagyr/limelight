@@ -58,7 +58,7 @@ module Limelight
 
     # Returns self.  A Scene is it's own scene.
     #
-    def scene 
+    def scene
       self
     end
 
@@ -86,7 +86,7 @@ module Limelight
       @fs.path_to(path, "styles.rb")
     end
 
-    # Creates the menu bar for the Scene 
+    # Creates the menu bar for the Scene
     #
     def menu_bar
       DSL::MenuBar.build(self) do
@@ -110,7 +110,7 @@ module Limelight
       production.open_scene(scene_name, stage)
     end
 
-    # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene. 
+    # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene.
     #
     def find(id)
       peer_result = @peer.find(id.to_s)

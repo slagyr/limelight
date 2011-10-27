@@ -13,4 +13,3 @@ end
 on_mouse_exited do
   @animation.stop
 end
-  

@@ -49,7 +49,7 @@ public class StageKeyListenerTest
   {
     assertEquals(root, listener.getFocusedPanel());
   }
-  
+
   @Test
   public void changeFocus() throws Exception
   {
@@ -60,7 +60,7 @@ public class StageKeyListenerTest
     assertEquals(panel, listener.getFocusedPanel());
     assertEquals(true, action.invoked);
   }
-  
+
   @Test
   public void focusIsLostWhenChangingFocus() throws Exception
   {
@@ -75,7 +75,7 @@ public class StageKeyListenerTest
     assertEquals(true, action.invoked);
     assertEquals(true, action2.invoked);
   }
-  
+
   @Test
   public void focusingOnNullDoesntChangeFocus() throws Exception
   {
@@ -86,7 +86,7 @@ public class StageKeyListenerTest
     assertEquals(panel, listener.getFocusedPanel());
     assertEquals(false, action.invoked);
   }
-  
+
   @Test
   public void focuedPanelReceivesTypedKeyEvents() throws Exception
   {
@@ -111,7 +111,7 @@ public class StageKeyListenerTest
     assertSame(panel, keyEvent.getSource());
     assertEquals(limelight.ui.events.panel.KeyEvent.KEY_A, keyEvent.getKeyCode());
   }
-  
+
   @Test
   public void focuedPanelReceivesReleaseKeyEvents() throws Exception
   {

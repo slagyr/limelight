@@ -21,7 +21,7 @@ public class TempDirectoryTest extends TestCase
 
   public void tearDown() throws Exception
   {
-    tempDirectory.cleanup(); 
+    tempDirectory.cleanup();
   }
 
   public void testLocations() throws Exception
@@ -31,7 +31,7 @@ public class TempDirectoryTest extends TestCase
     assertEquals(limelightTempDir, tempDirectory.getRoot());
     assertEquals(true, fs.exists(tempDirectory.getRoot()));
   }
-  
+
   public void testCleanup() throws Exception
   {
     fs.createDirectory(fs.join(tempDirectory.getRoot(), "blah"));
@@ -54,7 +54,7 @@ public class TempDirectoryTest extends TestCase
     assertEquals(true, fs.exists(newDirectory));
     assertEquals(tempDirectory.getRoot(), fs.parentPath(newDirectory));
   }
-  
+
   public void testMultipleNewTempDirs() throws Exception
   {
     String temp1 = tempDirectory.createNewDirectory();

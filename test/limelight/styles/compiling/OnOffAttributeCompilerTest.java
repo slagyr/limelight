@@ -43,7 +43,7 @@ public class OnOffAttributeCompilerTest
     assertEquals(false, ((SimpleOnOffValue) compiler.compile("false")).isOn());
     assertEquals(false, ((SimpleOnOffValue) compiler.compile("FALSE")).isOn());
   }
-  
+
   @Test
   public void validValuesWithColons() throws Exception
   {
