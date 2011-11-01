@@ -59,7 +59,7 @@ public class TextPanelCaretPainterTest
 
     assertEquals(false, graphics.filledShapes.isEmpty());
   }
-  
+
   @Test
   public void willNotPaintIfTheModelHasASelection()
   {

@@ -10,7 +10,7 @@ module Production
 #  end
 #
 #  # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"
-#  # If the version of limelight used to open this production is less than the minimum, 
+#  # If the version of limelight used to open this production is less than the minimum,
 #  # an error will be displayed (starting with version 0.4.0).
 #  #
 #  def minimum_limelight_version

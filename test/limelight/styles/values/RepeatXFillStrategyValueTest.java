@@ -59,7 +59,7 @@ public class RepeatXFillStrategyValueTest extends FillStrategyValueTest
     checkImage(graphics.drawnImages.get(0), image, 20, 20);
     checkImage(graphics.drawnImages.get(1), image, 50, 20);
   }
-  
+
   public void testFillAligned() throws Exception
   {
     Image image = new MockImage(35, 35);

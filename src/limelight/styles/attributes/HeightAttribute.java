@@ -13,7 +13,7 @@ public class HeightAttribute extends StyleAttribute
   {
     super("Height", "dimension", "auto");
   }
-  
+
   @Override
   public void applyChange(ChangeablePanel panel, StyleValue value)
   {

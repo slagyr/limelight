@@ -44,7 +44,7 @@ public class PanelPainterLoopTest extends Assert
   {
     assertEquals(null, loop.getActiveRoot());
   }
-  
+
   @Test
   public void getRootWithActiveFrame() throws Exception
   {
@@ -52,19 +52,19 @@ public class PanelPainterLoopTest extends Assert
 
     assertEquals(activeRoot, loop.getActiveRoot());
   }
-  
+
   @Test
   public void idleWhenThereIsNoRoot() throws Exception
   {
     assertEquals(true, loop.shouldBeIdle());
   }
-  
+
   @Test
   public void isIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
   {
     activeRoot.getAndClearDirtyRegions(new ArrayList<Rectangle>());
     activeRoot.getAndClearPanelsNeedingLayout(new ArrayList<limelight.ui.Panel>());
-    
+
     frameManager.focusedFrame = activeFrame;
 
     assertEquals(false, activeRoot.hasPanelsNeedingLayout());
@@ -89,7 +89,7 @@ public class PanelPainterLoopTest extends Assert
 
     assertEquals(false, loop.shouldBeIdle());
   }
-  
+
   @Test
   public void doesLayouts() throws Exception
   {

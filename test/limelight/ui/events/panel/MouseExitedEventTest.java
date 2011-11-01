@@ -23,7 +23,7 @@ public class MouseExitedEventTest
     panel = new MockPanel();
     event = new MouseExitedEvent(0, new Point(0, 0), 0);
   }
-  
+
   @Test
   public void isNotInheritable() throws Exception
   {

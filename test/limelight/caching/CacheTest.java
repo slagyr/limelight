@@ -53,13 +53,13 @@ public class CacheTest extends TestCase
 
   public void testRemovesNullEntriesOnRetrieval() throws Exception
   {
-    cache.cache("1", null);  
+    cache.cache("1", null);
     assertEquals(1, cache.getMap().size());
 
     cache.retrieve("1");
     assertEquals(0, cache.getMap().size());
   }
-  
+
   public void testExplicitlyExpiringAnEntry() throws Exception
   {
     cache.cache("1", "One");

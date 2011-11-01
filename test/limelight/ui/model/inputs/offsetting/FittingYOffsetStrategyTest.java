@@ -28,7 +28,7 @@ public class FittingYOffsetStrategyTest
     model = new MultiLineTextModel(textContainer);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }
-  
+
   @Test
   public void shouldOffsetToAllowRoomForCursor() throws Exception
   {
@@ -39,7 +39,7 @@ public class FittingYOffsetStrategyTest
     int offset = YOffsetStrategy.FITTING.calculateYOffset(model);
     assertEquals(-6, offset);
   }
-  
+
   @Test
   public void shouldNotGoNutsWhenTextIsBiggetThanHeight() throws Exception
   {
@@ -50,7 +50,7 @@ public class FittingYOffsetStrategyTest
 
     assertEquals(-2, YOffsetStrategy.FITTING.calculateYOffset(model));
   }
-  
+
   @Test
   public void shouldNotHaveOffsetGreaterThen0() throws Exception
   {

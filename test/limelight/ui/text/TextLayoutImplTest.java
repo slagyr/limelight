@@ -40,7 +40,7 @@ public class TextLayoutImplTest
     assertEquals(0, line.getIndexAt(-1));
     assertEquals(0, line.getIndexAt(-10));
   }
-  
+
   @Test
   public void shouldKnowWhenTextDoesntEndInNewline() throws Exception
   {
@@ -90,7 +90,7 @@ public class TextLayoutImplTest
   }
 
 // MDM - The actual measurements of text can vary at runtime causing these tests to occasionally fail.
-  
+
 //  @Test
 //  public void shouldMeasureText() throws Exception
 //  {

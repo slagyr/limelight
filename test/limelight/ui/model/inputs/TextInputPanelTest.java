@@ -73,7 +73,7 @@ public class TextInputPanelTest
     assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
     assertEquals(true, root.dirtyRegions.contains(parent.getBounds()));
   }
-  
+
   @Test
   public void shouldRequireLayoutAfterConsumableSizeChanges() throws Exception
   {
@@ -83,10 +83,10 @@ public class TextInputPanelTest
     panel.resetLayout();
 
     panel.consumableAreaChanged();
-    
+
     assertEquals(true, panel.needsLayout());
   }
-  
+
   @Test
   public void typingACharWillInsertIt() throws Exception
   {
@@ -106,7 +106,7 @@ public class TextInputPanelTest
 
     assertEquals("Some Text", model.getText());
   }
-  
+
   @Test
   public void typedCharsWithControlModifierDoNothing() throws Exception
   {
@@ -128,7 +128,7 @@ public class TextInputPanelTest
     assertEquals(1, root.dirtyRegions.size());
     assertEquals(panel.getBounds(), root.dirtyRegions.get(0));
   }
-  
+
   @Test
   public void backspaceIsNotTyped() throws Exception
   {
@@ -151,10 +151,10 @@ public class TextInputPanelTest
   public void consumedMousePressEventsDoNothing() throws Exception
   {
     new MousePressedEvent(0, new Point(0, 0), 3).consumed().dispatch(panel);
-    
+
     assertEquals(false, model.hasSelection());
   }
-  
+
   @Test
   public void consumedMouseDragEventsDoNothing() throws Exception
   {
@@ -168,12 +168,12 @@ public class TextInputPanelTest
   public void consumedFocusGainedEventsShouldNotStartTheCaret() throws Exception
   {
     assertEquals(false, panel.isCaretBlinking());
-    
+
     new FocusGainedEvent().consumed().dispatch(panel);
 
     assertEquals(false, panel.isCaretBlinking());
   }
-  
+
   @Test
   public void consumedFocusLostEventsShouldNotStopTheCaret() throws Exception
   {
@@ -218,7 +218,7 @@ public class TextInputPanelTest
     panel.setText("bar");
     assertEquals(true, action.invoked);
   }
-  
+
   @Test
   public void changesToModelAreReportedOnFocusLost() throws Exception
   {
@@ -232,7 +232,7 @@ public class TextInputPanelTest
 
     assertEquals(true, action.invoked);
   }
-  
+
   @Test
   public void caretAnimationIsStoppedWhenPanelIsDisowned() throws Exception
   {

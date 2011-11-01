@@ -50,7 +50,7 @@ public class Options
         }
         catch(IllegalArgumentException e)
         {
-          // Do Nothing  
+          // Do Nothing
         }
         catch(IllegalAccessException e)
         {

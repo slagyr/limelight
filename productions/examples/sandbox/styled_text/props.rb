@@ -42,4 +42,4 @@ arena :vertical_scrollbar => :on, :height => :greedy do
     styled_text :text => "Here is some text <padded>that has lots of padding</padded>. Tada!"
     styled_text :text => "Here is some text <background_image>with an image background</background_image>. Tada!"
   end
-end                                                                                                                                                                            
+end

@@ -7,7 +7,7 @@ public abstract class Event
 {
   private boolean consumed;
   protected Object subject;
-  
+
   public Event()
   {
   }

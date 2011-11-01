@@ -97,7 +97,7 @@ public abstract class IdleThreadLoop
 
   protected void idle()
   {
-    isIdle = true;   
+    isIdle = true;
     synchronized(lock)
     {
       try

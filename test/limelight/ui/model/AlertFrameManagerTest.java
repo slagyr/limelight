@@ -88,7 +88,7 @@ public class AlertFrameManagerTest
     manager.windowClosed(new HackedWindowEvent(frame));
     assertEquals(false, context.shutdownAttempted);
   }
-  
+
   @Test
   public void shouldInvokeShutdownWhenOnlyNonVitalFramesRemain() throws Exception
   {
@@ -212,7 +212,7 @@ public class AlertFrameManagerTest
 
     assertEquals(true, action.invoked);
   }
-  
+
   @Test
   public void cantDeactivateFramesThatAreNotActive() throws Exception
   {
@@ -253,7 +253,7 @@ public class AlertFrameManagerTest
 
     assertEquals(true, action.invoked);
   }
-  
+
   @Test
   public void stageNotifiedWhenFocusLost() throws Exception
   {

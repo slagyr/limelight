@@ -56,7 +56,7 @@ public abstract class PanelEvent extends Event
   {
     if(source == null)
       setSource(panel);
-    
+
     Panel previousRecipient = recipient;
     setRecipient(panel);
     final PanelEventHandler eventHandler = recipient.getEventHandler();

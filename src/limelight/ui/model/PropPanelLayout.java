@@ -44,7 +44,7 @@ public class PropPanelLayout implements Layout
       distributeGreediness(panel, rows);
       doPostLayoutOnChildren(panel);
       calculateConsumedDimentions(rows, consumedDimensions);
-      collapseAutoDimensions(panel, consumedDimensions);      
+      collapseAutoDimensions(panel, consumedDimensions);
       layoutRows(panel, consumedDimensions, rows);
     }
     layoutScrollBars(panel, consumedDimensions);
@@ -134,7 +134,7 @@ public class PropPanelLayout implements Layout
     {
       vertical.setHeight(area.height);
       vertical.setLocation(area.right() + 1, area.y);
-      vertical.configure(area.height, consumedDimensions.height);      
+      vertical.configure(area.height, consumedDimensions.height);
     }
     if(horizontal != null)
     {
@@ -188,7 +188,7 @@ public class PropPanelLayout implements Layout
     for(Panel child : panel.getChildren())
     {
       if(child.needsLayout())
-      {       
+      {
         child.getDefaultLayout().doLayout(child, false);
       }
     }

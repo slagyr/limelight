@@ -30,7 +30,7 @@ example_link {
   alignment :center
   text_color :blue
   border_color :blue
-  border_width 1  
+  border_width 1
   margin 3
   hover {
     text_color :white

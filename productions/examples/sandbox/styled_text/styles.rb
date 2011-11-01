@@ -5,7 +5,7 @@ text_section {
 }
 
 section_header {
-  width "100%" 
+  width "100%"
   background_color :light_blue
   secondary_background_color :white
   gradient :on
@@ -51,7 +51,7 @@ fox {
   font_size 20
 }
 
-quick {     
+quick {
   font_face "Handwriting - Dakota"
   text_color "#29d9f9"
   font_size 20

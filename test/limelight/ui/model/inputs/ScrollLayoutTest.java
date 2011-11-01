@@ -32,7 +32,7 @@ public class ScrollLayoutTest extends TestCase
     ScrollLayout verticalLayout = new ScrollLayout(parent.getVerticalScrollbar());
     verticalLayout.doLayout(parent);
     assertEquals(-1, panel.getY());
-                                                                                            
+
     parent.getHorizontalScrollbar().setValue(2);
     ScrollLayout horizontalLayout = new ScrollLayout(parent.getHorizontalScrollbar());
     horizontalLayout.doLayout(parent);

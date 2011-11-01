@@ -34,7 +34,7 @@ public class MouseEventTest
     event = new TestableMouseEvent(321, location, 1);
     event.setSource(panel);
   }
-  
+
   @Test
   public void constructorFields() throws Exception
   {
@@ -42,7 +42,7 @@ public class MouseEventTest
     assertEquals(location, event.getAbsoluteLocation());
     assertEquals(1, event.getClickCount());
   }
-  
+
   @Test
   public void locationIsRelativeToPanel() throws Exception
   {
@@ -53,7 +53,7 @@ public class MouseEventTest
     assertEquals(100, relativeLocation.x);
     assertEquals(400, relativeLocation.y);
   }
-  
+
   @Test
   public void locationIsRelativeToChangedPanel() throws Exception
   {

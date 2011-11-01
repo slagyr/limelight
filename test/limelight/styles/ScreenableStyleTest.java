@@ -95,7 +95,7 @@ public class ScreenableStyleTest extends TestCase
     }
     catch(Exception e)
     {
-      assertEquals("Screen already applied", e.getMessage());  
+      assertEquals("Screen already applied", e.getMessage());
     }
   }
 

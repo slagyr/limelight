@@ -33,7 +33,7 @@ class ImagePanelLayout implements Layout
       handleRotation(panel);
       handleAutoDimensions(panel, size);
     }
-  
+
     panel.setSize(size.width, size.height);
   }
 

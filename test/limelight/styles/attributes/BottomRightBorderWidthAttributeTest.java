@@ -21,7 +21,7 @@ public class BottomRightBorderWidthAttributeTest extends AbstractStyleAttributeT
     assertEquals("pixels", attribute.getCompiler().type);
     assertEquals("0", attribute.getDefaultValue().toString());
   }
-  
+
   @Test
   public void shouldStyleChanged() throws Exception
   {

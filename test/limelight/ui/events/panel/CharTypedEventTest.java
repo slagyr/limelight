@@ -21,7 +21,7 @@ public class CharTypedEventTest
     panel = new MockPanel();
     event = new CharTypedEvent(123, 'a');
   }
-  
+
   @Test
   public void canGetAttributes() throws Exception
   {

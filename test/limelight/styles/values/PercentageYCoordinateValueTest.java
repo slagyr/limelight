@@ -16,7 +16,7 @@ public class PercentageYCoordinateValueTest extends TestCase
     dime = new PercentageYCoordinateValue(10.0);
     half = new PercentageYCoordinateValue(50.0);
   }
-  
+
   public void testGetY() throws Exception
   {
     assertEquals(10, dime.getY(0, new Box(0, 0, 100, 100)));

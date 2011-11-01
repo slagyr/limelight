@@ -60,7 +60,7 @@ public class ContextTest extends TestCase
 
     assertEquals(false, context.os.isInKioskMode());
   }
-  
+
   public void testAttemptShutdown() throws Exception
   {
     studio.allowShutdown = false;

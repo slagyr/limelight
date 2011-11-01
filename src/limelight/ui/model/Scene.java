@@ -55,7 +55,7 @@ public interface Scene extends Panel, ParentPanel
   boolean isVisible();
 
   PropProxy getProxy();
-  
+
   CastingDirector getCastingDirector();
 
   String getAbsoluteName();

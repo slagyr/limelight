@@ -24,7 +24,7 @@ public class ScrollRepeaterTest
 
     Context.instance().animationLoop = new AnimationLoop();
   }
-  
+
   @Test
   public void updateIncrementsScrollBar() throws Exception
   {
@@ -36,7 +36,7 @@ public class ScrollRepeaterTest
     repeater.doUpdate();
     assertEquals(2, scrollBar.getValue());
   }
-  
+
   @Test
   public void increasesUpdatesAfterFirstUpdate() throws Exception
   {
@@ -46,7 +46,7 @@ public class ScrollRepeaterTest
 
     assertEquals(20, repeater.getUpdatesPerSecond(), 0.1);
   }
-  
+
   @Test
   public void resetUpdatesPErSecond() throws Exception
   {
@@ -60,11 +60,11 @@ public class ScrollRepeaterTest
   public void acceleratesAfterSeveralUpdates() throws Exception
   {
     repeater.setScrollDelta(100);
-    
+
     repeater.doUpdate();
     for(int i = 0; i < 10; i++)
       repeater.doUpdate();
-    
+
     assertEquals(125, repeater.getScrollDelta());
   }
 
@@ -76,7 +76,7 @@ public class ScrollRepeaterTest
     repeater.doUpdate();
     for(int i = 0; i < 20; i++)
       repeater.doUpdate();
-    
+
     assertEquals(156, repeater.getScrollDelta());
   }
 
@@ -91,7 +91,7 @@ public class ScrollRepeaterTest
 
     assertEquals(500, repeater.getScrollDelta());
   }
-  
+
   @Test
   public void addingRepeatConditionPreventsScrolling() throws Exception
   {

@@ -26,7 +26,7 @@ public class SimplePercentageValue implements PercentageValue
 
   public String toString()
   {
-    return format.format(percentage) + "%"; 
+    return format.format(percentage) + "%";
   }
 
   public boolean equals(Object obj)

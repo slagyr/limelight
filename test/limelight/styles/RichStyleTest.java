@@ -33,7 +33,7 @@ public class RichStyleTest extends TestCase
     for(StyleAttribute attribute : Style.STYLE_LIST)
       assertEquals(attribute.defaultValue, style.getCompiled(attribute));
   }
-  
+
   public void testCanSetNewValues() throws Exception
   {
     style.setBackgroundColor("blue");
@@ -67,9 +67,9 @@ public class RichStyleTest extends TestCase
   {
 	  style.addExtension(style2);
 	  style.addExtension(style3);
-	
+
 	  style.clearExtensions();
-	
+
 	  assertEquals(false, style.hasExtension(style2));
 	  assertEquals(false, style.hasExtension(style3));
   }

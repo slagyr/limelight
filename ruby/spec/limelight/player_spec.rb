@@ -102,7 +102,7 @@ describe Limelight::Player do
       $RECIPIENT.should == @prop
     end
   end
-  
+
   it "handles on_scene_opened actions" do
     scene = Limelight::Scene.new
     @player.module_eval "on_scene_opened { $RECIPIENT = self }"

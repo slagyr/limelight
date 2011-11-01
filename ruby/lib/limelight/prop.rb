@@ -160,7 +160,7 @@ module Limelight
     end
 
     def children
-      @peer.child_prop_panels.map { |child| child.proxy } 
+      @peer.child_prop_panels.map { |child| child.proxy }
     end
 
     # Returns the scene to which this prop belongs to.
@@ -292,7 +292,7 @@ module Limelight
       @peer.event_handler.add(Java::limelight.ui.events.panel.MouseReleasedEvent, action)
     end
 
-    def on_mouse_clicked(& action)  
+    def on_mouse_clicked(& action)
       @peer.event_handler.add(Java::limelight.ui.events.panel.MouseClickedEvent, action)
     end
 

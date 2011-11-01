@@ -51,7 +51,7 @@ public class CmdLineMainTest
     assertEquals("d", option.getShortName());
     assertEquals(false, option.requiresValue());
   }
-  
+
   @Test
   public void hasCommandParameter() throws Exception
   {
@@ -76,7 +76,7 @@ public class CmdLineMainTest
     assertEquals(HelpCommand.class, main.getCommand().getClass());
     assertEquals(true, main.getCommand().executed());
   }
-  
+
   @Test
   public void unrecognizedCommand() throws Exception
   {

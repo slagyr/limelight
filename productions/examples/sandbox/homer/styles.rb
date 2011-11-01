@@ -7,7 +7,7 @@ beach {
 	alignment :center
 	background_image "images/beach.jpg"
 }
-	
+
 homer {
 	width 320
 	height 452

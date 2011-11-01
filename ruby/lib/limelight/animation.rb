@@ -1,6 +1,6 @@
 #- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 #- Limelight and all included source files are distributed under terms of the MIT License.
-                    
+
 module Limelight
 
   # An object to manage a seqeunce of changes, assumedly to a prop.  The Animation object is constructed with options

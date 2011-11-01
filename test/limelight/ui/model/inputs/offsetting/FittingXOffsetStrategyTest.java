@@ -50,7 +50,7 @@ public class FittingXOffsetStrategyTest
 
     assertEquals(-101, strategy.calculateXOffset(model));
   }
-  
+
   @Test
   public void shouldMoveOneCharToTheLeft() throws Exception
   {
