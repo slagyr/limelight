@@ -7,18 +7,16 @@ import java.util.logging.*;
 
 public class Log
 {
-  public static Level defaultLevel = Level.WARNING;
-  public static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).getParent();
+  public static final Level DEBUG = new CustomLogLevel("DEBUG", Level.CONFIG.intValue() - 50);
+  public static final Level defaultLevel = Level.WARNING;
+  public static final Handler stderrHandler = new ConsoleHandler();
+  public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).getParent();
 
   static {
-    for(Handler h : logger.getHandlers())
-      logger.removeHandler(h);
-
-    logger.setLevel(defaultLevel);
-    ConsoleHandler handler = new ConsoleHandler();
-    handler.setLevel(defaultLevel);
-    handler.setFormatter(new LimelightFormatter());
-    logger.addHandler(handler);
+    stderrHandler.setFormatter(new LimelightFormatter());
+    silence();
+    setLevel(defaultLevel);
+    stderrOn();
   }
 
   private static class LimelightFormatter extends Formatter
@@ -34,9 +32,34 @@ public class Log
     }
   }
 
-  public static void setLevel(Level defaultLevel)
+  public static void silence()
   {
-    logger.setLevel(defaultLevel);
+    for(Handler h : logger.getHandlers())
+      logger.removeHandler(h);
+  }
+
+  public static void stderrOn()
+  {
+    stderrHandler.setLevel(logger.getLevel());
+    logger.addHandler(stderrHandler);
+  }
+
+  public static void setLevel(Level level)
+  {
+    logger.setLevel(level);
+    for(Handler handler : logger.getHandlers())
+      handler.setLevel(level);
+    info("Log - level set to: " + level.getName());
+  }
+
+  public static void setLevel(String levelName)
+  {
+    if(levelName == null)
+      setLevel(Level.OFF);
+    else if("DEBUG".equals(levelName.toUpperCase()))
+      setLevel(DEBUG);
+    else
+      setLevel(Level.parse(levelName.toUpperCase()));
   }
 
   public static void off()
@@ -56,7 +79,12 @@ public class Log
 
   public static void debugOn()
   {
-    setLevel(Level.CONFIG);
+    setLevel(DEBUG);
+  }
+
+  public static String getLevelName()
+  {
+    return logger.getLevel().getName();
   }
 
   public static void severe(String message)
@@ -67,6 +95,11 @@ public class Log
   public static void warn(String message)
   {
     logger.warning(message);
+  }
+
+  public static void warn(String message, Throwable e)
+  {
+    logger.log(Level.WARNING, message, e);
   }
 
   public static void info(String message)
@@ -81,7 +114,7 @@ public class Log
 
   public static void debug(String message)
   {
-    logger.config(message);
+    logger.log(DEBUG, message);
   }
 
   public static void fine(String message)
@@ -97,5 +130,13 @@ public class Log
   public static void finest(String message)
   {
     logger.finest(message);
+  }
+
+  private static class CustomLogLevel extends Level
+  {
+    public CustomLogLevel(String name, int value)
+    {
+      super(name, value);
+    }
   }
 }

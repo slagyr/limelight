@@ -40,7 +40,22 @@ public class CmdLineMain
     else
       command = buildCommand(options);
 
+    applyDebugOption(options);
+    applyLogLevelOption(options);
+
     command.execute(arguments.leftOverArgs());
+  }
+
+  private void applyLogLevelOption(Map<String, String> options)
+  {
+    if(options.containsKey("log"))
+      Log.setLevel(options.get("log"));
+  }
+
+  private void applyDebugOption(Map<String, String> options)
+  {
+    if(options.containsKey("debug"))
+      Log.debugOn();
   }
 
   private Command buildCommand(Map<String, String> options)
@@ -68,6 +83,8 @@ public class CmdLineMain
     arguments = new Arguments();
     arguments.addParameter("command", "The name of the command to execute. Use --help for a listing of command.");
     arguments.addSwitchOption("h", "help", "Prints this help message");
+    arguments.addSwitchOption("d", "debug", "Sets logger to DEBUG level on stderr");
+    arguments.addValueOption("l", "log", "LEVEL", "Sets log level: CRITICAL, WARN, INFO, CONFIG, DEBUG, FINE");
     return arguments;
   }
 

@@ -18,6 +18,7 @@ import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.util.Opts;
+import limelight.util.Version;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -50,6 +51,7 @@ public class Boot
 
   public static void boot(Map<String, Object> customizations)
   {
+    Log.info("Boot - Limelight " + About.version.toString());
     Opts options = defaultOptions.merge(customizations);
 
     if(booted)
@@ -63,6 +65,8 @@ public class Boot
       configureSystemProperties();
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+      Log.config("Boot - Limelight booted ----------");
     }
     catch(Exception e)
     {
@@ -100,10 +104,11 @@ public class Boot
     }
     catch(Exception e)
     {
-      System.err.println("OS class could not be loaded:" + e);
+      Log.warn("Boot - OS class could not be loaded:" + e);
       context().os = new UnsupportedOS();
     }
 
+    Log.config("Boot - OS: " + context().os.getClass().getCanonicalName());
     context().os.appIsStarting();
   }
 
@@ -126,6 +131,7 @@ public class Boot
 
     if(isOn(options.get("startBackgroundThreads")))
     {
+      Log.config("Boot - starting background threads");
       context().panelPanter.start();
       context().animationLoop.start();
       context().cacheCleaner.start();

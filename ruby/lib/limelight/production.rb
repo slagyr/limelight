@@ -198,12 +198,13 @@ module Limelight
     def load_stages
       return unless @fs.exists?(stages_file)
       content = @fs.read_text_file(stages_file)
+      prod = self
       Limelight.build_stages(theater) do
         begin
           eval content
         rescue Exception => e
           puts e.backtrace
-          raise DSL::BuildException.new(stages_file, content, e)
+          raise DSL::BuildException.new(prod.stages_file, content, e)
         end
       end
     end

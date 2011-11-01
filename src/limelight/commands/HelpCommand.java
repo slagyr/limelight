@@ -74,6 +74,9 @@ public class HelpCommand extends Command
     buffer.append("usage: ");
     buffer.append(CmdLineMain.mainCmd).append(" [limelight options] <command> [command options]").append(Util.ENDL);
     buffer.append(Util.ENDL);
+    buffer.append("limelight options:").append(Util.ENDL);
+    buffer.append(new CmdLineMain().getArguments().optionsString());
+    buffer.append(Util.ENDL);
     buffer.append("commands:").append(Util.ENDL);
     buildCommandDescriptions(commands, buffer);
     buffer.append(Util.ENDL);

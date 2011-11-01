@@ -83,6 +83,7 @@ public class Context
       return;
 
     isShuttingDown = true;
+    Log.info("Context - Limelight is closing down");
     if(studio != null)
       studio.shutdown();
 
@@ -95,7 +96,10 @@ public class Context
       os.exitKioskMode();
 
     if(!"test".equals(environment))
+    {
+      Log.info("Context - Goodbye");
       System.exit(0);
+    }
 
     isShuttingDown = false;
     isShutdown = true;

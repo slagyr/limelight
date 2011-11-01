@@ -199,19 +199,19 @@ public abstract class Production
 
   public Scene openScene(String scenePath, Stage stage, Map<String, Object> options)
   {
-    Log.info("Production - opening scene: " + scenePath + " on stage: " + stage.getName());
+    Log.info("Production - opening scene: '" + scenePath + "' on stage: '" + stage.getName() + "'");
     String sceneDir = Context.fs().pathTo(path, scenePath);
     Map<String, Object> sceneOptions = new HashMap<String, Object>(options);
     sceneOptions.put("path", sceneDir);
     sceneOptions.put("name", Context.fs().filename(sceneDir));
 
     Scene scene = loadScene(scenePath, sceneOptions);
-    Log.info("Production - scene loaded: " + scene + " with options: " + Util.mapToString(sceneOptions));
+    Log.debug("Production - scene loaded: '" + scene + "' with options: " + Util.mapToString(sceneOptions));
     final Map<String, RichStyle> sceneStyles = loadStyles(scene.getPath(), styles);
     scene.setStyles(Styles.merge(sceneStyles, styles));
     stage.setScene(scene);
     stage.open();
-    Log.info("Production - scene opened");
+    Log.debug("Production - scene opened");
     return scene;
   }
 

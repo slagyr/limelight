@@ -60,17 +60,20 @@ public class Studio
 
   public Production open(String productionPath)
   {
+    Log.info("Studio - opening production: " + productionPath);
     try
     {
-      productionPath = processProductionPath(productionPath);
-      Production production = productionStub == null ? instantiateProduction(productionPath) : productionStub;
+      String processedPath = processProductionPath(productionPath);
+      Log.debug("Studio - processed production path: " + processedPath);
+      Production production = productionStub == null ? instantiateProduction(processedPath) : productionStub;
+      Log.debug("Studio - production instance: " + production);
       production.open();
       add(production);
       return production;
     }
     catch(Exception e)
     {
-e.printStackTrace();
+      Log.warn("Studio - failed to open production", e);
       alert(e);
       shutdownIfEmpty();
       return null;
@@ -271,6 +274,7 @@ e.printStackTrace();
     try
     {
       String url = fs.readTextFile(productionPath).trim();
+      Log.debug("Studio - downloading production: " + url);
       String result = Downloader.get(url);
       return unpackLlp(result);
     }
@@ -283,6 +287,7 @@ e.printStackTrace();
   private String unpackLlp(String productionPath)
   {
     String destinationDir = fs.join(Data.productionsDir(), "" + System.currentTimeMillis());
+    Log.debug("Studio - unpacking production to: " + destinationDir);
     fs.createDirectory(destinationDir);
     return packer.unpack(productionPath, destinationDir);
   }

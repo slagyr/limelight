@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.logging.Level;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,6 +25,7 @@ public class CmdLineMainTest
   @Before
   public void setUp() throws Exception
   {
+    Log.silence();
     main = new CmdLineMain();
     output = new ByteArrayOutputStream();
     Command.setOutput(new PrintStream(output));
@@ -37,6 +39,16 @@ public class CmdLineMainTest
 
     assertNotNull(option);
     assertEquals("h", option.getShortName());
+    assertEquals(false, option.requiresValue());
+  }
+
+  @Test
+  public void debugOption() throws Exception
+  {
+    Arguments.Option option = main.getArguments().findOption("debug");
+
+    assertNotNull(option);
+    assertEquals("d", option.getShortName());
     assertEquals(false, option.requiresValue());
   }
   
@@ -72,5 +84,28 @@ public class CmdLineMainTest
     assertNotNull(main.getCommand());
     assertEquals(HelpCommand.class, main.getCommand().getClass());
     assertEquals(true, main.getCommand().executed());
+  }
+
+  @Test
+  public void usingDebugOption() throws Exception
+  {
+    main.run("-d", "help");
+    assertEquals("DEBUG", Log.getLevelName());
+    assertNotNull(main.getCommand());
+    assertEquals(HelpCommand.class, main.getCommand().getClass());
+    assertEquals(true, main.getCommand().executed());
+  }
+
+  @Test
+  public void specifyLogLevel() throws Exception
+  {
+    main.run("-l" , "info", "help");
+    assertEquals("INFO", Log.getLevelName());
+
+    main.run("--log=CONFIG", "help");
+    assertEquals("CONFIG", Log.getLevelName());
+
+    main.run("--log=DEBUG", "help");
+    assertEquals("DEBUG", Log.getLevelName());
   }
 }
