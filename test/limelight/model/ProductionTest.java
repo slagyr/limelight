@@ -196,11 +196,11 @@ public class ProductionTest
     production.stubbedScene = new FakeScene();
     final Map<String,Object> options = Util.toMap();
 
-    production.openScene("scenePath", new MockStage(), options);
+    production.openScene("scenePath/sceneName", new MockStage(), options);
 
     assertNotSame(options, production.loadedSceneOptions);
-    assertEquals("scenePath", production.loadedSceneOptions.get("name"));
-    assertEquals("/foo/bar/scenePath", production.loadedSceneOptions.get("path"));
+    assertEquals("sceneName", production.loadedSceneOptions.get("name"));
+    assertEquals("scenePath/sceneName", production.loadedSceneOptions.get("path"));
   }
 
   @Test

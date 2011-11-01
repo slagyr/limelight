@@ -19,3 +19,7 @@ if Java::java.lang.System.getProperty("limelight.home").nil?
 end
 
 require 'limelight/java_couplings'
+
+def log
+  Java::limelight.Log
+end

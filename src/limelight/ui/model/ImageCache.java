@@ -26,7 +26,7 @@ public class ImageCache extends SimpleCache<String, Image>
     Image image = retrieve(imagePath);
     if(image == null)
     {
-      Log.info("ImageCache - loading image: " + imagePath);
+      Log.debug("ImageCache - loading image: " + imagePath);
       image = loadImage(imagePath);
     }
     return image;

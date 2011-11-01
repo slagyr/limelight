@@ -214,9 +214,11 @@ module Limelight
     def load_scene(scene_path, options={})
       options = Util::Hashes.for_ruby(options)
       instance_variables = options.delete(:instance_variables)
+      log.debug "production.rb - scene options: #{options.inspect}"
       scene = Scene.new(options)
       scene.production = self
       if @fs.exists?(scene.props_file)
+        log.debug "production.rb - loading props: #{scene.props_file}"
         content = @fs.read_text_file(scene.props_file)
         options[:root_path] = self.path
         Limelight.build_props(scene, options.merge(:instance_variables => instance_variables)) do
@@ -226,6 +228,8 @@ module Limelight
             raise DSL::BuildException.new(scene.props_file, content, e)
           end
         end
+      else
+        log.debug "production.rb - props file doesn't exist': #{scene.props_file}"
       end
       scene
     end
