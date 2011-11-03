@@ -1,0 +1,3 @@
+<player class="limelight.builtin.players.CheckBox">
+    <onCast>install</onCast>
+</player>

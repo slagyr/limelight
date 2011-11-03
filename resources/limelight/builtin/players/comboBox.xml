@@ -1,0 +1,3 @@
+<player class="limelight.builtin.players.ComboBox">
+    <onCast>install</onCast>
+</player>

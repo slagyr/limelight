@@ -4,6 +4,7 @@
 package limelight.model;
 
 import limelight.Context;
+import limelight.Log;
 import limelight.builtin.BuiltinBeacon;
 import limelight.java.JavaCastingDirector;
 import limelight.model.api.CastingDirector;
@@ -30,21 +31,22 @@ public class PlayerRecruiter
   {
     final Scene scene = panel.getRoot();
     final String scenePlayersPath = Context.fs().pathTo(scene.getPath(), "players");
+    String result = null;
 
     if(recruitFrom(panel, playerName, castingDirector, scenePlayersPath))
-      return scene.getAbsoluteName() + "/" + playerName;
+      result = scene.getAbsoluteName() + "/" + playerName;
 
-    if(scene.getProduction() != null)
+    if(result == null && scene.getProduction() != null)
     {
       final String productionPlayersPath = Context.fs().pathTo(scene.getProduction().getPath(), "players");
       if(recruitFrom(panel, playerName, castingDirector, productionPlayersPath))
-        return playerName;
+        result = playerName;
     }
 
-    if(recruitFrom(panel, playerName, builtinCastingDirector, BuiltinBeacon.getBuiltinPlayersPath()))
-      return "limelight:" + playerName;
+    if(result == null && recruitFrom(panel, playerName, builtinCastingDirector, BuiltinBeacon.getBuiltinPlayersPath()))
+      result = "limelight:" + playerName;
 
-    return null;
+    return result;
   }
 
   private boolean recruitFrom(PropPanel panel, String playerName, CastingDirector castingDirector, String playersPath)

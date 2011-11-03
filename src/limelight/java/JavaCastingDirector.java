@@ -30,8 +30,7 @@ public class JavaCastingDirector implements CastingDirector
 
   private String playerFilePath(String playerName, String playersPath)
   {
-    final String path = playersPath + "/" + StringUtil.camalize(playerName) + ".xml";
-    return path;
+    return playersPath + "/" + StringUtil.camalize(playerName) + ".xml";
   }
 
   public void castPlayer(PropProxy propProxy, String playerName, String playersPath)

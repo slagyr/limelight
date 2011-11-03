@@ -1,0 +1,3 @@
+<player class="limelight.builtin.players.TextArea">
+    <onCast>install</onCast>
+</player>
