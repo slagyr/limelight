@@ -23,6 +23,12 @@ public class Utilities
     "framed", "false",
     "vital", "false");
 
+  private static Opts riggerStageOptions = Opts.with(
+    "title", "Limelight Rigger",
+    "location", "left, top",
+    "size", "200, auto",
+    "backgroundColor", "white");
+
   private Production production;
 
   final private Object alertMonitor = new Object();
@@ -113,7 +119,7 @@ public class Utilities
 
   public void openRigger()
   {
-    final Stage riggerStage = production.getTheater().get("rigger");
+    Stage riggerStage = establishStage("rigger", riggerStageOptions);
     production.openScene("rigger", riggerStage, new Opts());
   }
 }

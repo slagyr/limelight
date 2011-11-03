@@ -30,7 +30,11 @@ ensure
 end
 
 def darwin?
-  RUBY_PLATFORM =~ /darwin/
+  if defined?(Java)
+    java.lang.System.getProperty('os.name') =~ /Mac/
+  else
+    RUBY_PLATFORM =~ /darwin/
+  end
 end
 
 def _apply_includes_excludes(options, src_files)

@@ -8,7 +8,7 @@ describe Limelight::Production, "Instance methods" do
 
   before(:each) do
     @fs = Java::limelight.io.FakeFileSystem.installed
-    @studio = Limelight::Studio.install
+    @studio = Limelight::Studio.installed
     @peer = Java::limelight.ruby.RubyProduction.new("/test_prod")
     @production = Limelight::Production.new(@peer)
   end
