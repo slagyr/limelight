@@ -1,2 +1,7 @@
 <stages>
+    <rigger title="Limelight Rigger"
+            size="200, auto"
+            location="left, top"
+            backgroundColor="white"
+            vital="false"/>
 </stages>

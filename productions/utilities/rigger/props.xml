@@ -1,0 +1,5 @@
+<props>
+    <buttons>
+        <reloadAllButton id="reloadAllButton" text="Reload All" players="button"/>
+    </buttons>
+</props>

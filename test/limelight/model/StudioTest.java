@@ -30,13 +30,13 @@ public class StudioTest
     System.setProperty("limelight.home", "."); // For the RuntimeFactory to spawn productions properly
     context = MockContext.stub();
     fs = FakeFileSystem.installed();
-    studio = Studio.install();
+    studio = Studio.installed();
   }
 
   @Test
   public void installing() throws Exception
   {
-    assertSame(Studio.instance(), Context.instance().studio);
+    assertSame(studio, Context.instance().studio);
   }
 
   @Test

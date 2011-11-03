@@ -51,6 +51,11 @@ public class UtilitiesProduction
     return Boolean.parseBoolean(response.toString());
   }
 
+  public void openRigger()
+  {
+    production.send("openRigger");
+  }
+
   public Production getProduction()
   {
     return production;

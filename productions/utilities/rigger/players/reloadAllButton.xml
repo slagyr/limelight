@@ -1,0 +1,3 @@
+<player class="utilities.Rigger$ReloadAllButton">
+    <onButtonPushed>pressed</onButtonPushed>
+</player>

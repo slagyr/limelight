@@ -25,31 +25,24 @@ public class Studio
 {
   Production productionStub; // Used for testing
 
-  private static Studio instance;
   private final List<Production> index;
   public Thread shutdownThread;
   private boolean isShutdown;
   private boolean isShuttingDown;
-  private UtilitiesProduction utilitiesProduction;
+  protected UtilitiesProduction utilitiesProduction;
   private Packer packer = new Packer();
   private FileSystem fs;
 
-  public static Studio install()
+  public static Studio installed()
   {
-    Context.instance().studio = instance();
-    return instance();
+    final Studio studio = new Studio();
+    Context.instance().studio = studio;
+    return studio;
   }
 
   public static void uninstall()
   {
-    Context.instance().studio = instance = null;
-  }
-
-  public static Studio instance()
-  {
-    if(instance == null)
-      instance = new Studio();
-    return instance;
+    Context.instance().studio = null;
   }
 
   public Studio()
@@ -195,6 +188,7 @@ public class Studio
     return utilitiesProduction;
   }
 
+  // TODO - MDM - Move me to MockStudio
   public void stubUtilitiesProduction(Production stub)
   {
     utilitiesProduction = new UtilitiesProduction(stub);
@@ -297,7 +291,7 @@ public class Studio
     private static ProductionClosedHandler instance = new ProductionClosedHandler();
     public void invoke(Event event)
     {
-      Studio.instance().productionClosed(((ProductionEvent)event).getProduction());
+      Context.instance().studio.productionClosed(((ProductionEvent) event).getProduction());
     }
   }
 

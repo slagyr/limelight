@@ -235,7 +235,7 @@ public class UtilitiesTest
   }
 
   @Test
-  public void shouldReturnTrueWhenClickingProceed() throws Exception
+  public void returnsTrueWhenClickingProceed() throws Exception
   {
     startProceedWithIncompatibleVersion();
     FramedStage stage = waitForStage("Incompatible Version");
@@ -248,7 +248,7 @@ public class UtilitiesTest
   }
 
   @Test
-  public void shouldReturnFalseWhenClickingCancel() throws Exception
+  public void returnsFalseWhenClickingCancel() throws Exception
   {
     startProceedWithIncompatibleVersion();
     FramedStage stage = waitForStage("Incompatible Version");
@@ -258,5 +258,14 @@ public class UtilitiesTest
     waitForDialogResponse();
 
     assertEquals(false, dialogResponse);
+  }
+
+  @Test
+  public void riggerScene() throws Exception
+  {
+    utilities.openRigger();
+    final Stage stage = production.getTheater().get("rigger");
+    assertEquals(true, stage.isOpen());
+    assertEquals("rigger", stage.getScene().getAbsoluteName());
   }
 }

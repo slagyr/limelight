@@ -3,6 +3,7 @@
 
 package limelight.model.api;
 
+import limelight.Context;
 import limelight.model.Production;
 import limelight.model.Studio;
 
@@ -12,6 +13,13 @@ public class MockStudio extends Studio
   public boolean allowShutdown;
   public boolean isShutdown;
   public boolean shouldProceedWithIncompatibleVersion;
+
+  public static MockStudio installed()
+  {
+    MockStudio instance = new MockStudio();
+    Context.instance().studio = instance;
+    return instance;
+  }
 
   public Production open(String production)
   {

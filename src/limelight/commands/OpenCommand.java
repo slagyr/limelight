@@ -5,6 +5,7 @@ package limelight.commands;
 
 import limelight.Boot;
 import limelight.Context;
+import limelight.model.Studio;
 
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class OpenCommand extends Command
     if(arguments == null)
     {
       arguments = new Arguments();
+      arguments.addSwitchOption("r", "rigger", "Open the 'Rigger' scene too");
       arguments.addOptionalParameter("production", "Path to production directory, .llp file, or .lll file.  If none is provided, the Playbills production is opened.");
     }
     return arguments;
@@ -32,6 +34,10 @@ public class OpenCommand extends Command
 
     if(shouldBoot)
       Boot.boot();
+
+    if(args.containsKey("rigger"))
+      Context.instance().studio.utilitiesProduction().openRigger();
+
     Context.instance().studio.open(production);
   }
 

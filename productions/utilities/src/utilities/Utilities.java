@@ -7,6 +7,7 @@ import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.model.Theater;
 import limelight.model.events.ProductionEvent;
+import limelight.util.Opts;
 import limelight.util.Util;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public class Utilities
 {
-  private static Map<String, Object> dialogStageOptions = Util.toMap(
+  private static Opts dialogStageOptions = Opts.with(
     "location", "center, center",
     "size", "400, auto",
     "backgroundColor", "white",
@@ -108,5 +109,11 @@ public class Utilities
       theater.add(alertStage);
     }
     return alertStage;
+  }
+
+  public void openRigger()
+  {
+    final Stage riggerStage = production.getTheater().get("rigger");
+    production.openScene("rigger", riggerStage, new Opts());
   }
 }

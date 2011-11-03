@@ -58,7 +58,7 @@ public abstract class Production
 
   public void open()
   {
-    open(Util.toMap());
+    open(new Opts());
   }
 
   public void open(Map<String, Object> options)
