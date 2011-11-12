@@ -22,7 +22,7 @@ public class PropPanelLayout implements Layout
   public static PropPanelLayout instance = new PropPanelLayout();
 
 
-  // TODO MDM This gets called ALOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
+  // TODO MDM This gets called A LOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
   public void doLayout(Panel thePanel, boolean topLevel)
   {
     PropPanel panel = (PropPanel) thePanel;

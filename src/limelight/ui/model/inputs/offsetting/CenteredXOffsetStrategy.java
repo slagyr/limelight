@@ -11,7 +11,7 @@ public class CenteredXOffsetStrategy implements XOffsetStrategy
   public int calculateXOffset(TextModel model)
   {
     int xOffset = model.getXOffset();
-    Box boundingBox = model.getContainer().getBounds();
+    Box boundingBox = model.getContainer().getConsumableBounds();
     int absoluteCaretX = model.getAbsoluteX(model.getCaretLocation());
     int relativeCaretX = absoluteCaretX + xOffset;
 

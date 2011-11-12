@@ -39,6 +39,11 @@ public class MockTextContainer extends MockPanel implements TextContainer
 
   public Box getBounds()
   {
+    throw new RuntimeException("MockTextContainer.getBounds");
+  }
+
+  public Box getConsumableBounds()
+  {
     return bounds;
   }
 

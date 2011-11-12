@@ -33,7 +33,7 @@ public class TextBoxPanelTest extends Assert
   }
 
   @Test
-  public void shouldDefaultStyles() throws Exception
+  public void defaultStyles() throws Exception
   {
     assertEquals("150", panel.getStyle().getWidth());
     assertEquals("28", panel.getStyle().getHeight());
@@ -41,7 +41,7 @@ public class TextBoxPanelTest extends Assert
   }
 
   @Test
-  public void shouldHaveDefaultPadding()
+  public void hasDefaultPadding()
   {
     assertEquals("2", panel.getStyle().getTopPadding());
     assertEquals("2", panel.getStyle().getRightPadding());
@@ -50,7 +50,7 @@ public class TextBoxPanelTest extends Assert
   }
 
   @Test
-  public void shouldHaveDefaultBorderWidths()
+  public void hasDefaultBorderWidths()
   {
     assertEquals("4", panel.getStyle().getTopBorderWidth());
     assertEquals("4", panel.getStyle().getRightBorderWidth());
@@ -59,7 +59,7 @@ public class TextBoxPanelTest extends Assert
   }
 
   @Test
-  public void shouldHaveDefaultBorderColors()
+  public void hasDefaultBorderColors()
   {
     assertEquals("#00000000", panel.getStyle().getTopBorderColor());
     assertEquals("#00000000", panel.getStyle().getRightBorderColor());
@@ -68,20 +68,20 @@ public class TextBoxPanelTest extends Assert
   }
 
   @Test
-  public void shouldHaveDefaultAlignment() throws Exception
+  public void hasDefaultAlignment() throws Exception
   {
     assertEquals("center", panel.getStyle().getVerticalAlignment());
     assertEquals("left", panel.getStyle().getHorizontalAlignment());
   }
 
   @Test
-  public void shouldHaveDefaultCursor() throws Exception
+  public void hasDefaultCursor() throws Exception
   {
     assertEquals("text", panel.getStyle().getCursor());
   }
 
   @Test
-  public void shouldSetPainterOnParent() throws Exception
+  public void setsPainterOnParent() throws Exception
   {
     PropPanel newParent = new PropPanel(new FakePropProxy());
 

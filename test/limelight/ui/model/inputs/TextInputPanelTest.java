@@ -9,6 +9,7 @@ import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
 import limelight.ui.text.TextLocation;
+import limelight.util.Box;
 import limelight.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import java.awt.*;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotSame;
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assume.assumeTrue;
 
@@ -43,7 +45,7 @@ public class TextInputPanelTest
   }
 
   @Test
-  public void shouldDefaultLayout() throws Exception
+  public void defaultLayout() throws Exception
   {
     assertSame(TextInputPanelLayout.instance, panel.getDefaultLayout());
   }
@@ -75,7 +77,7 @@ public class TextInputPanelTest
   }
 
   @Test
-  public void shouldRequireLayoutAfterConsumableSizeChanges() throws Exception
+  public void requiresLayoutAfterConsumableSizeChanges() throws Exception
   {
     FakeScene root = new FakeScene();
     root.add(panel);
@@ -206,7 +208,7 @@ public class TextInputPanelTest
   }
 
   @Test
-  public void valuChangedEventInvokedWhenChangingText() throws Exception
+  public void valueChangedEventInvokedWhenChangingText() throws Exception
   {
     panel.setText("foo");
     final MockEventAction action = new MockEventAction();
@@ -242,6 +244,25 @@ public class TextInputPanelTest
     panel.setParent(null);
 
     assertEquals(false, panel.isCaretBlinking());
+  }
+
+  @Test
+  public void getConsumableBoundsBeginsAtOrigin() throws Exception
+  {
+    panel.setLocation(2, 3);
+    assertEquals(0, panel.getConsumableBounds().x);
+    assertEquals(0, panel.getConsumableBounds().y);
+  }
+
+  @Test
+  public void consumableBoundsAreCachedAndRefreshed() throws Exception
+  {
+    final Box original = panel.getConsumableBounds();
+    assertSame(panel.getConsumableBounds(), original);
+
+    panel.clearCache();
+
+    assertNotSame(panel.getConsumableBounds(), original);
   }
 
 }

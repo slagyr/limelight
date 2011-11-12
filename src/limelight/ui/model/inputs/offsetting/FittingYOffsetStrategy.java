@@ -13,7 +13,7 @@ public class FittingYOffsetStrategy implements YOffsetStrategy
   public int calculateYOffset(TextModel model)
   {
     int yOffset = model.getYOffset();
-    Box boundingBox = model.getContainer().getBounds();
+    Box boundingBox = model.getContainer().getConsumableBounds();
     TextLocation caretLocation = model.getCaretLocation();
     int absoluteCaretY = model.getAbsoluteY(caretLocation);
     int relativeCaretY = absoluteCaretY + yOffset;

@@ -24,6 +24,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   protected TextModel model;
   protected TextPanelMouseProcessor mouseProcessor;
   private CaretAnimator caretAnimator;
+  private Box consumableBounds;
 
   protected TextInputPanel()
   {
@@ -147,6 +148,20 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
   public void setModel(TextModel model)
   {
     this.model = model;
+  }
+
+  public Box getConsumableBounds()
+  {
+    if(consumableBounds == null)
+      consumableBounds = new Box(0, 0, getWidth(), getHeight());
+    return consumableBounds;
+  }
+
+  @Override
+  public void clearCache()
+  {
+    super.clearCache();
+    consumableBounds = null;
   }
 
   private static class CaretAnimator extends Animation

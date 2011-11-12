@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.Log;
 import limelight.ui.BufferedImagePool;
 import limelight.caching.Cache;
 import limelight.styles.Style;

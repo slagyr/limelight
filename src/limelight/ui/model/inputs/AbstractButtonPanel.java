@@ -66,7 +66,7 @@ public abstract class AbstractButtonPanel extends InputPanel
       final ScreenableStyle style = panel.getStyle();
       graphics.setColor(style.getCompiledTextColor().getColor());
 
-      TextLayout textLayout = new TextLayout(text, Fonts.fromStyle(style), TextPanel.staticFontRenderingContext);
+      TextLayout textLayout = new TextLayout(text, Fonts.fromStyle(style), TextPanel.getRenderContext());
       int height = (int) ((textLayout.getAscent() + textLayout.getDescent() + textLayout.getLeading()) + 0.5);
       int width = (int) (textLayout.getBounds().getWidth() + textLayout.getBounds().getX() + 0.5);
       final Dimension textDimensions = new Dimension(width, height);
