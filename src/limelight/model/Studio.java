@@ -12,7 +12,6 @@ import limelight.events.EventAction;
 import limelight.io.*;
 import limelight.model.events.ProductionClosedEvent;
 import limelight.model.events.ProductionEvent;
-import limelight.model.api.UtilitiesProduction;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -29,7 +28,7 @@ public class Studio
   public Thread shutdownThread;
   private boolean isShutdown;
   private boolean isShuttingDown;
-  protected UtilitiesProduction utilitiesProduction;
+  protected limelight.model.UtilitiesProduction utilitiesProduction;
   private Packer packer = new Packer();
   private FileSystem fs;
 
@@ -166,7 +165,7 @@ public class Studio
     return isShutdown;
   }
 
-  public UtilitiesProduction utilitiesProduction()
+  public limelight.model.UtilitiesProduction utilitiesProduction()
   {
     if(utilitiesProduction == null)
     {
@@ -177,7 +176,7 @@ public class Studio
         Production production = productionStub == null ? instantiateProduction(path) : productionStub;
         production.open();
         add(production);
-        utilitiesProduction = new UtilitiesProduction(production);
+        utilitiesProduction = new limelight.model.UtilitiesProduction(production);
       }
       catch(Exception e)
       {
@@ -191,7 +190,7 @@ public class Studio
   // TODO - MDM - Move me to MockStudio
   public void stubUtilitiesProduction(Production stub)
   {
-    utilitiesProduction = new UtilitiesProduction(stub);
+    utilitiesProduction = new limelight.model.UtilitiesProduction(stub);
   }
 
   private void adjustNameIfNeeded(Production production)

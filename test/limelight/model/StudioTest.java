@@ -7,7 +7,6 @@ import limelight.*;
 import limelight.io.*;
 import limelight.model.events.ProductionClosedEvent;
 import limelight.os.MockOS;
-import limelight.model.api.UtilitiesProduction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -156,7 +155,7 @@ public class StudioTest
     FakeProduction production = new FakeProduction("utilities");
     studio.productionStub = production;
 
-    UtilitiesProduction utilities = studio.utilitiesProduction();
+    limelight.model.UtilitiesProduction utilities = studio.utilitiesProduction();
     assertSame(production, utilities.getProduction());
 
     assertSame(utilities, studio.utilitiesProduction()); // no exception thrown
