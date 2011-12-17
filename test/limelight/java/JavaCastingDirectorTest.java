@@ -6,6 +6,8 @@ package limelight.java;
 import limelight.model.PlayerRecruiter;
 import limelight.model.api.FakeCastingDirector;
 import limelight.io.FakeFileSystem;
+import limelight.ui.events.panel.CastEvent;
+import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.model.ScenePanel;
 import limelight.util.Opts;
 import limelight.util.Util;
@@ -50,41 +52,42 @@ public class JavaCastingDirectorTest
 
     assertEquals("foo", prop.getName());
     assertEquals(1, prop.getPlayers().size());
-    Object player = prop.getPlayers().get(0);
+    JavaPlayer player = (JavaPlayer)prop.getPlayers().get(0);
     assertNotNull(player);
-    assertEquals("SamplePlayer", player.getClass().getName());
+    assertEquals("SamplePlayer", player.getPlayer().getClass().getName());
   }
-//
-//  @Test
-//  public void castedPlayerCanAddEvents() throws Exception
-//  {
-//    JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
-//    fs.createTextFile("/testProduction/aScene/players/foo.xml", "<player class='SamplePlayer'><onMouseClicked>sampleAction</onMouseClicked></player>");
-//
-//    final JavaProp prop = new JavaProp(Util.toMap("name", "foo"));
-//    scene.add(prop);
-//    director.castPlayer(prop, "foo", scenePlayersPath);
-//
-//    assertEquals(1, prop.getPeer().getEventHandler().getActions(MouseClickedEvent.class).size());
-//    new MouseClickedEvent(0, null, 1).dispatch(prop.getPeer());
-//    Object player = prop.getPlayers().get(0);
-//    assertEquals(1, player.getClass().getField("invocations").get(player));
-//  }
-//
-//  @Test
-//  public void onCastEvent() throws Exception
-//  {
-//    JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
-//    fs.createTextFile("/testProduction/aScene/players/foo.xml", "<player class='SamplePlayer'><onCast>sampleActionWithEvent</onCast></player>");
-//
-//    final JavaProp prop = new JavaProp(Util.toMap("name", "foo"));
-//    scene.add(prop);
-//    director.castPlayer(prop, "foo", scenePlayersPath);
-//
-//    assertEquals(0, prop.getPeer().getEventHandler().getActions(CastEvent.class).size());
-//    Object player = prop.getPlayers().get(0);
-//    assertEquals(1, player.getClass().getField("invocations").get(player));
-//    assertEquals(CastEvent.class, player.getClass().getField("event").get(player).getClass());
-//  }
 
+  @Test
+  public void castedPlayerCanAddEvents() throws Exception
+  {
+    JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
+    fs.createTextFile("/testProduction/aScene/players/foo.xml", "<player class='SamplePlayer'><onMouseClicked>sampleAction</onMouseClicked></player>");
+
+    final JavaProp prop = new JavaProp(Util.toMap("name", "foo"));
+    scene.add(prop);
+    director.castPlayer(prop, "foo", "/testProduction/aScene/players");
+
+    assertEquals(1, prop.getPeer().getEventHandler().getActions(MouseClickedEvent.class).size());
+    new MouseClickedEvent(0, null, 1).dispatch(prop.getPeer());
+    JavaPlayer player = (JavaPlayer)prop.getPlayers().get(0);
+    final Object playerObj = player.getPlayer();
+    assertEquals(1, playerObj.getClass().getField("invocations").get(playerObj));
+  }
+
+  @Test
+  public void onCastEvent() throws Exception
+  {
+    JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
+    fs.createTextFile("/testProduction/aScene/players/foo.xml", "<player class='SamplePlayer'><onCast>sampleActionWithEvent</onCast></player>");
+
+    final JavaProp prop = new JavaProp(Util.toMap("name", "foo"));
+    scene.add(prop);
+    director.castPlayer(prop, "foo", "/testProduction/aScene/players");
+
+    assertEquals(0, prop.getPeer().getEventHandler().getActions(CastEvent.class).size());
+    JavaPlayer playerWrapper = (JavaPlayer)prop.getPlayers().get(0);
+    Object player = playerWrapper.getPlayer();
+    assertEquals(1, player.getClass().getField("invocations").get(player));
+    assertEquals(CastEvent.class, player.getClass().getField("event").get(player).getClass());
+  }
 }

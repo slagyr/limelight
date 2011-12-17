@@ -4,12 +4,16 @@
 package limelight.ui.model;
 
 import limelight.model.api.FakePropProxy;
+import limelight.model.api.Player;
 import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
 import limelight.ui.painting.PaintAction;
 import limelight.ui.painting.Border;
 import limelight.model.api.PropProxy;
 import limelight.util.Box;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MockProp extends MockParentPanel implements Prop, PaintablePanel
 {

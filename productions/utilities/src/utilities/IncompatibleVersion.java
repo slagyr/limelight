@@ -4,16 +4,19 @@
 package utilities;
 
 import limelight.About;
+import limelight.java.JavaPlayer;
 import limelight.java.JavaProp;
 import limelight.java.JavaScene;
+import limelight.model.api.Player;
 import limelight.ui.events.panel.PanelEvent;
 
 public class IncompatibleVersion
 {
   public void populateTextLabels(PanelEvent event)
   {
-    JavaScene scene = ((JavaProp)event.getProp()).getScene();
-    Utilities utilities = (Utilities)scene.getProduction().getPlayer();
+    final JavaProp prop = (JavaProp) event.getProp();
+    JavaScene scene = prop.getScene();
+    Utilities utilities = getUtilities(prop);
 
     scene.findProp("productionNameLabel").setText(utilities.incompatibleVersionProductionName);
     scene.findProp("requiredVersionLabel").setText(utilities.incompatibleVersionRequiredVersion);
@@ -22,7 +25,8 @@ public class IncompatibleVersion
 
   public static Utilities getUtilities(JavaProp prop)
   {
-    return (Utilities) prop.getScene().getProduction().getPlayer();
+    final JavaPlayer player = (JavaPlayer)prop.getScene().getProduction().getPlayer();
+    return (Utilities) player.getPlayer();
   }
 
   public static class CancelButton

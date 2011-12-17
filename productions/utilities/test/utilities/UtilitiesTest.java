@@ -6,6 +6,7 @@ package utilities;
 import limelight.About;
 import limelight.Boot;
 import limelight.builtin.BuiltinBeacon;
+import limelight.java.JavaPlayer;
 import limelight.java.JavaProduction;
 import limelight.java.JavaProp;
 import limelight.java.JavaScene;
@@ -40,7 +41,8 @@ public class UtilitiesTest
     Boot.boot("startBackgroundThreads", false);
     production = new JavaProduction(BuiltinBeacon.getBuiltinProductionsPath() + "/utilities");
     production.open();
-    utilities = (Utilities) production.getPlayer();
+    final JavaPlayer javaPlayer = (JavaPlayer) production.getPlayer();
+    utilities = (Utilities) javaPlayer.getPlayer();
   }
 
   @After

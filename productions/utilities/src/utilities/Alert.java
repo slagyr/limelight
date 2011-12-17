@@ -3,15 +3,18 @@
 
 package utilities;
 
+import limelight.java.JavaPlayer;
 import limelight.java.JavaProp;
 import limelight.java.JavaScene;
+import limelight.model.api.Player;
 import limelight.ui.events.panel.PanelEvent;
 
 public class Alert
 {
   public static Utilities getUtilities(JavaProp prop)
   {
-    return (Utilities) prop.getScene().getProduction().getPlayer();
+    final JavaPlayer player = (JavaPlayer)prop.getScene().getProduction().getPlayer();
+    return (Utilities) player.getPlayer();
   }
 
   public static class OkButton

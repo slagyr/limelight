@@ -5,8 +5,8 @@ package limelight.java;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.io.FileSystem;
 import limelight.model.Production;
+import limelight.model.api.Player;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 import org.w3c.dom.*;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class JavaProduction extends Production
 {
   private PlayerClassLoader playerLoader;
-  private Object player;
+  private JavaPlayer player;
   private JavaTheater javaTheater;
 
   public JavaProduction(String path)
@@ -29,7 +29,7 @@ public class JavaProduction extends Production
     javaTheater = new JavaTheater(getTheater());
   }
 
-  public Object getPlayer()
+  public Player getPlayer()
   {
     return player;
   }
@@ -45,7 +45,9 @@ public class JavaProduction extends Production
     if(classpath != null && classpath.length() > 0)
       playerLoader.setClasspath(Context.fs().pathTo(getPath(), classpath));
 
-    player = JavaPlayers.toPlayer(productionElement, this.playerLoader, "limelight.model.events.", getEventHandler());
+    player = JavaCastingDirector.toPlayer(productionElement, this.playerLoader, "limelight.model.events.");
+    if(player != null)
+      player.applyEvents(productionElement, "limelight.model.events.", getEventHandler());
   }
 
   @Override

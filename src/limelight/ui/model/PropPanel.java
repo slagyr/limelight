@@ -8,8 +8,8 @@ import limelight.LimelightException;
 import limelight.Log;
 import limelight.events.Event;
 import limelight.events.EventAction;
-import limelight.model.PlayerRecruiter;
 import limelight.model.api.CastingDirector;
+import limelight.model.api.Player;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.*;
@@ -33,6 +33,7 @@ import java.util.List;
 public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, ChangeablePanel, StyleObserver
 {
   private static final Map<String, Object> EMPTY_OPTIONS = new EmptyMap<String, Object>();
+  private static final List<Player> EMPTY_PLAYERS = Collections.unmodifiableList(new LinkedList<Player>());
 
   private final PropProxy proxy;
   private String id;
@@ -52,6 +53,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   private Painter painter = DefaultPainter.instance;
   private Cursor preHoverCursor;
   private Map<String, Object> options;
+  private List<Player> players;
   public Dimension greediness = new Dimension(0, 0);
   public boolean borderChanged = true;
 
@@ -531,6 +533,20 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
         Context.instance().playerRecruiter.recruit(this, playerName, director);
       }
     }
+  }
+
+  public void addPlayer(Player player)
+  {
+    if(players == null)
+      players = new LinkedList<Player>();
+    players.add(player);
+  }
+
+  public List<Player> getPlayers()
+  {
+    if(players == null)
+      return EMPTY_PLAYERS;
+    return players;
   }
 
   private static class MouseWheelAction implements EventAction

@@ -8,6 +8,7 @@ import limelight.io.FakeFileSystem;
 import limelight.io.StreamReader;
 import limelight.model.PlayerRecruiter;
 import limelight.model.Stage;
+import limelight.model.api.Player;
 import limelight.model.events.ProductionCreatedEvent;
 import limelight.styles.RichStyle;
 import limelight.ui.model.FramedStage;
@@ -157,9 +158,9 @@ public class JavaProductionTest
 
     production.illuminate();
 
-    final Object player = production.getPlayer();
+    final Player player = production.getPlayer();
     assertNotNull(player);
-    assertEquals("SamplePlayer", player.getClass().getName());
+    assertEquals("SamplePlayer", ((JavaPlayer) player).getPlayer().getClass().getName());
   }
 
   @Test
@@ -170,11 +171,12 @@ public class JavaProductionTest
 
     production.illuminate();
 
-    final Object player = production.getPlayer();
+    final JavaPlayer playerWrapper = (JavaPlayer)production.getPlayer();
     final List<EventAction> onCreatedActions = production.getEventHandler().getActions(ProductionCreatedEvent.class);
     assertEquals(1, onCreatedActions.size());
 
     new ProductionCreatedEvent().dispatch(production);
+    final Object player = playerWrapper.getPlayer();
     assertEquals(1, player.getClass().getField("invocations").get(player));
   }
 

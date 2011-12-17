@@ -4,7 +4,9 @@
 package limelight.java;
 
 import limelight.Context;
+import limelight.LimelightException;
 import limelight.model.api.CastingDirector;
+import limelight.model.api.Player;
 import limelight.model.api.PropProxy;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
@@ -12,6 +14,7 @@ import limelight.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 public class JavaCastingDirector implements CastingDirector
@@ -38,24 +41,36 @@ public class JavaCastingDirector implements CastingDirector
     String playerPath = playerFilePath(playerName, playersPath);
     final Document document = Xml.loadDocumentFrom(playerPath);
     final Element playerElement = document.getDocumentElement();
-    final PropPanel prop = (PropPanel)propProxy.getPeer();
-    final Object player = JavaPlayers.toPlayer(playerElement, classLoader, "limelight.ui.events.panel.", prop.getEventHandler());
+    final Player player = toPlayer(playerElement, classLoader, "limelight.ui.events.panel.");
+
     if(propProxy instanceof JavaProp)
-      ((JavaProp)propProxy).addPlayer(player);
-    invokeCastEvents(prop, playerElement, player);
+      ((JavaProp) propProxy).addPlayer(player);
+
+    final PropPanel prop = (PropPanel) propProxy.getPeer();
+    player.cast(prop);
   }
 
-  private void invokeCastEvents(PropPanel prop, Element playerElement, Object player)
+  public static JavaPlayer toPlayer(Element element, ClassLoader classLoader, String eventsPrefix)
   {
-    final CastEvent castEvent = new CastEvent(prop);
-    for(Element child : Xml.loadChildElements(playerElement))
+    String className = element.getAttribute("class");
+    if(className == null || className.length() == 0)
+      return null;
+
+    final Object rawPlayer = resolvePlayer(classLoader, className);
+    return new JavaPlayer(rawPlayer, element, eventsPrefix);
+  }
+
+  public static Object resolvePlayer(ClassLoader loader, String name)
+  {
+    try
     {
-      if("onCast".equals(child.getNodeName()))
-      {
-        String methodName = child.getTextContent().trim();
-        final Method method = JavaPlayers.findMethod(methodName, player);
-        new JavaEventAction(player, method).invoke(castEvent);
-      }
+      Class playerClass = loader.loadClass(name);
+      final Constructor constructor = playerClass.getConstructor();
+      return constructor.newInstance();
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException(e);
     }
   }
 

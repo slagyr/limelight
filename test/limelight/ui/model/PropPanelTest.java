@@ -8,7 +8,9 @@ import limelight.io.FakeFileSystem;
 import limelight.model.FakeProduction;
 import limelight.model.PlayerRecruiter;
 import limelight.model.api.FakeCastingDirector;
+import limelight.model.api.FakePlayer;
 import limelight.model.api.FakePropProxy;
+import limelight.model.api.Player;
 import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.*;
@@ -680,7 +682,7 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void findByNameWithNestedStruture() throws Exception
+  public void findByNameWithNestedStructure() throws Exception
   {
     PropPanel fee = new PropPanel(new FakePropProxy(), Util.toMap("name", "fee"));
     PropPanel fie = new PropPanel(new FakePropProxy(), Util.toMap("name", "fie"));
@@ -698,5 +700,18 @@ public class PropPanelTest extends Assert
     assertEquals(Arrays.asList(fie), fee.findByName("fie"));
     assertEquals(Arrays.asList(foe), fee.findByName("foe"));
     assertEquals(Arrays.asList(fum, fum2), fee.findByName("fum"));
+  }
+
+  @Test
+  public void addingPlayers() throws Exception
+  {
+    final FakePlayer player1 = new FakePlayer("One Player");
+    final FakePlayer player2 = new FakePlayer("Player Two");
+    panel.addPlayer(player1);
+    panel.addPlayer(player2);
+
+    List<Player> players = panel.getPlayers();
+    assertEquals(player1, players.get(0));
+    assertEquals(player2, players.get(1));
   }
 }
