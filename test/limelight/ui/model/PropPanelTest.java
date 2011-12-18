@@ -5,12 +5,10 @@ package limelight.ui.model;
 
 import limelight.LimelightException;
 import limelight.io.FakeFileSystem;
+import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.FakeProduction;
-import limelight.model.PlayerRecruiter;
-import limelight.model.api.FakeCastingDirector;
-import limelight.model.api.FakePlayer;
-import limelight.model.api.FakePropProxy;
-import limelight.model.api.Player;
+import limelight.model.CastingDirector;
+import limelight.model.api.*;
 import limelight.styles.*;
 import limelight.ui.Panel;
 import limelight.ui.*;
@@ -46,7 +44,7 @@ public class PropPanelTest extends Assert
   private RichStyle style3;
   private RichStyle style4;
   private RichStyle style5;
-  private FakeCastingDirector castingDirector;
+  private FakePlayerRecruiter playerRecruiter;
 
   @Before
   public void setUp() throws Exception
@@ -56,13 +54,13 @@ public class PropPanelTest extends Assert
     panel = new PropPanel(prop);
     root.add(panel);
 
-    castingDirector = new FakeCastingDirector();
-    root.setCastingDirector(castingDirector);
+    playerRecruiter = new FakePlayerRecruiter();
+    root.setPlayerRecruiter(playerRecruiter);
     root.setProduction(new FakeProduction());
     root.setStage(new MockStage());
     style = panel.getStyle();
 
-    PlayerRecruiter.installed();
+    CastingDirector.installed();
     FakeFileSystem.installed();
     Context.instance().bufferedImageCache = new SimpleCache<Panel, BufferedImage>();
   }
@@ -589,7 +587,7 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
+    List<String> panelCastings = playerRecruiter.recruits.get(panel.getProxy());
     assertEquals(1, panelCastings.size());
     assertEquals("test/players/jumpy", panelCastings.get(0));
   }
@@ -602,7 +600,7 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
+    List<String> panelCastings = playerRecruiter.recruits.get(panel.getProxy());
     assertEquals(3, panelCastings.size());
     assertEquals("test/players/jumpy", panelCastings.get(0));
     assertEquals("test/players/itchy", panelCastings.get(1));
@@ -617,7 +615,7 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = castingDirector.castings.get(panel.getProxy());
+    List<String> panelCastings = playerRecruiter.recruits.get(panel.getProxy());
     assertEquals(1, panelCastings.size());
     assertEquals("test/players/jumpy", panelCastings.get(0));
   }

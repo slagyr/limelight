@@ -9,7 +9,7 @@ import limelight.background.CacheCleanerLoop;
 import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
 import limelight.io.TempDirectory;
-import limelight.model.PlayerRecruiter;
+import limelight.model.CastingDirector;
 import limelight.model.Studio;
 import limelight.os.OS;
 import limelight.os.UnsupportedOS;
@@ -18,7 +18,6 @@ import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
 import limelight.ui.model.AlertFrameManager;
 import limelight.util.Opts;
-import limelight.util.Version;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -164,7 +163,7 @@ public class Boot
       context().studio = new Studio();
 
     if(context().playerRecruiter == null)
-      context().playerRecruiter = new PlayerRecruiter();
+      context().playerRecruiter = new CastingDirector();
   }
 
 }

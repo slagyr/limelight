@@ -8,7 +8,7 @@ import limelight.LimelightException;
 import limelight.Log;
 import limelight.events.Event;
 import limelight.events.EventAction;
-import limelight.model.api.CastingDirector;
+import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.Player;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
@@ -529,8 +529,8 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       if(!playerName.isEmpty())
       {
         final Scene scene = getRoot();
-        final CastingDirector director = scene.getCastingDirector();
-        Context.instance().playerRecruiter.recruit(this, playerName, director);
+        final PlayerRecruiter director = scene.getPlayerRecruiter();
+        Context.instance().playerRecruiter.castRole(this, playerName, director);
       }
     }
   }

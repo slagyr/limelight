@@ -5,28 +5,26 @@ package limelight.java;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.model.api.CastingDirector;
+import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.Player;
 import limelight.model.api.PropProxy;
-import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
 import limelight.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 
-public class JavaCastingDirector implements CastingDirector
+public class JavaPlayerRecruiter implements PlayerRecruiter
 {
   private ClassLoader classLoader;
 
-  public JavaCastingDirector(ClassLoader classLoader)
+  public JavaPlayerRecruiter(ClassLoader classLoader)
   {
     this.classLoader = classLoader;
   }
 
-  public boolean hasPlayer(String playerName, String playersPath)
+  public boolean canRecruit(String playerName, String playersPath)
   {
     return Context.fs().exists(playerFilePath(playerName, playersPath));
   }
@@ -36,28 +34,22 @@ public class JavaCastingDirector implements CastingDirector
     return playersPath + "/" + StringUtil.camalize(playerName) + ".xml";
   }
 
-  public void castPlayer(PropProxy propProxy, String playerName, String playersPath)
+  public Player recruitPlayer(PropProxy propProxy, String playerName, String playersDir)
   {
-    String playerPath = playerFilePath(playerName, playersPath);
+    String playerPath = playerFilePath(playerName, playersDir);
     final Document document = Xml.loadDocumentFrom(playerPath);
     final Element playerElement = document.getDocumentElement();
-    final Player player = toPlayer(playerElement, classLoader, "limelight.ui.events.panel.");
-
-    if(propProxy instanceof JavaProp)
-      ((JavaProp) propProxy).addPlayer(player);
-
-    final PropPanel prop = (PropPanel) propProxy.getPeer();
-    player.cast(prop);
+    return toPlayer(playerPath, playerElement, classLoader, "limelight.ui.events.panel.");
   }
 
-  public static JavaPlayer toPlayer(Element element, ClassLoader classLoader, String eventsPrefix)
+  public static JavaPlayer toPlayer(String path, Element element, ClassLoader classLoader, String eventsPrefix)
   {
     String className = element.getAttribute("class");
     if(className == null || className.length() == 0)
       return null;
 
     final Object rawPlayer = resolvePlayer(classLoader, className);
-    return new JavaPlayer(rawPlayer, element, eventsPrefix);
+    return new JavaPlayer(rawPlayer, path, element, eventsPrefix);
   }
 
   public static Object resolvePlayer(ClassLoader loader, String name)

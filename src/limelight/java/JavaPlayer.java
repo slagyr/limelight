@@ -1,5 +1,6 @@
 package limelight.java;
 
+import limelight.Context;
 import limelight.LimelightException;
 import limelight.events.Event;
 import limelight.events.EventHandler;
@@ -13,12 +14,14 @@ import java.lang.reflect.Method;
 public class JavaPlayer implements Player
 {
   private Object player;
+  private String path;
   private Element element;
   private String eventsPrefix;
 
-  public JavaPlayer(Object obj, Element element, String eventsPrefix)
+  public JavaPlayer(Object obj, String path, Element element, String eventsPrefix)
   {
     this.player = obj;
+    this.path = path;
     this.element = element;
     this.eventsPrefix = eventsPrefix;
   }
@@ -30,6 +33,16 @@ public class JavaPlayer implements Player
     invokeCastEvents(prop, element);
     element = null;
     eventsPrefix = null;
+  }
+
+  public String getPath()
+  {
+    return path;
+  }
+
+  public String getName()
+  {
+    return Context.fs().filename(path);
   }
 
   private void invokeCastEvents(PropPanel prop, Element playerElement)

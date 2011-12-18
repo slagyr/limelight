@@ -5,20 +5,19 @@ package limelight.java;
 
 import limelight.model.api.SceneProxy;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.Scene;
 import limelight.ui.model.ScenePanel;
 
 import java.util.Map;
 
 public class JavaScene extends JavaProp implements SceneProxy
 {
-  private JavaCastingDirector castingDirector;
+  private JavaPlayerRecruiter castingDirector;
 
   public JavaScene(JavaProduction production, Map<String, Object> options)
   {
     super(options);
-    castingDirector = new JavaCastingDirector(production.getPlayerLoader());
-    getPeer().setCastingDirector(castingDirector);
+    castingDirector = new JavaPlayerRecruiter(production.getPlayerLoader());
+    getPeer().setPlayerRecruiter(castingDirector);
     getPeer().setProduction(production);
   }
 

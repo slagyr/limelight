@@ -13,6 +13,7 @@ import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
@@ -31,6 +32,19 @@ public class Xml
     catch(ParserConfigurationException e)
     {
       throw new LimelightException(e);
+    }
+  }
+
+  public static Document stringToDoc(String xmlContent)
+  {
+    try
+    {
+      final InputStream xmlInput = new ByteArrayInputStream(xmlContent.getBytes());
+      return builder.parse(xmlInput);
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException("Error parsing XML content", e);
     }
   }
 

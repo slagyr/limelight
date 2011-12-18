@@ -6,7 +6,7 @@ package limelight.java;
 import limelight.events.EventAction;
 import limelight.io.FakeFileSystem;
 import limelight.io.StreamReader;
-import limelight.model.PlayerRecruiter;
+import limelight.model.CastingDirector;
 import limelight.model.Stage;
 import limelight.model.api.Player;
 import limelight.model.events.ProductionCreatedEvent;
@@ -40,7 +40,7 @@ public class JavaProductionTest
   {
     fs = FakeFileSystem.installed();
     production = new JavaProduction("/testProduction");
-    PlayerRecruiter.installed();
+    CastingDirector.installed();
   }
 
   @Test

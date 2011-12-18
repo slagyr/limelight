@@ -6,7 +6,7 @@ package limelight.ui.model;
 import limelight.*;
 import limelight.model.Production;
 import limelight.model.Stage;
-import limelight.model.api.CastingDirector;
+import limelight.model.api.PlayerRecruiter;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
@@ -31,7 +31,7 @@ public class ScenePanel extends PropPanel implements Scene
   private boolean shouldAllowClose = true;
   private ButtonGroupCache buttonGroups = new ButtonGroupCache();
   private String pathRelativeToProduction;
-  private CastingDirector castingDirector;
+  private PlayerRecruiter playerRecruiter;
 
   public ScenePanel(PropProxy propProxy)
   {
@@ -301,14 +301,14 @@ public class ScenePanel extends PropPanel implements Scene
     super.addOptions(newOptions);
   }
 
-  public void setCastingDirector(CastingDirector castingDirector)
+  public void setPlayerRecruiter(PlayerRecruiter playerRecruiter)
   {
-    this.castingDirector = castingDirector;
+    this.playerRecruiter = playerRecruiter;
   }
 
-  public CastingDirector getCastingDirector()
+  public PlayerRecruiter getPlayerRecruiter()
   {
-    return castingDirector;
+    return playerRecruiter;
   }
 
   private static class SceneLayout implements Layout

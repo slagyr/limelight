@@ -5,8 +5,8 @@ package limelight.ui.model;
 
 import limelight.model.Production;
 import limelight.model.Stage;
-import limelight.model.api.CastingDirector;
-import limelight.model.api.FakeCastingDirector;
+import limelight.model.api.FakePlayerRecruiter;
+import limelight.model.api.PlayerRecruiter;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
 
@@ -23,7 +23,7 @@ public class FakeScene extends MockProp implements Scene
   public boolean shouldAllowClose;
   private Stage stage;
   public boolean visible;
-  public CastingDirector castingDirector = new FakeCastingDirector();
+  public PlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
 
   @Override
   public Scene getRoot()
@@ -97,9 +97,9 @@ public class FakeScene extends MockProp implements Scene
     return stage != null && stage.isVisible();
   }
 
-  public CastingDirector getCastingDirector()
+  public PlayerRecruiter getPlayerRecruiter()
   {
-    return castingDirector;
+    return playerRecruiter;
   }
 
   public String getAbsoluteName()

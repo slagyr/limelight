@@ -14,9 +14,10 @@ public class Images
   {
     try
     {
-      return ImageIO.read(resolve(path));
+      final URL url = resolve(path);
+      return ImageIO.read(url);
     }
-    catch(IOException e)
+    catch(Exception e)
     {
       System.err.println("Failed to load image: " + path);
       e.printStackTrace();

@@ -10,7 +10,7 @@ require 'limelight/production'
 describe Limelight::Prop do
 
   before(:each) do
-    @casting_director = mock("casting_director", :castPlayer => nil, :hasPlayer => false)
+    @casting_director = mock("casting_director", :recruitPlayer => nil, :canRecruit => false)
     @scene = Limelight::Scene.new(:casting_director => @casting_director)
     @prop = Limelight::Prop.new(:id => "root", :name => "root_class")
     @scene.peer.illuminate

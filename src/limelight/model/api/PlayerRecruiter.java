@@ -3,8 +3,8 @@
 
 package limelight.model.api;
 
-public interface CastingDirector
+public interface PlayerRecruiter
 {
-  boolean hasPlayer(String playerName, String playersPath);
-  void castPlayer(PropProxy propProxy, String playerName, String playersPath);
+  boolean canRecruit(String playerName, String playersPath);
+  Player recruitPlayer(PropProxy propProxy, String playerName, String playersPath);
 }

@@ -5,7 +5,7 @@ package limelight;
 
 import limelight.io.FileSystem;
 import limelight.io.TempDirectory;
-import limelight.model.PlayerRecruiter;
+import limelight.model.CastingDirector;
 import limelight.model.Studio;
 import limelight.ui.BufferedImagePool;
 import limelight.ui.KeyboardFocusManager;
@@ -41,7 +41,7 @@ public class Context
   public Studio studio;
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
   public OS os;
-  public PlayerRecruiter playerRecruiter;
+  public CastingDirector playerRecruiter;
   public boolean isShutdown;
   private boolean isShuttingDown;
 
