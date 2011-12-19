@@ -20,7 +20,7 @@
          [:great-grand-child {:id "great-grand-child3"}]]]
        [:child {:id "child2"}
         [:grand-child {:id "grand-child3"}]]]))
-    (.setCastingDirector @(.peer scene) (limelight.model.api.FakeCastingDirector.))
+    (.setPlayerRecruiter @(.peer scene) (limelight.model.api.FakePlayerRecruiter.))
     (.illuminate @(.peer scene))
     scene))
 

@@ -7,8 +7,7 @@
     [limelight.spec-helper]
     [limelight.production])
   (:import
-    [limelight.production Production]
-    [limelight.casting CastingDirector]))
+    [limelight.production Production]))
 
 (defn actions-for [production event-class]
   (-> production

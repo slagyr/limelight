@@ -21,8 +21,8 @@ describe Limelight::Scene do
     @scene.button_groups.class.should == Java::limelight.ui.ButtonGroupCache
   end
 
-  it "has a casting diretor" do
-    @scene.casting_director.should_not == nil
+  it "has a player recruiter" do
+    @scene.player_recruiter.should_not == nil
   end
 
   it "adds on_scene_opened actions" do
