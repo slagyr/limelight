@@ -8,7 +8,7 @@
     [limelight.scene])
   (:import
     [limelight.scene Scene]
-    [limelight.casting CastingDirector]))
+    [limelight.casting PlayerRecruiter]))
 
 (describe "Scene"
 
@@ -20,8 +20,8 @@
       (should-not= nil @(.peer scene))
       (should= @(.peer scene) (.getPeer scene))
       (should= limelight.ui.model.ScenePanel (type @(.peer scene)))
-      (should= CastingDirector (type @(.casting-director scene)))
-      (should= @(.casting-director scene) (.getCastingDirector @(.peer scene)))))
+      (should= PlayerRecruiter (type @(.player-recruiter scene)))
+      (should= @(.player-recruiter scene) (.getPlayerRecruiter @(.peer scene)))))
   )
 
 (run-specs)

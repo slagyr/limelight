@@ -23,9 +23,9 @@
 (defn- player-path [resource-root relative-player-path]
   (resource-path resource-root relative-player-path))
 
-(defn- cast-player [player-ns prop]
+(defn- cast-player [player-ns prop-panel]
   (let [event-actions @(ns-resolve player-ns '*event-actions*)
-        event-handler (.getEventHandler @(.peer prop))]
+        event-handler (.getEventHandler prop-panel)]
     (if-let [on-cast-actions (:on-cast @event-actions)]
       (doseq [action on-cast-actions]
         (.invoke action nil)))
@@ -37,16 +37,30 @@
 (defn- player-path [player-name players-path]
   (str players-path "/" (limelight.util.StringUtil/underscore player-name) ".clj"))
 
-(deftype CastingDirector [scene cast]
-  limelight.model.api.CastingDirector
-  (hasPlayer [this player-name players-path]
+(deftype Player [path player-ns]
+  limelight.model.api.Player
+  (cast [this prop-panel]
+    (cast-player player-ns prop-panel))
+  (getPath [this]
+    (.path this))
+  (getName [this]
+    (limelight.util.StringUtil/spearcase (.baseName (limelight.Context/fs) path))))
+
+(defn new-player [path player-ns]
+  (Player. path player-ns))
+
+(deftype PlayerRecruiter [scene cast]
+  limelight.model.api.PlayerRecruiter
+  (canRecruit [this player-name players-path]
     (if (@cast player-name)
       true
       (.exists (limelight.Context/fs) (player-path player-name players-path))))
-  (castPlayer [this prop player-name players-path]
-    (if-let [player (or (@cast player-name) (load-player-from this (player-path player-name players-path) player-name))]
-        (cast-player player prop))))
+  (recruitPlayer [this player-name players-path]
+    (let [player-path (player-path player-name players-path)
+          player-ns (or (@cast player-name) (load-player-from this player-path player-name))]
+      (when player-ns
+        (new-player player-path player-ns)))))
 
-(defn new-casting-director [scene]
-  (CastingDirector. scene (atom {})))
+(defn new-player-recruiter [scene]
+  (PlayerRecruiter. scene (atom {})))
 

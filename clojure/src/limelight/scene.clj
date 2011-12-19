@@ -3,11 +3,11 @@
 
 (ns limelight.scene
   (:use
-    [limelight.casting :only (new-casting-director)]
+    [limelight.casting :only (new-player-recruiter)]
     [limelight.util :only (map-for-java)]
     [limelight.common]))
 
-(deftype Scene [peer casting-director]
+(deftype Scene [peer player-recruiter]
 
   limelight.model.api.SceneProxy
   (getPeer [this] @peer)
@@ -15,16 +15,16 @@
 
   ResourceRoot
   (resource-path [this resource]
-    (.pathTo (limelight.Context/fs) (.getPath peer) resource)))
+    (.pathTo (limelight.Context/fs) (.getPath @peer) resource)))
 
 
 (defn new-scene [options]
   (let [scene (Scene. (atom nil) (atom nil))
-        casting-director (new-casting-director scene)
+        player-recruiter (new-player-recruiter scene)
         peer (limelight.ui.model.ScenePanel. scene)]
     (reset! (.peer scene) peer)
-    (reset! (.casting-director scene) casting-director)
+    (reset! (.player-recruiter scene) player-recruiter)
     (.addOptions peer (map-for-java options))
-    (.setCastingDirector peer casting-director)
+    (.setPlayerRecruiter peer player-recruiter)
     scene))
 

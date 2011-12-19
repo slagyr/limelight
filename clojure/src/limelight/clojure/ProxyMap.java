@@ -5,6 +5,8 @@ package limelight.clojure;
 
 import clojure.lang.*;
 import limelight.util.Opts;
+
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -15,14 +17,14 @@ import java.util.Map;
  */
 public class ProxyMap extends APersistentMap
 {
-  private Opts map;
+  private HashMap<String, Object> map;
 
   public ProxyMap()
   {
     map = new Opts();
   }
 
-  public ProxyMap(Opts map)
+  public ProxyMap(HashMap<String, Object> map)
   {
     this.map = map;
   }

@@ -68,4 +68,15 @@ public class StringUtilTest
     assertEquals("one_two_three", StringUtil.underscore("one-two-three"));
     assertEquals("one_two_three", StringUtil.underscore("one two three"));
   }
+
+  @Test
+  public void spearcase() throws Exception
+  {
+    assertEquals("class-name", StringUtil.spearcase("class_name"));
+    assertEquals("class-name", StringUtil.spearcase("ClassName"));
+    assertEquals("one-two-three", StringUtil.spearcase("OneTwoThree"));
+    assertEquals("one", StringUtil.spearcase("One"));
+    assertEquals("one-two-three", StringUtil.spearcase("one_two-three"));
+    assertEquals("one-two-three", StringUtil.spearcase("one two three"));
+  }
 }

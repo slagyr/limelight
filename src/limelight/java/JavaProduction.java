@@ -99,10 +99,11 @@ public class JavaProduction extends Production
   {
     try
     {
-      for(Method method : player.getClass().getMethods())
+      final Object utilities = getBackstage().get("utilities");
+      for(Method method : utilities.getClass().getMethods())
       {
         if(method.getName().equals(name))
-          return method.invoke(player, args);
+          return method.invoke(utilities, args);
       }
     }
     catch(Exception e)

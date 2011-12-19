@@ -11,7 +11,7 @@
     [limelight.prop :only (new-prop)]
     [limelight.production :only (new-production)])
   (:import
-    [limelight.casting CastingDirector]))
+    [limelight.casting PlayerRecruiter]))
 
 (defn setup-files [fs options]
   (doall (map (fn [[filename content]] (.createTextFile fs filename content)) options)))
@@ -30,32 +30,39 @@
   (with production (new-production (limelight.model.FakeProduction. "MockProduction")))
   (with scene (new-scene {:path "root"}))
   (with prop (first (add-props @scene (new-prop {}))))
-  (with casting-director (new-casting-director @scene))
+  (with player-recruiter (new-player-recruiter @scene))
   (with fs (limelight.io.FakeFileSystem/installed))
 
   (before
     (do
       @fs ; load the file system
-      (.setCastingDirector @(.peer @scene) (limelight.model.api.FakeCastingDirector.))
+      (.setPlayerRecruiter @(.peer @scene) (limelight.model.api.FakePlayerRecruiter.))
       (.setProduction @(.peer @scene) (.peer @production)))
     (.setStage @(.peer @scene) (.getDefaultStage (.peer (.getTheater @production)))))
 
   (unless-headless
 
     (it "can be created"
-      (should= {} @(.cast @casting-director)))
+      (should= {} @(.cast @player-recruiter)))
 
     (it "has limelight lineage"
-      (should (isa? CastingDirector limelight.model.api.CastingDirector)))
+      (should (isa? PlayerRecruiter limelight.model.api.PlayerRecruiter)))
+
+    (it "creates players with the correct path and ns"
+      (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
+      (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
+        (should= "test-player" (.getName player))
+        (should= "/root/players/test_player.clj" (.getPath player))))
 
     (it "includes one player from scene"
       (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
-      (.castPlayer @casting-director @prop "test-player" "/root/players")
-      (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent))))
+      (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
+        (.cast player @(.peer @prop))
+        (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent)))))
 
     (it "includes one player from production"
       (setup-files @fs {"/MockProduction/players/test_player.clj" "(on-mouse-clicked [_])"})
-      (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
+      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
       (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent))))
 
     (for [[event name] {(limelight.ui.events.panel.MouseClickedEvent. 0 nil 0) "mouse-clicked"
@@ -78,23 +85,23 @@
       (it (str "handles " name " events")
         (let [actions-before (actions-for @prop (class event))]
           (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-" name " (def *message* \"" name "\"))")})
-          (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
+          (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
           (let [actions-after (actions-for @prop (class event))]
             (should= 1 (- (count actions-after) (count actions-before)))
             (should-not-throw (.dispatch event @(.peer @prop)))
-            (should= name @(ns-resolve (@(.cast @casting-director) "test-player") '*message*))))))
+            (should= name @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*))))))
 
     (it "handles on-cast events"
       (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast [_] (def *message* \"casted\"))")})
-      (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
-      (should= "casted" @(ns-resolve (@(.cast @casting-director) "test-player") '*message*)))
+      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
+      (should= "casted" @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*)))
 
     (it "the bindings are optional"
       (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))")})
-      (.castPlayer @casting-director @prop "test-player" "/MockProduction/players")
-      (should= "casted" @(ns-resolve (@(.cast @casting-director) "test-player") '*message*)))
+      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
+      (should= "casted" @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*)))
 
     )
   )
 
-(run-specs)
+(run-specs :stacktrace true)

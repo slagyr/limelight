@@ -112,21 +112,32 @@ public class StringUtil
   private static Pattern underscoreSeparatorRegex = Pattern.compile("[ |\\-][A-Za-z]");
   public static String underscore(String value)
   {
-    value = gsub(value, mergeRegex, new Gsuber()
+    return changeCase(value, underscoreSeparatorRegex, "_");
+  }
+
+  private static Pattern dashSeparatorRegex = Pattern.compile("[ |_][A-Za-z]");
+  public static String spearcase(String value) {
+    return changeCase(value, dashSeparatorRegex, "-");
+  }
+
+  private static String changeCase(String value, Pattern badSeparaterPattern, final String separator)
+  {
+    value = gsub(value, mergeRegex, new StringUtil.Gsuber()
     {
       public String replacementFor(Matcher matcher)
       {
         final String match = matcher.group();
-        return match.substring(0, 1) + "_" + match.substring(1);
+        return match.substring(0, 1) + separator + match.substring(1);
       }
     });
 
-    value = gsub(value, underscoreSeparatorRegex, new Gsuber(){
+    value = gsub(value, badSeparaterPattern, new StringUtil.Gsuber(){
       public String replacementFor(Matcher matcher)
       {
-        return "_" + matcher.group().substring(1).toLowerCase();
+        return separator + matcher.group().substring(1).toLowerCase();
       }
     });
     return value.toLowerCase();
   }
+
 }
