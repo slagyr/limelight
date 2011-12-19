@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,9 +159,9 @@ public class JavaProductionTest
 
     production.illuminate();
 
-    final Player player = production.getPlayer();
+    final JavaPlayer player = (JavaPlayer)production.getPlayer();
     assertNotNull(player);
-    assertEquals("SamplePlayer", ((JavaPlayer) player).getPlayer().getClass().getName());
+    assertEquals("SamplePlayer", player.getPlayerClass().getName());
   }
 
   @Test
@@ -171,13 +172,19 @@ public class JavaProductionTest
 
     production.illuminate();
 
-    final JavaPlayer playerWrapper = (JavaPlayer)production.getPlayer();
+    final JavaPlayer player = (JavaPlayer)production.getPlayer();
     final List<EventAction> onCreatedActions = production.getEventHandler().getActions(ProductionCreatedEvent.class);
     assertEquals(1, onCreatedActions.size());
 
     new ProductionCreatedEvent().dispatch(production);
-    final Object player = playerWrapper.getPlayer();
-    assertEquals(1, player.getClass().getField("invocations").get(player));
+
+    assertEquals(1, player.getPlayerClass().getField("invocations").get(lastSamplePlayer(player)));
+  }
+
+  private Object lastSamplePlayer(JavaPlayer player) throws NoSuchFieldException, IllegalAccessException
+  {
+    final Field lastInstanceField = player.getPlayerClass().getField("lastInstance");
+    return lastInstanceField.get(player.getPlayerClass());
   }
 
   public static void writeSamplePlayerTo(OutputStream outputStream) throws IOException

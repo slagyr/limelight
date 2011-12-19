@@ -163,8 +163,7 @@ public class FileSystem
 
   public String baseName(String path)
   {
-    final File file = new File(path);
-    String name = file.getName();
+    String name = filename(path);
     final int extensionIndex = name.lastIndexOf(".");
     if(extensionIndex == -1)
       return name;

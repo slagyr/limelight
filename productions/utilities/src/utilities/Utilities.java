@@ -43,6 +43,7 @@ public class Utilities
   public void init(ProductionEvent event)
   {
     production = event.getProduction();
+    production.getBackstage().put("utilities", this);
     production.setAllowClose(false);
   }
 

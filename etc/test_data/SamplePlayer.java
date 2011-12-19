@@ -4,6 +4,12 @@ public class SamplePlayer
 {
   public int invocations;
   public Event event;
+  public static SamplePlayer lastInstance;
+
+  public SamplePlayer()
+  {
+    lastInstance = this;
+  }
 
   public void sampleAction()
   {

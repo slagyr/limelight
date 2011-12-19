@@ -47,7 +47,7 @@ public class JavaProduction extends Production
 
     player = JavaPlayerRecruiter.toPlayer(productionPlayerPath, productionElement, this.playerLoader, "limelight.model.events.");
     if(player != null)
-      player.applyEvents(productionElement, "limelight.model.events.", getEventHandler());
+      player.cast(getEventHandler());
   }
 
   @Override

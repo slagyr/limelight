@@ -587,9 +587,8 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = playerRecruiter.recruits.get(panel.getProxy());
-    assertEquals(1, panelCastings.size());
-    assertEquals("test/players/jumpy", panelCastings.get(0));
+    assertEquals(1, panel.getPlayers().size());
+    assertEquals("test/players/jumpy", panel.getPlayers().get(0).getPath());
   }
 
   @Test
@@ -600,11 +599,10 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = playerRecruiter.recruits.get(panel.getProxy());
-    assertEquals(3, panelCastings.size());
-    assertEquals("test/players/jumpy", panelCastings.get(0));
-    assertEquals("test/players/itchy", panelCastings.get(1));
-    assertEquals("test/players/scratchy", panelCastings.get(2));
+    assertEquals(3, panel.getPlayers().size());
+    assertEquals("test/players/jumpy", panel.getPlayers().get(0).getPath());
+    assertEquals("test/players/itchy", panel.getPlayers().get(1).getPath());
+    assertEquals("test/players/scratchy", panel.getPlayers().get(2).getPath());
   }
 
   @Test
@@ -615,9 +613,8 @@ public class PropPanelTest extends Assert
 
     panel.illuminate();
 
-    List<String> panelCastings = playerRecruiter.recruits.get(panel.getProxy());
-    assertEquals(1, panelCastings.size());
-    assertEquals("test/players/jumpy", panelCastings.get(0));
+    assertEquals(1, panel.getPlayers().size());
+    assertEquals("test/players/jumpy", panel.getPlayers().get(0).getPath());
   }
 
   @Test

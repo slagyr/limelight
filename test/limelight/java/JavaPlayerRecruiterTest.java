@@ -23,7 +23,6 @@ public class JavaPlayerRecruiterTest
 {
   private FakeFileSystem fs;
   private JavaPlayerRecruiter recruiter;
-  private JavaScene scene;
 
   @Before
   public void setUp() throws Exception
@@ -31,12 +30,6 @@ public class JavaPlayerRecruiterTest
     CastingDirector.installed();
     fs = FakeFileSystem.installed();
     fs.createTextFile("/testProduction/production.xml", "<production/>");
-    JavaProduction production = new JavaProduction("/testProduction");
-    production.illuminate();
-    ScenePanel scenePeer = (ScenePanel) production.loadScene("aScene", new Opts());
-    scenePeer.setPlayerRecruiter(new FakePlayerRecruiter());
-    scenePeer.illuminate();
-    scene = (JavaScene) scenePeer.getProxy();
     recruiter = new JavaPlayerRecruiter(new PlayerClassLoader("/testProduction/classes"));
   }
 
@@ -46,11 +39,21 @@ public class JavaPlayerRecruiterTest
     JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
     fs.createTextFile("/testProduction/aScene/players/foo.xml", "<player class='SamplePlayer'/>");
 
-    final JavaProp prop = new JavaProp(Util.toMap("name", "foo"));
-    scene.add(prop);
-    final JavaPlayer player = (JavaPlayer)recruiter.recruitPlayer(prop, "foo", "/testProduction/aScene/players");
+    final JavaPlayer player = (JavaPlayer)recruiter.recruitPlayer("foo", "/testProduction/aScene/players");
 
     assertNotNull(player);
-    assertEquals("SamplePlayer", player.getPlayer().getClass().getName());
+    assertEquals("SamplePlayer", player.getPlayerClass().getName());
+  }
+
+  @Test
+  public void cachesKnownPlayers() throws Exception
+  {
+    JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
+    fs.createTextFile("/testProduction/aScene/players/foo.xml", "<player class='SamplePlayer'/>");
+
+    final Player player1 = recruiter.recruitPlayer("foo", "/testProduction/aScene/players");
+    final Player player2 = recruiter.recruitPlayer("foo", "/testProduction/aScene/players");
+
+    assertSame(player1, player2);
   }
 }

@@ -7,17 +7,15 @@ import limelight.Context;
 import limelight.LimelightException;
 import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.Player;
-import limelight.model.api.PropProxy;
-import limelight.ui.model.PropPanel;
 import limelight.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import java.lang.reflect.Constructor;
+import java.util.HashMap;
 
 public class JavaPlayerRecruiter implements PlayerRecruiter
 {
   private ClassLoader classLoader;
+  private HashMap<String, JavaPlayer> playerCache = new HashMap<String, JavaPlayer>();
 
   public JavaPlayerRecruiter(ClassLoader classLoader)
   {
@@ -34,12 +32,18 @@ public class JavaPlayerRecruiter implements PlayerRecruiter
     return playersPath + "/" + StringUtil.camalize(playerName) + ".xml";
   }
 
-  public Player recruitPlayer(PropProxy propProxy, String playerName, String playersDir)
+  public Player recruitPlayer(String playerName, String playersDir)
   {
     String playerPath = playerFilePath(playerName, playersDir);
-    final Document document = Xml.loadDocumentFrom(playerPath);
-    final Element playerElement = document.getDocumentElement();
-    return toPlayer(playerPath, playerElement, classLoader, "limelight.ui.events.panel.");
+    if(!playerCache.containsKey(playerPath))
+    {
+      final Document document = Xml.loadDocumentFrom(playerPath);
+      final Element playerElement = document.getDocumentElement();
+      final JavaPlayer player = toPlayer(playerPath, playerElement, classLoader, "limelight.ui.events.panel.");
+      if(player != null)
+        playerCache.put(playerPath, player);
+    }
+    return playerCache.get(playerPath);
   }
 
   public static JavaPlayer toPlayer(String path, Element element, ClassLoader classLoader, String eventsPrefix)
@@ -48,19 +52,17 @@ public class JavaPlayerRecruiter implements PlayerRecruiter
     if(className == null || className.length() == 0)
       return null;
 
-    final Object rawPlayer = resolvePlayer(classLoader, className);
-    return new JavaPlayer(rawPlayer, path, element, eventsPrefix);
+    final Class<?> playerClass = resolveClass(classLoader, className);
+    return new JavaPlayer(playerClass, path, element, eventsPrefix);
   }
 
-  public static Object resolvePlayer(ClassLoader loader, String name)
+  private static Class<?> resolveClass(ClassLoader classLoader, String className)
   {
     try
     {
-      Class playerClass = loader.loadClass(name);
-      final Constructor constructor = playerClass.getConstructor();
-      return constructor.newInstance();
+      return classLoader.loadClass(className);
     }
-    catch(Exception e)
+    catch(ClassNotFoundException e)
     {
       throw new LimelightException(e);
     }

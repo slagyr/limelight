@@ -15,46 +15,55 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+import java.lang.reflect.Field;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class JavaPlayerTest
 {
-  public Object playerObj;
   public PropPanel prop;
+  private Class<?> samplePlayerClass;
 
   @Before
   public void setUp() throws Exception
   {
     FakeFileSystem fs = FakeFileSystem.installed();
     JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
-    playerObj = JavaPlayerRecruiter.resolvePlayer(new PlayerClassLoader("/testProduction/classes"), "SamplePlayer");
+    samplePlayerClass = new PlayerClassLoader("/testProduction/classes").loadClass("SamplePlayer");
     prop = new PropPanel(new FakePropProxy());
+  }
+
+  private Object lastSamplePlayer() throws NoSuchFieldException, IllegalAccessException
+  {
+    final Field lastInstanceField = samplePlayerClass.getField("lastInstance");
+    return lastInstanceField.get(samplePlayerClass);
   }
 
   @Test
   public void playerCanAddEvents() throws Exception
   {
     final Document doc = Xml.stringToDoc("<player class='SamplePlayer'><onMouseClicked>sampleAction</onMouseClicked></player>");
-    final Player player = new JavaPlayer(playerObj, "/testProduction/aScene/players/foo.xml", doc.getDocumentElement(), "limelight.ui.events.panel.");
+    final Player player = new JavaPlayer(samplePlayerClass, "/testProduction/aScene/players/foo.xml", doc.getDocumentElement(), "limelight.ui.events.panel.");
 
-    player.cast(prop);
+    Object playerObj = player.cast(prop);
 
+    assertEquals("SamplePlayer", playerObj.getClass().getName());
     assertEquals(1, prop.getEventHandler().getActions(MouseClickedEvent.class).size());
     new MouseClickedEvent(0, null, 1).dispatch(prop);
-    assertEquals(1, playerObj.getClass().getField("invocations").get(playerObj));
+    assertEquals(1, samplePlayerClass.getField("invocations").get(lastSamplePlayer()));
   }
 
   @Test
   public void onCastEvent() throws Exception
   {
     final Document doc = Xml.stringToDoc("<player class='SamplePlayer'><onCast>sampleActionWithEvent</onCast></player>");
-    final Player player = new JavaPlayer(playerObj, "/testProduction/aScene/players/foo.xml", doc.getDocumentElement(), "limelight.ui.events.panel.");
+    final Player player = new JavaPlayer(samplePlayerClass, "/testProduction/aScene/players/foo.xml", doc.getDocumentElement(), "limelight.ui.events.panel.");
 
     player.cast(prop);
 
     assertEquals(0, prop.getEventHandler().getActions(CastEvent.class).size());
-    assertEquals(1, playerObj.getClass().getField("invocations").get(playerObj));
-    assertEquals(CastEvent.class, playerObj.getClass().getField("event").get(playerObj).getClass());
+    assertEquals(1, samplePlayerClass.getField("invocations").get(lastSamplePlayer()));
+    assertEquals(CastEvent.class, samplePlayerClass.getField("event").get(lastSamplePlayer()).getClass());
   }
 }

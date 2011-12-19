@@ -6,5 +6,5 @@ package limelight.model.api;
 public interface PlayerRecruiter
 {
   boolean canRecruit(String playerName, String playersPath);
-  Player recruitPlayer(PropProxy propProxy, String playerName, String playersPath);
+  Player recruitPlayer(String playerName, String playersPath);
 }

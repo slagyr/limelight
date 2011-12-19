@@ -10,9 +10,29 @@ module Limelight
       end
     end
 
-    def initialize
+    def initialize(player_path)
+      @path = player_path
       @__event_cache = {}
     end
+
+    # implements limelight.model.api.Player
+
+    def cast(prop_panel)
+      prop = prop_panel.proxy
+      unless prop.is_a?(self)
+        prop.extend(self)
+      end
+    end
+
+    def path
+      @path
+    end
+    alias getPath path
+
+    def name
+      Java::limelight.Context.fs().baseName(@path)
+    end
+    alias getName name
 
     def __add_action(type, action)
       actions = @__event_cache[type]

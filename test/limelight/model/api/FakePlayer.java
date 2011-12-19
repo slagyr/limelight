@@ -13,9 +13,10 @@ public class FakePlayer implements Player
     this.path = path;
   }
 
-  public void cast(PropPanel prop)
+  public Object cast(PropPanel prop)
   {
     castedProp = prop;
+    return "Fake Casted Player Object";
   }
 
   public String getPath()

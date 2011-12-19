@@ -51,7 +51,7 @@ public class CastingDirector
   {
     if(playerRecruiter.canRecruit(playerName, playersPath))
     {
-      final Player player = playerRecruiter.recruitPlayer(panel.getProxy(), playerName, playersPath);
+      final Player player = playerRecruiter.recruitPlayer(playerName, playersPath);
       player.cast(panel);
       panel.addPlayer(player);
       return player;

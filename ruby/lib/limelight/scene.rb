@@ -4,7 +4,7 @@
 require 'limelight/java_util'
 require 'limelight/prop'
 require 'limelight/limelight_exception'
-require 'limelight/casting_director'
+require 'limelight/player_recruiter'
 
 module Limelight
 
@@ -21,12 +21,12 @@ module Limelight
 
     include Java::limelight.model.api.SceneProxy
 
-    attr_reader :casting_director
+    attr_reader :player_recruiter
 
     def initialize(options={})
-      @casting_director = options.delete(:casting_director) || CastingDirector.new
+      @player_recruiter = options.delete(:player_recruiter) || PlayerRecruiter.new
       super(options)
-      @peer.casting_director = @casting_director
+      @peer.player_recruiter = @player_recruiter
       @fs = Java::limelight.Context.fs
     end
 

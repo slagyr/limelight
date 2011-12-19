@@ -9,30 +9,51 @@ import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
 import limelight.util.StringUtil;
 import org.w3c.dom.Element;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 public class JavaPlayer implements Player
 {
-  private Object player;
+  private Class<?> playerClass;
   private String path;
   private Element element;
   private String eventsPrefix;
 
-  public JavaPlayer(Object obj, String path, Element element, String eventsPrefix)
+  public JavaPlayer(Class<?> playerClass, String path, Element element, String eventsPrefix)
   {
-    this.player = obj;
+    this.playerClass = playerClass;
     this.path = path;
     this.element = element;
     this.eventsPrefix = eventsPrefix;
   }
 
-  public void cast(PropPanel prop)
+  public Object instantiatePlayer()
+  {
+    try
+    {
+      final Constructor constructor = playerClass.getConstructor();
+      return constructor.newInstance();
+    }
+    catch(Exception e)
+    {
+      throw new LimelightException(e);
+    }
+  }
+
+  public Object cast(PropPanel prop)
   {
     EventHandler eventHandler = prop.getEventHandler();
-    applyEvents(element, eventsPrefix, eventHandler);
-    invokeCastEvents(prop, element);
-    element = null;
-    eventsPrefix = null;
+    Object player = cast(eventHandler);
+    invokeCastEvents(player, prop, element);
+    return player;
+  }
+
+  public Object cast(EventHandler eventHandler)
+  {
+    Object player = instantiatePlayer();
+    applyEvents(player, element, eventsPrefix, eventHandler);
+    return player;
   }
 
   public String getPath()
@@ -42,10 +63,10 @@ public class JavaPlayer implements Player
 
   public String getName()
   {
-    return Context.fs().filename(path);
+    return Context.fs().baseName(path);
   }
 
-  private void invokeCastEvents(PropPanel prop, Element playerElement)
+  private void invokeCastEvents(Object player, PropPanel prop, Element playerElement)
   {
     final CastEvent castEvent = new CastEvent(prop);
     for(Element child : Xml.loadChildElements(playerElement))
@@ -59,24 +80,24 @@ public class JavaPlayer implements Player
     }
   }
 
-  public void applyEvents(Element element, String eventsPrefix, EventHandler eventHandler)
+  public void applyEvents(Object player, Element element, String eventsPrefix, EventHandler eventHandler)
   {
     for(Element eventElement : Xml.loadChildElements(element))
     {
       String name = eventElement.getNodeName();
       String methodName = eventElement.getTextContent();
-      addEventActionFor(eventsPrefix, name, methodName, eventHandler);
+      addEventActionFor(player, eventsPrefix, name, methodName, eventHandler);
     }
   }
 
-  public void addEventActionFor(String eventPrefix, String eventName, String methodName, EventHandler eventHandler)
+  public void addEventActionFor(Object player, String eventPrefix, String eventName, String methodName, EventHandler eventHandler)
   {
     String eventClassName = eventPrefix + StringUtil.capitalCamalize(eventName.substring(2)) + "Event";
 
     if("limelight.ui.events.panel.CastEvent".equals(eventClassName))
       return;
 
-    Class<? extends Event> eventClass = null;
+    Class<? extends Event> eventClass;
     try
     {
       eventClass = (Class<? extends Event>) Class.forName(eventClassName);
@@ -96,22 +117,16 @@ public class JavaPlayer implements Player
 
   public Method findMethod(String methodName)
   {
-    Method eventMethod = null;
-    for(Method method : player.getClass().getMethods())
+    for(Method method : playerClass.getMethods())
     {
       if(methodName.equals(method.getName()))
-      {
-        eventMethod = method;
-        break;
-      }
+        return method;
     }
-    if(eventMethod == null)
-      throw new NoSuchMethodError(methodName + " for " + player.getClass());
-    return eventMethod;
+    throw new NoSuchMethodError(methodName + " for " + playerClass);
   }
 
-  public Object getPlayer()
+  public Class<?> getPlayerClass()
   {
-    return player;
+    return playerClass;
   }
 }

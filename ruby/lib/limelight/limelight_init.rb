@@ -9,10 +9,9 @@ require 'java'
 require 'limelight.jar'
 require 'ruby-limelight-java.jar'
 
-java_casting_director = Java::limelight.java.JavaCastingDirector
 context = Java::limelight.Context.instance
-context.playerRecruiter = Java::limelight.model.PlayerRecruiter.new
-context.playerRecruiter.builtin_casting_director = java_casting_director.new(JRuby.runtime.jruby_class_loader)
+context.playerRecruiter = Java::limelight.model.CastingDirector.new
+context.playerRecruiter.builtin_player_recruiter = Java::limelight.java.JavaPlayerRecruiter.new(JRuby.runtime.jruby_class_loader)
 
 if Java::java.lang.System.getProperty("limelight.home").nil?
   Java::java.lang.System.setProperty("limelight.home", $LIMELIGHT_HOME)

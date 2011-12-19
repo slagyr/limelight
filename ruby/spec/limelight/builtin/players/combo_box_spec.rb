@@ -9,7 +9,7 @@ require 'limelight/builtin/players'
 describe Limelight::Builtin::Players::ComboBox do
 
   before(:each) do
-    @scene = Limelight::Scene.new(:casting_director => mock("caster"))
+    @scene = Limelight::Scene.new(:player_recruiter => mock("caster"))
     @prop = Limelight::Prop.new(:scene => @scene)
     Limelight::Player.cast(Limelight::Builtin::Players::ComboBox, @prop)
   end

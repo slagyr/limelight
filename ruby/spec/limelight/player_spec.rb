@@ -10,14 +10,19 @@ describe Limelight::Player do
 
   before do
     @prop = Limelight::Prop.new
-    @player = Limelight::Player.new
+    @player = Limelight::Player.new("some/path.rb")
     $RECIPIENT = nil
+  end
+
+  it "has a name and path" do
+    @player.name.should == "path"
+    @player.path.should == "some/path.rb"
   end
 
   it "will call on_cast when extending a prop" do
     @player.module_eval "on_cast { $CAST_PROP = self }"
 
-    Limelight::Player.cast(@player, @prop)
+    @player.cast(@prop.peer)
 
     $CAST_PROP.should == @prop
     @prop.is_a?(@player).should == true
@@ -27,8 +32,8 @@ describe Limelight::Player do
     $CAST_COUNT = 0
     @player.module_eval "on_cast { $CAST_COUNT += 1 }"
 
-    Limelight::Player.cast(@player, @prop)
-    Limelight::Player.cast(@player, @prop)
+    @player.cast(@prop.peer)
+    @player.cast(@prop.peer)
 
     $CAST_COUNT.should == 1
   end
@@ -38,7 +43,7 @@ describe Limelight::Player do
     @player.module_eval "on_cast { $CASTS << self }"
     prop2 = Limelight::Prop.new
 
-    Limelight::Player.cast(@player, @prop)
+    @player.cast(@prop.peer)
     Limelight::Player.cast(@player, prop2)
 
     $CASTS.should == [@prop, prop2]
@@ -54,7 +59,7 @@ describe Limelight::Player do
   ].each do |event|
     it "handles #{event[:name]} actions" do
       @player.module_eval "#{event[:name]} { $RECIPIENT = self }"
-      Limelight::Player.cast(@player, @prop)
+      @player.cast(@prop.peer)
       begin
         event[:klass].new(0, nil, 0).dispatch(@prop.peer)
       rescue StandardError => e
@@ -67,7 +72,7 @@ describe Limelight::Player do
 
   it "handles on_mouse_wheel actions" do
     @player.module_eval "on_mouse_wheel { $RECIPIENT = self }"
-    Limelight::Player.cast(@player, @prop)
+    @player.cast(@prop.peer)
     Java::limelight.ui.events.panel.MouseWheelEvent.new(0, nil, 1, 0, 0, 0).dispatch(@prop.peer)
     $RECIPIENT.should == @prop
   end
@@ -77,7 +82,7 @@ describe Limelight::Player do
   ].each do |event|
     it "handles #{event[:name]} actions" do
       @player.module_eval "#{event[:name]} { $RECIPIENT = self }"
-      Limelight::Player.cast(@player, @prop)
+      @player.cast(@prop.peer)
       event[:klass].new(0, 0, 0).dispatch(@prop.peer)
       $RECIPIENT.should == @prop
     end
@@ -85,7 +90,7 @@ describe Limelight::Player do
 
   it "handles on_char_typed actions" do
     @player.module_eval "on_char_typed { $RECIPIENT = self }"
-    Limelight::Player.cast(@player, @prop)
+    @player.cast(@prop.peer)
     Java::limelight.ui.events.panel.CharTypedEvent.new(0, 0).dispatch(@prop.peer)
     $RECIPIENT.should == @prop
   end
@@ -97,7 +102,7 @@ describe Limelight::Player do
   ].each do |event|
     it "handles #{event[:name]} actions" do
       @player.module_eval "#{event[:name]} { $RECIPIENT = self }"
-      Limelight::Player.cast(@player, @prop)
+      @player.cast(@prop.peer)
       event[:klass].new.dispatch(@prop.peer)
       $RECIPIENT.should == @prop
     end

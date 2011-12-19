@@ -41,8 +41,7 @@ public class UtilitiesTest
     Boot.boot("startBackgroundThreads", false);
     production = new JavaProduction(BuiltinBeacon.getBuiltinProductionsPath() + "/utilities");
     production.open();
-    final JavaPlayer javaPlayer = (JavaPlayer) production.getPlayer();
-    utilities = (Utilities) javaPlayer.getPlayer();
+    utilities = (Utilities) production.getBackstage().get("utilities");
   }
 
   @After
