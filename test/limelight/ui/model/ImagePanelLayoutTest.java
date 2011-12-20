@@ -43,7 +43,9 @@ public class ImagePanelLayoutTest
   @Test
   public void getDimensionsWhenAuto() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    final String filePath = TestUtil.DATA_DIR + "/star.gif";
+    System.err.println("filePath = " + filePath);
+    panel.setImageFile(filePath);
     panel.doLayout();
 
     assertEquals(200, panel.getHeight());
