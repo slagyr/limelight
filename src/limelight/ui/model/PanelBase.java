@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.model.Stage;
 import limelight.ui.Panel;
+import limelight.ui.events.panel.IlluminatedEvent;
 import limelight.ui.events.panel.PanelEventHandler;
 import limelight.util.Box;
 
@@ -297,6 +298,7 @@ public abstract class PanelBase implements Panel
   public void illuminate()
   {
     illuminated = true;
+    new IlluminatedEvent(this).dispatch(this);
   }
 
   public void delluminate()

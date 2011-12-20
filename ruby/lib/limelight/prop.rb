@@ -46,7 +46,7 @@ module Limelight
     end
 
     def id
-      @peer.getId
+      @peer.id
     end
 
     def name
@@ -55,6 +55,13 @@ module Limelight
 
     def players
       @peer.players
+    end
+
+    def stagehands
+      if @stagehands == nil
+        @stagehands = Util::Hashes.for_ruby(@peer.stagehands)
+      end
+      @stagehands
     end
 
     def style
@@ -114,15 +121,6 @@ module Limelight
       @peer.remove_all
 #      @children.each { |child| scene.unindex_prop(child) } if scene
 #      @children = []
-    end
-
-    # Injects the behavior of the specified Player into the Prop.  The Player must be a Module.
-    #
-    def include_player(player_module)
-      unless self.is_a?(player_module)
-        extend player_module
-        self.casted if player_module.instance_methods.include?("casted")
-      end
     end
 
     # A hook to invoke behavior after a Prop is painted.
@@ -342,6 +340,10 @@ module Limelight
 
     def on_value_changed(& action)
       @peer.event_handler.add(Java::limelight.ui.events.panel.ValueChangedEvent, action)
+    end
+
+    def on_illuminated(& action)
+      @peer.event_handler.add(Java::limelight.ui.events.panel.IlluminatedEvent, action)
     end
 
   end

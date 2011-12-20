@@ -44,7 +44,6 @@ public class PropPanelTest extends Assert
   private RichStyle style3;
   private RichStyle style4;
   private RichStyle style5;
-  private FakePlayerRecruiter playerRecruiter;
 
   @Before
   public void setUp() throws Exception
@@ -54,7 +53,7 @@ public class PropPanelTest extends Assert
     panel = new PropPanel(prop);
     root.add(panel);
 
-    playerRecruiter = new FakePlayerRecruiter();
+    FakePlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
     root.setPlayerRecruiter(playerRecruiter);
     root.setProduction(new FakeProduction());
     root.setStage(new MockStage());
@@ -708,5 +707,11 @@ public class PropPanelTest extends Assert
     List<Player> players = panel.getPlayers();
     assertEquals(player1, players.get(0));
     assertEquals(player2, players.get(1));
+  }
+
+  @Test
+  public void stagehands() throws Exception
+  {
+    assertEquals(0, panel.getStagehands().size());
   }
 }

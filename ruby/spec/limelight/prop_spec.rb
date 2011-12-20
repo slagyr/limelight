@@ -17,39 +17,7 @@ describe Limelight::Prop do
     @scene << @prop
   end
 
-  module TestPlayer
-    class << self
-      attr_reader :extended_prop
-
-      def extended(prop)
-        @extended_prop = (prop)
-      end
-    end
-
-    def test_method
-    end
-
-    attr_reader :was_casted
-
-    def casted
-      @was_casted = true
-    end
-  end
-
-  it "should extend added controllers and invoke the extended hook" do
-    @prop.include_player(TestPlayer)
-
-    TestPlayer.extended_prop.should == @prop
-    @prop.respond_to?(:test_method).should == true
-  end
-
-  it "should call the player's casted method" do
-    @prop.include_player(TestPlayer)
-
-    @prop.was_casted.should == true
-  end
-
-  it "should have an id" do
+  it "have an id" do
     @prop.peer.illuminate
     @prop.id.should == "root"
   end
@@ -67,7 +35,7 @@ describe Limelight::Prop do
     @child2 << @grand_child3 << @grand_child4
   end
 
-  it "should find children by id" do
+  it "find children by id" do
     build_prop_tree
     @scene.find("blah").should == nil
     @scene.find("root").should be(@prop)
@@ -79,14 +47,14 @@ describe Limelight::Prop do
     @scene.find("grand_child4").should be(@grand_child4)
   end
 
-  it "should find children by name" do
+  it "find children by name" do
     build_prop_tree
     @prop.find_by_name("root_class").should == [@prop]
     @prop.find_by_name("child_class").should == [@child1, @child2]
     @prop.find_by_name("grand_child_class").should == [@grand_child1, @grand_child2, @grand_child3, @grand_child4]
   end
 
-  it "should get and set text" do
+  it "get and set text" do
     @prop.text = "blah"
     @prop.text.should == "blah"
     @prop.text = 123
@@ -95,7 +63,7 @@ describe Limelight::Prop do
     @prop.text.should == ""
   end
 
-  it "should get populated through constructor" do
+  it "get populated through constructor" do
     prop = Limelight::Prop.new(:name => "my_name", :id => "123", :players => "a, b, c")
     @scene << prop
 
@@ -103,7 +71,7 @@ describe Limelight::Prop do
     prop.id.should == "123"
   end
 
-  it "should populate styles through constructor" do
+  it "populate styles through constructor" do
     prop = Limelight::Prop.new(:width => "100", :text_color => "white", :background_image => "apple.jpg")
     @scene << prop
 
@@ -112,7 +80,7 @@ describe Limelight::Prop do
     prop.style.background_image.should == "apple.jpg"
   end
 
-  it "should define event through constructor using a string" do
+  it "define event through constructor using a string" do
     prop = Limelight::Prop.new(:on_mouse_clicked => "$RESULT = self")
     @scene << prop
 
@@ -121,7 +89,7 @@ describe Limelight::Prop do
     $RESULT.should == prop
   end
 
-  it "should pass scene on to children" do
+  it "pass scene on to children" do
     child = Limelight::Prop.new(:name => "child")
 
     @prop.parent.should == @scene
@@ -132,7 +100,7 @@ describe Limelight::Prop do
     child.scene.should == @scene
   end
 
-  it "should set styles upon illuminating, and convert them to strings" do
+  it "set styles upon illuminating, and convert them to strings" do
     prop = Limelight::Prop.new(:width => "100", :height => 200, :horizontal_alignment => :center)
 
     @scene << prop
@@ -142,7 +110,7 @@ describe Limelight::Prop do
     prop.style.horizontal_alignment.should == "center"
   end
 
-  it "should be able to remove children" do
+  it "be able to remove children" do
     child1 = Limelight::Prop.new()
     child2 = Limelight::Prop.new()
     child3 = Limelight::Prop.new()
@@ -156,7 +124,7 @@ describe Limelight::Prop do
     @prop.peer.children.include?(child2.peer).should == false
   end
 
-  it "should make dimensions accessible" do
+  it "make dimensions accessible" do
     @prop.peer.should_receive(:get_bounds).and_return("whole area")
     @prop.peer.should_receive(:get_bordered_bounds).and_return("area inside borders")
     @prop.peer.should_receive(:get_padded_bounds).and_return("area inside padding")
@@ -174,7 +142,7 @@ describe Limelight::Prop do
     @prop.absolute_location.should == "absolute location"
   end
 
-  it "should give you a pen" do
+  it "give you a pen" do
     graphics = mock("graphics", :setColor => nil, :setStroke => nil, :setRenderingHint => nil)
     @prop.peer.should_receive(:getGraphics).and_return(graphics)
 
@@ -183,7 +151,7 @@ describe Limelight::Prop do
     pen.context.should be(graphics)
   end
 
-  it "should set after paint action" do
+  it "set after paint action" do
     block = Proc.new { |pen|}
 
     @prop.after_painting &block
@@ -194,7 +162,7 @@ describe Limelight::Prop do
     action.block.should == block
   end
 
-  it "should clear after paint action" do
+  it "clear after paint action" do
     @prop.after_painting { |pen| puts "blah" }
 
     @prop.after_painting nil
@@ -202,7 +170,7 @@ describe Limelight::Prop do
     @prop.peer.after_paint_action.should == nil
   end
 
-  it "should build children" do
+  it "build children" do
     @prop.scene.production = Limelight::Production.new(Java::limelight.model.FakeProduction.new("some/path"))
     @prop.build do
       one
@@ -218,7 +186,7 @@ describe Limelight::Prop do
     @prop.children[1].children[0].name.should == "three"
   end
 
-  it "should build children with options" do
+  it "build children with options" do
     @prop.scene.production = Limelight::Production.new(Java::limelight.model.FakeProduction.new("some/path"))
     @prop.build(:one_val => "hello") do
       one :text => @one_val
@@ -236,7 +204,7 @@ describe Limelight::Prop do
     @prop.children[1].children[0].name.should == "three"
   end
 
-  it "should play sound" do
+  it "plays sound" do
     @fs = Java::limelight.io.FakeFileSystem.installed
     @fs.create_text_file("/path/to/prod/some.au", "blah")
 
@@ -245,6 +213,17 @@ describe Limelight::Prop do
 
     @prop.peer.should_receive(:play_sound).with("/path/to/prod/some.au")
     @prop.play_sound("some.au")
+  end
+
+  it "gets players" do
+    @prop.players.should == @prop.peer.getPlayers
+  end
+
+  it "gets stagehands" do
+    @prop.stagehands.should_not == nil
+    @prop.stagehands.should be(@prop.stagehands)
+    @prop.stagehands.class.should == Limelight::Util::MapHash
+    @prop.stagehands.map.should == @prop.peer.getStagehands
   end
 
   #TODO remove_all should not remove scrollbars
@@ -265,7 +244,8 @@ describe Limelight::Prop do
      {:method => :on_focus_gained, :klass => Java::limelight.ui.events.panel.FocusGainedEvent},
      {:method => :on_focus_lost, :klass => Java::limelight.ui.events.panel.FocusLostEvent},
      {:method => :on_button_pushed, :klass => Java::limelight.ui.events.panel.ButtonPushedEvent},
-     {:method => :on_value_changed, :klass => Java::limelight.ui.events.panel.ValueChangedEvent}
+     {:method => :on_value_changed, :klass => Java::limelight.ui.events.panel.ValueChangedEvent},
+     {:method => :on_illuminated, :klass => Java::limelight.ui.events.panel.IlluminatedEvent},
     ].each do |event|
       it "adds #{event[:method]} actions" do
         action = Proc.new { puts "I should never get printed" }
@@ -280,11 +260,11 @@ describe Limelight::Prop do
 
   describe "id" do
 
-    it "should index its id when illuminated" do
+    it "index its id when illuminated" do
       @scene.find("root").should == @prop
     end
 
-    it "should unindex ids when removing children" do
+    it "unindex ids when removing children" do
       child = Limelight::Prop.new(:id => "child")
       @prop << child
       @scene.find("child").should == child
@@ -294,7 +274,7 @@ describe Limelight::Prop do
       @scene.find("child").should == nil
     end
 
-    it "should unindex ids when removing all children" do
+    it "unindex ids when removing all children" do
       child1 = Limelight::Prop.new(:id => "child1")
       child2 = Limelight::Prop.new(:id => "child2")
       @prop << child1 << child2
@@ -305,7 +285,7 @@ describe Limelight::Prop do
       @scene.find("child2").should == nil
     end
 
-    it "should unindex grandchildren on remove all" do
+    it "unindex grandchildren on remove all" do
       grandchild = Limelight::Prop.new(:id => "grandchild")
       child = Limelight::Prop.new(:id => "child")
       child << grandchild
@@ -317,7 +297,7 @@ describe Limelight::Prop do
       @scene.find("grandchild").should == nil
     end
 
-    it "should index it's id when being re-added to the prop tree" do
+    it "index it's id when being re-added to the prop tree" do
       child = Limelight::Prop.new(:id => "child")
       @prop << child
       @prop.remove(child)
@@ -326,7 +306,7 @@ describe Limelight::Prop do
       @scene.find("child").should == child
     end
 
-    it "should traverse and index children when being re-added to the prop tree" do
+    it "traverses and index children when being re-added to the prop tree" do
       grandchild = Limelight::Prop.new(:id => "grandchild")
       child = Limelight::Prop.new(:id => "child")
       child << grandchild
@@ -342,7 +322,7 @@ describe Limelight::Prop do
 
   describe "launch" do
 
-    it "should launch a url" do
+    it "launch a url" do
       os = mock("Limelight OS")
       instance = mock("Limelight OS instance", :os => os)
       Java::limelight.Context.stub!(:instance).and_return(instance)

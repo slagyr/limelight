@@ -4,8 +4,11 @@
 //    assertEquals(true, panel.canBeBuffered());
 package limelight.ui.model;
 
+import limelight.events.*;
+import limelight.events.Event;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.MockPanel;
+import limelight.ui.events.panel.IlluminatedEvent;
 import limelight.util.Box;
 import org.junit.Assert;
 import org.junit.Before;
@@ -151,6 +154,24 @@ public class PanelBaseTest extends Assert
     assertEquals(panel.getY(), bounds.y);
     assertEquals(panel.getWidth(), bounds.width);
     assertEquals(panel.getHeight(), bounds.height);
+  }
+
+  private boolean illuminatedActionInvoked = false;
+  @Test
+  public void illuminatedEvent() throws Exception
+  {
+    final EventAction action = new EventAction()
+    {
+      public void invoke(Event event)
+      {
+        illuminatedActionInvoked = true;
+      }
+    };
+    panel.getEventHandler().add(IlluminatedEvent.class, action);
+
+    assertEquals(false, illuminatedActionInvoked);
+    panel.illuminate();
+    assertEquals(true, illuminatedActionInvoked);
   }
 
 }

@@ -21,10 +21,7 @@ import limelight.ui.events.panel.MouseWheelEvent;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.*;
-import limelight.util.Box;
-import limelight.util.EmptyMap;
-import limelight.util.Options;
-import limelight.util.Util;
+import limelight.util.*;
 
 import java.awt.*;
 import java.util.*;
@@ -56,6 +53,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   private List<Player> players;
   public Dimension greediness = new Dimension(0, 0);
   public boolean borderChanged = true;
+  private Map<String, Object> stagehands;
 
   public PropPanel(PropProxy proxy)
   {
@@ -547,6 +545,13 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     if(players == null)
       return EMPTY_PLAYERS;
     return players;
+  }
+
+  public Map<String, Object> getStagehands()
+  {
+    if(stagehands == null)
+      stagehands = new Opts();
+    return stagehands;
   }
 
   private static class MouseWheelAction implements EventAction

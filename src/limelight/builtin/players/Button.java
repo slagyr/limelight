@@ -9,10 +9,24 @@ import limelight.ui.model.inputs.ButtonPanel;
 
 public class Button
 {
+  private PropPanel propPanel;
+  private ButtonPanel buttonPanel;
+
   public void install(PanelEvent event)
   {
-    ButtonPanel button = new ButtonPanel();
-    final PropPanel panel = (PropPanel)event.getRecipient();
-    panel.add(button);
+    buttonPanel = new ButtonPanel();
+    propPanel = (PropPanel)event.getRecipient();
+    propPanel.add(buttonPanel);
+    propPanel.getStagehands().put("button", this);
+  }
+
+  public PropPanel getPropPanel()
+  {
+    return propPanel;
+  }
+
+  public ButtonPanel getButtonPanel()
+  {
+    return buttonPanel;
   }
 }

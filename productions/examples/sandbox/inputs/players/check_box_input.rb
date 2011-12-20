@@ -25,10 +25,12 @@ on_button_pushed do
   print("pressed")
 end
 
+stagehand_reader :check_box
+
 def print(value)
   log = scene.find("check_box_log")
   log.text += value + "\n"
 
   results = scene.find("check_box_results")
-  results.text = self.checked? ? "checked" : "unchecked"
+  results.text = check_box.checked? ? "checked" : "unchecked"
 end

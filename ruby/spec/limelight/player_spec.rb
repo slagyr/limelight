@@ -43,8 +43,8 @@ describe Limelight::Player do
     @player.module_eval "on_cast { $CASTS << self }"
     prop2 = Limelight::Prop.new
 
-    @player.cast(@prop.peer)
-    Limelight::Player.cast(@player, prop2)
+    @player.cast(@prop)
+    @player.cast(prop2)
 
     $CASTS.should == [@prop, prop2]
   end
@@ -95,10 +95,10 @@ describe Limelight::Player do
     $RECIPIENT.should == @prop
   end
 
-  [ {:name => "on_focus_gained", :klass => Java::limelight.ui.events.panel.FocusGainedEvent},
-    {:name => "on_focus_lost", :klass => Java::limelight.ui.events.panel.FocusLostEvent},
-    {:name => "on_button_pushed", :klass => Java::limelight.ui.events.panel.ButtonPushedEvent},
-    {:name => "on_value_changed", :klass => Java::limelight.ui.events.panel.ValueChangedEvent}
+  [{:name => "on_focus_gained", :klass => Java::limelight.ui.events.panel.FocusGainedEvent},
+   {:name => "on_focus_lost", :klass => Java::limelight.ui.events.panel.FocusLostEvent},
+   {:name => "on_button_pushed", :klass => Java::limelight.ui.events.panel.ButtonPushedEvent},
+   {:name => "on_value_changed", :klass => Java::limelight.ui.events.panel.ValueChangedEvent}
   ].each do |event|
     it "handles #{event[:name]} actions" do
       @player.module_eval "#{event[:name]} { $RECIPIENT = self }"
@@ -111,9 +111,38 @@ describe Limelight::Player do
   it "handles on_scene_opened actions" do
     scene = Limelight::Scene.new
     @player.module_eval "on_scene_opened { $RECIPIENT = self }"
-    Limelight::Player.cast(@player, scene)
+    @player.cast(scene)
     Java::limelight.ui.events.panel.SceneOpenedEvent.new.dispatch(scene.peer)
     $RECIPIENT.should == scene
+  end
+
+  it "handles on_illuminated actions" do
+    @player.module_eval "on_illuminated { $RECIPIENT = self }"
+    @player.cast(@prop.peer)
+    Java::limelight.ui.events.panel.IlluminatedEvent.new(@prop.peer).dispatch(@prop.peer)
+    $RECIPIENT.should == @prop
+  end
+
+  it "handles the prop_reader helper" do
+    scene = Limelight::Scene.new
+    waldo = Limelight::Prop.new(:id => "waldo")
+    prop = Limelight::Prop.new
+    scene << waldo << prop
+    scene.peer.illuminate
+
+    @player.module_eval "prop_reader :waldo"
+    @player.cast(prop)
+
+    prop.waldo.should == waldo
+  end
+
+  it "handles stagehand_reader helper" do
+    prop = Limelight::Prop.new
+    prop.stagehands["thing-one"] = 1
+    @player.module_eval "stagehand_reader :thing_one"
+    @player.cast(prop)
+
+    prop.thing_one.should == 1
   end
 
 end

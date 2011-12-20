@@ -4,21 +4,15 @@
 module Limelight
   class Player < Module
 
-    def self.cast(player, prop)
-      unless prop.is_a?(player)
-        prop.extend(player)
-      end
-    end
+    include Java::limelight.model.api.Player
 
     def initialize(player_path)
       @path = player_path
       @__event_cache = {}
     end
 
-    # implements limelight.model.api.Player
-
-    def cast(prop_panel)
-      prop = prop_panel.proxy
+    def cast(prop)
+      prop = prop.is_a?(Limelight::Prop) ? prop : prop.proxy
       unless prop.is_a?(self)
         prop.extend(self)
       end
@@ -127,11 +121,20 @@ module Limelight
       __add_action(Java::limelight.ui.events.panel.SceneOpenedEvent, action)
     end
 
+    def on_illuminated(& action)
+      __add_action(Java::limelight.ui.events.panel.IlluminatedEvent, action)
+    end
+
     def prop_reader(*symbols)
       symbols.each do |sym|
-        define_method(sym) do
-          return scene.find(sym.to_s)
-        end
+        module_eval("def #{sym}; return scene.find('#{sym}'); end")
+      end
+    end
+
+    def stagehand_reader(*symbols)
+      symbols.each do |sym|
+        name = Java::limelight.util.StringUtil.spearcase(sym.to_s)
+        module_eval("def #{sym}; return stagehands['#{name}']; end")
       end
     end
 
