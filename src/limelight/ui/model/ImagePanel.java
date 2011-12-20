@@ -138,8 +138,7 @@ public class ImagePanel extends PanelBase
       }
       catch(Exception e)
       {
-        e.printStackTrace();
-        throw new LimelightException("Could not load image: " + imageFile);
+        throw new LimelightException("Could not load image: " + imageFile + " (" + e.toString() + ")");
       }
     }
     return image;
