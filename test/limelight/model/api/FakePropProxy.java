@@ -3,12 +3,10 @@
 
 package limelight.model.api;
 
-import com.kenai.jffi.Type;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.Style;
 import limelight.ui.Panel;
 import limelight.ui.model.Prop;
-import limelight.util.Opts;
 
 import java.util.HashMap;
 import java.util.Map;
