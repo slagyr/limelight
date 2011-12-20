@@ -5,16 +5,9 @@ package limelight.java;
 
 import limelight.model.CastingDirector;
 import limelight.io.FakeFileSystem;
-import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.Player;
-import limelight.ui.events.panel.CastEvent;
-import limelight.ui.events.panel.MouseClickedEvent;
-import limelight.ui.model.ScenePanel;
-import limelight.util.Opts;
-import limelight.util.Util;
 import org.junit.Before;
 import org.junit.Test;
-import sun.tools.javap.oldjavap.JavaP;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
