@@ -382,19 +382,9 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   {
     Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
 
-    Object idObject = illuminateOptions.remove("id");
-    if(idObject != null && !idObject.toString().isEmpty())
-      id = idObject.toString();
-
-    Object nameObject = illuminateOptions.remove("name");
-    if(nameObject != null)
-      name = nameObject.toString();
-
+    illuminateId(illuminateOptions.remove("id"));
+    illuminateName(illuminateOptions.remove("name"));
     illuminateStyles(illuminateOptions.remove("styles"));
-
-    if(id != null)
-      getRoot().addToIndex(this);
-
     illuminatePlayers(illuminateOptions.remove("players"));
 
     Options.apply(this, illuminateOptions);
@@ -402,8 +392,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
     proxy.applyOptions(illuminateOptions);
 
-    for(Map.Entry<String, Object> entry : illuminateOptions.entrySet())
-      Log.warn("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue());
+    logUnusedOptions(illuminateOptions);
 
     options = null;
 
@@ -476,6 +465,21 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
   // PRIVATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+  private void illuminateName(Object nameObject)
+  {
+    if(nameObject != null)
+      name = nameObject.toString();
+  }
+
+  private void illuminateId(Object idObject)
+  {
+    if(idObject != null && !idObject.toString().isEmpty())
+      id = idObject.toString();
+    if(id != null)
+      getRoot().addToIndex(this);
+  }
+
   private void illuminateStyles(Object stylesObject)
   {
     String allStyles = stylesObject == null ? "" : stylesObject.toString();
@@ -528,9 +532,15 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       {
         final Scene scene = getRoot();
         final PlayerRecruiter director = scene.getPlayerRecruiter();
-        Context.instance().playerRecruiter.castRole(this, playerName, director);
+        Context.instance().castingDirector.castRole(this, playerName, director);
       }
     }
+  }
+
+  private void logUnusedOptions(Map<String, Object> illuminateOptions)
+  {
+    for(Map.Entry<String, Object> entry : illuminateOptions.entrySet())
+      Log.warn("Prop named '" + name + "' has unused option: " + entry.getKey() + " => " + entry.getValue());
   }
 
   public void addPlayer(Player player)

@@ -97,7 +97,7 @@ public class CreateCommand extends Command
   private void createProduction(Templater templater, String productionPath, String productionName, String sceneName, String testsPath)
   {
     templater.addToken("DEFAULT_SCENE_NAME", sceneName);
-    templater.addToken("PRODUCTION_NAME", StringUtil.titleize(productionName));
+    templater.addToken("PRODUCTION_NAME", StringUtil.titleCase(productionName));
     templater.addToken("CURRENT_VERSION", About.version.toString());
 
     templater.file(fs.join(productionPath, "production.rb"), "production/production.rb.template");
@@ -124,7 +124,7 @@ public class CreateCommand extends Command
   {
     final String sceneName = fs.filename(scenePath);
     templater.addToken("SCENE_NAME", sceneName);
-    templater.addToken("SCENE_TITLE", StringUtil.titleize(sceneName));
+    templater.addToken("SCENE_TITLE", StringUtil.titleCase(sceneName));
 
     templater.file(fs.join(scenePath, "props.rb"), "scene/props.rb.template");
     templater.file(fs.join(scenePath, "styles.rb"), "scene/styles.rb.template");

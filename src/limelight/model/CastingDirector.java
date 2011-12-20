@@ -10,6 +10,8 @@ import limelight.model.api.Player;
 import limelight.model.api.PlayerRecruiter;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.Scene;
+import limelight.util.StringUtil;
+import sun.swing.StringUIClientPropertyKey;
 
 public class CastingDirector
 {
@@ -18,7 +20,7 @@ public class CastingDirector
   public static CastingDirector installed()
   {
     CastingDirector playerRecruiter = new CastingDirector();
-    Context.instance().playerRecruiter = playerRecruiter;
+    Context.instance().castingDirector = playerRecruiter;
     return playerRecruiter;
   }
 
@@ -49,9 +51,10 @@ public class CastingDirector
 
   private Player castFrom(PropPanel panel, String playerName, PlayerRecruiter playerRecruiter, String playersPath)
   {
-    if(playerRecruiter.canRecruit(playerName, playersPath))
+    String normalizedName = StringUtil.spearCase(playerName);
+    if(playerRecruiter.canRecruit(normalizedName, playersPath))
     {
-      final Player player = playerRecruiter.recruitPlayer(playerName, playersPath);
+      final Player player = playerRecruiter.recruitPlayer(normalizedName, playersPath);
       player.cast(panel);
       panel.addPlayer(player);
       return player;

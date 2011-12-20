@@ -41,7 +41,7 @@ public class Context
   public Studio studio;
   public StyleAttributeCompilerFactory styleAttributeCompilerFactory;
   public OS os;
-  public CastingDirector playerRecruiter;
+  public CastingDirector castingDirector;
   public boolean isShutdown;
   private boolean isShuttingDown;
 

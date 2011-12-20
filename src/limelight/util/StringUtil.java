@@ -46,7 +46,7 @@ public class StringUtil
 
   public static String gsub(String value, Pattern regex, Gsuber gsuber)
   {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     Matcher matcher = regex.matcher(value);
     int lastMatchEndIndex = 0;
     while(matcher.find())
@@ -65,20 +65,16 @@ public class StringUtil
   }
 
   private static Pattern mergeRegex = Pattern.compile("[a-z0-9][A-Z]");
-  private static Pattern titleizeSeparatorRegex = Pattern.compile("[_| ][a-z]");
+  private static Pattern titleSeparatorRegex = Pattern.compile("[_| |\\-][a-z]");
+  private static Pattern camelSeparatorRegex = Pattern.compile("[_| |\\-][A-Za-z]");
+  private static Pattern underscoreSeparatorRegex = Pattern.compile("[ |\\-][A-Za-z]");
+  private static Pattern snakeSeparatorRegex = Pattern.compile("[ |_][A-Za-z]");
 
-  public static String titleize(String value)
+  public static String titleCase(String value)
   {
-    value = gsub(value, mergeRegex, new Gsuber()
-    {
-      public String replacementFor(Matcher matcher)
-      {
-        final String match = matcher.group();
-        return match.substring(0, 1) + " " + match.substring(1);
-      }
-    });
+    String result = separateMerges(value, " ");
 
-    value = gsub(value, titleizeSeparatorRegex, new Gsuber()
+    result = gsub(result, titleSeparatorRegex, new Gsuber()
     {
       public String replacementFor(Matcher matcher)
       {
@@ -87,14 +83,12 @@ public class StringUtil
       }
     });
 
-    return value.substring(0, 1).toUpperCase() + value.substring(1);
+    return result.substring(0, 1).toUpperCase() + result.substring(1);
   }
 
-  private static Pattern camalizeSpaceRegex = Pattern.compile("[_| |\\-][a-z]");
-
-  public static String camalize(String value)
+  public static String camelCase(String value)
   {
-    return gsub(value, camalizeSpaceRegex, new Gsuber()
+    return gsub(value, camelSeparatorRegex, new Gsuber()
     {
       public String replacementFor(Matcher matcher)
       {
@@ -103,26 +97,39 @@ public class StringUtil
     });
   }
 
-  public static String capitalCamalize(String value)
+  public static String capitalCamelCase(String value)
   {
-    String result = camalize(value);
+    String result = camelCase(value);
     return result.substring(0, 1).toUpperCase() + result.substring(1);
   }
 
-  private static Pattern underscoreSeparatorRegex = Pattern.compile("[ |\\-][A-Za-z]");
-  public static String underscore(String value)
+  public static String snakeCase(String value)
   {
     return changeCase(value, underscoreSeparatorRegex, "_");
   }
 
-  private static Pattern dashSeparatorRegex = Pattern.compile("[ |_][A-Za-z]");
-  public static String spearcase(String value) {
-    return changeCase(value, dashSeparatorRegex, "-");
+  public static String spearCase(String value)
+  {
+    return changeCase(value, snakeSeparatorRegex, "-");
   }
 
   private static String changeCase(String value, Pattern badSeparaterPattern, final String separator)
   {
-    value = gsub(value, mergeRegex, new StringUtil.Gsuber()
+    String result = separateMerges(value, separator);
+
+    result = gsub(result, badSeparaterPattern, new StringUtil.Gsuber()
+    {
+      public String replacementFor(Matcher matcher)
+      {
+        return separator + matcher.group().substring(1).toLowerCase();
+      }
+    });
+    return result.toLowerCase();
+  }
+
+  private static String separateMerges(String value, final String separator)
+  {
+    return gsub(value, mergeRegex, new StringUtil.Gsuber()
     {
       public String replacementFor(Matcher matcher)
       {
@@ -130,14 +137,6 @@ public class StringUtil
         return match.substring(0, 1) + separator + match.substring(1);
       }
     });
-
-    value = gsub(value, badSeparaterPattern, new StringUtil.Gsuber(){
-      public String replacementFor(Matcher matcher)
-      {
-        return separator + matcher.group().substring(1).toLowerCase();
-      }
-    });
-    return value.toLowerCase();
   }
 
 }

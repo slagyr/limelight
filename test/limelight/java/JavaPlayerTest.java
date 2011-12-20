@@ -1,16 +1,11 @@
 package limelight.java;
 
 import limelight.io.FakeFileSystem;
-import limelight.model.CastingDirector;
-import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.FakePropProxy;
 import limelight.model.api.Player;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.model.PropPanel;
-import limelight.ui.model.ScenePanel;
-import limelight.util.Opts;
-import limelight.util.Util;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -44,7 +39,7 @@ public class JavaPlayerTest
   public void playerCanAddEvents() throws Exception
   {
     final Document doc = Xml.stringToDoc("<player class='SamplePlayer'><onMouseClicked>sampleAction</onMouseClicked></player>");
-    final Player player = new JavaPlayer(samplePlayerClass, "/testProduction/aScene/players/foo.xml", doc.getDocumentElement(), "limelight.ui.events.panel.");
+    final Player player = new JavaPlayer("foo", "/testProduction/aScene/players/foo.xml", samplePlayerClass, doc.getDocumentElement(), "limelight.ui.events.panel.");
 
     Object playerObj = player.cast(prop);
 
@@ -58,7 +53,7 @@ public class JavaPlayerTest
   public void onCastEvent() throws Exception
   {
     final Document doc = Xml.stringToDoc("<player class='SamplePlayer'><onCast>sampleActionWithEvent</onCast></player>");
-    final Player player = new JavaPlayer(samplePlayerClass, "/testProduction/aScene/players/foo.xml", doc.getDocumentElement(), "limelight.ui.events.panel.");
+    final Player player = new JavaPlayer("foo", "/testProduction/aScene/players/foo.xml", samplePlayerClass, doc.getDocumentElement(), "limelight.ui.events.panel.");
 
     player.cast(prop);
 

@@ -9,7 +9,7 @@ module Limelight
     module Players
 
       #Dir.glob(File.expand_path(File.dirname(__FILE__) + "/players/*.rb")).each do |file|
-      #  module_name = File.basename(file)[0...-3].camalized
+      #  module_name = File.basename(file)[0...-3].camelized
       #  content = IO.read(file)
       #  player = Limelight::Player.new
       #  player.module_eval(content, file)

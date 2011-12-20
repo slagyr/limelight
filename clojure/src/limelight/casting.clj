@@ -35,19 +35,17 @@
           (.add event-handler event-class action))))))
 
 (defn- player-path [player-name players-path]
-  (str players-path "/" (limelight.util.StringUtil/underscore player-name) ".clj"))
+  (str players-path "/" (limelight.util.StringUtil/snakeCase player-name) ".clj"))
 
-(deftype Player [path player-ns]
+(deftype Player [name path player-ns]
   limelight.model.api.Player
   (cast [this prop-panel]
     (cast-player player-ns prop-panel))
-  (getPath [this]
-    (.path this))
-  (getName [this]
-    (limelight.util.StringUtil/spearcase (.baseName (limelight.Context/fs) path))))
+  (getPath [this] path)
+  (getName [this] name))
 
-(defn new-player [path player-ns]
-  (Player. path player-ns))
+(defn new-player [name path player-ns]
+  (Player. name path player-ns))
 
 (deftype PlayerRecruiter [scene cast]
   limelight.model.api.PlayerRecruiter
@@ -59,7 +57,7 @@
     (let [player-path (player-path player-name players-path)
           player-ns (or (@cast player-name) (load-player-from this player-path player-name))]
       (when player-ns
-        (new-player player-path player-ns)))))
+        (new-player player-name player-path player-ns)))))
 
 (defn new-player-recruiter [scene]
   (PlayerRecruiter. scene (atom {})))

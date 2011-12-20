@@ -24,11 +24,11 @@ arena do
   	cell(:border_width => "1") { input_results :id => "check_box_results" }
 #    # end row
     cell do
-      radio_button_input :players => "radio_button", :id => "radio_1", :group => "radios"
+      radio_button_input :players => "radio_button", :id => "radio_1", :radio_button => { :group => "radios" }
       radio_label :text => "One"
-      radio_button_input :players => "radio_button", :id => "radio_2", :group => "radios"
+      radio_button_input :players => "radio_button", :id => "radio_2", :radio_button => { :group => "radios" }
       radio_label :text => "Two"
-      radio_button_input :players => "radio_button", :id => "radio_3", :group => "radios"
+      radio_button_input :players => "radio_button", :id => "radio_3", :radio_button => { :group => "radios" }
       radio_label :text => "Three"
     end
   	cell { input_log :id => "radio_button_log" }

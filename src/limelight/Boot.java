@@ -162,8 +162,8 @@ public class Boot
     if(context().studio == null)
       context().studio = new Studio();
 
-    if(context().playerRecruiter == null)
-      context().playerRecruiter = new CastingDirector();
+    if(context().castingDirector == null)
+      context().castingDirector = new CastingDirector();
   }
 
 }

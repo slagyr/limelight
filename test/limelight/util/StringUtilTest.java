@@ -27,56 +27,59 @@ public class StringUtilTest
   @Test
   public void convertingStringsIntoTitles() throws Exception
   {
-    assertEquals("Class Name", StringUtil.titleize("Class Name"));
-    assertEquals("Class Name", StringUtil.titleize("class_name"));
-    assertEquals("Once Upon A Time", StringUtil.titleize("once_upon_a_time"));
-    assertEquals("Ab C E Fg Hi J", StringUtil.titleize("AbC_eFg_hiJ"));
-    assertEquals("With Spaces", StringUtil.titleize("with spaces"));
-    assertEquals("Some Title", StringUtil.titleize("Some Title"));
-    assertEquals("Some Title", StringUtil.titleize("SomeTitle"));
+    assertEquals("Class Name", StringUtil.titleCase("Class Name"));
+    assertEquals("Class Name", StringUtil.titleCase("class_name"));
+    assertEquals("Once Upon A Time", StringUtil.titleCase("once_upon_a_time"));
+    assertEquals("Once Upon A Time", StringUtil.titleCase("once-upon-a-time"));
+    assertEquals("Ab C E Fg Hi J", StringUtil.titleCase("AbC-eFg-hiJ"));
+    assertEquals("Ab C E Fg Hi J", StringUtil.titleCase("AbC_eFg_hiJ"));
+    assertEquals("With Spaces", StringUtil.titleCase("with spaces"));
+    assertEquals("Some Title", StringUtil.titleCase("Some Title"));
+    assertEquals("Some Title", StringUtil.titleCase("SomeTitle"));
   }
 
   @Test
   public void camalizeStrings() throws Exception
   {
-    assertEquals("defaultSceneName", StringUtil.camalize("defaultSceneName"));
-    assertEquals("setDefaultSceneName", StringUtil.camalize("set defaultSceneName"));
-    assertEquals("className", StringUtil.camalize("class_name"));
-    assertEquals("onceUponATime", StringUtil.camalize("once_upon_a_time"));
-    assertEquals("withSpaces", StringUtil.camalize("with spaces"));
-    assertEquals("withDash", StringUtil.camalize("with-dash"));
+    assertEquals("defaultSceneName", StringUtil.camelCase("defaultSceneName"));
+    assertEquals("setDefaultSceneName", StringUtil.camelCase("set defaultSceneName"));
+    assertEquals("className", StringUtil.camelCase("class_name"));
+    assertEquals("onceUponATime", StringUtil.camelCase("once_upon_a_time"));
+    assertEquals("withSpaces", StringUtil.camelCase("with spaces"));
+    assertEquals("withDash", StringUtil.camelCase("with-dash"));
+    assertEquals("startingCapital", StringUtil.camelCase("starting Capital"));
   }
 
   @Test
   public void capitalCamalizeStrings() throws Exception
   {
-    assertEquals("DefaultSceneName", StringUtil.capitalCamalize("DefaultSceneName"));
-    assertEquals("DefaultSceneName", StringUtil.capitalCamalize("defaultSceneName"));
-    assertEquals("ClassName", StringUtil.capitalCamalize("class_name"));
-    assertEquals("OnceUponATime", StringUtil.capitalCamalize("once_upon_a_time"));
-    assertEquals("WithSpaces", StringUtil.capitalCamalize("with spaces"));
-    assertEquals("WithDash", StringUtil.capitalCamalize("with-dash"));
+    assertEquals("DefaultSceneName", StringUtil.capitalCamelCase("DefaultSceneName"));
+    assertEquals("DefaultSceneName", StringUtil.capitalCamelCase("defaultSceneName"));
+    assertEquals("ClassName", StringUtil.capitalCamelCase("class_name"));
+    assertEquals("OnceUponATime", StringUtil.capitalCamelCase("once_upon_a_time"));
+    assertEquals("WithSpaces", StringUtil.capitalCamelCase("with spaces"));
+    assertEquals("WithDash", StringUtil.capitalCamelCase("with-dash"));
   }
 
   @Test
   public void underscore() throws Exception
   {
-    assertEquals("class_name", StringUtil.underscore("class_name"));
-    assertEquals("class_name", StringUtil.underscore("ClassName"));
-    assertEquals("one_two_three", StringUtil.underscore("OneTwoThree"));
-    assertEquals("one", StringUtil.underscore("One"));
-    assertEquals("one_two_three", StringUtil.underscore("one-two-three"));
-    assertEquals("one_two_three", StringUtil.underscore("one two three"));
+    assertEquals("class_name", StringUtil.snakeCase("class_name"));
+    assertEquals("class_name", StringUtil.snakeCase("ClassName"));
+    assertEquals("one_two_three", StringUtil.snakeCase("OneTwoThree"));
+    assertEquals("one", StringUtil.snakeCase("One"));
+    assertEquals("one_two_three", StringUtil.snakeCase("one-two-three"));
+    assertEquals("one_two_three", StringUtil.snakeCase("one two three"));
   }
 
   @Test
   public void spearcase() throws Exception
   {
-    assertEquals("class-name", StringUtil.spearcase("class_name"));
-    assertEquals("class-name", StringUtil.spearcase("ClassName"));
-    assertEquals("one-two-three", StringUtil.spearcase("OneTwoThree"));
-    assertEquals("one", StringUtil.spearcase("One"));
-    assertEquals("one-two-three", StringUtil.spearcase("one_two-three"));
-    assertEquals("one-two-three", StringUtil.spearcase("one two three"));
+    assertEquals("class-name", StringUtil.spearCase("class_name"));
+    assertEquals("class-name", StringUtil.spearCase("ClassName"));
+    assertEquals("one-two-three", StringUtil.spearCase("OneTwoThree"));
+    assertEquals("one", StringUtil.spearCase("One"));
+    assertEquals("one-two-three", StringUtil.spearCase("one_two-three"));
+    assertEquals("one-two-three", StringUtil.spearCase("one two three"));
   }
 }

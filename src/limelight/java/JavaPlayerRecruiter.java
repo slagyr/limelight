@@ -29,31 +29,31 @@ public class JavaPlayerRecruiter implements PlayerRecruiter
 
   private String playerFilePath(String playerName, String playersPath)
   {
-    return playersPath + "/" + StringUtil.camalize(playerName) + ".xml";
+    return playersPath + "/" + StringUtil.camelCase(playerName) + ".xml";
   }
 
-  public Player recruitPlayer(String playerName, String playersDir)
+  public Player recruitPlayer(String name, String dir)
   {
-    String playerPath = playerFilePath(playerName, playersDir);
-    if(!playerCache.containsKey(playerPath))
+    String path = playerFilePath(name, dir);
+    if(!playerCache.containsKey(path))
     {
-      final Document document = Xml.loadDocumentFrom(playerPath);
+      final Document document = Xml.loadDocumentFrom(path);
       final Element playerElement = document.getDocumentElement();
-      final JavaPlayer player = toPlayer(playerPath, playerElement, classLoader, "limelight.ui.events.panel.");
+      final JavaPlayer player = toPlayer(name, path, playerElement, classLoader, "limelight.ui.events.panel.");
       if(player != null)
-        playerCache.put(playerPath, player);
+        playerCache.put(path, player);
     }
-    return playerCache.get(playerPath);
+    return playerCache.get(path);
   }
 
-  public static JavaPlayer toPlayer(String path, Element element, ClassLoader classLoader, String eventsPrefix)
+  public static JavaPlayer toPlayer(String name, String path, Element element, ClassLoader classLoader, String eventsPrefix)
   {
     String className = element.getAttribute("class");
     if(className == null || className.length() == 0)
       return null;
 
     final Class<?> playerClass = resolveClass(classLoader, className);
-    return new JavaPlayer(playerClass, path, element, eventsPrefix);
+    return new JavaPlayer(name, path, playerClass, element, eventsPrefix);
   }
 
   private static Class<?> resolveClass(ClassLoader classLoader, String className)

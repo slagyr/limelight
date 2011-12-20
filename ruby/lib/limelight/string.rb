@@ -3,15 +3,13 @@
 
 class String
 
-  # Converts Ruby style names to Java style camal case.
+  # Converts Ruby style names to Java style camel case.
   #
-  #   "four_score".camalized # => "FourScore"
-  #   "and_seven_years".camalized(:lower) # => "andSevenYears"
+  #   "four_score".camelized # => "FourScore"
+  #   "and_seven_years".camelized(:lower) # => "andSevenYears"
   #
-  def camalized(starting_case = :upper)
-    value = self.downcase.gsub(/[_| |\-][a-z]/) { |match| match[-1..-1].upcase }
-    value = value[0..0].upcase + value[1..-1] if starting_case == :upper
-    return value
+  def camelized(starting_case = :upper)
+    starting_case == :upper ? Java::limelight.util.StringUtil.capitalCamelCase(self) : Java::limelight.util.StringUtil.camelCase(self)
   end
 
   # Converts Java camel case names to ruby style underscored names.
@@ -20,9 +18,7 @@ class String
   #   "andSevenYears".underscored # => "and_seven_years"
   #
   def underscored
-    value = self[0..0].downcase + self[1..-1]
-    value = value.gsub(/[A-Z]/) { |cap| "_#{cap.downcase}" }
-    return value
+    Java::limelight.util.StringUtil.snakeCase(self)
   end
 
 
@@ -31,8 +27,6 @@ class String
   #   "four_score".titleized # => "Four Score"
   #
   def titleized(starting_case = :upper)
-    value = self.gsub(/[a-z0-9][A-Z]/) { |match| "#{match[0..0]} #{match[-1..-1]}" }
-    value = value.gsub(/[_| ][a-z]/) { |match| " #{match[-1..-1].upcase}" }
-    return value[0..0].upcase + value[1..-1]
+    Java::limelight.util.StringUtil.titleCase(self)
   end
 end

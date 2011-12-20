@@ -21,7 +21,7 @@ class Class
   #
   def getters(*symbols)
     symbols.each do |symbol|
-      self.class_eval "def get#{symbol.to_s.camalized}; return #{symbol}; end"
+      self.class_eval "def get#{symbol.to_s.camelized}; return #{symbol}; end"
     end
   end
 
@@ -41,7 +41,7 @@ class Class
   #
   def setters(*symbols)
     symbols.each do |symbol|
-      self.class_eval "def set#{symbol.to_s.camalized}(value); self.#{symbol} = value; end"
+      self.class_eval "def set#{symbol.to_s.camelized}(value); self.#{symbol} = value; end"
     end
   end
 

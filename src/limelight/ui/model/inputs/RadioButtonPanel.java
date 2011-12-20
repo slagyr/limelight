@@ -11,6 +11,7 @@ import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;
 import limelight.ui.RadioButtonGroupMember;
 import limelight.ui.RadioButtonGroup;
+import limelight.ui.model.ScenePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,6 +24,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
   private BufferedImage focusImage;
   private boolean selected;
   private RadioButtonGroup radioButtonGroup;
+  private String group;
 
   public RadioButtonPanel()
   {
@@ -73,9 +75,32 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
     return selected;
   }
 
-  public void setGroup(RadioButtonGroup radioButtonGroup)
+  public void setButtonGroup(RadioButtonGroup radioButtonGroup)
   {
     this.radioButtonGroup = radioButtonGroup;
+  }
+
+  public void setGroup(String name)
+  {
+    this.group = name;
+    establishButtonGroup(name);
+  }
+
+  public String getGroup()
+  {
+    return group;
+  }
+
+  private void establishButtonGroup(String name)
+  {
+    if(radioButtonGroup != null)
+      radioButtonGroup.remove(this);
+    final ScenePanel scene = (ScenePanel) getRoot();
+    if(scene != null)
+    {
+      final RadioButtonGroup group = scene.getButtonGroups().get(name);
+      group.add(this);
+    }
   }
 
   public void setSelected(boolean value)
@@ -83,7 +108,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
     if(value == selected)
       return;
 
-    this.selected = value;
+    selected = value;
     if(selected && radioButtonGroup != null)
       radioButtonGroup.buttonSelected(this);
 
@@ -105,7 +130,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
       if(e.isConsumed())
         return;
 
-      PanelEvent event = (PanelEvent)e;
+      PanelEvent event = (PanelEvent) e;
       final RadioButtonPanel panel = (RadioButtonPanel) event.getRecipient();
       panel.setSelected(!panel.isSelected());
     }

@@ -7,17 +7,15 @@ require 'limelight/string'
 describe String do
 
   it "should convert into camel case" do
-    "class_name".camalized.should == "ClassName"
-    "once_upon_a_time".camalized.should == "OnceUponATime"
-    "AbC_eFg_hiJ".camalized.should == "AbcEfgHij"
-    "with spaces".camalized.should == "WithSpaces"
+    "class_name".camelized.should == "ClassName"
+    "once_upon_a_time".camelized.should == "OnceUponATime"
+    "with spaces".camelized.should == "WithSpaces"
   end
 
   it "should convert into camel case" do
-    "class_name".camalized(:lower).should == "className"
-    "once_upon_a_time".camalized(:lower).should == "onceUponATime"
-    "AbC_eFg_hiJ".camalized(:lower).should == "abcEfgHij"
-    "with spaces".camalized(:lower).should == "withSpaces"
+    "class_name".camelized(:lower).should == "className"
+    "once_upon_a_time".camelized(:lower).should == "onceUponATime"
+    "with spaces".camelized(:lower).should == "withSpaces"
   end
 
   it "should underscore a name" do

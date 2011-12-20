@@ -8,24 +8,33 @@ import java.util.ArrayList;
 public class RadioButtonGroup
 {
   private ArrayList<RadioButtonGroupMember> buttons = new ArrayList<RadioButtonGroupMember>();
+  private RadioButtonGroupMember selected;
 
   public void add(RadioButtonGroupMember button)
   {
     if(!buttons.contains(button))
       buttons.add(button);
-    button.setGroup(this);
+    button.setButtonGroup(this);
     if(button.isSelected())
       buttonSelected(button);
   }
 
-  public void buttonSelected(RadioButtonGroupMember selected)
+  public synchronized void remove(RadioButtonGroupMember button)
+  {
+    buttons.remove(button);
+    button.setButtonGroup(null);
+    if(selected == button)
+      selected = null;
+  }
+
+  public synchronized void buttonSelected(RadioButtonGroupMember selected)
   {
     for(RadioButtonGroupMember button : buttons)
     {
       if(button != selected)
         button.setSelected(false);
-
     }
+    this.selected = selected;
   }
 
   public ArrayList<RadioButtonGroupMember> getButtons()
@@ -33,4 +42,8 @@ public class RadioButtonGroup
     return buttons;
   }
 
+  public RadioButtonGroupMember getSelection()
+  {
+    return selected;
+  }
 }

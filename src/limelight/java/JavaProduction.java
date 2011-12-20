@@ -45,7 +45,7 @@ public class JavaProduction extends Production
     if(classpath != null && classpath.length() > 0)
       playerLoader.setClasspath(Context.fs().pathTo(getPath(), classpath));
 
-    player = JavaPlayerRecruiter.toPlayer(productionPlayerPath, productionElement, this.playerLoader, "limelight.model.events.");
+    player = JavaPlayerRecruiter.toPlayer("production", productionPlayerPath, productionElement, this.playerLoader, "limelight.model.events.");
     if(player != null)
       player.cast(getEventHandler());
   }

@@ -10,12 +10,12 @@ describe Limelight::Player do
 
   before do
     @prop = Limelight::Prop.new
-    @player = Limelight::Player.new("some/path.rb")
+    @player = Limelight::Player.new("bill", "some/path.rb")
     $RECIPIENT = nil
   end
 
   it "has a name and path" do
-    @player.name.should == "path"
+    @player.name.should == "bill"
     @player.path.should == "some/path.rb"
   end
 

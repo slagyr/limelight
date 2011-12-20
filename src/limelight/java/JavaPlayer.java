@@ -1,6 +1,5 @@
 package limelight.java;
 
-import limelight.Context;
 import limelight.LimelightException;
 import limelight.events.Event;
 import limelight.events.EventHandler;
@@ -9,7 +8,6 @@ import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
 import limelight.util.StringUtil;
 import org.w3c.dom.Element;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -19,11 +17,13 @@ public class JavaPlayer implements Player
   private String path;
   private Element element;
   private String eventsPrefix;
+  private String name;
 
-  public JavaPlayer(Class<?> playerClass, String path, Element element, String eventsPrefix)
+  public JavaPlayer(String name, String path, Class<?> playerClass, Element element, String eventsPrefix)
   {
-    this.playerClass = playerClass;
+    this.name = name;
     this.path = path;
+    this.playerClass = playerClass;
     this.element = element;
     this.eventsPrefix = eventsPrefix;
   }
@@ -63,7 +63,7 @@ public class JavaPlayer implements Player
 
   public String getName()
   {
-    return Context.fs().baseName(path);
+    return name;
   }
 
   private void invokeCastEvents(Object player, PropPanel prop, Element playerElement)
@@ -92,7 +92,7 @@ public class JavaPlayer implements Player
 
   public void addEventActionFor(Object player, String eventPrefix, String eventName, String methodName, EventHandler eventHandler)
   {
-    String eventClassName = eventPrefix + StringUtil.capitalCamalize(eventName.substring(2)) + "Event";
+    String eventClassName = eventPrefix + StringUtil.capitalCamelCase(eventName.substring(2)) + "Event";
 
     if("limelight.ui.events.panel.CastEvent".equals(eventClassName))
       return;

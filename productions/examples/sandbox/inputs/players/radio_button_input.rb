@@ -25,6 +25,12 @@ on_button_pushed do
   print("pressed")
 end
 
+stagehand_reader :radio_button
+
+def group=(name)
+  radio_button.group = name
+end
+
 def print(value)
   log = scene.find("radio_button_log")
   log.text += "#{id}:#{value}\n"
@@ -33,5 +39,5 @@ def print(value)
   radio1 = scene.find("radio_1")
   radio2 = scene.find("radio_2")
   radio3 = scene.find("radio_3")
-  results.text = "One: #{radio1.selected?}\nTwo: #{radio2.selected?}\nThree: #{radio3.selected?}"
+  results.text = "One: #{radio1.radio_button.selected?}\nTwo: #{radio2.radio_button.selected?}\nThree: #{radio3.radio_button.selected?}"
 end

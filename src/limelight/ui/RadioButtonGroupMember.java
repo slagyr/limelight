@@ -7,7 +7,7 @@ public interface RadioButtonGroupMember
 {
   boolean isSelected();
 
-  void setGroup(RadioButtonGroup radioButtonGroup);
+  void setButtonGroup(RadioButtonGroup radioButtonGroup);
 
   void setSelected(boolean value);
 }

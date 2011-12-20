@@ -16,7 +16,7 @@ public class Options
     final Set<String> keySet = new HashSet<String>(options.keySet());
     for(String key : keySet)
     {
-      String setterName = StringUtil.camalize("set " + key);
+      String setterName = StringUtil.camelCase("set " + key);
       findAndInvokeMethod(setterName, subject, options, key, methods);
     }
   }

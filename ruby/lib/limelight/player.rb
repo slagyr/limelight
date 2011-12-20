@@ -6,7 +6,8 @@ module Limelight
 
     include Java::limelight.model.api.Player
 
-    def initialize(player_path)
+    def initialize(player_name, player_path)
+      @name = player_name
       @path = player_path
       @__event_cache = {}
     end
@@ -24,7 +25,7 @@ module Limelight
     alias getPath path
 
     def name
-      Java::limelight.Context.fs().baseName(@path)
+      @name
     end
     alias getName name
 
@@ -133,7 +134,7 @@ module Limelight
 
     def stagehand_reader(*symbols)
       symbols.each do |sym|
-        name = Java::limelight.util.StringUtil.spearcase(sym.to_s)
+        name = Java::limelight.util.StringUtil.spearCase(sym.to_s)
         module_eval("def #{sym}; return stagehands['#{name}']; end")
       end
     end
