@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.io.FileSystem;
 import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
 import limelight.util.TestUtil;
@@ -22,6 +23,7 @@ public class ImagePanelLayoutTest
   @Before
   public void setUp() throws Exception
   {
+    FileSystem.installed();
     FakePropProxy scene = new FakePropProxy();
     ScenePanel root = new ScenePanel(scene);
     root.setStage(new MockStage());
@@ -44,7 +46,6 @@ public class ImagePanelLayoutTest
   public void getDimensionsWhenAuto() throws Exception
   {
     final String filePath = TestUtil.DATA_DIR + "/star.gif";
-    System.err.println("filePath = " + filePath);
     panel.setImageFile(filePath);
     panel.doLayout();
 
