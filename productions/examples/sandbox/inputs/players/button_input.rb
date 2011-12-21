@@ -2,7 +2,7 @@
 #- Limelight and all included source files are distributed under terms of the GNU LGPL.
 
 on_cast do
-  puts "BUTTON INOPUT EXTENDED"
+  log.info "BUTTON INOPUT EXTENDED"
 end
 
 on_key_pressed do |e|

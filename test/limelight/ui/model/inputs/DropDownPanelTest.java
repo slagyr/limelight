@@ -18,16 +18,16 @@ import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 
-public class ComboBoxPanelTest
+public class DropDownPanelTest
 {
-  private ComboBoxPanel panel;
+  private DropDownPanel panel;
   private PropPanel parent;
   private FakeScene root;
 
   @Before
   public void setUp() throws Exception
   {
-    panel = new ComboBoxPanel();
+    panel = new DropDownPanel();
     parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
 
@@ -53,10 +53,10 @@ public class ComboBoxPanelTest
   @Test
   public void settingParentSetsTextAccessor() throws Exception
   {
-    panel.addOption("foo");
-    panel.addOption("blah");
+    panel.addChoice("foo");
+    panel.addChoice("blah");
     parent.setText("blah");
-    assertEquals("blah", panel.getSelectedOption().toString());
+    assertEquals("blah", panel.getSelectedChoice().toString());
   }
 
   @Test
@@ -82,37 +82,37 @@ public class ComboBoxPanelTest
   @Test
   public void propPainterReset() throws Exception
   {
-    assertSame(ComboBoxPanel.ComboBoxPropPainter.instance, parent.getPainter());
+    assertSame(DropDownPanel.DropDownPropPainter.instance, parent.getPainter());
   }
 
   @Test
   public void settingSelection() throws Exception
   {
-    panel.setOptions(1, 2, 3, 4, 5);
-    assertEquals(1, panel.getSelectedOption());
+    panel.setChoicesVargs(1, 2, 3, 4, 5);
+    assertEquals(1, panel.getSelectedChoice());
 
-    panel.setSelectedOption(2);
-    assertEquals(2, panel.getSelectedOption());
+    panel.setSelectedChoice(2);
+    assertEquals(2, panel.getSelectedChoice());
   }
 
   @Test
   public void cannotAddNullOption() throws Exception
   {
-    panel.setOptions(1, 2, 3, null, 4);
-    assertEquals(4, panel.getOptions().size());
+    panel.setChoicesVargs(1, 2, 3, null, 4);
+    assertEquals(4, panel.getChoices().size());
 
-    panel.addOption(null);
-    assertEquals(4, panel.getOptions().size());
+    panel.addChoice(null);
+    assertEquals(4, panel.getChoices().size());
   }
 
   @Test
   public void clearingOptions() throws Exception
   {
-    panel.setOptions(1, 2, 3, null, 4);
+    panel.setChoicesVargs(1, 2, 3, null, 4);
 
     panel.clear();
 
-    assertEquals(0, panel.getOptions().size());
+    assertEquals(0, panel.getChoices().size());
   }
 
   @Test
@@ -120,7 +120,7 @@ public class ComboBoxPanelTest
   {
     CastingDirector.installed();
     root.illuminate();
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
 
     new ButtonPushedEvent().dispatch(panel);
 
@@ -129,24 +129,24 @@ public class ComboBoxPanelTest
     assertEquals("limelight_builtin_curtains", curtains.getName());
 
     PropPanel list = (PropPanel) curtains.getChildren().get(0);
-    assertEquals("limelight_builtin_combo_box_popup_list", list.getName());
+    assertEquals("limelight_builtin_drop_down_popup_list", list.getName());
 
     assertEquals(3, list.getChildren().size());
     final PropPanel item1 = (PropPanel) list.getChildren().get(0);
-    assertEquals("limelight_builtin_combo_box_popup_list_item", item1.getName());
+    assertEquals("limelight_builtin_drop_down_popup_list_item", item1.getName());
     assertEquals("1", item1.getText());
     final PropPanel item2 = (PropPanel) list.getChildren().get(1);
-    assertEquals("limelight_builtin_combo_box_popup_list_item", item2.getName());
+    assertEquals("limelight_builtin_drop_down_popup_list_item", item2.getName());
     assertEquals("2", item2.getText());
     final PropPanel item3 = (PropPanel) list.getChildren().get(2);
-    assertEquals("limelight_builtin_combo_box_popup_list_item", item3.getName());
+    assertEquals("limelight_builtin_drop_down_popup_list_item", item3.getName());
     assertEquals("3", item3.getText());
   }
 
   @Test
   public void consumedButtonPushedEventsDoNotLoadPopup() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
 
     new ButtonPushedEvent().consumed().dispatch(panel);
 
@@ -156,7 +156,7 @@ public class ComboBoxPanelTest
   @Test
   public void pressingEscapeWillClosePopupList() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
     new KeyPressedEvent(0, KeyEvent.KEY_ESCAPE, 0).dispatch(panel);
@@ -166,7 +166,7 @@ public class ComboBoxPanelTest
   @Test
   public void consumedKeyPressedEventsDoNothing() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
     new KeyPressedEvent(0, KeyEvent.KEY_ESCAPE, 0).consumed().dispatch(panel);
@@ -176,19 +176,19 @@ public class ComboBoxPanelTest
   @Test
   public void selectedOptionsIsHighlightedAtFirst() throws Exception
   {
-    panel.setOptions(1, 2, 3);
-    panel.setSelectedOption(3);
+    panel.setChoicesVargs(1, 2, 3);
+    panel.setSelectedChoice(3);
     new ButtonPushedEvent().dispatch(panel);
 
     final PropPanel selected = panel.getPopup().getSelectedItem();
     assertEquals("3", selected.getText());
-    assertEquals(root.getStyles().get("limelight_builtin_combo_box_popup_list_item_selected"), selected.getStyle().getScreen());
+    assertEquals(root.getStyles().get("limelight_builtin_drop_down_popup_list_item_selected"), selected.getStyle().getScreen());
   }
 
   @Test
   public void pressingDownSelectsTheNextItem() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
     new KeyPressedEvent(0, KeyEvent.KEY_DOWN, 0).dispatch(panel);
@@ -204,8 +204,8 @@ public class ComboBoxPanelTest
   @Test
   public void pressingUpSelectsThePreviousItem() throws Exception
   {
-    panel.setOptions(1, 2, 3);
-    panel.setSelectedOption(3);
+    panel.setChoicesVargs(1, 2, 3);
+    panel.setSelectedChoice(3);
     new ButtonPushedEvent().dispatch(panel);
 
     new KeyPressedEvent(0, KeyEvent.KEY_UP, 0).dispatch(panel);
@@ -221,7 +221,7 @@ public class ComboBoxPanelTest
   @Test
   public void itemsIsSelectedOnMouseEnter() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
     final Panel item3 = panel.getPopup().getPopupList().getChildren().get(2);
 
@@ -233,7 +233,7 @@ public class ComboBoxPanelTest
   @Test
   public void pressingReturnConfirmsSelection() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
     new KeyPressedEvent(0, KeyEvent.KEY_DOWN, 0).dispatch(panel);
 
@@ -246,7 +246,7 @@ public class ComboBoxPanelTest
   @Test
   public void popupClosesWhenFocusIsLost() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
     new FocusLostEvent().dispatch(panel);
@@ -257,7 +257,7 @@ public class ComboBoxPanelTest
   @Test
   public void consumedFocusLostEventDoesNothing() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
     new FocusLostEvent().consumed().dispatch(panel);
@@ -268,7 +268,7 @@ public class ComboBoxPanelTest
   @Test
   public void clickingOnListDoesNotCloseThePopup() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
     final PropPanel popupList = panel.getPopup().getPopupList();
@@ -283,7 +283,7 @@ public class ComboBoxPanelTest
     final MockStage stage = new MockStage();
     root.setStage(stage);
 
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     new ButtonPushedEvent().dispatch(panel);
 
     assertEquals(true, panel.hasFocus());
@@ -297,14 +297,14 @@ public class ComboBoxPanelTest
   @Test
   public void valueChangedEventInvokedWhenChangingText() throws Exception
   {
-    panel.setOptions(1, 2, 3);
+    panel.setChoicesVargs(1, 2, 3);
     final MockEventAction action = new MockEventAction();
     panel.getEventHandler().add(ValueChangedEvent.class, action);
 
-    panel.setSelectedOption(1);
+    panel.setSelectedChoice(1);
     assertEquals(false, action.invoked);
 
-    panel.setSelectedOption(3);
+    panel.setSelectedChoice(3);
     assertEquals(true, action.invoked);
   }
 }

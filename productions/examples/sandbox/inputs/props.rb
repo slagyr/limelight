@@ -35,10 +35,10 @@ arena do
   	cell(:border_width => "1") { input_results :id => "radio_button_results" }
     # end row
     cell do
-      combo_box_input :players => "combo_box", :choices => "%w{Red Orange Yellow Green Blue Indigo Violet}", :id => "combo_box_input"
+      drop_down_input :players => "drop_down", :choices => %w{Red Orange Yellow Green Blue Indigo Violet}, :id => "drop_down_input"
     end
-  	cell { input_log :id => "combo_box_log" }
-  	cell(:border_width => "1") { input_results :id => "combo_box_results" }
+  	cell { input_log :id => "drop_down_log" }
+  	cell(:border_width => "1") { input_results :id => "drop_down_results" }
     # end row
     cell do
       button_input :players => "button", :text => "A Button", :id => "button_input"

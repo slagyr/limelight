@@ -17,15 +17,15 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class ComboBoxPanel extends AbstractButtonPanel
+public class DropDownPanel extends AbstractButtonPanel
 {
-  private Object selectedOption;
-  private java.util.List<Object> options;
-  private ComboBoxPopup popup;
+  private Object selectedChoice;
+  private List<Object> choices;
+  private DropDownPopup popup;
 
-  public ComboBoxPanel()
+  public DropDownPanel()
   {
-    options = new LinkedList<Object>();
+    choices = new LinkedList<Object>();
     getEventHandler().add(ButtonPushedEvent.class, LoadPopupListAction.instance);
     getEventHandler().add(KeyPressedEvent.class, PopupKeyControlAction.instance);
     getEventHandler().add(FocusLostEvent.class, ClosePopupOnFocusLostAction.instance);
@@ -48,7 +48,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
   @Override
   protected Painter getPropPainter(PropPanel prop)
   {
-    return ComboBoxPropPainter.instance;
+    return DropDownPropPainter.instance;
   }
 
   public void setText(String text)
@@ -56,11 +56,11 @@ public class ComboBoxPanel extends AbstractButtonPanel
     if(text == null)
       return;
 
-    for(Object option : options)
+    for(Object choice : choices)
     {
-      if(text.equals(option.toString()))
+      if(text.equals(choice.toString()))
       {
-        setSelectedOption(option);
+        setSelectedChoice(choice);
         return;
       }
     }
@@ -68,64 +68,69 @@ public class ComboBoxPanel extends AbstractButtonPanel
 
   public String getText()
   {
-    if(selectedOption == null)
+    if(selectedChoice == null)
       return "";
     else
-      return selectedOption.toString();
+      return selectedChoice.toString();
   }
 
-  public void addOption(Object option)
+  public void addChoice(Object choice)
   {
-    if(option == null)
+    if(choice == null)
       return;
 
-    options.add(option);
-    if(options.size() == 1)
-      setSelectedOption(option);
+    this.choices.add(choice);
+    if(this.choices.size() == 1)
+      setSelectedChoice(choice);
   }
 
-  public Object getSelectedOption()
+  public Object getSelectedChoice()
   {
-    return selectedOption;
+    return selectedChoice;
   }
 
-  public void setOptions(Object... options)
+  public void setChoicesVargs(Object... choices)
+  {
+    setChoices(Arrays.asList(choices));
+  }
+
+  public void setChoices(Collection<?> choices)
   {
     clear();
-    for(Object option : options)
-      addOption(option);
+    for(Object choice : choices)
+      addChoice(choice);
   }
 
-  public void setSelectedOption(Object option)
+  public void setSelectedChoice(Object choice)
   {
-    if(option != null && option.equals(selectedOption))
+    if(choice != null && choice.equals(selectedChoice))
       return;
 
-    if(options.contains(option))
+    if(choices.contains(choice))
     {
-      selectedOption = option;
+      selectedChoice = choice;
       valueChanged();
     }
   }
 
-  public List<Object> getOptions()
+  public List<Object> getChoices()
   {
-    return new LinkedList<Object>(options);
+    return new LinkedList<Object>(choices);
   }
 
   public void clear()
   {
-    this.options.clear();
-    selectedOption = null;
+    this.choices.clear();
+    selectedChoice = null;
     markAsDirty();
   }
 
-  public void setPopup(ComboBoxPopup comboBoxPopup)
+  public void setPopup(DropDownPopup dropDownPopup)
   {
-    popup = comboBoxPopup;
+    popup = dropDownPopup;
   }
 
-  public ComboBoxPopup getPopup()
+  public DropDownPopup getPopup()
   {
     return popup;
   }
@@ -140,14 +145,14 @@ public class ComboBoxPanel extends AbstractButtonPanel
       if(event.isConsumed())
         return;
 
-      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getRecipient();
-      if(!comboBox.hasFocus() && comboBox.getStage() != null)
+      final DropDownPanel dropDown = (DropDownPanel) event.getRecipient();
+      if(!dropDown.hasFocus() && dropDown.getStage() != null)
       {
-        comboBox.getStage().getKeyListener().focusOn(comboBox);
+        dropDown.getStage().getKeyListener().focusOn(dropDown);
       }
-      if(comboBox.getPopup() == null)
+      if(dropDown.getPopup() == null)
       {
-        final ComboBoxPopup popup = new ComboBoxPopup(comboBox);
+        final DropDownPopup popup = new DropDownPopup(dropDown);
         popup.open();
       }
     }
@@ -163,8 +168,8 @@ public class ComboBoxPanel extends AbstractButtonPanel
       if(event.isConsumed())
         return;
 
-      ComboBoxPanel comboBox = (ComboBoxPanel) event.getRecipient();
-      final ComboBoxPopup popup = comboBox.getPopup();
+      DropDownPanel dropDownPanel = (DropDownPanel) event.getRecipient();
+      final DropDownPopup popup = dropDownPanel.getPopup();
       if(popup == null)
         return;
 
@@ -195,34 +200,33 @@ public class ComboBoxPanel extends AbstractButtonPanel
       if(event.isConsumed())
         return;
 
-      final ComboBoxPanel comboBox = (ComboBoxPanel) event.getRecipient();
-      if(comboBox.getPopup() != null)
-        comboBox.getPopup().close();
+      final DropDownPanel dropDown = (DropDownPanel) event.getRecipient();
+      if(dropDown.getPopup() != null)
+        dropDown.getPopup().close();
     }
   }
 
-
-  public static class ComboBoxPropPainter implements Painter
+  public static class DropDownPropPainter implements Painter
   {
-    public static Painter instance = new ComboBoxPropPainter();
+    public static Painter instance = new DropDownPropPainter();
 
     public void paint(Graphics2D graphics, PaintablePanel panel)
     {
       BackgroundPainter.instance.paint(graphics, panel);
-      ComboBoxBorderPainter.instance.paint(graphics, panel);
+      DropDownBorderPainter.instance.paint(graphics, panel);
     }
   }
 
-  private static class ComboBoxBorderPainter implements Painter
+  private static class DropDownBorderPainter implements Painter
   {
-    public static ComboBoxBorderPainter instance = new ComboBoxBorderPainter();
+    public static DropDownBorderPainter instance = new DropDownBorderPainter();
 
     private static NinePatch normalPatch;
     private static NinePatch focusPatch;
     static
     {
-      normalPatch = NinePatch.load(Images.load("combo_box.9.png"), true, true);
-      focusPatch = NinePatch.load(Images.load("combo_box_focus.9.png"), true, true);
+      normalPatch = NinePatch.load(Images.load("drop_down.9.png"), true, true);
+      focusPatch = NinePatch.load(Images.load("drop_down.9.png"), true, true);
     }
 
     public void paint(Graphics2D graphics, PaintablePanel panel)
@@ -235,7 +239,7 @@ public class ComboBoxPanel extends AbstractButtonPanel
       }
       catch(IndexOutOfBoundsException e)
       {
-        System.err.println("ComboBox: NinePatch choked again");
+        System.err.println("DropDown: NinePatch choked again");
       }
     }
   }

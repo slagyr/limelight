@@ -67,8 +67,8 @@ Feature: Sandbox
     Then The text of "radio_2" should include "on"
     And I set value of "radio_3" to "on"
     Then The text of "radio_3" should include "on"
-    And I set value of "combo_box_input" to "Indigo"
-    Then The text of "combo_box_input" should include "Indigo"
+    And I set value of "drop_down_input" to "Indigo"
+    Then The text of "drop_down_input" should include "Indigo"
 
   Scenario: Rounded Corner Scene
     Given I have the sanbox production opened

@@ -34,23 +34,23 @@ public class BuiltInStylesTest
   }
 
   @Test
-  public void hasComboBoxPopupList() throws Exception
+  public void hasDropDownPopupList() throws Exception
   {
-    Style popup = styles.get("limelight_builtin_combo_box_popup_list");
+    Style popup = styles.get("limelight_builtin_drop_down_popup_list");
 
     assertNotNull(popup);
     assertEquals("on", popup.getFloat());
   }
 
   @Test
-  public void hasComboBoxListItem() throws Exception
+  public void hasDropDownListItem() throws Exception
   {
-    Style popup = styles.get("limelight_builtin_combo_box_popup_list_item");
+    Style popup = styles.get("limelight_builtin_drop_down_popup_list_item");
 
     assertNotNull(popup);
     assertEquals("10", popup.getLeftPadding());
 
-    Style hover = styles.get("limelight_builtin_combo_box_popup_list_item_selected");
+    Style hover = styles.get("limelight_builtin_drop_down_popup_list_item_selected");
     assertEquals(Colors.toString(Colors.resolve("white")), hover.getTextColor());
   }
 

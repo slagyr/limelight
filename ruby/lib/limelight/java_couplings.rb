@@ -41,7 +41,7 @@ module Limelight
       module Inputs #:nodoc:
         ButtonPanel = Java::limelight.ui.model.inputs.ButtonPanel
         CheckBoxPanel = Java::limelight.ui.model.inputs.CheckBoxPanel
-        ComboBoxPanel = Java::limelight.ui.model.inputs.ComboBoxPanel
+        DropDownPanel = Java::limelight.ui.model.inputs.DropDownPanel
         RadioButtonPanel = Java::limelight.ui.model.inputs.RadioButtonPanel
         TextAreaPanel = Java::limelight.ui.model.inputs.TextAreaPanel
         TextBoxPanel = Java::limelight.ui.model.inputs.TextBoxPanel

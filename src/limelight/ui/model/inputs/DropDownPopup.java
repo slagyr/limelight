@@ -18,26 +18,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class ComboBoxPopup
+class DropDownPopup
 {
-  private final ComboBoxPanel comboBox;
+  private final DropDownPanel dropDown;
   private PropPanel curtains;
   private PropPanel popupList;
   private PropPanel selectedItem;
   private Map<String, RichStyle> stylesStore;
 
-  public ComboBoxPopup(final ComboBoxPanel comboBoxPanel)
+  public DropDownPopup(final DropDownPanel dropDownPanel)
   {
-    comboBox = comboBoxPanel;
+    dropDown = dropDownPanel;
 
-    stylesStore = comboBox.getRoot().getStyles();
+    stylesStore = dropDown.getRoot().getStyles();
     createCurtains();
     createList();
     createListItems();
 
     curtains.add(popupList);
 
-    comboBox.setPopup(this);
+    dropDown.setPopup(this);
   }
 
   private void createListItems()
@@ -60,15 +60,15 @@ class ComboBoxPopup
       }
     };
 
-    for(Object option : comboBox.getOptions())
+    for(Object option : dropDown.getChoices())
     {
-      PropPanel listItem = new PropPanel(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_combo_box_popup_list_item"));
-      listItem.getStyle().addExtension(stylesStore.get("limelight_builtin_combo_box_popup_list_item"));
+      PropPanel listItem = new PropPanel(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_drop_down_popup_list_item"));
+      listItem.getStyle().addExtension(stylesStore.get("limelight_builtin_drop_down_popup_list_item"));
       listItem.getEventHandler().add(MouseClickedEvent.class, itemChosenAction);
       listItem.getEventHandler().add(MouseEnteredEvent.class, itemSelectedAction);
       listItem.setText(option.toString());
 
-      if(option.equals(comboBox.getSelectedOption()))
+      if(option.equals(dropDown.getSelectedChoice()))
         select(listItem);
 
       popupList.add(listItem);
@@ -85,18 +85,18 @@ class ComboBoxPopup
 
     selectedItem = listItem;
     selectedItem.getStyle().removeScreen();
-    selectedItem.getStyle().applyScreen(stylesStore.get("limelight_builtin_combo_box_popup_list_item_selected"));
+    selectedItem.getStyle().applyScreen(stylesStore.get("limelight_builtin_drop_down_popup_list_item_selected"));
 
     // TODO - MDM - Need a better way to handle this... screens conflicts with hover.
   }
 
   private void createList()
   {
-    popupList = new PropPanel(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_combo_box_popup_list"));
-    popupList.getStyle().addExtension(stylesStore.get("limelight_builtin_combo_box_popup_list"));
-    popupList.getStyle().setX(comboBox.getParent().getAbsoluteLocation().x - comboBox.getRoot().getX());
-    popupList.getStyle().setY(comboBox.getParent().getAbsoluteLocation().y - comboBox.getRoot().getY());
-    popupList.getStyle().setWidth(comboBox.getParent().getWidth());
+    popupList = new PropPanel(new SimplePropProxy(), Util.toMap("name", "limelight_builtin_drop_down_popup_list"));
+    popupList.getStyle().addExtension(stylesStore.get("limelight_builtin_drop_down_popup_list"));
+    popupList.getStyle().setX(dropDown.getParent().getAbsoluteLocation().x - dropDown.getRoot().getX());
+    popupList.getStyle().setY(dropDown.getParent().getAbsoluteLocation().y - dropDown.getRoot().getY());
+    popupList.getStyle().setWidth(dropDown.getParent().getWidth());
     popupList.getEventHandler().add(MouseClickedEvent.class, new EventAction()
     {
       public void invoke(Event event)
@@ -121,19 +121,19 @@ class ComboBoxPopup
 
   public void open()
   {
-    comboBox.getRoot().add(curtains);
+    dropDown.getRoot().add(curtains);
   }
 
   public void close()
   {
     curtains.getParent().remove(curtains);
-    comboBox.setPopup(null);
+    dropDown.setPopup(null);
   }
 
   public void choose(PropPanel item)
   {
     if(item != null)
-      comboBox.setText(item.getText());
+      dropDown.setText(item.getText());
     close();
   }
 

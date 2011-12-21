@@ -23,11 +23,11 @@ arena :vertical_alignment => :center do
     end
     setting do
       label :text => "Horizontal Align:"
-      input :players => "combo_box", :choices => %w{left center right}, :id => "horizontal_align_input", :on_value_changed => "scene.find('logo').style.horizontal_alignment = text"
+      input :players => "drop_down", :choices => %w{left center right}, :id => "horizontal_align_input", :on_value_changed => "scene.find('logo').style.horizontal_alignment = text"
     end
     setting do
       label :text => "Vertical Align:"
-      input :players => "combo_box", :choices => %w{top center bottom}, :id => "vertical_align_input", :on_value_changed => "scene.find('logo').style.vertical_alignment = text"
+      input :players => "drop_down", :choices => %w{top center bottom}, :id => "vertical_align_input", :on_value_changed => "scene.find('logo').style.vertical_alignment = text"
     end
   end
   image_area do

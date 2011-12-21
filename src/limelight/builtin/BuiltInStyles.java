@@ -19,9 +19,9 @@ public class BuiltInStyles
 
     styles = new HashMap<String, RichStyle>();
     styles.put("limelight_builtin_curtains", buildCurtains());
-    styles.put("limelight_builtin_combo_box_popup_list", buildComboBoxPopupList());
-    styles.put("limelight_builtin_combo_box_popup_list_item", buildComboBoxPopupListItem());
-    styles.put("limelight_builtin_combo_box_popup_list_item_selected", buildComboBoxPopupListItemHover());
+    styles.put("limelight_builtin_drop_down_popup_list", buildDropDownPopupList());
+    styles.put("limelight_builtin_drop_down_popup_list_item", buildDropDownPopupListItem());
+    styles.put("limelight_builtin_drop_down_popup_list_item_selected", buildDropDownPopupListItemHover());
 
     return styles;
   }
@@ -38,7 +38,7 @@ public class BuiltInStyles
     return style;
   }
 
-  private static RichStyle buildComboBoxPopupList()
+  private static RichStyle buildDropDownPopupList()
   {
     RichStyle style = new RichStyle();
     style.setFloat("on");
@@ -52,7 +52,7 @@ public class BuiltInStyles
     return style;
   }
 
-  private static RichStyle buildComboBoxPopupListItem()
+  private static RichStyle buildDropDownPopupListItem()
   {
     RichStyle style = new RichStyle();
     style.setWidth("100%");
@@ -61,7 +61,7 @@ public class BuiltInStyles
     return style;
   }
 
-  private static RichStyle buildComboBoxPopupListItemHover()
+  private static RichStyle buildDropDownPopupListItemHover()
   {
     RichStyle style = new RichStyle();
     style.setTextColor("white");

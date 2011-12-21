@@ -25,11 +25,17 @@ on_button_pushed do
   print("pressed")
 end
 
+on_value_changed do
+  print("value changed")
+end
+
+stagehand_reader :drop_down
+
 def print(value)
-  log = scene.find("combo_box_log")
+  log = scene.find("drop_down_log")
   return if log.nil?
   log.text += value + "\n"
 
-  results = scene.find("combo_box_results")
-  results.text = "Selected value: #{self.value}"
+  results = scene.find("drop_down_results")
+  results.text = "Selected value: #{drop_down.value}"
 end
