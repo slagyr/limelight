@@ -11,3 +11,4 @@ out
 /ruby/Gemfile.lock
 .testClasses
 limelight.jar
+pom.xml

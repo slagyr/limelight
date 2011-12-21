@@ -3,10 +3,7 @@
 
 package limelight;
 
-import limelight.commands.Arguments;
-import limelight.commands.Command;
-import limelight.commands.FakeCommand;
-import limelight.commands.HelpCommand;
+import limelight.commands.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,6 +71,15 @@ public class CmdLineMainTest
     main.run("--help");
     assertNotNull(main.getCommand());
     assertEquals(HelpCommand.class, main.getCommand().getClass());
+    assertEquals(true, main.getCommand().executed());
+  }
+
+  @Test
+  public void versionCommandUsingOption() throws Exception
+  {
+    main.run("--version");
+    assertNotNull(main.getCommand());
+    assertEquals(VersionCommand.class, main.getCommand().getClass());
     assertEquals(true, main.getCommand().executed());
   }
 

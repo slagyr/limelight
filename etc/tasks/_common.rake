@@ -111,3 +111,10 @@ def deps(dir, prod_deps, dev_deps)
   in_dir(File.join(dir, "lib", "dev")) { install_deps(dev_deps) }
 end
 
+def limelight_version
+  return @limelight_version if @limelight_version
+  output = `java -cp limelight.jar limelight.CmdLineMain version`
+  @limelight_version = output.gsub("limelight", "").strip
+  @limelight_version
+end
+

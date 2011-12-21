@@ -15,11 +15,12 @@ public class CmdLineMain
 
   static
   {
+    commands.put("create", CreateCommand.class);
     commands.put("help", HelpCommand.class);
     commands.put("open", OpenCommand.class);
     commands.put("pack", PackCommand.class);
     commands.put("unpack", UnpackCommand.class);
-    commands.put("create", CreateCommand.class);
+    commands.put("version", VersionCommand.class);
   }
 
   private Command command;
@@ -37,6 +38,8 @@ public class CmdLineMain
     final Map<String, String> options = arguments.parse(args);
     if(options.containsKey("help"))
       command = new HelpCommand();
+    else if(options.containsKey("version"))
+      command = new VersionCommand();
     else
       command = buildCommand(options);
 
@@ -82,9 +85,10 @@ public class CmdLineMain
   {
     arguments = new Arguments();
     arguments.addParameter("command", "The name of the command to execute. Use --help for a listing of command.");
-    arguments.addSwitchOption("h", "help", "Prints this help message");
     arguments.addSwitchOption("d", "debug", "Sets logger to DEBUG level on stderr");
+    arguments.addSwitchOption("h", "help", "Prints this help message");
     arguments.addValueOption("l", "log", "LEVEL", "Sets log level: CRITICAL, WARN, INFO, CONFIG, DEBUG, FINE");
+    arguments.addSwitchOption("V", "version", "Prints current version");
     return arguments;
   }
 
