@@ -34,11 +34,23 @@ describe Limelight::PlayerRecruiter do
 
     @player_recruiter.can_recruit?("root", "scene_path/players").should == true
 
-    player = @player_recruiter.recruit_player( "root", "scene_path/players")
+    player = @player_recruiter.recruit_player("root", "scene_path/players")
 
     player.path.should == "scene_path/players/root.rb"
     player.name.should == "root"
     @player_recruiter.cast::Root.should == player
+  end
+
+  it "includes player with non-snake-name" do
+    prepare_player("scene_path", "root_beer")
+    make_root(:name => "root")
+
+    @player_recruiter.can_recruit?("root-beer", "scene_path/players").should == true
+    player = @player_recruiter.recruit_player("root-beer", "scene_path/players")
+
+    player.path.should == "scene_path/players/root_beer.rb"
+    player.name.should == "root-beer"
+    @player_recruiter.cast::RootBeer.should == player
   end
 
   it "creates the player in the scene's cast and doesn't currupt the global namespace" do

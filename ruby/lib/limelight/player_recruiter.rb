@@ -45,9 +45,8 @@ module Limelight
 
     private ###############################################
 
-
     def player_filename(player_name, players_path)
-      "#{@fs.join(players_path, player_name)}.rb"
+      "#{@fs.join(players_path, player_name.underscored)}.rb"
     end
 
   end
