@@ -29,6 +29,11 @@ module Limelight
     end
     alias getName name
 
+    def applyOptions(prop, options)
+      # nothing to do here because options are already applied to mixed in methods
+      options
+    end
+
     def __add_action(type, action)
       actions = @__event_cache[type]
       if actions == nil

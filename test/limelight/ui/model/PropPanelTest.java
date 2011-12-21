@@ -20,6 +20,7 @@ import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
 import limelight.audio.MockAudioPlayer;
+import limelight.util.Opts;
 import limelight.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
@@ -673,6 +674,19 @@ public class PropPanelTest extends Assert
     List<PropPanel> bars = panel.findByName("bar");
     assertEquals(1, bars.size());
     assertEquals(true, bars.contains(bar));
+  }
+
+  @Test
+  public void playersGetIlluminated() throws Exception
+  {
+    FakePlayer player = new FakePlayer("some/path");
+    root.delluminate();
+    panel.addPlayer(player);
+    panel.addOptions(Util.toMap("fooey", "Hello there"));
+    panel.illuminate();
+
+    assertNotNull(player.appliedOptions);
+    assertEquals("Hello there", player.appliedOptions.get("fooey"));
   }
 
   @Test

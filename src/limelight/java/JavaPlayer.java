@@ -6,10 +6,12 @@ import limelight.events.EventHandler;
 import limelight.model.api.Player;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
+import limelight.util.Options;
 import limelight.util.StringUtil;
 import org.w3c.dom.Element;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 public class JavaPlayer implements Player
 {
@@ -64,6 +66,14 @@ public class JavaPlayer implements Player
   public String getName()
   {
     return name;
+  }
+
+  public Map<String, Object> applyOptions(PropPanel prop, Map<String, Object> options)
+  {
+    Object hand = prop.getStagehands().get(name);
+    if(hand != null)
+      Options.apply(hand, options);
+    return options;
   }
 
   private void invokeCastEvents(Object player, PropPanel prop, Element playerElement)

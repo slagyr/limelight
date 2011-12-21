@@ -27,10 +27,6 @@ end
 
 stagehand_reader :radio_button
 
-def group=(name)
-  radio_button.group = name
-end
-
 def print(value)
   log = scene.find("radio_button_log")
   log.text += "#{id}:#{value}\n"

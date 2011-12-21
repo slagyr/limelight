@@ -388,6 +388,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     illuminatePlayers(illuminateOptions.remove("players"));
 
     Options.apply(this, illuminateOptions);
+    illuminateOptions = applyPlayerOptions(illuminateOptions);
     Options.apply(getStyle(), illuminateOptions);
 
     proxy.applyOptions(illuminateOptions);
@@ -535,6 +536,14 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
         Context.instance().castingDirector.castRole(this, playerName, director);
       }
     }
+  }
+
+  private Map<String, Object> applyPlayerOptions(Map<String, Object> options)
+  {
+    Map<String, Object> result = options;
+    for(Player player : getPlayers())
+      result = player.applyOptions(this, result);
+    return result;
   }
 
   private void logUnusedOptions(Map<String, Object> illuminateOptions)

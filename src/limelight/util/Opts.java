@@ -13,10 +13,10 @@ public class Opts extends HashMap<String, Object>
     super();
   }
 
-  public Opts(Map<Object, Object> starter)
+  public Opts(Map<?, Object> starter)
   {
     this();
-    for(Map.Entry<Object, Object> entry : starter.entrySet())
+    for(Map.Entry<?, Object> entry : starter.entrySet())
       put(toKey(entry.getKey()), entry.getValue());
   }
 

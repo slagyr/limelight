@@ -6,11 +6,13 @@ import limelight.model.api.Player;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
 import limelight.ui.model.PropPanel;
+import limelight.util.Opts;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -60,5 +62,27 @@ public class JavaPlayerTest
     assertEquals(0, prop.getEventHandler().getActions(CastEvent.class).size());
     assertEquals(1, samplePlayerClass.getField("invocations").get(lastSamplePlayer()));
     assertEquals(CastEvent.class, samplePlayerClass.getField("event").get(lastSamplePlayer()).getClass());
+  }
+
+  @Test
+  public void applyOptions() throws Exception
+  {
+    final Thing thing = new Thing();
+    prop.getStagehands().put("thing", thing);
+    final Player player = new JavaPlayer("thing", "path", null, null, null);
+
+    Map<String, Object> result = player.applyOptions(prop, Opts.with("value", 1234));
+    assertEquals(0, result.size());
+    assertEquals(1234, thing.value);
+  }
+
+  public static class Thing
+  {
+    public Object value;
+
+    public void setValue(Object value)
+    {
+      this.value = value;
+    }
   }
 }

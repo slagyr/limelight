@@ -42,7 +42,8 @@
   (cast [this prop-panel]
     (cast-player player-ns prop-panel))
   (getPath [this] path)
-  (getName [this] name))
+  (getName [this] name)
+  (applyOptions [this prop-panel options] options))
 
 (defn new-player [name path player-ns]
   (Player. name path player-ns))
