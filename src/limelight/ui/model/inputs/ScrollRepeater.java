@@ -44,10 +44,11 @@ public class ScrollRepeater extends Animation
   private void handleAcceleration()
   {
     ticks++;
-    if(ticks >= 10 && scrollDelta < maxScrollDelta)
+    if(ticks >= 10 && Math.abs(scrollDelta) < maxScrollDelta)
     {
       scrollDelta *= 1.25;
-      scrollDelta = Math.min(scrollDelta, maxScrollDelta);
+      if(Math.abs(scrollDelta) > maxScrollDelta)
+        scrollDelta = scrollDelta > maxScrollDelta ? maxScrollDelta : (-1 * maxScrollDelta);
       ticks = 0;
     }
   }
@@ -60,7 +61,7 @@ public class ScrollRepeater extends Animation
   public void setScrollDelta(int delta)
   {
     scrollDelta = delta;
-    maxScrollDelta = delta * 5;
+    maxScrollDelta = Math.abs(delta * 5);
   }
 
   public void reset()

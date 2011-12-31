@@ -3,6 +3,7 @@
 
 package limelight.ui.model.inputs.painting;
 
+import limelight.Log;
 import limelight.ui.images.Images;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
@@ -84,27 +85,27 @@ public class ScrollBarPainter
   {
     Box bounds = scrollBar.getBounds();
     if(scrollBar.isHorizontal())
-      return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH, bounds.y, INCREASING_BOX_LENGTH, bounds.height);
+      return new Box(bounds.width - INCREASING_BOX_LENGTH, 0, INCREASING_BOX_LENGTH, bounds.height);
     else
-      return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
+      return new Box(0, bounds.height - INCREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
   }
 
   public Box getDecreasingBox(ScrollBarPanel scrollBar)
   {
     Box bounds = scrollBar.getBounds();
     if(scrollBar.isHorizontal())
-      return new Box(bounds.x + bounds.width - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.y, DECREASING_BOX_LENGTH, bounds.height);
+      return new Box(bounds.width - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, 0, DECREASING_BOX_LENGTH, bounds.height);
     else
-      return new Box(bounds.x, bounds.y + bounds.height - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
+      return new Box(0, bounds.height - INCREASING_BOX_LENGTH - DECREASING_BOX_LENGTH, bounds.width, INCREASING_BOX_LENGTH);
   }
 
   public Box getTrackBox(ScrollBarPanel scrollBar)
   {
     Box bounds = scrollBar.getBounds();
     if(scrollBar.isHorizontal())
-      return new Box(bounds.x + CAP_LENGTH, bounds.y, bounds.width - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH, bounds.height);
+      return new Box(CAP_LENGTH, 0, bounds.width - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH, bounds.height);
     else
-      return new Box(bounds.x, bounds.y + CAP_LENGTH, bounds.width, bounds.height - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH);
+      return new Box(0, CAP_LENGTH, bounds.width, bounds.height - CAP_LENGTH - DECREASING_BOX_LENGTH - INCREASING_BOX_LENGTH);
   }
 
   private static void drawVertically(Graphics2D graphics, Box bounds, ScrollBarPanel scrollBar)

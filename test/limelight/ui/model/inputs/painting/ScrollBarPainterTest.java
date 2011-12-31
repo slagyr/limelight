@@ -17,7 +17,6 @@ public class ScrollBarPainterTest
   private ScrollBarPainter.ScrollBarImages images;
   private ScrollBarPainter painter = ScrollBarPainter.instance;
 
-
   private void setUpHorizontally()
   {
     scrollBar = new ScrollBarPanel(ScrollBarPanel.HORIZONTAL);

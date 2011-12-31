@@ -93,6 +93,18 @@ public class ScrollRepeaterTest
   }
 
   @Test
+  public void acceleratesWithNegativeDelta() throws Exception
+  {
+    repeater.setScrollDelta(-100);
+
+    repeater.doUpdate();
+    for(int i = 0; i < 10; i++)
+      repeater.doUpdate();
+
+    assertEquals(-125, repeater.getScrollDelta());
+  }
+
+  @Test
   public void addingRepeatConditionPreventsScrolling() throws Exception
   {
     repeater.setScrollDelta(5);
