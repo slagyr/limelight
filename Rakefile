@@ -3,7 +3,6 @@ TASK_DIR = File.expand_path(File.dirname(__FILE__) + "/etc/tasks")
 MODULES = %w{java utilities ruby clojure}
 
 Dir.glob(File.join(TASK_DIR, "*.rake")).sort.each do |rakefile|
-  puts "rakefile: #{rakefile}"
   load rakefile
 end
 
