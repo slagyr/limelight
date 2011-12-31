@@ -33,8 +33,8 @@
     <orderEntry type="library" scope="PROVIDED" name="rspec-core (v2.7.1, RVM: jruby-1.6.5 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-expectations (v2.7.0, RVM: jruby-1.6.5 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="diff-lcs (v1.1.3, RVM: jruby-1.6.5 [global]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rspec (v2.7.0, RVM: jruby-1.6.5 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v2.7.0, RVM: jruby-1.6.5 [global]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec (v2.7.0, RVM: jruby-1.6.5 [global]) [gem]" level="application" />
   </component>
 </module>
 

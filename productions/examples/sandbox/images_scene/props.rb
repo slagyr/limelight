@@ -15,11 +15,11 @@ arena :vertical_alignment => :center do
     end
     setting do
       label :text => "Scaled:", :width => "100%"
-      input :players => "check_box", :checked => true, :id => "scaled_checkbox", :on_button_pushed => "scene.find('logo').scaled = checked?"
+      input :players => "check_box", :checked => true, :id => "scaled_checkbox", :on_button_pushed => "scene.find('logo').stagehands['image'].scaled = stagehands['check-box'].checked?"
     end
     setting do
       label :text => "Rotation:"
-      input :players => "text_box", :text => "0", :id => "rotation_input", :on_focus_lost => "scene.find('logo').rotation = text.to_f"
+      input :players => "text_box", :text => "0", :id => "rotation_input", :on_focus_lost => "scene.find('logo').stagehands['image'].rotation = text.to_f"
     end
     setting do
       label :text => "Horizontal Align:"
@@ -31,6 +31,6 @@ arena :vertical_alignment => :center do
     end
   end
   image_area do
-    logo :id => "logo", :players => "image", :image => "images/logo.png"
+    logo :id => "logo", :players => "image", :filename => "images/logo.png"
   end
 end

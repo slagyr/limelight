@@ -46,7 +46,7 @@ public class ImagePanelLayoutTest
   public void getDimensionsWhenAuto() throws Exception
   {
     final String filePath = TestUtil.DATA_DIR + "/star.gif";
-    panel.setImageFile(filePath);
+    panel.setFilename(filePath);
     panel.doLayout();
 
     assertEquals(200, panel.getHeight());
@@ -56,7 +56,7 @@ public class ImagePanelLayoutTest
   @Test
   public void getDimensionsWhenNotAuto() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
     parent.style.setHeight("150");
     parent.childConsumableBounds = new Box(0, 0, 100, 150);
@@ -69,7 +69,7 @@ public class ImagePanelLayoutTest
   @Test
   public void getScaleTransformWhenDimensionsAreAuto() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     panel.doLayout();
 
     AffineTransform tranform = panel.getTransform();
@@ -80,7 +80,7 @@ public class ImagePanelLayoutTest
   @Test
   public void getScaleTransformWhenDimensionsAreNotAuto() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
     parent.style.setHeight("150");
     parent.childConsumableBounds = new Box(0, 0, 100, 150);
@@ -94,7 +94,7 @@ public class ImagePanelLayoutTest
   @Test
   public void getRotationTransformWhenDimensionsAreAuto() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     panel.setRotation(45);
     panel.doLayout();
 
@@ -108,7 +108,7 @@ public class ImagePanelLayoutTest
   @Test
   public void getScalleTransformWhenDimensionsAreNotAutoAndScalingIsOff() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     panel.setScaled(false);
     parent.style.setWidth("100");
     parent.style.setHeight("150");
@@ -123,7 +123,7 @@ public class ImagePanelLayoutTest
   @Test
   public void hasConstrainedProportionsWhenWidthIsNotAuto() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
     parent.childConsumableBounds = new Box(0, 0, 100, 200);
     parent.doLayout();
@@ -136,7 +136,7 @@ public class ImagePanelLayoutTest
   @Test
   public void hasConstrainedProportionsWhenHeightIsNotAuto() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setHeight("100");
     parent.childConsumableBounds = new Box(0, 0, 200, 100);
     parent.doLayout();
@@ -149,7 +149,7 @@ public class ImagePanelLayoutTest
   @Test
   public void sizeRemainsWhenStaticAndNotScaled() throws Exception
   {
-    panel.setImageFile(TestUtil.DATA_DIR + "/star.gif");
+    panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     panel.setScaled(false);
     parent.style.setHeight("400");
     parent.style.setHeight("400");

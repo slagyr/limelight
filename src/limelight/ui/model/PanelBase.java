@@ -228,16 +228,14 @@ public abstract class PanelBase implements Panel
 
   public synchronized void markAsNeedingLayout(Layout layout)
   {
-    if(getRoot() != null)
+    if(neededLayout == null)
     {
-      if(neededLayout == null)
-      {
-        neededLayout = layout; // Set first... race conditions otherwise.
+      neededLayout = layout; // Set first... race conditions otherwise.
+      if(getRoot() != null)
         getRoot().addPanelNeedingLayout(this);
-      }
-      else if(layout.overides(neededLayout))
-        neededLayout = layout;
     }
+    else if(layout.overides(neededLayout))
+      neededLayout = layout;
   }
 
   public void markAsNeedingLayout()
@@ -250,7 +248,7 @@ public abstract class PanelBase implements Panel
     return neededLayout != null;
   }
 
-  //TODO This is a little inefficient.  Reconsider what get's passed to props.
+  //TODO This is a little inefficient.  Reconsider what gets passed to props.
   protected MouseEvent translatedEvent(MouseEvent e)
   {
     e = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getClickCount(), false);

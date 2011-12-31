@@ -1,0 +1,3 @@
+<player class="limelight.builtin.players.Image">
+    <onCast>install</onCast>
+</player>

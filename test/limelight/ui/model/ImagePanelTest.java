@@ -43,8 +43,8 @@ public class ImagePanelTest
   @Test
   public void setImageFile() throws Exception
   {
-    panel.setImageFile("blah/blah.png");
-    assertEquals("blah/blah.png", panel.getImageFile());
+    panel.setFilename("blah/blah.png");
+    assertEquals("blah/blah.png", panel.getFilename());
   }
 
   @Test
@@ -100,7 +100,7 @@ public class ImagePanelTest
     StreamReader reader = new StreamReader(TestUtil.fs.inputStream(TestUtil.dataDirPath(imageFile)));
     byte[] bytes = reader.readBytes(100000);
 
-    panel.setImageData(bytes);
+    panel.setData(bytes);
 
     assertEquals(200, panel.getImage().getHeight(null));
     assertEquals(200, panel.getImage().getWidth(null));
@@ -109,7 +109,7 @@ public class ImagePanelTest
   @Test
   public void settingImageDataUpdatesInfo() throws Exception
   {
-    panel.setImageFile(TestUtil.dataDirPath("small_star.gif"));
+    panel.setFilename(TestUtil.dataDirPath("small_star.gif"));
     panel.getImage();
     panel.resetLayout();
     parent.resetLayout();
@@ -118,7 +118,7 @@ public class ImagePanelTest
 
     assertEquals(200, panel.getImageWidth(), 0.1);
     assertEquals(200, panel.getImageHeight(), 0.1);
-    assertEquals("<data>", panel.getImageFile());
+    assertEquals("[DATA]", panel.getFilename());
     assertEquals(true, panel.needsLayout());
     assertEquals(true, parent.needsLayout());
   }
@@ -126,10 +126,10 @@ public class ImagePanelTest
   @Test
   public void doesntCrashWhenNoImageFileProvided() throws Exception
   {
-    panel.setImageFile(null);
+    panel.setFilename(null);
     assertEquals(null, panel.getImage());
 
-    panel.setImageFile("");
+    panel.setFilename("");
     assertEquals(null, panel.getImage());
   }
 }

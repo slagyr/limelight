@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream;
 public class ImagePanel extends PanelBase
 {
   private double rotation;
-  private String imageFile;
+  private String filename;
   private Image image;
   private AffineTransform transform;
   private double rotatedWidth;
@@ -125,20 +125,20 @@ public class ImagePanel extends PanelBase
 
   public Image getImage()
   {
-    if(image == null && imageFile != null && imageFile.trim().length() > 0)
+    if(image == null && filename != null && filename.trim().length() > 0)
     {
       try
       {
         Scene rootPanel = getRoot();
-        if(rootPanel != null && imageFile != null)
+        if(rootPanel != null && filename != null)
         {
           ImageCache imageCache = rootPanel.getImageCache();
-          setImage(imageCache.getImage(imageFile));
+          setImage(imageCache.getImage(filename));
         }
       }
       catch(Exception e)
       {
-        throw new LimelightException("Could not load image: " + imageFile + " (" + e.toString() + ")");
+        throw new LimelightException("Could not load image: " + filename + " (" + e.toString() + ")");
       }
     }
     return image;
@@ -155,7 +155,7 @@ public class ImagePanel extends PanelBase
   {
     rotation = angle;
     markAsDirty();
-    ((PanelBase) getParent()).markAsDirty();
+    getParent().markAsDirty();
     markAsNeedingLayout();
     doPropagateSizeChangeUp(getParent());
   }
@@ -165,14 +165,14 @@ public class ImagePanel extends PanelBase
     return rotation;
   }
 
-  public void setImageFile(String filePath)
+  public void setFilename(String filePath)
   {
-    imageFile = filePath;
+    filename = filePath;
   }
 
-  public String getImageFile()
+  public String getFilename()
   {
-    return imageFile;
+    return filename;
   }
 
   public boolean isScaled()
@@ -187,11 +187,11 @@ public class ImagePanel extends PanelBase
     getParent().markAsNeedingLayout();
   }
 
-  public void setImageData(byte[] bytes) throws Exception
+  public void setData(byte[] bytes) throws Exception
   {
     ImageInputStream imageInput = new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
     setImage(ImageIO.read(imageInput));
-    imageFile = "<data>";
+    filename = "[DATA]";
 
     markAsNeedingLayout();
     getParent().markAsNeedingLayout();
