@@ -92,6 +92,11 @@ public class Log
     logger.severe(message);
   }
 
+  public static void severe(String message, Throwable e)
+  {
+    logger.log(Level.SEVERE, message, e);
+  }
+
   public static void warn(String message)
   {
     logger.warning(message);

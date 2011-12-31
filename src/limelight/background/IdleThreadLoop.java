@@ -3,6 +3,8 @@
 
 package limelight.background;
 
+import limelight.Log;
+
 public abstract class IdleThreadLoop
 {
   public static boolean verbose = true;
@@ -87,9 +89,7 @@ public abstract class IdleThreadLoop
         }
         catch(Exception e)
         {
-          //TODO What to do with execption here?
-          if(verbose)
-            e.printStackTrace();
+          Log.severe("Error in " + thread.getName() + " thread:", e);
         }
       }
     }

@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ImageCache extends SimpleCache<String, Image>
 {
@@ -37,7 +38,8 @@ public class ImageCache extends SimpleCache<String, Image>
     try
     {
       String imageFilename = Context.fs().pathTo(root, imagePath);
-      BufferedImage image = ImageIO.read(Context.fs().inputStream(imageFilename));
+      final InputStream inputStream = Context.fs().inputStream(imageFilename);
+      BufferedImage image = ImageIO.read(inputStream);
 
       if(!image.getColorModel().hasAlpha())
         image = imageWithAlpha(image);
