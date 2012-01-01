@@ -1,11 +1,11 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.casting
+(ns limelight.clojure.casting
   (:use
-    [limelight.common]
-    [limelight.player]
-    [limelight.util :only (read-src)]))
+    [limelight.clojure.core]
+    [limelight.clojure.player]
+    [limelight.clojure.util :only (read-src)]))
 
 (defn- load-player-from [casting-director player-path player-name]
   (let [player-content (.readTextFile (limelight.Context/fs) player-path)
@@ -13,9 +13,9 @@
         event-actions (intern player-ns '*event-actions* (atom {}))]
     (binding [*ns* player-ns]
       (use 'clojure.core)
-      (use 'limelight.player)
-      (use 'limelight.common)
-      (binding [limelight.player/*action-cache* @event-actions]
+      (use 'limelight.clojure.player)
+      (use 'limelight.clojure.core)
+      (binding [limelight.clojure.player/*action-cache* @event-actions]
         (read-src player-path player-content)))
     (swap! (.cast casting-director) #(assoc % player-name player-ns))
     player-ns))

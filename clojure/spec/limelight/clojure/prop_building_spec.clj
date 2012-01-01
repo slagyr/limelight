@@ -1,14 +1,14 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.prop-building-spec
+(ns limelight.clojure.prop-building-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.common]
-    [limelight.prop-building]
-    [limelight.scene :only (new-scene)]
-    [limelight.production :only (new-production)]))
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.core]
+    [limelight.clojure.prop-building]
+    [limelight.clojure.scene :only (new-scene)]
+    [limelight.clojure.production :only (new-production)]))
 
 (defn illuminate [scene]
   (.setProduction @(.peer scene) (.peer (new-production (limelight.model.FakeProduction. "Mock Production"))))

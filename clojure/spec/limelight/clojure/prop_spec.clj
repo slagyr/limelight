@@ -1,13 +1,13 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.prop-spec
+(ns limelight.clojure.prop-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.prop])
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.prop])
   (:import
-    [limelight.prop Prop]))
+    [limelight.clojure.prop Prop]))
 
 (describe "Prop"
 

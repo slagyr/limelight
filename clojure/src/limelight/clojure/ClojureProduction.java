@@ -56,7 +56,7 @@ public class ClojureProduction extends Production
   {
     try
     {
-      Var newProduction = loadVar("limelight.production", "new-production");
+      Var newProduction = loadVar("limelight.clojure.production", "new-production");
       proxy = (ProductionProxy)newProduction.invoke(this);
     }
     catch(Exception e)

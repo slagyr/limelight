@@ -1,13 +1,14 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.production-spec
+(ns limelight.clojure.production-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.production])
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.production])
   (:import
-    [limelight.production Production]))
+    [limelight.clojure.production Production]
+    [limelight.clojure.theater Theater]))
 
 (defn actions-for [production event-class]
   (-> production
@@ -35,7 +36,7 @@
       (should= @production (.getProxy (.peer @production))))
 
     (it "creates a theater"
-      (should= limelight.theater.Theater (type @(.theater @production)))
+      (should= limelight.clojure.theater.Theater (type @(.theater @production)))
       (should= (.getTheater @peer-production) (.peer @(.theater @production)))
       (should= @production (.production @(.theater @production))))
 

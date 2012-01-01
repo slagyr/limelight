@@ -1,12 +1,12 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.stage-building-spec
+(ns limelight.clojure.stage-building-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.stage-building]
-    [limelight.production :only (new-production)]))
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.stage-building]
+    [limelight.clojure.production :only (new-production)]))
 
 (describe "Stage building"
   (with peer-production (limelight.model.FakeProduction. "Mock Production"))

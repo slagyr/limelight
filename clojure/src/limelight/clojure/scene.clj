@@ -1,11 +1,11 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.scene
+(ns limelight.clojure.scene
   (:use
-    [limelight.casting :only (new-player-recruiter)]
-    [limelight.util :only (map-for-java)]
-    [limelight.common]))
+    [limelight.clojure.casting :only (new-player-recruiter)]
+    [limelight.clojure.util :only (map-for-java)]
+    [limelight.clojure.core]))
 
 (deftype Scene [peer player-recruiter]
 

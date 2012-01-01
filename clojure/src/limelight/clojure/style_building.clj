@@ -1,9 +1,9 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.style-building
+(ns limelight.clojure.style-building
   (:use
-    [limelight.util :only (read-src)]))
+    [limelight.clojure.util :only (read-src)]))
 
 (declare *styles*)
 (declare *extendable-styles*)
@@ -58,7 +58,7 @@
 (defn build-styles
   ([styles src path] (build-styles styles src path {}))
   ([styles src path extendable-styles]
-    (binding [*ns* (the-ns 'limelight.style-building)
+    (binding [*ns* (the-ns 'limelight.clojure.style-building)
               *styles* (atom styles)
               *extendable-styles* extendable-styles]
       (read-src path src)

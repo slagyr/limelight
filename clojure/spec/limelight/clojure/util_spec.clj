@@ -1,14 +1,14 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.util-spec
+(ns limelight.clojure.util-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.util])
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.util])
   (:import
     [limelight.clojure ProxyMap]
-    [limelight.util Opts]))
+    [limelight.clojure.util Opts]))
 
 (describe "Limelight Util"
 

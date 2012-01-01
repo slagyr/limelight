@@ -1,14 +1,14 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.common-spec
+(ns limelight.clojure.core-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.common]
-    [limelight.prop-building :only (to-props)]
-    [limelight.scene :only (new-scene)]
-    [limelight.production :only (new-production)]))
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.core]
+    [limelight.clojure.prop-building :only (to-props)]
+    [limelight.clojure.scene :only (new-scene)]
+    [limelight.clojure.production :only (new-production)]))
 
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]

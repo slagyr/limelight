@@ -1,12 +1,12 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.theater-spec
+(ns limelight.clojure.theater-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.theater])
-  (:import [limelight.theater Theater]))
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.theater])
+  (:import [limelight.clojure.theater Theater]))
 
 (describe "Theater"
   (with theater (Theater. :peer :production))

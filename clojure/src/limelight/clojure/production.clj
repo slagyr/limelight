@@ -1,19 +1,19 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.production
+(ns limelight.clojure.production
   (:use
-    [limelight.common]
-    [limelight.theater]
-    [limelight.stage-building :only (build-stages)]
-    [limelight.prop-building :only (build-props)]
-    [limelight.style-building :only (build-styles)]
-    [limelight.scene :only (new-scene)]
-    [limelight.util :only (read-src map-for-clojure)])
+    [limelight.clojure.core]
+    [limelight.clojure.theater]
+    [limelight.clojure.stage-building :only (build-stages)]
+    [limelight.clojure.prop-building :only (build-props)]
+    [limelight.clojure.style-building :only (build-styles)]
+    [limelight.clojure.scene :only (new-scene)]
+    [limelight.clojure.util :only (read-src map-for-clojure)])
   (:require
-    [limelight.production-player]
-    [limelight.core])
-  (:import [limelight.theater Theater]))
+    [limelight.clojure.production-player]
+    [limelight.clojure.core])
+  (:import [limelight.clojure.theater Theater]))
 
 (deftype Production [peer theater ns]
 
@@ -27,9 +27,9 @@
           player-src (if (.exists fs player-path) (.readTextFile fs player-path) nil)]
       (when player-src
         (binding [*ns* ns
-                  limelight.production-player/*production* this]
+                  limelight.clojure.production-player/*production* this]
           (use 'clojure.core)
-          (use 'limelight.production-player)
+          (use 'limelight.clojure.production-player)
           (read-src player-path player-src)))))
 
   (loadLibraries [this])

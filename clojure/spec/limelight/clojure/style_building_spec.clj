@@ -1,11 +1,11 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.style-building-spec
+(ns limelight.clojure.style-building-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.style-building]))
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.style-building]))
 
 (describe "Style building"
 

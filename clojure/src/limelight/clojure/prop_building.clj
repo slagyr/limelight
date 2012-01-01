@@ -1,11 +1,11 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.prop-building
+(ns limelight.clojure.prop-building
   (:use
-    [limelight.common]
-    [limelight.prop :only (new-prop)]
-    [limelight.util :only (read-src)]))
+    [limelight.clojure.core]
+    [limelight.clojure.prop :only (new-prop)]
+    [limelight.clojure.util :only (read-src)]))
 
 (declare to-prop)
 
@@ -27,7 +27,7 @@
     prop))
 
 (defn build-props [root src path]
-  (binding [*ns* (the-ns 'limelight.prop-building)]
+  (binding [*ns* (the-ns 'limelight.clojure.prop-building)]
     (let [prop-data (read-src path (str "[" src "]"))
           props (to-props prop-data)]
       (add-props root props)

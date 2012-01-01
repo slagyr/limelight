@@ -1,17 +1,17 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.casting-spec
+(ns limelight.clojure.casting-spec
   (:use
     [speclj.core]
-    [limelight.spec-helper]
-    [limelight.common :only (add-props)]
-    [limelight.casting]
-    [limelight.scene :only (new-scene)]
-    [limelight.prop :only (new-prop)]
-    [limelight.production :only (new-production)])
+    [limelight.clojure.spec-helper]
+    [limelight.clojure.core :only (add-props)]
+    [limelight.clojure.casting]
+    [limelight.clojure.scene :only (new-scene)]
+    [limelight.clojure.prop :only (new-prop)]
+    [limelight.clojure.production :only (new-production)])
   (:import
-    [limelight.casting PlayerRecruiter]))
+    [limelight.clojure.casting PlayerRecruiter]))
 
 (defn setup-files [fs options]
   (doall (map (fn [[filename content]] (.createTextFile fs filename content)) options)))
