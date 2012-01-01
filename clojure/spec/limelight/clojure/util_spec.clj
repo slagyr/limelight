@@ -8,7 +8,7 @@
     [limelight.clojure.util])
   (:import
     [limelight.clojure ProxyMap]
-    [limelight.clojure.util Opts]))
+    [limelight.util Opts]))
 
 (describe "Limelight Util"
 
