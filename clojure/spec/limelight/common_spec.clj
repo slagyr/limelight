@@ -7,19 +7,20 @@
     [limelight.spec-helper]
     [limelight.common]
     [limelight.prop-building :only (to-props)]
-    [limelight.scene :only (new-scene)]))
+    [limelight.scene :only (new-scene)]
+    [limelight.production :only (new-production)]))
 
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
     (add-props scene (to-props
-      [[:child {:id "child1"}
-        [:grand-child {:id "grand-child1"}
-         [:great-grand-child {:id "great-grand-child1"}]
-         [:great-grand-child {:id "great-grand-child2"}]]
-        [:grand-child {:id "grand-child2"}
-         [:great-grand-child {:id "great-grand-child3"}]]]
-       [:child {:id "child2"}
-        [:grand-child {:id "grand-child3"}]]]))
+                       [[:child {:id "child1"}
+                         [:grand-child {:id "grand-child1"}
+                          [:great-grand-child {:id "great-grand-child1"}]
+                          [:great-grand-child {:id "great-grand-child2"}]]
+                         [:grand-child {:id "grand-child2"}
+                          [:great-grand-child {:id "great-grand-child3"}]]]
+                        [:child {:id "child2"}
+                         [:grand-child {:id "grand-child3"}]]]))
     (.setPlayerRecruiter @(.peer scene) (limelight.model.api.FakePlayerRecruiter.))
     (.illuminate @(.peer scene))
     scene))
@@ -64,6 +65,23 @@
       (should= "great-grand-child" (prop-name result))
       (should= "grand-child2" (prop-id (parent-prop result)))
       (should= "child1" (prop-id (parent-prop (parent-prop result))))))
+
+  (context "with production"
+
+    (with peer-production (limelight.model.FakeProduction. "some/path"))
+    (with clj-production (new-production @peer-production))
+    (before (.setProduction (.getPeer @scene) @peer-production))
+
+    (it "loads the production from the scene"
+      (should= @clj-production (production @scene)))
+
+    (it "loads the production from a prop"
+      (let [aprop (find-prop @scene "child1")]
+        (should= @clj-production (production aprop))))
+
+    (it "opens a scene"
+      )
+    )
   )
 
 (run-specs)

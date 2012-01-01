@@ -11,8 +11,8 @@
 (defprotocol ResourceRoot
   (resource-path [this resource]))
 
-(defn production [scene]
-  (.getProxy (.getProduction @(.peer scene))))
+(defn production [prop]
+  (.getProxy (.getProduction (.getRoot @(.peer prop)))))
 
 (defn- as-proxies [peer-props]
   (map (fn [child] (.getProxy child)) peer-props))

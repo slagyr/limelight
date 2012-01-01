@@ -24,7 +24,7 @@ public class Rigger
         {
           final Scene scene = stage.getScene();
           if(scene != null)
-            production.openScene(scene.getAbsoluteName(), stage, new Opts());
+            production.openScene(scene.getAbsoluteName(), stage.getName(), new Opts());
         }
       }
     }

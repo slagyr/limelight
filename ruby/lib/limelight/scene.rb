@@ -107,7 +107,7 @@ module Limelight
     # TODO It doesn't quite make sense that a scene loads other scene.  It has to replace itself?
     #
     def load(scene_name)
-      production.open_scene(scene_name, stage)
+      production.open_scene(scene_name)
     end
 
     # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene.

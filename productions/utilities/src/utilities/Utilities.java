@@ -53,7 +53,7 @@ public class Utilities
     incompatibleVersionProductionName = productionName;
     incompatibleVersionRequiredVersion = requiredVersion;
     Stage incompatibleVersionStage = establishStage("Incompatible Version", dialogStageOptions);
-    production.openScene("incompatibleVersion", incompatibleVersionStage, Util.toMap());
+    production.openScene("incompatibleVersion", incompatibleVersionStage.getName(), Util.toMap());
 
     waitForResponse(incompatibleVersionMonitor);
 
@@ -75,7 +75,7 @@ public class Utilities
     alertMessage = message;
     alertResponse = null;
     Stage alertStage = establishStage("Alert", dialogStageOptions);
-    production.openScene("alert", alertStage, Util.toMap());
+    production.openScene("alert", "Alert", Util.toMap());
 
     waitForResponse(alertMonitor);
 
@@ -103,24 +103,25 @@ public class Utilities
     }
     catch(InterruptedException e)
     {
+      //ok
     }
   }
 
   private Stage establishStage(String stageName, Map<String, Object> stageOptions)
   {
     final Theater theater = production.getTheater();
-    Stage alertStage = theater.get(stageName);
-    if(alertStage == null)
+    Stage stage = theater.get(stageName);
+    if(stage == null)
     {
-      alertStage = theater.getProxy().buildStage(stageName, new HashMap<String, Object>(stageOptions));
-      theater.add(alertStage);
+      stage = theater.getProxy().buildStage(stageName, new HashMap<String, Object>(stageOptions));
+      theater.add(stage);
     }
-    return alertStage;
+    return stage;
   }
 
   public void openRigger()
   {
-    Stage riggerStage = establishStage("rigger", riggerStageOptions);
-    production.openScene("rigger", riggerStage, new Opts());
+    establishStage("rigger", riggerStageOptions);
+    production.openScene("rigger", "rigger", new Opts());
   }
 }

@@ -89,7 +89,7 @@ module Limelight
         if @scene.nil?
           _setup_stage
           if @ll_scene_id
-            @scene = production.open_scene(@ll_scene_id.to_s, @stage)
+            @scene = production.open_scene(@ll_scene_id.to_s, :stage => @stage.name)
           elsif @ll_scene_path
             _setup_scene
           end

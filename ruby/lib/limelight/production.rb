@@ -176,8 +176,13 @@ module Limelight
       send(name.to_sym, * args)
     end
 
-    def open_scene(scene_path, stage, options={})
-      scene_peer = @peer.open_scene(scene_path, stage.peer, Util::Hashes.for_java(options))
+    def open_scene(scene_path, options={})
+      stage_name = options[:stage]
+      if(stage_name)
+        scene_peer = @peer.open_scene(scene_path, stage_name, Util::Hashes.for_java(options))
+      else
+        scene_peer = @peer.open_scene(scene_path, Util::Hashes.for_java(options))
+      end
       scene_peer.proxy
     end
 

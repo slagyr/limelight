@@ -5,9 +5,11 @@ package limelight.model;
 
 import limelight.About;
 import limelight.Context;
+import limelight.LimelightException;
 import limelight.model.api.*;
 import limelight.model.events.*;
 import limelight.styles.RichStyle;
+import limelight.ui.events.stage.StageActivatedEvent;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.Scene;
@@ -175,14 +177,14 @@ public class ProductionTest
   }
 
   @Test
-  public void openScene() throws Exception
+  public void openSceneWithNoActiveStage() throws Exception
   {
     production.loadProduction();
-    MockStage stage = new MockStage();
+    final MockStage stage = (MockStage)production.getTheater().getDefaultStage();
     Scene scene = new FakeScene();
     production.stubbedScene = scene;
 
-    production.openScene("scenePath", stage, Util.toMap());
+    production.openScene("scenePath", Util.toMap());
 
     assertEquals("scenePath", production.loadedScenePath);
     assertEquals(scene, stage.getScene());
@@ -190,13 +192,65 @@ public class ProductionTest
   }
 
   @Test
+  public void openSceneWithActiveStage() throws Exception
+  {
+    production.loadProduction();
+    MockStage stage = new MockStage("active");
+    production.getTheater().add(stage);
+    new StageActivatedEvent().dispatch(stage);
+
+    Scene scene = new FakeScene();
+    production.stubbedScene = scene;
+
+    production.openScene("scenePath", Util.toMap());
+
+    assertEquals("scenePath", production.loadedScenePath);
+    assertEquals(scene, stage.getScene());
+    assertEquals(true, stage.opened);
+  }
+
+  @Test
+  public void openSceneWithStage() throws Exception
+  {
+    production.loadProduction();
+    MockStage stage = new MockStage("mock");
+    production.getTheater().add(stage);
+    Scene scene = new FakeScene();
+    production.stubbedScene = scene;
+
+    production.openScene("scenePath", "mock", Util.toMap());
+
+    assertEquals("scenePath", production.loadedScenePath);
+    assertEquals(scene, stage.getScene());
+    assertEquals(true, stage.opened);
+  }
+
+  @Test
+  public void openingSceneWithMissingStage() throws Exception
+  {
+    production.loadProduction();
+
+    try
+    {
+      production.openScene("scenePath", "blah", Util.toMap());
+      fail("should throw");
+    }
+    catch(LimelightException e)
+    {
+      assertEquals("No such stage: blah", e.getMessage());
+    }
+
+  }
+
+  @Test
   public void openSceneUpdatesOptionsWithNameAndPath() throws Exception
   {
     production.loadProduction();
+    production.getTheater().add(new MockStage("mock"));
     production.stubbedScene = new FakeScene();
     final Map<String,Object> options = Util.toMap();
 
-    production.openScene("scenePath/sceneName", new MockStage(), options);
+    production.openScene("scenePath/sceneName", "mock", options);
 
     assertNotSame(options, production.loadedSceneOptions);
     assertEquals("sceneName", production.loadedSceneOptions.get("name"));
@@ -207,12 +261,12 @@ public class ProductionTest
   public void openSceneLoadesStylesExtendingProductionStyles() throws Exception
   {
     production.loadProduction();
+    production.getTheater().add(new MockStage("mock"));
     production.getStyles().put("newStyle", new RichStyle());
-    MockStage stage = new MockStage();
     Scene scene = new FakeScene();
     production.stubbedScene = scene;
 
-    production.openScene("scenePath", stage, Util.toMap());
+    production.openScene("scenePath", "mock", Util.toMap());
 
     assertEquals(HashMap.class, scene.getStyles().getClass());
     assertEquals(true, scene.getStyles().containsKey("limelight_builtin_curtains"));

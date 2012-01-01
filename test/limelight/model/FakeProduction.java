@@ -3,6 +3,7 @@
 
 package limelight.model;
 
+import limelight.model.api.MockTheaterProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class FakeProduction extends Production
   public FakeProduction(String name)
   {
     super(name);
+    getTheater().setProxy(new MockTheaterProxy());
   }
 
   @Override

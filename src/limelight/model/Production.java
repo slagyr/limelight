@@ -5,6 +5,7 @@ package limelight.model;
 
 import limelight.About;
 import limelight.Context;
+import limelight.LimelightException;
 import limelight.Log;
 import limelight.builtin.BuiltInStyles;
 import limelight.events.EventHandler;
@@ -197,7 +198,24 @@ public abstract class Production
     new ProductionLoadedEvent().dispatch(this);
   }
 
-  public Scene openScene(String scenePath, Stage stage, Map<String, Object> options)
+  public Scene openScene(String scenePath, Map<String, Object> options)
+  {
+    Stage stage = getTheater().getActiveStage();
+    if(stage == null)
+      stage = getTheater().getDefaultStage();
+    return openSceneOnStage(scenePath, stage, options);
+  }
+
+  public Scene openScene(String scenePath, String stageName, Map<String, Object> options)
+  {
+    Stage stage = getTheater().get(stageName);
+    if(stage == null)
+      throw new LimelightException("No such stage: " + stageName);
+
+    return openSceneOnStage(scenePath, stage, options);
+  }
+
+  private Scene openSceneOnStage(String scenePath, Stage stage, Map<String, Object> options)
   {
     Log.info("Production - opening scene: '" + scenePath + "' on stage: '" + stage.getName() + "'");
     Map<String, Object> sceneOptions = new HashMap<String, Object>(options);
@@ -219,7 +237,7 @@ public abstract class Production
     for(Stage stage : theater.getStages())
     {
       if(stage.getDefaultSceneName() != null)
-        openScene(stage.getDefaultSceneName(), stage, options);
+        openScene(stage.getDefaultSceneName(), stage.getName(), options);
     }
     new ProductionOpenedEvent().dispatch(this);
   }
