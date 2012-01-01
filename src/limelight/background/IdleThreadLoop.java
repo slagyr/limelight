@@ -89,7 +89,8 @@ public abstract class IdleThreadLoop
         }
         catch(Exception e)
         {
-          Log.severe("Error in " + thread.getName() + " thread:", e);
+          if(verbose)
+            Log.severe("Error in " + thread.getName() + " thread:", e);
         }
       }
     }
