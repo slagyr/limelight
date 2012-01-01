@@ -198,6 +198,11 @@ public abstract class Production
     new ProductionLoadedEvent().dispatch(this);
   }
 
+  public Scene openScene(String scenePath)
+  {
+    return openScene(scenePath, new Opts());
+  }
+
   public Scene openScene(String scenePath, Map<String, Object> options)
   {
     Stage stage = getTheater().getActiveStage();

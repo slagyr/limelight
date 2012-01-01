@@ -67,6 +67,6 @@
 (defn new-production [peer]
   (let [ns (create-ns (gensym "limelight.dynamic-player.production-"))
         production (Production. peer (atom nil) ns)]
-    (swap! (.theater production) (fn [old] (Theater. (.getTheater peer) production)))
+    (reset! (.theater production) (Theater. (.getTheater peer) production))
     (.setProxy peer production)
     production))

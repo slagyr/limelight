@@ -79,7 +79,29 @@
       (let [aprop (find-prop @scene "child1")]
         (should= @clj-production (production aprop))))
 
-    (it "opens a scene"
+    (context "scene opening"
+
+      (with scene-stub (limelight.ui.model.FakeScene.))
+      (before
+        (do
+          (set! (.stubbedScene @peer-production) @scene-stub)
+          (.loadProduction @peer-production)
+          (.setProxy (.getTheater (.peer @clj-production)) (limelight.model.api.MockTheaterProxy.))))
+
+      (it "on default stage"
+        (let [result (open-scene @clj-production "foo")
+              stage (.getDefaultStage (.getTheater (.peer @clj-production)))]
+          (should= @scene-stub result)
+          (should= @scene-stub (.getScene stage))
+          (should= "foo" (.loadedScenePath @peer-production))))
+
+      (it "on specified stage"
+        (let [stage (limelight.ui.model.MockStage. "mock")
+              _ (.add (.getTheater (.peer @clj-production)) stage)
+              result (open-scene @clj-production "foo" "mock")]
+          (should= @scene-stub result)
+          (should= @scene-stub (.getScene stage))
+          (should= "foo" (.loadedScenePath @peer-production))))
       )
     )
   )

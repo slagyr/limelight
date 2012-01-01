@@ -54,3 +54,11 @@
 (defn prop-text= [prop value]
   (.setText @(.peer prop) value))
 
+(defn open-scene
+  ([production scene-name] (.openScene (.peer production) scene-name {}))
+  ([production scene-name stage-or-options]
+    (if (string? stage-or-options)
+      (.openScene (.peer production) scene-name stage-or-options {})
+      (.openScene (.peer production) scene-name stage-or-options)))
+  ([production scene-name stage-name options] (.openScene (.peer production) scene-name stage-name options)))
+
