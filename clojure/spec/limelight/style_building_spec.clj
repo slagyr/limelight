@@ -79,6 +79,12 @@
       (should= true (.hasExtension two one))
       (should= "200" (.getHeight two))
       (should= "100" (.getWidth two))))
+
+  (it "allows hover styles"
+    (let [styles (build-styles {} "(style :root :width 100 :hover {:width 50})", "styles.clj")]
+      (should= 2 (count styles))
+      (should= "100" (.getWidth (styles "root")))
+      (should= "50" (.getWidth (styles "root.hover")))))
   )
 
 (run-specs)

@@ -13,16 +13,6 @@ public class PercentageDimensionValue extends SimplePercentageValue implements D
     super(percentValue);
   }
 
-  public boolean isAuto()
-  {
-    return false;
-  }
-
-  public boolean isDynamic()
-  {
-    return true;
-  }
-
   public int calculateDimension(int consumableSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max, int greediness)
   {
     int calculatedSize = (int) ((getPercentage() * 0.01) * (double) consumableSize);

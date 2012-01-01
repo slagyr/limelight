@@ -8,6 +8,7 @@ import limelight.Log;
 import limelight.model.Stage;
 import limelight.styles.abstrstyling.*;
 import limelight.model.api.StageProxy;
+import limelight.styles.values.AutoDimensionValue;
 import limelight.ui.images.Images;
 import limelight.util.Colors;
 import limelight.util.Options;
@@ -305,9 +306,9 @@ public class FramedStage extends Stage
     int heightInsets = insets.top + insets.bottom;
 
     Dimension size = frame.getSize();
-    if(widthStyle.isAuto())
+    if(widthStyle instanceof AutoDimensionValue)
       size.width = widthStyle.collapseExcess(size.width + widthInsets, scene.getWidth() + widthInsets, NONE, NONE);
-    if(heightStyle.isAuto())
+    if(heightStyle instanceof AutoDimensionValue)
       size.height = heightStyle.collapseExcess(size.height + heightInsets, scene.getHeight() + heightInsets, NONE, NONE);
 
     frame.setSize(size);

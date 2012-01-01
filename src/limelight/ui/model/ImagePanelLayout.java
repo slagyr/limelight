@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.styles.values.AutoDimensionValue;
 import limelight.ui.Panel;
 import limelight.styles.Style;
 import limelight.util.Box;
@@ -56,8 +57,8 @@ class ImagePanelLayout implements Layout
   private void handleAutoDimensions(ImagePanel panel, Dimension size)
   {
     Style style = panel.getStyle();
-    boolean autoWidth = style.getCompiledWidth().isAuto();
-    boolean autoHeight = style.getCompiledHeight().isAuto();
+    boolean autoWidth = style.getCompiledWidth() instanceof AutoDimensionValue;
+    boolean autoHeight = style.getCompiledHeight() instanceof AutoDimensionValue;
     if(autoWidth && autoHeight)
     {
       size.width = (int)(panel.getRotatedWidth() + 0.5);

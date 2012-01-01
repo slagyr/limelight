@@ -29,22 +29,30 @@
       :else (merge attrs (apply hash-map body)))))
 
 (defn extends [style & ext-names]
-  (doseq [ext-name ext-names]
-    (let [ext-name (name ext-name)
-          extension (or (@*styles* ext-name) (*extendable-styles* ext-name))]
+  (doseq [ext-name (map name ext-names)]
+    (let [extension (or (@*styles* ext-name) (*extendable-styles* ext-name))]
       (if extension
         (.addExtension style extension)
-        (throw (limelight.LimelightException. (format "Can't extend missing style: '%s'" (name ext-name)))))))
+        (throw (limelight.LimelightException. (format "Can't extend missing style: '%s'" ext-name))))))
   style)
+
+(defn- extract-hover-style [name attributes]
+  (if-let [hover-attrs (:hover attributes)]
+    (let [hover-name (str name ".hover")
+          style (find-or-create hover-name)]
+      (limelight.util.Options/apply style (limelight.util.Opts. hover-attrs))
+      (write-to-map hover-name style)))
+  (dissoc attributes :hover))
 
 (defmacro style [name & body]
   (let [[body calls] (extract-calls body)
         attributes (extract-attributes body)]
     `(list
        (let [name# (clojure.core/name ~name)
-             style# (find-or-create name#)]
+             style# (find-or-create name#)
+             attributes# (extract-hover-style name# ~attributes)]
          (-> style# ~@calls)
-         (limelight.util.Options/apply style# (limelight.util.Opts. ~attributes))
+         (limelight.util.Options/apply style# (limelight.util.Opts. attributes#))
          (write-to-map name# style#)))))
 
 (defn build-styles

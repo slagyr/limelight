@@ -42,16 +42,6 @@ public class StaticDimensionValueTest extends TestCase
     assertEquals(false, fifty.equals(null));
   }
 
-  public void testIsDynamic() throws Exception
-  {
-    assertEquals(false, fifty.isDynamic());
-  }
-
-  public void testIsAuto() throws Exception
-  {
-    assertEquals(false, fifty.isAuto());
-  }
-
   public void testCalculateDimensionWithNoMinOrMax() throws Exception
   {
     NoneableValue<DimensionValue> min = new NoneableValue<DimensionValue>(null);

@@ -40,16 +40,6 @@ public class PercentageDimensionValueTest extends TestCase
     assertEquals(false, fiftyPercent.equals(null));
   }
 
-  public void testIsDynamic() throws Exception
-  {
-    assertEquals(true, fiftyPercent.isDynamic());
-  }
-
-  public void testIsAuto() throws Exception
-  {
-    assertEquals(false, fiftyPercent.isAuto());
-  }
-
   public void testCalculateDimensionWithNoMinOrMax() throws Exception
   {
     NoneableValue<DimensionValue> min = new NoneableValue<DimensionValue>(null);

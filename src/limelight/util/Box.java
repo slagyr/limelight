@@ -53,14 +53,12 @@ public class Box extends java.awt.Rectangle
 
 	public String toString()
 	{
-		return "Rectangle: x: " + x + ",  y: " + y + ", width: " + width + ", height: " + height;
+		return "Box: x: " + x + ",  y: " + y + ", width: " + width + ", height: " + height;
 	}
 
   public boolean sameSize(Rectangle other)
   {
-    if(other == null)
-      return false;
-    return width == other.width && height == other.height;
+    return other != null && width == other.width && height == other.height;
   }
 
   public Box translated(Point offset)

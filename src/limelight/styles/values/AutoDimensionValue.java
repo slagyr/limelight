@@ -15,20 +15,7 @@ public class AutoDimensionValue implements DimensionValue
 
   public boolean equals(Object obj)
   {
-    if(obj instanceof AutoDimensionValue)
-      return true;
-    else
-      return false;
-  }
-
-  public boolean isAuto()
-  {
-    return true;
-  }
-
-  public boolean isDynamic()
-  {
-    return true;
+    return obj instanceof AutoDimensionValue;
   }
 
   public int calculateDimension(int consumableSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max, int greediness)

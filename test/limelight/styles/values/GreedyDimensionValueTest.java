@@ -16,11 +16,6 @@ public class GreedyDimensionValueTest extends TestCase
     attribute = new GreedyDimensionValue();
   }
 
-  public void testIsDynamic() throws Exception
-  {
-    assertEquals(true, attribute.isDynamic());
-  }
-
   public void testCalculateDimension() throws Exception
   {
     assertEquals(25, attribute.calculateDimension(100, size(25), size(200), 0));

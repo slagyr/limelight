@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import limelight.Log;
 import limelight.styles.Style;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.GreedyDimensionValue;
@@ -73,14 +72,14 @@ public class PropPanelLayout implements Layout
     }
 
     int leftOver = panel.getChildConsumableBounds().height - consumedHeight;
-    if(leftOver > 0 && greedyRows > 0)
+    if(greedyRows > 0)
     {
       int[] split = splitEvenly(leftOver, greedyRows);
       int splitIndex = 0;
       for(Row row : rows)
       {
         if(row.isGreedy())
-          row.addGreedyHeight(split[splitIndex++]);
+          row.applyGreedyHeight(split[splitIndex++]);
       }
     }
   }
@@ -170,7 +169,7 @@ public class PropPanelLayout implements Layout
     {
       if(child.needsLayout())
       {
-        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth().isAuto())
+        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
         {
           child.getDefaultLayout().doLayout(child, true);
         }
@@ -281,9 +280,9 @@ public class PropPanelLayout implements Layout
     int newHeight = style.getCompiledHeight().calculateDimension(maxArea.height, style.getCompiledMinHeight(), style.getCompiledMaxHeight(), panel.greediness.height);
 
     // TODO MDM - Hacky Hack!!!!  More thought needs to go into the way layouts are down and how greedy fits into it all
-//    if(topLevel && style.getCompiledWidth() instanceof GreedyDimensionAttribute && panel.getWidth() > newWidth)
+//    if(topLevel && style.getCompiledWidth() instanceof GreedyDimensionValue && panel.getWidth() > newWidth)
 //      newWidth = panel.getWidth();
-//    if(topLevel && style.getCompiledHeight() instanceof GreedyDimensionAttribute && panel.getHeight() > newHeight)
+//    if(topLevel && style.getCompiledHeight() instanceof GreedyDimensionValue && panel.getHeight() > newHeight)
 //      newHeight = panel.getHeight();
 
     panel.setSize(newWidth, newHeight);
@@ -379,15 +378,15 @@ public class PropPanelLayout implements Layout
       return greedyHeights > 0;
     }
 
-    public void addGreedyHeight(int extraHeight)
+    public void applyGreedyHeight(int extraHeight)
     {
       height += extraHeight;
       for(Panel item : items)
       {
-        if(item instanceof PropPanel && item.getStyle().getCompiledHeight() instanceof GreedyDimensionValue)
+        if(hasGreedyHeight(item))
         {
           PropPanel panel = (PropPanel)item;
-          panel.greediness.height = extraHeight;
+          panel.greediness.height = Math.max(extraHeight, (height - panel.getHeight()));
           item.setSize(item.getWidth(), height);
         }
       }

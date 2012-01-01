@@ -18,16 +18,6 @@ public class StaticDimensionValue extends SimpleIntegerValue implements Dimensio
     return getValue();
   }
 
-  public boolean isAuto()
-  {
-    return false;
-  }
-
-  public boolean isDynamic()
-  {
-    return false;
-  }
-
   public int calculateDimension(int consumableSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max, int greediness)
   {
     return getPixels();

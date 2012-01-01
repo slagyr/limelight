@@ -8,8 +8,6 @@ public interface DimensionValue extends StyleValue
 {
   NoneableValue<DimensionValue> DIMENSION_NONE = new NoneableValue<DimensionValue>(null);
 
-  boolean isAuto();
-  boolean isDynamic();
   int calculateDimension(int consumableSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max, int greediness);
   int collapseExcess(int currentSize, int consumedSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max);
 }

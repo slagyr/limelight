@@ -9,16 +9,6 @@ import limelight.styles.abstrstyling.NoneableValue;
 public class GreedyDimensionValue implements DimensionValue
 {
 
-  public boolean isAuto()
-  {
-    return false;
-  }
-
-  public boolean isDynamic()
-  {
-    return true;
-  }
-
   public int calculateDimension(int consumableSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max, int greediness)
   {
     if(min.isNone())

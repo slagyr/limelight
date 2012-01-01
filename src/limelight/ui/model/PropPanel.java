@@ -604,7 +604,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getRoot() == null)
         return;
-      //TODO MDM - If the prop has no suface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
+      //TODO MDM - If the prop has no surface area (perhasps it's a floater that floated out of bounds), does it still get the mouseExited event?
       if(!panel.getStyle().hasScreen())
         panel.getStyle().applyScreen(panel.getHoverStyle()); // TODO - MDM - This seems inefficient considering most of the time, there's no change in styles.
 

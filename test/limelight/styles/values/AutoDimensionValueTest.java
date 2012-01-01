@@ -28,16 +28,6 @@ public class AutoDimensionValueTest extends TestCase
     assertEquals(false, auto.equals(null));
   }
 
-  public void testIsDynamic() throws Exception
-  {
-    assertEquals(true, auto.isDynamic());
-  }
-
-  public void testIsAuto() throws Exception
-  {
-    assertEquals(true, auto.isAuto());
-  }
-
   public void testCalculateDimensionWithNoMinOrMax() throws Exception
   {
     NoneableValue<DimensionValue> min = new NoneableValue<DimensionValue>(null);

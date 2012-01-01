@@ -5,6 +5,7 @@ package limelight.styles;
 
 import limelight.styles.abstrstyling.*;
 import limelight.styles.attributes.*;
+import limelight.styles.values.StaticDimensionValue;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -194,15 +195,9 @@ public abstract class Style
       observer.styleChanged(attribute, value);
   }
 
-
-  public boolean hasAutoDimension()
-  {
-    return getCompiledWidth().isAuto() || getCompiledHeight().isAuto();
-  }
-
   public boolean hasDynamicDimension()
   {
-    return getCompiledWidth().isDynamic() || getCompiledHeight().isDynamic();
+    return !(getCompiledWidth() instanceof StaticDimensionValue && getCompiledHeight() instanceof StaticDimensionValue);
   }
 
   public void setWidth(Object value)

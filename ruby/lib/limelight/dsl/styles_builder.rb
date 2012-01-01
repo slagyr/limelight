@@ -96,7 +96,7 @@ module Limelight
         @__styles_builder = styles_builder
       end
 
-      # Used to define a hover style.  Hover styles are appiled when the mouse passed over a prop using the specified style.
+      # Used to define a hover style.  Hover styles are applied when the mouse passes over a prop using the specified style.
       #
       #   spinner {
       #     width 50
