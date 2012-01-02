@@ -23,6 +23,11 @@
     (isa? (class the-map) java.util.HashMap) (ProxyMap. the-map)
     :else the-map))
 
+(defn ->options [options]
+  (if (map? (first options))
+    (merge (first options) (apply hash-map (rest options)))
+    (apply hash-map options)))
+
 (defn ->java-map [hash]
   (let [jmap (.getMap (ProxyMap.))]
     (doseq [[key value] hash]

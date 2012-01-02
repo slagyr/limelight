@@ -1,32 +1,51 @@
 ;- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 ;- Limelight and all included source files are distributed under terms of the MIT License.
 
-(ns limelight.clojure.core)
+(ns limelight.clojure.core
+  (:use
+    [limelight.clojure.util :only (->options)]))
 
-(def *log* (java.util.logging.Logger/getLogger  "clojure"))
+(def *log* (java.util.logging.Logger/getLogger "clojure"))
 
 (defn log [& messages]
   (.info *log* (apply str messages)))
 
+(defn peer [thing]
+  (let [result (._peer thing)]
+    (if (= clojure.lang.Atom (class result))
+      @result
+      result)))
+
+; Protocols -----------------------------------------------
+
 (defprotocol ResourceRoot
   (resource-path [this resource]))
 
-;(defprotocol ProductionSource
-;  (production [this]))
+(defprotocol ProductionSource
+  (production [this]))
 
 (defprotocol TheaterSource
   (theater [this]))
 
-(defn production [prop]
-  (.getProxy (.getProduction (.getRoot @(._peer prop)))))
+(defprotocol SceneSource
+  (scene [this]))
+
+(defprotocol Identified
+  (id [this]))
+
+(defprotocol Textable
+  (text [this])
+  (text= [this value]))
+
+; Prop functions ------------------------------------------
 
 (defn- as-proxies [peer-props]
   (map (fn [child] (.getProxy child)) peer-props))
 
-(defn child-props [parent]
+(defn children [parent]
   (as-proxies (.getChildPropPanels @(._peer parent))))
 
-(defn add-props [parent & children]
+(defn add [parent & children]
   (let [peer-prop @(._peer parent)
         children (flatten children)]
     (doseq [child children]
@@ -34,47 +53,39 @@
         (.add peer-prop @(._peer child))))
     children))
 
-(defn parent-prop [prop]
+(defn parent [prop]
   (.getProxy (.getParent @(._peer prop))))
 
-(defn scene-prop [prop]
-  (.getProxy (.getRoot @(._peer prop))))
-
-(defn find-prop [prop id]
-  (if-let [peer-result (.find @(._peer (scene-prop prop)) id)]
+(defn find-by-id [prop id]
+  (if-let [peer-result (.find @(._peer (scene prop)) id)]
     (.getProxy peer-result)
     nil))
 
-(defn find-props-named [root name]
+(defn find-by-name [root name]
   (as-proxies (.findByName @(._peer root) name)))
 
-(defn prop-id [prop]
-  (.getId @(._peer prop)))
-
-(defn prop-name [prop]
-  (.getName @(._peer prop)))
-
-(defn prop-text [prop]
-  (.getText @(._peer prop)))
-
-(defn prop-text= [prop value]
-  (.setText @(._peer prop) value))
+; Production functions ------------------------------------
 
 (defn open-scene
-  ([production scene-name] (.openScene (._peer production) scene-name {}))
+  ([production scene-name] (.getProxy (.openScene (._peer production) scene-name {})))
   ([production scene-name stage-or-options]
     (if (string? stage-or-options)
-      (.openScene (._peer production) scene-name stage-or-options {})
-      (.openScene (._peer production) scene-name stage-or-options)))
-  ([production scene-name stage-name options] (.openScene (._peer production) scene-name stage-name options)))
+      (.getProxy (.openScene (._peer production) scene-name stage-or-options {}))
+      (.getProxy (.openScene (._peer production) scene-name stage-or-options))))
+  ([production scene-name stage-name options] (.getProxy (.openScene (._peer production) scene-name stage-name options))))
+
+; Theater functions ---------------------------------------
+
+(defn build-stage [theater name & options]
+  (let [options (->options options)
+        stage-peer (.buildStage theater name options)]
+    (.getProxy stage-peer)))
 
 (defn add-stage [theater stage]
   (.add (._peer theater) @(._peer stage)))
 
-(defn create-stage [theater name & options]
-  (let [options (apply hash-map options)
-        stage-peer (.buildStage theater name options)
-        stage (.getProxy stage-peer)]
+(defn build-and-add-stage [theater name & options]
+  (let [stage (apply build-stage theater name options)]
     (add-stage theater stage)
     stage))
 
@@ -82,3 +93,6 @@
   (if-let [peer (.get (._peer theater) name)]
     (.getProxy peer)
     nil))
+
+(defn default-stage [theater]
+  (.getProxy (.getDefaultStage (._peer theater))))

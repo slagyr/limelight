@@ -13,6 +13,12 @@
   limelight.clojure.core.TheaterSource
   (theater [this] (.getProxy (.getTheater @_peer)))
 
+  limelight.clojure.core.ProductionSource
+  (production [this] (production _theater))
+
+  limelight.clojure.core.SceneSource
+  (scene [this] (if-let [peer-scene (.getScene @_peer)] (.getProxy peer-scene) nil))
+
   clojure.lang.Named
   (getName [this] (.getName @_peer))
   )

@@ -3,7 +3,9 @@
 
 (ns limelight.clojure.prop
   (:use
-    [limelight.clojure.util :only (map-for-clojure)]))
+    [limelight.clojure.util :only (map-for-clojure)])
+  (:require
+    [limelight.clojure.core]))
 
 (def prop-ns (the-ns 'limelight.clojure.prop))
 
@@ -19,12 +21,31 @@
           (recur (rest keys) options))))))
 
 (deftype Prop [_peer]
+
   limelight.model.api.PropProxy
   (applyOptions [this options]
     (let [opts (map-for-clojure options)]
       (apply-options this opts))
     options)
-  (getPeer [this] @_peer))
+  (getPeer [this] @_peer)
+
+  clojure.lang.Named
+  (getName [this] (.getName @_peer))
+
+  limelight.clojure.core.ProductionSource
+  (production [this] (.getProxy (.getProduction (.getRoot @_peer))))
+
+  limelight.clojure.core.SceneSource
+  (scene [this] (.getProxy (.getRoot @_peer)))
+
+  limelight.clojure.core.Identified
+  (id [this] (.getId @_peer))
+
+  limelight.clojure.core.Textable
+  (text [this] (.getText @_peer))
+  (text= [this value] (.setText @_peer value))
+
+  )
 
 (defn new-prop [options]
   (let [prop (Prop. (atom nil))

@@ -7,8 +7,11 @@
 
 (deftype Theater [_peer _production]
   limelight.model.api.TheaterProxy
-  (buildStage [this name options]
-    @(._peer (new-stage this name options))))
+  (buildStage [this name options] @(._peer (new-stage this name options)))
+
+  limelight.clojure.core.ProductionSource
+  (production [this] _production)
+  )
 
 (defn new-theater [peer production]
   (let [theater (Theater. peer production)]

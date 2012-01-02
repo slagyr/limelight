@@ -12,15 +12,15 @@
 
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
-    (add-props scene (to-props
-                       [[:child {:id "child1"}
-                         [:grand-child {:id "grand-child1"}
-                          [:great-grand-child {:id "great-grand-child1"}]
-                          [:great-grand-child {:id "great-grand-child2"}]]
-                         [:grand-child {:id "grand-child2"}
-                          [:great-grand-child {:id "great-grand-child3"}]]]
-                        [:child {:id "child2"}
-                         [:grand-child {:id "grand-child3"}]]]))
+    (add scene (to-props
+                 [[:child {:id "child1"}
+                   [:grand-child {:id "grand-child1"}
+                    [:great-grand-child {:id "great-grand-child1"}]
+                    [:great-grand-child {:id "great-grand-child2"}]]
+                   [:grand-child {:id "grand-child2"}
+                    [:great-grand-child {:id "great-grand-child3"}]]]
+                  [:child {:id "child2"}
+                   [:grand-child {:id "grand-child3"}]]]))
     (.setPlayerRecruiter @(._peer scene) (limelight.model.api.FakePlayerRecruiter.))
     (.illuminate @(._peer scene))
     scene))
@@ -31,58 +31,84 @@
 
   (context "finding props"
 
-    (with scene (build-tree))
+    (with root (build-tree))
 
     (it "finds root by name"
-      (let [roots (find-props-named @scene "root")]
+      (let [roots (find-by-name @root "root")]
         (should= 1 (count roots))
-        (should (identical? @scene (first roots)))))
+        (should (identical? @root (first roots)))))
 
     (it "finds children by name"
-      (let [children (find-props-named @scene "child")]
+      (let [children (find-by-name @root "child")]
         (should= 2 (count children))
-        (should= ["child1" "child2"] (map prop-id children))))
+        (should= ["child1" "child2"] (map id children))))
 
     (it "finds grand children by name"
-      (let [grand-children (find-props-named @scene "grand-child")]
+      (let [grand-children (find-by-name @root "grand-child")]
         (should= 3 (count grand-children))
-        (should= ["grand-child1" "grand-child2" "grand-child3"] (map prop-id grand-children))))
+        (should= ["grand-child1" "grand-child2" "grand-child3"] (map id grand-children))))
 
     (it "finds great grand children by name"
-      (let [great-grand-children (find-props-named @scene "great-grand-child")]
+      (let [great-grand-children (find-by-name @root "great-grand-child")]
         (should= 3 (count great-grand-children))
-        (should= ["great-grand-child1" "great-grand-child2" "great-grand-child3"] (map prop-id great-grand-children))))
+        (should= ["great-grand-child1" "great-grand-child2" "great-grand-child3"] (map id great-grand-children))))
 
     (it "finds root by id"
-      (let [result (find-prop @scene "root-id")]
-        (should (identical? @scene result))))
+      (let [result (find-by-id @root "root-id")]
+        (should (identical? @root result))))
 
     (it "finds child1 by id"
-      (let [result (find-prop @scene "child1")]
-        (should= "child" (prop-name result))
-        (should= @scene (parent-prop result))))
+      (let [result (find-by-id @root "child1")]
+        (should= "child" (name result))
+        (should= @root (parent result))))
 
     (it "finds great-grand-child3 by id"
-      (let [result (find-prop @scene "great-grand-child3")]
-        (should= "great-grand-child" (prop-name result))
-        (should= "grand-child2" (prop-id (parent-prop result)))
-        (should= "child1" (prop-id (parent-prop (parent-prop result))))))
+      (let [result (find-by-id @root "great-grand-child3")]
+        (should= "great-grand-child" (name result))
+        (should= "grand-child2" (id (parent result)))
+        (should= "child1" (id (parent (parent result))))))
+    )
+
+  (context "getting scene"
+    (with root (build-tree))
+
+    (it "gets the scene from the scene"
+      (should= @root (scene @root)))
+
+    (it "gets the scene from a prop"
+      (should= @root (scene (find-by-id @root "child1"))))
     )
 
   (context "with production"
 
-    (with scene (build-tree))
+    (with root (build-tree))
 
     (with peer-production (limelight.model.FakeProduction. "some/path"))
     (with production1 (new-production @peer-production))
-    (before (.setProduction (.getPeer @scene) @peer-production))
+    (before (.setProduction (.getPeer @root) @peer-production))
 
     (it "loads the production from the scene"
-      (should= @production1 (production @scene)))
+      (should= @production1 (production @root)))
 
     (it "loads the production from a prop"
-      (let [aprop (find-prop @scene "child1")]
+      (let [aprop (find-by-id @root "child1")]
         (should= @production1 (production aprop))))
+
+    (it "loads the production from a production"
+      (should= @production1 (production @production1)))
+
+    (it "loads the production from a theater"
+      (should= @production1 (production (theater @production1))))
+
+    (unless-headless
+      (it "loads the production from a stage"
+        (should= @production1 (production (default-stage (theater @production1)))))
+
+      (it "get the scene from a stage"
+        (let [stage1 (default-stage (theater @production1))]
+          (should= nil (scene stage1))
+          (.setScene (peer stage1) (peer @root))
+          (should= @root (scene stage1)))))
 
     (context "scene opening"
 
@@ -96,7 +122,7 @@
       (it "on default stage"
         (let [result (open-scene @production1 "foo")
               stage (.getDefaultStage (.getTheater (._peer @production1)))]
-          (should= @scene-stub result)
+          (should= (.getProxy @scene-stub) result)
           (should= @scene-stub (.getScene stage))
           (should= "foo" (.loadedScenePath @peer-production))))
 
@@ -104,7 +130,7 @@
         (let [stage (limelight.ui.model.MockStage. "mock")
               _ (.add (.getTheater (._peer @production1)) stage)
               result (open-scene @production1 "foo" "mock")]
-          (should= @scene-stub result)
+          (should= (.getProxy @scene-stub) result)
           (should= @scene-stub (.getScene stage))
           (should= "foo" (.loadedScenePath @peer-production))))
       )
@@ -114,13 +140,19 @@
       (it "gets the theater from the production"
         (should= @(._theater @production1) (theater @production1)))
 
-      (it "gets the theater from a stage"
-        (let [theater1 (theater @production1)
-              stage1 (create-stage theater1 "new-stage" :some :option)]
-          (should= theater1 (theater stage1))
-          (should= "new-stage" (name stage1))
-          (should= stage1 (get-stage theater1 "new-stage"))))
+      (unless-headless
+        (it "gets the theater from a stage"
+          (let [theater1 (theater @production1)
+                stage1 (build-and-add-stage theater1 "new-stage" :some :option)]
+            (should= theater1 (theater stage1))
+            (should= "new-stage" (name stage1))
+            (should= stage1 (get-stage theater1 "new-stage"))))
 
+        (it "gets the default-stage"
+          (let [theater1 (theater @production1)
+                stage1 (default-stage theater1)]
+            (should-not= nil stage1)
+            (should= (peer stage1) (.getDefaultStage (peer theater1))))))
 
       )
     )

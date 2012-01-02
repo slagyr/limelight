@@ -59,14 +59,17 @@
   (illuminate [this] (prod-illuminate this))
   (loadLibraries [this])
   (loadStages [this] (prod-load-stages this))
-  (loadScene [this scene-path options] (prod-load-scene production scene-path options))
+  (loadScene [this scene-path options] (prod-load-scene this scene-path options))
   (loadStyles [this path extendable-styles] (prod-load-styles this path extendable-styles))
 
-  ResourceRoot
+  limelight.clojure.core.ResourceRoot
   (resource-path [this resource] (.pathTo (limelight.Context/fs) (.getPath _peer) resource))
 
-  TheaterSource
+  limelight.clojure.core.TheaterSource
   (theater [this] @_theater)
+
+  limelight.clojure.core.ProductionSource
+  (production [this] this)
   )
 
 (defn new-production [peer]

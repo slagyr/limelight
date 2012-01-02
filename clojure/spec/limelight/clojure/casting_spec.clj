@@ -5,7 +5,7 @@
   (:use
     [speclj.core]
     [limelight.clojure.spec-helper]
-    [limelight.clojure.core :only (add-props)]
+    [limelight.clojure.core :only (add)]
     [limelight.clojure.casting]
     [limelight.clojure.scene :only (new-scene)]
     [limelight.clojure.prop :only (new-prop)]
@@ -29,7 +29,7 @@
 
   (with production (new-production (limelight.model.FakeProduction. "MockProduction")))
   (with scene (new-scene {:path "root"}))
-  (with prop (first (add-props @scene (new-prop {}))))
+  (with prop (first (add @scene (new-prop {}))))
   (with player-recruiter (new-player-recruiter @scene))
   (with fs (limelight.io.FakeFileSystem/installed))
 

@@ -23,12 +23,12 @@
         options (assoc options :name name)
         prop (new-prop (limelight.util.Opts. options))]
     (when (seq child-data)
-      (add-props prop (to-props child-data)))
+      (add prop (to-props child-data)))
     prop))
 
 (defn build-props [root src path]
   (binding [*ns* (the-ns 'limelight.clojure.prop-building)]
     (let [prop-data (read-src path (str "[" src "]"))
           props (to-props prop-data)]
-      (add-props root props)
+      (add root props)
       root)))

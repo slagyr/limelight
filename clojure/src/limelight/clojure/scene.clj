@@ -13,9 +13,26 @@
   (getPeer [this] @_peer)
   (applyOptions [this options] nil)
 
-  ResourceRoot
+  clojure.lang.Named
+  (getName [this] (.getName @_peer))
+
+  limelight.clojure.core.ResourceRoot
   (resource-path [this resource]
-    (.pathTo (limelight.Context/fs) (.getPath @_peer) resource)))
+    (.pathTo (limelight.Context/fs) (.getPath @_peer) resource))
+
+  limelight.clojure.core.ProductionSource
+  (production [this] (.getProxy (.getProduction @_peer)))
+
+  limelight.clojure.core.SceneSource
+  (scene [this] this)
+
+  limelight.clojure.core.Identified
+  (id [this] (.getId @_peer))
+
+  limelight.clojure.core.Textable
+  (text [this] (.getText @_peer))
+  (text= [this value] (.setText @_peer value))
+  )
 
 
 (defn new-scene [options]

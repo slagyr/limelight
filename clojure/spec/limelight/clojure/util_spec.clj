@@ -41,6 +41,22 @@
         (should= "bar" (.get result "foo"))
         (should= "bang" (.get result "fizz"))))
     )
+
+  (context "options"
+
+    (it "converts empty options"
+      (should= {} (->options [])))
+
+    (it "converts args to options"
+      (should= {:one 1 :two 2} (->options [:one 1 :two 2])))
+
+    (it "converts map to options"
+      (should= {:one 1 :two 2} (->options [{:one 1 :two 2}])))
+
+    (it "converts map and args to options"
+      (should= {:one 1 :two 2} (->options [{:one 1} :two 2])))
+
+    )
   )
 (run-specs)
 
