@@ -17,11 +17,11 @@
 
   (it "can be created"
     (let [scene (new-scene (hash-map :name "Bill"))]
-      (should-not= nil @(.peer scene))
-      (should= @(.peer scene) (.getPeer scene))
-      (should= limelight.ui.model.ScenePanel (type @(.peer scene)))
-      (should= PlayerRecruiter (type @(.player-recruiter scene)))
-      (should= @(.player-recruiter scene) (.getPlayerRecruiter @(.peer scene)))))
+      (should-not= nil @(._peer scene))
+      (should= @(._peer scene) (.getPeer scene))
+      (should= limelight.ui.model.ScenePanel (type @(._peer scene)))
+      (should= PlayerRecruiter (type @(._player-recruiter scene)))
+      (should= @(._player-recruiter scene) (.getPlayerRecruiter @(._peer scene)))))
   )
 
 (run-specs)

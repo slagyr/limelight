@@ -30,7 +30,7 @@ public class BootTest
   {
     Boot.reset();
     Context.removeInstance();
-    options = Boot.defaultOptions.merge("startBackgroundThreads", false);
+    options = Boot.defaultOptions.merge("start-background-threads", false);
   }
 
   @After
@@ -111,7 +111,7 @@ public class BootTest
   @Test
   public void canConfigureThreadsNotToStart() throws Exception
   {
-    Boot.configureContext(Opts.with("startBackgroundThreads", false));
+    Boot.configureContext(Opts.with("start-background-threads", false));
 
     final Context context = Context.instance();
     assertEquals(false, context.panelPanter.isRunning());
@@ -122,7 +122,7 @@ public class BootTest
   @Test
   public void threadsDoStartNormally() throws Exception
   {
-    Boot.configureContext(options.merge("startBackgroundThreads", true));
+    Boot.configureContext(options.merge("start-background-threads", true));
 
     final Context context = Context.instance();
     assertEquals(true, context.panelPanter.isRunning());

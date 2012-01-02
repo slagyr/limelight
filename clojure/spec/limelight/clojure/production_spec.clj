@@ -12,7 +12,7 @@
 
 (defn actions-for [production event-class]
   (-> production
-    (.peer)
+    (._peer)
     (.getEventHandler)
     (.getActions event-class)))
 
@@ -23,8 +23,8 @@
 
   (it "can be contructed"
     (let [production (Production. :peer :theater nil)]
-      (should= :peer (.peer production))
-      (should= :theater (.theater production))))
+      (should= :peer (._peer production))
+      (should= :theater (._theater production))))
 
   (context ", when fully constructed,"
     (with peer-production (limelight.model.FakeProduction. "Mock"))
@@ -32,13 +32,13 @@
     (with fs (limelight.io.FakeFileSystem/installed))
 
     (it "connects with the peer production"
-      (should= @peer-production (.peer @production))
-      (should= @production (.getProxy (.peer @production))))
+      (should= @peer-production (._peer @production))
+      (should= @production (.getProxy (._peer @production))))
 
     (it "creates a theater"
-      (should= limelight.clojure.theater.Theater (type @(.theater @production)))
-      (should= (.getTheater @peer-production) (.peer @(.theater @production)))
-      (should= @production (.production @(.theater @production))))
+      (should= limelight.clojure.theater.Theater (type @(._theater @production)))
+      (should= (.getTheater @peer-production) (._peer @(._theater @production)))
+      (should= @production (._production @(._theater @production))))
 
     (unless-headless
 
@@ -65,8 +65,8 @@
         (.createTextFile @fs "/MockProduction/production.clj" (str "(on-" name " [e] (def *message* :" name "))"))
         (.illuminate @production)
         (should= 1 (count (actions-for @production (class event))))
-        (should-not-throw (.dispatch event (.peer @production)))
-        (should= (keyword name) @(ns-resolve (.ns @production) '*message*))))
+        (should-not-throw (.dispatch event (._peer @production)))
+        (should= (keyword name) @(ns-resolve (._ns @production) '*message*))))
     )
   )
 

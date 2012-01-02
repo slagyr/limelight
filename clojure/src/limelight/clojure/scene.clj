@@ -7,23 +7,23 @@
     [limelight.clojure.util :only (map-for-java)]
     [limelight.clojure.core]))
 
-(deftype Scene [peer player-recruiter]
+(deftype Scene [_peer _player-recruiter]
 
   limelight.model.api.SceneProxy
-  (getPeer [this] @peer)
+  (getPeer [this] @_peer)
   (applyOptions [this options] nil)
 
   ResourceRoot
   (resource-path [this resource]
-    (.pathTo (limelight.Context/fs) (.getPath @peer) resource)))
+    (.pathTo (limelight.Context/fs) (.getPath @_peer) resource)))
 
 
 (defn new-scene [options]
   (let [scene (Scene. (atom nil) (atom nil))
         player-recruiter (new-player-recruiter scene)
         peer (limelight.ui.model.ScenePanel. scene)]
-    (reset! (.peer scene) peer)
-    (reset! (.player-recruiter scene) player-recruiter)
+    (reset! (._peer scene) peer)
+    (reset! (._player-recruiter scene) player-recruiter)
     (.addOptions peer (map-for-java options))
     (.setPlayerRecruiter peer player-recruiter)
     scene))

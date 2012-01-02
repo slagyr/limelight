@@ -8,6 +8,13 @@ import java.util.Map;
 
 public class Opts extends HashMap<String, Object>
 {
+  public static boolean isOn(Object option)
+  {
+    return option != null
+      && !option.equals(false)
+      && !"false".equals(option.toString().toLowerCase());
+  }
+
   public Opts()
   {
     super();

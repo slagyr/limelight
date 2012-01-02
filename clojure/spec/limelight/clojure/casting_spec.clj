@@ -18,7 +18,7 @@
 
 (defn actions-for [prop event]
   (-> prop
-    (.peer)
+    (._peer)
     (deref)
     (.getEventHandler)
     (.getActions event)))
@@ -36,9 +36,9 @@
   (before
     (do
       @fs ; load the file system
-      (.setPlayerRecruiter @(.peer @scene) (limelight.model.api.FakePlayerRecruiter.))
-      (.setProduction @(.peer @scene) (.peer @production)))
-    (.setStage @(.peer @scene) (.getDefaultStage (.peer (.getTheater @production)))))
+      (.setPlayerRecruiter @(._peer @scene) (limelight.model.api.FakePlayerRecruiter.))
+      (.setProduction @(._peer @scene) (._peer @production)))
+    (.setStage @(._peer @scene) (.getDefaultStage (._peer (.getTheater @production)))))
 
   (unless-headless
 
@@ -57,12 +57,12 @@
     (it "includes one player from scene"
       (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
       (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
-        (.cast player @(.peer @prop))
+        (.cast player @(._peer @prop))
         (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent)))))
 
     (it "includes one player from production"
       (setup-files @fs {"/MockProduction/players/test_player.clj" "(on-mouse-clicked [_])"})
-      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
+      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
       (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent))))
 
     (for [[event name] {(limelight.ui.events.panel.MouseClickedEvent. 0 nil 0) "mouse-clicked"
@@ -86,20 +86,20 @@
       (it (str "handles " name " events")
         (let [actions-before (actions-for @prop (class event))]
           (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-" name " (def *message* \"" name "\"))")})
-          (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
+          (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
           (let [actions-after (actions-for @prop (class event))]
             (should= 1 (- (count actions-after) (count actions-before)))
-            (should-not-throw (.dispatch event @(.peer @prop)))
+            (should-not-throw (.dispatch event @(._peer @prop)))
             (should= name @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*))))))
 
     (it "handles on-cast events"
       (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast [_] (def *message* \"casted\"))")})
-      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
+      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
       (should= "casted" @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*)))
 
     (it "the bindings are optional"
       (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))")})
-      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(.peer @prop))
+      (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
       (should= "casted" @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*)))
 
     )

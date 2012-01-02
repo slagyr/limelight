@@ -9,7 +9,6 @@ import limelight.LimelightException;
 import limelight.Log;
 import limelight.builtin.BuiltInStyles;
 import limelight.events.EventHandler;
-import limelight.model.api.ProductionProxy;
 import limelight.model.events.*;
 import limelight.styles.RichStyle;
 import limelight.styles.Styles;
@@ -26,14 +25,17 @@ public abstract class Production
   private String name;
   private boolean allowClose = true;
   private String path;
-  private ProductionProxy proxy;
   private Theater theater;
-  private Version minumumLimelightVersion = Version.ZERO;
+  private Version minimumLimelightVersion = Version.ZERO;
   private EventHandler eventHandler = new EventHandler();
   private boolean open;
   private Thread closingThread;
-  private HashMap<String,RichStyle> styles;
+  private HashMap<String, RichStyle> styles;
   private Opts backstage = new Opts();
+
+  public static final Opts defaultOptions = Opts.with(
+    "open-default-scenes", true
+  );
 
   public Production(String path)
   {
@@ -50,11 +52,17 @@ public abstract class Production
   }
 
   protected abstract void illuminate();
+
   protected abstract void loadLibraries();
+
   protected abstract void loadStages();
+
   protected abstract Scene loadScene(String scenePath, Map<String, Object> options);
-  protected abstract Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles);
+
+  protected abstract Map<String, RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles);
+
   protected abstract void prepareToOpen();
+
   protected abstract void finalizeClose();
 
   public void open()
@@ -62,8 +70,9 @@ public abstract class Production
     open(new Opts());
   }
 
-  public void open(Map<String, Object> options)
+  public void open(Map<String, Object> customizations)
   {
+    Opts options = defaultOptions.merge(customizations);
     prepareToOpen();
     illuminateProduction();
     if(!canProceedWithCompatibility())
@@ -72,8 +81,9 @@ public abstract class Production
       return;
     }
     loadProduction();
-    openDefaultScenes(options);
-
+    if(Opts.isOn(options.get("open-default-scenes")))
+      openDefaultScenes(options);
+    new ProductionOpenedEvent().dispatch(this);
     open = true;
   }
 
@@ -128,19 +138,6 @@ public abstract class Production
     allowClose = value;
   }
 
-  //TODO MDM Git rid of me
-  public ProductionProxy getProxy()
-  {
-    return proxy;
-  }
-
-  //TODO MDM Git rid of me
-  public void setProxy(ProductionProxy proxy)
-  {
-    this.proxy = proxy;
-    theater.setProxy(proxy.getTheater());
-  }
-
   public void attemptClose()
   {
     if(allowClose())
@@ -159,12 +156,12 @@ public abstract class Production
 
   public String getMinimumLimelightVersion()
   {
-    return minumumLimelightVersion.toString();
+    return minimumLimelightVersion.toString();
   }
 
   public void setMinimumLimelightVersion(String version)
   {
-    minumumLimelightVersion = new Version(version);
+    minimumLimelightVersion = new Version(version);
   }
 
   public Thread getClosingThread()
@@ -244,7 +241,6 @@ public abstract class Production
       if(stage.getDefaultSceneName() != null)
         openScene(stage.getDefaultSceneName(), stage.getName(), options);
     }
-    new ProductionOpenedEvent().dispatch(this);
   }
 
   public abstract Object send(String name, Object... args);

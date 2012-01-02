@@ -29,7 +29,7 @@ public class Boot
   private static boolean booted;
 
   public static final Opts defaultOptions = Opts.with(
-    "startBackgroundThreads", true
+    "start-background-threads", true
   );
 
   public static void reset()
@@ -128,18 +128,13 @@ public class Boot
     if(context().cacheCleaner == null)
       context().cacheCleaner = new CacheCleanerLoop();
 
-    if(isOn(options.get("startBackgroundThreads")))
+    if(Opts.isOn(options.get("start-background-threads")))
     {
       Log.config("Boot - starting background threads");
       context().panelPanter.start();
       context().animationLoop.start();
       context().cacheCleaner.start();
     }
-  }
-
-  private static boolean isOn(Object option)
-  {
-    return option != null && option.equals(true);
   }
 
   private static void installCommonConfigComponents()

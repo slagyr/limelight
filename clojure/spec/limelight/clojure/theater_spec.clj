@@ -5,18 +5,23 @@
   (:use
     [speclj.core]
     [limelight.clojure.spec-helper]
-    [limelight.clojure.theater])
+    [limelight.clojure.theater]
+    [limelight.clojure.production :only (new-production)])
   (:import [limelight.clojure.theater Theater]))
 
 (describe "Theater"
-  (with theater (Theater. :peer :production))
+  (with peer-production (limelight.model.FakeProduction.))
+  (with production (new-production @peer-production))
+  (with peer (limelight.model.Theater. @peer-production))
+  (with theater (new-theater @peer @production))
 
   (it "has Java lineage"
     (should (.isInstance limelight.model.api.TheaterProxy @theater)))
 
   (it "is contructed properly"
-    (should= :peer (.peer @theater))
-    (should= :production (.production @theater)))
+    (should= @peer (._peer @theater))
+    (should= @theater (.getProxy (._peer @theater)))
+    (should= @production (._production @theater)))
 
   (unless-headless
 

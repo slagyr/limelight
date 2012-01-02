@@ -11,9 +11,7 @@ import limelight.model.api.SceneProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
 import org.jruby.Ruby;
-import org.jruby.RubyHash;
 import org.jruby.RubyInstanceConfig;
-import org.jruby.RubySymbol;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaSupport;
 import java.io.ByteArrayInputStream;
@@ -36,7 +34,7 @@ public class RubyProduction extends Production
 
   private Ruby rubyRuntime;
   private int id;
-  private ProductionProxy rubyProxy;
+  private ProductionProxy proxy;
 
   public RubyProduction(String path)
   {
@@ -44,35 +42,38 @@ public class RubyProduction extends Production
     id = ++productionIds;
   }
 
-  @Override
   public void setProxy(ProductionProxy proxy)
   {
-    super.setProxy(proxy);
-    rubyProxy = proxy;
+    this.proxy = proxy;
+  }
+
+  public ProductionProxy getProxy()
+  {
+    return proxy;
   }
 
   @Override
   public Object send(String name, Object... args)
   {
-    return rubyProxy.send(name, args);
+    return proxy.send(name, args);
   }
 
   @Override
   public void illuminate()
   {
-    rubyProxy.illuminate();
+    proxy.illuminate();
   }
 
   @Override
   public void loadLibraries()
   {
-    rubyProxy.loadLibraries();
+    proxy.loadLibraries();
   }
 
   @Override
   public void loadStages()
   {
-    rubyProxy.loadStages();
+    proxy.loadStages();
   }
 
   @Override
@@ -80,14 +81,14 @@ public class RubyProduction extends Production
   {
 //    final RubyHash rubyHash = new RubyHash(rubyRuntime);
 //    RubySymbol.newSymbol()
-    final SceneProxy proxy = rubyProxy.loadScene(scenePath, options);
+    final SceneProxy proxy = this.proxy.loadScene(scenePath, options);
     return (Scene)proxy.getPeer();
   }
 
   @Override
   public Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
   {
-    return rubyProxy.loadStyles(path, extendableStyles);
+    return proxy.loadStyles(path, extendableStyles);
   }
 
   public void prepareToOpen()

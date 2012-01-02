@@ -12,53 +12,53 @@
   (resource-path [this resource]))
 
 (defn production [prop]
-  (.getProxy (.getProduction (.getRoot @(.peer prop)))))
+  (.getProxy (.getProduction (.getRoot @(._peer prop)))))
 
 (defn- as-proxies [peer-props]
   (map (fn [child] (.getProxy child)) peer-props))
 
 (defn child-props [parent]
-  (as-proxies (.getChildPropPanels @(.peer parent))))
+  (as-proxies (.getChildPropPanels @(._peer parent))))
 
 (defn add-props [parent & children]
-  (let [peer-prop @(.peer parent)
+  (let [peer-prop @(._peer parent)
         children (flatten children)]
     (doseq [child children]
       (if child
-        (.add peer-prop @(.peer child))))
+        (.add peer-prop @(._peer child))))
     children))
 
 (defn parent-prop [prop]
-  (.getProxy (.getParent @(.peer prop))))
+  (.getProxy (.getParent @(._peer prop))))
 
 (defn scene-prop [prop]
-  (.getProxy (.getRoot @(.peer prop))))
+  (.getProxy (.getRoot @(._peer prop))))
 
 (defn find-prop [prop id]
-  (if-let [peer-result (.find @(.peer (scene-prop prop)) id)]
+  (if-let [peer-result (.find @(._peer (scene-prop prop)) id)]
     (.getProxy peer-result)
     nil))
 
 (defn find-props-named [root name]
-  (as-proxies (.findByName @(.peer root) name)))
+  (as-proxies (.findByName @(._peer root) name)))
 
 (defn prop-id [prop]
-  (.getId @(.peer prop)))
+  (.getId @(._peer prop)))
 
 (defn prop-name [prop]
-  (.getName @(.peer prop)))
+  (.getName @(._peer prop)))
 
 (defn prop-text [prop]
-  (.getText @(.peer prop)))
+  (.getText @(._peer prop)))
 
 (defn prop-text= [prop value]
-  (.setText @(.peer prop) value))
+  (.setText @(._peer prop) value))
 
 (defn open-scene
-  ([production scene-name] (.openScene (.peer production) scene-name {}))
+  ([production scene-name] (.openScene (._peer production) scene-name {}))
   ([production scene-name stage-or-options]
     (if (string? stage-or-options)
-      (.openScene (.peer production) scene-name stage-or-options {})
-      (.openScene (.peer production) scene-name stage-or-options)))
-  ([production scene-name stage-name options] (.openScene (.peer production) scene-name stage-name options)))
+      (.openScene (._peer production) scene-name stage-or-options {})
+      (.openScene (._peer production) scene-name stage-or-options)))
+  ([production scene-name stage-name options] (.openScene (._peer production) scene-name stage-name options)))
 

@@ -21,6 +21,16 @@ public class ClojureProduction extends Production
     super(path);
   }
 
+  public ProductionProxy getProxy()
+  {
+    return proxy;
+  }
+
+  public void setProxy(ProductionProxy proxy)
+  {
+    this.proxy = proxy;
+  }
+
   @Override
   protected void illuminate()
   {

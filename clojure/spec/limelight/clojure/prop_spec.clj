@@ -11,7 +11,7 @@
 
 (defn actions-for [prop event]
   (-> prop
-    (.peer)
+    (._peer)
     (deref)
     (.getEventHandler)
     (.getActions event)))
@@ -23,8 +23,8 @@
 
   (it "can be created"
     (let [prop (new-prop (hash-map :name "Bill"))]
-      (should-not= nil @(.peer prop))
-      (should= limelight.ui.model.PropPanel (type @(.peer prop)))))
+      (should-not= nil @(._peer prop))
+      (should= limelight.ui.model.PropPanel (type @(._peer prop)))))
 
   (context "event options"
 
@@ -57,7 +57,7 @@
             (.applyOptions @prop options)
             (let [actions-after (actions-for @prop (class event))]
               (should= 1 (- (count actions-after) (count actions-before)))
-              (should-not-throw (.dispatch event @(.peer @prop)))
+              (should-not-throw (.dispatch event @(._peer @prop)))
               (should= name (System/getProperty "test.event"))
               (should= 0 (count options)))))
         )

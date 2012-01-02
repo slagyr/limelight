@@ -11,25 +11,25 @@
 (describe "Stage building"
   (with peer-production (limelight.model.FakeProduction. "Mock Production"))
   (with production (new-production @peer-production))
-  (with theater @(.theater @production))
+  (with theater @(._theater @production))
 
   (unless-headless
 
     (it "can build one stage"
       (let [result (build-stages @theater "(stage \"One\")" "stages.clj")]
-        (should= 1 (count (.getStages (.peer @theater))))))
+        (should= 1 (count (.getStages (._peer @theater))))))
 
     (it "applies options when building a stage"
       (let [result (build-stages @theater "(stage \"One\" {:title \"Super Stage\"})" "stages.clj")]
         (should= "Super Stage"
           (-> @theater
-            (.peer)
+            (._peer)
             (.get "One")
             (.getTitle)))))
 
     (it "can make multiple stages"
       (let [result (build-stages @theater "(stage \"One\" {:title \"Super Stage\"})(stage \"Two\")" "stages.clj")]
-        (should= 2 (count (.getStages (.peer @theater))))))
+        (should= 2 (count (.getStages (._peer @theater))))))
     )
   )
 

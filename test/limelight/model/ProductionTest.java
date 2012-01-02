@@ -14,6 +14,7 @@ import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.Scene;
 import limelight.ui.model.inputs.MockEventAction;
+import limelight.util.Opts;
 import limelight.util.Util;
 import limelight.util.Version;
 import org.junit.Before;
@@ -62,28 +63,6 @@ public class ProductionTest
     production.setAllowClose(false);
 
     assertEquals(false, production.allowClose());
-  }
-
-  @Test
-  public void accessingTheProxy() throws Exception
-  {
-    ProductionProxy proxy = new FakeProductionProxy();
-    assertEquals(null, production.getProxy());
-    production.setProxy(proxy);
-
-    assertEquals(proxy, production.getProxy());
-  }
-
-  @Test
-  public void settingProxySetsAllProxies() throws Exception
-  {
-    FakeProductionProxy proxy = new FakeProductionProxy();
-    proxy.theater = new MockTheaterProxy();
-
-    production.setProxy(proxy);
-
-    assertSame(proxy, production.getProxy());
-    assertSame(proxy.theater, production.getTheater().getProxy());
   }
 
   @Test
@@ -258,7 +237,7 @@ public class ProductionTest
   }
 
   @Test
-  public void openSceneLoadesStylesExtendingProductionStyles() throws Exception
+  public void openSceneLoadsStylesExtendingProductionStyles() throws Exception
   {
     production.loadProduction();
     production.getTheater().add(new MockStage("mock"));
@@ -293,7 +272,6 @@ public class ProductionTest
   @Test
   public void openDefaultScenes() throws Exception
   {
-    production.loadProduction();
     production.getEventHandler().add(ProductionOpenedEvent.class, action);
     MockStage stage = new MockStage();
     production.getTheater().add(stage);
@@ -301,11 +279,25 @@ public class ProductionTest
     Scene scene = new FakeScene();
     production.stubbedScene = scene;
 
-    production.openDefaultScenes(Util.toMap());
+    production.open(new Opts());
 
     assertEquals(true, action.invoked);
     assertEquals(true, stage.isOpen());
     assertEquals(scene, stage.getScene());
+  }
+
+  @Test
+  public void defaultScenesCanBeDisabled() throws Exception
+  {
+    MockStage stage = new MockStage();
+    production.getTheater().add(stage);
+    stage.setDefaultSceneName("defaultScene");
+    production.stubbedScene = new FakeScene();
+
+    production.open(Util.toMap("open-default-scenes", false));
+
+    assertEquals(false, stage.isOpen());
+    assertEquals(null, stage.getScene());
   }
 
   @Test

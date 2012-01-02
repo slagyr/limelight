@@ -5,25 +5,25 @@
   (:use
     [speclj.core]
     [limelight.clojure.spec-helper]
-    [limelight.clojure.stage])
-  (:import [limelight.clojure.stage Stage]))
+    [limelight.clojure.stage]
+    [limelight.clojure.core :only (theater)]))
 
 (describe "Stage"
   (it "has limelight lineage"
-    (should (isa? Stage limelight.model.api.StageProxy)))
+    (should (isa? limelight.clojure.stage.Stage limelight.model.api.StageProxy)))
 
   (unless-headless
 
     (it "can be created with all the right values"
       (let [stage (new-stage :theater "Bill" {})]
-        (should= limelight.ui.model.FramedStage (type @(.peer stage)))
-        (should= stage (.getProxy @(.peer stage)))
-        (should= "Bill" (.getName @(.peer stage)))
-        (should= :theater (.theater stage))))
+        (should= limelight.ui.model.FramedStage (type @(._peer stage)))
+        (should= stage (.getProxy @(._peer stage)))
+        (should= "Bill" (.getName @(._peer stage)))
+        (should= :theater (._theater stage))))
 
     (it "uses the options map passed in constructor function"
       (let [stage (new-stage :theater "George" (hash-map :title "Dr. Mario"))]
-        (should= "George" (.getName @(.peer stage)))
-        (should= "Dr. Mario" (.getTitle @(.peer stage)))))
+        (should= "George" (.getName @(._peer stage)))
+        (should= "Dr. Mario" (.getTitle @(._peer stage)))))
     )
   )

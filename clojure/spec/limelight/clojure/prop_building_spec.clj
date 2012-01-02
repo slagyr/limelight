@@ -11,8 +11,8 @@
     [limelight.clojure.production :only (new-production)]))
 
 (defn illuminate [scene]
-  (.setProduction @(.peer scene) (.peer (new-production (limelight.model.FakeProduction. "Mock Production"))))
-  (.illuminate @(.peer scene)))
+  (.setProduction @(._peer scene) (._peer (new-production (limelight.model.FakeProduction. "Mock Production"))))
+  (.illuminate @(._peer scene)))
 
 (describe "prop-building"
 
@@ -47,8 +47,8 @@
   (it "with illumination"
     (let [scene (build-props (new-scene {}) "[:one {:text \"Number ONE!\"} [:two]]" "props.clj")]
       (illuminate scene)
-      (should= "one" (.getName @(.peer (first (child-props scene)))))
-      (should= "Number ONE!" (.getText @(.peer (first (child-props scene)))))))
+      (should= "one" (.getName @(._peer (first (child-props scene)))))
+      (should= "Number ONE!" (.getText @(._peer (first (child-props scene)))))))
 
   (it "with dynamic code"
     (let [scene (build-props (new-scene {}) "[:one (for [name [:two :three]] [name])]" "props.clj")]

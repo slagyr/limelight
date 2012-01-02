@@ -18,18 +18,18 @@
             (recur (rest keys) (dissoc options key)))
           (recur (rest keys) options))))))
 
-(deftype Prop [peer]
+(deftype Prop [_peer]
   limelight.model.api.PropProxy
   (applyOptions [this options]
     (let [opts (map-for-clojure options)]
       (apply-options this opts))
     options)
-  (getPeer [this] @peer))
+  (getPeer [this] @_peer))
 
 (defn new-prop [options]
   (let [prop (Prop. (atom nil))
         peer (limelight.ui.model.PropPanel. prop)]
-    (swap! (.peer prop) (fn [_] peer))
+    (swap! (._peer prop) (fn [_] peer))
     (.addOptions peer options)
     prop))
 
@@ -42,7 +42,7 @@
 
 (defn- add-event-action [prop event-class action]
   (let [event-action (->event-action action)
-        event-handler (.getEventHandler @(.peer prop))]
+        event-handler (.getEventHandler @(._peer prop))]
     (.add event-handler event-class event-action)))
 
 (defn on-mouse-clicked [prop action] (add-event-action prop limelight.ui.events.panel.MouseClickedEvent action))

@@ -9,64 +9,69 @@
     [limelight.clojure.prop-building :only (build-props)]
     [limelight.clojure.style-building :only (build-styles)]
     [limelight.clojure.scene :only (new-scene)]
-    [limelight.clojure.util :only (read-src map-for-clojure)])
+    [limelight.clojure.util :only (read-src map-for-clojure)]
+    [limelight.clojure.theater :only (new-theater)])
   (:require
-    [limelight.clojure.production-player]
-    [limelight.clojure.core])
-  (:import [limelight.clojure.theater Theater]))
+    [limelight.clojure.production-player]))
 
-(deftype Production [peer theater ns]
+(defn- prod-illuminate [production]
+  (let [player-path (resource-path production "production.clj")
+        fs (limelight.Context/fs)
+        player-src (if (.exists fs player-path) (.readTextFile fs player-path) nil)]
+    (when player-src
+      (binding [*ns* (._ns production)
+                limelight.clojure.production-player/*production* production]
+        (use 'clojure.core)
+        (use 'limelight.clojure.production-player)
+        (read-src player-path player-src)))))
+
+(defn- prod-load-stages [production]
+  (let [stages-path (resource-path production "stages.clj")
+        fs (limelight.Context/fs)
+        stages-src (if (.exists fs stages-path) (.readTextFile fs stages-path) nil)]
+    (when stages-src
+      (build-stages @(._theater production) stages-src stages-path))))
+
+(defn- prod-load-scene [production scene-path options]
+  (let [fs (limelight.Context/fs)
+        options (map-for-clojure options)
+        scene (new-scene options)
+        _ (.setProduction @(._peer scene) (._peer production))
+        props-path (resource-path scene "props.clj")
+        props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
+    (when props-src
+      (build-props scene props-src props-path))
+    scene))
+
+(defn- prod-load-styles [production path extendable-styles]
+  (let [styles-path (str path "/styles.clj")
+        fs (limelight.Context/fs)
+        styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)]
+    (if styles-src
+      (build-styles {} styles-src styles-path extendable-styles)
+      {})))
+
+(deftype Production [_peer _theater _ns]
 
   limelight.model.api.ProductionProxy
   (send [this name args] nil)
-  (getTheater [this] @theater)
-
-  (illuminate [this]
-    (let [player-path (resource-path this "production.clj")
-          fs (limelight.Context/fs)
-          player-src (if (.exists fs player-path) (.readTextFile fs player-path) nil)]
-      (when player-src
-        (binding [*ns* ns
-                  limelight.clojure.production-player/*production* this]
-          (use 'clojure.core)
-          (use 'limelight.clojure.production-player)
-          (read-src player-path player-src)))))
-
+  (getTheater [this] @_theater)
+  (illuminate [this] (prod-illuminate this))
   (loadLibraries [this])
-
-  (loadStages [this]
-    (let [stages-path (resource-path this "stages.clj")
-          fs (limelight.Context/fs)
-          stages-src (if (.exists fs stages-path) (.readTextFile fs stages-path) nil)]
-      (when stages-src
-        (build-stages @theater stages-src stages-path))))
-
-  (loadScene [this scene-path options]
-    (let [fs (limelight.Context/fs)
-          options (map-for-clojure options)
-          scene (new-scene options)
-          _ (.setProduction @(.peer scene) peer)
-          props-path (resource-path scene "props.clj")
-          props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
-      (when props-src
-        (build-props scene props-src props-path))
-      scene))
-
-  (loadStyles [this path extendable-styles]
-    (let [styles-path (str path "/styles.clj")
-          fs (limelight.Context/fs)
-          styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)]
-      (if styles-src
-        (build-styles {} styles-src styles-path extendable-styles)
-        {})))
+  (loadStages [this] (prod-load-stages this))
+  (loadScene [this scene-path options] (prod-load-scene production scene-path options))
+  (loadStyles [this path extendable-styles] (prod-load-styles this path extendable-styles))
 
   ResourceRoot
-  (resource-path [this resource]
-    (.pathTo (limelight.Context/fs) (.getPath peer) resource)))
+  (resource-path [this resource] (.pathTo (limelight.Context/fs) (.getPath _peer) resource))
+
+  TheaterSource
+  (theater [this] @_theater)
+  )
 
 (defn new-production [peer]
   (let [ns (create-ns (gensym "limelight.dynamic-player.production-"))
         production (Production. peer (atom nil) ns)]
-    (reset! (.theater production) (Theater. (.getTheater peer) production))
+    (reset! (._theater production) (new-theater (.getTheater peer) production))
     (.setProxy peer production)
     production))

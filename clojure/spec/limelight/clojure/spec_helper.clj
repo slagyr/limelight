@@ -3,7 +3,7 @@
 
 (ns limelight.clojure.spec-helper)
 
-(def default-boot-options {"startBackgroundThreads" false})
+(def default-boot-options {"start-background-threads" false})
 
 (defn boot-limelight
   ([] (boot-limelight {}))
@@ -20,4 +20,3 @@
   (System/setProperty "java.awt.headless" "true"))
 
 (boot-limelight)
-

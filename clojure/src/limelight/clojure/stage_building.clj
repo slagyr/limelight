@@ -17,5 +17,5 @@
   (let [options (if (and (= 1 (count options)) (map? (first options))) (first options) (apply hash-map options))
         stage (.buildStage *theater* name options)]
     (-> *theater*
-        (.peer)
+        (._peer)
         (.add stage))))

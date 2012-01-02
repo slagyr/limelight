@@ -7,7 +7,7 @@
 
 (defn add-action-with-bindings [event-type action]
   (let [event-action (reify limelight.events.EventAction (invoke [this e] (action e)))]
-    (.add (.getEventHandler (.peer *production*)) event-type event-action)))
+    (.add (.getEventHandler (._peer *production*)) event-type event-action)))
 
 (defmacro add-action [event-type & forms]
   (if (vector? (first forms))
