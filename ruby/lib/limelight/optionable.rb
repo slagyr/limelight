@@ -4,8 +4,8 @@
 module Limelight
   module Optionable
 
-    def apply_options(options)
-      options = Util::Hashes.for_ruby(options)
+    def apply_options(opts)
+      options = Util::Hashes.for_ruby(opts)
       options.keys.each do |key|
         setter_sym = "#{key.to_s}=".to_sym
         if self.respond_to?(setter_sym)
@@ -16,6 +16,7 @@ module Limelight
           add_event_action(key, options.delete(key))
         end
       end
+      opts
     end
 
     alias :applyOptions :apply_options

@@ -80,6 +80,7 @@
                         (limelight.ui.events.panel.FocusLostEvent.) "focus-lost"
                         (limelight.ui.events.panel.ButtonPushedEvent.) "button-pushed"
                         (limelight.ui.events.panel.ValueChangedEvent.) "value-changed"
+                        (limelight.ui.events.panel.IlluminatedEvent. nil) "illuminated"
                         (limelight.ui.events.panel.SceneOpenedEvent.) "scene-opened"
                         }]
       (it (str "handles " name " events")

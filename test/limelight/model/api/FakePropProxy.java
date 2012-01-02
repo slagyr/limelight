@@ -60,10 +60,11 @@ public class FakePropProxy implements PropProxy
     return sceneProxy;
   }
 
-  public void applyOptions(Map<String, Object> options)
+  public Map<String, Object> applyOptions(Map<String, Object> options)
   {
     appliedOptions = new HashMap<String, Object>(options);
     options.clear();
+    return options;
   }
 
   public Prop getPeer()

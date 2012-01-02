@@ -30,5 +30,6 @@
 (defmacro on-focus-lost [& forms] `(add-action ~limelight.ui.events.panel.FocusLostEvent ~@forms))
 (defmacro on-button-pushed [& forms] `(add-action ~limelight.ui.events.panel.ButtonPushedEvent ~@forms))
 (defmacro on-value-changed [& forms] `(add-action ~limelight.ui.events.panel.ValueChangedEvent ~@forms))
+(defmacro on-illuminated [& forms] `(add-action ~limelight.ui.events.panel.IlluminatedEvent ~@forms))
 (defmacro on-scene-opened [& forms] `(add-action ~limelight.ui.events.panel.SceneOpenedEvent ~@forms))
 (defmacro on-cast [& forms] `(add-action :on-cast ~@forms))

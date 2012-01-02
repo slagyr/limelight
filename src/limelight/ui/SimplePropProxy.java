@@ -10,8 +10,9 @@ import java.util.Map;
 
 public class SimplePropProxy implements PropProxy
 {
-  public void applyOptions(Map<String, Object> options)
+  public Map<String, Object> applyOptions(Map<String, Object> options)
   {
+    return options;
   }
 
   public Prop getPeer()

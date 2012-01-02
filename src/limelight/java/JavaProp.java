@@ -35,8 +35,9 @@ public class JavaProp implements PropProxy
     return peer;
   }
 
-  public void applyOptions(Map<String, Object> options)
+  public Map<String, Object> applyOptions(Map<String, Object> options)
   {
+    return options;
   }
 
   public void add(JavaProp prop)

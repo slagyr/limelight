@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface PropProxy
 {
-  void applyOptions(Map<String, Object> options);
+  Map<String, Object> applyOptions(Map<String, Object> options);
 
   Prop getPeer();
 }
