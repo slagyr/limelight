@@ -9,7 +9,7 @@ import limelight.model.FakeProduction;
 import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
-import limelight.Context;
+import limelight.util.Opts;
 import limelight.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
@@ -302,7 +302,7 @@ public class ScenePanelTest extends Assert
     PropPanel prop = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
     root.add(prop);
 
-    root.removeFromIndex(prop);
+    root.removeFromCaches(prop);
 
     assertEquals(null, root.find("some id"));
   }
@@ -316,7 +316,7 @@ public class ScenePanelTest extends Assert
 
     try
     {
-      root.removeFromIndex(prop);
+      root.removeFromCaches(prop);
     }
     catch(Exception e)
     {
@@ -351,5 +351,28 @@ public class ScenePanelTest extends Assert
     root.setProduction(new FakeProduction("/test_prod"));
     root.addOptions(Util.toMap("path", "some/path"));
     assertEquals("/test_prod/some/path", root.getPath());
+  }
+
+  @Test
+  public void backstage() throws Exception
+  {
+    assertEquals(0, root.backstage_PRIVATE().size());
+    root.add(child);
+    Opts backstage = root.getBackstage(child);
+    assertEquals(1, root.backstage_PRIVATE().size());
+    assertEquals(0, backstage.size());
+    assertSame(backstage, root.getBackstage(child));
+  }
+
+  @Test
+  public void propRemovalCleansBackstage() throws Exception
+  {
+    PropPanel panel = new PropPanel(new FakePropProxy(), Util.toMap("id", "some id"));
+    root.add(panel);
+    root.getBackstage(panel);
+    assertEquals(1, root.backstage_PRIVATE().size());
+
+    root.removeFromCaches(panel);
+    assertEquals(0, root.backstage_PRIVATE().size());
   }
 }

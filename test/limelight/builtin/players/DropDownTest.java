@@ -3,7 +3,6 @@ package limelight.builtin.players;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
-import limelight.util.Util;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,8 +31,8 @@ public class DropDownTest
     assertNotNull(dropDown.getDropDownPanel());
     assertEquals(dropDown.getDropDownPanel(), propPanel.getChildren().get(0));
     assertEquals(true, propPanel.isSterilized());
-    assertNotNull(propPanel.getStagehands().get("drop-down"));
-    assertEquals(DropDown.class, propPanel.getStagehands().get("drop-down").getClass());
+    assertNotNull(propPanel.getBackstage().get("drop-down"));
+    assertEquals(DropDown.class, propPanel.getBackstage().get("drop-down").getClass());
   }
 
   @Test

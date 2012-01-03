@@ -29,8 +29,8 @@ public class ImageTest
     assertNotNull(image.getImagePanel());
     assertEquals(image.getImagePanel(), propPanel.getChildren().get(0));
     assertEquals(true, propPanel.isSterilized());
-    assertNotNull(propPanel.getStagehands().get("image"));
-    assertEquals(Image.class, propPanel.getStagehands().get("image").getClass());
+    assertNotNull(propPanel.getBackstage().get("image"));
+    assertEquals(Image.class, propPanel.getBackstage().get("image").getClass());
   }
 
   @Test

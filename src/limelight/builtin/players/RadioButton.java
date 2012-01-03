@@ -1,6 +1,5 @@
 package limelight.builtin.players;
 
-import limelight.ui.RadioButtonGroup;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.RadioButtonPanel;
@@ -16,7 +15,7 @@ public class RadioButton
     buttonPanel = new RadioButtonPanel();
     propPanel = (PropPanel)event.getRecipient();
     propPanel.add(buttonPanel);
-    propPanel.getStagehands().put("radio-button", this);
+    propPanel.getBackstage().put("radio-button", this);
   }
 
   public PropPanel getPropPanel()

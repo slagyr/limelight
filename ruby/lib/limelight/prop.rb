@@ -57,11 +57,11 @@ module Limelight
       @peer.players
     end
 
-    def stagehands
-      if @stagehands == nil
-        @stagehands = Util::Hashes.for_ruby(@peer.stagehands)
+    def backstage
+      if @backstage == nil
+        @backstage = Util::Hashes.for_ruby(@peer.backstage)
       end
-      @stagehands
+      @backstage
     end
 
     def style

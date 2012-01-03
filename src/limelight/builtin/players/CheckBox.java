@@ -14,7 +14,7 @@ public class CheckBox
     checkBoxPanel = new CheckBoxPanel();
     propPanel = (PropPanel)event.getRecipient();
     propPanel.add(checkBoxPanel);
-    propPanel.getStagehands().put("check-box", this);
+    propPanel.getBackstage().put("check-box", this);
   }
 
   public PropPanel getPropPanel()

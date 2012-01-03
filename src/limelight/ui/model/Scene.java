@@ -44,7 +44,7 @@ public interface Scene extends Panel, ParentPanel
 
   void addToIndex(PropPanel prop);
 
-  void removeFromIndex(PropPanel prop);
+  void removeFromCaches(PropPanel prop);
 
   Production getProduction();
 
@@ -61,6 +61,8 @@ public interface Scene extends Panel, ParentPanel
   String getAbsoluteName();
 
   String getPath();
+
+  Map<String,Object> getBackstage(Prop prop);
 }
 
 

@@ -25,7 +25,7 @@ on_button_pushed do
   print("pressed")
 end
 
-stagehand_reader :radio_button
+backstage_reader :radio_button
 
 def print(value)
   log = scene.find("radio_button_log")

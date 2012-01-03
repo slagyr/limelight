@@ -8,7 +8,6 @@ import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
 import limelight.util.Options;
 import limelight.util.StringUtil;
-import limelight.util.Util;
 import org.w3c.dom.Element;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -71,7 +70,7 @@ public class JavaPlayer implements Player
 
   public Map<String, Object> applyOptions(PropPanel prop, Map<String, Object> options)
   {
-    Object hand = prop.getStagehands().get(name);
+    Object hand = prop.getBackstage().get(name);
     if(hand != null)
       Options.apply(hand, options);
     return options;

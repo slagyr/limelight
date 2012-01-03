@@ -9,9 +9,11 @@ import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.PlayerRecruiter;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
+import limelight.util.Opts;
 
 import java.awt.*;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -21,9 +23,10 @@ public class FakeScene extends MockProp implements Scene
   public Map<String, RichStyle> styleStore;
   public Production production;
   public boolean shouldAllowClose;
-  private Stage stage;
+  public Stage stage;
   public boolean visible;
   public PlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
+  public Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
 
   @Override
   public Scene getRoot()
@@ -73,7 +76,7 @@ public class FakeScene extends MockProp implements Scene
   {
   }
 
-  public void removeFromIndex(PropPanel prop)
+  public void removeFromCaches(PropPanel prop)
   {
   }
 
@@ -110,6 +113,17 @@ public class FakeScene extends MockProp implements Scene
   public String getPath()
   {
     return "fake_scene/path";
+  }
+
+  public Opts getBackstage(Prop child)
+  {
+    Opts result = backstage.get(child);
+    if(result == null)
+    {
+      result = new Opts();
+      backstage.put(child, result);
+    }
+    return result;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

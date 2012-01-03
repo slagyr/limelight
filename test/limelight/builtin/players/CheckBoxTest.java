@@ -29,8 +29,8 @@ public class CheckBoxTest
     assertNotNull(checkBox.getCheckBoxPanel());
     assertEquals(checkBox.getCheckBoxPanel(), propPanel.getChildren().get(0));
     assertEquals(true, propPanel.isSterilized());
-    assertNotNull(propPanel.getStagehands().get("check-box"));
-    assertEquals(CheckBox.class, propPanel.getStagehands().get("check-box").getClass());
+    assertNotNull(propPanel.getBackstage().get("check-box"));
+    assertEquals(CheckBox.class, propPanel.getBackstage().get("check-box").getClass());
   }
 
   @Test

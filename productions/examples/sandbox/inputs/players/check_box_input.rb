@@ -25,7 +25,7 @@ on_button_pushed do
   print("pressed")
 end
 
-stagehand_reader :check_box
+backstage_reader :check_box
 
 def print(value)
   log = scene.find("check_box_log")

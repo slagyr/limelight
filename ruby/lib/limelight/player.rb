@@ -137,10 +137,10 @@ module Limelight
       end
     end
 
-    def stagehand_reader(*symbols)
+    def backstage_reader(*symbols)
       symbols.each do |sym|
         name = Java::limelight.util.StringUtil.spearCase(sym.to_s)
-        module_eval("def #{sym}; return stagehands['#{name}']; end")
+        module_eval("def #{sym}; return backstage['#{name}']; end")
       end
     end
 

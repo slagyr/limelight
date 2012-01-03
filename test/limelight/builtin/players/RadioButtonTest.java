@@ -29,8 +29,8 @@ public class RadioButtonTest
     assertNotNull(button.getButtonPanel());
     assertEquals(button.getButtonPanel(), propPanel.getChildren().get(0));
     assertEquals(true, propPanel.isSterilized());
-    assertNotNull(propPanel.getStagehands().get("radio-button"));
-    assertEquals(RadioButton.class, propPanel.getStagehands().get("radio-button").getClass());
+    assertNotNull(propPanel.getBackstage().get("radio-button"));
+    assertEquals(RadioButton.class, propPanel.getBackstage().get("radio-button").getClass());
   }
   
   @Test

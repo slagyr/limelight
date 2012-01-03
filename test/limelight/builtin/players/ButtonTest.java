@@ -29,7 +29,7 @@ public class ButtonTest
     assertNotNull(button.getButtonPanel());
     assertEquals(button.getButtonPanel(), propPanel.getChildren().get(0));
     assertEquals(true, propPanel.isSterilized());
-    assertNotNull(propPanel.getStagehands().get("button"));
-    assertEquals(Button.class, propPanel.getStagehands().get("button").getClass());
+    assertNotNull(propPanel.getBackstage().get("button"));
+    assertEquals(Button.class, propPanel.getBackstage().get("button").getClass());
   }
 }

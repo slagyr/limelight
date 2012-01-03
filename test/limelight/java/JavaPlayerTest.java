@@ -68,7 +68,7 @@ public class JavaPlayerTest
   public void applyOptions() throws Exception
   {
     final Thing thing = new Thing();
-    prop.getStagehands().put("thing", thing);
+    prop.getBackstage().put("thing", thing);
     final Player player = new JavaPlayer("thing", "path", null, null, null);
 
     Map<String, Object> result = player.applyOptions(prop, Opts.with("value", 1234));

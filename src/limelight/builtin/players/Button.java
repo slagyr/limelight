@@ -17,7 +17,7 @@ public class Button
     buttonPanel = new ButtonPanel();
     propPanel = (PropPanel)event.getRecipient();
     propPanel.add(buttonPanel);
-    propPanel.getStagehands().put("button", this);
+    propPanel.getBackstage().put("button", this);
   }
 
   public PropPanel getPropPanel()

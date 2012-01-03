@@ -29,7 +29,7 @@ on_value_changed do
   print("value changed")
 end
 
-stagehand_reader :drop_down
+backstage_reader :drop_down
 
 def print(value)
   log = scene.find("drop_down_log")

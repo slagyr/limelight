@@ -47,13 +47,12 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   private ScrollBarPanel verticalScrollbar;
   private ScrollBarPanel horizontalScrollbar;
   private boolean sizeChangePending = true;
+  public boolean borderChanged = true;
   private Painter painter = DefaultPainter.instance;
   private Cursor preHoverCursor;
   private Map<String, Object> options;
   private List<Player> players;
   public Dimension greediness = new Dimension(0, 0);
-  public boolean borderChanged = true;
-  private Map<String, Object> stagehands;
 
   public PropPanel(PropProxy proxy)
   {
@@ -403,7 +402,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   @Override
   public void delluminate()
   {
-    getRoot().removeFromIndex(this);
+    getRoot().removeFromCaches(this);
     style.tearDown();
     hoverStyle.tearDown();
     super.delluminate();
@@ -566,11 +565,13 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     return players;
   }
 
-  public Map<String, Object> getStagehands()
+  public Map<String, Object> getBackstage()
   {
-    if(stagehands == null)
-      stagehands = new Opts();
-    return stagehands;
+    final Scene root = getRoot();
+    if(root != null)
+      return root.getBackstage(this);
+    else
+      return null;
   }
 
   private static class MouseWheelAction implements EventAction

@@ -20,7 +20,6 @@ import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
 import limelight.audio.MockAudioPlayer;
-import limelight.util.Opts;
 import limelight.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
@@ -724,8 +723,8 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void stagehands() throws Exception
+  public void backstage() throws Exception
   {
-    assertEquals(0, panel.getStagehands().size());
+    assertEquals(0, panel.getBackstage().size());
   }
 }

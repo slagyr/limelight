@@ -14,7 +14,7 @@ public class Image
     imagePanel = new ImagePanel();
     propPanel = (PropPanel) event.getRecipient();
     propPanel.add(imagePanel);
-    propPanel.getStagehands().put("image", this);
+    propPanel.getBackstage().put("image", this);
   }
 
   public PropPanel getPropPanel()

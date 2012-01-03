@@ -12,6 +12,7 @@ import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
 import limelight.model.api.PropProxy;
+import limelight.util.Opts;
 import limelight.util.Util;
 
 import java.awt.*;
@@ -32,6 +33,7 @@ public class ScenePanel extends PropPanel implements Scene
   private ButtonGroupCache buttonGroups = new ButtonGroupCache();
   private String pathRelativeToProduction;
   private PlayerRecruiter playerRecruiter;
+  private Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
 
   public ScenePanel(PropProxy propProxy)
   {
@@ -242,9 +244,10 @@ public class ScenePanel extends PropPanel implements Scene
     index.put(prop.getId(), prop);
   }
 
-  public void removeFromIndex(PropPanel prop)
+  public void removeFromCaches(PropPanel prop)
   {
     index.remove(prop.getId());
+    backstage.remove(prop);
   }
 
   public PropPanel find(String id)
@@ -309,6 +312,22 @@ public class ScenePanel extends PropPanel implements Scene
   public PlayerRecruiter getPlayerRecruiter()
   {
     return playerRecruiter;
+  }
+
+  public Opts getBackstage(Prop child)
+  {
+    Opts result = backstage.get(child);
+    if(result == null)
+    {
+      result = new Opts();
+      backstage.put(child, result);
+    }
+    return result;
+  }
+
+  public Map<Prop, Opts> backstage_PRIVATE()
+  {
+    return backstage;
   }
 
   private static class SceneLayout implements Layout

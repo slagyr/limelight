@@ -219,11 +219,11 @@ describe Limelight::Prop do
     @prop.players.should == @prop.peer.getPlayers
   end
 
-  it "gets stagehands" do
-    @prop.stagehands.should_not == nil
-    @prop.stagehands.should be(@prop.stagehands)
-    @prop.stagehands.class.should == Limelight::Util::MapHash
-    @prop.stagehands.map.should == @prop.peer.getStagehands
+  it "gets backstage" do
+    @prop.backstage.should_not == nil
+    @prop.backstage.should be(@prop.backstage)
+    @prop.backstage.class.should == Limelight::Util::MapHash
+    @prop.backstage.map.should == @prop.peer.getBackstage
   end
 
   #TODO remove_all should not remove scrollbars

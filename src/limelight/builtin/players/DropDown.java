@@ -4,7 +4,6 @@ import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.inputs.DropDownPanel;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class DropDown
     dropDownPanel = new DropDownPanel();
     propPanel = (PropPanel)event.getRecipient();
     propPanel.add(dropDownPanel);
-    propPanel.getStagehands().put("drop-down", this);
+    propPanel.getBackstage().put("drop-down", this);
   }
 
   public PropPanel getPropPanel()
