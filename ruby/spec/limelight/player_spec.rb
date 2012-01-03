@@ -136,10 +136,12 @@ describe Limelight::Player do
     prop.waldo.should == waldo
   end
 
-  it "handles stagehand_reader helper" do
+  it "handles backstage_reader helper" do
+    scene = Limelight::Scene.new
     prop = Limelight::Prop.new
-    prop.stagehands["thing-one"] = 1
-    @player.module_eval "stagehand_reader :thing_one"
+    scene << prop
+    prop.backstage["thing-one"] = 1
+    @player.module_eval "backstage_reader :thing_one"
     @player.cast(prop)
 
     prop.thing_one.should == 1
