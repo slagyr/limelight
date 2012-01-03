@@ -571,7 +571,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     if(root != null)
       return root.getBackstage(this);
     else
-      return null;
+      throw new LimelightException("Backstage requires the prop to be part of a scene.");
   }
 
   private static class MouseWheelAction implements EventAction

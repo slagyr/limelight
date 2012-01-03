@@ -1,8 +1,10 @@
 package limelight.builtin.players;
 
 import limelight.model.api.FakePropProxy;
+import limelight.model.api.FakeSceneProxy;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
+import limelight.ui.model.ScenePanel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +23,7 @@ public class DropDownTest
   {
     dropDown = new DropDown();
     propPanel = new PropPanel(new FakePropProxy());
+    new ScenePanel(new FakeSceneProxy()).add(propPanel);
     dropDown.install(new CastEvent(propPanel));
   }
 

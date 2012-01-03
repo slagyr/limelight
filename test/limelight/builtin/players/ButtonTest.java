@@ -1,8 +1,10 @@
 package limelight.builtin.players;
 
 import limelight.model.api.FakePropProxy;
+import limelight.model.api.FakeSceneProxy;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.model.PropPanel;
+import limelight.ui.model.ScenePanel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +21,7 @@ public class ButtonTest
   {
     button = new Button();
     propPanel = new PropPanel(new FakePropProxy());
+    new ScenePanel(new FakeSceneProxy()).add(propPanel);
     button.install(new CastEvent(propPanel));
   }
 
