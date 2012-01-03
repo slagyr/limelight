@@ -4,11 +4,16 @@
     [limelight.clojure.core :as ll :exclude (production stage scene)]
     [limelight.clojure.util :only (->options)]))
 
+(def default-options
+    {:start-background-threads false
+     :environment "test"
+     :production "."})
+
 (defn load-production [options]
   (limelight.Boot/reset)
-  (limelight.Boot/boot {"start-background-threads" (or (:start-back-ground-threads options) false)})
+  (limelight.Boot/boot (limelight.util.Opts. options))
   (set! (. limelight.ui.model.StageFrame hiddenMode) true)
-  (let [production-path (or (:production options) ".")
+  (let [production-path (:production options)
         peer-prod (limelight.clojure.ClojureProduction. production-path)]
     (.open peer-prod {"open-default-scenes" false})
     (.getProxy peer-prod)))
@@ -25,7 +30,7 @@
     (open-scene production scene-path (name stage))))
 
 (defn with-limelight [& args]
-  (let [options (->options args)]
+  (let [options (merge default-options (->options args))]
     (list
       (with-all production (load-production options))
       (with stage (load-stage @production options))

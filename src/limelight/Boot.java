@@ -29,7 +29,8 @@ public class Boot
   private static boolean booted;
 
   public static final Opts defaultOptions = Opts.with(
-    "start-background-threads", true
+    "start-background-threads", true,
+    "environment", "production"
   );
 
   public static void reset()
@@ -114,6 +115,9 @@ public class Boot
   public static void configureContext(Map<String, Object> options) throws Exception
   {
 //VerboseRepaintManager.install();
+    if(options.get("environment") != null)
+      context().environment = options.get("environment").toString();
+
     if(context().frameManager == null)
       context().frameManager = new AlertFrameManager();
 

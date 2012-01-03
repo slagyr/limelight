@@ -131,6 +131,20 @@ public class BootTest
   }
 
   @Test
+  public void settingDefaultEnvironment() throws Exception
+  {
+    Boot.configureContext(options);
+    assertEquals("production", Context.instance().environment);
+  }
+
+  @Test
+  public void settingConfiguredEnvironment() throws Exception
+  {
+    Boot.configureContext(options.merge("environment", "foobar"));
+    assertEquals("foobar", Context.instance().environment);
+  }
+
+  @Test
   public void settingSystemCofiguration() throws Exception
   {
     System.setProperty("limelight.home", "/limelighthome");
