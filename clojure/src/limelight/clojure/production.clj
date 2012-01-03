@@ -73,6 +73,11 @@
 
   limelight.clojure.core.ProductionSource
   (production [this] this)
+
+  limelight.clojure.core.Backstaged
+  (backstage [this] (.getBackstage _peer))
+  (backstage-get [this key] (.get (.getBackstage _peer) key))
+  (backstage-put [this key value] (.put (.getBackstage _peer) key value))
   )
 
 (defn new-production [peer]

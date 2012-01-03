@@ -38,12 +38,23 @@
   limelight.clojure.core.SceneSource
   (scene [this] (.getProxy (.getRoot @_peer)))
 
+  limelight.clojure.core.PropSource
+  (prop [this] this)
+
+  limelight.clojure.core.StageSource
+  (stage [this] (.getProxy (.getStage (.getRoot @_peer))))
+
   limelight.clojure.core.Identified
   (id [this] (.getId @_peer))
 
   limelight.clojure.core.Textable
   (text [this] (.getText @_peer))
   (text= [this value] (.setText @_peer value))
+
+  limelight.clojure.core.Backstaged
+  (backstage [this] (.getBackstage @_peer))
+  (backstage-get [this key] (.get (.getBackstage @_peer) key))
+  (backstage-put [this key value] (.put (.getBackstage @_peer) key value))
 
   )
 

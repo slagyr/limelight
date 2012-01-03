@@ -19,6 +19,9 @@
   limelight.clojure.core.SceneSource
   (scene [this] (if-let [peer-scene (.getScene @_peer)] (.getProxy peer-scene) nil))
 
+  limelight.clojure.core.StageSource
+  (stage [this] this)
+
   clojure.lang.Named
   (getName [this] (.getName @_peer))
   )

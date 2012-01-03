@@ -31,6 +31,12 @@
 (defprotocol SceneSource
   (scene [this]))
 
+(defprotocol StageSource
+  (stage [this]))
+
+(defprotocol PropSource
+  (prop [this]))
+
 (defprotocol Identified
   (id [this]))
 
@@ -38,7 +44,10 @@
   (text [this])
   (text= [this value]))
 
-; TODO StageSource
+(defprotocol Backstaged
+  (backstage [this])
+  (backstage-get [this key])
+  (backstage-put [this key value]))
 
 ; TODO extend events
 
@@ -102,4 +111,21 @@
 (defn default-stage [theater]
   (.getProxy (.getDefaultStage (._peer theater))))
 
-; TODO stages
+(defn stages [theater]
+  (map #(.getProxy %) (.getStages (._peer theater))))
+
+; Event Extension -----------------------------------------
+
+(extend-type limelight.ui.events.panel.PanelEvent
+  PropSource
+  (prop [this] (.getProp this))
+
+  SceneSource
+  (scene [this] (scene (prop this)))
+
+  StageSource
+  (stage [this] (stage (prop this)))
+
+  ProductionSource
+  (production [this] (production (prop this)))
+  )
