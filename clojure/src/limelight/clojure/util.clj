@@ -11,10 +11,10 @@
         src-filename (.filename (limelight.Context/fs) src-path)]
     (try
       (clojure.lang.Compiler/load rdr parent-path src-filename)
-      (catch clojure.lang.Compiler$CompilerException e
+      (catch java.lang.Exception e
         (if-let [cause (.getCause e)]
-          (throw cause))
-          (throw e)))))
+          (throw (limelight.LimelightException. (str "Failed to read src: " src-path "\n\t<- " (.getMessage e)) cause))
+          (throw (limelight.LimelightException. (str "Failed to read src: " src-path) e)))))))
 
 (defn map-for-clojure [the-map]
   (cond

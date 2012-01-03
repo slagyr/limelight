@@ -53,10 +53,11 @@
       (should= "100" (.getWidth two))))
 
   (it "errors when extending missing style"
-    (should-throw
-      limelight.LimelightException
-      "Can't extend missing style: 'missing'"
-      (build-styles {} "(style :two (extends :missing) :height 200)" "styles.clj")))
+    (try
+      (build-styles {} "(style :two (extends :missing) :height 200)" "styles.clj")
+      (should-fail "Exception expected")
+      (catch limelight.LimelightException e
+        (should= true (.contains (.getMessage e) "Can't extend missing style: 'missing'")))))
 
   (it "allows styles to extend multiple styles"
     (let [src "(style :one :width 100) (style :two :height 200) (style :three (extends :one :two))"

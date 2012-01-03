@@ -5,7 +5,10 @@
   (:use
     [speclj.core]
     [limelight.clojure.spec-helper]
-    [limelight.clojure.production])
+    [limelight.clojure.production]
+    [limelight.clojure.core :only (children peer)]
+    [limelight.clojure.prop-building :only (build-props)]
+    [limelight.clojure.util :only (->options)])
   (:import
     [limelight.clojure.production Production]
     [limelight.clojure.theater Theater]))
@@ -26,7 +29,7 @@
       (should= :peer (._peer production))
       (should= :theater (._theater production))))
 
-  (context ", when fully constructed,"
+  (context "when fully constructed,"
     (with peer-production (limelight.model.FakeProduction. "Mock"))
     (with production (new-production @peer-production))
     (with fs (limelight.io.FakeFileSystem/installed))
@@ -47,9 +50,23 @@
         (.loadStages @production)
         (should= 1 (count (.getStages (.getTheater @peer-production)))))
       )
+
+    (it "loads a scene"
+      (.createTextFile @fs "/Mock/Scene/props.clj" "[:one]")
+      (let [result (.loadScene @production "Scene" {"path" "Scene"})]
+        (.illuminate (peer result))
+        (should= 1 (count (children result)))
+        (should= "one" (name (first (children result))))))
+
+    (it "include prod path with loading scene"
+      (.createTextFile @fs "/Mock/Scene/props.clj" "[:one]")
+      (let [opts (atom nil)]
+        (binding [build-props (fn [scene props-src props-path & args] (reset! opts (->options args)))]
+          (.loadScene @production "Scene" {"path" "Scene"}))
+        (should= "Mock" (:root-path @opts))))
     )
 
-  (context ", when illuminated,"
+  (context "when illuminated,"
     (with peer-production (limelight.model.FakeProduction. "MockProduction"))
     (with production (new-production @peer-production))
     (with fs (limelight.io.FakeFileSystem/installed))

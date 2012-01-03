@@ -19,7 +19,8 @@
 ; Protocols -----------------------------------------------
 
 (defprotocol ResourceRoot
-  (resource-path [this resource]))
+  (resource-path [this resource])
+  (path [this]))
 
 (defprotocol ProductionSource
   (production [this]))
@@ -36,6 +37,10 @@
 (defprotocol Textable
   (text [this])
   (text= [this value]))
+
+; TODO StageSource
+
+; TODO extend events
 
 ; Prop functions ------------------------------------------
 
@@ -96,3 +101,5 @@
 
 (defn default-stage [theater]
   (.getProxy (.getDefaultStage (._peer theater))))
+
+; TODO stages

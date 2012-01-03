@@ -17,8 +17,8 @@
   (getName [this] (.getName @_peer))
 
   limelight.clojure.core.ResourceRoot
-  (resource-path [this resource]
-    (.pathTo (limelight.Context/fs) (.getPath @_peer) resource))
+  (resource-path [this resource] (.pathTo (limelight.Context/fs) (.getPath @_peer) resource))
+  (path [this] (.getPath @_peer))
 
   limelight.clojure.core.ProductionSource
   (production [this] (.getProxy (.getProduction @_peer)))

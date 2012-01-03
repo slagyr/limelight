@@ -69,7 +69,7 @@
         (should= "child1" (id (parent (parent result))))))
     )
 
-  (context "getting scene"
+  (context "with scene"
     (with root (build-tree))
 
     (it "gets the scene from the scene"
@@ -109,6 +109,13 @@
           (should= nil (scene stage1))
           (.setScene (peer stage1) (peer @root))
           (should= @root (scene stage1)))))
+
+    (it "gets the path of a production"
+      (should= "some/path" (path @production1)))
+
+    (it "gets the path of a scene"
+      (.setProduction (peer @root) (peer @production1))
+      (should= "some/path/root" (path @root)))
 
     (context "scene opening"
 

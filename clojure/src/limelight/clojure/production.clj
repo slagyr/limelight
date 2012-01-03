@@ -40,7 +40,7 @@
         props-path (resource-path scene "props.clj")
         props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
     (when props-src
-      (build-props scene props-src props-path))
+      (build-props scene props-src props-path :root-path (path production)))
     scene))
 
 (defn- prod-load-styles [production path extendable-styles]
@@ -64,6 +64,7 @@
 
   limelight.clojure.core.ResourceRoot
   (resource-path [this resource] (.pathTo (limelight.Context/fs) (.getPath _peer) resource))
+  (path [this] (.getPath _peer))
 
   limelight.clojure.core.TheaterSource
   (theater [this] @_theater)
