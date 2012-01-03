@@ -35,12 +35,14 @@
 (defn- prod-load-scene [production scene-path options]
   (let [fs (limelight.Context/fs)
         options (map-for-clojure options)
+        prop-params (or (:prop-params options) {})
+        options (dissoc options :prop-params)
         scene (new-scene options)
         _ (.setProduction @(._peer scene) (._peer production))
         props-path (resource-path scene "props.clj")
         props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
     (when props-src
-      (build-props scene props-src props-path :root-path (path production)))
+      (build-props scene props-src props-path (assoc prop-params :root-path (path production))))
     scene))
 
 (defn- prod-load-styles [production path extendable-styles]

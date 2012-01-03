@@ -64,6 +64,13 @@
         (binding [build-props (fn [scene props-src props-path & args] (reset! opts (->options args)))]
           (.loadScene @production "Scene" {"path" "Scene"}))
         (should= "Mock" (:root-path @opts))))
+
+    (it "prop-params are used in prop-building when loading a scene"
+      (.createTextFile @fs "/Mock/Scene/props.clj" "[(:pname *context*)]")
+      (let [result (.loadScene @production "Scene" {"path" "Scene" :prop-params {:pname "foo"}})]
+        (.illuminate (peer result))
+        (should= 1 (count (children result)))
+        (should= "foo" (name (first (children result))))))
     )
 
   (context "when illuminated,"

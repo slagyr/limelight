@@ -34,7 +34,6 @@
   (text= [this value] (.setText @_peer value))
   )
 
-
 (defn new-scene [options]
   (let [scene (Scene. (atom nil) (atom nil))
         player-recruiter (new-player-recruiter scene)

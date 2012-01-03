@@ -10,10 +10,15 @@
 (declare to-prop)
 (declare *context*)
 
+(defn- named? [x]
+  (or
+    (instance? clojure.lang.Named x)
+    (string? x)))
+
 (defn to-props [coll]
   (cond
     (or (not (coll? coll)) (empty? coll)) ()
-    (keyword? (first coll)) (list (to-prop coll))
+    (named? (first coll)) (list (to-prop coll))
     (coll? (first coll)) (reduce #(into %1 (to-props %2)) [] coll)
     :else (throw (Exception. (str "Don't know how to create props from:" coll)))))
 

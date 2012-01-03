@@ -27,6 +27,10 @@
     (let [scene (build-props @root "[:one]" "props.clj")]
       (should= 1 (count (children scene)))))
 
+  (it "with one prop using string for name"
+    (let [scene (build-props @root "[\"one\"]" "props.clj")]
+      (should= 1 (count (children scene)))))
+
   (it "with two prop"
     (let [scene (build-props @root "[:one][:two]" "props.clj")]
       (should= 2 (count (children scene)))))
@@ -48,15 +52,15 @@
   (it "with illumination"
     (let [scene (build-props @root "[:one {:text \"Number ONE!\"} [:two]]" "props.clj")]
       (illuminate scene)
-      (should= "one" (.getName @(._peer (first (children scene)))))
-      (should= "Number ONE!" (.getText @(._peer (first (children scene)))))))
+      (should= "one" (name (first (children scene))))
+      (should= "Number ONE!" (text (first (children scene))))))
 
   (it "with dynamic code"
     (let [scene (build-props @root "[:one (for [name [:two :three]] [name])]" "props.clj")]
       (should= 2 (count (children (first (children scene)))))))
 
   (it "adds the props in the right order"
-    (let [scene (build-props @root "[:one][:two][:three]" "props.clj")]
+    (let [scene (build-props @root "[:one][\"two\"]['three]" "props.clj")]
       (illuminate scene)
       (should= "one" (name (first (children scene))))
       (should= "two" (name (second (children scene))))
