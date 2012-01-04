@@ -3,7 +3,7 @@
 
 (ns limelight.clojure.core
   (:use
-    [limelight.clojure.util :only (->options)]))
+    [limelight.clojure.util :only (->options map-for-java)]))
 
 (def *log* (java.util.logging.Logger/getLogger "clojure"))
 
@@ -19,7 +19,9 @@
 ; Protocols -----------------------------------------------
 
 (defprotocol ResourceRoot
-  (resource-path [this resource])
+  (resource-path [this resource]))
+
+(defprotocol Pathed
   (path [this]))
 
 (defprotocol ProductionSource
@@ -78,6 +80,9 @@
 (defn find-by-name [root name]
   (as-proxies (.findByName @(._peer root) name)))
 
+(defn players [prop]
+  (.getPlayers (peer prop)))
+
 ; Production functions ------------------------------------
 
 (defn open-scene
@@ -85,8 +90,9 @@
   ([production scene-name stage-or-options]
     (if (string? stage-or-options)
       (.getProxy (.openScene (._peer production) scene-name stage-or-options {}))
-      (.getProxy (.openScene (._peer production) scene-name stage-or-options))))
-  ([production scene-name stage-name options] (.getProxy (.openScene (._peer production) scene-name stage-name options))))
+      (.getProxy (.openScene (._peer production) scene-name (map-for-java stage-or-options)))))
+  ([production scene-name stage-name options]
+    (.getProxy (.openScene (._peer production) scene-name stage-name (map-for-java options)))))
 
 ; Theater functions ---------------------------------------
 

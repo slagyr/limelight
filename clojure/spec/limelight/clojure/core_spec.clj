@@ -111,6 +111,9 @@
       (with production1 (new-production @peer-production))
       (before (.setProduction (.getPeer @root) @peer-production))
 
+      (it "gets the name of the production"
+        (should= "path" (name @production1)))
+
       (it "loads the production from the scene"
         (should= @production1 (production @root)))
 

@@ -39,19 +39,19 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
   public void windowGainedFocus(WindowEvent e)
   {
     if(e.getSource() instanceof StageFrame)
-      new StageGainedFocusEvent().dispatch(((StageFrame)e.getSource()).getStage());
+      new StageGainedFocusEvent().dispatch(((StageFrame) e.getSource()).getStage());
   }
 
   public void windowLostFocus(WindowEvent e)
   {
     if(e.getSource() instanceof StageFrame)
-      new StageLostFocusEvent().dispatch(((StageFrame)e.getSource()).getStage());
+      new StageLostFocusEvent().dispatch(((StageFrame) e.getSource()).getStage());
   }
 
   public void windowOpened(WindowEvent e)
   {
     if(e.getSource() instanceof StageFrame)
-      new StageOpenedEvent().dispatch(((StageFrame)e.getSource()).getStage());
+      new StageOpenedEvent().dispatch(((StageFrame) e.getSource()).getStage());
   }
 
   public void windowClosing(WindowEvent e)
@@ -86,26 +86,26 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
   public void windowIconified(WindowEvent e)
   {
     if(e.getSource() instanceof StageFrame)
-      new StageIconifiedEvent().dispatch(((StageFrame)e.getSource()).getStage());
+      new StageIconifiedEvent().dispatch(((StageFrame) e.getSource()).getStage());
   }
 
   public void windowDeiconified(WindowEvent e)
   {
     if(e.getSource() instanceof StageFrame)
-      new StageDeiconifiedEvent().dispatch(((StageFrame)e.getSource()).getStage());
+      new StageDeiconifiedEvent().dispatch(((StageFrame) e.getSource()).getStage());
   }
 
   public void windowActivated(WindowEvent e)
   {
     if(e.getSource() instanceof StageFrame)
-      activateFrame((StageFrame)e.getSource());
+      activateFrame((StageFrame) e.getSource());
   }
 
   public void windowDeactivated(WindowEvent e)
   {
     if(e.getSource() instanceof StageFrame)
     {
-      StageFrame frame = (StageFrame)e.getSource();
+      StageFrame frame = (StageFrame) e.getSource();
       if(frame == activeFrame)
       {
         activeFrame = null;
@@ -141,9 +141,14 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
     return frames.size();
   }
 
-  public synchronized void closeAllFrames()
+  public void closeAllFrames()
   {
-    for(StageFrame frame : frames)
+    ArrayList<StageFrame> stageFrames;
+    synchronized(this)
+    {
+      stageFrames = new ArrayList<StageFrame>(frames);
+    }
+    for(StageFrame frame : stageFrames)
       frame.getStage().close();
   }
 

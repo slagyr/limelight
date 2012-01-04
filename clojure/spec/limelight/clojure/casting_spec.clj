@@ -5,7 +5,7 @@
   (:use
     [speclj.core]
     [limelight.clojure.spec-helper]
-    [limelight.clojure.core :only (add)]
+    [limelight.clojure.core :only (add path)]
     [limelight.clojure.casting]
     [limelight.clojure.scene :only (new-scene)]
     [limelight.clojure.prop :only (new-prop)]
@@ -53,6 +53,12 @@
       (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
         (should= "test-player" (.getName player))
         (should= "/root/players/test_player.clj" (.getPath player))))
+
+    (it "players are named pathed"
+      (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
+      (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
+        (should= "test-player" (name player))
+        (should= "/root/players/test_player.clj" (path player))))
 
     (it "includes one player from scene"
       (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})

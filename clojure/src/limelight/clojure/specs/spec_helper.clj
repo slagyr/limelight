@@ -2,12 +2,14 @@
   (:use
     [speclj.core]
     [limelight.clojure.core :as ll :exclude (production stage scene)]
-    [limelight.clojure.util :only (->options)]))
+    [limelight.clojure.util :only (->options)]
+    [limelight.clojure.prop-building :only (build-props)]
+    [limelight.clojure.scene :only (new-scene)]))
 
 (def default-options
-    {:start-background-threads false
-     :environment "test"
-     :production "."})
+  {:start-background-threads false
+   :environment "test"
+   :production "."})
 
 (defn load-production [options]
   (limelight.Boot/reset)
@@ -25,9 +27,23 @@
       result
       (throw (limelight.LimelightException. (str "No stage found named: " stage-name))))))
 
+(defn- build-scene [production stage options]
+  (cond
+    (:scene options) (open-scene production (:scene options) (name stage) {:prop-params (:prop-params options)})
+    (:scene-path options)
+    (let [scene-name (or (:scene-name options) (.filename (limelight.Context/fs) (:scene-path options)))
+          scene (new-scene :production production :path (:scene-path options) :name scene-name)]
+      (.styleAndStageScene (peer production) (peer scene) (peer stage))
+      scene)
+    :else (throw (limelight.LimelightException. "You must provide either :scene or :scene-path"))))
+
 (defn load-scene [production stage options]
-  (let [scene-path (:scene options)]
-    (open-scene production scene-path (name stage))))
+  (let [scene (build-scene production stage options)]
+    (when (:props options)
+      (let [prop-params (or (:prop-params options) {})
+            prop-params (assoc prop-params :root-path (path production))]
+        (build-props scene (:props options) (path scene) prop-params)))
+    scene))
 
 (defn with-limelight [& args]
   (let [options (merge default-options (->options args))]
@@ -35,4 +51,4 @@
       (with-all production (load-production options))
       (with stage (load-stage @production options))
       (with scene (load-scene @production @stage options))
-      (after-all (doseq [window (java.awt.Window/getWindows)] (.dispose window))))))
+      (after-all (.shutdown (limelight.Context/instance))))))

@@ -27,7 +27,7 @@ public class Context
 
   public final String limelightHome;
 
-  public String environment = "production";
+  public String environment = "test";
   public FileSystem fs = new FileSystem();
   public TempDirectory tempDirectory;
   public IdleThreadLoop panelPanter;
@@ -94,7 +94,6 @@ public class Context
 
     if(os != null && os.isInKioskMode())
       os.exitKioskMode();
-
     if(!"test".equals(environment))
     {
       Log.info("Context - Goodbye");

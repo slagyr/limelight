@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.LimelightException;
 import limelight.Log;
 import limelight.model.Stage;
 import limelight.styles.abstrstyling.*;
@@ -151,8 +152,10 @@ public class FramedStage extends Stage
     if(scene != null)
       scene.setStage(null);
 
-    mouseListener.reset();
-    keyListener.reset(newScene);
+    if(mouseListener != null)
+      mouseListener.reset();
+    if(keyListener != null)
+      keyListener.reset(newScene);
 
     scene = newScene;
     if(scene != null)

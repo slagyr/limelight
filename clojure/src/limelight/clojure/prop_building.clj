@@ -35,7 +35,7 @@
 (defn build-props [root src path & context]
   (binding [*ns* (the-ns 'limelight.clojure.prop-building)
             *context* (->options context)]
-    (let [prop-data (read-src path (str "[" src "]"))
+    (let [prop-data (if (string? src) (read-src path (str "[" src "]")) (eval src))
           props (to-props prop-data)]
       (add root props)
       root)))

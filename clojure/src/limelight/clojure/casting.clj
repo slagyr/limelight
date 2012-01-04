@@ -43,7 +43,13 @@
     (cast-player player-ns prop-panel))
   (getPath [this] path)
   (getName [this] name)
-  (applyOptions [this prop-panel options] options))
+  (applyOptions [this prop-panel options] options)
+
+  clojure.lang.Named
+
+  limelight.clojure.core.Pathed
+  (path [this] path)
+  )
 
 (defn new-player [name path player-ns]
   (Player. name path player-ns))

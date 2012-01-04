@@ -81,7 +81,7 @@ public abstract class Production
       return;
     }
     loadProduction();
-    if(Opts.isOn(options.get("open-default-scenes")))
+    if(Opts.isOn(options.remove("open-default-scenes")))
       openDefaultScenes(options);
     new ProductionOpenedEvent().dispatch(this);
     open = true;
@@ -226,12 +226,17 @@ public abstract class Production
 
     Scene scene = loadScene(scenePath, sceneOptions);
     Log.debug("Production - scene loaded: '" + scene + "' with options: " + Util.mapToString(sceneOptions));
+    styleAndStageScene(scene, stage);
+    return scene;
+  }
+
+  public void styleAndStageScene(Scene scene, Stage stage)
+  {
     final Map<String, RichStyle> sceneStyles = loadStyles(scene.getPath(), styles);
     scene.setStyles(Styles.merge(sceneStyles, styles));
     stage.setScene(scene);
     stage.open();
     Log.debug("Production - scene opened");
-    return scene;
   }
 
   public void openDefaultScenes(Map<String, Object> options)

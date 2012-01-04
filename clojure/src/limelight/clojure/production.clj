@@ -37,8 +37,7 @@
         options (map-for-clojure options)
         prop-params (or (:prop-params options) {})
         options (dissoc options :prop-params)
-        scene (new-scene options)
-        _ (.setProduction @(._peer scene) (._peer production))
+        scene (new-scene options :production production)
         props-path (resource-path scene "props.clj")
         props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
     (when props-src
@@ -66,7 +65,12 @@
 
   limelight.clojure.core.ResourceRoot
   (resource-path [this resource] (.pathTo (limelight.Context/fs) (.getPath _peer) resource))
+
+  limelight.clojure.core.Pathed
   (path [this] (.getPath _peer))
+
+  clojure.lang.Named
+  (getName [this] (.getName _peer))
 
   limelight.clojure.core.TheaterSource
   (theater [this] @_theater)
