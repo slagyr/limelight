@@ -88,7 +88,6 @@ public abstract class Stage
     new StageClosedEvent().dispatch(this);
   }
 
-
   public String getName()
   {
     return name;
@@ -116,16 +115,22 @@ public abstract class Stage
 
   public void setScene(Scene newScene)
   {
-    if(scene != null && scene.getStage() == this)
+    if(scene != null)
       scene.setStage(null);
+
+    if(mouseListener != null)
+      mouseListener.reset();
+    if(keyListener != null)
+      keyListener.reset(newScene);
 
     scene = newScene;
 
     if(scene != null)
     {
-      newScene.setStage(this);
+      scene.setStage(this);
+      setCursor(scene.getStyle().getCompiledCursor().getCursor());
       if(isOpen())
-        new SceneOpenedEvent().dispatch(newScene);
+        new SceneOpenedEvent().dispatch(scene);
     }
   }
 

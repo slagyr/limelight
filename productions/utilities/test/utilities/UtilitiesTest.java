@@ -38,7 +38,7 @@ public class UtilitiesTest
   public void setUp() throws Exception
   {
     assumeTrue(!GraphicsEnvironment.isHeadless()); //TODO MDM - Need to see if we can get these tests viable without needing a graphics env
-    Boot.boot("start-background-threads", false);
+    Boot.boot("start-background-threads", false, "environment", "test");
     production = new JavaProduction(BuiltinBeacon.getBuiltinProductionsPath() + "/utilities");
     production.open();
     utilities = (Utilities) production.getBackstage().get("utilities");

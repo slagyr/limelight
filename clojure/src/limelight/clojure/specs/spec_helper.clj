@@ -50,5 +50,6 @@
      (with-all ~'production (load-production (merge default-options (->options [~@args]))))
      (with ~'stage (load-stage @~'production (merge default-options (->options [~@args]))))
      (with ~'scene (load-scene @~'production @~'stage (merge default-options (->options [~@args]))))
+     (after (.setScene (peer @~'stage) nil))
      (after-all (.shutdown (limelight.Context/instance)))))
 

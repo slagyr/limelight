@@ -27,12 +27,14 @@ import static org.junit.Assert.assertSame;
 public class BootTest
 {
   private Opts options;
+  private Context context;
 
   @Before
   public void setUp() throws Exception
   {
     Boot.reset();
     Context.removeInstance();
+    context = Context.instance();
     options = Boot.defaultOptions.merge("start-background-threads", false);
   }
 
@@ -46,7 +48,7 @@ public class BootTest
   @Test
   public void tempFileIsAddedToContext() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
 
     assertNotNull(Context.instance().tempDirectory);
   }
@@ -54,7 +56,7 @@ public class BootTest
   @Test
   public void bufferedImageCacheIsAddedToContext() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
 
     Cache<Panel, BufferedImage> cache = Context.instance().bufferedImageCache;
     assertEquals(TimedCache.class, cache.getClass());
@@ -64,7 +66,7 @@ public class BootTest
   @Test
   public void frameManagerIsAddedToContext() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
 
     assertNotNull(Context.instance().frameManager);
   }
@@ -72,7 +74,7 @@ public class BootTest
   @Test
   public void audioPlayerIsAdded() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
 
     assertEquals(RealAudioPlayer.class, Context.instance().audioPlayer.getClass());
   }
@@ -87,7 +89,7 @@ public class BootTest
   @Test
   public void bufferedImagePoolIsInstalled() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
 
     assertNotNull(Context.instance().bufferedImagePool);
   }
@@ -95,7 +97,7 @@ public class BootTest
   @Test
   public void studioIsInstalled() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
 
     assertEquals(Studio.class, Context.instance().studio.getClass());
   }
@@ -103,7 +105,7 @@ public class BootTest
   @Test
   public void threadsDontStartInDevelopment() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
 
     final Context context = Context.instance();
     assertEquals(false, context.panelPanter.isRunning());
@@ -114,7 +116,7 @@ public class BootTest
   @Test
   public void canConfigureThreadsNotToStart() throws Exception
   {
-    Boot.configureContext(Boot.defaultOptions.merge("start-background-threads", false));
+    Boot.configureContext(Boot.defaultOptions.merge("start-background-threads", false), context);
 
     final Context context = Context.instance();
     assertEquals(false, context.panelPanter.isRunning());
@@ -126,7 +128,7 @@ public class BootTest
   public void configuringFileSystem() throws Exception
   {
     FileSystem fs = new FakeFileSystem();
-    Boot.configureContext(Boot.defaultOptions.merge("file-system", fs));
+    Boot.configureContext(Boot.defaultOptions.merge("file-system", fs), context);
 
     assertSame(fs, Context.fs());
   }
@@ -134,7 +136,7 @@ public class BootTest
   @Test
   public void threadsDoStartNormally() throws Exception
   {
-    Boot.configureContext(options.merge("start-background-threads", true));
+    Boot.configureContext(options.merge("start-background-threads", true), context);
 
     final Context context = Context.instance();
     assertEquals(true, context.panelPanter.isRunning());
@@ -145,14 +147,14 @@ public class BootTest
   @Test
   public void settingDefaultEnvironment() throws Exception
   {
-    Boot.configureContext(options);
+    Boot.configureContext(options, context);
     assertEquals("production", Context.instance().environment);
   }
 
   @Test
   public void settingConfiguredEnvironment() throws Exception
   {
-    Boot.configureContext(options.merge("environment", "foobar"));
+    Boot.configureContext(options.merge("environment", "foobar"), context);
     assertEquals("foobar", Context.instance().environment);
   }
 
@@ -163,7 +165,7 @@ public class BootTest
     MockOS os = new MockOS();
     Context.instance().os = os;
 
-    Boot.configureSystemProperties();
+    Boot.configureSystemProperties(context);
 
     assertEquals(true, os.systemPropertiesConfigured);
     assertEquals("true", System.getProperty("jruby.interfaces.useProxy"));
@@ -181,7 +183,7 @@ public class BootTest
       return;
     }
     System.setProperty("os.name", "Mac OS X");
-    Boot.configureOS();
+    Boot.configureOS(context);
 
     OS os = Context.instance().os;
     assertEquals("limelight.os.darwin.DarwinOS", os.getClass().getName());
@@ -191,7 +193,7 @@ public class BootTest
   public void windowsXPOS() throws Exception
   {
     System.setProperty("os.name", "Windows XP");
-    Boot.configureOS();
+    Boot.configureOS(context);
     OS os = Context.instance().os;
     assertEquals("limelight.os.win32.Win32OS", os.getClass().getName());
   }
@@ -200,7 +202,7 @@ public class BootTest
   public void windowsVistaOS() throws Exception
   {
     System.setProperty("os.name", "Windows Vista");
-    Boot.configureOS();
+    Boot.configureOS(context);
     OS os = Context.instance().os;
     assertEquals("limelight.os.win32.Win32OS", os.getClass().getName());
   }
@@ -209,7 +211,7 @@ public class BootTest
   public void unsupportedOS() throws Exception
   {
     System.setProperty("os.name", "Something Unsupported");
-    Boot.configureOS();
+    Boot.configureOS(context);
 
     OS os = Context.instance().os;
     assertEquals(UnsupportedOS.class, os.getClass());

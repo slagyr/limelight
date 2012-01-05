@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import limelight.model.api.MockStudio;
-import limelight.Context;
 import limelight.MockContext;
 import limelight.ui.events.stage.*;
 import limelight.ui.model.inputs.MockEventAction;
@@ -20,6 +19,9 @@ import static org.junit.Assume.assumeTrue;
 
 public class AlertFrameManagerTest
 {
+
+  public MockContext context;
+
   private static class HackedWindowEvent extends WindowEvent
   {
     public HackedWindowEvent(StageFrame frame)
@@ -39,10 +41,11 @@ public class AlertFrameManagerTest
   {
     assumeTrue(TestUtil.notHeadless());
     StageFrame.hiddenMode = false;
-    manager = new AlertFrameManager();
-    Context.instance().frameManager = manager;
-    Context.instance().studio = new MockStudio();
-    Context.instance().environment = "test";
+    context = MockContext.stub();
+    manager = new AlertFrameManager(context);
+    context.frameManager = manager;
+    context.studio = new MockStudio();
+    context.environment = "test";
     stage = new MockStage();
     frame = new StageFrame(stage);
     action = new MockEventAction();
@@ -73,7 +76,6 @@ public class AlertFrameManagerTest
   @Test
   public void checkingWithStudioBeforeShuttingDown() throws Exception
   {
-    MockContext context = MockContext.stub();
     manager.watch(frame);
     manager.windowClosed(new HackedWindowEvent(frame));
     assertEquals(true, context.shutdownAttempted);
@@ -82,7 +84,6 @@ public class AlertFrameManagerTest
   @Test
   public void shouldNotInvokeShutdownForNonVitalFrames() throws Exception
   {
-    MockContext context = MockContext.stub();
     stage.setVital(false);
     manager.watch(frame);
     manager.windowClosed(new HackedWindowEvent(frame));
@@ -92,7 +93,6 @@ public class AlertFrameManagerTest
   @Test
   public void shouldInvokeShutdownWhenOnlyNonVitalFramesRemain() throws Exception
   {
-    MockContext context = MockContext.stub();
     stage.setVital(false);
     StageFrame frame2 = new StageFrame(new MockStage());
     manager.watch(frame);

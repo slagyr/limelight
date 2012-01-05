@@ -110,7 +110,7 @@
       (should= "casper" (name @scene)))
     )
 
-  (context "extra props installing props"
+  (context "extra props installing other props"
     (with-limelight @test-opts :production "calc" :scene-path "ghost" :props '(install "face/props.clj"))
 
     (it "the scene has the installed props"
@@ -118,6 +118,7 @@
       (should= "()" (text (find-by-id @scene "lcd")))
       (should= 17 (count (find-by-name @scene "calc-button"))))
     )
+
 
   (context "extra props using prop-params"
     (with-limelight @test-opts :production "calc" :scene-path "ghost" :props '[(:foo *context*)] :prop-params {:foo "FOO"})

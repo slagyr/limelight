@@ -57,7 +57,7 @@
   (backstage-put [this key value] (.put (.getBackstage @_peer) key value))
 
   java.lang.Object
-  (toString [this] (str "name=\"" (name this) "\""))
+  (toString [this] (str "name=\"" (name this) "\" id=\"" (.getId @_peer) "\""))
   )
 
 (defn new-prop [options]

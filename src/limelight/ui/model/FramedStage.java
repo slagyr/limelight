@@ -146,25 +146,6 @@ public class FramedStage extends Stage
     return yLocationStyle;
   }
 
-  @Override
-  public void setScene(Scene newScene)
-  {
-    if(scene != null)
-      scene.setStage(null);
-
-    if(mouseListener != null)
-      mouseListener.reset();
-    if(keyListener != null)
-      keyListener.reset(newScene);
-
-    scene = newScene;
-    if(scene != null)
-    {
-      setCursor(scene.getStyle().getCompiledCursor().getCursor());
-      scene.setStage(this);
-    }
-  }
-
   public void setFullScreen(boolean setting)
   {
     frame.setFullScreen(setting);

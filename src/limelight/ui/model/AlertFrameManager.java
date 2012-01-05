@@ -18,9 +18,11 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
   private StageFrame activeFrame;
   private final HashSet<StageFrame> frames;
   private StageFrame lastFrameAdded;
+  private Context context;
 
-  public AlertFrameManager()
+  public AlertFrameManager(Context context)
   {
+    this.context = context; // MDM - Store context locally, otherwise race conditions may ensue. (old AlertFrameManager calls shutdown on newly created context... observed in tests)
     frames = new HashSet<StageFrame>();
   }
 
@@ -70,7 +72,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
       activeFrame = null;
     frames.remove(frame);
     if(frame.getStage().isVital() && !hasVisibleVitalFrame())
-      Context.instance().attemptShutdown();
+      context.attemptShutdown();
   }
 
   private synchronized boolean hasVisibleVitalFrame()

@@ -62,9 +62,10 @@ public class Boot
 
     try
     {
-      configureOS();
-      configureContext(options);
-      configureSystemProperties();
+      Context context = Context.instance();
+      configureOS(context);
+      configureContext(options, context);
+      configureSystemProperties(context);
 
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
@@ -76,20 +77,15 @@ public class Boot
     }
   }
 
-  private static Context context()
-  {
-    return Context.instance();
-  }
-
-  public static void configureSystemProperties()
+  public static void configureSystemProperties(Context context)
   {
     System.setProperty("jruby.interfaces.useProxy", "true");
-    context().os.configureSystemProperties();
+    context.os.configureSystemProperties();
   }
 
-  static void configureOS() throws Exception
+  static void configureOS(Context context) throws Exception
   {
-    if(context().os != null)
+    if(context.os != null)
       return;
 
     String className = "limelight.os.UnsupportedOS";
@@ -102,71 +98,71 @@ public class Boot
     {
       Class klass = Thread.currentThread().getContextClassLoader().loadClass(className);
       Constructor constructor = klass.getConstructor();
-      context().os = (OS) constructor.newInstance();
+      context.os = (OS) constructor.newInstance();
     }
     catch(Exception e)
     {
       Log.warn("Boot - OS class could not be loaded:" + e);
-      context().os = new UnsupportedOS();
+      context.os = new UnsupportedOS();
     }
 
-    Log.config("Boot - OS: " + context().os.getClass().getCanonicalName());
-    context().os.appIsStarting();
+    Log.config("Boot - OS: " + context.os.getClass().getCanonicalName());
+    context.os.appIsStarting();
   }
 
-  public static void configureContext(Map<String, Object> options) throws Exception
+  public static void configureContext(Map<String, Object> options, Context context) throws Exception
   {
 //VerboseRepaintManager.install();
     if(options.get("environment") != null)
-      context().environment = options.get("environment").toString();
+      context.environment = options.get("environment").toString();
 
-    context().fs = (FileSystem)options.get("file-system");
+    context.fs = (FileSystem)options.get("file-system");
 
-    if(context().frameManager == null)
-      context().frameManager = new AlertFrameManager();
+    if(context.frameManager == null)
+      context.frameManager = new AlertFrameManager(context);
 
-    installCommonConfigComponents();
+    installCommonConfigComponents(context);
 
-    if(context().panelPanter == null)
-      context().panelPanter = new PanelPainterLoop();
+    if(context.panelPanter == null)
+      context.panelPanter = new PanelPainterLoop();
 
-    if(context().animationLoop == null)
-      context().animationLoop = new AnimationLoop();
+    if(context.animationLoop == null)
+      context.animationLoop = new AnimationLoop();
 
-    if(context().cacheCleaner == null)
-      context().cacheCleaner = new CacheCleanerLoop();
+    if(context.cacheCleaner == null)
+      context.cacheCleaner = new CacheCleanerLoop();
 
     if(Opts.isOn(options.get("start-background-threads")))
     {
       Log.config("Boot - starting background threads");
-      context().panelPanter.start();
-      context().animationLoop.start();
-      context().cacheCleaner.start();
+      context.panelPanter.start();
+      context.animationLoop.start();
+      context.cacheCleaner.start();
     }
   }
 
-  private static void installCommonConfigComponents()
+  private static void installCommonConfigComponents(Context context)
   {
-    if(context().keyboardFocusManager == null)
-      context().keyboardFocusManager = KeyboardFocusManager.installed();
+    if(context.keyboardFocusManager == null)
+      context.keyboardFocusManager = KeyboardFocusManager.installed();
 
-    if(context().tempDirectory == null)
-      context().tempDirectory = new TempDirectory();
+    if(context.tempDirectory == null)
+      context.tempDirectory = new TempDirectory();
 
-    if(context().audioPlayer == null)
-      context().audioPlayer = new RealAudioPlayer();
+    if(context.audioPlayer == null)
+      context.audioPlayer = new RealAudioPlayer();
 
-    if(context().bufferedImageCache == null)
-      context().bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
+    if(context.bufferedImageCache == null)
+      context.bufferedImageCache = new TimedCache<Panel, BufferedImage>(1);
 
-    if(context().bufferedImagePool == null)
-      context().bufferedImagePool = new BufferedImagePool(1);
+    if(context.bufferedImagePool == null)
+      context.bufferedImagePool = new BufferedImagePool(1);
 
-    if(context().studio == null)
-      context().studio = new Studio();
+    if(context.studio == null)
+      context.studio = new Studio();
 
-    if(context().castingDirector == null)
-      context().castingDirector = new CastingDirector();
+    if(context.castingDirector == null)
+      context.castingDirector = new CastingDirector();
   }
 
 }
