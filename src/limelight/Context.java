@@ -97,6 +97,7 @@ public class Context
     if(!"test".equals(environment))
     {
       Log.info("Context - Goodbye");
+      new Exception("environment: " + environment).printStackTrace();
       System.exit(0);
     }
 

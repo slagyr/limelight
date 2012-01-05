@@ -8,6 +8,7 @@ import limelight.background.AnimationLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
+import limelight.io.FileSystem;
 import limelight.io.TempDirectory;
 import limelight.model.CastingDirector;
 import limelight.model.Studio;
@@ -30,7 +31,8 @@ public class Boot
 
   public static final Opts defaultOptions = Opts.with(
     "start-background-threads", true,
-    "environment", "production"
+    "environment", "production",
+    "file-system", new FileSystem()
   );
 
   public static void reset()
@@ -117,6 +119,8 @@ public class Boot
 //VerboseRepaintManager.install();
     if(options.get("environment") != null)
       context().environment = options.get("environment").toString();
+
+    context().fs = (FileSystem)options.get("file-system");
 
     if(context().frameManager == null)
       context().frameManager = new AlertFrameManager();

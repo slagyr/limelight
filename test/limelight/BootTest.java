@@ -6,6 +6,8 @@ package limelight;
 import limelight.audio.RealAudioPlayer;
 import limelight.caching.Cache;
 import limelight.caching.TimedCache;
+import limelight.io.FakeFileSystem;
+import limelight.io.FileSystem;
 import limelight.model.Studio;
 import limelight.os.MockOS;
 import limelight.os.OS;
@@ -20,6 +22,7 @@ import java.awt.image.BufferedImage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class BootTest
 {
@@ -111,12 +114,21 @@ public class BootTest
   @Test
   public void canConfigureThreadsNotToStart() throws Exception
   {
-    Boot.configureContext(Opts.with("start-background-threads", false));
+    Boot.configureContext(Boot.defaultOptions.merge("start-background-threads", false));
 
     final Context context = Context.instance();
     assertEquals(false, context.panelPanter.isRunning());
     assertEquals(false, context.animationLoop.isRunning());
     assertEquals(false, context.cacheCleaner.isRunning());
+  }
+
+  @Test
+  public void configuringFileSystem() throws Exception
+  {
+    FileSystem fs = new FakeFileSystem();
+    Boot.configureContext(Boot.defaultOptions.merge("file-system", fs));
+
+    assertSame(fs, Context.fs());
   }
 
   @Test

@@ -45,10 +45,10 @@
         (build-props scene (:props options) (path scene) prop-params)))
     scene))
 
-(defn with-limelight [& args]
-  (let [options (merge default-options (->options args))]
-    (list
-      (with-all production (load-production options))
-      (with stage (load-stage @production options))
-      (with scene (load-scene @production @stage options))
-      (after-all (.shutdown (limelight.Context/instance))))))
+(defmacro with-limelight [& args]
+  `(list
+     (with-all ~'production (load-production (merge default-options (->options [~@args]))))
+     (with ~'stage (load-stage @~'production (merge default-options (->options [~@args]))))
+     (with ~'scene (load-scene @~'production @~'stage (merge default-options (->options [~@args]))))
+     (after-all (.shutdown (limelight.Context/instance)))))
+
