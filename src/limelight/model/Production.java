@@ -190,9 +190,14 @@ public abstract class Production
   {
     loadLibraries();
     loadStages();
-    final Map<String, RichStyle> productionStyles = loadStyles(path, styles);
-    styles = Styles.merge(productionStyles, BuiltInStyles.all());
+    loadRootStyles();
     new ProductionLoadedEvent().dispatch(this);
+  }
+
+  public void loadRootStyles()
+  {
+    final Map<String, RichStyle> productionStyles = loadStyles(path, new HashMap<String, RichStyle>());
+    styles = Styles.merge(productionStyles, BuiltInStyles.all());
   }
 
   public Scene openScene(String scenePath)
