@@ -66,8 +66,6 @@ public class JavaProduction extends Production
   @Override
   protected Scene loadScene(String scenePath, Map<String, Object> options)
   {
-    options.put("path", scenePath);
-    options.put("name", Context.fs().filename(scenePath));
     JavaScene scene = new JavaScene(this, options);
 
     final String propsPath = Context.fs().pathTo(scene.getPeer().getPath(), "props.xml");

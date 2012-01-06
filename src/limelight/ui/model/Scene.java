@@ -9,6 +9,7 @@ import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.PropProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
+import limelight.util.Opts;
 
 import java.awt.*;
 import java.util.Collection;
@@ -62,7 +63,7 @@ public interface Scene extends Panel, ParentPanel
 
   String getPath();
 
-  Map<String,Object> getBackstage(Prop prop);
+  Opts getBackstage(Prop prop);
 }
 
 

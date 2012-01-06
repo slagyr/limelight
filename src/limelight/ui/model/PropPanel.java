@@ -385,6 +385,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     illuminateName(illuminateOptions.remove("name"));
     illuminateStyles(illuminateOptions.remove("styles"));
     illuminatePlayers(illuminateOptions.remove("players"));
+    illuminateBackstage(illuminateOptions.remove("backstage"));
 
     Options.apply(this, illuminateOptions);
     illuminateOptions = applyPlayerOptions(illuminateOptions);
@@ -537,6 +538,16 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     }
   }
 
+  private void illuminateBackstage(Object backstageObject)
+  {
+    if(backstageObject == null)
+      return;
+    if(!(backstageObject instanceof Map))
+      throw new LimelightException("backstage must be a map, but is: " + backstageObject.getClass());
+    Map backstage = (Map)backstageObject;
+    getBackstage().inject(backstage);
+  }
+
   private Map<String, Object> applyPlayerOptions(Map<String, Object> options)
   {
     Map<String, Object> result = options;
@@ -565,7 +576,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     return players;
   }
 
-  public Map<String, Object> getBackstage()
+  public Opts getBackstage()
   {
     final Scene root = getRoot();
     if(root != null)

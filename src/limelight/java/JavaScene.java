@@ -11,13 +11,11 @@ import java.util.Map;
 
 public class JavaScene extends JavaProp implements SceneProxy
 {
-  private JavaPlayerRecruiter castingDirector;
 
   public JavaScene(JavaProduction production, Map<String, Object> options)
   {
     super(options);
-    castingDirector = new JavaPlayerRecruiter(production.getPlayerLoader());
-    getPeer().setPlayerRecruiter(castingDirector);
+    getPeer().setPlayerRecruiter(new JavaPlayerRecruiter(production.getPlayerLoader()));
     getPeer().setProduction(production);
   }
 

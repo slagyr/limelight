@@ -20,6 +20,7 @@ import limelight.util.Box;
 import limelight.Context;
 import limelight.caching.SimpleCache;
 import limelight.audio.MockAudioPlayer;
+import limelight.util.Opts;
 import limelight.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +33,7 @@ import java.awt.font.FontRenderContext;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PropPanelTest extends Assert
 {
@@ -630,7 +632,7 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void canSetTestViaOptions() throws Exception
+  public void canSetTextViaOptions() throws Exception
   {
     root.delluminate();
     panel.addOptions(Util.toMap("text", "Hello there"));
@@ -726,5 +728,17 @@ public class PropPanelTest extends Assert
   public void backstage() throws Exception
   {
     assertEquals(0, panel.getBackstage().size());
+  }
+
+  @Test
+  public void backstageOptionValuesGetSavedOnIllumination() throws Exception
+  {
+    root.delluminate();
+    panel.addOptions(Util.toMap("backstage", Opts.with("foo", "bar", "fizz", "bang")));
+    panel.illuminate();
+
+    final Map<String,Object> backstage = panel.getBackstage();
+    assertEquals("bar", backstage.get("foo"));
+    assertEquals("bang", backstage.get("fizz"));
   }
 }

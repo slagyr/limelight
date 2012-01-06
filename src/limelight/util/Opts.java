@@ -103,11 +103,16 @@ public class Opts extends HashMap<String, Object>
     return buffer.toString();
   }
 
-  public Opts merge(Map<String, Object> other)
+  public void inject(Map other)
+  {
+    for(Object key : other.keySet())
+      put(toKey(key), other.get(key));
+  }
+
+  public Opts merge(Map other)
   {
     Opts result = (Opts)this.clone();
-    for(Map.Entry<String, Object> entry : other.entrySet())
-      result.put(entry.getKey(), entry.getValue());
+    result.inject(other);
     return result;
   }
 

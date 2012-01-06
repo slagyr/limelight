@@ -72,7 +72,7 @@ public class JavaProductionTest
   @Test
   public void loadsScene() throws Exception
   {
-    final Scene result = production.loadScene("aScene", new Opts());
+    final Scene result = production.loadScene("aScene", Opts.with("name", "aScene"));
 
     assertEquals(ScenePanel.class, result.getClass());
     ScenePanel scene = (ScenePanel)result;
@@ -96,8 +96,8 @@ public class JavaProductionTest
   public void loadsSceneWithProps() throws Exception
   {
     fs.createTextFile("/testProduction/aScene/props.xml", "<props><child><grandchild/></child><child2/></props>");
-    final Map<String,Object> options = Util.toMap("backgroundColor", "red", "shouldAllowClose", false);
-    ScenePanel scene = (ScenePanel)production.loadScene("aScene", options);
+    final Opts options = Opts.with("backgroundColor", "red", "shouldAllowClose", false);
+    ScenePanel scene = (ScenePanel)production.loadScene("aScene", options.merge("name", "aScene", "path", "aScene"));
 
     scene.illuminate();
     assertEquals(2, scene.getChildren().size());
