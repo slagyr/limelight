@@ -148,6 +148,22 @@
           (should= "calc-button" (name prop))
           (should= ["calc-button"] (map name (players prop)))))
       )
+
+    (context "options passed to regular scene"
+      (with-limelight @test-opts :production "calc" :scene "face" :scene-options {:backstage {:foo "bar"}})
+
+      (it "backstage was loaded"
+        (should= 1 (count (backstage @scene)))
+        (should= "bar" (backstage-get @scene "foo")))
+      )
+
+    (context "options passed to ghost scene"
+      (with-limelight @test-opts :production "calc" :scene-path "ghost" :scene-options {:backstage {:foo "bar"}})
+
+      (it "backstage was loaded"
+        (should= 1 (count (backstage @scene)))
+        (should= "bar" (backstage-get @scene "foo")))
+      )
     )
   )
 
