@@ -3,6 +3,7 @@
     [speclj.core]
     [limelight.clojure.util :only (->options)]
     [limelight.clojure.specs.spec-helper]
+    [limelight.clojure.spec-helper]
     [limelight.clojure.core :as ll :exclude (production stage scene)]))
 
 (unless-headless
