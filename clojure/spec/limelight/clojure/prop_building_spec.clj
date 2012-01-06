@@ -20,47 +20,47 @@
   (with root (new-scene {}))
 
   (it "builds with no props"
-    (let [scene (build-props @root "" "props.clj")]
+    (let [scene (build-props @root "")]
       (should= 0 (count (children scene)))))
 
   (it "with one prop"
-    (let [scene (build-props @root "[:one]" "props.clj")]
+    (let [scene (build-props @root "[:one]")]
       (should= 1 (count (children scene)))))
 
   (it "with one prop using string for name"
-    (let [scene (build-props @root "[\"one\"]" "props.clj")]
+    (let [scene (build-props @root "[\"one\"]")]
       (should= 1 (count (children scene)))))
 
   (it "with two prop"
-    (let [scene (build-props @root "[:one][:two]" "props.clj")]
+    (let [scene (build-props @root "[:one][:two]")]
       (should= 2 (count (children scene)))))
 
   (it "nested props"
-    (let [scene (build-props @root "[:one [:two]]" "props.clj")]
+    (let [scene (build-props @root "[:one [:two]]")]
       (should= 1 (count (children scene)))
       (should= 1 (count (children (first (children scene)))))))
 
   (it "with options and a child prop"
-    (let [scene (build-props @root "[:one {:text \"Number ONE!\"} [:two]]" "props.clj")]
+    (let [scene (build-props @root "[:one {:text \"Number ONE!\"} [:two]]")]
       (should= 1 (count (children scene)))
       (should= 1 (count (children (first (children scene)))))))
 
   (it "with two children"
-    (let [scene (build-props @root "[:one {:text \"Number ONE!\"} [:two] [:three]]" "props.clj")]
+    (let [scene (build-props @root "[:one {:text \"Number ONE!\"} [:two] [:three]]")]
       (should= 2 (count (children (first (children scene)))))))
 
   (it "with illumination"
-    (let [scene (build-props @root "[:one {:text \"Number ONE!\"} [:two]]" "props.clj")]
+    (let [scene (build-props @root "[:one {:text \"Number ONE!\"} [:two]]")]
       (illuminate scene)
       (should= "one" (name (first (children scene))))
       (should= "Number ONE!" (text (first (children scene))))))
 
   (it "with dynamic code"
-    (let [scene (build-props @root "[:one (for [name [:two :three]] [name])]" "props.clj")]
+    (let [scene (build-props @root "[:one (for [name [:two :three]] [name])]")]
       (should= 2 (count (children (first (children scene)))))))
 
   (it "adds the props in the right order"
-    (let [scene (build-props @root "[:one][\"two\"]['three]" "props.clj")]
+    (let [scene (build-props @root "[:one][\"two\"]['three]")]
       (illuminate scene)
       (should= "one" (name (first (children scene))))
       (should= "two" (name (second (children scene))))
@@ -68,7 +68,7 @@
 
   (it "allows events in options"
     (System/setProperty "foo.bar" "nothing")
-    (let [scene (build-props @root "[:one {:id :one :on-focus-lost (fn [_] (System/setProperty \"foo.bar\" \"fizz-bang\"))}]", "prop.clj")
+    (let [scene (build-props @root "[:one {:id :one :on-focus-lost (fn [_] (System/setProperty \"foo.bar\" \"fizz-bang\"))}]")
           _ (illuminate scene)
           prop (first (children scene))
           panel (.getPeer prop)]
@@ -81,7 +81,7 @@
 
     (it "renders installs external props"
       (.createTextFile @fs "/path_to/prod/include.clj" "[:foo]")
-      (let [scene (build-props @root "[:one (install \"include.clj\")]" "props.clj" :root-path "/path_to/prod")]
+      (let [scene (build-props @root "[:one (install \"include.clj\")]" :root-path "/path_to/prod")]
         (illuminate scene)
         (should= 1 (count (children @root)))
         (should= 1 (count (children (first (children @root)))))
@@ -89,7 +89,7 @@
 
     (it "does install with params"
       (.createTextFile @fs "/path_to/prod/include.clj" "[:foo {:id (:the-id *context*)}]")
-      (let [scene (build-props @root "[:one (install \"include.clj\" :the-id \"FOO\")]" "props.clj" :root-path "/path_to/prod")]
+      (let [scene (build-props @root "[:one (install \"include.clj\" :the-id \"FOO\")]" :root-path "/path_to/prod")]
         (illuminate scene)
         (should= 1 (count (children @root)))
         (should= 1 (count (children (first (children @root)))))
@@ -97,7 +97,7 @@
 
     (it "install needs a root-path"
       (try
-        (build-props @root "[:one (install \"include.clj\")]" "props.clj")
+        (build-props @root "[:one (install \"include.clj\")]")
         (should-fail "Exception expected")
         (catch limelight.LimelightException e
           (should= true (.contains (.getMessage e) "Can't install props without a :root-path")))))

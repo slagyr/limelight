@@ -51,7 +51,7 @@
     (when (:props options)
       (let [prop-params (or (:prop-params options) {})
             prop-params (assoc prop-params :root-path (path production))]
-        (build-props scene (:props options) (path scene) prop-params)))
+        (build-props scene (:props options) prop-params)))
     scene))
 
 (defmacro with-limelight [& args]

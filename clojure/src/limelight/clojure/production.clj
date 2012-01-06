@@ -41,7 +41,7 @@
         props-path (resource-path scene "props.clj")
         props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
     (when props-src
-      (build-props scene props-src props-path (assoc prop-params :root-path (path production))))
+      (build-props scene props-src (assoc prop-params :source-file props-path :root-path (path production))))
     scene))
 
 (defn- prod-load-styles [production path extendable-styles]

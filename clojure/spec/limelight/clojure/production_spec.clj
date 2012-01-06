@@ -61,7 +61,7 @@
     (it "include prod path with loading scene"
       (.createTextFile @fs "/Mock/Scene/props.clj" "[:one]")
       (let [opts (atom nil)]
-        (binding [build-props (fn [scene props-src props-path & args] (reset! opts (->options args)))]
+        (binding [build-props (fn [scene props-src & args] (reset! opts (->options args)))]
           (.loadScene @production "Scene" {"path" "Scene"}))
         (should= "Mock" (:root-path @opts))))
 

@@ -32,10 +32,16 @@
       (add prop (to-props child-data)))
     prop))
 
-(defn build-props [root src path & context]
+(defn- src->data [src]
+  (if (string? src)
+    (let [src-file (or (:source-file *context*) "[CODE]")]
+      (read-src src-file (str "[" src "]")))
+    (eval src)))
+
+(defn build-props [root src & context]
   (binding [*ns* (the-ns 'limelight.clojure.prop-building)
             *context* (->options context)]
-    (let [prop-data (if (string? src) (read-src path (str "[" src "]")) (eval src))
+    (let [prop-data (src->data src)
           props (to-props prop-data)]
       (add root props)
       root)))
