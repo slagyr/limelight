@@ -23,7 +23,7 @@
   (path [this] (.getPath @_peer))
 
   limelight.clojure.core.ProductionSource
-  (production [this] (.getProxy (.getProduction @_peer)))
+  (production [this] (if-let [prod (.getProduction @_peer)] (.getProxy prod) nil))
 
   limelight.clojure.core.SceneSource
   (scene [this] this)

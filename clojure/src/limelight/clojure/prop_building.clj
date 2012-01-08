@@ -38,13 +38,23 @@
       (read-src src-file (str "[" src "]")))
     (eval src)))
 
+(defn- establish-root-path [root context]
+  (if-let [prod (production root)]
+    (if (nil? (:root-path context))
+      (assoc context :root-path (path prod))
+      context)
+    context))
+
 (defn build-props [root src & context]
-  (binding [*ns* (the-ns 'limelight.clojure.prop-building)
-            *context* (->options context)]
-    (let [prop-data (src->data src)
-          props (to-props prop-data)]
-      (add root props)
-      root)))
+  (let [context (->options context)
+        context (establish-root-path root context)
+        context (assoc context :root root)]
+    (binding [*ns* (the-ns 'limelight.clojure.prop-building)
+              *context* context]
+      (let [prop-data (src->data src)
+            props (to-props prop-data)]
+        (add root props)
+        root))))
 
 (defn- extract-root-path []
   (if-let [path (:root-path *context*)]

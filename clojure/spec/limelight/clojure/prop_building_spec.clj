@@ -11,7 +11,7 @@
     [limelight.clojure.production :only (new-production)]))
 
 (defn illuminate [scene]
-  (.setProduction @(._peer scene) (._peer (new-production (limelight.model.FakeProduction. "Mock Production"))))
+  (.setProduction @(._peer scene) (._peer (new-production (limelight.model.FakeProduction. "/path_to/prod"))))
   (.illuminate @(._peer scene)))
 
 (describe "prop-building"
@@ -75,6 +75,10 @@
       (.dispatch (limelight.ui.events.panel.FocusLostEvent.) panel)
       (should= "fizz-bang" (System/getProperty "foo.bar"))))
 
+  (it "puts the root in the context"
+    (let [scene (build-props @root "[:one {:id (name (:root *context*))}]")]
+      (should= (name scene) (id (first (children scene))))))
+
   (context "with filesystem"
 
     (with fs (limelight.io.FakeFileSystem/installed))
@@ -94,6 +98,14 @@
         (should= 1 (count (children @root)))
         (should= 1 (count (children (first (children @root)))))
         (should= "FOO" (id (first (children (first (children @root))))))))
+
+    (it "for installs, can extract root-path from production"
+      (.createTextFile @fs "/path_to/prod/include.clj" "[:foo]")
+      (illuminate @root)
+      (let [scene (build-props @root "[:one (install \"include.clj\")]")]
+        (should= 1 (count (children @root)))
+        (should= 1 (count (children (first (children @root)))))
+        (should= "foo" (name (first (children (first (children @root))))))))
 
     (it "install needs a root-path"
       (try
