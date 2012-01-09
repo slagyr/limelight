@@ -45,8 +45,9 @@ public class TextPanelTest
     parent.setLocation(0, 0);
     parent.setSize(100, 100);
     style = parent.getStyle();
-    panel = new TextPanel(parent, "Some Text");
+    panel = new TextPanel(parent);
     parent.add(panel);
+    panel.setText("Some Text", parent);
     root = new ScenePanel(new FakePropProxy());
     root.setStage(new MockStage());
     root.add(parent);
@@ -69,7 +70,6 @@ public class TextPanelTest
   @Test
   public void testConstructor() throws Exception
   {
-    assertEquals(parent, panel.getPanel());
     assertEquals("Some Text", panel.getText());
   }
 

@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.styles.Style;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.GreedyDimensionValue;
@@ -188,7 +189,8 @@ public class PropPanelLayout implements Layout
     {
       if(child.needsLayout())
       {
-        child.getDefaultLayout().doLayout(child, false);
+        final Layout layout = child.getDefaultLayout();
+        layout.doLayout(child, false);
       }
     }
   }

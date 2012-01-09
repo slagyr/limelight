@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.model.Stage;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.IlluminatedEvent;

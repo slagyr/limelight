@@ -29,10 +29,11 @@ public class TempTextAccessor implements TextAccessor
       return;
     if(panel.getTextAccessor() != this)
       throw new LimelightException("You may only set text on empty props.");
-    TextPanel textPanel = new TextPanel(panel, text);
+    TextPanel textPanel = new TextPanel(panel);
     panel.add(textPanel);
     panel.sterilize();
     panel.setTextAccessor(textPanel);
+    textPanel.setText(text, panel);
   }
 
   public String getText()

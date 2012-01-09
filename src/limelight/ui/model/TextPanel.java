@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.text.StyledText;
@@ -36,11 +37,9 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
   private List<StyledText> textChunks;
 
   //TODO MDM panel is not really needed here.  It's the same as parent.
-  public TextPanel(Prop panel, String text)
+  public TextPanel(Prop panel)
   {
     this.panel = panel;
-    this.text = text;
-    markAsNeedingLayout();
   }
 
   public String getText()
@@ -51,8 +50,8 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
   public void setText(String text, Prop panel)
   {
     boolean differentText = !Util.equal(text, this.text);
-    if(!needsLayout() && differentText)
-      markAsNeedingLayout();
+//    if(!needsLayout() && differentText)
+//      markAsNeedingLayout();
     this.text = text;
     if(differentText)
     {
@@ -60,11 +59,6 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
       doPropagateSizeChangeUp(getParent());
       getParent().markAsNeedingLayout();
     }
-  }
-
-  public ParentPanel getPanel()
-  {
-    return panel;
   }
 
   public void paintOn(Graphics2D graphics)
@@ -277,7 +271,7 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
 
   public String toString()
   {
-    return "Text: <" + getText() + ">";
+    return "TextPanel: <" + getText() + ">";
   }
 
   public boolean canBeBuffered()

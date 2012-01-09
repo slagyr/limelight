@@ -20,5 +20,6 @@ header do
   example_link :text => "Styled Text", :on_mouse_clicked => "scene.load('styled_text')", :id => "styled_text_link"
   example_link :text => "Text Boxes", :on_mouse_clicked => "scene.load('text_boxes')", :id => "text_boxes_link"
   example_link :text => "Stage Handles", :on_mouse_clicked => "scene.load('stage_handles')", :id => "stage_handles_link"
+  example_link :text => "Dynamic Text", :on_mouse_clicked => "scene.load('dynamic_text')", :id => "dynamic_text_link"
 end
 

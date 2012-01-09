@@ -112,10 +112,11 @@ module Limelight
 
     # Returns a Prop with the specified id.  Returns nil id the Prop doesn't exist in the Scene.
     #
-    def find(id)
+    def find_by_id(id)
       peer_result = @peer.find(id.to_s)
       peer_result.nil? ? nil : peer_result.proxy
     end
+    alias :find :find_by_id
 
     def visible?
       @peer.visible?

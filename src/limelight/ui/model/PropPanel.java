@@ -79,10 +79,6 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
   public void setText(String text) throws LimelightException
   {
-    if(!Util.equal(text, getText()))
-    {
-      markAsNeedingLayout(); // TODO MDM - This is questionable...  The text panel would know if layout is needed.
-    }
     textAccessor.setText(text, this);
   }
 
@@ -234,7 +230,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   @Override
   public String toString()
   {
-    return getClass().getSimpleName() + " - " + getName();
+    return getClass().getSimpleName() + "-[name: " + getName() + ", id: " + getId() + "]";
   }
 
   public void setAfterPaintAction(PaintAction action)
