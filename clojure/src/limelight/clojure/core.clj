@@ -135,3 +135,8 @@
   ProductionSource
   (production [this] (production (prop this)))
   )
+
+(extend-type limelight.model.events.ProductionEvent
+  ProductionSource
+  (production [this] (.getProxy (.getProduction this)))
+  )

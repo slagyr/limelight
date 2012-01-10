@@ -22,6 +22,7 @@
       (binding [*ns* (._ns production)
                 limelight.clojure.production-player/*production* production]
         (use 'clojure.core)
+        (use 'limelight.clojure.core)
         (use 'limelight.clojure.production-player)
         (read-src player-path player-src)))))
 

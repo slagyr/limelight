@@ -130,6 +130,11 @@
       (it "get the production from a prop event"
         (should= @production1 (production (limelight.ui.events.panel.IlluminatedEvent. (peer @root)))))
 
+      (it "gets the production from a production event"
+        (let [event (limelight.model.events.ProductionOpenedEvent.)]
+          (.dispatch event (peer @production1))
+          (should= @production1 (production event))))
+
       (unless-headless
         (it "loads the production from a stage"
           (should= @production1 (production (default-stage (theater @production1)))))
