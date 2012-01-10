@@ -43,6 +43,7 @@ public abstract class InputPanel extends PanelBase implements TextAccessor
   public void setText(String text, Prop panel)
   {
     setText(text);
+    markAsDirty();
   }
 
   @Override

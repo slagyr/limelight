@@ -56,6 +56,16 @@ public class CheckBoxPanelTest
   }
 
   @Test
+  public void settingTextIsaDirtyJob() throws Exception
+  {
+    assertEquals(0, root.dirtyRegions.size());
+
+    panel.setText("on");
+
+    assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
+  }
+
+  @Test
   public void shouldDefaultStyles() throws Exception
   {
     assertEquals("20", panel.getStyle().getWidth());

@@ -11,6 +11,7 @@ import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;
 import limelight.ui.RadioButtonGroupMember;
 import limelight.ui.RadioButtonGroup;
+import limelight.ui.model.Scene;
 import limelight.ui.model.ScenePanel;
 
 import java.awt.*;
@@ -62,7 +63,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
 
   public void setText(String text)
   {
-    selected = "on".equals(text);
+    setSelected("on".equals(text.toLowerCase()));
   }
 
   public String getText()
@@ -95,7 +96,7 @@ public class RadioButtonPanel extends AbstractButtonPanel implements RadioButton
   {
     if(radioButtonGroup != null)
       radioButtonGroup.remove(this);
-    final ScenePanel scene = (ScenePanel) getRoot();
+    final Scene scene = getRoot();
     if(scene != null)
     {
       final RadioButtonGroup group = scene.getButtonGroups().get(name);

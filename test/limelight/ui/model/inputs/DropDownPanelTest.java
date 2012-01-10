@@ -60,6 +60,19 @@ public class DropDownPanelTest
   }
 
   @Test
+  public void settingTextIsaDirtyJob() throws Exception
+  {
+    panel.addChoice("foo");
+    panel.addChoice("bar");
+    root.dirtyRegions.clear();
+    assertEquals(0, root.dirtyRegions.size());
+
+    panel.setText("bar");
+
+    assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
+  }
+
+  @Test
   public void settingParentSteralizesParent() throws Exception
   {
     assertEquals(true, parent.isSterilized());

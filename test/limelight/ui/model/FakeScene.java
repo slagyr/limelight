@@ -8,6 +8,7 @@ import limelight.model.Stage;
 import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.PlayerRecruiter;
 import limelight.styles.RichStyle;
+import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
 import limelight.util.Opts;
 
@@ -27,6 +28,7 @@ public class FakeScene extends MockProp implements Scene
   public boolean visible;
   public PlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
   public Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
+  private ButtonGroupCache buttonGroups = new ButtonGroupCache();
 
   @Override
   public Scene getRoot()
@@ -124,6 +126,11 @@ public class FakeScene extends MockProp implements Scene
       backstage.put(child, result);
     }
     return result;
+  }
+
+  public ButtonGroupCache getButtonGroups()
+  {
+    return buttonGroups;
   }
 
   public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)

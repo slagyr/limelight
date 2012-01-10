@@ -77,6 +77,16 @@ public class TextInputPanelTest
   }
 
   @Test
+  public void settingTextIsaDirtyJob() throws Exception
+  {
+    assertEquals(0, root.dirtyRegions.size());
+
+    panel.setText("New Text");
+
+    assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
+  }
+
+  @Test
   public void requiresLayoutAfterConsumableSizeChanges() throws Exception
   {
     FakeScene root = new FakeScene();

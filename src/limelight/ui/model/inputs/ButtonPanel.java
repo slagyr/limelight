@@ -20,7 +20,6 @@ import java.awt.*;
 
 public class ButtonPanel extends AbstractButtonPanel
 {
-  private Drawable activePatch;
   private String text;
   private boolean isBeingPressed;
 
@@ -56,7 +55,7 @@ public class ButtonPanel extends AbstractButtonPanel
       return;
 
     this.text = text;
-
+    markAsDirty();
     valueChanged();
   }
 

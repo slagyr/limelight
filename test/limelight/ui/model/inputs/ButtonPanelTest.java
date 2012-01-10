@@ -70,6 +70,16 @@ public class ButtonPanelTest
   }
 
   @Test
+  public void settingTextIsaDirtyJob() throws Exception
+  {
+    assertEquals(0, root.dirtyRegions.size());
+
+    panel.setText("New Text");
+
+    assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
+  }
+
+  @Test
   public void pressingMouse() throws Exception
   {
     assertEquals(0, root.dirtyRegions.size());

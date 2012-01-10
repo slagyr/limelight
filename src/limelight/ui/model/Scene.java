@@ -8,6 +8,7 @@ import limelight.model.Stage;
 import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.PropProxy;
 import limelight.styles.RichStyle;
+import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
 import limelight.util.Opts;
 
@@ -64,6 +65,8 @@ public interface Scene extends Panel, ParentPanel
   String getPath();
 
   Opts getBackstage(Prop prop);
+
+  ButtonGroupCache getButtonGroups();
 }
 
 

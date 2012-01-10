@@ -88,6 +88,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
       return;
 
     model.setText(text);
+    markAsDirty();
     valueChanged();
   }
 

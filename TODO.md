@@ -1,3 +1,4 @@
+* Buttons should size themselves based on text?
 * remote API to replace DRb
 * Configurable Test infrastructure for each language
 * rewrite 9-patch

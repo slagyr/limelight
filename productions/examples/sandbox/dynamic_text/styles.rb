@@ -7,10 +7,14 @@ controls {
   width "100%"
   bottom_border_width 1
   border_color :grey
-  bottom_margin 100
+  bottom_margin 10
   bottom_padding 10
   vertical_alignment :center
   horizontal_alignment :center
+}
+
+main_switch {
+  width "5%"
 }
 
 text_input {
@@ -27,8 +31,15 @@ section {
   vertical_alignment :center
 }
 
+section_switch {
+  width "5%"
+  vertical_alignment :center
+  #right_border_width 1
+  #border_color :grey
+}
+
 section_label {
-  width "50%"
+  width "45%"
   padding 5
   font_size 18
   text_color :grey
@@ -58,4 +69,5 @@ text {
 
 line {
   width "100%"
+  vertical_alignment :center
 }

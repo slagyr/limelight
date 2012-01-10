@@ -6,6 +6,7 @@ package limelight.ui.model.inputs;
 import limelight.ui.RadioButtonGroup;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.ValueChangedEvent;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.model.ScenePanel;
@@ -18,6 +19,7 @@ public class RadioButtonPanelTest
 {
   private RadioButtonPanel panel;
   private PropPanel parent;
+  private FakeScene root;
 
   @Before
   public void setUp() throws Exception
@@ -25,6 +27,8 @@ public class RadioButtonPanelTest
     panel = new RadioButtonPanel();
     parent = new PropPanel(new FakePropProxy());
     parent.add(panel);
+    root = new FakeScene();
+    root.add(parent);
   }
 
   @Test
@@ -44,6 +48,16 @@ public class RadioButtonPanelTest
   {
     parent.setText("on");
     assertEquals("on", panel.getText());
+  }
+
+  @Test
+  public void settingTextIsaDirtyJob() throws Exception
+  {
+    assertEquals(0, root.dirtyRegions.size());
+
+    panel.setText("on");
+
+    assertEquals(true, root.dirtyRegions.contains(panel.getBounds()));
   }
 
   @Test

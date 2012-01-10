@@ -29,7 +29,13 @@ module Limelight
     end
 
     def add_event_action(symbol, value)
-      self.send(symbol) { eval(value) };
+      if value.is_a? String
+        self.send(symbol) { eval(value) }
+      elsif value.is_a? Proc
+        self.send(symbol, & value)
+      else
+        raise "don't how to create event action from: #{value}"
+      end
     end
 
   end

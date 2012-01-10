@@ -57,7 +57,7 @@ public class CheckBoxPanel extends AbstractButtonPanel
 
   public void setText(String text)
   {
-    selected = "on".equals(text);
+    setSelected("on".equals(text.toLowerCase()));
   }
 
   public String getText()

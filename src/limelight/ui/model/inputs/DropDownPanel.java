@@ -109,6 +109,7 @@ public class DropDownPanel extends AbstractButtonPanel
     if(choices.contains(choice))
     {
       selectedChoice = choice;
+      markAsDirty();
       valueChanged();
     }
   }
