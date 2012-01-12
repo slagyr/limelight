@@ -1,12 +1,13 @@
 package limelight.ui.ninepatch;
 
+import limelight.ui.model.Drawable;
 import limelight.util.Box;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 
-public class NinePatch
+public class NinePatch implements Drawable
 {
   private BufferedImage image = null;
   private Info info;
@@ -20,8 +21,7 @@ public class NinePatch
   public static NinePatch load(BufferedImage image)
   {
     Info info = Info.inspect(image);
-    NinePatch patch = new NinePatch(image, info);
-    return patch;
+    return new NinePatch(image, info);
   }
 
   public Image getImage()
@@ -31,22 +31,40 @@ public class NinePatch
 
   public void draw(Graphics2D graphics, int x, int y, int width, int height)
   {
-    drawBox(graphics, info.topLeftBounds,   x, y);
-    drawBox(graphics, info.topMiddleBounds, x+info.topLeftBounds.width, y);
-    drawBox(graphics, info.topRightBounds,  x+info.topLeftBounds.width+info.topMiddleBounds.width, y);
-    drawBox(graphics, info.middleLeftBounds, x, y+info.topLeftBounds.height);
-    drawBox(graphics, info.middleMiddleBounds, x+info.topLeftBounds.width, y+info.topRightBounds.height);
-    drawBox(graphics, info.middleRightBounds, x+info.topLeftBounds.width+info.topMiddleBounds.width, y+info.topRightBounds.height);
-    int row3y = y + info.topLeftBounds.height + info.middleLeftBounds.height;
-    drawBox(graphics, info.bottomLeftBounds, x, row3y);
-    drawBox(graphics, info.bottomMiddleBounds, x+info.bottomLeftBounds.width, row3y);
-    drawBox(graphics, info.bottomRightBounds, x+info.bottomLeftBounds.width+info.bottomMiddleBounds.width, row3y);
+    int midWidth = width - (info.topLeftBounds.width + info.topRightBounds.width);
+    int midHeight = height - (info.topLeftBounds.height + info.bottomLeftBounds.height);
+    int x2 = x + info.topLeftBounds.width;
+    int x3 = x2 + midWidth;
+    int y2 = y + info.topLeftBounds.height;
+    int y3 = y2 + midHeight;
+
+    // Row 1
+    drawBox(graphics, info.topLeftBounds, x, y, info.topLeftBounds.width, info.topLeftBounds.height);
+    if(midWidth > 0)
+      drawBox(graphics, info.topMiddleBounds, x2, y, midWidth, info.topMiddleBounds.height);
+    drawBox(graphics, info.topRightBounds, x3, y, info.topRightBounds.width, info.topRightBounds.height);
+
+    // Row 2
+    if(midHeight > 0)
+    {
+      drawBox(graphics, info.middleLeftBounds, x, y2, info.middleLeftBounds.width, midHeight);
+      if(midWidth > 0)
+        drawBox(graphics, info.middleMiddleBounds, x2, y2, midWidth, midHeight);
+      drawBox(graphics, info.middleRightBounds, x3, y2, info.middleRightBounds.width, midHeight);
+    }
+
+    // Row 3
+    drawBox(graphics, info.bottomLeftBounds, x, y3, info.bottomLeftBounds.width, info.bottomLeftBounds.height);
+    if(midWidth > 0)
+      drawBox(graphics, info.bottomMiddleBounds, x2, y3, midWidth, info.bottomMiddleBounds.height);
+    drawBox(graphics, info.bottomRightBounds, x3, y3, info.bottomRightBounds.width, info.bottomRightBounds.height);
   }
 
-  private void drawBox(Graphics2D graphics, Box source, int x, int y)
+  private void drawBox(Graphics2D graphics, Box source, int x, int y, int width, int height)
   {
-    graphics.drawImage(image, x, y, x+source.width, y+source.height,
-                              source.left(), source.top(), source.right() + 1, source.bottom() + 1, null);
+    graphics.drawImage(image,
+      x, y, x + width, y + height,
+      source.left(), source.top(), source.right() + 1, source.bottom() + 1, null);
   }
 
   public static class Info
@@ -97,49 +115,49 @@ public class NinePatch
     private int horizontalStretchEnd(BufferedImage image, Raster raster)
     {
       int[] pixel = new int[4];
-      for (int x = image.getWidth() - 1; x > 0; --x)
+      for(int x = image.getWidth() - 1; x > 0; --x)
       {
         raster.getPixel(x, 0, pixel);
-        if (isBlack(pixel))
+        if(isBlack(pixel))
           return x;
       }
-      throw new RuntimeException("The 9 Patch image does not have a left horizontal stripe.");
+      throw new RuntimeException("The 9 Patch image does not have a top horizontal stretch line.");
     }
 
     public int horizontalStretchStart(BufferedImage image, Raster raster)
     {
       int[] pixel = new int[4];
-      for (int x = 0; x < image.getWidth(); ++x)
+      for(int x = 0; x < image.getWidth(); ++x)
       {
         raster.getPixel(x, 0, pixel);
-        if (isBlack(pixel))
+        if(isBlack(pixel))
           return x;
       }
-      throw new RuntimeException("The 9 Patch image does not have a left horizontal stripe.");
+      throw new RuntimeException("The 9 Patch image does not have a top horizontal stretch line.");
     }
 
     private int verticalStretchEnd(BufferedImage image, Raster raster)
     {
       int[] pixel = new int[4];
-      for (int y = image.getHeight() - 1; y >= 0; --y)
+      for(int y = image.getHeight() - 1; y >= 0; --y)
       {
         raster.getPixel(0, y, pixel);
-        if (isBlack(pixel))
+        if(isBlack(pixel))
           return y;
       }
-      throw new RuntimeException("The 9 Patch image does not have a left vertical stripe.");
+      throw new RuntimeException("The 9 Patch image does not have a left vertical stretch line.");
     }
 
     public int verticalStretchStart(BufferedImage image, Raster raster)
     {
       int[] pixel = new int[4];
-      for (int y = 0; y < image.getHeight(); ++y)
+      for(int y = 0; y < image.getHeight(); ++y)
       {
         raster.getPixel(0, y, pixel);
-        if (isBlack(pixel))
+        if(isBlack(pixel))
           return y;
       }
-      throw new RuntimeException("The 9 Patch image does not have a left vertical stripe.");
+      throw new RuntimeException("The 9 Patch image does not have a left vertical stretch line.");
     }
 
     private boolean isBlack(int[] pixel)

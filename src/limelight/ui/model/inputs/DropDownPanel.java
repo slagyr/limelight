@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import com.android.ninepatch.NinePatch;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.styles.Style;
@@ -11,6 +10,7 @@ import limelight.ui.*;
 import limelight.ui.events.panel.*;
 import limelight.ui.images.Images;
 import limelight.ui.model.PropPanel;
+import limelight.ui.ninepatch.NinePatch;
 import limelight.ui.painting.BackgroundPainter;
 
 import java.awt.*;
@@ -226,8 +226,8 @@ public class DropDownPanel extends AbstractButtonPanel
     private static NinePatch focusPatch;
     static
     {
-      normalPatch = NinePatch.load(Images.load("drop_down.9.png"), true, true);
-      focusPatch = NinePatch.load(Images.load("drop_down.9.png"), true, true);
+      normalPatch = NinePatch.load(Images.load("drop_down.9.png"));
+      focusPatch = NinePatch.load(Images.load("drop_down_focus.9.png"));
     }
 
     public void paint(Graphics2D graphics, PaintablePanel panel)

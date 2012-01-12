@@ -3,11 +3,11 @@
 
 package limelight.ui.model.inputs.painting;
 
-import com.android.ninepatch.NinePatch;
 import limelight.ui.PaintablePanel;
 import limelight.ui.Painter;
 import limelight.ui.images.Images;
 import limelight.ui.model.Drawable;
+import limelight.ui.ninepatch.NinePatch;
 import limelight.ui.painting.BorderPainter;
 import limelight.util.Box;
 import limelight.util.Colors;
@@ -23,8 +23,8 @@ public class TextPanelBorderPainter implements Painter
 
   static
   {
-    normalBorder = NinePatch.load(Images.load("text_box.9.png"), true, true);
-    focusedBorder = NinePatch.load(Images.load("text_box_focus.9.png"), true, true);
+    normalBorder = NinePatch.load(Images.load("text_box.9.png"));
+    focusedBorder = NinePatch.load(Images.load("text_box_focus.9.png"));
   }
 
   private TextPanelBorderPainter()

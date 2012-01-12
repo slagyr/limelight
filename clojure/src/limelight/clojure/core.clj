@@ -114,6 +114,7 @@
     (.getProxy peer)
     nil))
 
+
 (defn default-stage [theater]
   (.getProxy (.getDefaultStage (._peer theater))))
 
@@ -140,3 +141,9 @@
   ProductionSource
   (production [this] (.getProxy (.getProduction this)))
   )
+
+
+; TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+; add active-stage
+; need a way to access the styles of a prop
+; need way to remove/add props, build-props here

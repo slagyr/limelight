@@ -3,7 +3,7 @@
 
 package limelight.ui.model.inputs;
 
-import com.android.ninepatch.NinePatch;
+import limelight.Log;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.styles.Style;
@@ -14,9 +14,11 @@ import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;
 import limelight.ui.model.*;
+import limelight.ui.ninepatch.NinePatch;
 import limelight.util.Box;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class ButtonPanel extends AbstractButtonPanel
 {
@@ -70,7 +72,7 @@ public class ButtonPanel extends AbstractButtonPanel
 
     public void invoke(Event e)
     {
-      PanelEvent event = (PanelEvent)e;
+      PanelEvent event = (PanelEvent) e;
       ButtonPanel panel = (ButtonPanel) event.getRecipient();
       panel.isBeingPressed = true;
       panel.markAsDirty();
@@ -83,7 +85,7 @@ public class ButtonPanel extends AbstractButtonPanel
 
     public void invoke(Event e)
     {
-      PanelEvent event = (PanelEvent)e;
+      PanelEvent event = (PanelEvent) e;
       ButtonPanel panel = (ButtonPanel) event.getRecipient();
       panel.isBeingPressed = false;
       panel.markAsDirty();
@@ -102,30 +104,22 @@ public class ButtonPanel extends AbstractButtonPanel
 
     static
     {
-      normalPatch = NinePatch.load(Images.load("button.9.png"), true, true);
-      selectedPatch = NinePatch.load(Images.load("button_selected.9.png"), true, true);
-      focusPatch = NinePatch.load(Images.load("button_focus.9.png"), true, true);
+      normalPatch = NinePatch.load(Images.load("button.9.png"));
+      selectedPatch = NinePatch.load(Images.load("button_selected.9.png"));
+      focusPatch = NinePatch.load(Images.load("button_focus.9.png"));
     }
-
 
     public void paint(Graphics2D graphics, PaintablePanel panel)
     {
-      try
-      {
-        final Box bounds = panel.getMarginedBounds();
-        if(panel.hasFocus())
-          focusPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
+      final Box bounds = panel.getMarginedBounds();
+      if(panel.hasFocus())
+        focusPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
 
-        final ButtonPanel button = (ButtonPanel) ((PropPanel) panel).getTextAccessor(); // TODO MDM Yuk!
-        if(button.isBeingPressed)
-          selectedPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
-        else
-          normalPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
-      }
-      catch(IndexOutOfBoundsException e)
-      {
-        System.err.println("ButtonPanel: NinePatch choked again");
-      }
+      final ButtonPanel button = (ButtonPanel) ((PropPanel) panel).getTextAccessor(); // TODO MDM Yuk!
+      if(button.isBeingPressed)
+        selectedPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
+      else
+        normalPatch.draw(graphics, bounds.x, bounds.y, bounds.width, bounds.height);
     }
   }
 }
