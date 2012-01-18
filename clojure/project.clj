@@ -1,4 +1,4 @@
-(defproject limelight/limelight-clj "0.6.11"
+(defproject limelight/limelight-clj "0.6.12"
   :description "FIXME: write"
   :dependencies [[org.clojure/clojure "1.2.1"]]
   :dev-dependencies [[speclj "2.0.1"]
