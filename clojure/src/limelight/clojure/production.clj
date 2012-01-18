@@ -36,8 +36,10 @@
 (defn- prod-load-scene [production scene-path options]
   (let [fs (limelight.Context/fs)
         options (map-for-clojure options)
+        backstage (or (:backstage options) {})
         prop-params (or (:prop-params options) {})
         options (dissoc options :prop-params)
+        prop-params (merge backstage prop-params)
         scene (new-scene options :production production)
         props-path (resource-path scene "props.clj")
         props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]

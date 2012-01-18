@@ -6,7 +6,7 @@
     [speclj.core]
     [limelight.clojure.spec-helper]
     [limelight.clojure.production]
-    [limelight.clojure.core :only (children peer build)]
+    [limelight.clojure.core :only (children peer build backstage)]
     [limelight.clojure.util :only (->options)])
   (:import
     [limelight.clojure.production Production]
@@ -70,6 +70,15 @@
         (.illuminate (peer result))
         (should= 1 (count (children result)))
         (should= "foo" (name (first (children result))))))
+
+    (it "backstage values are merged with prop-params and used in prop-building"
+      (.createTextFile @fs "/Mock/Scene/props.clj" "[:p {:backstage *context*}]")
+      (let [result (.loadScene @production "Scene" {"path" "Scene" :prop-params {:foo "bar" :fizz "bang"} :backstage {:foo "BAR" :qux "BAZ"}})]
+        (.illuminate (peer result))
+        (let [child (first (children result))]
+          (should= "bar" (:foo (backstage child)))
+          (should= "bang" (:fizz (backstage child)))
+          (should= "BAZ" (:qux (backstage child))))))
     )
 
   (context "when illuminated,"
