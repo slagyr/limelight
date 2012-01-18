@@ -114,7 +114,6 @@
     (.getProxy peer)
     nil))
 
-
 (defn default-stage [theater]
   (.getProxy (.getDefaultStage (._peer theater))))
 
@@ -142,8 +141,38 @@
   (production [this] (.getProxy (.getProduction this)))
   )
 
+; Styles --------------------------------------------------
+
+(def ^{:private true} STYLE-MAP
+  (reduce
+    (fn [h d]
+      (let [name (limelight.util.StringUtil/spearCase (.getName d))]
+        (assoc h name d (keyword name) d)))
+    {} limelight.styles.Style/STYLE_LIST))
+
+(defn style-descriptor [key]
+  (if-let [descriptor (get STYLE-MAP key)]
+    descriptor
+    (throw (limelight.LimelightException. (str "Unknown style: " key)))))
+
+; MDM - Would rather not create a wrapper like this... but Clojure doesn't allow the use of extend-type
+; to make limelight.styles.Style implement the clojure.lang.ILoopup.  It would be nice if Clojure
+; used a protocol in addition to interfaces.
+(deftype Style [_peer]
+  clojure.lang.ILookup
+  (valAt [this key] (.get _peer (style-descriptor key)))
+  (valAt [this key not-found] (or (.valAt this key) nil)))
+
+(defn style
+  ([prop] (Style. (.getStyle @(._peer prop))))
+  ([prop key] (.get (.getStyle @(._peer prop)) (style-descriptor key))))
+
+(defn style= [prop & args]
+  (when (odd? (count args))
+    (throw (limelight.LimelightException. (str "missing value for key: " (last args)))))
+  (let [style (.getStyle @(._peer prop))]
+    (doseq [[key value] (partition 2 args)]
+      (.put style (style-descriptor key) value))))
 
 ; TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-; add active-stage
-; need a way to access the styles of a prop
 ; need way to remove/add props, build-props here

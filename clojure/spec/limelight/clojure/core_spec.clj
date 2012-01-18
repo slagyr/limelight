@@ -246,10 +246,40 @@
 
       (it "can get the scene"
         (should= @root (scene @event)))
+      )
 
+    (context "styles"
+      (with child (find-by-id @root "child1"))
+      (with s (style @child))
+
+      (it "can get style from prop"
+        (let [prop (find-by-id @root "child1")]
+          (should= (.getStyle (peer prop)) (peer (style prop)))))
+
+      (it "can pull values from style"
+        (should= "auto" (:width @s))
+        (should= "0" (get @s :top-border-width)))
+
+      (it "can get any style attribute"
+        (doseq [descriptor limelight.styles.Style/STYLE_LIST]
+          (let [kw (keyword (limelight.util.StringUtil/spearCase (.getName descriptor)))]
+            (should= (.toString (.getDefaultValue descriptor)) (kw @s)))))
+
+      (it "can set a style attribute"
+        (should= "auto" (style @child :width))
+        (should= "auto" (style @child :height))
+        (style= @child :width 123)
+        (style= @child :height 456)
+        (should= "123" (style @child :width))
+        (should= "456" (style @child :height)))
+
+      (it "can set multiple style attributes"
+        (style= @child :width 123 :height 456)
+        (should= "123" (style @child :width))
+        (should= "456" (style @child :height)))
       )
 
     )
   )
 
-(run-specs)
+(run-specs :stacktrace true)

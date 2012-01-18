@@ -161,7 +161,7 @@ public class RichStyle extends Style implements StyleObserver
 
   public String toString()
   {
-    StringBuffer buffer = new StringBuffer(super.toString());
+    StringBuilder buffer = new StringBuilder(super.toString());
     for(int i = 0; i < styles.length; i++)
     {
       StyleValue style = styles[i];
