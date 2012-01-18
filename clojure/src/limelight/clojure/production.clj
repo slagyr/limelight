@@ -11,7 +11,8 @@
     [limelight.clojure.util :only (read-src map-for-clojure)]
     [limelight.clojure.theater :only (new-theater)])
   (:require
-    [limelight.clojure.production-player]))
+    [limelight.clojure.production-player]
+    [limelight.clojure.prop-building]))
 
 (defn- prod-illuminate [production]
   (let [player-path (resource-path production "production.clj")
