@@ -3,7 +3,6 @@
     [speclj.core]
     [limelight.clojure.core :as ll :exclude (production stage scene)]
     [limelight.clojure.util :only (->options)]
-    [limelight.clojure.prop-building :only (build-props)]
     [limelight.clojure.scene :only (new-scene)]))
 
 (def default-options
@@ -51,7 +50,7 @@
     (when (:props options)
       (let [prop-params (or (:prop-params options) {})
             prop-params (assoc prop-params :root-path (path production))]
-        (build-props scene (:props options) prop-params)))
+        (build scene (:props options) prop-params)))
     scene))
 
 (defmacro with-limelight [& args]

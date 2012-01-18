@@ -6,7 +6,6 @@
     [limelight.clojure.core]
     [limelight.clojure.theater]
     [limelight.clojure.stage-building :only (build-stages)]
-    [limelight.clojure.prop-building :only (build-props)]
     [limelight.clojure.style-building :only (build-styles)]
     [limelight.clojure.scene :only (new-scene)]
     [limelight.clojure.util :only (read-src map-for-clojure)]
@@ -42,7 +41,7 @@
         props-path (resource-path scene "props.clj")
         props-src (if (.exists fs props-path) (.readTextFile fs props-path) nil)]
     (when props-src
-      (build-props scene props-src (assoc prop-params :source-file props-path :root-path (path production))))
+      (build scene props-src (assoc prop-params :source-file props-path :root-path (path production))))
     scene))
 
 (defn- prod-load-styles [production path extendable-styles]

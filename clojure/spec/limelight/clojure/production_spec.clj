@@ -6,8 +6,7 @@
     [speclj.core]
     [limelight.clojure.spec-helper]
     [limelight.clojure.production]
-    [limelight.clojure.core :only (children peer)]
-    [limelight.clojure.prop-building :only (build-props)]
+    [limelight.clojure.core :only (children peer build)]
     [limelight.clojure.util :only (->options)])
   (:import
     [limelight.clojure.production Production]
@@ -61,7 +60,7 @@
     (it "include prod path with loading scene"
       (.createTextFile @fs "/Mock/Scene/props.clj" "[:one]")
       (let [opts (atom nil)]
-        (binding [build-props (fn [scene props-src & args] (reset! opts (->options args)))]
+        (binding [build (fn [scene props-src & args] (reset! opts (->options args)))]
           (.loadScene @production "Scene" {"path" "Scene"}))
         (should= "Mock" (:root-path @opts))))
 

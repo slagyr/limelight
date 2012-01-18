@@ -51,6 +51,9 @@
   (backstage-get [this key])
   (backstage-put [this key value]))
 
+(defprotocol Buildable
+  (build-props [this src context]))
+
 ; TODO extend events
 
 ; Prop functions ------------------------------------------
@@ -82,6 +85,19 @@
 
 (defn players [prop]
   (.getPlayers (peer prop)))
+
+(defn remove-all [prop]
+  (.removeAll (peer prop)))
+
+(defn remove-child [parent child]
+  (.remove (peer parent) (peer child)))
+
+(defn add-child
+  ([parent child] (.add (peer parent) (peer child)))
+  ([parent child index] (.add (peer parent) index (peer child))))
+
+(defn build [root src & context]
+  (build-props root src (->options context)))
 
 ; Production functions ------------------------------------
 
@@ -173,6 +189,3 @@
   (let [style (.getStyle @(._peer prop))]
     (doseq [[key value] (partition 2 args)]
       (.put style (style-descriptor key) value))))
-
-; TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-; need way to remove/add props, build-props here

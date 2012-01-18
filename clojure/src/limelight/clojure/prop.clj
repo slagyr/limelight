@@ -3,7 +3,7 @@
 
 (ns limelight.clojure.prop
   (:use
-    [limelight.clojure.util :only (map-for-clojure)])
+    [limelight.clojure.util :only (map-for-clojure map-for-java)])
   (:require
     [limelight.clojure.core]))
 
@@ -64,7 +64,7 @@
   (let [prop (Prop. (atom nil))
         peer (limelight.ui.model.PropPanel. prop)]
     (swap! (._peer prop) (fn [_] peer))
-    (.addOptions peer options)
+    (.addOptions peer (map-for-java options))
     prop))
 
 (defn- ->event-action [action]

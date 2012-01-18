@@ -8,7 +8,9 @@
     [limelight.clojure.core]
     [limelight.clojure.prop-building :only (to-props)]
     [limelight.clojure.scene :only (new-scene)]
-    [limelight.clojure.production :only (new-production)]))
+    [limelight.clojure.prop :only (new-prop)]
+    [limelight.clojure.production :only (new-production)]
+    [limelight.clojure.util :only (map-for-java)]))
 
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
@@ -277,6 +279,37 @@
         (style= @child :width 123 :height 456)
         (should= "123" (style @child :width))
         (should= "456" (style @child :height)))
+      )
+
+    (context "tree manipulation"
+
+      (it "can remove all the child props"
+        (remove-all @root)
+        (should= 0 (count (children @root))))
+
+      (it "can remove one child"
+        (let [child (find-by-id @root "child1")]
+          (remove-child @root child)
+          (should= 1 (count (children @root)))))
+
+      (it "can add a child"
+        (let [child (new-prop {:name "new" :id "new"})]
+          (add-child @root child)
+          (should= 3 (count (children @root)))
+          (should= child (last (children @root)))))
+
+      (it "can add a child at an index"
+        (let [child (new-prop {:name "new" :id "new"})]
+          (add-child @root child 0)
+          (should= 3 (count (children @root)))
+          (should= child (first (children @root)))))
+
+      (it "can build props"
+        (build @root [:new {:id "new"} [:new-child {:id "new-child"}]])
+        (should= 3 (count (children @root)))
+        (should= "new" (name (find-by-id @root "new")))
+        (should= "new-child" (name (find-by-id @root "new-child")))
+        (should= "new-child" (name (first (children (last (children @root)))))))
       )
 
     )

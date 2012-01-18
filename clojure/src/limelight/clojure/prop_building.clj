@@ -45,9 +45,8 @@
       context)
     context))
 
-(defn build-props [root src & context]
-  (let [context (->options context)
-        context (establish-root-path root context)
+(defn- do-build-props [root src context]
+  (let [context (establish-root-path root context)
         context (assoc context :root root)]
     (binding [*ns* (the-ns 'limelight.clojure.prop-building)
               *context* context]
@@ -70,3 +69,13 @@
         new-context (merge *context* extra-context)]
     (binding [*context* new-context]
       (read-src include-path (str "(list " src ")")))))
+
+(extend-type limelight.clojure.scene.Scene
+  limelight.clojure.core/Buildable
+  (build-props [this src context]
+    (do-build-props this src context)))
+
+(extend-type limelight.clojure.prop.Prop
+  limelight.clojure.core/Buildable
+  (build-props [this src context]
+    (do-build-props this src context)))
