@@ -7,17 +7,19 @@
     [limelight.clojure.player]
     [limelight.clojure.util :only (read-src)]))
 
-(defn- load-player-from [casting-director player-path player-name]
+; TODO MDM Player namespaces should be cleaned up... memory leak otherwise
+(defn- load-player-from [recruiter player-path player-name]
   (let [player-content (.readTextFile (limelight.Context/fs) player-path)
         player-ns (create-ns (gensym (str "limelight.dynamic-player." player-name "-")))
         event-actions (intern player-ns '*event-actions* (atom {}))]
     (binding [*ns* player-ns]
-      (use 'clojure.core)
-      (use 'limelight.clojure.player)
-      (use 'limelight.clojure.core)
+      (refer 'clojure.core)
+      (refer 'limelight.clojure.player)
+      (refer 'limelight.clojure.core)
+      (refer (.getName (._helper-ns (._scene recruiter))))
       (binding [limelight.clojure.player/*action-cache* @event-actions]
         (read-src player-path player-content)))
-    (swap! (.cast casting-director) #(assoc % player-name player-ns))
+    (swap! (._cast recruiter) #(assoc % player-name player-ns))
     player-ns))
 
 (defn- player-path [resource-root relative-player-path]
@@ -37,32 +39,32 @@
 (defn- player-path [player-name players-path]
   (str players-path "/" (limelight.util.StringUtil/snakeCase player-name) ".clj"))
 
-(deftype Player [name path player-ns]
+(deftype Player [_name _path _player-ns]
   limelight.model.api.Player
   (cast [this prop-panel]
-    (cast-player player-ns prop-panel))
-  (getPath [this] path)
-  (getName [this] name)
+    (cast-player _player-ns prop-panel))
+  (getPath [this] _path)
+  (getName [this] _name)
   (applyOptions [this prop-panel options] options)
 
   clojure.lang.Named
 
   limelight.clojure.core.Pathed
-  (path [this] path)
+  (path [this] _path)
   )
 
 (defn new-player [name path player-ns]
   (Player. name path player-ns))
 
-(deftype PlayerRecruiter [scene cast]
+(deftype PlayerRecruiter [_scene _cast]
   limelight.model.api.PlayerRecruiter
   (canRecruit [this player-name players-path]
-    (if (@cast player-name)
+    (if (@_cast player-name)
       true
       (.exists (limelight.Context/fs) (player-path player-name players-path))))
   (recruitPlayer [this player-name players-path]
     (let [player-path (player-path player-name players-path)
-          player-ns (or (@cast player-name) (load-player-from this player-path player-name))]
+          player-ns (or (@_cast player-name) (load-player-from this player-path player-name))]
       (when player-ns
         (new-player player-name player-path player-ns)))))
 

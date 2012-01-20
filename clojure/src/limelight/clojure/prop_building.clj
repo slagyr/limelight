@@ -5,7 +5,9 @@
   (:use
     [limelight.clojure.core]
     [limelight.clojure.prop :only (new-prop)]
-    [limelight.clojure.util :only (read-src ->options)]))
+    [limelight.clojure.util :only (read-src ->options)])
+  (:require
+    [limelight.clojure.scene]))
 
 (declare to-prop)
 (declare *context*)
@@ -32,11 +34,15 @@
       (add prop (to-props child-data)))
     prop))
 
-(defn- src->data [src]
-  (if (string? src)
-    (let [src-file (or (:source-file *context*) "[CODE]")]
-      (read-src src-file (str "[" src "]")))
-    (eval src)))
+(defn- src->data [src context root]
+  (let [scene (scene root)
+        props-ns (._props-ns scene)]
+      (binding [*ns* props-ns
+                *context* context]
+        (if (string? src)
+          (let [src-file (or (:source-file *context*) "[CODE]")]
+            (read-src src-file (str "[" src "]")))
+          (eval src)))))
 
 (defn- establish-root-path [root context]
   (if-let [prod (production root)]
@@ -45,15 +51,13 @@
       context)
     context))
 
-(defn- do-build-props [root src context]
+(defn do-prop-building [root src context]
   (let [context (establish-root-path root context)
-        context (assoc context :root root)]
-    (binding [*ns* (the-ns 'limelight.clojure.prop-building)
-              *context* context]
-      (let [prop-data (src->data src)
-            props (to-props prop-data)]
-        (add root props)
-        root))))
+        context (assoc context :root root)
+        prop-data (src->data src context root)
+        props (to-props prop-data)]
+    (add root props)
+    root))
 
 (defn- extract-root-path []
   (if-let [path (:root-path *context*)]
@@ -73,9 +77,9 @@
 (extend-type limelight.clojure.scene.Scene
   limelight.clojure.core/Buildable
   (build-props [this src context]
-    (do-build-props this src context)))
+    (do-prop-building this src context)))
 
 (extend-type limelight.clojure.prop.Prop
   limelight.clojure.core/Buildable
   (build-props [this src context]
-    (do-build-props this src context)))
+    (do-prop-building this src context)))

@@ -3,7 +3,9 @@
     [speclj.core]
     [limelight.clojure.core :as ll :exclude (production stage scene)]
     [limelight.clojure.util :only (->options)]
-    [limelight.clojure.scene :only (new-scene)]))
+    [limelight.clojure.scene :only (new-scene)])
+  (:require
+    [limelight.clojure.prop-building]))
 
 (def default-options
   {:start-background-threads false

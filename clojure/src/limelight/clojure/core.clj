@@ -64,14 +64,6 @@
 (defn children [parent]
   (as-proxies (.getChildPropPanels @(._peer parent))))
 
-(defn add [parent & children]
-  (let [peer-prop @(._peer parent)
-        children (flatten children)]
-    (doseq [child children]
-      (if child
-        (.add peer-prop @(._peer child))))
-    children))
-
 (defn parent [prop]
   (.getProxy (.getParent @(._peer prop))))
 
@@ -91,6 +83,14 @@
 
 (defn remove-child [parent child]
   (.remove (peer parent) (peer child)))
+
+(defn add [parent & children]
+  (let [peer-prop @(._peer parent)
+        children (flatten children)]
+    (doseq [child children]
+      (if child
+        (.add peer-prop @(._peer child))))
+    children))
 
 (defn add-child
   ([parent child] (.add (peer parent) (peer child)))

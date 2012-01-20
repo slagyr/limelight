@@ -24,7 +24,7 @@
     (should (isa? Production limelight.model.api.ProductionProxy)))
 
   (it "can be contructed"
-    (let [production (Production. :peer :theater nil)]
+    (let [production (Production. :peer :theater nil nil)]
       (should= :peer (._peer production))
       (should= :theater (._theater production))))
 
@@ -41,6 +41,14 @@
       (should= limelight.clojure.theater.Theater (type @(._theater @production)))
       (should= (.getTheater @peer-production) (._peer @(._theater @production)))
       (should= @production (._production @(._theater @production))))
+
+    (it "has a namespace"
+      (should-not= nil (._ns @production))
+      (should= true (.startsWith (.getName (.getName (._ns @production))) "limelight.dynamic.production.player-")))
+
+    (it "has a helper namespace"
+      (should-not= nil (._helper-ns @production))
+      (should= true (.startsWith (.getName (.getName (._helper-ns @production))) "limelight.dynamic.production.helper-")))
 
     (unless-headless
 
@@ -79,12 +87,6 @@
           (should= "bar" (:foo (backstage child)))
           (should= "bang" (:fizz (backstage child)))
           (should= "BAZ" (:qux (backstage child))))))
-    )
-
-  (context "when illuminated,"
-    (with peer-production (limelight.model.FakeProduction. "MockProduction"))
-    (with production (new-production @peer-production))
-    (with fs (limelight.io.FakeFileSystem/installed))
 
     (for [[name event] {
       "production-created" (limelight.model.events.ProductionCreatedEvent.)
@@ -94,11 +96,24 @@
       "production-closed" (limelight.model.events.ProductionClosedEvent.)
       }]
       (it (str "supports the " name " event")
-        (.createTextFile @fs "/MockProduction/production.clj" (str "(on-" name " [e] (def *message* :" name "))"))
+        (.createTextFile @fs "/Mock/production.clj" (str "(on-" name " [e] (def *message* :" name "))"))
         (.illuminate @production)
         (should= 1 (count (actions-for @production (class event))))
         (should-not-throw (.dispatch event (._peer @production)))
         (should= (keyword name) @(ns-resolve (._ns @production) '*message*))))
+
+    (it "loads the helper"
+      (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
+      (let [foo (ns-resolve (._helper-ns @production) 'foo)]
+        (should-not= nil foo)
+        (should= :foo (foo))))
+
+    (it "the production events can use helper fns"
+      (.createTextFile @fs "/Mock/production.clj" "(on-production-created [e] (def *message* (foo)))")
+      (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
+      (.illuminate @production)
+      (should-not-throw (.dispatch (limelight.model.events.ProductionCreatedEvent.) (._peer @production)))
+      (should= :foo @(ns-resolve (._ns @production) '*message*)))
     )
   )
 

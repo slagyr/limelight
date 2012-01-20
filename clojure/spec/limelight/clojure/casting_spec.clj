@@ -13,9 +13,6 @@
   (:import
     [limelight.clojure.casting PlayerRecruiter]))
 
-(defn setup-files [fs options]
-  (doall (map (fn [[filename content]] (.createTextFile fs filename content)) options)))
-
 (defn actions-for [prop event]
   (-> prop
     (._peer)
@@ -43,31 +40,31 @@
   (unless-headless
 
     (it "can be created"
-      (should= {} @(.cast @player-recruiter)))
+      (should= {} @(._cast @player-recruiter)))
 
     (it "has limelight lineage"
       (should (isa? PlayerRecruiter limelight.model.api.PlayerRecruiter)))
 
     (it "creates players with the correct path and ns"
-      (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
+      (.createTextFile @fs "/root/players/test_player.clj" "(on-mouse-clicked [_])")
       (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
         (should= "test-player" (.getName player))
         (should= "/root/players/test_player.clj" (.getPath player))))
 
     (it "players are named pathed"
-      (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
+      (.createTextFile @fs "/root/players/test_player.clj" "(on-mouse-clicked [_])")
       (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
         (should= "test-player" (name player))
         (should= "/root/players/test_player.clj" (path player))))
 
     (it "includes one player from scene"
-      (setup-files @fs {"/root/players/test_player.clj" "(on-mouse-clicked [_])"})
+      (.createTextFile @fs "/root/players/test_player.clj" "(on-mouse-clicked [_])")
       (let [player (.recruitPlayer @player-recruiter "test-player" "/root/players")]
         (.cast player @(._peer @prop))
         (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent)))))
 
     (it "includes one player from production"
-      (setup-files @fs {"/MockProduction/players/test_player.clj" "(on-mouse-clicked [_])"})
+      (.createTextFile @fs "/MockProduction/players/test_player.clj" "(on-mouse-clicked [_])")
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
       (should= 1 (count (actions-for @prop limelight.ui.events.panel.MouseClickedEvent))))
 
@@ -91,22 +88,22 @@
                         }]
       (it (str "handles " name " events")
         (let [actions-before (actions-for @prop (class event))]
-          (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-" name " (def *message* \"" name "\"))")})
+          (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-" name " (def *message* \"" name "\"))"))
           (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
           (let [actions-after (actions-for @prop (class event))]
             (should= 1 (- (count actions-after) (count actions-before)))
             (should-not-throw (.dispatch event @(._peer @prop)))
-            (should= name @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*))))))
+            (should= name @(ns-resolve (@(._cast @player-recruiter) "test-player") '*message*))))))
 
     (it "handles on-cast events"
-      (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast [_] (def *message* \"casted\"))")})
+      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast [_] (def *message* \"casted\"))"))
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
-      (should= "casted" @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*)))
+      (should= "casted" @(ns-resolve (@(._cast @player-recruiter) "test-player") '*message*)))
 
     (it "the bindings are optional"
-      (setup-files @fs {"/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))")})
+      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))"))
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
-      (should= "casted" @(ns-resolve (@(.cast @player-recruiter) "test-player") '*message*)))
+      (should= "casted" @(ns-resolve (@(._cast @player-recruiter) "test-player") '*message*)))
 
     )
   )
