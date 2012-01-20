@@ -48,7 +48,7 @@
 
     (it "has a helper namespace"
       (should-not= nil (._helper-ns @production))
-      (should= true (.startsWith (.getName (.getName (._helper-ns @production))) "limelight.dynamic.production.helper-")))
+      (should= true (.startsWith (.getName (.getName @(._helper-ns @production))) "limelight.dynamic.production.helper-")))
 
     (unless-headless
 
@@ -104,13 +104,15 @@
 
     (it "loads the helper"
       (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
-      (let [foo (ns-resolve (._helper-ns @production) 'foo)]
+      (.loadHelper @production)
+      (let [foo (ns-resolve @(._helper-ns @production) 'foo)]
         (should-not= nil foo)
         (should= :foo (foo))))
 
     (it "the production events can use helper fns"
       (.createTextFile @fs "/Mock/production.clj" "(on-production-created [e] (def *message* (foo)))")
       (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
+      (.loadHelper @production)
       (.illuminate @production)
       (should-not-throw (.dispatch (limelight.model.events.ProductionCreatedEvent.) (._peer @production)))
       (should= :foo @(ns-resolve (._ns @production) '*message*)))

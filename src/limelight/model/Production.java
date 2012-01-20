@@ -51,6 +51,8 @@ public abstract class Production
     theater = new Theater(this);
   }
 
+  public abstract void loadHelper();
+
   protected abstract void illuminate();
 
   protected abstract void loadLibraries();
@@ -74,6 +76,7 @@ public abstract class Production
   {
     Opts options = defaultOptions.merge(customizations);
     prepareToOpen();
+    loadHelper();
     illuminateProduction();
     if(!canProceedWithCompatibility())
     {

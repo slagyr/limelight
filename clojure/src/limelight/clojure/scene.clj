@@ -55,7 +55,7 @@
       (binding [*ns* (._helper-ns scene)]
         (refer 'clojure.core)
         (refer 'limelight.clojure.core)
-        (when production (refer (.getName (._helper-ns production))))
+        (when production (refer (.getName @(._helper-ns production))))
         (read-src helper-path helper-src)))))
 
 (defn- prepare-props-ns [scene production]
@@ -64,7 +64,7 @@
     (refer 'limelight.clojure.core)
     (refer 'limelight.clojure.prop-building)
     (refer (.getName (._helper-ns scene)))
-    (when production (refer (.getName (._helper-ns production))))))
+    (when production (refer (.getName @(._helper-ns production))))))
 
 (defn new-scene [& args]
   (let [options (->options args)

@@ -14,12 +14,13 @@
     [limelight.clojure.production-player]
     [limelight.clojure.prop-building]))
 
-(defn- load-production-helper [production]
+(defn- prod-load-helper [production]
   (let [helper-path (resource-path production "helper.clj")
         fs (limelight.Context/fs)
         helper-src (if (.exists fs helper-path) (.readTextFile fs helper-path) nil)]
     (when helper-src
-      (binding [*ns* (._helper-ns production)]
+      (reset! (._helper-ns production) (create-ns (gensym "limelight.dynamic.production.helper-")))
+      (binding [*ns* @(._helper-ns production)]
         (refer 'clojure.core)
         (refer 'limelight.clojure.core)
         (read-src helper-path helper-src)))))
@@ -34,7 +35,8 @@
         (refer 'clojure.core)
         (refer 'limelight.clojure.core)
         (refer 'limelight.clojure.production-player)
-        (refer (.getName (._helper-ns production)))
+        (when @(._helper-ns production)
+          (refer (.getName @(._helper-ns production))))
         (read-src player-path player-src)))))
 
 (defn- prod-load-stages [production]
@@ -71,6 +73,7 @@
   limelight.model.api.ProductionProxy
   (send [this name args] nil)
   (getTheater [this] @_theater)
+  (loadHelper [this] (prod-load-helper this))
   (illuminate [this] (prod-illuminate this))
   (loadLibraries [this])
   (loadStages [this] (prod-load-stages this))
@@ -101,8 +104,7 @@
 (defn new-production [peer]
   (let [ns (create-ns (gensym "limelight.dynamic.production.player-"))
         helper-ns (create-ns (gensym "limelight.dynamic.production.helper-"))
-        production (Production. peer (atom nil) ns helper-ns)]
+        production (Production. peer (atom nil) ns (atom helper-ns))]
     (reset! (._theater production) (new-theater (.getTheater peer) production))
     (.setProxy peer production)
-    (load-production-helper production)
     production))

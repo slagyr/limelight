@@ -27,11 +27,18 @@ public class FakeProduction extends Production
   public String loadStylesPath;
   public Map<String,Object> loadedSceneOptions;
   public ProductionProxy proxy;
+  public boolean helperLoader;
 
   public FakeProduction(String name)
   {
     super(name);
     getTheater().setProxy(new MockTheaterProxy());
+  }
+
+  @Override
+  public void loadHelper()
+  {
+    helperLoader = true;
   }
 
   public ProductionProxy getProxy()

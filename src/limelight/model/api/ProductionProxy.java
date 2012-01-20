@@ -13,6 +13,7 @@ public interface ProductionProxy
   Object send(String name, Object... args);
 
   TheaterProxy getTheater();
+  void loadHelper();
   void illuminate();
   void loadLibraries();
   void loadStages();

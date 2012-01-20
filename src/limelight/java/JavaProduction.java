@@ -29,6 +29,11 @@ public class JavaProduction extends Production
     javaTheater = new JavaTheater(getTheater());
   }
 
+  @Override
+  public void loadHelper()
+  {
+  }
+
   public Player getPlayer()
   {
     return player;

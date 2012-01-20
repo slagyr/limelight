@@ -49,6 +49,7 @@
     (it "the helper uses production helper"
       (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
       (.createTextFile @fs "/Mock/bill/helper.clj" "(defn bar [] [(foo) :bar])")
+      (.loadHelper @production)
       (let [bar (ns-resolve (._helper-ns @scene) 'bar)]
         (should= [:foo :bar] (bar))))
 

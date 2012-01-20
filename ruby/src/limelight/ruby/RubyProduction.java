@@ -42,6 +42,11 @@ public class RubyProduction extends Production
     id = ++productionIds;
   }
 
+  @Override
+  public void loadHelper()
+  {
+  }
+
   public void setProxy(ProductionProxy proxy)
   {
     this.proxy = proxy;

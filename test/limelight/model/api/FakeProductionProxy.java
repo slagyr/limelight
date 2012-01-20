@@ -22,6 +22,10 @@ public class FakeProductionProxy implements ProductionProxy
     return theater;
   }
 
+  public void loadHelper()
+  {
+  }
+
   public void illuminate()
   {
   }

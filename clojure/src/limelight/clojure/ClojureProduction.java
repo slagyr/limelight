@@ -21,6 +21,12 @@ public class ClojureProduction extends Production
     super(path);
   }
 
+  @Override
+  public void loadHelper()
+  {
+    proxy.loadHelper();
+  }
+
   public ProductionProxy getProxy()
   {
     return proxy;
