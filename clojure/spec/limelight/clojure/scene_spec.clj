@@ -60,6 +60,14 @@
       (.dispatch (limelight.ui.events.panel.SceneOpenedEvent.) (peer @scene))
       (should= :foo @(ns-resolve (get @(._cast @(._player-recruiter @scene)) "bill") '*message*)))
 
+    (it "production helper is usable by scene player"
+      (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
+      (.loadHelper @production)
+      (.createTextFile @fs "/Mock/bill/players/bill.clj" "(on-scene-opened [e] (def *message* (foo)))")
+      (.cast (.recruitPlayer @(._player-recruiter @scene) "bill" "/Mock/bill/players") (peer @scene))
+      (.dispatch (limelight.ui.events.panel.SceneOpenedEvent.) (peer @scene))
+      (should= :foo @(ns-resolve (get @(._cast @(._player-recruiter @scene)) "bill") '*message*)))
+
     (it "prop ns is used for prop building"
       (.createTextFile @fs "/Mock/bill/helper.clj" "(defn foo [] :foo)")
       (build @scene "[(foo) {:text (str *ns*)}]")

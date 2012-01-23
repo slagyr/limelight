@@ -6,7 +6,6 @@ import limelight.ui.model.inputs.RadioButtonPanel;
 
 public class RadioButton
 {
-
   private PropPanel propPanel;
   private RadioButtonPanel buttonPanel;
 
