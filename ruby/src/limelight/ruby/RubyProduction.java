@@ -6,6 +6,7 @@ package limelight.ruby;
 import limelight.Context;
 import limelight.LimelightException;
 import limelight.model.Production;
+import limelight.model.StylesSource;
 import limelight.model.api.ProductionProxy;
 import limelight.model.api.SceneProxy;
 import limelight.styles.RichStyle;
@@ -40,11 +41,6 @@ public class RubyProduction extends Production
   {
     super(path);
     id = ++productionIds;
-  }
-
-  @Override
-  public void loadHelper()
-  {
   }
 
   public void setProxy(ProductionProxy proxy)
@@ -91,9 +87,9 @@ public class RubyProduction extends Production
   }
 
   @Override
-  public Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
+  public Map<String,RichStyle> loadStyles(StylesSource source, Map<String, RichStyle> extendableStyles)
   {
-    return proxy.loadStyles(path, extendableStyles);
+    return proxy.loadStyles(source, extendableStyles);
   }
 
   public void prepareToOpen()

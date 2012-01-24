@@ -6,6 +6,7 @@ package limelight.java;
 import limelight.Context;
 import limelight.LimelightException;
 import limelight.model.Production;
+import limelight.model.StylesSource;
 import limelight.model.api.Player;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
@@ -27,11 +28,6 @@ public class JavaProduction extends Production
     String classes = Context.fs().pathTo(getPath(), "classes");
     playerLoader = new PlayerClassLoader(classes);
     javaTheater = new JavaTheater(getTheater());
-  }
-
-  @Override
-  public void loadHelper()
-  {
   }
 
   public Player getPlayer()
@@ -81,9 +77,9 @@ public class JavaProduction extends Production
   }
 
   @Override
-  protected Map<String, RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
+  protected Map<String, RichStyle> loadStyles(StylesSource source, Map<String, RichStyle> extendableStyles)
   {
-    final String stylesPath = Context.fs().join(path, "styles.xml");
+    final String stylesPath = Context.fs().join(source.getPath(), "styles.xml");
     return Xml.toStyles(stylesPath, new HashMap<String, RichStyle>(), extendableStyles);
   }
 

@@ -93,17 +93,17 @@
           (let [actions-after (actions-for @prop (class event))]
             (should= 1 (- (count actions-after) (count actions-before)))
             (should-not-throw (.dispatch event @(._peer @prop)))
-            (should= name @(ns-resolve (@(._cast @player-recruiter) "test-player") '*message*))))))
+            (should= name @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*message*))))))
 
     (it "handles on-cast events"
       (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast [_] (def *message* \"casted\"))"))
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
-      (should= "casted" @(ns-resolve (@(._cast @player-recruiter) "test-player") '*message*)))
+      (should= "casted" @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*message*)))
 
     (it "the bindings are optional"
       (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))"))
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
-      (should= "casted" @(ns-resolve (@(._cast @player-recruiter) "test-player") '*message*)))
+      (should= "casted" @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*message*)))
 
     )
   )

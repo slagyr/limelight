@@ -3,6 +3,7 @@
 
 package limelight.model.api;
 
+import limelight.model.StylesSource;
 import limelight.styles.RichStyle;
 
 import java.util.Map;
@@ -13,10 +14,9 @@ public interface ProductionProxy
   Object send(String name, Object... args);
 
   TheaterProxy getTheater();
-  void loadHelper();
   void illuminate();
   void loadLibraries();
   void loadStages();
   SceneProxy loadScene(String scenePath, Map<String, Object> options);
-  Map<String, RichStyle> loadStyles(String scene, Map<String, RichStyle> extendableStyles);
+  Map<String, RichStyle> loadStyles(StylesSource source, Map<String, RichStyle> extendableStyles);
 }

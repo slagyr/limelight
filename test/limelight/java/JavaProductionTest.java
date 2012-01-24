@@ -115,9 +115,9 @@ public class JavaProductionTest
   @Test
   public void loadEmptyStylesForScene() throws Exception
   {
-    production.loadScene("aScene", new Opts());
+    final Scene scene = production.loadScene("aScene", new Opts());
 
-    final Map<String, RichStyle> styles = production.loadStyles("testProduction/aScene", new HashMap<String, RichStyle>());
+    final Map<String, RichStyle> styles = production.loadStyles(scene, new HashMap<String, RichStyle>());
 
     assertEquals(0, styles.size());
   }
@@ -126,8 +126,9 @@ public class JavaProductionTest
   public void loadRealStylesForScene() throws Exception
   {
     fs.createTextFile("/testProduction/aScene/styles.xml", "<styles><high x='0' y='99' float='on'/><far x='99' y='0' float='off'/></styles>");
+    final Scene scene = production.loadScene("aScene", new Opts());
 
-    final Map<String, RichStyle> styles = production.loadStyles("/testProduction/aScene", new HashMap<String, RichStyle>());
+    final Map<String, RichStyle> styles = production.loadStyles(scene, new HashMap<String, RichStyle>());
 
     assertEquals(2, styles.size());
     final RichStyle high = styles.get("high");

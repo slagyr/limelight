@@ -3,11 +3,11 @@
 
 (ns limelight.clojure.scene
   (:use
-    [limelight.clojure.casting :only (new-player-recruiter)]
+    [limelight.clojure.casting :only (new-player-recruiter clj-players)]
     [limelight.clojure.util :only (map-for-java ->options read-src)]
     [limelight.clojure.core]))
 
-(deftype Scene [_peer _player-recruiter _helper-ns _props-ns]
+(deftype Scene [_peer _player-recruiter _ns]
 
   limelight.model.api.SceneProxy
   (getPeer [this] @_peer)
@@ -47,30 +47,19 @@
   (backstage-put [this key value] (.put (.getBackstage @_peer) key value))
   )
 
-(defn- load-scene-helper [scene production]
-  (let [helper-path (resource-path scene "helper.clj")
-        fs (limelight.Context/fs)
-        helper-src (if (.exists fs helper-path) (.readTextFile fs helper-path) nil)]
-    (when helper-src
-      (binding [*ns* (._helper-ns scene)]
-        (refer 'clojure.core)
-        (refer 'limelight.clojure.core)
-        (when production (refer (.getName @(._helper-ns production))))
-        (read-src helper-path helper-src)))))
-
-(defn- prepare-props-ns [scene production]
-  (binding [*ns* (._props-ns scene)]
+(defn- prepare-ns [scene production]
+  (binding [*ns* (._ns scene)]
     (refer 'clojure.core)
     (refer 'limelight.clojure.core)
     (refer 'limelight.clojure.prop-building)
-    (refer (.getName (._helper-ns scene)))
-    (when production (refer (.getName @(._helper-ns production))))))
+    (when production (alias 'production (.getName (._ns production))))
+    (doseq [player (clj-players scene)] (alias (symbol (._name player)) (.getName (._ns player))))
+    ))
 
 (defn new-scene [& args]
   (let [options (->options args)
-        helper-ns (create-ns (gensym "limelight.dynamic.scene.helper-"))
-        props-ns (create-ns (gensym "limelight.dynamic.scene.props-"))
-        scene (Scene. (atom nil) (atom nil) helper-ns props-ns)
+        ns (create-ns (gensym "limelight.dynamic.scene-"))
+        scene (Scene. (atom nil) (atom nil) ns)
         player-recruiter (new-player-recruiter scene)
         peer (limelight.ui.model.ScenePanel. scene)
         production (:production options)
@@ -80,8 +69,8 @@
     (.addOptions peer (map-for-java options))
     (.setPlayerRecruiter peer player-recruiter)
     (when production (.setProduction peer (._peer production)))
-    (load-scene-helper scene production)
-    (prepare-props-ns scene production)
+    (.illuminate peer)
+    (prepare-ns scene production)
     scene))
 
 

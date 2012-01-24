@@ -24,7 +24,7 @@
     (should (isa? Production limelight.model.api.ProductionProxy)))
 
   (it "can be contructed"
-    (let [production (Production. :peer :theater nil nil)]
+    (let [production (Production. :peer :theater nil)]
       (should= :peer (._peer production))
       (should= :theater (._theater production))))
 
@@ -44,11 +44,7 @@
 
     (it "has a namespace"
       (should-not= nil (._ns @production))
-      (should= true (.startsWith (.getName (.getName (._ns @production))) "limelight.dynamic.production.player-")))
-
-    (it "has a helper namespace"
-      (should-not= nil (._helper-ns @production))
-      (should= true (.startsWith (.getName (.getName @(._helper-ns @production))) "limelight.dynamic.production.helper-")))
+      (should= true (.startsWith (.getName (.getName (._ns @production))) "limelight.dynamic.production-")))
 
     (unless-headless
 
@@ -102,20 +98,13 @@
         (should-not-throw (.dispatch event (._peer @production)))
         (should= (keyword name) @(ns-resolve (._ns @production) '*message*))))
 
-    (it "loads the helper"
-      (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
-      (.loadHelper @production)
-      (let [foo (ns-resolve @(._helper-ns @production) 'foo)]
-        (should-not= nil foo)
-        (should= :foo (foo))))
-
     (it "the production events can use helper fns"
-      (.createTextFile @fs "/Mock/production.clj" "(on-production-created [e] (def *message* (foo)))")
-      (.createTextFile @fs "/Mock/helper.clj" "(defn foo [] :foo)")
-      (.loadHelper @production)
+      (.createTextFile @fs "/Mock/production.clj" "(def red :red)")
+      (.createTextFile @fs "/Mock/styles.clj" "[\"foo\" :background-color red]")
       (.illuminate @production)
-      (should-not-throw (.dispatch (limelight.model.events.ProductionCreatedEvent.) (._peer @production)))
-      (should= :foo @(ns-resolve (._ns @production) '*message*)))
+      (let [peer-prod (peer @production)
+            styles (.loadStyles @production peer-prod {})]
+        (should= "#ff0000ff" (.getBackgroundColor (.get styles "foo")))))
     )
   )
 

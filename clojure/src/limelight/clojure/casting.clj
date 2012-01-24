@@ -7,27 +7,6 @@
     [limelight.clojure.player]
     [limelight.clojure.util :only (read-src)]))
 
-; TODO MDM Player namespaces should be cleaned up... memory leak otherwise
-(defn- load-player-from [recruiter player-path player-name]
-  (let [player-content (.readTextFile (limelight.Context/fs) player-path)
-        player-ns (create-ns (gensym (str "limelight.dynamic-player." player-name "-")))
-        event-actions (intern player-ns '*event-actions* (atom {}))
-        scene (._scene recruiter)
-        production (production scene)]
-    (binding [*ns* player-ns]
-      (refer 'clojure.core)
-      (refer 'limelight.clojure.player)
-      (refer 'limelight.clojure.core)
-      (refer (.getName (._helper-ns scene)))
-      (when production (refer (.getName @(._helper-ns production))))
-      (binding [limelight.clojure.player/*action-cache* @event-actions]
-        (read-src player-path player-content)))
-    (swap! (._cast recruiter) #(assoc % player-name player-ns))
-    player-ns))
-
-(defn- player-path [resource-root relative-player-path]
-  (resource-path resource-root relative-player-path))
-
 (defn- cast-player [player-ns prop-panel]
   (let [event-actions @(ns-resolve player-ns '*event-actions*)
         event-handler (.getEventHandler prop-panel)]
@@ -39,13 +18,10 @@
         (doseq [action actions]
           (.add event-handler event-class action))))))
 
-(defn- player-path [player-name players-path]
-  (str players-path "/" (limelight.util.StringUtil/snakeCase player-name) ".clj"))
-
-(deftype Player [_name _path _player-ns]
+(deftype Player [_name _path _ns]
   limelight.model.api.Player
   (cast [this prop-panel]
-    (cast-player _player-ns prop-panel))
+    (cast-player _ns prop-panel))
   (getPath [this] _path)
   (getName [this] _name)
   (applyOptions [this prop-panel options] options)
@@ -59,6 +35,33 @@
 (defn new-player [name path player-ns]
   (Player. name path player-ns))
 
+(defn- player-path [player-name players-path]
+  (str players-path "/" (limelight.util.StringUtil/snakeCase player-name) ".clj"))
+
+(defn clj-players [prop]
+  (filter
+    #(= limelight.clojure.casting.Player (class %))
+    (players prop)))
+
+; TODO MDM Player namespaces should be cleaned up... memory leak otherwise
+(defn- load-player-from [recruiter player-path player-name]
+  (let [player-content (.readTextFile (limelight.Context/fs) player-path)
+        player-ns (create-ns (gensym (str "limelight.dynamic-player." player-name "-")))
+        player (new-player player-name player-path player-ns)
+        event-actions (intern player-ns '*event-actions* (atom {}))
+        scene (._scene recruiter)
+        production (production scene)]
+    (binding [*ns* player-ns]
+      (refer 'clojure.core)
+      (refer 'limelight.clojure.player)
+      (refer 'limelight.clojure.core)
+      (when production (alias 'production (.getName (._ns production))))
+      (doseq [player (clj-players scene)] (alias (symbol (._name player)) (.getName (._ns player))))
+      (binding [limelight.clojure.player/*action-cache* @event-actions]
+        (read-src player-path player-content)))
+    (swap! (._cast recruiter) #(assoc % player-name player))
+    player))
+
 (deftype PlayerRecruiter [_scene _cast]
   limelight.model.api.PlayerRecruiter
   (canRecruit [this player-name players-path]
@@ -66,10 +69,8 @@
       true
       (.exists (limelight.Context/fs) (player-path player-name players-path))))
   (recruitPlayer [this player-name players-path]
-    (let [player-path (player-path player-name players-path)
-          player-ns (or (@_cast player-name) (load-player-from this player-path player-name))]
-      (when player-ns
-        (new-player player-name player-path player-ns)))))
+    (let [player-path (player-path player-name players-path)]
+      (or (@_cast player-name) (load-player-from this player-path player-name)))))
 
 (defn new-player-recruiter [scene]
   (PlayerRecruiter. scene (atom {})))

@@ -20,7 +20,7 @@ import limelight.util.Version;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Production
+public abstract class Production implements StylesSource
 {
   private String name;
   private boolean allowClose = true;
@@ -51,17 +51,15 @@ public abstract class Production
     theater = new Theater(this);
   }
 
-  public abstract void loadHelper();
-
   protected abstract void illuminate();
 
   protected abstract void loadLibraries();
 
   protected abstract void loadStages();
 
-  protected abstract Scene loadScene(String scenePath, Map<String, Object> options);
+  protected abstract Scene loadScene(String path, Map<String, Object> options);
 
-  protected abstract Map<String, RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles);
+  protected abstract Map<String, RichStyle> loadStyles(StylesSource source, Map<String, RichStyle> extendableStyles);
 
   protected abstract void prepareToOpen();
 
@@ -76,7 +74,6 @@ public abstract class Production
   {
     Opts options = defaultOptions.merge(customizations);
     prepareToOpen();
-    loadHelper();
     illuminateProduction();
     if(!canProceedWithCompatibility())
     {
@@ -199,7 +196,7 @@ public abstract class Production
 
   public void loadRootStyles()
   {
-    final Map<String, RichStyle> productionStyles = loadStyles(path, new HashMap<String, RichStyle>());
+    final Map<String, RichStyle> productionStyles = loadStyles(this, new HashMap<String, RichStyle>());
     styles = Styles.merge(productionStyles, BuiltInStyles.all());
   }
 
@@ -240,7 +237,7 @@ public abstract class Production
 
   public void styleAndStageScene(Scene scene, Stage stage)
   {
-    final Map<String, RichStyle> sceneStyles = loadStyles(scene.getPath(), styles);
+    final Map<String, RichStyle> sceneStyles = loadStyles(scene, styles);
     scene.setStyles(Styles.merge(sceneStyles, styles));
     stage.setScene(scene);
     stage.open();

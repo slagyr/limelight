@@ -78,8 +78,9 @@ describe Limelight::Production, "Instance methods" do
 
   it "loads styles" do
     @fs.create_text_file("/test_prod/scene/styles.rb", "cool { width 100; x 42 }")
+    scene = @production.load_scene("scene", :name => "scene", :path => "/test_prod/scene")
 
-    styles = @production.load_styles("test_prod/scene", {})
+    styles = @production.load_styles(scene, {})
 
     styles["cool"].should_not == nil
     styles["cool"].width.should == "100"

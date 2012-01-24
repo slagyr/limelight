@@ -241,9 +241,9 @@ module Limelight
 
     alias :loadScene :load_scene
 
-    def load_styles(path, extendable_styles)
+    def load_styles(source, extendable_styles)
       result = {}
-      styles_path = @fs.join(path, "styles.rb")
+      styles_path = @fs.join(source.path, "styles.rb")
       if @fs.exists?(styles_path)
         Limelight.build_styles_from_file(styles_path, :styles => result, :extendable_styles => extendable_styles)
       end

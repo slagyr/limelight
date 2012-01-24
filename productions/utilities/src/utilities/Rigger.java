@@ -19,7 +19,6 @@ public class Rigger
       final List<Production> productions = Context.instance().studio.getProductions();
       for(Production production : productions)
       {
-        production.loadHelper();
         production.loadRootStyles();
         final List<Stage> stages = production.getTheater().getStages();
         for(Stage stage : stages)

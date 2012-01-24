@@ -7,6 +7,7 @@ import clojure.lang.*;
 import limelight.Boot;
 import limelight.LimelightException;
 import limelight.model.Production;
+import limelight.model.StylesSource;
 import limelight.model.api.ProductionProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
@@ -19,12 +20,6 @@ public class ClojureProduction extends Production
   public ClojureProduction(String path)
   {
     super(path);
-  }
-
-  @Override
-  public void loadHelper()
-  {
-    proxy.loadHelper();
   }
 
   public ProductionProxy getProxy()
@@ -62,9 +57,9 @@ public class ClojureProduction extends Production
   }
 
   @Override
-  protected Map<String, RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
+  protected Map<String, RichStyle> loadStyles(StylesSource source, Map<String, RichStyle> extendableStyles)
   {
-    return proxy.loadStyles(path, extendableStyles);
+    return proxy.loadStyles(source, extendableStyles);
   }
 
   @Override

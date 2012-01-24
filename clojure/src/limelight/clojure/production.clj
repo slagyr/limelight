@@ -14,17 +14,6 @@
     [limelight.clojure.production-player]
     [limelight.clojure.prop-building]))
 
-(defn- prod-load-helper [production]
-  (let [helper-path (resource-path production "helper.clj")
-        fs (limelight.Context/fs)
-        helper-src (if (.exists fs helper-path) (.readTextFile fs helper-path) nil)]
-    (when helper-src
-      (reset! (._helper-ns production) (create-ns (gensym "limelight.dynamic.production.helper-")))
-      (binding [*ns* @(._helper-ns production)]
-        (refer 'clojure.core)
-        (refer 'limelight.clojure.core)
-        (read-src helper-path helper-src)))))
-
 (defn- prod-illuminate [production]
   (let [player-path (resource-path production "production.clj")
         fs (limelight.Context/fs)
@@ -35,8 +24,6 @@
         (refer 'clojure.core)
         (refer 'limelight.clojure.core)
         (refer 'limelight.clojure.production-player)
-        (when @(._helper-ns production)
-          (refer (.getName @(._helper-ns production))))
         (read-src player-path player-src)))))
 
 (defn- prod-load-stages [production]
@@ -60,25 +47,24 @@
       (build scene props-src (assoc prop-params :source-file props-path :root-path (path production))))
     scene))
 
-(defn- prod-load-styles [production path extendable-styles]
-  (let [styles-path (str path "/styles.clj")
+(defn- prod-load-styles [production source extendable-styles]
+  (let [styles-path (str (.getPath source) "/styles.clj")
         fs (limelight.Context/fs)
         styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)]
     (if styles-src
-      (build-styles {} styles-src styles-path extendable-styles)
+      (build-styles {} styles-src styles-path (._ns production) extendable-styles)
       {})))
 
-(deftype Production [_peer _theater _ns _helper-ns]
+(deftype Production [_peer _theater _ns]
 
   limelight.model.api.ProductionProxy
   (send [this name args] nil)
   (getTheater [this] @_theater)
-  (loadHelper [this] (prod-load-helper this))
   (illuminate [this] (prod-illuminate this))
   (loadLibraries [this])
   (loadStages [this] (prod-load-stages this))
   (loadScene [this scene-path options] (prod-load-scene this scene-path options))
-  (loadStyles [this path extendable-styles] (prod-load-styles this path extendable-styles))
+  (loadStyles [this source extendable-styles] (prod-load-styles this source extendable-styles))
 
   limelight.clojure.core.ResourceRoot
   (resource-path [this resource] (.pathTo (limelight.Context/fs) (.getPath _peer) resource))
@@ -102,9 +88,8 @@
   )
 
 (defn new-production [peer]
-  (let [ns (create-ns (gensym "limelight.dynamic.production.player-"))
-        helper-ns (create-ns (gensym "limelight.dynamic.production.helper-"))
-        production (Production. peer (atom nil) ns (atom helper-ns))]
+  (let [ns (create-ns (gensym "limelight.dynamic.production-"))
+        production (Production. peer (atom nil) ns)]
     (reset! (._theater production) (new-theater (.getTheater peer) production))
     (.setProxy peer production)
     production))

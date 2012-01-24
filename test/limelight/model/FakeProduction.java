@@ -35,12 +35,6 @@ public class FakeProduction extends Production
     getTheater().setProxy(new MockTheaterProxy());
   }
 
-  @Override
-  public void loadHelper()
-  {
-    helperLoader = true;
-  }
-
   public ProductionProxy getProxy()
   {
     return proxy;
@@ -100,9 +94,9 @@ public class FakeProduction extends Production
   }
 
   @Override
-  public Map<String,RichStyle> loadStyles(String path, Map<String, RichStyle> extendableStyles)
+  public Map<String,RichStyle> loadStyles(StylesSource source, Map<String, RichStyle> extendableStyles)
   {
-    loadStylesPath = path;
+    loadStylesPath = source.getPath();
     return new HashMap<String, RichStyle>();
   }
 

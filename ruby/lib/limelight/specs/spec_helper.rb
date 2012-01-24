@@ -134,7 +134,7 @@ module Limelight
         _create_player_helpers
         Limelight.build_props(@scene, :build_loader => production.root, &@prop_block) if @prop_block
 
-        production.load_styles(@scene.styles_file, @scene.styles)
+        production.load_styles(@scene, @production.styles)
         @stage.scene = @scene
         @stage.open
       end

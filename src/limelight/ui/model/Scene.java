@@ -5,6 +5,7 @@ package limelight.ui.model;
 
 import limelight.model.Production;
 import limelight.model.Stage;
+import limelight.model.StylesSource;
 import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.PropProxy;
 import limelight.styles.RichStyle;
@@ -16,7 +17,7 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.Map;
 
-public interface Scene extends Panel, ParentPanel
+public interface Scene extends Panel, ParentPanel, StylesSource
 {
   void setStage(Stage frame);
 

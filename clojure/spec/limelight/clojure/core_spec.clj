@@ -6,7 +6,7 @@
     [speclj.core]
     [limelight.clojure.spec-helper]
     [limelight.clojure.core]
-    [limelight.clojure.prop-building :only (to-props)]
+    [limelight.clojure.prop-building :only (->props)]
     [limelight.clojure.scene :only (new-scene)]
     [limelight.clojure.prop :only (new-prop)]
     [limelight.clojure.production :only (new-production)]
@@ -14,7 +14,7 @@
 
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
-    (add scene (to-props
+    (add scene (->props
                  [[:child {:id "child1"}
                    [:grand-child {:id "grand-child1"}
                     [:great-grand-child {:id "great-grand-child1"}]

@@ -3,6 +3,7 @@
 
 package limelight.model.api;
 
+import limelight.model.StylesSource;
 import limelight.styles.RichStyle;
 
 import java.util.HashMap;
@@ -22,10 +23,6 @@ public class FakeProductionProxy implements ProductionProxy
     return theater;
   }
 
-  public void loadHelper()
-  {
-  }
-
   public void illuminate()
   {
   }
@@ -43,7 +40,7 @@ public class FakeProductionProxy implements ProductionProxy
     return null;
   }
 
-  public Map<String,RichStyle> loadStyles(String scene, Map<String, RichStyle> extendableStyles)
+  public Map<String,RichStyle> loadStyles(StylesSource source, Map<String, RichStyle> extendableStyles)
   {
     return new HashMap<String, RichStyle>();
   }
