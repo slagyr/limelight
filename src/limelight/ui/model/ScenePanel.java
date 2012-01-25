@@ -20,7 +20,7 @@ import java.util.*;
 
 public class ScenePanel extends PropPanel implements Scene
 {
-  private static final Map<String,RichStyle> EMPTY_STYLES = Collections.unmodifiableMap(new HashMap<String, RichStyle>());
+  private static final Map<String, RichStyle> EMPTY_STYLES = Collections.unmodifiableMap(new HashMap<String, RichStyle>());
 
   private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
@@ -97,7 +97,7 @@ public class ScenePanel extends PropPanel implements Scene
     synchronized(panelsNeedingLayout)
     {
       boolean shouldAdd = true;
-      for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext();)
+      for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext(); )
       {
         Panel panel = iterator.next();
         if(child == panel)
@@ -149,7 +149,7 @@ public class ScenePanel extends PropPanel implements Scene
         shouldAdd = false;
       else
       {
-        for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext();)
+        for(Iterator<Rectangle> iterator = dirtyRegions.iterator(); iterator.hasNext(); )
         {
           Rectangle dirtyRegion = iterator.next();
           if(dirtyRegion.contains(region))
@@ -304,6 +304,15 @@ public class ScenePanel extends PropPanel implements Scene
     super.addOptions(newOptions);
   }
 
+  public void partiallyIlluminate()
+  {
+    Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
+
+    illuminateId(illuminateOptions.remove("id"));
+    illuminateName(illuminateOptions.remove("name"));
+    illuminatePlayers(illuminateOptions.remove("players"));
+  }
+
   public void setPlayerRecruiter(PlayerRecruiter playerRecruiter)
   {
     this.playerRecruiter = playerRecruiter;
@@ -336,7 +345,7 @@ public class ScenePanel extends PropPanel implements Scene
 
     public void doLayout(Panel panel)
     {
-      ScenePanel scene = (ScenePanel)panel;
+      ScenePanel scene = (ScenePanel) panel;
       Style style = scene.getStyle();
       final Stage stage = scene.stage;
 

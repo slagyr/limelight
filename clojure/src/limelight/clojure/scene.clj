@@ -69,7 +69,7 @@
     (.addOptions peer (map-for-java options))
     (.setPlayerRecruiter peer player-recruiter)
     (when production (.setProduction peer (._peer production)))
-    (.illuminate peer)
+    (.partiallyIlluminate peer)
     (prepare-ns scene production)
     scene))
 

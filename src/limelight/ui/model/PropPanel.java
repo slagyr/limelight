@@ -29,8 +29,8 @@ import java.util.List;
 
 public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, ChangeablePanel, StyleObserver
 {
-  private static final Map<String, Object> EMPTY_OPTIONS = new EmptyMap<String, Object>();
-  private static final List<Player> EMPTY_PLAYERS = Collections.unmodifiableList(new LinkedList<Player>());
+  protected static final Map<String, Object> EMPTY_OPTIONS = new EmptyMap<String, Object>();
+  protected static final List<Player> EMPTY_PLAYERS = Collections.unmodifiableList(new LinkedList<Player>());
 
   private final PropProxy proxy;
   private String id;
@@ -50,7 +50,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   public boolean borderChanged = true;
   private Painter painter = DefaultPainter.instance;
   private Cursor preHoverCursor;
-  private Map<String, Object> options;
+  protected Map<String, Object> options;
   private List<Player> players;
   public Dimension greediness = new Dimension(0, 0);
 
@@ -375,12 +375,15 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   @Override
   public void illuminate()
   {
+    if(isIlluminated())
+      return;
+
     Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
 
     illuminateId(illuminateOptions.remove("id"));
     illuminateName(illuminateOptions.remove("name"));
-    illuminateStyles(illuminateOptions.remove("styles"));
     illuminatePlayers(illuminateOptions.remove("players"));
+    illuminateStyles(illuminateOptions.remove("styles"));
     illuminateBackstage(illuminateOptions.remove("backstage"));
 
     Options.apply(this, illuminateOptions);
@@ -463,13 +466,13 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   // PRIVATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  private void illuminateName(Object nameObject)
+  protected void illuminateName(Object nameObject)
   {
     if(nameObject != null)
       name = nameObject.toString();
   }
 
-  private void illuminateId(Object idObject)
+  protected void illuminateId(Object idObject)
   {
     if(idObject != null && !idObject.toString().isEmpty())
       id = idObject.toString();
@@ -477,7 +480,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       getRoot().addToIndex(this);
   }
 
-  private void illuminateStyles(Object stylesObject)
+  protected void illuminateStyles(Object stylesObject)
   {
     String allStyles = stylesObject == null ? "" : stylesObject.toString();
 
@@ -510,7 +513,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     }
   }
 
-  private void illuminatePlayers(Object playersObject)
+  protected void illuminatePlayers(Object playersObject)
   {
     ArrayList<String> playerNames = new ArrayList<String>();
     String allPlayers = playersObject == null ? "" : playersObject.toString();
