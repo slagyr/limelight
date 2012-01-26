@@ -44,7 +44,7 @@
 
     (it "has a namespace"
       (should-not= nil (._ns @production))
-      (should= true (.startsWith (.getName (.getName (._ns @production))) "limelight.dynamic.production-")))
+      (should= true (.startsWith (.getName (.getName @(._ns @production))) "limelight.dynamic.production-")))
 
     (unless-headless
 
@@ -96,7 +96,7 @@
         (.illuminate @production)
         (should= 1 (count (actions-for @production (class event))))
         (should-not-throw (.dispatch event (._peer @production)))
-        (should= (keyword name) @(ns-resolve (._ns @production) '*message*))))
+        (should= (keyword name) @(ns-resolve @(._ns @production) '*message*))))
 
     (it "the production events can use helper fns"
       (.createTextFile @fs "/Mock/production.clj" "(def red :red)")
@@ -105,6 +105,7 @@
       (let [peer-prod (peer @production)
             styles (.loadStyles @production peer-prod {})]
         (should= "#ff0000ff" (.getBackgroundColor (.get styles "foo")))))
+
     )
   )
 

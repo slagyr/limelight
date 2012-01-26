@@ -15,15 +15,19 @@
     [limelight.clojure.prop-building]))
 
 (defn- prod-illuminate [production]
-  (let [player-path (resource-path production "production.clj")
+  (when-let [ns @(._ns production)]
+    (remove-ns (.getName ns)))
+  (let [ns (create-ns (gensym "limelight.dynamic.production-"))
+        player-path (resource-path production "production.clj")
         fs (limelight.Context/fs)
         player-src (if (.exists fs player-path) (.readTextFile fs player-path) nil)]
-    (when player-src
-      (binding [*ns* (._ns production)
-                limelight.clojure.production-player/*production* production]
-        (refer 'clojure.core)
-        (refer 'limelight.clojure.core)
-        (refer 'limelight.clojure.production-player)
+    (reset! (._ns production) ns)
+    (binding [*ns* @(._ns production)
+              limelight.clojure.production-player/*production* production]
+      (refer 'clojure.core)
+      (refer 'limelight.clojure.core)
+      (refer 'limelight.clojure.production-player)
+      (when player-src
         (read-src player-path player-src)))))
 
 (defn- prod-load-stages [production]
@@ -52,7 +56,9 @@
         fs (limelight.Context/fs)
         styles-src (if (.exists fs styles-path) (.readTextFile fs styles-path) nil)]
     (if styles-src
-      (build-styles {} styles-src styles-path (._ns production) extendable-styles)
+      (let [ns (._ns (.getProxy source))
+            ns (if (= clojure.lang.Atom (class ns)) @ns ns)]
+        (build-styles {} styles-src styles-path ns extendable-styles))
       {})))
 
 (deftype Production [_peer _theater _ns]
@@ -89,7 +95,7 @@
 
 (defn new-production [peer]
   (let [ns (create-ns (gensym "limelight.dynamic.production-"))
-        production (Production. peer (atom nil) ns)]
+        production (Production. peer (atom nil) (atom ns))]
     (reset! (._theater production) (new-theater (.getTheater peer) production))
     (.setProxy peer production)
     production))

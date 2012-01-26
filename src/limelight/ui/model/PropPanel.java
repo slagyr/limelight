@@ -102,9 +102,8 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   {
     if(verticalScrollbar != null && verticalScrollbar.getAbsoluteBounds().contains(point))
       return verticalScrollbar;
-    else
-      if(horizontalScrollbar != null && horizontalScrollbar.getAbsoluteBounds().contains(point))
-        return horizontalScrollbar;
+    else if(horizontalScrollbar != null && horizontalScrollbar.getAbsoluteBounds().contains(point))
+      return horizontalScrollbar;
 
     return super.getOwnerOfPoint(point);
   }
@@ -379,10 +378,9 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       return;
 
     Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
-
-    illuminateId(illuminateOptions.remove("id"));
-    illuminateName(illuminateOptions.remove("name"));
-    illuminatePlayers(illuminateOptions.remove("players"));
+    if(!illuminateOptions.containsKey("__invigorated__"))
+      invigorate();
+    illuminateOptions.remove("__invigorated__");
     illuminateStyles(illuminateOptions.remove("styles"));
     illuminateBackstage(illuminateOptions.remove("backstage"));
 
@@ -397,6 +395,16 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     options = null;
 
     super.illuminate();
+  }
+
+  public void invigorate()
+  {
+    Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
+
+    illuminateId(illuminateOptions.remove("id"));
+    illuminateName(illuminateOptions.remove("name"));
+    illuminatePlayers(illuminateOptions.remove("players"));
+    addOptions(Opts.with("__invigorated__", true));
   }
 
   @Override
@@ -459,20 +467,20 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     for(Panel panel : getChildren())
     {
       if(panel instanceof PropPanel)
-        ((PropPanel)panel).findByName(name, results);
+        ((PropPanel) panel).findByName(name, results);
     }
   }
 
   // PRIVATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  protected void illuminateName(Object nameObject)
+  private void illuminateName(Object nameObject)
   {
     if(nameObject != null)
       name = nameObject.toString();
   }
 
-  protected void illuminateId(Object idObject)
+  private void illuminateId(Object idObject)
   {
     if(idObject != null && !idObject.toString().isEmpty())
       id = idObject.toString();
@@ -500,9 +508,8 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       RichStyle style = store.get(styleName);
       if(style != null)
         getStyle().addExtension(style);
-      else
-        if(!styleName.equals(name))
-          System.err.println("Prop named '" + name + "' attempting to use missing style '" + styleName + "'"); //TODO - MDM - This should get logged
+      else if(!styleName.equals(name))
+        System.err.println("Prop named '" + name + "' attempting to use missing style '" + styleName + "'"); //TODO - MDM - This should get logged
 
       RichStyle hoverStyle = store.get(styleName + ".hover");
       if(hoverStyle != null)
@@ -513,7 +520,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     }
   }
 
-  protected void illuminatePlayers(Object playersObject)
+  private void illuminatePlayers(Object playersObject)
   {
     ArrayList<String> playerNames = new ArrayList<String>();
     String allPlayers = playersObject == null ? "" : playersObject.toString();
@@ -543,7 +550,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       return;
     if(!(backstageObject instanceof Map))
       throw new LimelightException("backstage must be a map, but is: " + backstageObject.getClass());
-    Map backstage = (Map)backstageObject;
+    Map backstage = (Map) backstageObject;
     getBackstage().inject(backstage);
   }
 
@@ -590,7 +597,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
     public void invoke(Event e)
     {
-      PanelEvent event = (PanelEvent)e;
+      PanelEvent event = (PanelEvent) e;
       if(!(event.getRecipient() instanceof PropPanel))
         return;
 
@@ -599,9 +606,8 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       ScrollBarPanel scrollBar = wheelEvent.isVertical() ? panel.getVerticalScrollbar() : panel.getHorizontalScrollbar();
       if(scrollBar != null)
         scrollBar.setValue(scrollBar.getValue() + wheelEvent.getUnitsToScroll());
-      else
-        if(panel.getParent() != null)
-          event.dispatch(panel.getParent());
+      else if(panel.getParent() != null)
+        event.dispatch(panel.getParent());
     }
   }
 
@@ -611,7 +617,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
     public void invoke(Event e)
     {
-      PanelEvent event = (PanelEvent)e;
+      PanelEvent event = (PanelEvent) e;
       final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getRoot() == null)
         return;
@@ -635,7 +641,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
     public void invoke(Event e)
     {
-      PanelEvent event = (PanelEvent)e;
+      PanelEvent event = (PanelEvent) e;
       final PropPanel panel = (PropPanel) event.getRecipient();
       if(panel.getStyle().hasScreen())
         panel.getStyle().removeScreen();

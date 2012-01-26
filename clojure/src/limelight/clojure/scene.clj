@@ -52,7 +52,7 @@
     (refer 'clojure.core)
     (refer 'limelight.clojure.core)
     (refer 'limelight.clojure.prop-building)
-    (when production (alias 'production (.getName (._ns production))))
+    (when production (alias 'production (.getName @(._ns production))))
     (doseq [player (clj-players scene)] (alias (symbol (._name player)) (.getName (._ns player))))
     ))
 
@@ -69,7 +69,7 @@
     (.addOptions peer (map-for-java options))
     (.setPlayerRecruiter peer player-recruiter)
     (when production (.setProduction peer (._peer production)))
-    (.partiallyIlluminate peer)
+    (.invigorate peer)
     (prepare-ns scene production)
     scene))
 

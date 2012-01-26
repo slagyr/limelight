@@ -304,15 +304,6 @@ public class ScenePanel extends PropPanel implements Scene
     super.addOptions(newOptions);
   }
 
-  public void partiallyIlluminate()
-  {
-    Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
-
-    illuminateId(illuminateOptions.remove("id"));
-    illuminateName(illuminateOptions.remove("name"));
-    illuminatePlayers(illuminateOptions.remove("players"));
-  }
-
   public void setPlayerRecruiter(PlayerRecruiter playerRecruiter)
   {
     this.playerRecruiter = playerRecruiter;

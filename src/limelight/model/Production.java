@@ -180,6 +180,11 @@ public abstract class Production implements StylesSource
     return isLimelightVersionCompatible() || Context.instance().studio.canProceedWithIncompatibleVersion(getName(), getMinimumLimelightVersion());
   }
 
+  public void reIlluminate()
+  {
+    illuminate();
+  }
+
   public void illuminateProduction()
   {
     illuminate();

@@ -55,7 +55,7 @@
       (refer 'clojure.core)
       (refer 'limelight.clojure.player)
       (refer 'limelight.clojure.core)
-      (when production (alias 'production (.getName (._ns production))))
+      (when production (alias 'production (.getName @(._ns production))))
       (doseq [player (clj-players scene)] (alias (symbol (._name player)) (.getName (._ns player))))
       (binding [limelight.clojure.player/*action-cache* @event-actions]
         (read-src player-path player-content)))

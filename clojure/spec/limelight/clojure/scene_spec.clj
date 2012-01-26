@@ -56,13 +56,20 @@
       (.dispatch (limelight.ui.events.panel.SceneOpenedEvent.) (peer @scene))
       (should= :foo @(ns-resolve (._ns (get @(._cast @(._player-recruiter @scene)) "tom")) '*message*)))
 
-    (it "prop ns is used for prop building"
+    (it "scene ns is used for prop building"
       (.createTextFile @fs "/Mock/bill/players/bill.clj" "(defn foo [] :foo)")
       (build @scene "[(bill/foo) {:text (str *ns*)}]")
       (.illuminate (peer @scene))
       (should= 1 (count (children @scene)))
       (should= "foo" (name (first (children @scene))))
       (should= (str (._ns @scene)) (text (first (children @scene)))))
+
+    (it "scene ns is used for style building"
+      (.createTextFile @fs "/Mock/bill/players/bill.clj" "(defn foo [] :blue)")
+      (.createTextFile @fs "/Mock/bill/styles.clj" "[:one :background-color (bill/foo)]")
+      (let [styles (.loadStyles @production (peer @scene) {})
+            style (.get styles "one")]
+        (should= "#0000ffff" (.getBackgroundColor style))))
     )
   )
 
