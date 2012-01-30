@@ -28,7 +28,7 @@
       (refer 'limelight.clojure.core)
       (refer 'limelight.clojure.production-player)
       (when player-src
-        (read-src player-path player-src)))))
+        (read-src production player-path player-src)))))
 
 (defn- prod-load-stages [production]
   (let [stages-path (resource-path production "stages.clj")
@@ -61,7 +61,7 @@
         (build-styles {} styles-src styles-path ns extendable-styles))
       {})))
 
-(deftype Production [_peer _theater _ns]
+(deftype Production [_peer _theater _ns _loader]
 
   limelight.model.api.ProductionProxy
   (send [this name args] nil)
@@ -93,9 +93,25 @@
   (backstage-put [this key value] (.put (.getBackstage _peer) key value))
   )
 
+(defn- ->url [path]
+  (if (.startsWith path "file:")
+    (java.net.URL. path)
+    (java.net.URL. (str "file:" path))))
+
+(defn- create-production-class-loader [path]
+  (let [fs (limelight.Context/fs)
+        root (.absolutePath fs path)
+        urls [(->url (str root "/src/"))]
+        lib-dir (str root "/lib")
+        jars (if (.exists fs lib-dir) (.fileListing fs (str root "/lib")) [])
+        jar-urls (map #(->url (str lib-dir "/" %1)) jars)
+        urls (concat urls jar-urls)]
+    (java.net.URLClassLoader. (into-array java.net.URL urls) (.getContextClassLoader (Thread/currentThread)))))
+
 (defn new-production [peer]
   (let [ns (create-ns (gensym "limelight.dynamic.production-"))
-        production (Production. peer (atom nil) (atom ns))]
+        loader (create-production-class-loader (.getPath peer))
+        production (Production. peer (atom nil) (atom ns) loader)]
     (reset! (._theater production) (new-theater (.getTheater peer) production))
     (.setProxy peer production)
     production))

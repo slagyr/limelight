@@ -5,16 +5,27 @@
   (:import
     [limelight.clojure ProxyMap]))
 
-(defn read-src [src-path src-content]
-  (let [rdr (java.io.StringReader. src-content)
-        parent-path (.parentPath (limelight.Context/fs) src-path)
-        src-filename (.filename (limelight.Context/fs) src-path)]
-    (try
-      (clojure.lang.Compiler/load rdr parent-path src-filename)
-      (catch java.lang.Exception e
-        (if-let [cause (.getCause e)]
-          (throw (limelight.LimelightException. (str "Failed to read src: " src-path "\n\t<- " (.getMessage e)) cause))
-          (throw (limelight.LimelightException. (str "Failed to read src: " src-path) e)))))))
+(defn- read-error [src-path e]
+  (if-let [cause (.getCause e)]
+    (throw (limelight.LimelightException. (str "Failed to read src: " src-path "\n\t<- " (.getMessage e)) cause))
+    (throw (limelight.LimelightException. (str "Failed to read src: " src-path) e))))
+
+(defn read-src
+  ([src-path src-content]
+    (let [rdr (java.io.StringReader. src-content)
+          parent-path (.parentPath (limelight.Context/fs) src-path)
+          src-filename (.filename (limelight.Context/fs) src-path)]
+      (try
+        (clojure.lang.Compiler/load rdr parent-path src-filename)
+        (catch java.lang.Exception e (read-error src-path e)))))
+  ([production src-path src-content]
+    (let [original-loader (.getContextClassLoader (Thread/currentThread))
+          production-loader (._loader production)]
+      (try
+        (.setContextClassLoader (Thread/currentThread) production-loader)
+        (binding [*use-context-classloader* true]
+          (read-src src-path src-content))
+        (finally (.setContextClassLoader (Thread/currentThread) original-loader))))))
 
 (defn map-for-clojure [the-map]
   (cond

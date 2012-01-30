@@ -7,7 +7,7 @@ $LIMELIGHT_HOME = File.expand_path(File.join($LIMELIGHT_LIB, "..", ".."))
 
 require 'java'
 require 'limelight.jar'
-require 'ruby-limelight-java.jar'
+require 'limelight-rb.jar'
 
 context = Java::limelight.Context.instance
 context.castingDirector = Java::limelight.model.CastingDirector.new

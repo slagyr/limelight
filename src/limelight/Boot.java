@@ -8,6 +8,7 @@ import limelight.background.AnimationLoop;
 import limelight.background.CacheCleanerLoop;
 import limelight.background.PanelPainterLoop;
 import limelight.caching.TimedCache;
+import limelight.io.Data;
 import limelight.io.FileSystem;
 import limelight.io.TempDirectory;
 import limelight.model.CastingDirector;
@@ -32,7 +33,8 @@ public class Boot
   public static final Opts defaultOptions = Opts.with(
     "start-background-threads", true,
     "environment", "production",
-    "file-system", new FileSystem()
+    "file-system", new FileSystem(),
+    "log-to-file", null
   );
 
   public static void reset()
@@ -64,6 +66,7 @@ public class Boot
     {
       Context context = Context.instance();
       configureOS(context);
+      configureLogger(options);
       configureContext(options, context);
       configureSystemProperties(context);
 
@@ -75,6 +78,13 @@ public class Boot
     {
       throw new LimelightException(e);
     }
+  }
+
+  private static void configureLogger(Opts options)
+  {
+    final Object logToFile = options.get("log-to-file");
+    if(logToFile != null && logToFile != Boolean.FALSE)
+      Log.setLogFile(Data.logFile());
   }
 
   public static void configureSystemProperties(Context context)

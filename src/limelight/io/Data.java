@@ -11,12 +11,14 @@ public class Data
   private static String root;
   private static String downloadsDir;
   private static String productionsDir;
+  private static String logFile;
 
   public static void reset()
   {
     root = null;
     downloadsDir = null;
     productionsDir = null;
+    logFile = null;
   }
 
   public static String getRoot()
@@ -38,6 +40,13 @@ public class Data
     if(productionsDir == null)
       productionsDir = Context.fs().join(getRoot(), "Productions");
     return productionsDir;
+  }
+
+  public static String logFile()
+  {
+    if(logFile == null)
+      logFile = Context.fs().join(getRoot(), "log.txt");
+    return logFile;
   }
 
   public static void establishDirs()

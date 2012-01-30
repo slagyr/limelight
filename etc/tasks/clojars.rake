@@ -36,8 +36,14 @@ POM
   end
 
   desc "Push limelight.jar to clojars"
-  task :push => %{pom} do
+  task :push => %w{pom} do
     run_command "scp pom.xml limelight.jar clojars@clojars.org:"
+  end
+
+  desc "Deploy limelight.jar locally"
+  task :deploy => %w{} do
+    version = limelight_version
+    run_command "mvn install:install-file -DgroupId=limelight -DartifactId=limelight -Dpackaging=jar -Dversion=#{version} -Dfile=limelight.jar -DgeneratePom=true"
   end
 
 end

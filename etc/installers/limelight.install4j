@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="4.2.2" transformSequenceNumber="2">
-  <directoryPresets config="./images" />
-  <application name="Limelight" distributionSourceDir="" applicationId="7235-6226-7889-3305" mediaDir="." mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="true" excludeSignedFromPacking="true" keepModificationTimes="true" missingFilesStrategy="warn" shortName="Limelight" publisher="8th Light, Inc." publisherWeb="http://limelight.8thlight.com" version="0.5.5" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.5" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+<install4j version="4.2.8" transformSequenceNumber="2">
+  <directoryPresets config="../../ruby" />
+  <application name="Limelight" distributionSourceDir="" applicationId="7235-6226-7889-3305" mediaDir="." mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="true" excludeSignedFromPacking="true" keepModificationTimes="true" missingFilesStrategy="warn" shortName="Limelight" publisher="8th Light, Inc." publisherWeb="http://limelight.8thlight.com" version="0.6.12" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.5" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
       <additionalLanguages />
@@ -17,33 +17,34 @@
     <filesets />
     <roots />
     <mountPoints>
-      <mountPoint id="20" root="" location="productions" mode="755" />
-      <mountPoint id="21" root="" location="bin" mode="755" />
-      <mountPoint id="22" root="" location="lib" mode="755" />
       <mountPoint id="17" root="" location="" mode="755" />
+      <mountPoint id="133" root="" location="clojure" mode="755" />
+      <mountPoint id="134" root="" location="ruby" mode="755" />
+      <mountPoint id="137" root="" location="ruby/lib" mode="755" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="20" file="../../productions" overwrite="4" shared="false" mode="644" uninstallMode="0" excludeSuffixes="*.DS_Store, *.git*" dirMode="755">
-        <exclude />
-      </dirEntry>
-      <dirEntry mountPoint="21" file="../../bin" overwrite="4" shared="false" mode="644" uninstallMode="0" excludeSuffixes=".DS_Store, *.git*" dirMode="755">
-        <exclude />
-      </dirEntry>
-      <dirEntry mountPoint="22" file="../../lib" overwrite="4" shared="false" mode="644" uninstallMode="0" excludeSuffixes="*.git*, *.DS_Store*" dirMode="755">
+      <fileEntry mountPoint="17" file="../../LICENSE" overwrite="2" shared="false" mode="644" uninstallMode="2" />
+      <fileEntry mountPoint="17" file="../../limelight.jar" overwrite="2" shared="false" mode="644" uninstallMode="2" />
+      <fileEntry mountPoint="133" file="../../clojure/limelight-clj-0.6.14.jar" overwrite="2" shared="false" mode="644" uninstallMode="2" />
+      <fileEntry mountPoint="133" file="../../clojure/lib/clojure-1.2.1.jar" overwrite="2" shared="false" mode="644" uninstallMode="2" />
+      <fileEntry mountPoint="134" file="../../ruby/lib/jruby-complete-1.6.4.jar" overwrite="2" shared="false" mode="644" uninstallMode="2" />
+      <dirEntry mountPoint="137" file="../../ruby/lib" overwrite="2" shared="false" mode="644" uninstallMode="2" excludeSuffixes="" dirMode="755">
         <exclude>
-          <entry location=".DS_Store" fileType="regular" />
-          <entry location=".gitignore" fileType="regular" />
-          <entry location="junit-4.4.jar" fileType="regular" />
+          <entry location="dev" fileType="regular" />
+          <entry location="jruby-complete-1.6.4.jar" fileType="regular" />
+          <entry location="limelight-rb.jar" fileType="regular" />
+          <entry location="limelight.rb" fileType="regular" />
+          <entry location="ruby-limelight-java.jar" fileType="regular" />
         </exclude>
       </dirEntry>
-      <fileEntry mountPoint="17" file="../../license.txt" overwrite="4" shared="false" mode="755" uninstallMode="0" />
+      <fileEntry mountPoint="137" file="../../ruby/lib/limelight-rb.jar" overwrite="2" shared="false" mode="644" uninstallMode="2" />
     </entries>
     <components />
   </files>
   <launchers>
     <launcher name="limelight" id="18" external="false" excludeFromMenu="false" menuName="" icnsFile="./images/limelight.icns" pngIcon16File="./images/icon_16x16.png" pngIcon32File="./images/icon_32x32.png" macServiceDependencies="" swtApp="false" fileset="">
-      <executable name="Limelight" type="1" iconSet="true" iconFile="./images/icon.ico" executableDir="" redirectStderr="true" stderrFile="error.log" redirectStdout="false" stdoutFile="output.log" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false">
-        <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" />
+      <executable name="Limelight" type="1" iconSet="true" iconFile="./images/icon.ico" executableDir="" redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
+        <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>
       <splashScreen show="true" autoOff="true" alwaysOnTop="true" width="0" height="0" bitmapFile="./images/splash.png" java6SplashScreen="false">
         <text>
@@ -51,10 +52,13 @@
           <versionLine x="20" y="40" text="version ${compiler:sys.version}" font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
         </text>
       </splashScreen>
-      <java mainClass="limelight.Main" vmParameters="&quot;-Dlimelight.home=${launcher:sys.launcherDirectory}&quot; -Dlimelight.as.app=true" arguments="" allowVMPassthroughParameters="true" preferredVM="">
+      <java mainClass="limelight.AppMain" vmParameters="&quot;-Dlimelight.home=${launcher:sys.launcherDirectory}&quot;" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
         <classPath>
-          <archive location="lib/limelight.jar" failOnError="false" />
-          <archive location="lib/jruby-complete-1.4.0.jar" failOnError="false" />
+          <archive location="limelight.jar" failOnError="false" />
+          <archive location="clojure/clojure-1.2.1.jar" failOnError="false" />
+          <archive location="clojure/limelight-clj-0.6.14.jar" failOnError="false" />
+          <archive location="ruby/jruby-complete-1.6.4.jar" failOnError="false" />
+          <archive location="ruby/limelight-rb.jar" failOnError="false" />
         </classPath>
         <nativeLibraryDirectories />
       </java>
@@ -402,7 +406,7 @@
     </applications>
   </installerGui>
   <mediaSets>
-    <win32 name="Windows" id="24" mediaFileName="" installDir="Limelight" overridePrincipalLanguage="false" requires64bit="false" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreFtpURL="" jreShared="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
+    <win32 name="Windows" id="24" mediaFileName="" installDir="Limelight" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreFtpURL="" jreShared="false" directDownload="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
       <excludedLaunchers />
       <excludedComponents />
       <excludedBeans />
@@ -410,7 +414,7 @@
       <exclude />
       <variables />
     </win32>
-    <macos name="Mac OS X Single Bundle" id="25" mediaFileName="" installDir="Limelight" overridePrincipalLanguage="false" requires64bit="false" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" launcherId="18">
+    <macos name="Mac OS X Single Bundle" id="25" mediaFileName="" installDir="Limelight" overridePrincipalLanguage="false" requires64bit="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" launcherId="18">
       <excludedComponents />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />

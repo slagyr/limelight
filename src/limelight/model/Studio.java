@@ -65,7 +65,7 @@ public class Studio
     }
     catch(Exception e)
     {
-      Log.warn("Studio - failed to open production", e);
+      Log.warn("Studio - failed to open production: " + productionPath, e);
       alert(e);
       shutdownIfEmpty();
       return null;
@@ -83,8 +83,8 @@ public class Studio
     }
     catch(Exception e)
     {
-      e.printStackTrace();
-      throw new RuntimeException();
+      Log.warn("Studio - failed to instantiate production: " + productionPath, e);
+      throw new RuntimeException(e);
     }
   }
 

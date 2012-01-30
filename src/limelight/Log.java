@@ -3,6 +3,9 @@
 
 package limelight;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.*;
 
 public class Log
@@ -10,6 +13,7 @@ public class Log
   public static final Level DEBUG = new CustomLogLevel("DEBUG", Level.CONFIG.intValue() - 50);
   public static final Level defaultLevel = Level.WARNING;
   public static final Handler stderrHandler = new ConsoleHandler();
+  public static FileHandler fileHandler;
   public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).getParent();
 
   static {
@@ -36,6 +40,23 @@ public class Log
   {
     for(Handler h : logger.getHandlers())
       logger.removeHandler(h);
+  }
+
+  public static void setLogFile(String filePath)
+  {
+    try
+    {
+      fileHandler = new FileHandler(filePath);
+      fileHandler.setFormatter(new LimelightFormatter());
+      fileHandler.setLevel(logger.getLevel());
+      logger.addHandler(fileHandler);
+      logger.removeHandler(stderrHandler);
+      Log.info("Logging to file: " + filePath);
+    }
+    catch(IOException e)
+    {
+      throw new LimelightException("Failed to set log file: " + filePath, e);
+    }
   }
 
   public static void stderrOn()
@@ -95,6 +116,7 @@ public class Log
   public static void severe(String message, Throwable e)
   {
     logger.log(Level.SEVERE, message, e);
+    logError(Level.SEVERE, e);
   }
 
   public static void warn(String message)
@@ -104,7 +126,17 @@ public class Log
 
   public static void warn(String message, Throwable e)
   {
-    logger.log(Level.WARNING, message, e);
+    logger.log(Level.WARNING, message);
+    logError(Level.WARNING, e);
+  }
+
+  private static void logError(Level level, Throwable e)
+  {
+    final ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+    final PrintStream buffer = new PrintStream(byteBuffer);
+    e.printStackTrace(buffer);
+    buffer.close();
+    logger.log(level, byteBuffer.toString());
   }
 
   public static void info(String message)

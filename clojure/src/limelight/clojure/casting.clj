@@ -58,7 +58,7 @@
       (when production (alias 'production (.getName @(._ns production))))
       (doseq [player (clj-players scene)] (alias (symbol (._name player)) (.getName (._ns player))))
       (binding [limelight.clojure.player/*action-cache* @event-actions]
-        (read-src player-path player-content)))
+        (read-src production player-path player-content)))
     (swap! (._cast recruiter) #(assoc % player-name player))
     player))
 

@@ -3,7 +3,7 @@ require 'rake/dsl_definition'
 load File.expand_path(File.dirname(__FILE__) + "/../etc/tasks/_common.rake")
 
 #require File.expand_path(File.dirname(__FILE__) + "/lib/limelight.jar")
-#require File.expand_path(File.dirname(__FILE__) + "/lib/ruby-limelight-java.jar")
+#require File.expand_path(File.dirname(__FILE__) + "/lib/limelight-rb.jar")
 #require File.expand_path(File.dirname(__FILE__) + "/lib/limelight/limelight_init")
 
 RUBY_ROOT = File.expand_path(File.dirname(__FILE__))
@@ -61,7 +61,7 @@ desc "Build a jar file with the limelight src"
 task "jar" => %w{clean compile} do
   in_dir("classes") do
     with_tmp_file("../.manifest", ["Built-By: Micah Martin", ""]) do
-      run_command "jar -cfm #{RUBY_ROOT}/lib/ruby-limelight-java.jar ../.manifest *"
+      run_command "jar -cfm #{RUBY_ROOT}/lib/limelight-rb.jar ../.manifest *"
     end
   end
 end

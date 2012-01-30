@@ -19,7 +19,7 @@ public class AppMain
   {
     try
     {
-      Boot.boot();
+      Boot.boot("log-to-file", true);
 
       if(args.length > 0 && startupProductionPath == null)
         startupProductionPath = args[0];

@@ -24,7 +24,7 @@
     (should (isa? Production limelight.model.api.ProductionProxy)))
 
   (it "can be contructed"
-    (let [production (Production. :peer :theater nil)]
+    (let [production (Production. :peer :theater nil nil)]
       (should= :peer (._peer production))
       (should= :theater (._theater production))))
 
@@ -45,6 +45,17 @@
     (it "has a namespace"
       (should-not= nil (._ns @production))
       (should= true (.startsWith (.getName (.getName @(._ns @production))) "limelight.dynamic.production-")))
+
+    (it "has a class loader"
+      (.createTextFile @fs "/Mock/lib/foo.jar" "foo")
+      (.createTextFile @fs "/Mock/lib/bar.jar" "bar")
+      (let [loader (._loader @production)
+            urls (seq (.getURLs loader))]
+        (should-not= nil loader)
+        (should= 3 (count urls))
+        (should= "file:/Mock/src/" (str (first urls)))
+        (should= "file:/Mock/lib/bar.jar" (str (second urls)))
+        (should= "file:/Mock/lib/foo.jar" (str (nth urls 2)))))
 
     (unless-headless
 

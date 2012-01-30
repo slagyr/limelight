@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.logging.Handler;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class LogTest
 {
@@ -18,9 +19,9 @@ public class LogTest
   @Test
   public void stderrHandler() throws Exception
   {
-    assertEquals(false, hashHandler(Log.stderrHandler));
+    assertEquals(false, hasHandler(Log.stderrHandler));
     Log.stderrOn();
-    assertEquals(true, hashHandler(Log.stderrHandler));
+    assertEquals(true, hasHandler(Log.stderrHandler));
   }
 
   @Test
@@ -32,7 +33,7 @@ public class LogTest
     assertEquals(0, Log.logger.getHandlers().length);
   }
 
-  private boolean hashHandler(Handler desired)
+  private boolean hasHandler(Handler desired)
   {
     boolean found = false;
     for(Handler handler : Log.logger.getHandlers())
@@ -61,5 +62,15 @@ public class LogTest
     String level = null;
     Log.setLevel(level);
     assertEquals("OFF", Log.getLevelName());
+  }
+
+  @Test
+  public void settingLogFile() throws Exception
+  {
+    Log.setLogFile("/tmp/foo");
+    assertNotNull(Log.fileHandler);
+    assertEquals(true, hasHandler(Log.fileHandler));
+    assertEquals(false, hasHandler(Log.stderrHandler));
+    assertEquals(Log.stderrHandler.getFormatter().getClass(), Log.fileHandler.getFormatter().getClass());
   }
 }
