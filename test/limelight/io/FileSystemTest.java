@@ -21,12 +21,16 @@ public class FileSystemTest
   private FileSystem fs;
   private String tmpDir;
   private String jarPath;
+  public String osRoot;
+  public String SLASH;
 
   @Before
   public void setUp() throws Exception
   {
     fs = new FileSystem();
     jarPath = "jar:" + TestUtil.dataDirPath("calc.jar!");
+    osRoot = new File("/").getAbsolutePath();
+    SLASH = fs.separator();
   }
 
   @After
@@ -41,12 +45,6 @@ public class FileSystemTest
     tmpDir = fs.join(System.getProperty("java.io.tmpdir"), "fstest");
     fs.createDirectory(tmpDir);
   }
-
-  @Test
-  public void buildPathEmpty() throws Exception
-	{
-		assertEquals("", fs.join());
-	}
 
   @Test
 	public void buildPathOneElement() throws Exception
@@ -65,8 +63,8 @@ public class FileSystemTest
   public void baseName() throws Exception
   {
     assertEquals("foo", fs.baseName("foo"));
-    assertEquals("foo", fs.baseName("bar/foo"));
-    assertEquals("foo", fs.baseName("bar/foo.txt"));
+    assertEquals("foo", fs.baseName(fs.join("bar", "foo")));
+    assertEquals("foo", fs.baseName(fs.join("bar", "foo.txt")));
   }
 
   @Test
@@ -74,11 +72,11 @@ public class FileSystemTest
   {
     assertEquals("/", fs.filename("/"));
     assertEquals("C:\\", fs.filename("C:\\"));
-    assertEquals("one", fs.filename("/one"));
-    assertEquals("two", fs.filename("/one/two"));
-    assertEquals("two", fs.filename("one/two"));
-    assertEquals("two.txt", fs.filename("one/two.txt"));
-    assertEquals("two", fs.filename("one/two/"));
+    assertEquals("one", fs.filename(SLASH + "one"));
+    assertEquals("two", fs.filename(SLASH + "one" + SLASH + "two"));
+    assertEquals("two", fs.filename(fs.join("one", "two")));
+    assertEquals("two.txt", fs.filename(fs.join("one", "two.txt")));
+    assertEquals("two", fs.filename("one" + SLASH + "two" + SLASH));
   }
 
   @Test
@@ -189,7 +187,9 @@ public class FileSystemTest
   @Test
   public void fileListingWithJarProtocol() throws Exception
   {
-    assertArrayEquals(new String[]{"players", "props.xml", "styles.xml"}, fs.fileListing(jarPath + "/calculator.java/main"));
+    final String path = jarPath + "/calculator.java/main";
+    final String[] children = fs.fileListing(path);
+    assertArrayEquals(new String[]{"players", "props.xml", "styles.xml"}, children);
   }
 
   @Test
@@ -207,7 +207,7 @@ public class FileSystemTest
   public void modificationTimeWithFileProtocol() throws Exception
   {
     withTmpDir();
-    final String path = fs.join("file:" + tmpDir, "file.txt");
+    final String path = new File(tmpDir).toURI().toString() + "/file.txt";
     fs.createTextFile(path, "blah");
 
     final long millisSinceModified = System.currentTimeMillis() - fs.modificationTime(path);
@@ -243,10 +243,14 @@ public class FileSystemTest
   @Test
   public void isAbsolute() throws Exception
   {
+    assertEquals(true, fs.isAbsolute("file:C:/"));
     assertEquals(true, fs.isAbsolute("file:/"));
     assertEquals(true, fs.isAbsolute("file:/foo"));
+    assertEquals(true, fs.isAbsolute("file:C:/foo"));
     assertEquals(true, fs.isAbsolute("jar:file:/foo.jar!/bar"));
-    assertEquals(false, fs.isAbsolute("/foo"));
+    assertEquals(true, fs.isAbsolute("jar:file:C:/foo.jar!/bar"));
+    assertEquals(true, fs.isAbsolute("/foo"));
+    assertEquals(true, fs.isAbsolute("C:\\foo"));
     assertEquals(false, fs.isAbsolute("foo"));
     assertEquals(false, fs.isAbsolute("../foo"));
   }
@@ -265,14 +269,15 @@ public class FileSystemTest
   @Test
   public void parentPath() throws Exception
   {
-    assertEquals("/", fs.parentPath("/"));
+    assertEquals(osRoot, fs.parentPath("/"));
+    assertEquals(osRoot, fs.parentPath(SLASH));
     assertEquals(fs.workingDir(), fs.parentPath("foo"));
-    assertEquals("/", fs.parentPath("/foo"));
-    assertEquals("/", fs.parentPath("/foo"));
-    assertEquals("/foo", fs.parentPath("/foo/bar"));
-    assertEquals("file:/foo", fs.parentPath("file:/foo/bar"));
-    assertEquals("file:/", fs.parentPath("file:/foo"));
-    assertEquals("jar:file:/foo!/", fs.parentPath("jar:file:/foo!/bar"));
+    assertEquals(SLASH, fs.parentPath("/foo"));
+    assertEquals(SLASH, fs.parentPath(SLASH + "foo"));
+    assertEquals(SLASH + "foo", fs.parentPath(SLASH + "foo" + SLASH + "bar"));
+    assertEquals("file:" + osRoot + "foo", fs.parentPath("file:" + osRoot + "foo" + SLASH + "bar"));
+    assertEquals("file:" + osRoot, fs.parentPath("file:" + osRoot + "foo"));
+    assertEquals("jar:file:" + osRoot + "foo!" + SLASH, fs.parentPath("jar:file:" + osRoot + "foo!" + SLASH + "bar"));
   }
 
   @Test

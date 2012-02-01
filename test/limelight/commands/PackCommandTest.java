@@ -3,6 +3,7 @@
 
 package limelight.commands;
 
+import limelight.io.FakeFileSystem;
 import limelight.io.MockPacker;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ public class PackCommandTest
   @Before
   public void setUp() throws Exception
   {
+    FakeFileSystem.installed();
     command = new PackCommand();
     packer = new MockPacker();
     command.setPacker(packer);

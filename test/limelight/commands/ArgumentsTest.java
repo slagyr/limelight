@@ -3,6 +3,7 @@
 
 package limelight.commands;
 
+import limelight.util.Util;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -287,11 +288,11 @@ public class ArgumentsTest
     assertEquals("", args.parametersString());
 
     args.addParameter("foo", "Foo Param");
-    assertEquals("  foo  Foo Param\n", args.parametersString());
+    assertEquals("  foo  Foo Param" + Util.ENDL, args.parametersString());
 
     args.addParameter("fizz", "Fizz Param");
-    assertEquals("  foo   Foo Param\n" +
-                 "  fizz  Fizz Param\n", args.parametersString());
+    assertEquals("  foo   Foo Param" + Util.ENDL +
+                 "  fizz  Fizz Param" + Util.ENDL, args.parametersString());
   }
 
   @Test
@@ -300,11 +301,11 @@ public class ArgumentsTest
     assertEquals("", args.optionsString());
 
     args.addSwitchOption("a", "a-option", "Option A");
-    assertEquals("  -a, --a-option  Option A\n", args.optionsString());
+    assertEquals("  -a, --a-option  Option A" + Util.ENDL, args.optionsString());
 
     args.addValueOption("b", "b-option", "value", "Option B");
-    final String expected = "  -a, --a-option          Option A\n" +
-                            "  -b, --b-option=<value>  Option B\n";
+    final String expected = "  -a, --a-option          Option A" + Util.ENDL + 
+                            "  -b, --b-option=<value>  Option B" + Util.ENDL;
 
     assertEquals(expected, args.optionsString());
   }
