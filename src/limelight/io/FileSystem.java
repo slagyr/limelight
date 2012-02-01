@@ -19,7 +19,7 @@ import java.util.zip.ZipFile;
 
 public class FileSystem
 {
-  public static final Pattern WinDrive = Pattern.compile("[A-Z]\\:\\\\");
+  public static final Pattern WinDrive = Pattern.compile("[A-Z]\\:(\\\\|/)");
 
   protected String separator = System.getProperty("file.separator");
   protected boolean windows = System.getProperty("os.name").toLowerCase().contains("windows");
@@ -106,11 +106,7 @@ public class FileSystem
 
   public String parentPath(String path)
   {
-    final String parent = resolve(path).parentPath();
-    if(isAbsolute(path))
-      return absolutePath(parent);
-    else
-      return parent;
+    return resolve(path).parentPath();
   }
 
   public boolean isAbsolute(String path)
@@ -132,13 +128,14 @@ public class FileSystem
     String commonParent = absoluteOrigin;
     while(!absoluteTarget.startsWith(commonParent))
     {
-      path += ".." + separator();
+      path += ".." + "/";
       commonParent = parentPath(commonParent);
       if(isRoot(commonParent))
         break;
     }
-    final String result = path + absoluteTarget.substring(commonParent.length());
-    return result.startsWith(separator()) ? result.substring(1) : result;
+    String result = path + absoluteTarget.substring(commonParent.length());
+    result = result.startsWith("/") ? result.substring(1) : result;
+    return removeDuplicateSeprators(result.replace("/", separator()));
   }
 
   // UTILITY  METHODS --------------------------------------------------------------------------------------------------
@@ -150,12 +147,12 @@ public class FileSystem
 
   public String homeDir()
   {
-    return System.getProperty("user.home");
+    return absolutePath(System.getProperty("user.home"));
   }
 
   public String workingDir()
   {
-    return System.getProperty("user.dir");
+    return absolutePath(System.getProperty("user.dir"));
   }
 
   public String join(String root, String... parts)
@@ -165,7 +162,7 @@ public class FileSystem
     else if(isAbsolute(root))
       return removeDuplicateSeprators(root + "/" + StringUtil.join("/", (Object[]) parts));
     else
-      return removeDuplicateSeprators(root + separator + StringUtil.join(separator, (Object[]) parts));
+      return join(absolutePath(root), (String[]) parts);
   }
 
   public String baseName(String path)
@@ -191,11 +188,12 @@ public class FileSystem
 
   public String filename(String path)
   {
-    if(windows ? WinDrive.matcher(path).matches() : "/".equals(path))
+    if((windows && WinDrive.matcher(path).matches()) || "/".equals(path))
       return path;
-    if(path.endsWith(separator))
-      path = path.substring(0, path.length() - separator.length());
-    final int lastSeparator = path.lastIndexOf(separator);
+    path = path.replace(separator, "/");
+    if(path.endsWith("/"))
+      path = path.substring(0, path.length() - 1);
+    final int lastSeparator = path.lastIndexOf("/");
     if(lastSeparator == -1)
       return path;
     return path.substring(lastSeparator + 1);
@@ -414,10 +412,16 @@ public class FileSystem
 
     public String parentPath()
     {
-      final File parentFile = file().getParentFile();
-      if(parentFile != null)
-        return parentFile.toURI().toString();
-      return null;
+      String path = uri.toString();
+      if("file:/".equals(path) || WinDrive.matcher(path.substring(6)).matches())
+        return path;
+      final int lastSlashIndex = path.lastIndexOf("/");
+      if(lastSlashIndex == 8 && WinDrive.matcher(path.substring(6, 9)).matches())
+        return path.substring(0, lastSlashIndex + 1);
+      else if(lastSlashIndex == 5)
+        return "file:/";
+      else
+        return path.substring(0, lastSlashIndex);
     }
 
     public boolean isAbsolute()
@@ -447,16 +451,11 @@ public class FileSystem
 
     public String parentPath()
     {
-      final String parentPath = file().getParent();
-      if(parentPath == null)
-      {
-        final String absoluteParentPath = file().getAbsoluteFile().getParent();
-        if(absoluteParentPath == null)
-          return file().getAbsolutePath();
-        else
-          return absoluteParentPath;
-      }
-      return parentPath;
+      final File parent = file().getAbsoluteFile().getParentFile();
+      if(parent != null)
+        return parent.toURI().toString();
+      else
+        return getAbsolutePath();
     }
 
     public boolean isAbsolute()

@@ -55,8 +55,7 @@ public class FileSystemTest
   @Test
   public void buildPathThreeElements() throws Exception
   {
-    String separator = System.getProperty("file.separator");
-    assertEquals("a" + separator + "b" + separator + "c", fs.join("a", "b", "c"));
+    assertEquals(fs.absolutePath("a") + "/b/c", fs.join("a", "b", "c"));
   }
 
   @Test
@@ -94,11 +93,12 @@ public class FileSystemTest
   public void canTellFileExistsUsingFileProtocol() throws Exception
   {
     withTmpDir();
-    assertEquals(false, fs.exists("file:" + tmpDir + "/file.txt"));
+    final String file = fs.join(tmpDir, "file.txt");
+    assertEquals(false, fs.exists(file));
 
-    fs.createTextFile(tmpDir + "/file.txt", "some text");
+    fs.createTextFile(file, "some text");
 
-    assertEquals(true, fs.exists("file:" + tmpDir + "/file.txt"));
+    assertEquals(true, fs.exists(file));
   }
 
   @Test
@@ -123,7 +123,7 @@ public class FileSystemTest
   public void createDirectoryWithFileProtocol() throws Exception
   {
     withTmpDir();
-    final String dir2 = fs.join("file:" + tmpDir, "newDir2");
+    final String dir2 = fs.join(tmpDir, "newDir2");
     fs.createDirectory(dir2);
     assertEquals(true, fs.exists(dir2));
     assertEquals(true, fs.isDirectory(dir2));
@@ -153,7 +153,7 @@ public class FileSystemTest
   public void canReadAndWriteUsingFileProtocol() throws Exception
   {
     withTmpDir();
-    final String path = fs.join("file:" + tmpDir, "file.txt");
+    final String path = fs.join(tmpDir, "file.txt");
 
     fs.createTextFile(path, "I'm looking for a safe house.");
 
@@ -179,9 +179,9 @@ public class FileSystemTest
   public void fileListingWithFileProtocol() throws Exception
   {
     withTmpDir();
-    assertArrayEquals(new String[0], fs.fileListing("file:" + tmpDir));
-    fs.createTextFile(fs.join("file:" + tmpDir, "file.txt"), "blah");
-    assertArrayEquals(new String[]{"file.txt"}, fs.fileListing("file:" + tmpDir));
+    assertArrayEquals(new String[0], fs.fileListing(tmpDir));
+    fs.createTextFile(fs.join(tmpDir, "file.txt"), "blah");
+    assertArrayEquals(new String[]{"file.txt"}, fs.fileListing(tmpDir));
   }
 
   @Test
@@ -279,14 +279,14 @@ public class FileSystemTest
   {
     if(fs.windows)
     {
-      assertEquals("file:C:/", fs.parentPath("C:/"));
+      assertEquals("file:/C:/", fs.parentPath("C:/"));
       assertEquals(fs.workingDir(), fs.parentPath("foo"));
-      assertEquals("file:C:/", fs.parentPath("C:/foo"));
-      assertEquals("file:C:/", fs.parentPath("C:/foo"));
-      assertEquals("file:C:/foo", fs.parentPath("C:/foo/bar"));
-      assertEquals("file:C:/foo", fs.parentPath("file:C:/foo/bar"));
-      assertEquals("file:C:/", fs.parentPath("file:C:/foo"));
-      assertEquals("jar:file:C:/foo!/", fs.parentPath("jar:file:C:/foo!/bar"));
+      assertEquals("file:/C:/", fs.parentPath("C:/foo"));
+      assertEquals("file:/C:/", fs.parentPath("C:/foo"));
+      assertEquals("file:/C:/foo", fs.parentPath("C:/foo/bar"));
+      assertEquals("file:/C:/foo", fs.parentPath("file:/C:/foo/bar"));
+      assertEquals("file:/C:/", fs.parentPath("file:/C:/foo"));
+      assertEquals("jar:file:/C:/foo!/", fs.parentPath("jar:file:/C:/foo!/bar"));
     }
     else
     {
@@ -314,9 +314,9 @@ public class FileSystemTest
     assertEquals(".", fs.relativePathBetween("file:/", "file:/"));
     assertEquals(".", fs.relativePathBetween("file:/origin", "file:/origin"));
     assertEquals("target", fs.relativePathBetween("file:/", "file:/target"));
-    assertEquals("../target", fs.relativePathBetween("file:/origin", "file:/target"));
-    assertEquals("../../target", fs.relativePathBetween("file:/origin/child", "file:/target"));
-    assertEquals("child/target", fs.relativePathBetween("file:/origin", "file:/origin/child/target"));
+    assertEquals(".." + fs.separator() + "target", fs.relativePathBetween("file:/origin", "file:/target"));
+    assertEquals(".." + fs.separator() + ".." + fs.separator() + "target", fs.relativePathBetween("file:/origin/child", "file:/target"));
+    assertEquals("child" + fs.separator() + "target", fs.relativePathBetween("file:/origin", "file:/origin/child/target"));
   }
 
   @Test
@@ -325,6 +325,7 @@ public class FileSystemTest
     final FakeFileSystem fake = new FakeFileSystem();
     fake.setWorkingDirectory("/working/dir");
     fs = fake;
+    assertEquals("../dir/target", fs.relativePathBetween("/working/foo", "target"));
     assertEquals("../working/dir/target", fs.relativePathBetween("/origin", "target"));
     assertEquals("child", fs.relativePathBetween("origin", "origin/child"));
   }
