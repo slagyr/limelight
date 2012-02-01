@@ -30,7 +30,6 @@ public class Downloader
 
   public Downloader()
   {
-    Data.establishDirs();
     destinationRoot = Data.downloadsDir();
   }
 

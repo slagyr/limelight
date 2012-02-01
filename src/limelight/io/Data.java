@@ -24,21 +24,33 @@ public class Data
   public static String getRoot()
   {
     if(root == null)
+    {
       root = Context.instance().os.dataRoot();
+      if(!Context.fs().exists(root))
+        Context.fs().createDirectory(root);
+    }
     return root;
   }
 
   public static String downloadsDir()
   {
     if(downloadsDir == null)
+    {
       downloadsDir = Context.fs().join(getRoot(), "Downloads");
+      if(!Context.fs().exists(downloadsDir))
+        Context.fs().createDirectory(downloadsDir);
+    }
     return downloadsDir;
   }
 
   public static String productionsDir()
   {
     if(productionsDir == null)
+    {
       productionsDir = Context.fs().join(getRoot(), "Productions");
+      if(!Context.fs().exists(productionsDir))
+        Context.fs().createDirectory(productionsDir);
+    }
     return productionsDir;
   }
 
@@ -47,14 +59,5 @@ public class Data
     if(logFile == null)
       logFile = Context.fs().join(getRoot(), "log.txt");
     return logFile;
-  }
-
-  public static void establishDirs()
-  {
-    final FileSystem fs = Context.fs();
-    if(!fs.exists(downloadsDir()))
-      fs.createDirectory(downloadsDir());
-    if(!fs.exists(productionsDir()))
-      fs.createDirectory(productionsDir());
   }
 }

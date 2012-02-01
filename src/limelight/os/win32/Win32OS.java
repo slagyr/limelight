@@ -12,7 +12,7 @@ public class Win32OS extends OS
 
   public String dataRoot()
   {
-    return System.getProperty("user.home") + "/Application Data/Limelight";
+    return System.getProperty("user.home") + "\\Application Data\\Limelight";
   }
 
   protected void turnOnKioskMode()

@@ -9,7 +9,7 @@ import org.junit.runner.JUnitCore;
 
 public class TestRunner
 {
-  public static void main(String[] args) throws ClassNotFoundException
+  public static void main(String[] args) throws Exception
   {
     String[] classNames = loadClassNames();
     JUnitCore.runMainAndExit(new RealSystem(), classNames);

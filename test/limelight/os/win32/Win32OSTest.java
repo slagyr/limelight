@@ -20,7 +20,7 @@ public class Win32OSTest extends TestCase
 
   public void testDataRootDir() throws Exception
   {
-    assertEquals(System.getProperty("user.home") + "/Application Data/Limelight", os.dataRoot());
+    assertEquals(System.getProperty("user.home") + "\\Application Data\\Limelight", os.dataRoot());
   }
 
   public void testConfigureSystemProperties() throws Exception

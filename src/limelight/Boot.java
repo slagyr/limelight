@@ -102,7 +102,7 @@ public class Boot
     if(System.getProperty("os.name").contains("Windows"))
       className = "limelight.os.win32.Win32OS";
     else if(System.getProperty("os.name").contains("Mac OS X"))
-        className = "limelight.os.darwin.DarwinOS";
+      className = "limelight.os.darwin.DarwinOS";
 
     try
     {
@@ -112,7 +112,7 @@ public class Boot
     }
     catch(Exception e)
     {
-      Log.warn("Boot - OS class could not be loaded:" + e);
+      Log.warn("Boot - OS class could not be loaded", e);
       context.os = new UnsupportedOS();
     }
 
@@ -126,7 +126,7 @@ public class Boot
     if(options.get("environment") != null)
       context.environment = options.get("environment").toString();
 
-    context.fs = (FileSystem)options.get("file-system");
+    context.fs = (FileSystem) options.get("file-system");
 
     if(context.frameManager == null)
       context.frameManager = new AlertFrameManager(context);

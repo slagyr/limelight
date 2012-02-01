@@ -42,15 +42,4 @@ public class DataTest
     final String expectedPath = fs.absolutePath(fs.join(Data.getRoot(), "Productions"));
     assertEquals(expectedPath, Data.productionsDir());
   }
-
-  @Test
-  public void establishDirs() throws Exception
-  {
-    assertEquals(false, fs.exists(Data.downloadsDir()));
-    assertEquals(false, fs.exists(Data.productionsDir()));
-
-    Data.establishDirs();
-    assertEquals(true, fs.exists(Data.downloadsDir()));
-    assertEquals(true, fs.exists(Data.productionsDir()));
-  }
 }
