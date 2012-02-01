@@ -47,17 +47,17 @@ public class FileSystemTest
   }
 
   @Test
-	public void buildPathOneElement() throws Exception
-	{
-		assertEquals("a", fs.join("a"));
-	}
+  public void buildPathOneElement() throws Exception
+  {
+    assertEquals("a", fs.join("a"));
+  }
 
   @Test
-	public void buildPathThreeElements() throws Exception
-	{
-		String separator = System.getProperty("file.separator");
-		assertEquals("a" + separator + "b" + separator + "c", fs.join("a", "b", "c"));
-	}
+  public void buildPathThreeElements() throws Exception
+  {
+    String separator = System.getProperty("file.separator");
+    assertEquals("a" + separator + "b" + separator + "c", fs.join("a", "b", "c"));
+  }
 
   @Test
   public void baseName() throws Exception
@@ -227,7 +227,7 @@ public class FileSystemTest
   public void absolutePathWithFileProtocol() throws Exception
   {
     withTmpDir();
-    final String expected = "file:" + new File(tmpDir).getCanonicalPath();
+    final String expected = new File(tmpDir).toURI().toString();
     assertEquals(expected, fs.absolutePath(tmpDir));
   }
 
@@ -249,8 +249,16 @@ public class FileSystemTest
     assertEquals(true, fs.isAbsolute("file:C:/foo"));
     assertEquals(true, fs.isAbsolute("jar:file:/foo.jar!/bar"));
     assertEquals(true, fs.isAbsolute("jar:file:C:/foo.jar!/bar"));
-    assertEquals(true, fs.isAbsolute("/foo"));
-    assertEquals(true, fs.isAbsolute("C:\\foo"));
+    if(fs.windows)
+    {
+      assertEquals(false, fs.isAbsolute("/foo"));
+      assertEquals(true, fs.isAbsolute("C:\\foo"));
+    }
+    else
+    {
+      assertEquals(true, fs.isAbsolute("/foo"));
+      assertEquals(false, fs.isAbsolute("C:\\foo"));
+    }
     assertEquals(false, fs.isAbsolute("foo"));
     assertEquals(false, fs.isAbsolute("../foo"));
   }
@@ -269,15 +277,28 @@ public class FileSystemTest
   @Test
   public void parentPath() throws Exception
   {
-    assertEquals(osRoot, fs.parentPath("/"));
-    assertEquals(osRoot, fs.parentPath(SLASH));
-    assertEquals(fs.workingDir(), fs.parentPath("foo"));
-    assertEquals(SLASH, fs.parentPath("/foo"));
-    assertEquals(SLASH, fs.parentPath(SLASH + "foo"));
-    assertEquals(SLASH + "foo", fs.parentPath(SLASH + "foo" + SLASH + "bar"));
-    assertEquals("file:" + osRoot + "foo", fs.parentPath("file:" + osRoot + "foo" + SLASH + "bar"));
-    assertEquals("file:" + osRoot, fs.parentPath("file:" + osRoot + "foo"));
-    assertEquals("jar:file:" + osRoot + "foo!" + SLASH, fs.parentPath("jar:file:" + osRoot + "foo!" + SLASH + "bar"));
+    if(fs.windows)
+    {
+      assertEquals("file:C:/", fs.parentPath("C:/"));
+      assertEquals(fs.workingDir(), fs.parentPath("foo"));
+      assertEquals("file:C:/", fs.parentPath("C:/foo"));
+      assertEquals("file:C:/", fs.parentPath("C:/foo"));
+      assertEquals("file:C:/foo", fs.parentPath("C:/foo/bar"));
+      assertEquals("file:C:/foo", fs.parentPath("file:C:/foo/bar"));
+      assertEquals("file:C:/", fs.parentPath("file:C:/foo"));
+      assertEquals("jar:file:C:/foo!/", fs.parentPath("jar:file:C:/foo!/bar"));
+    }
+    else
+    {
+      assertEquals("file:/", fs.parentPath("/"));
+      assertEquals(fs.workingDir(), fs.parentPath("foo"));
+      assertEquals("file:/", fs.parentPath("/foo"));
+      assertEquals("file:/", fs.parentPath("/foo"));
+      assertEquals("file:/foo", fs.parentPath("/foo/bar"));
+      assertEquals("file:/foo", fs.parentPath("file:/foo/bar"));
+      assertEquals("file:/", fs.parentPath("file:/foo"));
+      assertEquals("jar:file:/foo!/", fs.parentPath("jar:file:/foo!/bar"));
+    }
   }
 
   @Test

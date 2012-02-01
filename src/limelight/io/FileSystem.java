@@ -9,6 +9,7 @@ import limelight.util.StringUtil;
 
 import java.io.*;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.regex.Matcher;
@@ -159,7 +160,9 @@ public class FileSystem
 
   public String join(String root, String... parts)
   {
-    if(isAbsolute(root))
+    if(parts.length == 0)
+      return root;
+    else if(isAbsolute(root))
       return removeDuplicateSeprators(root + "/" + StringUtil.join("/", (Object[]) parts));
     else
       return removeDuplicateSeprators(root + separator + StringUtil.join(separator, (Object[]) parts));
@@ -269,7 +272,7 @@ public class FileSystem
   protected Path resolve(String path)
   {
     if(path.startsWith("file:"))
-      return new FilePath(this, path);
+      return new UriPath(this, path);
     else if(path.startsWith("jar:"))
       return new ZipPath(this, path);
     else
@@ -303,33 +306,66 @@ public class FileSystem
     boolean isAbsolute();
   }
 
-  private static class FilePath implements Path
+  private static abstract class FileBasedPath implements Path
   {
-    private String path;
-    private File file;
-    private URI uri;
-    private FileSystem fs;
+    protected abstract File file();
 
-    public FilePath(FileSystem fs, String path)
+    public boolean exists()
     {
-      this.fs = fs;
-      this.path = path;
-      if(path.startsWith("file:"))
-        this.path = path.substring(5);
+      return file().exists();
     }
 
-    public File file()
+    public void mkdirs()
     {
-      if(file == null)
-        file = new File(path);
-      return file;
+      if(!file().exists() && !file().mkdirs())
+        throw new LimelightException("Can't establish directory: " + file().getPath());
     }
-    
-    public URI uri()
+
+    public boolean isDirectory()
     {
-      if(uri == null)
-        uri = file().toURI();
-      return uri;
+      return file().isDirectory();
+    }
+
+    public OutputStream outputStream()
+    {
+      try
+      {
+        return new FileOutputStream(file());
+      }
+      catch(FileNotFoundException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
+
+    public InputStream inputStream()
+    {
+      try
+      {
+        return new FileInputStream(file());
+      }
+      catch(FileNotFoundException e)
+      {
+        throw new LimelightException(e);
+      }
+    }
+
+    public void delete()
+    {
+      if(file().isDirectory())
+        deleteDirectory(file());
+      else
+        deleteFile(file());
+    }
+
+    public String[] listing()
+    {
+      return file().list();
+    }
+
+    public long lastModified()
+    {
+      return file().lastModified();
     }
 
     public boolean isRoot()
@@ -342,6 +378,71 @@ public class FileSystem
       {
         return false;
       }
+    }
+  }
+
+  private static class UriPath extends FileBasedPath
+  {
+    private URI uri;
+    private File file;
+    private FileSystem fs;
+
+    private UriPath(FileSystem fs, String path)
+    {
+      this.fs = fs;
+      try
+      {
+        uri = new URI(path);
+      }
+      catch(URISyntaxException e)
+      {
+        throw new LimelightException("Failed to create URIPath from: " + path, e);
+      }
+    }
+
+    protected File file()
+    {
+      if(file == null)
+        file = new File(uri.getRawPath());
+      return file;
+    }
+
+    public String getAbsolutePath()
+    {
+      return uri.toString();
+    }
+
+    public String parentPath()
+    {
+      final File parentFile = file().getParentFile();
+      if(parentFile != null)
+        return parentFile.toURI().toString();
+      return null;
+    }
+
+    public boolean isAbsolute()
+    {
+      return uri.isAbsolute();
+    }
+  }
+
+  private static class FilePath extends FileBasedPath
+  {
+    private String path;
+    private File file;
+    private FileSystem fs;
+
+    public FilePath(FileSystem fs, String path)
+    {
+      this.fs = fs;
+      this.path = path;
+    }
+
+    public File file()
+    {
+      if(file == null)
+        file = new File(path);
+      return file;
     }
 
     public String parentPath()
@@ -369,81 +470,16 @@ public class FileSystem
       return matcher.find() && matcher.start() == 0;
     }
 
-    public boolean exists()
-    {
-      return file().exists();
-    }
-
-    public void mkdirs()
-    {
-      if(!file().exists() && !file().mkdirs())
-        throw new LimelightException("Can't establish directory: " + path);
-    }
-
-    public boolean isDirectory()
-    {
-      return file().isDirectory();
-    }
-
-    public OutputStream outputStream()
-    {
-      try
-      {
-        return new FileOutputStream(path);
-      }
-      catch(FileNotFoundException e)
-      {
-        throw new LimelightException(e);
-      }
-    }
-
-    public InputStream inputStream()
-    {
-      try
-      {
-        return new FileInputStream(path);
-      }
-      catch(FileNotFoundException e)
-      {
-        throw new LimelightException(e);
-      }
-    }
-
     public String getAbsolutePath()
     {
-      try
-      {
-        return uri().toString();
-      }
-      catch(Exception e)
-      {
-        throw new LimelightException(e);
-      }
-    }
-
-    public void delete()
-    {
-      if(file().isDirectory())
-        deleteDirectory(file());
-      else
-        deleteFile(file());
-    }
-
-    public String[] listing()
-    {
-      return file().list();
-    }
-
-    public long lastModified()
-    {
-      return file().lastModified();
+      return file().toURI().toString();
     }
   }
 
   private static class ZipPath implements Path
   {
-    private FilePath pathToZip;
-    private String pathToFile;
+    private FileBasedPath zipPath;
+    private String filePath;
     private ZipFile zip;
     private FileSystem fs;
 
@@ -454,8 +490,8 @@ public class FileSystem
       if(bangIndex == -1)
         throw new LimelightException("Invalid Jar file path: " + path);
 
-      pathToZip = (FilePath)fs.resolve(path.substring(4, bangIndex));
-      pathToFile = path.substring(bangIndex + 2);
+      zipPath = (FileBasedPath) fs.resolve(path.substring(4, bangIndex));
+      filePath = path.substring(bangIndex + 2);
     }
 
     private ZipFile zip()
@@ -464,7 +500,7 @@ public class FileSystem
       {
         try
         {
-          zip = new ZipFile(pathToZip.file());
+          zip = new ZipFile(zipPath.file());
         }
         catch(IOException e)
         {
@@ -476,12 +512,12 @@ public class FileSystem
 
     private ZipEntry zipEntry()
     {
-      return zip().getEntry(pathToFile);
+      return zip().getEntry(filePath);
     }
 
     public boolean exists()
     {
-      return pathToZip.exists() && (zipEntry() != null);
+      return zipPath.exists() && (zipEntry() != null);
     }
 
     public void mkdirs()
@@ -491,11 +527,11 @@ public class FileSystem
 
     public boolean isDirectory()
     {
-      if(pathToFile.endsWith("/"))
+      if(filePath.endsWith("/"))
         return zipEntry().isDirectory();
       else
       {
-        final ZipEntry entry = zip().getEntry(pathToFile + "/");
+        final ZipEntry entry = zip().getEntry(filePath + "/");
         return entry != null && entry.isDirectory();
       }
     }
@@ -519,7 +555,7 @@ public class FileSystem
 
     public String getAbsolutePath()
     {
-      return "jar:" + pathToZip.getAbsolutePath() + "!/" + pathToFile;
+      return "jar:" + zipPath.getAbsolutePath() + "!/" + filePath;
     }
 
     public void delete()
@@ -533,16 +569,16 @@ public class FileSystem
         return new String[0];
       else
       {
-        pathToFile = pathToFile.endsWith("/") ? pathToFile : pathToFile + "/";
+        filePath = filePath.endsWith("/") ? filePath : filePath + "/";
         ArrayList<String> list = new ArrayList<String>();
         final Enumeration<? extends ZipEntry> entries = zip().entries();
         while(entries.hasMoreElements())
         {
           ZipEntry entry = entries.nextElement();
           final String entryName = entry.getName();
-          if(entryName.startsWith(pathToFile))
+          if(entryName.startsWith(filePath))
           {
-            String name = entryName.substring(pathToFile.length());
+            String name = entryName.substring(filePath.length());
             if(name.endsWith("/"))
               name = name.substring(0, name.length() - 2);
             if(name.length() > 0 && !name.contains("/"))
@@ -558,24 +594,24 @@ public class FileSystem
       return zipEntry().getTime();
     }
 
-//    public File file()
-//    {
-//      throw new LimelightException("JarPath.file() is not supported");
-//    }
-
     public boolean isRoot()
     {
-      return pathToFile.isEmpty();
+      return filePath.isEmpty();
     }
 
     public String parentPath()
     {
-      return "jar:" + pathToZip.getAbsolutePath() + "!" + fs.parentPath("/" + pathToFile);
+      final String base = "jar:" + zipPath.getAbsolutePath() + "!";
+      final int lastSlashIndex = filePath.lastIndexOf("/") ;
+      if(lastSlashIndex > 0)
+        return base + filePath.substring(0, lastSlashIndex);
+      else
+        return base + "/";
     }
 
     public boolean isAbsolute()
     {
-      return pathToZip.isAbsolute();
+      return zipPath.isAbsolute();
     }
   }
 }
