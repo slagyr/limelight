@@ -48,11 +48,12 @@ public class HelpCommandTest
   }
 
   @Test
-  public void outputContainsComandStructure() throws Exception
+  public void outputContainsCommandStructure() throws Exception
   {
+    CmdLineMain.mainCmd = "java -jar limelight.jar";
     command.execute();
     String expected = "java -jar limelight.jar [limelight options] <command> [command options]";
-    assertEquals(true, output.toString().contains(expected));
+    assertEquals(output.toString(), true, output.toString().contains(expected));
   }
 
   @Test

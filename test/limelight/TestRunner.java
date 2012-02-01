@@ -22,6 +22,6 @@ public class TestRunner
       throw new RuntimeException(".testClasses file is missing");
 
     final String classesContent = fs.readTextFile(".testClasses");
-    return classesContent.split("\n");
+    return classesContent.split("(\r\n|\n)");
   }
 }

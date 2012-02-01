@@ -6,7 +6,7 @@ namespace "utilities" do
     elems = Dir.glob("#{LIMELIGHT_ROOT}/lib/**/*.jar")
     elems.unshift "#{LIMELIGHT_ROOT}/classes"
     elems.unshift "#{UTILITIES_ROOT}/classes"
-    elems.join(":")
+    elems.join(path_separator)
   end
 
   desc "Prints the calculated classpath"

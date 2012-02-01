@@ -1,6 +1,7 @@
 classes
 /lib
 *.iws
+*.iml
 /.idea/*
 pkg
 out

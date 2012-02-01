@@ -24,6 +24,7 @@ public class FakeFileSystem extends FileSystem
   public FakeFileSystem()
   {
     separator = "/";
+    windows = false;
     root = FakeFile.directory("");
     workingDirectory = (FakeFilePath)resolve("/");
   }
@@ -301,6 +302,11 @@ public class FakeFileSystem extends FileSystem
         return path.substring(0, lastSeparatorIndex);
       else
         return fs.workingDir();
+    }
+
+    public boolean isAbsolute()
+    {
+      return path.startsWith("/");
     }
   }
 }

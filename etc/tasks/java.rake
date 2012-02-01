@@ -3,7 +3,7 @@ namespace "java" do
   def classpath
     elems = Dir.glob("#{LIMELIGHT_ROOT}/lib/**/*.jar")
     elems.unshift "#{LIMELIGHT_ROOT}/classes"
-    elems.join(":")
+    elems.join(path_separator)
   end
 
   def java_prod_deps

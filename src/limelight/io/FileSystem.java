@@ -8,25 +8,26 @@ import limelight.LimelightException;
 import limelight.util.StringUtil;
 
 import java.io.*;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class FileSystem
 {
-  protected String separator;
+  public static final Pattern WinDrive = Pattern.compile("[A-Z]\\:\\\\");
+
+  protected String separator = System.getProperty("file.separator");
+  protected boolean windows = System.getProperty("os.name").toLowerCase().contains("windows");
 
   public static FileSystem installed()
   {
     FileSystem fs = new FileSystem();
     Context.instance().fs = fs;
     return fs;
-  }
-
-  public FileSystem()
-  {
-    separator = System.getProperty("file.separator");
   }
 
   public void createDirectory(String path)
@@ -113,7 +114,7 @@ public class FileSystem
 
   public boolean isAbsolute(String path)
   {
-    return absolutePath(path).equals(path);
+    return resolve(path).isAbsolute();
   }
 
   public String relativePathBetween(String origin, String target)
@@ -156,9 +157,12 @@ public class FileSystem
     return System.getProperty("user.dir");
   }
 
-  public String join(String... parts)
+  public String join(String root, String... parts)
   {
-    return removeDuplicateSeprators(StringUtil.join(separator, (Object[]) parts));
+    if(isAbsolute(root))
+      return removeDuplicateSeprators(root + "/" + StringUtil.join("/", (Object[]) parts));
+    else
+      return removeDuplicateSeprators(root + separator + StringUtil.join(separator, (Object[]) parts));
   }
 
   public String baseName(String path)
@@ -184,7 +188,7 @@ public class FileSystem
 
   public String filename(String path)
   {
-    if("/".equals(path))
+    if(windows ? WinDrive.matcher(path).matches() : "/".equals(path))
       return path;
     if(path.endsWith(separator))
       path = path.substring(0, path.length() - separator.length());
@@ -265,11 +269,11 @@ public class FileSystem
   protected Path resolve(String path)
   {
     if(path.startsWith("file:"))
-      return new FilePath(path);
+      return new FilePath(this, path);
     else if(path.startsWith("jar:"))
-      return new ZipPath(path, this);
+      return new ZipPath(this, path);
     else
-      return new FilePath(path);
+      return new FilePath(this, path);
   }
 
   protected static interface Path
@@ -295,15 +299,20 @@ public class FileSystem
     boolean isRoot();
 
     String parentPath();
+
+    boolean isAbsolute();
   }
 
   private static class FilePath implements Path
   {
     private String path;
     private File file;
+    private URI uri;
+    private FileSystem fs;
 
-    public FilePath(String path)
+    public FilePath(FileSystem fs, String path)
     {
+      this.fs = fs;
       this.path = path;
       if(path.startsWith("file:"))
         this.path = path.substring(5);
@@ -314,6 +323,13 @@ public class FileSystem
       if(file == null)
         file = new File(path);
       return file;
+    }
+    
+    public URI uri()
+    {
+      if(uri == null)
+        uri = file().toURI();
+      return uri;
     }
 
     public boolean isRoot()
@@ -335,11 +351,22 @@ public class FileSystem
       {
         final String absoluteParentPath = file().getAbsoluteFile().getParent();
         if(absoluteParentPath == null)
-          return path;
+          return file().getAbsolutePath();
         else
           return absoluteParentPath;
       }
       return parentPath;
+    }
+
+    public boolean isAbsolute()
+    {
+      return fs.windows ? startsWithWinDive() : path.startsWith(fs.separator);
+    }
+
+    private boolean startsWithWinDive()
+    {
+      final Matcher matcher = WinDrive.matcher(path);
+      return matcher.find() && matcher.start() == 0;
     }
 
     public boolean exists()
@@ -386,9 +413,9 @@ public class FileSystem
     {
       try
       {
-        return "file:" + file().getCanonicalPath();
+        return uri().toString();
       }
-      catch(IOException e)
+      catch(Exception e)
       {
         throw new LimelightException(e);
       }
@@ -420,7 +447,7 @@ public class FileSystem
     private ZipFile zip;
     private FileSystem fs;
 
-    private ZipPath(String path, FileSystem fs)
+    private ZipPath(FileSystem fs, String path)
     {
       this.fs = fs;
       final int bangIndex = path.indexOf("!");
@@ -531,10 +558,10 @@ public class FileSystem
       return zipEntry().getTime();
     }
 
-    public File file()
-    {
-      throw new LimelightException("JarPath.file() is not supported");
-    }
+//    public File file()
+//    {
+//      throw new LimelightException("JarPath.file() is not supported");
+//    }
 
     public boolean isRoot()
     {
@@ -544,6 +571,11 @@ public class FileSystem
     public String parentPath()
     {
       return "jar:" + pathToZip.getAbsolutePath() + "!" + fs.parentPath("/" + pathToFile);
+    }
+
+    public boolean isAbsolute()
+    {
+      return pathToZip.isAbsolute();
     }
   }
 }

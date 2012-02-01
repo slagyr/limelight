@@ -15,7 +15,7 @@ public class TestUtil
 
   public static String dataDirPath(String... args)
   {
-    return fs.join(DATA_DIR, fs.join(args));
+    return fs.join(DATA_DIR, args);
   }
 
   public static boolean notHeadless()
