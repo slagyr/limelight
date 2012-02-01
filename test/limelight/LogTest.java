@@ -1,5 +1,6 @@
 package limelight;
 
+import limelight.io.FakeFileSystem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,13 +65,13 @@ public class LogTest
     assertEquals("OFF", Log.getLevelName());
   }
 
-  @Test
-  public void settingLogFile() throws Exception
-  {
-    Log.setLogFile("/tmp/foo");
-    assertNotNull(Log.fileHandler);
-    assertEquals(true, hasHandler(Log.fileHandler));
-    assertEquals(false, hasHandler(Log.stderrHandler));
-    assertEquals(Log.stderrHandler.getFormatter().getClass(), Log.fileHandler.getFormatter().getClass());
-  }
+//  @Test
+//  public void settingLogFile() throws Exception
+//  {
+//    Log.setLogFile("/tmp/foo");
+//    assertNotNull(Log.fileHandler);
+//    assertEquals(true, hasHandler(Log.fileHandler));
+//    assertEquals(false, hasHandler(Log.stderrHandler));
+//    assertEquals(Log.stderrHandler.getFormatter().getClass(), Log.fileHandler.getFormatter().getClass());
+//  }
 }

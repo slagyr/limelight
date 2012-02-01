@@ -9,7 +9,7 @@ import org.junit.runner.JUnitCore;
 
 public class TestRunner
 {
-  public static void main(String[] args) throws ClassNotFoundException
+  public static void main(String[] args) throws Exception
   {
     String[] classNames = loadClassNames();
     JUnitCore.runMainAndExit(new RealSystem(), classNames);
@@ -22,6 +22,6 @@ public class TestRunner
       throw new RuntimeException(".testClasses file is missing");
 
     final String classesContent = fs.readTextFile(".testClasses");
-    return classesContent.split("\n");
+    return classesContent.split("(\r\n|\n)");
   }
 }

@@ -37,6 +37,26 @@ def darwin?
   end
 end
 
+def windows?
+  if defined?(Java)
+    java.lang.System.getProperty('os.name') =~ /Windows/
+  else
+    RUBY_PLATFORM =~ /win/
+  end
+end
+
+def linux?
+  if defined?(Java)
+    java.lang.System.getProperty('os.name') =~ /Linux/
+  else
+    RUBY_PLATFORM =~ /linux/
+  end
+end
+
+def path_separator
+  windows? ? ";" : ":"
+end
+
 def _apply_includes_excludes(options, src_files)
   if options[:excludes]
     options[:excludes].each do |exclude|
@@ -88,7 +108,7 @@ def fetch_dep(dep)
     when /http\:\/\//
       run_command "wget #{dep}"
     when /https\:\/\//
-      run_command "wget #{dep}"
+      run_command "wget --no-check-certificate #{dep}"
     else
       raise "Don't know how to install dependency: #{dep}"
   end
