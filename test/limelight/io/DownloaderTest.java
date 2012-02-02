@@ -15,20 +15,17 @@ import static junit.framework.Assert.fail;
 public class DownloaderTest
 {
   private static final String dataRoot = "/limelight/data";
-  private static final String downloadRoot = Context.fs().join(dataRoot, "Downloads");
+  private static final String downloadRoot = dataRoot + "/Downloads";
 
   private Downloader downloader;
   private FakeFileSystem fs;
-  private MockOS os;
 
   @Before
   public void setUp() throws Exception
   {
     Data.reset();
 
-    os = new MockOS();
-    os.dataRoot = dataRoot;
-    Context.instance().os = os;
+    MockOS.installed().dataRoot = dataRoot;
 
     fs = FakeFileSystem.installed();
     downloader = new Downloader();

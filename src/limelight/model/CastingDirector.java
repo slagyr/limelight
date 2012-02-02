@@ -11,7 +11,6 @@ import limelight.model.api.PlayerRecruiter;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.Scene;
 import limelight.util.StringUtil;
-import sun.swing.StringUIClientPropertyKey;
 
 public class CastingDirector
 {

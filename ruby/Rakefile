@@ -1,5 +1,3 @@
-require 'rake/dsl_definition'
-#require 'rake'
 load File.expand_path(File.dirname(__FILE__) + "/../etc/tasks/_common.rake")
 
 #require File.expand_path(File.dirname(__FILE__) + "/lib/limelight.jar")
