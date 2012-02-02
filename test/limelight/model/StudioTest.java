@@ -178,7 +178,7 @@ public class StudioTest
 
     assertEquals("blah", result);
     assertEquals("/dir/production.llp", mockPacker.unpackPackagePath);
-    assertEquals(Data.productionsDir(), new File(mockPacker.unpackDestination).getParent());
+    assertEquals(Data.productionsDir(), Context.fs().parentPath(mockPacker.unpackDestination));
   }
 
   @Test
@@ -205,8 +205,8 @@ public class StudioTest
     String result = studio.processProductionPath(path);
 
     assertEquals("blah", result);
-    assertEquals(Downloader.stubbedGetResult, new File(mockPacker.unpackPackagePath).getAbsolutePath());
-    assertEquals(Data.productionsDir(), new File(mockPacker.unpackDestination).getParent());
+    assertEquals(Downloader.stubbedGetResult, fs.absolutePath(mockPacker.unpackPackagePath));
+    assertEquals(Data.productionsDir(), fs.parentPath(mockPacker.unpackDestination));
   }
 
   @Test

@@ -14,9 +14,7 @@ import limelight.os.OS;
 import limelight.os.UnsupportedOS;
 import limelight.ui.Panel;
 import limelight.util.Opts;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.awt.image.BufferedImage;
 
@@ -26,9 +24,22 @@ import static org.junit.Assert.assertSame;
 
 public class BootTest
 {
+  private static String realOsName;
   private Opts options;
   private Context context;
 
+  @BeforeClass
+  public static void suiteSetup()
+  {
+    realOsName = System.getProperty("os.name");
+  }
+  
+  @AfterClass
+  public static void suiteTearDown()
+  {
+    System.setProperty("os.name", realOsName);
+  }
+  
   @Before
   public void setUp() throws Exception
   {

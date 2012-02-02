@@ -35,8 +35,8 @@ public class NanoTimerTest extends Assert
   public void idleTime() throws Exception
   {
     assertEquals(true, timer.getIdleNanos() < ONE_MILLION);
-    Thread.sleep(10);
-    assertEquals(true, timer.getIdleNanos() > TEN_MILLION);
+    Thread.sleep(10); // Doesn't necessarily sleep a full 10 millis
+    assertEquals("" + timer.getIdleNanos() + " should > NINE_MILLION", true, timer.getIdleNanos() > NINE_MILLION);
   }
 
 //  @Test

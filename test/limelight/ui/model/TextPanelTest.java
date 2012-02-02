@@ -187,7 +187,6 @@ public class TextPanelTest
     TextLayout layout = lines.get(0);
     assertEquals(1, lines.size());
     assertEquals(9, layout.getCharacterCount());
-    assertSubString("family=Helvetica", layout.toString());
     assertSubString("name=Helvetica", layout.toString());
     assertSubString("style=bold", layout.toString());
     assertSubString("size=20", layout.toString());
@@ -216,7 +215,6 @@ public class TextPanelTest
 
     StyledText layout = chunks.get(0);
     assertEquals(5, layout.getText().length());
-    assertSubString("family=Helvetica", layout.toString());
     assertSubString("name=Helvetica", layout.toString());
     assertSubString("style=bold", layout.toString());
     assertSubString("size=20", layout.toString());

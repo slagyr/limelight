@@ -308,5 +308,15 @@ public class FakeFileSystem extends FileSystem
     {
       return path.startsWith("/");
     }
+
+    public Path append(String part)
+    {
+      return new FakeFilePath(fs, fs.removeDuplicateSeparators(path + "/" + part, "/"));
+    }
+
+    public String toPath()
+    {
+      return path;
+    }
   }
 }

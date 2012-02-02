@@ -25,6 +25,7 @@ public class StageFrameTest extends Assert
   @Before
   public void setUp() throws Exception
   {
+    StageFrame.hiddenMode = false;
     assumeTrue(TestUtil.notHeadless());
     stage = new MockStage();
     frame = new StageFrame(stage);

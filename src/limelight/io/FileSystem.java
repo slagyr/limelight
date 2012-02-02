@@ -5,7 +5,6 @@ package limelight.io;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.util.StringUtil;
 
 import java.io.*;
 import java.net.URI;
@@ -135,7 +134,7 @@ public class FileSystem
     }
     String result = path + absoluteTarget.substring(commonParent.length());
     result = result.startsWith("/") ? result.substring(1) : result;
-    return removeDuplicateSeprators(result.replace("/", separator()));
+    return removeDuplicateSeparators(result.replace("/", separator()));
   }
 
   // UTILITY  METHODS --------------------------------------------------------------------------------------------------
@@ -159,10 +158,10 @@ public class FileSystem
   {
     if(parts.length == 0)
       return root;
-    else if(isAbsolute(root))
-      return removeDuplicateSeprators(root + "/" + StringUtil.join("/", (Object[]) parts));
-    else
-      return join(absolutePath(root), (String[]) parts);
+    Path path = resolve(root);
+    for(String part : parts)
+      path = path.append(part);
+    return path.toPath();
   }
 
   public String baseName(String path)
@@ -256,11 +255,16 @@ public class FileSystem
     }
   }
 
-  private String removeDuplicateSeprators(String path)
+  protected String removeDuplicateSeparators(String path)
+  {
+    return removeDuplicateSeparators(path, separator());
+  }
+
+  protected String removeDuplicateSeparators(String path, String separator)
   {
     final String duplicate = separator + separator;
     if(path.contains(duplicate))
-      return removeDuplicateSeprators(path.replace(duplicate, separator));
+      return removeDuplicateSeparators(path.replace(duplicate, separator));
     else
       return path;
   }
@@ -274,7 +278,7 @@ public class FileSystem
     else if(path.startsWith("jar:"))
       return new ZipPath(this, path);
     else
-      return new FilePath(this, path);
+      return new RelativePath(this, path);
   }
 
   protected static interface Path
@@ -302,6 +306,10 @@ public class FileSystem
     String parentPath();
 
     boolean isAbsolute();
+
+    Path append(String part);
+
+    String toPath();
   }
 
   private static abstract class FileBasedPath implements Path
@@ -428,15 +436,26 @@ public class FileSystem
     {
       return uri.isAbsolute();
     }
+
+    public Path append(String part)
+    {
+      String path = uri.toString();
+      return new UriPath(fs, fs.removeDuplicateSeparators(path + "/" + part, "/"));
+    }
+
+    public String toPath()
+    {
+      return getAbsolutePath();
+    }
   }
 
-  private static class FilePath extends FileBasedPath
+  private static class RelativePath extends FileBasedPath
   {
     private String path;
     private File file;
     private FileSystem fs;
 
-    public FilePath(FileSystem fs, String path)
+    public RelativePath(FileSystem fs, String path)
     {
       this.fs = fs;
       this.path = path;
@@ -461,6 +480,16 @@ public class FileSystem
     public boolean isAbsolute()
     {
       return fs.windows ? startsWithWinDive() : path.startsWith(fs.separator);
+    }
+
+    public Path append(String part)
+    {
+      return new RelativePath(fs, fs.removeDuplicateSeparators(path + fs.separator() + part));
+    }
+
+    public String toPath()
+    {
+      return path;
     }
 
     private boolean startsWithWinDive()
@@ -491,6 +520,14 @@ public class FileSystem
 
       zipPath = (FileBasedPath) fs.resolve(path.substring(4, bangIndex));
       filePath = path.substring(bangIndex + 2);
+    }
+
+    private ZipPath(FileSystem fs, FileBasedPath zipPath, ZipFile zip, String filePath)
+    {
+      this.fs = fs;
+      this.zipPath = zipPath;
+      this.zip = zip;
+      this.filePath = filePath;
     }
 
     private ZipFile zip()
@@ -601,7 +638,7 @@ public class FileSystem
     public String parentPath()
     {
       final String base = "jar:" + zipPath.getAbsolutePath() + "!";
-      final int lastSlashIndex = filePath.lastIndexOf("/") ;
+      final int lastSlashIndex = filePath.lastIndexOf("/");
       if(lastSlashIndex > 0)
         return base + filePath.substring(0, lastSlashIndex);
       else
@@ -611,6 +648,17 @@ public class FileSystem
     public boolean isAbsolute()
     {
       return zipPath.isAbsolute();
+    }
+
+    public Path append(String part)
+    {
+      final String newFilePath = fs.removeDuplicateSeparators(filePath + "/" + part, "/");
+      return new ZipPath(fs, zipPath, zip, newFilePath);
+    }
+
+    public String toPath()
+    {
+      return getAbsolutePath();
     }
   }
 }

@@ -156,14 +156,14 @@ public class FramedStageTest
   @Test
   public void shouldShouldRetainSizeAndLocationWhenComingOutOfFullscreen() throws Exception
   {
-    stage.setSizeStyles(128, 456);
+    stage.setSizeStyles(321, 456);
     stage.setLocationStyles(12, 34);
     stage.open();
 
     stage.setFullScreen(true);
     stage.setFullScreen(false);
 
-    assertEquals(new Dimension(128, 456), stage.getSize());
+    assertEquals(new Dimension(321, 456), stage.getSize());
     assertEquals(new Point(12, 34), stage.getLocation());
   }
 

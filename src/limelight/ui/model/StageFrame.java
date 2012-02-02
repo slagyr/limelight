@@ -71,6 +71,7 @@ public class StageFrame extends Frame
   {
     if(hiddenMode || visible == isVisible())
       return;
+
     super.setVisible(visible);
 
     if(visible)

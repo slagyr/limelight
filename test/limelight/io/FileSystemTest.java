@@ -4,6 +4,7 @@
 package limelight.io;
 
 import limelight.LimelightException;
+import limelight.util.StringUtil;
 import limelight.util.TestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -55,7 +56,7 @@ public class FileSystemTest
   @Test
   public void buildPathThreeElements() throws Exception
   {
-    assertEquals(fs.absolutePath("a") + "/b/c", fs.join("a", "b", "c"));
+    assertEquals(StringUtil.join(fs.separator(), "a", "b", "c"), fs.join("a", "b", "c"));
   }
 
   @Test
