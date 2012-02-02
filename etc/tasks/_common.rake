@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'rbconfig'
 
 LIMELIGHT_ROOT = File.expand_path(File.dirname(__FILE__) + "/../../")
 
@@ -30,27 +31,15 @@ ensure
 end
 
 def darwin?
-  if defined?(Java)
-    java.lang.System.getProperty('os.name') =~ /Mac/
-  else
-    RUBY_PLATFORM =~ /darwin/
-  end
+  Config::CONFIG["host_os"] =~ /darwin/
 end
 
 def windows?
-  if defined?(Java)
-    java.lang.System.getProperty('os.name') =~ /Windows/
-  else
-    RUBY_PLATFORM =~ /win/
-  end
+  Config::CONFIG["host_os"] =~ /mswin/
 end
 
 def linux?
-  if defined?(Java)
-    java.lang.System.getProperty('os.name') =~ /Linux/
-  else
-    RUBY_PLATFORM =~ /linux/
-  end
+  Config::CONFIG["host_os"] =~ /linux/ #???
 end
 
 def path_separator
