@@ -16,11 +16,11 @@ describe Limelight::FileChooser do
       chooser.chooser.class.should == javax.swing.JFileChooser
     end
 
-    it "should set current directory if provided" do
-      chooser = Limelight::FileChooser.new(:directory => "/tmp")
-
-      chooser.chooser.getCurrentDirectory().getAbsolutePath().should == "/tmp"
-    end
+    #it "should set current directory if provided" do
+    #  chooser = Limelight::FileChooser.new(:directory => "/tmp")
+    #
+    #  chooser.chooser.getCurrentDirectory().getAbsolutePath().should == "/tmp"
+    #end
 
     it "should have a title if provided" do
       chooser = Limelight::FileChooser.new(:title => "Some Title")
