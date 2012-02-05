@@ -19,6 +19,7 @@ public class AppMain
   {
     try
     {
+      Log.debugOn();
       Boot.boot("log-to-file", true);
 
       if(args.length > 0 && startupProductionPath == null)
@@ -43,7 +44,7 @@ public class AppMain
 
   private String getStartupProductionPath()
   {
-    String productionName = Context.instance().limelightHome + "/productions/playbills.lll";
+    String productionName = Context.fs().join(Context.instance().limelightHome, "productions", "playbills.lll");
     if(productionProvided())
       productionName = startupProductionPath;
     return productionName;

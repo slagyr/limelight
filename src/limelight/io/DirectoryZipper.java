@@ -134,7 +134,7 @@ public class DirectoryZipper
   {
     String name = fs.absolutePath(file).substring(locationPath.length() + 1);
     if(fs.isDirectory(file))
-      name = name + fs.separator();
+      name = name + "/";
     return name;
   }
 
