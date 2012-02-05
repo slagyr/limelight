@@ -399,7 +399,7 @@ public class FileSystem
       try
       {
         if(path.charAt(5) != '/')
-          uri= new URI("file:/" + path.substring(5));
+          uri = new URI("file:/" + path.substring(5));
         else
           uri = new URI(path);
       }
@@ -522,7 +522,7 @@ public class FileSystem
         throw new LimelightException("Invalid Jar file path: " + path);
 
       zipPath = (FileBasedPath) fs.resolve(path.substring(4, bangIndex));
-      filePath = path.substring(bangIndex + 1);
+      filePath = path.substring(bangIndex + 2);
     }
 
     private ZipPath(FileSystem fs, FileBasedPath zipPath, ZipFile zip, String filePath)
@@ -640,12 +640,12 @@ public class FileSystem
 
     public String parentPath()
     {
-      final String base = "jar:" + zipPath.getAbsolutePath() + "!";
+      final String base = "jar:" + zipPath.getAbsolutePath() + "!/";
       final int lastSlashIndex = filePath.lastIndexOf("/");
       if(lastSlashIndex > 0)
         return base + filePath.substring(0, lastSlashIndex);
       else
-        return base + "/";
+        return base;
     }
 
     public boolean isAbsolute()
