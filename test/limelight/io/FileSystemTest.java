@@ -4,6 +4,7 @@
 package limelight.io;
 
 import limelight.LimelightException;
+import limelight.builtin.BuiltinBeacon;
 import limelight.util.StringUtil;
 import limelight.util.TestUtil;
 import org.junit.After;
@@ -105,9 +106,9 @@ public class FileSystemTest
   @Test
   public void canTellFileExistsUsingJarProtocol() throws Exception
   {
-    assertEquals(false, fs.exists(jarPath + "/blah.txt"));
+    assertEquals(false, fs.exists(jarPath + "blah.txt"));
 
-    assertEquals(true, fs.exists(jarPath + "/calculator.java/stages.xml"));
+    assertEquals(true, fs.exists(jarPath + "calculator.java/stages.xml"));
   }
 
   @Test
@@ -146,8 +147,8 @@ public class FileSystemTest
   @Test
   public void isDirectoryWithJarProtocol() throws Exception
   {
-    assertEquals(true, fs.isDirectory(jarPath + "/calculator.java/main"));
-    assertEquals(false, fs.isDirectory(jarPath + "/calculator.java/stages.xml"));
+    assertEquals(true, fs.isDirectory(jarPath + "calculator.java/main"));
+    assertEquals(false, fs.isDirectory(jarPath + "calculator.java/stages.xml"));
   }
 
   @Test
@@ -164,7 +165,7 @@ public class FileSystemTest
   @Test
   public void canReadUsingJarProtocol() throws Exception
   {
-    assertEquals("<stages>", fs.readTextFile(jarPath + "/calculator.java/stages.xml").substring(0, 8));
+    assertEquals("<stages>", fs.readTextFile(jarPath + "calculator.java/stages.xml").substring(0, 8));
   }
 
   @Test
@@ -188,7 +189,7 @@ public class FileSystemTest
   @Test
   public void fileListingWithJarProtocol() throws Exception
   {
-    final String path = jarPath + "/calculator.java/main";
+    final String path = jarPath + "calculator.java/main";
     final String[] children = fs.fileListing(path);
     assertArrayEquals(new String[]{"players", "props.xml", "styles.xml"}, children);
   }
@@ -218,7 +219,7 @@ public class FileSystemTest
   @Test
   public void modificationTimeWithJarProtocol() throws Exception
   {
-    long modTime = fs.modificationTime(jarPath + "/calculator.java/stages.xml");
+    long modTime = fs.modificationTime(jarPath + "calculator.java/stages.xml");
     GregorianCalendar date = new GregorianCalendar();
     date.setTime(new Date(modTime));
     assertEquals(2010, date.get(Calendar.YEAR));
@@ -235,7 +236,7 @@ public class FileSystemTest
   @Test
   public void absolutePathWithJarProtocol() throws Exception
   {
-    String result = fs.absolutePath(jarPath + "/calculator.java/stages.xml");
+    String result = fs.absolutePath(jarPath + "calculator.java/stages.xml");
     String expected = "jar:" + fs.absolutePath(TestUtil.dataDirPath("calc.jar")) + "!/calculator.java/stages.xml";
 
     assertEquals(expected, result);
@@ -268,7 +269,7 @@ public class FileSystemTest
   public void isRoot() throws Exception
   {
     assertEquals(true, fs.isRoot("/"));
-    assertEquals(true, fs.isRoot("jar:file:/foo!/"));
+    assertEquals(true, fs.isRoot("jar:file:/foo!"));
     assertEquals(false, fs.isRoot("."));
     assertEquals(false, fs.isRoot("foo"));
     assertEquals(false, fs.isRoot("/foo"));

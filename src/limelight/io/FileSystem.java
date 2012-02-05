@@ -519,7 +519,7 @@ public class FileSystem
         throw new LimelightException("Invalid Jar file path: " + path);
 
       zipPath = (FileBasedPath) fs.resolve(path.substring(4, bangIndex));
-      filePath = path.substring(bangIndex + 2);
+      filePath = path.substring(bangIndex + 1);
     }
 
     private ZipPath(FileSystem fs, FileBasedPath zipPath, ZipFile zip, String filePath)
