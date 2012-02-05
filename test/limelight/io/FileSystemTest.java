@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -330,5 +331,14 @@ public class FileSystemTest
     assertEquals("../dir/target", fs.relativePathBetween("/working/foo", "target"));
     assertEquals("../working/dir/target", fs.relativePathBetween("/origin", "target"));
     assertEquals("child", fs.relativePathBetween("origin", "origin/child"));
+  }
+
+  @Test
+  public void URIPaths() throws Exception
+  {
+    assertEquals("file:/Projects", fs.absolutePath("file:/Projects"));
+    assertEquals("file:/Projects", fs.absolutePath("file:Projects"));
+    assertEquals("file:/C:/Projects", fs.absolutePath("file:/C:/Projects"));
+    assertEquals("file:/C:/Projects", fs.absolutePath("file:C:/Projects"));
   }
 }

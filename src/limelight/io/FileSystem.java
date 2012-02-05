@@ -398,7 +398,10 @@ public class FileSystem
       this.fs = fs;
       try
       {
-        uri = new URI(path);
+        if(path.charAt(5) != '/')
+          uri= new URI("file:/" + path.substring(5));
+        else
+          uri = new URI(path);
       }
       catch(URISyntaxException e)
       {
