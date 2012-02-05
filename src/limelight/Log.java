@@ -28,7 +28,7 @@ public class Log
     @Override
     public String format(LogRecord logRecord)
     {
-      return String.format("%1$7s %2$tH:%2$tm:%2$tS:%2$tL %3$s: %4$s\n",
+      return String.format("%1$7s %2$tH:%2$tM:%2$tS:%2$tL %3$s: %4$s\n",
         logRecord.getLevel(),
         logRecord.getMillis(),
         logRecord.getLoggerName(),
