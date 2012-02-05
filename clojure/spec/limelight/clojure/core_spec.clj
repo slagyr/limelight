@@ -12,6 +12,8 @@
     [limelight.clojure.production :only (new-production)]
     [limelight.clojure.util :only (map-for-java)]))
 
+(def SLASH (.separator (limelight.Context/fs)))
+
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
     (add scene (->props
@@ -109,7 +111,7 @@
 
     (context "with production"
 
-      (with peer-production (limelight.model.FakeProduction. "some/path"))
+      (with peer-production (limelight.model.FakeProduction. (str "some" SLASH "path")))
       (with production1 (new-production @peer-production))
       (before (.setProduction (.getPeer @root) @peer-production))
 
@@ -148,11 +150,11 @@
             (should= @root (scene stage1)))))
 
       (it "gets the path of a production"
-        (should= "some/path" (path @production1)))
+        (should= (str "some" SLASH "path") (path @production1)))
 
       (it "gets the path of a scene"
         (.setProduction (peer @root) (peer @production1))
-        (should= "some/path/root" (path @root)))
+        (should= (str "some" SLASH "path" SLASH "root") (path @root)))
 
       (context "backstage"
 

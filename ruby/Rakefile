@@ -1,5 +1,3 @@
-require 'rake/dsl_definition'
-#require 'rake'
 load File.expand_path(File.dirname(__FILE__) + "/../etc/tasks/_common.rake")
 
 #require File.expand_path(File.dirname(__FILE__) + "/lib/limelight.jar")
@@ -10,8 +8,9 @@ RUBY_ROOT = File.expand_path(File.dirname(__FILE__))
 
 def classpath
   elems = Dir.glob("#{RUBY_ROOT}/lib/**/*.jar")
+  elems.concat Dir.glob("#{LIMELIGHT_ROOT}/lib/**/*.jar")
   elems.unshift "#{RUBY_ROOT}/classes"
-  elems.join(":")
+  elems.join(path_separator)
 end
 
 def prod_deps
@@ -53,7 +52,8 @@ end
 
 desc "Run ruby specs"
 task "spec" do
-  run_command "java #{jvm_opts} -cp #{classpath} -jar lib/jruby-complete-1.6.4.jar -S rspec spec"
+  raise "ERROR!!! GEM_PATH not defined" unless ENV["GEM_PATH"]
+  run_command "java #{jvm_opts} -cp #{classpath} org.jruby.Main -S rspec spec"
 end
 task "test" => %w{spec}
 

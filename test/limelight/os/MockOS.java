@@ -3,10 +3,19 @@
 
 package limelight.os;
 
+import limelight.Context;
+
 public class MockOS extends OS
 {
   public boolean systemPropertiesConfigured;
   public String dataRoot;
+
+  public static MockOS installed()
+  {
+    final MockOS os = new MockOS();
+    Context.instance().os = os;
+    return os;
+  }
 
   protected void turnOnKioskMode()
   {
@@ -33,4 +42,5 @@ public class MockOS extends OS
     else
       return super.dataRoot();
   }
+
 }
