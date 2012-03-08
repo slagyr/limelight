@@ -412,7 +412,7 @@ public class FileSystem
     protected File file()
     {
       if(file == null)
-        file = new File(uri.getRawPath());
+        file = new File(uri.getPath());
       return file;
     }
 

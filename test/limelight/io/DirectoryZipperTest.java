@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -60,6 +63,26 @@ public class DirectoryZipperTest
     assertEquals("child", fs.readTextFile(fs.join(ROOT_DIR, "childdir", "child.txt")));
     assertEquals("grand child", fs.readTextFile(fs.join(ROOT_DIR, "childdir", "grandchilddir", "grandchild.txt")));
   }
+  
+  @Test
+  public void zipAndUnzipWithRealFS() throws Exception
+  {
+    FileSystem fs = FileSystem.installed();
+    final String tmp = fs.join(System.getProperty("java.io.tmpdir"), new Random().nextInt(10000000) + "");
+    String source = fs.join(tmp, "zipSource");
+    fs.createTextFile(fs.join(source, "one.txt"), "one");
+    fs.createTextFile(fs.join(source, "two", "two.txt"), "two");
+    fs.createTextFile(fs.join(source, "one", "two", "three.txt"), "three");
+    final DirectoryZipper zipper = DirectoryZipper.fromDir(source);
+    zipper.zipTo(new FileOutputStream(fs.join(tmp, "zip.zip")));
+
+    final DirectoryZipper unzipper = DirectoryZipper.fromZip(new FileInputStream(fs.join(tmp, "zip.zip")));
+    String dest = fs.join(tmp, "zipDest");
+    unzipper.unzip(dest);
+    assertEquals("one", fs.readTextFile(fs.join(dest, "one.txt")));
+    assertEquals("two", fs.readTextFile(fs.join(dest, "two", "two.txt")));
+    assertEquals("three", fs.readTextFile(fs.join(dest, "one", "two", "three.txt")));
+  }
 
 //  public void testZipIty() throws Exception
 //  {
@@ -68,5 +91,14 @@ public class DirectoryZipperTest
 //
 //    FileOutputStream output = new FileOutputStream("/tmp/OUCH.zip");
 //    zipper.zipTo(output);
+//  }
+  
+//  @Test
+//  public void realUnzip() throws Exception
+//  {
+//    FileSystem.installed();
+//    final DirectoryZipper zipper = DirectoryZipper.fromZip(new FileInputStream("C:\\Projects\\hosemonster\\ui\\production.llp"));
+//    zipper.unzip("C:\\Users\\8thlight\\tmp");
+//
 //  }
 }
