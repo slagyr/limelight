@@ -78,7 +78,7 @@ public class TextPanelTest
   {
     useFrame();
     panel.doLayout();
-    assertEquals(58, panel.getWidth());
+    assertEquals(59, panel.getWidth());
     assertEquals(14, panel.getHeight());
   }
 
