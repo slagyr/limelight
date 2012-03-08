@@ -54,8 +54,6 @@
 (defprotocol Buildable
   (build-props [this src context]))
 
-; TODO extend events
-
 ; Prop functions ------------------------------------------
 
 (defn- as-proxies [peer-props]
@@ -68,12 +66,12 @@
   (.getProxy (.getParent @(._peer prop))))
 
 (defn find-by-id [prop id]
-  (if-let [peer-result (.find @(._peer (scene prop)) id)]
+  (if-let [peer-result (.find @(._peer (scene prop)) (name id))]
     (.getProxy peer-result)
     nil))
 
 (defn find-by-name [root name]
-  (as-proxies (.findByName @(._peer root) name)))
+  (as-proxies (.findByName @(._peer root) (clojure.core/name name))))
 
 (defn players [prop]
   (.getPlayers (peer prop)))
@@ -109,6 +107,28 @@
       (.getProxy (.openScene (._peer production) scene-name (map-for-java stage-or-options)))))
   ([production scene-name stage-name options]
     (.getProxy (.openScene (._peer production) scene-name stage-name (map-for-java options)))))
+
+(defmacro ^{:private true} assert-args
+  [& pairs]
+  `(do (when-not ~(first pairs)
+         (throw (IllegalArgumentException.
+                  (str (first ~'&form) " requires " ~(second pairs) " in " ~'*ns* ":" (:line (meta ~'&form))))))
+     ~(let [more (nnext pairs)]
+        (when more
+          (list* `assert-args more)))))
+
+; TODO Test me
+(defmacro let-in [bindings & body]
+  (assert-args
+    (vector? bindings) "a vector for its binding"
+    (= 2 (count bindings)) "exactly 2 forms in binding vector")
+  (let [form (bindings 0) context (bindings 1)]
+    `(let [context# ~context
+           ns# (._ns ~context)
+           ns# (if (= clojure.lang.Atom (class ns#)) @ns# ns#)
+           eval-form# (cons 'fn (cons ['~form] '~body))]
+       (binding [*ns* ns#]
+         ((eval eval-form#) ~context)))))
 
 ; Theater functions ---------------------------------------
 

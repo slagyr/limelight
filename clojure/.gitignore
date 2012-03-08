@@ -4,3 +4,4 @@ lib
 classes
 m2
 
+.lein-deps-sum
