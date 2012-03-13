@@ -56,6 +56,7 @@
       (should= "Number ONE!" (text (first (children scene))))))
 
   (it "any map is considered options for the contining prop"
+    (pending)
     (let [scene (build @root "[:one [:two] {:text \"Number ONE!\"}]")]
       (illuminate scene)
       (should= "one" (name (first (children scene))))
@@ -63,6 +64,7 @@
       (should= "two" (name (first (first (children scene)))))))
 
   (it "options can be added to the scene"
+    (pending)
     (let [scene (build @root "{:id \"SCENE!\"}")]
       (illuminate scene)
       (should= "SCENE!" (id scene))))

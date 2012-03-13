@@ -17,7 +17,7 @@ public class PasswordMaskTest
   public void masksToDots() throws Exception
   {
     assertEquals("", PasswordMask.instance.mask(""));
-    assertEquals("•", PasswordMask.instance.mask("a"));
-    assertEquals("•••", PasswordMask.instance.mask("abc"));
+    assertEquals("\u2022", PasswordMask.instance.mask("a"));
+    assertEquals("\u2022\u2022\u2022", PasswordMask.instance.mask("abc"));
   }
 }
