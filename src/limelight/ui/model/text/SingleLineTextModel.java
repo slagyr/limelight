@@ -1,10 +1,10 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs;
+package limelight.ui.model.text;
 
-import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
-import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.model.text.offsetting.XOffsetStrategy;
+import limelight.ui.model.text.offsetting.YOffsetStrategy;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class SingleLineTextModel extends TextModel
 {
-  public SingleLineTextModel(TextContainer myBox)
+  public SingleLineTextModel(limelight.ui.model.text.TextContainer myBox)
   {
     super(myBox);
   }
@@ -22,7 +22,7 @@ public class SingleLineTextModel extends TextModel
   @Override
   protected void buildLines(ArrayList<TypedLayout> lines)
   {
-    lines.add(createLayout(getText()));
+    lines.add(createLayout(getDisplayableText()));
   }
 
   @Override

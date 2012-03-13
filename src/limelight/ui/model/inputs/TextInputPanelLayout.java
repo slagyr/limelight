@@ -4,8 +4,8 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
-import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
-import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.model.text.offsetting.XOffsetStrategy;
+import limelight.ui.model.text.offsetting.YOffsetStrategy;
 
 public class TextInputPanelLayout extends InputPanelLayout
 {

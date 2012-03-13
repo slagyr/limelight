@@ -55,6 +55,18 @@
       (should= "one" (name (first (children scene))))
       (should= "Number ONE!" (text (first (children scene))))))
 
+  (it "any map is considered options for the contining prop"
+    (let [scene (build @root "[:one [:two] {:text \"Number ONE!\"}]")]
+      (illuminate scene)
+      (should= "one" (name (first (children scene))))
+      (should= "Number ONE!" (text (first (children scene))))
+      (should= "two" (name (first (first (children scene)))))))
+
+  (it "options can be added to the scene"
+    (let [scene (build @root "{:id \"SCENE!\"}")]
+      (illuminate scene)
+      (should= "SCENE!" (id scene))))
+
   (it "with dynamic code"
     (let [scene (build @root "[:one (for [name [:two :three]] [name])]")]
       (should= 2 (count (children (first (children scene)))))))
@@ -65,6 +77,18 @@
       (should= "one" (name (first (children scene))))
       (should= "two" (name (second (children scene))))
       (should= "three" (name (nth (children scene) 2)))))
+
+  (it "builds props from data"
+    (let [scene (build @root '(for [n ["one" "two" "three"]] [n]))]
+      (illuminate scene)
+      (should= "one" (name (first (children scene))))
+      (should= "two" (name (second (children scene))))
+      (should= "three" (name (nth (children scene) 2)))))
+
+  (it "builds props from single vector"
+    (let [scene (build @root [:one])]
+      (illuminate scene)
+      (should= "one" (name (first (children scene))))))
 
   (it "allows events in options"
     (System/setProperty "foo.bar" "nothing")

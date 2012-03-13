@@ -37,12 +37,12 @@
 (defn- src->data [src context root]
   (let [scene (scene root)
         props-ns (._ns scene)]
-      (binding [*ns* props-ns
-                *context* context]
-        (if (string? src)
-          (let [src-file (or (:source-file *context*) "[CODE]")]
-            (read-src src-file (str "[" src "]")))
-          (eval src)))))
+    (binding [*ns* props-ns
+              *context* context]
+      (if (string? src)
+        (let [src-file (or (:source-file *context*) "[CODE]")]
+          (read-src src-file (str "[" src "]")))
+        (eval src)))))
 
 (defn- establish-root-path [root context]
   (if-let [prod (production root)]

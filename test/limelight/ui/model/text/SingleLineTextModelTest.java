@@ -1,10 +1,13 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs;
+package limelight.ui.model.text;
 
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.model.MockParentPanel;
+import limelight.ui.model.inputs.TextBoxPanel;
+import limelight.ui.model.inputs.TextInputPanel;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.TestUtil;

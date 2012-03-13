@@ -69,7 +69,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="Limelight" />
+    <orderEntry type="module" module-name="limelight" />
   </component>
 </module>
 

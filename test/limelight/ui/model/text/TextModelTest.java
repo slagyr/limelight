@@ -1,9 +1,11 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs;
+package limelight.ui.model.text;
 
 import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.model.text.masking.IdentityMask;
+import limelight.ui.model.text.masking.PasswordMask;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.TestUtil;
@@ -20,13 +22,13 @@ import static org.junit.Assume.assumeTrue;
 public class TextModelTest
 {
   TextModel model;
-  MockTextContainer container;
+  limelight.ui.model.text.MockTextContainer container;
 
   @Before
   public void setUp()
   {
     assumeTrue(TestUtil.notHeadless());
-    container = new MockTextContainer();
+    container = new limelight.ui.model.text.MockTextContainer();
     container.bounds = new Box(0, 0, 150, 20);
     model = new SingleLineTextModel(container);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
@@ -232,6 +234,20 @@ public class TextModelTest
   public void sendingCareToEndOfLine() throws Exception
   {
     model.setText("This is some text\n");
+  }
+
+  @Test
+  public void defaultMaskIsIdentity() throws Exception
+  {
+    assertEquals(IdentityMask.instance, model.getMask());
+  }
+
+  @Test
+  public void usingDifferentMask() throws Exception
+  {
+    model.setMask(PasswordMask.instance);
+    model.setText("hello world");
+    assertEquals(PasswordMask.instance.mask("hello world"), model.getDisplayableText());
   }
 
 }

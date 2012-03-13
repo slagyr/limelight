@@ -4,6 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.events.panel.KeyEvent;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 

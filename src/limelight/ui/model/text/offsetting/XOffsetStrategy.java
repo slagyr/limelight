@@ -1,9 +1,7 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs.offsetting;
-
-import limelight.ui.model.inputs.TextModel;
+package limelight.ui.model.text.offsetting;
 
 public interface XOffsetStrategy
 {
@@ -11,5 +9,5 @@ public interface XOffsetStrategy
   XOffsetStrategy CENTERED = new CenteredXOffsetStrategy();
   XOffsetStrategy FITTING = new FittingXOffsetStrategy();
 
-  int calculateXOffset(TextModel model);
+  int calculateXOffset(limelight.ui.model.text.TextModel model);
 }

@@ -6,9 +6,6 @@ package limelight.ui.model.inputs.painting;
 import limelight.ui.MockGraphics;
 import limelight.ui.MockTypedLayout;
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.model.inputs.MockTextContainer;
-import limelight.ui.model.inputs.MultiLineTextModel;
-import limelight.ui.model.inputs.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.Colors;
@@ -24,18 +21,18 @@ import static org.junit.Assume.assumeTrue;
 public class TextPanelTextPainterTest
 {
   public TextPanelPainter painter;
-  public TextModel model;
-  public MockTextContainer container;
+  public limelight.ui.model.text.TextModel model;
+  public limelight.ui.model.text.MockTextContainer container;
   public MockGraphics graphics;
 
   @Before
   public void setUp()
   {
     assumeTrue(TestUtil.notHeadless());
-    container = new MockTextContainer();
+    container = new limelight.ui.model.text.MockTextContainer();
     container.bounds = new Box(0, 0, 150, 50);
 
-    model = new MultiLineTextModel(container);
+    model = new limelight.ui.model.text.MultiLineTextModel(container);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("Some Text");
     model.setCaretLocation(TextLocation.at(0, 4));

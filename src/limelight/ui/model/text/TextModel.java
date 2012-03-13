@@ -1,14 +1,15 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs;
+package limelight.ui.model.text;
 
-import limelight.Log;
 import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.Fonts;
-import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
-import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.model.text.masking.IdentityMask;
+import limelight.ui.model.text.masking.TextMask;
+import limelight.ui.model.text.offsetting.XOffsetStrategy;
+import limelight.ui.model.text.offsetting.YOffsetStrategy;
 import limelight.ui.text.*;
 import limelight.ui.model.TextPanel;
 import limelight.util.Box;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public abstract class TextModel implements ClipboardOwner
 {
-  private TextContainer container;
+  private limelight.ui.model.text.TextContainer container;
   private StringBuffer text = new StringBuffer(); // TODO MDM Storing the text in both StringBuffer and List of TextLayouts leads to some major inefficiencies.  Should make an attempt to get rid of StringBuffer.
   private ArrayList<TypedLayout> lines;
   private Point offset = new Point(0, 0);
@@ -31,6 +32,7 @@ public abstract class TextModel implements ClipboardOwner
   private TextLocation selectionLocation = TextLocation.at(0, 0);
   private TextLocation verticalOrigin;
   private boolean changeFlag;
+  private TextMask mask = IdentityMask.instance;
 
   public abstract Box getCaretShape();
 
@@ -46,7 +48,7 @@ public abstract class TextModel implements ClipboardOwner
 
   protected abstract YOffsetStrategy getDefaultYOffsetStrategy();
 
-  public TextModel(TextContainer container)
+  public TextModel(limelight.ui.model.text.TextContainer container)
   {
     this.container = container;
   }
@@ -126,7 +128,7 @@ public abstract class TextModel implements ClipboardOwner
     return height;
   }
 
-  protected void recalculateOffset(XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
+  public void recalculateOffset(XOffsetStrategy xOffsetStrategy, YOffsetStrategy yOffsetStrategy)
   {
     Box boundingBox = getContainer().getConsumableBounds();
     Dimension textDimensions = getTextDimensions();
@@ -315,6 +317,16 @@ public abstract class TextModel implements ClipboardOwner
     return text.toString();
   }
 
+  public String getDisplayableText()
+  {
+    return mask.mask(getText());
+  }
+
+  public boolean hasText()
+  {
+    return text != null && text.length() > 0;
+  }
+
   public synchronized void insertChar(char c)
   {
     if(c == KeyEvent.CHAR_UNDEFINED)
@@ -445,7 +457,7 @@ public abstract class TextModel implements ClipboardOwner
     return caretLocation.before(selectionLocation) ? selectionLocation : caretLocation;
   }
 
-  public TextContainer getContainer()
+  public limelight.ui.model.text.TextContainer getContainer()
   {
     return container;
   }
@@ -465,7 +477,7 @@ public abstract class TextModel implements ClipboardOwner
     //this doesn't have to do anything...
   }
 
-  protected TypedLayout createLayout(String text)
+  public TypedLayout createLayout(String text)
   {
     return typedLayoutFactory.createLayout(text, getFont(), TextPanel.getRenderContext());
   }
@@ -490,9 +502,18 @@ public abstract class TextModel implements ClipboardOwner
     return changeFlag;
   }
 
-
   public boolean isSingleLine()
   {
     return false;
+  }
+
+  public TextMask getMask()
+  {
+    return mask;
+  }
+
+  public void setMask(TextMask mask)
+  {
+    this.mask = mask;
   }
 }

@@ -4,6 +4,8 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
+import limelight.ui.model.text.MultiLineTextModel;
+import limelight.ui.model.text.TextModel;
 
 public class TextAreaPanel extends TextInputPanel
 {

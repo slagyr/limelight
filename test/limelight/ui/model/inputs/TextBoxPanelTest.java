@@ -5,7 +5,13 @@ package limelight.ui.model.inputs;
 
 import limelight.model.api.FakePropProxy;
 import limelight.ui.MockGraphics;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
+import limelight.ui.model.Scene;
+import limelight.ui.model.ScenePanel;
+import limelight.ui.model.text.TextModel;
+import limelight.ui.model.text.masking.IdentityMask;
+import limelight.ui.model.text.masking.PasswordMask;
 import limelight.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -88,5 +94,35 @@ public class TextBoxPanelTest extends Assert
     panel.setParent(newParent);
 
     assertEquals(TextInputPanel.TextInputPropPainter.instance, newParent.getPainter());
+  }
+
+  @Test
+  public void passwordMode() throws Exception
+  {
+    panel.setInPasswordMode(true);
+    assertEquals(PasswordMask.instance, panel.getModel().getMask());
+    assertEquals(true, panel.isInPasswordMode());
+
+    panel.setInPasswordMode(false);
+    assertEquals(IdentityMask.instance, panel.getModel().getMask());
+    assertEquals(false, panel.isInPasswordMode());
+  }
+
+  @Test
+  public void changingPasswordModeMakesThePanelDirty() throws Exception
+  {
+    FakeScene root = new FakeScene();
+    root.add(parent);
+    panel.getModel().resetChangeFlag();
+    assertEquals(false, root.dirtyRegions.contains(panel.getAbsoluteBounds()));
+    assertEquals(false, panel.getModel().hasChanged());
+
+    panel.setInPasswordMode(false);
+    assertEquals(false, root.dirtyRegions.contains(panel.getAbsoluteBounds()));
+    assertEquals(false, panel.getModel().hasChanged());
+
+    panel.setInPasswordMode(true);
+    assertEquals(true, root.dirtyRegions.contains(panel.getAbsoluteBounds()));
+    assertEquals(true, panel.getModel().hasChanged());
   }
 }

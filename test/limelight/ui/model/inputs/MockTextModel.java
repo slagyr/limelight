@@ -4,8 +4,10 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
-import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.model.text.offsetting.XOffsetStrategy;
+import limelight.ui.model.text.offsetting.YOffsetStrategy;
+import limelight.ui.model.text.TextContainer;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
@@ -33,7 +35,7 @@ public class MockTextModel extends TextModel
   @Override
   protected void buildLines(ArrayList<TypedLayout> lines)
   {
-    lines.add(createLayout(getText()));
+    lines.add(createLayout(getDisplayableText()));
   }
 
   @Override

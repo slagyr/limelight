@@ -1,11 +1,9 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs.offsetting;
+package limelight.ui.model.text.offsetting;
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.model.inputs.MockTextContainer;
-import limelight.ui.model.inputs.MultiLineTextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.TestUtil;
@@ -17,15 +15,15 @@ import static org.junit.Assume.assumeTrue;
 
 public class FittingYOffsetStrategyTest
 {
-  private MultiLineTextModel model;
-  private MockTextContainer textContainer;
+  private limelight.ui.model.text.MultiLineTextModel model;
+  private limelight.ui.model.text.MockTextContainer textContainer;
 
   @Before
   public void setUp() throws Exception
   {
     assumeTrue(TestUtil.notHeadless());
-    textContainer = new MockTextContainer(new Box(0, 0, 100, 15));
-    model = new MultiLineTextModel(textContainer);
+    textContainer = new limelight.ui.model.text.MockTextContainer(new Box(0, 0, 100, 15));
+    model = new limelight.ui.model.text.MultiLineTextModel(textContainer);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }
 

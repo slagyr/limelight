@@ -1,7 +1,7 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs;
+package limelight.ui.model.text;
 
 import limelight.ui.MockTypedLayoutFactory;
 import limelight.ui.text.TextLocation;
@@ -20,13 +20,13 @@ import static org.junit.Assume.assumeTrue;
 public class MultiLineTextModelTest
 {
   private MultiLineTextModel model;
-  private MockTextContainer container;
+  private limelight.ui.model.text.MockTextContainer container;
 
   @Before
   public void setUp()
   {
     assumeTrue(TestUtil.notHeadless());
-    container = new MockTextContainer();
+    container = new limelight.ui.model.text.MockTextContainer();
     container.bounds = new Box(0, 0, 150, 75);
     model = new MultiLineTextModel(container);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);

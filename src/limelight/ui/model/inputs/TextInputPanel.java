@@ -11,6 +11,8 @@ import limelight.ui.*;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.*;
 import limelight.ui.model.inputs.painting.*;
+import limelight.ui.model.text.TextContainer;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.util.Box;
 

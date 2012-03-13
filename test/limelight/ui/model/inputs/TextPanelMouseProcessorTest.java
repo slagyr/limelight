@@ -9,6 +9,7 @@ import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.TestUtil;
 import org.junit.Before;

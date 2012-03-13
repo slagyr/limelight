@@ -8,6 +8,7 @@ import limelight.ui.events.panel.*;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.TestUtil;

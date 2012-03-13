@@ -3,7 +3,7 @@
 
 (ns limelight.clojure.scene
   (:use
-    [limelight.clojure.casting :only (new-player-recruiter clj-players)]
+    [limelight.clojure.casting :only (new-player-recruiter)]
     [limelight.clojure.util :only (map-for-java ->options read-src)]
     [limelight.clojure.core]))
 

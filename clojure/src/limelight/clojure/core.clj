@@ -76,6 +76,11 @@
 (defn players [prop]
   (.getPlayers (peer prop)))
 
+(defn clj-players [prop]
+  (filter
+    #(= "limelight.clojure.casting.Player" (.getName (class %)))
+    (players prop)))
+
 (defn remove-all [prop]
   (.removeAll (peer prop)))
 
@@ -117,6 +122,13 @@
         (when more
           (list* `assert-args more)))))
 
+(defmacro do-in [context & body]
+  `(let [ns# (._ns ~context)
+         ns# (if (= clojure.lang.Atom (class ns#)) @ns# ns#)
+         eval-form# (cons 'do '~body)]
+     (binding [*ns* ns#]
+       (eval eval-form#))))
+
 ; TODO Test me
 (defmacro let-in [bindings & body]
   (assert-args
@@ -130,11 +142,18 @@
        (binding [*ns* ns#]
          ((eval eval-form#) ~context)))))
 
+; TODO Test me
+(defmacro cue [thing fn-name & args]
+  `(let [nses# (if (isa? (class ~thing) limelight.model.api.ProductionProxy) [@(._ns ~thing)] (map #(._ns %) (clj-players ~thing)))
+         fn# (some #(if-let [ns-fn# (ns-resolve % '~fn-name)] ns-fn# nil) nses#)]
+     (fn# ~thing ~@args)))
+
 ; Theater functions ---------------------------------------
 
 (defn build-stage [theater name & options]
   (let [options (->options options)
         stage-peer (.buildStage theater name options)]
+
     (.getProxy stage-peer)))
 
 (defn add-stage [theater stage]
