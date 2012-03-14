@@ -3,19 +3,18 @@
 
 package limelight.ui.model;
 
-import limelight.Log;
+import limelight.LimelightException;
 import limelight.styles.Style;
+import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.GreedyDimensionValue;
-import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
-import limelight.LimelightException;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.awt.*;
 
 public class PropPanelLayout implements Layout
 {

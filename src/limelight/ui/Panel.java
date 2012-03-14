@@ -3,13 +3,13 @@
 
 package limelight.ui;
 
+import limelight.model.Stage;
 import limelight.styles.ScreenableStyle;
 import limelight.ui.events.panel.PanelEventHandler;
+import limelight.ui.model.Layout;
 import limelight.ui.model.ParentPanelBase;
-import limelight.model.Stage;
 import limelight.ui.model.Scene;
 import limelight.util.Box;
-import limelight.ui.model.Layout;
 
 import java.awt.*;
 

@@ -3,10 +3,11 @@
 
 package limelight.ui.model;
 
-import limelight.styles.ScreenableStyle;
 import limelight.model.api.PropProxy;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
+
 import java.awt.*;
 
 

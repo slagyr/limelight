@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
@@ -24,7 +25,7 @@ public class PropPanelLayoutTest
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new FakePropProxy());
+    root = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter()); // TODO - Should be able to use FakeScene here but tests fail. Figuring out why is non-trivial.
     MockStage frame = new MockStage();
     root.setStage(frame);
     parent = new PropPanel(new FakePropProxy());

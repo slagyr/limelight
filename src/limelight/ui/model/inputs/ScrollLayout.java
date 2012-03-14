@@ -3,11 +3,11 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.styles.Style;
+import limelight.ui.Panel;
 import limelight.ui.model.Layout;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.PropPanelLayout;
-import limelight.ui.Panel;
-import limelight.styles.Style;
 
 import java.awt.*;
 import java.util.LinkedList;

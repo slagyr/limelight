@@ -3,12 +3,10 @@
 
 package limelight.os.darwin;
 
-import limelight.os.OS;
-import limelight.Context;
-import limelight.util.StringUtil;
 import com.sun.jna.ptr.IntByReference;
+import limelight.Context;
+import limelight.os.OS;
 
-import java.io.File;
 import java.io.IOException;
 
 public class DarwinOS extends OS

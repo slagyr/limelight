@@ -3,9 +3,9 @@
 
 package limelight.styles.compiling;
 
+import limelight.styles.abstrstyling.StringValue;
 import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.abstrstyling.StringValue;
 
 public class StringAttributeCompiler extends StyleCompiler
 {

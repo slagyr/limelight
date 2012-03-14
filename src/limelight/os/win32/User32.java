@@ -3,11 +3,11 @@
 
 package limelight.os.win32;
 
-import com.sun.jna.Structure;
-import com.sun.jna.Pointer;
 import com.sun.jna.Native;
-import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 import com.sun.jna.ptr.ByteByReference;
+import com.sun.jna.ptr.IntByReference;
 
 public interface User32 extends W32API
 {

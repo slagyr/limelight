@@ -4,7 +4,6 @@
 package limelight.background;
 
 import limelight.Context;
-import limelight.Log;
 import limelight.ui.Panel;
 import limelight.ui.model.PaintJob;
 import limelight.ui.model.Scene;

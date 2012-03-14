@@ -22,12 +22,12 @@ public class ParentPanelTest
   private MockParentPanel child;
   private MockParentPanel grandChild;
   private MockPanel sibling;
-  private ScenePanel root;
+  private FakeScene root;
 
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new FakePropProxy());
+    root = new FakeScene();
     root.setStage(new MockStage());
     panel = new TestableParentPanel();
     root.add(panel);
@@ -35,7 +35,7 @@ public class ParentPanelTest
 
   private void createFamilyTree()
   {
-    root = new ScenePanel(new FakePropProxy());
+    root = new FakeScene();
     parent = new MockParentPanel();
     root.add(parent);
     child = new MockParentPanel();
@@ -420,10 +420,8 @@ public class ParentPanelTest
     panel.markAsNeedingLayout();
 
     assertEquals(true, panel.needsLayout());
-    ArrayList<Panel> buffer = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(buffer);
-    assertEquals(1, buffer.size());
-    assertSame(root, buffer.get(0));
+    assertEquals(1, root.panelsNeedingLayout.size());
+    assertSame(panel, root.panelsNeedingLayout.get(0));
 
     panel.resetLayout();
 
@@ -436,14 +434,10 @@ public class ParentPanelTest
     panel.markAsNeedingLayout();
 
     assertEquals(true, panel.needsLayout());
-    ArrayList<Panel> buffer = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(buffer);
+    root.panelsNeedingLayout.clear();
 
     panel.markAsNeedingLayout();
-    buffer.clear();
-    root.getAndClearPanelsNeedingLayout(buffer);
-
-    assertEquals(0, buffer.size());
+    assertEquals(0, root.panelsNeedingLayout.size());
     assertEquals(true, panel.needsLayout());
   }
 

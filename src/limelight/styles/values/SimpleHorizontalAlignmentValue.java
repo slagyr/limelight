@@ -4,8 +4,8 @@
 package limelight.styles.values;
 
 import limelight.LimelightException;
-import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.styles.HorizontalAlignment;
+import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 
 import java.awt.*;
 

@@ -3,17 +3,17 @@
 
 package limelight.os.win32;
 
-import com.sun.jna.win32.W32APIFunctionMapper;
-import com.sun.jna.win32.W32APITypeMapper;
-import com.sun.jna.win32.StdCallLibrary;
-import com.sun.jna.PointerType;
 import com.sun.jna.FromNativeContext;
 import com.sun.jna.IntegerType;
 import com.sun.jna.Pointer;
+import com.sun.jna.PointerType;
 import com.sun.jna.ptr.ByReference;
+import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APIFunctionMapper;
+import com.sun.jna.win32.W32APITypeMapper;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public interface W32API extends StdCallLibrary, W32Errors
 {

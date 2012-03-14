@@ -3,9 +3,9 @@
 
 package limelight.styles.compiling;
 
+import limelight.styles.VerticalAlignment;
 import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.VerticalAlignment;
 import limelight.styles.values.SimpleVerticalAlignmentValue;
 
 public class VerticalAlignmentAttributeCompiler extends StyleCompiler

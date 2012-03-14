@@ -3,8 +3,10 @@
 
 package limelight.ui.model;
 
-import limelight.Log;
-import limelight.styles.*;
+import limelight.styles.RichStyle;
+import limelight.styles.ScreenableStyle;
+import limelight.styles.StyleAttribute;
+import limelight.styles.StyleObserver;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.text.StyledText;
 import limelight.ui.text.StyledTextParser;
@@ -19,8 +21,10 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
 {

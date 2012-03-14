@@ -4,7 +4,6 @@
 package limelight.ui;
 
 import limelight.styles.ScreenableStyle;
-import limelight.model.api.PropProxy;
 import limelight.ui.painting.Border;
 import limelight.util.Box;
 

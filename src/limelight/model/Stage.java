@@ -8,9 +8,9 @@ import limelight.model.api.StageProxy;
 import limelight.ui.events.panel.SceneOpenedEvent;
 import limelight.ui.events.stage.StageClosedEvent;
 import limelight.ui.events.stage.StageClosingEvent;
+import limelight.ui.model.Scene;
 import limelight.ui.model.StageKeyListener;
 import limelight.ui.model.StageMouseListener;
-import limelight.ui.model.Scene;
 
 import java.awt.*;
 

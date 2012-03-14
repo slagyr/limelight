@@ -4,15 +4,14 @@
 package limelight.ui.model.inputs;
 
 import limelight.events.Event;
-import limelight.styles.Style;
 import limelight.events.EventAction;
+import limelight.styles.Style;
+import limelight.ui.RadioButtonGroup;
+import limelight.ui.RadioButtonGroupMember;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;
-import limelight.ui.RadioButtonGroupMember;
-import limelight.ui.RadioButtonGroup;
 import limelight.ui.model.Scene;
-import limelight.ui.model.ScenePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

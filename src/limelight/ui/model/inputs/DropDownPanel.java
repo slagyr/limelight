@@ -6,7 +6,8 @@ package limelight.ui.model.inputs;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.styles.Style;
-import limelight.ui.*;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
 import limelight.ui.events.panel.*;
 import limelight.ui.images.Images;
 import limelight.ui.model.PropPanel;
@@ -14,7 +15,9 @@ import limelight.ui.ninepatch.NinePatch;
 import limelight.ui.painting.BackgroundPainter;
 
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DropDownPanel extends AbstractButtonPanel

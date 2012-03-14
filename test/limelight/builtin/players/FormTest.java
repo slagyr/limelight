@@ -3,6 +3,7 @@ package limelight.builtin.players;
 import limelight.model.api.FakePropProxy;
 import limelight.model.api.FakeSceneProxy;
 import limelight.ui.events.panel.CastEvent;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.util.Opts;
@@ -21,7 +22,7 @@ public class FormTest
   {
     form = new Form();
     propPanel = new PropPanel(new FakePropProxy());
-    new ScenePanel(new FakeSceneProxy()).add(propPanel);
+    new FakeScene().add(propPanel);
     form.install(new CastEvent(propPanel));
   }
 

@@ -21,12 +21,6 @@ module Limelight
 
     include Optionable
 
-    class << self
-      def panel_class #:nodoc:
-        Java::limelight.ui.model.PropPanel
-      end
-    end
-
     include Java::limelight.model.api.PropProxy
 
     attr_reader :peer #:nodoc:
@@ -41,7 +35,7 @@ module Limelight
     # until the prop is added to a Prop tree with a Scene.
     #
     def initialize(options={})
-      @peer = self.class.panel_class.new(self)
+      @peer = Java::limelight.ui.model.PropPanel.new(self)
       @peer.add_options(Util::Hashes.for_java(options))
     end
 

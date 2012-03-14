@@ -4,8 +4,8 @@
 package limelight.ui.model.inputs;
 
 import limelight.events.Event;
-import limelight.styles.Style;
 import limelight.events.EventAction;
+import limelight.styles.Style;
 import limelight.ui.events.panel.ButtonPushedEvent;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;

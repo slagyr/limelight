@@ -5,7 +5,9 @@ package limelight.ui.model;
 
 import limelight.LimelightException;
 import limelight.io.FakeFileSystem;
+import limelight.model.CastingDirector;
 import limelight.model.FakeProduction;
+import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.Panel;
@@ -29,7 +31,7 @@ public class ScenePanelTest extends Assert
   public void setUp() throws Exception
   {
     frame = new MockStage();
-    root = new ScenePanel(new FakePropProxy());
+    root = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter());
     child = new MockProp("child");
     limelight.ui.KeyboardFocusManager.installed();
     FakeFileSystem.installed();
@@ -347,7 +349,7 @@ public class ScenePanelTest extends Assert
     root.setProduction(new FakeProduction("test_prod"));
     assertEquals("test_prod", root.getPath());
 
-    root = new ScenePanel(new FakePropProxy());
+    root = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter());
     root.setProduction(new FakeProduction("/test_prod"));
     root.addOptions(Util.toMap("path", "some/path"));
     assertEquals("/test_prod/some/path", root.getPath());
@@ -374,5 +376,21 @@ public class ScenePanelTest extends Assert
 
     root.removeFromCaches(panel);
     assertEquals(0, root.backstage_PRIVATE().size());
+  }
+
+  @Test
+  public void optionsAreIlluminatedImmediately() throws Exception
+  {
+    CastingDirector.installed();
+
+    root.addOptions(Opts.with("id", "scenex123"));
+    assertEquals("scenex123", root.getId());
+
+    root.addOptions(Opts.with("name", "super-scene"));
+    assertEquals("super-scene", root.getName());
+
+    root.addOptions(Opts.with("players", "super-scene"));
+    assertEquals(1, root.getPlayers().size());
+    assertEquals("super-scene", root.getPlayers().get(0).getName());
   }
 }

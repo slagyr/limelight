@@ -4,8 +4,8 @@
 package limelight.ui.model.inputs;
 
 import limelight.ui.Panel;
-import limelight.ui.model.PanelBase;
 import limelight.ui.model.Layout;
+import limelight.ui.model.PanelBase;
 import limelight.util.Box;
 
 public class InputPanelLayout implements Layout

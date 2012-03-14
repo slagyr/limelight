@@ -8,6 +8,7 @@ import limelight.ui.model.text.offsetting.YOffsetStrategy;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
+
 import java.awt.*;
 import java.util.ArrayList;
 

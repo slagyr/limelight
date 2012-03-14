@@ -3,12 +3,13 @@
 
 package limelight.ui.painting;
 
-import limelight.styles.abstrstyling.NoneableValue;
-import limelight.ui.*;
-import limelight.ui.model.Scene;
-import limelight.ui.model.ImageCache;
 import limelight.styles.Style;
+import limelight.styles.abstrstyling.NoneableValue;
 import limelight.styles.abstrstyling.StringValue;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
+import limelight.ui.model.ImageCache;
+import limelight.ui.model.Scene;
 import limelight.util.Box;
 
 import java.awt.*;

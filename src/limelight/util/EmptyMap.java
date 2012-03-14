@@ -3,7 +3,10 @@
 
 package limelight.util;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 
 public class EmptyMap<K,V> implements Map<K,V>
 {

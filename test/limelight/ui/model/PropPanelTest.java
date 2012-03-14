@@ -50,13 +50,11 @@ public class PropPanelTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new FakePropProxy());
+    root = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter());
     prop = new FakePropProxy();
     panel = new PropPanel(prop);
     root.add(panel);
 
-    FakePlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
-    root.setPlayerRecruiter(playerRecruiter);
     root.setProduction(new FakeProduction());
     root.setStage(new MockStage());
     style = panel.getStyle();

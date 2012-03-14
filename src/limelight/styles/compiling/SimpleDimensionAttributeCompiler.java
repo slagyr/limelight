@@ -3,8 +3,8 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.DimensionValue;
+import limelight.styles.abstrstyling.StyleValue;
 
 public class SimpleDimensionAttributeCompiler extends DimensionAttributeCompiler
 {

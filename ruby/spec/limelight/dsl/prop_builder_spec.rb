@@ -126,7 +126,7 @@ describe Limelight::DSL::PropBuilder do
     it "should install external props" do
       @fs.create_text_file("/root/external.rb", "child :id => 123")
 
-      root = Limelight::build_props(@scene, :id => 321, :root_path => "/root", :player_recruiter => @recruiter) do
+      root = Limelight::build_props(@scene, :id => 321, :root_path => "/root") do
         __install "external.rb"
       end
       root.peer.illuminate
@@ -177,7 +177,7 @@ describe Limelight::DSL::PropBuilder do
     it "should allow instance_variable when installing an external props file" do
       @fs.create_text_file("/root/external.rb", "child :id => @desired_id")
 
-      root = Limelight::build_props(@scene, :id => 321, :root_path => "/root", :player_recruiter => @recruiter) do
+      root = Limelight::build_props(@scene, :id => 321, :root_path => "/root") do
         __install "external.rb", :desired_id => "123"
       end
       root.peer.illuminate

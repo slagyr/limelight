@@ -6,10 +6,10 @@ package limelight.styles.compiling;
 import limelight.styles.abstrstyling.DimensionValue;
 import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.values.GreedyDimensionValue;
-import limelight.styles.values.StaticDimensionValue;
 import limelight.styles.values.AutoDimensionValue;
+import limelight.styles.values.GreedyDimensionValue;
 import limelight.styles.values.PercentageDimensionValue;
+import limelight.styles.values.StaticDimensionValue;
 
 public class DimensionAttributeCompiler extends StyleCompiler
 {

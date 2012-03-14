@@ -5,8 +5,8 @@ package limelight.ui.model;
 
 import limelight.Context;
 import limelight.model.Stage;
-import limelight.styles.abstrstyling.*;
 import limelight.model.api.StageProxy;
+import limelight.styles.abstrstyling.*;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.ui.images.Images;
 import limelight.util.Colors;

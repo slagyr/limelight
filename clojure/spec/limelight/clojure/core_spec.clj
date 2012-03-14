@@ -6,7 +6,7 @@
     [speclj.core]
     [limelight.clojure.spec-helper]
     [limelight.clojure.core]
-    [limelight.clojure.prop-building :only (->props)]
+    [limelight.clojure.prop-building :only (build-props-on)]
     [limelight.clojure.scene :only (new-scene)]
     [limelight.clojure.prop :only (new-prop)]
     [limelight.clojure.production :only (new-production)]
@@ -16,15 +16,15 @@
 
 (defn build-tree []
   (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
-    (add scene (->props
-                 [[:child {:id "child1"}
-                   [:grand-child {:id "grand-child1"}
-                    [:great-grand-child {:id "great-grand-child1"}]
-                    [:great-grand-child {:id "great-grand-child2"}]]
-                   [:grand-child {:id "grand-child2"}
-                    [:great-grand-child {:id "great-grand-child3"}]]]
-                  [:child {:id "child2"}
-                   [:grand-child {:id "grand-child3"}]]]))
+    (build-props-on scene
+      [[:child {:id "child1"}
+        [:grand-child {:id "grand-child1"}
+         [:great-grand-child {:id "great-grand-child1"}]
+         [:great-grand-child {:id "great-grand-child2"}]]
+        [:grand-child {:id "grand-child2"}
+         [:great-grand-child {:id "great-grand-child3"}]]]
+       [:child {:id "child2"}
+        [:grand-child {:id "grand-child3"}]]])
     (.setPlayerRecruiter @(._peer scene) (limelight.model.api.FakePlayerRecruiter.))
     (.illuminate @(._peer scene))
     scene))

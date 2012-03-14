@@ -3,9 +3,9 @@
 
 package limelight.ui.model;
 
+import limelight.styles.Style;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.ui.Panel;
-import limelight.styles.Style;
 import limelight.util.Box;
 
 import java.awt.*;

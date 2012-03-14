@@ -3,8 +3,8 @@
 
 package limelight.styles.values;
 
-import limelight.styles.abstrstyling.YCoordinateValue;
 import limelight.styles.VerticalAlignment;
+import limelight.styles.abstrstyling.YCoordinateValue;
 
 public class AlignedYCoordinateValue extends SimpleVerticalAlignmentValue implements YCoordinateValue
 {

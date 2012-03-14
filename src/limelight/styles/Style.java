@@ -4,10 +4,10 @@
 package limelight.styles;
 
 import limelight.styles.abstrstyling.*;
+import limelight.styles.abstrstyling.StringValue;
 import limelight.styles.attributes.*;
 import limelight.styles.values.StaticDimensionValue;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;

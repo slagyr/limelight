@@ -9,7 +9,7 @@ import limelight.ui.events.panel.ValueChangedEvent;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
 import limelight.model.api.FakePropProxy;
-import limelight.ui.model.ScenePanel;
+import limelight.ui.model.Scene;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -137,7 +137,7 @@ public class RadioButtonPanelTest
   @Test
   public void settingTheGroupName() throws Exception
   {
-    ScenePanel scene = new ScenePanel(new FakePropProxy("scene"));
+    Scene scene = new FakeScene();
     PropPanel parent1 = new PropPanel(new FakePropProxy("parent1"));
     RadioButtonPanel radio1 = new RadioButtonPanel();
     parent1.add(radio1);
@@ -161,7 +161,7 @@ public class RadioButtonPanelTest
   @Test
   public void changingGroupName() throws Exception
   {
-    ScenePanel scene = new ScenePanel(new FakePropProxy("scene"));
+    Scene scene = new FakeScene();
     PropPanel parent1 = new PropPanel(new FakePropProxy("parent1"));
     RadioButtonPanel radio1 = new RadioButtonPanel();
     parent1.add(radio1);

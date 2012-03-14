@@ -31,7 +31,7 @@ public class TextPanelTest
   private Style style;
   private Frame frame;
   private MockProp parent;
-  private ScenePanel root;
+  private Scene root;
   private String defaultFontFace;
   private String defaultFontSize;
   private String defaultFontStyle;
@@ -48,7 +48,7 @@ public class TextPanelTest
     panel = new TextPanel(parent);
     parent.add(panel);
     panel.setText("Some Text", parent);
-    root = new ScenePanel(new FakePropProxy());
+    root = new FakeScene();
     root.setStage(new MockStage());
     root.add(parent);
     style.setTextColor("green");

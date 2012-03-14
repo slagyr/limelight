@@ -8,9 +8,11 @@ import limelight.LimelightException;
 import limelight.model.Production;
 import limelight.model.StylesSource;
 import limelight.model.api.Player;
+import limelight.model.api.PlayerRecruiter;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -67,7 +69,8 @@ public class JavaProduction extends Production
   @Override
   protected Scene loadScene(String scenePath, Map<String, Object> options)
   {
-    JavaScene scene = new JavaScene(this, options);
+    PlayerRecruiter recruiter = new JavaPlayerRecruiter(playerLoader);
+    JavaScene scene = new JavaScene(this, recruiter, options);
 
     final String propsPath = Context.fs().pathTo(scene.getPeer().getPath(), "props.xml");
     for(Element propElement : Xml.loadRootElements(propsPath))

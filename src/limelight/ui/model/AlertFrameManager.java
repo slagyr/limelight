@@ -6,12 +6,12 @@ package limelight.ui.model;
 import limelight.Context;
 import limelight.ui.events.stage.*;
 
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AlertFrameManager implements WindowFocusListener, WindowListener, WindowStateListener, FrameManager
 {

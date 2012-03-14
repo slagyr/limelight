@@ -3,6 +3,7 @@ package limelight.builtin.players;
 import limelight.model.api.FakePropProxy;
 import limelight.model.api.FakeSceneProxy;
 import limelight.ui.events.panel.CastEvent;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.ScenePanel;
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class ImageTest
   {
     image = new Image();
     propPanel = new PropPanel(new FakePropProxy());
-    new ScenePanel(new FakeSceneProxy()).add(propPanel);
+    new FakeScene().add(propPanel);
     image.install(new CastEvent(propPanel));
   }
 

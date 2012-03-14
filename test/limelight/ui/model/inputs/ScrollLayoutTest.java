@@ -3,25 +3,29 @@
 
 package limelight.ui.model.inputs;
 
-import junit.framework.TestCase;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.model.*;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ScrollLayoutTest extends TestCase
+import static org.junit.Assert.assertEquals;
+
+public class ScrollLayoutTest
 {
   private PropPanel parent;
 
+  @Before
   public void setUp() throws Exception
   {
-    ScenePanel root = new ScenePanel(new FakePropProxy());
-    root.setStage(new MockStage());
+    Scene root = new FakeScene();
     parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("100");
   }
 
-  public void testScrollContentThatIsntAlignedTopLeft() throws Exception
+  @Test
+  public void scrollContentThatIsntAlignedTopLeft() throws Exception
   {
     parent.getStyle().setScrollbars("on");
     parent.getStyle().setAlignment("center");

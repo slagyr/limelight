@@ -24,14 +24,9 @@ public class ImagePanelLayoutTest
   public void setUp() throws Exception
   {
     FileSystem.installed();
-    FakePropProxy scene = new FakePropProxy();
-    ScenePanel root = new ScenePanel(scene);
-    root.setStage(new MockStage());
+    Scene root = new FakeScene();
     parent = new MockProp();
-    FakeProduction production = new FakeProduction("Mock");
-    root.setProduction(production);
     root.add(parent);
-
     panel = new ImagePanel();
     parent.add(panel);
   }

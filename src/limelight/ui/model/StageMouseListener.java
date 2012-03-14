@@ -7,9 +7,9 @@ import limelight.model.Stage;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.*;
 
-import java.awt.event.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.event.MouseWheelEvent;
 
 public class StageMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener

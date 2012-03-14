@@ -4,7 +4,6 @@
 package limelight.audio;
 
 import limelight.AudioPlayer;
-import limelight.Context;
 
 import javax.sound.sampled.*;
 import java.io.File;

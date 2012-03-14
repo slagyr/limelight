@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.Log;
 import limelight.styles.Style;
 import limelight.ui.model.text.SingleLineTextModel;
 import limelight.ui.model.text.TextModel;

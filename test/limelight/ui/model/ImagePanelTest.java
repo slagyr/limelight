@@ -28,14 +28,10 @@ public class ImagePanelTest
   @Before
   public void setUp() throws Exception
   {
-    FakePropProxy scene = new FakePropProxy();
-    ScenePanel root = new ScenePanel(scene);
+    Scene root = new FakeScene();
     root.setStage(new MockStage());
     parent = new MockProp();
-    FakeProduction production = new FakeProduction("Mock");
-    root.setProduction(production);
     root.add(parent);
-
     panel = new ImagePanel();
     parent.add(panel);
   }

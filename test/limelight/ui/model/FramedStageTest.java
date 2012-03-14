@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import limelight.Context;
-import limelight.model.api.FakePropProxy;
 import limelight.os.MockOS;
 import limelight.styles.compiling.RealStyleAttributeCompilerFactory;
 import limelight.styles.values.*;
@@ -88,7 +87,7 @@ public class FramedStageTest
   @Test
   public void shouldLoad() throws Exception
   {
-    ScenePanel panel = new ScenePanel(new FakePropProxy());
+    Scene panel = new FakeScene();
     stage.setScene(panel);
 
     Scene root = stage.getScene();
@@ -100,29 +99,25 @@ public class FramedStageTest
   public void shouldLoadSetsDefaultCursor() throws Exception
   {
     stage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    ScenePanel panel = new ScenePanel(new FakePropProxy());
-    stage.setScene(panel);
+    stage.setScene(new FakeScene());
 
     assertEquals(Cursor.DEFAULT_CURSOR, stage.getCursor().getType());
   }
 
   @Test
-  public void shouldLoadWillDestroyPreviousRoots() throws Exception
+  public void loadWillDestroyPreviousRoots() throws Exception
   {
-    ScenePanel panel = new ScenePanel(new FakePropProxy());
-    stage.setScene(panel);
+    final FakeScene firstRoot = new FakeScene();
+    stage.setScene(firstRoot);
+    assertEquals(stage, firstRoot.stage);
 
-    Scene firstRoot = stage.getScene();
-    assertEquals(true, firstRoot.isIlluminated());
+    stage.setScene(new FakeScene());
 
-    ScenePanel panel2 = new ScenePanel(new FakePropProxy());
-    stage.setScene(panel2);
-
-    assertEquals(false, firstRoot.isIlluminated());
+    assertEquals(null, firstRoot.stage);
   }
 
   @Test
-  public void shouldAddsSelfToFrameManager() throws Exception
+  public void addsSelfToFrameManager() throws Exception
   {
     assertEquals(1, frameManager.getFrameCount());
     assertEquals(true, frameManager.isWatching(frame));

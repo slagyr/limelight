@@ -28,7 +28,7 @@ public class CastingDirectorTest
   public void setUp() throws Exception
   {
     FakeProduction production = new FakeProduction("/path/to/testProduction");
-    ScenePanel scene = new ScenePanel(new FakePropProxy(), Util.toMap("name", "theScene", "path", "theScene"));
+    ScenePanel scene = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter(), Util.toMap("name", "theScene", "path", "theScene"));
     scene.setProduction(production);
     panel = new PropPanel(new FakePropProxy());
     scene.add(panel);

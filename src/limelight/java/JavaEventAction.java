@@ -6,6 +6,7 @@ package limelight.java;
 import limelight.LimelightException;
 import limelight.events.Event;
 import limelight.events.EventAction;
+
 import java.lang.reflect.Method;
 
 public class JavaEventAction implements EventAction

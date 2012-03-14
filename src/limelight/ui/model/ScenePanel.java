@@ -3,15 +3,17 @@
 
 package limelight.ui.model;
 
-import limelight.*;
+import limelight.Context;
+import limelight.LimelightException;
+import limelight.Log;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.model.api.PlayerRecruiter;
+import limelight.model.api.PropProxy;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
-import limelight.model.api.PropProxy;
 import limelight.util.Opts;
 import limelight.util.Util;
 
@@ -35,16 +37,18 @@ public class ScenePanel extends PropPanel implements Scene
   private PlayerRecruiter playerRecruiter;
   private Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
 
-  public ScenePanel(PropProxy propProxy)
+
+  public ScenePanel(PropProxy propProxy, PlayerRecruiter playerRecruiter)
   {
     super(propProxy);
+    this.playerRecruiter = playerRecruiter;
     getStyle().setDefault(Style.WIDTH, "100%");
     getStyle().setDefault(Style.HEIGHT, "100%");
   }
 
-  public ScenePanel(PropProxy propProxy, Map<String, Object> options)
+  public ScenePanel(PropProxy propProxy, PlayerRecruiter playerRecruiter, Map<String, Object> options)
   {
-    this(propProxy);
+    this(propProxy, playerRecruiter);
     addOptions(options);
   }
 
@@ -301,13 +305,19 @@ public class ScenePanel extends PropPanel implements Scene
   {
     if(newOptions.containsKey("path"))
       pathRelativeToProduction = Util.toString(newOptions.remove("path"));
+
+    illuminateId(newOptions.remove("id"));
+    illuminateName(newOptions.remove("name"));
+    if(playerRecruiter != null)
+      illuminatePlayers(newOptions.remove("players"));
+
     super.addOptions(newOptions);
   }
 
-  public void setPlayerRecruiter(PlayerRecruiter playerRecruiter)
-  {
-    this.playerRecruiter = playerRecruiter;
-  }
+//  public void setPlayerRecruiter(PlayerRecruiter playerRecruiter)
+//  {
+//    this.playerRecruiter = playerRecruiter;
+//  }
 
   public PlayerRecruiter getPlayerRecruiter()
   {

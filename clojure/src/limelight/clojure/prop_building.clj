@@ -9,7 +9,6 @@
   (:require
     [limelight.clojure.scene]))
 
-(declare ->prop)
 (declare *context*)
 
 (defn- named? [x]
@@ -17,22 +16,46 @@
     (instance? clojure.lang.Named x)
     (string? x)))
 
-(defn ->props [coll]
+(defn- with-options [prop options]
+  (.addOptions (peer prop) (limelight.util.Opts. options))
+  parent)
+
+(defn- with-child [parent child]
+  (add parent child)
+  parent)
+
+(declare build-prop)
+
+(defn build-props-on [parent coll]
   (cond
-    (or (not (coll? coll)) (empty? coll)) ()
-    (named? (first coll)) (list (->prop coll))
-    (coll? (first coll)) (reduce #(into %1 (->props %2)) [] coll)
+    (map? coll) (with-options parent coll)
+    (named? (first coll)) (with-child parent (build-prop coll))
+    (sequential? coll) (do (doseq [form coll] (build-props-on parent form)) parent)
     :else (throw (Exception. (str "Don't know how to create props from:" coll)))))
 
-(defn- ->prop [data]
+
+(defn- build-prop [data]
   (let [name (name (first data))
-        options (if (map? (second data)) (second data) nil)
-        child-data (if options (rest (rest data)) (rest data))
-        options (assoc options :name name)
-        prop (new-prop (limelight.util.Opts. options))]
-    (when (seq child-data)
-      (add prop (->props child-data)))
-    prop))
+        prop (new-prop {:name name})]
+    (build-props-on prop (rest data))))
+
+;(declare ->prop)
+;(defn ->props [coll]
+;  (cond
+;    (or (not (coll? coll)) (empty? coll)) ()
+;    (named? (first coll)) (list (->prop coll))
+;    (coll? (first coll)) (reduce #(into %1 (->props %2)) [] coll)
+;    :else (throw (Exception. (str "Don't know how to create props from:" coll)))))
+;
+;(defn- ->prop [data]
+;  (let [name (name (first data))
+;        options (if (map? (second data)) (second data) nil)
+;        child-data (if options (rest (rest data)) (rest data))
+;        options (assoc options :name name)
+;        prop (new-prop (limelight.util.Opts. options))]
+;    (when (seq child-data)
+;      (add prop (->props child-data)))
+;    prop))
 
 (defn- src->data [src context root]
   (let [scene (scene root)
@@ -41,7 +64,7 @@
               *context* context]
       (if (string? src)
         (let [src-file (or (:source-file *context*) "[CODE]")]
-          (read-src src-file (str "[" src "]")))
+          (read-src src-file (str "(list " src ")")))
         (eval src)))))
 
 (defn- establish-root-path [root context]
@@ -54,10 +77,8 @@
 (defn do-prop-building [root src context]
   (let [context (establish-root-path root context)
         context (assoc context :root root)
-        prop-data (src->data src context root)
-        props (->props prop-data)]
-    (add root props)
-    root))
+        prop-data (src->data src context root)]
+    (build-props-on root prop-data)))
 
 (defn- extract-root-path []
   (if-let [path (:root-path *context*)]

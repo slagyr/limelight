@@ -3,6 +3,7 @@
 
 package limelight.java;
 
+import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.SceneProxy;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.ScenePanel;
@@ -12,19 +13,17 @@ import java.util.Map;
 public class JavaScene extends JavaProp implements SceneProxy
 {
 
-  public JavaScene(JavaProduction production, Map<String, Object> options)
+  public JavaScene(JavaProduction production, PlayerRecruiter recruiter, Map<String, Object> options)
   {
     super(options);
-    getPeer().setPlayerRecruiter(new JavaPlayerRecruiter(production.getPlayerLoader()));
+    peer = new ScenePanel(this, recruiter, options);
     getPeer().setProduction(production);
   }
 
   @Override
   protected PropPanel createPeer(Map<String, Object> options)
   {
-    final ScenePanel panel = new ScenePanel(this);
-    panel.addOptions(options);
-    return panel;
+    return null; // Wierd I know.
   }
 
   public ScenePanel getPeer()

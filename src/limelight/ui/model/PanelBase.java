@@ -3,7 +3,6 @@
 
 package limelight.ui.model;
 
-import limelight.Log;
 import limelight.model.Stage;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.IlluminatedEvent;
@@ -11,8 +10,8 @@ import limelight.ui.events.panel.PanelEventHandler;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.util.Iterator;
 
 public abstract class PanelBase implements Panel
 {

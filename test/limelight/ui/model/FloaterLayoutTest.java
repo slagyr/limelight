@@ -13,11 +13,11 @@ import limelight.model.api.FakePropProxy;
 public class FloaterLayoutTest extends TestCase
 {
   private PropPanel panel;
-  private ScenePanel root;
+  private FakeScene root;
 
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new FakePropProxy());
+    root = new FakeScene();
     root.setStage(new MockStage());
     panel = new PropPanel(new FakePropProxy());
     root.add(panel);
@@ -40,7 +40,7 @@ public class FloaterLayoutTest extends TestCase
 
     assertEquals(0, panel.getX());
     assertEquals(0, panel.getY());
-    assertEquals(false, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
+    assertEquals(false, root.dirtyRegions.contains(panel.getAbsoluteBounds()));
   }
 
   public void testDoFloatLayoutAsFloater() throws Exception
@@ -55,7 +55,7 @@ public class FloaterLayoutTest extends TestCase
 
     assertEquals(100, panel.getX());
     assertEquals(200, panel.getY());
-    assertEquals(true, root.dirtyRegionsContains(before));
-    assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
+    assertEquals(true, root.dirtyRegions.contains(before));
+    assertEquals(true, root.dirtyRegions.contains(panel.getAbsoluteBounds()));
   }
 }

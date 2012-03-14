@@ -3,21 +3,22 @@
 
 package limelight;
 
+import limelight.background.AnimationLoop;
+import limelight.background.CacheCleanerLoop;
+import limelight.background.IdleThreadLoop;
+import limelight.caching.Cache;
 import limelight.io.FileSystem;
 import limelight.io.TempDirectory;
 import limelight.model.CastingDirector;
 import limelight.model.Studio;
+import limelight.os.OS;
+import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
 import limelight.ui.BufferedImagePool;
 import limelight.ui.KeyboardFocusManager;
 import limelight.ui.Panel;
 import limelight.ui.model.FrameManager;
-import limelight.caching.Cache;
-import limelight.styles.abstrstyling.StyleAttributeCompilerFactory;
-import limelight.background.AnimationLoop;
-import limelight.background.IdleThreadLoop;
-import limelight.background.CacheCleanerLoop;
-import limelight.os.OS;
 import limelight.ui.model.StageFrame;
+
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 

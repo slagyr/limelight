@@ -41,9 +41,9 @@ public class StageMouseListenerTest
     root.add(parent);
     parent.add(child);
 
-    ScenePanel scenePanel = new ScenePanel(new FakePropProxy());
-    scenePanel.add(parent);
-    scenePanel.setStage(new MockStage());
+    Scene scene = new FakeScene();
+    scene.add(parent);
+    scene.setStage(new MockStage());
 
     parent.setSize(1000, 1000);
     child.setLocation(250, 250);

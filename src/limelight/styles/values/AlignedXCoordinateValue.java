@@ -3,8 +3,8 @@
 
 package limelight.styles.values;
 
-import limelight.styles.abstrstyling.XCoordinateValue;
 import limelight.styles.HorizontalAlignment;
+import limelight.styles.abstrstyling.XCoordinateValue;
 
 public class AlignedXCoordinateValue extends SimpleHorizontalAlignmentValue implements XCoordinateValue
 {

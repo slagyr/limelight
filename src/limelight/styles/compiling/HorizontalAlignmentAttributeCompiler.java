@@ -3,9 +3,9 @@
 
 package limelight.styles.compiling;
 
+import limelight.styles.HorizontalAlignment;
 import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.HorizontalAlignment;
 import limelight.styles.values.SimpleHorizontalAlignmentValue;
 
 public class HorizontalAlignmentAttributeCompiler extends StyleCompiler

@@ -3,8 +3,6 @@
 
 package limelight.ui.text;
 
-import limelight.ui.text.TypedLayout;
-
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 

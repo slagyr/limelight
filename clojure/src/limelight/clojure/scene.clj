@@ -61,15 +61,13 @@
         ns (create-ns (gensym "limelight.dynamic.scene-"))
         scene (Scene. (atom nil) (atom nil) ns)
         player-recruiter (new-player-recruiter scene)
-        peer (limelight.ui.model.ScenePanel. scene)
+        peer (limelight.ui.model.ScenePanel. scene player-recruiter)
         production (:production options)
         options (dissoc options :production)]
     (reset! (._peer scene) peer)
     (reset! (._player-recruiter scene) player-recruiter)
-    (.addOptions peer (map-for-java options))
-    (.setPlayerRecruiter peer player-recruiter)
     (when production (.setProduction peer (._peer production)))
-    (.invigorate peer)
+    (.addOptions peer (map-for-java options))
     (prepare-ns scene production)
     scene))
 

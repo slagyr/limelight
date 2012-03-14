@@ -13,20 +13,14 @@ module Limelight
   #
   class Scene < Prop
 
-    class << self
-      def panel_class #:nodoc:
-        Java::limelight.ui.model.ScenePanel
-      end
-    end
-
     include Java::limelight.model.api.SceneProxy
 
     attr_reader :player_recruiter
 
     def initialize(options={})
       @player_recruiter = options.delete(:player_recruiter) || PlayerRecruiter.new
-      super(options)
-      @peer.player_recruiter = @player_recruiter
+      @peer = Java::limelight.ui.model.ScenePanel.new(self, @player_recruiter)
+      @peer.add_options(Util::Hashes.for_java(options))
       @fs = Java::limelight.Context.fs
     end
 

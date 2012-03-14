@@ -6,12 +6,15 @@ package limelight.ui.model.text;
 import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.Fonts;
+import limelight.ui.model.TextPanel;
 import limelight.ui.model.text.masking.IdentityMask;
 import limelight.ui.model.text.masking.TextMask;
 import limelight.ui.model.text.offsetting.XOffsetStrategy;
 import limelight.ui.model.text.offsetting.YOffsetStrategy;
-import limelight.ui.text.*;
-import limelight.ui.model.TextPanel;
+import limelight.ui.text.TextLocation;
+import limelight.ui.text.TextTypedLayoutFactory;
+import limelight.ui.text.TypedLayout;
+import limelight.ui.text.TypedLayoutFactory;
 import limelight.util.Box;
 
 import java.awt.*;

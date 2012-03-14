@@ -6,9 +6,9 @@ package limelight.ui.model.inputs;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.MouseDraggedEvent;
 import limelight.ui.events.panel.MousePressedEvent;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.model.text.offsetting.XOffsetStrategy;
 import limelight.ui.model.text.offsetting.YOffsetStrategy;
-import limelight.ui.model.text.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 
