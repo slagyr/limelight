@@ -60,7 +60,8 @@
   (let [options (->options args)
         ns (create-ns (gensym "limelight.dynamic.scene-"))
         scene (Scene. (atom nil) (atom nil) ns)
-        player-recruiter (new-player-recruiter scene)
+        player-recruiter (or (:player-recruiter options) (new-player-recruiter scene))
+        options (dissoc options :player-recruiter)
         peer (limelight.ui.model.ScenePanel. scene player-recruiter)
         production (:production options)
         options (dissoc options :production)]

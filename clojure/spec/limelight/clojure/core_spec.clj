@@ -15,7 +15,7 @@
 (def SLASH (.separator (limelight.Context/fs)))
 
 (defn build-tree []
-  (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
+  (let [scene (new-scene {:id "root-id" :name "root" :path "root" :player-recruiter (limelight.model.api.FakePlayerRecruiter.)})]
     (build-props-on scene
       [[:child {:id "child1"}
         [:grand-child {:id "grand-child1"}
@@ -25,7 +25,6 @@
          [:great-grand-child {:id "great-grand-child3"}]]]
        [:child {:id "child2"}
         [:grand-child {:id "grand-child3"}]]])
-    (.setPlayerRecruiter @(._peer scene) (limelight.model.api.FakePlayerRecruiter.))
     (.illuminate @(._peer scene))
     scene))
 

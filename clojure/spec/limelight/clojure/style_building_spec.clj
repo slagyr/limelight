@@ -57,7 +57,6 @@
       (build-styles {} "[:two :extends :missing :height 200]" "styles.clj" *ns*)
       (should-fail "Exception expected")
       (catch limelight.LimelightException e
-        (println "e: " e)
         (should= true (.contains (.getMessage e) "Can't extend missing style: 'missing'")))))
 
   (it "allows styles to extend multiple styles"

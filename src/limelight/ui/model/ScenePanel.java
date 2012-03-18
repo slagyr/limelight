@@ -314,11 +314,6 @@ public class ScenePanel extends PropPanel implements Scene
     super.addOptions(newOptions);
   }
 
-//  public void setPlayerRecruiter(PlayerRecruiter playerRecruiter)
-//  {
-//    this.playerRecruiter = playerRecruiter;
-//  }
-
   public PlayerRecruiter getPlayerRecruiter()
   {
     return playerRecruiter;

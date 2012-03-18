@@ -26,15 +26,13 @@
 
   (with production (new-production (limelight.model.FakeProduction. "MockProduction")))
   (with scene (new-scene {:path "root"}))
+  (with player-recruiter @(._player-recruiter @scene))
   (with prop (first (add @scene (new-prop {}))))
-  (with player-recruiter (new-player-recruiter @scene))
   (with fs (limelight.io.FakeFileSystem/installed))
 
   (before
-    (do
-      @fs ; load the file system
-      (.setPlayerRecruiter @(._peer @scene) (limelight.model.api.FakePlayerRecruiter.))
-      (.setProduction @(._peer @scene) (._peer @production)))
+    @fs ; load the file system
+    (.setProduction @(._peer @scene) (._peer @production))
     (.setStage @(._peer @scene) (.getDefaultStage (._peer (.getTheater @production)))))
 
   (unless-headless
