@@ -20,7 +20,6 @@ public class TextPanelTextPainter extends TextPanelPainter
   @Override
   public void paint(Graphics2D graphics, limelight.ui.model.text.TextModel model)
   {
-    Log.debug("model.getDisplayableText() = " + model.getDisplayableText());
     if(!model.hasText())
       return;
 
