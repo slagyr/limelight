@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.ui.Panel;
 
 public class TextPanelLayout implements Layout
@@ -12,7 +13,6 @@ public class TextPanelLayout implements Layout
   public void doLayout(Panel thePanel)
   {
     TextPanel panel = (TextPanel) thePanel;
-    panel.resetLayout();
     try
     {
       panel.compile();
@@ -20,6 +20,7 @@ public class TextPanelLayout implements Layout
     catch(Exception e)
     {
       // Can fail if the graphics are not ready.
+Log.debug("TEXT failed to compile", e);
       panel.markAsNeedingLayout();
       panel.getParent().markAsNeedingLayout();
     }

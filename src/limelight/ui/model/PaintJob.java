@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.Context;
+import limelight.Log;
 import limelight.caching.Cache;
 import limelight.styles.Style;
 import limelight.ui.BufferedImagePool;
@@ -49,6 +50,7 @@ public class PaintJob
 
   public void paint(Panel panel, Graphics2D graphics)
   {
+Log.debug("painting: " + panel + " dim: " + panel.getWidth() + ", " + panel.getHeight());
     applyAlphaCompositeFor(panel, graphics);
     paintClipFor(panel, graphics);
     restoreComposite(graphics);

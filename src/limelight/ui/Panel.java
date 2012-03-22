@@ -39,7 +39,6 @@ public interface Panel extends Iterable<Panel>
   void paintOn(Graphics2D graphics);
   boolean canBeBuffered();
 
-  void doLayout();
   Layout getDefaultLayout();
 
   ScreenableStyle getStyle();
@@ -48,7 +47,6 @@ public interface Panel extends Iterable<Panel>
   void doFloatLayout();
 
   void consumableAreaChanged();
-  boolean needsLayout();
   void markAsNeedingLayout();
   void markAsDirty();
 

@@ -4,6 +4,7 @@
 package limelight.ui.model;
 
 import limelight.LimelightException;
+import limelight.Log;
 import limelight.styles.Style;
 import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.styles.values.AutoDimensionValue;
@@ -24,8 +25,8 @@ public class PropPanelLayout implements Layout
   // TODO MDM This gets called A LOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
   public void doLayout(Panel thePanel, boolean topLevel)
   {
+    Log.debug("doing layout on: " + thePanel);
     PropPanel panel = (PropPanel) thePanel;
-    panel.resetLayout();
     FloaterLayout.instance.doLayout(panel);
     Style style = panel.getStyle();
     if(panel.isSizeChangePending() || style.hasDynamicDimension())
@@ -167,17 +168,15 @@ public class PropPanelLayout implements Layout
   {
     for(Panel child : panel.getChildren())
     {
-      if(child.needsLayout())
+      // TODO MDM - Could optimize by checking if child needs layout.  Would have to pass needLayoutMap/Set around.
+      if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
       {
-        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
-        {
-          child.getDefaultLayout().doLayout(child, true);
-        }
-        else
-        {
-          ((PropPanel)child).greediness.setSize(0, 0);
-          snapToSize((PropPanel) child, false);
-        }
+        child.getDefaultLayout().doLayout(child, true);
+      }
+      else
+      {
+        ((PropPanel) child).greediness.setSize(0, 0);
+        snapToSize((PropPanel) child, false);
       }
     }
   }
@@ -186,11 +185,9 @@ public class PropPanelLayout implements Layout
   {
     for(Panel child : panel.getChildren())
     {
-      if(child.needsLayout())
-      {
-        final Layout layout = child.getDefaultLayout();
-        layout.doLayout(child, false);
-      }
+      // TODO MDM - Could optimize by checking if child needs layout.  Would have to pass needLayoutMap/Set around.
+      final Layout layout = child.getDefaultLayout();
+      layout.doLayout(child, false);
     }
   }
 
@@ -386,7 +383,7 @@ public class PropPanelLayout implements Layout
       {
         if(hasGreedyHeight(item))
         {
-          PropPanel panel = (PropPanel)item;
+          PropPanel panel = (PropPanel) item;
           panel.greediness.height = Math.max(extraHeight, (height - panel.getHeight()));
           item.setSize(item.getWidth(), height);
         }

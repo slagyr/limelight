@@ -24,7 +24,7 @@ public class ScenePanel extends PropPanel implements Scene
 {
   private static final Map<String, RichStyle> EMPTY_STYLES = Collections.unmodifiableMap(new HashMap<String, RichStyle>());
 
-  private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
+  private final Map<Panel, Layout> panelsNeedingLayout = new HashMap<Panel, Layout>(47);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
   private Stage stage;
@@ -96,32 +96,35 @@ public class ScenePanel extends PropPanel implements Scene
     return stage.getCursor();
   }
 
-  public void addPanelNeedingLayout(Panel child)
+  public void addPanelNeedingLayout(Panel child, Layout layout)
   {
     synchronized(panelsNeedingLayout)
     {
+//Log.debug("adding panel needing layout", new Exception());
+Log.debug("adding panel needing layout: " + child + " " + layout);
       boolean shouldAdd = true;
-      for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext(); )
+      for(Iterator<Panel> iterator = panelsNeedingLayout.keySet().iterator(); iterator.hasNext(); )
       {
         Panel panel = iterator.next();
         if(child == panel)
         {
-          shouldAdd = false;
+          shouldAdd = layout.overides(panelsNeedingLayout.get(child));
           break;
         }
-        else if(child.isDescendantOf(panel) && child.getParent().needsLayout())
+        else if(child.isDescendantOf(panel) && panelsNeedingLayout.containsKey(child.getParent()))
         {
           shouldAdd = false;
           break;
         }
-        else if(panel.isDescendantOf(child) && panel.getParent().needsLayout())
+        else if(panel.isDescendantOf(child) && panelsNeedingLayout.containsKey(panel))
         {
+          // TODO MDM This is questionable.  It forces layout on all descendants all the time.  If we know which children need layout, we can be strategic, do less work.
           iterator.remove();
         }
       }
       if(shouldAdd)
       {
-        panelsNeedingLayout.add(child);
+        panelsNeedingLayout.put(child, layout);
       }
     }
     Context.kickPainter();
@@ -135,11 +138,19 @@ public class ScenePanel extends PropPanel implements Scene
     }
   }
 
-  public void getAndClearPanelsNeedingLayout(Collection<Panel> buffer)
+  public boolean hasPanelNeedingLayout(Panel panel)
   {
     synchronized(panelsNeedingLayout)
     {
-      buffer.addAll(panelsNeedingLayout);
+      return panelsNeedingLayout.containsKey(panel);
+    }
+  }
+
+  public void getAndClearPanelsNeedingLayout(Map<Panel, Layout> buffer)
+  {
+    synchronized(panelsNeedingLayout)
+    {
+      buffer.putAll(panelsNeedingLayout);
       panelsNeedingLayout.clear();
     }
   }
@@ -220,7 +231,7 @@ public class ScenePanel extends PropPanel implements Scene
     if(stage != null)
     {
       illuminate();
-      addPanelNeedingLayout(this);
+      addPanelNeedingLayout(this, getDefaultLayout());
     }
   }
 

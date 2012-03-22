@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.styles.RichStyle;
 import limelight.styles.ScreenableStyle;
 import limelight.styles.StyleAttribute;
@@ -190,6 +191,7 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
 
     for(StyledText textChunk : textChunks)
     {
+Log.debug("textChunk.getText() = " + textChunk.getText());
       buf.append(textChunk.getText());
     }
 

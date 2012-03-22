@@ -15,7 +15,6 @@ public class InputPanelLayout implements Layout
   public void doLayout(Panel thePanel)
   {
     PanelBase panel = (PanelBase)thePanel;
-    panel.resetLayout();
     Box bounds = panel.getParent().getChildConsumableBounds();
     panel.setLocation(bounds.x, bounds.y);
     panel.setSize(bounds.width, bounds.height);

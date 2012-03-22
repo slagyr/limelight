@@ -154,6 +154,12 @@ public class Log
     logger.log(DEBUG, message);
   }
 
+  public static void debug(String message, Throwable e)
+  {
+    logger.log(DEBUG, message);
+    logError(DEBUG, e);
+  }
+
   public static void fine(String message)
   {
     logger.fine(message);

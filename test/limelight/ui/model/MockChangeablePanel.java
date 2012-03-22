@@ -17,6 +17,7 @@ public class MockChangeablePanel extends PanelBase implements ChangeablePanel
   public boolean borderChanged;
   public boolean clearCacheCalled;
   public TextAccessor textAccessor;
+  public Layout neededLayout;
 
   public void paintOn(Graphics2D graphics)
   {
@@ -44,6 +45,8 @@ public class MockChangeablePanel extends PanelBase implements ChangeablePanel
   {
     markAsNeedingLayoutCalled = true;
     neededLayout = layout;
+    if(getRoot() != null)
+      getRoot().addPanelNeedingLayout(this, layout);
   }
 
 
@@ -77,11 +80,4 @@ public class MockChangeablePanel extends PanelBase implements ChangeablePanel
   {
     clearCacheCalled = true;
   }
-
-  public Layout getNeededLayout()
-  {
-    return neededLayout;
-  }
-
-
 }

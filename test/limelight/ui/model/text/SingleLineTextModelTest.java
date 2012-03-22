@@ -32,7 +32,7 @@ public class SingleLineTextModelTest
     MockParentPanel parent = new MockParentPanel();
     parent.add(panel);
     parent.setSize(100, 20);
-    panel.doLayout();
+    panel.getDefaultLayout().doLayout(panel);
     model = panel.getModel();
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }

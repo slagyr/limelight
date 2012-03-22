@@ -16,7 +16,6 @@ public interface Prop extends ParentPanel
   void add(limelight.ui.Panel child);
   boolean remove(limelight.ui.Panel child);
   void removeAll();
-  void doLayout();
   void setAfterPaintAction(PaintAction action);
   void setText(String text);
   String getText();

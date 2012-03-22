@@ -67,11 +67,6 @@ public class ImagePanel extends PanelBase
     rotatedWidth = width;
   }
 
-  public void doLayout()
-  {
-    ImagePanelLayout.instance.doLayout(this);
-  }
-
   public Layout getDefaultLayout()
   {
     return ImagePanelLayout.instance;

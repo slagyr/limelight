@@ -4,7 +4,9 @@
 package limelight.background;
 
 import limelight.Context;
+import limelight.Log;
 import limelight.ui.Panel;
+import limelight.ui.model.Layout;
 import limelight.ui.model.PaintJob;
 import limelight.ui.model.Scene;
 import limelight.ui.model.StageFrame;
@@ -13,10 +15,12 @@ import limelight.util.NanoTimer;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PanelPainterLoop extends IdleThreadLoop
 {
-  private final ArrayList<Panel> panelBuffer = new ArrayList<Panel>(50);
+  private final HashMap<Panel, Layout> panelBuffer = new HashMap<Panel, Layout>(47);
   private final ArrayList<Rectangle> regionBuffer = new ArrayList<Rectangle>(50);
   private final ArrayList<StageFrame> frameBuffer = new ArrayList<StageFrame>(5);
   private int updatesPerSecond;
@@ -62,6 +66,7 @@ public class PanelPainterLoop extends IdleThreadLoop
   private boolean nothingToDo()
   {
     boolean somethingToDo = false;
+
     for(StageFrame stageFrame : frameBuffer)
     {
       Scene root = stageFrame.getStage().getScene();
@@ -113,6 +118,7 @@ public class PanelPainterLoop extends IdleThreadLoop
       Graphics2D rootGraphics = root.getGraphics();
       if(rootGraphics != null)
       {
+Log.debug("painting rectangle = " + rectangle);
         doPaintJob(root, new Box(rectangle), rootGraphics);
       }
     }
@@ -130,9 +136,13 @@ public class PanelPainterLoop extends IdleThreadLoop
   {
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);
-    for(limelight.ui.Panel panel : panelBuffer)
+Log.debug(this + " " + root + " doing layout on panels: " + panelBuffer.size());
+    for(Map.Entry<Panel, Layout> entry : panelBuffer.entrySet())
     {
-      panel.doLayout();
+      final Layout layout = entry.getValue();
+      final Panel panel = entry.getKey();
+Log.debug("root level layout: " + panel + " " + layout);
+      layout.doLayout(panel);
     }
   }
 

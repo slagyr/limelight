@@ -82,7 +82,7 @@ public class PropPanelTest extends Assert
     panel.paintOn(new MockGraphics());
     assertEquals(false, paintAction.invoked);
 
-    panel.doLayout();
+    panel.getDefaultLayout().doLayout(panel);
     panel.paintOn(new MockGraphics());
     assertEquals(true, paintAction.invoked);
   }
@@ -121,9 +121,9 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void shouldSettingTextShouldLeadToLayout() throws Exception
+  public void settingTextShouldLeadToLayout() throws Exception
   {
-    panel.resetLayout();
+    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     panel.setText("Some Text");
   }
 
@@ -166,39 +166,45 @@ public class PropPanelTest extends Assert
     panel.setSize(100, 100);
     MockGraphics mockGraphics = new MockGraphics();
     mockGraphics.setClip(0, 0, 100, 100);
-    panel.doLayout();
+    panel.getDefaultLayout().doLayout(panel);
     panel.paintOn(mockGraphics);
 
     assertEquals(true, action.invoked);
   }
 
   @Test
-  public void shouldHasChangesWhenaStyleIsChanged() throws Exception
+  public void hasChangesWhenaStyleIsChanged() throws Exception
   {
+    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
+
     style.setWidth("100%");
 
-    assertEquals(true, panel.needsLayout());
+    assertEquals(true, root.hasPanelNeedingLayout(root));
   }
 
   @Test
-  public void shouldHasChangesWhenaTextIsChanged() throws Exception
+  public void hasChangesWhenaTextIsChanged() throws Exception
   {
+    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     TextPanel.staticFontRenderingContext = new FontRenderContext(new AffineTransform(), true, true);
-    panel.doLayout();
+    panel.getDefaultLayout().doLayout(panel);
 
+    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     panel.setText("blah");
-    assertEquals(true, panel.needsLayout());
+    assertEquals(true, root.hasPanelsNeedingLayout());
 
-    panel.doLayout();
+    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
+    panel.getDefaultLayout().doLayout(panel);
     panel.setText("blah");
-    assertEquals(false, panel.needsLayout());
+    assertEquals(false, root.hasPanelsNeedingLayout());
 
+    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     panel.setText("new text");
-    assertEquals(true, panel.needsLayout());
+    assertEquals(true, root.hasPanelsNeedingLayout());
   }
 
   @Test
-  public void shouldAddingScrollBarChangesChildConsumableArea() throws Exception
+  public void addingScrollBarChangesChildConsumableArea() throws Exception
   {
     style.setMargin("0");
     style.setPadding("0");
@@ -380,29 +386,6 @@ public class PropPanelTest extends Assert
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
-  }
-
-  @Test
-  public void shouldRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
-  {
-    for(int i = 0; i < 100; i++)
-      panel.add(new PropPanel(new FakePropProxy()));
-    panel.markAsNeedingLayout();
-    Thread thread = new Thread(new Runnable()
-    {
-      public void run()
-      {
-        panel.doLayout();
-      }
-    });
-    thread.start();
-
-    while(panel.getChildren().get(0).needsLayout())
-      Thread.yield();
-    panel.markAsNeedingLayout();
-    thread.join();
-
-    assertEquals(true, panel.needsLayout());
   }
 
   @Test

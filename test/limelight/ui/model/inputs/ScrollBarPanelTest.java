@@ -61,10 +61,10 @@ public class ScrollBarPanelTest
     PropPanel parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
-    parent.doLayout();
+    parent.getDefaultLayout().doLayout(parent);
     verticalScrollBar.setValue(50);
 
-    assertEquals(true, parent.needsLayout());
+    assertEquals(true, root.hasPanelNeedingLayout(parent));
   }
 
   @Test
@@ -75,11 +75,11 @@ public class ScrollBarPanelTest
     PropPanel parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
-    parent.doLayout();
+    parent.getDefaultLayout().doLayout(parent);
 
     verticalScrollBar.setValue(50);
 
-    assertEquals(true, parent.needsLayout());
+    assertEquals(true, root.hasPanelNeedingLayout(parent));
   }
 
   @Test

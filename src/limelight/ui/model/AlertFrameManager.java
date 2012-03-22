@@ -167,6 +167,7 @@ public class AlertFrameManager implements WindowFocusListener, WindowListener, W
       new StageDeactivatedEvent().dispatch(previouslyActiveFrame.getStage());
 
     new StageActivatedEvent().dispatch(stageFrame.getStage());
+    Context.kickPainter();
   }
 
   public void getVisibleFrames(ArrayList<StageFrame> result)

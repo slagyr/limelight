@@ -24,7 +24,6 @@ public class ScrollLayout extends PropPanelLayout
   public void doLayout(Panel aPanel)
   {
     PropPanel panel = (PropPanel) aPanel;
-    panel.resetLayout();
     int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
     int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
 

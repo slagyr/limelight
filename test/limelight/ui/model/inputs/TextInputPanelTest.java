@@ -93,11 +93,11 @@ public class TextInputPanelTest
     FakeScene root = new FakeScene();
     root.add(panel);
     panel.getRoot();
-    panel.resetLayout();
+    root.panelsNeedingLayout.clear();
 
     panel.consumableAreaChanged();
 
-    assertEquals(true, panel.needsLayout());
+    assertEquals(true, root.hasPanelNeedingLayout(panel));
   }
 
   @Test

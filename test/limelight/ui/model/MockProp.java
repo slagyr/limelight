@@ -89,13 +89,29 @@ public class MockProp extends MockParentPanel implements Prop, PaintablePanel
     return prop;
   }
 
-  public void doLayout()
+  @Override
+  public Layout getDefaultLayout()
   {
-    super.doLayout();
-    setSize(prepForSnapWidth, prepForSnapHeight);
-    for(Panel child : children)
-      child.doLayout();
-    wasLaidOut = true;
+    return new Layout()
+    {
+      public void doLayout(Panel panel)
+      {
+        doLayout(panel, true);
+      }
+
+      public boolean overides(Layout other)
+      {
+        return false;
+      }
+
+      public void doLayout(Panel panel, boolean topLevel)
+      {
+        setSize(prepForSnapWidth, prepForSnapHeight);
+        for(Panel child : children)
+          child.getDefaultLayout().doLayout(child);
+        wasLaidOut = true;
+      }
+    };
   }
 
   public void doFloatLayout()

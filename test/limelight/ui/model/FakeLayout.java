@@ -5,15 +5,15 @@ package limelight.ui.model;
 
 import limelight.ui.Panel;
 
-public class MockLayout implements Layout
+public class FakeLayout implements Layout
 {
-  public static MockLayout instance = new MockLayout(false);
-  public static MockLayout alwaysOverides = new MockLayout(true);
+  public static FakeLayout instance = new FakeLayout(false);
+  public static FakeLayout alwaysOverides = new FakeLayout(true);
 
   public Panel lastPanelProcessed;
   private boolean overide;
 
-  public MockLayout(boolean overide)
+  public FakeLayout(boolean overide)
   {
     this.overide = overide;
   }

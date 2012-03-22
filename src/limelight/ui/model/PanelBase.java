@@ -23,7 +23,6 @@ public abstract class PanelBase implements Panel
   protected Point absoluteLocation;
   private Box absoluteBounds;
   private Box boundingBox;
-  protected Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;
   private boolean illuminated;
   protected PanelEventHandler eventHandler;
@@ -135,6 +134,7 @@ public abstract class PanelBase implements Panel
       delluminate();
 
     parent = newParent;
+    markAsNeedingLayout();
 
     if(parent != null && parent.isIlluminated())
       illuminate();
@@ -175,20 +175,6 @@ public abstract class PanelBase implements Panel
     return (Graphics2D) getRoot().getGraphics().create(bounds.x, bounds.y, bounds.width, bounds.height);
   }
 
-  public void doLayout()
-  {
-    Layout layout = neededLayout;
-    if(layout != null)
-      layout.doLayout(this);
-    else
-      getDefaultLayout().doLayout(this);
-  }
-
-  // TODO MDM Calling this from the layout is error prone.  A Layout might forget to call.  Can easily solve by resetting when ever the panel is laid out (prior to layout)
-  public synchronized void resetLayout()
-  {
-    neededLayout = null;
-  }
 
   public Layout getDefaultLayout()
   {
@@ -228,24 +214,14 @@ public abstract class PanelBase implements Panel
 
   public synchronized void markAsNeedingLayout(Layout layout)
   {
-    if(neededLayout == null)
-    {
-      neededLayout = layout; // Set first... race conditions otherwise.
-      if(getRoot() != null)
-        getRoot().addPanelNeedingLayout(this);
-    }
-    else if(layout.overides(neededLayout))
-      neededLayout = layout;
+    final Scene root = getRoot();
+    if(root != null)
+      root.addPanelNeedingLayout(this, layout);
   }
 
   public void markAsNeedingLayout()
   {
     markAsNeedingLayout(getDefaultLayout());
-  }
-
-  public boolean needsLayout()
-  {
-    return neededLayout != null;
   }
 
   //TODO This is a little inefficient.  Reconsider what gets passed to props.
@@ -262,9 +238,15 @@ public abstract class PanelBase implements Panel
     return new PanelIterator(this);
   }
 
+  public static boolean needsLayout(Panel panel)
+  {
+    final Scene root = panel.getRoot();
+    return root != null && root.hasPanelNeedingLayout(panel);
+  }
+
   protected void doPropagateSizeChangeUp(Panel panel)
   {
-    if(panel != null && !panel.needsLayout() && panel instanceof PanelBase)
+    if(panel != null && !needsLayout(panel) && panel instanceof PanelBase)
     {
       panel.markAsNeedingLayout();
       doPropagateSizeChangeUp(panel.getParent());

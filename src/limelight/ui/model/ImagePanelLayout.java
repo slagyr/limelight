@@ -17,7 +17,6 @@ class ImagePanelLayout implements Layout
   public void doLayout(Panel thePanel)
   {
     ImagePanel panel = (ImagePanel)thePanel;
-    panel.resetLayout();
     Box consumableArea = panel.getParent().getChildConsumableBounds();
     if(panel.getImage() == null)
       return;

@@ -10,6 +10,7 @@ import limelight.model.FakeProduction;
 import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
+import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.util.Opts;
 import limelight.util.Util;
@@ -19,7 +20,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class ScenePanelTest extends Assert
 {
@@ -53,13 +57,13 @@ public class ScenePanelTest extends Assert
   @Test
   public void shouldAddPanelNeedingLayout() throws Exception
   {
-    root.addPanelNeedingLayout(child);
+    root.addPanelNeedingLayout(child, FakeLayout.instance);
 
-    ArrayList<Panel> panels = new ArrayList<Panel>();
+    HashMap<Panel, Layout> panels = new HashMap<Panel, Layout>();
     root.getAndClearPanelsNeedingLayout(panels);
 
     assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
+    assertEquals(true, panels.containsKey(child));
 
     panels.clear();
     root.getAndClearPanelsNeedingLayout(panels);
@@ -70,14 +74,14 @@ public class ScenePanelTest extends Assert
   @Test
   public void shouldAddPanelNeedingLayoutDoesntAllowDuplicates() throws Exception
   {
-    root.addPanelNeedingLayout(child);
-    root.addPanelNeedingLayout(child);
+    root.addPanelNeedingLayout(child, FakeLayout.instance);
+    root.addPanelNeedingLayout(child, FakeLayout.instance);
 
-    ArrayList<Panel> panels = new ArrayList<Panel>();
+    HashMap<Panel, Layout> panels = new HashMap<Panel, Layout>();
     root.getAndClearPanelsNeedingLayout(panels);
 
     assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
+    assertEquals(true, panels.containsKey(child));
 
     panels.clear();
     root.getAndClearPanelsNeedingLayout(panels);
@@ -89,14 +93,14 @@ public class ScenePanelTest extends Assert
     MockProp grandChild = new MockProp();
     child.add(grandChild);
 
-    root.addPanelNeedingLayout(child);
-    root.addPanelNeedingLayout(grandChild);
+    root.addPanelNeedingLayout(child, FakeLayout.instance);
+    root.addPanelNeedingLayout(grandChild, FakeLayout.instance);
 
-    ArrayList<Panel> panels = new ArrayList<Panel>();
+    HashMap<Panel, Layout> panels = new HashMap<Panel, Layout>();
     root.getAndClearPanelsNeedingLayout(panels);
 
     assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
+    assertEquals(true, panels.containsKey(child));
   }
 
   @Test
@@ -106,53 +110,33 @@ public class ScenePanelTest extends Assert
     MockProp greatGrandChild = new MockProp("greatGrandChild");
     child.add(grandChild);
     grandChild.add(greatGrandChild);
-    child.doLayout();
+    child.getDefaultLayout().doLayout(child);
 
-    root.addPanelNeedingLayout(child);
-    root.addPanelNeedingLayout(greatGrandChild);
+    root.addPanelNeedingLayout(child, FakeLayout.instance);
+    root.addPanelNeedingLayout(greatGrandChild, FakeLayout.instance);
 
-    ArrayList<Panel> panels = new ArrayList<Panel>();
+    HashMap<Panel, Layout> panels = new HashMap<Panel, Layout>();
     root.getAndClearPanelsNeedingLayout(panels);
 
     assertEquals(2, panels.size());
-    assertEquals(child, panels.get(0));
-    assertEquals(greatGrandChild, panels.get(1));
+    assertEquals(true, panels.containsKey(child));
+    assertEquals(true, panels.containsKey(greatGrandChild));
   }
 
   @Test
-  public void shouldAddPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
+  public void addPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
   {
     MockProp grandChild = new MockProp();
     child.add(grandChild);
 
-    root.addPanelNeedingLayout(grandChild);
-    root.addPanelNeedingLayout(child);
+    root.addPanelNeedingLayout(grandChild, FakeLayout.instance);
+    root.addPanelNeedingLayout(child, FakeLayout.instance);
 
-    ArrayList<Panel> panels = new ArrayList<Panel>();
+    HashMap<Panel, Layout> panels = new HashMap<Panel, Layout>();
     root.getAndClearPanelsNeedingLayout(panels);
 
     assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
-  }
-
-  @Test
-  public void shouldAddPanelNeedingLayoutWillNotRemoveChildWhenAncestorIsAddedYetChildsParentDoesntNeedLayout() throws Exception
-  {
-    MockProp grandChild = new MockProp();
-    MockProp greatGrandChild = new MockProp("greatGrandChild");
-    child.add(grandChild);
-    grandChild.add(greatGrandChild);
-    child.doLayout();
-
-    root.addPanelNeedingLayout(greatGrandChild);
-    root.addPanelNeedingLayout(child);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(2, panels.size());
-    assertEquals(greatGrandChild, panels.get(0));
-    assertEquals(child, panels.get(1));
+    assertEquals(true, panels.containsKey(child));
   }
 
   @Test
@@ -392,5 +376,25 @@ public class ScenePanelTest extends Assert
     root.addOptions(Opts.with("players", "super-scene"));
     assertEquals(1, root.getPlayers().size());
     assertEquals("super-scene", root.getPlayers().get(0).getName());
+  }
+
+  @Test
+  public void overridingLayouts() throws Exception
+  {
+    final HashMap<Panel, Layout> buffer = new HashMap<Panel, Layout>();
+    Panel panel = new MockPanel();
+    root.add(panel);
+    root.getAndClearPanelsNeedingLayout(buffer);
+    buffer.clear();
+    final FakeLayout weakLayout = new FakeLayout(false);
+    final FakeLayout strongLayout = new FakeLayout(true);
+
+    root.addPanelNeedingLayout(panel, weakLayout);
+    root.addPanelNeedingLayout(panel, strongLayout);
+
+    root.getAndClearPanelsNeedingLayout(buffer);
+
+    final Layout finalLayout = buffer.get(panel);
+    assertSame(strongLayout, finalLayout);
   }
 }

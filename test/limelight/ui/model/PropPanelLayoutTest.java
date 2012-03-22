@@ -403,16 +403,6 @@ public class PropPanelLayoutTest
   }
 
   @Test
-  public void panelNoLongerNeedsLayout() throws Exception
-  {
-    assertEquals(true, parent.needsLayout());
-
-    layout.doLayout(parent);
-
-    assertEquals(false, parent.needsLayout());
-  }
-
-  @Test
   public void shouldOverideEverything() throws Exception
   {
     assertEquals(true, layout.overides(null));

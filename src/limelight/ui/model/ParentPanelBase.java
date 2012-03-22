@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
@@ -76,6 +77,7 @@ public abstract class ParentPanelBase extends PanelBase implements ParentPanel
 
     synchronized(children)
     {
+Log.debug("adding child = " + child);
       if(index == -1)
         children.add(child);
       else
