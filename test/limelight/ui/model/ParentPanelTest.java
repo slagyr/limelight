@@ -487,7 +487,7 @@ public class ParentPanelTest
   public void shouldDoLayoutDoesDefaultLayoutIfNoneAreSet() throws Exception
   {
     root.panelsNeedingLayout.clear();
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
 
     assertEquals(panel, BasePanelLayout.instance.lastPanelProcessed);
   }

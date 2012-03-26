@@ -30,16 +30,16 @@ public class ScrollLayoutTest
     parent.getStyle().setScrollbars("on");
     parent.getStyle().setAlignment("center");
     PropPanel panel = addChildWithSize(parent, "200", "200");
-    PropPanelLayout.instance.doLayout(parent);
+    PropPanelLayout.instance.doLayout(parent, null);
 
     parent.getVerticalScrollbar().setValue(1);
     ScrollLayout verticalLayout = new ScrollLayout(parent.getVerticalScrollbar());
-    verticalLayout.doLayout(parent);
+    verticalLayout.doLayout(parent, null);
     assertEquals(-1, panel.getY());
 
     parent.getHorizontalScrollbar().setValue(2);
     ScrollLayout horizontalLayout = new ScrollLayout(parent.getHorizontalScrollbar());
-    horizontalLayout.doLayout(parent);
+    horizontalLayout.doLayout(parent, null);
     assertEquals(-2, panel.getX());
   }
 

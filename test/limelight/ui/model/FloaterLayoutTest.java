@@ -36,7 +36,7 @@ public class FloaterLayoutTest extends TestCase
     panel.getStyle().setFloat(false);
     root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
 
-    FloaterLayout.instance.doLayout(panel);
+    FloaterLayout.instance.doLayout(panel, null);
 
     assertEquals(0, panel.getX());
     assertEquals(0, panel.getY());
@@ -51,7 +51,7 @@ public class FloaterLayoutTest extends TestCase
     root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
     Rectangle before = panel.getBounds();
 
-    FloaterLayout.instance.doLayout(panel);
+    FloaterLayout.instance.doLayout(panel, null);
 
     assertEquals(100, panel.getX());
     assertEquals(200, panel.getY());

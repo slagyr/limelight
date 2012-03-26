@@ -281,7 +281,7 @@ public class FramedStage extends Stage
       return;
 
     frame.superDoLayout();
-    scene.getDefaultLayout().doLayout(scene);
+    scene.getDefaultLayout().doLayout(scene, null);
 
     Insets insets = frame.getInsets();
     int widthInsets = insets.left + insets.right;

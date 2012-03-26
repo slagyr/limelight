@@ -11,6 +11,7 @@ import limelight.ui.model.PropPanelLayout;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class ScrollLayout extends PropPanelLayout
 {
@@ -21,9 +22,16 @@ public class ScrollLayout extends PropPanelLayout
     this.scrollBar = scrollBar;
   }
 
-  public void doLayout(Panel aPanel)
+  @Override
+  public void doExpansion(Panel thePanel)
   {
-    PropPanel panel = (PropPanel) aPanel;
+
+  }
+
+  @Override
+  public void doContraction(Panel thePanel)
+  {
+    PropPanel panel = (PropPanel) thePanel;
     int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
     int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
 
@@ -31,9 +39,27 @@ public class ScrollLayout extends PropPanelLayout
     Dimension consumedDimensions = new Dimension();
     calculateConsumedDimentions(rows, consumedDimensions);
     layoutRows(panel, consumedDimensions, rows, dx, dy);
+  }
 
+  @Override
+  public void doFinalization(Panel panel)
+  {
     panel.markAsDirty();
-    panel.wasLaidOut();
+  }
+
+  public void doLayout(Panel aPanel, Map<Panel, Layout> panelsToLayout)
+  {
+//    PropPanel panel = (PropPanel) aPanel;
+//    int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
+//    int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
+//
+//    LinkedList<PropPanelLayout.Row> rows = buildRows(panel);
+//    Dimension consumedDimensions = new Dimension();
+//    calculateConsumedDimentions(rows, consumedDimensions);
+//    layoutRows(panel, consumedDimensions, rows, dx, dy);
+//
+//    panel.markAsDirty();
+//    panel.wasLaidOut();
   }
 
   public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)
@@ -50,15 +76,5 @@ public class ScrollLayout extends PropPanelLayout
       row.layoutComponents(x, y, style.getCompiledVerticalAlignment());
       y += row.height;
     }
-  }
-
-  public boolean overides(Layout other)
-  {
-    return false;
-  }
-
-  public void doLayout(Panel panel, boolean topLevel)
-  {
-    doLayout(panel);
   }
 }

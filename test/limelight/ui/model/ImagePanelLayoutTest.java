@@ -40,7 +40,7 @@ public class ImagePanelLayoutTest
   {
     final String filePath = TestUtil.DATA_DIR + "/star.gif";
     panel.setFilename(filePath);
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
 
     assertEquals(200, panel.getHeight());
     assertEquals(200, panel.getWidth());
@@ -53,7 +53,7 @@ public class ImagePanelLayoutTest
     parent.style.setWidth("100");
     parent.style.setHeight("150");
     parent.childConsumableBounds = new Box(0, 0, 100, 150);
-    parent.getDefaultLayout().doLayout(parent);
+    parent.getDefaultLayout().doLayout(parent, null);
 
     assertEquals(100, panel.getWidth());
     assertEquals(150, panel.getHeight());
@@ -63,7 +63,7 @@ public class ImagePanelLayoutTest
   public void getScaleTransformWhenDimensionsAreAuto() throws Exception
   {
     panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
 
     AffineTransform tranform = panel.getTransform();
     assertEquals(1.0, tranform.getScaleX(), 0.001);
@@ -77,7 +77,7 @@ public class ImagePanelLayoutTest
     parent.style.setWidth("100");
     parent.style.setHeight("150");
     parent.childConsumableBounds = new Box(0, 0, 100, 150);
-    parent.getDefaultLayout().doLayout(parent);
+    parent.getDefaultLayout().doLayout(parent, null);
 
     AffineTransform tranform = panel.getTransform();
     assertEquals(0.5, tranform.getScaleX(), 0.001);
@@ -89,7 +89,7 @@ public class ImagePanelLayoutTest
   {
     panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     panel.setRotation(45);
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
 
     AffineTransform tranform = panel.getTransform();
 
@@ -106,7 +106,7 @@ public class ImagePanelLayoutTest
     parent.style.setWidth("100");
     parent.style.setHeight("150");
     parent.childConsumableBounds = new Box(0, 0, 100, 150);
-    parent.getDefaultLayout().doLayout(parent);
+    parent.getDefaultLayout().doLayout(parent, null);
 
     AffineTransform tranform = panel.getTransform();
     assertEquals(1.0, tranform.getScaleX(), 0.001);
@@ -119,7 +119,7 @@ public class ImagePanelLayoutTest
     panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setWidth("100");
     parent.childConsumableBounds = new Box(0, 0, 100, 200);
-    parent.getDefaultLayout().doLayout(parent);
+    parent.getDefaultLayout().doLayout(parent, null);
 
     AffineTransform tranform = panel.getTransform();
     assertEquals(0.5, tranform.getScaleX(), 0.001);
@@ -132,7 +132,7 @@ public class ImagePanelLayoutTest
     panel.setFilename(TestUtil.DATA_DIR + "/star.gif");
     parent.style.setHeight("100");
     parent.childConsumableBounds = new Box(0, 0, 200, 100);
-    parent.getDefaultLayout().doLayout(parent);
+    parent.getDefaultLayout().doLayout(parent, null);
 
     AffineTransform tranform = panel.getTransform();
     assertEquals(0.5, tranform.getScaleX(), 0.001);
@@ -147,7 +147,7 @@ public class ImagePanelLayoutTest
     parent.style.setHeight("400");
     parent.style.setHeight("400");
     parent.childConsumableBounds = new Box(0, 0, 400, 400);
-    parent.getDefaultLayout().doLayout(parent);
+    parent.getDefaultLayout().doLayout(parent, null);
 
     AffineTransform tranform = panel.getTransform();
     assertEquals(1.0, tranform.getScaleX(), 0.001);

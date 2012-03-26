@@ -26,7 +26,7 @@ public class TextInputPanelLayoutTest extends Assert
     MockParentPanel parent = new MockParentPanel();
     parent.add(panel);
 
-    TextInputPanelLayout.instance.doLayout(panel);
+    TextInputPanelLayout.instance.doLayout(panel, null);
 
     assertEquals(true, panel.mockModel.clearLayoutsCalled);
   }

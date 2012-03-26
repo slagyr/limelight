@@ -23,7 +23,7 @@ public abstract class PanelBase implements Panel
   protected Point absoluteLocation;
   private Box absoluteBounds;
   private Box boundingBox;
-  protected boolean laidOut;
+  protected boolean laidOut;  // TODO MDM This doesn't seem useful.  Delete me!
   private boolean illuminated;
   protected PanelEventHandler eventHandler;
 
@@ -134,7 +134,6 @@ public abstract class PanelBase implements Panel
       delluminate();
 
     parent = newParent;
-    markAsNeedingLayout();
 
     if(parent != null && parent.isIlluminated())
       illuminate();
@@ -249,6 +248,7 @@ public abstract class PanelBase implements Panel
     if(panel != null && !needsLayout(panel) && panel instanceof PanelBase)
     {
       panel.markAsNeedingLayout();
+      // TODO MDM Do we need to propagate this size change down?
       doPropagateSizeChangeUp(panel.getParent());
     }
   }
@@ -278,6 +278,7 @@ public abstract class PanelBase implements Panel
   public void illuminate()
   {
     illuminated = true;
+    markAsNeedingLayout();
     new IlluminatedEvent(this).dispatch(this);
   }
 

@@ -50,7 +50,7 @@ public class PaintJob
 
   public void paint(Panel panel, Graphics2D graphics)
   {
-Log.debug("painting: " + panel + " dim: " + panel.getWidth() + ", " + panel.getHeight());
+//Log.debug("painting: " + panel + " dim: " + panel.getWidth() + ", " + panel.getHeight());
     applyAlphaCompositeFor(panel, graphics);
     paintClipFor(panel, graphics);
     restoreComposite(graphics);

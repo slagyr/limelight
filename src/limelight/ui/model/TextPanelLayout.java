@@ -6,11 +6,14 @@ package limelight.ui.model;
 import limelight.Log;
 import limelight.ui.Panel;
 
-public class TextPanelLayout implements Layout
+import java.util.Map;
+
+public class TextPanelLayout extends SimpleLayout
 {
   public static TextPanelLayout instance = new TextPanelLayout();
 
-  public void doLayout(Panel thePanel)
+  @Override
+  public void doExpansion(Panel thePanel)
   {
     TextPanel panel = (TextPanel) thePanel;
     try
@@ -20,10 +23,26 @@ public class TextPanelLayout implements Layout
     catch(Exception e)
     {
       // Can fail if the graphics are not ready.
-Log.debug("TEXT failed to compile", e);
+      Log.debug("TEXT failed to compile", e);
       panel.markAsNeedingLayout();
       panel.getParent().markAsNeedingLayout();
     }
+  }
+
+  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout)
+  {
+//    TextPanel panel = (TextPanel) thePanel;
+//    try
+//    {
+//      panel.compile();
+//    }
+//    catch(Exception e)
+//    {
+//      // Can fail if the graphics are not ready.
+//Log.debug("TEXT failed to compile", e);
+//      panel.markAsNeedingLayout();
+//      panel.getParent().markAsNeedingLayout();
+//    }
   }
 
   public boolean overides(Layout other)
@@ -31,8 +50,8 @@ Log.debug("TEXT failed to compile", e);
     return true;
   }
 
-  public void doLayout(Panel panel, boolean topLevel)
+  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
   {
-    doLayout(panel);
+    doLayout(thePanel, null);
   }
 }

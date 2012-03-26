@@ -258,7 +258,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   @Override
   public void doFloatLayout()
   {
-    FloaterLayout.instance.doLayout(this);
+    FloaterLayout.instance.doLayout(this, null);
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.

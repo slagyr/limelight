@@ -82,7 +82,7 @@ public class PropPanelTest extends Assert
     panel.paintOn(new MockGraphics());
     assertEquals(false, paintAction.invoked);
 
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
     panel.paintOn(new MockGraphics());
     assertEquals(true, paintAction.invoked);
   }
@@ -166,7 +166,7 @@ public class PropPanelTest extends Assert
     panel.setSize(100, 100);
     MockGraphics mockGraphics = new MockGraphics();
     mockGraphics.setClip(0, 0, 100, 100);
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
     panel.paintOn(mockGraphics);
 
     assertEquals(true, action.invoked);
@@ -187,14 +187,14 @@ public class PropPanelTest extends Assert
   {
     root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     TextPanel.staticFontRenderingContext = new FontRenderContext(new AffineTransform(), true, true);
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
 
     root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     panel.setText("blah");
     assertEquals(true, root.hasPanelsNeedingLayout());
 
     root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
-    panel.getDefaultLayout().doLayout(panel);
+    panel.getDefaultLayout().doLayout(panel, null);
     panel.setText("blah");
     assertEquals(false, root.hasPanelsNeedingLayout());
 

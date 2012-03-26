@@ -101,31 +101,33 @@ public class ScenePanel extends PropPanel implements Scene
     synchronized(panelsNeedingLayout)
     {
 //Log.debug("adding panel needing layout", new Exception());
-Log.debug("adding panel needing layout: " + child + " " + layout);
-      boolean shouldAdd = true;
-      for(Iterator<Panel> iterator = panelsNeedingLayout.keySet().iterator(); iterator.hasNext(); )
-      {
-        Panel panel = iterator.next();
-        if(child == panel)
-        {
-          shouldAdd = layout.overides(panelsNeedingLayout.get(child));
-          break;
-        }
-        else if(child.isDescendantOf(panel) && panelsNeedingLayout.containsKey(child.getParent()))
-        {
-          shouldAdd = false;
-          break;
-        }
-        else if(panel.isDescendantOf(child) && panelsNeedingLayout.containsKey(panel))
-        {
-          // TODO MDM This is questionable.  It forces layout on all descendants all the time.  If we know which children need layout, we can be strategic, do less work.
-          iterator.remove();
-        }
-      }
-      if(shouldAdd)
-      {
+      Log.debug("adding panel needing layout: " + child + " " + layout);
+      if(!panelsNeedingLayout.containsKey(child) || layout.overides(panelsNeedingLayout.get(child)))
         panelsNeedingLayout.put(child, layout);
-      }
+//      boolean shouldAdd = true;
+//      for(Iterator<Panel> iterator = panelsNeedingLayout.keySet().iterator(); iterator.hasNext(); )
+//      {
+//        Panel panel = iterator.next();
+//        if(child == panel)
+//        {
+//          shouldAdd = layout.overides(panelsNeedingLayout.get(child));
+//          break;
+//        }
+//        else if(child.isDescendantOf(panel) && panelsNeedingLayout.containsKey(child.getParent()))
+//        {
+//          shouldAdd = false;
+//          break;
+//        }
+//        else if(panel.isDescendantOf(child) && panelsNeedingLayout.containsKey(panel))
+//        {
+//          // TODO MDM This is questionable.  It forces layout on all descendants all the time.  If we know which children need layout, we can be strategic, do less work.
+//          iterator.remove();
+//        }
+//      }
+//      if(shouldAdd)
+//      {
+//        panelsNeedingLayout.put(child, layout);
+//      }
     }
     Context.kickPainter();
   }
@@ -346,11 +348,11 @@ Log.debug("adding panel needing layout: " + child + " " + layout);
     return backstage;
   }
 
-  private static class SceneLayout implements Layout
+  private static class SceneLayout extends PropPanelLayout
   {
     public static Layout instance = new SceneLayout();
 
-    public void doLayout(Panel panel)
+    public void doExpansion(Panel panel)
     {
       ScenePanel scene = (ScenePanel) panel;
       Style style = scene.getStyle();
@@ -372,17 +374,12 @@ Log.debug("adding panel needing layout: " + child + " " + layout);
       final int height = style.getCompiledHeight().calculateDimension(consumableHeight, style.getCompiledMinHeight(), style.getCompiledMaxHeight(), 0);
       scene.setSize(width, height);
 
-      PropPanelLayout.instance.doLayout(scene);
+      PropPanelLayout.instance.doExpansion(scene);
     }
 
     public boolean overides(Layout other)
     {
       return true;
-    }
-
-    public void doLayout(Panel panel, boolean topLevel)
-    {
-      doLayout(panel);
     }
   }
 }

@@ -16,21 +16,48 @@ import limelight.util.Box;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class PropPanelLayout implements Layout
 {
   public static PropPanelLayout instance = new PropPanelLayout();
 
+  public void doExpansion(Panel thePanel)
+  {
+    PropPanel panel = (PropPanel) thePanel;
+    FloaterLayout.instance.doLayout(panel, null);
+//    Style style = panel.getStyle();
+//    if(panel.isSizeChangePending() || style.hasDynamicDimension())
+    snapToSize(panel);
+  }
+
+  public void doContraction(Panel thePanel)
+  {
+    PropPanel panel = (PropPanel) thePanel;
+    establishScrollBars(panel);
+    LinkedList<Row> rows = buildRows(panel);
+    distributeGreediness(panel, rows);
+    Dimension consumedDimensions = new Dimension();
+    calculateConsumedDimentions(rows, consumedDimensions);
+    collapseAutoDimensions(panel, consumedDimensions);
+    layoutRows(panel, consumedDimensions, rows);
+    layoutScrollBars(panel, consumedDimensions);
+  }
+
+  public void doFinalization(Panel thePanel)
+  {
+    PropPanel panel = (PropPanel) thePanel;
+    panel.updateBorder();
+    panel.markAsDirty();
+    panel.wasLaidOut();
+  }
 
   // TODO MDM This gets called A LOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
-  public void doLayout(Panel thePanel, boolean topLevel)
+  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
   {
     Log.debug("doing layout on: " + thePanel);
+    doExpansion(thePanel);
     PropPanel panel = (PropPanel) thePanel;
-    FloaterLayout.instance.doLayout(panel);
-    Style style = panel.getStyle();
-    if(panel.isSizeChangePending() || style.hasDynamicDimension())
-      snapToSize(panel, topLevel);
 
     establishScrollBars(panel);
 
@@ -39,10 +66,10 @@ public class PropPanelLayout implements Layout
       collapseAutoDimensions(panel, consumedDimensions);
     else
     {
-      doPreliminaryLayoutOnChildren(panel);
+      doPreliminaryLayoutOnChildren(panel, panelsToLayout);
       LinkedList<Row> rows = buildRows(panel);
       distributeGreediness(panel, rows);
-      doPostLayoutOnChildren(panel);
+      doPostLayoutOnChildren(panel, panelsToLayout);
       calculateConsumedDimentions(rows, consumedDimensions);
       collapseAutoDimensions(panel, consumedDimensions);
       layoutRows(panel, consumedDimensions, rows);
@@ -107,9 +134,9 @@ public class PropPanelLayout implements Layout
     return true;
   }
 
-  public void doLayout(Panel child)
+  public void doLayout(Panel child, Map<Panel, Layout> panelsToLayout)
   {
-    doLayout(child, true);
+    doLayout(child, panelsToLayout, true);
   }
 
   private boolean hasNonScrollBarChildren(PropPanel panel)
@@ -164,30 +191,34 @@ public class PropPanelLayout implements Layout
     return panel.getBounds().height - panel.getPaddedBounds().height;
   }
 
-  protected void doPreliminaryLayoutOnChildren(PropPanel panel)
+  protected void doPreliminaryLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
   {
     for(Panel child : panel.getChildren())
     {
-      // TODO MDM - Could optimize by checking if child needs layout.  Would have to pass needLayoutMap/Set around.
-      if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
+      if(panelsToLayout != null && panelsToLayout.containsKey(child))
       {
-        child.getDefaultLayout().doLayout(child, true);
-      }
-      else
-      {
-        ((PropPanel) child).greediness.setSize(0, 0);
-        snapToSize((PropPanel) child, false);
+        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
+        {
+          child.getDefaultLayout().doLayout(child, panelsToLayout, true);
+        }
+        else
+        {
+          ((PropPanel) child).greediness.setSize(0, 0);
+          snapToSize((PropPanel) child);
+        }
       }
     }
   }
 
-  protected void doPostLayoutOnChildren(PropPanel panel)
+  protected void doPostLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
   {
     for(Panel child : panel.getChildren())
     {
-      // TODO MDM - Could optimize by checking if child needs layout.  Would have to pass needLayoutMap/Set around.
-      final Layout layout = child.getDefaultLayout();
-      layout.doLayout(child, false);
+      if(panelsToLayout != null && panelsToLayout.containsKey(child))
+      {
+        final Layout layout = child.getDefaultLayout();
+        layout.doLayout(child, panelsToLayout, false);
+      }
     }
   }
 
@@ -264,7 +295,7 @@ public class PropPanelLayout implements Layout
       panel.removeHorizontalScrollBar();
   }
 
-  public void snapToSize(PropPanel panel, boolean topLevel)
+  public void snapToSize(PropPanel panel)
   {
     if(panel.getParent() == null) // can happen if removed from tree
       return;
@@ -352,9 +383,10 @@ public class PropPanelLayout implements Layout
         {
           if(hasGreedyWidth(item))
           {
-            PropPanel panel = (PropPanel) item;
+//            PropPanel panel = (PropPanel) item;
             int greedyWidth = splits[splitIndex++];
-            panel.greediness.width = greedyWidth;
+//            panel.greediness.width = greedyWidth;
+
             item.setSize(item.getWidth() + greedyWidth, item.getHeight());
           }
         }
@@ -383,8 +415,9 @@ public class PropPanelLayout implements Layout
       {
         if(hasGreedyHeight(item))
         {
-          PropPanel panel = (PropPanel) item;
-          panel.greediness.height = Math.max(extraHeight, (height - panel.getHeight()));
+//          PropPanel panel = (PropPanel) item;
+//          panel.greediness.height = Math.max(extraHeight, (height - panel.getHeight()));
+//          item.setSize(item.getWidth(), height);
           item.setSize(item.getWidth(), height);
         }
       }

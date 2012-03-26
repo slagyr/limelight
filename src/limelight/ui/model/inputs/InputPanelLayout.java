@@ -6,19 +6,33 @@ package limelight.ui.model.inputs;
 import limelight.ui.Panel;
 import limelight.ui.model.Layout;
 import limelight.ui.model.PanelBase;
+import limelight.ui.model.SimpleLayout;
 import limelight.util.Box;
 
-public class InputPanelLayout implements Layout
+import java.util.Map;
+
+public class InputPanelLayout extends SimpleLayout
 {
   public static InputPanelLayout instance = new InputPanelLayout();
 
-  public void doLayout(Panel thePanel)
+  @Override
+  public void doExpansion(Panel thePanel)
   {
     PanelBase panel = (PanelBase)thePanel;
     Box bounds = panel.getParent().getChildConsumableBounds();
     panel.setLocation(bounds.x, bounds.y);
     panel.setSize(bounds.width, bounds.height);
+  }
+
+  @Override
+  public void doFinalization(Panel panel)
+  {
     panel.markAsDirty();
+  }
+
+  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout)
+  {
+
   }
 
   public boolean overides(Layout other)
@@ -26,8 +40,8 @@ public class InputPanelLayout implements Layout
     return true;
   }
 
-  public void doLayout(Panel panel, boolean topLevel)
+  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
   {
-    doLayout(panel);
+    doLayout(thePanel, null);
   }
 }

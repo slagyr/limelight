@@ -6,17 +6,12 @@ package limelight.background;
 import limelight.Context;
 import limelight.Log;
 import limelight.ui.Panel;
-import limelight.ui.model.Layout;
-import limelight.ui.model.PaintJob;
-import limelight.ui.model.Scene;
-import limelight.ui.model.StageFrame;
+import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PanelPainterLoop extends IdleThreadLoop
 {
@@ -136,15 +131,56 @@ Log.debug("painting rectangle = " + rectangle);
   {
     panelBuffer.clear();
     root.getAndClearPanelsNeedingLayout(panelBuffer);
-Log.debug(this + " " + root + " doing layout on panels: " + panelBuffer.size());
-    for(Map.Entry<Panel, Layout> entry : panelBuffer.entrySet())
-    {
-      final Layout layout = entry.getValue();
-      final Panel panel = entry.getKey();
-Log.debug("root level layout: " + panel + " " + layout);
-      layout.doLayout(panel);
-    }
+    Log.debug(this + " " + root + " doing layout on panels: " + panelBuffer.size());
+    LayoutJob.go(panelBuffer);
+//    final ArrayList<Panel> orderedPanels = new ArrayList<Panel>(panelBuffer.keySet());
+//    Collections.sort(orderedPanels, new Comparator<Panel>(){
+//      public int compare(Panel panel, Panel panel1)
+//      {
+//        return depthOf(panel).compareTo(depthOf(panel1));
+//      }
+//    });
+////    Collections.reverse(orderedPanels);
+//    final ArrayList<Panel> finishedPanels = new ArrayList<Panel>();
+//    for(Panel panel : orderedPanels)
+//    {
+//      if(!ancestorFinished(panel, finishedPanels))
+//      {
+//        final Layout layout = panelBuffer.get(panel);
+//        Log.debug("root level layout: " + panel + " " + layout);
+//        layout.doLayout(panel, panelBuffer);
+//      }
+//      else
+//        Log.debug("skipping layout of panel = " + panel);
+//      finishedPanels.add(panel);
+//    }
   }
+//
+//  private Integer depthOf(Panel panel)
+//  {
+//    if(panel == null)
+//      return -1;
+//    else
+//      return depthOf(panel, 0);
+//  }
+//
+//  private int depthOf(Panel panel, int depth)
+//  {
+//    if(panel.getParent() == null)
+//      return depth;
+//    else
+//      return depthOf(panel.getParent(), depth + 1);
+//  }
+//
+//  private boolean ancestorFinished(Panel panel, ArrayList<Panel> finishedPanels)
+//  {
+//    for(Panel ancestor : finishedPanels)
+//    {
+//      if(panel.isDescendantOf(ancestor))
+//        return true;
+//    }
+//    return false;
+//  }
 
   public PanelPainterLoop started()
   {
