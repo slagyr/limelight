@@ -19,7 +19,6 @@ public class LayoutJobTest
   public FakeLayout layout2;
   public FakeLayout layout3;
   public LayoutJob job;
-  public HashMap<Panel,Layout> panelsNeedingLayout;
 
   @Before
   public void setUp() throws Exception
@@ -31,44 +30,15 @@ public class LayoutJobTest
     root.add(panel1);
     panel1.add(panel2);
     panel2.add(panel3);
-
-    panelsNeedingLayout = new HashMap<Panel, Layout>();
-  }
-
-  @Test
-  public void panelsAndLayoutsAreSorted() throws Exception
-  {
-    rootLayout = new FakeLayout(false);
-    layout1 = new FakeLayout(false);
-    layout2 = new FakeLayout(false);
-    layout3 = new FakeLayout(false);
-
-    panelsNeedingLayout.put(root, rootLayout);
-    panelsNeedingLayout.put(panel3, layout3);
-    panelsNeedingLayout.put(panel2, layout2);
-    panelsNeedingLayout.put(panel1, layout1);
-
-    job = LayoutJob.prepare(panelsNeedingLayout);
-
-    assertEquals(root, job.getPanels().get(0));
-    assertEquals(panel1, job.getPanels().get(1));
-    assertEquals(panel2, job.getPanels().get(2));
-    assertEquals(panel3, job.getPanels().get(3));
-
-    assertEquals(rootLayout, job.getLayouts().get(0));
-    assertEquals(layout1, job.getLayouts().get(1));
-    assertEquals(layout2, job.getLayouts().get(2));
-    assertEquals(layout3, job.getLayouts().get(3));
   }
 
   private FakeLayout prepareSingleLayout()
   {
-    FakeLayout layout = new FakeLayout(false);
-    panelsNeedingLayout.put(root, layout);
-    panelsNeedingLayout.put(panel3, layout);
-    panelsNeedingLayout.put(panel2, layout);
-    panelsNeedingLayout.put(panel1, layout);
-    job = LayoutJob.prepare(panelsNeedingLayout);
+    FakeLayout layout = new FakeLayout(true);
+    root.markAsNeedingLayout(layout);
+    panel3.markAsNeedingLayout(layout);
+    panel1.markAsNeedingLayout(layout);
+    panel2.markAsNeedingLayout(layout);
     return layout;
   }
 
@@ -77,7 +47,7 @@ public class LayoutJobTest
   {
     FakeLayout layout = prepareSingleLayout();
 
-    job.doExpansions();
+    LayoutJob.layoutPanel(root);
 
     assertEquals(root, layout.expansions.get(0));
     assertEquals(panel1, layout.expansions.get(1));
@@ -90,7 +60,7 @@ public class LayoutJobTest
   {
     FakeLayout layout = prepareSingleLayout();
 
-    job.doContractions();
+    LayoutJob.layoutPanel(root);
 
     assertEquals(root, layout.contractions.get(3));
     assertEquals(panel2, layout.contractions.get(1));
@@ -103,11 +73,11 @@ public class LayoutJobTest
   {
     FakeLayout layout = prepareSingleLayout();
 
-    job.doFinalizations();
+    LayoutJob.layoutPanel(root);
 
-    assertEquals(root, layout.finalizations.get(0));
-    assertEquals(panel1, layout.finalizations.get(1));
-    assertEquals(panel2, layout.finalizations.get(2));
-    assertEquals(panel3, layout.finalizations.get(3));
+    assertEquals(root, layout.finalizations.get(3));
+    assertEquals(panel1, layout.finalizations.get(2));
+    assertEquals(panel2, layout.finalizations.get(1));
+    assertEquals(panel3, layout.finalizations.get(0));
   }
 }

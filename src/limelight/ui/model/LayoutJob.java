@@ -1,5 +1,6 @@
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.ui.Panel;
 import limelight.ui.PanelUtil;
 import limelight.util.Pair;
@@ -8,81 +9,28 @@ import java.util.*;
 
 public class LayoutJob
 {
-  private List<Panel> panels;
-  private List<Layout> layouts;
-
-  private LayoutJob(ArrayList<Panel> panels, ArrayList<Layout> layouts)
+  public static void layoutPanel(Panel panel)
   {
-    this.panels = panels;
-    this.layouts = layouts;
-  }
-
-  public static LayoutJob prepare(Map<Panel, Layout> panelLayoutMap)
-  {
-    ArrayList<Pair<Panel, Integer>> sortList = new ArrayList<Pair<Panel, Integer>>();
-    for(Panel panel : panelLayoutMap.keySet())
-      sortList.add(new Pair<Panel, Integer>(panel, PanelUtil.depthOf(panel)));
-    Collections.sort(sortList, LayoutComparator.instance);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    ArrayList<Layout> layouts = new ArrayList<Layout>();
-
-    for(Pair<Panel, Integer> pair : sortList)
+Log.debug("layoutPanel = " + panel);
+    if(panel.needsLayout())
     {
-      panels.add(pair.a);
-      layouts.add(panelLayoutMap.get(pair.a));
+      final Layout layout = panel.resetNeededLayout();
+      layout.doExpansion(panel);
+      layoutChildren(panel);
+      layout.doContraction(panel);
+      layout.doFinalization(panel);
     }
-    return new LayoutJob(panels, layouts);
+    else
+      layoutChildren(panel);
   }
 
-  public List<Panel> getPanels()
+  private static void layoutChildren(Panel panel)
   {
-    return panels;
-  }
-
-  public List<Layout> getLayouts()
-  {
-    return layouts;
-  }
-
-  public void doExpansions()
-  {
-    for(int i = 0; i < panels.size(); i++)
-      layouts.get(i).doExpansion(panels.get(i));
-  }
-
-  public void doContractions()
-  {
-    for(int i = panels.size() - 1; i >= 0; i--)
-      layouts.get(i).doContraction(panels.get(i));
-  }
-
-  public void doFinalizations()
-  {
-    for(int i = 0; i < panels.size(); i++)
-      layouts.get(i).doFinalization(panels.get(i));
-  }
-
-  public static void go(HashMap<Panel, Layout> panelsNeedingLayout)
-  {
-    LayoutJob job = prepare(panelsNeedingLayout);
-    job.doLayouts();
-  }
-
-  private void doLayouts()
-  {
-    doExpansions();
-    doContractions();
-    doFinalizations();
-  }
-
-  private static class LayoutComparator implements Comparator<Pair<Panel, Integer>>
-  {
-    public static LayoutComparator instance = new LayoutComparator();
-
-    public int compare(Pair<Panel, Integer> a, Pair<Panel, Integer> b)
+    if(panel instanceof ParentPanel)
     {
-      return a.b.compareTo(b.b);
+      ParentPanel parent = (ParentPanel) panel;
+      for(Panel child : parent.getChildren())
+        layoutPanel(child);
     }
   }
 }

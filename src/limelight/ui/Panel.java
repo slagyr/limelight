@@ -47,7 +47,9 @@ public interface Panel extends Iterable<Panel>
   void doFloatLayout();
 
   void consumableAreaChanged();
+  boolean needsLayout();
   void markAsNeedingLayout();
+  Layout resetNeededLayout();
   void markAsDirty();
 
   boolean isIlluminated();
@@ -57,4 +59,5 @@ public interface Panel extends Iterable<Panel>
   boolean hasFocus();
 
   PanelEventHandler getEventHandler();
+
 }

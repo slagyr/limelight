@@ -11,6 +11,7 @@ import limelight.util.Box;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 public abstract class ParentPanelBase extends PanelBase implements ParentPanel
 {
@@ -49,7 +50,7 @@ public abstract class ParentPanelBase extends PanelBase implements ParentPanel
     {
       synchronized(children)
       {
-        for(ListIterator<limelight.ui.Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious();)
+        for(ListIterator<limelight.ui.Panel> iterator = children.listIterator(children.size()); iterator.hasPrevious(); )
         {
           limelight.ui.Panel panel = iterator.previous();
           if(panel.isFloater() && panel.getAbsoluteBounds().contains(point))
@@ -75,19 +76,28 @@ public abstract class ParentPanelBase extends PanelBase implements ParentPanel
     if(sterilized && !(child instanceof ScrollBarPanel))
       throw new SterilePanelException(this.toString());
 
-    synchronized(children)
+    final Lock lock = getTreeLock();
+    try
     {
+      lock.lock();
+      synchronized(children)
+      {
 Log.debug("adding child = " + child);
-      if(index == -1)
-        children.add(child);
-      else
-        children.add(index, child);
-      readonlyChildren = null;
-    }
+        if(index == -1)
+          children.add(child);
+        else
+          children.add(index, child);
+        readonlyChildren = null;
+      }
 
-    child.setParent(this);
-    doPropagateSizeChangeUp(this);
-    markAsNeedingLayout();
+      child.setParent(this);
+      doPropagateSizeChangeUp(this);
+      markAsNeedingLayout();
+    }
+    finally
+    {
+      lock.unlock();
+    }
   }
 
   public boolean hasChildren()
@@ -138,7 +148,7 @@ Log.debug("adding child = " + child);
     {
       synchronized(children)
       {
-        for(Iterator<limelight.ui.Panel> iterator = children.iterator(); iterator.hasNext();)
+        for(Iterator<limelight.ui.Panel> iterator = children.iterator(); iterator.hasNext(); )
         {
           limelight.ui.Panel child = iterator.next();
           if(canRemove(child))

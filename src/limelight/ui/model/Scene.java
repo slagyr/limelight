@@ -16,6 +16,7 @@ import limelight.util.Opts;
 import java.awt.*;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
 
 public interface Scene extends Panel, ParentPanel, StylesSource
 {
@@ -70,6 +71,12 @@ public interface Scene extends Panel, ParentPanel, StylesSource
   boolean hasPanelsNeedingLayout();
 
   boolean hasPanelNeedingLayout(Panel panel);
+
+  Lock getLock();
+
+  void layoutRequired();
+  boolean isLayoutRequired();
+  void resetLayoutRequired();
 }
 
 

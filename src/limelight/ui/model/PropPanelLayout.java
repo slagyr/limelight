@@ -25,7 +25,7 @@ public class PropPanelLayout implements Layout
   public void doExpansion(Panel thePanel)
   {
     PropPanel panel = (PropPanel) thePanel;
-    FloaterLayout.instance.doLayout(panel, null);
+    FloaterLayout.instance.doFinalization(panel);
 //    Style style = panel.getStyle();
 //    if(panel.isSizeChangePending() || style.hasDynamicDimension())
     snapToSize(panel);

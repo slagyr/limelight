@@ -116,12 +116,12 @@ public class ScrollBarPanel extends PanelBase
     return false;
   }
 
+
   private synchronized void configurationChanged()
   {
-    //TODO - could improve performance here... no need to create new instance of layout every time
     PanelBase parent = getParent();
     if(parent != null)
-      parent.markAsNeedingLayout(new ScrollLayout(this));
+      parent.markAsNeedingLayout(ScrollLayout.instance);
   }
 
   public void configure(int visible, int available)

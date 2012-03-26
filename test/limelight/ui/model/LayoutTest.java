@@ -42,7 +42,7 @@ public class LayoutTest
   {
     PropPanel child = addChildWithSize(parent, "100", "100");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(new Point(0, 0), child.getLocation());
   }
@@ -53,7 +53,7 @@ public class LayoutTest
     PropPanel child1 = addChildWithSize(parent, "50", "50");
     PropPanel child2 = addChildWithSize(parent, "50", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(new Point(0, 0), child1.getLocation());
     assertEquals(new Point(50, 0), child2.getLocation());
@@ -66,7 +66,7 @@ public class LayoutTest
     PropPanel child2 = addChildWithSize(parent, "50", "50");
     PropPanel child3 = addChildWithSize(parent, "50", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(new Point(0, 0), child1.getLocation());
     assertEquals(new Point(50, 0), child2.getLocation());
@@ -80,7 +80,7 @@ public class LayoutTest
     parent.getStyle().setHorizontalAlignment("right");
     PropPanel child = addChildWithSize(parent, "50", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(true, child.isLaidOut());
     assertEquals(new Point(50, 50), child.getLocation());
@@ -94,7 +94,7 @@ public class LayoutTest
     PropPanel child1 = addChildWithSize(parent, "25", "50");
     PropPanel child2 = addChildWithSize(parent, "25", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(new Point(25, 25), child1.getLocation());
     assertEquals(new Point(50, 25), child2.getLocation());
@@ -106,7 +106,7 @@ public class LayoutTest
     PropPanel panel = addChildWithSize(parent, "auto", "auto");
     addChildWithSize(panel, "50", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(50, panel.getWidth());
     assertEquals(50, panel.getHeight());
@@ -118,7 +118,7 @@ public class LayoutTest
     PropPanel panel = addChildWithSize(parent, "auto", "100");
     addChildWithSize(panel, "50", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(50, panel.getWidth());
     assertEquals(100, panel.getHeight());
@@ -130,7 +130,7 @@ public class LayoutTest
     PropPanel panel = addChildWithSize(parent, "70%", "auto");
     addChildWithSize(panel, "50", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(70, panel.getWidth());
     assertEquals(50, panel.getHeight());
@@ -156,7 +156,7 @@ public class LayoutTest
     child.prepForSnap(50, 50);
     panel.add(child);
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(98, panel.getWidth());
     assertEquals(80, panel.getHeight());
@@ -173,7 +173,7 @@ public class LayoutTest
     child.prepForSnap(50, 50);
     panel.add(child);
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(10, child.getX());
     assertEquals(10, child.getY());
@@ -186,7 +186,7 @@ public class LayoutTest
   {
     PropPanel panel = addChildWithSize(parent, "auto", "auto");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(0, panel.getWidth());
     assertEquals(0, panel.getHeight());
@@ -200,7 +200,7 @@ public class LayoutTest
     panel.getStyle().setMinHeight("15");
     addChildWithSize(panel, "5", "5");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(20, panel.getWidth());
     assertEquals(15, panel.getHeight());
@@ -214,7 +214,7 @@ public class LayoutTest
     panel.getStyle().setMaxHeight("86");
     addChildWithSize(panel, "90", "90");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(75, panel.getWidth());
     assertEquals(86, panel.getHeight());
@@ -227,7 +227,7 @@ public class LayoutTest
     PropPanel floater = addChildWithSize(parent, "500", "500");
     floater.getStyle().setFloat("on");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(2, parent.getChildren().size());
     assertSame(child, parent.getChildren().get(0));
@@ -243,7 +243,7 @@ public class LayoutTest
     PropPanel floater = addChildWithSize(panel, "500", "500");
     floater.getStyle().setFloat("on");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(50, panel.getWidth());
     assertEquals(50, panel.getHeight());
@@ -256,7 +256,7 @@ public class LayoutTest
     floater.getStyle().setFloat(true);
     PropPanel child = addChildWithSize(parent, "50", "50");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(true, floater.isLaidOut());
     assertEquals(true, child.isLaidOut());
@@ -271,7 +271,7 @@ public class LayoutTest
     assertEquals(null, parent.getHorizontalScrollbar());
     parent.getStyle().setScrollbars("on");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(2, parent.getChildren().size());
     assertNotNull(parent.getVerticalScrollbar());
@@ -303,7 +303,7 @@ public class LayoutTest
     panel.getStyle().setHeight("auto");
     panel.getStyle().setScrollbars("on");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(0, panel.getWidth());
     assertEquals(0, panel.getHeight());
@@ -313,10 +313,10 @@ public class LayoutTest
   public void scrollBarsDontGetLayoutLikeOtherProps() throws Exception
   {
     parent.getStyle().setScrollbars("on");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     PropPanel panel = addChildWithSize(parent, "100%", "100%");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(0, panel.getX());
     assertEquals(0, panel.getY());
@@ -327,10 +327,10 @@ public class LayoutTest
   {
     root.prepForSnap(500, 500);
     parent.getStyle().setScrollbars("on");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     addChildWithSize(parent, "200", "300");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(200, parent.getHorizontalScrollbar().getAvailableAmount());
     assertEquals(100 - ScrollBarPanel.GIRTH, parent.getHorizontalScrollbar().getVisibleAmount());
@@ -341,11 +341,11 @@ public class LayoutTest
   {
     parent.getStyle().setScrollbars("on");
     PropPanel panel = addChildWithSize(parent, "200", "300");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     parent.getVerticalScrollbar().setValue(100);
     parent.getHorizontalScrollbar().setValue(50);
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(-50, panel.getX());
     assertEquals(-100, panel.getY());
@@ -358,7 +358,7 @@ public class LayoutTest
     Border border = parent.getBorderShaper();
 
     parent.getStyle().setBorderWidth("21");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(21, border.getTopWidth());
   }
@@ -368,7 +368,7 @@ public class LayoutTest
   {
     assertEquals(false, parent.isLaidOut());
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(true, parent.isLaidOut());
   }
@@ -378,7 +378,7 @@ public class LayoutTest
   {
     root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(true, root.dirtyRegions.contains(parent.getAbsoluteBounds()));
   }
@@ -387,11 +387,13 @@ public class LayoutTest
   public void layoutChildrenWithPercentageDimensionsWhenSizeChanges() throws Exception
   {
     PropPanel panel = addChildWithSize(parent, "100%", "100%");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     parent.getStyle().setWidth(200);
     parent.getStyle().setHeight(300);
-    LayoutJob.go(root.panelsNeedingLayout);
+    panel.markAsNeedingLayout();
+    parent.markAsNeedingLayout();
+    LayoutJob.layoutPanel(root);
 
     assertEquals(200, panel.getWidth());
     assertEquals(300, panel.getHeight());
@@ -402,11 +404,14 @@ public class LayoutTest
   {
     PropPanel panel = addChildWithSize(parent, "auto", "auto");
     PropPanel child = addChildWithSize(panel, "100%", "100%");
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     parent.getStyle().setWidth(200);
     parent.getStyle().setHeight(300);
-    LayoutJob.go(root.panelsNeedingLayout);
+    panel.markAsNeedingLayout();
+    child.markAsNeedingLayout();
+    parent.markAsNeedingLayout();
+    LayoutJob.layoutPanel(root);
 
     assertEquals(200, panel.getWidth());
     assertEquals(300, panel.getHeight());
@@ -421,7 +426,7 @@ public class LayoutTest
     PropPanel panel1 = addChildWithSize(parent, "50%", "100%");
     PropPanel panel2 = addChildWithSize(parent, "50%", "50%");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(0, panel1.getY());
     assertEquals(50, panel2.getY());
@@ -433,7 +438,7 @@ public class LayoutTest
     PropPanel panel1 = addChildWithSize(parent, "20", "100");
     PropPanel panel2 = addChildWithSize(parent, "greedy", "100");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(20, panel1.getWidth());
     assertEquals(80, panel2.getWidth());
@@ -446,7 +451,7 @@ public class LayoutTest
     PropPanel greedy1 = addChildWithSize(parent, "greedy", "100");
     PropPanel greedy2 = addChildWithSize(parent, "greedy", "100");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(20, inert.getWidth());
     assertEquals(40, greedy1.getWidth());
@@ -459,7 +464,7 @@ public class LayoutTest
     PropPanel panel1 = addChildWithSize(parent, "100", "20");
     PropPanel panel2 = addChildWithSize(parent, "100", "greedy");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(20, panel1.getHeight());
     assertEquals(80, panel2.getHeight());
@@ -473,7 +478,7 @@ public class LayoutTest
 //    PropPanel panel1 = addChildWithSize(parent, "100", "auto");
 //    PropPanel panel2 = addChildWithSize(parent, "100", "greedy");
 //
-//    LayoutJob.go(root.panelsNeedingLayout);
+//    LayoutJob.layoutPanel(root);
 //
 //    assertEquals(0, panel1.getHeight());
 //    assertEquals(100, panel2.getHeight());
@@ -485,7 +490,7 @@ public class LayoutTest
     PropPanel panel1 = addChildWithSize(parent, "50", "100%");
     PropPanel panel2 = addChildWithSize(parent, "50", "greedy");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(100, panel1.getHeight());
     assertEquals(100, panel2.getHeight());
@@ -498,7 +503,7 @@ public class LayoutTest
     PropPanel greedy1 = addChildWithSize(parent, "100", "greedy");
     PropPanel greedy2 = addChildWithSize(parent, "100", "greedy");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(20, panel1.getHeight());
     assertEquals(40, greedy1.getHeight());
@@ -511,7 +516,7 @@ public class LayoutTest
     PropPanel greedy1 = addChildWithSize(parent, "greedy", "auto");
     PropPanel child = addChildWithSize(greedy1, "100%", "100%");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(100, child.getWidth());
     assertEquals(100, child.getHeight());
@@ -524,7 +529,7 @@ public class LayoutTest
 
     try
     {
-      LayoutJob.go(root.panelsNeedingLayout);
+      LayoutJob.layoutPanel(root);
       fail("should throw exception");
     }
     catch(Exception e)
@@ -540,7 +545,7 @@ public class LayoutTest
     PropPanel child = addChildWithSize(panel, "100%", "auto");
     addChildWithSize(child, "100%", "14");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(100, panel.getWidth());
     assertEquals(14, panel.getHeight());
@@ -552,7 +557,7 @@ public class LayoutTest
     parent.getStyle().setWidth("100");
     parent.getStyle().setHeight("200");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(100, parent.getWidth());
     assertEquals(200, parent.getHeight());
@@ -568,7 +573,7 @@ public class LayoutTest
     parent.getStyle().setMaxHeight("82");
     addChildWithSize(parent, "100%", "100%");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(75, parent.getWidth());
     assertEquals(82, parent.getHeight());
@@ -583,7 +588,7 @@ public class LayoutTest
     parent.getStyle().setMaxWidth("75");
     parent.getStyle().setMaxHeight("82");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(75, parent.getWidth());
     assertEquals(82, parent.getHeight());
@@ -598,7 +603,7 @@ public class LayoutTest
     parent.getStyle().setMinWidth("42");
     parent.getStyle().setMinHeight("51");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(42, parent.getWidth());
     assertEquals(51, parent.getHeight());
@@ -611,7 +616,7 @@ public class LayoutTest
     parent.getStyle().setAlignment("center");
     PropPanel panel = addChildWithSize(parent, "200", "200");
 
-    LayoutJob.go(root.panelsNeedingLayout);
+    LayoutJob.layoutPanel(root);
 
     assertEquals(0, panel.getX());
     assertEquals(0, panel.getY());

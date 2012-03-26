@@ -33,13 +33,11 @@ public class ScrollLayoutTest
     PropPanelLayout.instance.doLayout(parent, null);
 
     parent.getVerticalScrollbar().setValue(1);
-    ScrollLayout verticalLayout = new ScrollLayout(parent.getVerticalScrollbar());
-    verticalLayout.doLayout(parent, null);
+    ScrollLayout.instance.doContraction(parent);
     assertEquals(-1, panel.getY());
 
     parent.getHorizontalScrollbar().setValue(2);
-    ScrollLayout horizontalLayout = new ScrollLayout(parent.getHorizontalScrollbar());
-    horizontalLayout.doLayout(parent, null);
+    ScrollLayout.instance.doContraction(parent);
     assertEquals(-2, panel.getX());
   }
 

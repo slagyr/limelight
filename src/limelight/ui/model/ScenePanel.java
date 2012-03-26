@@ -19,6 +19,8 @@ import limelight.util.Util;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ScenePanel extends PropPanel implements Scene
 {
@@ -36,6 +38,8 @@ public class ScenePanel extends PropPanel implements Scene
   private String pathRelativeToProduction;
   private PlayerRecruiter playerRecruiter;
   private Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
+  private Lock lock = new ReentrantLock();
+  private boolean layoutRequired;
 
 
   public ScenePanel(PropProxy propProxy, PlayerRecruiter playerRecruiter)
@@ -148,6 +152,28 @@ public class ScenePanel extends PropPanel implements Scene
     }
   }
 
+  public Lock getLock()
+  {
+    return lock;
+  }
+
+  public void layoutRequired()
+  {
+    layoutRequired = true;
+Log.debug("setting layout required " + this);
+    Context.kickPainter();
+  }
+
+  public boolean isLayoutRequired()
+  {
+    return layoutRequired;
+  }
+
+  public void resetLayoutRequired()
+  {
+    layoutRequired = false;
+  }
+
   public void getAndClearPanelsNeedingLayout(Map<Panel, Layout> buffer)
   {
     synchronized(panelsNeedingLayout)
@@ -233,7 +259,8 @@ public class ScenePanel extends PropPanel implements Scene
     if(stage != null)
     {
       illuminate();
-      addPanelNeedingLayout(this, getDefaultLayout());
+      markAsNeedingLayout();
+//      addPanelNeedingLayout(this, getDefaultLayout());
     }
   }
 
@@ -325,6 +352,20 @@ public class ScenePanel extends PropPanel implements Scene
       illuminatePlayers(newOptions.remove("players"));
 
     super.addOptions(newOptions);
+  }
+
+  @Override
+  public void illuminate()
+  {
+    final Lock lock = getLock();
+    try
+    {
+      lock.lock();
+      super.illuminate();
+    }
+    finally {
+      lock.unlock();
+    }
   }
 
   public PlayerRecruiter getPlayerRecruiter()

@@ -15,12 +15,7 @@ import java.util.Map;
 
 public class ScrollLayout extends PropPanelLayout
 {
-  private ScrollBarPanel scrollBar;
-
-  public ScrollLayout(ScrollBarPanel scrollBar)
-  {
-    this.scrollBar = scrollBar;
-  }
+  public static ScrollLayout instance = new ScrollLayout();
 
   @Override
   public void doExpansion(Panel thePanel)
@@ -32,8 +27,10 @@ public class ScrollLayout extends PropPanelLayout
   public void doContraction(Panel thePanel)
   {
     PropPanel panel = (PropPanel) thePanel;
-    int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
-    int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
+    final ScrollBarPanel horizontalScrollbar = panel.getHorizontalScrollbar();
+    final ScrollBarPanel verticalScrollbar = panel.getVerticalScrollbar();
+    int dx = horizontalScrollbar == null ? 0 : horizontalScrollbar.getValue();//scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
+    int dy = verticalScrollbar == null ? 0 : verticalScrollbar.getValue();//scrollBar.isVertical() ? scrollBar.getValue() : 0;
 
     LinkedList<PropPanelLayout.Row> rows = buildRows(panel);
     Dimension consumedDimensions = new Dimension();
@@ -45,21 +42,6 @@ public class ScrollLayout extends PropPanelLayout
   public void doFinalization(Panel panel)
   {
     panel.markAsDirty();
-  }
-
-  public void doLayout(Panel aPanel, Map<Panel, Layout> panelsToLayout)
-  {
-//    PropPanel panel = (PropPanel) aPanel;
-//    int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
-//    int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
-//
-//    LinkedList<PropPanelLayout.Row> rows = buildRows(panel);
-//    Dimension consumedDimensions = new Dimension();
-//    calculateConsumedDimentions(rows, consumedDimensions);
-//    layoutRows(panel, consumedDimensions, rows, dx, dy);
-//
-//    panel.markAsDirty();
-//    panel.wasLaidOut();
   }
 
   public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)

@@ -175,7 +175,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   public void consumableAreaChanged()
   {
     Style style = getStyle();
-    if(!needsLayout(this) && style != null && style.hasDynamicDimension())
+    if(!needsLayout() && style != null && style.hasDynamicDimension())
       super.consumableAreaChanged();
   }
 

@@ -8,10 +8,12 @@ import limelight.ui.Panel;
 import limelight.ui.events.panel.IlluminatedEvent;
 import limelight.ui.events.panel.PanelEventHandler;
 import limelight.util.Box;
+import limelight.util.NullLock;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
+import java.util.concurrent.locks.Lock;
 
 public abstract class PanelBase implements Panel
 {
@@ -23,6 +25,7 @@ public abstract class PanelBase implements Panel
   protected Point absoluteLocation;
   private Box absoluteBounds;
   private Box boundingBox;
+  protected Layout neededLayout = getDefaultLayout();
   protected boolean laidOut;  // TODO MDM This doesn't seem useful.  Delete me!
   private boolean illuminated;
   protected PanelEventHandler eventHandler;
@@ -213,14 +216,31 @@ public abstract class PanelBase implements Panel
 
   public synchronized void markAsNeedingLayout(Layout layout)
   {
+//    final Scene root = getRoot();
+//    if(root != null)
+//      root.addPanelNeedingLayout(this, layout);
+    if(neededLayout == null || layout.overides(neededLayout))
+      neededLayout = layout;
     final Scene root = getRoot();
     if(root != null)
-      root.addPanelNeedingLayout(this, layout);
+      root.layoutRequired();
   }
 
   public void markAsNeedingLayout()
   {
     markAsNeedingLayout(getDefaultLayout());
+  }
+
+  public synchronized Layout resetNeededLayout()
+  {
+    Layout layout = neededLayout;
+    neededLayout = null;
+    return layout;
+  }
+
+  public boolean needsLayout()
+  {
+    return neededLayout != null;
   }
 
   //TODO This is a little inefficient.  Reconsider what gets passed to props.
@@ -237,15 +257,9 @@ public abstract class PanelBase implements Panel
     return new PanelIterator(this);
   }
 
-  public static boolean needsLayout(Panel panel)
-  {
-    final Scene root = panel.getRoot();
-    return root != null && root.hasPanelNeedingLayout(panel);
-  }
-
   protected void doPropagateSizeChangeUp(Panel panel)
   {
-    if(panel != null && !needsLayout(panel) && panel instanceof PanelBase)
+    if(panel != null && !panel.needsLayout() && panel instanceof PanelBase)
     {
       panel.markAsNeedingLayout();
       // TODO MDM Do we need to propagate this size change down?
@@ -290,5 +304,14 @@ public abstract class PanelBase implements Panel
   public boolean hasFocus()
   {
     return false;
+  }
+
+  public Lock getTreeLock()
+  {
+    final Scene root = getRoot();
+    if(root == null)
+      return NullLock.instance;
+    else
+      return root.getLock();
   }
 }

@@ -11,6 +11,7 @@ import limelight.styles.RichStyle;
 import limelight.ui.ButtonGroupCache;
 import limelight.ui.MockGraphics;
 import limelight.ui.Panel;
+import limelight.util.NullLock;
 import limelight.util.Opts;
 
 import java.awt.*;
@@ -18,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
 
 public class FakeScene extends MockProp implements Scene
 {
@@ -68,6 +70,24 @@ public class FakeScene extends MockProp implements Scene
   public boolean hasPanelNeedingLayout(Panel panel)
   {
     return panelsNeedingLayout.containsKey(panel);
+  }
+
+  public Lock getLock()
+  {
+    return NullLock.instance;
+  }
+
+  public void layoutRequired()
+  {
+  }
+
+  public boolean isLayoutRequired()
+  {
+    return false;
+  }
+
+  public void resetLayoutRequired()
+  {
   }
 
   @Override

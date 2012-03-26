@@ -12,6 +12,7 @@ import limelight.util.NanoTimer;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
 
 public class PanelPainterLoop extends IdleThreadLoop
 {
@@ -65,7 +66,8 @@ public class PanelPainterLoop extends IdleThreadLoop
     for(StageFrame stageFrame : frameBuffer)
     {
       Scene root = stageFrame.getStage().getScene();
-      if(root != null && (root.hasPanelsNeedingLayout() || root.hasDirtyRegions()))
+//      if(root != null && (root.hasPanelsNeedingLayout() || root.hasDirtyRegions()))
+      if(root != null && (root.isLayoutRequired() || root.hasDirtyRegions()))
       {
         somethingToDo = true;
         break;
@@ -81,8 +83,17 @@ public class PanelPainterLoop extends IdleThreadLoop
       Scene root = stageFrame.getStage().getScene();
       if(root != null)
       {
-        doAllLayouts(root);
-        paintDirtyRegions(root);
+        final Lock lock = root.getLock();
+        try
+        {
+          lock.lock();
+          doAllLayouts(root);
+          paintDirtyRegions(root);
+        }
+        finally
+        {
+          lock.unlock();
+        }
       }
     }
     lastExecutionDuration = timer.getIdleNanos();
@@ -113,7 +124,7 @@ public class PanelPainterLoop extends IdleThreadLoop
       Graphics2D rootGraphics = root.getGraphics();
       if(rootGraphics != null)
       {
-Log.debug("painting rectangle = " + rectangle);
+        Log.debug("painting rectangle = " + rectangle);
         doPaintJob(root, new Box(rectangle), rootGraphics);
       }
     }
@@ -129,10 +140,19 @@ Log.debug("painting rectangle = " + rectangle);
 
   public void doAllLayouts(Scene root)
   {
-    panelBuffer.clear();
-    root.getAndClearPanelsNeedingLayout(panelBuffer);
-    Log.debug(this + " " + root + " doing layout on panels: " + panelBuffer.size());
-    LayoutJob.go(panelBuffer);
+Log.debug("root.isLayoutRequired() = " + root.isLayoutRequired() + " " + this);
+    if(root.isLayoutRequired())
+    {
+      Log.debug("doing layout on = " + root);
+      root.resetLayoutRequired();
+      LayoutJob.layoutPanel(root);
+    }
+    //////////////////////////////////
+//    panelBuffer.clear();
+//    root.getAndClearPanelsNeedingLayout(panelBuffer);
+//    Log.debug(this + " " + root + " doing layout on panels: " + panelBuffer.size());
+//    LayoutJob.go(panelBuffer);
+    ///////////////////////////////////
 //    final ArrayList<Panel> orderedPanels = new ArrayList<Panel>(panelBuffer.keySet());
 //    Collections.sort(orderedPanels, new Comparator<Panel>(){
 //      public int compare(Panel panel, Panel panel1)
