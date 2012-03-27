@@ -39,29 +39,6 @@ class ImagePanelLayout extends SimpleLayout
     panel.setSize(size.width, size.height);
   }
 
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout)
-  {
-//    ImagePanel panel = (ImagePanel) thePanel;
-//    Box consumableArea = panel.getParent().getChildConsumableBounds();
-//    if(panel.getImage() == null)
-//      return;
-//
-//
-//    Dimension size;
-//    if(panel.isScaled())
-//      size = new Dimension(consumableArea.width, consumableArea.height);
-//    else
-//      size = new Dimension((int) (panel.getImageWidth() + 0.5), (int) (panel.getImageHeight() + 0.5));
-//
-//    if(panel.getImage() != null)
-//    {
-//      handleRotation(panel);
-//      handleAutoDimensions(panel, size);
-//    }
-//
-//    panel.setSize(size.width, size.height);
-  }
-
   private void handleRotation(ImagePanel panel)
   {
     if(panel.getRotation() != 0.0)
@@ -103,10 +80,5 @@ class ImagePanelLayout extends SimpleLayout
   public boolean overides(Layout other)
   {
     return true;
-  }
-
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-  {
-    doLayout(thePanel, null);
   }
 }

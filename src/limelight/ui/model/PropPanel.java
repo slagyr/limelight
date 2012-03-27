@@ -200,9 +200,6 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
   public void paintOn(Graphics2D graphics)
   {
-    if(!laidOut)
-      return;
-
     painter.paint(graphics, this);
 
     if(afterPaintAction != null)
@@ -253,12 +250,6 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   public boolean isFloater()
   {
     return getStyle().getCompiledFloat().isOn();
-  }
-
-  @Override
-  public void doFloatLayout()
-  {
-    FloaterLayout.instance.doLayout(this, null);
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.

@@ -63,11 +63,11 @@ public class PanelPainterLoopTest extends Assert
   public void isIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
   {
     activeRoot.getAndClearDirtyRegions(new ArrayList<Rectangle>());
-    activeRoot.getAndClearPanelsNeedingLayout(new HashMap<limelight.ui.Panel, Layout>());
+    activeRoot.resetLayoutRequired();
 
     frameManager.focusedFrame = activeFrame;
 
-    assertEquals(false, activeRoot.hasPanelsNeedingLayout());
+    assertEquals(false, activeRoot.isLayoutRequired());
     assertEquals(false, activeRoot.hasDirtyRegions());
     assertEquals(true, loop.shouldBeIdle());
   }
@@ -76,7 +76,7 @@ public class PanelPainterLoopTest extends Assert
   public void isNotIdleWhenPanelsNeedLayout() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
-    activeRoot.addPanelNeedingLayout(new MockPanel(), FakeLayout.instance);
+    activeRoot.layoutRequired();
 
     assertEquals(false, loop.shouldBeIdle());
   }
@@ -95,16 +95,18 @@ public class PanelPainterLoopTest extends Assert
   {
     MockPanel panel1 = new MockPanel();
     MockPanel panel2 = new MockPanel();
-    final FakeLayout layout1 = new FakeLayout(false);
-    final FakeLayout layout2 = new FakeLayout(false);
-    activeRoot.addPanelNeedingLayout(panel1, layout1);
-    activeRoot.addPanelNeedingLayout(panel2, layout2);
+    activeRoot.add(panel1);
+    activeRoot.add(panel2);
+    final FakeLayout layout1 = new FakeLayout(true);
+    final FakeLayout layout2 = new FakeLayout(true);
+    panel1.markAsNeedingLayout(layout1);
+    panel2.markAsNeedingLayout(layout2);
 
     loop.doAllLayouts(activeRoot);
 
-    assertEquals(panel1, layout1.lastPanelProcessed);
-    assertEquals(panel2, layout2.lastPanelProcessed);
-    assertEquals(false, activeRoot.hasPanelsNeedingLayout());
+    assertEquals(panel1, layout1.lastPanelExpanded);
+    assertEquals(panel2, layout2.lastPanelExpanded);
+    assertEquals(false, activeRoot.isLayoutRequired());
   }
 
   @Test

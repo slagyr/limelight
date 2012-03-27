@@ -171,6 +171,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     consumableBounds = null;
   }
 
+  //TODO MDM Is this getting leaked?  Maybe we can get away with one instance.
   private static class CaretAnimator extends Animation
   {
     private TextInputPanel panel;

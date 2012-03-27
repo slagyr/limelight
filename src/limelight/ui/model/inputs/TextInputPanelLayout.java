@@ -22,8 +22,4 @@ public class TextInputPanelLayout extends InputPanelLayout
     super.doExpansion(thePanel);
     textInputPanel.getModel().recalculateOffset(XOffsetStrategy.CENTERED, YOffsetStrategy.FITTING);
   }
-
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout)
-  {
-  }
 }

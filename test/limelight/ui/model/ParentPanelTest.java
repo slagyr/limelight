@@ -48,6 +48,20 @@ public class ParentPanelTest
     root.setStage(new MockStage());
   }
 
+  private void resetFamilyLayouts()
+  {
+    root.resetNeededLayout();
+    panel.resetNeededLayout();
+    if(parent != null)
+      parent.resetNeededLayout();
+    if(child != null)
+      child.resetNeededLayout();
+    if(grandChild != null)
+      grandChild.resetNeededLayout();
+    if(sibling != null)
+      sibling.resetNeededLayout();
+  }
+
   @Test
   public void shouldCanAddPanels() throws Exception
   {
@@ -278,19 +292,19 @@ public class ParentPanelTest
 
     panel.add(child);
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
   }
 
   @Test
-  public void shouldRemoveRequiresUpdate() throws Exception
+  public void removeRequiresUpdate() throws Exception
   {
     Panel child = new MockPanel();
     panel.add(child);
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
 
     panel.remove(child);
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
   }
 
   @Test
@@ -298,11 +312,11 @@ public class ParentPanelTest
   {
     Panel child = new MockPanel();
     panel.add(child);
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
 
     panel.remove(new MockPanel());
 
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
+    assertEquals(false, panel.needsLayout());
   }
 
   @Test
@@ -310,21 +324,21 @@ public class ParentPanelTest
   {
     Panel child = new MockPanel();
     panel.add(child);
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
 
     panel.removeAll();
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
   }
 
   @Test
   public void shouldRemoveAllDoesntRequireUpdateIfNoChildWasRemoved() throws Exception
   {
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
 
     panel.removeAll();
 
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
+    assertEquals(false, panel.needsLayout());
   }
 
   @Test
@@ -370,7 +384,7 @@ public class ParentPanelTest
     panel.add(childA);
     panel.add(0, childB);
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
   }
 
   @Test
@@ -410,36 +424,34 @@ public class ParentPanelTest
   @Test
   public void needsLayoutByDefault() throws Exception
   {
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
   }
 
   @Test
   public void needsLayout() throws Exception
   {
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
     panel.markAsNeedingLayout();
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
-    assertEquals(1, root.panelsNeedingLayout.size());
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
 
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
 
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
+    assertEquals(false, panel.needsLayout());
   }
 
   @Test
-  public void shouldAncestorsWithAutoDimensionsRequireLayoutWhenChildrenAdded() throws Exception
+  public void ancestorsWithAutoDimensionsRequireLayoutWhenChildrenAdded() throws Exception
   {
     createFamilyTree();
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
 
     PropPanel newPanel = new PropPanel(new FakePropProxy());
     grandChild.add(newPanel);
 
-    assertEquals(true, root.hasPanelNeedingLayout(grandChild));
-    assertEquals(true, root.hasPanelNeedingLayout(child));
-    assertEquals(true, root.hasPanelNeedingLayout(parent));
+    assertEquals(true, grandChild.needsLayout());
+    assertEquals(true, child.needsLayout());
+    assertEquals(true, parent.needsLayout());
   }
 
   @Test
@@ -449,12 +461,12 @@ public class ParentPanelTest
 
     MockPanel newPanel = new MockPanel();
     grandChild.add(newPanel);
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
     grandChild.remove(newPanel);
 
-    assertEquals(true, root.hasPanelNeedingLayout(grandChild));
-    assertEquals(true, root.hasPanelNeedingLayout(child));
-    assertEquals(true, root.hasPanelNeedingLayout(parent));
+    assertEquals(true, grandChild.needsLayout());
+    assertEquals(true, child.needsLayout());
+    assertEquals(true, parent.needsLayout());
   }
 
   @Test
@@ -464,12 +476,12 @@ public class ParentPanelTest
 
     MockPanel newPanel = new MockPanel();
     grandChild.add(newPanel);
-    root.panelsNeedingLayout.clear();
+    resetFamilyLayouts();
     grandChild.removeAll();
 
-    assertEquals(true, root.hasPanelNeedingLayout(grandChild));
-    assertEquals(true, root.hasPanelNeedingLayout(child));
-    assertEquals(true, root.hasPanelNeedingLayout(parent));
+    assertEquals(true, grandChild.needsLayout());
+    assertEquals(true, child.needsLayout());
+    assertEquals(true, parent.needsLayout());
   }
 
   @Test
@@ -484,16 +496,13 @@ public class ParentPanelTest
   }
 
   @Test
-  public void shouldDoLayoutDoesDefaultLayoutIfNoneAreSet() throws Exception
+  public void doLayoutDoesDefaultLayoutIfNoneAreSet() throws Exception
   {
-    root.panelsNeedingLayout.clear();
-    panel.getDefaultLayout().doLayout(panel, null);
-
-    assertEquals(panel, BasePanelLayout.instance.lastPanelProcessed);
+    assertEquals(BasePanelLayout.instance, panel.getDefaultLayout());
   }
 
   @Test
-  public void shouldKnowWhenItIsIlluminated() throws Exception
+  public void knowsWhenItIsIlluminated() throws Exception
   {
     panel = new TestableParentPanel();
     assertEquals(false, panel.isIlluminated());

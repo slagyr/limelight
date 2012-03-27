@@ -32,8 +32,8 @@ public class FakeScene extends MockProp implements Scene
   public PlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
   public Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
   public ButtonGroupCache buttonGroups = new ButtonGroupCache();
-  public HashMap<Panel, Layout> panelsNeedingLayout = new HashMap<Panel, Layout>();
   public ImageCache imageCache;
+  public boolean layoutRequired;
 
 
   @Override
@@ -52,24 +52,9 @@ public class FakeScene extends MockProp implements Scene
     return stage;
   }
 
-  public boolean hasPanelsNeedingLayout()
-  {
-    return panelsNeedingLayout.size() > 0;
-  }
-
   public boolean hasDirtyRegions()
   {
     return dirtyRegions.size() > 0;
-  }
-
-  public void addPanelNeedingLayout(Panel panel, Layout layout)
-  {
-    panelsNeedingLayout.put(panel, layout);
-  }
-
-  public boolean hasPanelNeedingLayout(Panel panel)
-  {
-    return panelsNeedingLayout.containsKey(panel);
   }
 
   public Lock getLock()
@@ -79,15 +64,17 @@ public class FakeScene extends MockProp implements Scene
 
   public void layoutRequired()
   {
+    layoutRequired = true;
   }
 
   public boolean isLayoutRequired()
   {
-    return false;
+    return layoutRequired;
   }
 
   public void resetLayoutRequired()
   {
+    layoutRequired = false;
   }
 
   @Override
@@ -169,12 +156,6 @@ public class FakeScene extends MockProp implements Scene
   public ButtonGroupCache getButtonGroups()
   {
     return buttonGroups;
-  }
-
-  public void getAndClearPanelsNeedingLayout(Map<Panel, Layout> layoutBuffer)
-  {
-    layoutBuffer.putAll(panelsNeedingLayout);
-    panelsNeedingLayout.clear();
   }
 
   public void getAndClearDirtyRegions(Collection<Rectangle> regionBuffer)

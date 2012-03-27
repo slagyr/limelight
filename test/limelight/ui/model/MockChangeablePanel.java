@@ -46,7 +46,7 @@ public class MockChangeablePanel extends PanelBase implements ChangeablePanel
     markAsNeedingLayoutCalled = true;
     neededLayout = layout;
     if(getRoot() != null)
-      getRoot().addPanelNeedingLayout(this, layout);
+      getRoot().layoutRequired();
   }
 
 

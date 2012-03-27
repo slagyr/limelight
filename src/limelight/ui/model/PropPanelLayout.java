@@ -49,37 +49,9 @@ public class PropPanelLayout implements Layout
     PropPanel panel = (PropPanel) thePanel;
     panel.updateBorder();
     panel.markAsDirty();
-    panel.wasLaidOut();
   }
 
   // TODO MDM This gets called A LOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-  {
-    Log.debug("doing layout on: " + thePanel);
-    doExpansion(thePanel);
-    PropPanel panel = (PropPanel) thePanel;
-
-    establishScrollBars(panel);
-
-    Dimension consumedDimensions = new Dimension();
-    if(!hasNonScrollBarChildren(panel))
-      collapseAutoDimensions(panel, consumedDimensions);
-    else
-    {
-      doPreliminaryLayoutOnChildren(panel, panelsToLayout);
-      LinkedList<Row> rows = buildRows(panel);
-      distributeGreediness(panel, rows);
-      doPostLayoutOnChildren(panel, panelsToLayout);
-      calculateConsumedDimentions(rows, consumedDimensions);
-      collapseAutoDimensions(panel, consumedDimensions);
-      layoutRows(panel, consumedDimensions, rows);
-    }
-    layoutScrollBars(panel, consumedDimensions);
-
-    panel.updateBorder();
-    panel.markAsDirty();
-    panel.wasLaidOut();
-  }
 
   private void distributeGreediness(PropPanel panel, LinkedList<Row> rows)
   {
@@ -134,23 +106,18 @@ public class PropPanelLayout implements Layout
     return true;
   }
 
-  public void doLayout(Panel child, Map<Panel, Layout> panelsToLayout)
-  {
-    doLayout(child, panelsToLayout, true);
-  }
-
-  private boolean hasNonScrollBarChildren(PropPanel panel)
-  {
-    List<Panel> children = panel.getChildren();
-    if(children.size() == 0)
-      return false;
-    else if(children.size() == 1)
-      return !(children.contains(panel.getVerticalScrollbar()) || children.contains(panel.getHorizontalScrollbar()));
-    else if(children.size() == 2)
-      return !(children.contains(panel.getVerticalScrollbar()) && children.contains(panel.getHorizontalScrollbar()));
-    else
-      return true;
-  }
+//  private boolean hasNonScrollBarChildren(PropPanel panel)
+//  {
+//    List<Panel> children = panel.getChildren();
+//    if(children.size() == 0)
+//      return false;
+//    else if(children.size() == 1)
+//      return !(children.contains(panel.getVerticalScrollbar()) || children.contains(panel.getHorizontalScrollbar()));
+//    else if(children.size() == 2)
+//      return !(children.contains(panel.getVerticalScrollbar()) && children.contains(panel.getHorizontalScrollbar()));
+//    else
+//      return true;
+//  }
 
   private void layoutScrollBars(PropPanel panel, Dimension consumedDimensions)
   {
@@ -191,36 +158,36 @@ public class PropPanelLayout implements Layout
     return panel.getBounds().height - panel.getPaddedBounds().height;
   }
 
-  protected void doPreliminaryLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
-  {
-    for(Panel child : panel.getChildren())
-    {
-      if(panelsToLayout != null && panelsToLayout.containsKey(child))
-      {
-        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
-        {
-          child.getDefaultLayout().doLayout(child, panelsToLayout, true);
-        }
-        else
-        {
-          ((PropPanel) child).greediness.setSize(0, 0);
-          snapToSize((PropPanel) child);
-        }
-      }
-    }
-  }
-
-  protected void doPostLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
-  {
-    for(Panel child : panel.getChildren())
-    {
-      if(panelsToLayout != null && panelsToLayout.containsKey(child))
-      {
-        final Layout layout = child.getDefaultLayout();
-        layout.doLayout(child, panelsToLayout, false);
-      }
-    }
-  }
+//  protected void doPreliminaryLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
+//  {
+//    for(Panel child : panel.getChildren())
+//    {
+//      if(panelsToLayout != null && panelsToLayout.containsKey(child))
+//      {
+//        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
+//        {
+//          child.getDefaultLayout().doLayout(child, panelsToLayout, true);
+//        }
+//        else
+//        {
+//          ((PropPanel) child).greediness.setSize(0, 0);
+//          snapToSize((PropPanel) child);
+//        }
+//      }
+//    }
+//  }
+//
+//  protected void doPostLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
+//  {
+//    for(Panel child : panel.getChildren())
+//    {
+//      if(panelsToLayout != null && panelsToLayout.containsKey(child))
+//      {
+//        final Layout layout = child.getDefaultLayout();
+//        layout.doLayout(child, panelsToLayout, false);
+//      }
+//    }
+//  } 1
 
   public void layoutRows(PropPanel panel, Dimension consumedDimension, LinkedList<Row> rows)
   {

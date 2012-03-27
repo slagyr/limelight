@@ -29,29 +29,8 @@ public class TextPanelLayout extends SimpleLayout
     }
   }
 
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout)
-  {
-//    TextPanel panel = (TextPanel) thePanel;
-//    try
-//    {
-//      panel.compile();
-//    }
-//    catch(Exception e)
-//    {
-//      // Can fail if the graphics are not ready.
-//Log.debug("TEXT failed to compile", e);
-//      panel.markAsNeedingLayout();
-//      panel.getParent().markAsNeedingLayout();
-//    }
-  }
-
   public boolean overides(Layout other)
   {
     return true;
-  }
-
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-  {
-    doLayout(thePanel, null);
   }
 }

@@ -13,21 +13,9 @@ public class BasePanelLayout extends SimpleLayout
   public static BasePanelLayout instance = new BasePanelLayout();
   public Panel lastPanelProcessed;
 
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout)
-  {
-    PanelBase panel = (PanelBase) thePanel;
-    panel.wasLaidOut();
-    lastPanelProcessed = thePanel;
-  }
-
   public boolean overides(Layout other)
   {
     return false;
-  }
-
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-  {
-    doLayout(thePanel, null);
   }
 
 }

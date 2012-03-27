@@ -6,8 +6,8 @@ package limelight.ui.model;
 
 import limelight.events.*;
 import limelight.events.Event;
-import limelight.model.api.FakePropProxy;
 import limelight.ui.MockPanel;
+import limelight.ui.Panel;
 import limelight.ui.events.panel.IlluminatedEvent;
 import limelight.util.Box;
 import org.junit.Assert;
@@ -172,6 +172,19 @@ public class PanelBaseTest extends Assert
     assertEquals(false, illuminatedActionInvoked);
     panel.illuminate();
     assertEquals(true, illuminatedActionInvoked);
+  }
+
+  @Test
+  public void overridingLayouts() throws Exception
+  {
+    Panel panel = new MockPanel();
+    final FakeLayout weakLayout = new FakeLayout(false);
+    final FakeLayout strongLayout = new FakeLayout(true);
+
+    panel.markAsNeedingLayout(weakLayout);
+    panel.markAsNeedingLayout(strongLayout);
+
+    assertSame(strongLayout, panel.resetNeededLayout());
   }
 
 }

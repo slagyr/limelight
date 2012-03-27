@@ -2,16 +2,23 @@ package limelight.ui.model;
 
 import limelight.Log;
 import limelight.ui.Panel;
-import limelight.ui.PanelUtil;
-import limelight.util.Pair;
 
-import java.util.*;
-
-public class LayoutJob
+public class Layouts
 {
-  public static void layoutPanel(Panel panel)
+  public static void on(Panel panel)
   {
-Log.debug("layoutPanel = " + panel);
+    layoutPanel(panel);
+  }
+
+  public static void on(Panel panel, Layout layout)
+  {
+    panel.resetNeededLayout();
+    panel.markAsNeedingLayout(layout);
+    layoutPanel(panel);
+  }
+
+  private static void layoutPanel(Panel panel)
+  {
     if(panel.needsLayout())
     {
       final Layout layout = panel.resetNeededLayout();
@@ -30,7 +37,7 @@ Log.debug("layoutPanel = " + panel);
     {
       ParentPanel parent = (ParentPanel) panel;
       for(Panel child : parent.getChildren())
-        layoutPanel(child);
+        on(child);
     }
   }
 }

@@ -82,7 +82,6 @@ public abstract class ParentPanelBase extends PanelBase implements ParentPanel
       lock.lock();
       synchronized(children)
       {
-Log.debug("adding child = " + child);
         if(index == -1)
           children.add(child);
         else

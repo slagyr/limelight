@@ -12,10 +12,5 @@ public interface Layout
   void doExpansion(Panel panel);
   void doContraction(Panel panel);
   void doFinalization(Panel panel);
-
-  void doLayout(Panel panel, Map<Panel, Layout> panelsToLayout);
-
   boolean overides(Layout other);
-
-  void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel);
 }

@@ -26,7 +26,6 @@ public abstract class PanelBase implements Panel
   private Box absoluteBounds;
   private Box boundingBox;
   protected Layout neededLayout = getDefaultLayout();
-  protected boolean laidOut;  // TODO MDM This doesn't seem useful.  Delete me!
   private boolean illuminated;
   protected PanelEventHandler eventHandler;
 
@@ -198,11 +197,6 @@ public abstract class PanelBase implements Panel
     return false;
   }
 
-  public void doFloatLayout()
-  {
-    // Panels are not floaters by default.
-  }
-
   public void consumableAreaChanged()
   {
     markAsNeedingLayout();
@@ -272,16 +266,6 @@ public abstract class PanelBase implements Panel
     Scene rootPanel = getRoot();
     if(rootPanel != null)
       rootPanel.addDirtyRegion(getAbsoluteBounds());
-  }
-
-  public boolean isLaidOut()
-  {
-    return laidOut;
-  }
-
-  public void wasLaidOut()
-  {
-    laidOut = true;
   }
 
   public boolean isIlluminated()

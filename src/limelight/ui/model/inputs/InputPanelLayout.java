@@ -30,18 +30,8 @@ public class InputPanelLayout extends SimpleLayout
     panel.markAsDirty();
   }
 
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout)
-  {
-
-  }
-
   public boolean overides(Layout other)
   {
     return true;
-  }
-
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-  {
-    doLayout(thePanel, null);
   }
 }

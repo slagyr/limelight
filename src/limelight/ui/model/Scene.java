@@ -64,14 +64,6 @@ public interface Scene extends Panel, ParentPanel, StylesSource
 
   boolean hasDirtyRegions();
 
-  void getAndClearPanelsNeedingLayout(Map<Panel, Layout> layoutBuffer);
-
-  void addPanelNeedingLayout(Panel panel, Layout layout);
-
-  boolean hasPanelsNeedingLayout();
-
-  boolean hasPanelNeedingLayout(Panel panel);
-
   Lock getLock();
 
   void layoutRequired();

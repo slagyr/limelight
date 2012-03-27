@@ -98,14 +98,12 @@ public abstract class IdleThreadLoop
 
   protected void idle()
   {
-Log.debug("going idle zzzzzzzzz " + this);
     isIdle = true;
     synchronized(lock)
     {
       try
       {
         lock.wait();
-Log.debug("I'm awake!!!!!!!! = " + this);
       }
       catch(InterruptedException e)
       {

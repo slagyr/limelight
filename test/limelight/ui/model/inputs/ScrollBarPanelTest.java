@@ -54,32 +54,18 @@ public class ScrollBarPanelTest
   }
 
   @Test
-  public void changesCausesLayout() throws Exception
+  public void parentIsMarkedAsChanged() throws Exception
   {
     Scene root = new FakeScene();
     root.setStage(new MockStage());
     PropPanel parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
-    parent.getDefaultLayout().doLayout(parent, null);
-    verticalScrollBar.setValue(50);
-
-    assertEquals(true, root.hasPanelNeedingLayout(parent));
-  }
-
-  @Test
-  public void shouldParentIsMarkedAsChanged() throws Exception
-  {
-    Scene root = new FakeScene();
-    root.setStage(new MockStage());
-    PropPanel parent = new PropPanel(new FakePropProxy());
-    root.add(parent);
-    parent.add(verticalScrollBar);
-    parent.getDefaultLayout().doLayout(parent, null);
+    Layouts.on(parent, parent.getDefaultLayout());
 
     verticalScrollBar.setValue(50);
 
-    assertEquals(true, root.hasPanelNeedingLayout(parent));
+    assertEquals(true, parent.needsLayout());
   }
 
   @Test

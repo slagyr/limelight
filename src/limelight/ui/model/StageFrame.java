@@ -37,7 +37,7 @@ public class StageFrame extends Frame
   {
     final Scene root = stage.getScene();
     if(root != null && isWindowResizing())
-      root.getDefaultLayout().doLayout(root, null);
+      Layouts.on(root, root.getDefaultLayout());
     else
       super.doLayout();
 

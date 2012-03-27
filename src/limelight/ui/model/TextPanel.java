@@ -187,11 +187,10 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
   {
     List<StyledText> textChunks = getTextChunks();
 
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
 
     for(StyledText textChunk : textChunks)
     {
-Log.debug("textChunk.getText() = " + textChunk.getText());
       buf.append(textChunk.getText());
     }
 

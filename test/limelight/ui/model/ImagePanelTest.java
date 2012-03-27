@@ -70,12 +70,11 @@ public class ImagePanelTest
   @Test
   public void parentSizeChangesAlwaysRequiresLayout() throws Exception
   {
-    root.panelsNeedingLayout.clear();
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
+    root.resetLayoutRequired();
 
     panel.consumableAreaChanged();
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, root.isLayoutRequired());
   }
 
   @Test
@@ -108,15 +107,16 @@ public class ImagePanelTest
   {
     panel.setFilename(TestUtil.dataDirPath("small_star.gif"));
     panel.getImage();
-    root.panelsNeedingLayout.clear();
+    panel.resetNeededLayout();
+    parent.resetNeededLayout();
 
     checkSettingImageDataWith("star.gif");
 
     assertEquals(200, panel.getImageWidth(), 0.1);
     assertEquals(200, panel.getImageHeight(), 0.1);
     assertEquals("[DATA]", panel.getFilename());
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
-    assertEquals(true, root.hasPanelNeedingLayout(parent));
+    assertEquals(true, panel.needsLayout());
+    assertEquals(true, parent.needsLayout());
   }
 
   @Test

@@ -4,6 +4,7 @@
 package limelight.ui.model.text;
 
 import limelight.ui.MockTypedLayoutFactory;
+import limelight.ui.model.Layouts;
 import limelight.ui.model.MockParentPanel;
 import limelight.ui.model.inputs.TextBoxPanel;
 import limelight.ui.model.inputs.TextInputPanel;
@@ -31,7 +32,7 @@ public class SingleLineTextModelTest
     MockParentPanel parent = new MockParentPanel();
     parent.add(panel);
     parent.setSize(100, 20);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     model = panel.getModel();
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
   }

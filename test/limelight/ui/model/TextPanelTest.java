@@ -75,7 +75,7 @@ public class TextPanelTest
   public void preferredSize() throws Exception
   {
     useFrame();
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     assertEquals(58, panel.getWidth());
     assertEquals(14, panel.getHeight());
   }
@@ -85,7 +85,7 @@ public class TextPanelTest
   {
     useFrame();
     panel.setText("Once upon a time, there was a developer working on a tool called Limelight.", parent);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     assertEquals(true, panel.getWidth() >= 97 && panel.getWidth() <= 99);
     assertEquals(69, panel.getHeight());
   }
@@ -95,7 +95,7 @@ public class TextPanelTest
   {
     useFrame();
     style.setFontSize("40");
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     assertEquals(80, panel.getWidth());
     assertEquals(138, panel.getHeight());
   }
@@ -105,7 +105,7 @@ public class TextPanelTest
   {
     useFrame();
     panel.setText("1\n2\n3\nlongest", parent);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     assertEquals(true, panel.getWidth() >= 39 && panel.getWidth() <= 41);
     assertEquals(55, panel.getHeight());
   }
@@ -123,17 +123,17 @@ public class TextPanelTest
     assertEquals(false, panel.textChanged());
 
     panel.setText("Something", parent);
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
 
-    root.panelsNeedingLayout.clear();
+    panel.resetNeededLayout();
     panel.setText("Something", parent);
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
+    assertEquals(false, panel.needsLayout());
 
     panel.setText("Something Else", parent);
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
 
-    root.panelsNeedingLayout.clear();
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
+    panel.resetNeededLayout();
+    assertEquals(false, panel.needsLayout());
   }
 
   @Test
@@ -371,20 +371,19 @@ public class TextPanelTest
   @Test
   public void changingTestRequiresUpdates() throws Exception
   {
-    root.panelsNeedingLayout.clear();
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
-    assertEquals(false, root.hasPanelNeedingLayout(parent));
+    panel.resetNeededLayout();
+    parent.resetNeededLayout();
 
     panel.setText("New Text", parent);
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
-    assertEquals(true, root.hasPanelNeedingLayout(parent));
+    assertEquals(true, panel.needsLayout());
+    assertEquals(true, parent.needsLayout());
   }
 
   @Test
   public void layoutCausesDirtyRegion() throws Exception
   {
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
 
     ArrayList<Rectangle> list = new ArrayList<Rectangle>();
     root.getAndClearDirtyRegions(list);
@@ -396,11 +395,11 @@ public class TextPanelTest
   public void resizesTextWhenSizeChanges() throws Exception
   {
     panel.setText("Some really long text so that there are multiple lines requiring layout when the size changes.", parent);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
 
     int originalHeight = panel.getHeight();
     parent.setSize(400, 200);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
 
     int newHeight = panel.getHeight();
 
@@ -411,24 +410,24 @@ public class TextPanelTest
   @Test
   public void parentSizeChangesAlwaysRequiresLayout() throws Exception
   {
-    root.panelsNeedingLayout.clear();
-    assertEquals(false, root.hasPanelNeedingLayout(panel));
+    panel.resetNeededLayout();
+    assertEquals(false, panel.needsLayout());
 
     panel.consumableAreaChanged();
 
-    assertEquals(true, root.hasPanelNeedingLayout(panel));
+    assertEquals(true, panel.needsLayout());
   }
 
   @Test
   public void teardownStyledTextBeforeDiscarding() throws Exception
   {
     panel.setText("Original Text", parent);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     List<StyleObserver> observers = panel.getStyle().getObservers();
     assertEquals(1, observers.size());
     StyleObserver observer = observers.get(0);
 
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     List<StyleObserver> newObservers = panel.getStyle().getObservers();
     assertEquals(1, newObservers.size());
     StyleObserver newObserver = newObservers.get(0);

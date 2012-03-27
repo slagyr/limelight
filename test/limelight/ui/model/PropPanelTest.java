@@ -74,20 +74,6 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void onlyPaintWhenLaidOut() throws Exception
-  {
-    MockAfterPaintAction paintAction = new MockAfterPaintAction();
-    panel.setAfterPaintAction(paintAction);
-
-    panel.paintOn(new MockGraphics());
-    assertEquals(false, paintAction.invoked);
-
-    panel.getDefaultLayout().doLayout(panel, null);
-    panel.paintOn(new MockGraphics());
-    assertEquals(true, paintAction.invoked);
-  }
-
-  @Test
   public void constructor() throws Exception
   {
     assertSame(prop, panel.getProxy());
@@ -123,12 +109,13 @@ public class PropPanelTest extends Assert
   @Test
   public void settingTextShouldLeadToLayout() throws Exception
   {
-    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
+    root.resetLayoutRequired();
     panel.setText("Some Text");
+    assertEquals(true, root.isLayoutRequired());
   }
 
   @Test
-  public void shouldRactanglesAreCached() throws Exception
+  public void rectanglesAreCached() throws Exception
   {
     Box rectangle = panel.getBounds();
     Box insideMargins = panel.getMarginedBounds();
@@ -166,7 +153,7 @@ public class PropPanelTest extends Assert
     panel.setSize(100, 100);
     MockGraphics mockGraphics = new MockGraphics();
     mockGraphics.setClip(0, 0, 100, 100);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
     panel.paintOn(mockGraphics);
 
     assertEquals(true, action.invoked);
@@ -175,32 +162,29 @@ public class PropPanelTest extends Assert
   @Test
   public void hasChangesWhenaStyleIsChanged() throws Exception
   {
-    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
+    root.resetNeededLayout();
 
     style.setWidth("100%");
 
-    assertEquals(true, root.hasPanelNeedingLayout(root));
+    assertEquals(true, root.needsLayout());
   }
 
   @Test
-  public void hasChangesWhenaTextIsChanged() throws Exception
+  public void hasChangesWhenTextIsChanged() throws Exception
   {
-    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     TextPanel.staticFontRenderingContext = new FontRenderContext(new AffineTransform(), true, true);
-    panel.getDefaultLayout().doLayout(panel, null);
+    Layouts.on(panel, panel.getDefaultLayout());
 
-    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
+    panel.resetNeededLayout();
     panel.setText("blah");
-    assertEquals(true, root.hasPanelsNeedingLayout());
+    assertEquals(true, panel.needsLayout());
 
-    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
-    panel.getDefaultLayout().doLayout(panel, null);
+    panel.resetNeededLayout();
     panel.setText("blah");
-    assertEquals(false, root.hasPanelsNeedingLayout());
+    assertEquals(false, panel.needsLayout());
 
-    root.getAndClearPanelsNeedingLayout(new HashMap<Panel, Layout>());
     panel.setText("new text");
-    assertEquals(true, root.hasPanelsNeedingLayout());
+    assertEquals(true, panel.needsLayout());
   }
 
   @Test

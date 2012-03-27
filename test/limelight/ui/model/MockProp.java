@@ -93,12 +93,6 @@ public class MockProp extends MockParentPanel implements Prop, PaintablePanel
     return new MockPropLayout();
   }
 
-  public void doFloatLayout()
-  {
-    super.doFloatLayout();
-    wasFloatLaidOut = true;
-  }
-
   public void prepForSnap(int width, int height)
   {
     prepForSnapWidth = width;
@@ -125,21 +119,9 @@ public class MockProp extends MockParentPanel implements Prop, PaintablePanel
     {
     }
 
-    public void doLayout(Panel panel, Map<Panel, Layout> panelsToLayout)
-    {
-      setSize(prepForSnapWidth, prepForSnapHeight);
-      for(Panel child : children)
-        child.getDefaultLayout().doLayout(child, null);
-      wasLaidOut = true;
-    }
-
     public boolean overides(Layout other)
     {
       return false;
-    }
-
-    public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-    {
     }
   }
 }

@@ -22,9 +22,4 @@ public abstract class SimpleLayout implements Layout
   {
     return false;
   }
-
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-  {
-    doLayout(thePanel, panelsToLayout);
-  }
 }

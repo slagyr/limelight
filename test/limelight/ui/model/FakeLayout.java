@@ -14,7 +14,6 @@ public class FakeLayout implements Layout
   public static FakeLayout instance = new FakeLayout(false);
   public static FakeLayout alwaysOverides = new FakeLayout(true);
 
-  public Panel lastPanelProcessed;
   public boolean overide;
   public Panel lastPanelExpanded;
   public Panel lastPanelContracted;
@@ -46,18 +45,8 @@ public class FakeLayout implements Layout
     lastPanelFinalized = panel;
   }
 
-  public void doLayout(Panel panel, Map<Panel, Layout> panelsToLayout)
-  {
-    lastPanelProcessed = panel;
-  }
-
   public boolean overides(Layout other)
   {
     return overide;
-  }
-
-  public void doLayout(Panel thePanel, Map<Panel, Layout> panelsToLayout, boolean topLevel)
-  {
-    doLayout(thePanel, null);
   }
 }

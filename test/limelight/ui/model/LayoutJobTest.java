@@ -1,10 +1,7 @@
 package limelight.ui.model;
 
-import limelight.ui.Panel;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +15,7 @@ public class LayoutJobTest
   public FakeLayout layout1;
   public FakeLayout layout2;
   public FakeLayout layout3;
-  public LayoutJob job;
+  public Layouts job;
 
   @Before
   public void setUp() throws Exception
@@ -47,7 +44,7 @@ public class LayoutJobTest
   {
     FakeLayout layout = prepareSingleLayout();
 
-    LayoutJob.layoutPanel(root);
+    Layouts.on(root);
 
     assertEquals(root, layout.expansions.get(0));
     assertEquals(panel1, layout.expansions.get(1));
@@ -60,7 +57,7 @@ public class LayoutJobTest
   {
     FakeLayout layout = prepareSingleLayout();
 
-    LayoutJob.layoutPanel(root);
+    Layouts.on(root);
 
     assertEquals(root, layout.contractions.get(3));
     assertEquals(panel2, layout.contractions.get(1));
@@ -73,7 +70,7 @@ public class LayoutJobTest
   {
     FakeLayout layout = prepareSingleLayout();
 
-    LayoutJob.layoutPanel(root);
+    Layouts.on(root);
 
     assertEquals(root, layout.finalizations.get(3));
     assertEquals(panel1, layout.finalizations.get(2));
