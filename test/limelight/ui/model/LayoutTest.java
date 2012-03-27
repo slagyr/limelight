@@ -1,6 +1,5 @@
 package limelight.ui.model;
 
-import apple.laf.JRSUIUtils;
 import limelight.model.api.FakePropProxy;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
