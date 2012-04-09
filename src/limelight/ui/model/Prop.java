@@ -17,7 +17,7 @@ public interface Prop extends ParentPanel
   boolean remove(limelight.ui.Panel child);
   void removeAll();
   void setAfterPaintAction(PaintAction action);
-  void setText(String text);
+  void setText(String text); // TODO MDM - this ought to take an Object to be more flexible
   String getText();
   TextAccessor getTextAccessor();
   void setTextAccessor(TextAccessor accessor);

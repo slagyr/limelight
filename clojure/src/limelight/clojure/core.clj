@@ -143,10 +143,17 @@
          ((eval eval-form#) ~context)))))
 
 ; TODO Test me
-(defmacro cue [thing fn-name & args]
+(defmacro player-resolve [thing fn-name]
   `(let [nses# (if (isa? (class ~thing) limelight.model.api.ProductionProxy) [@(._ns ~thing)] (map #(._ns %) (clj-players ~thing)))
-         fn# (some #(if-let [ns-fn# (ns-resolve % '~fn-name)] ns-fn# nil) nses#)]
-     (fn# ~thing ~@args)))
+         var# (some #(if-let [ns-fn# (ns-resolve % '~fn-name)] ns-fn# nil) nses#)]
+     (if var# @var# nil)))
+
+(defmacro cue [thing vname & args]
+  `(let [pfn# (player-resolve ~thing ~vname)]
+    (cond
+      (nil? pfn#) (throw (Exception. (str "Unrecognized cue: " '~vname " by " ~thing)))
+      (not (instance? clojure.lang.IFn pfn#)) (throw (Exception. (str "cue <" '~vname "> is not an IFn: " ~thing)))
+      :else (pfn# ~thing ~@args))))
 
 ; Theater functions ---------------------------------------
 

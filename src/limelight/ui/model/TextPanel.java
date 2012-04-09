@@ -130,12 +130,16 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
       StyledTextParser parser = new StyledTextParser();
       textChunks = parser.parse(text);
 
-      Map<String, RichStyle> styleMap = getRoot().getStyles();
-      for(StyledText styledText : textChunks)
-        styledText.setupStyles(styleMap, getStyle(), this);
-      // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?
+      final Scene root = getRoot();
+      if(root != null) // TODO MDM - It happens.... but how?  Ah!  Need to acquire tree lock when removing panels.
+      {
+        Map<String, RichStyle> styleMap = root.getStyles();
+        for(StyledText styledText : textChunks)
+          styledText.setupStyles(styleMap, getStyle(), this);
+        // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?
 
-      addLines();
+        addLines();
+      }
     }
   }
 
@@ -148,6 +152,8 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
     LineBreakMeasurer lbm = new LineBreakMeasurer(styledTextIterator, getRenderContext());
 
     float width = (float) consumableArea.width;
+    if(width <= 0)
+      return;
 
     TextLayout layout;
     int startOfNextLayout;

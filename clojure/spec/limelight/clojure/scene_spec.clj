@@ -10,7 +10,8 @@
     [limelight.clojure.production :only (new-production)])
   (:import
     [limelight.clojure.scene Scene]
-    [limelight.clojure.casting PlayerRecruiter]))
+    [limelight.clojure.casting PlayerRecruiter]
+    [limelight.model.api FakePlayerRecruiter]))
 
 (describe "Scene"
 
@@ -70,6 +71,12 @@
       (let [styles (.loadStyles @production (peer @scene) {})
             style (.get styles "one")]
         (should= "#0000ffff" (.getBackgroundColor style))))
+
+    (it "casts the scene player, with long name, only once"
+      (let [player-recruiter (FakePlayerRecruiter.)
+            scene (new-scene {:name "customer_list" :player-recruiter player-recruiter})]
+        (.illuminate (peer scene))
+        (should= 1 (count (players scene)))))
     )
   )
 

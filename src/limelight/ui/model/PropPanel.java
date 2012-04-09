@@ -25,10 +25,7 @@ import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.ui.painting.Border;
 import limelight.ui.painting.DefaultPainter;
 import limelight.ui.painting.PaintAction;
-import limelight.util.Box;
-import limelight.util.EmptyMap;
-import limelight.util.Options;
-import limelight.util.Opts;
+import limelight.util.*;
 
 import java.awt.*;
 import java.util.*;
@@ -512,7 +509,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   {
     for(Player player : getPlayers())
     {
-      if(player.getName().toLowerCase().equals(name.toLowerCase()))
+      if(StringUtil.snakeCase(player.getName()).equals(StringUtil.snakeCase(name)))
         return true;
     }
     return false;

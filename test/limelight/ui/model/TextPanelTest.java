@@ -3,6 +3,7 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.styles.StyleObserver;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeTrue;
 
 public class TextPanelTest
@@ -403,7 +405,7 @@ public class TextPanelTest
 
     int newHeight = panel.getHeight();
 
-    assertEquals(true, 200 - panel.getWidth() < 100 );
+    assertEquals(true, 200 - panel.getWidth() < 100);
     assertEquals(true, newHeight < originalHeight);
   }
 
@@ -432,6 +434,22 @@ public class TextPanelTest
     assertEquals(1, newObservers.size());
     StyleObserver newObserver = newObservers.get(0);
     assertNotSame(newObserver, observer);
+  }
+
+  @Test
+  public void doestCrashWhenTheresNoConsumableArea() throws Exception
+  {
+    try
+    {
+      parent.setSize(-100, 0);
+      panel.setText("hello", parent);
+      panel.compile();
+    }
+    catch(Exception e)
+    {
+      fail("shouldn't throw error: " + e);
+    }
+
   }
 }
 
