@@ -3,8 +3,8 @@
 
 package limelight.styles.compiling;
 
-import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.StyleCompiler;
+import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.values.SimplePercentageValue;
 
 import java.util.regex.Matcher;

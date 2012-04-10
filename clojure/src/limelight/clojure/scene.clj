@@ -3,7 +3,7 @@
 
 (ns limelight.clojure.scene
   (:use
-    [limelight.clojure.casting :only (new-player-recruiter clj-players)]
+    [limelight.clojure.casting :only (new-player-recruiter)]
     [limelight.clojure.util :only (map-for-java ->options read-src)]
     [limelight.clojure.core]))
 
@@ -43,8 +43,8 @@
 
   limelight.clojure.core.Backstaged
   (backstage [this] (.getBackstage @_peer))
-  (backstage-get [this key] (.get (.getBackstage @_peer) key))
-  (backstage-put [this key value] (.put (.getBackstage @_peer) key value))
+  (backstage-get [this key] (.get (.getBackstage @_peer) (name key)))
+  (backstage-put [this key value] (.put (.getBackstage @_peer) (name key) value))
   )
 
 (defn- prepare-ns [scene production]
@@ -60,16 +60,15 @@
   (let [options (->options args)
         ns (create-ns (gensym "limelight.dynamic.scene-"))
         scene (Scene. (atom nil) (atom nil) ns)
-        player-recruiter (new-player-recruiter scene)
-        peer (limelight.ui.model.ScenePanel. scene)
+        player-recruiter (or (:player-recruiter options) (new-player-recruiter scene))
+        options (dissoc options :player-recruiter)
+        peer (limelight.ui.model.ScenePanel. scene player-recruiter)
         production (:production options)
         options (dissoc options :production)]
     (reset! (._peer scene) peer)
     (reset! (._player-recruiter scene) player-recruiter)
-    (.addOptions peer (map-for-java options))
-    (.setPlayerRecruiter peer player-recruiter)
     (when production (.setProduction peer (._peer production)))
-    (.invigorate peer)
+    (.addOptions peer (map-for-java options))
     (prepare-ns scene production)
     scene))
 

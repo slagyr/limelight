@@ -3,9 +3,9 @@
 
 package limelight.background;
 
+import limelight.Context;
 import limelight.LimelightException;
 import limelight.util.NanoTimer;
-import limelight.Context;
 
 // TODO MDM - Animations should stop if they throw an exception
 

@@ -3,7 +3,6 @@
 
 package limelight.background;
 
-import limelight.model.api.FakePropProxy;
 import limelight.ui.BufferedImagePool;
 import limelight.ui.model.*;
 import limelight.ui.MockPanel;
@@ -15,6 +14,7 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assume.assumeTrue;
 
@@ -23,7 +23,7 @@ public class PanelPainterLoopTest extends Assert
   private PanelPainterLoop loop;
   private MockFrameManager frameManager;
   private StageFrame activeFrame;
-  private ScenePanel activeRoot;
+  private Scene activeRoot;
 
   @Before
   public void setUp() throws Exception
@@ -34,7 +34,7 @@ public class PanelPainterLoopTest extends Assert
     Context.instance().frameManager = frameManager;
     MockStage activeStage = new MockStage();
     activeFrame = new StageFrame(activeStage);
-    activeRoot = new ScenePanel(new FakePropProxy());
+    activeRoot = new FakeScene();
     activeRoot.setStage(activeStage);
     activeStage.setScene(activeRoot);
   }
@@ -63,11 +63,11 @@ public class PanelPainterLoopTest extends Assert
   public void isIdleWhenRootHasNoPanelsNeedingLayoutsOrDirtyRegions() throws Exception
   {
     activeRoot.getAndClearDirtyRegions(new ArrayList<Rectangle>());
-    activeRoot.getAndClearPanelsNeedingLayout(new ArrayList<limelight.ui.Panel>());
+    activeRoot.resetLayoutRequired();
 
     frameManager.focusedFrame = activeFrame;
 
-    assertEquals(false, activeRoot.hasPanelsNeedingLayout());
+    assertEquals(false, activeRoot.isLayoutRequired());
     assertEquals(false, activeRoot.hasDirtyRegions());
     assertEquals(true, loop.shouldBeIdle());
   }
@@ -76,7 +76,7 @@ public class PanelPainterLoopTest extends Assert
   public void isNotIdleWhenPanelsNeedLayout() throws Exception
   {
     frameManager.focusedFrame = activeFrame;
-    activeRoot.addPanelNeedingLayout(new MockPanel());
+    activeRoot.layoutRequired();
 
     assertEquals(false, loop.shouldBeIdle());
   }
@@ -95,14 +95,18 @@ public class PanelPainterLoopTest extends Assert
   {
     MockPanel panel1 = new MockPanel();
     MockPanel panel2 = new MockPanel();
-    activeRoot.addPanelNeedingLayout(panel1);
-    activeRoot.addPanelNeedingLayout(panel2);
+    activeRoot.add(panel1);
+    activeRoot.add(panel2);
+    final FakeLayout layout1 = new FakeLayout(true);
+    final FakeLayout layout2 = new FakeLayout(true);
+    panel1.markAsNeedingLayout(layout1);
+    panel2.markAsNeedingLayout(layout2);
 
     loop.doAllLayouts(activeRoot);
 
-    assertEquals(true, panel1.wasLaidOut);
-    assertEquals(true, panel2.wasLaidOut);
-    assertEquals(false, activeRoot.hasPanelsNeedingLayout());
+    assertEquals(panel1, layout1.lastPanelExpanded);
+    assertEquals(panel2, layout2.lastPanelExpanded);
+    assertEquals(false, activeRoot.isLayoutRequired());
   }
 
   @Test

@@ -16,26 +16,15 @@ import limelight.util.Opts;
 import java.awt.*;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
 
 public interface Scene extends Panel, ParentPanel, StylesSource
 {
   void setStage(Stage frame);
 
-  boolean hasPanelsNeedingLayout();
-
-  boolean hasDirtyRegions();
-
-  void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer);
-
-  void getAndClearDirtyRegions(Collection<Rectangle> regionBuffer);
-
-  void addDirtyRegion(Rectangle bounds);
-
   public Map<String, RichStyle> getStyles();
 
-  void setStyles(Map<String,RichStyle> styles);
-
-  void addPanelNeedingLayout(Panel panel);
+  void setStyles(Map<String, RichStyle> styles);
 
   Stage getStage();
 
@@ -68,6 +57,18 @@ public interface Scene extends Panel, ParentPanel, StylesSource
   Opts getBackstage(Prop prop);
 
   ButtonGroupCache getButtonGroups();
+
+  void getAndClearDirtyRegions(Collection<Rectangle> regionBuffer);
+
+  void addDirtyRegion(Rectangle bounds);
+
+  boolean hasDirtyRegions();
+
+  Lock getLock();
+
+  void layoutRequired();
+  boolean isLayoutRequired();
+  void resetLayoutRequired();
 }
 
 

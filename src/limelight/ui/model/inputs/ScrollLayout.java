@@ -3,38 +3,45 @@
 
 package limelight.ui.model.inputs;
 
+import limelight.styles.Style;
+import limelight.ui.Panel;
 import limelight.ui.model.Layout;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.PropPanelLayout;
-import limelight.ui.Panel;
-import limelight.styles.Style;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class ScrollLayout extends PropPanelLayout
 {
-  private ScrollBarPanel scrollBar;
+  public static ScrollLayout instance = new ScrollLayout();
 
-  public ScrollLayout(ScrollBarPanel scrollBar)
+  @Override
+  public void doExpansion(Panel thePanel)
   {
-    this.scrollBar = scrollBar;
+
   }
 
-  public void doLayout(Panel aPanel)
+  @Override
+  public void doContraction(Panel thePanel)
   {
-    PropPanel panel = (PropPanel) aPanel;
-    panel.resetLayout();
-    int dx = scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
-    int dy = scrollBar.isVertical() ? scrollBar.getValue() : 0;
+    PropPanel panel = (PropPanel) thePanel;
+    final ScrollBarPanel horizontalScrollbar = panel.getHorizontalScrollbar();
+    final ScrollBarPanel verticalScrollbar = panel.getVerticalScrollbar();
+    int dx = horizontalScrollbar == null ? 0 : horizontalScrollbar.getValue();//scrollBar.isHorizontal() ? scrollBar.getValue() : 0;
+    int dy = verticalScrollbar == null ? 0 : verticalScrollbar.getValue();//scrollBar.isVertical() ? scrollBar.getValue() : 0;
 
     LinkedList<PropPanelLayout.Row> rows = buildRows(panel);
     Dimension consumedDimensions = new Dimension();
     calculateConsumedDimentions(rows, consumedDimensions);
     layoutRows(panel, consumedDimensions, rows, dx, dy);
+  }
 
+  @Override
+  public void doFinalization(Panel panel)
+  {
     panel.markAsDirty();
-    panel.wasLaidOut();
   }
 
   public void layoutRows(PropPanel panel, Dimension consumeDimension, LinkedList<Row> rows, int dx, int dy)
@@ -51,15 +58,5 @@ public class ScrollLayout extends PropPanelLayout
       row.layoutComponents(x, y, style.getCompiledVerticalAlignment());
       y += row.height;
     }
-  }
-
-  public boolean overides(Layout other)
-  {
-    return false;
-  }
-
-  public void doLayout(Panel panel, boolean topLevel)
-  {
-    doLayout(panel);
   }
 }

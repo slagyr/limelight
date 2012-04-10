@@ -50,13 +50,11 @@ public class PropPanelTest extends Assert
   @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new FakePropProxy());
+    root = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter());
     prop = new FakePropProxy();
     panel = new PropPanel(prop);
     root.add(panel);
 
-    FakePlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
-    root.setPlayerRecruiter(playerRecruiter);
     root.setProduction(new FakeProduction());
     root.setStage(new MockStage());
     style = panel.getStyle();
@@ -73,20 +71,6 @@ public class PropPanelTest extends Assert
 
     assertNotNull(panel.getStyle());
     assertEquals(ScreenableStyle.class, panel.getStyle().getClass());
-  }
-
-  @Test
-  public void onlyPaintWhenLaidOut() throws Exception
-  {
-    MockAfterPaintAction paintAction = new MockAfterPaintAction();
-    panel.setAfterPaintAction(paintAction);
-
-    panel.paintOn(new MockGraphics());
-    assertEquals(false, paintAction.invoked);
-
-    panel.doLayout();
-    panel.paintOn(new MockGraphics());
-    assertEquals(true, paintAction.invoked);
   }
 
   @Test
@@ -123,14 +107,15 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void shouldSettingTextShouldLeadToLayout() throws Exception
+  public void settingTextShouldLeadToLayout() throws Exception
   {
-    panel.resetLayout();
+    root.resetLayoutRequired();
     panel.setText("Some Text");
+    assertEquals(true, root.isLayoutRequired());
   }
 
   @Test
-  public void shouldRactanglesAreCached() throws Exception
+  public void rectanglesAreCached() throws Exception
   {
     Box rectangle = panel.getBounds();
     Box insideMargins = panel.getMarginedBounds();
@@ -168,30 +153,33 @@ public class PropPanelTest extends Assert
     panel.setSize(100, 100);
     MockGraphics mockGraphics = new MockGraphics();
     mockGraphics.setClip(0, 0, 100, 100);
-    panel.doLayout();
+    Layouts.on(panel, panel.getDefaultLayout());
     panel.paintOn(mockGraphics);
 
     assertEquals(true, action.invoked);
   }
 
   @Test
-  public void shouldHasChangesWhenaStyleIsChanged() throws Exception
+  public void hasChangesWhenaStyleIsChanged() throws Exception
   {
+    root.resetNeededLayout();
+
     style.setWidth("100%");
 
-    assertEquals(true, panel.needsLayout());
+    assertEquals(true, root.needsLayout());
   }
 
   @Test
-  public void shouldHasChangesWhenaTextIsChanged() throws Exception
+  public void hasChangesWhenTextIsChanged() throws Exception
   {
     TextPanel.staticFontRenderingContext = new FontRenderContext(new AffineTransform(), true, true);
-    panel.doLayout();
+    Layouts.on(panel, panel.getDefaultLayout());
 
+    panel.resetNeededLayout();
     panel.setText("blah");
     assertEquals(true, panel.needsLayout());
 
-    panel.doLayout();
+    panel.resetNeededLayout();
     panel.setText("blah");
     assertEquals(false, panel.needsLayout());
 
@@ -200,7 +188,7 @@ public class PropPanelTest extends Assert
   }
 
   @Test
-  public void shouldAddingScrollBarChangesChildConsumableArea() throws Exception
+  public void addingScrollBarChangesChildConsumableArea() throws Exception
   {
     style.setMargin("0");
     style.setPadding("0");
@@ -382,29 +370,6 @@ public class PropPanelTest extends Assert
 
     assertEquals(Cursor.DEFAULT_CURSOR, root.getCursor().getType());
     assertEquals(null, style.getScreen());
-  }
-
-  @Test
-  public void shouldRequiredLayoutTriggeredWhilePerformingLayoutStillGetsRegistered() throws Exception
-  {
-    for(int i = 0; i < 100; i++)
-      panel.add(new PropPanel(new FakePropProxy()));
-    panel.markAsNeedingLayout();
-    Thread thread = new Thread(new Runnable()
-    {
-      public void run()
-      {
-        panel.doLayout();
-      }
-    });
-    thread.start();
-
-    while(panel.getChildren().get(0).needsLayout())
-      Thread.yield();
-    panel.markAsNeedingLayout();
-    thread.join();
-
-    assertEquals(true, panel.needsLayout());
   }
 
   @Test

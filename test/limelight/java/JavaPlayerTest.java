@@ -6,6 +6,7 @@ import limelight.model.api.FakeSceneProxy;
 import limelight.model.api.Player;
 import limelight.ui.events.panel.CastEvent;
 import limelight.ui.events.panel.MouseClickedEvent;
+import limelight.ui.model.FakeScene;
 import limelight.ui.model.PropPanel;
 import limelight.ui.model.ScenePanel;
 import limelight.util.Opts;
@@ -31,7 +32,7 @@ public class JavaPlayerTest
     JavaProductionTest.writeSamplePlayerTo(fs.outputStream("/testProduction/classes/SamplePlayer.class"));
     samplePlayerClass = new PlayerClassLoader("/testProduction/classes").loadClass("SamplePlayer");
     prop = new PropPanel(new FakePropProxy());
-    new ScenePanel(new FakeSceneProxy()).add(prop);
+    new FakeScene().add(prop);
   }
 
   private Object lastSamplePlayer() throws NoSuchFieldException, IllegalAccessException

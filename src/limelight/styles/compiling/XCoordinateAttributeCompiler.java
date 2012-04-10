@@ -3,16 +3,13 @@
 
 package limelight.styles.compiling;
 
+import limelight.styles.HorizontalAlignment;
 import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.styles.abstrstyling.XCoordinateValue;
-import limelight.styles.HorizontalAlignment;
+import limelight.styles.values.AlignedXCoordinateValue;
 import limelight.styles.values.PercentageXCoordinateValue;
 import limelight.styles.values.StaticXCoordinateValue;
-import limelight.styles.values.AlignedXCoordinateValue;
-import limelight.styles.compiling.HorizontalAlignmentAttributeCompiler;
-import limelight.styles.compiling.IntegerAttributeCompiler;
-import limelight.styles.compiling.PercentageAttributeCompiler;
 
 public class XCoordinateAttributeCompiler extends StyleCompiler
 {

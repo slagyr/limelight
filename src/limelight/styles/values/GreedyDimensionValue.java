@@ -3,22 +3,20 @@
 
 package limelight.styles.values;
 
-import limelight.styles.abstrstyling.DimensionValue;
-import limelight.styles.abstrstyling.NoneableValue;
-
-public class GreedyDimensionValue implements DimensionValue
+// TODO MDM Clean Me
+//public class GreedyDimensionValue implements DimensionValue
+public class GreedyDimensionValue extends AutoDimensionValue
 {
-
-  public int calculateDimension(int consumableSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max, int greediness)
-  {
-    if(min.isNone())
-      return greediness;
-    else
-      return min.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE, 0) + greediness;
-  }
-
-  public int collapseExcess(int currentSize, int consumedSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max)
-  {
-    return currentSize;
-  }
+//  public int calculateDimension(int consumableSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max, int greediness)
+//  {
+//    if(min.isNone())
+//      return greediness;
+//    else
+//      return min.getAttribute().calculateDimension(consumableSize, DIMENSION_NONE, DIMENSION_NONE, 0) + greediness;
+//  }
+//
+//  public int collapseExcess(int currentSize, int consumedSize, NoneableValue<DimensionValue> min, NoneableValue<DimensionValue> max)
+//  {
+//    return currentSize;
+//  }
 }

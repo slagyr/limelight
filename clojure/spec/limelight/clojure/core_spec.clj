@@ -6,7 +6,7 @@
     [speclj.core]
     [limelight.clojure.spec-helper]
     [limelight.clojure.core]
-    [limelight.clojure.prop-building :only (->props)]
+    [limelight.clojure.prop-building :only (build-props-on)]
     [limelight.clojure.scene :only (new-scene)]
     [limelight.clojure.prop :only (new-prop)]
     [limelight.clojure.production :only (new-production)]
@@ -15,17 +15,16 @@
 (def SLASH (.separator (limelight.Context/fs)))
 
 (defn build-tree []
-  (let [scene (new-scene {:id "root-id" :name "root" :path "root"})]
-    (add scene (->props
-                 [[:child {:id "child1"}
-                   [:grand-child {:id "grand-child1"}
-                    [:great-grand-child {:id "great-grand-child1"}]
-                    [:great-grand-child {:id "great-grand-child2"}]]
-                   [:grand-child {:id "grand-child2"}
-                    [:great-grand-child {:id "great-grand-child3"}]]]
-                  [:child {:id "child2"}
-                   [:grand-child {:id "grand-child3"}]]]))
-    (.setPlayerRecruiter @(._peer scene) (limelight.model.api.FakePlayerRecruiter.))
+  (let [scene (new-scene {:id "root-id" :name "root" :path "root" :player-recruiter (limelight.model.api.FakePlayerRecruiter.)})]
+    (build-props-on scene
+      [[:child {:id "child1"}
+        [:grand-child {:id "grand-child1"}
+         [:great-grand-child {:id "great-grand-child1"}]
+         [:great-grand-child {:id "great-grand-child2"}]]
+        [:grand-child {:id "grand-child2"}
+         [:great-grand-child {:id "great-grand-child3"}]]]
+       [:child {:id "child2"}
+        [:grand-child {:id "grand-child3"}]]])
     (.illuminate @(._peer scene))
     scene))
 
@@ -57,6 +56,11 @@
         (should= 3 (count great-grand-children))
         (should= ["great-grand-child1" "great-grand-child2" "great-grand-child3"] (map id great-grand-children))))
 
+    (it "find-by-name takes Named types as name"
+      (should= 1 (count (find-by-name @root :root)))
+      (should= 2 (count (find-by-name @root :child)))
+      (should= 3 (count (find-by-name @root 'grand-child))))
+
     (it "finds root by id"
       (let [result (find-by-id @root "root-id")]
         (should (identical? @root result))))
@@ -71,6 +75,10 @@
         (should= "great-grand-child" (name result))
         (should= "grand-child2" (id (parent result)))
         (should= "child1" (id (parent (parent result))))))
+
+    (it "find-by-id takes Names types as id"
+      (should= @root (find-by-id @root :root-id))
+      (should= "child" (name (find-by-id @root :child1))))
     )
 
   (context "with scene"
@@ -89,6 +97,11 @@
     (it "gets the prop from the scene"
       (should= @root (prop @root)))
 
+    (it "can evaluate code inside the scene ns"
+      (let [[scn sns] (let-in [s @root] [s clojure.core/*ns*])]
+        (should= @root scn)
+        (should= (._ns @root) sns)))
+
     (context "backstage"
 
       (it "props have a backstage"
@@ -100,13 +113,19 @@
       (it "props can put thing in and get thing out"
         (let [prop (find-by-id @root "child1")]
           (should= nil (backstage-get prop "foo"))
+          (should= nil (backstage-get prop :fizz))
           (backstage-put prop "foo" "bar")
-          (should= "bar" (backstage-get prop "foo"))))
+          (backstage-put prop :fizz "bang")
+          (should= "bar" (backstage-get prop :foo))
+          (should= "bang" (backstage-get prop "fizz"))))
 
       (it "scenes can put thing in and get thing out"
         (should= nil (backstage-get @root "foo"))
+        (should= nil (backstage-get @root :fizz))
         (backstage-put @root "foo" "bar")
-        (should= "bar" (backstage-get @root "foo")))
+        (backstage-put @root :fizz "bang")
+        (should= "bar" (backstage-get @root :foo))
+        (should= "bang" (backstage-get @root "fizz")))
       )
 
     (context "with production"
@@ -156,6 +175,11 @@
         (.setProduction (peer @root) (peer @production1))
         (should= (str "some" SLASH "path" SLASH "root") (path @root)))
 
+      (it "can evaluate code inside the production ns"
+        (let [[prod pns] (let-in [p @production1] [p clojure.core/*ns*])]
+          (should= @production1 prod)
+          (should= @(._ns @production1) pns)))
+
       (context "backstage"
 
         (it "productions have a backstage"
@@ -164,8 +188,11 @@
 
         (it "productions can put thing in and get thing out"
           (should= nil (backstage-get @production1 "foo"))
+          (should= nil (backstage-get @production1 :fizz))
           (backstage-put @production1 "foo" "bar")
-          (should= "bar" (backstage-get @production1 "foo")))
+          (backstage-put @production1 :fizz "bang")
+          (should= "bar" (backstage-get @production1 :foo))
+          (should= "bang" (backstage-get @production1 "fizz")))
         )
 
       (context "scene opening"

@@ -6,10 +6,35 @@ import limelight.ui.model.inputs.TextBoxPanel;
 
 public class TextBox
 {
+
+  public TextBoxPanel textBoxPanel;
+  public PropPanel propPanel;
+
   public void install(PanelEvent event)
   {
-    TextBoxPanel textbox = new TextBoxPanel();
-    final PropPanel panel = (PropPanel)event.getRecipient();
-    panel.add(textbox);
+    textBoxPanel = new TextBoxPanel();
+    propPanel = (PropPanel)event.getRecipient();
+    propPanel.add(textBoxPanel);
+    propPanel.getBackstage().put("text-box", this);
+  }
+
+  public PropPanel getPropPanel()
+  {
+    return propPanel;
+  }
+
+  public TextBoxPanel getTextBoxPanel()
+  {
+    return textBoxPanel;
+  }
+
+  public boolean isPassword()
+  {
+    return textBoxPanel.isInPasswordMode();
+  }
+
+  public void setPassword(boolean b)
+  {
+    textBoxPanel.setInPasswordMode(b);
   }
 }

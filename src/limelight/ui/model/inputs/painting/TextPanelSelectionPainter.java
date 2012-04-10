@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs.painting;
 
-import limelight.ui.model.inputs.TextModel;
 import limelight.util.Box;
 import limelight.util.Colors;
 
@@ -18,11 +17,11 @@ public class TextPanelSelectionPainter extends TextPanelPainter
   {
   }
 
-  public void paint(Graphics2D graphics, TextModel boxInfo)
+  public void paint(Graphics2D graphics, limelight.ui.model.text.TextModel boxInfo)
   {
     if (!boxInfo.hasSelection())
       return;
-    if (boxInfo.getText() != null && boxInfo.getText().length() > 0)
+    if (boxInfo.hasText())
     {
       graphics.setColor(Colors.resolve("#BBD453AA"));
       ArrayList<Box> regions = boxInfo.getSelectionRegions();

@@ -4,6 +4,11 @@
 package limelight.ui.model.inputs;
 
 import limelight.styles.Style;
+import limelight.ui.model.text.SingleLineTextModel;
+import limelight.ui.model.text.TextModel;
+import limelight.ui.model.text.masking.IdentityMask;
+import limelight.ui.model.text.masking.PasswordMask;
+import limelight.ui.model.text.masking.TextMask;
 
 // TODO MDM - Need to support password fields
 
@@ -25,5 +30,22 @@ public class TextBoxPanel extends TextInputPanel
     style.setDefault(Style.BACKGROUND_COLOR, "white");
     setBorderStyleDefaults(style);
     setPaddingDefaults(style);
+  }
+
+  public void setInPasswordMode(boolean passwordMode)
+  {
+    TextMask newMask = passwordMode ? PasswordMask.instance : IdentityMask.instance;
+    final TextModel model = getModel();
+    if(model.getMask() != newMask)
+    {
+      model.setMask(newMask);
+      model.clearCache();
+      markAsDirty();
+    }
+  }
+
+  public boolean isInPasswordMode()
+  {
+    return getModel().getMask() == PasswordMask.instance;
   }
 }

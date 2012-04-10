@@ -15,7 +15,7 @@ public class MockPanel extends PanelBase
   public boolean wasPainted;
   public boolean canBeBuffered;
   public boolean changeMarkerWasReset;
-  public boolean wasLaidOut;
+//  public boolean wasLaidOut;
   public boolean floater;
   public boolean consumableAreaChangedCalled;
   public boolean markedAsDirty;
@@ -39,12 +39,6 @@ public class MockPanel extends PanelBase
   public boolean canBeBuffered()
   {
     return canBeBuffered;
-  }
-
-  public void doLayout()
-  {
-    super.doLayout();
-    wasLaidOut = true;
   }
 
   public void stubAbsoluteLocation(Point location)

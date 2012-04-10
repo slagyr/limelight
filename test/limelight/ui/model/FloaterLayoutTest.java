@@ -3,47 +3,53 @@
 
 package limelight.ui.model;
 
-import junit.framework.TestCase;
-
 import java.awt.*;
 import java.util.ArrayList;
 
 import limelight.model.api.FakePropProxy;
+import org.junit.Before;
+import org.junit.Test;
 
-public class FloaterLayoutTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+
+public class FloaterLayoutTest
 {
   private PropPanel panel;
-  private ScenePanel root;
+  private FakeScene root;
 
+  @Before
   public void setUp() throws Exception
   {
-    root = new ScenePanel(new FakePropProxy());
+    root = new FakeScene();
     root.setStage(new MockStage());
     panel = new PropPanel(new FakePropProxy());
     root.add(panel);
   }
 
-  public void testOverrides() throws Exception
+  @Test
+  public void overrides() throws Exception
   {
     assertEquals(true, FloaterLayout.instance.overides(null));
     assertEquals(false, FloaterLayout.instance.overides(PropPanelLayout.instance));
   }
 
-  public void testDoFloatLayoutNonFloater() throws Exception
+  @Test
+  public void doFloatLayoutNonFloater() throws Exception
   {
     panel.getStyle().setX(100);
     panel.getStyle().setY(200);
     panel.getStyle().setFloat(false);
-    root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
+    root.dirtyRegions.clear();
 
-    FloaterLayout.instance.doLayout(panel);
+    Layouts.on(panel, FloaterLayout.instance);
 
     assertEquals(0, panel.getX());
     assertEquals(0, panel.getY());
-    assertEquals(false, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
+    assertEquals(false, root.dirtyRegions.contains(panel.getAbsoluteBounds()));
   }
 
-  public void testDoFloatLayoutAsFloater() throws Exception
+  @Test
+  public void doFloatLayoutAsFloater() throws Exception
   {
     panel.getStyle().setX(100);
     panel.getStyle().setY(200);
@@ -51,11 +57,11 @@ public class FloaterLayoutTest extends TestCase
     root.getAndClearDirtyRegions(new ArrayList<Rectangle>());
     Rectangle before = panel.getBounds();
 
-    FloaterLayout.instance.doLayout(panel);
+    Layouts.on(panel, FloaterLayout.instance);
 
     assertEquals(100, panel.getX());
     assertEquals(200, panel.getY());
-    assertEquals(true, root.dirtyRegionsContains(before));
-    assertEquals(true, root.dirtyRegionsContains(panel.getAbsoluteBounds()));
+    assertEquals(true, root.dirtyRegions.contains(before));
+    assertEquals(true, root.dirtyRegions.contains(panel.getAbsoluteBounds()));
   }
 }

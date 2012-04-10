@@ -9,6 +9,7 @@ import limelight.ui.events.panel.*;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
+import limelight.ui.model.text.TextModel;
 import limelight.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Before;

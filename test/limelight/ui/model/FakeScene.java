@@ -9,7 +9,9 @@ import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.PlayerRecruiter;
 import limelight.styles.RichStyle;
 import limelight.ui.ButtonGroupCache;
+import limelight.ui.MockGraphics;
 import limelight.ui.Panel;
+import limelight.util.NullLock;
 import limelight.util.Opts;
 
 import java.awt.*;
@@ -17,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
 
 public class FakeScene extends MockProp implements Scene
 {
@@ -28,7 +31,10 @@ public class FakeScene extends MockProp implements Scene
   public boolean visible;
   public PlayerRecruiter playerRecruiter = new FakePlayerRecruiter();
   public Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
-  private ButtonGroupCache buttonGroups = new ButtonGroupCache();
+  public ButtonGroupCache buttonGroups = new ButtonGroupCache();
+  public ImageCache imageCache;
+  public boolean layoutRequired;
+
 
   @Override
   public Scene getRoot()
@@ -41,23 +47,40 @@ public class FakeScene extends MockProp implements Scene
     this.stage = stage;
   }
 
-  public boolean hasPanelsNeedingLayout()
+  public Stage getStage()
   {
-    return false;
+    return stage;
   }
 
   public boolean hasDirtyRegions()
   {
-    return false;
+    return dirtyRegions.size() > 0;
   }
 
-  public void addPanelNeedingLayout(Panel panel)
+  public Lock getLock()
   {
+    return NullLock.instance;
   }
 
-  public Stage getStage()
+  public void layoutRequired()
   {
-    return stage;
+    layoutRequired = true;
+  }
+
+  public boolean isLayoutRequired()
+  {
+    return layoutRequired;
+  }
+
+  public void resetLayoutRequired()
+  {
+    layoutRequired = false;
+  }
+
+  @Override
+  public Graphics2D getGraphics()
+  {
+    return new MockGraphics();
   }
 
   public void setCursor(Cursor cursor)
@@ -71,7 +94,9 @@ public class FakeScene extends MockProp implements Scene
 
   public ImageCache getImageCache()
   {
-    return null;
+    if(imageCache == null)
+      imageCache = new ImageCache("/test/path");
+    return imageCache;
   }
 
   public void addToIndex(PropPanel prop)
@@ -133,12 +158,10 @@ public class FakeScene extends MockProp implements Scene
     return buttonGroups;
   }
 
-  public void getAndClearPanelsNeedingLayout(Collection<Panel> panelBuffer)
-  {
-  }
-
   public void getAndClearDirtyRegions(Collection<Rectangle> regionBuffer)
   {
+    regionBuffer.addAll(dirtyRegions);
+    dirtyRegions.clear();
   }
 
   public void addDirtyRegion(Rectangle bounds)

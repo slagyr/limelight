@@ -3,13 +3,11 @@
 
 package limelight.styles.compiling;
 
+import limelight.styles.abstrstyling.PixelsValue;
 import limelight.styles.abstrstyling.StyleCompiler;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.styles.abstrstyling.PixelsValue;
-import limelight.styles.compiling.IntegerAttributeCompiler;
-import limelight.styles.compiling.PercentageAttributeCompiler;
-import limelight.styles.values.StaticPixelsValue;
 import limelight.styles.values.PercentagePixelsValue;
+import limelight.styles.values.StaticPixelsValue;
 
 public class PixelsAttributeCompiler extends StyleCompiler
 {

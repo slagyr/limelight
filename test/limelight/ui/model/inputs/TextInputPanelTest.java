@@ -8,6 +8,7 @@ import limelight.ui.events.panel.*;
 import limelight.ui.model.FakeScene;
 import limelight.ui.model.MockStage;
 import limelight.ui.model.PropPanel;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.TestUtil;
@@ -92,11 +93,11 @@ public class TextInputPanelTest
     FakeScene root = new FakeScene();
     root.add(panel);
     panel.getRoot();
-    panel.resetLayout();
+    root.resetLayoutRequired();
 
     panel.consumableAreaChanged();
 
-    assertEquals(true, panel.needsLayout());
+    assertEquals(true, root.isLayoutRequired());
   }
 
   @Test

@@ -3,8 +3,6 @@
 
 package limelight.ui.events.panel;
 
-import limelight.ui.Panel;
-
 import java.awt.*;
 
 public class MouseEnteredEvent extends MouseEvent

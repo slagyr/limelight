@@ -12,7 +12,7 @@
         event-handler (.getEventHandler prop-panel)]
     (if-let [on-cast-actions (:on-cast @event-actions)]
       (doseq [action on-cast-actions]
-        (.invoke action nil)))
+        (.invoke action (limelight.ui.events.panel.CastEvent. prop-panel))))
     (doseq [[event-class actions] @event-actions]
       (when (not (= :on-cast event-class))
         (doseq [action actions]
@@ -37,11 +37,6 @@
 
 (defn- player-path [player-name players-path]
   (str players-path "/" (limelight.util.StringUtil/snakeCase player-name) ".clj"))
-
-(defn clj-players [prop]
-  (filter
-    #(= limelight.clojure.casting.Player (class %))
-    (players prop)))
 
 ; TODO MDM Player namespaces should be cleaned up... memory leak otherwise
 (defn- load-player-from [recruiter player-path player-name]

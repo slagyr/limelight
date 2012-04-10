@@ -8,19 +8,23 @@ import limelight.LimelightException;
 import limelight.Log;
 import limelight.events.Event;
 import limelight.events.EventAction;
-import limelight.model.api.PlayerRecruiter;
+import limelight.model.CastingDirector;
 import limelight.model.api.Player;
+import limelight.model.api.PlayerRecruiter;
+import limelight.model.api.PropProxy;
 import limelight.styles.*;
 import limelight.styles.abstrstyling.StyleValue;
-import limelight.ui.*;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
 import limelight.ui.Panel;
-import limelight.model.api.PropProxy;
 import limelight.ui.events.panel.MouseEnteredEvent;
 import limelight.ui.events.panel.MouseExitedEvent;
 import limelight.ui.events.panel.MouseWheelEvent;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.model.inputs.ScrollBarPanel;
-import limelight.ui.painting.*;
+import limelight.ui.painting.Border;
+import limelight.ui.painting.DefaultPainter;
+import limelight.ui.painting.PaintAction;
 import limelight.util.*;
 
 import java.awt.*;
@@ -193,9 +197,6 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
 
   public void paintOn(Graphics2D graphics)
   {
-    if(!laidOut)
-      return;
-
     painter.paint(graphics, this);
 
     if(afterPaintAction != null)
@@ -246,12 +247,6 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   public boolean isFloater()
   {
     return getStyle().getCompiledFloat().isOn();
-  }
-
-  @Override
-  public void doFloatLayout()
-  {
-    FloaterLayout.instance.doLayout(this);
   }
 
   //TODO super.clearCache() deals with absolute positioning.  Here the boxes are all relative.  They're uneccessarily being cleared.
@@ -378,9 +373,9 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       return;
 
     Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
-    if(!illuminateOptions.containsKey("__invigorated__"))
-      invigorate();
-    illuminateOptions.remove("__invigorated__");
+    illuminateId(illuminateOptions.remove("id"));
+    illuminateName(illuminateOptions.remove("name"));
+    illuminatePlayers(illuminateOptions.remove("players"));
     illuminateStyles(illuminateOptions.remove("styles"));
     illuminateBackstage(illuminateOptions.remove("backstage"));
 
@@ -395,16 +390,6 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     options = null;
 
     super.illuminate();
-  }
-
-  public void invigorate()
-  {
-    Map<String, Object> illuminateOptions = options == null ? EMPTY_OPTIONS : options;
-
-    illuminateId(illuminateOptions.remove("id"));
-    illuminateName(illuminateOptions.remove("name"));
-    illuminatePlayers(illuminateOptions.remove("players"));
-    addOptions(Opts.with("__invigorated__", true));
   }
 
   @Override
@@ -474,13 +459,13 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
   // PRIVATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  private void illuminateName(Object nameObject)
+  protected void illuminateName(Object nameObject)
   {
     if(nameObject != null)
       name = nameObject.toString();
   }
 
-  private void illuminateId(Object idObject)
+  protected void illuminateId(Object idObject)
   {
     if(idObject != null && !idObject.toString().isEmpty())
       id = idObject.toString();
@@ -509,7 +494,7 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
       if(style != null)
         getStyle().addExtension(style);
       else if(!styleName.equals(name))
-        System.err.println("Prop named '" + name + "' attempting to use missing style '" + styleName + "'"); //TODO - MDM - This should get logged
+        Log.warn("Prop named '" + name + "' attempting to use missing style '" + styleName + "'");
 
       RichStyle hoverStyle = store.get(styleName + ".hover");
       if(hoverStyle != null)
@@ -520,7 +505,17 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
     }
   }
 
-  private void illuminatePlayers(Object playersObject)
+  protected boolean hasPlayerWithName(String name)
+  {
+    for(Player player : getPlayers())
+    {
+      if(StringUtil.snakeCase(player.getName()).equals(StringUtil.snakeCase(name)))
+        return true;
+    }
+    return false;
+  }
+
+  protected void illuminatePlayers(Object playersObject)
   {
     ArrayList<String> playerNames = new ArrayList<String>();
     String allPlayers = playersObject == null ? "" : playersObject.toString();
@@ -533,13 +528,14 @@ public class PropPanel extends ParentPanelBase implements Prop, PaintablePanel, 
         playerNames.add(playerName);
     }
 
+    final Scene scene = getRoot();
+    final PlayerRecruiter director = scene.getPlayerRecruiter();
+    final CastingDirector castingDirector = Context.instance().castingDirector;
     for(String playerName : playerNames)
     {
-      if(!playerName.isEmpty())
+      if(!playerName.isEmpty() && !hasPlayerWithName(playerName))
       {
-        final Scene scene = getRoot();
-        final PlayerRecruiter director = scene.getPlayerRecruiter();
-        Context.instance().castingDirector.castRole(this, playerName, director);
+        castingDirector.castRole(this, playerName, director);
       }
     }
   }

@@ -54,8 +54,6 @@
 (defprotocol Buildable
   (build-props [this src context]))
 
-; TODO extend events
-
 ; Prop functions ------------------------------------------
 
 (defn- as-proxies [peer-props]
@@ -68,15 +66,20 @@
   (.getProxy (.getParent @(._peer prop))))
 
 (defn find-by-id [prop id]
-  (if-let [peer-result (.find @(._peer (scene prop)) id)]
+  (if-let [peer-result (.find @(._peer (scene prop)) (name id))]
     (.getProxy peer-result)
     nil))
 
 (defn find-by-name [root name]
-  (as-proxies (.findByName @(._peer root) name)))
+  (as-proxies (.findByName @(._peer root) (clojure.core/name name))))
 
 (defn players [prop]
   (.getPlayers (peer prop)))
+
+(defn clj-players [prop]
+  (filter
+    #(= "limelight.clojure.casting.Player" (.getName (class %)))
+    (players prop)))
 
 (defn remove-all [prop]
   (.removeAll (peer prop)))
@@ -110,11 +113,54 @@
   ([production scene-name stage-name options]
     (.getProxy (.openScene (._peer production) scene-name stage-name (map-for-java options)))))
 
+(defmacro ^{:private true} assert-args
+  [& pairs]
+  `(do (when-not ~(first pairs)
+         (throw (IllegalArgumentException.
+                  (str (first ~'&form) " requires " ~(second pairs) " in " ~'*ns* ":" (:line (meta ~'&form))))))
+     ~(let [more (nnext pairs)]
+        (when more
+          (list* `assert-args more)))))
+
+(defmacro do-in [context & body]
+  `(let [ns# (._ns ~context)
+         ns# (if (= clojure.lang.Atom (class ns#)) @ns# ns#)
+         eval-form# (cons 'do '~body)]
+     (binding [*ns* ns#]
+       (eval eval-form#))))
+
+; TODO Test me
+(defmacro let-in [bindings & body]
+  (assert-args
+    (vector? bindings) "a vector for its binding"
+    (= 2 (count bindings)) "exactly 2 forms in binding vector")
+  (let [form (bindings 0) context (bindings 1)]
+    `(let [context# ~context
+           ns# (._ns ~context)
+           ns# (if (= clojure.lang.Atom (class ns#)) @ns# ns#)
+           eval-form# (cons 'fn (cons ['~form] '~body))]
+       (binding [*ns* ns#]
+         ((eval eval-form#) ~context)))))
+
+; TODO Test me
+(defmacro player-resolve [thing fn-name]
+  `(let [nses# (if (isa? (class ~thing) limelight.model.api.ProductionProxy) [@(._ns ~thing)] (map #(._ns %) (clj-players ~thing)))
+         var# (some #(if-let [ns-fn# (ns-resolve % '~fn-name)] ns-fn# nil) nses#)]
+     (if var# @var# nil)))
+
+(defmacro cue [thing vname & args]
+  `(let [pfn# (player-resolve ~thing ~vname)]
+    (cond
+      (nil? pfn#) (throw (Exception. (str "Unrecognized cue: " '~vname " by " ~thing)))
+      (not (instance? clojure.lang.IFn pfn#)) (throw (Exception. (str "cue <" '~vname "> is not an IFn: " ~thing)))
+      :else (pfn# ~thing ~@args))))
+
 ; Theater functions ---------------------------------------
 
 (defn build-stage [theater name & options]
   (let [options (->options options)
         stage-peer (.buildStage theater name options)]
+
     (.getProxy stage-peer)))
 
 (defn add-stage [theater stage]

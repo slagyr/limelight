@@ -1,14 +1,13 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs.offsetting;
+package limelight.ui.model.text.offsetting;
 
-import limelight.ui.model.inputs.TextModel;
 import limelight.util.Box;
 
 public class CenteredXOffsetStrategy implements XOffsetStrategy
 {
-  public int calculateXOffset(TextModel model)
+  public int calculateXOffset(limelight.ui.model.text.TextModel model)
   {
     int xOffset = model.getXOffset();
     Box boundingBox = model.getContainer().getConsumableBounds();

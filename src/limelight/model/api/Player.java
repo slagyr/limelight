@@ -1,6 +1,7 @@
 package limelight.model.api;
 
 import limelight.ui.model.PropPanel;
+
 import java.util.Map;
 
 public interface Player

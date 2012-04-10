@@ -6,18 +6,16 @@ package limelight.background;
 import limelight.Context;
 import limelight.Log;
 import limelight.ui.Panel;
-import limelight.ui.model.PaintJob;
-import limelight.ui.model.Scene;
-import limelight.ui.model.StageFrame;
+import limelight.ui.model.*;
 import limelight.util.Box;
 import limelight.util.NanoTimer;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.concurrent.locks.Lock;
 
 public class PanelPainterLoop extends IdleThreadLoop
 {
-  private final ArrayList<Panel> panelBuffer = new ArrayList<Panel>(50);
   private final ArrayList<Rectangle> regionBuffer = new ArrayList<Rectangle>(50);
   private final ArrayList<StageFrame> frameBuffer = new ArrayList<StageFrame>(5);
   private int updatesPerSecond;
@@ -63,10 +61,11 @@ public class PanelPainterLoop extends IdleThreadLoop
   private boolean nothingToDo()
   {
     boolean somethingToDo = false;
+
     for(StageFrame stageFrame : frameBuffer)
     {
       Scene root = stageFrame.getStage().getScene();
-      if(root != null && (root.hasPanelsNeedingLayout() || root.hasDirtyRegions()))
+      if(root != null && (root.isLayoutRequired() || root.hasDirtyRegions()))
       {
         somethingToDo = true;
         break;
@@ -82,8 +81,17 @@ public class PanelPainterLoop extends IdleThreadLoop
       Scene root = stageFrame.getStage().getScene();
       if(root != null)
       {
-        doAllLayouts(root);
-        paintDirtyRegions(root);
+        final Lock lock = root.getLock();
+        try
+        {
+          lock.lock();
+          doAllLayouts(root);
+          paintDirtyRegions(root);
+        }
+        finally
+        {
+          lock.unlock();
+        }
       }
     }
     lastExecutionDuration = timer.getIdleNanos();
@@ -129,11 +137,10 @@ public class PanelPainterLoop extends IdleThreadLoop
 
   public void doAllLayouts(Scene root)
   {
-    panelBuffer.clear();
-    root.getAndClearPanelsNeedingLayout(panelBuffer);
-    for(limelight.ui.Panel panel : panelBuffer)
+    if(root.isLayoutRequired())
     {
-      panel.doLayout();
+      root.resetLayoutRequired();
+      Layouts.on(root);
     }
   }
 

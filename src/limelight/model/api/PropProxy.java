@@ -4,6 +4,7 @@
 package limelight.model.api;
 
 import limelight.ui.model.Prop;
+
 import java.util.Map;
 
 public interface PropProxy

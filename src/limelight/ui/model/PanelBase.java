@@ -3,16 +3,17 @@
 
 package limelight.ui.model;
 
-import limelight.Log;
 import limelight.model.Stage;
 import limelight.ui.Panel;
 import limelight.ui.events.panel.IlluminatedEvent;
 import limelight.ui.events.panel.PanelEventHandler;
 import limelight.util.Box;
+import limelight.util.NullLock;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.util.Iterator;
+import java.util.concurrent.locks.Lock;
 
 public abstract class PanelBase implements Panel
 {
@@ -25,7 +26,6 @@ public abstract class PanelBase implements Panel
   private Box absoluteBounds;
   private Box boundingBox;
   protected Layout neededLayout = getDefaultLayout();
-  protected boolean laidOut;
   private boolean illuminated;
   protected PanelEventHandler eventHandler;
 
@@ -176,20 +176,6 @@ public abstract class PanelBase implements Panel
     return (Graphics2D) getRoot().getGraphics().create(bounds.x, bounds.y, bounds.width, bounds.height);
   }
 
-  public void doLayout()
-  {
-    Layout layout = neededLayout;
-    if(layout != null)
-      layout.doLayout(this);
-    else
-      getDefaultLayout().doLayout(this);
-  }
-
-  // TODO MDM Calling this from the layout is error prone.  A Layout might forget to call.  Can easily solve by resetting when ever the panel is laid out (prior to layout)
-  public synchronized void resetLayout()
-  {
-    neededLayout = null;
-  }
 
   public Layout getDefaultLayout()
   {
@@ -211,11 +197,6 @@ public abstract class PanelBase implements Panel
     return false;
   }
 
-  public void doFloatLayout()
-  {
-    // Panels are not floaters by default.
-  }
-
   public void consumableAreaChanged()
   {
     markAsNeedingLayout();
@@ -229,19 +210,26 @@ public abstract class PanelBase implements Panel
 
   public synchronized void markAsNeedingLayout(Layout layout)
   {
-    if(neededLayout == null)
-    {
-      neededLayout = layout; // Set first... race conditions otherwise.
-      if(getRoot() != null)
-        getRoot().addPanelNeedingLayout(this);
-    }
-    else if(layout.overides(neededLayout))
+//    final Scene root = getRoot();
+//    if(root != null)
+//      root.addPanelNeedingLayout(this, layout);
+    if(neededLayout == null || layout.overides(neededLayout))
       neededLayout = layout;
+    final Scene root = getRoot();
+    if(root != null)
+      root.layoutRequired();
   }
 
   public void markAsNeedingLayout()
   {
     markAsNeedingLayout(getDefaultLayout());
+  }
+
+  public synchronized Layout resetNeededLayout()
+  {
+    Layout layout = neededLayout;
+    neededLayout = null;
+    return layout;
   }
 
   public boolean needsLayout()
@@ -268,6 +256,7 @@ public abstract class PanelBase implements Panel
     if(panel != null && !panel.needsLayout() && panel instanceof PanelBase)
     {
       panel.markAsNeedingLayout();
+      // TODO MDM Do we need to propagate this size change down?
       doPropagateSizeChangeUp(panel.getParent());
     }
   }
@@ -279,16 +268,6 @@ public abstract class PanelBase implements Panel
       rootPanel.addDirtyRegion(getAbsoluteBounds());
   }
 
-  public boolean isLaidOut()
-  {
-    return laidOut;
-  }
-
-  public void wasLaidOut()
-  {
-    laidOut = true;
-  }
-
   public boolean isIlluminated()
   {
     return illuminated;
@@ -297,6 +276,7 @@ public abstract class PanelBase implements Panel
   public void illuminate()
   {
     illuminated = true;
+    markAsNeedingLayout();
     new IlluminatedEvent(this).dispatch(this);
   }
 
@@ -308,5 +288,14 @@ public abstract class PanelBase implements Panel
   public boolean hasFocus()
   {
     return false;
+  }
+
+  public Lock getTreeLock()
+  {
+    final Scene root = getRoot();
+    if(root == null)
+      return NullLock.instance;
+    else
+      return root.getLock();
   }
 }

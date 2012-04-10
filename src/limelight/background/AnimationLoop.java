@@ -4,8 +4,6 @@
 package limelight.background;
 
 import limelight.util.NanoTimer;
-import limelight.util.Debug;
-import limelight.background.IdleThreadLoop;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

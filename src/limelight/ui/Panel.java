@@ -3,13 +3,13 @@
 
 package limelight.ui;
 
+import limelight.model.Stage;
 import limelight.styles.ScreenableStyle;
 import limelight.ui.events.panel.PanelEventHandler;
+import limelight.ui.model.Layout;
 import limelight.ui.model.ParentPanelBase;
-import limelight.model.Stage;
 import limelight.ui.model.Scene;
 import limelight.util.Box;
-import limelight.ui.model.Layout;
 
 import java.awt.*;
 
@@ -39,17 +39,17 @@ public interface Panel extends Iterable<Panel>
   void paintOn(Graphics2D graphics);
   boolean canBeBuffered();
 
-  void doLayout();
   Layout getDefaultLayout();
 
   ScreenableStyle getStyle();
 
   boolean isFloater();
-  void doFloatLayout();
 
   void consumableAreaChanged();
-  boolean needsLayout();
   void markAsNeedingLayout();
+  void markAsNeedingLayout(Layout layout);
+  boolean needsLayout();
+  Layout resetNeededLayout();
   void markAsDirty();
 
   boolean isIlluminated();

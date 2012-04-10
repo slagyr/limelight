@@ -1,11 +1,9 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs.offsetting;
+package limelight.ui.model.text.offsetting;
 
 import limelight.ui.MockTypedLayoutFactory;
-import limelight.ui.model.inputs.MockTextContainer;
-import limelight.ui.model.inputs.SingleLineTextModel;
 import limelight.ui.text.TextLocation;
 import limelight.util.Box;
 import limelight.util.TestUtil;
@@ -18,17 +16,17 @@ import static org.junit.Assume.assumeTrue;
 public class FittingXOffsetStrategyTest
 {
   private XOffsetStrategy strategy;
-  private SingleLineTextModel model;
-  private MockTextContainer container;
+  private limelight.ui.model.text.SingleLineTextModel model;
+  private limelight.ui.model.text.MockTextContainer container;
 
   @Before
   public void setUp() throws Exception
   {
     assumeTrue(TestUtil.notHeadless());
     strategy = XOffsetStrategy.FITTING;
-    container = new MockTextContainer();
+    container = new limelight.ui.model.text.MockTextContainer();
     container.bounds = new Box(0, 0, 100, 50);
-    model = new SingleLineTextModel(container);
+    model = new limelight.ui.model.text.SingleLineTextModel(container);
     model.setTypedLayoutFactory(MockTypedLayoutFactory.instance);
     model.setText("0123456789012345678901234567890");
   }

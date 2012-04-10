@@ -6,7 +6,10 @@ package limelight.io;
 import limelight.Context;
 import limelight.LimelightException;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;

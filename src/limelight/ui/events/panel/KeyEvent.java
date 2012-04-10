@@ -3,8 +3,6 @@
 
 package limelight.ui.events.panel;
 
-import limelight.ui.Panel;
-
 public class KeyEvent extends ModifiableEvent
 {
   public static final int KEY_UNKNOWN = 0;

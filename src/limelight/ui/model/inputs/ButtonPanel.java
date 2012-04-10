@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs;
 
-import limelight.Log;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.styles.Style;
@@ -13,12 +12,12 @@ import limelight.ui.events.panel.MousePressedEvent;
 import limelight.ui.events.panel.MouseReleasedEvent;
 import limelight.ui.events.panel.PanelEvent;
 import limelight.ui.images.Images;
-import limelight.ui.model.*;
+import limelight.ui.model.Drawable;
+import limelight.ui.model.PropPanel;
 import limelight.ui.ninepatch.NinePatch;
 import limelight.util.Box;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class ButtonPanel extends AbstractButtonPanel
 {

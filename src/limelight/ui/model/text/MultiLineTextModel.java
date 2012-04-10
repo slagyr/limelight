@@ -1,20 +1,20 @@
 //- Copyright © 2008-2011 8th Light, Inc. All Rights Reserved.
 //- Limelight and all included source files are distributed under terms of the MIT License.
 
-package limelight.ui.model.inputs;
+package limelight.ui.model.text;
 
-import limelight.ui.model.inputs.offsetting.XOffsetStrategy;
-import limelight.ui.model.inputs.offsetting.YOffsetStrategy;
+import limelight.ui.model.text.offsetting.XOffsetStrategy;
+import limelight.ui.model.text.offsetting.YOffsetStrategy;
 import limelight.ui.text.TextLocation;
 import limelight.ui.text.TypedLayout;
 import limelight.util.Box;
+
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class MultiLineTextModel extends TextModel
 {
-  public MultiLineTextModel(TextContainer myAreaPanel)
+  public MultiLineTextModel(limelight.ui.model.text.TextContainer myAreaPanel)
   {
     super(myAreaPanel);
     setOffset(0, 0);
@@ -23,7 +23,7 @@ public class MultiLineTextModel extends TextModel
   @Override
   public Dimension getTextDimensions()
   {
-    if(getText() == null && getText().length() == 0)
+    if(!hasText())
       return new Dimension(0, 0);
 
     int height = 0;
@@ -77,7 +77,7 @@ public class MultiLineTextModel extends TextModel
 
   protected void buildLines(ArrayList<TypedLayout> lines)
   {
-    if(getText() == null || getText().length() == 0)
+    if(!hasText())
       lines.add(createLayout(""));
     else
       Lineator.parseTextForMultipleLayouts(this, lines);

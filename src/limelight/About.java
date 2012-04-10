@@ -7,5 +7,5 @@ import limelight.util.Version;
 
 public class About
 {
-  public static Version version = new Version(0, 6, 12);
+  public static Version version = new Version(0, 6, 16);
 }

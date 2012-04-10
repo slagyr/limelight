@@ -3,11 +3,9 @@
 
 package limelight.ui.model.inputs.painting;
 
-import limelight.ui.model.inputs.TextModel;
-
 import java.awt.*;
 
 public abstract class TextPanelPainter
 {
-  abstract public void paint(Graphics2D graphics, TextModel boxInfo);
+  abstract public void paint(Graphics2D graphics, limelight.ui.model.text.TextModel boxInfo);
 }

@@ -4,7 +4,10 @@
 package limelight.ui.model;
 
 import limelight.Log;
-import limelight.styles.*;
+import limelight.styles.RichStyle;
+import limelight.styles.ScreenableStyle;
+import limelight.styles.StyleAttribute;
+import limelight.styles.StyleObserver;
 import limelight.styles.abstrstyling.StyleValue;
 import limelight.ui.text.StyledText;
 import limelight.ui.text.StyledTextParser;
@@ -19,8 +22,10 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
 {
@@ -125,12 +130,16 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
       StyledTextParser parser = new StyledTextParser();
       textChunks = parser.parse(text);
 
-      Map<String, RichStyle> styleMap = getRoot().getStyles();
-      for(StyledText styledText : textChunks)
-        styledText.setupStyles(styleMap, getStyle(), this);
-      // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?
+      final Scene root = getRoot();
+      if(root != null) // TODO MDM - It happens.... but how?  Ah!  Need to acquire tree lock when removing panels.
+      {
+        Map<String, RichStyle> styleMap = root.getStyles();
+        for(StyledText styledText : textChunks)
+          styledText.setupStyles(styleMap, getStyle(), this);
+        // TODO MDM StyleObservers may cause a memory leak.  Styles keep track of panels that are no longer used?
 
-      addLines();
+        addLines();
+      }
     }
   }
 
@@ -143,6 +152,8 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
     LineBreakMeasurer lbm = new LineBreakMeasurer(styledTextIterator, getRenderContext());
 
     float width = (float) consumableArea.width;
+    if(width <= 0)
+      return;
 
     TextLayout layout;
     int startOfNextLayout;
@@ -182,7 +193,7 @@ public class TextPanel extends PanelBase implements StyleObserver, TextAccessor
   {
     List<StyledText> textChunks = getTextChunks();
 
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
 
     for(StyledText textChunk : textChunks)
     {

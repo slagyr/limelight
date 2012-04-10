@@ -3,7 +3,6 @@
 
 package limelight.ui.model.inputs.painting;
 
-import limelight.ui.model.inputs.TextModel;
 import limelight.util.Box;
 
 import java.awt.*;
@@ -16,7 +15,7 @@ public class TextPanelCaretPainter extends TextPanelPainter
   {
   }
 
-  public void paint(Graphics2D graphics, TextModel model)
+  public void paint(Graphics2D graphics, limelight.ui.model.text.TextModel model)
   {
     if(!model.isCaretOn() || model.hasSelection())
       return;

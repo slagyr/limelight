@@ -7,10 +7,16 @@ import limelight.background.Animation;
 import limelight.events.Event;
 import limelight.events.EventAction;
 import limelight.styles.Style;
-import limelight.ui.*;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
 import limelight.ui.events.panel.*;
 import limelight.ui.model.*;
-import limelight.ui.model.inputs.painting.*;
+import limelight.ui.model.inputs.painting.TextPanelBorderPainter;
+import limelight.ui.model.inputs.painting.TextPanelCaretPainter;
+import limelight.ui.model.inputs.painting.TextPanelSelectionPainter;
+import limelight.ui.model.inputs.painting.TextPanelTextPainter;
+import limelight.ui.model.text.TextContainer;
+import limelight.ui.model.text.TextModel;
 import limelight.ui.painting.BackgroundPainter;
 import limelight.util.Box;
 
@@ -165,6 +171,7 @@ public abstract class TextInputPanel extends InputPanel implements TextAccessor,
     consumableBounds = null;
   }
 
+  //TODO MDM Is this getting leaked?  Maybe we can get away with one instance.
   private static class CaretAnimator extends Animation
   {
     private TextInputPanel panel;

@@ -5,11 +5,12 @@ package limelight.java;
 
 import limelight.Context;
 import limelight.LimelightException;
-import limelight.model.api.PlayerRecruiter;
 import limelight.model.api.Player;
+import limelight.model.api.PlayerRecruiter;
 import limelight.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import java.util.HashMap;
 
 public class JavaPlayerRecruiter implements PlayerRecruiter

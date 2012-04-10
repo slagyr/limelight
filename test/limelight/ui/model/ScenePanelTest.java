@@ -5,9 +5,12 @@ package limelight.ui.model;
 
 import limelight.LimelightException;
 import limelight.io.FakeFileSystem;
+import limelight.model.CastingDirector;
 import limelight.model.FakeProduction;
+import limelight.model.api.FakePlayerRecruiter;
 import limelight.model.api.FakePropProxy;
 import limelight.styles.RichStyle;
+import limelight.ui.MockPanel;
 import limelight.ui.Panel;
 import limelight.util.Opts;
 import limelight.util.Util;
@@ -17,7 +20,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class ScenePanelTest extends Assert
 {
@@ -29,7 +35,7 @@ public class ScenePanelTest extends Assert
   public void setUp() throws Exception
   {
     frame = new MockStage();
-    root = new ScenePanel(new FakePropProxy());
+    root = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter());
     child = new MockProp("child");
     limelight.ui.KeyboardFocusManager.installed();
     FakeFileSystem.installed();
@@ -46,111 +52,6 @@ public class ScenePanelTest extends Assert
   {
     root.add(child);
     assertSame(root, child.getParent());
-  }
-
-  @Test
-  public void shouldAddPanelNeedingLayout() throws Exception
-  {
-    root.addPanelNeedingLayout(child);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
-
-    panels.clear();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(0, panels.size());
-  }
-
-  @Test
-  public void shouldAddPanelNeedingLayoutDoesntAllowDuplicates() throws Exception
-  {
-    root.addPanelNeedingLayout(child);
-    root.addPanelNeedingLayout(child);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
-
-    panels.clear();
-    root.getAndClearPanelsNeedingLayout(panels);
-  }
-
-  @Test
-  public void shouldAddPanelNeedingLayoutWontAddWhenAncestorIsAlreadyInTheList() throws Exception
-  {
-    MockProp grandChild = new MockProp();
-    child.add(grandChild);
-
-    root.addPanelNeedingLayout(child);
-    root.addPanelNeedingLayout(grandChild);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
-  }
-
-  @Test
-  public void shouldAddPanelNeedingLayoutWillAddWhenAncestorIsAlreadyInTheListButTheParentDoesntNeedLayout() throws Exception
-  {
-    MockProp grandChild = new MockProp("grandChild");
-    MockProp greatGrandChild = new MockProp("greatGrandChild");
-    child.add(grandChild);
-    grandChild.add(greatGrandChild);
-    child.doLayout();
-
-    root.addPanelNeedingLayout(child);
-    root.addPanelNeedingLayout(greatGrandChild);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(2, panels.size());
-    assertEquals(child, panels.get(0));
-    assertEquals(greatGrandChild, panels.get(1));
-  }
-
-  @Test
-  public void shouldAddPanelNeedingLayoutWillRemoveChildWhenAncestorIsAdded() throws Exception
-  {
-    MockProp grandChild = new MockProp();
-    child.add(grandChild);
-
-    root.addPanelNeedingLayout(grandChild);
-    root.addPanelNeedingLayout(child);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(1, panels.size());
-    assertEquals(child, panels.get(0));
-  }
-
-  @Test
-  public void shouldAddPanelNeedingLayoutWillNotRemoveChildWhenAncestorIsAddedYetChildsParentDoesntNeedLayout() throws Exception
-  {
-    MockProp grandChild = new MockProp();
-    MockProp greatGrandChild = new MockProp("greatGrandChild");
-    child.add(grandChild);
-    grandChild.add(greatGrandChild);
-    child.doLayout();
-
-    root.addPanelNeedingLayout(greatGrandChild);
-    root.addPanelNeedingLayout(child);
-
-    ArrayList<Panel> panels = new ArrayList<Panel>();
-    root.getAndClearPanelsNeedingLayout(panels);
-
-    assertEquals(2, panels.size());
-    assertEquals(greatGrandChild, panels.get(0));
-    assertEquals(child, panels.get(1));
   }
 
   @Test
@@ -347,7 +248,7 @@ public class ScenePanelTest extends Assert
     root.setProduction(new FakeProduction("test_prod"));
     assertEquals("test_prod", root.getPath());
 
-    root = new ScenePanel(new FakePropProxy());
+    root = new ScenePanel(new FakePropProxy(), new FakePlayerRecruiter());
     root.setProduction(new FakeProduction("/test_prod"));
     root.addOptions(Util.toMap("path", "some/path"));
     assertEquals("/test_prod/some/path", root.getPath());
@@ -374,5 +275,21 @@ public class ScenePanelTest extends Assert
 
     root.removeFromCaches(panel);
     assertEquals(0, root.backstage_PRIVATE().size());
+  }
+
+  @Test
+  public void optionsAreIlluminatedImmediately() throws Exception
+  {
+    CastingDirector.installed();
+
+    root.addOptions(Opts.with("id", "scenex123"));
+    assertEquals("scenex123", root.getId());
+
+    root.addOptions(Opts.with("name", "super-scene"));
+    assertEquals("super-scene", root.getName());
+
+    root.addOptions(Opts.with("players", "super-scene"));
+    assertEquals(1, root.getPlayers().size());
+    assertEquals("super-scene", root.getPlayers().get(0).getName());
   }
 }

@@ -3,21 +3,22 @@
 
 package limelight.ui.model;
 
+import limelight.styles.Style;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.ui.Panel;
-import limelight.styles.Style;
 import limelight.util.Box;
 
 import java.awt.*;
+import java.util.Map;
 
-class ImagePanelLayout implements Layout
+class ImagePanelLayout extends SimpleLayout
 {
   public static ImagePanelLayout instance = new ImagePanelLayout();
 
-  public void doLayout(Panel thePanel)
+  @Override
+  public void doExpansion(Panel thePanel)
   {
-    ImagePanel panel = (ImagePanel)thePanel;
-    panel.resetLayout();
+    ImagePanel panel = (ImagePanel) thePanel;
     Box consumableArea = panel.getParent().getChildConsumableBounds();
     if(panel.getImage() == null)
       return;
@@ -27,7 +28,7 @@ class ImagePanelLayout implements Layout
     if(panel.isScaled())
       size = new Dimension(consumableArea.width, consumableArea.height);
     else
-      size = new Dimension((int)(panel.getImageWidth() + 0.5), (int)(panel.getImageHeight() + 0.5));
+      size = new Dimension((int) (panel.getImageWidth() + 0.5), (int) (panel.getImageHeight() + 0.5));
 
     if(panel.getImage() != null)
     {
@@ -61,28 +62,23 @@ class ImagePanelLayout implements Layout
     boolean autoHeight = style.getCompiledHeight() instanceof AutoDimensionValue;
     if(autoWidth && autoHeight)
     {
-      size.width = (int)(panel.getRotatedWidth() + 0.5);
-      size.height = (int)(panel.getRotatedHeight() + 0.5);
+      size.width = (int) (panel.getRotatedWidth() + 0.5);
+      size.height = (int) (panel.getRotatedHeight() + 0.5);
     }
     else if(autoWidth)
     {
       double ratio = size.height / panel.getRotatedHeight();
-      size.width = (int)(panel.getRotatedWidth() * ratio + 0.5);
+      size.width = (int) (panel.getRotatedWidth() * ratio + 0.5);
     }
     else if(autoHeight)
     {
       double ratio = size.width / panel.getRotatedWidth();
-      size.height = (int)(panel.getRotatedHeight() * ratio + 0.5);
+      size.height = (int) (panel.getRotatedHeight() * ratio + 0.5);
     }
   }
 
   public boolean overides(Layout other)
   {
     return true;
-  }
-
-  public void doLayout(Panel panel, boolean topLevel)
-  {
-    doLayout(panel);
   }
 }

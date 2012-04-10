@@ -4,13 +4,11 @@
 package limelight.ui;
 
 import limelight.caching.TimedCacheEntry;
-import limelight.util.NanoTimer;
-import limelight.util.Debug;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class BufferedImagePool
 {

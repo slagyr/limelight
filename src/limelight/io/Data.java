@@ -4,7 +4,6 @@
 package limelight.io;
 
 import limelight.Context;
-import limelight.LimelightException;
 
 public class Data
 {

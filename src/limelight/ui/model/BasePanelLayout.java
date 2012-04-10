@@ -5,27 +5,17 @@ package limelight.ui.model;
 
 import limelight.ui.Panel;
 
-public class BasePanelLayout implements Layout
+import java.util.Map;
+
+// TODO MDM - This class does nothing. Delete me!
+public class BasePanelLayout extends SimpleLayout
 {
   public static BasePanelLayout instance = new BasePanelLayout();
   public Panel lastPanelProcessed;
 
-  public void doLayout(Panel thePanel)
-  {
-    PanelBase panel = (PanelBase) thePanel;
-    panel.resetLayout();
-    panel.wasLaidOut();
-    lastPanelProcessed = thePanel;
-  }
-
   public boolean overides(Layout other)
   {
     return false;
-  }
-
-  public void doLayout(Panel panel, boolean topLevel)
-  {
-    doLayout(panel);
   }
 
 }

@@ -4,10 +4,7 @@
 package limelight.ui.model.inputs;
 
 import limelight.model.api.FakePropProxy;
-import limelight.ui.model.FakeScene;
-import limelight.ui.model.PropPanel;
-import limelight.ui.model.ScenePanel;
-import limelight.ui.model.MockStage;
+import limelight.ui.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,28 +54,14 @@ public class ScrollBarPanelTest
   }
 
   @Test
-  public void changesCausesLayout() throws Exception
+  public void parentIsMarkedAsChanged() throws Exception
   {
-    ScenePanel root = new ScenePanel(new FakePropProxy());
+    Scene root = new FakeScene();
     root.setStage(new MockStage());
     PropPanel parent = new PropPanel(new FakePropProxy());
     root.add(parent);
     parent.add(verticalScrollBar);
-    parent.doLayout();
-    verticalScrollBar.setValue(50);
-
-    assertEquals(true, parent.needsLayout());
-  }
-
-  @Test
-  public void shouldParentIsMarkedAsChanged() throws Exception
-  {
-    ScenePanel root = new ScenePanel(new FakePropProxy());
-    root.setStage(new MockStage());
-    PropPanel parent = new PropPanel(new FakePropProxy());
-    root.add(parent);
-    parent.add(verticalScrollBar);
-    parent.doLayout();
+    Layouts.on(parent, parent.getDefaultLayout());
 
     verticalScrollBar.setValue(50);
 

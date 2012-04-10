@@ -3,56 +3,55 @@
 
 package limelight.ui.model;
 
+import limelight.LimelightException;
 import limelight.Log;
 import limelight.styles.Style;
+import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.styles.values.AutoDimensionValue;
 import limelight.styles.values.GreedyDimensionValue;
-import limelight.styles.abstrstyling.VerticalAlignmentValue;
 import limelight.ui.Panel;
 import limelight.ui.model.inputs.ScrollBarPanel;
 import limelight.util.Box;
-import limelight.LimelightException;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.awt.*;
+import java.util.Map;
 
 public class PropPanelLayout implements Layout
 {
   public static PropPanelLayout instance = new PropPanelLayout();
 
-
-  // TODO MDM This gets called A LOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
-  public void doLayout(Panel thePanel, boolean topLevel)
+  public void doExpansion(Panel thePanel)
   {
     PropPanel panel = (PropPanel) thePanel;
-    panel.resetLayout();
-    FloaterLayout.instance.doLayout(panel);
-    Style style = panel.getStyle();
-    if(panel.isSizeChangePending() || style.hasDynamicDimension())
-      snapToSize(panel, topLevel);
+    FloaterLayout.instance.doFinalization(panel);
+//    Style style = panel.getStyle();
+//    if(panel.isSizeChangePending() || style.hasDynamicDimension())
+    snapToSize(panel);
+  }
 
+  public void doContraction(Panel thePanel)
+  {
+    PropPanel panel = (PropPanel) thePanel;
     establishScrollBars(panel);
-
+    LinkedList<Row> rows = buildRows(panel);
+    distributeGreediness(panel, rows);
     Dimension consumedDimensions = new Dimension();
-    if(!hasNonScrollBarChildren(panel))
-      collapseAutoDimensions(panel, consumedDimensions);
-    else
-    {
-      doPreliminaryLayoutOnChildren(panel);
-      LinkedList<Row> rows = buildRows(panel);
-      distributeGreediness(panel, rows);
-      doPostLayoutOnChildren(panel);
-      calculateConsumedDimentions(rows, consumedDimensions);
-      collapseAutoDimensions(panel, consumedDimensions);
-      layoutRows(panel, consumedDimensions, rows);
-    }
+    calculateConsumedDimentions(rows, consumedDimensions);
+    collapseAutoDimensions(panel, consumedDimensions);
+    layoutRows(panel, consumedDimensions, rows);
     layoutScrollBars(panel, consumedDimensions);
+  }
 
+  public void doFinalization(Panel thePanel)
+  {
+    PropPanel panel = (PropPanel) thePanel;
     panel.updateBorder();
     panel.markAsDirty();
-    panel.wasLaidOut();
   }
+
+  // TODO MDM This gets called A LOT!  Possible speed up by re-using objects, rather then reallocating them. (rows list, rows)
 
   private void distributeGreediness(PropPanel panel, LinkedList<Row> rows)
   {
@@ -107,23 +106,18 @@ public class PropPanelLayout implements Layout
     return true;
   }
 
-  public void doLayout(Panel child)
-  {
-    doLayout(child, true);
-  }
-
-  private boolean hasNonScrollBarChildren(PropPanel panel)
-  {
-    List<Panel> children = panel.getChildren();
-    if(children.size() == 0)
-      return false;
-    else if(children.size() == 1)
-      return !(children.contains(panel.getVerticalScrollbar()) || children.contains(panel.getHorizontalScrollbar()));
-    else if(children.size() == 2)
-      return !(children.contains(panel.getVerticalScrollbar()) && children.contains(panel.getHorizontalScrollbar()));
-    else
-      return true;
-  }
+//  private boolean hasNonScrollBarChildren(PropPanel panel)
+//  {
+//    List<Panel> children = panel.getChildren();
+//    if(children.size() == 0)
+//      return false;
+//    else if(children.size() == 1)
+//      return !(children.contains(panel.getVerticalScrollbar()) || children.contains(panel.getHorizontalScrollbar()));
+//    else if(children.size() == 2)
+//      return !(children.contains(panel.getVerticalScrollbar()) && children.contains(panel.getHorizontalScrollbar()));
+//    else
+//      return true;
+//  }
 
   private void layoutScrollBars(PropPanel panel, Dimension consumedDimensions)
   {
@@ -164,36 +158,36 @@ public class PropPanelLayout implements Layout
     return panel.getBounds().height - panel.getPaddedBounds().height;
   }
 
-  protected void doPreliminaryLayoutOnChildren(PropPanel panel)
-  {
-    for(Panel child : panel.getChildren())
-    {
-      if(child.needsLayout())
-      {
-        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
-        {
-          child.getDefaultLayout().doLayout(child, true);
-        }
-        else
-        {
-          ((PropPanel)child).greediness.setSize(0, 0);
-          snapToSize((PropPanel) child, false);
-        }
-      }
-    }
-  }
-
-  protected void doPostLayoutOnChildren(PropPanel panel)
-  {
-    for(Panel child : panel.getChildren())
-    {
-      if(child.needsLayout())
-      {
-        final Layout layout = child.getDefaultLayout();
-        layout.doLayout(child, false);
-      }
-    }
-  }
+//  protected void doPreliminaryLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
+//  {
+//    for(Panel child : panel.getChildren())
+//    {
+//      if(panelsToLayout != null && panelsToLayout.containsKey(child))
+//      {
+//        if(!(child instanceof PropPanel) || child.getStyle().getCompiledWidth() instanceof AutoDimensionValue)
+//        {
+//          child.getDefaultLayout().doLayout(child, panelsToLayout, true);
+//        }
+//        else
+//        {
+//          ((PropPanel) child).greediness.setSize(0, 0);
+//          snapToSize((PropPanel) child);
+//        }
+//      }
+//    }
+//  }
+//
+//  protected void doPostLayoutOnChildren(PropPanel panel, Map<Panel, Layout> panelsToLayout)
+//  {
+//    for(Panel child : panel.getChildren())
+//    {
+//      if(panelsToLayout != null && panelsToLayout.containsKey(child))
+//      {
+//        final Layout layout = child.getDefaultLayout();
+//        layout.doLayout(child, panelsToLayout, false);
+//      }
+//    }
+//  } 1
 
   public void layoutRows(PropPanel panel, Dimension consumedDimension, LinkedList<Row> rows)
   {
@@ -268,7 +262,7 @@ public class PropPanelLayout implements Layout
       panel.removeHorizontalScrollBar();
   }
 
-  public void snapToSize(PropPanel panel, boolean topLevel)
+  public void snapToSize(PropPanel panel)
   {
     if(panel.getParent() == null) // can happen if removed from tree
       return;
@@ -356,9 +350,10 @@ public class PropPanelLayout implements Layout
         {
           if(hasGreedyWidth(item))
           {
-            PropPanel panel = (PropPanel) item;
+//            PropPanel panel = (PropPanel) item;
             int greedyWidth = splits[splitIndex++];
-            panel.greediness.width = greedyWidth;
+//            panel.greediness.width = greedyWidth;
+
             item.setSize(item.getWidth() + greedyWidth, item.getHeight());
           }
         }
@@ -387,8 +382,9 @@ public class PropPanelLayout implements Layout
       {
         if(hasGreedyHeight(item))
         {
-          PropPanel panel = (PropPanel)item;
-          panel.greediness.height = Math.max(extraHeight, (height - panel.getHeight()));
+//          PropPanel panel = (PropPanel) item;
+//          panel.greediness.height = Math.max(extraHeight, (height - panel.getHeight()));
+//          item.setSize(item.getWidth(), height);
           item.setSize(item.getWidth(), height);
         }
       }

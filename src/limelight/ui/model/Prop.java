@@ -3,10 +3,11 @@
 
 package limelight.ui.model;
 
-import limelight.styles.ScreenableStyle;
 import limelight.model.api.PropProxy;
+import limelight.styles.ScreenableStyle;
 import limelight.ui.painting.PaintAction;
 import limelight.util.Box;
+
 import java.awt.*;
 
 
@@ -15,9 +16,8 @@ public interface Prop extends ParentPanel
   void add(limelight.ui.Panel child);
   boolean remove(limelight.ui.Panel child);
   void removeAll();
-  void doLayout();
   void setAfterPaintAction(PaintAction action);
-  void setText(String text);
+  void setText(String text); // TODO MDM - this ought to take an Object to be more flexible
   String getText();
   TextAccessor getTextAccessor();
   void setTextAccessor(TextAccessor accessor);

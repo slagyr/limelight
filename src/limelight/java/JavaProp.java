@@ -5,11 +5,9 @@ package limelight.java;
 
 import limelight.model.api.PropProxy;
 import limelight.styles.Style;
-import limelight.ui.Panel;
 import limelight.ui.model.PropPanel;
 import limelight.util.Box;
 
-import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

@@ -3,15 +3,16 @@
 
 package limelight.util;
 
-import limelight.ui.Panel;
 import limelight.model.api.PropProxy;
+import limelight.ui.Panel;
 import limelight.ui.model.PropPanel;
 
 import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.io.*;
-import java.awt.image.RenderedImage;
 import java.util.Date;
 
 public class Debug

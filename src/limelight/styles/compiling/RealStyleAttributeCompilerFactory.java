@@ -3,10 +3,11 @@
 
 package limelight.styles.compiling;
 
+import limelight.Context;
 import limelight.LimelightException;
 import limelight.styles.abstrstyling.*;
-import limelight.styles.values.*;
-import limelight.Context;
+import limelight.styles.abstrstyling.StringValue;
+import limelight.styles.values.SimpleIntegerValue;
 
 public class RealStyleAttributeCompilerFactory implements StyleAttributeCompilerFactory
 {

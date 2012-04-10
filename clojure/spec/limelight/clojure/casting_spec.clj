@@ -26,15 +26,13 @@
 
   (with production (new-production (limelight.model.FakeProduction. "MockProduction")))
   (with scene (new-scene {:path "root"}))
+  (with player-recruiter @(._player-recruiter @scene))
   (with prop (first (add @scene (new-prop {}))))
-  (with player-recruiter (new-player-recruiter @scene))
   (with fs (limelight.io.FakeFileSystem/installed))
 
   (before
-    (do
-      @fs ; load the file system
-      (.setPlayerRecruiter @(._peer @scene) (limelight.model.api.FakePlayerRecruiter.))
-      (.setProduction @(._peer @scene) (._peer @production)))
+    @fs ; load the file system
+    (.setProduction @(._peer @scene) (._peer @production))
     (.setStage @(._peer @scene) (.getDefaultStage (._peer (.getTheater @production)))))
 
   (unless-headless
@@ -96,9 +94,11 @@
             (should= name @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*message*))))))
 
     (it "handles on-cast events"
-      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast [_] (def *message* \"casted\"))"))
+      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast [e] (def *event* e))"))
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
-      (should= "casted" @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*message*)))
+      (let [cast-event @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*event*)]
+        (should= limelight.ui.events.panel.CastEvent (class cast-event))
+        (should= @prop (.getProp cast-event))))
 
     (it "the bindings are optional"
       (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))"))

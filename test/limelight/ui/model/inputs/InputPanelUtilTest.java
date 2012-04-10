@@ -24,12 +24,12 @@ public class InputPanelUtilTest extends TestCase
     input = new TestableInputPanel();
     parent = new PropPanel(new FakePropProxy());
     parent.add(input);
-    Context.instance().keyboardFocusManager = new KeyboardFocusManager().installed();
+    KeyboardFocusManager.installed();
   }
 
   private void attatchRoot()
   {
-    ScenePanel root = new ScenePanel(new FakePropProxy());
+    Scene root = new FakeScene();
     root.setStage(new MockStage());
     rootPanel = new MockParentPanel();
     root.add(rootPanel);

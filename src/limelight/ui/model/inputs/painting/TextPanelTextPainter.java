@@ -3,14 +3,11 @@
 
 package limelight.ui.model.inputs.painting;
 
+import limelight.Log;
 import limelight.styles.Style;
-import limelight.styles.abstrstyling.HorizontalAlignmentValue;
 import limelight.ui.text.TypedLayout;
-import limelight.ui.model.inputs.TextModel;
-import limelight.util.Box;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class TextPanelTextPainter extends TextPanelPainter
 {
@@ -21,9 +18,9 @@ public class TextPanelTextPainter extends TextPanelPainter
   }
 
   @Override
-  public void paint(Graphics2D graphics, TextModel model)
+  public void paint(Graphics2D graphics, limelight.ui.model.text.TextModel model)
   {
-    if(model.getText() == null || model.getText().length() == 0)
+    if(!model.hasText())
       return;
 
     float y = model.getYOffset();

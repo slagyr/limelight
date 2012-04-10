@@ -18,6 +18,7 @@ public class ImagePanelTest
 {
   private ImagePanel panel;
   private MockProp parent;
+  public FakeScene root;
 
   @BeforeClass
   public static void classSetUp() throws Exception
@@ -28,14 +29,10 @@ public class ImagePanelTest
   @Before
   public void setUp() throws Exception
   {
-    FakePropProxy scene = new FakePropProxy();
-    ScenePanel root = new ScenePanel(scene);
+    root = new FakeScene();
     root.setStage(new MockStage());
     parent = new MockProp();
-    FakeProduction production = new FakeProduction("Mock");
-    root.setProduction(production);
     root.add(parent);
-
     panel = new ImagePanel();
     parent.add(panel);
   }
@@ -73,12 +70,11 @@ public class ImagePanelTest
   @Test
   public void parentSizeChangesAlwaysRequiresLayout() throws Exception
   {
-    panel.resetLayout();
-    assertEquals(false, panel.needsLayout());
+    root.resetLayoutRequired();
 
     panel.consumableAreaChanged();
 
-    assertEquals(true, panel.needsLayout());
+    assertEquals(true, root.isLayoutRequired());
   }
 
   @Test
@@ -111,8 +107,8 @@ public class ImagePanelTest
   {
     panel.setFilename(TestUtil.dataDirPath("small_star.gif"));
     panel.getImage();
-    panel.resetLayout();
-    parent.resetLayout();
+    panel.resetNeededLayout();
+    parent.resetNeededLayout();
 
     checkSettingImageDataWith("star.gif");
 

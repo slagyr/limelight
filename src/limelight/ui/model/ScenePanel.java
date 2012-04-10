@@ -3,26 +3,29 @@
 
 package limelight.ui.model;
 
-import limelight.*;
+import limelight.Context;
+import limelight.LimelightException;
+import limelight.Log;
 import limelight.model.Production;
 import limelight.model.Stage;
 import limelight.model.api.PlayerRecruiter;
+import limelight.model.api.PropProxy;
 import limelight.styles.RichStyle;
 import limelight.styles.Style;
 import limelight.ui.ButtonGroupCache;
 import limelight.ui.Panel;
-import limelight.model.api.PropProxy;
 import limelight.util.Opts;
 import limelight.util.Util;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ScenePanel extends PropPanel implements Scene
 {
   private static final Map<String, RichStyle> EMPTY_STYLES = Collections.unmodifiableMap(new HashMap<String, RichStyle>());
 
-  private final AbstractList<Panel> panelsNeedingLayout = new ArrayList<Panel>(50);
   private final AbstractList<Rectangle> dirtyRegions = new ArrayList<Rectangle>(50);
   private ImageCache imageCache;
   private Stage stage;
@@ -34,17 +37,20 @@ public class ScenePanel extends PropPanel implements Scene
   private String pathRelativeToProduction;
   private PlayerRecruiter playerRecruiter;
   private Map<Prop, Opts> backstage = new HashMap<Prop, Opts>();
+  private Lock lock = new ReentrantLock();
+  private boolean layoutRequired;
 
-  public ScenePanel(PropProxy propProxy)
+  public ScenePanel(PropProxy propProxy, PlayerRecruiter playerRecruiter)
   {
     super(propProxy);
+    this.playerRecruiter = playerRecruiter;
     getStyle().setDefault(Style.WIDTH, "100%");
     getStyle().setDefault(Style.HEIGHT, "100%");
   }
 
-  public ScenePanel(PropProxy propProxy, Map<String, Object> options)
+  public ScenePanel(PropProxy propProxy, PlayerRecruiter playerRecruiter, Map<String, Object> options)
   {
-    this(propProxy);
+    this(propProxy, playerRecruiter);
     addOptions(options);
   }
 
@@ -92,52 +98,25 @@ public class ScenePanel extends PropPanel implements Scene
     return stage.getCursor();
   }
 
-  public void addPanelNeedingLayout(Panel child)
+  public Lock getLock()
   {
-    synchronized(panelsNeedingLayout)
-    {
-      boolean shouldAdd = true;
-      for(Iterator<Panel> iterator = panelsNeedingLayout.iterator(); iterator.hasNext(); )
-      {
-        Panel panel = iterator.next();
-        if(child == panel)
-        {
-          shouldAdd = false;
-          break;
-        }
-        else if(child.isDescendantOf(panel) && child.getParent().needsLayout())
-        {
-          shouldAdd = false;
-          break;
-        }
-        else if(panel.isDescendantOf(child) && panel.getParent().needsLayout())
-        {
-          iterator.remove();
-        }
-      }
-      if(shouldAdd)
-      {
-        panelsNeedingLayout.add(child);
-      }
-    }
+    return lock;
+  }
+
+  public void layoutRequired()
+  {
+    layoutRequired = true;
     Context.kickPainter();
   }
 
-  public boolean hasPanelsNeedingLayout()
+  public boolean isLayoutRequired()
   {
-    synchronized(panelsNeedingLayout)
-    {
-      return panelsNeedingLayout.size() > 0;
-    }
+    return layoutRequired;
   }
 
-  public void getAndClearPanelsNeedingLayout(Collection<Panel> buffer)
+  public void resetLayoutRequired()
   {
-    synchronized(panelsNeedingLayout)
-    {
-      buffer.addAll(panelsNeedingLayout);
-      panelsNeedingLayout.clear();
-    }
+    layoutRequired = false;
   }
 
   public void addDirtyRegion(Rectangle region)
@@ -216,7 +195,8 @@ public class ScenePanel extends PropPanel implements Scene
     if(stage != null)
     {
       illuminate();
-      addPanelNeedingLayout(this);
+      markAsNeedingLayout();
+//      addPanelNeedingLayout(this, getDefaultLayout());
     }
   }
 
@@ -301,12 +281,27 @@ public class ScenePanel extends PropPanel implements Scene
   {
     if(newOptions.containsKey("path"))
       pathRelativeToProduction = Util.toString(newOptions.remove("path"));
+
+    illuminateId(newOptions.remove("id"));
+    illuminateName(newOptions.remove("name"));
+    if(playerRecruiter != null)
+      illuminatePlayers(newOptions.remove("players"));
+
     super.addOptions(newOptions);
   }
 
-  public void setPlayerRecruiter(PlayerRecruiter playerRecruiter)
+  @Override
+  public void illuminate()
   {
-    this.playerRecruiter = playerRecruiter;
+    final Lock lock = getLock();
+    try
+    {
+      lock.lock();
+      super.illuminate();
+    }
+    finally {
+      lock.unlock();
+    }
   }
 
   public PlayerRecruiter getPlayerRecruiter()
@@ -330,11 +325,11 @@ public class ScenePanel extends PropPanel implements Scene
     return backstage;
   }
 
-  private static class SceneLayout implements Layout
+  private static class SceneLayout extends PropPanelLayout
   {
     public static Layout instance = new SceneLayout();
 
-    public void doLayout(Panel panel)
+    public void doExpansion(Panel panel)
     {
       ScenePanel scene = (ScenePanel) panel;
       Style style = scene.getStyle();
@@ -356,17 +351,12 @@ public class ScenePanel extends PropPanel implements Scene
       final int height = style.getCompiledHeight().calculateDimension(consumableHeight, style.getCompiledMinHeight(), style.getCompiledMaxHeight(), 0);
       scene.setSize(width, height);
 
-      PropPanelLayout.instance.doLayout(scene);
+      PropPanelLayout.instance.doExpansion(scene);
     }
 
     public boolean overides(Layout other)
     {
       return true;
-    }
-
-    public void doLayout(Panel panel, boolean topLevel)
-    {
-      doLayout(panel);
     }
   }
 }

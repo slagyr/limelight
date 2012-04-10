@@ -23,7 +23,6 @@ public class AbstractStyleAttributeTestBase extends Assert
   public void setUpPanel() throws Exception
   {
     panel = new MockChangeablePanel();
-    panel.resetLayout();
     cache = new SimpleCache<Panel, BufferedImage>();
     Context.instance().bufferedImageCache = cache;
     cache.cache(panel, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -74,7 +73,7 @@ public class AbstractStyleAttributeTestBase extends Assert
     attribute.applyChange(panel, null);
 
     assertEquals(true, panel.markAsNeedingLayoutCalled);
-    assertEquals(FloaterLayout.instance, panel.getNeededLayout());
+    assertEquals(FloaterLayout.instance, panel.neededLayout);
     assertNotNull(cache.retrieve(panel));
   }
 
@@ -85,7 +84,7 @@ public class AbstractStyleAttributeTestBase extends Assert
     attribute.applyChange(panel, null);
 
     assertEquals(true, panel.markAsNeedingLayoutCalled);
-    assertEquals(null, panel.getNeededLayout());
+    assertEquals(null, panel.neededLayout);
     assertEquals(null, cache.retrieve(panel));
   }
 

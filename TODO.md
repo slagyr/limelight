@@ -1,3 +1,10 @@
+* Layout when wondow resized
+* drop down, replace with new utility scene
+* conformation alert
+* greedy layout not working well
+* empty scroll still moves the contents
+* clj styles needs to be ordered
+
 * Buttons should size themselves based on text?
 * remote API to replace DRb
 * Configurable Test infrastructure for each language

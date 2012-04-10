@@ -4,7 +4,6 @@
 package limelight.ui.model;
 
 import limelight.model.api.FakePropProxy;
-import limelight.model.api.Player;
 import limelight.ui.Panel;
 import limelight.ui.PaintablePanel;
 import limelight.ui.painting.PaintAction;
@@ -12,8 +11,7 @@ import limelight.ui.painting.Border;
 import limelight.model.api.PropProxy;
 import limelight.util.Box;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
 public class MockProp extends MockParentPanel implements Prop, PaintablePanel
 {
@@ -89,19 +87,10 @@ public class MockProp extends MockParentPanel implements Prop, PaintablePanel
     return prop;
   }
 
-  public void doLayout()
+  @Override
+  public Layout getDefaultLayout()
   {
-    super.doLayout();
-    setSize(prepForSnapWidth, prepForSnapHeight);
-    for(Panel child : children)
-      child.doLayout();
-    wasLaidOut = true;
-  }
-
-  public void doFloatLayout()
-  {
-    super.doFloatLayout();
-    wasFloatLaidOut = true;
+    return new MockPropLayout();
   }
 
   public void prepForSnap(int width, int height)
@@ -113,5 +102,26 @@ public class MockProp extends MockParentPanel implements Prop, PaintablePanel
   public String toString()
   {
     return super.toString() + ":" + name;
+  }
+
+  private class MockPropLayout implements Layout
+  {
+    public void doExpansion(Panel panel)
+    {
+      setSize(prepForSnapWidth, prepForSnapHeight);
+    }
+
+    public void doContraction(Panel panel)
+    {
+    }
+
+    public void doFinalization(Panel panel)
+    {
+    }
+
+    public boolean overides(Layout other)
+    {
+      return false;
+    }
   }
 }

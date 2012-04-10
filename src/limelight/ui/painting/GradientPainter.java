@@ -3,8 +3,9 @@
 
 package limelight.ui.painting;
 
-import limelight.ui.*;
 import limelight.styles.Style;
+import limelight.ui.PaintablePanel;
+import limelight.ui.Painter;
 import limelight.util.Box;
 
 import java.awt.*;

@@ -6,9 +6,9 @@ package limelight.ui.model;
 import limelight.LimelightException;
 import limelight.styles.ScreenableStyle;
 
+import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.io.ByteArrayInputStream;
@@ -65,11 +65,6 @@ public class ImagePanel extends PanelBase
   public void setRotatedWidth(double width)
   {
     rotatedWidth = width;
-  }
-
-  public void doLayout()
-  {
-    ImagePanelLayout.instance.doLayout(this);
   }
 
   public Layout getDefaultLayout()

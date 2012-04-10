@@ -3,16 +3,19 @@
 
 package limelight.ui.model;
 
+import limelight.Log;
 import limelight.ui.Panel;
 
-public class TextPanelLayout implements Layout
+import java.util.Map;
+
+public class TextPanelLayout extends SimpleLayout
 {
   public static TextPanelLayout instance = new TextPanelLayout();
 
-  public void doLayout(Panel thePanel)
+  @Override
+  public void doExpansion(Panel thePanel)
   {
     TextPanel panel = (TextPanel) thePanel;
-    panel.resetLayout();
     try
     {
       panel.compile();
@@ -20,6 +23,7 @@ public class TextPanelLayout implements Layout
     catch(Exception e)
     {
       // Can fail if the graphics are not ready.
+      Log.debug("TEXT failed to compile", e);
       panel.markAsNeedingLayout();
       panel.getParent().markAsNeedingLayout();
     }
@@ -28,10 +32,5 @@ public class TextPanelLayout implements Layout
   public boolean overides(Layout other)
   {
     return true;
-  }
-
-  public void doLayout(Panel panel, boolean topLevel)
-  {
-    doLayout(panel);
   }
 }
