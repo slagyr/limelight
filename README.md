@@ -16,10 +16,11 @@ that'll teach you everything you need to know to build your own Limelight produc
 Just install Limelight and let'er rip.
 
 ## Developing with Limelight
-    jruby -S gem install limelight
+    rvm use jruby
+    gem install limelight
 
-    jruby -S limelight create production my_first_production
-    jruby -S limelight open my_first_production
+    limelight create production my_first_production
+    limelight open my_first_production
 
 ## Development on Limelight
     git clone git://github.com/slagyr/limelight.git
