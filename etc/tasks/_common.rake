@@ -122,7 +122,7 @@ end
 
 def limelight_version
   return @limelight_version if @limelight_version
-  output = `java -cp limelight.jar limelight.CmdLineMain version`
+  output = `java -cp #{LIMELIGHT_ROOT}/limelight.jar limelight.CmdLineMain version`
   @limelight_version = output.gsub("limelight", "").strip
   @limelight_version
 end

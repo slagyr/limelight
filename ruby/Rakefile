@@ -14,8 +14,7 @@ def classpath
 end
 
 def prod_deps
-  ["http://jruby.org.s3.amazonaws.com/downloads/1.6.4/jruby-complete-1.6.4.jar",
-   "file:/#{LIMELIGHT_ROOT}/limelight.jar"]
+  %W(http://jruby.org.s3.amazonaws.com/downloads/1.6.4/jruby-complete-1.6.4.jar file:/#{LIMELIGHT_ROOT}/limelight.jar)
 end
 
 desc "Creates required files"
@@ -68,3 +67,25 @@ end
 
 desc "Compiles, and tests the limelight java code"
 task "build" => %w{clean deps jar spec}
+
+desc "Builds a gem file"
+task "gem" do #=> %w{jar} do
+  begin
+    version = limelight_version
+    FileUtils.mkdir("gem")
+    require "erb"
+    template = ERB.new(IO.read("gemfile_template.rb"))
+    File.open("gem/limelight.gemspec", "w") { |f| f.write template.result(binding) }
+    FileUtils.mkdir("gem/ruby")
+    FileUtils.cp_r("lib", "gem/ruby")
+    FileUtils.cp_r("bin", "gem")
+    FileUtils.cp("../limelight.jar", "gem/ruby/lib/limelight.jar")
+    FileUtils.cp("../LICENSE", "gem/LICENSE")
+    FileUtils.mkdir("gem/productions")
+    FileUtils.cp("../productions/playbills.lll", "gem/productions")
+    system `rm gem/ruby/lib/jruby-complete*`
+    system "cd gem && gem build limelight.gemspec && cp limelight-#{version}-java.gem .."
+  ensure
+    FileUtils.rm_r("gem")
+  end
+end

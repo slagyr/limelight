@@ -1,5 +1,9 @@
 #!/usr/bin/env jruby
 
-require File.expand_path(File.dirname(__FILE__) + "/../lib/limelight/limelight_init")
+LIMELIGHT_HOME = File.expand_path(File.dirname(__FILE__) + "/..")
+
+Java::java.lang.System.setProperty("limelight.home", LIMELIGHT_HOME)
+
+require LIMELIGHT_HOME + "/ruby/lib/limelight/limelight_init"
 Java::limelight.CmdLineMain.mainCmd = "limelight"
 Java::limelight.CmdLineMain.main(ARGV)
