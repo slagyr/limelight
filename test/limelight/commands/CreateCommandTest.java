@@ -41,7 +41,7 @@ public class CreateCommandTest
 
     command = new CreateCommand();
     command.setTemplaterLoger(new NullTemplaterLogger());
-    command.setFileSystem(fs);
+    Context.instance().fs = fs;
   }
 
   private void setupSceneTemplates()

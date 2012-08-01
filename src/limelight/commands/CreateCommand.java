@@ -15,7 +15,6 @@ public class CreateCommand extends Command
 {
   private static Arguments arguments;
   private Templater.TemplaterLogger logger;
-  private FileSystem fs;
 
   public static Arguments arguments()
   {
@@ -66,30 +65,30 @@ public class CreateCommand extends Command
   private void createProject(Map<String, String> args)
   {
     final String projectPath = args.get("path");
-    String testsPath = fs.join(projectPath, getArgOrDefault(args, "test-path", "spec"));
+    String testsPath = fs().join(projectPath, getArgOrDefault(args, "test-path", "spec"));
     String sceneName = getArgOrDefault(args, "scene-name", "default_scene");
 
-    String projectName = fs.filename(projectPath);
-    Templater templater = createTemplater(fs.parentPath(projectPath));
+    String projectName = fs().filename(projectPath);
+    Templater templater = createTemplater(fs().parentPath(projectPath));
 
     templater.addToken("LLP_NAME", projectName);
 
-    templater.file(fs.join(projectName, "features/step_definitions/limelight_steps.rb"), "features/step_definitions/limelight_steps.rb.template");
-    templater.file(fs.join(projectName, "features/support/env.rb"), "features/support/env.rb.template");
-    templater.file(fs.join(projectName, "Rakefile"), "project/Rakefile.template");
+    templater.file(fs().join(projectName, "features/step_definitions/limelight_steps.rb"), "features/step_definitions/limelight_steps.rb.template");
+    templater.file(fs().join(projectName, "features/support/env.rb"), "features/support/env.rb.template");
+    templater.file(fs().join(projectName, "Rakefile"), "project/Rakefile.template");
 
-    createProduction(templater, fs.join(projectName, "production"), projectName, sceneName, testsPath);
+    createProduction(templater, fs().join(projectName, "production"), projectName, sceneName, testsPath);
   }
 
   private void createProduction(Map<String, String> args)
   {
     String productionPath = args.get("path");
-    String testsPath = fs.join(productionPath, getArgOrDefault(args, "test-path", "spec"));
+    String testsPath = fs().join(productionPath, getArgOrDefault(args, "test-path", "spec"));
     String sceneName = getArgOrDefault(args, "scene-name", "default_scene");
 
-    Templater templater = createTemplater(fs.parentPath(productionPath));
+    Templater templater = createTemplater(fs().parentPath(productionPath));
 
-    String productionName = fs.filename(productionPath);
+    String productionName = fs().filename(productionPath);
     productionPath = productionName;
     createProduction(templater, productionPath, productionName, sceneName, testsPath);
   }
@@ -100,12 +99,12 @@ public class CreateCommand extends Command
     templater.addToken("PRODUCTION_NAME", StringUtil.titleCase(productionName));
     templater.addToken("CURRENT_VERSION", About.version.toString());
 
-    templater.file(fs.join(productionPath, "production.rb"), "production/production.rb.template");
-    templater.file(fs.join(productionPath, "stages.rb"), "production/stages.rb.template");
-    templater.file(fs.join(productionPath, "styles.rb"), "production/styles.rb.template");
-    templater.file(fs.join(testsPath, "spec_helper.rb"), "production/spec/spec_helper.rb.template");
+    templater.file(fs().join(productionPath, "production.rb"), "production/production.rb.template");
+    templater.file(fs().join(productionPath, "stages.rb"), "production/stages.rb.template");
+    templater.file(fs().join(productionPath, "styles.rb"), "production/styles.rb.template");
+    templater.file(fs().join(testsPath, "spec_helper.rb"), "production/spec/spec_helper.rb.template");
 
-    createScene(templater, fs.join(productionPath, sceneName), testsPath);
+    createScene(templater, fs().join(productionPath, sceneName), testsPath);
   }
 
   private void createScene(Map<String, String> args)
@@ -116,29 +115,28 @@ public class CreateCommand extends Command
 
     Templater templater = createTemplater(productionPath);
 
-    final String scenePath = fs.filename(path);
+    final String scenePath = fs().filename(path);
     createScene(templater, scenePath, testsPath);
   }
 
   private void createScene(Templater templater, String scenePath, String testsPath)
   {
-    final String sceneName = fs.filename(scenePath);
+    final String sceneName = fs().filename(scenePath);
     templater.addToken("SCENE_NAME", sceneName);
     templater.addToken("SCENE_TITLE", StringUtil.titleCase(sceneName));
 
-    templater.file(fs.join(scenePath, "props.rb"), "scene/props.rb.template");
-    templater.file(fs.join(scenePath, "styles.rb"), "scene/styles.rb.template");
-    templater.directory(fs.join(scenePath, "players"));
-    templater.file(fs.join(testsPath, sceneName, sceneName + "_spec.rb"), "scene_spec/scene_spec.rb.template");
+    templater.file(fs().join(scenePath, "props.rb"), "scene/props.rb.template");
+    templater.file(fs().join(scenePath, "styles.rb"), "scene/styles.rb.template");
+    templater.directory(fs().join(scenePath, "players"));
+    templater.file(fs().join(testsPath, sceneName, sceneName + "_spec.rb"), "scene_spec/scene_spec.rb.template");
   }
 
   private Templater createTemplater(String path)
   {
-    Templater templater = new Templater(path, fs.join(Context.instance().limelightHome, "ruby", "lib", "limelight", "templates", "sources"));
+    Templater templater = new Templater(path, fs().join(Context.instance().limelightHome, "ruby", "lib", "limelight", "templates", "sources"));
     if(logger != null)
       templater.setLogger(logger);
-    if(fs != null)
-      templater.setFs(fs);
+    templater.setFs(fs());
     return templater;
   }
 
@@ -146,9 +144,9 @@ public class CreateCommand extends Command
   {
     this.logger = logger;
   }
-
-  public void setFileSystem(FileSystem fileSystem)
+  
+  private FileSystem fs()
   {
-    this.fs = fileSystem;
+    return Context.fs();
   }
 }
