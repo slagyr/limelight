@@ -94,7 +94,7 @@ module Limelight
     # Creates a new Producer to open the specified Production.
     #
     def open_production(production_path)
-      Thread.new { Context.instance.studio.open(production_path) }
+      Thread.new { Java::limelight.Context.instance.studio.open(production_path) }
     end
 
     # Opens the specified Scene on the Stage currently occupied by this Scene.

@@ -22,7 +22,7 @@ describe Limelight::DSL::StylesBuilder do
     end
 
     result.size.should == 1
-    result["root"].class.should == Limelight::Styles::RichStyle
+    result["root"].class.should == Java::limelight.styles.RichStyle
   end
 
   it "should build one style with styling" do

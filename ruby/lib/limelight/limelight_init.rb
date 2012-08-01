@@ -17,8 +17,6 @@ if Java::java.lang.System.getProperty("limelight.home").nil?
   Java::java.lang.System.setProperty("limelight.home", $LIMELIGHT_HOME)
 end
 
-require 'limelight/java_couplings'
-
 def log
   Java::limelight.Log
 end

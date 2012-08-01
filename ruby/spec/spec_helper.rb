@@ -7,7 +7,7 @@ require 'limelight/mouse'
 require 'limelight/util/hashes'
 
 Java::limelight.Boot.boot("start-background-threads", false)
-context = Limelight::Context.instance
+context = Java::limelight.Context.instance
 context.frameManager = Java::limelight.ui.model.InertFrameManager.new
 
 class Object

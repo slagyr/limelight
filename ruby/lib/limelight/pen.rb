@@ -29,7 +29,7 @@ module Limelight
     # a hex color value.
     #
     def color=(value)
-      resolve_color = Util::Colors.resolve(value)
+      resolve_color = Java::limelight.util.Colors.resolve(value)
       @context.setColor(resolve_color)
     end
 

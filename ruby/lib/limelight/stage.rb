@@ -234,7 +234,7 @@ module Limelight
     def alert(message)
       Thread.new do
         begin
-          Context.instance.studio.utilities_production.alert(message)
+          Java::limelight.Context.instance.studio.utilities_production.alert(message)
         rescue StandardError => e
           puts "Error on alert: #{e}"
         end

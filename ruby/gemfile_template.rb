@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
 
   s.files        = Dir.glob("{bin,ruby,productions}/**/*") + %w(LICENSE)
   s.executables  = %w(limelight)
-  s.require_path = 'lib'
+  s.require_path = 'ruby/lib'
 end

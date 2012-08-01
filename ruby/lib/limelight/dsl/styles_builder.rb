@@ -75,7 +75,7 @@ module Limelight
 
       def __add_style(name, &block) #:nodoc:
         style = @__styles[name]
-        style = Styles::RichStyle.new if style == nil
+        style = Java::limelight.styles.RichStyle.new if style == nil
         builder = StyleBuilder.new(name, style, self)
         builder.instance_eval(&block) if block
         @__styles[name] = style

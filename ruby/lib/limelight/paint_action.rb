@@ -9,7 +9,7 @@ module Limelight
   #
   class PaintAction #:nodoc:
 
-    include UI::Painting::PaintAction
+    include Java::limelight.ui.painting.PaintAction
 
     attr_reader :block
 

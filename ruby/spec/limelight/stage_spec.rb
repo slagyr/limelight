@@ -14,7 +14,7 @@ describe Limelight::Stage do
     @production = mock("production")
     @theater = Limelight::Theater.new(@production, @peer_production.theater)
     @stage = @theater.add_stage("George")
-    Limelight::Context.instance.frameManager = Java::limelight.ui.model.InertFrameManager.new
+    Java::limelight.Context.instance.frameManager = Java::limelight.ui.model.InertFrameManager.new
   end
 
   unless_headless do

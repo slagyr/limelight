@@ -9,7 +9,7 @@ module Limelight
   # Although, this object does not update the screen, it provides a means to perform sequential updates in evenly
   # spaced time frames.
   #
-  class Animation < Limelight::Background::Animation
+  class Animation < Java::limelight.background.Animation
 
     # A Prop and block are required to construct an Animation.  Options may include
     # 1. :name (string)

@@ -13,3 +13,4 @@ out
 .testClasses
 limelight.jar
 pom.xml
+clojure/target

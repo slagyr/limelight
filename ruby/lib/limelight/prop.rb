@@ -271,7 +271,7 @@ module Limelight
     #
     #   link :text => "I am a link", :url => "http://www.8thlight.com"
     def launch(url)
-      Context.instance.os.launch(url)
+      Java::limelight.Context.instance.os.launch(url)
     end
 
     # GUI Events ##########################################
