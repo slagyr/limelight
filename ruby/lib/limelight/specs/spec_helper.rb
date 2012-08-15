@@ -67,7 +67,7 @@ module Limelight
       def production
         if Limelight::Specs.production.nil?
 #          if $with_ui
-          Java::limelight.Boot.boot
+          Java::limelight.Boot.boot(:environment => "test")
 #          else
 #            Limelight::Main.initializeTestContext
 #          end
