@@ -132,7 +132,7 @@ module Limelight
         path = production.scene_directory(@ll_scene_path)
         @scene = Scene.new(:production => production, :path => path, :name => @ll_scene_name)
         _create_player_helpers
-        Limelight.build_props(@scene, :build_loader => production.root, &@prop_block) if @prop_block
+        Limelight.build_props(@scene, :build_loader => production.path, &@prop_block) if @prop_block
 
         production.load_styles(@scene, @production.styles)
         @stage.scene = @scene
