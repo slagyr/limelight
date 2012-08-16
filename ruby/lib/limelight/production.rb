@@ -49,6 +49,12 @@ module Limelight
       @backstage
     end
 
+    # returns the production's styles map.  These styles are common to all scenes.
+    #
+    def styles
+      @peer.styles
+    end
+
     # returns true if the production has been opened, and not yet closed.
     #
     def open?
