@@ -14,7 +14,7 @@ def classpath
 end
 
 def prod_deps
-  %W(http://jruby.org.s3.amazonaws.com/downloads/1.6.4/jruby-complete-1.6.4.jar file:/#{LIMELIGHT_ROOT}/limelight.jar)
+  %W(http://jruby.org.s3.amazonaws.com/downloads/1.7.0.preview2/jruby-complete-1.7.0.preview2.jar file:/#{LIMELIGHT_ROOT}/limelight.jar)
 end
 
 desc "Creates required files"

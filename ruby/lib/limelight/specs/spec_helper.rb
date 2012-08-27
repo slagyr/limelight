@@ -56,7 +56,7 @@ module Limelight
     #       clicky :id => "clicky", :text => "click me", :on_mouse_clicked => "self.text = 'Hey! You clicked me!'"
     #     end
     #
-    #     it "should change text on clicky when clicked" do
+    #     it "changes text on clicky when clicked" do
     #       scene.find("clicky").mouse_clicked(nil)
     #       clicky.text.should == "Hey!  You clicked me!"
     #     end

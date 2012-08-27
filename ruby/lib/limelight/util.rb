@@ -30,10 +30,10 @@ module Limelight
     # This is used by the DSL Builder classes to minimize reserved keywords.
     #
     def self.lobotomize(klass)
-      klass.methods.each do |method_name|
-        unless method_name[0..1] == "__" || method_name == "instance_eval" || method_name == "methods"
+      klass.methods.each do |method|
+        unless method.to_s()[0..1] == "__" || method == :instance_eval || method == :methods
           begin
-            klass.instance_eval "undef_method :#{method_name}"
+            klass.instance_eval "undef_method :#{method}"
           rescue Exception => e
           end
         end

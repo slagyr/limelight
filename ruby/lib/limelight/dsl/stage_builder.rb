@@ -4,6 +4,10 @@
 require 'limelight/stage'
 require 'limelight/limelight_exception'
 
+class Foo
+
+end
+
 module Limelight
 
   # A trigger to build/configure Stage objects using the StageBuilder DSL.

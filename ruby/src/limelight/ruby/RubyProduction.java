@@ -11,6 +11,7 @@ import limelight.model.api.ProductionProxy;
 import limelight.model.api.SceneProxy;
 import limelight.styles.RichStyle;
 import limelight.ui.model.Scene;
+import org.jruby.CompatVersion;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 import org.jruby.javasupport.JavaEmbedUtils;
@@ -176,6 +177,7 @@ public class RubyProduction extends Production
         final String rubyLibDir = new File(Context.instance().limelightHome + "/ruby/lib").getCanonicalPath();
         loadPaths.add(rubyLibDir);
         RubyInstanceConfig config = new RubyInstanceConfig();
+        config.setCompatVersion(CompatVersion.RUBY1_9);
         config.setObjectSpaceEnabled(true);
         ruby = JavaEmbedUtils.initialize(loadPaths, config);
         InputStream input = new ByteArrayInputStream(src.getBytes());

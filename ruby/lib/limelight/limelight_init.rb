@@ -6,6 +6,7 @@ $:.unshift $LIMELIGHT_LIB unless $:.include?($LIMELIGHT_LIB)
 $LIMELIGHT_HOME = File.expand_path(File.join($LIMELIGHT_LIB, "..", ".."))
 
 require 'java'
+require 'jruby'
 require 'limelight.jar'
 require 'limelight-rb.jar'
 
