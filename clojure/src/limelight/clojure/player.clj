@@ -3,7 +3,7 @@
 
 (ns limelight.clojure.player)
 
-(declare *action-cache*)
+(declare ^:dynamic *action-cache*)
 
 (defn add-action-with-bindings [event-type action]
   (let [event-action (reify limelight.events.EventAction (invoke [this e] (action e)))

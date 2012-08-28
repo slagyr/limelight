@@ -54,15 +54,15 @@ public class ProxyMap extends APersistentMap
     return this;
   }
 
-  public IPersistentMap assocEx(Object keyObj, Object value) throws Exception
+  public IPersistentMap assocEx(Object keyObj, Object value)
   {
     String key = stringify(keyObj);
     if(containsKey(key))
-      throw new Exception("Key already present");
+      throw new RuntimeException("Key already present");
     return assoc(key, value);
   }
 
-  public IPersistentMap without(Object key) throws Exception
+  public IPersistentMap without(Object key)
   {
     map.remove(stringify(key));
     return this;

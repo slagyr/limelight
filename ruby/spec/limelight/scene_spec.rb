@@ -70,7 +70,7 @@ describe Limelight::Scene do
       begin
         @scene << prop2
       rescue Exception => e
-        e.message.should == "limelight.LimelightException: Duplicate id: some_id"
+        e.message.should == "Duplicate id: some_id"
       end
     end
 

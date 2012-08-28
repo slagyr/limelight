@@ -3,7 +3,7 @@
 
 (ns limelight.clojure.production-player)
 
-(declare *production*)
+(declare ^:dynamic *production*)
 
 (defn add-action-with-bindings [event-type action]
   (let [event-action (reify limelight.events.EventAction (invoke [this e] (action e)))]

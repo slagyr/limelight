@@ -5,7 +5,7 @@ namespace "clojure" do
   end
 
   def lein
-    windows? ? "cmd /c lein" : "lein"
+    windows? ? "cmd /c lein" : "lein2"
   end
 
   %w{classpath clean compile spec jar}.each do |name|

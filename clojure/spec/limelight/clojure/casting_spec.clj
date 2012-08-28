@@ -86,7 +86,7 @@
                         }]
       (it (str "handles " name " events")
         (let [actions-before (actions-for @prop (class event))]
-          (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-" name " (def *message* \"" name "\"))"))
+          (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-" name " (def ^:dynamic *message* \"" name "\"))"))
           (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
           (let [actions-after (actions-for @prop (class event))]
             (should= 1 (- (count actions-after) (count actions-before)))
@@ -94,14 +94,14 @@
             (should= name @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*message*))))))
 
     (it "handles on-cast events"
-      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast [e] (def *event* e))"))
+      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast [e] (def ^:dynamic *event* e))"))
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
       (let [cast-event @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*event*)]
         (should= limelight.ui.events.panel.CastEvent (class cast-event))
         (should= @prop (.getProp cast-event))))
 
     (it "the bindings are optional"
-      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast (def *message* \"casted\"))"))
+      (.createTextFile @fs "/MockProduction/players/test_player.clj" (str "(on-cast (def ^:dynamic *message* \"casted\"))"))
       (.cast (.recruitPlayer @player-recruiter "test-player" "/MockProduction/players") @(._peer @prop))
       (should= "casted" @(ns-resolve (._ns (@(._cast @player-recruiter) "test-player")) '*message*)))
 

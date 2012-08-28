@@ -5,7 +5,7 @@
   (:use
     [limelight.clojure.util :only (->options map-for-java)]))
 
-(def *log* (java.util.logging.Logger/getLogger "clojure"))
+(def ^:dynamic *log* (java.util.logging.Logger/getLogger "clojure"))
 
 (defn log [& messages]
   (.info *log* (apply str messages)))

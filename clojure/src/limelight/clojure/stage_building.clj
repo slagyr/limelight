@@ -5,7 +5,7 @@
   (:use
     [limelight.clojure.util :only (read-src)]))
 
-(declare *theater*)
+(declare ^:dynamic *theater*)
 
 (defn build-stages [theater src path]
   (binding [*theater* theater

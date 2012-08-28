@@ -9,7 +9,7 @@
   (:require
     [limelight.clojure.scene]))
 
-(declare *context*)
+(declare ^:dynamic *context*)
 
 (defn- named? [x]
   (or

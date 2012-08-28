@@ -17,7 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/lib" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="RVM: jruby-1.6.7.2 [limelight]" jdkType="JRUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="limelight" />
     <orderEntry type="library" scope="PROVIDED" name="RVM: jruby-1.6.7.2 [limelight] facet library" level="application" />

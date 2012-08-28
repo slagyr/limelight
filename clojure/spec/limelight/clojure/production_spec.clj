@@ -75,7 +75,7 @@
     (it "include prod path with loading scene"
       (.createTextFile @fs "/Mock/Scene/props.clj" "[:one]")
       (let [opts (atom nil)]
-        (binding [build (fn [scene props-src & args] (reset! opts (->options args)))]
+        (with-redefs [build (fn [scene props-src & args] (reset! opts (->options args)))]
           (.loadScene @production "Scene" {"path" "Scene"}))
         (should= "Mock" (:root-path @opts))))
 
@@ -103,7 +103,7 @@
       "production-closed" (limelight.model.events.ProductionClosedEvent.)
       }]
       (it (str "supports the " name " event")
-        (.createTextFile @fs "/Mock/production.clj" (str "(on-" name " [e] (def *message* :" name "))"))
+        (.createTextFile @fs "/Mock/production.clj" (str "(on-" name " [e] (def ^:dynamic *message* :" name "))"))
         (.illuminate @production)
         (should= 1 (count (actions-for @production (class event))))
         (should-not-throw (.dispatch event (._peer @production)))

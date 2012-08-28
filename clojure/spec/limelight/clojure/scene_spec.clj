@@ -52,7 +52,7 @@
 
     (it "player nses are usable by other players"
       (.createTextFile @fs "/Mock/bill/players/bill.clj" "(defn foo [] :foo)")
-      (.createTextFile @fs "/Mock/bill/players/tom.clj" "(on-scene-opened [e] (def *message* (bill/foo)))")
+      (.createTextFile @fs "/Mock/bill/players/tom.clj" "(on-scene-opened [e] (def ^:dynamic *message* (bill/foo)))")
       (.cast (.recruitPlayer @(._player-recruiter @scene) "tom" "/Mock/bill/players") (peer @scene))
       (.dispatch (limelight.ui.events.panel.SceneOpenedEvent.) (peer @scene))
       (should= :foo @(ns-resolve (._ns (get @(._cast @(._player-recruiter @scene)) "tom")) '*message*)))
