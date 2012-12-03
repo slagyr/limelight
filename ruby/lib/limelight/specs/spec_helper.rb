@@ -7,6 +7,7 @@ require 'limelight/production'
 require 'limelight/scene'
 require 'limelight/string'
 require 'limelight/mouse'
+require 'limelight/keyboard'
 
 module Limelight
 
@@ -85,6 +86,11 @@ module Limelight
         @mouse
       end
 
+      def keyboard
+        @keyboard ||= Limelight::Keyboard.new
+        @keyboard
+      end
+
       def scene
         if @scene.nil?
           _setup_stage
@@ -114,14 +120,14 @@ module Limelight
           @ll_player_names = @ll_player_names.is_a?(Array) ? @ll_player_names : [@ll_player_names]
           @ll_player_names = @ll_player_names.map { |n| n.to_s }
           @ll_player_names.each do |player_name|
-            eval "def #{player_name}; scene.find('#{player_name}'); end;"
+            self.class.class_eval "def #{player_name}; scene.find('#{player_name}'); end;"
           end
         end
       end
 
       def _create_player_helpers
-        player_names = @ll_player_names
-        Limelight.build_props(@scene, :build_loader => production.root) do
+        player_names = Array(@ll_player_names)
+        Limelight.build_props(@scene, :root_path => production.path) do
           player_names.each do |player_name|
             __test_prop :name =>player_name, :players => "#{player_name}", :id => "#{player_name}"
           end
@@ -132,9 +138,9 @@ module Limelight
         path = production.scene_directory(@ll_scene_path)
         @scene = Scene.new(:production => production, :path => path, :name => @ll_scene_name)
         _create_player_helpers
-        Limelight.build_props(@scene, :build_loader => production.path, &@prop_block) if @prop_block
+        Limelight.build_props(@scene, :root_path => production.path, &@prop_block) if @prop_block
 
-        production.load_styles(@scene, production.styles)
+        @scene.peer.styles = production.load_styles(@scene, production.styles)
         @stage.scene = @scene
         @stage.open
       end
